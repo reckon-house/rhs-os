@@ -5,9 +5,9 @@ export function ThreeColumnText({ columns }: ThreeColumnTextSection) {
   const cards = columns.map((col, i) => (
     <div key={i}>
       {col.title && (
-        <h3 className="text-[16px] font-bold leading-[24px] mb-3">{col.title}</h3>
+        <h3 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-3">{col.title}</h3>
       )}
-      <p className="text-[12px] md:text-[16px] leading-[1.875] text-foreground/80 whitespace-pre-line">
+      <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 whitespace-pre-line">
         {col.content.replace(/\n\n/g, "\n")}
       </p>
     </div>
@@ -21,13 +21,13 @@ export function ThreeColumnText({ columns }: ThreeColumnTextSection) {
         {columns.map((col, i) => (
           <div key={i} className="grid grid-cols-12 gap-x-5">
             {col.title && (
-              <h3 className="col-span-3 text-[16px] font-bold leading-[24px] pt-[3px]">
+              <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
                 {col.title}
               </h3>
             )}
             <div className={`${col.title ? "col-start-7 col-span-6" : "col-span-12"}`}>
               {col.content.split("\n\n").map((p, j) => (
-                <p key={j} className="text-[12px] md:text-[16px] leading-[1.875] text-foreground/80 mb-4 last:mb-0">
+                <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 mb-4 last:mb-0">
                   {p}
                 </p>
               ))}

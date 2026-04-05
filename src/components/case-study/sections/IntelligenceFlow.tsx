@@ -1,8 +1,9 @@
 "use client";
 
+import { useMemo } from "react";
 import type { IntelligenceFlowSection } from "@/lib/types";
 
-// Deterministic pseudo-random
+// ── Seeded random ──────────────────────────────────────────────
 function seededRandom(seed: number) {
   let s = seed;
   return () => {
@@ -11,281 +12,564 @@ function seededRandom(seed: number) {
   };
 }
 
-// Circle cluster generator (same visual language as heatmap)
-function generateNodeCluster(
-  cx: number, cy: number, radius: number,
-  intensity: number, seed: number, palette: string[]
-) {
-  const rng = seededRandom(seed);
-  const circles: { cx: number; cy: number; r: number; fill: string; opacity: number }[] = [];
-
-  const count = Math.floor(6 + intensity * 18);
-
-  for (let i = 0; i < count; i++) {
-    const angle = rng() * Math.PI * 2;
-    const dist = rng() * radius * (0.4 + intensity * 0.4);
-    const x = cx + Math.cos(angle) * dist;
-    const y = cy + Math.sin(angle) * dist;
-    const baseR = 4 + intensity * 16;
-    const r = baseR * (0.2 + rng() * 0.8);
-    const fill = palette[Math.floor(rng() * palette.length)];
-    const opacity = 0.1 + intensity * 0.25 + rng() * 0.12;
-    circles.push({ cx: x, cy: y, r, fill, opacity });
-  }
-
-  // Accent rings
-  if (intensity >= 0.5) {
-    const ringCount = Math.floor(1 + intensity * 2);
-    for (let i = 0; i < ringCount; i++) {
-      const angle = rng() * Math.PI * 2;
-      const dist = rng() * radius * 0.6;
-      circles.push({
-        cx: cx + Math.cos(angle) * dist,
-        cy: cy + Math.sin(angle) * dist,
-        r: 8 + rng() * 14,
-        fill: "none",
-        opacity: 0.12 + rng() * 0.1,
-      });
-    }
-  }
-
-  return circles;
+function polar(cx: number, cy: number, r: number, angleDeg: number) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
 }
 
+// ── Sally Marketing OS palette ──────────────────────────────────
+const PALETTE = [
+  "#C94545", "#C4946B", "#C4A878", "#8C8578", "#B1BC94",
+  "#6B8060", "#A0886C", "#9B8E7E", "#D4736B", "#CC9878",
+];
+
+// ── Ring 1: Pipeline stages (inner ring) ────────────────────────
+const PIPELINE_STEPS = [
+  { label: "Signal\nCapture", angle: 0 },
+  { label: "AI\nProcessing", angle: 60 },
+  { label: "Insight\nGeneration", angle: 120 },
+  { label: "Brief\nCreation", angle: 180 },
+  { label: "Asset\nProduction", angle: 240 },
+  { label: "Store\nExecution", angle: 300 },
+];
+
+// ── Ring 2: Technology stack ────────────────────────────────────
+const TECH_STACK = [
+  { label: "Claude Opus", color: "#C94545", angle: 10, w: 58 },
+  { label: "Gemini 2.5 Pro", color: "#C4A878", angle: 55, w: 64 },
+  { label: "Perplexity Sonar", color: "#8C8578", angle: 95, w: 72 },
+  { label: "Knowledge Base", color: "#6B8060", angle: 140, w: 66 },
+  { label: "Prompt Cache", color: "#A0886C", angle: 185, w: 58 },
+  { label: "Asset Pipeline", color: "#B1BC94", angle: 230, w: 62 },
+  { label: "Store Analytics", color: "#556B4A", angle: 275, w: 64 },
+  { label: "Feedback Loop", color: "#C4946B", angle: 325, w: 62 },
+];
+
+// ── Ring 3: Data model ──────────────────────────────────────────
+const DATA_NODES = [
+  { label: "Publication", angle: 0, color: "#8C8578", r: 6, importance: 20 },
+  { label: "Social Signal", angle: 18, color: "#8C8578", r: 5, importance: 16 },
+  { label: "Competitor", angle: 35, color: "#8C8578", r: 7, importance: 22 },
+  { label: "Pricing", angle: 52, color: "#C4A878", r: 5, importance: 14 },
+  { label: "Trend Score", angle: 68, color: "#C4A878", r: 6, importance: 18 },
+  { label: "Category", angle: 85, color: "#C4A878", r: 5, importance: 15 },
+  { label: "Sally's Take", angle: 102, color: "#C94545", r: 8, importance: 28 },
+  { label: "Threat", angle: 118, color: "#C4946B", r: 6, importance: 18 },
+  { label: "Opportunity", angle: 135, color: "#C4946B", r: 7, importance: 22 },
+  { label: "Signal", angle: 150, color: "#C4946B", r: 5, importance: 14 },
+  { label: "Strategy", angle: 168, color: "#C94545", r: 7, importance: 24 },
+  { label: "Channel Mix", angle: 185, color: "#C94545", r: 6, importance: 18 },
+  { label: "Audience", angle: 200, color: "#C94545", r: 5, importance: 16 },
+  { label: "KPI", angle: 215, color: "#D4736B", r: 4, importance: 12 },
+  { label: "Timeline", angle: 230, color: "#D4736B", r: 4, importance: 10 },
+  { label: "Digital", angle: 245, color: "#B1BC94", r: 6, importance: 20 },
+  { label: "Email", angle: 258, color: "#B1BC94", r: 5, importance: 16 },
+  { label: "Social", angle: 272, color: "#B1BC94", r: 7, importance: 22 },
+  { label: "In-Store", angle: 286, color: "#6B8060", r: 6, importance: 18 },
+  { label: "Shelf Talker", angle: 300, color: "#6B8060", r: 5, importance: 14 },
+  { label: "Regional", angle: 315, color: "#6B8060", r: 5, importance: 16 },
+  { label: "Performance", angle: 330, color: "#556B4A", r: 6, importance: 20 },
+  { label: "Conversion", angle: 345, color: "#556B4A", r: 5, importance: 15 },
+];
+
+// ── Ring 4: AI decision points ──────────────────────────────────
+const AI_DECISIONS = [
+  { label: "Auto-Categorize Signal → Route to Strategist", angle: 8, color: "#8C8578" },
+  { label: "Competitor Move → Generate Sally's Take", angle: 45, color: "#C4A878" },
+  { label: "High Confidence → Auto-Brief Draft", angle: 82, color: "#C94545" },
+  { label: "Multi-Signal → Trend Cluster Detection", angle: 118, color: "#C4946B" },
+  { label: "Brief Complete → Trigger Asset Pipeline", angle: 155, color: "#C94545" },
+  { label: "Brand Compliance → Auto-Scan Assets", angle: 192, color: "#B1BC94" },
+  { label: "AI Tag → Confidence Score + Human Review", angle: 228, color: "#B1BC94" },
+  { label: "Channel Optimize → A/B Variant Generation", angle: 265, color: "#6B8060" },
+  { label: "Sell-Through Data → Next Cycle Intelligence", angle: 302, color: "#556B4A" },
+  { label: "Performance Gap → Alert + Recommendation", angle: 338, color: "#C4946B" },
+];
+
+// ── Ring 5: Platform modules ────────────────────────────────────
+const PLATFORM_MODULES = [
+  { label: "Trends Feed", sub: "14 Sources", angle: 15, color: "#8C8578" },
+  { label: "Brand Brain", sub: "Jim AI", angle: 87, color: "#C94545" },
+  { label: "Briefing Engine", sub: "3 Tiers", angle: 159, color: "#C4946B" },
+  { label: "Asset Hub", sub: "DAM + AI", angle: 231, color: "#B1BC94" },
+  { label: "Utilities", sub: "10 Tools", angle: 303, color: "#6B8060" },
+];
+
+// ── Cross-ring connections ──────────────────────────────────────
+const CONNECTIONS: [number, number][] = [
+  [0, 0], [0, 1], [1, 2], [1, 3], [2, 4],
+  [3, 5], [4, 0], [4, 1], [5, 2], [5, 3],
+  [6, 4], [6, 5], [7, 0], [7, 1], [2, 2],
+  [3, 3], [7, 4], [0, 5],
+];
+
 export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
-  const W = 900;
-  const H = 900;
-  const CX = W / 2;
-  const CY = H / 2;
+  const CX = 500;
+  const CY = 500;
+  const R1 = 105;
+  const R2 = 200;
+  const R3 = 290;
+  const R4 = 375;
+  const R5 = 455;
 
-  // Orbital radius
-  const orbitR = 310;
+  const particles = useMemo(() => {
+    const rng = seededRandom(42);
+    const dots: { x: number; y: number; r: number; color: string; opacity: number }[] = [];
 
-  // Stage positions around the circle (clockwise from top)
-  // Slight offset so the feedback arc has visual space
-  const startAngle = -Math.PI / 2 + 0.15; // start just past 12 o'clock
-  const stageAngles = stages.map((_, i) =>
-    startAngle + (i / stages.length) * Math.PI * 2
-  );
+    DATA_NODES.forEach((node) => {
+      const center = polar(CX, CY, R3, node.angle);
+      const count = Math.round(node.importance * 2.2);
+      for (let j = 0; j < count; j++) {
+        const spread = 30 + rng() * 50;
+        const a = rng() * Math.PI * 2;
+        const dist = spread * (0.2 + rng() * 0.8);
+        dots.push({
+          x: center.x + Math.cos(a) * dist,
+          y: center.y + Math.sin(a) * dist,
+          r: node.importance >= 20 ? 2 + rng() * 5 : 1 + rng() * 3.5,
+          color: node.color,
+          opacity: 0.08 + rng() * 0.32,
+        });
+      }
+    });
 
-  // Colors per stage — portal palette
-  const stageColors = [
-    "#8C8578", // sources — warm grey
-    "#C4A878", // engines — golden
-    "#C4946B", // insights — warm rose-tan
-    "#C94545", // briefs — portal red
-    "#B1BC94", // assets — sage green
-    "#6B8060", // stores — deep green
-  ];
+    TECH_STACK.forEach((tech) => {
+      const center = polar(CX, CY, R2, tech.angle);
+      for (let j = 0; j < 22; j++) {
+        const spread = 18 + rng() * 38;
+        const a = rng() * Math.PI * 2;
+        const dist = spread * (0.15 + rng() * 0.85);
+        dots.push({
+          x: center.x + Math.cos(a) * dist,
+          y: center.y + Math.sin(a) * dist,
+          r: 1.2 + rng() * 3.5,
+          color: tech.color,
+          opacity: 0.1 + rng() * 0.28,
+        });
+      }
+    });
 
-  const stagePalettes = [
-    ["#8C8578", "#A09890", "#B5AFA8", "#7A7570", "#9C9690"],
-    ["#C4A878", "#D4B888", "#B89860", "#CAAE80", "#D6C098"],
-    ["#C4946B", "#D4A07A", "#B8886A", "#CC9878", "#D4A888"],
-    ["#C94545", "#D4736B", "#E08080", "#B53A3A", "#CC6B7A"],
-    ["#B1BC94", "#C0CA A4", "#A0AC84", "#BCC8A0", "#98A880"],
-    ["#6B8060", "#7A9070", "#5C7050", "#88A078", "#608058"],
-  ];
+    for (let i = 0; i < 350; i++) {
+      const ring = (R1 - 20) + rng() * (R5 - R1 + 60);
+      const angle = rng() * 360;
+      const pos = polar(CX, CY, ring, angle);
+      dots.push({
+        x: pos.x + (rng() - 0.5) * 20,
+        y: pos.y + (rng() - 0.5) * 20,
+        r: 0.3 + rng() * 2,
+        color: PALETTE[Math.floor(rng() * PALETTE.length)],
+        opacity: 0.03 + rng() * 0.12,
+      });
+    }
 
-  // Fix the space in palette
-  const fixedPalettes = stagePalettes.map(p => p.map(c => c.replace(/\s/g, "")));
+    AI_DECISIONS.forEach((d) => {
+      const center = polar(CX, CY, R4, d.angle);
+      for (let j = 0; j < 16; j++) {
+        const spread = 14 + rng() * 32;
+        const a = rng() * Math.PI * 2;
+        const dist = spread * (0.2 + rng() * 0.8);
+        dots.push({
+          x: center.x + Math.cos(a) * dist,
+          y: center.y + Math.sin(a) * dist,
+          r: 1 + rng() * 3,
+          color: d.color,
+          opacity: 0.08 + rng() * 0.22,
+        });
+      }
+    });
 
-  // Node sizes (proportional to volume)
-  const maxVal = stages[0].value;
-  const nodeRadii = stages.map(s => 35 + (s.value / maxVal) * 45);
+    PLATFORM_MODULES.forEach((p) => {
+      const center = polar(CX, CY, R5, p.angle);
+      for (let j = 0; j < 18; j++) {
+        const spread = 18 + rng() * 35;
+        const a = rng() * Math.PI * 2;
+        const dist = spread * (0.2 + rng() * 0.8);
+        dots.push({
+          x: center.x + Math.cos(a) * dist,
+          y: center.y + Math.sin(a) * dist,
+          r: 1.2 + rng() * 3,
+          color: p.color,
+          opacity: 0.06 + rng() * 0.18,
+        });
+      }
+    });
 
-  // Build curved flow paths between consecutive stages
-  function flowPath(i1: number, i2: number, isForward: boolean) {
-    const a1 = stageAngles[i1];
-    const a2 = stageAngles[i2];
+    PIPELINE_STEPS.forEach((step) => {
+      const center = polar(CX, CY, R1, step.angle);
+      for (let j = 0; j < 10; j++) {
+        const spread = 20 + rng() * 30;
+        const a = rng() * Math.PI * 2;
+        const dist = spread * (0.3 + rng() * 0.7);
+        dots.push({
+          x: center.x + Math.cos(a) * dist,
+          y: center.y + Math.sin(a) * dist,
+          r: 0.8 + rng() * 2.5,
+          color: PALETTE[Math.floor(rng() * PALETTE.length)],
+          opacity: 0.05 + rng() * 0.15,
+        });
+      }
+    });
 
-    const x1 = CX + Math.cos(a1) * orbitR;
-    const y1 = CY + Math.sin(a1) * orbitR;
-    const x2 = CX + Math.cos(a2) * orbitR;
-    const y2 = CY + Math.sin(a2) * orbitR;
+    return dots;
+  }, []);
 
-    // Control points — curve inward toward center for forward flow
-    const midAngle = (a1 + a2) / 2;
-    const curvePull = isForward ? orbitR * 0.65 : orbitR * 1.35;
-    const cpx = CX + Math.cos(midAngle) * curvePull;
-    const cpy = CY + Math.sin(midAngle) * curvePull;
+  const webLines = useMemo(() => {
+    const rng = seededRandom(77);
+    const lines: { x1: number; y1: number; x2: number; y2: number; color: string; opacity: number; width: number }[] = [];
 
-    return `M ${x1} ${y1} Q ${cpx} ${cpy} ${x2} ${y2}`;
-  }
+    DATA_NODES.forEach((node) => {
+      AI_DECISIONS.forEach((d) => {
+        const angleDiff = Math.abs(((node.angle - d.angle + 540) % 360) - 180);
+        if (angleDiff < 45) {
+          const from = polar(CX, CY, R3 + node.r, node.angle);
+          const to = polar(CX, CY, R4, d.angle);
+          lines.push({
+            x1: from.x, y1: from.y, x2: to.x, y2: to.y,
+            color: node.color, opacity: 0.14 + rng() * 0.12, width: 0.3 + rng() * 0.5,
+          });
+        }
+      });
+    });
 
-  // Feedback arc (stores → sources) — goes OUTSIDE the orbit
-  const feedbackPath = (() => {
-    const a1 = stageAngles[stages.length - 1]; // stores
-    const a2 = stageAngles[0]; // sources
+    for (let i = 0; i < DATA_NODES.length; i++) {
+      for (let j = i + 1; j < DATA_NODES.length; j++) {
+        const angleDiff = Math.abs(((DATA_NODES[i].angle - DATA_NODES[j].angle + 540) % 360) - 180);
+        if (angleDiff < 30 && rng() > 0.25) {
+          const from = polar(CX, CY, R3, DATA_NODES[i].angle);
+          const to = polar(CX, CY, R3, DATA_NODES[j].angle);
+          lines.push({
+            x1: from.x, y1: from.y, x2: to.x, y2: to.y,
+            color: DATA_NODES[i].color, opacity: 0.1 + rng() * 0.1, width: 0.25 + rng() * 0.4,
+          });
+        }
+      }
+    }
 
-    const x1 = CX + Math.cos(a1) * orbitR;
-    const y1 = CY + Math.sin(a1) * orbitR;
-    const x2 = CX + Math.cos(a2) * orbitR;
-    const y2 = CY + Math.sin(a2) * orbitR;
+    for (let i = 0; i < 90; i++) {
+      const r1 = R1 + rng() * (R5 - R1);
+      const r2 = R1 + rng() * (R5 - R1);
+      const a1 = rng() * 360;
+      const a2 = a1 + (rng() - 0.5) * 50;
+      const from = polar(CX, CY, r1, a1);
+      const to = polar(CX, CY, r2, a2);
+      lines.push({
+        x1: from.x, y1: from.y, x2: to.x, y2: to.y,
+        color: PALETTE[Math.floor(rng() * PALETTE.length)],
+        opacity: 0.08 + rng() * 0.1,
+        width: 0.2 + rng() * 0.4,
+      });
+    }
 
-    // Arc outside the orbit
-    const midAngle = a1 + (Math.PI * 2 - (a1 - a2)) / 2;
-    const outerR = orbitR * 1.3;
-    const cpx = CX + Math.cos(midAngle) * outerR;
-    const cpy = CY + Math.sin(midAngle) * outerR;
+    for (let i = 0; i < 36; i++) {
+      const angle = i * 10 + rng() * 6;
+      const rStart = R1 + 35 + rng() * 30;
+      const rEnd = R4 + rng() * 80;
+      const from = polar(CX, CY, rStart, angle);
+      const to = polar(CX, CY, rEnd, angle + (rng() - 0.5) * 12);
+      lines.push({
+        x1: from.x, y1: from.y, x2: to.x, y2: to.y,
+        color: PALETTE[Math.floor(rng() * PALETTE.length)],
+        opacity: 0.1 + rng() * 0.1,
+        width: 0.25 + rng() * 0.45,
+      });
+    }
 
-    return `M ${x1} ${y1} Q ${cpx} ${cpy} ${x2} ${y2}`;
-  })();
+    TECH_STACK.forEach((tech) => {
+      DATA_NODES.forEach((node) => {
+        const angleDiff = Math.abs(((tech.angle - node.angle + 540) % 360) - 180);
+        if (angleDiff < 30 && rng() > 0.5) {
+          const from = polar(CX, CY, R2 + 15, tech.angle);
+          const to = polar(CX, CY, R3 - 10, node.angle);
+          lines.push({
+            x1: from.x, y1: from.y, x2: to.x, y2: to.y,
+            color: tech.color, opacity: 0.12 + rng() * 0.1, width: 0.25 + rng() * 0.4,
+          });
+        }
+      });
+    });
+
+    return lines;
+  }, []);
 
   return (
-    <div className="overflow-x-auto scrollbar-hide">
-      <div className="relative overflow-hidden"
-        style={{ minWidth: 800, background: "#F3F0ED", borderRadius: "clamp(20px,3vw,40px)", padding: "24px 16px 16px" }}>
-
-        {/* Dot grid background */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{
-          backgroundImage: "radial-gradient(circle, #1A1A1A 0.5px, transparent 0.5px)",
-          backgroundSize: "28px 28px",
-        }} />
-
+    <section className="w-full py-12">
+      <div className="w-full max-w-[960px] mx-auto px-4 md:px-0">
         <svg
-          viewBox={`0 0 ${W} ${H}`}
-          width="100%"
-          style={{ fontFamily: "'Satoshi', system-ui, sans-serif", position: "relative" }}
+          viewBox="0 0 1000 1000"
+          className="w-full h-auto"
+          style={{ fontFamily: "'Satoshi', system-ui, sans-serif" }}
         >
-          <defs>
-            <filter id="flowGlow">
-              <feGaussianBlur stdDeviation="6" />
-            </filter>
-            {/* Arrow marker for feedback */}
-            <marker id="feedbackArrow" viewBox="0 0 10 8" refX="8" refY="4"
-              markerWidth="8" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 4 L 0 8 Z" fill="#C94545" opacity="0.5" />
-            </marker>
-          </defs>
-
-          {/* Orbit ring (subtle) */}
-          <circle cx={CX} cy={CY} r={orbitR} fill="none"
-            stroke="#D6C9B0" strokeWidth="0.5" opacity={0.3}
-            strokeDasharray="4 8" />
-
-          {/* Inner orbit ring */}
-          <circle cx={CX} cy={CY} r={orbitR * 0.6} fill="none"
-            stroke="#D6C9B0" strokeWidth="0.3" opacity={0.15} />
-
-          {/* Forward flow paths (between consecutive stages) */}
-          {stages.slice(0, -1).map((_, i) => {
-            const path = flowPath(i, i + 1, true);
-            const thickness = 2 + (stages[i].value / maxVal) * 6;
+          {/* ── Grid ── */}
+          {Array.from({ length: 11 }).map((_, i) => {
+            const pos = (i + 1) * (1000 / 12);
             return (
-              <g key={`flow-${i}`}>
-                {/* Glow */}
-                <path d={path} fill="none" stroke={stageColors[i]}
-                  strokeWidth={thickness * 3} opacity={0.06} filter="url(#flowGlow)" />
-                {/* Main path */}
-                <path d={path} fill="none" stroke={stageColors[i]}
-                  strokeWidth={thickness} opacity={0.2}
-                  strokeLinecap="round" />
-                {/* Thin accent line */}
-                <path d={path} fill="none" stroke={stageColors[i + 1]}
-                  strokeWidth={1} opacity={0.15}
-                  strokeDasharray="3 6" strokeLinecap="round" />
+              <g key={`grid-${i}`}>
+                <line x1={pos} y1={0} x2={pos} y2={1000} stroke="#141414" strokeWidth={0.5} opacity={0.1} />
+                <line x1={0} y1={pos} x2={1000} y2={pos} stroke="#141414" strokeWidth={0.5} opacity={0.1} />
               </g>
             );
           })}
 
-          {/* Feedback arc (stores → sources) — portal red */}
-          <path d={feedbackPath} fill="none" stroke="#C94545"
-            strokeWidth={2} opacity={0.12} filter="url(#flowGlow)" />
-          <path d={feedbackPath} fill="none" stroke="#C94545"
-            strokeWidth={1.5} opacity={0.3}
-            strokeDasharray="6 4" strokeLinecap="round"
-            markerEnd="url(#feedbackArrow)" />
+          {/* ── Concentric rings ── */}
+          {[R1, R2, R3, R4, R5, 150, 245, 330, 410, 170, 260, 350, 425].map((r, i) => (
+            <circle key={`ring-${i}`} cx={CX} cy={CY} r={r}
+              fill="none" stroke="#141414"
+              strokeWidth={i < 5 ? 0.4 : 0.2}
+              opacity={i < 5 ? 0.06 : 0.025}
+              strokeDasharray={i >= 5 ? "1,3" : "none"}
+            />
+          ))}
 
-          {/* Feedback label */}
-          {(() => {
-            const a1 = stageAngles[stages.length - 1];
-            const a2 = stageAngles[0];
-            const midAngle = a1 + (Math.PI * 2 - (a1 - a2)) / 2;
-            const labelR = orbitR * 1.22;
+          {/* ── Radial grid ── */}
+          {Array.from({ length: 120 }).map((_, i) => {
+            const angle = i * 3;
+            const major = angle % 30 === 0;
+            const mid = angle % 15 === 0;
+            const inner = polar(CX, CY, R1 - 10, angle);
+            const outer = polar(CX, CY, R5 + 20, angle);
             return (
-              <text
-                x={CX + Math.cos(midAngle) * labelR}
-                y={CY + Math.sin(midAngle) * labelR}
-                textAnchor="middle" fontSize="8" fontWeight="600"
-                fill="#C94545" opacity={0.5} letterSpacing="0.1em"
-              >
-                PERFORMANCE FEEDBACK
-              </text>
+              <line key={`radial-${i}`}
+                x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y}
+                stroke="#141414"
+                strokeWidth={major ? 0.25 : mid ? 0.15 : 0.08}
+                opacity={major ? 0.04 : mid ? 0.025 : 0.012}
+              />
             );
-          })()}
+          })}
 
-          {/* Stage nodes */}
-          {stages.map((stage, i) => {
-            const angle = stageAngles[i];
-            const x = CX + Math.cos(angle) * orbitR;
-            const y = CY + Math.sin(angle) * orbitR;
-            const r = nodeRadii[i];
-            const intensity = stage.value / maxVal;
-            const clusters = generateNodeCluster(x, y, r * 1.2, intensity, i * 777 + 42, fixedPalettes[i]);
+          {/* ── Connection web ── */}
+          {webLines.map((line, i) => (
+            <line key={`web-${i}`}
+              x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
+              stroke={line.color} strokeWidth={line.width} opacity={line.opacity}
+            />
+          ))}
 
+          {/* ── Tech → Pipeline curves ── */}
+          {CONNECTIONS.map(([techIdx, pipeIdx], i) => {
+            const tech = TECH_STACK[techIdx];
+            const pipe = PIPELINE_STEPS[pipeIdx];
+            const from = polar(CX, CY, R2, tech.angle);
+            const to = polar(CX, CY, R1 + 32, pipe.angle);
+            const ctrl = polar(CX, CY, (R1 + R2) * 0.38, (tech.angle + pipe.angle) / 2);
             return (
-              <g key={stage.name}>
-                {/* Background halo */}
-                <circle cx={x} cy={y} r={r * 1.6} fill={stageColors[i]} opacity={0.04} />
+              <path key={`conn-${i}`}
+                d={`M${from.x},${from.y} Q${ctrl.x},${ctrl.y} ${to.x},${to.y}`}
+                fill="none" stroke={tech.color}
+                strokeWidth={0.9} opacity={0.18}
+              />
+            );
+          })}
 
-                {/* Circle clusters */}
-                {clusters.map((c, k) =>
-                  c.fill === "none" ? (
-                    <circle key={k} cx={c.cx} cy={c.cy} r={c.r}
-                      fill="none" stroke={fixedPalettes[i][0]}
-                      strokeWidth="0.8" opacity={c.opacity} />
-                  ) : (
-                    <circle key={k} cx={c.cx} cy={c.cy} r={c.r}
-                      fill={c.fill} opacity={c.opacity} />
-                  )
+          {/* ── Data → Tech connections ── */}
+          {DATA_NODES.map((node, i) => {
+            const from = polar(CX, CY, R3, node.angle);
+            const nearest = TECH_STACK.reduce((best, t) => {
+              const d = Math.abs(((t.angle - node.angle + 540) % 360) - 180);
+              const bd = Math.abs(((best.angle - node.angle + 540) % 360) - 180);
+              return d < bd ? t : best;
+            });
+            const to = polar(CX, CY, R2 + 15, nearest.angle);
+            return (
+              <line key={`dm-c-${i}`}
+                x1={from.x} y1={from.y} x2={to.x} y2={to.y}
+                stroke={node.color} strokeWidth={0.5} opacity={0.16}
+              />
+            );
+          })}
+
+          {/* ── Particles ── */}
+          {particles.map((dot, i) => (
+            <circle key={`p-${i}`}
+              cx={dot.x} cy={dot.y} r={dot.r}
+              fill={dot.color} opacity={dot.opacity}
+            />
+          ))}
+
+          {/* ── Ring 5: Platform modules ── */}
+          {PLATFORM_MODULES.map((mod, i) => {
+            const arcStart = polar(CX, CY, R5, mod.angle - 32);
+            const arcEnd = polar(CX, CY, R5, mod.angle + 32);
+            const labelPos = polar(CX, CY, R5 + 32, mod.angle);
+            const n = ((mod.angle % 360) + 360) % 360;
+            const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
+            return (
+              <g key={`mod-${i}`}>
+                <path
+                  d={`M${arcStart.x},${arcStart.y} A${R5},${R5} 0 0,1 ${arcEnd.x},${arcEnd.y}`}
+                  fill="none" stroke={mod.color}
+                  strokeWidth={14} opacity={0.25}
+                  strokeLinecap="round"
+                />
+                <text x={labelPos.x} y={labelPos.y - 5}
+                  textAnchor={anchor} fill="#141414"
+                  fontSize={9} fontWeight={600} opacity={0.55}
+                  dominantBaseline="middle"
+                >{mod.label}</text>
+                <text x={labelPos.x} y={labelPos.y + 7}
+                  textAnchor={anchor} fill="#141414"
+                  fontSize={8} fontWeight={400} opacity={0.4}
+                  dominantBaseline="middle"
+                >{mod.sub}</text>
+              </g>
+            );
+          })}
+
+          {/* ── Ring 4: AI decisions ── */}
+          {AI_DECISIONS.map((decision, i) => {
+            const pos = polar(CX, CY, R4, decision.angle);
+            const n = ((decision.angle % 360) + 360) % 360;
+            const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
+            const labelPos = polar(CX, CY, R4 + 16, decision.angle);
+            return (
+              <g key={`ai-${i}`}>
+                <circle cx={pos.x} cy={pos.y} r={12} fill={decision.color} opacity={0.05} />
+                <circle cx={pos.x} cy={pos.y} r={7} fill={decision.color} opacity={0.1} />
+                <circle cx={pos.x} cy={pos.y} r={3.5} fill={decision.color} opacity={0.5} />
+                <text x={labelPos.x} y={labelPos.y}
+                  textAnchor={anchor} fill="#141414"
+                  fontSize={7} opacity={0.4}
+                  dominantBaseline="middle"
+                >{decision.label}</text>
+              </g>
+            );
+          })}
+
+          {/* ── Ring 3: Data nodes ── */}
+          {DATA_NODES.map((node, i) => {
+            const pos = polar(CX, CY, R3, node.angle);
+            const n = ((node.angle % 360) + 360) % 360;
+            const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
+            const labelPos = polar(CX, CY, R3 + 14 + node.r, node.angle);
+            return (
+              <g key={`dm-${i}`}>
+                {node.importance >= 18 && (
+                  <circle cx={pos.x} cy={pos.y} r={node.r + 8} fill={node.color} opacity={0.05} />
                 )}
-
-                {/* Center label background */}
-                <circle cx={x} cy={y} r={r * 0.55} fill="#F3F0ED" opacity={0.85} />
-
-                {/* Stage label */}
-                <text x={x} y={y - r - 14}
-                  textAnchor="middle" fontSize="8.5" fontWeight="700"
-                  fill="#1A1A1A" letterSpacing="0.1em" opacity={0.7}
-                >
-                  {stage.name.toUpperCase()}
-                </text>
-
-                {/* Items */}
-                {stage.items.map((item, j) => {
-                  const itemY = y - ((stage.items.length - 1) * 11) / 2 + j * 11;
-                  return (
-                    <text key={item} x={x} y={itemY + 2}
-                      textAnchor="middle" fontSize="8" fontWeight="500"
-                      fill="#1A1A1A" opacity={0.5}
-                    >
-                      {item}
-                    </text>
-                  );
-                })}
+                <circle cx={pos.x} cy={pos.y} r={node.r} fill={node.color} opacity={0.6} />
+                <text x={labelPos.x} y={labelPos.y}
+                  textAnchor={anchor} fill="#141414"
+                  fontSize={8} fontWeight={500} opacity={0.55}
+                  dominantBaseline="middle"
+                >{node.label}</text>
               </g>
             );
           })}
 
-          {/* Center label */}
-          <circle cx={CX} cy={CY} r={36} fill="#F3F0ED" stroke="#D6C9B0" strokeWidth="0.5" opacity={0.9} />
-          <text x={CX} y={CY - 5} textAnchor="middle" fontSize="9" fontWeight="700"
-            fill="#1A1A1A" opacity={0.5} letterSpacing="0.12em">
-            SALLY
-          </text>
-          <text x={CX} y={CY + 7} textAnchor="middle" fontSize="7" fontWeight="500"
-            fill="#1A1A1A" opacity={0.35} letterSpacing="0.08em">
-            MARKETING OS
-          </text>
+          {/* ── Ring 2: Tech pills ── */}
+          {TECH_STACK.map((tech, i) => {
+            const pos = polar(CX, CY, R2, tech.angle);
+            return (
+              <g key={`tech-${i}`}>
+                <rect
+                  x={pos.x - tech.w / 2 - 4} y={pos.y - 15}
+                  width={tech.w + 8} height={30}
+                  rx={15} fill={tech.color} opacity={0.06}
+                />
+                <rect
+                  x={pos.x - tech.w / 2} y={pos.y - 11}
+                  width={tech.w} height={22}
+                  rx={11} fill={tech.color} opacity={0.88}
+                />
+                <text x={pos.x} y={pos.y}
+                  textAnchor="middle" dominantBaseline="central"
+                  fill="#fff" fontSize={7.5} fontWeight={600}
+                >{tech.label}</text>
+              </g>
+            );
+          })}
 
-          {/* Footer */}
-          <text x={CX} y={H - 16} textAnchor="middle" fontSize="7.5" fontWeight="500"
-            fill="#8C8578" letterSpacing="0.1em" opacity={0.45}>
-            SIGNAL TO SHELF — closed-loop intelligence pipeline
-          </text>
+          {/* ── Ring 1: Pipeline steps ── */}
+          {PIPELINE_STEPS.map((step, i) => {
+            const pos = polar(CX, CY, R1, step.angle);
+            const lines = step.label.split("\n");
+            const next = PIPELINE_STEPS[(i + 1) % 6];
+            const a1 = polar(CX, CY, R1, step.angle + 20);
+            const a2 = polar(CX, CY, R1, (i < 5 ? next.angle : step.angle + 60) - 20);
+            return (
+              <g key={`pipe-${i}`}>
+                {i < 5 && (
+                  <path
+                    d={`M${a1.x},${a1.y} A${R1},${R1} 0 0,1 ${a2.x},${a2.y}`}
+                    fill="none" stroke="#141414"
+                    strokeWidth={0.6} opacity={0.08}
+                    strokeDasharray="2,4"
+                  />
+                )}
+                <circle cx={pos.x} cy={pos.y} r={36}
+                  fill="#F3F0ED" stroke="#141414" strokeWidth={0.5} opacity={0.15} />
+                <circle cx={pos.x} cy={pos.y} r={32}
+                  fill="#F3F0ED" stroke="#141414" strokeWidth={0.3} opacity={0.08} />
+                <text x={pos.x} y={pos.y - 2}
+                  textAnchor="middle" fontSize={6.5} fontWeight={600}
+                  fill="#141414" opacity={0.35} letterSpacing="0.02em"
+                >
+                  <tspan x={pos.x} dy="0">{String(i + 1).padStart(2, "0")}</tspan>
+                </text>
+                {lines.map((l, li) => (
+                  <text key={li} x={pos.x} y={pos.y + 6 + li * 10}
+                    textAnchor="middle" fontSize={8} fontWeight={600}
+                    fill="#141414" opacity={0.6}
+                  >{l}</text>
+                ))}
+              </g>
+            );
+          })}
+
+          {/* ── Center hub ── */}
+          <circle cx={CX} cy={CY} r={60} fill="#F3F0ED" stroke="#141414" strokeWidth={0.5} opacity={0.12} />
+          <circle cx={CX} cy={CY} r={55} fill="#F3F0ED" stroke="#141414" strokeWidth={0.3} opacity={0.06} />
+          <text x={CX} y={CY - 4} textAnchor="middle" fontSize={14} fontWeight={500}
+            fill="#141414" opacity={0.5} letterSpacing="0.08em"
+            style={{ fontFamily: "'Ogg', serif" }}
+          >SALLY</text>
+          <text x={CX} y={CY + 12} textAnchor="middle" fontSize={7} fontWeight={400}
+            fill="#141414" opacity={0.3} letterSpacing="0.12em"
+          >MARKETING OS</text>
+
+          {/* ── Legend ── */}
+          <g transform="translate(30, 850)">
+            <text fontSize={9} fontWeight={700} fill="#141414" opacity={0.5} letterSpacing="0.08em">Ring Index</text>
+            {[
+              { label: "Pipeline Flow", color: "none", stroke: true },
+              { label: "Technology Stack", color: "#C4A878" },
+              { label: "Data Model", color: "#B1BC94" },
+              { label: "AI Decision Points", color: "#C4946B" },
+              { label: "Platform Modules", color: "#6B8060" },
+            ].map((item, i) => (
+              <g key={i} transform={`translate(0, ${18 + i * 16})`}>
+                <circle cx={6} cy={0} r={4}
+                  fill={item.color === "none" ? "none" : item.color}
+                  stroke={item.stroke ? "#141414" : "none"}
+                  strokeWidth={item.stroke ? 0.5 : 0}
+                  opacity={0.5}
+                />
+                <text x={16} y={0} fontSize={8} fill="#141414" opacity={0.45} dominantBaseline="middle">
+                  {item.label}
+                </text>
+              </g>
+            ))}
+          </g>
+
+          <g transform="translate(750, 850)">
+            <text fontSize={9} fontWeight={700} fill="#141414" opacity={0.5} letterSpacing="0.08em">Data Categories</text>
+            {[
+              { label: "Sources / Signals", color: "#8C8578" },
+              { label: "AI Processing", color: "#C4A878" },
+              { label: "Insights / Strategy", color: "#C94545" },
+              { label: "Assets / Production", color: "#B1BC94" },
+              { label: "Stores / Performance", color: "#6B8060" },
+            ].map((item, i) => (
+              <g key={i} transform={`translate(0, ${18 + i * 16})`}>
+                <circle cx={6} cy={0} r={4} fill={item.color} opacity={0.5} />
+                <text x={16} y={0} fontSize={8} fill="#141414" opacity={0.45} dominantBaseline="middle">
+                  {item.label}
+                </text>
+              </g>
+            ))}
+          </g>
         </svg>
       </div>
-    </div>
+    </section>
   );
 }

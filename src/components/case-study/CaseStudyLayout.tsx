@@ -93,22 +93,23 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
   const items = groupSections(study.sections);
 
   return (
-    <article className="relative w-full max-w-[1400px] mx-auto pb-24">
-      {/* Breadcrumb bar — sticky, content scrolls under */}
-      <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:left-auto md:right-auto md:mb-0 md:-mt-[50px] md:px-0">
-        <div className="flex items-center justify-between gap-4">
-          <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-            <span>Case Studies</span>
-            <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span>Apps</span>
-            <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span className="font-bold">{study.title}</span>
-          </nav>
-          <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
-            House OS. Beta.
-          </span>
-        </div>
+    <>
+    {/* Breadcrumb bar — outside max-w container so it spans full width */}
+    <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:-mb-[50px] md:px-0">
+      <div className="flex items-center justify-between gap-4">
+        <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
+          <span>Case Studies</span>
+          <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
+          <span>Apps</span>
+          <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
+          <span className="font-bold">{study.title}</span>
+        </nav>
+        <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
+          House OS. Beta.
+        </span>
       </div>
+    </div>
+    <article className="relative w-full max-w-[1200px] mx-auto pb-24">
 
       {/* 12-column grid overlay — toggle with Ctrl/Cmd+G */}
       {showGrid && (
@@ -166,5 +167,6 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
         })}
       </div>
     </article>
+    </>
   );
 }

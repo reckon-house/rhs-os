@@ -19,8 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased">
         <div className="flex h-dvh w-screen overflow-hidden">
-          <NavRail />
-          <div className="w-[1px] shrink-0 bg-[#DDDDDD] mt-[50px]" />
+          <div className="relative" style={{ zIndex: 2147483647 }}>
+            <NavRail />
+          </div>
+          <div className="hidden md:block w-[1px] shrink-0 bg-[#DDDDDD] mt-[50px] self-start h-[calc(100vh-100px)]" style={{ zIndex: 2147483647, maxHeight: "700px" }} />
           <SmoothScroll>
             {children}
           </SmoothScroll>

@@ -204,7 +204,7 @@ function HomeContent() {
       )}
 
       {/* Breadcrumb bar */}
-      <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:left-auto md:right-auto md:mb-[30px] md:px-0">
+      <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:mb-[30px] md:left-0 md:right-0 md:w-auto md:px-0">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
             <span>Reckon House Staples</span>

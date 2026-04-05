@@ -5,7 +5,7 @@ export function ClosingBlock({ services, stack, links, content }: ClosingSection
     <section className="w-full py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-x-5 gap-y-8 pl-0 md:pl-[calc(100%/24)]">
         {/* Left — Services, Stack, Links (cols 1-4) */}
-        <div className="md:col-span-4 text-[12px] md:text-[16px] leading-[1.875] text-[#141414]">
+        <div className="md:col-span-4 text-[11px] md:text-[14px] leading-[1.875] text-[#141414]">
           <p className="font-bold">Services</p>
           {services.map((s, i) => (
             <p key={i} className="text-foreground/70">{s}</p>
@@ -34,7 +34,7 @@ export function ClosingBlock({ services, stack, links, content }: ClosingSection
         {/* Right — Closing text (cols 7-12) */}
         <div className="md:col-start-7 md:col-span-6 space-y-5">
           {content.split("\n\n").map((p, i) => (
-            <p key={i} className="text-[12px] md:text-[16px] leading-[1.875] text-foreground/80">
+            <p key={i} className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80">
               {p}
             </p>
           ))}

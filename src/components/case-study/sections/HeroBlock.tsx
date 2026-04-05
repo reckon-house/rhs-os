@@ -2,7 +2,7 @@ import type { HeroSection } from "@/lib/types";
 
 export function HeroBlock({ image, alt, inline }: HeroSection) {
   return (
-    <section className={`w-[calc(100%+32px)] -ml-4 md:w-[calc(100%+100px)] md:-ml-[50px] ${inline ? "mt-10 mb-4" : "mb-8"}`}>
+    <section className={`hero-breakout ${inline ? "mt-10 mb-4" : "mb-8"}`}>
       <div className="w-full rounded-[clamp(30px,5vw,100px)] overflow-hidden bg-surface-alt">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
