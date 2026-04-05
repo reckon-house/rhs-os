@@ -18,8 +18,8 @@ export function FeatureCards({ items }: FeatureCardsSection) {
           </div>
         )}
       </div>
-      <h3 className="text-[14px] font-bold leading-[24px] mb-3">{item.title}</h3>
-      <p className="text-[13px] leading-[22px] text-foreground/80 whitespace-pre-line">{item.description}</p>
+      <h3 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-3">{item.title}</h3>
+      <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 whitespace-pre-line">{item.description}</p>
     </div>
   ));
 
@@ -44,8 +44,8 @@ export function FeatureCards({ items }: FeatureCardsSection) {
                 </div>
               )}
             </div>
-            <h3 className="text-[14px] font-bold leading-[24px] mb-3">{item.title}</h3>
-            <p className="text-[13px] leading-[22px] text-foreground/80 whitespace-pre-line">{item.description}</p>
+            <h3 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-3">{item.title}</h3>
+            <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 whitespace-pre-line">{item.description}</p>
           </div>
         ))}
       </div>

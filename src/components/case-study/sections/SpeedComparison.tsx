@@ -14,10 +14,10 @@ function seededRandom(seed: number) {
 
 // ── Data ────────────────────────────────────────────────────────
 const VIEWS = [
-  { label: "Dashboard", tasks: ["Overview", "Value summary", "Category scan", "Coverage check"], manualMin: 45, manualMax: 60, arcMin: 0, arcMax: 0, color: "#BF9A4E" },
-  { label: "Room View", tasks: ["Navigate rooms", "Item cards", "Sort/filter", "Photo browse"], manualMin: 120, manualMax: 180, arcMin: 3, arcMax: 5, color: "#4A5D3E" },
-  { label: "Document AI", tasks: ["Receipt scan", "Data extract", "Item match", "Auto-file"], manualMin: 90, manualMax: 120, arcMin: 1, arcMax: 2, color: "#9B9288" },
-  { label: "Reports", tasks: ["PDF generate", "Room filter", "Photo compile", "Format"], manualMin: 60, manualMax: 90, arcMin: 2, arcMax: 4, color: "#7B4E2D" },
+  { label: "Dashboard", tasks: ["Overview", "Value summary", "Category scan", "Coverage check"], manualMin: 45, manualMax: 60, arcMin: 0, arcMax: 0, color: "#C4A265" },
+  { label: "Room View", tasks: ["Navigate rooms", "Item cards", "Sort/filter", "Photo browse"], manualMin: 120, manualMax: 180, arcMin: 3, arcMax: 5, color: "#6B8060" },
+  { label: "Document AI", tasks: ["Receipt scan", "Data extract", "Item match", "Auto-file"], manualMin: 90, manualMax: 120, arcMin: 1, arcMax: 2, color: "#9B8E7E" },
+  { label: "Reports", tasks: ["PDF generate", "Room filter", "Photo compile", "Format"], manualMin: 60, manualMax: 90, arcMin: 2, arcMax: 4, color: "#8B7355" },
 ];
 
 const PHASES = [
@@ -129,7 +129,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
         x: ML + rng() * CW * 0.85,
         y: scatterY + rng() * scatterH * 0.45,
         r: 1.5 + rng() * 4,
-        color: "#9a9a92",
+        color: "#8C8578",
         opacity: 0.2 + rng() * 0.4,
       });
     }
@@ -139,7 +139,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
         x: ML + rng() * CW * 0.06,
         y: scatterY + scatterH * 0.55 + rng() * scatterH * 0.4,
         r: 2 + rng() * 4,
-        color: "#4A5D3E",
+        color: "#6B8060",
         opacity: 0.3 + rng() * 0.5,
       });
     }
@@ -167,7 +167,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
       <svg viewBox={`0 0 ${W} ${TOTAL_H}`} className="w-full" aria-label="Documentation speed analysis">
         <defs>
           <pattern id="speed-hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-            <line x1="0" y1="0" x2="0" y2="4" stroke="#9a9a92" strokeWidth="0.5" strokeOpacity="0.3" />
+            <line x1="0" y1="0" x2="0" y2="4" stroke="#8C8578" strokeWidth="0.5" strokeOpacity="0.3" />
           </pattern>
         </defs>
 
@@ -199,20 +199,20 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
           return (
             <g key={i}>
               {/* Manual time block */}
-              <rect x={block.x + 1} y={waterfallY + 15} width={block.w - 2} height={manualH} rx="2" fill="#9a9a92" fillOpacity="0.2" />
+              <rect x={block.x + 1} y={waterfallY + 15} width={block.w - 2} height={manualH} rx="2" fill="#8C8578" fillOpacity="0.2" />
               <rect x={block.x + 1} y={waterfallY + 15} width={block.w - 2} height={manualH} rx="2" fill="url(#speed-hatch)" />
 
               {/* Manual fill — proportional to minutes */}
-              <rect x={block.x + 1} y={waterfallY + 15} width={block.w - 2} height={manualH} rx="2" fill="#9a9a92" fillOpacity="0.15" />
+              <rect x={block.x + 1} y={waterfallY + 15} width={block.w - 2} height={manualH} rx="2" fill="#8C8578" fillOpacity="0.15" />
 
               {/* Contour wave inside */}
               <path
                 d={wavePath(wave, block.x + 2, block.x + block.w - 2, waterfallY + 15 + manualH * 0.5)}
-                fill="none" stroke="#9a9a92" strokeWidth="0.6" strokeOpacity="0.4"
+                fill="none" stroke="#8C8578" strokeWidth="0.6" strokeOpacity="0.4"
               />
 
               {/* ARC time block — tiny */}
-              <rect x={block.x + 1} y={waterfallY + 15 + manualH + 6} width={Math.max(6, (block.arcMinutes / block.minutes) * (block.w - 2))} height={8} rx="4" fill="#4A5D3E"
+              <rect x={block.x + 1} y={waterfallY + 15 + manualH + 6} width={Math.max(6, (block.arcMinutes / block.minutes) * (block.w - 2))} height={8} rx="4" fill="#6B8060"
                
                 style={{ "--dur": `${2.5 + i * 0.5}s`, "--del": `${i * 0.3}s` } as React.CSSProperties} />
 
@@ -233,7 +233,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
         {/* Manual total label */}
         <text x={ML + CW + 8} y={waterfallY + 15 + elements.waterfallH * 0.55 / 2 + 3} fontSize="9" fill="#141414" fillOpacity="0.5" fontWeight="500">8-12 hrs</text>
         {/* ARC total label */}
-        <text x={ML + CW + 8} y={waterfallY + 15 + elements.waterfallH * 0.55 + 12} fontSize="9" fill="#4A5D3E" fontWeight="600">~30 min</text>
+        <text x={ML + CW + 8} y={waterfallY + 15 + elements.waterfallH * 0.55 + 12} fontSize="9" fill="#6B8060" fontWeight="600">~30 min</text>
 
         {/* Divider */}
         <line x1={ML} y1={waterfallY + waterfallH + 15} x2={ML + CW} y2={waterfallY + waterfallH + 15} stroke="#141414" strokeOpacity="0.06" strokeWidth="0.5" />
@@ -291,7 +291,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
         {/* ── Layer 3: Scatter field ── */}
         {/* Stream lines */}
         {streams.map((d, i) => (
-          <path key={i} d={d} fill="none" stroke="#4A5D3E" strokeWidth="0.4" strokeOpacity="0.15"
+          <path key={i} d={d} fill="none" stroke="#6B8060" strokeWidth="0.4" strokeOpacity="0.15"
            
             style={{ "--dur": `${5 + (i % 4) * 2}s`, "--del": `${(i % 6) * 0.7}s` } as React.CSSProperties} />
         ))}
@@ -307,7 +307,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
         <text x={ML + CW * 0.5} y={scatterY - 3} fontSize="9" fill="#141414" textAnchor="middle" fillOpacity="0.4">Manual time distribution (minutes per phase)</text>
 
         {/* ARC zone label */}
-        <text x={ML + CW * 0.03} y={scatterY + scatterH + 14} fontSize="9" fill="#4A5D3E" textAnchor="middle" fillOpacity="0.7" fontWeight="600">A.R.C.</text>
+        <text x={ML + CW * 0.03} y={scatterY + scatterH + 14} fontSize="9" fill="#6B8060" textAnchor="middle" fillOpacity="0.7" fontWeight="600">A.R.C.</text>
 
         {/* 16-24x callout */}
         <text x={ML + CW} y={scatterY + scatterH + 14} fontSize="28" fontWeight="700" fill="#141414" textAnchor="end">16-24×</text>

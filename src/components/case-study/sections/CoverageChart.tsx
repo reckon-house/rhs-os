@@ -32,14 +32,14 @@ const CATEGORY_H = 130;
 
 /* ── Category data — palette sourced from interior photography ── */
 const CATEGORIES = [
-  { name: "Furniture", value: 12580, color: "#BF9A4E", pct: 0.253 },    // honey oak
-  { name: "Electronics", value: 8320, color: "#4A5D3E", pct: 0.168 },   // sage cabinet
-  { name: "Artwork", value: 7540, color: "#B8923A", pct: 0.152 },       // brass hardware
-  { name: "Appliances", value: 6890, color: "#9B9288", pct: 0.139 },    // marble grey
-  { name: "Fixtures", value: 4960, color: "#5E7050", pct: 0.100 },      // cabinet shadow
-  { name: "Textiles", value: 3420, color: "#7B4E2D", pct: 0.069 },      // leather brown
-  { name: "Collectibles", value: 3280, color: "#6B8060", pct: 0.066 },  // muted green
-  { name: "Other", value: 2640, color: "#3D2B1F", pct: 0.053 },         // walnut floor
+  { name: "Furniture", value: 12580, color: "#C4A265", pct: 0.253 },
+  { name: "Electronics", value: 8320, color: "#8B7355", pct: 0.168 },
+  { name: "Artwork", value: 7540, color: "#B1BC94", pct: 0.152 },
+  { name: "Appliances", value: 6890, color: "#9B8E7E", pct: 0.139 },
+  { name: "Fixtures", value: 4960, color: "#6B8060", pct: 0.100 },
+  { name: "Textiles", value: 3420, color: "#A0886C", pct: 0.069 },
+  { name: "Collectibles", value: 3280, color: "#556B4A", pct: 0.066 },
+  { name: "Other", value: 2640, color: "#8C8578", pct: 0.053 },
 ];
 
 /* ── Wave path ── */
@@ -195,8 +195,8 @@ export function CoverageChart({
         >
           <defs>
             <linearGradient id="cov-gap-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#B22234" stopOpacity={0.04} />
-              <stop offset="100%" stopColor="#B22234" stopOpacity={0.01} />
+              <stop offset="0%" stopColor="#8B7355" stopOpacity={0.04} />
+              <stop offset="100%" stopColor="#8B7355" stopOpacity={0.01} />
             </linearGradient>
             <clipPath id="accum-clip">
               <rect x={ML} y={ACCUM_Y} width={CW} height={ACCUM_H} />
@@ -210,15 +210,15 @@ export function CoverageChart({
             return (
               <g key={`sum-${i}`}>
                 <text x={x} y={SUMMARY_Y + 24}
-                  fill={stat.highlight ? "#B22234" : "#141414"}
+                  fill={stat.highlight ? "#8B7355" : "#141414"}
                   fontSize={28} fontWeight={700} letterSpacing={-0.5}
                   style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>
                   {stat.value}
                 </text>
                 <text x={x} y={SUMMARY_Y + 40}
-                  fill={stat.highlight ? "#B22234" : "#141414"}
+                  fill={stat.highlight ? "#8B7355" : "#141414"}
                   fontSize={9} fontWeight={600} letterSpacing={0.8}
-                  opacity={stat.highlight ? 0.8 : 0.55}>
+                  opacity={stat.highlight ? 0.5 : 0.35}>
                   {stat.label}
                 </text>
                 <text x={x} y={SUMMARY_Y + 53}
@@ -255,10 +255,10 @@ export function CoverageChart({
           {/* Policy limit flat line */}
           <line x1={ML} y1={ACCUM_Y + ACCUM_H * (1 - policyPct)}
             x2={ML + CW} y2={ACCUM_Y + ACCUM_H * (1 - policyPct)}
-            stroke="#B22234" strokeWidth={0.6} opacity={0.15}
+            stroke="#8B7355" strokeWidth={0.6} opacity={0.15}
             strokeDasharray="4,4" />
           <text x={ML + CW + 4} y={ACCUM_Y + ACCUM_H * (1 - policyPct) + 3}
-            fill="#B22234" fontSize={8} opacity={0.55}
+            fill="#8B7355" fontSize={8} opacity={0.55}
             style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>
             Policy limit
           </text>
@@ -276,7 +276,7 @@ export function CoverageChart({
                 }),
                 `${ML + CW},${ACCUM_Y + ACCUM_H}`,
               ].join(" ")}
-              fill="#BF9A4E" opacity={0.1}
+              fill="#C4A265" opacity={0.1}
             />
             {/* Line */}
             <polyline
@@ -285,7 +285,7 @@ export function CoverageChart({
                 const y = ACCUM_Y + ACCUM_H - (v / assetAmount) * ACCUM_H * 0.95;
                 return `${x.toFixed(1)},${y.toFixed(1)}`;
               }).join(" ")}
-              fill="none" stroke="#BF9A4E" strokeWidth={1.2} opacity={0.4}
+              fill="none" stroke="#C4A265" strokeWidth={1.2} opacity={0.4}
             />
 
             {/* Gap fill area — between asset curve and policy line */}
@@ -299,7 +299,7 @@ export function CoverageChart({
                 }).filter(Boolean).join(" "),
                 `${ML + CW},${ACCUM_Y + ACCUM_H * (1 - policyPct)}`,
               ].join(" ")}
-              fill="#B22234" opacity={0.04}
+              fill="#8B7355" opacity={0.04}
             />
 
             {/* Item scatter dots */}
@@ -363,7 +363,7 @@ export function CoverageChart({
           {categorySegments.map((seg, i) => (
             <g key={`ab-${i}`}>
               <rect x={seg.x} y={BAR_Y} width={seg.w} height={BAR_H}
-                rx={3} fill={seg.color} opacity={0.7} />
+                rx={3} fill={seg.color} opacity={0.35} />
               {/* Wave texture inside each segment */}
               <clipPath id={`ac-${i}`}>
                 <rect x={seg.x} y={BAR_Y} width={seg.w} height={BAR_H} rx={3} />
@@ -379,7 +379,7 @@ export function CoverageChart({
               {seg.w > 50 && (
                 <text x={seg.x + seg.w / 2} y={BAR_Y + BAR_H / 2 + 1}
                   fill="#141414" fontSize={8} fontWeight={600}
-                  dominantBaseline="middle" textAnchor="middle" opacity={0.7}
+                  dominantBaseline="middle" textAnchor="middle" opacity={0.5}
                   style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>
                   {`$${(seg.value / 1000).toFixed(1)}k`}
                 </text>
@@ -406,7 +406,7 @@ export function CoverageChart({
                 {/* Covered portion */}
                 <rect x={seg.x} y={BAR_Y + BAR_H + BAR_GAP}
                   width={covW} height={BAR_H}
-                  rx={3} fill="#9B9288" opacity={0.55} />
+                  rx={3} fill="#9B8E7E" opacity={0.3} />
                 <clipPath id={`pc-${i}`}>
                   <rect x={seg.x} y={BAR_Y + BAR_H + BAR_GAP}
                     width={covW} height={BAR_H} rx={3} />
@@ -422,13 +422,13 @@ export function CoverageChart({
                 {covRatio < 0.98 && (
                   <rect x={seg.x + covW} y={BAR_Y + BAR_H + BAR_GAP}
                     width={seg.w - covW} height={BAR_H}
-                    rx={3} fill="#B22234" />
+                    rx={3} fill="#8B7355" />
                 )}
                 {/* Coverage % label — only on wide segments */}
                 {seg.w > 50 && (
                   <text x={seg.x + seg.w / 2} y={BAR_Y + BAR_H + BAR_GAP + BAR_H / 2 + 1}
                     fill="#141414" fontSize={7} fontWeight={500}
-                    dominantBaseline="middle" textAnchor="middle" opacity={0.6}
+                    dominantBaseline="middle" textAnchor="middle" opacity={0.4}
                     style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>
                     {`${(covRatio * 100).toFixed(0)}%`}
                   </text>

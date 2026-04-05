@@ -15,14 +15,14 @@ function seededRandom(seed: number) {
 // ── Data ────────────────────────────────────────────────────────
 const CATEGORIES = [
   { label: "Furniture", value: 680, color: "#C4A265", rooms: [0.9, 0.8, 0.7, 0.2, 0.1, 0.3, 0.05] },
-  { label: "Electronics", value: 425, color: "#8B7D5E", rooms: [0.3, 0.9, 0.5, 0.8, 0.1, 0.2, 0.05] },
+  { label: "Electronics", value: 425, color: "#8B7355", rooms: [0.3, 0.9, 0.5, 0.8, 0.1, 0.2, 0.05] },
   { label: "Artwork", value: 580, color: "#B1BC94", rooms: [0.9, 0.6, 0.3, 0.1, 0.7, 0.05, 0.02] },
-  { label: "Appliances", value: 890, color: "#A68B5B", rooms: [0.1, 0.2, 0.05, 0.9, 0.05, 0.7, 0.8] },
+  { label: "Appliances", value: 890, color: "#A0886C", rooms: [0.1, 0.2, 0.05, 0.9, 0.05, 0.7, 0.8] },
   { label: "Fixtures", value: 310, color: "#8B7355", rooms: [0.5, 0.3, 0.8, 0.9, 0.2, 0.6, 0.1] },
-  { label: "Textiles", value: 185, color: "#9A8B6E", rooms: [0.8, 0.7, 0.3, 0.2, 0.1, 0.9, 0.05] },
+  { label: "Textiles", value: 185, color: "#9B8E7E", rooms: [0.8, 0.7, 0.3, 0.2, 0.1, 0.9, 0.05] },
   { label: "Collectibles", value: 695, color: "#6B8060", rooms: [0.6, 0.8, 0.1, 0.1, 0.3, 0.05, 0.9] },
   { label: "Vehicles", value: 5000, color: "#556B4A", rooms: [0.05, 0.05, 0.05, 0.1, 0.05, 0.05, 0.9] },
-  { label: "Jewelry", value: 1200, color: "#C9A87A", rooms: [0.3, 0.8, 0.1, 0.05, 0.05, 0.7, 0.1] },
+  { label: "Jewelry", value: 1200, color: "#C4C4A0", rooms: [0.3, 0.8, 0.1, 0.05, 0.05, 0.7, 0.1] },
 ];
 
 const ROOMS = ["Living", "Bedroom", "Bath", "Kitchen", "Hallway", "Laundry", "Garage"];
@@ -118,7 +118,7 @@ export function StatsBar({ items }: StatsBarSection) {
           y: Math.max(CHART_Y + 5, Math.min(CHART_Y + CHART_H - 5, y)),
           size: 0.6 + r() * 3,
           color: cat.color,
-          opacity: 0.15 + r() * 0.4,
+          opacity: 0.08 + r() * 0.22,
         });
       }
     });
@@ -196,7 +196,7 @@ export function StatsBar({ items }: StatsBarSection) {
   }, [N]);
 
   return (
-    <section className="w-full py-6 px-[calc(100%/12)]">
+    <section className="w-full py-6">
       <div className="relative">
         <div className="overflow-x-auto md:overflow-visible -mx-4 md:mx-0">
           <div className="min-w-[800px] md:min-w-0 px-4 md:px-0">
@@ -321,7 +321,7 @@ export function StatsBar({ items }: StatsBarSection) {
                   {/* Main stroke */}
                   <path
                     d={linePath(cat.curve, ML, W - MR, baseline)}
-                    fill="none" stroke={cat.color} strokeWidth={1.3} opacity={0.55}
+                    fill="none" stroke={cat.color} strokeWidth={1.3} opacity={0.3}
                   />
                   {/* Ghost echo */}
                   <path

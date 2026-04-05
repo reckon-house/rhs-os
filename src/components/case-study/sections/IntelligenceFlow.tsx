@@ -292,8 +292,8 @@ export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
   }, []);
 
   return (
-    <section className="w-full py-12">
-      <div className="w-full max-w-[960px] mx-auto px-4 md:px-0">
+    <section className="w-full py-12 overflow-x-auto scrollbar-hide">
+      <div className="min-w-[800px] max-w-[960px] mx-auto px-4 md:px-0">
         <svg
           viewBox="0 0 1000 1000"
           className="w-full h-auto"
