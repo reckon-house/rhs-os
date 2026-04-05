@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 1024.71 1024.71" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 861">
+<path id="Guideline" d="M0.353553 703.354H1024.35" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_2" d="M0.353553 512.354H1024.35" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_3" d="M0.353553 321.354H1024.35" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_4" d="M703.354 1024.35V0.353553" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_5" d="M512.354 1024.35V0.353553" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_6" d="M321.354 1024.35V0.353553" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_7" d="M1024.35 1024.35L0.353553 0.353553" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<path id="Guideline_8" d="M0.353553 1024.35L1024.35 0.353553" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+<circle id="Ellipse" cx="512.354" cy="512.354" r="445" stroke="var(--stroke-0, #AEAEAE)" stroke-opacity="0.33"/>
+</g>
+</svg>

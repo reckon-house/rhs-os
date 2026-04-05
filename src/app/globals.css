@@ -1,26 +1,210 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Burn Melt page transition cover ────────────────────────────── */
+/* White cover hides raw content until the BurnMeltTransition burn-in runs.
+   The component sets --burn-cover to 0 once it takes over. */
+body::before {
+  content: "";
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  bottom: -200px;
+  left: -200px;
+  background: #F3F0ED;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: var(--burn-cover, 1);
+  transition: opacity 0s linear;
+}
+@media (min-width: 768px) {
+  body::before {
+    left: 161px;
+  }
+}
+
+/* ── Asterisk animations ─────────────────────────────────────────── */
+@keyframes asterisk-entry {
+  from {
+    opacity: 0;
+    transform: scale(0.1) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(720deg);
+  }
+}
+
+@keyframes asterisk-idle {
+  /* Explicitly match entry's final visual state so the handoff is invisible */
+  from { opacity: 1; transform: scale(1) rotate(0deg); }
+  to   { opacity: 1; transform: scale(1) rotate(360deg); }
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-VariableItalic.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ogg';
+  src: url('/fonts/Ogg-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-DemiBold.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-border: var(--border-color);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-warm: var(--accent-warm);
+  --color-nav-bg: var(--nav-bg);
+  --color-nav-fg: var(--nav-fg);
+  --font-sans: 'Satoshi', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #F3F0ED;
+  --foreground: #1A1A1A;
+  --surface: #FFFFFF;
+  --surface-alt: #EDE9E3;
+  --border-color: #D6D0C7;
+  --muted: #8C8578;
+  --accent: #B1BC94;
+  --accent-warm: #C4A265;
+  --nav-bg: #1A1A1A;
+  --nav-fg: #F5F2ED;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Satoshi', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for content area */
+.content-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.content-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Hide scrollbar for swipe rows */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Group container — responsive padding */
+/* On mobile, left/right = 1 grid column (calc(100%/12)) to match the col-start-2 offset used by MetaBlock */
+.group-container {
+  --gp-x: calc(100% / 12);
+  --gp-y: 20px;
+  padding: var(--gp-y) var(--gp-x) !important;
+}
+
+/* Bleed image — flush with group container edges (left, right, bottom).
+   On mobile, 100% in margin resolves to content width (container - 2*pad),
+   so we use 100%/10 (= container/12 when pad is container/12) to match.
+   On desktop, --group-padding is a fixed value so calc works directly. */
+.group-container .bleed-image {
+  margin-left: calc(-100% / 10);
+  margin-right: calc(-100% / 10);
+  margin-bottom: calc(-1 * var(--gp-y));
+}
+@media (min-width: 768px) {
+  .group-container .bleed-image {
+    margin-left: calc(-1 * var(--gp-x));
+    margin-right: calc(-1 * var(--gp-x));
+  }
+}
+/* Bleed-top image — flush with group container top, left, right */
+.group-container .bleed-top {
+  margin-left: calc(-100% / 10);
+  margin-right: calc(-100% / 10);
+  margin-top: calc(-1 * var(--gp-y));
+}
+@media (min-width: 768px) {
+  .group-container .bleed-top {
+    margin-left: calc(-1 * var(--gp-x));
+    margin-right: calc(-1 * var(--gp-x));
+    margin-top: calc(-1 * var(--gp-y));
+  }
+}
+
+/* Mobile only: anchor thumbs to edges in 2-col grid */
+@media (max-width: 767px) {
+  .hp-row > :nth-child(odd of .hp-thumb) {
+    justify-self: start;
+  }
+  .hp-row > :nth-child(even of .hp-thumb) {
+    justify-self: end;
+  }
+  .hp-row > .hp-span {
+    justify-self: center !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .group-container {
+    --gp-x: var(--group-padding, 60px);
+    --gp-y: var(--group-padding, 60px);
+    padding: var(--gp-y) var(--gp-x) !important;
+  }
 }

@@ -1,0 +1,27 @@
+import { notFound } from "next/navigation";
+import { CaseStudyLayout } from "@/components/case-study/CaseStudyLayout";
+import { arcCaseStudy } from "@/data/arc-case-study";
+import { sallyCaseStudy } from "@/data/sally-case-study";
+
+// For now, case studies are loaded from local data files.
+// This will migrate to Supabase when the CMS layer is ready.
+const caseStudies = [arcCaseStudy, sallyCaseStudy];
+
+export function generateStaticParams() {
+  return caseStudies.map((s) => ({ slug: s.slug }));
+}
+
+export default async function CaseStudyPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const study = caseStudies.find((s) => s.slug === slug);
+
+  if (!study) {
+    notFound();
+  }
+
+  return <CaseStudyLayout study={study} />;
+}
