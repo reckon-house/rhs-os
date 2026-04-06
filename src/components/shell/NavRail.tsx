@@ -50,10 +50,10 @@ const utilities = [
   },
 ];
 
-const MELT_STYLE = {
+const MELT_BACKDROP = {
   background: "rgba(243, 240, 237, 0.15)",
-  backdropFilter: "blur(2px) saturate(6) contrast(2.5)",
-  WebkitBackdropFilter: "blur(2px) saturate(6) contrast(2.5)",
+  backdropFilter: "url(#navMelt) blur(2px) saturate(6) contrast(2.5)",
+  WebkitBackdropFilter: "url(#navMelt) blur(2px) saturate(6) contrast(2.5)",
   boxShadow: "0 2px 20px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.04)",
 } as React.CSSProperties;
 
@@ -73,17 +73,17 @@ export function NavRail() {
         </defs>
       </svg>
 
-      {/* ── Mobile bottom pill bars ── */}
-      <div className="fixed bottom-4 left-3 right-3 z-50 flex md:hidden gap-2 items-end"
+      {/* ── Bottom pill bars (all screens) ── */}
+      <div className="fixed bottom-4 left-3 right-3 md:bottom-6 md:left-0 md:right-0 z-50 flex md:justify-center gap-2 md:gap-3 items-end"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Categories pill */}
-        <div className="flex-1 overflow-x-auto scrollbar-hide">
-          <div className="relative rounded-full overflow-hidden">
+        <div className="flex-1 md:flex-none overflow-x-auto scrollbar-hide">
+          <div className="relative rounded-[28px] overflow-hidden">
             {/* Melt backdrop */}
-            <div className="absolute inset-0 rounded-full" style={{ ...MELT_STYLE, filter: "url(#navMelt)" }} />
+            <div className="absolute inset-0 rounded-[28px]" style={MELT_BACKDROP} />
             {/* Nav content */}
-            <div className="relative flex items-center gap-3 px-3 py-2">
+            <div className="relative flex items-center gap-4 md:gap-8 px-5 md:px-10 py-2 md:py-3">
 
             {categories.map((cat) => {
               const isHome = cat.href === "/";
@@ -97,7 +97,7 @@ export function NavRail() {
                   href={cat.href}
                   className="flex flex-col items-center gap-1 shrink-0"
                 >
-                  <div className="w-[36px] h-[36px] rounded-[10px] overflow-hidden bg-surface-alt">
+                  <div className="w-[36px] h-[36px] md:w-[50px] md:h-[50px] rounded-[10px] md:rounded-[15px] overflow-hidden bg-surface-alt">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={cat.image}
@@ -105,7 +105,7 @@ export function NavRail() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="text-[8px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
+                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
                     {cat.label}
                   </span>
                 </Link>
@@ -117,21 +117,23 @@ export function NavRail() {
 
         {/* Utilities pill */}
         <div className="overflow-x-auto scrollbar-hide shrink-0">
-          <div className="relative rounded-full overflow-hidden">
+          <div className="relative rounded-[28px] overflow-hidden">
             {/* Melt backdrop */}
-            <div className="absolute inset-0 rounded-full" style={{ ...MELT_STYLE, filter: "url(#navMelt)" }} />
+            <div className="absolute inset-0 rounded-[28px]" style={MELT_BACKDROP} />
             {/* Nav content */}
-            <div className="relative flex items-center gap-3 px-3 py-2">
+            <div className="relative flex items-center gap-4 md:gap-8 px-5 md:px-10 py-2 md:py-3">
               {utilities.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className="flex flex-col items-center gap-1 shrink-0"
                 >
-                  <div className="w-[28px] h-[28px] flex items-center justify-center opacity-60">
-                    {item.icon}
+                  <div className="w-[36px] h-[36px] md:w-[50px] md:h-[50px] flex items-center justify-center opacity-50">
+                    <div className="scale-[0.9] md:scale-[1.3]">
+                      {item.icon}
+                    </div>
                   </div>
-                  <span className="text-[8px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
+                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
                     {item.label}
                   </span>
                 </Link>
@@ -141,64 +143,7 @@ export function NavRail() {
         </div>
       </div>
 
-      {/* ── Desktop nav rail (unchanged) ── */}
-      <nav
-        className="hidden md:flex fixed md:relative z-40 top-0 left-0 h-full
-          w-[160px] bg-background flex-col items-center
-          overflow-y-auto overflow-x-hidden"
-      >
-        {/* Category links with images */}
-        <div className="flex flex-col items-center gap-[30px] pt-[50px] pb-6 w-full px-4">
-          {categories.map((cat) => {
-            const active = cat.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(cat.href);
-            return (
-              <Link
-                key={cat.href}
-                href={cat.href}
-                className="flex flex-col items-center gap-[7px] group w-full min-h-[44px] justify-center"
-              >
-                <div className="w-[50px] h-[50px] rounded-[15px] overflow-hidden bg-surface-alt">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={cat.image}
-                    alt={cat.label}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span className="text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]">
-                  {cat.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Divider */}
-        <div className="w-16 h-[1px] bg-border shrink-0" />
-
-        {/* Utility links with icons */}
-        <div className="flex flex-col items-center gap-[30px] pt-6 pb-8 w-full px-4">
-          {utilities.map((item) => {
-            const active = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex flex-col items-center gap-[7px] min-h-[44px] justify-center"
-              >
-                <div className={active ? "opacity-100" : "opacity-60"}>
-                  {item.icon}
-                </div>
-                <span className="text-[10px] leading-none font-medium tracking-tight text-[#141414]">
-                  {item.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      {/* Desktop nav rail removed — bottom pills on all screens */}
     </>
   );
 }

@@ -18,7 +18,7 @@ body::before {
 }
 @media (min-width: 768px) {
   body::before {
-    left: 161px;
+    left: -200px;
   }
 }
 
@@ -216,7 +216,7 @@ body {
 }
 @media (min-width: 768px) {
   .hero-breakout {
-    width: calc(100vw - 181px);
-    margin-left: calc(-50vw + 50% + 90.5px);
+    width: calc(100vw - 20px);
+    margin-left: calc(-50vw + 50% + 10px);
   }
 }
