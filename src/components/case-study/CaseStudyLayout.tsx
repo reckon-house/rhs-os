@@ -109,7 +109,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
         </span>
       </div>
     </div>
-    <article className="relative w-full max-w-[1200px] mx-auto pb-24">
+    <article className="relative w-full max-w-[1100px] mx-auto pb-24">
 
       {/* 12-column grid overlay — toggle with Ctrl/Cmd+G */}
       {showGrid && (

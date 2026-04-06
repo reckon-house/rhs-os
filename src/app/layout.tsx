@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
-import { HeatbarMelt } from "@/components/fx/HeatbarMelt";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 
 export const metadata: Metadata = {
@@ -19,12 +18,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased">
         <div className="flex h-dvh w-screen overflow-hidden">
-          <NavRail />
           <SmoothScroll>
             {children}
           </SmoothScroll>
         </div>
         <BurnMeltTransition />
+        <NavRail />
       </body>
     </html>
   );

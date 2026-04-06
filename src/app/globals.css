@@ -16,11 +16,6 @@ body::before {
   opacity: var(--burn-cover, 1);
   transition: opacity 0s linear;
 }
-@media (min-width: 768px) {
-  body::before {
-    left: -200px;
-  }
-}
 
 /* ── Asterisk animations ─────────────────────────────────────────── */
 @keyframes asterisk-entry {
@@ -211,12 +206,12 @@ body {
 
 /* Hero breakout — extends beyond max-w container to fill the scroll area */
 .hero-breakout {
-  width: calc(100vw - 12px);
-  margin-left: calc(-50vw + 50% + 6px);
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 @media (min-width: 768px) {
   .hero-breakout {
-    width: calc(100vw - 20px);
-    margin-left: calc(-50vw + 50% + 10px);
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
 }
