@@ -73,13 +73,16 @@ export function NavRail() {
     const animate = () => {
       const timeSince = Date.now() - lastScroll;
 
-      // Ramp up immediately on any input, fade slowly when stopped
+      // Ease in on scroll, ease out when stopped
       if (timeSince < 500) {
-        heat = Math.min(heat + 0.15, 1);
-      } else if (timeSince < 2000) {
-        heat *= 0.98;
+        // Ease-out ramp: fast at start, slows as it approaches 1
+        const target = 1;
+        heat += (target - heat) * 0.06;
+      } else if (timeSince < 2500) {
+        // Slow ease out
+        heat += (0 - heat) * 0.015;
       } else {
-        heat *= 0.96;
+        heat += (0 - heat) * 0.03;
       }
       if (heat < 0.005) heat = 0;
 
