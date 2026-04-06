@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -50,19 +50,68 @@ const utilities = [
   },
 ];
 
-const MELT_BACKDROP = {
-  background: "rgba(243, 240, 237, 0.15)",
-  backdropFilter: "url(#navMelt) blur(2px) saturate(6) contrast(2.5)",
-  WebkitBackdropFilter: "url(#navMelt) blur(2px) saturate(6) contrast(2.5)",
-  boxShadow: "0 2px 20px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.04)",
-} as React.CSSProperties;
-
 export function NavRail() {
   const pathname = usePathname();
+  const backdrop1 = useRef<HTMLDivElement>(null);
+  const backdrop2 = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let heat = 0;
+    let lastScroll = 0;
+    let raf: number;
+
+    const onInput = () => {
+      lastScroll = Date.now();
+    };
+
+    // Catch ALL scroll-related input
+    window.addEventListener("scroll", onInput, { passive: true, capture: true });
+    document.addEventListener("scroll", onInput, { passive: true, capture: true });
+    window.addEventListener("wheel", onInput, { passive: true });
+    window.addEventListener("touchmove", onInput, { passive: true });
+
+    const animate = () => {
+      const timeSince = Date.now() - lastScroll;
+
+      // Ramp up immediately on any input, fade slowly when stopped
+      if (timeSince < 500) {
+        heat = Math.min(heat + 0.15, 1);
+      } else if (timeSince < 2000) {
+        heat *= 0.98;
+      } else {
+        heat *= 0.96;
+      }
+      if (heat < 0.005) heat = 0;
+
+      const sat = 1 + heat * 7;
+      const con = 1 + heat * 2;
+      const blr = heat * 4;
+      const bg = `rgba(243, 240, 237, ${0.05 + heat * 0.1})`;
+      const filter = `url(#navMelt) blur(${blr}px) saturate(${sat}) contrast(${con})`;
+
+      [backdrop1.current, backdrop2.current].forEach((el) => {
+        if (!el) return;
+        el.style.backdropFilter = filter;
+        (el.style as any).webkitBackdropFilter = filter;
+        el.style.background = bg;
+      });
+
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("scroll", onInput, { capture: true } as EventListenerOptions);
+      document.removeEventListener("scroll", onInput, { capture: true } as EventListenerOptions);
+      window.removeEventListener("wheel", onInput);
+      window.removeEventListener("touchmove", onInput);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <>
-      {/* SVG displacement filter for nav melt */}
+      {/* SVG displacement filter */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="navMelt" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
@@ -73,25 +122,25 @@ export function NavRail() {
         </defs>
       </svg>
 
-      {/* ── Bottom pill bars (all screens) ── */}
+      {/* ── Bottom pill bars ── */}
       <div className="fixed bottom-4 left-3 right-3 md:bottom-6 md:left-0 md:right-0 z-50 flex md:justify-center gap-2 md:gap-3 items-end"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Categories pill */}
         <div className="flex-1 md:flex-none overflow-x-auto scrollbar-hide">
           <div className="relative rounded-[28px] overflow-hidden">
-            {/* Melt backdrop */}
-            <div className="absolute inset-0 rounded-[28px]" style={MELT_BACKDROP} />
-            {/* Nav content */}
+            <div
+              ref={backdrop1}
+              className="absolute inset-0 rounded-[28px]"
+              style={{
+                backdropFilter: "url(#navMelt) blur(0px) saturate(1) contrast(1)",
+                WebkitBackdropFilter: "url(#navMelt) blur(0px) saturate(1) contrast(1)",
+                background: "rgba(243, 240, 237, 0.05)",
+                boxShadow: "0 2px 20px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.04)",
+              }}
+            />
             <div className="relative flex items-center gap-4 md:gap-8 px-5 md:px-10 py-2 md:py-3">
-
-            {categories.map((cat) => {
-              const isHome = cat.href === "/";
-              const active = isHome
-                ? pathname === "/" && !new URLSearchParams(typeof window !== "undefined" ? window.location.search : "").has("category")
-                : pathname === "/" && typeof window !== "undefined" && window.location.search.includes(cat.href.split("?")[1] || "");
-
-              return (
+              {categories.map((cat) => (
                 <Link
                   key={cat.href}
                   href={cat.href}
@@ -109,8 +158,7 @@ export function NavRail() {
                     {cat.label}
                   </span>
                 </Link>
-              );
-            })}
+              ))}
             </div>
           </div>
         </div>
@@ -118,9 +166,16 @@ export function NavRail() {
         {/* Utilities pill */}
         <div className="overflow-x-auto scrollbar-hide shrink-0">
           <div className="relative rounded-[28px] overflow-hidden">
-            {/* Melt backdrop */}
-            <div className="absolute inset-0 rounded-[28px]" style={MELT_BACKDROP} />
-            {/* Nav content */}
+            <div
+              ref={backdrop2}
+              className="absolute inset-0 rounded-[28px]"
+              style={{
+                backdropFilter: "url(#navMelt) blur(0px) saturate(1) contrast(1)",
+                WebkitBackdropFilter: "url(#navMelt) blur(0px) saturate(1) contrast(1)",
+                background: "rgba(243, 240, 237, 0.05)",
+                boxShadow: "0 2px 20px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.04)",
+              }}
+            />
             <div className="relative flex items-center gap-4 md:gap-8 px-5 md:px-10 py-2 md:py-3">
               {utilities.map((item) => (
                 <Link
@@ -142,8 +197,6 @@ export function NavRail() {
           </div>
         </div>
       </div>
-
-      {/* Desktop nav rail removed — bottom pills on all screens */}
     </>
   );
 }
