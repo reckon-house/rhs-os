@@ -95,7 +95,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
   return (
     <>
     {/* Breadcrumb bar — outside max-w container so it spans full width */}
-    <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:-mb-[25px] md:px-0">
+    <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
       <div className="flex items-center justify-between gap-4">
         <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
           <span>Case Studies</span>

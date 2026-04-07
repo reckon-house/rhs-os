@@ -220,7 +220,7 @@ function HomeContent() {
       </div>
 
       {/* ---- Project grid ---- */}
-      <div className="pb-24 space-y-20">
+      <div className="pb-24 space-y-10 md:space-y-[100px]">
 
         {/* Row 1: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">

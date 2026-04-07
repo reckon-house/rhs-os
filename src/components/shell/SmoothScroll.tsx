@@ -32,7 +32,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   return (
     <main
       ref={wrapperRef}
-      className="flex-1 overflow-y-auto content-scroll pt-[25px] pb-[90px] px-4 md:px-[50px]"
+      className="flex-1 overflow-y-auto content-scroll pt-0 pb-[90px] px-0 md:px-[50px]"
     >
       <div>{children}</div>
     </main>

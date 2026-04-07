@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 
 const categories = [
   { label: "Reckon.House", image: "/nav/logo.jpg", href: "/" },
-  { label: "Digital", image: "/nav/digital.jpg", href: "/?category=digital" },
-  { label: "Campaigns", image: "/nav/reckonhouse.jpg", href: "/?category=campaigns" },
-  { label: "Interiors", image: "/nav/interiors.jpg", href: "/?category=interiors" },
-  { label: "Branding", image: "/nav/branding.jpg", href: "/?category=branding" },
+  { label: "Digital", image: "/nav/digital.jpg", href: "/category/digital" },
+  { label: "Campaigns", image: "/nav/reckonhouse.jpg", href: "/category/campaigns" },
+  { label: "Interiors", image: "/nav/interiors.jpg", href: "/category/interiors" },
+  { label: "Branding", image: "/nav/branding.jpg", href: "/category/branding" },
 ];
 
 const utilities = [
@@ -61,11 +61,10 @@ export function NavRail() {
 
   // Determine active index from URL
   useEffect(() => {
-    const search = typeof window !== "undefined" ? window.location.search : "";
-    if (pathname === "/" && search.includes("category=digital")) setActiveIdx(1);
-    else if (pathname === "/" && search.includes("category=campaigns")) setActiveIdx(2);
-    else if (pathname === "/" && search.includes("category=interiors")) setActiveIdx(3);
-    else if (pathname === "/" && search.includes("category=branding")) setActiveIdx(4);
+    if (pathname === "/category/digital") setActiveIdx(1);
+    else if (pathname === "/category/campaigns") setActiveIdx(2);
+    else if (pathname === "/category/interiors") setActiveIdx(3);
+    else if (pathname === "/category/branding") setActiveIdx(4);
     else setActiveIdx(0);
   }, [pathname]);
 
@@ -76,8 +75,7 @@ export function NavRail() {
     if (!container || !highlight) return;
 
     const positionHighlight = () => {
-      const items = container.querySelectorAll("a, button");
-      // Skip the highlight div — items are the interactive children
+      const items = container.querySelectorAll(":scope > a");
       const activeEl = items[activeIdx] as HTMLElement;
       if (!activeEl) return;
 
@@ -218,8 +216,9 @@ export function NavRail() {
                   );
                 }
                 return (
-                  <button
+                  <Link
                     key={cat.href}
+                    href={cat.href}
                     onClick={() => setActiveIdx(i)}
                     className="flex flex-col items-center gap-1 shrink-0"
                   >
@@ -230,7 +229,7 @@ export function NavRail() {
                     <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
                       {cat.label}
                     </span>
-                  </button>
+                  </Link>
                 );
               })}
             </div>

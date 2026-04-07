@@ -48,8 +48,8 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
         ref={containerRef}
         className="w-full overflow-hidden bg-surface-alt will-change-transform"
         style={{
-          transform: "scale(0.82)",
-          borderRadius: "60px",
+          transform: inline ? "scale(0.82)" : "scale(1)",
+          borderRadius: inline ? "60px" : "0px",
           transformOrigin: "center center",
         }}
       >
