@@ -45,7 +45,9 @@ export type Section =
   | SpacerSection
   | EditorialHeadlineSection
   | AIHeatmapSection
-  | IntelligenceFlowSection;
+  | IntelligenceFlowSection
+  | DoubleExposureAnatomySection
+  | ColorFieldMapSection;
 
 interface BaseSection {
   id: string;
@@ -334,4 +336,12 @@ export interface IntelligenceFlowSection extends BaseSection {
     /** Relative volume at this stage (used for band width) */
     value: number;
   }[];
+}
+
+export interface DoubleExposureAnatomySection extends BaseSection {
+  type: "double-exposure-anatomy";
+}
+
+export interface ColorFieldMapSection extends BaseSection {
+  type: "color-field-map";
 }

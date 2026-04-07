@@ -29,6 +29,8 @@ import { SystemArchitecture } from "./sections/SystemArchitecture";
 import { EditorialHeadline } from "./sections/EditorialHeadline";
 import { AIHeatmap } from "./sections/AIHeatmap";
 import { IntelligenceFlow } from "./sections/IntelligenceFlow";
+import { DoubleExposureAnatomy } from "./sections/DoubleExposureAnatomy";
+import { ColorFieldMap } from "./sections/ColorFieldMap";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -92,6 +94,10 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <AIHeatmap {...section} />;
     case "intelligence-flow":
       return <IntelligenceFlow {...section} />;
+    case "double-exposure-anatomy":
+      return <DoubleExposureAnatomy />;
+    case "color-field-map":
+      return <ColorFieldMap />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:

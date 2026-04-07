@@ -104,7 +104,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
   const restRows = chunkRows(rest);
 
   return (
-    <div className="relative w-full max-w-[1400px] mx-auto min-h-full">
+    <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
       {/* Breadcrumb */}
       <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:mb-[30px] md:left-0 md:right-0 md:w-auto md:px-0">
         <div className="flex items-center justify-between gap-4">

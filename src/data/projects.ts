@@ -16,7 +16,7 @@ export const projects: Project[] = [
   { id: "ivyPark", title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/Image.jpg`, tags: ["digital", "campaigns"], featured: true },
   { id: "arc", title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/image 264.jpg`, href: "/case-studies/arc", tags: ["digital"], featured: true },
   { id: "hillKitchen", title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg`, tags: ["interiors"], featured: true },
-  { id: "robertRod", title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/image 278.jpg`, tags: ["campaigns"], featured: true },
+  { id: "robertRod", title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/image 278.jpg`, href: "/case-studies/robert-rodriguez", tags: ["campaigns"], featured: true },
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-digital-design-house-staple-brand-site.jpg.jpg`, tags: ["digital"] },
   { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg`, tags: ["digital"] },
   { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/Image-1.jpg`, tags: ["branding"] },

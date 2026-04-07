@@ -135,7 +135,7 @@ const p = {
   ivyPark: { title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/Image.jpg` },
   arc: { title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/image 264.jpg`, href: "/case-studies/arc" },
   hillKitchen: { title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg` },
-  robertRod: { title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/image 278.jpg` },
+  robertRod: { title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/image 278.jpg`, href: "/case-studies/robert-rodriguez" },
   nordstromPersonal: { title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-digital-design-house-staple-brand-site.jpg.jpg` },
   jeffreyNyc: { title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg` },
   capitanBoot: { title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/Image-1.jpg` },
@@ -188,7 +188,7 @@ function HomeContent() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[1400px] mx-auto min-h-full">
+    <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
       {/* 12-column grid overlay — toggle with Ctrl/Cmd+G */}
       {showGrid && (
         <div className="pointer-events-none fixed inset-0 z-50 ml-[161px] pt-[50px] pl-[50px] pr-[50px]">

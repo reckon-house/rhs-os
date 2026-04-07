@@ -172,8 +172,8 @@ export function NavRail() {
         style={{ zIndex: 2147483647, paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Categories pill */}
-        <div className="flex-1 md:flex-none overflow-x-auto scrollbar-hide">
-          <div className="relative rounded-[28px] overflow-hidden">
+        <div className="flex-1 md:flex-none">
+          <div className="relative rounded-[28px] overflow-x-auto overflow-y-hidden scrollbar-hide">
             <div
               ref={backdrop1}
               className="absolute inset-0 rounded-[28px]"

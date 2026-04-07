@@ -2,10 +2,11 @@ import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/case-study/CaseStudyLayout";
 import { arcCaseStudy } from "@/data/arc-case-study";
 import { sallyCaseStudy } from "@/data/sally-case-study";
+import { robertRodriguezCaseStudy } from "@/data/robert-rodriguez-case-study";
 
 // For now, case studies are loaded from local data files.
 // This will migrate to Supabase when the CMS layer is ready.
-const caseStudies = [arcCaseStudy, sallyCaseStudy];
+const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy];
 
 export function generateStaticParams() {
   return caseStudies.map((s) => ({ slug: s.slug }));

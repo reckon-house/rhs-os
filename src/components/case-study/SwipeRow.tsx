@@ -68,8 +68,8 @@ export function SwipeRow({
             {child}
           </div>
         ))}
-        {/* End spacer so last card can snap left */}
-        <div className="shrink-0" style={{ width: spacerWidth }} />
+        {/* End spacer so last card can snap left (skip for 2 items) */}
+        {count > 2 && <div className="shrink-0" style={{ width: spacerWidth }} />}
       </div>
 
       {/* Dot indicators */}
