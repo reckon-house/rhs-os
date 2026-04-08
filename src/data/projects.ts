@@ -55,7 +55,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string }> = {
   },
   interiors: {
     headline: "Interior design\nand environments.",
-    body: "Residential design from concept through construction documentation. Every room tells a story — the work is making sure it's the right one. Materials, lighting, spatial flow, and the details that make a space feel considered rather than decorated.",
+    body: "Residential design from concept through construction documentation. Every room tells a story. The work is making sure it's the right one. Materials, lighting, spatial flow, and the details that make a space feel considered rather than decorated.",
   },
   branding: {
     headline: "Branding, identity\nand visual systems.",

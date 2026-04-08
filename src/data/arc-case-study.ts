@@ -54,7 +54,7 @@ export const arcCaseStudy: CaseStudy = {
       subtitle:
         "A computer vision system for residential asset documentation and insurance gap analysis. Designed, engineered, and shipped by a single builder.",
       abstract:
-        "Home inventory is a solved problem that nobody has solved well. The average American household contains approximately 300,000 items with a combined insurable value that most homeowners have never calculated. Existing documentation tools are spreadsheets with better packaging. Manual entry, manual categorization, manual everything. The result is predictable: 60% of homeowners are underinsured because they've never cataloged what they own.\n\nA.R.C. applies computer vision to the problem. Point a camera at a room. The system identifies objects, estimates replacement value, assigns categories, and archives everything against a structured database. The financial layer calculates total documented assets against insurance policy limits and surfaces gaps in coverage before a claim is necessary.\n\nThe entire product was designed, engineered, branded, and brought to market by one person working nights and weekends alongside a full-time creative director role. Python backend. Streamlit frontend. OpenAI Vision API for object recognition. Deployed on Vercel with Supabase handling data persistence. Concept to live product in weeks, not quarters.",
+        "Home inventory is a solved problem that nobody has solved well. The average American household contains approximately 300,000 items with a combined insurable value that most homeowners have never calculated. Existing documentation tools are spreadsheets with better packaging. Manual entry, manual categorization, manual everything. The math is predictable: 60% of homeowners are underinsured because they've never cataloged what they own.\n\nA.R.C. applies computer vision to the problem. Point a camera at a room. The system identifies objects, estimates replacement value, assigns categories, and archives everything against a structured database. The financial layer calculates total documented assets against insurance policy limits and flags coverage gaps before a claim becomes necessary.\n\nThe entire product was designed, engineered, branded, and brought to market by one person working nights and weekends alongside a full-time creative director role. Python backend. Streamlit frontend. OpenAI Vision API for object recognition. Deployed on Vercel with Supabase handling data persistence. Concept to live product in weeks, not quarters.",
     },
 
     // ── PROBLEM STATEMENT — grouped in ECE6E1 container with 75px radius ──
@@ -125,7 +125,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-editorial",
       type: "editorial-headline",
-      text: "Every room tells a story.\nWe built the system\nthat remembers it.",
+      text: "Every room tells a story.\nI built the system\nthat remembers it.",
     },
     {
       id: "problem-hero-group",
@@ -155,7 +155,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The image passes through vision processing, object identification, value estimation, and archival — each stage feeding the next, each decision point governed by confidence thresholds. Processing time measured under typical indoor lighting conditions.",
+        "The image passes through vision processing, object identification, value estimation, and archival. Each stage feeds the next. Each decision point governed by confidence thresholds. Processing time measured under typical indoor lighting conditions.",
     },
     {
       id: "pipeline",
@@ -178,14 +178,14 @@ export const arcCaseStudy: CaseStudy = {
             "OpenAI Vision API receives the image and returns structured analysis. Object identification, material detection, style classification, condition assessment, estimated era or manufacture period.",
           title2: "Financial Analysis",
           description2:
-            "Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the gap is surfaced. The homeowner sees the shortfall before a disaster reveals it.",
+            "Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the shortfall shows up as a specific dollar amount. The homeowner sees it before a disaster reveals it.",
           image: "/case-studies/arc/System Architecture6.jpg",
         },
         {
           number: "03",
           title: "Value Estimation",
           description:
-            "Identified objects are matched against market replacement data. The system estimates current replacement cost — not depreciated value, not original purchase price. Replacement cost is the insurance-relevant metric.",
+            "Identified objects are matched against market replacement data. The system estimates current replacement cost, not depreciated value or original purchase price. Replacement cost is the insurance-relevant metric.",
           title2: "Category Assignment",
           description2:
             "Each item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents. Sub-categories provide additional granularity.",
@@ -303,7 +303,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Documented asset value compared against user-reported policy limits. Gap surfaced as a specific dollar amount before a disaster reveals it.",
+        "Documented asset value compared against user-reported policy limits. Gap shown as a specific dollar amount before a disaster reveals it.",
     },
     {
       id: "financial-text",
@@ -354,13 +354,13 @@ export const arcCaseStudy: CaseStudy = {
         },
         {
           name: "Avenir Next",
-          role: "Secondary Typeface — Medium",
+          role: "Secondary Typeface, Medium",
           description:
             "Clean, neutral, highly legible. Carries the product's utility layer. Data labels, navigation, body text, interface clarity.",
         },
         {
           name: "Avenir Next",
-          role: "Secondary Typeface — Demi Bold",
+          role: "Secondary Typeface, Demi Bold",
           description:
             "Structural emphasis. Section labels, key data points, navigational hierarchy. Weight that signals importance without shouting.",
         },
@@ -398,7 +398,7 @@ export const arcCaseStudy: CaseStudy = {
         {
           title: "The Builder Reality",
           content:
-            "No engineering team. No product manager assigning tickets. No design review board. No QA department. One person identifying the problem, designing the solution, writing the code, testing the output, fixing what broke, and shipping the result.\n\nThis isn't a limitation narrative. It's a velocity argument. The feedback loop between identifying a problem and deploying a fix is measured in hours, not sprints. A UX friction point noticed during testing gets resolved in the same session. A feature idea that surfaces during development gets prototyped immediately. The distance between intention and execution is as short as it can possibly be.\n\nThe tradeoff is real. Solo development means every decision is a prioritization decision. What ships now versus what ships later. What gets refined versus what gets functional. V1 is an honest assessment of those tradeoffs: comprehensive in scope, considered in design, pragmatic in implementation.",
+            "No engineering team. No product manager assigning tickets. No design review board. No QA department. One person identifying the problem, designing the solution, writing the code, testing the output, fixing what broke, and shipping the result.\n\nThis isn't a limitation narrative. It's a velocity argument. The feedback loop between identifying a problem and deploying a fix is measured in hours, not sprints. A UX friction point noticed during testing gets resolved in the same session. A feature idea that shows up during development gets prototyped immediately. The distance between intention and execution is as short as it can possibly be.\n\nThe tradeoff is real. Solo development means every decision is a prioritization decision. What ships now versus what ships later. What gets refined versus what gets functional. V1 is an honest assessment of those tradeoffs: comprehensive in scope, considered in design, pragmatic in implementation.",
         },
         {
           title: "AI-Assisted Development",
@@ -442,7 +442,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Dashboard, room, item detail, and report views — all screens reflect V1 production application with representative usage data.",
+        "Dashboard, room, item detail, and report views. All screens reflect V1 production application with representative usage data.",
       group: { name: "product-interface" },
     },
     {
@@ -572,7 +572,7 @@ export const arcCaseStudy: CaseStudy = {
         { label: "heythere@arcready.app", url: "mailto:heythere@arcready.app" },
       ],
       content:
-        "The product is the proof that a single person with design experience, AI tools, and a real problem to solve can ship a complete product. Not a prototype. Not a demo. A live application in the App Store with paying users and a roadmap.\n\nThe next version migrates the full stack to a native architecture. More precise scanning. Faster processing. Deeper financial analysis. The foundation built in V1 supports everything planned for V2 without a rebuild.\n\nThe larger point extends beyond this specific product. The tools exist now for designers who think in systems to build the systems they think about. The gap between vision and execution isn't technical anymore. It's about willingness to ship. A.R.C. shipped.",
+        "A single person with design experience, AI tools, and a real problem to solve shipped a complete product. Not a prototype. Not a demo. A live application in the App Store with paying users and a roadmap.\n\nV2 migrates the full stack to a native architecture. More precise scanning. Faster processing. Deeper financial analysis. The foundation built in V1 supports everything planned without a rebuild.\n\nThe larger point extends beyond this specific product. The tools exist now for designers who think in systems to build the systems they think about. The gap between vision and execution isn't technical anymore. It's about willingness to ship. A.R.C. shipped.",
     },
   ],
 };

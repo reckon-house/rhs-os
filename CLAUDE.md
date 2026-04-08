@@ -79,11 +79,64 @@ The goal: drop in new images + a project summary → generate a complete new cas
 - Pipeline steps: square-ish, works with `rounded-[18%]` crop
 - Use descriptive filenames (good for SEO + findability)
 
-### Copy patterns (match ARC tone)
-- Headlines: bold, declarative, short ("A single photograph triggers a six-stage recognition pipeline.")
-- Subheads: full sentence, slightly lighter weight
-- Body: editorial, specific, no filler ("The estimated time to properly inventory an average home: 40+ hours.")
-- Section labels: uppercase, spaced ("SECTION 03: METHODOLOGY / HOW IT WORKS")
+### Copy Rules (Non-Negotiable)
+
+**Voice:**
+1. No em dashes. Ever. Use periods, commas, or restructure.
+2. Beer test. Read it aloud. If it sounds like a press release, rewrite.
+3. No word repetition within 15 words.
+4. Kill adverbs. Use strong verbs.
+5. One idea per sentence.
+6. Lead with verbs. Action before description.
+7. Cut sentences that don't add information.
+
+**AI Tell Flags (avoid these patterns):**
+- Balanced parallelism ("Not X, not Y") more than once per study
+- Consistent triplets. Vary list counts (2, 4, or just the one that matters)
+- Every paragraph opening with a thesis statement. Bury the point sometimes.
+- "Surfaces" as a verb. Use "shows up," "flags," "finds," "catches"
+- "The result was..." Cut it. Start with what happened.
+- "The [noun] is the [noun]" more than once per study
+- Perfectly even paragraph lengths. Mix short punchy + dense long.
+- "The [noun]..." sentence starters on repeat. Mix in fragments, specifics.
+- Clean emotional escalation. Real projects have weird detours.
+- Vocabulary repetition. No word more than 3x per study (excluding articles/proper nouns).
+
+**Banned phrases:** "crafting meaningful experiences," "creative soul," "listener, thinker, problem-solver," "journey," "passion," "tapestry," "leveraging," "elevating," "disrupting," "innovative," "cutting-edge," "best-in-class," stacked triple adjectives, "seamless/seamlessly," "robust"
+
+**Subject rules:**
+- Standard case studies: remove "I" and "We." Lead with verbs or objects.
+- Builder case studies (ARC, Sally OS): use "I" to claim ownership.
+- "We" never appears in case studies.
+
+**Cross-study repetition (critical):**
+Use ONCE across the entire portfolio:
+- "The feedback loop between identifying a problem and deploying a fix"
+- "The gap/distance between vision/intention and execution"
+- "Not a prototype. Not a demo/proof of concept."
+- "Measured in hours, not sprints"
+- "One person" as a section-opening framing device
+
+Each study needs its own builder thesis angle:
+- ARC: willingness-to-ship, personal need became product
+- Sally: context advantage, builder knows the workflow
+- Robert Rodriguez: constraint-as-catalyst, one shoot, full campaign
+
+**Section rhythm:**
+- No more than two `three-column-text` sections consecutively
+- After dense text, give a visual beat (hero, dual-image, editorial headline)
+- `editorial-headline` is a palate cleanser. 2-3 lines max, no periods, 1-2 per study (3 ceiling)
+
+**Subhead vs footnote:**
+- Subhead (`size: "subhead"`): the hook. Provocative. 1-2 sentences max.
+- Footnote (`size: "base", fullWidth`): supporting detail, methodology, context.
+- They must NOT say the same thing in different words.
+
+**Abstract:** State problem, solution, and builder context in three dense paragraphs. Numbers, tools, timelines. No filler. Like a journal abstract.
+
+**Stats:** Real numbers only. Round numbers read as honest. Always specify what's measured.
+
+**Section labels:** ALL CAPS with section number. "SECTION 03: METHODOLOGY / HOW IT WORKS"
 
 ### To create a new case study
 1. Create `src/data/[slug]-case-study.ts` — copy `arc-case-study.ts` as a template
