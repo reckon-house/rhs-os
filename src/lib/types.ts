@@ -2,6 +2,7 @@ export interface CaseStudy {
   slug: string;
   title: string;
   subtitle: string;
+  category?: { label: string; href: string };
   field: string;
   author: string;
   published: string;
@@ -47,7 +48,10 @@ export type Section =
   | AIHeatmapSection
   | IntelligenceFlowSection
   | DoubleExposureAnatomySection
-  | ColorFieldMapSection;
+  | ColorFieldMapSection
+  | PatternMatrixSection
+  | MaterialCircosSection
+  | KitchenPaletteSection;
 
 interface BaseSection {
   id: string;
@@ -125,6 +129,7 @@ export interface ImageSection extends BaseSection {
   bleedTop?: boolean;
   maxWidth?: number;
   noRadius?: boolean;
+  padded?: boolean;
 }
 
 export interface DualImageSection extends BaseSection {
@@ -344,4 +349,16 @@ export interface DoubleExposureAnatomySection extends BaseSection {
 
 export interface ColorFieldMapSection extends BaseSection {
   type: "color-field-map";
+}
+
+export interface PatternMatrixSection extends BaseSection {
+  type: "pattern-matrix";
+}
+
+export interface MaterialCircosSection extends BaseSection {
+  type: "material-circos";
+}
+
+export interface KitchenPaletteSection extends BaseSection {
+  type: "kitchen-palette";
 }

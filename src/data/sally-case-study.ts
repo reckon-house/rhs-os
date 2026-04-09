@@ -3,6 +3,7 @@ import type { CaseStudy } from "@/lib/types";
 export const sallyCaseStudy: CaseStudy = {
   slug: "sally",
   title: "Sally Beauty Marketing OS",
+  category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "Five connected platforms covering the full pipeline from competitive signal to store-level sale. Built internally using AI-assisted development.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
@@ -40,7 +41,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "hero-1",
       type: "hero",
-      image: "/case-studies/sally-os/heroes/hero.jpg",
+      image: "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
       alt: "Sally Beauty Marketing OS, platform overview",
     },
 
@@ -69,7 +70,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "problem-image",
       type: "image",
-      src: "/case-studies/sally-os/hero-grid.png",
+      src: "/case-studies/sally-os/sally-os-dashboard-grid-overview.png",
       alt: "Sally Marketing OS, five connected platforms overview",
       bleedTop: true,
       noRadius: true,
@@ -126,7 +127,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "trends-portal-hero",
       type: "hero",
-      image: "/case-studies/sally-os/briefing-portal-production.up.railway.app_(4k) (1) 1.png",
+      image: "/case-studies/sally-os/sally-os-briefing-portal-fullscreen.png",
       alt: "Sally Marketing OS, intelligence feed and competitive dashboard",
       inline: true,
     },
@@ -178,11 +179,11 @@ export const sallyCaseStudy: CaseStudy = {
       native: true,
       transparent: true,
       left: {
-        src: "/case-studies/sally-os/marketing-insight-2up.png",
+        src: "/case-studies/sally-os/sally-os-marketing-insight-dual-view.png",
         alt: "Sally Marketing OS, AI-generated competitive insights",
       },
       right: {
-        src: "/case-studies/sally-os/model-2up.png",
+        src: "/case-studies/sally-os/sally-os-model-selection-dual-view.png",
         alt: "Sally Beauty, dark waves, professional color",
       },
     },
@@ -197,11 +198,11 @@ export const sallyCaseStudy: CaseStudy = {
       native: true,
       transparent: true,
       left: {
-        src: "/case-studies/sally-os/model2-2up.png",
+        src: "/case-studies/sally-os/sally-os-model-detail-dual-view.png",
         alt: "Sally Beauty, blonde curls, natural color",
       },
       right: {
-        src: "/case-studies/sally-os/social-trends.png",
+        src: "/case-studies/sally-os/sally-os-social-trends-dashboard.png",
         alt: "Sally Marketing OS, social trend tracking dashboard",
       },
     },
@@ -238,7 +239,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "brain-hero",
       type: "image",
-      src: "/case-studies/sally-os/heroes/brand-brain-hero.jpg",
+      src: "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
       alt: "Brand Brain, AI strategy interface for Sally Beauty",
       aspect: "native",
       bleedTop: true,
@@ -297,11 +298,11 @@ export const sallyCaseStudy: CaseStudy = {
       transparent: true,
       group: { name: "brand-brain" },
       left: {
-        src: "/case-studies/sally-os/chat-2up.png",
+        src: "/case-studies/sally-os/sally-os-brand-brain-chat-dual-view.png",
         alt: "Brand Brain, conversational strategy with Jim",
       },
       right: {
-        src: "/case-studies/sally-os/model-2up-chat.png",
+        src: "/case-studies/sally-os/sally-os-model-chat-interface.png",
         alt: "Sally Beauty, teal braids, expressive color",
       },
     },
@@ -317,11 +318,11 @@ export const sallyCaseStudy: CaseStudy = {
       native: true,
       transparent: true,
       left: {
-        src: "/case-studies/sally-os/brief-2up.png",
+        src: "/case-studies/sally-os/sally-os-brief-builder-dual-view.png",
         alt: "Brand Brain, AI-assisted campaign brief generation",
       },
       right: {
-        src: "/case-studies/sally-os/model-2up-chat2.png",
+        src: "/case-studies/sally-os/sally-os-model-chat-response.png",
         alt: "Sally Beauty, purple curls, bold color expression",
       },
       group: { name: "brand-brain" },
@@ -369,7 +370,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "asset-hero-image",
       type: "hero",
-      image: "/case-studies/sally-os/heroes/asset-hub-hero.jpg",
+      image: "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
       alt: "Asset Hub, AI-powered digital asset management",
       inline: true,
     },
@@ -421,11 +422,11 @@ export const sallyCaseStudy: CaseStudy = {
       transparent: true,
       aspect: "aspect-square",
       left: {
-        src: "/case-studies/sally-os/model-asset.png",
+        src: "/case-studies/sally-os/sally-os-model-asset-library.png",
         alt: "Asset Hub, AI tagging and metadata on model photography",
       },
       right: {
-        src: "/case-studies/sally-os/product-asset.png",
+        src: "/case-studies/sally-os/sally-os-product-asset-library.png",
         alt: "Asset Hub, AI studio photography pipeline",
       },
     },
@@ -453,7 +454,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "asset-hub-alt",
       type: "image",
-      src: "/case-studies/sally-os/heroes/asset-hub.jpg",
+      src: "/case-studies/sally-os/heroes/sally-os-asset-hub-detail.jpg",
       alt: "Asset Hub, full interface overview with AI tagging and search",
       aspect: "native",
     },
@@ -462,7 +463,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "utilities-hero-image",
       type: "hero",
-      image: "/case-studies/sally-os/heroes/utilities-marketplace.jpg",
+      image: "/case-studies/sally-os/heroes/sally-os-utilities-marketplace-hero.jpg",
       alt: "Utilities Marketplace, internal tools platform",
       inline: true,
     },

@@ -4,7 +4,7 @@ import { SwipeRow } from "../SwipeRow";
 function ImageSlot({ src, alt, native, transparent, aspect }: { src: string; alt: string; native?: boolean; transparent?: boolean; aspect?: string }) {
   const aspectClass = aspect ? aspect : native ? "" : "aspect-[4/5]";
   return (
-    <div className={`${aspectClass} ${transparent ? "" : "rounded-[clamp(20px,4vw,40px)] bg-surface-alt"} overflow-hidden`}>
+    <div className={`${aspectClass} ${transparent ? "" : "rounded-[clamp(30px,5vw,60px)] bg-surface-alt"} overflow-hidden`}>
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={src} alt={alt} className={`w-full ${native && !aspect ? "h-auto" : "h-full object-cover"}`} />

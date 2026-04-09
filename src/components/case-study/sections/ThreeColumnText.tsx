@@ -22,14 +22,14 @@ function Accordion({ title, content, defaultOpen }: { title?: string; content: s
           fill="none"
           className={`shrink-0 ml-2 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         >
-          <path d="M2 4.5L6 8.5L10 4.5" stroke="#141414" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
+          <path d="M2 4.5L6 8.5L10 4.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
         </svg>
       </button>
       <div
         className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${open ? "max-h-[1000px] opacity-100 pb-4" : "max-h-0 opacity-0"}`}
       >
         {content.split("\n\n").map((p, i) => (
-          <p key={i} className="text-[11px] leading-[1.875] text-foreground/80 mb-3 last:mb-0">
+          <p key={i} className="text-[11px] leading-[1.875] text-current/80 mb-3 last:mb-0">
             {p}
           </p>
         ))}
@@ -64,7 +64,7 @@ export function ThreeColumnText({ columns }: ThreeColumnTextSection) {
             )}
             <div className={`${col.title ? "col-start-7 col-span-6" : "col-span-12"}`}>
               {col.content.split("\n\n").map((p, j) => (
-                <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 mb-4 last:mb-0">
+                <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-current/80 mb-4 last:mb-0">
                   {p}
                 </p>
               ))}

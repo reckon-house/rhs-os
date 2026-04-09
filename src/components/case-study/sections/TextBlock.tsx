@@ -1,10 +1,10 @@
 import type { TextSection } from "@/lib/types";
 
 const sizeStyles = {
-  base: "text-[11px] md:text-[14px] leading-[1.875] text-[#141414]",
-  lg: "text-[14px] md:text-[18px] leading-[1.875] text-[#141414]",
-  xl: "text-[18px] md:text-[24px] font-normal leading-[1.875] text-[#141414]",
-  subhead: "text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414]",
+  base: "text-[11px] md:text-[14px] leading-[1.875]",
+  lg: "text-[14px] md:text-[18px] leading-[1.875]",
+  xl: "text-[18px] md:text-[24px] font-normal leading-[1.875]",
+  subhead: "text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em]",
 };
 
 const spacingStyles = {

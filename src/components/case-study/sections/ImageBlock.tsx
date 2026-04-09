@@ -8,12 +8,14 @@ const aspectMap: Record<string, string> = {
   native: "",
 };
 
-export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWidth, noRadius }: ImageSection) {
+export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWidth, noRadius, padded }: ImageSection) {
   const radius = noRadius ? "" : "rounded-[clamp(30px,5vw,100px)]";
   const sectionClass = bleed
     ? "bleed-image py-0"
     : bleedTop
     ? "bleed-top pt-0 pb-14"
+    : padded
+    ? "w-full py-6 px-4 md:px-10 lg:px-16"
     : "w-full py-6 px-4 md:px-0";
   return (
     <section className={sectionClass}>

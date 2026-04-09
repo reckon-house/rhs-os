@@ -83,7 +83,7 @@ export function SectionHeader({ label, title, group, centered }: SectionHeaderSe
 
   return (
     <section ref={ref} className={`w-full ${topPad} pb-0 ${align}`}>
-      <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+      <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-current font-medium px-4 py-2 rounded-full bg-current/[0.06] mb-5">
         <ScrambleText text={label} trigger={visible} />
       </span>
       {title && (

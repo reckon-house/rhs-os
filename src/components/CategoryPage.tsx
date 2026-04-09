@@ -109,9 +109,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
       <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-            <span>Reckon House Staples</span>
-            <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span>Project Index</span>
+            <Link href="/" className="hover:opacity-70 transition-opacity">House</Link>
             <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
             <span className="font-bold">{tag.charAt(0).toUpperCase() + tag.slice(1)}</span>
           </nav>

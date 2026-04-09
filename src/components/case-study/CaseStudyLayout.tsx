@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import type { CaseStudy, Section } from "@/lib/types";
 import { SectionRenderer } from "./SectionRenderer";
 
@@ -34,6 +35,9 @@ function getColSpan(type: string): string {
     case "feature-cards":
     case "spacer":
     case "timeline":
+    case "pattern-matrix":
+    case "material-circos":
+    case "kitchen-palette":
       return "col-span-12";
     // Text sections — inset on mobile, full width on desktop
     default:
@@ -98,9 +102,13 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
     <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
       <div className="flex items-center justify-between gap-4">
         <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-          <span>Case Studies</span>
+          <Link href="/" className="hover:opacity-70 transition-opacity">House</Link>
           <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-          <span>Apps</span>
+          {study.category ? (
+            <Link href={study.category.href} className="hover:opacity-70 transition-opacity">{study.category.label}</Link>
+          ) : (
+            <span>Projects</span>
+          )}
           <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
           <span className="font-bold">{study.title}</span>
         </nav>
@@ -148,10 +156,11 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
           }
 
           // Grouped sections — wrap in a styled container
+          const isDarkBg = item.bg && parseInt(item.bg.replace("#", "").slice(0, 2), 16) < 80;
           return (
             <div key={item.name} className={`col-span-12 ${sectionGap}`}>
               <div
-                className="overflow-hidden group-container"
+                className={`overflow-hidden group-container ${isDarkBg ? "text-[#EDE7E2]" : ""}`}
                 style={{
                   backgroundColor: item.bg,
                   borderRadius: item.radius ? `clamp(30px, 5vw, ${item.radius}px)` : undefined,

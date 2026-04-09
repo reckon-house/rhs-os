@@ -132,35 +132,35 @@ function Headline({ children }: { children: React.ReactNode }) {
 /* ------------------------------------------------------------------ */
 
 const p = {
-  ivyPark: { title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/Image.jpg` },
-  arc: { title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/image 264.jpg`, href: "/case-studies/arc" },
-  hillKitchen: { title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg` },
-  robertRod: { title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/image 278.jpg`, href: "/case-studies/robert-rodriguez" },
-  nordstromPersonal: { title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-digital-design-house-staple-brand-site.jpg.jpg` },
+  ivyPark: { title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/rhs-ivy-park-beyonce-digital-brand-launch.jpg` },
+  arc: { title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/rhs-arc-ai-home-inventory-app-thumbnail.jpg`, href: "/case-studies/arc" },
+  hillKitchen: { title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg`, href: "/case-studies/hill-country-kitchen" },
+  robertRod: { title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg`, href: "/case-studies/robert-rodriguez" },
+  nordstromPersonal: { title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-design-system.jpg` },
   jeffreyNyc: { title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg` },
-  capitanBoot: { title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/Image-1.jpg` },
+  capitanBoot: { title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg` },
   jeffreyCampaign: { title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg` },
-  hillBath: { title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/bath_front 3.jpg` },
-  nordstromBeauty: { title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg.jpg` },
-  oakworks: { title: "Hill County Oakworks", category: "Campaign direction, branding", image: `${HP}/image 275.jpg` },
+  hillBath: { title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg` },
+  nordstromBeauty: { title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg` },
+  oakworks: { title: "Hill County Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-county-oakworks-campaign-branding.jpg` },
   cosmoProf: { title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg` },
-  dsc: { title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/Group 730.jpg` },
-  bwType: { title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg` },
+  dsc: { title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-website-app.jpg` },
+  bwType: { title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg`, href: "/case-studies/black-white-type" },
   hillLiving: { title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg` },
   jChristianson: { title: "J.Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg` },
   amberShockey: { title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg` },
   sallyBeauty: { title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg` },
-  sallyOS: { title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/hero.jpg`, href: "/case-studies/sally" },
+  sallyOS: { title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/sally-os-platform-hero.jpg`, href: "/case-studies/sally" },
   jeffreyCampaign2: { title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg` },
   fairviewSitting: { title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg` },
   floorDecor: { title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg` },
   fairviewBedroom: { title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg` },
   fairviewFoyer: { title: "The Fairview", category: "Interior Design, foyer", image: `${HP}/rhs-interior-design-grand-entry-luxe.jpg` },
-  nordstromFramework: { title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/Group 917.jpg` },
+  nordstromFramework: { title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/rhs-nordstrom-framework-content-design.jpg` },
   lovedByNordstrom: { title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-campaign-design-nordstrom-loved-by-campaign.jpg` },
   mountainView: { title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg` },
   neimanMarcus: { title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-campaign-design-neiman-marcus-editorial-design.jpg` },
-  variousDesign: { title: "Various design", category: "Branding, art, apparel", image: `${HP}/Mask group.jpg` },
+  variousDesign: { title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg` },
 } satisfies Record<string, Project>;
 
 /* ------------------------------------------------------------------ */
@@ -207,11 +207,9 @@ function HomeContent() {
       <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-            <span>Reckon House Staples</span>
+            <span className="font-bold">House</span>
             <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span>Project Index</span>
-            <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span className="font-bold">All</span>
+            <span>All Projects</span>
           </nav>
           <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
             House OS. Beta.

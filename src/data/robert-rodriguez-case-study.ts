@@ -5,6 +5,7 @@ const IMG = "/case-studies/robert-rodriguez";
 export const robertRodriguezCaseStudy: CaseStudy = {
   slug: "robert-rodriguez",
   title: "Robert Rodriguez x Neiman\u2019s",
+  category: { label: "Campaigns", href: "/category/campaigns" },
   subtitle: "Spring Campaign",
   field: "Campaign Design Art Direction Photo Compositing",
   author: "Jeremy Prasatik",

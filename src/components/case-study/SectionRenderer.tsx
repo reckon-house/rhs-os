@@ -31,6 +31,9 @@ import { AIHeatmap } from "./sections/AIHeatmap";
 import { IntelligenceFlow } from "./sections/IntelligenceFlow";
 import { DoubleExposureAnatomy } from "./sections/DoubleExposureAnatomy";
 import { ColorFieldMap } from "./sections/ColorFieldMap";
+import { PatternMatrix } from "./sections/PatternMatrix";
+import { MaterialCircos } from "./sections/MaterialCircos";
+import { KitchenPalette } from "./sections/KitchenPalette";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -98,6 +101,12 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <DoubleExposureAnatomy />;
     case "color-field-map":
       return <ColorFieldMap />;
+    case "pattern-matrix":
+      return <PatternMatrix />;
+    case "material-circos":
+      return <MaterialCircos />;
+    case "kitchen-palette":
+      return <KitchenPalette />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:

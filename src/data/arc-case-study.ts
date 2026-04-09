@@ -3,6 +3,7 @@ import type { CaseStudy } from "@/lib/types";
 export const arcCaseStudy: CaseStudy = {
   slug: "arc",
   title: "A.R.C. Archive. Ready. Cloud.",
+  category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "Computer vision meets home inventory. A complete product designed, engineered, branded, and shipped by one person.",
   field: "Home Inventory\nComputer Vision\nInsurance Technology",
@@ -32,7 +33,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "hero-1",
       type: "hero",
-      image: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-mobile-phone-kitchen-interior-design-project-selection-wooden-surface-lifestyle.jpg",
+      image: "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
       alt: "A.R.C. app on wooden surface with kitchen interior",
     },
 
@@ -86,9 +87,9 @@ export const arcCaseStudy: CaseStudy = {
       id: "problem-images",
       type: "triple-image",
       images: [
-        { src: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-smartphone-mobile-interface-wooden-table-lifestyle-mockup.jpg", alt: "A.R.C. app — smartphone mockup" },
-        { src: "/case-studies/arc/Rectangle 1514.jpg", alt: "A.R.C. app — room scanning interface" },
-        { src: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-smartphone-mobile-interface-living-room-furniture-selection-app-screen.jpg", alt: "A.R.C. app — item detail view" },
+        { src: "/case-studies/arc/arc-app-smartphone-wooden-table-mockup.jpg", alt: "A.R.C. app — smartphone mockup" },
+        { src: "/case-studies/arc/arc-room-scanning-interface.jpg", alt: "A.R.C. app — room scanning interface" },
+        { src: "/case-studies/arc/arc-app-living-room-furniture-selection.jpg", alt: "A.R.C. app — item detail view" },
       ],
       group: { name: "problem" },
     },
@@ -117,7 +118,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-mobile-screens",
       type: "image",
-      src: "/case-studies/arc/3-app-scene.png",
+      src: "/case-studies/arc/arc-three-screen-lifestyle-mockup.png",
       alt: "A.R.C. mobile app screens overview",
       bleed: true,
       group: { name: "problem" },
@@ -130,7 +131,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-hero-group",
       type: "hero",
-      image: "/case-studies/arc/hero-group.jpg",
+      image: "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
       alt: "A.R.C. app lifestyle scenes — mobile interfaces in context",
       inline: true,
     },
@@ -169,7 +170,7 @@ export const arcCaseStudy: CaseStudy = {
           title2: "Archive Entry",
           description2:
             "The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
-          image: "/case-studies/arc/System Architecture4.jpg",
+          image: "/case-studies/arc/arc-pipeline-ai-categorization-step.jpg",
         },
         {
           number: "02",
@@ -179,7 +180,7 @@ export const arcCaseStudy: CaseStudy = {
           title2: "Financial Analysis",
           description2:
             "Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the shortfall shows up as a specific dollar amount. The homeowner sees it before a disaster reveals it.",
-          image: "/case-studies/arc/System Architecture6.jpg",
+          image: "/case-studies/arc/arc-pipeline-cloud-sync-step.jpg",
         },
         {
           number: "03",
@@ -189,7 +190,7 @@ export const arcCaseStudy: CaseStudy = {
           title2: "Category Assignment",
           description2:
             "Each item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents. Sub-categories provide additional granularity.",
-          image: "/case-studies/arc/System Architecture1.jpg",
+          image: "/case-studies/arc/arc-pipeline-photo-capture-step.jpg",
         },
       ],
     },
@@ -278,7 +279,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "classification-hero",
       type: "image",
-      src: "/case-studies/arc/screen-hero.png",
+      src: "/case-studies/arc/arc-dashboard-screen-hero.png",
       alt: "A.R.C. classification system interface",
       aspect: "native",
       maxWidth: 700,
@@ -322,7 +323,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "financial-image",
       type: "hero",
-      image: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-smartphone-vinyl-record-player-turntable-wooden-shelves-books-mobile-interface-lifestyle.jpg",
+      image: "/case-studies/arc/arc-app-vinyl-turntable-shelves-lifestyle.jpg",
       alt: "Insurance Coverage Analysis",
       inline: true,
     },
@@ -366,7 +367,7 @@ export const arcCaseStudy: CaseStudy = {
         },
       ],
       logoConstructionImage: "/case-studies/arc/arc-logo-grid.png",
-      appScreenshotImage: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-dashboard-interface-furniture-artwork-vehicles-electronics-categories-backup-status-report-configuration.png",
+      appScreenshotImage: "/case-studies/arc/arc-app-dashboard-categories-configuration.png",
     },
 
     // ── BUILD METHODOLOGY ──
@@ -415,7 +416,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "build-app-screens",
       type: "image",
-      src: "/case-studies/arc/5-app-screens.png",
+      src: "/case-studies/arc/arc-five-screen-app-showcase.png",
       alt: "Five A.R.C. application screens showing dashboard, item entry, room view, project selection, and document library",
       aspect: "native",
     },
@@ -530,7 +531,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "closing-lifestyle",
       type: "hero",
-      image: "/case-studies/arc/arc-home-inventory-app-archive-ready-cloud-smartphone-tablet-interior-design-kitchen-living-room-mobile-interface-lifestyle.jpg",
+      image: "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg",
       alt: "A.R.C. app lifestyle — smartphone and tablet",
       inline: true,
     },
