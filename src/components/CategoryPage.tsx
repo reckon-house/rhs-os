@@ -35,16 +35,16 @@ function Thumb({ project }: { project: Project }) {
 /* ── Large featured image ── */
 function FeaturedImage({ project }: { project: Project }) {
   const inner = (
-    <div className="w-[180px] md:w-[240px]">
+    <div className="w-full">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={project.image}
         alt={project.title}
-        className="w-full aspect-square object-cover rounded-[23%]"
+        className="w-full aspect-[4/2] object-cover rounded-[clamp(30px,5vw,50px)]"
       />
       <div className="text-center mt-2 md:mt-3">
-        <p className="text-[10px] md:text-[12px] font-medium leading-[1.5]">{project.title}</p>
-        <p className="text-[10px] md:text-[11px] leading-[1.5] text-foreground/50">{project.category}</p>
+        <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
+        <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
       </div>
     </div>
   );
@@ -88,8 +88,8 @@ function CategoryLabel({ tag }: { tag: Tag }) {
 export function CategoryPage({ tag }: { tag: Tag }) {
   const info = categoryInfo[tag];
   const categoryProjects = getProjectsByTag(tag);
-  const featured = categoryProjects.slice(0, 3);
-  const rest = categoryProjects.slice(3);
+  const featured = categoryProjects.slice(0, 2);
+  const rest = categoryProjects.slice(2);
   const otherTags = getOtherTags(tag);
 
   // Chunk into rows of 4
@@ -106,7 +106,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
       {/* Breadcrumb */}
-      <div className="fixed top-[18px] left-4 right-14 z-40 md:sticky md:top-0 md:mb-[30px] md:left-0 md:right-0 md:w-auto md:px-0">
+      <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
             <span>Reckon House Staples</span>
@@ -121,24 +121,30 @@ export function CategoryPage({ tag }: { tag: Tag }) {
         </div>
       </div>
 
+      {/* Spacer for fixed breadcrumb */}
+      <div className="h-[30px] md:h-[50px]" />
+
       <div className="pb-24 space-y-10 md:space-y-[100px] pt-12 md:pt-0">
 
-        {/* ── Featured: Three large square images ── */}
-        {featured.length >= 1 && (
+        {/* ── Featured: Two hero images matching thumbnail row edges ── */}
+        {featured.length >= 2 && (
           <>
             {/* Mobile: swipe carousel */}
             <div className="md:hidden">
-              <SwipeRow cardFraction={0.75}>
-                {featured.slice(0, 3).map((proj) => (
+              <SwipeRow cardFraction={0.85}>
+                {featured.map((proj) => (
                   <FeaturedImage key={proj.id} project={proj} />
                 ))}
               </SwipeRow>
             </div>
-            {/* Desktop: flex row */}
-            <div className="hidden md:flex justify-between items-start">
-              {featured.slice(0, 3).map((proj) => (
-                <FeaturedImage key={proj.id} project={proj} />
-              ))}
+            {/* Desktop: side by side */}
+            <div className="hidden md:flex md:justify-between md:items-start">
+              <div className="md:w-[40%]">
+                <FeaturedImage project={featured[0]} />
+              </div>
+              <div className="md:w-[40%]">
+                <FeaturedImage project={featured[1]} />
+              </div>
             </div>
           </>
         )}

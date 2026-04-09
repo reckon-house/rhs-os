@@ -357,6 +357,33 @@ export function SystemArchitecture() {
             />
           ))}
 
+          {/* ── Traveling signal dots — two orbiting the chart ── */}
+          {(() => {
+            // Long path that winds through the rings
+            const p1 = `M${polar(CX,CY,R1,0).x},${polar(CX,CY,R1,0).y} `
+              + `A${R1},${R1} 0 0,1 ${polar(CX,CY,R1,120).x},${polar(CX,CY,R1,120).y} `
+              + `L${polar(CX,CY,R3,140).x},${polar(CX,CY,R3,140).y} `
+              + `A${R3},${R3} 0 0,1 ${polar(CX,CY,R3,280).x},${polar(CX,CY,R3,280).y} `
+              + `L${polar(CX,CY,R5,300).x},${polar(CX,CY,R5,300).y} `
+              + `A${R5},${R5} 0 0,1 ${polar(CX,CY,R5,60).x},${polar(CX,CY,R5,60).y} `
+              + `L${polar(CX,CY,R2,40).x},${polar(CX,CY,R2,40).y} `
+              + `A${R2},${R2} 0 0,1 ${polar(CX,CY,R2,200).x},${polar(CX,CY,R2,200).y} `
+              + `L${polar(CX,CY,R4,220).x},${polar(CX,CY,R4,220).y} `
+              + `A${R4},${R4} 0 0,1 ${polar(CX,CY,R4,350).x},${polar(CX,CY,R4,350).y} `
+              + `L${polar(CX,CY,R1,0).x},${polar(CX,CY,R1,0).y}`;
+
+            return (
+              <>
+                <circle r={5} fill="#B1BC94" opacity={0.4}>
+                  <animateMotion dur="45s" repeatCount="indefinite" path={p1} />
+                </circle>
+                <circle r={4} fill="#C4A265" opacity={0.35}>
+                  <animateMotion dur="60s" repeatCount="indefinite" begin="15s" path={p1} />
+                </circle>
+              </>
+            );
+          })()}
+
           {/* ── Tech → Pipeline curved connections (darker) ── */}
           {CONNECTIONS.map(([techIdx, pipeIdx], i) => {
             const tech = TECH_STACK[techIdx];
