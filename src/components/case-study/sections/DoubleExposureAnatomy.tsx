@@ -271,7 +271,7 @@ export function DoubleExposureAnatomy() {
                 {/* Peak markers on the tallest wave */}
                 {(() => {
                   const mainWave = waves[0];
-                  const markers: JSX.Element[] = [];
+                  const markers: React.ReactNode[] = [];
                   const markerRng = seededRandom(li * 555);
                   mainWave.forEach((val, si) => {
                     if (val > 0.75 && markerRng() > 0.85) {

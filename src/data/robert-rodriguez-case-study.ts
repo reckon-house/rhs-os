@@ -6,6 +6,15 @@ export const robertRodriguezCaseStudy: CaseStudy = {
   slug: "robert-rodriguez",
   title: "Robert Rodriguez x Neiman\u2019s",
   subtitle: "Spring Campaign",
+  field: "Campaign Design Art Direction Photo Compositing",
+  author: "Jeremy Prasatik",
+  published: "2024",
+  status: "Complete",
+  classification: ["Art Direction", "Photo Compositing", "Typography Design", "Campaign"],
+  services: ["Art Direction", "Photo Compositing", "Typography Design", "Campaign Design"],
+  stack: ["Adobe Photoshop", "Adobe Illustrator", "Capture One"],
+  links: [{ label: "Neiman Marcus", url: "https://www.neimanmarcus.com" }],
+  heroImage: "",
   sections: [
     // ── HERO ──
     {
