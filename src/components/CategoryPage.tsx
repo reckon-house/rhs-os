@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type Tag, type Project, categoryInfo, getProjectsByTag, getOtherTags } from "@/data/projects";
+import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
 
@@ -32,13 +32,16 @@ function Thumb({ project }: { project: Project }) {
   return <div className="hp-thumb group cursor-default">{inner}</div>;
 }
 
-/* ── Large featured image ── */
-function FeaturedImage({ project }: { project: Project }) {
+/* ── Large featured hero image with project info ── */
+function FeaturedHero({ hero }: { hero: CategoryHero }) {
+  const project = getProjectById(hero.projectId);
+  if (!project) return null;
+
   const inner = (
     <div className="w-full">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={project.image}
+        src={hero.image}
         alt={project.title}
         className="w-full aspect-[4/2] object-cover rounded-[clamp(30px,5vw,50px)]"
       />
@@ -73,9 +76,8 @@ function ThumbRow({ items }: { items: Project[] }) {
 function CategoryLabel({ tag }: { tag: Tag }) {
   const labels: Record<Tag, string> = {
     digital: "More digital",
-    campaigns: "More campaigns",
+    creative: "More creative",
     interiors: "More interiors",
-    branding: "More branding",
   };
   return (
     <p className="text-[11px] md:text-[14px] text-[#141414] font-bold mb-6">
@@ -87,9 +89,9 @@ function CategoryLabel({ tag }: { tag: Tag }) {
 /* ── Main category page ── */
 export function CategoryPage({ tag }: { tag: Tag }) {
   const info = categoryInfo[tag];
-  const categoryProjects = getProjectsByTag(tag);
-  const featured = categoryProjects.slice(0, 2);
-  const rest = categoryProjects.slice(2);
+  const heroes = info.heroes;
+  const heroIds = new Set(heroes.map((h) => h.projectId));
+  const categoryProjects = getProjectsByTag(tag).filter((p) => !heroIds.has(p.id));
   const otherTags = getOtherTags(tag);
 
   // Chunk into rows of 4
@@ -101,7 +103,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
     return rows;
   };
 
-  const restRows = chunkRows(rest);
+  const allRows = chunkRows(categoryProjects);
 
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
@@ -124,34 +126,32 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
       <div className="pb-24 space-y-10 md:space-y-[100px] pt-12 md:pt-0">
 
-        {/* ── Featured: Two hero images matching thumbnail row edges ── */}
-        {featured.length >= 2 && (
-          <>
-            {/* Mobile: swipe carousel */}
-            <div className="md:hidden">
-              <SwipeRow cardFraction={0.85}>
-                {featured.map((proj) => (
-                  <FeaturedImage key={proj.id} project={proj} />
-                ))}
-              </SwipeRow>
+        {/* ── Featured: Two hero images ── */}
+        <>
+          {/* Mobile: swipe carousel */}
+          <div className="md:hidden">
+            <SwipeRow cardFraction={0.85}>
+              {heroes.map((hero, i) => (
+                <FeaturedHero key={i} hero={hero} />
+              ))}
+            </SwipeRow>
+          </div>
+          {/* Desktop: side by side */}
+          <div className="hidden md:flex md:justify-between md:items-start">
+            <div className="md:w-[40%]">
+              <FeaturedHero hero={heroes[0]} />
             </div>
-            {/* Desktop: side by side */}
-            <div className="hidden md:flex md:justify-between md:items-start">
-              <div className="md:w-[40%]">
-                <FeaturedImage project={featured[0]} />
-              </div>
-              <div className="md:w-[40%]">
-                <FeaturedImage project={featured[1]} />
-              </div>
+            <div className="md:w-[40%]">
+              <FeaturedHero hero={heroes[1]} />
             </div>
-          </>
-        )}
+          </div>
+        </>
 
         {/* ── First thumbnail row ── */}
-        {restRows[0] && <ThumbRow items={restRows[0]} />}
+        {allRows[0] && <ThumbRow items={allRows[0]} />}
 
         {/* ── Second thumbnail row ── */}
-        {restRows[1] && <ThumbRow items={restRows[1]} />}
+        {allRows[1] && <ThumbRow items={allRows[1]} />}
 
         {/* ── Editorial headline ── */}
         <div className="py-8 md:py-16">
@@ -160,29 +160,67 @@ export function CategoryPage({ tag }: { tag: Tag }) {
           </h2>
         </div>
 
-        {/* ── Two-column text block ── */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-5 gap-y-4 px-4 md:px-0">
-          <div className="md:col-span-3">
-            <p className="text-[11px] md:text-[14px] font-bold leading-[1.875]">
-              {tag.charAt(0).toUpperCase() + tag.slice(1)}
+        {/* ── Expertise section (grouped container) ── */}
+        {info.expertise && (
+          <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
+            {/* Pill label */}
+            <div className="md:pl-[calc(100%/24)]">
+              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-current font-medium px-4 py-2 rounded-full bg-current/[0.06] mb-5">
+                {info.expertise.label}
+              </span>
+            </div>
+            {/* Title */}
+            <h2 className="text-[16px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2 md:pl-[calc(100%/24)]">
+              {info.expertise.title.replace(/\n/g, " ")}
+            </h2>
+            {/* Subhead */}
+            <p className="text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] md:pl-[calc(100%/24)] mb-4">
+              {info.expertise.subhead}
             </p>
+            {/* Footnote */}
+            <p className="text-[11px] md:text-[14px] leading-[1.875] md:pl-[calc(100%/24)] mb-8">
+              {info.expertise.footnote}
+            </p>
+            {/* Three columns — Desktop */}
+            <div className="hidden md:block space-y-10 md:px-[calc(100%/24)]">
+              {info.expertise.columns.map((col, i) => (
+                <div key={i} className="grid grid-cols-12 gap-x-5">
+                  <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
+                    {col.title}
+                  </h3>
+                  <div className="col-start-7 col-span-6">
+                    {col.content.split("\n\n").map((p, j) => (
+                      <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-current/80 mb-4 last:mb-0">
+                        {p}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Three columns — Mobile */}
+            <div className="md:hidden space-y-6">
+              {info.expertise.columns.map((col, i) => (
+                <div key={i}>
+                  <h3 className="text-[11px] font-bold leading-[1.875] mb-1">{col.title}</h3>
+                  {col.content.split("\n\n").map((p, j) => (
+                    <p key={j} className="text-[11px] leading-[1.875] text-current/80 mb-3 last:mb-0">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="md:col-start-7 md:col-span-6">
-            {info.body.split("\n\n").map((p, i) => (
-              <p key={i} className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 mb-4 last:mb-0">
-                {p}
-              </p>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* ── Remaining rows ── */}
-        {restRows.slice(2).map((row, i) => (
+        {allRows.slice(2).map((row, i) => (
           <ThumbRow key={`rest-${i}`} items={row} />
         ))}
 
         {/* ── Data visualization ── */}
-        <div className="px-4 md:px-0 py-12">
+        <div className="max-w-[1100px] mx-auto px-4 md:px-0 py-12">
           <CareerGalaxy />
         </div>
 

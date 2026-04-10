@@ -144,7 +144,8 @@ export function ColorFieldMap() {
   }, []);
 
   return (
-    <section className="w-full py-12 overflow-x-auto scrollbar-hide">
+    <section className="w-full py-12 overflow-x-auto scrollbar-hide"
+        data-lenis-prevent>
       <div className="min-w-[800px] max-w-[1100px] mx-auto px-4 md:px-0">
         <svg
           viewBox={`0 0 ${W} ${H}`}

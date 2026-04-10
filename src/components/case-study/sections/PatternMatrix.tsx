@@ -339,7 +339,8 @@ export function PatternMatrix() {
       </div>
 
       {/* Chart container */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto"
+        data-lenis-prevent>
         <div className="min-w-[800px]">
           <svg
             viewBox="0 0 900 700"

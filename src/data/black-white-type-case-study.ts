@@ -5,7 +5,7 @@ const IMG = "/case-studies/black-white-type";
 export const blackWhiteTypeCaseStudy: CaseStudy = {
   slug: "black-white-type",
   title: "Typography & Patterns",
-  category: { label: "Branding", href: "/category/branding" },
+  category: { label: "Creative", href: "/category/creative" },
   subtitle:
     "Six patterns, three art prints, zero color. Type as art form, pattern as texture.",
   field: "Typography Design\nPattern Design\nArt Direction",

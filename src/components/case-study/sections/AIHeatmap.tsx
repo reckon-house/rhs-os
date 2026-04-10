@@ -117,7 +117,8 @@ export function AIHeatmap({
   const totalH = headerH + competitors.length * (cellH + rowGap) - rowGap + 40;
 
   return (
-    <div className="overflow-x-auto scrollbar-hide">
+    <div className="overflow-x-auto scrollbar-hide"
+        data-lenis-prevent>
       <div className="relative overflow-hidden"
         style={{ minWidth: 800, background: "#F3F0ED", borderRadius: "clamp(20px,3vw,40px)", padding: "30px 20px 16px" }}>
 

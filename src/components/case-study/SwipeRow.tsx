@@ -58,6 +58,7 @@ export function SwipeRow({
         ref={scrollRef}
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
         style={{ gap, scrollBehavior: "smooth" }}
+        data-lenis-prevent
       >
         {children.map((child, i) => (
           <div

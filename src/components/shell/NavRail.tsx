@@ -7,9 +7,8 @@ import { usePathname } from "next/navigation";
 const categories = [
   { label: "Reckon.House", image: "/nav/logo.jpg", href: "/" },
   { label: "Digital", image: "/nav/digital.jpg", href: "/category/digital" },
-  { label: "Campaigns", image: "/nav/reckonhouse.jpg", href: "/category/campaigns" },
+  { label: "Creative", image: "/nav/reckonhouse.jpg", href: "/category/creative" },
   { label: "Interiors", image: "/nav/interiors.jpg", href: "/category/interiors" },
-  { label: "Branding", image: "/nav/branding.jpg", href: "/category/branding" },
 ];
 
 const utilities = [
@@ -62,9 +61,8 @@ export function NavRail() {
   // Determine active index from URL
   useEffect(() => {
     if (pathname === "/category/digital") setActiveIdx(1);
-    else if (pathname === "/category/campaigns") setActiveIdx(2);
+    else if (pathname === "/category/creative") setActiveIdx(2);
     else if (pathname === "/category/interiors") setActiveIdx(3);
-    else if (pathname === "/category/branding") setActiveIdx(4);
     else setActiveIdx(0);
   }, [pathname]);
 
@@ -104,22 +102,27 @@ export function NavRail() {
       lastScroll = Date.now();
     };
 
-    // Catch ALL scroll-related input
+    // Catch ALL scroll-related input on window
     window.addEventListener("scroll", onInput, { passive: true, capture: true });
     document.addEventListener("scroll", onInput, { passive: true, capture: true });
     window.addEventListener("wheel", onInput, { passive: true });
     window.addEventListener("touchmove", onInput, { passive: true });
+
+    // Also listen directly on the <main> scroll container (Lenis wrapper)
+    const mainEl = document.querySelector("main");
+    if (mainEl) {
+      mainEl.addEventListener("scroll", onInput, { passive: true });
+      mainEl.addEventListener("touchmove", onInput, { passive: true });
+    }
 
     const animate = () => {
       const timeSince = Date.now() - lastScroll;
 
       // Ease in on scroll, ease out when stopped
       if (timeSince < 500) {
-        // Ease-out ramp: fast at start, slows as it approaches 1
         const target = 1;
         heat += (target - heat) * 0.06;
       } else if (timeSince < 2500) {
-        // Slow ease out
         heat += (0 - heat) * 0.015;
       } else {
         heat += (0 - heat) * 0.03;
@@ -148,6 +151,10 @@ export function NavRail() {
       document.removeEventListener("scroll", onInput, { capture: true } as EventListenerOptions);
       window.removeEventListener("wheel", onInput);
       window.removeEventListener("touchmove", onInput);
+      if (mainEl) {
+        mainEl.removeEventListener("scroll", onInput);
+        mainEl.removeEventListener("touchmove", onInput);
+      }
       cancelAnimationFrame(raf);
     };
   }, []);
@@ -173,7 +180,7 @@ export function NavRail() {
       >
         {/* Categories pill */}
         <div className="flex-1 md:flex-none">
-          <div className="relative rounded-[28px] overflow-x-auto overflow-y-hidden scrollbar-hide">
+          <div className="relative rounded-[28px] overflow-x-auto overflow-y-hidden scrollbar-hide" data-lenis-prevent>
             <div
               ref={backdrop1}
               className="absolute inset-0 rounded-[28px]"

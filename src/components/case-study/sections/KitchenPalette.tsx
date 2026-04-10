@@ -359,7 +359,8 @@ export function KitchenPalette() {
           material families · color relationships
         </span>
       </div>
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto"
+        data-lenis-prevent>
         <div className="min-w-[800px]">
           <svg viewBox="-30 -30 960 960" className="w-full h-auto" style={{ background: "transparent" }}>
             {svgContent}
