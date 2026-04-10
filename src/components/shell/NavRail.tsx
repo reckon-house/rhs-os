@@ -102,20 +102,35 @@ export function NavRail() {
       lastScroll = Date.now();
     };
 
-    // Catch ALL scroll-related input on window
+    // Catch ALL scroll-related input everywhere
     window.addEventListener("scroll", onInput, { passive: true, capture: true });
     document.addEventListener("scroll", onInput, { passive: true, capture: true });
     window.addEventListener("wheel", onInput, { passive: true });
     window.addEventListener("touchmove", onInput, { passive: true });
+    window.addEventListener("touchstart", onInput, { passive: true });
 
-    // Also listen directly on the <main> scroll container (Lenis wrapper)
+    // Listen directly on the <main> scroll container (Lenis wrapper)
     const mainEl = document.querySelector("main");
     if (mainEl) {
       mainEl.addEventListener("scroll", onInput, { passive: true });
       mainEl.addEventListener("touchmove", onInput, { passive: true });
+      mainEl.addEventListener("touchstart", onInput, { passive: true });
     }
 
+    // Poll scroll position as fallback for iOS where events may not fire
+    let lastScrollTop = 0;
+    const pollScroll = () => {
+      if (mainEl) {
+        const currentTop = mainEl.scrollTop;
+        if (currentTop !== lastScrollTop) {
+          lastScrollTop = currentTop;
+          onInput();
+        }
+      }
+    };
+
     const animate = () => {
+      pollScroll();
       const timeSince = Date.now() - lastScroll;
 
       // Ease in on scroll, ease out when stopped
@@ -151,9 +166,11 @@ export function NavRail() {
       document.removeEventListener("scroll", onInput, { capture: true } as EventListenerOptions);
       window.removeEventListener("wheel", onInput);
       window.removeEventListener("touchmove", onInput);
+      window.removeEventListener("touchstart", onInput);
       if (mainEl) {
         mainEl.removeEventListener("scroll", onInput);
         mainEl.removeEventListener("touchmove", onInput);
+        mainEl.removeEventListener("touchstart", onInput);
       }
       cancelAnimationFrame(raf);
     };
