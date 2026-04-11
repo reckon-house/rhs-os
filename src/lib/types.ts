@@ -52,7 +52,8 @@ export type Section =
   | PatternMatrixSection
   | MaterialCircosSection
   | KitchenPaletteSection
-  | HexPolygonSection;
+  | HexPolygonSection
+  | CampaignBlastRadiusSection;
 
 interface BaseSection {
   id: string;
@@ -145,6 +146,7 @@ export interface DualImageSection extends BaseSection {
 export interface TripleImageSection extends BaseSection {
   type: "triple-image";
   images: { src: string; alt: string }[];
+  native?: boolean;
 }
 
 export interface StatsBarSection extends BaseSection {
@@ -366,4 +368,8 @@ export interface KitchenPaletteSection extends BaseSection {
 
 export interface HexPolygonSection extends BaseSection {
   type: "hex-polygon";
+}
+
+export interface CampaignBlastRadiusSection extends BaseSection {
+  type: "campaign-blast-radius";
 }

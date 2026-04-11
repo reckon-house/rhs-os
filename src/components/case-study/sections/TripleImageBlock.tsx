@@ -1,12 +1,12 @@
 import type { TripleImageSection } from "@/lib/types";
 import { SwipeRow } from "../SwipeRow";
 
-export function TripleImageBlock({ images }: TripleImageSection) {
+export function TripleImageBlock({ images, native }: TripleImageSection) {
   const imageCards = images.map((img, i) => (
-    <div key={i} className="aspect-square rounded-[18%] overflow-hidden bg-surface-alt">
+    <div key={i} className={`${native ? "" : "aspect-square"} rounded-[clamp(20px,4vw,40px)] overflow-hidden bg-surface-alt`}>
       {img.src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+        <img src={img.src} alt={img.alt} className={`w-full ${native ? "h-auto" : "h-full object-cover"}`} />
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-surface-alt to-border flex items-center justify-center">
           <span className="text-muted text-xs tracking-widest uppercase">{img.alt}</span>

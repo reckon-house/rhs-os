@@ -59,6 +59,11 @@ export const ivyParkCaseStudy: CaseStudy = {
 
     // ── THE BRIEF — grouped ──
     {
+      id: "brief-polygon",
+      type: "hex-polygon",
+      group: { name: "brief", bg: "#ECE6E1", radius: 75, padding: "60px" },
+    },
+    {
       id: "brief-header",
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
@@ -108,10 +113,10 @@ export const ivyParkCaseStudy: CaseStudy = {
     // ── CAMPAIGN GRID ──
     {
       id: "campaign-grid",
-      type: "image",
-      src: `${IMG}/ivy-park-campaign-assets-grid-overview.jpg`,
+      type: "hero",
+      image: `${IMG}/ivy-park-campaign-assets-grid-overview.jpg`,
       alt: "Ivy Park campaign assets grid: brand experience, emails, social, product photography, editorial",
-      aspect: "native",
+      inline: true,
     },
 
     // ── THE EXPERIENCE ──
@@ -137,13 +142,13 @@ export const ivyParkCaseStudy: CaseStudy = {
         "The polygon started as a crop mask for portraits. Angled edges against the rectangular photo grid gave athlete imagery a geometric tension that matched the brand's positioning between sport and fashion. The shape animated on scroll, rotated between sections, and scaled from thumbnail to full-bleed. Custom CMS components built for this project lived on in Nordstrom's system for other launches.",
     },
 
-    // ── EXPERIENCE SCREENSHOTS ──
+    // ── EXPERIENCE SCREENSHOT ──
     {
       id: "experience-page-1",
-      type: "hero",
-      image: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
+      type: "image",
+      src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
       alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
-      inline: true,
+      aspect: "native",
     },
 
     {
@@ -168,19 +173,16 @@ export const ivyParkCaseStudy: CaseStudy = {
       ],
     },
 
-    // ── DEVICE PAIR ──
+    // ── EXPERIENCE SCREENS — 3 across ──
     {
-      id: "device-pair",
-      type: "dual-image",
+      id: "experience-screens",
+      type: "triple-image",
       native: true,
-      left: {
-        src: `${IMG}/ivy-park-experience-page-hero-product-grid.jpg`,
-        alt: "Ivy Park brand experience, full page hero section and product grid",
-      },
-      right: {
-        src: `${IMG}/ivy-park-experience-confidence-strength-inclusivity.jpg`,
-        alt: "Ivy Park experience, Confidence is Strength section, product specs, inclusivity messaging",
-      },
+      images: [
+        { src: `${IMG}/ivy-park-experience-page-hero-product-grid.jpg`, alt: "Ivy Park brand experience, full page hero section and product grid" },
+        { src: `${IMG}/ivy-park-experience-confidence-strength-inclusivity.jpg`, alt: "Ivy Park experience, Confidence is Strength section, product specs, inclusivity messaging" },
+        { src: `${IMG}/ivy-park-experience-courage-power-polygon-frames.jpg`, alt: "Ivy Park experience, Courage is Power section with polygon portrait frames" },
+      ],
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -222,38 +224,22 @@ export const ivyParkCaseStudy: CaseStudy = {
         "Production moved fast after the experience locked. The polygon, the type system, and the photography were already established. Adapting them to email templates, banner ads, and social formats was execution, not invention. The brand system held across every format because the elements were simple enough to scale. A polygon crops the same at 300px and 3000px. Bold type reads at any size. Black and white photography converts to any aspect ratio.",
     },
 
-    // ── CAMPAIGN IMAGES ──
+    // ── CAMPAIGN IMAGES — 3 across ──
     {
-      id: "campaign-detail-pair",
-      type: "dual-image",
+      id: "campaign-screens",
+      type: "triple-image",
       native: true,
-      left: {
-        src: `${IMG}/ivy-park-experience-courage-power-polygon-frames.jpg`,
-        alt: "Ivy Park experience, Courage is Power section with polygon portrait frames",
-      },
-      right: {
-        src: `${IMG}/ivy-park-product-detail-leggings-choice-system.jpg`,
-        alt: "Ivy Park product detail, leggings specification, Choice is Everything, I/V/Y rise system",
-      },
-    },
-    {
-      id: "shop-look",
-      type: "dual-image",
-      native: true,
-      left: {
-        src: `${IMG}/ivy-park-shop-the-look-editorial-grid.jpg`,
-        alt: "Ivy Park Shop the Look section, editorial product grid, model portraits",
-      },
-      right: {
-        src: `${IMG}/ivy-park-editorial-beanie-portrait-dancer.jpg`,
-        alt: "Ivy Park editorial, black and white beanie portrait and dancer movement",
-      },
+      images: [
+        { src: `${IMG}/ivy-park-product-detail-leggings-choice-system.jpg`, alt: "Ivy Park product detail, leggings specification, Choice is Everything, I/V/Y rise system" },
+        { src: `${IMG}/ivy-park-shop-the-look-editorial-grid.jpg`, alt: "Ivy Park Shop the Look section, editorial product grid, model portraits" },
+        { src: `${IMG}/ivy-park-editorial-beanie-portrait-dancer.jpg`, alt: "Ivy Park editorial, black and white beanie portrait and dancer movement" },
+      ],
     },
 
-    // ── ANIMATED POLYGON ──
+    // ── CAMPAIGN BLAST RADIUS CHART ──
     {
-      id: "polygon-hero",
-      type: "hex-polygon",
+      id: "blast-radius",
+      type: "campaign-blast-radius",
     },
 
     // ── CLOSING ──

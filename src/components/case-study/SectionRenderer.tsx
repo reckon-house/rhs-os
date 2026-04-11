@@ -35,6 +35,7 @@ import { PatternMatrix } from "./sections/PatternMatrix";
 import { MaterialCircos } from "./sections/MaterialCircos";
 import { KitchenPalette } from "./sections/KitchenPalette";
 import { HexPolygon } from "./sections/HexPolygon";
+import { CampaignBlastRadius } from "./sections/CampaignBlastRadius";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -110,6 +111,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <KitchenPalette />;
     case "hex-polygon":
       return <HexPolygon />;
+    case "campaign-blast-radius":
+      return <CampaignBlastRadius />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:
