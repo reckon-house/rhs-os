@@ -34,6 +34,7 @@ import { ColorFieldMap } from "./sections/ColorFieldMap";
 import { PatternMatrix } from "./sections/PatternMatrix";
 import { MaterialCircos } from "./sections/MaterialCircos";
 import { KitchenPalette } from "./sections/KitchenPalette";
+import { HexPolygon } from "./sections/HexPolygon";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -107,6 +108,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <MaterialCircos />;
     case "kitchen-palette":
       return <KitchenPalette />;
+    case "hex-polygon":
+      return <HexPolygon />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:

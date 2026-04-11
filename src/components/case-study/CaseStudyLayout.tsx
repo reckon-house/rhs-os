@@ -38,6 +38,7 @@ function getColSpan(type: string): string {
     case "pattern-matrix":
     case "material-circos":
     case "kitchen-palette":
+    case "hex-polygon":
       return "col-span-12";
     // Text sections — inset on mobile, full width on desktop
     default:

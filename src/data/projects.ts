@@ -13,7 +13,7 @@ export interface Project {
 const HP = "/case-studies/hp";
 
 export const projects: Project[] = [
-  { id: "ivyPark", title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/rhs-ivy-park-beyonce-digital-brand-launch.jpg`, tags: ["digital", "creative"], featured: true },
+  { id: "ivyPark", title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/rhs-ivy-park-beyonce-digital-brand-launch.jpg`, href: "/case-studies/ivy-park", tags: ["digital", "creative"], featured: true },
   { id: "arc", title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/rhs-arc-ai-home-inventory-app-thumbnail.jpg`, href: "/case-studies/arc", tags: ["digital"], featured: true },
   { id: "hillKitchen", title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg`, href: "/case-studies/hill-country-kitchen", tags: ["interiors"], featured: true },
   { id: "robertRod", title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg`, href: "/case-studies/robert-rodriguez", tags: ["creative"], featured: true },

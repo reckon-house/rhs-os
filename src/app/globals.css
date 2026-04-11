@@ -206,12 +206,14 @@ body {
 
 /* Hero breakout — extends beyond max-w container to fill the scroll area */
 .hero-breakout {
-  width: 100%;
-  margin-left: 0;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 @media (min-width: 768px) {
   .hero-breakout {
-    width: calc(100vw - 100px); /* account for 50px padding on each side */
-    margin-left: calc(-50vw + 50% + 50px);
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(-50vw + 50%);
   }
 }

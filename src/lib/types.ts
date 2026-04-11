@@ -51,7 +51,8 @@ export type Section =
   | ColorFieldMapSection
   | PatternMatrixSection
   | MaterialCircosSection
-  | KitchenPaletteSection;
+  | KitchenPaletteSection
+  | HexPolygonSection;
 
 interface BaseSection {
   id: string;
@@ -361,4 +362,8 @@ export interface MaterialCircosSection extends BaseSection {
 
 export interface KitchenPaletteSection extends BaseSection {
   type: "kitchen-palette";
+}
+
+export interface HexPolygonSection extends BaseSection {
+  type: "hex-polygon";
 }
