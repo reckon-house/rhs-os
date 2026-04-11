@@ -163,7 +163,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
   return (
     <section className="w-full py-4">
       <div className="overflow-x-auto md:overflow-visible -mx-4 md:mx-0"
-        data-lenis-prevent>
+        data-lenis-prevent-touch>
         <div className="min-w-[700px] md:min-w-0 px-4 md:px-0">
       <svg viewBox={`0 0 ${W} ${TOTAL_H}`} className="w-full" aria-label="Documentation speed analysis">
         <defs>

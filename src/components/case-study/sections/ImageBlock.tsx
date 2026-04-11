@@ -15,7 +15,7 @@ export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWid
     : bleedTop
     ? "bleed-top pt-0 pb-14"
     : padded
-    ? "w-full py-6 px-4 md:px-10 lg:px-16"
+    ? "w-full py-6 px-4 md:px-[calc(100%/24)]"
     : "w-full py-6 px-4 md:px-0";
   return (
     <section className={sectionClass}>

@@ -36,6 +36,7 @@ import { MaterialCircos } from "./sections/MaterialCircos";
 import { KitchenPalette } from "./sections/KitchenPalette";
 import { HexPolygon } from "./sections/HexPolygon";
 import { CampaignBlastRadius } from "./sections/CampaignBlastRadius";
+import { ColorPermutations } from "./sections/ColorPermutations";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -113,6 +114,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <HexPolygon />;
     case "campaign-blast-radius":
       return <CampaignBlastRadius />;
+    case "color-permutations":
+      return <ColorPermutations />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:

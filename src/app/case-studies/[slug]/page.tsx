@@ -6,10 +6,13 @@ import { robertRodriguezCaseStudy } from "@/data/robert-rodriguez-case-study";
 import { blackWhiteTypeCaseStudy } from "@/data/black-white-type-case-study";
 import { hillCountryKitchenCaseStudy } from "@/data/hill-country-kitchen-case-study";
 import { ivyParkCaseStudy } from "@/data/ivy-park-case-study";
+import { hillCountryBathCaseStudy } from "@/data/hill-country-bath-case-study";
+import { fairviewSuiteCaseStudy } from "@/data/fairview-suite-case-study";
+import { jChristiansonCaseStudy } from "@/data/j-christianson-case-study";
 
 // For now, case studies are loaded from local data files.
 // This will migrate to Supabase when the CMS layer is ready.
-const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy, blackWhiteTypeCaseStudy, hillCountryKitchenCaseStudy, ivyParkCaseStudy];
+const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy, blackWhiteTypeCaseStudy, hillCountryKitchenCaseStudy, ivyParkCaseStudy, hillCountryBathCaseStudy, fairviewSuiteCaseStudy, jChristiansonCaseStudy];
 
 export function generateStaticParams() {
   return caseStudies.map((s) => ({ slug: s.slug }));

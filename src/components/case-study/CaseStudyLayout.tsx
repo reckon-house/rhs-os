@@ -40,6 +40,7 @@ function getColSpan(type: string): string {
     case "kitchen-palette":
     case "hex-polygon":
     case "campaign-blast-radius":
+    case "color-permutations":
       return "col-span-12";
     // Text sections — inset on mobile, full width on desktop
     default:

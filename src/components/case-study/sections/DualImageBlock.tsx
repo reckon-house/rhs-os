@@ -18,7 +18,7 @@ function ImageSlot({ src, alt, native, transparent, aspect }: { src: string; alt
 }
 
 export function DualImageBlock({ left, right, native, transparent, aspect }: DualImageSection) {
-  const sidePad = transparent ? "" : "md:px-10 lg:px-16";
+  const sidePad = transparent ? "" : "md:px-[calc(100%/24)]";
   return (
     <section className={`w-full ${sidePad} py-4`}>
       <SwipeRow className="" cardFraction={0.88}>

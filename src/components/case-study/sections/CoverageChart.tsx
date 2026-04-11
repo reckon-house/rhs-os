@@ -187,7 +187,7 @@ export function CoverageChart({
     <section className="w-full py-8">
       <div>
         <div className="overflow-x-auto md:overflow-visible -mx-4 md:mx-0"
-        data-lenis-prevent>
+        data-lenis-prevent-touch>
           <div className="min-w-[800px] md:min-w-0 px-4 md:px-0">
         <svg
           viewBox={`0 0 ${W} ${TOTAL_H}`}

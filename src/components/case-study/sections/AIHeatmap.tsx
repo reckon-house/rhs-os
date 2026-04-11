@@ -118,7 +118,7 @@ export function AIHeatmap({
 
   return (
     <div className="overflow-x-auto scrollbar-hide"
-        data-lenis-prevent>
+        data-lenis-prevent-touch>
       <div className="relative overflow-hidden"
         style={{ minWidth: 800, background: "#F3F0ED", borderRadius: "clamp(20px,3vw,40px)", padding: "30px 20px 16px" }}>
 

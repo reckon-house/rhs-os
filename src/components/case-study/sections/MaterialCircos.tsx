@@ -375,7 +375,7 @@ export function MaterialCircos() {
         </span>
       </div>
       <div className="w-full overflow-x-auto"
-        data-lenis-prevent>
+        data-lenis-prevent-touch>
         <div className="min-w-[800px]">
           <svg viewBox="-30 -30 960 960" className="w-full h-auto" style={{ background: "transparent" }}>
             {svgContent}

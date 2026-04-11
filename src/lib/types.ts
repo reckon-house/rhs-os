@@ -53,7 +53,8 @@ export type Section =
   | MaterialCircosSection
   | KitchenPaletteSection
   | HexPolygonSection
-  | CampaignBlastRadiusSection;
+  | CampaignBlastRadiusSection
+  | ColorPermutationsSection;
 
 interface BaseSection {
   id: string;
@@ -372,4 +373,8 @@ export interface HexPolygonSection extends BaseSection {
 
 export interface CampaignBlastRadiusSection extends BaseSection {
   type: "campaign-blast-radius";
+}
+
+export interface ColorPermutationsSection extends BaseSection {
+  type: "color-permutations";
 }
