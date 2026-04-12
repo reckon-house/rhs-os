@@ -58,7 +58,7 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
           <img
             src={image}
             alt={alt}
-            className={`w-full h-auto${inline ? " scale-[1.04]" : ""}`}
+            className={`w-full ${inline ? "scale-[1.04] " : ""}aspect-[5/4] md:aspect-auto object-cover md:object-contain md:h-auto`}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#5a3e28]/60 to-[#3a2518]/80 flex items-end justify-center pb-0 overflow-hidden">

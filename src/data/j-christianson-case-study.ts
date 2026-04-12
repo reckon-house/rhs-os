@@ -33,8 +33,8 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/j-christianson-billboard-mockup-brand-pattern.jpg`,
-      alt: "J. Christianson brand identity on billboard, organic color shapes with four-dot logo",
+      image: `${IMG}/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
+      alt: "J. Christianson tree stripe graphic in storefront window, natural light",
     },
 
     // ── META ──
@@ -58,22 +58,73 @@ export const jChristiansonCaseStudy: CaseStudy = {
         "Ground-up brand development for a fashion and home goods label. Started with the name. Built the logo, color system, typography, and product graphics from there.\n\nThe mark is four circles in a tight grid. Same form, different color combinations depending on application. Brown and accent colors for one context, olive and accents for another. The flexibility was designed into the identity from the start. One logo that shifts its palette without losing recognition.\n\nThe tree motif emerged as the signature graphic element. A single silhouette rendered in four seasonal colorways. Used across apparel, candles, hangtags, and print materials. Layered over a striped color field that pulls from the brand palette. One graphic idea stretched into a full product language.",
     },
 
-    // ── BRAND PATTERN HERO ──
+    // ── THE TREE — grouped in white container ──
     {
-      id: "brand-pattern",
+      id: "tree-header",
+      type: "section-header",
+      label: "SECTION 02: THE TREE",
+      title: "One Silhouette.\nFour Seasons.\nFull Product Language.",
+      group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
+    },
+    {
+      id: "tree-text",
+      type: "text",
+      size: "subhead",
+      content:
+        "The tree started as a graphic experiment. A white silhouette layered over the brand's stripe pattern. It became the visual element that carried the identity from print into product.",
+      group: { name: "tree" },
+    },
+    {
+      id: "tree-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Four colorways mapped to seasons. Teal and dark green for winter. Yellow and gold for summer. Orange and rust for autumn. Brown and earth tones for fall. Same tree, same stripe pattern, different palette each time. The silhouette breaks out of the stripe field at the edges, branches reaching past the color block into white space. Used on apparel, candle labels, hangtags, and promotional print. A single graphic idea that justified an entire product range.",
+      group: { name: "tree" },
+    },
+    {
+      id: "tree-pair",
+      type: "dual-image",
+      native: true,
+      blend: "multiply",
+      group: { name: "tree" },
+      left: {
+        src: `${IMG}/j-christianson-tree-stripe-graphic-breakout.jpg`,
+        alt: "J. Christianson tree silhouette breaking out of stripe color field",
+      },
+      right: {
+        src: `${IMG}/j-christianson-tree-stripe-graphic-tagline.jpg`,
+        alt: "J. Christianson tree stripe graphic with tagline, Heavenly Inspired Fashion and Design",
+      },
+    },
+    { id: "tree-spacer", type: "spacer", height: 60, group: { name: "tree" } },
+    {
+      id: "seasonal-flat",
       type: "image",
-      src: `${IMG}/j-christianson-brand-pattern-logo-four-colors.jpg`,
-      alt: "J. Christianson brand pattern, four organic color shapes with logo centered",
+      src: `${IMG}/j-christianson-four-seasonal-tree-circles-flat.jpg`,
+      alt: "J. Christianson four seasonal tree circles, teal, yellow, orange, brown landscape silhouettes",
       aspect: "native",
+      maxWidth: 400,
+      blend: "multiply",
+      group: { name: "tree" },
     },
 
-    // ── THE MARK — grouped ──
+    // ── BILLBOARD HERO (old hero, now inline) ──
+    {
+      id: "billboard-hero",
+      type: "hero",
+      image: `${IMG}/j-christianson-billboard-mockup-brand-pattern.jpg`,
+      alt: "J. Christianson brand identity on billboard, organic color shapes with four-dot logo",
+      inline: true,
+    },
+
+    // ── THE MARK ──
     {
       id: "mark-header",
       type: "section-header",
-      label: "SECTION 02: THE MARK",
+      label: "SECTION 03: THE MARK",
       title: "Four Circles.\nOne Grid.\nShifting Palette.",
-      group: { name: "mark", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
       id: "mark-text",
@@ -81,7 +132,6 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "subhead",
       content:
         "The logo is four circles arranged in a square. Tight spacing. No outline. The form stays constant. The colors rotate depending on where the mark appears.",
-      group: { name: "mark" },
     },
     {
       id: "mark-footnote",
@@ -90,7 +140,17 @@ export const jChristiansonCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid, not the specific fill. The mark works on white, on color, on product, on signage. The flexibility meant fewer logo lockup variations and more applications.",
-      group: { name: "mark" },
+    },
+
+    // ── BRAND PATTERN ──
+    {
+      id: "brand-pattern",
+      type: "image",
+      src: `${IMG}/j-christianson-brand-pattern-logo-four-colors.jpg`,
+      alt: "J. Christianson brand pattern, four organic color shapes with logo centered",
+      aspect: "native",
+      padded: true,
+      blend: "multiply",
     },
 
     // ── DOT GRID PAIR (these two stay together) ──
@@ -98,13 +158,13 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "dot-grid-pair",
       type: "dual-image",
       native: true,
-      group: { name: "mark" },
+      transparent: true,
       left: {
-        src: `${IMG}/j-christianson-dot-grid-pattern-brown-accents.jpg`,
+        src: `${IMG}/j-christianson-dot-grid-pattern-brown-accents.png`,
         alt: "J. Christianson dot grid pattern, brown with yellow, orange, red, teal accents",
       },
       right: {
-        src: `${IMG}/j-christianson-dot-grid-pattern-olive-accents.jpg`,
+        src: `${IMG}/j-christianson-dot-grid-pattern-olive-accents.png`,
         alt: "J. Christianson dot grid pattern, olive with yellow, orange, red, teal accents",
       },
     },
@@ -122,54 +182,6 @@ export const jChristiansonCaseStudy: CaseStudy = {
       image: `${IMG}/j-christianson-storefront-sign-dot-grid-brown.jpg`,
       alt: "J. Christianson storefront sign mockup, dot grid pattern on wood facade",
       inline: true,
-    },
-
-    // ── THE TREE ──
-    {
-      id: "tree-header",
-      type: "section-header",
-      label: "SECTION 03: THE TREE",
-      title: "One Silhouette.\nFour Seasons.\nFull Product Language.",
-    },
-    {
-      id: "tree-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "The tree started as a graphic experiment. A white silhouette layered over the brand's stripe pattern. It became the visual element that carried the identity from print into product.",
-    },
-    {
-      id: "tree-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "Four colorways mapped to seasons. Teal and dark green for winter. Yellow and gold for summer. Orange and rust for autumn. Brown and earth tones for fall. Same tree, same stripe pattern, different palette each time. The silhouette breaks out of the stripe field at the edges, branches reaching past the color block into white space. Used on apparel, candle labels, hangtags, and promotional print. A single graphic idea that justified an entire product range.",
-    },
-
-    // ── TREE PAIR (these two stay together) ──
-    {
-      id: "tree-pair",
-      type: "dual-image",
-      native: true,
-      left: {
-        src: `${IMG}/j-christianson-tree-stripe-graphic-breakout.jpg`,
-        alt: "J. Christianson tree silhouette breaking out of stripe color field",
-      },
-      right: {
-        src: `${IMG}/j-christianson-tree-stripe-graphic-tagline.jpg`,
-        alt: "J. Christianson tree stripe graphic with tagline, Heavenly Inspired Fashion and Design",
-      },
-    },
-
-    // ── SEASONAL CIRCLES ──
-    {
-      id: "seasonal-flat",
-      type: "image",
-      src: `${IMG}/j-christianson-four-seasonal-tree-circles-flat.jpg`,
-      alt: "J. Christianson four seasonal tree circles, teal, yellow, orange, brown landscape silhouettes",
-      aspect: "native",
-      padded: true,
     },
 
     // ── EDITORIAL HEADLINE ──

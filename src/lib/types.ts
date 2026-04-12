@@ -133,6 +133,7 @@ export interface ImageSection extends BaseSection {
   maxWidth?: number;
   noRadius?: boolean;
   padded?: boolean;
+  blend?: "multiply" | "screen" | "overlay";
 }
 
 export interface DualImageSection extends BaseSection {
@@ -142,6 +143,7 @@ export interface DualImageSection extends BaseSection {
   native?: boolean;
   transparent?: boolean;
   aspect?: string;
+  blend?: "multiply" | "screen" | "overlay";
 }
 
 export interface TripleImageSection extends BaseSection {

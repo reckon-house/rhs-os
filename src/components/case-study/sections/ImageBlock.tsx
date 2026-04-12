@@ -8,7 +8,7 @@ const aspectMap: Record<string, string> = {
   native: "",
 };
 
-export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWidth, noRadius, padded }: ImageSection) {
+export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWidth, noRadius, padded, blend }: ImageSection) {
   const radius = noRadius ? "" : "rounded-[clamp(30px,5vw,100px)]";
   const sectionClass = bleed
     ? "bleed-image py-0"
@@ -25,7 +25,7 @@ export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWid
       >
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={src} alt={alt} className={`w-full ${bleed || bleedTop ? "h-auto" : aspect === "native" ? "h-auto" : "h-full object-cover"}`} />
+          <img src={src} alt={alt} className={`w-full ${bleed || bleedTop ? "h-auto" : aspect === "native" ? "h-auto" : "h-full object-cover"}`} style={blend ? { mixBlendMode: blend } : undefined} />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-surface-alt to-border flex items-center justify-center">
             <span className="text-muted text-xs tracking-widest uppercase">{alt || "Image"}</span>
