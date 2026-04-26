@@ -3,7 +3,6 @@ import "./globals.css";
 import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { NavigationProvider } from "@/components/shell/NavigationProvider";
-import { NavigationLoader } from "@/components/shell/NavigationLoader";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
 
@@ -37,7 +36,8 @@ export default function RootLayout({
             </SmoothScroll>
           </div>
           <BurnMeltTransition />
-          <NavigationLoader />
+          {/* NavRail acts as the nav loader — themed sweep fills the bar
+              left → right during navigation. See NavigationProvider. */}
           <NavRail />
           <FilmOverlay />
         </NavigationProvider>
