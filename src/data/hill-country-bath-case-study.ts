@@ -62,7 +62,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "vanity-header",
       type: "section-header",
       label: "SECTION 02: THE VANITY",
-      title: "Globe Sconces.\nMarble Edge.\nMorning Light.",
+      title: "Hers Faces East.\nThe Sun Does the Rest.",
       group: { name: "vanity", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -117,7 +117,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
     {
       id: "headline-collected",
       type: "editorial-headline",
-      text: "Collected, not decorated.\nFound, not fitted.",
+      text: "Collected,\nnot decorated.",
     },
 
     // ── THE SHOWER ──
@@ -125,7 +125,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "shower-header",
       type: "section-header",
       label: "SECTION 03: THE SHOWER",
-      title: "Three Marbles.\nOne Shower.",
+      title: "The Marble Selection\nTook the Longest.",
     },
     {
       id: "shower-text",
@@ -185,7 +185,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "objects-header",
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
-      title: "A Brass Valet Stand.\nAn Oil Painting.\nA Clay Pot.",
+      title: "Objects Chosen for the Owner,\nNot the Lens.",
     },
     {
       id: "objects-text",
@@ -200,7 +200,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The styling reads personal because it is. A room that looks lived-in on the day the photographer arrives is a room where the objects were chosen for the owner, not the lens. The denim jacket on the valet stand. The vintage rug fraying at the edge. The olive tree leaning toward the window. These details resist the temptation to make everything perfect. Imperfection signals that someone lives here.",
+        "The styling reads personal because it is. A room that looks lived-in on the day the photographer arrives is a room where someone actually lives. The denim jacket on the valet stand. The vintage rug fraying at the edge. The olive tree leaning toward the window. These details resist the temptation to perfect everything. Imperfection signals that someone uses the room.",
     },
 
     // ── CLOSING ──
@@ -208,14 +208,14 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "400 Square Feet.\nThree Stones.\nOne Room.",
+      title: "A Quieter Room\nin the Same Family.",
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "A bath that borrows from the kitchen's vocabulary without repeating it. Same property, same design sensibility, quieter volume.",
+        "A bath that echoes the kitchen's vocabulary without repeating it. Same property, same design sensibility, quieter volume.",
     },
     {
       id: "closing",
@@ -229,7 +229,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. The shiplap walls, the wood ceiling, the sage cabinetry carry through. The register shifts from social space to private one.\n\nA freestanding tub positioned where the light falls. Globe sconces that throw warm circles on vertical plank walls. A shower lined in three different stones selected to feel related, not identical. Objects chosen for the people who use the room, not the people who photograph it.",
+        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. The shiplap walls. The wood ceiling. The sage cabinetry. All carry through. What changes is the temperature. The kitchen is for company. The bath is not.\n\nA freestanding tub positioned where the light falls. Globe sconces throwing warm circles on vertical plank walls. A shower lined in three stones selected to feel related, not identical. Objects chosen for the people who use the room, not the people who photograph it.",
     },
   ],
 };

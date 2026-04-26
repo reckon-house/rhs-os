@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ScrambleOnView } from "@/components/fx/ScrambleText";
 
 function seededRandom(seed: number) {
   let s = seed;
@@ -112,7 +113,12 @@ const OUTER_LABELS = [
   { label: "INTERIORS & FABRICATION",        angle: 240, color: "#AA7E44" },
 ];
 
-export function CapabilityWeb() {
+export function CapabilityWeb({ dark = false }: { dark?: boolean } = {}) {
+  // ── Theme colors — flip when on dark bg ────────────────────────
+  const INK = dark ? "#F0EAE4" : "#141414";          // text + grid lines
+  const SURFACE = dark ? "#1F1F1F" : "#efebe4";      // disc + hub fills
+  const HUB_RING = dark ? "#3A3530" : "#c0bbb4";     // hub ring stroke
+
   // ── Particles ──────────────────────────────────────────────────
   const particles = useMemo(() => {
     const rng = seededRandom(42);
@@ -269,22 +275,51 @@ export function CapabilityWeb() {
     return lines;
   }, []);
 
+  // Text classes adapt to dark mode
+  const inkClass = dark ? "text-[#F0EAE4]" : "text-[#141414]";
+  const inkSoft = dark ? "text-[#F0EAE4]/75" : "text-foreground/90";
+  const inkDim = dark ? "text-[#F0EAE4]/60" : "text-foreground/80";
+  const pillBg = dark ? "bg-[#F0EAE4]/[0.08]" : "bg-[#141414]/[0.06]";
+
   return (
     <div className="w-full">
-      {/* Heading */}
-      <div className="mb-8">
-        <h2 className="text-[20px] md:text-[24px] leading-[1.3] tracking-[-0.02em] font-bold">
-          The work of Jeremy Prasatik
+      {/* Heading — case-study MetaBlock pattern */}
+      <div className="mb-12">
+        <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
+          <ScrambleOnView text="SECTION 04: PRACTICE" />
+        </span>
+        <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
+          The work of Jeremy Prasatik.
         </h2>
-        <p className="text-[16px] leading-[24px] text-foreground/80 mt-4 max-w-3xl">
+        <p className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal ${inkClass} mb-6`}>
           Three practices. Twenty disciplines. Digital, branding, and interiors — each complete on its own, each made stronger by the others.
         </p>
 
-        {/* Contact */}
-        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-1">
-          <a href="mailto:hello@reckon.house" className="text-[14px] font-medium text-[#141414] hover:text-foreground/60 transition-colors">hello@reckon.house</a>
-          <span className="text-[14px] font-medium text-[#141414]">214.697.4578</span>
-          <a href="https://instagram.com/reckonhousestaples" target="_blank" rel="noopener noreferrer" className="text-[14px] font-medium text-[#141414] hover:text-foreground/60 transition-colors">IG@reckonhousestaples</a>
+        {/* Meta fields — left column */}
+        <div className={`text-spec ${inkSoft}`}>
+          <p>
+            <span className="font-bold">Studio </span>
+            Reckon House  Multi-disciplinary
+          </p>
+          <p>
+            <span className="font-bold">Founded </span>
+            2002  Location: Texas / Anywhere  Status: Open for projects
+          </p>
+          <p>
+            <span className="font-bold">Classification </span>
+            Digital  Branding  Interiors
+          </p>
+        </div>
+
+        {/* Abstract — right column */}
+        <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
+          <p className={`font-bold ${inkClass} indent-[4em]`}>Abstract</p>
+          <p className="indent-[4em]">
+            One studio, three practices, no handoff. Apps that ship. Brands that hold up. Rooms people actually live in. Designed and built by the same hands from concept through production.
+          </p>
+          <p className="mt-4">
+            The chart below shows the full range, plotted as a web. Disciplines at the center, skills in the middle ring, tools and methods at the edge. Every node connects.
+          </p>
         </div>
       </div>
 
@@ -298,15 +333,15 @@ export function CapabilityWeb() {
             const pos = (i + 1) * (1000 / 12);
             return (
               <g key={`grid-${i}`}>
-                <line x1={pos} y1={0} x2={pos} y2={1000} stroke="#141414" strokeWidth={0.5} opacity={0.1} />
-                <line x1={0} y1={pos} x2={1000} y2={pos} stroke="#141414" strokeWidth={0.5} opacity={0.1} />
+                <line x1={pos} y1={0} x2={pos} y2={1000} stroke={INK} strokeWidth={0.5} opacity={0.1} />
+                <line x1={0} y1={pos} x2={1000} y2={pos} stroke={INK} strokeWidth={0.5} opacity={0.1} />
               </g>
             );
           })}
 
           {/* ── Concentric rings ── */}
           {[R1, R2, R3, R4, R5, 155, 260, 350, 430, 180, 295, 370].map((r, i) => (
-            <circle key={`ring-${i}`} cx={CX} cy={CY} r={r} fill="none" stroke="#141414"
+            <circle key={`ring-${i}`} cx={CX} cy={CY} r={r} fill="none" stroke={INK}
               strokeWidth={i < 5 ? 0.4 : 0.2} opacity={i < 5 ? 0.06 : 0.025}
               strokeDasharray={i >= 5 ? "1,3" : "none"} />
           ))}
@@ -320,7 +355,7 @@ export function CapabilityWeb() {
             const outer = polar(CX, CY, R5 + 22, angle);
             return (
               <line key={`radial-${i}`} x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y}
-                stroke="#141414" strokeWidth={major ? 0.25 : mid ? 0.15 : 0.08}
+                stroke={INK} strokeWidth={major ? 0.25 : mid ? 0.15 : 0.08}
                 opacity={major ? 0.04 : mid ? 0.025 : 0.012} />
             );
           })}
@@ -366,7 +401,7 @@ export function CapabilityWeb() {
               <g key={`tool-${i}`}>
                 <circle cx={pos.x} cy={pos.y} r={tool.r + 6} fill={tool.color} opacity={0.05} />
                 <circle cx={pos.x} cy={pos.y} r={tool.r} fill={tool.color} opacity={0.55} />
-                <text x={labelPos.x} y={labelPos.y} textAnchor={anchor} fill="#141414"
+                <text x={labelPos.x} y={labelPos.y} textAnchor={anchor} fill={INK}
                   fontSize={7.5} fontWeight={500} opacity={0.5} dominantBaseline="middle">
                   {tool.label}
                 </text>
@@ -398,7 +433,7 @@ export function CapabilityWeb() {
             return (
               <g key={`disc-${i}`}>
                 <circle cx={pos.x} cy={pos.y} r={50} fill={disc.color} opacity={0.04} />
-                <circle cx={pos.x} cy={pos.y} r={38} fill="#efebe4" stroke={disc.color}
+                <circle cx={pos.x} cy={pos.y} r={38} fill={SURFACE} stroke={disc.color}
                   strokeWidth={1} opacity={0.92} />
                 <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central"
                   fill={disc.color} fontSize={8} fontWeight={700} opacity={0.8} letterSpacing="0.05em">
@@ -410,17 +445,17 @@ export function CapabilityWeb() {
 
           {/* ── Center: RHS ── */}
           <circle cx={CX} cy={CY} r={52} fill="#8A8580" opacity={0.05} />
-          <circle cx={CX} cy={CY} r={42} fill="#efebe4" stroke="#c0bbb4" strokeWidth={0.8} opacity={0.88} />
-          <text x={CX} y={CY + 2} textAnchor="middle" fill="#141414" fontSize={11}
+          <circle cx={CX} cy={CY} r={42} fill={SURFACE} stroke={HUB_RING} strokeWidth={0.8} opacity={0.88} />
+          <text x={CX} y={CY + 2} textAnchor="middle" fill={INK} fontSize={11}
             fontWeight={600} opacity={0.55} letterSpacing="0.12em">
             RHS
           </text>
 
           {/* ── Legend ── */}
           <g transform="translate(32, 880)">
-            <text fill="#141414" fontSize={9} fontWeight={700} opacity={0.45} letterSpacing={1.5}>RING INDEX</text>
+            <text fill={INK} fontSize={9} fontWeight={700} opacity={0.45} letterSpacing={1.5}>RING INDEX</text>
             {[
-              { label: "Discipline", color: "#141414", shape: "ring" },
+              { label: "Discipline", color: INK, shape: "ring" },
               { label: "Skill / Practice", color: "#4488BB", shape: "pill" },
               { label: "Tool / Method", color: "#AA7E44", shape: "dot" },
             ].map((item, i) => (
@@ -432,17 +467,17 @@ export function CapabilityWeb() {
                 ) : (
                   <circle cx={7} cy={-2} r={5.5} fill={item.color} opacity={0.6} />
                 )}
-                <text x={22} y={2} fill="#141414" fontSize={10} opacity={0.45}>{item.label}</text>
+                <text x={22} y={2} fill={INK} fontSize={10} opacity={0.45}>{item.label}</text>
               </g>
             ))}
           </g>
 
           <g transform="translate(790, 880)">
-            <text fill="#141414" fontSize={9} fontWeight={700} opacity={0.45} letterSpacing={1.5}>DISCIPLINES</text>
+            <text fill={INK} fontSize={9} fontWeight={700} opacity={0.45} letterSpacing={1.5}>DISCIPLINES</text>
             {DISCIPLINES.map((d, i) => (
               <g key={i} transform={`translate(0, ${18 + i * 18})`}>
                 <circle cx={-5} cy={-2} r={5.5} fill={d.color} opacity={0.6} />
-                <text x={6} y={2} fill="#141414" fontSize={10} opacity={0.45}>{d.label}</text>
+                <text x={6} y={2} fill={INK} fontSize={10} opacity={0.45}>{d.label}</text>
               </g>
             ))}
           </g>

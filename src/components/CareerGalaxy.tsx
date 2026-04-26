@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { ScrambleOnView } from "@/components/fx/ScrambleText";
 
 const seeded = (seed: number) => {
   let s = seed;
@@ -146,22 +147,49 @@ export function CareerGalaxy() {
 
   return (
     <div className="w-full">
-      {/* Heading — matches case study SectionHeader style */}
-      <div className="mb-8">
-        <span className="inline-block text-[11px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-          Data Visualization
+      {/* Heading — case-study MetaBlock pattern: pill + title + subtitle + meta + abstract */}
+      <div className="mb-12">
+        <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          <ScrambleOnView text="SECTION 02: DATA VISUALIZATION" />
         </span>
-        <h2 className="text-[20px] md:text-[24px] leading-[1.3] tracking-[-0.02em] font-bold">
-          Twenty-four years of making things.
+        <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
+          Twenty-four years. Thirty-two projects. One timeline.
         </h2>
-        <p className="text-[16px] leading-[24px] text-foreground/80 mt-4">
-          Apps, campaigns, interiors. Different mediums — same attention.
+        <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-6">
+          Apps, campaigns, and rooms mapped chronologically by impact, sized by scope, colored by domain.
         </p>
+
+        {/* Meta fields — left column, narrow */}
+        <div className="text-spec text-foreground/90">
+          <p>
+            <span className="font-bold">Field </span>
+            Data Visualization  Career Index
+          </p>
+          <p>
+            <span className="font-bold">Span </span>
+            2002 — 2026  Projects: 32  Status: Live
+          </p>
+          <p>
+            <span className="font-bold">Classification </span>
+            Bubble Chart  Time Series  Multi-Discipline
+          </p>
+        </div>
+
+        {/* Abstract — right column, sits below meta on desktop */}
+        <div className="mt-6 md:mt-4 md:ml-[48%] text-body text-foreground/80">
+          <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
+          <p className="indent-[4em]">
+            Two and a half decades collapsed into a single chart. Thirty-two projects positioned by year, sized by their impact relative to the rest, colored by which of the three practices they belong to.
+          </p>
+          <p className="mt-4">
+            No filters. No groupings. The shape of one career&apos;s output, plotted continuously.
+          </p>
+        </div>
       </div>
 
       {/* Chart — horizontal scroll on mobile */}
       <div className="overflow-x-auto md:overflow-x-visible">
-      <div className="min-w-[800px] md:min-w-0 relative overflow-hidden" style={{ background: "#F3F0ED", borderRadius: "clamp(20px,3vw,40px)" }}>
+      <div className="min-w-[800px] md:min-w-0 relative">
         {/* Top-left meta */}
         <div className="absolute top-6 left-7 z-10">
           <div className="text-[9px] tracking-[0.15em] uppercase text-[#999] font-medium" style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>

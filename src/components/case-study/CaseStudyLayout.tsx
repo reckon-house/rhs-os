@@ -41,6 +41,9 @@ function getColSpan(type: string): string {
     case "hex-polygon":
     case "campaign-blast-radius":
     case "color-permutations":
+    case "editorial-treatments":
+    case "logo-carousel":
+    case "marks-materials":
       return "col-span-12";
     // Text sections — inset on mobile, full width on desktop
     default:
@@ -51,7 +54,7 @@ function getColSpan(type: string): string {
 /** Group consecutive sections that share the same group.name */
 type SectionOrGroup =
   | { kind: "single"; section: Section }
-  | { kind: "group"; name: string; bg?: string; radius?: number; padding?: string; sections: Section[] };
+  | { kind: "group"; name: string; bg?: string; radius?: number; padding?: string; bleed?: boolean; sections: Section[] };
 
 function groupSections(sections: Section[]): SectionOrGroup[] {
   const result: SectionOrGroup[] = [];
@@ -61,10 +64,11 @@ function groupSections(sections: Section[]): SectionOrGroup[] {
     const s = sections[i];
     if (s.group?.name) {
       const groupName = s.group.name;
-      // Collect the first section's group config (bg, radius, padding)
+      // Collect the first section's group config (bg, radius, padding, bleed)
       const bg = s.group.bg;
       const radius = s.group.radius;
       const padding = s.group.padding;
+      const bleed = s.group.bleed;
       const grouped: Section[] = [];
 
       while (i < sections.length && sections[i].group?.name === groupName) {
@@ -72,7 +76,7 @@ function groupSections(sections: Section[]): SectionOrGroup[] {
         i++;
       }
 
-      result.push({ kind: "group", name: groupName, bg, radius, padding, sections: grouped });
+      result.push({ kind: "group", name: groupName, bg, radius, padding, bleed, sections: grouped });
     } else {
       result.push({ kind: "single", section: s });
       i++;
@@ -140,13 +144,16 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
       <div className="grid grid-cols-12 gap-x-0 md:gap-x-5">
         {items.map((item, idx) => {
           // Add 200px spacing before section-header items (except the first few)
+          const isCarousel = item.kind === "single" && item.section.type === "logo-carousel";
           const isNewSection =
             (item.kind === "single" && item.section.type === "section-header") ||
-            item.kind === "group";
+            item.kind === "group" ||
+            isCarousel;
           const prevItem = idx > 0 ? items[idx - 1] : null;
           const prevIsHero = prevItem?.kind === "single" && prevItem.section.type === "hero";
+          const isBleedItem = (item.kind === "group" && item.bleed) || isCarousel;
           const sectionGap = isNewSection && idx > 0
-            ? prevIsHero ? "pt-[40px] md:pt-[80px]" : "pt-[80px] md:pt-[200px]"
+            ? (prevIsHero || isBleedItem) ? "pt-[40px] md:pt-[80px]" : "pt-[80px] md:pt-[200px]"
             : "";
 
           if (item.kind === "single") {
@@ -160,13 +167,14 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
 
           // Grouped sections — wrap in a styled container
           const isDarkBg = item.bg && parseInt(item.bg.replace("#", "").slice(0, 2), 16) < 80;
+          const bleedClass = item.bleed ? "hero-breakout" : "";
           return (
             <div key={item.name} className={`col-span-12 ${sectionGap}`}>
               <div
-                className={`overflow-hidden group-container ${isDarkBg ? "text-[#EDE7E2]" : ""}`}
+                className={`overflow-hidden group-container ${bleedClass} ${isDarkBg ? "text-[#EDE7E2]" : ""}`}
                 style={{
                   backgroundColor: item.bg,
-                  borderRadius: item.radius ? `clamp(30px, 5vw, ${item.radius}px)` : undefined,
+                  borderRadius: item.bleed ? undefined : (item.radius ? `clamp(30px, 5vw, ${item.radius}px)` : undefined),
                   ["--group-padding" as string]: item.padding,
                 }}
               >

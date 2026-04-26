@@ -54,7 +54,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         "Furniture Curation",
       ],
       abstract:
-        "The suite was designed around a single question: what does a room feel like when everything in it commits to the same mood? Charcoal violet on every wall. Vaulted ceilings with exposed wood beams. Floor-to-ceiling steel-framed windows filling one wall with views of the property's tree canopy.\n\nThe material palette skews dark and warm. Velvet headboard, linen sofa, bouclé ottoman, faux fur throws. Brass accents at every furniture base and fixture. A cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow. Blues, grays, warm metallics.\n\nThe ensuite continues through double doors. Charcoal hexagon tile from floor to ceiling. A hammered copper clawfoot tub beneath a crystal chandelier. Brass fixtures throughout. The bath earns the same commitment to atmosphere that the bedroom establishes.",
+        "The suite commits to a single mood and follows it through every surface. Charcoal violet on every wall. Vaulted ceilings with exposed wood beams. Floor-to-ceiling steel-framed windows opening onto the property's tree canopy.\n\nThe material palette skews dark and warm. Velvet headboard. Linen sofa. Bouclé ottoman. Faux fur throws. Brass accents at every furniture base and fixture. A cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow. Blues, grays, warm metallics.\n\nThe ensuite continues through double doors. Charcoal hexagon tile floor to ceiling. A hammered copper clawfoot tub beneath a crystal chandelier. Brass fixtures throughout. The bath holds the same temperature the bedroom set.",
     },
 
     // ── THE ROOM — grouped ──
@@ -62,7 +62,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "room-header",
       type: "section-header",
       label: "SECTION 02: THE ROOM",
-      title: "Vaulted Ceiling.\nViolet Walls.\nOne Mood.",
+      title: "One Color\non Every Wall.",
       group: { name: "room", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -103,7 +103,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "furniture-header",
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
-      title: "Velvet. Bouclé.\nBrass. Marble.",
+      title: "Three Decades\non One Floor.",
     },
     {
       id: "furniture-text",
@@ -150,7 +150,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
     {
       id: "headline-mood",
       type: "editorial-headline",
-      text: "Romantic, but with weight.\nGlam that earns the square footage.",
+      text: "Glam that earns\nthe square footage.",
     },
 
     // ── ENSUITE HERO ──
@@ -167,14 +167,14 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "Copper Tub.\nCrystal Chandelier.\nHex Tile Floor to Ceiling.",
+      title: "The Bath Doesn't Break\nthe Mood.",
     },
     {
       id: "ensuite-text",
       type: "text",
       size: "subhead",
       content:
-        "The ensuite opens through double doors off the bedroom. The mood doesn't break. Charcoal hexagon tile replaces the violet paint. A hammered copper clawfoot tub sits beneath a second crystal chandelier. Brass fixtures on every surface.",
+        "The ensuite opens through double doors off the bedroom. Charcoal hexagon tile replaces the violet paint. A hammered copper clawfoot tub sits beneath a second crystal chandelier. Brass fixtures on every surface. Same temperature, different materials.",
     },
     {
       id: "ensuite-footnote",
@@ -182,7 +182,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The tub is the statement piece. Hammered copper interior, matte black exterior, cast iron claw feet. It faces the glass-enclosed shower through a half-wall of hex tile. The chandelier above it is smaller than the bedroom's but carries the same crystal-and-brass DNA. The tile runs every vertical surface from floor to ceiling, turning the wet area into a single material volume.",
+        "The tub is the statement piece. Hammered copper interior, matte black exterior, cast iron claw feet. It faces the glass-enclosed shower through a half-wall of hex tile. The chandelier above it is smaller than the bedroom's but reads as part of the same family. The tile covers every vertical surface, turning the wet area into a single material volume.",
     },
 
     // ── Bath details ──
@@ -205,14 +205,14 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "600 Square Feet.\nOne Commitment.",
+      title: "One Suite,\nTwo Registers.",
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "A suite that picks a mood and follows it through every surface, every fixture, every throw pillow. The bedroom and ensuite read as one continuous space with two registers.",
+        "A suite that picks a mood and follows it through every surface, every fixture, every throw pillow.",
     },
     {
       id: "closing",
@@ -226,7 +226,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Charcoal violet in the bedroom. Charcoal hex in the bath. Crystal chandeliers in both. The tonal palette stays narrow enough that a copper tub and a bouclé ottoman can share a floor plan without either feeling out of place.\n\nThe room works because every piece commits to the same temperature. Warm metallics against cool walls. Soft textures against hard surfaces. Natural light pouring through steel frames onto dark paint. The tension between glam and grounded is what makes the space feel like a destination rather than a decorated room.",
+        "Charcoal violet in the bedroom. Charcoal hex in the bath. Crystal chandeliers in both. The palette stays narrow enough that a copper tub and a bouclé ottoman share a floor plan without either feeling out of place.\n\nEvery piece commits to the same temperature. The tension between glam and grounded keeps the suite from tipping into either extreme.",
     },
   ],
 };

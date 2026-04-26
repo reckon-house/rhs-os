@@ -147,11 +147,10 @@ export function CategoryPage({ tag }: { tag: Tag }) {
           </div>
         </>
 
-        {/* ── First thumbnail row ── */}
-        {allRows[0] && <ThumbRow items={allRows[0]} />}
-
-        {/* ── Second thumbnail row ── */}
-        {allRows[1] && <ThumbRow items={allRows[1]} />}
+        {/* ── All category thumbnail rows ── */}
+        {allRows.map((row, i) => (
+          <ThumbRow key={`thumb-${i}`} items={row} />
+        ))}
 
         {/* ── Editorial headline ── */}
         <div className="py-8 md:py-16">
@@ -213,11 +212,6 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             </div>
           </div>
         )}
-
-        {/* ── Remaining rows ── */}
-        {allRows.slice(2).map((row, i) => (
-          <ThumbRow key={`rest-${i}`} items={row} />
-        ))}
 
         {/* ── Data visualization ── */}
         <div className="max-w-[1100px] mx-auto px-4 md:px-0 py-12">

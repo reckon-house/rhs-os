@@ -3,6 +3,7 @@ import "./globals.css";
 import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
+import { FilmOverlay } from "@/components/fx/FilmOverlay";
 
 export const metadata: Metadata = {
   title: "RHS OS",
@@ -24,6 +25,7 @@ export default function RootLayout({
         </div>
         <BurnMeltTransition />
         <NavRail />
+        <FilmOverlay />
       </body>
     </html>
   );

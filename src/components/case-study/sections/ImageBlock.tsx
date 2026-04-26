@@ -20,7 +20,7 @@ export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWid
   return (
     <section className={sectionClass}>
       <div
-        className={`${maxWidth ? "mx-auto" : "w-full"} ${bleed || bleedTop ? "" : `${aspectMap[aspect] || ""} ${radius}`} overflow-hidden ${aspect !== "native" && !bleed && !bleedTop ? "bg-surface-alt" : ""}`}
+        className={`${maxWidth ? "mx-auto" : "w-full"} ${bleed || bleedTop ? "" : `${aspectMap[aspect] || ""} ${radius} overflow-hidden`} ${aspect !== "native" && !bleed && !bleedTop ? "bg-surface-alt" : ""}`}
         style={maxWidth ? { maxWidth: `${maxWidth}px` } : undefined}
       >
         {src ? (

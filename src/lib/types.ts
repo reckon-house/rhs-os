@@ -25,6 +25,8 @@ export type Section =
   | ImageSection
   | DualImageSection
   | TripleImageSection
+  | QuadImageSection
+  | QuadGridSection
   | StatsSummarySection
   | StatsBarSection
   | FeatureCardsSection
@@ -54,7 +56,10 @@ export type Section =
   | KitchenPaletteSection
   | HexPolygonSection
   | CampaignBlastRadiusSection
-  | ColorPermutationsSection;
+  | ColorPermutationsSection
+  | EditorialTreatmentsSection
+  | LogoCarouselSection
+  | MarksAndMaterialsSection;
 
 interface BaseSection {
   id: string;
@@ -64,6 +69,8 @@ interface BaseSection {
     bg?: string;
     radius?: number;
     padding?: string;
+    /** Break out of the max-width article container to fill the viewport (also drops radius) */
+    bleed?: boolean;
   };
 }
 
@@ -150,6 +157,35 @@ export interface TripleImageSection extends BaseSection {
   type: "triple-image";
   images: { src: string; alt: string }[];
   native?: boolean;
+  transparent?: boolean;
+  blend?: "multiply" | "screen" | "overlay";
+}
+
+export interface QuadImageSection extends BaseSection {
+  type: "quad-image";
+  images: { src: string; alt: string }[];
+  native?: boolean;
+  transparent?: boolean;
+  blend?: "multiply" | "screen" | "overlay";
+}
+
+/**
+ * QuadGridSection — 4 images arranged 2×2 with NO gap between cells.
+ * Only the outer corners are rounded (top-left of [0], top-right of [1],
+ * bottom-left of [2], bottom-right of [3]) so the four images meet at the
+ * center to form one unified rectangle.
+ *
+ * Image order in `images`: [topLeft, topRight, bottomLeft, bottomRight].
+ *
+ * Use `cellAspect` to control the cell shape (defaults to 4/3 — works well
+ * for vinyl-sleeve-with-record mockups). All four cells use the same aspect
+ * so the grid stays clean regardless of source image dimensions.
+ */
+export interface QuadGridSection extends BaseSection {
+  type: "quad-grid";
+  images: { src: string; alt: string }[];
+  /** Tailwind aspect class for each cell. Defaults to "aspect-[4/3]". */
+  cellAspect?: string;
 }
 
 export interface StatsBarSection extends BaseSection {
@@ -379,4 +415,70 @@ export interface CampaignBlastRadiusSection extends BaseSection {
 
 export interface ColorPermutationsSection extends BaseSection {
   type: "color-permutations";
+}
+
+export interface EditorialTreatmentsSection extends BaseSection {
+  type: "editorial-treatments";
+}
+
+export interface LogoCarouselSection extends BaseSection {
+  type: "logo-carousel";
+  slides: {
+    src: string;
+    alt: string;
+    bg: string;
+    maxWidth?: number;
+  }[];
+  /** Milliseconds between auto-advances (default 5000) */
+  interval?: number;
+  /** Padding inside each slide (default "clamp(120px, 18vw, 280px)") */
+  padding?: string;
+}
+
+/**
+ * MarksAndMaterialsSection — standardized brand pattern that goes near the end
+ * of every case study. Visual treatment matches A.R.C.'s BrandSystem: two-tone
+ * inline panel with a generated chromatic sphere on the left and philosophy +
+ * type on the right. The sphere is generated from the project's color palette,
+ * so each project gets a chromatic visual without bespoke artwork.
+ */
+export interface MarksAndMaterialsSection extends BaseSection {
+  type: "marks-materials";
+  /** Section pill, e.g. "SECTION 06: MARKS & MATERIALS" */
+  label: string;
+  /** Display title above the intro, supports \n for line breaks */
+  title: string;
+  /** Subhead paragraph under the title */
+  introText: string;
+  /** Optional smaller supporting line under the intro */
+  subcopy?: string;
+  /** Heading shown above the philosophy paragraphs (default "Brand philosophy") */
+  philosophyTitle?: string;
+  /** Philosophy paragraphs, separated by "\n\n" */
+  philosophyText: string;
+  /** Color palette — used for the generated chromatic sphere AND the swatch labels below it */
+  colors: {
+    name: string;
+    hex: string;
+    description?: string;
+  }[];
+  /** Type system — each entry renders as an inline description AND a large display sample */
+  fonts: {
+    name: string;
+    role: string;
+    description: string;
+    /** CSS font-family stack for the display sample (defaults to system font) */
+    family?: string;
+    /** CSS font-weight for the display sample */
+    weight?: number;
+    /** Display sample size in px at desktop max (defaults to 36) */
+    sampleSize?: number;
+    /** Override the text shown in the color band sample (defaults to `name`). Useful when the full name wraps awkwardly. */
+    sampleText?: string;
+  }[];
+  /** Primary mark image, shown centered at the bottom of the panel */
+  markImage: string;
+  markAlt: string;
+  /** When true, the mark image fills the panel width (good for system spreads / wide compositions). Default false. */
+  markFullBleed?: boolean;
 }

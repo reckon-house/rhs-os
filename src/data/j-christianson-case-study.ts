@@ -55,7 +55,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
         "Graphic Design",
       ],
       abstract:
-        "Ground-up brand development for a fashion and home goods label. Started with the name. Built the logo, color system, typography, and product graphics from there.\n\nThe mark is four circles in a tight grid. Same form, different color combinations depending on application. Brown and accent colors for one context, olive and accents for another. The flexibility was designed into the identity from the start. One logo that shifts its palette without losing recognition.\n\nThe tree motif emerged as the signature graphic element. A single silhouette rendered in four seasonal colorways. Used across apparel, candles, hangtags, and print materials. Layered over a striped color field that pulls from the brand palette. One graphic idea stretched into a full product language.",
+        "Ground-up brand development for a fashion and home goods label. Started with the name. Built the mark, color system, typography, and product graphics from there.\n\nThe logo is four circles in a tight grid. Same form, different color combinations depending on where it lives. Brown circles with accent colors for one context. Olive circles with the same accents for another. Flexibility built into the identity from the first sketch. One mark that shifts its palette without losing recognition.\n\nA tree silhouette did the rest of the heavy lifting. Rendered in four seasonal colorways and layered over a striped color field pulled from the brand palette. Apparel. Candles. Hangtags. Print materials. One drawing doing the work of a full product line.",
     },
 
     // ── THE TREE — grouped in white container ──
@@ -63,7 +63,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "tree-header",
       type: "section-header",
       label: "SECTION 02: THE TREE",
-      title: "One Silhouette.\nFour Seasons.\nFull Product Language.",
+      title: "The Tree Did What\nthe Logo Couldn't.",
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -71,7 +71,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The tree started as a graphic experiment. A white silhouette layered over the brand's stripe pattern. It became the visual element that carried the identity from print into product.",
+        "The logo gave the brand recognition. The tree gave it a story. A white silhouette layered over the brand's stripe pattern, breaking out at the edges into white space.",
       group: { name: "tree" },
     },
     {
@@ -80,7 +80,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Four colorways mapped to seasons. Teal and dark green for winter. Yellow and gold for summer. Orange and rust for autumn. Brown and earth tones for fall. Same tree, same stripe pattern, different palette each time. The silhouette breaks out of the stripe field at the edges, branches reaching past the color block into white space. Used on apparel, candle labels, hangtags, and promotional print. A single graphic idea that justified an entire product range.",
+        "Four colorways. Teal and dark green. Yellow and gold. Orange and rust. Brown and earth tones. Same tree, same stripe pattern, different palette in each. Branches reach past the color block into white space, breaking the rectangle so the graphic feels drawn rather than placed. Used on apparel, candle labels, hangtags, and promotional print. One drawing that earned a full product range.",
       group: { name: "tree" },
     },
     {
@@ -124,14 +124,14 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "mark-header",
       type: "section-header",
       label: "SECTION 03: THE MARK",
-      title: "Four Circles.\nOne Grid.\nShifting Palette.",
+      title: "The Mark Stays the Same.\nThe Palette Doesn't.",
     },
     {
       id: "mark-text",
       type: "text",
       size: "subhead",
       content:
-        "The logo is four circles arranged in a square. Tight spacing. No outline. The form stays constant. The colors rotate depending on where the mark appears.",
+        "Four circles arranged in a square. Tight spacing. No outline. Constant form. The colors rotate depending on where the mark appears.",
     },
     {
       id: "mark-footnote",
@@ -139,7 +139,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid, not the specific fill. The mark works on white, on color, on product, on signage. The flexibility meant fewer logo lockup variations and more applications.",
+        "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid, not the fill. Fewer locked variations meant more places the mark could land without redrawing.",
     },
 
     // ── BRAND PATTERN ──
@@ -205,14 +205,14 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "Name to Product.\nOne System.",
+      title: "From a Name\nto a Storefront.",
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "A brand built from a blank page. The name, the mark, the color system, the graphic language, and the product applications all developed as one connected set of decisions.",
+        "A brand built from a blank page. Name, mark, color, graphics, product applications. All developed as one connected set of decisions.",
     },
     {
       id: "closing",
@@ -227,7 +227,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "Four circles in a grid. A tree silhouette over color stripes. A palette pulled from mid-century earth tones with enough warmth to feel organic and enough restraint to feel modern. The identity holds from a billboard down to a clothing tag because the elements are simple enough to scale and specific enough to recognize.\n\nThe color-shifting logo meant fewer production variants. The seasonal tree graphic meant one illustration could cover a full product calendar. Every design decision optimized for flexibility at the system level, not decoration at the surface level.",
+        "Four circles in a grid. A tree silhouette over color stripes. A palette pulled from mid-century earth tones, warm enough to feel organic without the nostalgia. The identity holds from a billboard down to a clothing tag because the elements were built to scale.\n\nThe color-shifting logo meant fewer production variants. The seasonal tree graphic let one illustration cover a full product calendar. Decisions optimized at the system level so the surface could stay simple.",
     },
   ],
 };

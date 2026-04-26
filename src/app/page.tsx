@@ -4,6 +4,25 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
 import { CapabilityWeb } from "@/components/CapabilityWeb";
+import { HeroCarousel } from "@/components/fx/HeroCarousel";
+import { ScrambleOnView } from "@/components/fx/ScrambleText";
+import { projectsById as p, type Project } from "@/data/projects";
+
+// Case study hero slides for the homepage carousel
+const CASE_STUDY_HEROES = [
+  { src: "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",                                                                                                                                                          alt: "A.R.C. AI home inventory app" },
+  { src: "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",                                                                                                                                                                    alt: "Sally Marketing OS" },
+  { src: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",                                                          alt: "Robert Rodriguez at Neiman Marcus" },
+  { src: "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",                                                                                                                              alt: "Black & white typography & patterns" },
+  { src: "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",                                                                                                                                     alt: "Hill Country home kitchen" },
+  { src: "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",                                                                                                                                                alt: "Ivy Park by Beyonce" },
+  { src: "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",                                                                                                                                      alt: "Hill Country home primary bath" },
+  { src: "/case-studies/fairview-suite/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",                                                                                                                                   alt: "The Fairview suite" },
+  { src: "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",                                                                                                                                        alt: "J. Christianson brand identity" },
+  { src: "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg",                                                                                                                                              alt: "Nordstrom Beauty hub" },
+  { src: "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg",                                                                                                                                 alt: "Neiman Marcus editorial" },
+  { src: "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg",                                                                                                                             alt: "Loved by Nordstrom campaign" },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Asterisk SVG component                                              */
@@ -76,14 +95,7 @@ function Asterisk({ weight = "regular" }: { weight?: "thin" | "regular" | "heavy
 /*  Project type + thumbnails                                          */
 /* ------------------------------------------------------------------ */
 
-interface Project {
-  title: string;
-  category: string;
-  image: string;
-  href?: string;
-}
-
-const HP = "/case-studies/hp";
+// Project type and HP image-path constant now live in `@/data/projects`.
 
 /* ------------------------------------------------------------------ */
 /*  Thumbnail component                                                */
@@ -126,42 +138,6 @@ function Headline({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  All project records                                                */
-/* ------------------------------------------------------------------ */
-
-const p = {
-  ivyPark: { title: "Ivy Park by Beyonce", category: "Digital design, brand launch", image: `${HP}/rhs-ivy-park-beyonce-digital-brand-launch.jpg`, href: "/case-studies/ivy-park" },
-  arc: { title: "A.R.C. - AI home Inventory", category: "App & brand development", image: `${HP}/rhs-arc-ai-home-inventory-app-thumbnail.jpg`, href: "/case-studies/arc" },
-  hillKitchen: { title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg`, href: "/case-studies/hill-country-kitchen" },
-  robertRod: { title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg`, href: "/case-studies/robert-rodriguez" },
-  nordstromPersonal: { title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-design-system.jpg` },
-  jeffreyNyc: { title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg` },
-  capitanBoot: { title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg` },
-  jeffreyCampaign: { title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg` },
-  hillBath: { title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg` },
-  nordstromBeauty: { title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg` },
-  oakworks: { title: "Hill County Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-county-oakworks-campaign-branding.jpg` },
-  cosmoProf: { title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg` },
-  dsc: { title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-website-app.jpg` },
-  bwType: { title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg`, href: "/case-studies/black-white-type" },
-  hillLiving: { title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg` },
-  jChristianson: { title: "J.Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg` },
-  amberShockey: { title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg` },
-  sallyBeauty: { title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg` },
-  sallyOS: { title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/sally-os-platform-hero.jpg`, href: "/case-studies/sally" },
-  jeffreyCampaign2: { title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg` },
-  fairviewSitting: { title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg` },
-  floorDecor: { title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg` },
-  fairviewBedroom: { title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg` },
-  fairviewFoyer: { title: "The Fairview", category: "Interior Design, foyer", image: `${HP}/rhs-interior-design-grand-entry-luxe.jpg` },
-  nordstromFramework: { title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/rhs-nordstrom-framework-content-design.jpg` },
-  lovedByNordstrom: { title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-campaign-design-nordstrom-loved-by-campaign.jpg` },
-  mountainView: { title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg` },
-  neimanMarcus: { title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-campaign-design-neiman-marcus-editorial-design.jpg` },
-  variousDesign: { title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg` },
-} satisfies Record<string, Project>;
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -220,6 +196,49 @@ function HomeContent() {
       {/* Spacer for fixed breadcrumb */}
       <div className="h-[30px] md:h-[50px]" />
 
+      {/* ---- Manifesto block — case-study Meta pattern at portfolio scale ---- */}
+      <section className="w-full pt-8 md:pt-12 pb-12 md:pb-20 px-4 md:px-0">
+        {/* Section pill — matches case-study + CareerGalaxy + CapabilityWeb pattern */}
+        <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          <ScrambleOnView text="SECTION 01: OVERVIEW" />
+        </span>
+
+        {/* Title */}
+        <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
+          A practice across brand, product, and place.
+        </h1>
+
+        {/* Subtitle — spans full width, regular weight */}
+        <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+          The work spans AI-powered software, enterprise retail campaigns, and custom homes built piece by piece. The throughline isn&apos;t the discipline. It&apos;s the thinking, and the willingness to ship.
+        </p>
+
+        {/* Smaller secondary line — sits directly under the subhead, full width like the headings */}
+        <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
+          Generation is becoming free. Taste, judgment, and editing are what compound. The projects below are the argument.
+        </p>
+
+        {/* Meta fields — left-aligned, constrained width */}
+        <div className="text-spec text-foreground/90">
+          <p>
+            <span className="font-bold">Field </span>
+            Brand  Product  Place
+          </p>
+          <p>
+            <span className="font-bold">Author </span>
+            Jeremy Prasatik
+            {"  Active Since: "}
+            2002
+            {"  Status: "}
+            Practicing
+          </p>
+          <p>
+            <span className="font-bold">Classification </span>
+            Product Design  Full-Stack Engineering  Brand Strategy  Creative Direction  Interior Design
+          </p>
+        </div>
+      </section>
+
       {/* ---- Project grid ---- */}
       <div className="pb-24 space-y-10 md:space-y-[100px]">
 
@@ -231,20 +250,10 @@ function HomeContent() {
           <Thumb project={p.robertRod} />
         </div>
 
-        {/* Row 2: studio name (cols 1-2) + 2 thumbnails (cols 3-4) */}
+        {/* Row 2: 2 thumbnails on the right (cols 3-4) */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible md:relative">
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
-          <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <p className="text-[20px] font-semibold text-center whitespace-nowrap pointer-events-auto">
-              Creative work{" "}
-              <span className="text-foreground/50 font-normal">by Jeremy Prasatik</span>
-            </p>
-          </div>
-          <p className="hp-span col-span-2 text-[14px] font-semibold text-center py-2 md:hidden">
-            Creative work{" "}
-            <span className="text-foreground/50 font-normal">by Jeremy Prasatik</span>
-          </p>
           <Thumb project={p.nordstromPersonal} />
           <Thumb project={p.jeffreyNyc} />
         </div>
@@ -266,10 +275,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>Architecting digital and physical spaces</Headline>
+            <Headline>From software to campaigns to kitchens.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>Architecting digital and physical spaces</Headline>
+            <Headline>From software to campaigns to kitchens.</Headline>
           </div>
         </div>
 
@@ -286,10 +295,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>From pixels to pine plank floors</Headline>
+            <Headline>The disciplines share patterns.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>From pixels to pine plank floors</Headline>
+            <Headline>The disciplines share patterns.</Headline>
           </div>
           <Thumb project={p.jChristianson} />
           <Thumb project={p.amberShockey} />
@@ -312,10 +321,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>Content, code, and construction</Headline>
+            <Headline>The premium is in the editing.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>Content, code, and construction</Headline>
+            <Headline>The premium is in the editing.</Headline>
           </div>
         </div>
 
@@ -338,14 +347,138 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* ---- Career Galaxy ---- */}
+      {/* ---- Carousel hero — scroll-reactive, full-bleed, lifted out of the chapter card ---- */}
+      <HeroCarousel
+        slides={CASE_STUDY_HEROES}
+        aspectClassName="aspect-[16/9]"
+        scrollReactive
+      />
+
+      {/* ---- The Practice — chapter card ----
+           Cream rounded container holds: CareerGalaxy chart → Principles cards.
+           Reads as one chapter beat below the breakout hero. */}
       <div className="px-4 md:px-0 py-20">
-        <CareerGalaxy />
+        <div
+          className="overflow-hidden"
+          style={{
+            backgroundColor: "#ECE6E1",
+            borderRadius: "clamp(30px, 5vw, 75px)",
+          }}
+        >
+          {/* Inner padded content — chart + principles */}
+          <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
+            <CareerGalaxy />
+
+            {/* ── Principles — case-study ThreeColumnText pattern ──
+                 Title left (col-span-3), copy right (col-start-7 col-span-6), three rows stacked. */}
+            <div className="mt-20 md:mt-32 pt-12 md:pt-16 border-t border-[#141414]/10">
+              <p className="text-[10px] md:text-[12px] font-semibold tracking-[0.15em] uppercase text-foreground/40 mb-10 md:mb-14">
+                Principles
+              </p>
+
+              <div className="space-y-8 md:space-y-10">
+                {/* Principle 01 */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
+                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
+                    Function. Detail. Endurance.
+                  </h3>
+                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
+                    Three filters every project runs through. The first asks whether it works. The second asks whether it&apos;s right. The third asks whether it survives.
+                  </p>
+                </div>
+
+                {/* Principle 02 */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
+                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
+                    Range is the practice.
+                  </h3>
+                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
+                    A campaign, a kitchen, and a software product share patterns. Working across all three sharpens the work in each. The disciplines are not separate.
+                  </p>
+                </div>
+
+                {/* Principle 03 */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
+                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
+                    Aesthetic intelligence.
+                  </h3>
+                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
+                    Generation is becoming free. Taste, judgment, and the willingness to throw work away are what compound. The premium is in the editing, not the first draft.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* ---- Capability Bubbles ---- */}
-      <div className="px-4 md:px-0 pb-20">
-        <CapabilityWeb />
+      {/* ---- Dark inset footer card — same container pattern as the Career Galaxy section ---- */}
+      <div className="px-4 md:px-0 py-20">
+        <div
+          className="overflow-hidden"
+          style={{
+            backgroundColor: "#141414",
+            borderRadius: "clamp(30px, 5vw, 75px)",
+          }}
+        >
+          {/* Inner padded content */}
+          <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
+
+          {/* Editorial headline — case-study EditorialHeadline pattern, scaled for footer */}
+          <h2 className="text-[#F0EAE4] text-[44px] md:text-[88px] font-light leading-[1.05] tracking-[-0.03em] text-center whitespace-pre-line py-12 md:py-20">
+            {"Brand. Product. Place.\nConcept through launch."}
+          </h2>
+
+          {/* Capability Web — chart + dense meta heading */}
+          <CapabilityWeb dark />
+
+          {/* Closing block — case-study ClosingBlock pattern */}
+          <div className="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-12 gap-x-5 gap-y-12 pl-0 md:pl-[calc(100%/24)]">
+
+            {/* Left column — Services / Stack / Year */}
+            <div className="md:col-span-4 text-spec text-[#F0EAE4]">
+              <p className="font-bold">Services</p>
+              <p className="text-[#F0EAE4]/70">Product Design</p>
+              <p className="text-[#F0EAE4]/70">Full-Stack Engineering</p>
+              <p className="text-[#F0EAE4]/70">Brand Strategy & Identity</p>
+              <p className="text-[#F0EAE4]/70">Creative Direction</p>
+              <p className="text-[#F0EAE4]/70">Interior Design</p>
+
+              <p className="font-bold mt-6">Stack</p>
+              <p className="text-[#F0EAE4]/70">Next.js  React  TypeScript</p>
+              <p className="text-[#F0EAE4]/70">Supabase  Vercel</p>
+              <p className="text-[#F0EAE4]/70">Figma  Framer  Webflow</p>
+              <p className="text-[#F0EAE4]/70">Claude  GPT  Midjourney</p>
+
+              <p className="font-bold mt-6">Active Since</p>
+              <p className="text-[#F0EAE4]/70">2002 — Present</p>
+            </div>
+
+            {/* Right column — Closing copy + Contact */}
+            <div className="md:col-start-7 md:col-span-6 space-y-6">
+              <p className="text-body text-[#F0EAE4]/80">
+                Strategy and execution don&apos;t take turns. They run at the same desk, in the same week, on the same project.
+              </p>
+              <p className="text-body text-[#F0EAE4]/80">
+                Engagements range from a single mark to a full platform to a custom home. The work ships, and it holds up after.
+              </p>
+
+              <div className="pt-4 border-t border-[#F0EAE4]/15">
+                <p className="text-spec font-bold text-[#F0EAE4] mb-2">Contact</p>
+                <p className="text-spec">
+                  <a href="mailto:hello@reckon.house" className="text-[#F0EAE4]/80 hover:text-[#F0EAE4] underline underline-offset-2 transition-colors">hello@reckon.house</a>
+                </p>
+                <p className="text-spec text-[#F0EAE4]/80">214.697.4578</p>
+                <p className="text-spec">
+                  <a href="https://instagram.com/reckonhousestaples" target="_blank" rel="noopener noreferrer" className="text-[#F0EAE4]/80 hover:text-[#F0EAE4] underline underline-offset-2 transition-colors">IG @reckonhousestaples</a>
+                </p>
+                <p className="text-spec text-[#F0EAE4]/80">Texas / Anywhere</p>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        </div>
       </div>
 
     </div>

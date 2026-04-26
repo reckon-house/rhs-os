@@ -75,6 +75,30 @@ body::before {
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Northwest';
+  src: url('/fonts/NorthwestRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Northwest Round';
+  src: url('/fonts/NorthwestRound.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Oldman';
+  src: url('/fonts/OldMan.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -111,12 +135,47 @@ html, body {
   overflow: hidden;
 }
 
-body {
+/* Root cream lives on <html> so body can be transparent and the FilmOverlay
+   grain layer can sit between it and content without being covered. */
+html {
   background: var(--background);
+}
+
+body {
+  background: transparent;
   color: var(--foreground);
   font-family: 'Satoshi', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Spec-text utility ───────────────────────────────────────────
+   Smaller spec-sheet typography for labels and short list items:
+   Field, Author, Classification, Services, Stack, Contact details.
+   Used across MetaBlock, ClosingBlock, CareerGalaxy, CapabilityWeb,
+   and the homepage's inlined manifesto + dark footer. */
+.text-spec {
+  font-size: 10px;
+  line-height: 1.875;
+}
+@media (min-width: 768px) {
+  .text-spec {
+    font-size: 12px;
+  }
+}
+
+/* ── Body-text utility ───────────────────────────────────────────
+   Standard body copy size used for case-study paragraphs (TextBlock base),
+   abstracts, and closing-block prose. One step larger than .text-spec
+   so reading copy stays comfortable. */
+.text-body {
+  font-size: 11px;
+  line-height: 1.875;
+}
+@media (min-width: 768px) {
+  .text-body {
+    font-size: 14px;
+  }
 }
 
 /* Scrollbar styling for content area */

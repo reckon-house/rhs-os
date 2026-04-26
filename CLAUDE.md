@@ -33,6 +33,26 @@
 - Root layout uses `h-dvh` (not `h-screen`) to handle mobile browser chrome correctly
 - Charts with `min-w-[800px]` use intentional horizontal scroll on mobile — keep the pattern, don't fight it
 
+## Image Radius — Design System Rule
+**Every image in the case study system must have a rounded radius.** Part of the visual language.
+
+**The simple pattern (matches all working case studies):**
+- **Container always has** `rounded-[X] overflow-hidden`
+- **`transparent` flag only removes `bg-surface-alt`** — the radius and overflow-hidden stay
+- **Don't apply radius to the img element** — let the parent clip handle it
+- **Don't use `clip-path` or `isolation: isolate`** — unnecessary complexity
+
+**Radius scale by component:**
+- HeroBlock (non-inline): animates 60px → 0px (intentional full-bleed effect)
+- HeroBlock (inline): animates 60px → 30px (keeps rounded at rest)
+- ImageBlock: `rounded-[clamp(30px,5vw,100px)]` on container
+- DualImageBlock: `rounded-[clamp(30px,5vw,60px)]` on container
+- TripleImageBlock: `rounded-[clamp(20px,4vw,40px)]` on container
+
+**Lesson learned:** When `mix-blend-mode` seemed to break rounded corners, the issue was real — Chrome's compositing layer for mix-blend-mode escapes the parent's `overflow: hidden + border-radius` clip. But the fix only needs to apply WHEN blend is active. For all non-blended images, the simple container-level clip works fine.
+
+**The actual fix for mix-blend-mode images:** When `blend` prop is set, apply `clip-path: inset(0 round VALUE)` directly to the `<img>` element. `clip-path` is applied before the compositing step, so it clips the image to the rounded shape regardless of blend mode. Don't apply `clip-path` when blend is absent — it's not needed and adds complexity.
+
 ## Case Study Creation Workflow
 The goal: drop in new images + a project summary → generate a complete new case study fast.
 

@@ -31,7 +31,7 @@ export function MetaBlock({
       )}
 
       {/* Meta fields — left-aligned, constrained width */}
-      <div className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/90 max-w-full md:max-w-[40%]">
+      <div className="text-spec text-foreground/90">
         <p>
           <span className="font-bold">Field </span>
           {field}
@@ -52,7 +52,7 @@ export function MetaBlock({
 
       {/* Abstract — right column, sits below meta fields */}
       {abstractParagraphs.length > 0 && (
-        <div className="mt-6 md:mt-4 md:ml-[48%] text-[11px] md:text-[14px] leading-[1.875] text-foreground/80 px-0">
+        <div className="mt-6 md:mt-4 md:ml-[48%] text-body text-foreground/80 px-0">
           <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
           {abstractParagraphs.map((p, i) => (
             <p key={i} className={i === 0 ? "indent-[4em]" : `mt-4`}>

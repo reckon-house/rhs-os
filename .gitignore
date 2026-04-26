@@ -41,6 +41,11 @@ yarn-error.log*
 next-env.d.ts
 ._*
 .playwright-mcp/
-Fonts/
-fx/
+# Root-level Fonts/ — original source files (.otf/.ttf masters).
+# Production fonts in public/fonts/ are tracked.
+# Anchored to root so it doesn't match public/fonts/ on case-insensitive filesystems.
+/Fonts/
+# Root-level fx/ folder for notes & scratch only.
+# Production effects live in src/components/fx/ and SHOULD be tracked.
+/fx/
 sally-marketing-case-study.pdf

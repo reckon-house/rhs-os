@@ -9,6 +9,8 @@ import { ThreeColumnText } from "./sections/ThreeColumnText";
 import { ImageBlock } from "./sections/ImageBlock";
 import { DualImageBlock } from "./sections/DualImageBlock";
 import { TripleImageBlock } from "./sections/TripleImageBlock";
+import { QuadImageBlock } from "./sections/QuadImageBlock";
+import { QuadGridBlock } from "./sections/QuadGridBlock";
 import { StatsSummary } from "./sections/StatsSummary";
 import { StatsBar } from "./sections/StatsBar";
 import { FeatureCards } from "./sections/FeatureCards";
@@ -37,6 +39,9 @@ import { KitchenPalette } from "./sections/KitchenPalette";
 import { HexPolygon } from "./sections/HexPolygon";
 import { CampaignBlastRadius } from "./sections/CampaignBlastRadius";
 import { ColorPermutations } from "./sections/ColorPermutations";
+import { EditorialTreatments } from "./sections/EditorialTreatments";
+import { LogoCarousel } from "./sections/LogoCarousel";
+import { MarksAndMaterials } from "./sections/MarksAndMaterials";
 
 export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
@@ -60,6 +65,10 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <DualImageBlock {...section} />;
     case "triple-image":
       return <TripleImageBlock {...section} />;
+    case "quad-image":
+      return <QuadImageBlock {...section} />;
+    case "quad-grid":
+      return <QuadGridBlock {...section} />;
     case "stats-summary":
       return <StatsSummary {...section} />;
     case "stats-bar":
@@ -116,6 +125,12 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <CampaignBlastRadius />;
     case "color-permutations":
       return <ColorPermutations />;
+    case "editorial-treatments":
+      return <EditorialTreatments />;
+    case "logo-carousel":
+      return <LogoCarousel {...section} />;
+    case "marks-materials":
+      return <MarksAndMaterials {...section} />;
     case "spacer":
       return <div style={{ height: section.height }} />;
     default:

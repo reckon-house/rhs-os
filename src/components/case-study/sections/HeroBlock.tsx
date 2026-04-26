@@ -20,13 +20,13 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
       const viewH = window.innerHeight;
 
       // Progress: 0 when element enters viewport from bottom, 1 when top hits top of viewport
-      const raw = 1 - (rect.top / viewH);
+      const raw = 1 - rect.top / viewH;
       const progress = Math.max(0, Math.min(1, raw));
 
       // Scale: 0.82 → 1.0
       const scale = 0.82 + progress * 0.18;
 
-      // Border radius: 60px → 0px
+      // Border radius: 60px → 0px (both inline and non-inline sharpen as they reach full size)
       const radius = Math.round(60 * (1 - progress));
 
       container.style.transform = `scale(${scale})`;
@@ -48,8 +48,8 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
         ref={containerRef}
         className="w-full overflow-hidden bg-surface-alt will-change-transform"
         style={{
-          transform: inline ? "scale(0.82)" : "scale(1)",
-          borderRadius: inline ? "60px" : "0px",
+          transform: "scale(0.82)",
+          borderRadius: "60px",
           transformOrigin: "center center",
         }}
       >
