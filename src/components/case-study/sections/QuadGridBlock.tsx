@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { QuadGridSection } from "@/lib/types";
 
 /**
@@ -7,6 +8,10 @@ import type { QuadGridSection } from "@/lib/types";
  *
  * `images` order: [topLeft, topRight, bottomLeft, bottomRight]
  */
+
+// Each cell is half the article width on desktop, half on mobile too (since the grid stays 2-col on mobile).
+const CELL_SIZES = "(min-width: 768px) 50vw, 50vw";
+
 export function QuadGridBlock({ images, cellAspect = "aspect-[4/3]" }: QuadGridSection) {
   const cornerClasses = [
     "rounded-tl-[clamp(30px,5vw,60px)]",
@@ -21,14 +26,15 @@ export function QuadGridBlock({ images, cellAspect = "aspect-[4/3]" }: QuadGridS
         {images.slice(0, 4).map((img, i) => (
           <div
             key={i}
-            className={`overflow-hidden ${cornerClasses[i]} ${cellAspect}`}
+            className={`overflow-hidden relative ${cornerClasses[i]} ${cellAspect}`}
           >
             {img.src ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={img.src}
                 alt={img.alt}
-                className="w-full h-full object-cover"
+                fill
+                sizes={CELL_SIZES}
+                className="object-cover"
                 draggable={false}
               />
             ) : (

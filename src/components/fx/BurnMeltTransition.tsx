@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { themeColorFor } from "@/lib/case-study-themes";
+import { useNavigationActions } from "@/components/shell/NavigationProvider";
 
 /**
  * BURN MELT TRANSITION
@@ -37,6 +39,7 @@ export function BurnMeltTransition() {
 
   const pathname = usePathname();
   const router = useRouter();
+  const { startNavigation, completeNavigation } = useNavigationActions();
   const [uniqueId] = useState(() => Math.random().toString(36).substr(2, 9));
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -196,6 +199,15 @@ export function BurnMeltTransition() {
       isNavigating.current = true;
       pendingHref = absoluteUrl;
 
+      // Kick off the loader bar with the destination's theme color.
+      // Reads the slug from the absolute URL pathname.
+      try {
+        const destPath = new URL(absoluteUrl).pathname;
+        startNavigation(themeColorFor(destPath));
+      } catch {
+        startNavigation("#141414");
+      }
+
       const overlay = overlayRef.current;
       const white = whiteRef.current;
       if (!overlay || !white) {
@@ -333,32 +345,81 @@ export function BurnMeltTransition() {
     const white = whiteRef.current;
     if (!overlay || !white) return;
 
-    // Overlays should already be at opacity 1 from burn-out
-    // Just do the burn-in reveal
-    requestAnimationFrame(() => {
+    // Wait for the destination's hero image (if any) to fully load before
+    // playing the burn-in reveal. Otherwise the overlay melts away revealing
+    // a blank hero space, which kills the cinematic effect.
+    //
+    // Strategy: poll for `.hero-breakout img` to appear in the new DOM, then
+    // wait for its `complete + naturalWidth > 0` state (or attach load listener).
+    // Cap the wait at MAX_WAIT_MS so a slow/broken image doesn't strand us.
+    const MAX_WAIT_MS = 2000;
+    const POLL_INTERVAL_MS = 30;
+    const startedAt = performance.now();
+    let cancelled = false;
+
+    const playBurnIn = () => {
+      if (cancelled) return;
       requestAnimationFrame(() => {
-        startTurbulenceAnimation();
+        requestAnimationFrame(() => {
+          startTurbulenceAnimation();
 
-        const whiteDuration = burnDuration * 0.35;
-        const overlayDuration = burnDuration * 0.7;
-        const overlayDelay = burnDuration * 0.15;
+          const whiteDuration = burnDuration * 0.35;
+          const overlayDuration = burnDuration * 0.7;
+          const overlayDelay = burnDuration * 0.15;
 
-        white.style.transition = `opacity ${whiteDuration}s ease-out`;
-        white.style.opacity = "0";
+          white.style.transition = `opacity ${whiteDuration}s ease-out`;
+          white.style.opacity = "0";
 
-        setTimeout(() => {
-          overlay.style.transition = `opacity ${overlayDuration}s ${easeCurve}`;
-          overlay.style.opacity = "0";
-        }, overlayDelay * 1000);
+          setTimeout(() => {
+            overlay.style.transition = `opacity ${overlayDuration}s ${easeCurve}`;
+            overlay.style.opacity = "0";
+          }, overlayDelay * 1000);
 
-        setTimeout(() => {
-          stopTurbulenceAnimation();
-          isNavigating.current = false;
-          isReady.current = true;
-        }, (overlayDelay + overlayDuration) * 1000);
+          setTimeout(() => {
+            stopTurbulenceAnimation();
+            isNavigating.current = false;
+            isReady.current = true;
+            completeNavigation();
+          }, (overlayDelay + overlayDuration) * 1000);
+        });
       });
-    });
-  }, [pathname, burnDuration, easeCurve]);
+    };
+
+    const waitForHero = () => {
+      if (cancelled) return;
+      const heroImg = document.querySelector<HTMLImageElement>(".hero-breakout img");
+
+      if (heroImg) {
+        if (heroImg.complete && heroImg.naturalWidth > 0) {
+          playBurnIn();
+          return;
+        }
+        // Image is in DOM but not loaded yet — wait for it.
+        const onLoad = () => {
+          heroImg.removeEventListener("load", onLoad);
+          heroImg.removeEventListener("error", onLoad);
+          if (!cancelled) playBurnIn();
+        };
+        heroImg.addEventListener("load", onLoad);
+        heroImg.addEventListener("error", onLoad); // play through on error too
+        return;
+      }
+
+      // No hero img in DOM yet — page still rendering. Poll.
+      if (performance.now() - startedAt < MAX_WAIT_MS) {
+        setTimeout(waitForHero, POLL_INTERVAL_MS);
+      } else {
+        // Timeout — play anyway so the user isn't stuck.
+        playBurnIn();
+      }
+    };
+
+    waitForHero();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname, burnDuration, easeCurve, completeNavigation]);
 
   // Cleanup
   useEffect(() => {

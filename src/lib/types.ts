@@ -17,6 +17,7 @@ export interface CaseStudy {
 
 export type Section =
   | HeroSection
+  | HeroCarouselSection
   | MetaSection
   | TextSection
   | TextRightSection
@@ -79,6 +80,27 @@ export interface HeroSection extends BaseSection {
   image: string;
   alt: string;
   inline?: boolean;
+}
+
+/**
+ * HeroCarouselSection — auto-cycles through multiple images with a heat-fade
+ * transition. Default behavior matches the opening hero (full-bleed,
+ * scroll-reactive scale + radius animation). Set `inline: true` to render as a
+ * standard inline image carousel inside the content flow (no scroll animation).
+ */
+export interface HeroCarouselSection extends BaseSection {
+  type: "hero-carousel";
+  slides: { src: string; alt: string }[];
+  /** ms each slide is fully visible before the transition starts (default 4500) */
+  holdMs?: number;
+  /** ms the transition itself takes (default 1000) */
+  transitionMs?: number;
+  /** When true, render inline inside the content grid with no scroll animation. Default false (full-bleed hero). */
+  inline?: boolean;
+  /** When true (and inline), break out of the max-width container to fill the viewport. Useful for inline carousels that should still go edge-to-edge. */
+  bleed?: boolean;
+  /** Tailwind aspect class for inline mode (default "aspect-[16/10]") */
+  aspectClassName?: string;
 }
 
 export interface MetaSection extends BaseSection {

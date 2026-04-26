@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import type { LogoCarouselSection } from "@/lib/types";
 
 const TRANSITION_MS = 900;
@@ -62,12 +63,14 @@ export function LogoCarousel({
               padding,
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={slide.src}
               alt={slide.alt}
+              width={800}
+              height={600}
+              sizes={`${slide.maxWidth ?? 360}px`}
               className="w-full h-auto"
-              style={{ maxWidth: slide.maxWidth ?? 360 }}
+              style={{ maxWidth: slide.maxWidth ?? 360, height: "auto" }}
             />
           </div>
         ))}

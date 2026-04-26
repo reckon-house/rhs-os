@@ -1,5 +1,6 @@
 import type { Section } from "@/lib/types";
 import { HeroBlock } from "./sections/HeroBlock";
+import { HeroCarousel } from "../fx/HeroCarousel";
 import { MetaBlock } from "./sections/MetaBlock";
 import { SectionHeader } from "./sections/SectionHeader";
 import { TextBlock } from "./sections/TextBlock";
@@ -47,6 +48,18 @@ export function SectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
     case "hero":
       return <HeroBlock {...section} />;
+    case "hero-carousel":
+      return (
+        <HeroCarousel
+          slides={section.slides}
+          holdMs={section.holdMs}
+          transitionMs={section.transitionMs}
+          aspectClassName={section.aspectClassName}
+          scrollReactive={!section.inline}
+          // When inline + bleed, escape the max-width container without the scroll animation
+          className={section.inline && section.bleed ? "hero-breakout" : ""}
+        />
+      );
     case "meta":
       return <MetaBlock {...section} />;
     case "section-header":

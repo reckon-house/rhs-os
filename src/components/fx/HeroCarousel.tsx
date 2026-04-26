@@ -335,6 +335,18 @@ export function HeroCarousel({
           willChange: "opacity",
         }}
       />
+
+      {/* Preload the rest of the slides so the first cycle doesn't stutter while
+          the next image loads in. Slot A & B already cover slides[0] and slides[1];
+          everything from slides[2] onward gets a hidden eager-loaded preload tag. */}
+      {slides.length > 2 && (
+        <div aria-hidden className="absolute pointer-events-none opacity-0 w-0 h-0 overflow-hidden">
+          {slides.slice(2).map((slide, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img key={`preload-${i}`} src={slide.src} alt="" loading="eager" />
+          ))}
+        </div>
+      )}
     </>
   );
 

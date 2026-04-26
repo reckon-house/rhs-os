@@ -58,6 +58,8 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
           <img
             src={image}
             alt={alt}
+            loading={inline ? "lazy" : "eager"}
+            fetchPriority={inline ? "auto" : "high"}
             className={`w-full ${inline ? "scale-[1.04] " : ""}aspect-[5/4] md:aspect-auto object-cover md:object-contain md:h-auto`}
           />
         ) : (

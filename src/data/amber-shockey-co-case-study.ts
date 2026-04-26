@@ -7,7 +7,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
   title: "Amber Shockey & Co.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Tableware pattern design. Four collections built to layer, mix, and scale from single accent to full table.",
+    "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
   field: "Pattern Design\nProduct Design\nColorway Development",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -18,12 +18,27 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
   links: [],
   heroImage: "",
   sections: [
-    // ── HERO ──
+    // ── HERO CAROUSEL ──
+    // Auto-cycles through the three collection mockups. Tells the brand's range
+    // in the first 15 seconds of the page. Same scroll-reactive scale + radius
+    // animation as a single hero, but multi-image.
     {
       id: "hero",
-      type: "hero",
-      image: `${IMG}/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg`,
-      alt: "Amber Shockey & Co. blue florals collection, layered plates set against a peony pattern field in matching cobalt and cream",
+      type: "hero-carousel",
+      slides: [
+        {
+          src: `${IMG}/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. blue florals collection, plates layered on peony pattern background, stacked to read as a still life",
+        },
+        {
+          src: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver",
+        },
+        {
+          src: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
+        },
+      ],
     },
 
     // ── META ──
@@ -32,59 +47,164 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "meta",
       title: "Amber Shockey\n& Co.",
       subtitle:
-        "Tableware pattern design. Four collections built to layer, mix, and scale from single accent to full table.",
+        "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
       field: "Pattern Design  Product Design  Colorway Development",
       author: "Jeremy Prasatik",
       published: "2017",
       status: "Live",
       classification: ["Pattern Design", "Product Design", "Colorway Development"],
       abstract:
-        "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nFour directions. Blue florals, red dragons, black linework, geometric grid. Each balances structured against organic. Each carries multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
+        "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each carries multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
     },
 
     // ════════════════════════════════════════
-    // SECTION 02 — THE COLLECTIONS
+    // SECTION 02 — BLUE FLORALS
     // ════════════════════════════════════════
     {
-      id: "collections-header",
+      id: "blue-header",
       type: "section-header",
-      label: "SECTION 02: THE COLLECTIONS",
-      title: "Four Directions.\nOne Logic.",
+      label: "SECTION 02: BLUE FLORALS",
+      title: "Peonies and\nGeometry.",
     },
     {
-      id: "collections-subhead",
+      id: "blue-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Blue florals. Red dragons. Black linework. Geometric grid. Each collection a complete language, designed to read alone or as a set.",
+        "The most pattern-on-pattern direction. Blue peonies layered against a geometric grid. Plates that read as a still life when set, as a single object when used alone.",
     },
     {
-      id: "collections-footnote",
+      id: "blue-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
       content:
-        "Patterns balance structured against organic. Dragons against florals. Linear grids against scattered dots. The contrasts are intentional. The point isn't variety for its own sake. It's range built from a single rule.",
+        "Pairs with black linework when the set needs structure. Pairs with red dragons when the table needs heat. The cobalt anchors any combination because every other collection carries cream as the shared ground.",
     },
 
-    // ── Three collection mockups
+    // Inline hero: peony wallpaper pattern field
     {
-      id: "collections-triple",
-      type: "triple-image",
-      images: [
-        {
-          src: `${IMG}/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg`,
-          alt: "Blue florals collection, plates layered on peony pattern background",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
-          alt: "Black linework collection, geometric plates on marble surface",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
-          alt: "Red dragons collection, plates set against dragon pattern backdrop",
-        },
-      ],
+      id: "blue-hero",
+      type: "hero",
+      image: `${IMG}/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg`,
+      alt: "Blue florals peony pattern at wallpaper scale, full repeat tile showing the rhythm of the print",
+      inline: true,
+    },
+
+    // 2-up: geometric blue marks (the system inside the colorway)
+    {
+      id: "blue-marks-pair",
+      type: "dual-image",
+      transparent: true,
+      native: true,
+      left: {
+        src: `${IMG}/amber-shockey-co-geometric-linework-circle-blue-cream-pattern-hero-mark.jpg`,
+        alt: "Geometric linework circle pattern in blue and cream, the geometric variant within the blue colorway",
+      },
+      right: {
+        src: `${IMG}/amber-shockey-co-geometric-diamond-blue-cream-accent-mark.jpg`,
+        alt: "Clean blue diamond accent mark on grey-blue, the simplest geometric form in the blue family",
+      },
+    },
+
+    // ════════════════════════════════════════
+    // SECTION 03 — BLACK LINEWORK
+    // ════════════════════════════════════════
+    {
+      id: "black-header",
+      type: "section-header",
+      label: "SECTION 03: BLACK LINEWORK",
+      title: "Linework\nand Dots.",
+    },
+    {
+      id: "black-subhead",
+      type: "text",
+      size: "subhead",
+      content:
+        "The most reductive direction. Geometric grids and halftone density on charcoal. Reads as the most modern of the three. Holds against everything else.",
+    },
+    {
+      id: "black-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Mixes into any other collection without competing. The graphic flatness lets blue florals or red dragons sit on top of a black linework setting without losing color depth.",
+    },
+
+    // Inline hero: black linework plates mockup
+    {
+      id: "black-hero",
+      type: "hero",
+      image: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
+      alt: "Black linework collection, geometric plates on marble surface in charcoal and silver",
+      inline: true,
+    },
+
+    // 2-up: black linework marks
+    {
+      id: "black-marks-pair",
+      type: "dual-image",
+      transparent: true,
+      native: true,
+      left: {
+        src: `${IMG}/amber-shockey-co-black-linework-halftone-dot-circle-mark.jpg`,
+        alt: "Black linework collection halftone dot circle on charcoal ground",
+      },
+      right: {
+        src: `${IMG}/amber-shockey-co-black-linework-diamond-cross-pattern-mark.jpg`,
+        alt: "Black linework collection navy diamond with cross pattern, the structural mark of the family",
+      },
+    },
+
+    // ════════════════════════════════════════
+    // SECTION 04 — RED DRAGONS
+    // ════════════════════════════════════════
+    {
+      id: "red-header",
+      type: "section-header",
+      label: "SECTION 04: RED DRAGONS",
+      title: "Dragons\nand Florals.",
+    },
+    {
+      id: "red-subhead",
+      type: "text",
+      size: "subhead",
+      content:
+        "The most ornamental direction. Burgundy dragons curled against floral filigree. Reads as Eastern textile work. The hero piece of the line for buyers who want one statement plate.",
+    },
+    {
+      id: "red-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Lands well with black linework underneath as a setting. Hard against blue florals; the cobalt and burgundy fight. Pair with the cream pieces in either collection to break the contrast.",
+    },
+
+    // Inline hero: red dragons plates mockup
+    {
+      id: "red-hero",
+      type: "hero",
+      image: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
+      alt: "Red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
+      inline: true,
+    },
+
+    // 2-up: red dragons marks
+    {
+      id: "red-marks-pair",
+      type: "dual-image",
+      transparent: true,
+      native: true,
+      left: {
+        src: `${IMG}/amber-shockey-co-red-dragons-burgundy-dragon-mandala-hero-mark.jpg`,
+        alt: "Red dragons hero mark, burgundy dragon mandala in circle on muted rose ground",
+      },
+      right: {
+        src: `${IMG}/amber-shockey-co-red-dragons-burgundy-floral-diamond-secondary-mark.jpg`,
+        alt: "Red dragons secondary mark, burgundy floral diamond on muted rose ground",
+      },
     },
 
     // ── Editorial palate cleanser
@@ -95,162 +215,60 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 03 — THE MARKS
-    // ════════════════════════════════════════
-    {
-      id: "marks-header",
-      type: "section-header",
-      label: "SECTION 03: THE MARKS",
-      title: "Hero. Secondary.\nAccent.",
-    },
-    {
-      id: "marks-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Every collection resolves to three marks. A hero motif, a secondary, an accent. Layered together they make a setting. Used alone, each one carries the brand.",
-    },
-    {
-      id: "marks-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The structure lets a buyer start with a single accent piece and grow the set over time. Or commit to a full collection in one buy. The marks were drawn as a family before any single one was finished.",
-    },
-
-    // ── Triple of red dragons + black linework hero marks
-    {
-      id: "marks-triple-1",
-      type: "triple-image",
-      images: [
-        {
-          src: `${IMG}/amber-shockey-co-red-dragons-burgundy-dragon-mandala-hero-mark.jpg`,
-          alt: "Red dragons hero mark: burgundy dragon mandala in circle",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-red-dragons-burgundy-floral-diamond-secondary-mark.jpg`,
-          alt: "Red dragons secondary mark: burgundy floral diamond",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-black-linework-diamond-cross-pattern-mark.jpg`,
-          alt: "Black linework hero mark: navy diamond with cross pattern",
-        },
-      ],
-    },
-
-    // ── Triple of geometric collection marks
-    {
-      id: "marks-triple-2",
-      type: "triple-image",
-      images: [
-        {
-          src: `${IMG}/amber-shockey-co-black-linework-halftone-dot-circle-mark.jpg`,
-          alt: "Black linework accent mark: halftone dot circle on navy",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-geometric-linework-circle-blue-cream-pattern-hero-mark.jpg`,
-          alt: "Geometric collection hero mark: linework circle pattern in blue and cream",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-geometric-diamond-blue-cream-accent-mark.jpg`,
-          alt: "Geometric collection accent mark: clean blue diamond on grey-blue",
-        },
-      ],
-    },
-
-    // ── Construction view (system thinking made visible)
-    {
-      id: "marks-construction",
-      type: "image",
-      src: `${IMG}/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg`,
-      alt: "Geometric diamond accent mark with construction grid behind, showing the underlying geometry",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 04 — PATTERN FIELDS
-    // ════════════════════════════════════════
-    {
-      id: "fields-header",
-      type: "section-header",
-      label: "SECTION 04: PATTERN FIELDS",
-      title: "From a Single Plate\nto Wallpaper.",
-    },
-    {
-      id: "fields-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "The same patterns scale to wall covering, table linen, packaging. Built once. Re-rendered for every surface the brand needed.",
-    },
-
-    {
-      id: "fields-pattern",
-      type: "image",
-      src: `${IMG}/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg`,
-      alt: "Blue florals peony pattern at wallpaper scale, showing the full repeat tile and rhythm",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ════════════════════════════════════════
     // SECTION 05 — MARKS & MATERIALS
     // ════════════════════════════════════════
     {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "A Family of Patterns.\nA Single System.",
+      title: "A Family of Shapes.\nA Single System.",
       introText:
-        "Five colors. Two faces. One rule. The whole collection scales out of a small set of decisions made once and held across every direction.",
+        "Five colors. Four shapes. One rule. The whole line scales out of a small set of decisions made once and held across every direction.",
       philosophyText:
-        "Patterns work as a family. A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later. Nothing in the second buy fights anything in the first.\n\nThe palette runs cobalt for florals, burgundy for dragons, charcoal for linework, blush for geometry, with cream as the shared ground. Type stays editorial in the wordmark, neutral in the catalog. Decoration lives in the patterns, not the type.",
+        "Patterns work as a family. A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later. Nothing in the second buy fights anything in the first.\n\nEach collection has a hero shape and a colorway. Peony lives in cobalt. Circle lives in blush. Chinese dragon lives in burgundy. Halftone dot lives in charcoal. Cream runs underneath as the shared ground that lets any two collections sit together without fighting.",
       colors: [
-        { name: "Cream", hex: "#ECE6D5", description: "Shared ground" },
-        { name: "Cobalt", hex: "#1F4D78", description: "Florals, geometry" },
-        { name: "Blush", hex: "#D87A82", description: "Geometry accent" },
+        { name: "Cobalt", hex: "#1F4D78", description: "Blue florals" },
+        { name: "Blush", hex: "#D87A82", description: "Pink geometry" },
         { name: "Burgundy", hex: "#8E3F40", description: "Red dragons" },
-        { name: "Charcoal", hex: "#1F2434", description: "Linework, ground" },
+        { name: "Charcoal", hex: "#1F2434", description: "Black linework" },
+        { name: "Cream", hex: "#ECE6D5", description: "Shared ground" },
       ],
       fonts: [
         {
-          name: "Caslon",
-          sampleText: "Caslon",
-          role: "Wordmark",
+          name: "Peony",
+          role: "Blue florals hero",
           description:
-            "Classic serif with editorial warmth. Used for the wordmark and section headers. Sets the tone before a single pattern is seen.",
+            "The largest motif in the line. Layered florals that read as wallpaper at field scale and as a single bloom at plate scale.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 400,
         },
         {
-          name: "Avenir Next",
-          role: "Body & catalog",
+          name: "Circle",
+          role: "Pink geometry hero",
           description:
-            "Neutral sans-serif for catalog copy, captions, and pricing. Stays out of the way so the patterns lead.",
-          family: "'Avenir Next', system-ui, sans-serif",
-          weight: 500,
-        },
-        {
-          name: "Caslon Italic",
-          role: "Editorial detail",
-          description:
-            "Italic variant for collection names and editorial moments in the catalog.",
-          family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
-          weight: 400,
-        },
-        {
-          name: "Avenir Next Demi Bold",
-          role: "Labels & nav",
-          description:
-            "Heavier weight for navigation and structural labels. Anchors the page without competing with the patterns.",
+            "Linework circles built on a construction grid. The most reduced form of the geometric language. Carries the colorway when the collection needs an accent without a full pattern.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 600,
         },
+        {
+          name: "Chinese Dragon",
+          role: "Red dragons hero",
+          description:
+            "Dragons curled around floral filigree, set in a circular mandala. The most ornamental motif. Pulls Eastern textile work into a Western tableware context.",
+          family: "'Didot', 'Bodoni 72', 'Caslon', serif",
+          weight: 400,
+        },
+        {
+          name: "Halftone Dot",
+          role: "Black linework hero",
+          description:
+            "Density built from points instead of lines. The most reductive direction in the family. Sits under any other pattern without competing for the surface.",
+          family: "'Avenir Next', system-ui, sans-serif",
+          weight: 300,
+        },
       ],
-      markImage: `${IMG}/amber-shockey-co-red-dragons-burgundy-dragon-mandala-hero-mark.jpg`,
-      markAlt: "Amber Shockey & Co. red dragons hero mark, burgundy dragon mandala on muted rose ground",
+      markImage: `${IMG}/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg`,
+      markAlt: "Geometric diamond accent mark with construction grid behind, showing the underlying geometry that holds the system together",
     },
 
     // ════════════════════════════════════════
@@ -276,7 +294,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A startup needed patterns that could carry a full tableware line without locking into a single look. The system answers in three marks per collection and shared ground colors across all four. New directions slot in without breaking the family.",
+        "A startup needed patterns that could carry a full tableware line without locking into a single look. The system answers in three marks per collection and shared ground colors across the family. New directions slot in without breaking what came before.",
     },
   ],
 };

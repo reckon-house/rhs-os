@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { MarksAndMaterialsSection } from "@/lib/types";
 
 // ── Color helpers ─────────────────────────────────────────────────────────
@@ -307,11 +308,14 @@ export function MarksAndMaterials({
 
           {/* ─── PRIMARY MARK / SYSTEM SPREAD (centered) ─── */}
           <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 pt-6 flex justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={markImage}
               alt={markAlt}
+              width={2000}
+              height={1200}
+              sizes={markFullBleed ? "(min-width: 1100px) 1000px, 100vw" : "(min-width: 1000px) 1000px, 100vw"}
               className={`w-full ${markFullBleed ? "max-w-none" : "max-w-[1000px]"} object-contain rounded-[clamp(20px,4vw,50px)]`}
+              style={{ height: "auto" }}
             />
           </div>
         </div>

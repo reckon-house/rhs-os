@@ -16,6 +16,7 @@ function getColSpan(type: string): string {
       return "col-start-2 col-span-10";
     // Visual / full-width sections — no mobile inset
     case "hero":
+    case "hero-carousel":
     case "image":
     case "dual-image":
     case "triple-image":
@@ -150,7 +151,9 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
             item.kind === "group" ||
             isCarousel;
           const prevItem = idx > 0 ? items[idx - 1] : null;
-          const prevIsHero = prevItem?.kind === "single" && prevItem.section.type === "hero";
+          const prevIsHero =
+            prevItem?.kind === "single" &&
+            (prevItem.section.type === "hero" || prevItem.section.type === "hero-carousel");
           const isBleedItem = (item.kind === "group" && item.bleed) || isCarousel;
           const sectionGap = isNewSection && idx > 0
             ? (prevIsHero || isBleedItem) ? "pt-[40px] md:pt-[80px]" : "pt-[80px] md:pt-[200px]"

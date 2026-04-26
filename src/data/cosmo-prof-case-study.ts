@@ -67,22 +67,34 @@ export const cosmoProfCaseStudy: CaseStudy = {
         "Photography came first because nothing else mattered if the imagery still felt like a 2010 catalog. Each frame defined what a good Cosmo Prof picture looked like, then the templates that followed pulled from that library.",
     },
 
+    // Hero-carousel — cycles through the photography library so the section
+    // shows the range, not a single frame. Full-bleed and scroll-reactive,
+    // matching the opening hero treatment.
     {
-      id: "photo-hero",
-      type: "image",
-      src: `${IMG}/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg`,
-      alt: "Cosmo Prof photography lookbook: four-quadrant composition spanning color application, product macro, line lay-down, and applicator detail",
-      aspect: "native",
-      padded: true,
-    },
-
-    {
-      id: "photo-detail",
-      type: "image",
-      src: `${IMG}/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters.jpg`,
-      alt: "Maria Nila Colour Masque product photography on cream-and-blush ground with splattered pearl droplets framing the jar",
-      aspect: "native",
-      padded: true,
+      id: "photo-carousel",
+      type: "hero-carousel",
+      slides: [
+        {
+          src: `${IMG}/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters.jpg`,
+          alt: "Maria Nila Colour Masque product photography on cream-and-blush ground with splattered pearl droplets framing the jar",
+        },
+        {
+          src: `${IMG}/carousel/cosmo-prof-photography-shine-zero-lift-tubes-droplet-twin-macro.jpg`,
+          alt: "Shine Zero Lift twin tube macro on pink ground with cream pearl droplets at the seal",
+        },
+        {
+          src: `${IMG}/carousel/cosmo-prof-photography-framar-applicator-brushes-gold-pink-trio.jpg`,
+          alt: "Framar applicator brush trio in gold and rose, fanned across a white frame on pink ground with pastel droplets",
+        },
+        {
+          src: `${IMG}/carousel/cosmo-prof-photography-wella-shinefinity-product-tube-box-lineup.jpg`,
+          alt: "Wella Shinefinity Zero Lift Glaze tube and box lineup arranged on pink ground with pearl droplet accents",
+        },
+        {
+          src: `${IMG}/carousel/cosmo-prof-photography-hair-color-mask-application.jpg`,
+          alt: "Copper hair color stroke applied with brush across a white frame on pink ground, framed by pastel droplets",
+        },
+      ],
     },
 
     // ── Editorial palate cleanser

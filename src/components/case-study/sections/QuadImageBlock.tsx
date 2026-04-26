@@ -1,12 +1,34 @@
+import Image from "next/image";
 import type { QuadImageSection } from "@/lib/types";
 import { SwipeRow } from "../SwipeRow";
 
+// Each tile is roughly a quarter of the article width on desktop, full width on mobile.
+const TILE_SIZES = "(min-width: 768px) 25vw, 100vw";
+
 export function QuadImageBlock({ images, native, transparent, blend }: QuadImageSection) {
   const imageCards = images.map((img, i) => (
-    <div key={i} className={`${native ? "" : "aspect-[3/4]"} rounded-[clamp(16px,3vw,30px)] overflow-hidden ${transparent ? "" : "bg-surface-alt"}`}>
+    <div key={i} className={`${native ? "" : "aspect-[3/4] relative"} rounded-[clamp(16px,3vw,30px)] overflow-hidden ${transparent ? "" : "bg-surface-alt"}`}>
       {img.src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={img.src} alt={img.alt} className={`w-full ${native ? "h-auto" : "h-full object-cover"}`} style={blend ? { mixBlendMode: blend as React.CSSProperties["mixBlendMode"] } : undefined} />
+        native ? (
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={900}
+            height={1200}
+            sizes={TILE_SIZES}
+            className="w-full h-auto"
+            style={{ ...(blend ? { mixBlendMode: blend as React.CSSProperties["mixBlendMode"] } : {}), height: "auto" }}
+          />
+        ) : (
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            sizes={TILE_SIZES}
+            className="object-cover"
+            style={blend ? { mixBlendMode: blend as React.CSSProperties["mixBlendMode"] } : undefined}
+          />
+        )
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-surface-alt to-border flex items-center justify-center">
           <span className="text-muted text-xs tracking-widest uppercase">{img.alt}</span>
