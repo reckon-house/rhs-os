@@ -14,79 +14,92 @@ interface NavigationState {
   isNavigating: boolean;
   /** Theme color for the destination — drives the loader bar color. */
   themeColor: string;
-  /** Visual progress 0–1. Mostly indeterminate; jumps to 1 when ready. */
-  progress: number;
+  /** Target width 0–1. Driven by single CSS transitions, not interval steps. */
+  target: number;
+  /** Duration in ms for the width transition. 0 = snap, 1400 = creep, 200 = finish. */
+  transitionMs: number;
 }
 
 interface NavigationActions {
-  /** Begin navigation: starts the loader, sets theme, kicks off "creep" progress. */
+  /** Begin navigation: bar appears in theme color, smoothly creeps toward 80%. */
   startNavigation: (themeColor: string) => void;
-  /** The destination is fully ready — hero loaded, page rendered. Loader fills + fades. */
+  /** The destination is fully ready — bar finishes to 100% fast, then fades. */
   completeNavigation: () => void;
-  /** Bump progress manually (optional — used if we attach to real signals later). */
-  setProgress: (progress: number) => void;
 }
 
 const NavigationStateContext = createContext<NavigationState | null>(null);
 const NavigationActionsContext = createContext<NavigationActions | null>(null);
 
+// ── Tuning ────────────────────────────────────────────────────────────────
+// Single ease-out curve from 0 → 80% over CREEP_MS. Slow enough to feel like
+// progress on slower connections; fast enough that on typical static-page
+// navigations it's still climbing when the hero loads.
+const CREEP_MS = 1400;
+// When ready, finish to 100% fast — this is what makes the bar feel TIED to
+// the actual ready moment instead of completing on its own.
+const FINISH_MS = 200;
+// Hold at 100% before fading. Short — we want the bar gone the second the page
+// is usable.
+const HOLD_AT_FULL_MS = 80;
+// Fade-out duration, controlled by NavigationLoader's opacity transition.
+const FADE_MS = 200;
+
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<NavigationState>({
     isNavigating: false,
     themeColor: "#141414",
-    progress: 0,
+    target: 0,
+    transitionMs: 0,
   });
 
-  // Holds the "creep" interval so we can clear it on completion.
-  const creepRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Hold-completion timer so we don't yank the loader away mid-fade.
+  // Hold/fade timers so we don't yank the loader away mid-fade.
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const startNavigation = useCallback((themeColor: string) => {
-    if (creepRef.current) clearInterval(creepRef.current);
+  const clearTimers = () => {
+    if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
     if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    holdTimerRef.current = null;
+    fadeTimerRef.current = null;
+  };
 
-    setState({ isNavigating: true, themeColor, progress: 0.05 });
-
-    // Creep upward asymptotically — never reaches 100% on its own.
-    // This is the standard NProgress trick: feels like real progress but capped
-    // until the actual ready signal fires.
-    creepRef.current = setInterval(() => {
-      setState((prev) => {
-        if (!prev.isNavigating) return prev;
-        const remaining = 0.85 - prev.progress;
-        if (remaining <= 0.01) return prev;
-        return { ...prev, progress: prev.progress + remaining * 0.18 };
+  const startNavigation = useCallback((themeColor: string) => {
+    clearTimers();
+    // Two-step: first snap to 0% (no transition), then on the next frame apply
+    // the long transition + target. Without this, repeat navigations would
+    // try to animate from the previous "fading" position.
+    setState({ isNavigating: true, themeColor, target: 0, transitionMs: 0 });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setState((prev) => ({
+          ...prev,
+          target: 0.8,
+          transitionMs: CREEP_MS,
+        }));
       });
-    }, 180);
+    });
   }, []);
 
   const completeNavigation = useCallback(() => {
-    if (creepRef.current) {
-      clearInterval(creepRef.current);
-      creepRef.current = null;
-    }
+    clearTimers();
+    // Finish to 100% with a fast tail. The CSS transition handles the smooth
+    // jump from wherever the creep got to → 100%.
+    setState((prev) => ({ ...prev, target: 1, transitionMs: FINISH_MS }));
 
-    // Fill to 100% then fade out after a beat so the user sees the completion.
-    setState((prev) => ({ ...prev, progress: 1 }));
-
-    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-    fadeTimerRef.current = setTimeout(() => {
+    // After the finish animation + brief hold, fade out via opacity.
+    holdTimerRef.current = setTimeout(() => {
       setState((prev) => ({ ...prev, isNavigating: false }));
-      // Reset progress slightly later so the fade-out animation can play.
+      // After the fade completes, snap width back to 0% (no transition) so
+      // the next navigation starts clean.
       fadeTimerRef.current = setTimeout(() => {
-        setState((prev) => ({ ...prev, progress: 0 }));
-      }, 300);
-    }, 200);
-  }, []);
-
-  const setProgress = useCallback((progress: number) => {
-    setState((prev) => ({ ...prev, progress: Math.max(prev.progress, progress) }));
+        setState((prev) => ({ ...prev, target: 0, transitionMs: 0 }));
+      }, FADE_MS + 40);
+    }, FINISH_MS + HOLD_AT_FULL_MS);
   }, []);
 
   const actions = useMemo<NavigationActions>(
-    () => ({ startNavigation, completeNavigation, setProgress }),
-    [startNavigation, completeNavigation, setProgress],
+    () => ({ startNavigation, completeNavigation }),
+    [startNavigation, completeNavigation],
   );
 
   return (
