@@ -27,6 +27,7 @@ export const CASE_STUDY_THEMES: Record<string, string> = {
   "hill-country-kitchen": "#7A6B58", // warm stone
   "hill-country-bath": "#9DA89E", // sage stone
   "fairview-suite": "#7B5C3A", // warm wood
+  "fairview-sitting": "#A87A45", // antiqued brass
   "ivy-park": "#8A1F1F", // deep red
   "j-christianson": "#1E2733", // navy
   "nordstrom-beauty": "#C4A187", // warm beige
