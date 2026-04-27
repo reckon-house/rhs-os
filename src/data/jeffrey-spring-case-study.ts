@@ -56,47 +56,6 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       padded: true,
     },
 
-    // ════════════════════════════════════════
-    // SECTION 02 — FOLIAGE AS ARCHITECTURE
-    // ════════════════════════════════════════
-    {
-      id: "foliage-header",
-      type: "section-header",
-      label: "SECTION 02: FOLIAGE AS ARCHITECTURE",
-      title: "Leaves as Frame.\nNot Decoration.",
-    },
-    {
-      id: "foliage-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Monstera and palm shot like architectural elements. Cropped past the edge so they read as planes, not props. Studio white behind, leaves doing the structural work.",
-    },
-    {
-      id: "foliage-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The brief said spring without saying tropical. The compositions hold the season without a single beach. Each leaf was photographed once, then composed into the dress shots in post — same kit reused across three designer stories.",
-    },
-
-    // 2-up: pure foliage texture details
-    {
-      id: "foliage-pair",
-      type: "dual-image",
-      transparent: true,
-      native: true,
-      left: {
-        src: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
-        alt: "Single monstera leaf shot tight on white, treated as a graphic element rather than a styling prop",
-      },
-      right: {
-        src: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
-        alt: "Palm frond texture detail with sharp blade structure shot on white studio backdrop",
-      },
-    },
-
     // ── Editorial palate cleanser
     {
       id: "headline-global",
@@ -105,14 +64,14 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 03 — THREE STORIES, ONE SYSTEM
+    // SECTION 02 — THREE STORIES, ONE SYSTEM
     // (Each designer's dress shot paired with their template — same kit
     // applied three different ways. Shows the system in context.)
     // ════════════════════════════════════════
     {
       id: "stories-header",
       type: "section-header",
-      label: "SECTION 03: THREE STORIES",
+      label: "SECTION 02: THREE STORIES",
       title: "Same System.\nThree Designers.",
     },
     {
@@ -164,17 +123,19 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 04 — MARKS & MATERIALS
+    // SECTION 03 — MARKS & MATERIALS
+    // (Foliage lives here too — the leaves ARE materials in this campaign,
+    // shot once and reused across every story.)
     // ════════════════════════════════════════
     {
       id: "marks-materials",
       type: "marks-materials",
-      label: "SECTION 04: MARKS & MATERIALS",
+      label: "SECTION 03: MARKS & MATERIALS",
       title: "Studio Whites.\nLeaf Greens.",
       introText:
-        "Five colors and four type voices. Same system held across three designer stories without a single set change.",
+        "Five colors, four type voices, two foliage crops. Same kit held across three designer stories without a single set change.",
       philosophyText:
-        "The palette runs studio white as the ground, monstera green as the architecture, soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent — striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType does the rhythm work. Condensed for the headline. Letter-spaced for the designer name. Body sans for the catalog. Layered together they sound like a magazine spread, not a banner ad.",
+        "The palette runs studio white as the ground, monstera green as the architecture, soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent — striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nThe foliage is a material, not a prop. Two leaves shot once on white, then composed into every dress story in post. Type does the rhythm work — condensed for the headline, letter-spaced for the designer name, body sans for the catalog. Layered together they sound like a magazine spread, not a banner ad.",
       colors: [
         { name: "Studio White", hex: "#F5F2EC", description: "Ground, paper" },
         { name: "Monstera", hex: "#3E5A39", description: "Architecture, frame" },
@@ -224,13 +185,32 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       markFullBleed: true,
     },
 
+    // ── Foliage as material — the two graphic elements that anchor every
+    // composition in the campaign. Shot once on studio white, dropped into
+    // every dress story. Sits inside Marks & Materials because the leaves
+    // ARE the brand material.
+    {
+      id: "foliage-pair",
+      type: "dual-image",
+      transparent: true,
+      native: true,
+      left: {
+        src: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
+        alt: "Single monstera leaf shot tight on white, treated as a graphic material rather than a styling prop",
+      },
+      right: {
+        src: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
+        alt: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
+      },
+    },
+
     // ════════════════════════════════════════
     // CLOSING
     // ════════════════════════════════════════
     {
       id: "closing-header",
       type: "section-header",
-      label: "SECTION 05: CLOSING",
+      label: "SECTION 04: CLOSING",
       title: "A Campaign Built\nfor the Studio.",
     },
     {
