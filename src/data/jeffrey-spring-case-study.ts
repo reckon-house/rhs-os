@@ -19,11 +19,13 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   heroImage: "",
   sections: [
     // ── HERO ──
+    // 3x4 grid of all three dress stories (JW Anderson, Valentino, Simone
+    // Rocha) interleaved with monstera leaves — the whole campaign in one frame.
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg`,
-      alt: "Jeffrey Spring Campaign hero — Simone Rocha black floral dress framed by extreme-cropped monstera leaves on a studio white",
+      image: `${IMG}/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg`,
+      alt: "Jeffrey Spring Campaign hero collage: 3x4 grid weaving JW Anderson, Valentino, and Simone Rocha dress shots with cropped monstera leaves on studio white",
     },
 
     // ── META ──
@@ -40,6 +42,18 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       classification: ["Art Direction", "Campaign Design", "Email & Web Templates"],
       abstract:
         "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio. Used bold foliage crops as structural anchors rather than styling props. Monstera leaves and palm fronds treated like graphic elements, not greenery. Color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built a system that moved cleanly across email, homepage, and social without redesign. Same visual language, different formats.",
+    },
+
+    // ── Valentino template — campaign in context, second beat in the case
+    // study. Shows the system working at desktop scale before the foliage
+    // breakdown that follows.
+    {
+      id: "valentino-template",
+      type: "image",
+      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png`,
+      alt: "Jeffrey desktop homepage featuring the Valentino pink lace dress alongside cropped monstera leaves with the IN SEASON BOLD READY & NOW headline",
+      aspect: "native",
+      padded: true,
     },
 
     // ════════════════════════════════════════
@@ -83,15 +97,6 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
     },
 
-    // ── Inline hero: JW Anderson dress + monstera composition
-    {
-      id: "jw-hero",
-      type: "hero",
-      image: `${IMG}/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg`,
-      alt: "JW Anderson blue striped asymmetric dress framed by monstera leaves, second story in the spring dress set",
-      inline: true,
-    },
-
     // ── Editorial palate cleanser
     {
       id: "headline-global",
@@ -100,43 +105,61 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 03 — THE TEMPLATE SYSTEM
+    // SECTION 03 — THREE STORIES, ONE SYSTEM
+    // (Each designer's dress shot paired with their template — same kit
+    // applied three different ways. Shows the system in context.)
     // ════════════════════════════════════════
     {
-      id: "templates-header",
+      id: "stories-header",
       type: "section-header",
-      label: "SECTION 03: THE TEMPLATES",
-      title: "Same Language.\nEvery Format.",
+      label: "SECTION 03: THREE STORIES",
+      title: "Same System.\nThree Designers.",
     },
     {
-      id: "templates-subhead",
+      id: "stories-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Built to scale across email, homepage, and social without redesign. The condensed-stretched-layered type system holds at every size. The foliage frame holds too.",
+        "Drop the dress, set the foliage, ship the template. Every story carries the brand without a single redesign.",
     },
     {
-      id: "templates-footnote",
+      id: "stories-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
       content:
-        "Repeatable week to week with minimal rework. Drop the new dress in, refresh the foliage crop, ship. The system carries the brand voice so individual pieces don't have to.",
+        "Repeatable week to week with minimal rework. The condensed-stretched-layered type system holds at desktop and at mobile. The foliage frame holds too. The dress is the only variable.",
     },
 
-    // 2-up: desktop + mobile templates
+    // ── Simone Rocha pair: dress shot + matching desktop template
     {
-      id: "templates-pair",
+      id: "simone-pair",
       type: "dual-image",
       transparent: true,
       native: true,
       left: {
+        src: `${IMG}/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg`,
+        alt: "Simone Rocha black floral dress framed by extreme-cropped monstera leaves on a studio white",
+      },
+      right: {
         src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-simone-rocha-in-season-bold.png`,
-        alt: "Jeffrey desktop homepage template featuring Simone Rocha dress with IN SEASON BOLD READY & NOW headline alongside the monstera frame",
+        alt: "Jeffrey desktop homepage featuring the same Simone Rocha dress with the IN SEASON BOLD READY & NOW headline alongside the monstera frame",
+      },
+    },
+
+    // ── JW Anderson pair: dress shot + matching mobile template
+    {
+      id: "jw-pair",
+      type: "dual-image",
+      transparent: true,
+      native: true,
+      left: {
+        src: `${IMG}/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg`,
+        alt: "JW Anderson blue striped asymmetric dress framed by monstera leaves",
       },
       right: {
         src: `${IMG}/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png`,
-        alt: "Jeffrey mobile template featuring JW Anderson dress with the same IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
+        alt: "Jeffrey mobile template featuring the same JW Anderson dress with IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
       },
     },
 
