@@ -493,6 +493,8 @@ export interface MarksAndMaterialsSection extends BaseSection {
     family?: string;
     /** CSS font-weight for the display sample */
     weight?: number;
+    /** Italic styling for the display sample (e.g. brand wordmarks set in italic) */
+    italic?: boolean;
     /** Display sample size in px at desktop max (defaults to 36) */
     sampleSize?: number;
     /** Override the text shown in the color band sample (defaults to `name`). Useful when the full name wraps awkwardly. */

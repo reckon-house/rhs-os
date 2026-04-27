@@ -276,6 +276,7 @@ export function MarksAndMaterials({
                         style={{
                           fontFamily: font.family,
                           fontWeight: font.weight,
+                          fontStyle: font.italic ? "italic" : undefined,
                           fontSize: `clamp(${Math.round(size * 0.55)}px, ${size / 14}vw + 6px, ${size}px)`,
                           color: fg,
                         }}
