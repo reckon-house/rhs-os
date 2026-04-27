@@ -146,7 +146,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       fonts: [
         {
           name: "JEFFREY",
-          sampleText: "Jeffrey",
+          sampleText: "JEFFREY",
           role: "Wordmark",
           description:
             "Italic heavy sans for the brand wordmark. Set wide with the Atlanta/New York city tagline at smaller scale alongside. The only italic in the system — everything else stays upright.",
