@@ -289,28 +289,38 @@ export function NavRail() {
                 willChange: "width, opacity",
               }}
             >
-              {/* Themed tint — soft fill at moderate opacity so the overlay
-                  blend has something to work with. */}
+              {/* Single smooth gradient — solid color on the left fades
+                  through the leading edge to transparent. No hard seam. */}
               <div
-                className="absolute inset-y-0 left-0 right-[140px]"
-                style={{ backgroundColor: themeColor, opacity: 0.55 }}
-              />
-              {/* Hot leading edge — denser color with strong heat distortion.
-                  This is where the burn shows. */}
-              <div
-                className="absolute inset-y-0 right-0 w-[160px]"
+                className="absolute inset-0"
                 style={{
-                  background: `linear-gradient(90deg, ${themeColor}00 0%, ${themeColor}66 35%, ${themeColor}cc 75%, ${themeColor} 95%, ${themeColor}aa 100%)`,
-                  backdropFilter: "url(#navMelt) blur(5px) saturate(6) contrast(2)",
-                  WebkitBackdropFilter: "blur(5px) saturate(6) contrast(2)",
-                  filter: "saturate(1.4)",
+                  background: `linear-gradient(90deg,
+                    ${themeColor}cc 0%,
+                    ${themeColor}cc 70%,
+                    ${themeColor} 88%,
+                    ${themeColor}99 96%,
+                    ${themeColor}33 100%
+                  )`,
                 }}
               />
-              {/* Glow behind the leading edge — adds the "ember" feel */}
+              {/* Heat-distortion overlay — runs across the full sweep but
+                  intensifies toward the leading edge. Uses the navMelt
+                  turbulence filter so anything underneath (thumbnails, type)
+                  ripples as the sweep passes. */}
               <div
-                className="absolute inset-y-0 right-0 w-[260px] pointer-events-none"
+                className="absolute inset-0 pointer-events-none"
                 style={{
-                  background: `radial-gradient(ellipse 60% 200% at 90% 50%, ${themeColor}88 0%, transparent 60%)`,
+                  backdropFilter: "url(#navMelt) blur(2px) saturate(3) contrast(1.4)",
+                  WebkitBackdropFilter: "blur(2px) saturate(3) contrast(1.4)",
+                  maskImage: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 60%, black 90%, rgba(0,0,0,0.6) 100%)",
+                  WebkitMaskImage: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 60%, black 90%, rgba(0,0,0,0.6) 100%)",
+                }}
+              />
+              {/* Ember glow trailing the leading edge */}
+              <div
+                className="absolute inset-y-0 right-0 w-[280px] pointer-events-none"
+                style={{
+                  background: `radial-gradient(ellipse 70% 220% at 88% 50%, ${themeColor}aa 0%, transparent 65%)`,
                   mixBlendMode: "screen",
                 }}
               />
