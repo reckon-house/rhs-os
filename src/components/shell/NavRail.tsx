@@ -269,59 +269,34 @@ export function NavRail() {
                 WebkitBackdropFilter: "blur(4px) saturate(5) contrast(1.8)",
               }}
             />
-            {/* Navigation loader sweep — themed tint that grows left → right
-                as the destination loads. Sits behind nav content. Uses
-                mix-blend-mode: overlay so the color paints WITH the nav
-                backdrop instead of covering it, keeping the bar's glassiness
-                while picking up the destination's brand. The leading edge
-                runs heavy navMelt distortion + saturation so it reads as a
-                heat wave passing through. */}
+            {/* Navigation loader sweep — themed fill that grows left → right
+                as the destination loads. Sits behind nav content; thumbnails
+                ride on top with a subtle heat distortion as the leading edge
+                passes through. */}
             <div
               aria-hidden
               className="absolute inset-y-0 left-0 rounded-[28px] pointer-events-none overflow-hidden"
               style={{
                 width: `${target * 100}%`,
-                opacity: isNavigating ? 1 : 0,
-                mixBlendMode: "overlay",
+                opacity: isNavigating ? 0.85 : 0,
                 transition: transitionMs
                   ? `width ${transitionMs}ms cubic-bezier(0.1, 0.9, 0.2, 1), opacity 220ms ease-out`
                   : "opacity 220ms ease-out",
                 willChange: "width, opacity",
               }}
             >
-              {/* Single smooth gradient — solid color on the left fades
-                  through the leading edge to transparent. No hard seam. */}
+              {/* Solid themed fill */}
               <div
-                className="absolute inset-0"
-                style={{
-                  background: `linear-gradient(90deg,
-                    ${themeColor}cc 0%,
-                    ${themeColor}cc 70%,
-                    ${themeColor} 88%,
-                    ${themeColor}99 96%,
-                    ${themeColor}33 100%
-                  )`,
-                }}
+                className="absolute inset-y-0 left-0 right-[18px]"
+                style={{ backgroundColor: themeColor }}
               />
-              {/* Heat-distortion overlay — runs across the full sweep but
-                  intensifies toward the leading edge. Uses the navMelt
-                  turbulence filter so anything underneath (thumbnails, type)
-                  ripples as the sweep passes. */}
+              {/* Soft hot leading edge — gradient fade with backdrop heat */}
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-y-0 right-0 w-[120px]"
                 style={{
-                  backdropFilter: "url(#navMelt) blur(2px) saturate(3) contrast(1.4)",
-                  WebkitBackdropFilter: "blur(2px) saturate(3) contrast(1.4)",
-                  maskImage: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 60%, black 90%, rgba(0,0,0,0.6) 100%)",
-                  WebkitMaskImage: "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 60%, black 90%, rgba(0,0,0,0.6) 100%)",
-                }}
-              />
-              {/* Ember glow trailing the leading edge */}
-              <div
-                className="absolute inset-y-0 right-0 w-[280px] pointer-events-none"
-                style={{
-                  background: `radial-gradient(ellipse 70% 220% at 88% 50%, ${themeColor}aa 0%, transparent 65%)`,
-                  mixBlendMode: "screen",
+                  background: `linear-gradient(90deg, ${themeColor} 0%, ${themeColor}99 30%, ${themeColor}33 70%, transparent 100%)`,
+                  backdropFilter: "url(#navMelt) blur(3px) saturate(4) contrast(1.6)",
+                  WebkitBackdropFilter: "blur(3px) saturate(4) contrast(1.6)",
                 }}
               />
             </div>
