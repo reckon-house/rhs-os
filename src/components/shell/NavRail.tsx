@@ -269,34 +269,49 @@ export function NavRail() {
                 WebkitBackdropFilter: "blur(4px) saturate(5) contrast(1.8)",
               }}
             />
-            {/* Navigation loader sweep — themed fill that grows left → right
-                as the destination loads. Sits behind nav content; thumbnails
-                ride on top with a subtle heat distortion as the leading edge
-                passes through. */}
+            {/* Navigation loader sweep — themed tint that grows left → right
+                as the destination loads. Sits behind nav content. Uses
+                mix-blend-mode: overlay so the color paints WITH the nav
+                backdrop instead of covering it, keeping the bar's glassiness
+                while picking up the destination's brand. The leading edge
+                runs heavy navMelt distortion + saturation so it reads as a
+                heat wave passing through. */}
             <div
               aria-hidden
               className="absolute inset-y-0 left-0 rounded-[28px] pointer-events-none overflow-hidden"
               style={{
                 width: `${target * 100}%`,
-                opacity: isNavigating ? 0.85 : 0,
+                opacity: isNavigating ? 1 : 0,
+                mixBlendMode: "overlay",
                 transition: transitionMs
                   ? `width ${transitionMs}ms cubic-bezier(0.1, 0.9, 0.2, 1), opacity 220ms ease-out`
                   : "opacity 220ms ease-out",
                 willChange: "width, opacity",
               }}
             >
-              {/* Solid themed fill */}
+              {/* Themed tint — soft fill at moderate opacity so the overlay
+                  blend has something to work with. */}
               <div
-                className="absolute inset-y-0 left-0 right-[18px]"
-                style={{ backgroundColor: themeColor }}
+                className="absolute inset-y-0 left-0 right-[140px]"
+                style={{ backgroundColor: themeColor, opacity: 0.55 }}
               />
-              {/* Soft hot leading edge — gradient fade with backdrop heat */}
+              {/* Hot leading edge — denser color with strong heat distortion.
+                  This is where the burn shows. */}
               <div
-                className="absolute inset-y-0 right-0 w-[120px]"
+                className="absolute inset-y-0 right-0 w-[160px]"
                 style={{
-                  background: `linear-gradient(90deg, ${themeColor} 0%, ${themeColor}99 30%, ${themeColor}33 70%, transparent 100%)`,
-                  backdropFilter: "url(#navMelt) blur(3px) saturate(4) contrast(1.6)",
-                  WebkitBackdropFilter: "blur(3px) saturate(4) contrast(1.6)",
+                  background: `linear-gradient(90deg, ${themeColor}00 0%, ${themeColor}66 35%, ${themeColor}cc 75%, ${themeColor} 95%, ${themeColor}aa 100%)`,
+                  backdropFilter: "url(#navMelt) blur(5px) saturate(6) contrast(2)",
+                  WebkitBackdropFilter: "blur(5px) saturate(6) contrast(2)",
+                  filter: "saturate(1.4)",
+                }}
+              />
+              {/* Glow behind the leading edge — adds the "ember" feel */}
+              <div
+                className="absolute inset-y-0 right-0 w-[260px] pointer-events-none"
+                style={{
+                  background: `radial-gradient(ellipse 60% 200% at 90% 50%, ${themeColor}88 0%, transparent 60%)`,
+                  mixBlendMode: "screen",
                 }}
               />
             </div>

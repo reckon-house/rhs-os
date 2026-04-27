@@ -1,40 +1,43 @@
 /**
  * Case-study theme colors.
  *
- * The navigation loader bar uses these to color-match the destination case study,
- * giving a subtle "you're entering this brand's world" feel during page transitions.
+ * Used by the NavRail sweep loader to tint the bar with a hint of the
+ * destination's brand. Colors are intentionally LIGHTER picks from each
+ * project's palette — the sweep is rendered at low opacity with mix-blend-mode
+ * overlay, so a too-dark color reads as muddy. Lighter accent / cream / blush
+ * tones tint cleanly against the cream navbar backdrop.
  *
- * Source of truth: each case study's primary palette color (typically pulled from
- * the marks-materials section). When adding a new case study, add an entry here.
+ * When adding a new case study, pick the lightest meaningful color from its
+ * marks-materials palette (cream, blush, light tan, etc.).
  *
  * Default fallback (`__default__`) is used for the homepage and any unmatched route.
  */
 export const CASE_STUDY_THEMES: Record<string, string> = {
-  // Default — used on routes without a specific theme (homepage, category pages).
-  __default__: "#141414",
+  // Default — light grey for routes without a specific theme (homepage, category pages).
+  __default__: "#A0A0A0",
 
   // ── New case studies (built this session, palettes known) ──
-  "capitan-boot-co": "#2A2A1A", // dark olive
-  "amber-shockey-co": "#1F4D78", // cobalt
-  "cosmo-prof": "#000000", // sharp black
-  "hill-country-oak": "#DA8849", // burnt orange
+  "capitan-boot-co": "#C4B594", // warm tan (lighter than the dark olive primary)
+  "amber-shockey-co": "#D87A82", // blush (lighter accent vs the cobalt)
+  "cosmo-prof": "#F4D9DC", // signature blush
+  "hill-country-oak": "#ECC265", // mustard (lighter than the burnt orange)
+  "fairview-sitting": "#C4B5A0", // soft stone (lighter than the antiqued brass)
 
-  // ── Existing case studies — sensible defaults pulled from each project's palette ──
-  arc: "#B1BC94", // sage primary
-  sally: "#2C2C2C", // platform charcoal
-  "robert-rodriguez": "#C44A2D", // editorial orange
-  "black-white-type": "#000000", // black
-  "hill-country-kitchen": "#7A6B58", // warm stone
-  "hill-country-bath": "#9DA89E", // sage stone
-  "fairview-suite": "#7B5C3A", // warm wood
-  "fairview-sitting": "#A87A45", // antiqued brass
-  "ivy-park": "#8A1F1F", // deep red
-  "j-christianson": "#1E2733", // navy
-  "nordstrom-beauty": "#C4A187", // warm beige
-  "neiman-marcus": "#A52A2A", // editorial red
-  "loved-by-nordstrom": "#9F7E5C", // tan
-  "branding-graphics": "#3A3A3A", // neutral
-  "nordstrom-personalization": "#1E1E1E", // anthracite
+  // ── Existing case studies — lightest meaningful palette pick per project ──
+  arc: "#D4D4A8", // lighter sage
+  sally: "#D4D4D0", // light platform grey
+  "robert-rodriguez": "#F4C9A0", // soft peach
+  "black-white-type": "#D4D4D4", // light grey
+  "hill-country-kitchen": "#D8C8A8", // light warm stone
+  "hill-country-bath": "#C8D2C4", // light sage
+  "fairview-suite": "#D8B888", // light warm wood
+  "ivy-park": "#E8A5A5", // light coral
+  "j-christianson": "#B8C4D4", // light steel blue
+  "nordstrom-beauty": "#E8D4BD", // light warm beige
+  "neiman-marcus": "#E8A88A", // light coral
+  "loved-by-nordstrom": "#D8BFA0", // light tan
+  "branding-graphics": "#C8C8C8", // light neutral
+  "nordstrom-personalization": "#C8C8C8", // light anthracite
 };
 
 /**
