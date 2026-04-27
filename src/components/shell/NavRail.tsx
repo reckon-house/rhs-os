@@ -59,9 +59,9 @@ export function NavRail() {
   const navContentRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Navigation loader state — drives the themed sweep that fills the bar
-  // left → right while the destination loads.
-  const { isNavigating, themeColor, target, transitionMs } = useNavigationState();
+  // Navigation loader state — drives the heat-burn fill that grows the
+  // navrail's hot state left → right while the destination loads.
+  const { isNavigating, target, transitionMs } = useNavigationState();
 
   // Determine active index from URL
   useEffect(() => {
@@ -269,37 +269,25 @@ export function NavRail() {
                 WebkitBackdropFilter: "blur(4px) saturate(5) contrast(1.8)",
               }}
             />
-            {/* Navigation loader sweep — themed fill that grows left → right
-                as the destination loads. Sits behind nav content; thumbnails
-                ride on top with a subtle heat distortion as the leading edge
-                passes through. */}
+            {/* Navigation loader — same hot heat-burn state as the scroll
+                animation, but progressively revealed left → right as the
+                destination loads. No theming, no extra colors — just the
+                bar's own heated state filling in. */}
             <div
               aria-hidden
-              className="absolute inset-y-0 left-0 rounded-[28px] pointer-events-none overflow-hidden"
+              className="absolute inset-y-0 left-0 rounded-[28px] pointer-events-none"
               style={{
                 width: `${target * 100}%`,
-                opacity: isNavigating ? 0.85 : 0,
+                opacity: isNavigating ? 1 : 0,
+                background: "rgba(243, 240, 237, 0.15)",
+                backdropFilter: "url(#navMelt) blur(4px) saturate(8) contrast(3)",
+                WebkitBackdropFilter: "blur(4px) saturate(8) contrast(3)",
                 transition: transitionMs
                   ? `width ${transitionMs}ms cubic-bezier(0.1, 0.9, 0.2, 1), opacity 220ms ease-out`
                   : "opacity 220ms ease-out",
                 willChange: "width, opacity",
               }}
-            >
-              {/* Solid themed fill */}
-              <div
-                className="absolute inset-y-0 left-0 right-[18px]"
-                style={{ backgroundColor: themeColor }}
-              />
-              {/* Soft hot leading edge — gradient fade with backdrop heat */}
-              <div
-                className="absolute inset-y-0 right-0 w-[120px]"
-                style={{
-                  background: `linear-gradient(90deg, ${themeColor} 0%, ${themeColor}99 30%, ${themeColor}33 70%, transparent 100%)`,
-                  backdropFilter: "url(#navMelt) blur(3px) saturate(4) contrast(1.6)",
-                  WebkitBackdropFilter: "blur(3px) saturate(4) contrast(1.6)",
-                }}
-              />
-            </div>
+            />
             {/* Nav content */}
             <div ref={navContentRef} className="relative flex items-center gap-4 md:gap-8 px-4 md:px-4 py-2 md:py-3">
               {/* Sliding highlight */}
