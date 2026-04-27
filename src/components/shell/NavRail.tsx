@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useNavigationState } from "./NavigationProvider";
 
 const categories = [
   { label: "Reckon.House", image: "/nav/logo.jpg", href: "/" },
@@ -58,10 +57,6 @@ export function NavRail() {
   const highlightRef = useRef<HTMLDivElement>(null);
   const navContentRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
-
-  // Navigation loader state — drives the heat-burn fill that grows the
-  // navrail's hot state left → right while the destination loads.
-  const { isNavigating, target, transitionMs } = useNavigationState();
 
   // Determine active index from URL
   useEffect(() => {
@@ -267,25 +262,6 @@ export function NavRail() {
                 background: "linear-gradient(90deg, transparent 0%, transparent 20%, rgba(255,255,255,0.06) 40%, rgba(255,255,255,0.15) 65%, rgba(255,255,255,0.3) 85%, rgba(255,255,255,0.45) 100%)",
                 backdropFilter: "blur(4px) saturate(5) contrast(1.8)",
                 WebkitBackdropFilter: "blur(4px) saturate(5) contrast(1.8)",
-              }}
-            />
-            {/* Navigation loader — same hot heat-burn state as the scroll
-                animation, but progressively revealed left → right as the
-                destination loads. No theming, no extra colors — just the
-                bar's own heated state filling in. */}
-            <div
-              aria-hidden
-              className="absolute inset-y-0 left-0 rounded-[28px] pointer-events-none"
-              style={{
-                width: `${target * 100}%`,
-                opacity: isNavigating ? 1 : 0,
-                background: "rgba(243, 240, 237, 0.15)",
-                backdropFilter: "url(#navMelt) blur(4px) saturate(8) contrast(3)",
-                WebkitBackdropFilter: "blur(4px) saturate(8) contrast(3)",
-                transition: transitionMs
-                  ? `width ${transitionMs}ms cubic-bezier(0.1, 0.9, 0.2, 1), opacity 220ms ease-out`
-                  : "opacity 220ms ease-out",
-                willChange: "width, opacity",
               }}
             />
             {/* Nav content */}

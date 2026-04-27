@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
-import { NavigationProvider } from "@/components/shell/NavigationProvider";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
 
@@ -29,18 +28,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <NavigationProvider>
-          <div className="flex h-dvh w-screen overflow-hidden">
-            <SmoothScroll>
-              {children}
-            </SmoothScroll>
-          </div>
-          <BurnMeltTransition />
-          {/* NavRail acts as the nav loader — themed sweep fills the bar
-              left → right during navigation. See NavigationProvider. */}
-          <NavRail />
-          <FilmOverlay />
-        </NavigationProvider>
+        <div className="flex h-dvh w-screen overflow-hidden">
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </div>
+        <BurnMeltTransition />
+        <NavRail />
+        <FilmOverlay />
       </body>
     </html>
   );
