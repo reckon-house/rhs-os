@@ -20,7 +20,7 @@ export const projects: Project[] = [
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-design-system.jpg`, href: "/case-studies/nordstrom-personalization", tags: ["digital"] },
   { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg`, tags: ["digital"] },
   { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg`, href: "/case-studies/capitan-boot-co", tags: ["creative"] },
-  { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg`, tags: ["creative"] },
+  { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "hillBath", title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg`, href: "/case-studies/hill-country-bath", tags: ["interiors"] },
   { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg`, href: "/case-studies/nordstrom-beauty", tags: ["digital"] },
   { id: "oakworks", title: "Hill County Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-county-oakworks-campaign-branding.jpg`, href: "/case-studies/hill-country-oak", tags: ["creative"] },

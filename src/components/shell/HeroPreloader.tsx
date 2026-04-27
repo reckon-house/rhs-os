@@ -35,6 +35,7 @@ const HERO_IMAGES = [
   // cosmo-prof opens with a single hero, then has a hero-carousel inside
   "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg",
   "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg",
+  "/case-studies/jeffrey-spring/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg",
 ];
 
 const STAGGER_MS = 200;
