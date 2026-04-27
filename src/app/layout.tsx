@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
+import { HeroPreloader } from "@/components/shell/HeroPreloader";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
         <BurnMeltTransition />
         <NavRail />
         <FilmOverlay />
+        <HeroPreloader />
       </body>
     </html>
   );
