@@ -113,7 +113,61 @@ const OUTER_LABELS = [
   { label: "INTERIORS & FABRICATION",        angle: 240, color: "#AA7E44" },
 ];
 
-export function CapabilityWeb({ dark = false }: { dark?: boolean } = {}) {
+/**
+ * Heading + meta block for the Practice section. Exported standalone so the
+ * 3D Showpiece variant can render the same heading above its canvas.
+ */
+export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
+  const inkClass = dark ? "text-[#F0EAE4]" : "text-[#141414]";
+  const inkSoft = dark ? "text-[#F0EAE4]/75" : "text-foreground/90";
+  const inkDim = dark ? "text-[#F0EAE4]/60" : "text-foreground/80";
+  const pillBg = dark ? "bg-[#F0EAE4]/[0.08]" : "bg-[#141414]/[0.06]";
+
+  return (
+    <div className="mb-12">
+      <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
+        <ScrambleOnView text="SECTION 04: PRACTICE" />
+      </span>
+      <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
+        The work of Jeremy Prasatik.
+      </h2>
+      <p className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal ${inkClass} mb-6`}>
+        Three practices. Twenty disciplines. Digital, branding, and interiors — each complete on its own, each made stronger by the others.
+      </p>
+
+      <div className={`text-spec ${inkSoft}`}>
+        <p>
+          <span className="font-bold">Studio </span>
+          Reckon House  Multi-disciplinary
+        </p>
+        <p>
+          <span className="font-bold">Founded </span>
+          2002  Location: Texas / Anywhere  Status: Open for projects
+        </p>
+        <p>
+          <span className="font-bold">Classification </span>
+          Digital  Branding  Interiors
+        </p>
+      </div>
+
+      <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
+        <p className={`font-bold ${inkClass} indent-[4em]`}>Abstract</p>
+        <p className="indent-[4em]">
+          One studio, three practices, no handoff. Apps that ship. Brands that hold up. Rooms people actually live in. Designed and built by the same hands from concept through production.
+        </p>
+        <p className="mt-4">
+          The chart below shows the full range, plotted as a web. Disciplines at the center, skills in the middle ring, tools and methods at the edge. Every node connects.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The 2D SVG chart, rendered standalone. Used as the fallback / mobile
+ * version when the 3D Showpiece is the active variant.
+ */
+export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) {
   // ── Theme colors — flip when on dark bg ────────────────────────
   const INK = dark ? "#F0EAE4" : "#141414";          // text + grid lines
   const SURFACE = dark ? "#1F1F1F" : "#efebe4";      // disc + hub fills
@@ -275,54 +329,8 @@ export function CapabilityWeb({ dark = false }: { dark?: boolean } = {}) {
     return lines;
   }, []);
 
-  // Text classes adapt to dark mode
-  const inkClass = dark ? "text-[#F0EAE4]" : "text-[#141414]";
-  const inkSoft = dark ? "text-[#F0EAE4]/75" : "text-foreground/90";
-  const inkDim = dark ? "text-[#F0EAE4]/60" : "text-foreground/80";
-  const pillBg = dark ? "bg-[#F0EAE4]/[0.08]" : "bg-[#141414]/[0.06]";
-
   return (
     <div className="w-full">
-      {/* Heading — case-study MetaBlock pattern */}
-      <div className="mb-12">
-        <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
-          <ScrambleOnView text="SECTION 04: PRACTICE" />
-        </span>
-        <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
-          The work of Jeremy Prasatik.
-        </h2>
-        <p className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal ${inkClass} mb-6`}>
-          Three practices. Twenty disciplines. Digital, branding, and interiors — each complete on its own, each made stronger by the others.
-        </p>
-
-        {/* Meta fields — left column */}
-        <div className={`text-spec ${inkSoft}`}>
-          <p>
-            <span className="font-bold">Studio </span>
-            Reckon House  Multi-disciplinary
-          </p>
-          <p>
-            <span className="font-bold">Founded </span>
-            2002  Location: Texas / Anywhere  Status: Open for projects
-          </p>
-          <p>
-            <span className="font-bold">Classification </span>
-            Digital  Branding  Interiors
-          </p>
-        </div>
-
-        {/* Abstract — right column */}
-        <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
-          <p className={`font-bold ${inkClass} indent-[4em]`}>Abstract</p>
-          <p className="indent-[4em]">
-            One studio, three practices, no handoff. Apps that ship. Brands that hold up. Rooms people actually live in. Designed and built by the same hands from concept through production.
-          </p>
-          <p className="mt-4">
-            The chart below shows the full range, plotted as a web. Disciplines at the center, skills in the middle ring, tools and methods at the edge. Every node connects.
-          </p>
-        </div>
-      </div>
-
       {/* Chart — horizontal scroll on mobile */}
       <div className="overflow-x-auto md:overflow-x-visible">
       <div className="min-w-[800px] md:min-w-0 w-full max-w-[960px] mx-auto px-4 md:px-0">
@@ -484,6 +492,19 @@ export function CapabilityWeb({ dark = false }: { dark?: boolean } = {}) {
         </svg>
       </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Default export — composes the heading + 2D chart for backwards compatibility.
+ * Use this when you don't need the 3D Showpiece variant.
+ */
+export function CapabilityWeb({ dark = false }: { dark?: boolean } = {}) {
+  return (
+    <div className="w-full">
+      <CapabilityWebHeader dark={dark} />
+      <CapabilityWebChart2D dark={dark} />
     </div>
   );
 }

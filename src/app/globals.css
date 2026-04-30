@@ -271,6 +271,49 @@ body {
   }
 }
 
+/* CapabilityWeb 3D labels — drei's <Html> injects these into the DOM at
+   world positions. Compact + uppercase so the chart still reads as a chart. */
+.discipline-label {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+.skill-label {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(240, 234, 228, 0.9);
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  user-select: none;
+  text-align: center;
+}
+.tool-label {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: rgba(240, 234, 228, 0.6);
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  user-select: none;
+}
+.hub-label {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(240, 234, 228, 0.85);
+  white-space: nowrap;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+  user-select: none;
+}
+
 /* Hero breakout — extends beyond max-w container to fill the scroll area */
 .hero-breakout {
   width: 100vw;

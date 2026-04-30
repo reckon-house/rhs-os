@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
-import { CapabilityWeb } from "@/components/CapabilityWeb";
+import { CapabilityWebShowpiece } from "@/components/CapabilityWebShowpiece";
 import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { projectsById as p, type Project } from "@/data/projects";
@@ -430,7 +430,7 @@ function HomeContent() {
           </h2>
 
           {/* Capability Web — chart + dense meta heading */}
-          <CapabilityWeb dark />
+          <CapabilityWebShowpiece dark />
 
           {/* Closing block — case-study ClosingBlock pattern */}
           <div className="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-12 gap-x-5 gap-y-12 pl-0 md:pl-[calc(100%/24)]">
