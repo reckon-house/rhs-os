@@ -39,7 +39,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Art Direction", "Campaign Design"],
       abstract:
-        "Texas oak, whiskey barrels, and the landscape that grows both. The brand needed a visual language that could carry from billboard to phone screen without losing the heritage feeling.\n\nThe system pulls from mid-century poster design. Warm color blocking, silhouetted trees, geometric shapes that echo barrel geometry. Typography stays utilitarian. Distressed texture gives it weight without feeling forced.\n\nBuilt to scale across billboard, print, and digital. A complete campaign language out of a single graphic idea.",
+        "Texas oak, whiskey barrels, and the landscape that grows both. The brand needed a visual language that could carry from billboard to phone screen without losing the heritage feeling.\n\nThe system pulls from mid-century poster design - warm color blocking, silhouetted trees, geometric shapes that echo the barrel geometry. Typography stays utilitarian, and a distressed texture gives the whole thing weight without feeling forced.\n\nBuilt to scale across billboard, print, and digital out of a single graphic idea.",
     },
 
     // ════════════════════════════════════════
@@ -51,14 +51,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "lang-header",
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
-      title: "Mid-Century Posters.\nUtilitarian Type.",
+      title: "Mid-Century Posters\nMeet Workshop Type.",
     },
     {
       id: "lang-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Color blocking. Tree silhouettes. A heavy geometric sans used at scale. The kit does the work the imagery doesn't need to.",
+        "Color blocking, tree silhouettes, a heavy geometric sans used at scale. The kit does the work the imagery doesn't need to.",
     },
     {
       id: "lang-footnote",
@@ -124,14 +124,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "app-header",
       type: "section-header",
       label: "SECTION 03: APPLICATION",
-      title: "Billboard to T-Shirt.\nSame System.",
+      title: "One System Sized for\nBillboard to Phone Screen.",
     },
     {
       id: "app-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Campaign assets sized from outdoor banners down to phone screens. Same color blocking, same silhouettes, same type. Different surface, same brand.",
+        "Campaign assets sized from outdoor banners down to phone screens, all sharing the same color blocking, silhouettes, and type. The surface changes, the brand doesn't.",
     },
 
     {
@@ -156,9 +156,9 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "Sun-Washed Palette.\nWorkshop Type.",
+      title: "A Sun-Washed Palette\nPaired with Workshop Type.",
       introText:
-        "Five colors pulled from a Texas hour-before-sunset. One face, used at every weight the system needed. Same kit on every surface.",
+        "Five colors pulled from a Texas hour-before-sunset, one type family used at every weight the system needed - the same kit applied across every surface.",
       philosophyText:
         "The palette had to read as Texas without leaning into red, white, and blue. Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Pulled from old highway signs and the actual color of the landscape during last-light.\n\nGreatdome carries the editorial headlines. Avenir Next runs everything else, heavy weight for the wordmark, lighter for body. The display face does the heritage work so the workhorse sans doesn't have to.",
       colors: [
@@ -214,14 +214,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Heritage,\nNot Nostalgia.",
+      title: "Heritage Without\nthe Cosplay.",
     },
     {
       id: "closing-subhead",
       type: "text",
       size: "subhead",
       content:
-        "A campaign language built once and applied everywhere. Same color blocks, same silhouettes, same type. Different surface, same brand.",
+        "A campaign language built once and applied everywhere - the same color blocks, silhouettes, and type running across every surface the brand lands on.",
     },
     {
       id: "closing",
@@ -230,7 +230,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, utilitarian type. Heritage without the cosplay.",
+        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held the system together. Heritage without the cosplay.",
     },
   ],
 };

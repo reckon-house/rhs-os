@@ -42,7 +42,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "meta",
       title: "Hill Country\nPrimary Bath",
       subtitle:
-        "Three marbles. Two vanities. One freestanding tub under a wood plank ceiling. 400 square feet designed to feel found, not fitted.",
+        "Three marbles, two vanities, one freestanding tub under a wood plank ceiling. 400 square feet designed to feel found, not fitted.",
       field: "Interior Design  Bathroom Design  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -54,7 +54,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
         "Art Selection",
       ],
       abstract:
-        "The primary bath sits in the same Hill Country home as the kitchen. Same property, same material family, different register. Where the kitchen runs bold (dark sage, raw oak, unlacquered brass), the bath pulls back. Lighter sage on the cabinetry. Polished nickel where the kitchen used brass. Three different marbles instead of one.\n\nCountertops in a warm-veined Calacatta. Shower walls in a cooler, gray-dominant slab with vertical stacking. Floor in hex marble mosaic. The stones were selected as a group, not matched. The variation keeps 400 square feet of hard surface from reading as a showroom.\n\nWood plank ceiling overhead. Globe sconces at both vanities. Wall-mounted cross-handle faucets. A freestanding tub positioned under natural light with views to the property. Dried florals, an olive tree, layered vintage rugs. Every object placed to feel personal rather than styled.",
+        "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register. Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back. Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one.\n\nCountertops in a warm-veined Calacatta, shower walls in a cooler gray-dominant slab with vertical stacking, floor in hex marble mosaic. The stones were selected as a group rather than matched, and the variation keeps 400 square feet of hard surface from reading as a showroom.\n\nWood plank ceiling overhead, globe sconces at both vanities, wall-mounted cross-handle faucets, a freestanding tub positioned under natural light with views to the property. Dried florals, an olive tree, layered vintage rugs - every object placed to feel personal rather than styled.",
     },
 
     // ── GROUPING 1: Her vanity + tub — warm light, details ──
@@ -62,7 +62,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "vanity-header",
       type: "section-header",
       label: "SECTION 02: THE VANITY",
-      title: "Hers Faces East.\nThe Sun Does the Rest.",
+      title: "An East-Facing Vanity\nDoing Its Own Lighting.",
       group: { name: "vanity", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -79,7 +79,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Vessel sinks on marble countertops. Wall-mounted bridge faucets with cross handles, a vintage silhouette against modern plumbing. The cabinet color reads lighter than the kitchen's sage, pulled from the same paint family but shifted two steps toward gray. Glass-front uppers on one side for display. Solid doors on the other for storage. The asymmetry is deliberate.",
+        "Vessel sinks on marble countertops, wall-mounted bridge faucets with cross handles giving a vintage silhouette against modern plumbing. The cabinet color reads lighter than the kitchen's sage, pulled from the same paint family but shifted two steps toward gray. Glass-front uppers on one side for display, solid doors on the other for storage - the asymmetry is deliberate.",
       group: { name: "vanity" },
     },
 
@@ -117,7 +117,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
     {
       id: "headline-collected",
       type: "editorial-headline",
-      text: "Collected,\nnot decorated.",
+      text: "A room that looks\nlived in on day one",
     },
 
     // ── THE SHOWER ──
@@ -132,7 +132,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Walls, floor, and niche each in a different cut. Vertical stacking on the walls for height. Hex mosaic on the floor for grip and visual texture. A recessed niche lined in the same hex for continuity. Polished nickel rain head and hand shower.",
+        "Walls, floor, and niche each in a different cut. Vertical stacking on the walls for height, hex mosaic on the floor for grip and visual texture, a recessed niche lined in the same hex for continuity. Polished nickel rain head and hand shower.",
     },
     {
       id: "shower-footnote",
@@ -140,7 +140,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The marble selection took longer than any other specification in the bath. Three stones needed to read as relatives, not twins. Too close and the room flattens. Too far apart and the transitions jar. The countertop marble runs warm with gold and brown veining. The shower walls pull cooler with gray movement. The hex floor splits the difference. The bench inside the shower uses the same slab as the walls, bookmatched at the corner.",
+        "The marble selection took longer than any other specification in the bath. Three stones needed to read as relatives rather than twins, with enough distance to keep the room from flattening but not so much that the transitions jarred. The countertop marble runs warm with gold and brown veining, the shower walls pull cooler with gray movement, and the hex floor splits the difference. The bench inside the shower uses the same slab as the walls, bookmatched at the corner.",
     },
 
     // ── GROUPING 2: Shower + his side — cooler tones, details ──
@@ -185,14 +185,14 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "objects-header",
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
-      title: "Objects Chosen for the Owner,\nNot the Lens.",
+      title: "Objects Chosen by the\nPerson Who Lives Here.",
     },
     {
       id: "objects-text",
       type: "text",
       size: "subhead",
       content:
-        "The objects in the room weren't sourced from a single vendor or ordered to spec. A brass valet stand from an antique shop. A landscape painting that predates the house. Dried field grass in a clay pot that weighs more than the sink.",
+        "The objects in the room weren't sourced from a single vendor or ordered to spec - a brass valet stand from an antique shop, a landscape painting that predates the house, dried field grass in a clay pot that weighs more than the sink.",
     },
     {
       id: "objects-footnote",
@@ -200,7 +200,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The styling reads personal because it is. A room that looks lived-in on the day the photographer arrives is a room where someone actually lives. The denim jacket on the valet stand. The vintage rug fraying at the edge. The olive tree leaning toward the window. These details resist the temptation to perfect everything. Imperfection signals that someone uses the room.",
+        "The styling reads personal because it is. A room that looks lived-in on the day the photographer arrives is a room where someone actually lives - the denim jacket on the valet stand, the vintage rug fraying at the edge, the olive tree leaning toward the window. These details resist the temptation to perfect everything, and imperfection signals that someone uses the room.",
     },
 
     // ── CLOSING ──
@@ -229,7 +229,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. The shiplap walls. The wood ceiling. The sage cabinetry. All carry through. What changes is the temperature. The kitchen is for company. The bath is not.\n\nA freestanding tub positioned where the light falls. Globe sconces throwing warm circles on vertical plank walls. A shower lined in three stones selected to feel related, not identical. Objects chosen for the people who use the room, not the people who photograph it.",
+        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. Shiplap walls, wood ceiling, sage cabinetry - all of it carries through from the kitchen, but the temperature shifts. Where the kitchen is built for company, the bath is built for the morning.\n\nA freestanding tub sits where the light falls, globe sconces throw warm circles on the vertical plank walls, and the shower is lined in three stones selected to feel related rather than identical. The objects in the room belong to the people who use it.",
     },
   ],
 };

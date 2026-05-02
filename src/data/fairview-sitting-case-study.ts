@@ -39,7 +39,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       status: "Built",
       classification: ["Interior Design", "Furniture Curation", "Finish Selection"],
       abstract:
-        "Texture runs the room. Ledgestone fireplace wall floor to ceiling. Charcoal velvet swivel chairs with enough sheen to catch light. Antiqued brass coffee table and bar cabinet adding warmth without shine. Black box beams overhead pull the contrast together.\n\nTight palette. Stone, velvet, brass, warm oak. No competing colors. The materials do the talking.\n\nFurniture arranged for conversation rather than a television. Four swivels facing the fire, close enough for quiet voices. A round bar cabinet in the corner stocks what the moment calls for. Calm and slightly glam. Formal without being stiff.",
+        "Texture runs the room. A ledgestone fireplace wall climbs floor to ceiling, charcoal velvet swivel chairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine. Black box beams overhead pull the contrast together.\n\nThe palette stays tight - stone, velvet, brass, warm oak, no competing colors. The materials do the talking.\n\nFurniture arranges for conversation rather than a television. Four swivels face the fire, close enough for quiet voices, with a round bar cabinet in the corner stocking what the moment calls for. Calm and slightly glam, formal without being stiff.",
     },
 
     // ════════════════════════════════════════
@@ -56,7 +56,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Texture runs the room. Four materials, deeply considered. No competing colors, no decorative noise.",
+        "Texture runs the room. Four materials carry the whole composition, with no competing colors and no decorative noise.",
     },
     {
       id: "texture-footnote",
@@ -64,7 +64,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Stone wall floor to ceiling. Charcoal velvet on the swivels with enough sheen to catch light. Antiqued brass adding warmth without shine. Warm oak underfoot. Each material does one job and stays out of the others' way.",
+        "Stone wall floor to ceiling, charcoal velvet on the swivels with enough sheen to catch light, antiqued brass adding warmth without shine, warm oak underfoot. Each material does one job and stays out of the others' way.",
     },
 
     // Material detail image — stone wall + mantel close-up
@@ -109,7 +109,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "conversation-header",
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
-      title: "Built for the Drink.\nNot the TV.",
+      title: "A Grouping Built\nAround the Fire.",
     },
     {
       id: "conversation-subhead",
@@ -124,7 +124,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The TV doesn't get a seat. The fire does. The brass coffee table sits at the center because that's where everyone reaches. Furniture as architecture for conversation, not for staring at a screen.",
+        "The fire gets the seat the TV would normally take. The brass coffee table sits at the center because that's where everyone reaches, and the furniture is arranged as architecture for conversation rather than for staring at a screen.",
     },
 
     // 2-up: brass table detail + grouping front
@@ -157,7 +157,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
     {
       id: "headline-glam",
       type: "editorial-headline",
-      text: "Calm and slightly glam\nFormal without being stiff",
+      text: "A formal room\nthat doesn't feel formal",
     },
 
     // ════════════════════════════════════════
@@ -170,12 +170,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "Four Materials.\nOne Room.",
+      title: "Four Materials\nCarrying One Room.",
       introText:
-        "The room runs on four materials and one shared light. Pulled tight enough to read as a single composition.",
+        "The room runs on four materials and one shared light, pulled tight enough to read as a single composition.",
       philosophyTitle: "Material philosophy",
       philosophyText:
-        "Stone for the structure. Velvet for the seating. Brass for the centerpiece. Oak for the floor. Every other choice in the room derives from one of those four — the box beams pull from the velvet, the mantel from the oak, the bar cabinet from the brass.\n\nThe palette stays tight on purpose. Color goes in via the materials, not via accents. No throw pillow doing the work the room should already be doing.",
+        "Stone for the structure, velvet for the seating, brass for the centerpiece, oak for the floor. Every other choice in the room derives from one of those four - the box beams pull from the velvet, the mantel from the oak, the bar cabinet from the brass.\n\nThe palette stays tight on purpose. Color goes in via the materials, not via accents. No throw pillow doing the work the room should already be doing.",
       colors: [
         { name: "Stone Grey", hex: "#B4ACA0", description: "Stacked stone, walls" },
         { name: "Charcoal Velvet", hex: "#3F3E37", description: "Swivels, beams" },
@@ -245,7 +245,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "A formal room that doesn't feel formal. Four materials, four chairs, one fire. Calm and slightly glam. Formal without being stiff.",
+        "A formal room that doesn't feel formal. Four materials, four chairs, one fire, used for the drink, the conversation, and the quiet hour after dinner.",
     },
   ],
 };

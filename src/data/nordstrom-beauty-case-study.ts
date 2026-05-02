@@ -54,7 +54,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
         "Editorial Templates",
       ],
       abstract:
-        "Beauty content ages fast. New products launch weekly. Trends shift seasonally. Static editorial goes stale before it publishes. The answer wasn't faster publishing. It was a template that aged better than the content inside it.\n\nThree modular story formats. Each designed with editorial voice but built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the underlying product grid stayed current. Content that looked curated but actually ran on rails.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it applied, buy without leaving the modal. Stories opened into a shoppable drawer rather than navigating away. The flow kept customers inside the narrative instead of bouncing them through product pages.",
+        "Beauty content ages fast. New products launch weekly, trends shift seasonally, and static editorial goes stale before it publishes. The answer wasn't faster publishing - it was a template that aged better than the content inside it.\n\nThree modular story formats, each designed with editorial voice but built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the underlying product grid stayed current. Content that looked curated but actually ran on rails.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it applied, buy without leaving the modal. Stories opened into a shoppable drawer rather than navigating away, so the flow kept customers inside the narrative instead of bouncing them through product pages.",
     },
 
     // ── THE HUB — grouped ──
@@ -70,7 +70,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hub anchored around three rotating editorial stories. \"Lips That Pop.\" \"Top 5 Serums.\" \"Get That Glow.\" Each card opened into a full shoppable experience. The three-card layout gave merchandising enough surface area to feature seasonal pushes without overwhelming the page.",
+        "The hub anchored around three rotating editorial stories - \"Lips That Pop,\" \"Top 5 Serums,\" \"Get That Glow\" - each card opening into a full shoppable experience. The three-card layout gave merchandising enough surface area to feature seasonal pushes without overwhelming the page.",
       group: { name: "hub" },
     },
     {
@@ -79,7 +79,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The templates separated content from structure. Editorial voice lived in the headlines, photography, and copy. Product data pulled from the catalog automatically. Swap a SKU and the price, description, and imagery updated without a designer touching the page. They survived three seasonal rotations before anyone requested a layout change.",
+        "The templates separated content from structure. Editorial voice lived in the headlines, photography, and copy, while product data pulled from the catalog automatically - swap a SKU and the price, description, and imagery updated without a designer touching the page. They survived three seasonal rotations before anyone requested a layout change.",
       group: { name: "hub" },
     },
 
@@ -108,14 +108,14 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "tryon-header",
       type: "section-header",
       label: "SECTION 03: VIRTUAL TRY-ON",
-      title: "The Tool Turned\nBrowsing into Trying.",
+      title: "Color Discovery That\nLived on the Customer's Face.",
     },
     {
       id: "tryon-text",
       type: "text",
       size: "subhead",
       content:
-        "The tool brought product discovery into the customer's actual face. Upload a selfie or pull one from the existing Style Profile. Drag across a color gradient and watch shades apply to the photo in real time. Find the right red, tap it, and the product card appears below with reviews, pricing, and an add-to-bag button.",
+        "The tool brought product discovery into the customer's actual face. Upload a selfie or pull one from the existing Style Profile, drag across a color gradient and watch shades apply to the photo in real time. Find the right red, tap it, and the product card appears below with reviews, pricing, and an add-to-bag button.",
     },
     {
       id: "tryon-footnote",
@@ -123,7 +123,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The tool lived inside the \"Lips That Pop\" story but was designed as a standalone component. Reusable across any color-driven category: lip, eye, cheek, nail. The color gradient mapped directly to available SKUs. No shade appeared in the tool that couldn't be purchased. The function and the experience were the same thing.",
+        "The tool lived inside the \"Lips That Pop\" story but was designed as a standalone component, reusable across any color-driven category: lip, eye, cheek, nail. The color gradient mapped directly to available SKUs, so no shade appeared in the tool that couldn't be purchased - the function and the experience held the same shape.",
     },
 
     // ── Desktop try-on ──
@@ -164,7 +164,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every story opened into a shoppable drawer rather than a product page. The editorial narrative stayed visible while the product detail slid in from the side. Reviews. Pricing. Size options. Add to bag. The purchase happened without breaking the read.",
+        "Every story opened into a shoppable drawer rather than a product page. The editorial narrative stayed visible while the product detail slid in from the side - reviews, pricing, size options, add to bag - and the purchase happened without breaking the read.",
     },
     {
       id: "stories-footnote",
@@ -210,14 +210,14 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Built Once,\nMerchandised Continuously.",
+      title: "A Hub That Stayed Fresh\nWithout Manual Updates.",
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "Three story templates. One try-on tool. A drawer pattern that kept customers inside the narrative.",
+        "Three story templates, one try-on tool, and a drawer pattern that kept customers inside the narrative.",
     },
     {
       id: "closing",
@@ -231,7 +231,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
       content:
-        "The beauty hub solved a publishing problem by turning it into a design problem. Separate the editorial voice from the product data. Let the templates hold the layout while the catalog feeds the content. A hub that looked hand-curated every week without a designer opening a file.\n\nThe try-on tool turned browsing into trying. The shoppable drawer kept the story visible during the purchase. Both patterns kept the customer inside the experience instead of scattering them across product pages.",
+        "The beauty hub solved a publishing problem by turning it into a design problem - separate the editorial voice from the product data, and let the templates hold the layout while the catalog feeds the content. A hub that looked hand-curated every week without a designer opening a file.\n\nThe try-on tool turned browsing into trying, and the shoppable drawer kept the story visible during the purchase. Both patterns kept the customer inside the experience instead of scattering them across product pages.",
     },
   ],
 };

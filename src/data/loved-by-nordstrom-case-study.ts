@@ -40,7 +40,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "meta",
       title: "Loved by\nNordstrom",
       subtitle:
-        "One icon borrowed from Instagram. Twelve months of brand merchandising built on top of it.",
+        "One icon borrowed from Instagram, twelve months of brand merchandising built on top of it.",
       field: "Creative Direction  Campaign Design  Design Systems",
       author: "Jeremy Prasatik",
       published: "2017",
@@ -51,7 +51,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         "Design Systems",
       ],
       abstract:
-        "The brief was emerging brand awareness. A Nordstrom mandate to lift smaller designer labels across the department store floor and the digital storefront at the same time. The solve was simpler than it sounds. Borrow the heart icon from Instagram. Make it the campaign signature. Done.\n\nOne mark. Two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising. \"Loved by Nordstrom\" carried the hero slots that earned the extra real estate. Same icon, same typography, different emotional weight. Merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template absorbed whatever the brand had already licensed. Helmut Lang shot minimal and cold. The Great shot warm and narrative. See by Chloé led with product. The frame held all of them without flattening any of them. The campaign ran long because there was nothing to get tired of.",
+        "The brief was emerging brand awareness - a Nordstrom mandate to lift smaller designer labels across the department store floor and the digital storefront at the same time. The solve was simpler than it sounds: borrow the heart icon from Instagram and let it carry the campaign signature.\n\nOne mark, two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising, and \"Loved by Nordstrom\" carried the hero slots that earned the extra real estate. Same icon, same typography, different emotional weight - merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template absorbed whatever the brand had already licensed - Helmut Lang shot minimal and cold, The Great shot warm and narrative, See by Chloé led with product. The frame held all of them without flattening any of them, and the campaign ran long because there was nothing to get tired of.",
     },
 
     // ── THE IDEA ──
@@ -74,7 +74,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Two typographic levels did the work of a full brand hierarchy. \"Liked\" sat on the smaller tiles. \"Loved\" carried the hero slots. Same icon, same typography, different emotional weight. Merchandising picked which tier a brand earned. The design held the frame.",
+        "Two typographic levels did the work of a full brand hierarchy. \"Liked\" sat on the smaller tiles and \"Loved\" carried the hero slots - same icon, same typography, different emotional weight. Merchandising picked which tier a brand earned and the design held the frame.",
     },
 
     // ── IPHONE INSTAGRAM HERO ──
@@ -91,7 +91,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "The Tile Was a Container,\nNot a Layout.",
+      title: "A Tile That Worked\nAs a Container.",
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
     },
     {
@@ -99,7 +99,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Brand name on top. Photography in the middle. Heart and endorsement at the base. Anything in the middle slot worked. Product shot, lifestyle frame, studio portrait, campaign still. The frame absorbed whatever the brand had already licensed.",
+        "Brand name on top, photography in the middle, heart and endorsement at the base. Anything could land in the middle slot - product shot, lifestyle frame, studio portrait, campaign still. The frame absorbed whatever the brand had already licensed.",
       group: { name: "system" },
     },
     {
@@ -108,7 +108,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The flexibility came from discipline at the structural level. Fixed grid. Fixed type. Fixed icon. Everything else open. Merchandising got more freedom than the brands could have negotiated individually.",
+        "The flexibility came from discipline at the structural level. Fixed grid, fixed type, fixed icon, everything else open. Merchandising got more freedom than the brands could have negotiated individually.",
       group: { name: "system" },
     },
 
@@ -154,14 +154,14 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "loved-header",
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
-      title: "Liked Is the Floor.\nLoved Is the Ceiling.",
+      title: "Two Tiers Giving\nMerchandising a Lever.",
     },
     {
       id: "loved-text",
       type: "text",
       size: "subhead",
       content:
-        "Loved By earned the bigger canvas. Larger crops, tighter compositions, single-brand focus. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale. Same type, same heart, different voltage.",
+        "Loved By earned the bigger canvas - larger crops, tighter compositions, single-brand focus. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale, with the same type and heart but a different voltage.",
     },
     {
       id: "loved-footnote",
@@ -200,7 +200,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The tile rendered the same whether it showed up in a feed, an email hero, a window decal, or a landing page header. Scale changed. Framing stayed. Recognition compounded across channels without anyone teaching the customer to look for it.",
+        "The tile rendered the same whether it showed up in a feed, an email hero, a window decal, or a landing page header. Scale changed, framing stayed, and recognition compounded across channels without anyone teaching the customer to look for it.",
     },
     {
       id: "channels-footnote",
@@ -245,7 +245,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       stack: ["Art Direction", "Photography Licensing", "Editorial Systems"],
       links: [],
       content:
-        "The Instagram heart was the argument. The rest was restraint. Keep the frame constant. Keep the typography quiet. Let the brand photography do the talking. The campaign ran long because there was nothing to get tired of. No swapping slogans. No reinventing the treatment for fall.\n\nThe tier between Liked and Loved gave merchandising a lever and gave designers a reason not to touch the layout every month. One icon, two levels, any asset. A year of output from a five-minute idea.",
+        "The Instagram heart was the argument and the rest was restraint - keep the frame constant, keep the typography quiet, let the brand photography do the talking. The campaign ran long because there was nothing to get tired of, no slogans to swap, no treatment to reinvent for fall.\n\nThe tier between Liked and Loved gave merchandising a lever and gave designers a reason not to touch the layout every month. One icon, two levels, any asset, a year of output from a five-minute idea.",
     },
   ],
 };

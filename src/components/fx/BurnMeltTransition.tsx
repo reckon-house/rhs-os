@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useId } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 /**
@@ -37,7 +37,11 @@ export function BurnMeltTransition() {
 
   const pathname = usePathname();
   const router = useRouter();
-  const [uniqueId] = useState(() => Math.random().toString(36).substr(2, 9));
+  // Stable across SSR/CSR (Math.random would diverge and break hydration on the
+  // overlay's `filter: url(#…)` style). useId() includes ":" which isn't valid
+  // inside CSS url() identifiers, so strip it.
+  const reactId = useId();
+  const uniqueId = reactId.replace(/[^a-zA-Z0-9_-]/g, "");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -53,20 +57,20 @@ export function BurnMeltTransition() {
 
   const filterId = `burn-melt-filter-${uniqueId}`;
 
-  // Detect iOS Safari
-  const isIOSSafari =
-    typeof navigator !== "undefined" &&
-    (() => {
-      const ua = navigator.userAgent;
-      const iOS =
-        /iPad|iPhone|iPod/.test(ua) ||
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-      const safari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua);
-      return iOS && safari;
-    })();
+  // iOS Safari detection — must default to false on first render so SSR and
+  // the initial client paint agree. Updated in useEffect after mount; the
+  // mask-image style only kicks in once the flag flips, which is well after
+  // hydration completes.
+  const [isIOSSafari, setIsIOSSafari] = useState(false);
 
   useEffect(() => {
     pageOrigin.current = window.location.origin;
+    const ua = navigator.userAgent;
+    const iOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const safari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua);
+    if (iOS && safari) setIsIOSSafari(true);
   }, []);
 
   const toAbsoluteUrl = (href: string): string => {

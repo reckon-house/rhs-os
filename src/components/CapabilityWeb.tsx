@@ -1,7 +1,34 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
+
+// ── Color helpers — used to derive 3D-orb gradients from each base color ───
+function parseHex(hex: string): [number, number, number] {
+  const v = hex.replace("#", "");
+  return [
+    parseInt(v.slice(0, 2), 16),
+    parseInt(v.slice(2, 4), 16),
+    parseInt(v.slice(4, 6), 16),
+  ];
+}
+function rgbToHex(r: number, g: number, b: number): string {
+  const c = (n: number) =>
+    Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, "0");
+  return `#${c(r)}${c(g)}${c(b)}`;
+}
+function lightenHex(hex: string, amt: number): string {
+  const [r, g, b] = parseHex(hex);
+  return rgbToHex(r + (255 - r) * amt, g + (255 - g) * amt, b + (255 - b) * amt);
+}
+function darkenHex(hex: string, amt: number): string {
+  const [r, g, b] = parseHex(hex);
+  return rgbToHex(r * (1 - amt), g * (1 - amt), b * (1 - amt));
+}
+/** Stable id-safe slug for a hex color (drop the #). */
+function colorId(hex: string): string {
+  return hex.replace("#", "");
+}
 
 function seededRandom(seed: number) {
   let s = seed;
@@ -11,9 +38,17 @@ function seededRandom(seed: number) {
   };
 }
 
+// Round to 4 decimals — Node and V8 Math intrinsics can disagree at the last
+// bit of float precision, which surfaces as a SSR/CSR hydration mismatch on
+// SVG numeric attributes. 4 decimals is more than enough for the chart and
+// flushes those phantom diffs.
+function round4(n: number) {
+  return Math.round(n * 10000) / 10000;
+}
+
 function polar(cx: number, cy: number, r: number, angleDeg: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  return { x: round4(cx + r * Math.cos(rad)), y: round4(cy + r * Math.sin(rad)) };
 }
 
 const CX = 500, CY = 500;
@@ -129,10 +164,10 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
         <ScrambleOnView text="SECTION 04: PRACTICE" />
       </span>
       <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
-        The work of Jeremy Prasatik.
+        Putting the work first.
       </h2>
-      <p className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal ${inkClass} mb-6`}>
-        Three practices. Twenty disciplines. Digital, branding, and interiors — each complete on its own, each made stronger by the others.
+      <p className={`mt-4 text-[14px] md:text-[16px] leading-[1.6] ${inkDim} mb-6`}>
+        It&apos;s the part I love most.
       </p>
 
       <div className={`text-spec ${inkSoft}`}>
@@ -148,15 +183,33 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
           <span className="font-bold">Classification </span>
           Digital  Branding  Interiors
         </p>
+        <p>
+          <span className="font-bold">Contact </span>
+          <a
+            href="mailto:hello@reckon.house"
+            className="underline underline-offset-2 hover:text-[#F0EAE4] transition-colors"
+          >
+            hello@reckon.house
+          </a>
+          {"  "}214.697.4578{"  "}
+          <a
+            href="https://instagram.com/reckonhousestaples"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-[#F0EAE4] transition-colors"
+          >
+            IG @reckonhousestaples
+          </a>
+        </p>
       </div>
 
       <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
         <p className={`font-bold ${inkClass} indent-[4em]`}>Abstract</p>
         <p className="indent-[4em]">
-          One studio, three practices, no handoff. Apps that ship. Brands that hold up. Rooms people actually live in. Designed and built by the same hands from concept through production.
+          The work means a lot of things at once - writing the code that ships an app, picking the marble that goes in a kitchen, art directing a campaign shoot, building a brand voice from scratch, designing the AI tooling that runs marketing operations at enterprise scale. These aren&apos;t separate jobs, they&apos;re the same job showing up in different rooms.
         </p>
         <p className="mt-4">
-          The chart below shows the full range, plotted as a web. Disciplines at the center, skills in the middle ring, tools and methods at the edge. Every node connects.
+          What makes it work is the no-handoff part. Wireframing and coding happen in the same week. Picking kitchen finishes and coordinating the install happen on the same site visit. The thinking and the making stay close to each other, which is why the disciplines stay connected instead of competing for attention.
         </p>
       </div>
     </div>
@@ -170,8 +223,124 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
 export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) {
   // ── Theme colors — flip when on dark bg ────────────────────────
   const INK = dark ? "#F0EAE4" : "#141414";          // text + grid lines
-  const SURFACE = dark ? "#1F1F1F" : "#efebe4";      // disc + hub fills
-  const HUB_RING = dark ? "#3A3530" : "#c0bbb4";     // hub ring stroke
+
+  // ── Scroll-driven parallax ─────────────────────────────────────
+  // Computed in rAF and applied directly to the DOM via refs so there's
+  // no React re-render on scroll. The chart has ~1700 SVG nodes; pushing
+  // parallax through useState would reconcile all of them every frame.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const outerLayerRef = useRef<SVGGElement | null>(null);
+  const nebulaLayerRef = useRef<SVGGElement | null>(null);
+  const starsFarRef = useRef<SVGGElement | null>(null);
+  const starsMidRef = useRef<SVGGElement | null>(null);
+  const starsNearRef = useRef<SVGGElement | null>(null);
+
+  useEffect(() => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    let raf = 0;
+    let target = 0;     // scroll-derived parallax (0..1)
+    let current = 0;    // smoothed value applied to the DOM
+    let running = false;
+    let inView = false; // gated by IntersectionObserver
+
+    const apply = (t: number) => {
+      if (outerLayerRef.current) {
+        outerLayerRef.current.style.transform = `scale(${1 + t * 0.045})`;
+      }
+      if (nebulaLayerRef.current) {
+        nebulaLayerRef.current.style.transform = `rotate(${t * -1.4}deg) scale(${1 + t * 0.04})`;
+      }
+      if (starsFarRef.current) {
+        starsFarRef.current.style.transform = `rotate(${t * -0.8}deg) scale(${1 + t * 0.025})`;
+      }
+      if (starsMidRef.current) {
+        starsMidRef.current.style.transform = `rotate(${t * -1.6}deg) scale(${1 + t * 0.07})`;
+      }
+      if (starsNearRef.current) {
+        starsNearRef.current.style.transform = `rotate(${t * -2.6}deg) scale(${1 + t * 0.14})`;
+      }
+    };
+
+    // Continuous rAF loop while the value hasn't settled. LERPing the
+    // displayed value toward the scroll-derived target masks any
+    // frame-time variance and feels physically smooth.
+    const animate = () => {
+      current += (target - current) * 0.16;
+      if (Math.abs(target - current) < 0.001) {
+        current = target;
+        apply(current);
+        running = false;
+        return;
+      }
+      apply(current);
+      raf = requestAnimationFrame(animate);
+    };
+
+    const readTarget = () => {
+      // Skip when off-screen — IntersectionObserver flips inView.
+      if (!inView) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const center = rect.top + rect.height / 2;
+      target = Math.max(-0.2, Math.min(1.2, 1 - center / vh));
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(animate);
+      }
+    };
+
+    // Seed both target and current at mount so the layers start at rest.
+    const el = containerRef.current;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const center = rect.top + rect.height / 2;
+      target = Math.max(-0.2, Math.min(1.2, 1 - center / vh));
+      current = target;
+      apply(current);
+    }
+
+    // IntersectionObserver gates everything below. The capture-phase
+    // scroll listener stays attached but no-ops while the chart is off
+    // screen — saves work on long pages where the chart is far below.
+    // rootMargin gives a generous lead so parallax has time to seed
+    // before the chart enters the viewport.
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            (entries) => {
+              const hit = entries[0]?.isIntersecting ?? false;
+              const wasOut = !inView;
+              inView = hit;
+              if (hit && wasOut) {
+                // Re-seed target on entry so first frame is correct.
+                readTarget();
+              }
+            },
+            { rootMargin: "200px 0px" }
+          )
+        : null;
+    if (io && el) io.observe(el);
+    // Fallback when IO is unavailable: always treat as in view.
+    if (!io) inView = true;
+
+    // Capture-phase catches scrolls from any scroll container (page
+    // scroll lives on a content wrapper, not <body>, in this layout).
+    document.addEventListener("scroll", readTarget, { capture: true, passive: true });
+    window.addEventListener("resize", readTarget);
+    return () => {
+      cancelAnimationFrame(raf);
+      io?.disconnect();
+      document.removeEventListener("scroll", readTarget, { capture: true } as EventListenerOptions);
+      window.removeEventListener("resize", readTarget);
+    };
+  }, []);
 
   // ── Particles ──────────────────────────────────────────────────
   const particles = useMemo(() => {
@@ -187,8 +356,8 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.15 + rng() * 0.85);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: round4(center.x + Math.cos(a) * dist),
+          y: round4(center.y + Math.sin(a) * dist),
           r: skill.importance >= 20 ? 2 + rng() * 5.5 : 1 + rng() * 3.5,
           color: skill.color,
           opacity: 0.07 + rng() * 0.3,
@@ -203,8 +372,8 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
         const spread = 16 + rng() * 36;
         const a = rng() * Math.PI * 2;
         dots.push({
-          x: center.x + Math.cos(a) * (spread * (0.15 + rng() * 0.85)),
-          y: center.y + Math.sin(a) * (spread * (0.15 + rng() * 0.85)),
+          x: round4(center.x + Math.cos(a) * (spread * (0.15 + rng() * 0.85))),
+          y: round4(center.y + Math.sin(a) * (spread * (0.15 + rng() * 0.85))),
           r: 1 + rng() * 3,
           color: tool.color,
           opacity: 0.08 + rng() * 0.25,
@@ -219,8 +388,8 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
         const spread = 20 + rng() * 40;
         const a = rng() * Math.PI * 2;
         dots.push({
-          x: center.x + Math.cos(a) * (spread * (0.2 + rng() * 0.8)),
-          y: center.y + Math.sin(a) * (spread * (0.2 + rng() * 0.8)),
+          x: round4(center.x + Math.cos(a) * (spread * (0.2 + rng() * 0.8))),
+          y: round4(center.y + Math.sin(a) * (spread * (0.2 + rng() * 0.8))),
           r: 1.2 + rng() * 4,
           color: disc.color,
           opacity: 0.06 + rng() * 0.22,
@@ -229,13 +398,13 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
     });
 
     // Atmospheric scatter
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 220; i++) {
       const ring = (R1 - 30) + rng() * (R5 - R1 + 50);
       const angle = rng() * 360;
       const pos = polar(CX, CY, ring, angle);
       dots.push({
-        x: pos.x + (rng() - 0.5) * 18,
-        y: pos.y + (rng() - 0.5) * 18,
+        x: round4(pos.x + (rng() - 0.5) * 18),
+        y: round4(pos.y + (rng() - 0.5) * 18),
         r: 0.3 + rng() * 2,
         color: ALL_COLORS[Math.floor(rng() * ALL_COLORS.length)],
         opacity: 0.02 + rng() * 0.1,
@@ -243,7 +412,7 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
     }
 
     // R4 detail ring scatter
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 60; i++) {
       const angle = rng() * 360;
       const pos = polar(CX, CY, R4 + (rng() - 0.5) * 30, angle);
       const discIdx = Math.floor(angle / 120) % 3;
@@ -257,6 +426,48 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
     }
 
     return dots;
+  }, []);
+
+  // ── Starfield — dense distant stars across the whole canvas, gives
+  // the chart galactic depth instead of a clean solar-system look.
+  // X range matches the wide viewBox (-200..1200) so stars bleed
+  // past the chart's circular footprint to the dark-card edges. ──
+  const stars = useMemo(() => {
+    const rng = seededRandom(123);
+    const list: { x: number; y: number; r: number; color: string; opacity: number }[] = [];
+
+    // Layer 1: distant pinpricks (kept lean — they're below visibility threshold individually)
+    for (let i = 0; i < 520; i++) {
+      list.push({
+        x: -200 + rng() * 1400,
+        y: rng() * 1000,
+        r: 0.3 + rng() * 0.6,
+        color: rng() > 0.85 ? "#FFE8B0" : "#F5EFE8",
+        opacity: 0.18 + rng() * 0.32,
+      });
+    }
+    // Layer 2: mid-distance stars
+    for (let i = 0; i < 220; i++) {
+      list.push({
+        x: -200 + rng() * 1400,
+        y: rng() * 1000,
+        r: 0.55 + rng() * 0.95,
+        color: "#F5EFE8",
+        opacity: 0.32 + rng() * 0.38,
+      });
+    }
+    // Layer 3: bright foreground stars (sparse, do most of the visual work)
+    for (let i = 0; i < 60; i++) {
+      list.push({
+        x: -200 + rng() * 1400,
+        y: rng() * 1000,
+        r: 0.9 + rng() * 1.5,
+        color: rng() > 0.75 ? "#FFE8B0" : "#FFFFFF",
+        opacity: 0.5 + rng() * 0.4,
+      });
+    }
+
+    return list;
   }, []);
 
   // ── Web lines ──────────────────────────────────────────────────
@@ -302,7 +513,7 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
     CROSS_CONNECTIONS.forEach(([ai, bi]) => {
       const from = polar(CX, CY, R2, SKILLS[ai].angle);
       const to   = polar(CX, CY, R2, SKILLS[bi].angle);
-      const ctrl = { x: CX + (from.x - CX) * 0.3 + (to.x - CX) * 0.3, y: CY + (from.y - CY) * 0.3 + (to.y - CY) * 0.3 };
+      const ctrl = { x: round4(CX + (from.x - CX) * 0.3 + (to.x - CX) * 0.3), y: round4(CY + (from.y - CY) * 0.3 + (to.y - CY) * 0.3) };
       lines.push({ x1: from.x, y1: from.y, x2: ctrl.x, y2: ctrl.y, color: SKILLS[ai].color, opacity: 0.14, width: 0.5 });
       lines.push({ x1: ctrl.x, y1: ctrl.y, x2: to.x, y2: to.y, color: SKILLS[bi].color, opacity: 0.14, width: 0.5 });
     });
@@ -329,55 +540,284 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
     return lines;
   }, []);
 
+  // Collect every unique color used by orbs so we can pre-build a radial
+  // gradient for each one. Gradients sit in <defs> and are referenced by id.
+  const orbColors = useMemo(() => {
+    const set = new Set<string>();
+    DISCIPLINES.forEach((d) => set.add(d.color));
+    SKILLS.forEach((s) => set.add(s.color));
+    TOOLS.forEach((t) => set.add(t.color));
+    return Array.from(set);
+  }, []);
+
+  // ── Pre-rasterized atmosphere ──────────────────────────────────
+  // Draw stars/particles/web-lines/radial-grid to offscreen canvases
+  // once at mount, expose as data URLs, and reference them in the SVG
+  // as <image> elements. Collapses ~2,500 SVG nodes into 6 image refs.
+  // The interactive elements (planets, hub, labels, rings) stay live
+  // SVG — only the static atmospheric texture moves to canvas.
+  const [bgUrls, setBgUrls] = useState<{
+    starsFar: string;
+    starsMid: string;
+    starsNear: string;
+    particles: string;
+    webLines: string;
+    radialGrid: string;
+  } | null>(null);
+
+  useLayoutEffect(() => {
+    if (typeof document === "undefined") return;
+    // Canvas matches the SVG viewBox "-200 0 1400 1000". Translate the
+    // canvas origin so SVG x=-200 maps to canvas x=0.
+    const VW = 1400;
+    const VH = 1000;
+    const VX = -200;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const make = (draw: (ctx: CanvasRenderingContext2D) => void) => {
+      const c = document.createElement("canvas");
+      c.width = VW * dpr;
+      c.height = VH * dpr;
+      const ctx = c.getContext("2d");
+      if (!ctx) return "";
+      ctx.scale(dpr, dpr);
+      ctx.translate(-VX, 0);
+      draw(ctx);
+      return c.toDataURL("image/png");
+    };
+
+    const drawDots =
+      (subset: { x: number; y: number; r: number; color: string; opacity: number }[]) =>
+      (ctx: CanvasRenderingContext2D) => {
+        subset.forEach((d) => {
+          ctx.fillStyle = d.color;
+          ctx.globalAlpha = d.opacity;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      };
+
+    const drawWebLines = (ctx: CanvasRenderingContext2D) => {
+      webLines.forEach((line) => {
+        ctx.strokeStyle = line.color;
+        ctx.globalAlpha = line.opacity;
+        ctx.lineWidth = line.width;
+        ctx.beginPath();
+        ctx.moveTo(line.x1, line.y1);
+        ctx.lineTo(line.x2, line.y2);
+        ctx.stroke();
+      });
+    };
+
+    const drawRadialGrid = (ctx: CanvasRenderingContext2D) => {
+      ctx.strokeStyle = INK;
+      for (let i = 0; i < 72; i++) {
+        const angle = i * 5;
+        const major = angle % 30 === 0;
+        const mid = angle % 15 === 0;
+        const inner = polar(CX, CY, R1 - 12, angle);
+        const outer = polar(CX, CY, R5 + 22, angle);
+        ctx.lineWidth = major ? 0.25 : mid ? 0.15 : 0.08;
+        ctx.globalAlpha = major ? 0.04 : mid ? 0.025 : 0.012;
+        ctx.beginPath();
+        ctx.moveTo(inner.x, inner.y);
+        ctx.lineTo(outer.x, outer.y);
+        ctx.stroke();
+      }
+    };
+
+    setBgUrls({
+      starsFar: make(drawDots(stars.slice(0, 520))),
+      starsMid: make(drawDots(stars.slice(520, 740))),
+      starsNear: make(drawDots(stars.slice(740))),
+      particles: make(drawDots(particles)),
+      webLines: make(drawWebLines),
+      radialGrid: make(drawRadialGrid),
+    });
+  }, [stars, particles, webLines, INK]);
+
   return (
-    <div className="w-full">
+    <div
+      className="w-full"
+      ref={containerRef}
+      // Bleed past the dark card's horizontal padding so the galaxy
+      // gradient and starfield reach the rounded card edges. Margin
+      // value matches the parent's clamp() padding exactly.
+      style={{
+        marginLeft: "calc(-1 * clamp(24px, 5vw, 64px))",
+        marginRight: "calc(-1 * clamp(24px, 5vw, 64px))",
+        width: "auto",
+      }}
+    >
       {/* Chart — horizontal scroll on mobile */}
       <div className="overflow-x-auto md:overflow-x-visible">
-      <div className="min-w-[800px] md:min-w-0 w-full max-w-[960px] mx-auto px-4 md:px-0">
-        <svg viewBox="0 0 1000 1000" className="w-full h-auto" style={{ fontFamily: "'Satoshi', system-ui, sans-serif" }}>
+      <div className="min-w-[800px] md:min-w-0 w-full px-4 md:px-0">
+        <svg viewBox="-200 0 1400 1000" className="w-full h-auto" style={{
+          fontFamily: "'Satoshi', system-ui, sans-serif",
+          // Promote to a separate compositing layer so scroll-driven
+          // transform updates inside the SVG don't repaint the page.
+          willChange: "transform",
+          transform: "translateZ(0)",
+        }}>
 
-          {/* ── Background square grid ── */}
+          {/* ── 3D-orb defs: per-color radial gradients + soft shadow ─── */}
+          <defs>
+            {orbColors.map((c) => {
+              const id = `orb-${colorId(c)}`;
+              const hi = lightenHex(c, 0.55);
+              const lo = darkenHex(c, 0.35);
+              return (
+                <radialGradient key={id} id={id} cx="32%" cy="28%" r="78%">
+                  <stop offset="0%" stopColor={hi} />
+                  <stop offset="42%" stopColor={c} />
+                  <stop offset="100%" stopColor={lo} />
+                </radialGradient>
+              );
+            })}
+
+            {/* Sun gradient — warm corona core, deep at the limb */}
+            <radialGradient id="sun-core" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFF8E2" stopOpacity={1} />
+              <stop offset="35%" stopColor="#FFD98C" />
+              <stop offset="75%" stopColor="#E89B3F" />
+              <stop offset="100%" stopColor="#9C5520" stopOpacity={0.95} />
+            </radialGradient>
+
+            {/* Sun corona — soft outer glow that fades to nothing */}
+            <radialGradient id="sun-corona" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFD98C" stopOpacity={0.55} />
+              <stop offset="50%" stopColor="#E89B3F" stopOpacity={0.18} />
+              <stop offset="100%" stopColor="#9C5520" stopOpacity={0} />
+            </radialGradient>
+
+            {/* Subtle terminator overlay — darkens the lower-right of each
+                planet to give classic illustrated-planet shading instead of
+                the glossy modern sheen we had before. */}
+            <radialGradient id="terminator" cx="68%" cy="72%" r="65%">
+              <stop offset="40%" stopColor="#000000" stopOpacity={0} />
+              <stop offset="100%" stopColor="#000000" stopOpacity={0.45} />
+            </radialGradient>
+
+            {/* Bottom edge fade — dissolves the chart's atmospheric layer
+                into the dark card color so the SVG doesn't read as a hard
+                rectangle sitting inside the closing block. */}
+            <linearGradient id="bottom-fade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#141414" stopOpacity={0} />
+              <stop offset="100%" stopColor="#141414" stopOpacity={1} />
+            </linearGradient>
+            {/* Top edge fade — same idea, applied to the top so the chart
+                doesn't pop in either. The header copy sits above this. */}
+            <linearGradient id="top-fade" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#141414" stopOpacity={0} />
+              <stop offset="100%" stopColor="#141414" stopOpacity={1} />
+            </linearGradient>
+
+            {/* Distant nebula color washes — low-opacity radial gradients
+                that fake galactic dust clouds and add depth to the field */}
+            <radialGradient id="nebula-cool" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#1F3340" stopOpacity={0.32} />
+              <stop offset="100%" stopColor="#1F3340" stopOpacity={0} />
+            </radialGradient>
+            <radialGradient id="nebula-warm" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#5C2E1F" stopOpacity={0.26} />
+              <stop offset="100%" stopColor="#5C2E1F" stopOpacity={0} />
+            </radialGradient>
+            <radialGradient id="nebula-amber" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#3F2A18" stopOpacity={0.28} />
+              <stop offset="100%" stopColor="#3F2A18" stopOpacity={0} />
+            </radialGradient>
+            <radialGradient id="nebula-violet" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#2A1E33" stopOpacity={0.22} />
+              <stop offset="100%" stopColor="#2A1E33" stopOpacity={0} />
+            </radialGradient>
+          </defs>
+
+          {/* ── Background square grid (stays fixed — page-grid reference)
+              Grid columns extend across the wide viewBox so the L/R bleed
+              areas still feel structurally tied to the chart. ── */}
+          {Array.from({ length: 14 }).map((_, i) => {
+            // 14 vertical lines from x=-100 to x=1200 in 100-unit steps
+            const pos = -100 + i * 100;
+            return (
+              <line key={`grid-v-${i}`} x1={pos} y1={0} x2={pos} y2={1000}
+                stroke={INK} strokeWidth={0.5} opacity={0.1} />
+            );
+          })}
           {Array.from({ length: 11 }).map((_, i) => {
+            // 11 horizontal lines spanning the wide canvas
             const pos = (i + 1) * (1000 / 12);
             return (
-              <g key={`grid-${i}`}>
-                <line x1={pos} y1={0} x2={pos} y2={1000} stroke={INK} strokeWidth={0.5} opacity={0.1} />
-                <line x1={0} y1={pos} x2={1000} y2={pos} stroke={INK} strokeWidth={0.5} opacity={0.1} />
-              </g>
+              <line key={`grid-h-${i}`} x1={-200} y1={pos} x2={1200} y2={pos}
+                stroke={INK} strokeWidth={0.5} opacity={0.1} />
             );
           })}
 
-          {/* ── Concentric rings ── */}
+          {/* ── Galaxy field — outer parallax wrapper.
+              Scales the whole cosmic scene as scroll progress increases,
+              giving the "pulled deeper into the galaxy" feel. Legend
+              and grid live outside this group so they stay anchored.
+              Transform applied imperatively in rAF — see useEffect. ── */}
+          <g ref={outerLayerRef} style={{ transformOrigin: "500px 500px", willChange: "transform" }}>
+
+          {/* ── Distant nebulae — dim color washes for galactic depth.
+              Now spread across the wide -200..1200 X range so the bleed
+              area gets atmospheric color, not just stars on plain dark. ── */}
+          <g ref={nebulaLayerRef} style={{ transformOrigin: "500px 500px", willChange: "transform" }}>
+            <ellipse cx={-50} cy={260} rx={380} ry={260} fill="url(#nebula-cool)" />
+            <ellipse cx={1060} cy={760} rx={360} ry={280} fill="url(#nebula-warm)" />
+            <ellipse cx={950} cy={170} rx={320} ry={220} fill="url(#nebula-amber)" />
+            <ellipse cx={-40} cy={830} rx={340} ry={240} fill="url(#nebula-warm)" />
+            <ellipse cx={500} cy={500} rx={500} ry={460} fill="url(#nebula-violet)" />
+            {/* Outer-bleed nebulae — softly fill the new horizontal margins */}
+            <ellipse cx={-180} cy={520} rx={260} ry={420} fill="url(#nebula-amber)" />
+            <ellipse cx={1180} cy={480} rx={260} ry={420} fill="url(#nebula-cool)" />
+          </g>
+
+          {/* ── Distant starfield — pre-rasterized to a canvas image.
+              ~520 circles → 1 <image> element. Transform applied to
+              parent <g> in the rAF loop just like before. ── */}
+          <g ref={starsFarRef} style={{ transformOrigin: "500px 500px", willChange: "transform" }}>
+            {bgUrls?.starsFar && (
+              <image x={-200} y={0} width={1400} height={1000} href={bgUrls.starsFar} preserveAspectRatio="none" />
+            )}
+          </g>
+
+          {/* ── Mid starfield (canvas image) ── */}
+          <g ref={starsMidRef} style={{ transformOrigin: "500px 500px", willChange: "transform" }}>
+            {bgUrls?.starsMid && (
+              <image x={-200} y={0} width={1400} height={1000} href={bgUrls.starsMid} preserveAspectRatio="none" />
+            )}
+          </g>
+
+          {/* ── Foreground starfield (canvas image) ── */}
+          <g ref={starsNearRef} style={{ transformOrigin: "500px 500px", willChange: "transform" }}>
+            {bgUrls?.starsNear && (
+              <image x={-200} y={0} width={1400} height={1000} href={bgUrls.starsNear} preserveAspectRatio="none" />
+            )}
+          </g>
+
+          {/* ── Orbital rings — galactic structure, dim ── */}
           {[R1, R2, R3, R4, R5, 155, 260, 350, 430, 180, 295, 370].map((r, i) => (
             <circle key={`ring-${i}`} cx={CX} cy={CY} r={r} fill="none" stroke={INK}
-              strokeWidth={i < 5 ? 0.4 : 0.2} opacity={i < 5 ? 0.06 : 0.025}
+              strokeWidth={i < 5 ? 0.5 : 0.18} opacity={i < 5 ? 0.10 : 0.035}
               strokeDasharray={i >= 5 ? "1,3" : "none"} />
           ))}
 
-          {/* ── Dense radial grid ── */}
-          {Array.from({ length: 120 }).map((_, i) => {
-            const angle = i * 3;
-            const major = angle % 30 === 0;
-            const mid   = angle % 15 === 0;
-            const inner = polar(CX, CY, R1 - 12, angle);
-            const outer = polar(CX, CY, R5 + 22, angle);
-            return (
-              <line key={`radial-${i}`} x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y}
-                stroke={INK} strokeWidth={major ? 0.25 : mid ? 0.15 : 0.08}
-                opacity={major ? 0.04 : mid ? 0.025 : 0.012} />
-            );
-          })}
+          {/* ── Radial grid (canvas image — was 72 SVG lines) ── */}
+          {bgUrls?.radialGrid && (
+            <image x={-200} y={0} width={1400} height={1000} href={bgUrls.radialGrid} preserveAspectRatio="none" />
+          )}
 
-          {/* ── Web lines ── */}
-          {webLines.map((line, i) => (
-            <line key={`web-${i}`} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
-              stroke={line.color} strokeWidth={line.width} opacity={line.opacity} />
-          ))}
+          {/* ── Web lines (canvas image — was ~250 SVG lines) ── */}
+          {bgUrls?.webLines && (
+            <image x={-200} y={0} width={1400} height={1000} href={bgUrls.webLines} preserveAspectRatio="none" />
+          )}
 
-          {/* ── Particle field ── */}
-          {particles.map((dot, i) => (
-            <circle key={`p-${i}`} cx={dot.x} cy={dot.y} r={dot.r} fill={dot.color} opacity={dot.opacity} />
-          ))}
+          {/* ── Particle field (canvas image — was ~750 SVG circles) ── */}
+          {bgUrls?.particles && (
+            <image x={-200} y={0} width={1400} height={1000} href={bgUrls.particles} preserveAspectRatio="none" />
+          )}
 
           {/* ── Outer label arcs (R5) ── */}
           {OUTER_LABELS.map((label, i) => {
@@ -399,7 +839,7 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
             );
           })}
 
-          {/* ── Tool nodes (R3) — small dots + labels ── */}
+          {/* ── Tool nodes (R3) — CareerGalaxy 3-layer iris pattern ── */}
           {TOOLS.map((tool, i) => {
             const pos = polar(CX, CY, R3, tool.angle);
             const n = ((tool.angle % 360) + 360) % 360;
@@ -407,59 +847,75 @@ export function CapabilityWebChart2D({ dark = false }: { dark?: boolean } = {}) 
             const labelPos = polar(CX, CY, R3 + 14 + tool.r, tool.angle);
             return (
               <g key={`tool-${i}`}>
-                <circle cx={pos.x} cy={pos.y} r={tool.r + 6} fill={tool.color} opacity={0.05} />
-                <circle cx={pos.x} cy={pos.y} r={tool.r} fill={tool.color} opacity={0.55} />
+                <circle cx={pos.x} cy={pos.y} r={tool.r * 2.2} fill={tool.color} opacity={0.08} />
+                <circle cx={pos.x} cy={pos.y} r={tool.r} fill={tool.color} opacity={0.85} />
+                <circle cx={pos.x} cy={pos.y} r={tool.r * 0.3} fill="#FFFFFF" opacity={0.5} />
                 <text x={labelPos.x} y={labelPos.y} textAnchor={anchor} fill={INK}
-                  fontSize={7.5} fontWeight={500} opacity={0.5} dominantBaseline="middle">
+                  fontSize={7.5} fontWeight={500} opacity={0.5} dominantBaseline="middle"
+                  letterSpacing="0.04em">
                   {tool.label}
                 </text>
               </g>
             );
           })}
 
-          {/* ── Skill nodes (R2) — pills ── */}
+          {/* ── Skill planets (R2) — CareerGalaxy 3-layer iris pattern ── */}
           {SKILLS.map((skill, i) => {
             const pos = polar(CX, CY, R2, skill.angle);
-            const w = skill.label.length * 4.8 + 12;
+            // Importance 14..24 → planet radius 9..16
+            const r = 9 + ((skill.importance - 14) / 10) * 7;
+            const n = ((skill.angle % 360) + 360) % 360;
+            const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
+            const labelPos = polar(CX, CY, R2 + r + 12, skill.angle);
             return (
               <g key={`skill-${i}`}>
-                <rect x={pos.x - w / 2 - 4} y={pos.y - 15} width={w + 8} height={30} rx={15}
-                  fill={skill.color} opacity={0.06} />
-                <rect x={pos.x - w / 2} y={pos.y - 11} width={w} height={22} rx={11}
-                  fill={skill.color} opacity={0.85} />
-                <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central"
-                  fill="#fff" fontSize={7.5} fontWeight={600}>
+                <circle cx={pos.x} cy={pos.y} r={r * 2.2} fill={skill.color} opacity={0.08} />
+                <circle cx={pos.x} cy={pos.y} r={r} fill={skill.color} opacity={0.85} />
+                <circle cx={pos.x} cy={pos.y} r={r * 0.3} fill="#FFFFFF" opacity={0.5} />
+                <text x={labelPos.x} y={labelPos.y} textAnchor={anchor} fill={INK}
+                  fontSize={9} fontWeight={600} opacity={0.8} dominantBaseline="middle"
+                  letterSpacing="0.04em">
                   {skill.label}
                 </text>
               </g>
             );
           })}
 
-          {/* ── Discipline nodes (R1) ── */}
+          {/* ── Discipline planets (R1) — 2-layer (no inner core; centered text takes that role) ── */}
           {DISCIPLINES.map((disc, i) => {
             const pos = polar(CX, CY, R1, disc.angle);
             return (
               <g key={`disc-${i}`}>
-                <circle cx={pos.x} cy={pos.y} r={50} fill={disc.color} opacity={0.04} />
-                <circle cx={pos.x} cy={pos.y} r={38} fill={SURFACE} stroke={disc.color}
-                  strokeWidth={1} opacity={0.92} />
-                <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central"
-                  fill={disc.color} fontSize={8} fontWeight={700} opacity={0.8} letterSpacing="0.05em">
+                {/* Outer halo at 2.2x — matches CareerGalaxy density */}
+                <circle cx={pos.x} cy={pos.y} r={38 * 2.2} fill={disc.color} opacity={0.08} />
+                {/* Body — semi-transparent so it doesn't read as fully filled */}
+                <circle cx={pos.x} cy={pos.y} r={38} fill={disc.color} opacity={0.85} />
+                <text x={pos.x} y={pos.y + 1} textAnchor="middle" dominantBaseline="central"
+                  fill="#FFFFFF" fontSize={9} fontWeight={700} opacity={0.95} letterSpacing="0.08em"
+                  style={{ textShadow: "0 1px 3px rgba(0,0,0,0.65)" }}>
                   {disc.label.toUpperCase()}
                 </text>
               </g>
             );
           })}
 
-          {/* ── Center: RHS ── */}
-          <circle cx={CX} cy={CY} r={52} fill="#8A8580" opacity={0.05} />
-          <circle cx={CX} cy={CY} r={42} fill={SURFACE} stroke={HUB_RING} strokeWidth={0.8} opacity={0.88} />
-          <text x={CX} y={CY + 2} textAnchor="middle" fill={INK} fontSize={11}
-            fontWeight={600} opacity={0.55} letterSpacing="0.12em">
+          {/* ── Center: RHS — semi-transparent body, centered text in place of inner core ── */}
+          <circle cx={CX} cy={CY} r={68} fill="url(#sun-corona)" opacity={0.4} />
+          <circle cx={CX} cy={CY} r={36} fill="#E89B3F" opacity={0.85} />
+          <text x={CX} y={CY + 3} textAnchor="middle" fill="#5A2F0F" fontSize={10}
+            fontWeight={700} opacity={0.8} letterSpacing="0.18em">
             RHS
           </text>
 
-          {/* ── Legend ── */}
+          </g>
+
+          {/* ── Edge fades — blend atmospheric content into the dark card.
+              Painted on top of the parallax wrapper but below the legend
+              so the labels stay crisp. ── */}
+          <rect x={-200} y={760} width={1400} height={240} fill="url(#bottom-fade)" pointerEvents="none" />
+          <rect x={-200} y={0} width={1400} height={140} fill="url(#top-fade)" pointerEvents="none" />
+
+          {/* ── Legend (anchored — sits outside the parallax wrapper) ── */}
           <g transform="translate(32, 880)">
             <text fill={INK} fontSize={9} fontWeight={700} opacity={0.45} letterSpacing={1.5}>RING INDEX</text>
             {[

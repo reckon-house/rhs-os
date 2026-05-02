@@ -55,7 +55,7 @@ export const arcCaseStudy: CaseStudy = {
       subtitle:
         "A computer vision system for residential asset documentation and insurance gap analysis. Designed, engineered, and shipped by a single builder.",
       abstract:
-        "Home inventory is a solved problem that nobody has solved well. The average American household contains approximately 300,000 items with a combined insurable value that most homeowners have never calculated. Existing documentation tools are spreadsheets with better packaging. Manual entry, manual categorization, manual everything. The math is predictable: 60% of homeowners are underinsured because they've never cataloged what they own.\n\nA.R.C. applies computer vision to the problem. Point a camera at a room. The system identifies objects, estimates replacement value, assigns categories, and archives everything against a structured database. The financial layer calculates total documented assets against insurance policy limits and flags coverage gaps before a claim becomes necessary.\n\nThe entire product was designed, engineered, branded, and brought to market by one person working nights and weekends alongside a full-time creative director role. Python backend. Streamlit frontend. OpenAI Vision API for object recognition. Deployed on Vercel with Supabase handling data persistence. Concept to live product in weeks, not quarters.",
+        "Home inventory is a solved problem that nobody has solved well. The average American household contains around 300,000 items with a combined insurable value most homeowners have never calculated, and the existing tools haven't moved the needle - they're spreadsheets with better packaging, asking people to do the same manual work they'd been avoiding all along. The result is predictable. About 60% of homeowners are underinsured because they've never cataloged what they own.\n\nA.R.C. takes a different approach. Point a camera at a room and the system handles identification, valuation, and categorization in the same pass. The financial layer compares documented assets against the user's stated policy limit and surfaces coverage gaps as a specific dollar amount, not a vague concept.\n\nI built A.R.C. end to end - concept, code, brand, go-to-market - on nights and weekends while working full-time as a creative director. Python backend, Streamlit frontend, OpenAI Vision API for object recognition, deployed on Vercel with Supabase handling data persistence. Concept to live product in ten weeks.",
     },
 
     // ── PROBLEM STATEMENT — grouped in ECE6E1 container with 75px radius ──
@@ -126,7 +126,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-editorial",
       type: "editorial-headline",
-      text: "Every room tells a story.\nI built the system\nthat remembers it.",
+      text: "The problem was never the cataloging.\nIt was always the input.",
     },
     {
       id: "problem-hero-group",
@@ -382,7 +382,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "One person. Ten weeks. Concept to live product in the App Store.",
+        "Ten weeks from concept to a live App Store product. Solo build. AI-assisted throughout.",
     },
     {
       id: "build-footnote",
@@ -390,7 +390,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "AI-assisted development with Claude Code as the primary environment. Python backend, Streamlit frontend, deployed on Vercel. No engineering team, no QA department.",
+        "Claude Code as the primary development environment. Python backend, Streamlit frontend, deployed on Vercel. No engineering team behind any of it.",
     },
     {
       id: "build-text",
@@ -399,17 +399,17 @@ export const arcCaseStudy: CaseStudy = {
         {
           title: "The Builder Reality",
           content:
-            "No engineering team. No product manager assigning tickets. No design review board. No QA department. One person identifying the problem, designing the solution, writing the code, testing the output, fixing what broke, and shipping the result.\n\nThis isn't a limitation narrative. It's a velocity argument. The feedback loop between identifying a problem and deploying a fix is measured in hours, not sprints. A UX friction point noticed during testing gets resolved in the same session. A feature idea that shows up during development gets prototyped immediately. The distance between intention and execution is as short as it can possibly be.\n\nThe tradeoff is real. Solo development means every decision is a prioritization decision. What ships now versus what ships later. What gets refined versus what gets functional. V1 is an honest assessment of those tradeoffs: comprehensive in scope, considered in design, pragmatic in implementation.",
+            "Building solo means I made every decision and shipped every line. There was no engineering team, no PM assigning tickets, no design review, no QA department. I identified the problem, designed the solution, wrote the code, tested the output, fixed what broke, and shipped the result.\n\nThis isn't a limitation - it's a speed advantage. The feedback loop between noticing a problem and deploying a fix runs in hours, not sprints. UX friction caught during testing gets resolved in the same session. A feature idea that surfaces during development gets prototyped right away. The distance between intention and execution stays as short as I could make it.\n\nThe tradeoff is real. Solo means every decision is a prioritization decision - what ships now versus what ships later, what gets polished versus what gets to functional. V1 reflects those choices honestly. Comprehensive in scope, considered in design, pragmatic where it had to be.",
         },
         {
           title: "AI-Assisted Development",
           content:
-            "Claude Code served as the primary development environment. The workflow: describe the intended behavior in natural language. Review the generated code. Test the output. Refine through conversation. Ship.\n\nThis approach inverts the traditional bottleneck. The constraint is no longer syntax knowledge or framework expertise. It's clarity of intention. Knowing exactly what the product should do matters more than knowing exactly how to make it do it.\n\nThe same AI-assisted methodology that powers A.R.C.'s computer vision also powered its creation. A product built with AI, built to use AI, built by someone who understands both sides of that equation.",
+            "Claude Code was my primary environment throughout. The workflow looked something like this: I'd describe what I wanted in natural language, review the code that came back, test the output, refine through conversation, ship. Repeat until the feature worked.\n\nThis setup inverts the old bottleneck. The constraint isn't syntax fluency or framework expertise anymore. It's clarity of intention. Knowing exactly what the product should do matters more than knowing exactly how to make it do it - and that's the part design experience actually prepares you for.\n\nA.R.C. uses AI to do its core job. A.R.C. was also built with AI to make it. Same toolset, two sides of the same equation, which is part of what makes the whole thing possible at this scale and speed.",
         },
         {
           title: "Development Timeline",
           content:
-            "Week 1-2: Core concept validation. Can computer vision reliably identify household items from standard smartphone photographs? Testing across lighting conditions, angles, room types. The answer was yes, with caveats that informed the UX design.\n\nWeek 3-4: Product architecture. Database schema. User flow. Room and item data models. Authentication. Storage. The foundational decisions that everything else builds on.\n\nWeek 5-6: Interface design and implementation. Simultaneously designing and building. The luxury of solo development: no handoff gap between design intent and code reality.\n\nWeek 7-8: Financial layer. Insurance gap calculations. Policy limit comparisons. The feature that transforms a documentation tool into a risk management product.\n\nWeek 9-10: Brand identity. Visual system. Marketing site. Go-to-market preparation. Launch. Weeks, not months. Not quarters. Not fiscal years. Weeks.",
+            "Weeks 1-2 went to concept validation. Could computer vision reliably identify household items from standard smartphone photos? I tested across lighting conditions, angles, and room types. The answer was yes, with caveats that ended up shaping the UX.\n\nWeeks 3-4 were product architecture - database schema, user flow, room and item data models, authentication, storage. The foundational decisions everything else builds on.\n\nWeeks 5-6 were interface design and implementation, happening at the same time. That's the part you can't really do at a traditional studio - no handoff gap between design intent and what shows up in code.\n\nWeeks 7-8 were the financial layer. Insurance gap calculations, policy limit comparisons. This is the feature that turns A.R.C. from a documentation tool into a risk management one.\n\nWeeks 9-10 were brand identity, visual system, marketing site, and the go-to-market work. Then launch. Ten weeks, start to finish.",
         },
       ],
     },
@@ -548,7 +548,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Built because the person who made it needed it. A renovated house, years of collected objects, and nothing documented.",
+        "I built A.R.C. because I needed it. A renovated house, years of collected objects, nothing documented anywhere that would survive an insurance claim.",
     },
     {
       id: "closing-footnote",
@@ -556,7 +556,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "V1 live and in market. V2 roadmap includes native architecture migration, enhanced scanning precision, and deeper financial analysis.",
+        "V1 is live and in market. V2 work is underway - native iOS, enhanced scanning, deeper financial analysis. The V1 foundation supports it all without a rebuild.",
     },
     {
       id: "closing",
@@ -573,7 +573,7 @@ export const arcCaseStudy: CaseStudy = {
         { label: "heythere@arcready.app", url: "mailto:heythere@arcready.app" },
       ],
       content:
-        "A single person with design experience, AI tools, and a real problem to solve shipped a complete product. Not a prototype. Not a demo. A live application in the App Store with paying users and a roadmap.\n\nV2 migrates the full stack to a native architecture. More precise scanning. Faster processing. Deeper financial analysis. The foundation built in V1 supports everything planned without a rebuild.\n\nThe larger point extends beyond this specific product. The tools exist now for designers who think in systems to build the systems they think about. The gap between vision and execution isn't technical anymore. It's about willingness to ship. A.R.C. shipped.",
+        "A.R.C. is a complete product. Not a prototype, not a demo - a live application with users and a roadmap. The whole thing came out of needing the tool and not finding it.\n\nThe version in market right now does the core job. Computer vision identifies what's in a room. The financial layer compares documented assets against policy limits and flags the gap. Reports generate on demand. It works because the input friction is gone, which was always the actual problem with home inventory.\n\nLooking at it now, the more interesting thing isn't this specific product. It's that the gap between idea and shipped product keeps shrinking, and a single person can hold all of it now - the brand, the code, the financial logic, the launch. I'm still figuring out what that means for the next thing. But it's the part of the work I keep coming back to.",
     },
   ],
 };

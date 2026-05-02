@@ -266,7 +266,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Flowing botanical illustration for a fashion collective. Halftone dots and geometric sans for a DJ. A bird on a monogram for a lifestyle brand. Range from ornamental to blunt.",
+        "The only consistency is that each mark gets out of its own way - flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand. Range from ornamental to blunt.",
     },
     {
       id: "marks-footnote",
@@ -344,7 +344,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Personal projects. Deadline projects. Album sleeves nobody asked for. Logos for friends starting things. The fluency lives in the volume.",
+        "Personal projects, deadline projects, album sleeves nobody asked for, logos for friends starting things. The fluency lives in the volume.",
     },
     {
       id: "closing",
@@ -359,7 +359,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
       links: [],
       content:
-        "The commercial work that came later traces directly back to this output. Compositional habits. Color confidence. The willingness to start with a blank page and not know which direction the piece will turn.\n\nThis section will keep growing. Every new piece becomes another reference point.",
+        "The commercial work that came later traces directly back to this output - compositional habits, color confidence, the willingness to start with a blank page and not know which direction the piece will turn.\n\nThis section will keep growing. Every new piece becomes another reference point.",
     },
   ],
 };

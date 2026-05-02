@@ -63,7 +63,7 @@ export const sallyCaseStudy: CaseStudy = {
       subtitle:
         "Five connected platforms covering the full pipeline from competitive signal to store-level sale. Built internally using AI-assisted development.",
       abstract:
-        "Retail marketing runs on cycles. Seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores. That kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nThis platform rebuilt each piece with AI integration and connected them into a single pipeline. Competitive intelligence feeds strategy. Strategy produces briefs. Briefs connect to assets. Assets flow to stores. Purchase data feeds back. Signal to shelf, one closed loop where market intelligence converts into store-level sales data that informs the next round of strategy.",
+        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI integration and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back. Signal to shelf, one closed loop where market intelligence converts into store-level sales data that informs the next round of strategy.",
     },
 
     // ── PROBLEM STATEMENT - grouped in ECE6E1 container ──
@@ -88,7 +88,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Marketing infrastructure held together by habit. Competitive intel lived in someone's browser tabs. Brand guidelines lived in a PDF no one opened. Campaign briefs lived in email threads. Asset production lived in shared drives with naming conventions that drifted quarterly.",
+        "Marketing infrastructure held together by habit. Competitive intel lived in someone's browser tabs, brand guidelines lived in a PDF no one opened, campaign briefs lived in email threads, and asset production lived in shared drives with naming conventions that drifted quarterly.",
       group: { name: "problem" },
     },
     {
@@ -97,7 +97,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The volume problem compounds the context problem. Thousands of SKUs across hair color, hair care, styling, and professional tools. Hundreds of stores with regional variation. Dozens of campaigns running simultaneously across digital, email, social, and in-store channels. Every disconnected tool multiplies the coordination cost.",
+        "The volume problem compounds the context problem. Thousands of SKUs across hair color, hair care, styling, and professional tools, hundreds of stores with regional variation, dozens of campaigns running simultaneously across digital, email, social, and in-store channels. Every disconnected tool multiplies the coordination cost.",
       group: { name: "problem" },
     },
     {
@@ -107,12 +107,12 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "The Intelligence Gap",
           content:
-            "Competitive intelligence was manual. Someone tracked Ulta's promotions in a spreadsheet. Someone else monitored Sephora's social presence on their phone. Target Beauty's pricing changes showed up anecdotally in meetings. The data existed, scattered across individuals, formats, and time zones, but never consolidated into anything actionable.\n\nWithout a shared intelligence layer, strategy meetings started from scratch every cycle. The same questions repeated. The same competitors surprised. The same opportunities appeared too late to act on.",
+            "Competitive intelligence was manual. Someone tracked Ulta's promotions in a spreadsheet, someone else monitored Sephora's social presence on their phone, and Target Beauty's pricing changes showed up anecdotally in meetings. The data existed, scattered across individuals, formats, and time zones, but never consolidated into anything actionable.\n\nWithout a shared intelligence layer, strategy meetings started from scratch every cycle - the same questions repeated, the same competitors surprised, and the same opportunities appeared too late to act on.",
         },
         {
           title: "The Briefing Bottleneck",
           content:
-        "Campaign briefs were documents. Word files emailed to distribution lists, edited in parallel, version-confused within days. The brief that reached the design team rarely matched the brief that left strategy. Context degraded at every handoff.\n\nAssets got produced against outdated direction. Revisions that should have been unnecessary piled up. Production timelines were consumed by alignment work instead of creative work. The brief wasn't just a document problem. It was the single point of failure in the entire production pipeline.",
+        "Campaign briefs were documents - Word files emailed to distribution lists, edited in parallel, version-confused within days. The brief that reached the design team rarely matched the brief that left strategy, and context degraded at every handoff.\n\nAssets got produced against outdated direction, revisions that should have been unnecessary piled up, and production timelines were consumed by alignment work instead of creative work. The brief was the single point of failure in the entire production pipeline.",
         },
         {
           title: "The Asset Sprawl",
@@ -142,7 +142,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A triple-engine AI architecture monitors 14 industry publications, competitor social channels, pricing movements, and emerging category trends. Raw signals aren't useful on their own. What matters is what they mean for Sally. Every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against Sally's internal knowledge base, active campaign briefs, and brand positioning to flag what's actually actionable.",
+        "A triple-engine AI architecture monitors 14 industry publications, competitor social channels, pricing movements, and emerging category trends. Raw signals aren't useful on their own - what matters is what they mean for Sally. Every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against Sally's internal knowledge base, active campaign briefs, and brand positioning to flag what's actually actionable.",
     },
     {
       id: "trends-footnote",
@@ -150,7 +150,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The workflow closes the gap between seeing a trend and acting on it. A competitor launches a new campaign. The system detects it, generates Sally's strategic response based on existing briefs and brand guidelines, and offers a one-click path to create a new brief. Intelligence feeds strategy. Strategy produces briefs. Briefs flow into asset production. The entire pipeline from market signal to store-level execution starts here.\n\nThree AI models run in parallel to make this work. Claude handles strategy and copywriting with prompt-cached brand context. Gemini scans Sally's full knowledge base on every interaction. Perplexity pulls live competitive data from the web. Each engine contributes a different lens, and the combined output is richer than any single model produces alone.",
+        "The workflow closes the gap between seeing a trend and acting on it. A competitor launches a new campaign, the system detects it, generates Sally's strategic response based on existing briefs and brand guidelines, and offers a one-click path to create a new brief. Intelligence feeds strategy, strategy produces briefs, briefs flow into asset production - the entire pipeline from market signal to store-level execution starts here.\n\nThree AI models run in parallel to make this work. Claude handles strategy and copywriting with prompt-cached brand context, Gemini scans Sally's full knowledge base on every interaction, and Perplexity pulls live competitive data from the web. Each engine contributes a different lens, and the combined output is richer than any single model produces alone.",
     },
     {
       id: "trends-engines",
@@ -257,7 +257,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, and performance data. Not a chatbot. A strategy partner that knows the brand as well as the team does.",
+        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, and performance data. A strategy partner that knows the brand as well as the team does, not a chatbot.",
       group: { name: "brand-brain" },
     },
     {
@@ -276,17 +276,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude: Deep Analysis",
           content:
-            "Handles the heavy reasoning. Long-form strategy documents, competitive analysis synthesis, campaign brief generation. Claude processes the full context window, including brand guidelines, performance history, and competitive data, then produces output that reads like it came from someone who's worked on the brand for years.\n\nThe writing quality matters. Strategy documents circulate to leadership. The AI output needs to match the rigor and tone of senior strategic thinking, not generate filler that requires heavy editing.",
+            "Handles the heavy reasoning - long-form strategy documents, competitive analysis synthesis, campaign brief generation. Claude processes the full context window, including brand guidelines, performance history, and competitive data, then produces output that reads like it came from someone who's worked on the brand for years.\n\nThe writing quality matters because strategy documents circulate to leadership. The AI output needs to match the rigor and tone of senior strategic thinking rather than generate filler that requires heavy editing.",
         },
         {
           title: "Gemini: Pattern Recognition",
           content:
-            "Processes visual and structural patterns across large datasets. Product imagery analysis, social content categorization, trend clustering across competitor activity. Gemini's multimodal capabilities handle the visual intelligence layer that text-only models miss.\n\nWhen a competitor launches a new merchandising approach, Gemini identifies the pattern across store imagery before it appears in trade press. Visual intelligence at the speed the market moves.",
+            "Processes visual and structural patterns across large datasets - product imagery analysis, social content categorization, trend clustering across competitor activity. Gemini's multimodal capabilities handle the visual intelligence layer that text-only models miss.\n\nWhen a competitor launches a new merchandising approach, Gemini identifies the pattern across store imagery before it appears in trade press. Visual intelligence moving at the speed the market does.",
         },
         {
           title: "Perplexity Sonar Pro: Live Intelligence",
           content:
-            "Real-time web monitoring. Industry news, competitor announcements, social sentiment shifts, regulatory changes. Sonar Pro provides the live data layer: what's happening right now, not what happened last quarter.\n\nThe freshness advantage compounds. When competitive intelligence arrives hours instead of weeks after a market event, the strategic response window opens wide enough to actually use.",
+            "Real-time web monitoring - industry news, competitor announcements, social sentiment shifts, regulatory changes. Sonar Pro provides the live data layer that surfaces what's happening right now instead of what happened last quarter.\n\nThe freshness advantage compounds. When competitive intelligence arrives hours instead of weeks after a market event, the strategic response window opens wide enough to actually use.",
         },
       ],
       group: { name: "brand-brain" },
@@ -385,7 +385,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Sally had a DAM. It was bloated, slow, and nobody wanted to use it. The two things the team actually needed, tagging and search, didn't work well. This one was built from the ground up.",
+        "Sally had a DAM. It was bloated, slow, and nobody wanted to use it - the two things the team actually needed, tagging and search, didn't work well. I built this one from the ground up.",
     },
     {
       id: "asset-footnote",
@@ -393,7 +393,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Every image gets analyzed by AI on upload. Description, tags, product category, dominant colors, confidence scoring. No manual cataloging. Search runs against weighted relevance across tags, titles, brands, and AI descriptions so the right asset appears in seconds, not minutes of scrolling.",
+        "Every image gets analyzed by AI on upload - description, tags, product category, dominant colors, confidence scoring, all without manual cataloging. Search runs against weighted relevance across tags, titles, brands, and AI descriptions so the right asset appears in seconds rather than minutes of scrolling.",
     },
     {
       id: "asset-columns-1",
@@ -402,7 +402,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Auto-Tagging",
           content:
-            "Claude Vision analyzes every uploaded image automatically. Returns description, tags, product category, dominant colors, campaign suggestions, and confidence score. Lifestyle vs. product shot detection. One-click re-tag on any asset, batch re-tag across selections.\n\nAI-generated vs. manual tags tracked separately. The system knows what it tagged and what a human corrected, and the corrections improve future tagging accuracy.",
+            "Claude Vision analyzes every uploaded image automatically and returns description, tags, product category, dominant colors, campaign suggestions, and confidence score. Lifestyle vs. product shot detection, one-click re-tag on any asset, batch re-tag across selections.\n\nAI-generated and manual tags get tracked separately. The system knows what it tagged and what a human corrected, and the corrections improve future tagging accuracy.",
         },
         {
           title: "AI Studio Photography",
@@ -437,7 +437,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Vendor Upload Portal",
           content:
-            "Public-facing upload form, no login required. Vendor enters name, email, company, product name, SKU, brand, asset type, and usage rights confirmation. Admin review dashboard with real-time updates via Supabase Realtime.\n\nApprove pushes the asset to the library and triggers AI tagging automatically. Reject sends a reason back to the vendor. No email chains. No shared drives. No version confusion.",
+            "Public-facing upload form with no login required. Vendor enters name, email, company, product name, SKU, brand, asset type, and usage rights confirmation. Admin review dashboard with real-time updates via Supabase Realtime.\n\nApprove pushes the asset to the library and triggers AI tagging automatically. Reject sends a reason back to the vendor. No email chains, no shared drives, no version confusion.",
         },
         {
           title: "Workflow & Collections",
@@ -478,7 +478,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Ten specialized apps built by the marketing team, for the marketing team. Each one eliminates a manual process that used to take hours. Click a card and the tool loads inline. No onboarding, no separate login, no IT ticket. The marketplace grows every month as the team identifies new bottlenecks worth automating.",
+        "Ten specialized apps built by the marketing team, for the marketing team. Each one eliminates a manual process that used to take hours - click a card and the tool loads inline, with no onboarding, no separate login, no IT ticket. The marketplace grows every month as the team identifies new bottlenecks worth automating.",
     },
     {
       id: "utilities-footnote",
@@ -486,7 +486,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The architecture is deliberately simple. Each tool is a standalone app hosted independently, loaded via iframe. Registering a new one takes minutes because the tool list is a JavaScript array. A Streamlit app, a Next.js dashboard, a static PDF generator: they all register the same way. The platform doesn't care what the tool is built with. It cares that the tool works. Designed so anyone on the team can build, deploy, and share a tool without engineering support.",
+        "The architecture is deliberately simple. Each tool is a standalone app hosted independently and loaded via iframe, and registering a new one takes minutes because the tool list is a JavaScript array. A Streamlit app, a Next.js dashboard, a static PDF generator - they all register the same way, because the platform only cares that the tool works. Designed so anyone on the team can build, deploy, and share a tool without engineering support.",
     },
     {
       id: "utilities-columns-1",
@@ -566,7 +566,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Five platforms. One builder. Built because the team that needed it couldn't wait for a vendor evaluation cycle. Shipped because AI-assisted development made it possible for one person to build what used to require a department.",
+        "Five platforms, one builder. I built it because the team that needed it couldn't wait for a vendor evaluation cycle, and shipped it because AI-assisted development made it possible for one person to build what used to require a department.",
     },
     {
       id: "closing-footnote",
@@ -574,7 +574,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Every platform in the OS was designed, engineered, and deployed by a single product leader working alongside AI tools. The same person who defined the strategy wrote the code that implemented it. All five platforms are in daily production use across the Sally Beauty marketing organization.",
+        "I designed, engineered, and deployed every platform in the OS working alongside AI tools. Same person defining the strategy wrote the code that implemented it. All five platforms are in daily production use across the Sally Beauty marketing organization.",
     },
     {
       id: "closing-columns",
@@ -583,17 +583,17 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "The Velocity Argument",
           content:
-            "Traditional enterprise tool development follows a predictable arc. Requirements gathering. Vendor evaluation. Procurement. Implementation. Training. Iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThis isn't a cost argument. It's a context argument. The person building the tools is the person who understands the workflows. No requirements translation. No specification drift. No handoff gap between what was asked for and what got built.",
+            "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implementation, training, iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThe argument isn't really about cost - it's about context. The person building the tools is the person who understands the workflows, so there's no requirements translation, no specification drift, and no handoff gap between what was asked for and what got built.",
         },
         {
           title: "AI as Engineering Partner",
           content:
-            "Claude Code served as the primary development environment. The workflow: describe the intended system behavior in precise terms. Review the generated architecture. Test against real marketing workflows. Refine through conversation. Deploy.\n\nThe AI doesn't replace engineering judgment. It amplifies it. Architectural decisions still require deep understanding of the problem space. Data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity, the translation from clear intention to working code.\n\nEnterprise-grade tools built at startup speed, by someone who knows exactly what the tools need to do because they're the one who needs them.",
+            "Claude Code served as my primary development environment. The workflow: describe the intended system behavior in precise terms, review the generated architecture, test against real marketing workflows, refine through conversation, deploy.\n\nThe AI doesn't replace engineering judgment so much as amplify it. Architectural decisions still require deep understanding of the problem space, and data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity - the translation from clear intention to working code.\n\nEnterprise-grade tools built at startup speed, by someone who knows exactly what the tools need to do because I'm the one who needs them.",
         },
         {
           title: "The Stack",
           content:
-            "Next.js provides the application framework: server-side rendering, API routes, and the component architecture that makes a five-platform system feel like one coherent product.\n\nSupabase handles data persistence, authentication, and real-time subscriptions. When a competitive insight appears in the Trends Feed, it's immediately available in Brand Brain without polling.\n\nVercel deploys everything. Preview deployments for stakeholder review. Production deployments with zero-downtime updates.\n\nPython and Streamlit power the data processing pipeline. The AI orchestration layer, routing tasks to Claude, Gemini, or Perplexity based on task type, runs as a Python service.",
+            "Next.js provides the application framework with server-side rendering, API routes, and the component architecture that makes a five-platform system feel like one coherent product.\n\nSupabase handles data persistence, authentication, and real-time subscriptions. When a competitive insight appears in the Trends Feed, it's immediately available in Brand Brain without polling.\n\nVercel deploys everything - preview deployments for stakeholder review, production deployments with zero-downtime updates.\n\nPython and Streamlit power the data processing pipeline. The AI orchestration layer routes tasks to Claude, Gemini, or Perplexity based on task type, running as a Python service.",
         },
       ],
     },
@@ -620,7 +620,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       links: [],
       content:
-        "The platform proves a thesis: enterprise marketing tools don't need to be enterprise software projects. They need someone who understands the workflow deeply enough to design the system, and AI tools capable enough to help build it at production quality.\n\nThe five platforms share data, share context, and share a design language. A competitive insight captured in the Trends Feed flows through Brand Brain's strategic analysis, into a campaign brief, through asset production, and out to 3,000+ stores. No re-entry. No context loss. No version confusion.\n\nThe gap between a product vision and a production system has narrowed to the point where the person with the vision can build the system. A production platform used daily by a marketing organization that ships thousands of assets per month.",
+        "Enterprise marketing tools don't have to be enterprise software projects. They need someone who understands the workflow deeply enough to design the system, and AI tools capable enough to help build it at production quality.\n\nThe five platforms share data, share context, and share a design language. A competitive insight captured in the Trends Feed flows through Brand Brain's strategic analysis, into a campaign brief, through asset production, and out to 3,000+ stores - no re-entry, no context loss, no version confusion.\n\nLooking at it now, the more interesting thing isn't this specific platform. It's that the gap between a product vision and a production system keeps shrinking, and the person with the vision can hold all of it now. A platform used daily by a marketing organization that ships thousands of assets per month, built start-to-finish by one person.",
     },
   ],
 };

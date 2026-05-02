@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
-import { CapabilityWebShowpiece } from "@/components/CapabilityWebShowpiece";
+import { CapabilityWebHeader, CapabilityWebChart2D } from "@/components/CapabilityWeb";
 import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { projectsById as p, type Project } from "@/data/projects";
@@ -140,6 +140,77 @@ function Headline({ children }: { children: React.ReactNode }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  AnimatedDarkCard — only the background surface scales 0.82 → 1.0    */
+/*  and the corners sharpen 75px → 0px as the section enters view.      */
+/*  Text content sits on top in normal flow at constant size, so the    */
+/*  reading experience stays persistent.                                 */
+/*                                                                       */
+/*  The current scale is also written to the section as a CSS variable  */
+/*  --card-scale so any opt-in element inside (like the chart) can use  */
+/*  `transform: scale(var(--card-scale))` to scale in lockstep.         */
+/* ------------------------------------------------------------------ */
+
+function AnimatedDarkCard({ children }: { children: React.ReactNode }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const bg = bgRef.current;
+    if (!section || !bg) return;
+
+    const scrollEl = document.querySelector("main");
+    if (!scrollEl) return;
+
+    let raf = 0;
+    const update = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      // Progress: 0 when section enters viewport from below, 1 when its top hits viewport top.
+      const raw = 1 - rect.top / viewH;
+      const progress = Math.max(0, Math.min(1, raw));
+      const scale = 0.82 + progress * 0.18;
+      const radius = Math.round(75 * (1 - progress));
+      bg.style.transform = `scale(${scale})`;
+      bg.style.borderRadius = `${radius}px`;
+      // Expose to opt-in children (e.g. the chart wrapper).
+      section.style.setProperty("--card-scale", String(scale));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    scrollEl.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      scrollEl.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="hero-breakout relative py-20" style={{ ["--card-scale" as string]: "0.82" }}>
+      {/* Background — sits behind content, scales 0.82 → 1.0 with radius. */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 will-change-transform pointer-events-none"
+        style={{
+          backgroundColor: "#141414",
+          borderRadius: "75px",
+          transform: "scale(0.82)",
+          transformOrigin: "center center",
+        }}
+      />
+      {/* Content — static, on top. */}
+      <div className="relative">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -205,17 +276,17 @@ function HomeContent() {
 
         {/* Title */}
         <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          A practice across brand, product, and place.
+          I&apos;m Jeremy, a designer who builds across brand, product, and place.
         </h1>
 
-        {/* Subtitle — spans full width, regular weight */}
+        {/* Disciplines paragraph — flows directly under the headline as one block */}
         <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The work spans AI-powered software, enterprise retail campaigns, and custom homes built piece by piece. The throughline isn&apos;t the discipline. It&apos;s the thinking, and the willingness to ship.
+          The work spans apps and software, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and content infrastructure - and increasingly, the places where those disciplines meet.
         </p>
 
-        {/* Smaller secondary line — sits directly under the subhead, full width like the headings */}
+        {/* Closing paragraph — personal lens, smaller secondary line treatment */}
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          Generation is becoming free. Taste, judgment, and editing are what compound. The projects below are the argument.
+          I see the world in scale, systems, and color palettes - and I try to make little worlds that have meaning someone can feel.
         </p>
 
         {/* Meta fields — left-aligned, constrained width */}
@@ -244,50 +315,56 @@ function HomeContent() {
 
         {/* Row 1: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.sallyOS} />
           <Thumb project={p.ivyPark} />
           <Thumb project={p.arc} />
           <Thumb project={p.hillKitchen} />
-          <Thumb project={p.robertRod} />
         </div>
 
-        {/* Row 2: 2 thumbnails on the right (cols 3-4) */}
+        {/* Row 2: headline (cols 1-2) + 2 thumbnails on the right (cols 3-4) */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible md:relative">
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
+          <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
+            <Headline>Designing digital and physical spaces</Headline>
+          </div>
+          <div className="hp-span col-span-2 py-2 text-center md:hidden">
+            <Headline>Designing digital and physical spaces</Headline>
+          </div>
+          <Thumb project={p.robertRod} />
           <Thumb project={p.nordstromPersonal} />
-          <Thumb project={p.jeffreyNyc} />
         </div>
 
         {/* Row 3: cols 1, 2, *, 4 */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.jeffreyNyc} />
           <Thumb project={p.capitanBoot} />
-          <Thumb project={p.jeffreyCampaign} />
           <div className="hp-thumb flex items-center justify-center overflow-visible md:w-[160px]">
             <Asterisk weight="thin" />
           </div>
-          <Thumb project={p.hillBath} />
+          <Thumb project={p.jeffreyCampaign} />
         </div>
 
         {/* Row 4: cols 1, 2 + headline (cols 3-4) */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible md:relative">
+          <Thumb project={p.hillBath} />
           <Thumb project={p.nordstromBeauty} />
-          <Thumb project={p.oakworks} />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>From software to campaigns to kitchens.</Headline>
+            <Headline>from software to campaigns to kitchens</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>From software to campaigns to kitchens.</Headline>
+            <Headline>from software to campaigns to kitchens</Headline>
           </div>
         </div>
 
         {/* Row 5: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.oakworks} />
           <Thumb project={p.cosmoProf} />
           <Thumb project={p.dsc} />
           <Thumb project={p.bwType} />
-          <Thumb project={p.hillLiving} />
         </div>
 
         {/* Row 6: headline (cols 1-2) + cols 3, 4 */}
@@ -295,44 +372,44 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>The disciplines share patterns.</Headline>
+            <Headline>the process shares patterns</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>The disciplines share patterns.</Headline>
+            <Headline>the process shares patterns</Headline>
           </div>
+          <Thumb project={p.hillLiving} />
           <Thumb project={p.jChristianson} />
-          <Thumb project={p.amberShockey} />
         </div>
 
         {/* Row 7: cols 1, *, 3, 4 */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
-          <Thumb project={p.sallyBeauty} />
+          <Thumb project={p.amberShockey} />
           <div className="hp-thumb flex items-center justify-center overflow-visible md:w-[160px]">
             <Asterisk weight="heavy" />
           </div>
+          <Thumb project={p.sallyBeauty} />
           <Thumb project={p.jeffreyCampaign2} />
-          <Thumb project={p.fairviewSitting} />
         </div>
 
         {/* Row 8: cols 1, 2 + headline (cols 3-4) */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible md:relative">
+          <Thumb project={p.fairviewSitting} />
           <Thumb project={p.floorDecor} />
-          <Thumb project={p.fairviewBedroom} />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>The premium is in the editing.</Headline>
+            <Headline>the work tells the story.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>The premium is in the editing.</Headline>
+            <Headline>the work tells the story.</Headline>
           </div>
         </div>
 
         {/* Row 9: cols 1, 2, 3, * */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.fairviewBedroom} />
           <Thumb project={p.fairviewFoyer} />
           <Thumb project={p.nordstromFramework} />
-          <Thumb project={p.lovedByNordstrom} />
           <div className="hp-thumb flex items-center justify-center overflow-visible md:w-[160px]">
             <Asterisk weight="regular" />
           </div>
@@ -340,10 +417,10 @@ function HomeContent() {
 
         {/* Row 10: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.lovedByNordstrom} />
           <Thumb project={p.mountainView} />
           <Thumb project={p.neimanMarcus} />
           <Thumb project={p.variousDesign} />
-          <Thumb project={p.sallyOS} />
         </div>
       </div>
 
@@ -365,121 +442,50 @@ function HomeContent() {
             borderRadius: "clamp(30px, 5vw, 75px)",
           }}
         >
-          {/* Inner padded content — chart + principles */}
+          {/* Inner padded content — chart only */}
           <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
             <CareerGalaxy />
-
-            {/* ── Principles — case-study ThreeColumnText pattern ──
-                 Title left (col-span-3), copy right (col-start-7 col-span-6), three rows stacked. */}
-            <div className="mt-20 md:mt-32 pt-12 md:pt-16 border-t border-[#141414]/10">
-              <p className="text-[10px] md:text-[12px] font-semibold tracking-[0.15em] uppercase text-foreground/40 mb-10 md:mb-14">
-                Principles
-              </p>
-
-              <div className="space-y-8 md:space-y-10">
-                {/* Principle 01 */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
-                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
-                    Function. Detail. Endurance.
-                  </h3>
-                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
-                    Three filters every project runs through. The first asks whether it works. The second asks whether it&apos;s right. The third asks whether it survives.
-                  </p>
-                </div>
-
-                {/* Principle 02 */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
-                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
-                    Range is the practice.
-                  </h3>
-                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
-                    A campaign, a kitchen, and a software product share patterns. Working across all three sharpens the work in each. The disciplines are not separate.
-                  </p>
-                </div>
-
-                {/* Principle 03 */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-5">
-                  <h3 className="md:col-span-3 text-[13px] md:text-[14px] font-bold leading-[1.5] md:leading-[1.875] md:pt-[3px]">
-                    Aesthetic intelligence.
-                  </h3>
-                  <p className="md:col-start-7 md:col-span-6 text-[13px] md:text-[14px] leading-[1.7] md:leading-[1.875] text-foreground/80">
-                    Generation is becoming free. Taste, judgment, and the willingness to throw work away are what compound. The premium is in the editing, not the first draft.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* ---- Dark inset footer card — same container pattern as the Career Galaxy section ---- */}
-      <div className="px-4 md:px-0 py-20">
-        <div
-          className="overflow-hidden"
-          style={{
-            backgroundColor: "#141414",
-            borderRadius: "clamp(30px, 5vw, 75px)",
-          }}
-        >
-          {/* Inner padded content */}
-          <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
+      {/* ---- Dark inset footer card — animates to full bleed on scroll
+              using the same scale + corner-sharpen pattern as case-study HeroBlocks ---- */}
+      <AnimatedDarkCard>
+          {/* Restore main's md:px-[50px] inside the hero-breakout so SECTION 04
+              header aligns with SECTION 02's. Background stays full bleed. */}
+          <div className="px-0 md:px-[50px]">
+            <div
+              className="max-w-[1400px] mx-auto"
+              style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}
+            >
 
           {/* Editorial headline — case-study EditorialHeadline pattern, scaled for footer */}
           <h2 className="text-[#F0EAE4] text-[44px] md:text-[88px] font-light leading-[1.05] tracking-[-0.03em] text-center whitespace-pre-line py-12 md:py-20">
-            {"Brand. Product. Place.\nConcept through launch."}
+            {"Designing across\nspace and material."}
           </h2>
 
-          {/* Capability Web — chart + dense meta heading */}
-          <CapabilityWebShowpiece dark />
-
-          {/* Closing block — case-study ClosingBlock pattern */}
-          <div className="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-12 gap-x-5 gap-y-12 pl-0 md:pl-[calc(100%/24)]">
-
-            {/* Left column — Services / Stack / Year */}
-            <div className="md:col-span-4 text-spec text-[#F0EAE4]">
-              <p className="font-bold">Services</p>
-              <p className="text-[#F0EAE4]/70">Product Design</p>
-              <p className="text-[#F0EAE4]/70">Full-Stack Engineering</p>
-              <p className="text-[#F0EAE4]/70">Brand Strategy & Identity</p>
-              <p className="text-[#F0EAE4]/70">Creative Direction</p>
-              <p className="text-[#F0EAE4]/70">Interior Design</p>
-
-              <p className="font-bold mt-6">Stack</p>
-              <p className="text-[#F0EAE4]/70">Next.js  React  TypeScript</p>
-              <p className="text-[#F0EAE4]/70">Supabase  Vercel</p>
-              <p className="text-[#F0EAE4]/70">Figma  Framer  Webflow</p>
-              <p className="text-[#F0EAE4]/70">Claude  GPT  Midjourney</p>
-
-              <p className="font-bold mt-6">Active Since</p>
-              <p className="text-[#F0EAE4]/70">2002 — Present</p>
-            </div>
-
-            {/* Right column — Closing copy + Contact */}
-            <div className="md:col-start-7 md:col-span-6 space-y-6">
-              <p className="text-body text-[#F0EAE4]/80">
-                Strategy and execution don&apos;t take turns. They run at the same desk, in the same week, on the same project.
-              </p>
-              <p className="text-body text-[#F0EAE4]/80">
-                Engagements range from a single mark to a full platform to a custom home. The work ships, and it holds up after.
-              </p>
-
-              <div className="pt-4 border-t border-[#F0EAE4]/15">
-                <p className="text-spec font-bold text-[#F0EAE4] mb-2">Contact</p>
-                <p className="text-spec">
-                  <a href="mailto:hello@reckon.house" className="text-[#F0EAE4]/80 hover:text-[#F0EAE4] underline underline-offset-2 transition-colors">hello@reckon.house</a>
-                </p>
-                <p className="text-spec text-[#F0EAE4]/80">214.697.4578</p>
-                <p className="text-spec">
-                  <a href="https://instagram.com/reckonhousestaples" target="_blank" rel="noopener noreferrer" className="text-[#F0EAE4]/80 hover:text-[#F0EAE4] underline underline-offset-2 transition-colors">IG @reckonhousestaples</a>
-                </p>
-                <p className="text-spec text-[#F0EAE4]/80">Texas / Anywhere</p>
-              </div>
-            </div>
+          {/* Capability Web — header text stays static; chart scales with the
+              background via the --card-scale CSS variable from AnimatedDarkCard. */}
+          <CapabilityWebHeader dark />
+          <div
+            className="will-change-transform"
+            style={{
+              transform: "scale(var(--card-scale, 1))",
+              transformOrigin: "center center",
+            }}
+          >
+            <CapabilityWebChart2D dark />
           </div>
 
+          {/* Copyright — single muted line, centered */}
+          <p className="mt-20 md:mt-32 text-spec text-center text-[#F0EAE4]/50">
+            &copy; 2026 Reckon House. Made by Jeremy Prasatik.
+          </p>
+
+            </div>
           </div>
-        </div>
-      </div>
+      </AnimatedDarkCard>
 
     </div>
   );

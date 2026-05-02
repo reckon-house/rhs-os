@@ -53,7 +53,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "Print",
       ],
       abstract:
-        "Personal work built on a single question: how much visual range can a handful of patterns produce? Strip everything back. No color. No photography. No gradients. Black ink, white paper, six repeating elements simple enough for a child to draw.\n\nDots, lines, stripes, diamonds. Arranged in grids, varied in scale, alternated between positive and negative. The patterns fill letterforms, break outside them, stack into backgrounds, build rhythm across compositions. Three lithographs, each pulling from the identical library but arriving somewhere different.\n\nWithout color, density does the tonal work. A tight dot grid reads dark. A sparse one reads light. Scale determines what the eye processes first. Spacing sets the mood. Every decision in the composition carries more weight because there are fewer decisions to make.",
+        "Personal work built on a single question: how much visual range can a handful of patterns produce? Strip everything back - no color, no photography, no gradients. Just black ink, white paper, and six repeating elements simple enough for a child to draw.\n\nDots, lines, stripes, diamonds. Arranged in grids, varied in scale, alternated between positive and negative. The patterns fill letterforms, break outside them, stack into backgrounds, build rhythm across compositions. Three lithographs, each pulling from the identical library but arriving somewhere different.\n\nWithout color, density does the tonal work. A tight dot grid reads dark. A sparse one reads light. Scale determines what the eye processes first. Spacing sets the mood. Every decision in the composition carries more weight because there are fewer decisions to make.",
     },
 
     // ── THE RULES — grouped in black container ──
@@ -69,7 +69,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Dots. Lines. Stripes. Diamonds. Horizontal, vertical, diagonal. The entire vocabulary fits in a grid smaller than a business card. Varied only in density and scale. Black on white or white on black. Nothing else enters the frame.",
+        "Dots, lines, stripes, diamonds in three orientations - horizontal, vertical, diagonal. The entire vocabulary fits in a grid smaller than a business card. Varied only in density and scale. Black on white or white on black, nothing else enters the frame.",
       group: { name: "rules" },
     },
     {
@@ -344,7 +344,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The interesting part isn't any single print. It's what happens when the same six elements get rearranged. The vocabulary never changes. The results do.",
+        "The interesting part isn't any single print - it's what happens when the same six elements get rearranged. The vocabulary never changes, the results do.",
       group: { name: "system" },
     },
     {
@@ -391,7 +391,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Personal work. No client. No brief. No deadline. Just a question about how far a small set of rules could stretch.",
+        "Personal work. No client, no brief, no deadline. Just a question about how far a small set of rules could stretch.",
     },
     {
       id: "closing",
@@ -404,7 +404,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "The pattern set is almost childlike. Dots, lines, stripes, diamonds. The type is the opposite. Didone serifs, calligraphic flourishes, slab capitals with presence. The tension between the two is what makes the prints hold up at large scale.\n\nBlack and white was the only rule that never bent. No gray. No texture photography. No gradients blending one value into another. Ink or paper. On or off. The binary forced every composition to find its tone through spacing alone.",
+        "The pattern set is almost childlike. Dots, lines, stripes, diamonds. The type is the opposite - Didone serifs, calligraphic flourishes, slab capitals with presence. The tension between the two is what makes the prints hold up at large scale.\n\nBlack and white was the only rule that never bent. No gray, no texture photography, no gradients blending one value into another. Ink or paper. The binary forced every composition to find its tone through spacing alone.",
     },
   ],
 };

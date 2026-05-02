@@ -39,7 +39,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Brand Identity", "Logo System", "Apparel Graphics", "Photography"],
       abstract:
-        "Capitan needed an identity that could work as hard as the product. Boots get scuffed. Stamps blur. Embossing flattens. The marks had to survive that and still read at every scale.\n\nBuilt the system as interlocking elements. Primary logo, secondary badges, typographic lockups, illustrative assets. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props. No stand-ins. Western original isn't a mood board, it's a real place. The photography had to come from inside it.",
+        "Capitan needed an identity that could work as hard as the product. Boots get scuffed, stamps blur, embossing flattens - the marks had to survive all of that and still read at every scale.\n\nBuilt the system as interlocking elements - primary logo, secondary badges, typographic lockups, illustrative assets. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props, no stand-ins, no styling beyond what the place already had. The photography had to come from inside the landscape the boots are made for, not from a moodboard built around it.",
     },
 
     // ════════════════════════════════════════
@@ -172,7 +172,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       introText:
         "Marks made for stamp, stitch, embroidery, print. Every color, every face, every lockup tested against the process before it earned a place in the system.",
       philosophyText:
-        "The system carries primary logo, secondary badges, typographic lockups, illustrative assets. Each piece holds shape under load. Range comes before decoration.\n\nNorthwest carries scale. Oldman carries character. The bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first, an illustration second. Every choice traces back to where the boot ends up.",
+        "The system carries primary logo, secondary badges, typographic lockups, and illustrative assets, each one holding shape under load. Range comes before decoration.\n\nNorthwest carries scale, Oldman carries character, and the bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first and an illustration second. Every choice traces back to where the boot ends up.",
       colors: [
         { name: "Cream", hex: "#EFEAD9", description: "Paper, hangtags" },
         { name: "Tan", hex: "#C4B594", description: "Photography, leather" },
@@ -242,7 +242,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign", "Camera"],
       links: [],
       content:
-        "Capitan asked for branding that could survive where the boots end up. The system holds at every surface. The photography came from the same place.",
+        "Capitan asked for branding that could survive where the boots end up. The system holds at every surface, and the photography came from the same place the boots are made for.",
     },
   ],
 };

@@ -11,6 +11,12 @@ const seeded = (seed: number) => {
   };
 };
 
+// Round to 4 decimals — Node and V8 Math intrinsics can disagree at the last
+// bit of float precision, which surfaces as a SSR/CSR hydration mismatch on
+// SVG numeric attributes. 4 decimals is more than enough visually and flushes
+// those phantom diffs.
+const round4 = (n: number) => Math.round(n * 10000) / 10000;
+
 const projects = [
   { name: "Applied Media", year: 2003, duration: 4, impact: 30, disciplines: ["digital"], colors: ["#4A7FBF", "#3668A8", "#2A5590"] },
   { name: "Neiman Marcus", year: 2007, duration: 6, impact: 60, disciplines: ["digital", "editorial"], colors: ["#CC8A2E", "#B57528", "#9E6020"] },
@@ -75,10 +81,10 @@ export function CareerGalaxy() {
         const rayAngle = baseAngle + (rng() - 0.5) * 0.25;
         const rayLen = baseRadius + 20 + rng() * 60;
         allRays.push({
-          x1: center + Math.cos(rayAngle) * 15,
-          y1: center + Math.sin(rayAngle) * 15,
-          x2: center + Math.cos(rayAngle) * rayLen,
-          y2: center + Math.sin(rayAngle) * rayLen,
+          x1: round4(center + Math.cos(rayAngle) * 15),
+          y1: round4(center + Math.sin(rayAngle) * 15),
+          x2: round4(center + Math.cos(rayAngle) * rayLen),
+          y2: round4(center + Math.sin(rayAngle) * rayLen),
           color: project.colors[0],
           opacity: 0.08 + rng() * 0.1,
         });
@@ -97,8 +103,8 @@ export function CareerGalaxy() {
         const opacity = 0.25 + rng() * 0.55;
         const drift = dotSize > 8 ? rng() * 15 : 0;
         allParticles.push({
-          x: center + Math.cos(angle) * (radius + drift),
-          y: center + Math.sin(angle) * (radius + drift),
+          x: round4(center + Math.cos(angle) * (radius + drift)),
+          y: round4(center + Math.sin(angle) * (radius + drift)),
           r: dotSize,
           color: project.colors[colorIdx],
           opacity,
@@ -118,12 +124,12 @@ export function CareerGalaxy() {
     const outerR = size * 0.46;
     const isMajor = y % 2 === 0;
     yearMarkers.push({
-      x1: center + Math.cos(angle) * (outerR - (isMajor ? 8 : 4)),
-      y1: center + Math.sin(angle) * (outerR - (isMajor ? 8 : 4)),
-      x2: center + Math.cos(angle) * outerR,
-      y2: center + Math.sin(angle) * outerR,
-      labelX: center + Math.cos(angle) * (outerR + 12),
-      labelY: center + Math.sin(angle) * (outerR + 12),
+      x1: round4(center + Math.cos(angle) * (outerR - (isMajor ? 8 : 4))),
+      y1: round4(center + Math.sin(angle) * (outerR - (isMajor ? 8 : 4))),
+      x2: round4(center + Math.cos(angle) * outerR),
+      y2: round4(center + Math.sin(angle) * outerR),
+      labelX: round4(center + Math.cos(angle) * (outerR + 12)),
+      labelY: round4(center + Math.sin(angle) * (outerR + 12)),
       year: y,
       major: isMajor,
       angle,
@@ -138,8 +144,8 @@ export function CareerGalaxy() {
       const radius = 40 + yearPct * (size * 0.36);
       const labelR = radius + 35 + (p.impact / 100) * 20;
       return {
-        x: center + Math.cos(angle) * labelR,
-        y: center + Math.sin(angle) * labelR,
+        x: round4(center + Math.cos(angle) * labelR),
+        y: round4(center + Math.sin(angle) * labelR),
         name: p.name,
         angle,
       };
@@ -153,17 +159,17 @@ export function CareerGalaxy() {
           <ScrambleOnView text="SECTION 02: DATA VISUALIZATION" />
         </span>
         <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          Twenty-four years. Thirty-two projects. One timeline.
+          For 20+ years I&apos;ve worked across digital and physical spaces.
         </h2>
-        <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-6">
-          Apps, campaigns, and rooms mapped chronologically by impact, sized by scope, colored by domain.
+        <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
+          The chart below is what that actually looks like.
         </p>
 
         {/* Meta fields — left column, narrow */}
         <div className="text-spec text-foreground/90">
           <p>
             <span className="font-bold">Field </span>
-            Data Visualization  Career Index
+            Career Index  Multi-Discipline
           </p>
           <p>
             <span className="font-bold">Span </span>
@@ -171,7 +177,7 @@ export function CareerGalaxy() {
           </p>
           <p>
             <span className="font-bold">Classification </span>
-            Bubble Chart  Time Series  Multi-Discipline
+            Digital  Brand  Place
           </p>
         </div>
 
@@ -179,10 +185,10 @@ export function CareerGalaxy() {
         <div className="mt-6 md:mt-4 md:ml-[48%] text-body text-foreground/80">
           <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
           <p className="indent-[4em]">
-            Two and a half decades collapsed into a single chart. Thirty-two projects positioned by year, sized by their impact relative to the rest, colored by which of the three practices they belong to.
+            Apps, campaigns, brand systems, custom homes - all of it plotted on a single timeline, sized by impact, colored by discipline. No filters, no highlights reel. Just the shape of one career&apos;s output, the way it really happened.
           </p>
           <p className="mt-4">
-            No filters. No groupings. The shape of one career&apos;s output, plotted continuously.
+            Looking at it now, I&apos;m not sure I would have predicted any of this twenty years ago. The shape just kept happening. An interior project would sit next to a digital launch the same year. An app would ship near a kitchen makeover that was running in parallel. Disciplines I thought were separate kept showing up at the same moments.
           </p>
         </div>
       </div>

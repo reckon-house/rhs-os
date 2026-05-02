@@ -54,7 +54,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         "Furniture Curation",
       ],
       abstract:
-        "The suite commits to a single mood and follows it through every surface. Charcoal violet on every wall. Vaulted ceilings with exposed wood beams. Floor-to-ceiling steel-framed windows opening onto the property's tree canopy.\n\nThe material palette skews dark and warm. Velvet headboard. Linen sofa. Bouclé ottoman. Faux fur throws. Brass accents at every furniture base and fixture. A cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow. Blues, grays, warm metallics.\n\nThe ensuite continues through double doors. Charcoal hexagon tile floor to ceiling. A hammered copper clawfoot tub beneath a crystal chandelier. Brass fixtures throughout. The bath holds the same temperature the bedroom set.",
+        "The suite commits to a single mood and follows it through every surface - charcoal violet on every wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the property's tree canopy.\n\nThe material palette skews dark and warm. A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow - blues, grays, warm metallics.\n\nThe ensuite continues through double doors with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub beneath a crystal chandelier, and brass fixtures throughout. The bath holds the same temperature the bedroom set.",
     },
 
     // ── THE ROOM — grouped ──
@@ -70,7 +70,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Paint color sets the tone for everything that follows. Charcoal violet on every vertical surface. Not gray. Not navy. A color that shifts between cool and warm depending on the light coming through those steel-framed windows.",
+        "Paint color sets the tone for everything that follows. Charcoal violet on every vertical surface - a color that shifts between cool and warm depending on the light coming through those steel-framed windows.",
       group: { name: "room" },
     },
     {
@@ -118,7 +118,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "A charcoal velvet sofa at the foot of the bed. A swivel chair with a brass base and channel tufting. A bouclé ottoman on turned legs. Faux fur throws layered across the bed. A solid marble pedestal side table. Brass hammered vessels on the floor. The individual pieces span three decades of design. Together they read as a collection, not a catalog order.",
+        "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together read as a collection, not a catalog order.",
     },
 
     // ── Full room shot ──
@@ -167,14 +167,14 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "The Bath Doesn't Break\nthe Mood.",
+      title: "The Bath Holds the\nSame Temperature.",
     },
     {
       id: "ensuite-text",
       type: "text",
       size: "subhead",
       content:
-        "The ensuite opens through double doors off the bedroom. Charcoal hexagon tile replaces the violet paint. A hammered copper clawfoot tub sits beneath a second crystal chandelier. Brass fixtures on every surface. Same temperature, different materials.",
+        "The ensuite opens through double doors off the bedroom. Charcoal hexagon tile replaces the violet paint, a hammered copper clawfoot tub sits beneath a second crystal chandelier, and brass fixtures cover every surface. Same temperature, different materials.",
     },
     {
       id: "ensuite-footnote",
@@ -205,7 +205,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "One Suite,\nTwo Registers.",
+      title: "One Mood,\nAcross Two Rooms.",
     },
     {
       id: "closing-text",
@@ -226,7 +226,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Charcoal violet in the bedroom. Charcoal hex in the bath. Crystal chandeliers in both. The palette stays narrow enough that a copper tub and a bouclé ottoman share a floor plan without either feeling out of place.\n\nEvery piece commits to the same temperature. The tension between glam and grounded keeps the suite from tipping into either extreme.",
+        "Charcoal violet in the bedroom, charcoal hex in the bath, crystal chandeliers in both. The palette stays narrow enough that a copper tub and a bouclé ottoman share a floor plan without either feeling out of place.\n\nEvery piece commits to the same temperature, and the tension between glam and grounded keeps the suite from tipping into either extreme.",
     },
   ],
 };

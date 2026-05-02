@@ -211,7 +211,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "Pattern as system\nNot decoration",
+      text: "A pattern only works\nif the next one fits.",
     },
 
     // ════════════════════════════════════════

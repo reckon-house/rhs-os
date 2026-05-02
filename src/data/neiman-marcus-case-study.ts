@@ -44,7 +44,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "meta",
       title: "Neiman Marcus\nInSite",
       subtitle:
-        "A luxury retailer's digital editorial hub from 2012. Magazine layouts, runway typography, studio-shot photography. All in service of the sale.",
+        "A luxury retailer's digital editorial hub from 2012. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
       field: "Editorial Design  Art Direction  Typography",
       author: "Jeremy Prasatik",
       published: "2012",
@@ -57,7 +57,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         "Typography",
       ],
       abstract:
-        "InSite was Neiman Marcus's digital editorial hub. The mandate read like a contradiction. Make the website feel like a magazine. Sell product like a store. Don't let either side win.\n\nEvery piece started with the story. Designer spotlights introducing names like Derek Lam and Helmut Lang to a broader luxury audience. Seasonal trend narratives organized around color or silhouette. Ways-to-wear features that styled a single garment multiple directions. The concept came first. The shoot, the styling, the layout followed.\n\nAll studio photography. No location budgets. Graphic color blocks stood in for environments a different production might have flown to. Pixelated saturated fields built mood when a sunset wasn't in the cards. Typography did the rest. Designer names built as compositions instead of headlines. Letters interlocking with photography, overlapping garments, sometimes breaking the grid and trusting that the shopper would still find the price.",
+        "InSite was Neiman Marcus's digital editorial hub. The mandate read like a contradiction - make the website feel like a magazine, sell product like a store, don't let either side win.\n\nEvery piece started with the story. Designer spotlights introducing names like Derek Lam and Helmut Lang to a broader luxury audience, seasonal trend narratives organized around color or silhouette, ways-to-wear features that styled a single garment multiple directions. The concept came first, then the shoot, the styling, and the layout followed.\n\nAll studio photography, no location budgets. Graphic color blocks stood in for environments a different production might have flown to, and pixelated saturated fields built mood when a sunset wasn't in the cards. Typography did the rest - designer names built as compositions instead of headlines, letters interlocking with photography, overlapping garments, sometimes breaking the grid and trusting that the shopper would still find the price.",
     },
 
     // ── DESIGNER SPOTLIGHTS — grouped ──
@@ -65,7 +65,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "designers-header",
       type: "section-header",
       label: "SECTION 02: DESIGNER SPOTLIGHTS",
-      title: "These Names Needed Context.\nThe Page Provided It.",
+      title: "Spotlights That Read\nLike Print Profiles.",
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -157,7 +157,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "No location budgets. Studio sweeps and seamless paper. The creative had to stand in for the world outside the shoot. Pixelated color blocks did the work of environments. A grid of saturated tones built the mood that a room and a sunset would have built on a bigger production.",
+        "No location budgets, just studio sweeps and seamless paper. The creative had to stand in for the world outside the shoot, so pixelated color blocks did the work of environments. A grid of saturated tones built the mood that a room and a sunset would have built on a bigger production.",
     },
     {
       id: "color-footnote",
@@ -165,7 +165,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Hot Pink. Yellow. Rainbow. Orange. Coral. Each color story led with a word and a grid of color chips stepping through tonal values. The pixelation read as digital on purpose. The treatment knew it was on a screen and stopped pretending it was in print. Color did the work a location scout would have handled somewhere else.",
+        "Hot Pink, Yellow, Rainbow, Orange, Coral - each color story led with a word and a grid of color chips stepping through tonal values. The pixelation read as digital on purpose, and the treatment stopped pretending it was in print. Color did the work a location scout would have handled somewhere else.",
     },
 
     // Color story triples
@@ -207,14 +207,14 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "type-header",
       type: "section-header",
       label: "SECTION 04: TYPOGRAPHY",
-      title: "Restraint on One Page.\nTheater on the Next.",
+      title: "Type That Set the\nVolume of the Page.",
     },
     {
       id: "type-text",
       type: "text",
       size: "subhead",
       content:
-        "Some stories wanted letters nearly dissolving into texture. Minimalism. Structure. Thin outline serifs ghosting behind the garment. Others wanted theater. The Rocker. The Socialite. Classic Beauty. Oversized display serifs wrapped into the subject's silhouette, negative space doing the layout work.",
+        "Some stories wanted letters nearly dissolving into texture - Minimalism, Structure, thin outline serifs ghosting behind the garment. Others wanted theater - The Rocker, The Socialite, Classic Beauty, with oversized display serifs wrapped into the subject's silhouette and negative space doing the layout work.",
     },
     {
       id: "type-footnote",
@@ -222,7 +222,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The typographic decision came before the shoot. The designer ran scale, weight, and position through the story's concept, then briefed the photographer with those parameters. A quiet story got a quiet silhouette on a flat gray paper sweep. A loud story got a saturated backdrop and a pose with room for a letter to land across the shoulder.",
+        "The typographic decision came before the shoot. The designer ran scale, weight, and position through the story's concept, then briefed the photographer with those parameters. A quiet story got a quiet silhouette on a flat gray paper sweep, while a loud story got a saturated backdrop and a pose with room for a letter to land across the shoulder.",
     },
 
     // Minimalism pair
@@ -356,7 +356,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Designer spotlights, color stories, typographic theater, ways-to-wear grids. One hub. Dozens of stories. Every layout a decision about how far to push the editorial without losing the shopper.",
+        "Designer spotlights, color stories, typographic theater, ways-to-wear grids - one hub holding dozens of stories. Every layout was a decision about how far to push the editorial without losing the shopper.",
     },
     {
       id: "closing",
@@ -371,7 +371,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
       links: [],
       content:
-        "A luxury retailer's digital hub that behaved like a magazine without forgetting it was a store. The studio-only mandate forced the creative to carry the weight. Color blocks stood in for location photography. Typography did the work a stylist and a location scout would have handled on a bigger production.\n\nThe stories held up because the framework underneath held up. Fixed templates for ways-to-wear. Open typography for designer spotlights. Color-as-environment for trend pieces. A framework loose enough to support a dozen editorial moods, tight enough that every story felt like it came from the same room.",
+        "A luxury retailer's digital hub that behaved like a magazine without forgetting it was a store. The studio-only mandate forced the creative to carry the weight - color blocks stood in for location photography, and typography did the work a stylist and a location scout would have handled on a bigger production.\n\nThe stories held up because the framework underneath held up. Fixed templates for ways-to-wear, open typography for designer spotlights, color-as-environment for trend pieces - a framework loose enough to support a dozen editorial moods and tight enough that every story felt like it came from the same room.",
     },
   ],
 };

@@ -41,7 +41,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Art Direction", "Campaign Design", "Email & Web Templates"],
       abstract:
-        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio. Used bold foliage crops as structural anchors rather than styling props. Monstera leaves and palm fronds treated like graphic elements, not greenery. Color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built a system that moved cleanly across email, homepage, and social without redesign. Same visual language, different formats.",
+        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic - condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. I built it as a single system that moved cleanly across email, homepage, and social without redesign, so the same visual language could carry every format.",
     },
 
     // ── Valentino template — campaign in context, second beat in the case
@@ -60,7 +60,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "headline-global",
       type: "editorial-headline",
-      text: "Global feel.\nLocal cost.",
+      text: "Scale without\na plane ticket",
     },
 
     // ════════════════════════════════════════
@@ -72,7 +72,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 02: THREE STORIES",
-      title: "Same System.\nThree Designers.",
+      title: "One System Holding\nThree Designer Stories.",
     },
     {
       id: "stories-subhead",
@@ -87,7 +87,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Repeatable week to week with minimal rework. The condensed-stretched-layered type system holds at desktop and at mobile. The foliage frame holds too. The dress is the only variable.",
+        "Repeatable week to week with minimal rework. The condensed-stretched-layered type system holds at desktop and at mobile, the foliage frame holds at both, and the dress is the only variable.",
     },
 
     // ── Simone Rocha pair: dress shot + matching desktop template
@@ -131,11 +131,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 03: MARKS & MATERIALS",
-      title: "Studio Whites.\nLeaf Greens.",
+      title: "A Studio Palette\nBuilt Around Foliage.",
       introText:
-        "Five colors, four type weights, two foliage crops. Same kit held across three designer stories without a single set change.",
+        "Five colors, four type weights, two foliage crops - the same kit held across three designer stories without a single set change.",
       philosophyText:
-        "The palette runs studio white as the ground, monstera green as the architecture, soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent — striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType is one family. Avenir Next in italic heavy for the Jeffrey wordmark, then Medium, Demi Bold, and Heavy for everything else. The foliage is a material, not a prop — two leaves shot once on white, then composed into every dress story in post.",
+        "The palette runs studio white as the ground, monstera green as the architecture, and soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType is one family. Avenir Next in italic heavy for the Jeffrey wordmark, then Medium, Demi Bold, and Heavy for everything else. The foliage works as a material rather than a prop - two leaves shot once on white, then composed into every dress story in post.",
       colors: [
         { name: "Studio White", hex: "#F5F2EC", description: "Ground, paper" },
         { name: "Striped Blue", hex: "#A8B8C8", description: "JW Anderson accent" },
@@ -227,7 +227,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       stack: ["Photoshop", "InDesign", "Studio photography"],
       links: [],
       content:
-        "A retailer needed spring without the budget for spring. The system answers in foliage and typography — both shot once, both reused across every story the season needed.",
+        "A retailer needed spring without the budget for spring. The system answers in foliage and typography - both shot once, both reused across every story the season needed.",
     },
   ],
 };

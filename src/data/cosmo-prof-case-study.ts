@@ -39,7 +39,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Creative Direction", "Digital Design", "Photography Direction"],
       abstract:
-        "Cosmo Prof needed a digital refresh that matched the professionals using it. The existing site was functional but dated. The goal: modern visual direction and clearer product discovery without slowing down commerce.\n\nStarted with photography. High-contrast lighting, defined shadows, cleaner compositions. Product imagery that looks intentional rather than catalog. Typography shifted to Jost. The palette paired soft neutrals with sharp black to ground the tone.\n\nThe redesigned homepage introduced tabbed recommendations personalized per stylist. Shoppable video let users explore looks and purchase during playback. The global header stripped back to give screen space to content. Templates unified product photography, type, and layout across the site.",
+        "Cosmo Prof needed a digital refresh that matched the professionals using it. The existing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery without slowing down commerce.\n\nStarted with photography - high-contrast lighting, defined shadows, cleaner compositions, product imagery that looks intentional rather than photographed for inventory. Typography shifted to Jost, and the palette paired soft neutrals with sharp black to ground the tone.\n\nThe redesigned homepage introduced tabbed recommendations personalized per stylist, shoppable video that let users explore looks and purchase during playback, and a stripped-back global header that gave screen space to content. Templates unified product photography, type, and layout across the site so promotions, brand campaigns, and education modules could all sit on the same chassis.",
     },
 
     // ════════════════════════════════════════
@@ -49,14 +49,14 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "photo-header",
       type: "section-header",
       label: "SECTION 02: PHOTOGRAPHY DIRECTION",
-      title: "Lit Like a Studio.\nShot Like a Catalog.",
+      title: "Photography That Stops\nLooking Like Inventory.",
     },
     {
       id: "photo-subhead",
       type: "text",
       size: "subhead",
       content:
-        "High-contrast lighting. Defined shadows. Compositions that read at thumbnail and hold up at full bleed. Product imagery that looks intentional, not photographed for inventory.",
+        "High-contrast lighting, defined shadows, compositions that read at thumbnail and hold up at full bleed. Product imagery that looks intentional, not photographed for inventory.",
     },
     {
       id: "photo-footnote",
@@ -101,7 +101,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
     {
       id: "headline-pros",
       type: "editorial-headline",
-      text: "Professional tools\npresented professionally",
+      text: "Imagery built for the\npeople who use the tools",
     },
 
     // ════════════════════════════════════════
@@ -111,7 +111,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "home-header",
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
-      title: "Stripped Header.\nMore Content.",
+      title: "A Header That Gets Out\nof Its Own Way.",
     },
     {
       id: "home-subhead",
@@ -163,14 +163,14 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "mobile-header",
       type: "section-header",
       label: "SECTION 04: MOBILE",
-      title: "Same System.\nSmaller Frame.",
+      title: "The Same System,\nResized for Pocket.",
     },
     {
       id: "mobile-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Mobile starts with the same content priorities. Tabs become swipes. The hero crops vertical without losing the product. The catalog fits one column without feeling cramped.",
+        "Mobile starts with the same content priorities. Tabs become swipes, the hero crops vertical without losing the product, and the catalog fits one column without feeling cramped.",
     },
 
     {
@@ -195,11 +195,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "Soft Neutrals,\nSharp Black.",
+      title: "A Palette Tuned to\nLet the Photography Lead.",
     introText:
         "A palette that lets the photography lead. A type system that scales from header lockup to catalog caption without changing voice.",
       philosophyText:
-        "Cosmo Prof sells to working professionals. The brand had to feel premium without getting precious about it. Soft neutrals carry the warmth, sharp black does the structural lifting.\n\nJost runs the whole system. Block weights for the wordmark and category nav. Regular for catalog copy. The single family keeps the site from fragmenting into a dozen voices the way most B2B sites do.",
+        "Cosmo Prof sells to working professionals, so the brand had to feel premium without getting precious about it. Soft neutrals carry the warmth, sharp black does the structural lifting.\n\nJost runs the whole system - block weights for the wordmark and category nav, regular for catalog copy, light for captions and pricing meta. The single family keeps the site from fragmenting into a dozen voices the way most B2B sites do.",
       colors: [
         { name: "Cream", hex: "#F8F6F2", description: "Paper, cards" },
         { name: "Blush", hex: "#F4D9DC", description: "Hero accent" },
@@ -253,7 +253,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "B2B That Reads\nAs Brand.",
+      title: "B2B That Reads\nLike Brand Work.",
     },
     {
       id: "closing-subhead",
@@ -269,7 +269,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       stack: ["Figma", "Sketch", "Photoshop"],
       links: [],
       content:
-        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh. Templates carried the system across promotions, brand campaigns, and education without breaking. Same chassis, every page.",
+        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh, and templates carried the system across promotions, brand campaigns, and education without breaking - same chassis, every page.",
     },
   ],
 };
