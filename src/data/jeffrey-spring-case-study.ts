@@ -19,13 +19,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   heroImage: "",
   sections: [
     // ── HERO ──
-    // 3x4 grid of all three dress stories (JW Anderson, Valentino, Simone
-    // Rocha) interleaved with monstera leaves — the whole campaign in one frame.
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg`,
-      alt: "Jeffrey Spring Campaign hero collage: 3x4 grid weaving JW Anderson, Valentino, and Simone Rocha dress shots with cropped monstera leaves on studio white",
+      image: `${IMG}/jeffrey-spring-campaign-hero.jpg`,
+      alt: "Jeffrey Spring Campaign hero",
     },
 
     // ── META ──
@@ -63,6 +61,19 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       text: "Scale without\na plane ticket",
     },
 
+    // ── Inline scaling hero — 3x4 grid of all three dress stories (JW Anderson,
+    // Valentino, Simone Rocha) interleaved with monstera leaves. Lifted out of
+    // the top hero slot and parked here as a visual breath after the editorial
+    // headline. inline:true keeps the radius rounded at rest and animates on
+    // scroll instead of full-bleeding.
+    {
+      id: "hero-grid-inline",
+      type: "hero",
+      image: `${IMG}/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg`,
+      alt: "Jeffrey Spring Campaign hero collage: 3x4 grid weaving JW Anderson, Valentino, and Simone Rocha dress shots with cropped monstera leaves on studio white",
+      inline: true,
+    },
+
     // ════════════════════════════════════════
     // SECTION 02 — THREE STORIES, ONE SYSTEM
     // (Each designer's dress shot paired with their template — same kit
@@ -90,28 +101,39 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         "Repeatable week to week with minimal rework. The condensed-stretched-layered type system holds at desktop and at mobile, the foliage frame holds at both, and the dress is the only variable.",
     },
 
-    // ── Simone Rocha pair: dress shot + matching desktop template
+    // ── Breathing room below the footnote before the 4-grid begins.
+    { id: "footnote-spacer", type: "spacer", height: 32 },
+
+    // ── Simone Rocha pair: mobile mockup (left, scaled down) + dress shot (right).
+    // matchHeight: mobile mockup is portrait, dress is square — equal aspect
+    // slots with object-contain so the mockup scales down with whitespace.
     {
       id: "simone-pair",
       type: "dual-image",
       transparent: true,
-      native: true,
+      matchHeight: true,
       left: {
+        src: `${IMG}/jeffrey-spring-campaign-mobile-simone-rocha-in-season-bold-shop-now.png`,
+        alt: "Jeffrey mobile template featuring the Simone Rocha dress with IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
+      },
+      right: {
         src: `${IMG}/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg`,
         alt: "Simone Rocha black floral dress framed by extreme-cropped monstera leaves on a studio white",
       },
-      right: {
-        src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-simone-rocha-in-season-bold.png`,
-        alt: "Jeffrey desktop homepage featuring the same Simone Rocha dress with the IN SEASON BOLD READY & NOW headline alongside the monstera frame",
-      },
     },
 
-    // ── JW Anderson pair: dress shot + matching mobile template
+    // ── Spacer between the two pairs — gives the 4-grid breathing room
+    // between rows so the simone and jw pairs read as distinct beats.
+    { id: "pair-spacer", type: "spacer", height: 40 },
+
+    // ── JW Anderson pair: dress shot (left) + mobile mockup (right, scaled down).
+    // Mirrors the simone-pair layout with the mockup on the opposite side
+    // for visual rhythm.
     {
       id: "jw-pair",
       type: "dual-image",
       transparent: true,
-      native: true,
+      matchHeight: true,
       left: {
         src: `${IMG}/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg`,
         alt: "JW Anderson blue striped asymmetric dress framed by monstera leaves",
@@ -120,6 +142,18 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         src: `${IMG}/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png`,
         alt: "Jeffrey mobile template featuring the same JW Anderson dress with IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
       },
+    },
+
+    // ── Desktop mockup — third beat below the 4-grid. Anchors the section
+    // by showing the same campaign system at full desktop scale after the
+    // dress-to-mobile pairings above.
+    {
+      id: "simone-desktop",
+      type: "image",
+      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-simone-rocha-in-season-bold.png`,
+      alt: "Jeffrey desktop homepage featuring the Simone Rocha dress with the IN SEASON BOLD READY & NOW headline alongside the monstera frame",
+      aspect: "native",
+      padded: true,
     },
 
     // ════════════════════════════════════════
@@ -180,28 +214,13 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           weight: 800,
         },
       ],
-      markImage: `${IMG}/jeffrey-spring-campaign-desktop-homepage-simone-rocha-in-season-bold.png`,
-      markAlt: "Jeffrey desktop homepage as the brand expression in context — wordmark, type system, and foliage architecture all visible in one frame",
-      markFullBleed: true,
-    },
-
-    // ── Foliage as material — the two graphic elements that anchor every
-    // composition in the campaign. Shot once on studio white, dropped into
-    // every dress story. Sits inside Marks & Materials because the leaves
-    // ARE the brand material.
-    {
-      id: "foliage-pair",
-      type: "dual-image",
-      transparent: true,
-      native: true,
-      left: {
-        src: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
-        alt: "Single monstera leaf shot tight on white, treated as a graphic material rather than a styling prop",
-      },
-      right: {
-        src: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
-        alt: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
-      },
+      // Mark slot: side-by-side foliage pair. The leaves ARE the brand
+      // material, so this slot shows them as a complementary detail study
+      // (monstera + palm frond) rather than another mockup screenshot.
+      markImage: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
+      markAlt: "Single monstera leaf shot tight on white, treated as a graphic material rather than a styling prop",
+      markImageRight: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
+      markAltRight: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
     },
 
     // ════════════════════════════════════════

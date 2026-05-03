@@ -173,6 +173,13 @@ export interface DualImageSection extends BaseSection {
   transparent?: boolean;
   aspect?: string;
   blend?: "multiply" | "screen" | "overlay";
+  /**
+   * When true, both slots render at the same aspect ratio (square) and the
+   * right image uses object-contain so a portrait/mobile mockup doesn't blow
+   * up the row vertically. Use when pairing a square image with a much taller
+   * one (e.g. dress photo + mobile/email screenshot).
+   */
+  matchHeight?: boolean;
 }
 
 export interface TripleImageSection extends BaseSection {
@@ -505,4 +512,12 @@ export interface MarksAndMaterialsSection extends BaseSection {
   markAlt: string;
   /** When true, the mark image fills the panel width (good for system spreads / wide compositions). Default false. */
   markFullBleed?: boolean;
+  /**
+   * Optional secondary image — when provided, the mark slot renders as a
+   * side-by-side pair (markImage left, markImageRight right). Use for cases
+   * like material studies where two complementary shots tell the story
+   * better than a single spread.
+   */
+  markImageRight?: string;
+  markAltRight?: string;
 }

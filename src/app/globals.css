@@ -76,6 +76,38 @@ body::before {
 }
 
 @font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-Heavy.woff') format('woff');
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('/fonts/AvenirNext-HeavyItalic.woff') format('woff');
+  font-weight: 800;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
   font-family: 'Northwest';
   src: url('/fonts/NorthwestRegular.woff2') format('woff2');
   font-weight: 400;

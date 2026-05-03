@@ -118,6 +118,8 @@ export function MarksAndMaterials({
   markImage,
   markAlt,
   markFullBleed = false,
+  markImageRight,
+  markAltRight,
 }: MarksAndMaterialsSection) {
   const titleLines = title.split("\n");
   const philosophyParagraphs = philosophyText.split("\n\n");
@@ -308,16 +310,44 @@ export function MarksAndMaterials({
           </div>
 
           {/* ─── PRIMARY MARK / SYSTEM SPREAD (centered) ─── */}
-          <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 pt-6 flex justify-center">
-            <Image
-              src={markImage}
-              alt={markAlt}
-              width={2000}
-              height={1200}
-              sizes={markFullBleed ? "(min-width: 1100px) 1000px, 100vw" : "(min-width: 1000px) 1000px, 100vw"}
-              className={`w-full ${markFullBleed ? "max-w-none" : "max-w-[1000px]"} object-contain rounded-[clamp(20px,4vw,50px)]`}
-              style={{ height: "auto" }}
-            />
+          {/* When markImageRight is set, render as a side-by-side pair (good
+              for material studies — e.g. two complementary detail shots).
+              Otherwise render the single markImage spread. */}
+          <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 pt-6">
+            {markImageRight ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <Image
+                  src={markImage}
+                  alt={markAlt}
+                  width={2000}
+                  height={2000}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="w-full object-contain rounded-[clamp(20px,4vw,50px)]"
+                  style={{ height: "auto" }}
+                />
+                <Image
+                  src={markImageRight}
+                  alt={markAltRight ?? ""}
+                  width={2000}
+                  height={2000}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="w-full object-contain rounded-[clamp(20px,4vw,50px)]"
+                  style={{ height: "auto" }}
+                />
+              </div>
+            ) : (
+              <div className="flex justify-center">
+                <Image
+                  src={markImage}
+                  alt={markAlt}
+                  width={2000}
+                  height={1200}
+                  sizes={markFullBleed ? "(min-width: 1100px) 1000px, 100vw" : "(min-width: 1000px) 1000px, 100vw"}
+                  className={`w-full ${markFullBleed ? "max-w-none" : "max-w-[1000px]"} object-contain rounded-[clamp(20px,4vw,50px)]`}
+                  style={{ height: "auto" }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
