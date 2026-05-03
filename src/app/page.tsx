@@ -6,6 +6,7 @@ import { CareerGalaxy } from "@/components/CareerGalaxy";
 import { CapabilityWebHeader, CapabilityWebChart2D } from "@/components/CapabilityWeb";
 import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
+import { NowPlayingThumb } from "@/components/NowPlayingThumb";
 import { projectsById as p, type Project } from "@/data/projects";
 
 // Case study hero slides for the homepage carousel
@@ -415,12 +416,14 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Row 10: 4 thumbnails */}
+        {/* Row 10: 4 thumbnails — last slot is the live music easter egg.
+             Renders as variousDesign normally; swaps to album art + song +
+             artist when a recent Apple Music play is detected. */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
           <Thumb project={p.lovedByNordstrom} />
           <Thumb project={p.mountainView} />
           <Thumb project={p.neimanMarcus} />
-          <Thumb project={p.variousDesign} />
+          <NowPlayingThumb fallback={p.variousDesign} />
         </div>
       </div>
 

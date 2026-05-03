@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+*.p8
 
 # debug
 npm-debug.log*
@@ -49,9 +50,6 @@ next-env.d.ts
 # Production effects live in src/components/fx/ and SHOULD be tracked.
 /fx/
 sally-marketing-case-study.pdf
-
-# Moodboards & reference imagery — not deployed, not part of the site.
-/public/case-studies/inspiration/
 
 # Stray Figma exports inside case-study folders (named like "Group 907.png").
 # Production images use descriptive filenames; these are working files only.
