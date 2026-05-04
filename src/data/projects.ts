@@ -18,7 +18,7 @@ export const projects: Project[] = [
   { id: "hillKitchen", title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg`, href: "/case-studies/hill-country-kitchen", tags: ["interiors"], featured: true },
   { id: "robertRod", title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg`, href: "/case-studies/robert-rodriguez", tags: ["creative"], featured: true },
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-design-system.jpg`, href: "/case-studies/nordstrom-personalization", tags: ["digital"] },
-  { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg`, tags: ["digital"] },
+  { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg`, href: "/case-studies/jeffrey-ecommerce", tags: ["digital"] },
   { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg`, href: "/case-studies/capitan-boot-co", tags: ["creative"] },
   { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "hillBath", title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg`, href: "/case-studies/hill-country-bath", tags: ["interiors"] },
@@ -30,16 +30,16 @@ export const projects: Project[] = [
   { id: "hillLiving", title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg`, tags: ["interiors"] },
   { id: "jChristianson", title: "J.Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg`, href: "/case-studies/j-christianson", tags: ["creative"] },
   { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg`, href: "/case-studies/amber-shockey-co", tags: ["creative"] },
-  { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg`, tags: ["creative"] },
+  { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg`, href: "/case-studies/you-by-sally", tags: ["creative"] },
   { id: "sallyOS", title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/sally-os-platform-hero.jpg`, href: "/case-studies/sally", tags: ["digital"] },
   { id: "jeffreyCampaign2", title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg`, tags: ["creative"] },
   { id: "fairviewSitting", title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg`, href: "/case-studies/fairview-sitting", tags: ["interiors"] },
-  { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg`, tags: ["interiors"] },
+  { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg`, href: "/case-studies/floor-and-decor", tags: ["interiors"] },
   { id: "fairviewBedroom", title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg`, href: "/case-studies/fairview-suite", tags: ["interiors"] },
   { id: "fairviewFoyer", title: "The Fairview", category: "Interior Design, foyer", image: `${HP}/rhs-interior-design-grand-entry-luxe.jpg`, tags: ["interiors"] },
   { id: "nordstromFramework", title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/rhs-nordstrom-framework-content-design.jpg`, tags: ["digital", "creative"] },
   { id: "lovedByNordstrom", title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-campaign-design-nordstrom-loved-by-campaign.jpg`, href: "/case-studies/loved-by-nordstrom", tags: ["creative"] },
-  { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg`, tags: ["interiors"] },
+  { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg`, href: "/case-studies/chalet", tags: ["interiors"] },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-campaign-design-neiman-marcus-editorial-design.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
 ];
@@ -51,6 +51,8 @@ export interface ExpertiseSection {
   title: string;
   subhead: string;
   footnote: string;
+  /** Columns mirror the case-study three-column pattern — small title on the
+   * left, body content on the right. Body can contain `\n\n` for paragraphs. */
   columns: { title: string; content: string }[];
 }
 

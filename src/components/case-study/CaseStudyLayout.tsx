@@ -174,6 +174,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
           return (
             <div key={item.name} className={`col-span-12 ${sectionGap}`}>
               <div
+                data-nav-dark={isDarkBg ? true : undefined}
                 className={`overflow-hidden group-container ${bleedClass} ${isDarkBg ? "text-[#EDE7E2]" : ""}`}
                 style={{
                   backgroundColor: item.bg,

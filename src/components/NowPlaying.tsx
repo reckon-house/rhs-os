@@ -1,12 +1,13 @@
 "use client";
 
 /**
- * NowPlaying — small chip showing Jeremy's most recently played Apple Music
- * track. Polls /api/now-playing every 60 seconds. Falls back gracefully if
- * the endpoint errors or no track is available.
+ * NowPlaying — 1×1 album-art tile showing Jeremy's most recently played
+ * Apple Music track. Drops into masonry grids alongside inspiration
+ * imagery so it reads as just another shelf item, not a chrome chip.
  *
- * Currently used at the bottom of the inspiration page. Could also live as
- * a persistent footer chip or in the dark Section 04 footer.
+ * Polls /api/now-playing every 60 seconds. Renders nothing until the
+ * first fetch settles or if no track is available — keeps the layout
+ * from flashing an empty state.
  */
 
 import { useEffect, useState } from "react";
@@ -56,8 +57,7 @@ export function NowPlaying() {
     };
   }, []);
 
-  // Don't render anything until the first fetch settles. Avoids the flash
-  // of an empty card on initial paint.
+  // Don't render anything until the first fetch settles.
   if (!loaded) return null;
 
   // No recent track available — render nothing rather than an empty state.
@@ -68,32 +68,42 @@ export function NowPlaying() {
       href={track.appleMusicUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-3 max-w-full"
+      className="group relative block w-full aspect-square overflow-hidden bg-[#141414]/[0.06]"
+      style={{ borderRadius: "clamp(18px, 3.5vw, 36px)" }}
     >
-      {/* Album art */}
-      <div className="relative shrink-0 w-12 h-12 md:w-14 md:h-14 overflow-hidden rounded-md bg-[#141414]/[0.06]">
-        {track.artworkUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={track.artworkUrl}
-            alt={`${track.albumName} cover`}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        )}
-      </div>
+      {/* Album art — fills the square */}
+      {track.artworkUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={track.artworkUrl}
+          alt={`${track.albumName} cover`}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+      )}
 
-      {/* Text — single line, ellipsis if it overflows */}
-      <div className="min-w-0 flex flex-col leading-tight">
-        <span className="text-[10px] uppercase tracking-[0.08em] text-foreground/50 font-medium">
+      {/* Gradient scrim — only over the bottom third for text legibility,
+          keeps most of the album art clean. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0) 100%)",
+        }}
+      />
+
+      {/* Text overlay — bottom left */}
+      <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white">
+        <div className="text-[9px] md:text-[10px] uppercase tracking-[0.1em] font-medium opacity-70 mb-1">
           Last played
-        </span>
-        <span className="text-[13px] md:text-[14px] text-foreground font-medium truncate group-hover:underline underline-offset-2">
+        </div>
+        <div className="text-[13px] md:text-[14px] font-medium leading-tight truncate group-hover:underline underline-offset-2">
           {track.name}
-        </span>
-        <span className="text-[12px] text-foreground/60 truncate">
+        </div>
+        <div className="text-[11px] md:text-[12px] opacity-80 leading-tight truncate mt-0.5">
           {track.artistName}
-        </span>
+        </div>
       </div>
     </a>
   );

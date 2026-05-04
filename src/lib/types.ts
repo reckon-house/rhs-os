@@ -57,6 +57,9 @@ export type Section =
   | KitchenPaletteSection
   | HexPolygonSection
   | CampaignBlastRadiusSection
+  | JeffreyFlagshipRadiusSection
+  | MaterialOverlapSection
+  | CabinMidCenturySpectrumSection
   | ColorPermutationsSection
   | EditorialTreatmentsSection
   | LogoCarouselSection
@@ -80,6 +83,14 @@ export interface HeroSection extends BaseSection {
   image: string;
   alt: string;
   inline?: boolean;
+  /**
+   * cropWide: when true, the image fills the container with object-cover at a
+   * fixed widescreen aspect ratio on desktop instead of the default
+   * object-contain that fits the entire image. Use for super-wide source images
+   * where you want the left/right edges to clip out of view, suggesting the
+   * image continues beyond the visible area.
+   */
+  cropWide?: boolean;
 }
 
 /**
@@ -440,6 +451,18 @@ export interface HexPolygonSection extends BaseSection {
 
 export interface CampaignBlastRadiusSection extends BaseSection {
   type: "campaign-blast-radius";
+}
+
+export interface JeffreyFlagshipRadiusSection extends BaseSection {
+  type: "jeffrey-flagship-radius";
+}
+
+export interface MaterialOverlapSection extends BaseSection {
+  type: "material-overlap";
+}
+
+export interface CabinMidCenturySpectrumSection extends BaseSection {
+  type: "cabin-midcentury-spectrum";
 }
 
 export interface ColorPermutationsSection extends BaseSection {

@@ -161,7 +161,7 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
   return (
     <div className="mb-12">
       <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
-        <ScrambleOnView text="SECTION 04: PRACTICE" />
+        <ScrambleOnView text="SECTION: PRACTICE" />
       </span>
       <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
         Putting the work first.

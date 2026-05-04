@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlaying } from "@/components/NowPlaying";
 import { inspiration } from "@/data/inspiration";
@@ -9,9 +10,9 @@ export default function InspirationPage() {
       <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-            <span className="font-bold">House</span>
+            <Link href="/" className="hover:opacity-70 transition-opacity">House</Link>
             <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span>Inspiration</span>
+            <span className="font-bold">Inspiration</span>
           </nav>
           <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
             House OS. Beta.
@@ -31,36 +32,47 @@ export default function InspirationPage() {
 
         {/* Title */}
         <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          A shelf of things I keep coming back to.
+          A shelf of staples I keep coming back to.
         </h1>
 
         {/* Body — flows directly under the headline as one block, like the homepage */}
         <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          Interiors, campaigns, type, photography, furniture, color, light - saved when something catches and kept where I can see it. The input side of the work, organized by no system other than &quot;something here.&quot;
+          The people, the work, the rooms - the things that show up in everything I make, whether I notice or not. Plus the occasional piece I write about why they matter.
         </p>
 
-        {/* Closing line — quieter, secondary lens */}
+        {/* Closing line — quieter, secondary lens. Acts as the tagline that
+            frames how Reckon*House and House*Staples relate. */}
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          Not curated for an audience. Kept personal so it stays useful.
+          Reckon*House is what gets made. House*Staples is what holds it up.
         </p>
 
         {/* Meta fields — matches homepage pattern */}
         <div className="text-spec text-foreground/90">
           <p>
-            <span className="font-bold">Field </span>
+            <span className="font-bold">Field: </span>
             Visual Reference
           </p>
           <p>
-            <span className="font-bold">Saved by </span>
+            <span className="font-bold">Saved by: </span>
             Jeremy Prasatik
-            {"  Updated: "}
+            {" | Updated: "}
             Regularly
-            {"  Status: "}
+            {" | Status: "}
             Personal
           </p>
           <p>
-            <span className="font-bold">Classification </span>
-            Interiors  Photography  Type  Color  Form
+            <span className="font-bold">Classification: </span>
+            People | Rooms | Objects | Words
+          </p>
+          <p>
+            <span className="font-bold">Connect: </span>
+            <a
+              href="mailto:hello@reckon.house"
+              className="underline underline-offset-2 hover:opacity-70 transition-opacity"
+            >
+              hello@reckon.house
+            </a>
+            {" | 214.697.4578"}
           </p>
         </div>
       </section>
@@ -74,6 +86,13 @@ export default function InspirationPage() {
           className="columns-2 lg:columns-4"
           style={{ columnGap: "40px" }}
         >
+          {/* Now-playing tile — drops into the masonry as a 1×1 album-art
+              card with a small "Last Played" overlay. Renders nothing if
+              no recent track is available, so the column flow stays clean. */}
+          <div className="mb-10 md:mb-12 break-inside-avoid">
+            <NowPlaying />
+          </div>
+
           {inspiration.map((item) => (
             <div
               key={item.src}
@@ -89,13 +108,6 @@ export default function InspirationPage() {
               />
             </div>
           ))}
-        </div>
-
-        {/* Now-playing chip — quiet beat at the end of the feed.
-            Renders nothing if no recent track is available, so the page
-            never shows an empty state. */}
-        <div className="mt-12 md:mt-16">
-          <NowPlaying />
         </div>
       </section>
     </div>

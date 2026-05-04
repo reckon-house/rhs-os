@@ -39,6 +39,9 @@ import { MaterialCircos } from "./sections/MaterialCircos";
 import { KitchenPalette } from "./sections/KitchenPalette";
 import { HexPolygon } from "./sections/HexPolygon";
 import { CampaignBlastRadius } from "./sections/CampaignBlastRadius";
+import { JeffreyFlagshipRadius } from "./sections/JeffreyFlagshipRadius";
+import { MaterialOverlap } from "./sections/MaterialOverlap";
+import { CabinMidCenturySpectrum } from "./sections/CabinMidCenturySpectrum";
 import { ColorPermutations } from "./sections/ColorPermutations";
 import { EditorialTreatments } from "./sections/EditorialTreatments";
 import { LogoCarousel } from "./sections/LogoCarousel";
@@ -136,6 +139,12 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <HexPolygon />;
     case "campaign-blast-radius":
       return <CampaignBlastRadius />;
+    case "jeffrey-flagship-radius":
+      return <JeffreyFlagshipRadius />;
+    case "material-overlap":
+      return <MaterialOverlap />;
+    case "cabin-midcentury-spectrum":
+      return <CabinMidCenturySpectrum />;
     case "color-permutations":
       return <ColorPermutations />;
     case "editorial-treatments":

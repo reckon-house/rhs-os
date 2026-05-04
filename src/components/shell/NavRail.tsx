@@ -5,46 +5,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const categories = [
-  { label: "Reckon.House", image: "/nav/logo.jpg", href: "/" },
+  { label: "Reckon*House", image: "/nav/logo.jpg", href: "/" },
   { label: "Digital", image: "/nav/digital.jpg", href: "/category/digital" },
   { label: "Creative", image: "/nav/reckonhouse.jpg", href: "/category/creative" },
   { label: "Interiors", image: "/nav/interiors.jpg", href: "/category/interiors" },
 ];
 
+// House*Staples is the home for the rest of the practice's content —
+// inspiration board, learn notes, and contact/connect — collapsed into
+// a single page. Learn and Connect dropped from the rail; their content
+// will live as sections inside House*Staples.
 const utilities = [
   {
-    label: "Inspiration",
+    label: "House*Staples",
     href: "/inspiration",
     icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#141414" strokeWidth="1.5" strokeLinecap="round">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <line x1="6" y1="18" x2="6" y2="10" />
         <line x1="10" y1="20" x2="10" y2="8" />
         <line x1="14" y1="16" x2="14" y2="12" />
         <line x1="18" y1="22" x2="18" y2="6" />
         <line x1="22" y1="18" x2="22" y2="10" />
-      </svg>
-    ),
-  },
-  {
-    label: "Learn",
-    href: "/learn",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#141414" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M2 3h20" />
-        <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3" />
-        <path d="m7 21 5-5 5 5" />
-      </svg>
-    ),
-  },
-  {
-    label: "Connect",
-    href: "/connect",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#141414" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.828 14.828 21 21" />
-        <path d="M21 16v5h-5" />
-        <path d="m21 3-9 9-4-4-6 6" />
-        <path d="M21 8V3h-5" />
       </svg>
     ),
   },
@@ -56,13 +37,17 @@ export function NavRail() {
   const sweepRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
   const navContentRef = useRef<HTMLDivElement>(null);
+  const navBarRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [overDark, setOverDark] = useState(false);
 
-  // Determine active index from URL
+  // Determine active index from URL. Categories occupy 0–3, House*Staples
+  // (the only utility) sits at index 4 — past the divider.
   useEffect(() => {
     if (pathname === "/category/digital") setActiveIdx(1);
     else if (pathname === "/category/creative") setActiveIdx(2);
     else if (pathname === "/category/interiors") setActiveIdx(3);
+    else if (pathname === "/inspiration") setActiveIdx(4);
     else setActiveIdx(0);
   }, [pathname]);
 
@@ -220,6 +205,59 @@ export function NavRail() {
     };
   }, []);
 
+  // ── Detect overlap with any [data-nav-dark] region (e.g. SiteFooter)
+  // and invert the bar's text/icon/divider colors for legibility. ──
+  useEffect(() => {
+    const main = document.querySelector("main");
+    if (!main) return;
+
+    let raf = 0;
+    let last = false;
+    const check = () => {
+      const navEl = navBarRef.current;
+      if (!navEl) return;
+      const navRect = navEl.getBoundingClientRect();
+      // Sample the vertical center of the bar; horizontal placement is
+      // centered on desktop and full-width on mobile, so a center y check
+      // is enough.
+      const sampleY = navRect.top + navRect.height / 2;
+      const darkRegions = document.querySelectorAll("[data-nav-dark]");
+      let hit = false;
+      for (const el of Array.from(darkRegions)) {
+        const r = (el as HTMLElement).getBoundingClientRect();
+        if (sampleY >= r.top && sampleY <= r.bottom) {
+          hit = true;
+          break;
+        }
+      }
+      if (hit !== last) {
+        last = hit;
+        setOverDark(hit);
+      }
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(check);
+    };
+
+    check();
+    main.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      main.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  // ── Color palette swap based on whether the bar overlays a dark area.
+  // The hex values mirror the light/dark ink already used elsewhere in
+  // the app (#141414 cream-on-light, #F0EAE4 cream-on-dark). ──
+  const ink = overDark ? "#F0EAE4" : "#141414";
+  const inkSoft = overDark ? "rgba(240,234,228,0.7)" : "rgba(20,20,20,0.7)";
+  const dividerBg = overDark ? "rgba(240,234,228,0.16)" : "rgba(20,20,20,0.10)";
+  const highlightBg = overDark ? "rgba(240,234,228,0.10)" : "rgba(20,20,20,0.06)";
+
   return (
     <>
       {/* SVG displacement filter */}
@@ -235,9 +273,10 @@ export function NavRail() {
 
       {/* ── Single unified bottom bar ── */}
       <div
+        ref={navBarRef}
         data-nav-bar
         className="fixed bottom-4 left-3 right-3 md:bottom-6 md:left-0 md:right-0 flex md:justify-center items-end"
-        style={{ zIndex: 2147483647, paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        style={{ zIndex: 2147483647, paddingBottom: "env(safe-area-inset-bottom, 0px)", color: ink, transition: "color 0.3s ease" }}
       >
         <div className="flex-1 md:flex-none">
           <div className="relative rounded-[28px] overflow-x-auto overflow-y-hidden scrollbar-hide" data-lenis-prevent>
@@ -269,11 +308,12 @@ export function NavRail() {
               {/* Sliding highlight */}
               <div
                 ref={highlightRef}
-                className="absolute top-1/2 -translate-y-1/2 rounded-[18px] bg-[#141414]/[0.06] pointer-events-none"
+                className="absolute top-1/2 -translate-y-1/2 rounded-[18px] pointer-events-none"
                 style={{
                   opacity: 0,
                   left: 0,
-                  transition: "left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease",
+                  backgroundColor: highlightBg,
+                  transition: "left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background-color 0.3s ease",
                 }}
               />
 
@@ -289,14 +329,14 @@ export function NavRail() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={cat.image} alt={cat.label} className="w-full h-full object-cover" />
                   </div>
-                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
+                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
                     {cat.label}
                   </span>
                 </Link>
               ))}
 
               {/* Divider */}
-              <div className="nav-divider w-px h-[30px] md:h-[40px] bg-[#141414]/10 shrink-0" />
+              <div className="nav-divider w-px h-[30px] md:h-[40px] shrink-0" style={{ backgroundColor: dividerBg, transition: "background-color 0.3s ease" }} />
 
               {/* Utilities */}
               {utilities.map((item) => (
@@ -310,7 +350,7 @@ export function NavRail() {
                       {item.icon}
                     </div>
                   </div>
-                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center text-[#141414]/70 whitespace-nowrap">
+                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
                     {item.label}
                   </span>
                 </Link>

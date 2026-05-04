@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
-import { CareerGalaxy } from "@/components/CareerGalaxy";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
 
 /* ── Thumbnail (same as homepage) ── */
@@ -126,6 +125,27 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
       <div className="pb-24 space-y-10 md:space-y-[100px] pt-12 md:pt-0">
 
+        {/* ── Header block at top — pill + title + subhead + footnote only.
+            Same Meta-block pattern as the homepage manifesto. The three-
+            column expertise breakdown sits below the projects in its own
+            cream container (further down the page). */}
+        {info.expertise && (
+          <section className="w-full pt-8 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
+            <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+              {info.expertise.label}
+            </span>
+            <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
+              {info.expertise.title.replace(/\n/g, " ")}
+            </h1>
+            <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
+              {info.expertise.subhead}
+            </p>
+            <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              {info.expertise.footnote}
+            </p>
+          </section>
+        )}
+
         {/* ── Featured: Two hero images ── */}
         <>
           {/* Mobile: swipe carousel */}
@@ -152,35 +172,30 @@ export function CategoryPage({ tag }: { tag: Tag }) {
           <ThumbRow key={`thumb-${i}`} items={row} />
         ))}
 
-        {/* ── Editorial headline ── */}
-        <div className="py-8 md:py-16">
-          <h2 className="text-[48px] md:text-[96px] leading-[1.05] tracking-[-0.03em] font-light text-center text-foreground whitespace-pre-line">
-            {info.headline}
-          </h2>
-        </div>
-
-        {/* ── Expertise section (grouped container) ── */}
+        {/* ── Three-column expertise breakdown — sits BELOW the projects in
+            its own cream container. Now mirrors the case-study section
+            pattern: pill + bold headline + larger subhead + smaller footnote
+            at the top of the container, then the three columns of supporting
+            detail below. */}
         {info.expertise && (
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
-            {/* Pill label */}
-            <div className="md:pl-[calc(100%/24)]">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-current font-medium px-4 py-2 rounded-full bg-current/[0.06] mb-5">
+            {/* Section header — pill, headline, subhead, footnote */}
+            <div className="md:px-[calc(100%/24)] mb-10 md:mb-14">
+              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
                 {info.expertise.label}
               </span>
+              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
+                {info.expertise.title.replace(/\n/g, " ")}
+              </h2>
+              <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
+                {info.expertise.subhead}
+              </p>
+              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+                {info.expertise.footnote}
+              </p>
             </div>
-            {/* Title */}
-            <h2 className="text-[16px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2 md:pl-[calc(100%/24)]">
-              {info.expertise.title.replace(/\n/g, " ")}
-            </h2>
-            {/* Subhead */}
-            <p className="text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] md:pl-[calc(100%/24)] mb-4">
-              {info.expertise.subhead}
-            </p>
-            {/* Footnote */}
-            <p className="text-[11px] md:text-[14px] leading-[1.875] md:pl-[calc(100%/24)] mb-8">
-              {info.expertise.footnote}
-            </p>
-            {/* Three columns — Desktop */}
+
+            {/* Desktop columns */}
             <div className="hidden md:block space-y-10 md:px-[calc(100%/24)]">
               {info.expertise.columns.map((col, i) => (
                 <div key={i} className="grid grid-cols-12 gap-x-5">
@@ -197,7 +212,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
                 </div>
               ))}
             </div>
-            {/* Three columns — Mobile */}
+            {/* Mobile columns */}
             <div className="md:hidden space-y-6">
               {info.expertise.columns.map((col, i) => (
                 <div key={i}>
@@ -212,11 +227,6 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             </div>
           </div>
         )}
-
-        {/* ── Data visualization ── */}
-        <div className="max-w-[1100px] mx-auto px-4 md:px-0 py-12">
-          <CareerGalaxy />
-        </div>
 
         {/* ── Other category sections ── */}
         {otherTags.map((otherTag) => {

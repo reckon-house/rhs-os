@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
-import { CapabilityWebHeader, CapabilityWebChart2D } from "@/components/CapabilityWeb";
 import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlayingThumb } from "@/components/NowPlayingThumb";
@@ -137,77 +136,6 @@ function Headline({ children }: { children: React.ReactNode }) {
     <div className="flex items-center justify-center">
       <p className="text-[14px] md:text-[20px] font-semibold text-center leading-[1.3]">{children}</p>
     </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  AnimatedDarkCard — only the background surface scales 0.82 → 1.0    */
-/*  and the corners sharpen 75px → 0px as the section enters view.      */
-/*  Text content sits on top in normal flow at constant size, so the    */
-/*  reading experience stays persistent.                                 */
-/*                                                                       */
-/*  The current scale is also written to the section as a CSS variable  */
-/*  --card-scale so any opt-in element inside (like the chart) can use  */
-/*  `transform: scale(var(--card-scale))` to scale in lockstep.         */
-/* ------------------------------------------------------------------ */
-
-function AnimatedDarkCard({ children }: { children: React.ReactNode }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const bg = bgRef.current;
-    if (!section || !bg) return;
-
-    const scrollEl = document.querySelector("main");
-    if (!scrollEl) return;
-
-    let raf = 0;
-    const update = () => {
-      const rect = section.getBoundingClientRect();
-      const viewH = window.innerHeight;
-      // Progress: 0 when section enters viewport from below, 1 when its top hits viewport top.
-      const raw = 1 - rect.top / viewH;
-      const progress = Math.max(0, Math.min(1, raw));
-      const scale = 0.82 + progress * 0.18;
-      const radius = Math.round(75 * (1 - progress));
-      bg.style.transform = `scale(${scale})`;
-      bg.style.borderRadius = `${radius}px`;
-      // Expose to opt-in children (e.g. the chart wrapper).
-      section.style.setProperty("--card-scale", String(scale));
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-
-    update();
-    scrollEl.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      scrollEl.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="hero-breakout relative py-20" style={{ ["--card-scale" as string]: "0.82" }}>
-      {/* Background — sits behind content, scales 0.82 → 1.0 with radius. */}
-      <div
-        ref={bgRef}
-        className="absolute inset-0 will-change-transform pointer-events-none"
-        style={{
-          backgroundColor: "#141414",
-          borderRadius: "75px",
-          transform: "scale(0.82)",
-          transformOrigin: "center center",
-        }}
-      />
-      {/* Content — static, on top. */}
-      <div className="relative">
-        {children}
-      </div>
-    </section>
   );
 }
 
@@ -451,44 +379,6 @@ function HomeContent() {
           </div>
         </div>
       </div>
-
-      {/* ---- Dark inset footer card — animates to full bleed on scroll
-              using the same scale + corner-sharpen pattern as case-study HeroBlocks ---- */}
-      <AnimatedDarkCard>
-          {/* Restore main's md:px-[50px] inside the hero-breakout so SECTION 04
-              header aligns with SECTION 02's. Background stays full bleed. */}
-          <div className="px-0 md:px-[50px]">
-            <div
-              className="max-w-[1400px] mx-auto"
-              style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}
-            >
-
-          {/* Editorial headline — case-study EditorialHeadline pattern, scaled for footer */}
-          <h2 className="text-[#F0EAE4] text-[44px] md:text-[88px] font-light leading-[1.05] tracking-[-0.03em] text-center whitespace-pre-line py-12 md:py-20">
-            {"Designing across\nspace and material."}
-          </h2>
-
-          {/* Capability Web — header text stays static; chart scales with the
-              background via the --card-scale CSS variable from AnimatedDarkCard. */}
-          <CapabilityWebHeader dark />
-          <div
-            className="will-change-transform"
-            style={{
-              transform: "scale(var(--card-scale, 1))",
-              transformOrigin: "center center",
-            }}
-          >
-            <CapabilityWebChart2D dark />
-          </div>
-
-          {/* Copyright — single muted line, centered */}
-          <p className="mt-20 md:mt-32 text-spec text-center text-[#F0EAE4]/50">
-            &copy; 2026 Reckon House. Made by Jeremy Prasatik.
-          </p>
-
-            </div>
-          </div>
-      </AnimatedDarkCard>
 
     </div>
   );

@@ -3,14 +3,14 @@
 import { useEffect, useRef } from "react";
 import type { HeroSection } from "@/lib/types";
 
-export function HeroBlock({ image, alt, inline }: HeroSection) {
+export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const container = containerRef.current;
-    if (!section || !container) return;
+    if (!section) return;
 
     const scrollEl = document.querySelector("main");
     if (!scrollEl) return;
@@ -23,21 +23,85 @@ export function HeroBlock({ image, alt, inline }: HeroSection) {
       const raw = 1 - rect.top / viewH;
       const progress = Math.max(0, Math.min(1, raw));
 
-      // Scale: 0.82 → 1.0
-      const scale = 0.82 + progress * 0.18;
-
-      // Border radius: 60px → 0px (both inline and non-inline sharpen as they reach full size)
-      const radius = Math.round(60 * (1 - progress));
-
-      container.style.transform = `scale(${scale})`;
-      container.style.borderRadius = `${radius}px`;
+      if (cropWide) {
+        // Image at a fixed vh height, container grows in height in lockstep
+        // with the scaled image so top/bottom never clip — only the sides
+        // clip at the viewport edges. The vh height is intentionally smaller
+        // than 80vh because the source image (hero2b) has TWO stacked rows
+        // of mockups; constraining to 80vh would have rendered them tall
+        // enough that — combined with the image's wider-than-viewport
+        // natural width — the second row sat below the visible viewport.
+        // 60vh keeps both rows in view at all scales.
+        const img = imgRef.current;
+        const container = containerRef.current;
+        if (!img || !container) return;
+        const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+        const baseHeightVh = isDesktop ? 60 : 40;
+        const scale = 1.05 + progress * 0.25;
+        img.style.height = `${baseHeightVh}vh`;
+        img.style.width = "auto";
+        img.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        container.style.height = `${baseHeightVh * scale}vh`;
+      } else {
+        const container = containerRef.current;
+        if (!container) return;
+        // Scale: 0.82 → 1.0
+        const scale = 0.82 + progress * 0.18;
+        // Border radius: 60px → 0px
+        const radius = Math.round(60 * (1 - progress));
+        container.style.transform = `scale(${scale})`;
+        container.style.borderRadius = `${radius}px`;
+      }
     };
 
     scrollEl.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
     update(); // initial
 
-    return () => scrollEl.removeEventListener("scroll", update);
-  }, []);
+    return () => {
+      scrollEl.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [cropWide]);
+
+  // cropWide: image at a fixed vh height (sized small enough to fit the
+  // image's full vertical content — both rows of mockups for the
+  // jeffrey-ecommerce hero2b source), absolutely centered inside a 100vw
+  // container that grows in height in lockstep with the scaled image. All
+  // dimensions driven by inline style + JS to avoid Tailwind arbitrary-value
+  // parsing edge cases.
+  if (cropWide && image) {
+    return (
+      <section
+        ref={sectionRef}
+        className={`hero-breakout ${inline ? "mt-10 mb-4" : "mb-8"}`}
+      >
+        <div
+          ref={containerRef}
+          className="w-full overflow-hidden relative"
+          style={{ height: "63vh" }} // 60vh × 1.05; JS overrides for mobile and on scroll
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            ref={imgRef}
+            src={image}
+            alt={alt}
+            loading="lazy"
+            fetchPriority="auto"
+            className="block absolute will-change-transform"
+            style={{
+              height: "60vh",
+              width: "auto",
+              maxWidth: "none",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%) scale(1.05)",
+            }}
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
