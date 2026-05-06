@@ -1,16 +1,18 @@
+import Image from "next/image";
 import type { FeatureCardsSection } from "@/lib/types";
 import { SwipeRow } from "../SwipeRow";
 
 export function FeatureCards({ items }: FeatureCardsSection) {
   const cards = items.map((item, i) => (
     <div key={i}>
-      <div className="aspect-square max-w-[190px] overflow-hidden rounded-[30px] mb-5">
+      <div className="relative aspect-square max-w-[190px] overflow-hidden rounded-[30px] mb-5">
         {item.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={item.image}
             alt={item.title}
-            className="w-full h-full object-cover"
+            fill
+            sizes="190px"
+            className="object-cover"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-surface-alt to-border flex items-center justify-center">
@@ -30,13 +32,14 @@ export function FeatureCards({ items }: FeatureCardsSection) {
       <div className="hidden md:flex flex-wrap gap-4 md:gap-6">
         {items.map((item, i) => (
           <div key={i} className="w-[190px]">
-            <div className="w-[190px] h-[190px] overflow-hidden rounded-[30px] mb-5">
+            <div className="relative w-[190px] h-[190px] overflow-hidden rounded-[30px] mb-5">
               {item.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="190px"
+                  className="object-cover"
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-surface-alt to-border flex items-center justify-center">

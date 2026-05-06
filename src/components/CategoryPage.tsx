@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
@@ -8,12 +9,15 @@ import { SwipeRow } from "@/components/case-study/SwipeRow";
 function Thumb({ project }: { project: Project }) {
   const inner = (
     <div className="w-[130px] md:w-[160px]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full aspect-square object-cover rounded-[23%]"
-      />
+      <div className="relative w-full aspect-square rounded-[23%] overflow-hidden">
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          sizes="(min-width: 768px) 160px, 130px"
+          className="object-cover"
+        />
+      </div>
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
         <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
@@ -38,12 +42,15 @@ function FeaturedHero({ hero }: { hero: CategoryHero }) {
 
   const inner = (
     <div className="w-full">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={hero.image}
-        alt={project.title}
-        className="w-full aspect-[4/2] object-cover rounded-[clamp(30px,5vw,50px)]"
-      />
+      <div className="relative w-full aspect-[4/2] rounded-[clamp(30px,5vw,50px)] overflow-hidden">
+        <Image
+          src={hero.image}
+          alt={project.title}
+          fill
+          sizes="(min-width: 768px) 40vw, 88vw"
+          className="object-cover"
+        />
+      </div>
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
         <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>

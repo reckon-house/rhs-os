@@ -19,6 +19,7 @@
  * carousel masks to that shape automatically.
  */
 
+import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 
 interface HeroSlide {
@@ -294,12 +295,14 @@ export function HeroCarousel({
       </svg>
 
       {/* Slot A — initial top */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         ref={slotARef}
         src={slides[slotAIdx].src}
         alt={slides[slotAIdx].alt}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes="100vw"
+        priority
+        className="object-cover"
         style={{
           opacity: topSlot === "A" ? 1 : 0,
           zIndex: topSlot === "A" ? 2 : 1,
@@ -309,12 +312,14 @@ export function HeroCarousel({
       />
 
       {/* Slot B */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         ref={slotBRef}
         src={slides[slotBIdx].src}
         alt={slides[slotBIdx].alt}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes="100vw"
+        priority
+        className="object-cover"
         style={{
           opacity: topSlot === "B" ? 1 : 0,
           zIndex: topSlot === "B" ? 2 : 1,

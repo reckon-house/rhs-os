@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { PipelineSection } from "@/lib/types";
 import { SwipeRow } from "../SwipeRow";
 
@@ -5,9 +6,14 @@ export function PipelineBlock({ steps }: PipelineSection) {
   const mobileCards = steps.map((step, i) => (
     <div key={i}>
       {step.image && (
-        <div className="aspect-square rounded-[18%] overflow-hidden bg-surface-alt mb-4">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
+        <div className="relative aspect-square rounded-[18%] overflow-hidden bg-surface-alt mb-4">
+          <Image
+            src={step.image}
+            alt={step.title}
+            fill
+            sizes="(min-width: 768px) 25vw, 75vw"
+            className="object-cover"
+          />
         </div>
       )}
       <h4 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-2">{step.title}</h4>
@@ -26,9 +32,14 @@ export function PipelineBlock({ steps }: PipelineSection) {
           <div key={i} className="grid grid-cols-12 gap-x-5 items-start bg-[#EDE7E2] rounded-[clamp(20px,3vw,40px)] p-8">
             <div className="col-span-3">
               {step.image && (
-                <div className="aspect-square rounded-[18%] overflow-hidden bg-surface-alt">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
+                <div className="relative aspect-square rounded-[18%] overflow-hidden bg-surface-alt">
+                  <Image
+                    src={step.image}
+                    alt={step.title}
+                    fill
+                    sizes="(min-width: 768px) 22vw, 75vw"
+                    className="object-cover"
+                  />
                 </div>
               )}
             </div>
