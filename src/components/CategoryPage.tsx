@@ -121,16 +121,16 @@ export function CategoryPage({ tag }: { tag: Tag }) {
       </div>
 
       {/* Spacer for fixed breadcrumb */}
-      <div className="h-[30px] md:h-[50px]" />
+      <div className="h-[20px] md:h-[50px]" />
 
-      <div className="pb-24 space-y-10 md:space-y-[100px] pt-12 md:pt-0">
+      <div className="pb-24 space-y-10 md:space-y-[100px]">
 
         {/* ── Header block at top — pill + title + subhead + footnote only.
             Same Meta-block pattern as the homepage manifesto. The three-
             column expertise breakdown sits below the projects in its own
             cream container (further down the page). */}
         {info.expertise && (
-          <section className="w-full pt-8 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
+          <section className="w-full pt-4 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
             <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
               {info.expertise.label}
             </span>
@@ -150,7 +150,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
         <>
           {/* Mobile: swipe carousel */}
           <div className="md:hidden">
-            <SwipeRow cardFraction={0.85}>
+            <SwipeRow cardFraction={0.85} inset={0}>
               {heroes.map((hero, i) => (
                 <FeaturedHero key={i} hero={hero} />
               ))}

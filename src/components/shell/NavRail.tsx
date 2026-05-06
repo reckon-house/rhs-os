@@ -275,10 +275,10 @@ export function NavRail() {
       <div
         ref={navBarRef}
         data-nav-bar
-        className="fixed bottom-4 left-3 right-3 md:bottom-6 md:left-0 md:right-0 flex md:justify-center items-end"
+        className="fixed bottom-4 left-3 right-3 md:bottom-6 md:left-0 md:right-0 flex justify-center items-end"
         style={{ zIndex: 2147483647, paddingBottom: "env(safe-area-inset-bottom, 0px)", color: ink, transition: "color 0.3s ease" }}
       >
-        <div className="flex-1 md:flex-none">
+        <div className="flex-none max-w-full">
           <div className="relative rounded-[28px] overflow-x-auto overflow-y-hidden scrollbar-hide" data-lenis-prevent>
             {/* Backdrop */}
             <div
@@ -329,7 +329,7 @@ export function NavRail() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={cat.image} alt={cat.label} className="w-full h-full object-cover" />
                   </div>
-                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
+                  <span className="text-[9px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
                     {cat.label}
                   </span>
                 </Link>
@@ -350,7 +350,7 @@ export function NavRail() {
                       {item.icon}
                     </div>
                   </div>
-                  <span className="text-[8px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
+                  <span className="text-[9px] md:text-[10px] leading-none font-medium tracking-tight text-center whitespace-nowrap" style={{ color: inkSoft, transition: "color 0.3s ease" }}>
                     {item.label}
                   </span>
                 </Link>

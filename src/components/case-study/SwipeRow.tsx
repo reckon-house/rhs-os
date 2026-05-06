@@ -8,6 +8,15 @@ interface SwipeRowProps {
   cardFraction?: number;
   /** Gap between cards in px (default: 16) */
   gap?: number;
+  /**
+   * Left inset (px) between the viewport edge and the first card.
+   * Default 16 matches the px-4 used by ImageBlock on case-study pages so
+   * carousels align with static images above/below. Pages whose surrounding
+   * content sits flush to a different outer wrapper (e.g. CategoryPage with
+   * its px-[10px] outer) should pass inset={0} so the carousel aligns with
+   * the rest of the page.
+   */
+  inset?: number;
   className?: string;
 }
 
@@ -15,6 +24,7 @@ export function SwipeRow({
   children,
   cardFraction = 0.85,
   gap = 16,
+  inset = 16,
   className = "",
 }: SwipeRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -57,7 +67,7 @@ export function SwipeRow({
       <div
         ref={scrollRef}
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-        style={{ gap, scrollBehavior: "smooth" }}
+        style={{ gap, scrollBehavior: "smooth", paddingLeft: inset, scrollPaddingLeft: inset }}
         data-lenis-prevent
       >
         {children.map((child, i) => (

@@ -168,6 +168,13 @@ export interface ImageSection extends BaseSection {
   src: string;
   alt: string;
   aspect?: "video" | "square" | "wide" | "tall" | "native";
+  /**
+   * Override aspect on mobile only. Useful for wide native images that scale
+   * down to feel tiny on phones — pick a taller aspect (e.g. "square") and
+   * the image fills it via object-cover, cropping the sides to gain height.
+   * Desktop still uses `aspect`.
+   */
+  mobileAspect?: "video" | "square" | "wide" | "tall";
   bleed?: boolean;
   bleedTop?: boolean;
   maxWidth?: number;

@@ -419,6 +419,7 @@ export const arcCaseStudy: CaseStudy = {
       src: "/case-studies/arc/arc-five-screen-app-showcase.png",
       alt: "Five A.R.C. application screens showing dashboard, item entry, room view, project selection, and document library",
       aspect: "native",
+      mobileAspect: "square",
     },
 
     // ── PRODUCT INTERFACE ──

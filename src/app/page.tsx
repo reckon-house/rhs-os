@@ -194,10 +194,10 @@ function HomeContent() {
       </div>
 
       {/* Spacer for fixed breadcrumb */}
-      <div className="h-[30px] md:h-[50px]" />
+      <div className="h-[20px] md:h-[50px]" />
 
       {/* ---- Manifesto block — case-study Meta pattern at portfolio scale ---- */}
-      <section className="w-full pt-8 md:pt-12 pb-12 md:pb-20 px-4 md:px-0">
+      <section className="w-full pt-4 md:pt-12 pb-12 md:pb-20 px-4 md:px-0">
         {/* Section pill — matches case-study + CareerGalaxy + CapabilityWeb pattern */}
         <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
           <ScrambleOnView text="SECTION 01: OVERVIEW" />

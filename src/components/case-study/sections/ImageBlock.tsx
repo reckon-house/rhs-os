@@ -13,7 +13,7 @@ const aspectMap: Record<string, string> = {
 // fallback for the rare reader on a 4K display.
 const DEFAULT_SIZES = "(min-width: 1280px) 1100px, 100vw";
 
-export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWidth, noRadius, padded, blend }: ImageSection) {
+export function ImageBlock({ src, alt, aspect = "video", mobileAspect, bleed, bleedTop, maxWidth, noRadius, padded, blend }: ImageSection) {
   const radius = noRadius ? "" : "rounded-[clamp(30px,5vw,100px)]";
   const sectionClass = bleed
     ? "bleed-image py-0"
@@ -28,11 +28,65 @@ export function ImageBlock({ src, alt, aspect = "video", bleed, bleedTop, maxWid
   const isNative = aspect === "native";
   const sizes = maxWidth ? `${maxWidth}px` : DEFAULT_SIZES;
 
+  // Hybrid: mobile uses a fixed aspect with object-cover (cropping sides for
+  // height), desktop keeps the base behavior. Bleed variants opt out — they
+  // already break the standard frame.
+  const useMobileOverride = !!mobileAspect && !bleed && !bleedTop;
+  const widthWrapper = maxWidth ? "mx-auto" : "w-full";
+  const widthStyle = maxWidth ? { maxWidth: `${maxWidth}px` } : undefined;
+
+  if (useMobileOverride && src) {
+    return (
+      <section className={sectionClass}>
+        {/* Mobile: fixed aspect with cover crop */}
+        <div
+          className={`md:hidden ${widthWrapper} relative ${aspectMap[mobileAspect!]} ${radius} overflow-hidden bg-surface-alt`}
+          style={widthStyle}
+        >
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes={sizes}
+            className="object-cover"
+            style={blend ? { mixBlendMode: blend } : undefined}
+          />
+        </div>
+        {/* Desktop: base behavior (native or fixed aspect) */}
+        <div
+          className={`hidden md:block ${widthWrapper} ${aspectMap[aspect] || ""} ${radius} overflow-hidden ${!isNative ? "bg-surface-alt relative" : ""}`}
+          style={widthStyle}
+        >
+          {isNative ? (
+            <Image
+              src={src}
+              alt={alt}
+              width={2400}
+              height={1600}
+              sizes={sizes}
+              className="w-full h-auto"
+              style={{ ...(blend ? { mixBlendMode: blend } : {}), height: "auto" }}
+            />
+          ) : (
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              sizes={sizes}
+              className="object-cover"
+              style={blend ? { mixBlendMode: blend } : undefined}
+            />
+          )}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={sectionClass}>
       <div
-        className={`${maxWidth ? "mx-auto" : "w-full"} ${bleed || bleedTop ? "" : `${aspectMap[aspect] || ""} ${radius} overflow-hidden`} ${aspect !== "native" && !bleed && !bleedTop ? "bg-surface-alt" : ""} ${!isNative && !bleed && !bleedTop ? "relative" : ""}`}
-        style={maxWidth ? { maxWidth: `${maxWidth}px` } : undefined}
+        className={`${widthWrapper} ${bleed || bleedTop ? "" : `${aspectMap[aspect] || ""} ${radius} overflow-hidden`} ${aspect !== "native" && !bleed && !bleedTop ? "bg-surface-alt" : ""} ${!isNative && !bleed && !bleedTop ? "relative" : ""}`}
+        style={widthStyle}
       >
         {src ? (
           isNative || bleed || bleedTop ? (
