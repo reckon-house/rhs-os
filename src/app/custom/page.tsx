@@ -184,9 +184,6 @@ export default function CustomPage() {
               </p>
             </div>
             <AIAgentDemo />
-            <p className="text-[12px] md:text-[13px] text-foreground/50 mt-3 italic">
-              Live interactive version: launching this week.
-            </p>
           </div>
         </section>
 
@@ -207,9 +204,6 @@ export default function CustomPage() {
               </p>
             </div>
             <BookingDemo />
-            <p className="text-[12px] md:text-[13px] text-foreground/50 mt-3 italic">
-              Live interactive version: launching this week.
-            </p>
           </div>
         </section>
 
@@ -230,9 +224,6 @@ export default function CustomPage() {
               </p>
             </div>
             <CRMDemo />
-            <p className="text-[12px] md:text-[13px] text-foreground/50 mt-3 italic">
-              Live interactive version: launching this week.
-            </p>
           </div>
         </section>
 
