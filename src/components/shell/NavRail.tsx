@@ -336,7 +336,7 @@ export function NavRail() {
               ))}
 
               {/* Divider */}
-              <div className="nav-divider w-px h-[30px] md:h-[40px] shrink-0" style={{ backgroundColor: dividerBg, transition: "background-color 0.3s ease" }} />
+              <div className="nav-divider w-px h-[30px] md:h-[40px] shrink-0 -mx-2 md:-mx-4" style={{ backgroundColor: dividerBg, transition: "background-color 0.3s ease" }} />
 
               {/* Utilities */}
               {utilities.map((item) => (

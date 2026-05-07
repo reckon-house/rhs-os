@@ -61,87 +61,112 @@ export interface CategoryHero {
   projectId: string; // matches a project.id for title, category, and link
 }
 
-export const categoryInfo: Record<Tag, { headline: string; body: string; heroes: [CategoryHero, CategoryHero]; expertise: ExpertiseSection }> = {
+export interface CategoryMeta {
+  field: string;
+  activeSince: string;
+  status: string;
+  classification: string;
+}
+
+export const categoryInfo: Record<Tag, { headline: string; body: string; meta: CategoryMeta; heroes: [CategoryHero, CategoryHero]; expertise: ExpertiseSection }> = {
   digital: {
     headline: "Digital experiences,\necommerce and apps.",
-    body: "Design and code happen together. Fast prototypes, working products, AI integration when it solves a real problem. Same hands from concept through launch, whether it's a complete platform or a product page.\n\nMost brands get designed, then handed off to be built. The gap between vision and execution is where things fall apart. This work closes that gap.",
+    body: "Apps, ecommerce platforms, AI tools - the kinds of things that have to actually work, not just look like they do. The design and the code happen at the same desk, since shipping software is what proves whether the design was right in the first place.\n\nMost brand work gets designed and then handed off to be built. The gap between those two steps is where most digital projects quietly fall apart. The work in this section closes that gap by not having a handoff in the first place.",
+    meta: {
+      field: "Apps  Ecommerce  AI Tools",
+      activeSince: "2002",
+      status: "Shipping",
+      classification: "Product Design  Full-Stack Engineering  Information Architecture  Interaction Design  AI Integration",
+    },
     heroes: [
       { image: `${CAT_IMG}/category-digital-arc-app-smartphone-lifestyle.jpg`, projectId: "arc" },
       { image: `${CAT_IMG}/category-digital-sally-os-platform-dashboard.jpg`, projectId: "sallyOS" },
     ],
     expertise: {
-      label: "SECTION: DIGITAL",
-      title: "Design That Ships\nas Code",
-      subhead: "Products, platforms, and tools built by the same person who designed them. No handoff. No spec drift. The interface and the engineering happen in the same session.",
-      footnote: "The stack shifts per project. Next.js, React, Python, Streamlit, Supabase, Vercel. AI integration where it solves a real problem, not where it makes a good slide. Every project listed here is live, in production, handling real users.",
+      label: "SECTION 02: PRACTICE",
+      title: "Same person designs it\nand ships it",
+      subhead: "Every product on this list is live in production. The thing rendered in the prototype is the thing customers use, because the prototype was built in code from the start.",
+      footnote: "The stack shifts per project - Next.js, React, Python, Streamlit, Supabase, sometimes other things, depending on what the work needs. AI shows up where the alternative can't keep up, since the tools should serve the problem, not the resume.",
       columns: [
         {
           title: "App Design & Development",
-          content: "Native and web applications from concept through deployment. Information architecture, interaction design, visual system, and working code. A.R.C. went from idea to App Store in ten weeks. Sally Marketing OS runs five connected platforms in daily production use.\n\nThe difference between designing an app and building one is the difference between a render and a room you can walk through.",
+          content: "Native and web applications from the first idea through whatever launches at the end of it. The hard part isn't the architecture or the visuals or the code in isolation - it's keeping all three of them in conversation as the project moves, which is mostly what you do all day when you're designing and building something at the same time.\n\nA.R.C. went from concept to live product in ten weeks. Sally Marketing OS now runs five connected platforms inside a Fortune 500 marketing team in daily production use. The difference between designing an app and shipping one is the difference between a render and a room someone actually walks through.",
         },
         {
           title: "Ecommerce & Web",
-          content: "Branded web experiences that handle transactions and tell a story at the same time. Product pages that convert. Category systems that scale. Checkout flows that don't lose people.\n\nJeffrey NYC, Nordstrom personalization, Cosmo Prof. Each one required understanding the product catalog, the customer behavior, and the brand voice simultaneously. The design reflects all three.",
+          content: "Ecommerce sites have to do two things at the same time that mostly want to fight each other - they have to move people through a transaction and they have to make people feel something about the brand while it's happening. Most sites pick one and apologize for the other.\n\nJeffrey NYC, Nordstrom personalization, Cosmo Prof - each one came together by treating the product catalog, the customer behavior, and the brand voice as parts of the same problem instead of three problems that get solved separately and stitched together at the end.",
         },
         {
           title: "AI Integration",
-          content: "Computer vision for object recognition. Natural language processing for brand strategy. Multi-model orchestration across Claude, Gemini, and Perplexity. Real-time competitive intelligence pipelines.\n\nAI shows up in the work when it solves a specific problem faster or better than the alternative. Not as a feature bullet. As infrastructure that makes the product possible.",
+          content: "AI shows up in the work when the alternative can't keep up. A.R.C. uses computer vision because asking someone to type out every object in their house would have killed the product before it shipped. Sally OS uses multi-model orchestration across Claude, Gemini, and Perplexity because brand strategy moves faster than any single model can think alone.\n\nNone of it gets used because it's the new thing - it gets used because it's the thing that makes the product possible. The most interesting AI work is the kind nobody notices, because the product just works the way someone needed it to.",
         },
       ],
     },
   },
   creative: {
     headline: "Creative direction,\ncampaigns and brand.",
-    body: "Positioning, voice, visual identity. The DNA that makes a brand recognizable across every touchpoint. Sometimes that means a full campaign shoot. Sometimes a logo system. Sometimes a typography study that never had a client. The scope changes but the attention doesn't.",
+    body: "Most brand work I take on has the same underlying problem - the brand has to read like the same brand whether it shows up as a logo, a billboard, a bottle, or a website, and the work is mostly the small calls between those things that decide whether it actually holds together.\n\nI'm drawn to the projects where every surface matters, where someone can tell that the headline and the photography and the typeface and the packaging were all picked by someone paying attention to the same thing. Those are the projects in this section.",
+    meta: {
+      field: "Brand Identity  Campaign Direction  Surface Design",
+      activeSince: "2002",
+      status: "Making",
+      classification: "Logo Systems  Art Direction  Photography  Pattern Design  Editorial",
+    },
     heroes: [
       { image: `${CAT_IMG}/category-creative-ivy-park-roller-skating-editorial.jpg`, projectId: "ivyPark" },
       { image: `${CAT_IMG}/category-creative-capitan-boot-co-desert-branding.jpg`, projectId: "capitanBoot" },
     ],
     expertise: {
-      label: "SECTION: CREATIVE",
-      title: "From Logo\nto Lookbook",
-      subhead: "Brand identity, campaign creative, art direction, and the physical objects that carry the work into the world. The range runs from a single mark to a full seasonal rollout across retail, digital, and editorial.",
-      footnote: "Most projects start with positioning and end with production files. The deliverables vary but the thinking stays consistent: what does this brand need to say, and what's the most honest way to say it visually?",
+      label: "SECTION 02: PRACTICE",
+      title: "Same eye on the strategy\nas on the photo shoot",
+      subhead: "Most agency creative work gets split between teams - strategy hands off to identity, identity hands off to campaign, campaign hands off to whoever's running the bottle line. Every handoff is a small loss of context. The work in this section came together without those handoffs, which is mostly why it reads like one studio shipped it.",
+      footnote: "The arc usually runs the full year. Positioning question in January, production files by November, inside one client relationship, with the same hands holding both ends.",
       columns: [
         {
           title: "Brand Identity",
-          content: "Logos, type systems, color palettes, brand guidelines. The foundational layer that everything else builds on. Capitan Boot Co. needed a mark that worked on leather. J.Christianson needed a system flexible enough for hospitality and retail.\n\nA logo is a five-second argument for why someone should pay attention. The identity system is the longer conversation that follows.",
+          content: "A logo is a five-second argument for why someone should pay attention. The identity system is the longer conversation that follows - typography, color, hierarchy, the small rules that govern how the brand behaves when it isn't trying to introduce itself.\n\nCapitan Boot Co. needed a mark that would survive on leather and read at a distance. J.Christianson needed a system flexible enough to span hospitality and retail. Different industries, same underlying question - what does this brand sound like when it speaks, and how does it look when it isn't speaking.",
         },
         {
           title: "Campaigns & Art Direction",
-          content: "Robert Rodriguez at Neiman Marcus. One shoot day, four frames, a full seasonal campaign across storefront, editorial, social, and email. Ivy Park by Beyonce. Sally Beauty's \"You By Sally\" repositioning.\n\nArt direction means controlling the frame. Lighting, wardrobe, set, talent, post-production. Making sure the brand reads in a thumbnail and holds up at billboard scale.",
+          content: "Art direction is mostly about controlling what the frame is allowed to contain - the lighting that flatters the right thing and ignores the rest, the wardrobe that argues for the brand without performing it, the set that disappears when it should and shows up when it shouldn't, the talent that reads in a thumbnail and holds up at billboard scale.\n\nAt Neiman Marcus, the Robert Rodriguez campaign came together as one shoot day producing four frames that ran across storefront, editorial, social, and email. The Ivy Park by Beyonce launch was the exclusive US digital rollout at Nordstrom. Sally Beauty's \"You By Sally\" campaign repositioned a brand that had drifted from itself. Different scales, same job - making sure the work survives the long trip from set to whatever screen or surface it eventually lands on.",
         },
         {
           title: "Surface & Object Design",
-          content: "Amber Shockey's tableware line. Pattern systems for textile and ceramic. Typography studies rendered as lithographs. The work moves off-screen and onto physical surfaces.\n\nDesigning for a plate or a print demands a different kind of precision. No hover states. No responsive breakpoints. The object is the final output. It has to hold up in your hands.",
+          content: "Designing for a plate or a print or a textile is a different problem than designing for a screen. There's no hover state to bail you out, no responsive breakpoint to forgive a layout decision. The object is the final output, and it has to hold up in someone's hands or on someone's wall, in the light of an actual room, ten years from now.\n\nAmber Shockey's tableware line, pattern systems that translate between textile and ceramic, typography studies rendered as lithographs that nobody commissioned - the work moves off the screen and onto physical surfaces, where the rules change and the tolerance for getting it wrong drops.",
         },
       ],
     },
   },
   interiors: {
-    headline: "Interior design\nand environments.",
-    body: "Residential design from concept through construction documentation. Every room tells a story. The work is making sure it's the right one. Materials, lighting, spatial flow, and the details that make a space feel considered rather than decorated.",
+    headline: "Rooms that work the way people live.",
+    body: "Custom homes, kitchens, and baths designed to feel collected rather than decorated. Less ornament, more time spent on the few elements that carry the weight - the stone, the wood, the way the light hits a wall in late afternoon.\n\nMost of the work happens long before the install. Choosing the palette, editing the references, deciding what gets to be loud and what stays quiet. The unglamorous part - specs, sourcing, jobsite visits - happens behind the scenes. What the room shows is the editing.",
+    meta: {
+      field: "Custom Homes  Kitchens  Baths",
+      activeSince: "2012",
+      status: "Designing",
+      classification: "Spatial Design  Material Selection  Construction Documentation  Lighting Plans",
+    },
     heroes: [
       { image: `${CAT_IMG}/category-interiors-hill-country-kitchen-island-marble.jpg`, projectId: "hillKitchen" },
       { image: `${CAT_IMG}/category-interiors-primary-bath-vanity-marble-sconces.jpg`, projectId: "hillBath" },
     ],
     expertise: {
-      label: "SECTION: INTERIORS",
-      title: "Rooms That Work\nthe Way People Live",
-      subhead: "Residential design from floor plan through final styling. Custom homes, kitchens, baths, full remodels. Every material specified, every fixture selected, every detail documented for construction.",
-      footnote: "The process mirrors product design more than most interior designers would admit. Define the user. Map the workflows. Select the components. Build the system. Test it against real life. The medium is different. The methodology isn't.",
+      label: "SECTION 02: PRACTICE",
+      title: "From custom homes\nto cabinet pulls",
+      subhead: "Whole-house plans get the same eye as a single hardware pick - the kind of attention that sounds like overkill until you live in a room where someone actually paid it. The work scales without losing the person doing the choosing, mostly because there isn't anyone else to lose it to.",
+      footnote: "The work happens at the table before it happens on the site - palette specified, materials sourced, hardware schedule final, all before anyone breaks ground. By the time the contractor shows up, the room is mostly already designed.",
       columns: [
         {
           title: "Custom Homes & Remodels",
-          content: "Hill Country properties. The Fairview estate. Mountain View cabin. Each project starts with the site, the light, and how the household actually functions. Not a mood board. A spatial program.\n\nRemodels carry an added layer: reading the bones of the existing structure and deciding what stays, what goes, and what gets reinterpreted. The original architecture has opinions. Listening to them produces better rooms.",
+          content: "Each project starts with the site itself, which is a cliché in the field but happens to be true: what the light does at different hours, where the household actually lives during the week versus the weekend, what the existing structure has going for it that should probably stay. The early conversations don't have anything to do with finishes yet.\n\nWhere remodels get tricky is that some of the existing architecture has good ideas baked into it and some of it really doesn't, and sorting that out before drawing a new floor plan is the difference between a project that fights itself for eighteen months and a project that doesn't.",
         },
         {
           title: "Kitchen & Bath",
-          content: "The two rooms where material decisions compound fastest. A kitchen is four or five finishes repeated across dozens of surfaces. Get the palette right and every specification falls into place. Get it wrong and no amount of decorating fixes the underlying friction.\n\nMarble, wood, metal, paint. Each material has a maintenance profile, an aging trajectory, and a visual weight. Selecting for all three at once is the job.",
+          content: "Kitchens and baths are the rooms where small material decisions compound the fastest, which is why they tend to consume more of the design timeline than their square footage would suggest. A kitchen is really only four or five finishes (cabinetry, countertop, backsplash, hardware, floor) repeated across dozens of surfaces and sightlines, and a bath works the same way at smaller scale. Get the palette right at the front end and the rest of the room falls into place. Get it wrong and you produce a room someone can't quite explain why they don't like.\n\nThe reason that early call matters is that each material is carrying multiple jobs at once. A marble at install looks nothing like the same marble ten years in, brass tarnishes in ways that some people love and some people hate, white oak ambers as it ages. Most of the work is reading all of that ahead of time, before the slabs get cut.",
         },
         {
           title: "Selections & Documentation",
-          content: "Fixture schedules. Finish specifications. Lighting plans. Tile layouts. Hardware selections down to the hinge. The unsexy layer that separates a designed room from a decorated one.\n\nConstruction documentation means the builder opens the plans and knows exactly what goes where. No ambiguity. No RFIs that should have been answered in design. The specification is the product.",
+          content: "The selections - the lighting plan, the hardware schedule, the paint palette, the floor coverings - are where rooms actually get designed. Which lights make a room and which ones disappear, which hardware reads quiet and which steps forward, which paint shifts depending on the light coming through whatever window happens to be closest. The taste decisions live here, not on the floor plan.\n\nDocumentation is the version that survives the install. A complete spec set translates the selections into something a builder can build without picking up the phone - paperwork to anyone who hasn't been through a chaotic install, the actual design to anyone who has.",
         },
       ],
     },

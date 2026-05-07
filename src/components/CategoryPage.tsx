@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
+import { ScrambleOnView } from "@/components/fx/ScrambleText";
 
 /* ── Thumbnail (same as homepage) ── */
 function Thumb({ project }: { project: Project }) {
@@ -132,26 +133,48 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
       <div className="pb-24 space-y-10 md:space-y-[100px]">
 
-        {/* ── Header block at top — pill + title + subhead + footnote only.
-            Same Meta-block pattern as the homepage manifesto. The three-
-            column expertise breakdown sits below the projects in its own
-            cream container (further down the page). */}
-        {info.expertise && (
-          <section className="w-full pt-4 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
-            <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-              {info.expertise.label}
-            </span>
-            <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-              {info.expertise.title.replace(/\n/g, " ")}
-            </h1>
-            <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-              {info.expertise.subhead}
+        {/* ── Overview block at top — pill + headline + body. Mirrors the
+            homepage manifesto pattern. The three-column practice breakdown
+            sits below the projects in its own cream container (further down). */}
+        <section className="w-full pt-4 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
+          <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+            <ScrambleOnView text="SECTION 01: OVERVIEW" />
+          </span>
+          <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
+            {info.headline.replace(/\n/g, " ")}
+          </h1>
+          {info.body.split("\n\n").map((para, i) => (
+            <p
+              key={i}
+              className={i === 0
+                ? "text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4"
+                : "text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6"
+              }
+            >
+              {para}
             </p>
-            <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
-              {info.expertise.footnote}
+          ))}
+
+          {/* Meta fields — left-aligned, mirrors homepage manifesto pattern */}
+          <div className="text-spec text-foreground/90">
+            <p>
+              <span className="font-bold">Field </span>
+              {info.meta.field}
             </p>
-          </section>
-        )}
+            <p>
+              <span className="font-bold">Author </span>
+              Jeremy Prasatik
+              {"  Active Since: "}
+              {info.meta.activeSince}
+              {"  Status: "}
+              {info.meta.status}
+            </p>
+            <p>
+              <span className="font-bold">Classification </span>
+              {info.meta.classification}
+            </p>
+          </div>
+        </section>
 
         {/* ── Featured: Two hero images ── */}
         <>
