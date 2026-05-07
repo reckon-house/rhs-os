@@ -21,7 +21,7 @@
 
 import { useState, useRef, useEffect } from "react";
 
-const DEFAULT_BUSINESS = `I run a coffee shop in East Austin called Bell & Boon. Open 7am to 3pm Monday through Saturday, closed Sunday. We have a loyalty program — buy nine drinks, get the tenth free, no app required, just give us your phone number. Sam is our head barista and runs custom drink experiments on Fridays.`;
+const DEFAULT_BUSINESS = `I run a coffee shop in East Austin called Bell & Boon. Open 7am to 3pm Monday through Saturday, closed Sunday. We have a loyalty program. Buy nine drinks, get the tenth free, no app required, just give us your phone number. Sam is our head barista and runs custom drink experiments on Fridays.`;
 
 const SEED_CONVO = [
   { role: "user" as const, content: "What time do you close today?" },
@@ -150,7 +150,7 @@ export function AIAgentDemo() {
           onChange={(e) => setBusinessDescription(e.target.value.slice(0, 2000))}
           rows={4}
           className="w-full bg-transparent text-[13px] md:text-[14px] leading-[1.5] text-white/90 resize-none focus:outline-none placeholder:text-white/30"
-          placeholder="Describe your business — hours, products, voice, anything customers might ask about."
+          placeholder="Describe your business. Hours, products, voice, anything customers might ask about."
         />
       </div>
 

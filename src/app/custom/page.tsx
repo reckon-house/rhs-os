@@ -57,7 +57,7 @@ export default function CustomPage() {
             Software shaped to your business.
           </h1>
           <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-            Off-the-shelf SaaS forces your business into someone else&apos;s design. Square decided what a restaurant looks like. Calendly decided how booking works. Most of the time, your actual business doesn&apos;t quite fit. You adapt. Pay monthly fees forever. Tell customers &ldquo;sorry, the system can&apos;t do that.&rdquo;
+            Off-the-shelf SaaS forces your business into someone else's design. Square decided what a restaurant looks like. Calendly decided how booking works. Most of the time, your actual business doesn't quite fit. You adapt. Pay monthly fees forever. Tell customers &ldquo;sorry, the system can't do that.&rdquo;
           </p>
           <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
             Or you build the tool that actually fits. AI changed the math on what that costs. What used to be a six-month custom build is a one-week sprint. What used to need an enterprise contract starts at the price of a year of SaaS. When something needs to change, the change happens in hours, not a roadmap meeting.
@@ -107,7 +107,7 @@ export default function CustomPage() {
                 Three ways most small businesses solve this. All three have a tradeoff that gets worse over time.
               </h2>
               <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
-                Every business owner has tried at least one. Most have tried all three. Here&apos;s where each one breaks.
+                Every business owner has tried at least one. Most have tried all three. Here's where each one breaks.
               </p>
             </div>
 
@@ -116,25 +116,24 @@ export default function CustomPage() {
               {[
                 {
                   title: "Off-the-shelf SaaS",
-                  body: "You pay forever for software that almost fits. The fees compound. The customizations stop where the platform&apos;s API ends. Your data is locked in their format. Year five of paying $200/month for Toast is $12,000 you&apos;ll never see again, and you still can&apos;t do the thing you wished it could do on day one.",
+                  body: "You pay forever for software that almost fits. The fees compound. The customizations stop where the platform's API ends. Your data is locked in their format. Year five of paying $200/month for Toast is $12,000 you'll never see again, and you still can't do the thing you wished it could do on day one.",
                 },
                 {
                   title: "Hiring an agency",
-                  body: "$50K and four months later, you have a tool. Then you need a small change. The freelancer is on another project. The agency wants a new statement of work. The thing you owned starts feeling like something you&apos;re renting from your developer.",
+                  body: "$50K and four months later, you have a tool. Then you need a small change. The freelancer is on another project. The agency wants a new statement of work. The thing you owned starts feeling like something you're renting from your developer.",
                 },
                 {
                   title: "DIY with no-code",
-                  body: "Notion, Airtable, Zapier, a dozen integrations duct-taped together. Works for a while. Then your team hits the ceiling: a workflow no-code can&apos;t quite handle, a customer-facing experience that looks like a Google Form, an automation that breaks every other Tuesday. The thing you built isn&apos;t a tool. It&apos;s a job.",
+                  body: "Notion, Airtable, Zapier, a dozen integrations duct-taped together. Works for a while. Then your team hits the ceiling: a workflow no-code can't quite handle, a customer-facing experience that looks like a Google Form, an automation that breaks every other Tuesday. The thing you built isn't a tool. It's a job.",
                 },
               ].map((col) => (
                 <div key={col.title} className="grid grid-cols-12 gap-x-5">
                   <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
                     {col.title}
                   </h3>
-                  <p
-                    className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80"
-                    dangerouslySetInnerHTML={{ __html: col.body }}
-                  />
+                  <p className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80">
+                    {col.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -144,23 +143,22 @@ export default function CustomPage() {
               {[
                 {
                   title: "Off-the-shelf SaaS",
-                  body: "You pay forever for software that almost fits. The fees compound. The customizations stop where the platform&apos;s API ends. Year five of paying $200/month for Toast is $12,000 you&apos;ll never see again, and you still can&apos;t do the thing you wished it could do on day one.",
+                  body: "You pay forever for software that almost fits. The fees compound. The customizations stop where the platform's API ends. Year five of paying $200/month for Toast is $12,000 you'll never see again, and you still can't do the thing you wished it could do on day one.",
                 },
                 {
                   title: "Hiring an agency",
-                  body: "$50K and four months later, you have a tool. Then you need a small change. The freelancer is on another project. The agency wants a new statement of work. The thing you owned starts feeling like something you&apos;re renting from your developer.",
+                  body: "$50K and four months later, you have a tool. Then you need a small change. The freelancer is on another project. The agency wants a new statement of work. The thing you owned starts feeling like something you're renting from your developer.",
                 },
                 {
                   title: "DIY with no-code",
-                  body: "Notion, Airtable, Zapier, a dozen integrations duct-taped together. Works for a while. Then your team hits the ceiling: a workflow no-code can&apos;t quite handle, a customer-facing experience that looks like a Google Form, an automation that breaks every other Tuesday. The thing you built isn&apos;t a tool. It&apos;s a job.",
+                  body: "Notion, Airtable, Zapier, a dozen integrations duct-taped together. Works for a while. Then your team hits the ceiling: a workflow no-code can't quite handle, a customer-facing experience that looks like a Google Form, an automation that breaks every other Tuesday. The thing you built isn't a tool. It's a job.",
                 },
               ].map((col) => (
                 <div key={col.title}>
                   <h3 className="text-[11px] font-bold leading-[1.875] mb-1">{col.title}</h3>
-                  <p
-                    className="text-[11px] leading-[1.875] text-current/80"
-                    dangerouslySetInnerHTML={{ __html: col.body }}
-                  />
+                  <p className="text-[11px] leading-[1.875] text-current/80">
+                    {col.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -200,7 +198,7 @@ export default function CustomPage() {
                 Booking that works the way you actually book.
               </h2>
               <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
-                Calendly assumes everyone books the same way. Real businesses don&apos;t. Set the rules — staff schedules, service types, lunch breaks, blackout days — and the booker rebuilds itself. The version below is configured for a hair salon working four days a week.
+                Calendly assumes everyone books the same way. Real businesses don't. Set the rules: staff schedules, service types, lunch breaks, blackout days. The booker rebuilds itself in real time. The version below is configured for a hair salon working four days a week.
               </p>
             </div>
             <BookingDemo />
@@ -240,7 +238,7 @@ export default function CustomPage() {
                 Day one to deployed in two weeks.
               </h2>
               <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
-                Most engagements run a two-week shape. Some are faster. Some need three. Here&apos;s the typical arc.
+                Most engagements run a two-week shape. Some are faster. Some need three. Here's the typical arc.
               </p>
             </div>
 
@@ -249,7 +247,7 @@ export default function CustomPage() {
               {[
                 {
                   title: "Days 1–2 · Conversation",
-                  body: "Two-hour kickoff call. We talk through the actual workflow, not abstractions. What does the day look like? Where does software get in the way? What do you wish the current tools did? I take notes, you correct them. By the end of the second day there&apos;s a written scope you&apos;ve signed off on.",
+                  body: "Two-hour kickoff call. We talk through the actual workflow, not abstractions. What does the day look like? Where does software get in the way? What do you wish the current tools did? I take notes, you correct them. By the end of the second day there's a written scope you've signed off on.",
                 },
                 {
                   title: "Days 3–7 · Build",
@@ -257,17 +255,16 @@ export default function CustomPage() {
                 },
                 {
                   title: "Days 8–14 · Refine and ship",
-                  body: "You use it on real work for a week. Edge cases surface. We patch them. By day fourteen the tool is in production with your team using it daily. The relationship doesn&apos;t end here. Changes after launch are part of the ongoing arrangement.",
+                  body: "You use it on real work for a week. Edge cases surface. We patch them. By day fourteen the tool is in production with your team using it daily. The relationship doesn't end here. Changes after launch are part of the ongoing arrangement.",
                 },
               ].map((col) => (
                 <div key={col.title} className="grid grid-cols-12 gap-x-5">
                   <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
                     {col.title}
                   </h3>
-                  <p
-                    className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80"
-                    dangerouslySetInnerHTML={{ __html: col.body }}
-                  />
+                  <p className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80">
+                    {col.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -277,7 +274,7 @@ export default function CustomPage() {
               {[
                 {
                   title: "Days 1–2 · Conversation",
-                  body: "Two-hour kickoff call. We talk through the actual workflow, not abstractions. What does the day look like? Where does software get in the way? I take notes, you correct them. By end of day two there&apos;s a scope you&apos;ve signed off on.",
+                  body: "Two-hour kickoff call. We talk through the actual workflow, not abstractions. What does the day look like? Where does software get in the way? I take notes, you correct them. By end of day two there's a scope you've signed off on.",
                 },
                 {
                   title: "Days 3–7 · Build",
@@ -290,10 +287,9 @@ export default function CustomPage() {
               ].map((col) => (
                 <div key={col.title}>
                   <h3 className="text-[11px] font-bold leading-[1.875] mb-1">{col.title}</h3>
-                  <p
-                    className="text-[11px] leading-[1.875] text-current/80"
-                    dangerouslySetInnerHTML={{ __html: col.body }}
-                  />
+                  <p className="text-[11px] leading-[1.875] text-current/80">
+                    {col.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -411,7 +407,7 @@ export default function CustomPage() {
                 Tell me about your business.
               </h2>
               <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-                If any of this resonated, the next step is a thirty-minute conversation. No pitch deck. No sales call. Just talking through what you&apos;re working with and whether there&apos;s a fit.
+                If any of this resonated, the next step is a thirty-minute conversation. No pitch deck. No sales call. Just talking through what you're working with and whether there's a fit.
               </p>
               <div className="text-spec text-foreground/90 mt-8">
                 <p>
