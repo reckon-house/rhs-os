@@ -1,8 +1,35 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { AIAgentDemo } from "./AIAgentDemo";
 import { BookingDemo } from "./BookingDemo";
 import { CRMDemo } from "./CRMDemo";
+
+/**
+ * Page metadata — overrides the site-wide defaults from layout.tsx so that
+ * when this link is pasted into Slack, iMessage, email, or anywhere else
+ * that unfurls a URL, the preview shows the actual pitch instead of a
+ * generic "RHS OS" title.
+ */
+export const metadata: Metadata = {
+  title: "Software shaped to your business · Reckon*House",
+  description:
+    "Custom-built apps, AI customer-service agents, booking tools, and CRMs " +
+    "for small businesses. Three working demos inside. Built in days, not months.",
+  openGraph: {
+    title: "Software shaped to your business",
+    description:
+      "Custom-built apps, AI agents, and internal tools for small businesses. " +
+      "Working demos inside. Built in days, not months.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Software shaped to your business",
+    description:
+      "Custom apps, AI agents, and internal tools for small businesses. Working demos inside.",
+  },
+};
 
 /**
  * /custom — landing page for custom-built business software.
