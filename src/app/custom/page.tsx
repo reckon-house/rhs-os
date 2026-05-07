@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
@@ -193,6 +194,20 @@ export default function CustomPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
+            EDITORIAL HEADLINE — palate cleanser between the dense "what
+            this replaces" comparison and the demo trio. Distills the
+            page's thesis into a magazine-spread moment.
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="w-full py-4 md:py-12 px-4 md:px-0">
+          <div className="md:px-[calc(100%/24)]">
+            <p className="text-[36px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] font-light text-[#141414]">
+              Built once, owned forever<br />
+              <span className="text-foreground/40">Changed in hours, not quarters</span>
+            </p>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
             SECTION 03 · DEMO 01 — AI AGENT
             ═══════════════════════════════════════════════════════════════ */}
         <section className="w-full px-4 md:px-0">
@@ -253,13 +268,59 @@ export default function CustomPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            SECTION 06 · PROCESS
+            SECTION 06 · ONE BRANDED PORTAL — the upsell beyond standalone
+            tools. Demos prove individual capability; this section makes the
+            argument for stitching them together as a unified, branded OS.
+            Sally OS dashboard image acts as proof: I've already built this
+            model at enterprise scale.
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="w-full px-4 md:px-0">
+          <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
+            <div className="md:px-[calc(100%/24)] mb-8 md:mb-12">
+              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text="SECTION 06: ONE BRANDED PORTAL" />
+              </span>
+              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
+                Built like an operating system, not a stack of subscriptions.
+              </h2>
+              <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
+                Each demo above runs as a standalone. The real upgrade is when they live together in one branded portal, with AI keeping the data flowing between them. Start with one tool. Add the next when the business needs it. The portal evolves with the business, not against it.
+              </p>
+              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+                I built this model for Sally Beauty at enterprise scale: five connected platforms running signal to shelf. The architecture works at every size: one location or fifty, a single team or a whole organization. Same approach, different blast radius.
+              </p>
+            </div>
+
+            {/* Proof image — Sally Marketing OS dashboard grid */}
+            <div className="md:px-[calc(100%/24)]">
+              <div className="rounded-[clamp(20px,3vw,40px)] overflow-hidden bg-white">
+                <Image
+                  src="/case-studies/sally-os/sally-os-dashboard-grid-overview.png"
+                  alt="Sally Beauty Marketing OS dashboard grid showing five connected platforms in one branded portal"
+                  width={3048}
+                  height={1776}
+                  sizes="(min-width: 1100px) 1000px, 90vw"
+                  className="block w-full h-auto"
+                />
+              </div>
+              <p className="text-[12px] md:text-[13px] text-foreground/60 mt-3 italic">
+                Sally Beauty Marketing OS. Five platforms in one branded portal.{" "}
+                <Link href="/case-studies/sally" className="underline underline-offset-2 hover:opacity-70 transition-opacity not-italic font-medium">
+                  See the full case study →
+                </Link>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            SECTION 07 · PROCESS
             ═══════════════════════════════════════════════════════════════ */}
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)] mb-10 md:mb-14">
               <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 06: PROCESS" />
+                <ScrambleOnView text="SECTION 07: PROCESS" />
               </span>
               <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
                 Day one to deployed in two weeks.
@@ -324,7 +385,7 @@ export default function CustomPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            SECTION 07 · PRICING
+            SECTION 08 · PRICING
             ═══════════════════════════════════════════════════════════════
             TODO: tune the numbers below. Current placeholders are
             educated guesses based on the small-biz market. Swap to real
@@ -332,7 +393,7 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="md:px-[calc(100%/24)] mb-8 md:mb-10">
             <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-              <ScrambleOnView text="SECTION 07: PRICING" />
+              <ScrambleOnView text="SECTION 08: PRICING" />
             </span>
             <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
               Three tiers. No surprises.
@@ -422,13 +483,13 @@ export default function CustomPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            SECTION 08 · CONTACT
+            SECTION 09 · CONTACT
             ═══════════════════════════════════════════════════════════════ */}
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-20" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)]">
               <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 08: LET'S TALK" />
+                <ScrambleOnView text="SECTION 09: LET'S TALK" />
               </span>
               <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
                 Tell me about your business.
