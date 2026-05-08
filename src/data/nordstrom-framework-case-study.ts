@@ -67,14 +67,15 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
         "Customers were getting volume without context. Merchandising, marketing, and editorial each pushed in parallel with no shared language for what any of it was. Email ran its own cadence. Landing pages followed a separate lifecycle. The only thread connecting any of it was the date on the calendar.",
     },
 
-    // Visual beat showing the volume of modules
+    // Visual beat showing the volume of modules — promoted to a scroll-
+    // animated hero so the phone-in-hand becomes a full-bleed moment as
+    // the user scrolls past, then re-tucks. Same scale + radius animation
+    // as the page's top hero.
     {
       id: "problem-image",
-      type: "image",
-      src: `${IMG}/hero3.png`,
+      type: "hero",
+      image: `${IMG}/hero3.png`,
       alt: "Nordstrom homepage with multiple content modules running side by side under the new framework",
-      aspect: "native",
-      padded: true,
     },
 
     // ════════════════════════════════════════
@@ -173,11 +174,9 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
     // Final supporting hero
     {
       id: "application-secondary",
-      type: "image",
-      src: `${IMG}/hero4.png`,
+      type: "hero",
+      image: `${IMG}/hero4.png`,
       alt: "Nordstrom Content Framework section showing email and landing treatment with custom lockup and icon",
-      aspect: "native",
-      padded: true,
     },
 
     // ════════════════════════════════════════
