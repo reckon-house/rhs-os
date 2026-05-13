@@ -63,6 +63,17 @@ export function BurnMeltTransition() {
   // hydration completes.
   const [isIOSSafari, setIsIOSSafari] = useState(false);
 
+  // Mobile (touch-only) detection — same SSR-safe pattern. On mobile we
+  // drop the GPU-heavy backdrop-filter and the rAF turbulence animation,
+  // keeping just the SVG displacement filter so the burn character holds
+  // without the per-frame compositor work that stutters on mobile GPUs.
+  //
+  // Backed by both state (for JSX style re-render on flip) and a ref (for
+  // the rAF animation guards, which read from closures that would
+  // otherwise capture a stale `false` value when this flips after mount).
+  const [isMobile, setIsMobile] = useState(false);
+  const isMobileRef = useRef(false);
+
   useEffect(() => {
     pageOrigin.current = window.location.origin;
     const ua = navigator.userAgent;
@@ -71,6 +82,18 @@ export function BurnMeltTransition() {
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const safari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua);
     if (iOS && safari) setIsIOSSafari(true);
+
+    // Touch-only device detection. Catches phones and tablets without
+    // false-positiving on touch-enabled laptops (those still have hover).
+    const mql = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setIsMobile(mql.matches);
+    isMobileRef.current = mql.matches;
+    const onChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+      isMobileRef.current = e.matches;
+    };
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
   }, []);
 
   const toAbsoluteUrl = (href: string): string => {
@@ -122,6 +145,11 @@ export function BurnMeltTransition() {
   }, [uniqueId, displacement, displacementBlur, filterId]);
 
   const startTurbulenceAnimation = () => {
+    // Mobile: skip the 60fps noise-field re-computation. The SVG filter
+    // still applies with a static baseFrequency, so the burn warp shape
+    // is preserved — just without the rolling micro-motion. Cuts per-
+    // frame CPU work on mobile by an order of magnitude.
+    if (isMobileRef.current) return;
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
 
     const animate = () => {
@@ -424,8 +452,16 @@ export function BurnMeltTransition() {
     opacity: 0,
     background: "rgba(243, 240, 237, 0.35)",
     filter: `url(#${filterId})`,
-    backdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
-    WebkitBackdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
+    // Backdrop-filter is the heaviest single cost in this transition on
+    // mobile — it forces the compositor to read and reprocess the entire
+    // viewport every frame the overlay is visible. The SVG displacement
+    // filter above keeps the burn character; backdrop-filter only added
+    // the saturate/contrast pop, which barely reads at 35% opacity over
+    // cream anyway. Desktop keeps the full effect.
+    ...(isMobile ? {} : {
+      backdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
+      WebkitBackdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
+    }),
     ...(isIOSSafari && {
       WebkitMaskImage: iosMask,
       maskImage: iosMask,

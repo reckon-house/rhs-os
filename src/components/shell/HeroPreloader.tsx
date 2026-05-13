@@ -40,14 +40,23 @@ const HERO_IMAGES = [
 
 const STAGGER_MS = 200;
 
+// On mobile (touch-only devices), cap the background preload at the first
+// few heroes. Visitors don't browse 20 case studies on a phone the way they
+// might on desktop; the rest are bandwidth taxes for views that won't happen.
+// Desktop still preloads all of them.
+const MOBILE_PRELOAD_LIMIT = 6;
+
 export function HeroPreloader() {
   useEffect(() => {
     let cancelled = false;
     const timers: ReturnType<typeof setTimeout>[] = [];
 
+    const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    const list = isMobile ? HERO_IMAGES.slice(0, MOBILE_PRELOAD_LIMIT) : HERO_IMAGES;
+
     const start = () => {
       if (cancelled) return;
-      HERO_IMAGES.forEach((src, i) => {
+      list.forEach((src, i) => {
         timers.push(
           setTimeout(() => {
             if (cancelled) return;
