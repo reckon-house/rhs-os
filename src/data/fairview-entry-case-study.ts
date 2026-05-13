@@ -93,12 +93,12 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       },
     },
 
-    // ── Inline hero: architectural pulled-back view
+    // ── Inline hero: side angle showing the art wall + bench composition
     {
       id: "architectural-hero",
       type: "hero",
-      image: `${IMG}/3.webp`,
-      alt: "Horizontal architectural view of the entry showing the French doors at center, vintage rug, palm on the left, coat tree against the side wall",
+      image: `${IMG}/hero5.webp`,
+      alt: "Side angle of the entry showing the full art wall: slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground",
       inline: true,
     },
 
@@ -127,7 +127,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         "The chandelier is a single brass disc, oversized for the space, hung alone. The leather bench under the slatted wood art is for the bag set down on the way in. The palm is the only thing in the room that's alive. Everything else has been somewhere first.",
     },
 
-    // 2-up: bench detail + art wall context
+    // 2-up: bench detail close-up + wide architectural context (tight to wide)
     {
       id: "pieces-pair",
       type: "dual-image",
@@ -138,8 +138,8 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         alt: "Tight detail of the black leather bench with a sheepskin throw, woven basket below, under the slatted wood geometric wall art",
       },
       right: {
-        src: `${IMG}/hero5.webp`,
-        alt: "Side angle showing the full art wall: slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground",
+        src: `${IMG}/3.webp`,
+        alt: "Horizontal architectural view of the entry: French doors at center, vintage rug runner, palm on the left, coat tree against the side wall",
       },
     },
 
