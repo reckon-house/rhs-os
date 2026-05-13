@@ -79,8 +79,12 @@ export function SwipeRow({
             {child}
           </div>
         ))}
-        {/* End spacer so last card can snap left (skip for 2 items) */}
-        {count > 2 && <div className="shrink-0" style={{ width: spacerWidth }} />}
+        {/* End spacer gives the last card enough trailing room to snap to
+            the same left-inset position as the first card. Without it the
+            last card hugs the viewport's right edge — visually asymmetric
+            with how the first card sits. Applies for any count > 1
+            (single-card layouts have nothing to scroll to). */}
+        {count > 1 && <div className="shrink-0" style={{ width: spacerWidth }} />}
       </div>
 
       {/* Dot indicators */}
