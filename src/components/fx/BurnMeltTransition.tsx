@@ -63,6 +63,14 @@ export function BurnMeltTransition() {
   // hydration completes.
   const [isIOSSafari, setIsIOSSafari] = useState(false);
 
+  // Mobile detection — touch-only devices skip the SVG displacement filter
+  // and its rAF turbulence animation. Backdrop-filter (the saturate/contrast
+  // pop that defines the burn character) is kept. State drives the JSX
+  // style; ref drives the rAF guard to avoid stale-closure capture in the
+  // animation start function.
+  const [isMobile, setIsMobile] = useState(false);
+  const isMobileRef = useRef(false);
+
   useEffect(() => {
     pageOrigin.current = window.location.origin;
     const ua = navigator.userAgent;
@@ -71,6 +79,16 @@ export function BurnMeltTransition() {
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const safari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua);
     if (iOS && safari) setIsIOSSafari(true);
+
+    const mql = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setIsMobile(mql.matches);
+    isMobileRef.current = mql.matches;
+    const onChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+      isMobileRef.current = e.matches;
+    };
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
   }, []);
 
   const toAbsoluteUrl = (href: string): string => {
@@ -122,6 +140,10 @@ export function BurnMeltTransition() {
   }, [uniqueId, displacement, displacementBlur, filterId]);
 
   const startTurbulenceAnimation = () => {
+    // Mobile: SVG displacement filter isn't applied (see overlayStyle), so
+    // the rAF noise updates would write to an SVG nothing references.
+    // Skip the loop entirely on mobile.
+    if (isMobileRef.current) return;
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
 
     const animate = () => {
@@ -423,7 +445,13 @@ export function BurnMeltTransition() {
     willChange: "opacity",
     opacity: 0,
     background: "rgba(243, 240, 237, 0.35)",
-    filter: `url(#${filterId})`,
+    // Mobile: skip the SVG displacement filter. Backdrop-filter (the
+    // saturate/contrast pop that defines the burn) is preserved. The
+    // overlay becomes a clean cream rectangle that fades in/out instead
+    // of a warped one. Desktop keeps the full warp.
+    ...(isMobile ? {} : {
+      filter: `url(#${filterId})`,
+    }),
     backdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
     WebkitBackdropFilter: `blur(${blur}px) saturate(${saturation}) contrast(${contrast})`,
     ...(isIOSSafari && {
