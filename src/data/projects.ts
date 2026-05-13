@@ -36,7 +36,7 @@ export const projects: Project[] = [
   { id: "fairviewSitting", title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg`, href: "/case-studies/fairview-sitting", tags: ["interiors"] },
   { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg`, href: "/case-studies/floor-and-decor", tags: ["interiors"] },
   { id: "fairviewBedroom", title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg`, href: "/case-studies/fairview-suite", tags: ["interiors"] },
-  { id: "fairviewFoyer", title: "The Fairview", category: "Interior Design, foyer", image: `${HP}/rhs-interior-design-grand-entry-luxe.jpg`, tags: ["interiors"] },
+  { id: "fairviewFoyer", title: "The Fairview", category: "Interior Design, foyer", image: `${HP}/rhs-interior-design-grand-entry-luxe.jpg`, href: "/case-studies/fairview-entry", tags: ["interiors"] },
   { id: "nordstromFramework", title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/rhs-nordstrom-framework-content-design.jpg`, href: "/case-studies/nordstrom-framework", tags: ["digital", "creative"] },
   { id: "lovedByNordstrom", title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-campaign-design-nordstrom-loved-by-campaign.jpg`, href: "/case-studies/loved-by-nordstrom", tags: ["creative"] },
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg`, href: "/case-studies/chalet", tags: ["interiors"] },

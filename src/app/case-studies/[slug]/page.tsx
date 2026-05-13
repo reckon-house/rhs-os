@@ -25,10 +25,11 @@ import { jeffreyEcommerceCaseStudy } from "@/data/jeffrey-ecommerce-case-study";
 import { floorAndDecorCaseStudy } from "@/data/floor-and-decor-case-study";
 import { chaletCaseStudy } from "@/data/chalet-case-study";
 import { nordstromFrameworkCaseStudy } from "@/data/nordstrom-framework-case-study";
+import { fairviewEntryCaseStudy } from "@/data/fairview-entry-case-study";
 
 // For now, case studies are loaded from local data files.
 // This will migrate to Supabase when the CMS layer is ready.
-const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy, blackWhiteTypeCaseStudy, hillCountryKitchenCaseStudy, ivyParkCaseStudy, hillCountryBathCaseStudy, fairviewSuiteCaseStudy, jChristiansonCaseStudy, nordstromBeautyCaseStudy, neimanMarcusCaseStudy, lovedByNordstromCaseStudy, brandingGraphicsCaseStudy, nordstromPersonalizationCaseStudy, capitanBootCoCaseStudy, amberShockeyCoCaseStudy, cosmoProfCaseStudy, hillCountryOakCaseStudy, fairviewSittingCaseStudy, jeffreySpringCaseStudy, youBySallyCaseStudy, jeffreyEcommerceCaseStudy, floorAndDecorCaseStudy, chaletCaseStudy, nordstromFrameworkCaseStudy];
+const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy, blackWhiteTypeCaseStudy, hillCountryKitchenCaseStudy, ivyParkCaseStudy, hillCountryBathCaseStudy, fairviewSuiteCaseStudy, jChristiansonCaseStudy, nordstromBeautyCaseStudy, neimanMarcusCaseStudy, lovedByNordstromCaseStudy, brandingGraphicsCaseStudy, nordstromPersonalizationCaseStudy, capitanBootCoCaseStudy, amberShockeyCoCaseStudy, cosmoProfCaseStudy, hillCountryOakCaseStudy, fairviewSittingCaseStudy, jeffreySpringCaseStudy, youBySallyCaseStudy, jeffreyEcommerceCaseStudy, floorAndDecorCaseStudy, chaletCaseStudy, nordstromFrameworkCaseStudy, fairviewEntryCaseStudy];
 
 export function generateStaticParams() {
   return caseStudies.map((s) => ({ slug: s.slug }));
