@@ -7,7 +7,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
   title: "The Fairview: Entry.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor-to-ceiling French doors, a brass disc chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
+    "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
   field: "Interior Design\nFurniture Curation\nFinish Selection",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -23,7 +23,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "hero",
       type: "hero",
       image: `${IMG}/hero1.avif`,
-      alt: "The Fairview entry: two-story foyer with brass disc chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right",
+      alt: "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right",
     },
 
     // ── META ──
@@ -32,14 +32,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "meta",
       title: "The Fairview\nEntry.",
       subtitle:
-        "Floor-to-ceiling French doors, a brass disc chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
+        "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
       field: "Interior Design  Furniture Curation  Finish Selection",
       author: "Jeremy Prasatik",
       published: "2023",
       status: "Built",
       classification: ["Interior Design", "Furniture Curation", "Finish Selection"],
       abstract:
-        "The entry sits two stories tall, French ironwork glass running floor to ceiling at the center. Light is the design move first. Everything else is sized and placed to let it through.\n\nA vintage rug runner anchors the floor without crowding it. A brass disc chandelier hangs alone overhead. White oak boards run unbroken to the doorway. A potted palm adds living texture against limestone-cream walls.\n\nTwo pieces of art on the side wall tell stories without explaining themselves: a slatted wood geometric piece, a dark abstract in a thick frame. The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the house.",
+        "The entry sits two stories tall, French ironwork glass running floor to ceiling at the center. Light is the design move first. Everything else is sized and placed to let it through.\n\nA vintage rug runner anchors the floor without crowding it. A brass and alabaster chandelier hangs alone overhead. White oak boards run unbroken to the doorway. A potted palm adds living texture against limestone-cream walls.\n\nTwo pieces of art on the side wall tell stories without explaining themselves: a slatted wood geometric piece, a dark abstract in a thick frame. The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the house.",
     },
 
     // ════════════════════════════════════════
@@ -67,30 +67,24 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         "Most foyers fight their own architecture. This one was sized around the front doors. The room is tall because the doors are tall. The walls are limestone-cream because limestone takes light without bouncing it back. The rug is dark enough to ground the floor, woven loose enough to read on a cloudy afternoon.",
     },
 
-    // Vertical hero composition — the chandelier + full-height doors
+    // Two vertical light compositions as standalone singles, stacked.
+    // First pulls back to show the rug anchoring the floor; second
+    // frames the chandelier and full-height doors more tightly.
+    {
+      id: "light-rug",
+      type: "image",
+      src: `${IMG}/2.avif`,
+      alt: "Vertical view straight through the foyer to the French doors with the brass chandelier overhead and the full vintage rug runner anchoring the floor",
+      aspect: "native",
+      padded: true,
+    },
     {
       id: "light-chandelier",
       type: "image",
       src: `${IMG}/4.avif`,
-      alt: "Vertical composition looking up at the brass disc chandelier with French double doors and transom windows running the full two-story height",
+      alt: "Vertical composition looking up at the brass and alabaster chandelier with French double doors and transom windows running the full two-story height",
       aspect: "native",
       padded: true,
-    },
-
-    // 2-up: light streaming in detail + vertical rug+doors view
-    {
-      id: "light-pair",
-      type: "dual-image",
-      transparent: true,
-      native: true,
-      left: {
-        src: `${IMG}/7.webp`,
-        alt: "Tight detail of the potted palm, wood coat tree, and the corner of the vintage rug catching morning sunlight on white oak floors",
-      },
-      right: {
-        src: `${IMG}/2.avif`,
-        alt: "Vertical view straight through the foyer to the French doors with the brass chandelier overhead and the full vintage rug runner anchoring the floor",
-      },
     },
 
     // ── Inline hero: side angle showing the art wall + bench composition
@@ -116,7 +110,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A vintage rug, a brass disc light, two pieces of art that don't quite explain themselves. The kind of pieces you arrive at over time.",
+        "A vintage rug, a brass-and-alabaster light hung alone, two pieces of art that don't quite explain themselves. The kind of pieces you arrive at over time.",
     },
     {
       id: "pieces-footnote",
@@ -124,10 +118,12 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The chandelier is a single brass disc, oversized for the space, hung alone. The leather bench under the slatted wood art is for the bag set down on the way in. The palm is the only thing in the room that's alive. Everything else has been somewhere first.",
+        "The chandelier is a single alabaster pendant set in brass, oversized for the space, hung alone. The leather bench under the slatted wood art is for the bag set down on the way in. The palm is the only thing in the room that's alive. Everything else has been somewhere first.",
     },
 
-    // 2-up: bench detail close-up + wide architectural context (tight to wide)
+    // 2-up: two tight detail shots of the found objects side by side. Left
+    // is the bench + slatted wood art; right is the palm + coat tree corner
+    // catching morning light.
     {
       id: "pieces-pair",
       type: "dual-image",
@@ -138,9 +134,20 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         alt: "Tight detail of the black leather bench with a sheepskin throw, woven basket below, under the slatted wood geometric wall art",
       },
       right: {
-        src: `${IMG}/3.webp`,
-        alt: "Horizontal architectural view of the entry: French doors at center, vintage rug runner, palm on the left, coat tree against the side wall",
+        src: `${IMG}/7.webp`,
+        alt: "Tight detail of the potted palm, wood coat tree, and the corner of the vintage rug catching morning sunlight on white oak floors",
       },
+    },
+
+    // Wide architectural context shot after the pair — pulls the viewer
+    // back to see how the pieces sit in the full foyer.
+    {
+      id: "pieces-context",
+      type: "image",
+      src: `${IMG}/3.webp`,
+      alt: "Horizontal architectural view of the entry: French doors at center, vintage rug runner, palm on the left, coat tree against the side wall",
+      aspect: "native",
+      padded: true,
     },
 
     // ── Editorial palate cleanser
@@ -168,7 +175,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       colors: [
         { name: "Limestone Cream", hex: "#E7DFD2", description: "Walls, ceiling" },
         { name: "Black Iron", hex: "#1F1E1B", description: "Doors, frames, bench" },
-        { name: "Antiqued Brass", hex: "#A87A45", description: "Disc chandelier" },
+        { name: "Antiqued Brass", hex: "#A87A45", description: "Chandelier" },
         { name: "White Oak", hex: "#C0A47C", description: "Floors" },
         { name: "Vintage Indigo", hex: "#4B4A52", description: "Rug runner" },
       ],
@@ -191,9 +198,9 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         },
         {
           name: "Antiqued Brass",
-          role: "Disc chandelier",
+          role: "Chandelier",
           description:
-            "A single hand-rubbed brass disc hung dead-center. Oversized on purpose so the room reads vertical from the doorway. The closest thing to jewelry the entry gets.",
+            "An alabaster pendant set in hand-rubbed brass, hung dead-center. Oversized on purpose so the room reads vertical from the doorway. The closest thing to jewelry the entry gets.",
           family: "'Didot', 'Bodoni 72', 'Caslon', serif",
           weight: 400,
         },
@@ -215,7 +222,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         },
       ],
       markImage: `${IMG}/hero1.avif`,
-      markAlt: "Wide pulled-back view of the entry: brass disc chandelier overhead, vintage rug on white oak, French doors at center, geometric wood wall art at right",
+      markAlt: "Wide pulled-back view of the entry: brass and alabaster chandelier overhead, vintage rug on white oak, French doors at center, geometric wood wall art at right",
       markFullBleed: true,
     },
 
@@ -233,7 +240,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The brass disc, the vintage rug, the morning light. Found pieces and natural architecture, working together before anyone says hello.",
+        "The brass and alabaster chandelier, the vintage rug, the morning light. Found pieces and natural architecture, working together before anyone says hello.",
     },
     {
       id: "closing",
