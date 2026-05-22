@@ -27,7 +27,7 @@ export const projects: Project[] = [
   { id: "cosmoProf", title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg`, href: "/case-studies/cosmo-prof", tags: ["digital"] },
   { id: "dsc", title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-website-app.jpg`, tags: ["digital"] },
   { id: "bwType", title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg`, href: "/case-studies/black-white-type", tags: ["creative"] },
-  { id: "hillLiving", title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg`, tags: ["interiors"] },
+  { id: "hillLiving", title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg`, href: "/case-studies/hill-country-living", tags: ["interiors"] },
   { id: "jChristianson", title: "J.Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg`, href: "/case-studies/j-christianson", tags: ["creative"] },
   { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg`, href: "/case-studies/amber-shockey-co", tags: ["creative"] },
   { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg`, href: "/case-studies/you-by-sally", tags: ["creative"] },
