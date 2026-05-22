@@ -32,7 +32,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/hero1.jpg`,
+      image: `${IMG}/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg`,
       alt: "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors",
     },
 
@@ -82,14 +82,15 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         "Floor-to-ceiling limestone on the fireplace wall. Reclaimed 1950s pine underfoot and overhead as exposed beams. Brass fixtures throughout. Cognac leather on the sofa and bench seats. The walls and ceiling stay quiet so the texture has room to register.",
     },
 
-    // Symmetrical fireplace wall — every key material in one frame
+    // Symmetrical fireplace wall — promoted to a scroll-animated hero so
+    // the every-material-in-one-frame moment gets full-bleed treatment as
+    // the user scrolls past, then re-tucks. Same scale + radius animation
+    // as the page's top hero.
     {
       id: "material-fireplace",
-      type: "image",
-      src: `${IMG}/hero2.jpg`,
+      type: "hero",
+      image: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
       alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
-      aspect: "native",
-      padded: true,
     },
 
     // 2-up: stone-wall vertical details (the 2x22 pair)
@@ -99,11 +100,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       transparent: true,
       native: true,
       left: {
-        src: `${IMG}/2x22/Reckonhousestaples12.jpg`,
+        src: `${IMG}/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg`,
         alt: "Vertical detail of the limestone wall with the ladder shelf holding a vintage globe, brass fireplace tools below, and the corner of a tweed armchair",
       },
       right: {
-        src: `${IMG}/2x22/Reckonhousestaples26.jpg`,
+        src: `${IMG}/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg`,
         alt: "Vertical detail of the limestone wall, the Eisenhower painting and a smaller landscape framed in gilt, mid-century record-player shelf below, brass pendant chandelier overhead, edge of the gray sofa in the foreground",
       },
     },
@@ -112,7 +113,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "architectural-hero",
       type: "hero",
-      image: `${IMG}/hero3.jpg`,
+      image: `${IMG}/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg`,
       alt: "View from the living room into the open kitchen beyond: cognac leather sofa with pampas and textured pillows in the foreground, exposed wood beams overhead, green cabinetry and marble counters in the kitchen behind",
       inline: true,
     },
@@ -149,11 +150,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       transparent: true,
       native: true,
       left: {
-        src: `${IMG}/2x23/Reckonhousestaples25.jpg`,
+        src: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg`,
         alt: "Vertical view of the limestone fireplace with the Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug",
       },
       right: {
-        src: `${IMG}/2x23/Reckonhousestaples27.jpg`,
+        src: `${IMG}/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg`,
         alt: "Two tweed armchairs facing each other in front of a tall window looking out to the Hill Country landscape, leather stool between them, vintage patterned rug underfoot",
       },
     },
@@ -165,11 +166,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       transparent: true,
       native: true,
       left: {
-        src: `${IMG}/2x2/Mask group.jpg`,
+        src: `${IMG}/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg`,
         alt: "Entry vignette in an adjacent room: leather-strapped oval mirror, wood cutting board on the wall, small framed art, wood console table with crystal lamp, plaid throw and wicker basket beneath",
       },
       right: {
-        src: `${IMG}/2x2/Mask group-1.jpg`,
+        src: `${IMG}/hill-country-living-cognac-sofa-pampas-wood-bowl-kitchen-background-detail.jpg`,
         alt: "Tight detail of the cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind",
       },
     },
@@ -178,7 +179,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "collected-recordplayer",
       type: "image",
-      src: `${IMG}/Reckonhousestaples21.jpg`,
+      src: `${IMG}/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg`,
       alt: "Tight detail of the mid-century record-player shelf against the limestone wall, vinyl records below including Sturgill Simpson and ZZ Top, cactus and small framed landscape painting to the side, edge of the Eisenhower painting visible above",
       aspect: "native",
       padded: true,
@@ -255,7 +256,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
           weight: 400,
         },
       ],
-      markImage: `${IMG}/hero2.jpg`,
+      markImage: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
       markAlt: "Symmetrical centered view of the limestone fireplace wall: Eisenhower painting flanked by landscape pieces, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw, every material in one frame",
       markFullBleed: true,
     },
