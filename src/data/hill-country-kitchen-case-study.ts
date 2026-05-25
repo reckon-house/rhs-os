@@ -43,7 +43,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "meta",
       title: "Hill Country\nKitchen",
       subtitle:
-        "Four materials applied across every surface, fixture, and finish - a unified system where vintage warmth meets modern precision.",
+        "Four materials applied across every surface, fixture, and finish. The constraint held the room together.",
       field: "Interior Design  Kitchen Design  Material Specification",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -155,7 +155,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The cabinet program runs floor to ceiling on three walls. Base cabinets, upper glass-fronts, a built-in hutch flanking the range, full-height pantry storage with cremone bolt closures. The same sage green, the same shaker profile, the same brass hardware throughout. Repetition is the system.",
+        "The cabinet program runs floor to ceiling on three walls. Base cabinets, upper glass-fronts, a built-in hutch flanking the range, full-height pantry storage with cremone bolt closures. The same sage green, the same shaker profile, the same brass hardware throughout.",
     },
     {
       id: "hardware-footnote",
@@ -287,7 +287,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "A Dining Zone Borrowing\nfrom the Same Vocabulary.",
+      title: "A Dining Zone on\nthe Same Palette.",
     },
     {
       id: "dining-text",
@@ -302,7 +302,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Leather-and-oak safari chairs surround the table. The leather picks up the brass warmth. The oak frames reference the island wood. A dark patterned rug grounds the furniture group and separates it visually from the kitchen's hardwood floor. The dining zone borrows from the kitchen's vocabulary but speaks at a lower volume. Darker, quieter, more contained.",
+        "Leather-and-oak safari chairs surround the table. The leather picks up the brass warmth. The oak frames reference the island wood. A dark patterned rug grounds the furniture group and separates it visually from the kitchen's hardwood floor. The dining zone uses the kitchen's palette but runs it quieter - darker, more contained.",
     },
 
     // ── DINING DETAILS ──
@@ -368,7 +368,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The same discipline that makes a digital design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints generate the aesthetic rather than fight against them.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate. UX for a room.",
+        "The same discipline that makes a digital design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints generate the aesthetic rather than fight against them.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
     },
   ],
 };

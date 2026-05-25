@@ -84,7 +84,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Nordstrom held the only US retail partnership, which made the website something it usually isn't - the entire launch surface. Brand story, product showcase, campaign rollout, all on one page that hadn't existed yet. The digital experience wasn't supporting the launch, it was the launch.",
+        "Nordstrom held the only US retail partnership, which made the website something it usually isn't - the entire launch surface. Brand story, product showcase, campaign rollout, all on one page that hadn't existed yet. The digital experience was the launch.",
       group: { name: "brief" },
     },
     {
@@ -104,7 +104,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Scope",
           content:
-            "One scrolling brand experience, a series of launch emails timed to the drop, digital marketing across Nordstrom's owned channels, social assets formatted for every platform, and in-store signage for physical locations carrying the line.\n\nSix deliverable categories, all built on the same vocabulary - the polygon, the typographic cadence, the progression from black-and-white into color. Consistent from inbox to storefront.",
+            "One scrolling brand experience, a series of launch emails timed to the drop, digital marketing across Nordstrom's owned channels, social assets formatted for every platform, and in-store signage for physical locations carrying the line.\n\nSix deliverable categories, all built on the same elements - the polygon, the typographic cadence, the progression from black-and-white into color.",
         },
       ],
       group: { name: "brief" },
@@ -139,7 +139,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Started as a crop mask for portraits. Angled edges against the rectangular photo grid gave athlete imagery a geometric tension that matched the brand's positioning between sport and fashion. The shape animated on scroll, rotated between sections, scaled from thumbnail to full-bleed. One geometric idea handling framing, motion, and signature in a single move.",
+        "Started as a crop mask for portraits. Angled edges against the rectangular photo grid gave athlete imagery a geometric tension that matched the brand's positioning between sport and fashion. The shape animated on scroll, rotated between sections, scaled from thumbnail to full-bleed. One geometric idea handling framing, motion, and signature.",
     },
 
     // ── EXPERIENCE SCREENSHOT ──
@@ -206,14 +206,14 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "campaign-header",
       type: "section-header",
       label: "SECTION 04: THE CAMPAIGN",
-      title: "The Same Vocabulary\nAcross Every Channel.",
+      title: "One System,\nEvery Format.",
     },
     {
       id: "campaign-text",
       type: "text",
       size: "subhead",
       content:
-        "The scrolling page carried the brand, and the campaign pushed the same vocabulary out across every channel Nordstrom owned - launch emails, digital ads, social assets, in-store screens. Same elements, every format.",
+        "The scrolling page carried the brand, and the campaign pushed the same elements out across every channel Nordstrom owned - launch emails, digital ads, social assets, in-store screens.",
     },
     {
       id: "campaign-footnote",

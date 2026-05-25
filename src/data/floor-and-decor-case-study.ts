@@ -201,7 +201,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Marble, dolomite, white oak, classic tile - the same vocabulary across three projects, applied with enough confidence to read as three distinct rooms.",
+        "Marble, dolomite, white oak, classic tile - the same palette across three projects, applied with enough confidence to read as three distinct rooms.",
     },
     {
       id: "closing",
@@ -210,7 +210,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Floor & Decor named the studio Designer of the Quarter on the strength of three bathrooms that share a material vocabulary but read as three completely different rooms. The hard surface selections did the structural work - tile and stone setting the proportions, the rest of the build sitting on top of them.",
+        "Floor & Decor named the studio Designer of the Quarter on the strength of three bathrooms that share a material kit but read as three completely different rooms. The hard surface selections did the structural work - tile and stone setting the proportions, the rest of the build sitting on top of them.",
     },
   ],
 };

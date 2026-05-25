@@ -215,7 +215,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A bath that echoes the kitchen's vocabulary without repeating it. Same property, same design sensibility, quieter volume.",
+        "A bath that belongs to the same house without repeating the kitchen. Same property, same design sensibility, quieter register.",
     },
     {
       id: "closing",
