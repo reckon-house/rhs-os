@@ -5,7 +5,7 @@ export const sallyCaseStudy: CaseStudy = {
   title: "Sally Beauty Marketing OS",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Five connected platforms covering the full pipeline from competitive signal to store-level sale. Built internally using AI-assisted development.",
+    "Five connected platforms that turn competitive intelligence into store-level execution.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -61,9 +61,9 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
-        "Five connected platforms covering the full pipeline from competitive signal to store-level sale. Built internally using AI-assisted development.",
+        "Five connected platforms that turn competitive intelligence into store-level execution.",
       abstract:
-        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI integration and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back. Signal to shelf, one closed loop where market intelligence converts into store-level sales data that informs the next round of strategy.",
+        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.",
     },
 
     // ── PROBLEM STATEMENT - grouped in ECE6E1 container ──
@@ -80,7 +80,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Scattered Tools,\nNo Shared Context",
+      title: "Five Problems\nWith One Root",
       group: { name: "problem" },
     },
     {
@@ -142,7 +142,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A triple-engine AI architecture monitors 14 industry publications, competitor social channels, pricing movements, and emerging category trends. Raw signals aren't useful on their own - what matters is what they mean for Sally. Every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against Sally's internal knowledge base, active campaign briefs, and brand positioning to flag what's actually actionable.",
+        "Three AI models run in parallel, monitoring 14 industry publications, competitor social channels, pricing shifts, and emerging category trends. Raw signals are noise until they mean something for Sally - so every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against our brand positioning, active briefs, and internal knowledge base. The system doesn't just show you what happened. It tells you whether it matters.",
     },
     {
       id: "trends-footnote",
@@ -150,7 +150,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The workflow closes the gap between seeing a trend and acting on it. A competitor launches a new campaign, the system detects it, generates Sally's strategic response based on existing briefs and brand guidelines, and offers a one-click path to create a new brief. Intelligence feeds strategy, strategy produces briefs, briefs flow into asset production - the entire pipeline from market signal to store-level execution starts here.\n\nThree AI models run in parallel to make this work. Claude handles strategy and copywriting with prompt-cached brand context, Gemini scans Sally's full knowledge base on every interaction, and Perplexity pulls live competitive data from the web. Each engine contributes a different lens, and the combined output is richer than any single model produces alone.",
+        "The workflow closes the gap between seeing a trend and acting on it. A competitor launches a new campaign, the system detects it, generates Sally's strategic response based on existing briefs and brand guidelines, and offers a one-click path to create a new brief. Intelligence feeds strategy, strategy produces briefs, briefs flow into asset production - the entire pipeline from market signal to store-level execution starts here.\n\nThree AI models run in parallel to make this work. Claude handles strategy and copywriting with prompt-cached brand context, Gemini scans Sally's full knowledge base on every interaction, and Perplexity pulls live competitive data from the web. Each model sees something the others miss, and the combined output is better than any one of them alone.",
     },
     {
       id: "trends-engines",
@@ -190,7 +190,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "trends-synthesis-headline",
       type: "editorial-headline",
-      text: "Brand synthesis.\nAI brand analysis on relevant\nnews items.",
+      text: "A competitor moves.\nThe system already knows\nwhat it means for Sally.",
     },
     {
       id: "trends-pair-2",
@@ -257,7 +257,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, and performance data. A strategy partner that knows the brand as well as the team does, not a chatbot.",
+        "An AI system trained on Sally's complete brand architecture - voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how it thinks before it responds. It knows the brand as well as the team does, which is what separates it from a chatbot.",
       group: { name: "brand-brain" },
     },
     {
@@ -266,7 +266,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brand Brain ingests and indexes the full corpus of brand documentation, past campaign performance, competitive intelligence, and market research. When a strategist asks a question, the response draws from institutional knowledge that would take a new hire months to accumulate.",
+        "Brand Brain ingests and indexes the full corpus of brand documentation, past campaign performance, competitive intelligence, and market research. When a strategist asks a question, the response draws on institutional knowledge that would take a new hire months to build up.",
       group: { name: "brand-brain" },
     },
     {
@@ -309,7 +309,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
-      text: "The brief is the product.\nEverything downstream\ndepends on it.",
+      text: "Every asset, email, and shelf talker\nstarts as a brief.\nThe brief had better be right.",
       group: { name: "brand-brain" },
     },
     {
@@ -559,14 +559,14 @@ export const sallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 08: CLOSING",
-      title: "In Production\nFive Platforms Live",
+      title: "What Shipped",
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "Five platforms, one builder. I built it because the team that needed it couldn't wait for a vendor evaluation cycle, and shipped it because AI-assisted development made it possible for one person to build what used to require a department.",
+        "I built this because the team that needed it couldn't wait for a vendor evaluation, and the tools exist now for one person to ship what used to take a department. Five platforms, all in daily use.",
     },
     {
       id: "closing-footnote",
@@ -581,14 +581,14 @@ export const sallyCaseStudy: CaseStudy = {
       type: "three-column-text",
       columns: [
         {
-          title: "The Velocity Argument",
+          title: "Why This Was Possible",
           content:
-            "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implementation, training, iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThe argument isn't really about cost - it's about context. The person building the tools is the person who understands the workflows, so there's no requirements translation, no specification drift, and no handoff gap between what was asked for and what got built.",
+            "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implementation, training, iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThe real advantage isn't cost - it's that the person building the tools is the person who uses the workflows. No requirements translation, no spec drift, no gap between what was asked for and what got built.",
         },
         {
           title: "AI as Engineering Partner",
           content:
-            "Claude Code served as my primary development environment. The workflow: describe the intended system behavior in precise terms, review the generated architecture, test against real marketing workflows, refine through conversation, deploy.\n\nThe AI doesn't replace engineering judgment so much as amplify it. Architectural decisions still require deep understanding of the problem space, and data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity - the translation from clear intention to working code.\n\nEnterprise-grade tools built at startup speed, by someone who knows exactly what the tools need to do because I'm the one who needs them.",
+            "Claude Code served as my primary development environment. The workflow: describe the intended system behavior in precise terms, review the generated architecture, test against real marketing workflows, refine through conversation, deploy.\n\nThe AI doesn't replace engineering judgment so much as amplify it. Architectural decisions still require deep understanding of the problem space, and data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity - the translation from clear intention to working code.\n\nThe result is enterprise tools built at startup speed, by the person who actually has to use them every day.",
         },
         {
           title: "The Stack",
@@ -620,7 +620,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       links: [],
       content:
-        "Enterprise marketing tools don't have to be enterprise software projects. They need someone who understands the workflow deeply enough to design the system, and AI tools capable enough to help build it at production quality.\n\nThe five platforms share data, share context, and share a design language. A competitive insight captured in the Trends Feed flows through Brand Brain's strategic analysis, into a campaign brief, through asset production, and out to 3,000+ stores - no re-entry, no context loss, no version confusion.\n\nLooking at it now, the more interesting thing isn't this specific platform. It's that the gap between a product vision and a production system keeps shrinking, and the person with the vision can hold all of it now. A platform used daily by a marketing organization that ships thousands of assets per month, built start-to-finish by one person.",
+        "The five platforms share data, share context, and share a design language. A competitive insight captured in the Trends Feed flows through Brand Brain's strategic analysis, into a campaign brief, through asset production, and out to 3,000+ stores - no re-entry, no context loss, no version confusion.\n\nThe marketing team ships thousands of assets per month through this system. It runs every day. It replaced tools that cost more and did less, and nobody had to file a procurement request or sit through a vendor demo to get it.",
     },
   ],
 };

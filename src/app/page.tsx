@@ -205,7 +205,7 @@ function HomeContent() {
 
         {/* Title */}
         <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          I&apos;m Jeremy, a designer who builds across brand, product, and place.
+          I&apos;m Jeremy. I work across brand, product, and place.
         </h1>
 
         {/* Disciplines paragraph — flows directly under the headline as one block */}
@@ -215,7 +215,7 @@ function HomeContent() {
 
         {/* Closing paragraph — personal lens, smaller secondary line treatment */}
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          I see the world in scale, systems, and color palettes - and I try to make little worlds that have meaning someone can feel.
+          The thinking and the making stay close to each other. That&apos;s the through line.
         </p>
 
         {/* Meta fields — left-aligned, constrained width */}
@@ -301,10 +301,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>the process shares patterns</Headline>
+            <Headline>same instincts, different materials</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>the process shares patterns</Headline>
+            <Headline>same instincts, different materials</Headline>
           </div>
           <Thumb project={p.hillLiving} />
           <Thumb project={p.jChristianson} />
@@ -327,10 +327,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>the work tells the story.</Headline>
+            <Headline>all of it shipped.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>the work tells the story.</Headline>
+            <Headline>all of it shipped.</Headline>
           </div>
         </div>
 
