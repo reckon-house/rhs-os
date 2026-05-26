@@ -1,9 +1,45 @@
 import Link from "next/link";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlaying } from "@/components/NowPlaying";
+import { InspirationQuoteTile } from "@/components/InspirationQuoteTile";
 import { inspiration } from "@/data/inspiration";
+import { inspirationQuotes, quoteInsertionPoints } from "@/data/inspiration-quotes";
+
+// Weave quotes into the image list at the configured anchor points.
+// Insertion is done before mapping so each tile gets a stable key based on
+// its source data. Quotes whose insertion point exceeds the image count
+// simply append to the end.
+type InspirationItem =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "quote"; text: string; attribution: string; key: string };
+
+function buildInspirationItems(): InspirationItem[] {
+  const items: InspirationItem[] = inspiration.map((img) => ({
+    kind: "image",
+    src: img.src,
+    alt: img.alt,
+  }));
+
+  // Insert from the end so earlier insertions don't shift later indexes.
+  const sortedPoints = [...quoteInsertionPoints].sort((a, b) => b - a);
+  sortedPoints.forEach((point) => {
+    const quoteIdx = quoteInsertionPoints.indexOf(point);
+    const quote = inspirationQuotes[quoteIdx];
+    if (!quote) return;
+    items.splice(Math.min(point, items.length), 0, {
+      kind: "quote",
+      text: quote.text,
+      attribution: quote.attribution,
+      key: `quote-${quoteIdx}`,
+    });
+  });
+
+  return items;
+}
 
 export default function InspirationPage() {
+  const items = buildInspirationItems();
+
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
       {/* Breadcrumb bar — matches homepage */}
@@ -65,6 +101,10 @@ export default function InspirationPage() {
             People | Rooms | Objects | Words
           </p>
           <p>
+            <span className="font-bold">Rights: </span>
+            Not mine, no claim made, all credit to the makers
+          </p>
+          <p>
             <span className="font-bold">Connect: </span>
             <a
               href="mailto:hello@reckon.house"
@@ -93,19 +133,23 @@ export default function InspirationPage() {
             <NowPlaying />
           </div>
 
-          {inspiration.map((item) => (
+          {items.map((item) => (
             <div
-              key={item.src}
+              key={item.kind === "image" ? item.src : item.key}
               className="mb-10 md:mb-12 break-inside-avoid overflow-hidden"
               style={{ borderRadius: "clamp(18px, 3.5vw, 36px)" }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.src}
-                alt={item.alt}
-                loading="lazy"
-                className="block w-full h-auto"
-              />
+              {item.kind === "image" ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  className="block w-full h-auto"
+                />
+              ) : (
+                <InspirationQuoteTile text={item.text} attribution={item.attribution} />
+              )}
             </div>
           ))}
         </div>
