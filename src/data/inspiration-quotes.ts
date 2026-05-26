@@ -37,13 +37,6 @@ export const inspirationQuotes: InspirationQuote[] = [
   },
   {
     type: "quote",
-    // PLACEHOLDER — swap with a real quote you want to live with. Use the
-    // voice-references library as the bar for tone.
-    text: "Build the thing, then describe the thing. Not the other way around.",
-    attribution: "Jeremy Prasatik",
-  },
-  {
-    type: "quote",
     text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.",
     attribution: "Cormac McCarthy",
   },
@@ -55,4 +48,4 @@ export const inspirationQuotes: InspirationQuote[] = [
  * anchors with the current ~100-image board. If the list grows past 200
  * consider switching to fraction-based math instead of fixed indexes.
  */
-export const quoteInsertionPoints = [5, 38, 71, 90];
+export const quoteInsertionPoints = [5, 38, 90];

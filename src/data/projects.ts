@@ -84,8 +84,8 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
     ],
     expertise: {
       label: "SECTION 02: PRACTICE",
-      title: "Same person designs it\nand ships it",
-      subhead: "Every product on this list is live in production. The thing rendered in the prototype is the thing customers use, because the prototype was built in code from the start.",
+      title: "From product vision\nto production code",
+      subhead: "Apps, ecommerce platforms, AI tools - the kind of work where the design decisions and the engineering decisions are really the same decision made at different zoom levels. The projects in this section were built that way, which is mostly why they shipped without the gap between what was designed and what went live.",
       footnote: "The stack shifts per project - Next.js, React, Python, Streamlit, Supabase, sometimes other things, depending on what the work needs. AI shows up where the alternative can't keep up, since the tools should serve the problem, not the resume.",
       columns: [
         {
@@ -118,9 +118,9 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
     ],
     expertise: {
       label: "SECTION 02: PRACTICE",
-      title: "Same eye on the strategy\nas on the photo shoot",
-      subhead: "Most agency creative work gets split between teams - strategy hands off to identity, identity hands off to campaign, campaign hands off to whoever's running the bottle line. Every handoff is a small loss of context. The work in this section came together without those handoffs, which is mostly why it reads like one studio shipped it.",
-      footnote: "The arc usually runs the full year. Positioning question in January, production files by November, inside one client relationship, with the same hands holding both ends.",
+      title: "From brand strategy\nto the finished frame",
+      subhead: "Campaigns, identity systems, art direction - the kind of work where the concept has to survive every surface it lands on, from a storefront window to a phone screen to a clothing tag. The best of it holds together because the same thinking ran through the strategy, the shoot, and the production files.",
+      footnote: "Some of these projects ran the full arc from positioning through final deliverables. Others were specific pieces of a larger effort. The scope varies, but the attention doesn't.",
       columns: [
         {
           title: "Brand Identity",
