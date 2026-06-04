@@ -171,14 +171,10 @@ export function FilmOverlay() {
           }}
         />
       </div>
-      {/* Vignette — stays on top of content for the edge-darkening effect */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-[45]"
-        style={{
-          background: `radial-gradient(ellipse at center, transparent ${settings.vignetteInnerStop}%, rgba(0,0,0,${settings.vignetteDark}) 100%)`,
-        }}
-      />
+      {/* Vignette layer removed — it rendered a full-screen fixed element with
+          vignetteDark: 0 (fully transparent), so it was invisible while still
+          costing a paint layer on every page. The vignette settings stay in
+          the dev Controls panel in case it's ever reinstated. */}
     </>
   );
 }
