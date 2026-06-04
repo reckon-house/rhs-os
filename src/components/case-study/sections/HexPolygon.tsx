@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 const POLYGON_PATH =
   "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
 
-const IMG_SRC = "/case-studies/ivy-park/ivy-park-polygon-portrait-frame-logo.png";
+const IMG_SRC = "/case-studies/ivy-park/ivy-park-polygon-portrait-frame-logo.webp";
 
 const POLYGON_COUNT = 7;
 const POLYGON_SCALE = 0.92;

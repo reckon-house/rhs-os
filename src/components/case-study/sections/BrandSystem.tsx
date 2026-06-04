@@ -1,4 +1,6 @@
+import Image from "next/image";
 import type { BrandSystemSection } from "@/lib/types";
+import { getImageDimensions } from "@/data/image-dimensions";
 
 function ChromaticCircle() {
   return (
@@ -166,21 +168,37 @@ export function BrandSystem({
 
           {/* ─── LOGO CONSTRUCTION: centered, spans both columns ─── */}
           <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 flex justify-center">
-            <img
-              src={logoConstructionImage}
-              alt="A.R.C. logo construction guidelines"
-              className="w-full max-w-[800px] object-contain"
-            />
+            {(() => {
+              const [w, h] = getImageDimensions(logoConstructionImage);
+              return (
+                <Image
+                  src={logoConstructionImage}
+                  alt="A.R.C. logo construction guidelines"
+                  width={w}
+                  height={h}
+                  sizes="(min-width: 768px) 800px, 100vw"
+                  className="w-full max-w-[800px] h-auto object-contain"
+                />
+              );
+            })()}
           </div>
 
           {/* ─── APP SCREENSHOT: below logo, native ratio ─── */}
           {appScreenshotImage && (
             <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 flex justify-center">
-              <img
-                src={appScreenshotImage}
-                alt="A.R.C. app interface components"
-                className="w-full object-contain"
-              />
+              {(() => {
+                const [w, h] = getImageDimensions(appScreenshotImage);
+                return (
+                  <Image
+                    src={appScreenshotImage}
+                    alt="A.R.C. app interface components"
+                    width={w}
+                    height={h}
+                    sizes="(min-width: 1280px) 1000px, 100vw"
+                    className="w-full h-auto object-contain"
+                  />
+                );
+              })()}
             </div>
           )}
         </div>

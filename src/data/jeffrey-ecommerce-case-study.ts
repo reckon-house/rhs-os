@@ -74,7 +74,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "strategy-inline",
       type: "hero",
-      image: `${IMG}/jeffrey-new-york-homepage-template-grid-mockups.png`,
+      image: `${IMG}/jeffrey-new-york-homepage-template-grid-mockups.webp`,
       alt: "Jeffrey New York site in context — homepage with editorial hero and curated grid",
       inline: true,
       cropWide: true,

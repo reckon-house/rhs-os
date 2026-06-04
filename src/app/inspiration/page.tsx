@@ -1,9 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlaying } from "@/components/NowPlaying";
 import { InspirationQuoteTile } from "@/components/InspirationQuoteTile";
 import { inspiration } from "@/data/inspiration";
 import { inspirationQuotes, quoteInsertionPoints } from "@/data/inspiration-quotes";
+import { getImageDimensions } from "@/data/image-dimensions";
 
 // Weave quotes into the image list at the configured anchor points.
 // Insertion is done before mapping so each tile gets a stable key based on
@@ -140,13 +142,24 @@ export default function InspirationPage() {
               style={{ borderRadius: "clamp(18px, 3.5vw, 36px)" }}
             >
               {item.kind === "image" ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  loading="lazy"
-                  className="block w-full h-auto"
-                />
+                (() => {
+                  // Real dimensions from the manifest let next/image reserve
+                  // exact space (no layout shift as the masonry fills in) and
+                  // serve responsive AVIF/WebP. Masonry shows 2 cols on mobile,
+                  // 4 on desktop, so each tile is ~half / quarter viewport.
+                  const [w, h] = getImageDimensions(item.src);
+                  return (
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      width={w}
+                      height={h}
+                      sizes="(min-width: 1024px) 24vw, 48vw"
+                      loading="lazy"
+                      className="block w-full h-auto"
+                    />
+                  );
+                })()
               ) : (
                 <InspirationQuoteTile text={item.text} attribution={item.attribution} />
               )}

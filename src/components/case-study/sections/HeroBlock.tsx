@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import type { HeroSection } from "@/lib/types";
+import { getImageDimensions } from "@/data/image-dimensions";
 
 export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -103,6 +105,13 @@ export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
     );
   }
 
+  // Natural aspect ratio from the dimensions manifest. Drives the desktop
+  // container shape so the image shows at its true proportions (mobile keeps
+  // a 5:4 crop). Rendered through next/image with `fill`, so Vercel serves
+  // responsive AVIF/WebP and the reserved aspect box prevents layout shift.
+  const [iw, ih] = getImageDimensions(image);
+  const naturalAR = `${iw}/${ih}`;
+
   return (
     <section
       ref={sectionRef}
@@ -118,14 +127,20 @@ export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
         }}
       >
         {image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={alt}
-            loading={inline ? "lazy" : "eager"}
-            fetchPriority={inline ? "auto" : "high"}
-            className={`w-full ${inline ? "scale-[1.04] " : ""}aspect-[5/4] md:aspect-auto object-cover md:object-contain md:h-auto`}
-          />
+          <div
+            className="relative w-full aspect-[5/4] md:aspect-[var(--hero-ar)]"
+            style={{ "--hero-ar": naturalAR } as React.CSSProperties}
+          >
+            <Image
+              src={image}
+              alt={alt}
+              fill
+              sizes="100vw"
+              priority={!inline}
+              loading={inline ? "lazy" : "eager"}
+              className={`object-cover md:object-contain ${inline ? "scale-[1.04]" : ""}`}
+            />
+          </div>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#5a3e28]/60 to-[#3a2518]/80 flex items-end justify-center pb-0 overflow-hidden">
             <div className="w-[220px] md:w-[280px] bg-[#1a1a1a] rounded-t-[20px] h-[60%] flex flex-col p-3 pt-6">
