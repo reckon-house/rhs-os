@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { HeroPreloader } from "@/components/shell/HeroPreloader";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
+import { SpringSolve } from "@/components/fx/SpringSolve";
 
 export const metadata: Metadata = {
   title: "RHS OS",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <BurnMeltTransition />
         <NavRail />
         <FilmOverlay />
+        <SpringSolve />
         <HeroPreloader />
       </body>
     </html>

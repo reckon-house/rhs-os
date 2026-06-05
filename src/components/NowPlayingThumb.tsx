@@ -18,6 +18,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Project } from "@/data/projects";
+import { thumbMotionVars } from "@/lib/thumb-motion";
 
 type Track = {
   name: string;
@@ -61,15 +62,16 @@ export function NowPlayingThumb({ fallback }: { fallback: Project }) {
   const href = track?.appleMusicUrl || fallback.href;
   const isExternal = !!track;
 
+  const m = thumbMotionVars(fallback.title);
   const inner = (
-    <div className="w-[130px] md:w-[160px]">
+    <div className="thumb-float w-[130px] md:w-[160px]" style={m.float}>
       {/* Album art / project image */}
-      <div className="relative">
+      <div className="thumb-card relative" style={m.card}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={image}
           alt={title}
-          className="w-full aspect-square object-cover rounded-[23%]"
+          className="block w-full aspect-square object-cover"
         />
 
         {/* Now-playing dot — only shows when a real track is loaded.

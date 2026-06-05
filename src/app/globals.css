@@ -139,6 +139,65 @@ body::before {
   font-style: normal;
 }
 
+/* SpringSolve — each single-stroke pen path draws itself on, and (for
+   reverse-exit fragments) un-draws the same way, retracing the pencil. */
+@keyframes springDraw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes springErase {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 1; }
+}
+
+/* ── Homepage thumbnails — "objects resting on the desk" ──────────────
+   Each thumb floats on its own slow clock (independent, like the asterisk
+   and SpringSolve), sits on a warm depth shadow, and lifts on hover. Pure
+   transform/opacity so it composites on the GPU; idle drift is gated behind
+   prefers-reduced-motion. The transforms live on separate nested layers
+   (float → card) so they never fight over the `transform` property. */
+@keyframes thumbFloat {
+  0%, 100% { transform: perspective(700px) translate3d(0, 0, 0) rotateY(calc(var(--tilt, 0deg) * var(--mf, 1))); }
+  25%      { transform: perspective(700px) translate3d(calc(var(--ampX, 0px) * var(--mf, 1)), calc(var(--amp, -3px) * var(--mf, 1) * 0.55), 0) rotateY(0deg); }
+  50%      { transform: perspective(700px) translate3d(0, calc(var(--amp, -3px) * var(--mf, 1)), 0) rotateY(calc(var(--tilt, 0deg) * var(--mf, 1) * -1)); }
+  75%      { transform: perspective(700px) translate3d(calc(var(--ampX, 0px) * var(--mf, 1) * -1), calc(var(--amp, -3px) * var(--mf, 1) * 0.55), 0) rotateY(0deg); }
+}
+.thumb-float {
+  /* Motion factor ramps with scroll energy (--e, scoped to #hp-grid): a gentle
+     ~40% idle drift at rest (always-on, composites on the GPU for free), up to
+     100% while scrolling. Shadows stay flat at rest — only motion has a floor. */
+  --mf: calc(0.4 + 0.6 * var(--e, 0));
+  animation: thumbFloat var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  transform-style: preserve-3d;
+}
+.thumb-card {
+  border-radius: 23%;
+  overflow: hidden;
+  transform: scale(var(--rs, 1));
+  /* Angled directional shadow, faded in by scroll energy. At --e 0 every term
+     is ~0 (alpha 0) so the card sits flat; it blooms as you scroll. No
+     transition — it tracks the energy rAF directly. */
+  box-shadow:
+    calc(var(--sh-x, 5px) * var(--es, 0))
+    calc(var(--sh-y, 6px) * var(--es, 0))
+    calc(6px + var(--sh-blur, 10px) * var(--es, 0))
+    -1px
+    rgba(58, 48, 38, calc(var(--sh-a, 0.14) * var(--es, 0)));
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.thumb-card img { transition: filter 0.45s ease; }
+.hp-thumb:hover .thumb-card {
+  /* Hover overdrives local shadow energy so a hovered card always shows a full,
+     slightly larger shadow even at rest, and lifts. */
+  --es: 1.4;
+  transform: scale(calc(var(--rs, 1) * 1.055)) translateY(-7px);
+}
+.hp-thumb:hover .thumb-card img { filter: saturate(1.08) contrast(1.02); }
+@media (prefers-reduced-motion: reduce) {
+  .thumb-float { animation: none; }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

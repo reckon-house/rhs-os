@@ -7,6 +7,8 @@ import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlayingThumb } from "@/components/NowPlayingThumb";
 import { projectsById as p, type Project } from "@/data/projects";
+import { thumbMotionVars } from "@/lib/thumb-motion";
+import { ThumbEnergy } from "@/components/fx/ThumbEnergy";
 
 // Case study hero slides for the homepage carousel
 const CASE_STUDY_HEROES = [
@@ -102,14 +104,17 @@ function Asterisk({ weight = "regular" }: { weight?: "thin" | "regular" | "heavy
 /* ------------------------------------------------------------------ */
 
 function Thumb({ project }: { project: Project }) {
+  const m = thumbMotionVars(project.title);
   const inner = (
-    <div className="w-[130px] md:w-[160px]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full aspect-square object-cover rounded-[23%]"
-      />
+    <div className="thumb-float w-[130px] md:w-[160px]" style={m.float}>
+      <div className="thumb-card" style={m.card}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.image}
+          alt={project.title}
+          className="block w-full aspect-square object-cover"
+        />
+      </div>
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
         <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
@@ -165,6 +170,9 @@ function HomeContent() {
 
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
+      {/* Scroll-reactive thumbnail aliveness — pumps --e on <html> */}
+      <ThumbEnergy />
+
       {/* 12-column grid overlay — toggle with Ctrl/Cmd+G */}
       {showGrid && (
         <div className="pointer-events-none fixed inset-0 z-50 ml-[161px] pt-[50px] pl-[50px] pr-[50px]">
@@ -240,7 +248,10 @@ function HomeContent() {
       </section>
 
       {/* ---- Project grid ---- */}
-      <div className="pb-24 space-y-10 md:space-y-[100px]">
+      {/* id is the scope target for ThumbEnergy's --e/--es vars: writing them
+          here (not on :root) keeps scroll-time style invalidation inside the
+          grid subtree instead of the whole document (SpringSolve, etc.). */}
+      <div id="hp-grid" className="pb-24 space-y-10 md:space-y-[100px]">
 
         {/* Row 1: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
