@@ -142,7 +142,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three AI models run in parallel, monitoring 14 industry publications, competitor social channels, pricing shifts, and emerging category trends. Raw signals are noise until they mean something for Sally - so every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against our brand positioning, active briefs, and internal knowledge base. The system doesn't just show you what happened. It tells you whether it matters.",
+        "Three AI models run in parallel, monitoring 14 industry publications, competitor social channels, pricing shifts, and emerging category trends. Raw signals are noise until they mean something for Sally - so every trend gets a \"Sally's Take,\" an AI-generated analysis that cross-references the signal against our brand positioning, active briefs, and internal knowledge base, then says plainly whether it's worth acting on.",
     },
     {
       id: "trends-footnote",
@@ -159,7 +159,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude Opus: The Strategist",
           content:
-            "Powers the conversational layer, brief generation, and long-form copywriting. Claude handles the complex reasoning tasks: synthesizing competitive signals into strategic recommendations, generating campaign briefs from raw intelligence, and drafting copy that aligns with brand voice.\n\nPrompt caching keeps the experience fast. Repeated context like brand guidelines, tone rules, and competitive positioning loads instantly rather than re-processing on every interaction. The strategist remembers everything and responds in seconds.",
+            "Powers the conversational layer, brief generation, and long-form copywriting. Claude handles the complex reasoning tasks: synthesizing competitive signals into strategic recommendations, generating campaign briefs from raw intelligence, and drafting copy that aligns with brand voice.\n\nPrompt caching keeps the experience fast. Repeated context like brand guidelines, tone rules, and competitive positioning loads instantly instead of re-processing on every interaction.",
         },
         {
           title: "Gemini 2.5 Pro: The Librarian",
@@ -281,12 +281,12 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Gemini: Pattern Recognition",
           content:
-            "Processes visual and structural patterns across large datasets - product imagery analysis, social content categorization, trend clustering across competitor activity. Gemini's multimodal capabilities handle the visual intelligence layer that text-only models miss.\n\nWhen a competitor launches a new merchandising approach, Gemini identifies the pattern across store imagery before it appears in trade press. Visual intelligence moving at the speed the market does.",
+            "Processes visual and structural patterns across large datasets - product imagery analysis, social content categorization, trend clustering across competitor activity. Gemini's multimodal capabilities handle the visual layer that text-only models miss.\n\nWhen a competitor launches a new merchandising approach, Gemini identifies the pattern across store imagery before it appears in trade press.",
         },
         {
           title: "Perplexity Sonar Pro: Live Intelligence",
           content:
-            "Real-time web monitoring - industry news, competitor announcements, social sentiment shifts, regulatory changes. Sonar Pro provides the live data layer that surfaces what's happening right now instead of what happened last quarter.\n\nThe freshness advantage compounds. When competitive intelligence arrives hours instead of weeks after a market event, the strategic response window opens wide enough to actually use.",
+            "Real-time web monitoring - industry news, competitor announcements, social sentiment shifts, regulatory changes. Sonar Pro provides the live data layer that surfaces what's happening right now instead of what happened last quarter.\n\nWhen competitive intelligence arrives hours after a market event instead of weeks, the response window opens wide enough to actually use.",
         },
       ],
       group: { name: "brand-brain" },
@@ -521,7 +521,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Social Copy Generator",
           content:
-            "Generate platform-optimized social media copy from campaign briefs. Outputs character-counted posts for Instagram, TikTok, Facebook, and X. Matches brand voice, includes hashtag strategy, and formats for each platform's requirements. One brief, four channels, sixty seconds.",
+            "Generate platform-optimized social media copy from campaign briefs. Outputs character-counted posts for Instagram, TikTok, Facebook, and X. Matches brand voice, includes a hashtag strategy, and formats for each platform's requirements - one brief turned into four channels in about a minute.",
         },
         {
           title: "SKU Lookup & Enrichment",
@@ -574,7 +574,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "I designed, engineered, and deployed every platform in the OS working alongside AI tools. Same person defining the strategy wrote the code that implemented it. All five platforms are in daily production use across the Sally Beauty marketing organization.",
+        "I designed, engineered, and deployed all five platforms, working alongside AI tools throughout. The same understanding that shaped the strategy shaped the code.",
     },
     {
       id: "closing-columns",
@@ -583,12 +583,12 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Why This Was Possible",
           content:
-            "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implementation, training, iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThe real advantage isn't cost - it's that the person building the tools is the person who uses the workflows. No requirements translation, no spec drift, no gap between what was asked for and what got built.",
+            "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implementation, training, iteration cycles measured in quarters. The Sally Marketing OS took a different path.\n\nDeep product understanding combined with AI-assisted development tools made it possible to build what would traditionally require a cross-functional team and a six-figure vendor contract. The feedback loop between identifying a workflow problem and deploying a solution collapsed from months to days.\n\nThe advantage is less about cost than context - the person building the tools is the person who uses the workflows. No requirements translation, no spec drift, no gap between what was asked for and what got built.",
         },
         {
           title: "AI as Engineering Partner",
           content:
-            "Claude Code served as my primary development environment. The workflow: describe the intended system behavior in precise terms, review the generated architecture, test against real marketing workflows, refine through conversation, deploy.\n\nThe AI doesn't replace engineering judgment so much as amplify it. Architectural decisions still require deep understanding of the problem space, and data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity - the translation from clear intention to working code.\n\nThe result is enterprise tools built at startup speed, by the person who actually has to use them every day.",
+            "Claude Code served as my primary development environment. The workflow: describe the intended system behavior in precise terms, review the generated architecture, test against real marketing workflows, refine through conversation, deploy.\n\nThe AI doesn't replace engineering judgment so much as amplify it. Architectural decisions still require deep understanding of the problem space, and data model design still requires knowing how marketing teams actually work. The AI handles the implementation velocity - the translation from clear intention to working code.\n\nWhat used to need a team and a long timeline becomes a tight loop of intent, review, and deploy.",
         },
         {
           title: "The Stack",
