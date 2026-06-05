@@ -184,14 +184,14 @@ body::before {
     calc(6px + var(--sh-blur, 10px) * var(--es, 0))
     -1px
     rgba(58, 48, 38, calc(var(--sh-a, 0.14) * var(--es, 0)));
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: filter 0.3s ease;
 }
 .thumb-card img { transition: filter 0.45s ease; }
 .hp-thumb:hover .thumb-card {
-  /* Hover overdrives local shadow energy so a hovered card always shows a full,
-     slightly larger shadow even at rest, and lifts. */
-  --es: 1.4;
-  transform: scale(calc(var(--rs, 1) * 1.055)) translateY(-7px);
+  /* Hover: just fade a drop shadow in — no size change, no lift. Uses filter
+     (not box-shadow) so it transitions independently of the scroll-energy
+     shadow, and only the hovered card repaints. */
+  filter: drop-shadow(8px 12px 13px rgba(58, 48, 38, 0.22));
 }
 .hp-thumb:hover .thumb-card img { filter: saturate(1.08) contrast(1.02); }
 @media (prefers-reduced-motion: reduce) {
