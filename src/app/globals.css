@@ -156,6 +156,13 @@ body::before {
    transform/opacity so it composites on the GPU; idle drift is gated behind
    prefers-reduced-motion. The transforms live on separate nested layers
    (float → card) so they never fight over the `transform` property. */
+/* Hover energy for the thumbnails — registered so it can transition (fade)
+   while the scroll energy (--es) stays instant. */
+@property --he {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
 @keyframes thumbFloat {
   0%, 100% { transform: perspective(700px) translate3d(0, 0, 0) rotateY(calc(var(--tilt, 0deg) * var(--mf, 1))); }
   25%      { transform: perspective(700px) translate3d(calc(var(--ampX, 0px) * var(--mf, 1)), calc(var(--amp, -3px) * var(--mf, 1) * 0.55), 0) rotateY(0deg); }
@@ -175,24 +182,20 @@ body::before {
   border-radius: 23%;
   overflow: hidden;
   transform: scale(var(--rs, 1));
-  /* Angled directional shadow, faded in by scroll energy. At --e 0 every term
-     is ~0 (alpha 0) so the card sits flat; it blooms as you scroll. No
-     transition — it tracks the energy rAF directly. */
+  /* Figma drop shadow (X 27, Y 21, blur 32.2, spread -17, black @ 20%) driven by
+     the greater of scroll energy (--es) and hover (--he): flat at rest, blooms
+     to the exact same spec on scroll AND on hover. --es stays instant (scroll);
+     --he eases via its @property transition (hover fade). */
   box-shadow:
-    calc(var(--sh-x, 5px) * var(--es, 0))
-    calc(var(--sh-y, 6px) * var(--es, 0))
-    calc(6px + var(--sh-blur, 10px) * var(--es, 0))
-    -1px
-    rgba(58, 48, 38, calc(var(--sh-a, 0.14) * var(--es, 0)));
-  transition: filter 0.3s ease;
+    calc(27px * max(var(--es, 0), var(--he, 0)))
+    calc(21px * max(var(--es, 0), var(--he, 0)))
+    calc(32.2px * max(var(--es, 0), var(--he, 0)))
+    calc(-17px * max(var(--es, 0), var(--he, 0)))
+    rgba(0, 0, 0, calc(0.2 * max(var(--es, 0), var(--he, 0))));
+  transition: --he 0.3s ease;
 }
 .thumb-card img { transition: filter 0.45s ease; }
-.hp-thumb:hover .thumb-card {
-  /* Hover: just fade a drop shadow in — no size change, no lift. Uses filter
-     (not box-shadow) so it transitions independently of the scroll-energy
-     shadow, and only the hovered card repaints. */
-  filter: drop-shadow(8px 12px 13px rgba(58, 48, 38, 0.22));
-}
+.hp-thumb:hover .thumb-card { --he: 1; } /* fades the box-shadow to full spec, no resize */
 .hp-thumb:hover .thumb-card img { filter: saturate(1.08) contrast(1.02); }
 @media (prefers-reduced-motion: reduce) {
   .thumb-float { animation: none; }
