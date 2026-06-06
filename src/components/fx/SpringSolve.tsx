@@ -56,7 +56,10 @@ function eqStrokes(text: string, rng: () => number, unit = 1.25, jit = 0.85): St
       out.push(
         s.map(([px, py]) => [
           pen + (px - g.l) * unit * sc + (rng() - 0.5) * jit * unit,
-          -py * unit * sc + dy + gy + (rng() - 0.5) * jit * unit,
+          // Glyph data is "negative = top" (same convention as the diagram
+          // builders), so use py directly. Negating it flipped all text
+          // upside-down (A→∀, /→\).
+          py * unit * sc + dy + gy + (rng() - 0.5) * jit * unit,
         ]) as Stroke,
       );
     }
@@ -659,8 +662,14 @@ export function SpringSolve() {
     setMounted(true);
   }, []);
 
+  const onHome = pathname === "/";
+  const isCase = (pathname ?? "").startsWith("/case-studies/");
+
   const fragments = useMemo<FragmentDef[]>(() => {
-    const rng = mulberry32(20260605);
+    // Case studies carry the same desk language but reseeded, so each reads as
+    // related rather than identical (no glyph-flipping mirror — that would
+    // reverse the equations into mirror-writing).
+    const rng = mulberry32(isCase ? 91116007 : 20260605);
     const cols = isMobile ? 4 : 10;
     const rows = isMobile ? 10 : 8;
     const baseS = isMobile ? 0.5 : 0.46;
@@ -703,9 +712,9 @@ export function SpringSolve() {
       }
     }
     return out;
-  }, [isMobile]);
+  }, [isMobile, isCase]);
 
-  if (!mounted || pathname !== "/") return null;
+  if (!mounted || (!onHome && !isCase)) return null;
 
   return (
     <div aria-hidden className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>
