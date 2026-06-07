@@ -200,22 +200,23 @@ html[data-paused] div[aria-hidden] svg[viewBox="0 0 1440 900"] path {
   position: relative;
   aspect-ratio: 1; /* both layers are absolute, so the card needs its own square */
 }
-/* The back (ink) layer starts collapsed at the body's splatter-corner (transform-origin
-   set inline by BlotImage) and grows outward when the thumbnail scrolls into view
-   (data-in set by its IntersectionObserver) — so the spray looks like it's growing
-   out of the thumbnail itself. */
+/* The back (ink) layer starts collapsed at its corner (transform-origin set inline by
+   BlotImage) and grows out once, when the thumbnail scrolls into view (data-in set by
+   its IntersectionObserver). A small per-thumbnail delay (--blot-delay) staggers them
+   so a row cascades instead of firing at the same instant; `both` keeps the landed
+   state, so it never reverses. */
 .blot-ink {
   transform: scale(0.12);
   opacity: 0;
   will-change: transform, opacity;
 }
-.blot-ink[data-in="1"] {
-  animation: blotComeOut 0.9s cubic-bezier(0.16, 0.9, 0.2, 1.03) forwards;
-}
 @keyframes blotComeOut {
   0% { transform: scale(0.12); opacity: 0; }
   35% { opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
+}
+.blot-ink[data-in="1"] {
+  animation: blotComeOut 0.9s cubic-bezier(0.16, 0.9, 0.2, 1.03) var(--blot-delay, 0s) both;
 }
 @media (prefers-reduced-motion: reduce) {
   .blot-ink { transform: none; opacity: 1; animation: none; }

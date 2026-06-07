@@ -677,7 +677,18 @@ export function SpringSolve() {
     const heroCount = isMobile ? 4 : 8;
     const total = cols * rows;
     const heroCells = new Set<number>();
-    while (heroCells.size < heroCount) heroCells.add(Math.floor(rng() * total));
+    // Keep the big hero sketches from stacking: reject a candidate cell that neighbours
+    // (incl. diagonally) an already-chosen hero, so no two diagrams ever overlap.
+    const heroPos: { r: number; c: number }[] = [];
+    for (let t = 0; heroCells.size < heroCount && t < 400; t++) {
+      const cell = Math.floor(rng() * total);
+      if (heroCells.has(cell)) continue;
+      const cr = Math.floor(cell / cols);
+      const cc = cell % cols;
+      if (heroPos.some((p) => Math.abs(p.r - cr) <= 1 && Math.abs(p.c - cc) <= 1)) continue;
+      heroCells.add(cell);
+      heroPos.push({ r: cr, c: cc });
+    }
 
     // Shuffled cycling: walk each pool in random order, reshuffling on wrap so
     // every equation / diagram / hero appears before any repeats — kills the

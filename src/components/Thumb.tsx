@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, type CSSProperties } from "react";
 import Link from "next/link";
 import { type Project } from "@/data/projects";
 import { thumbMotionVars } from "@/lib/thumb-motion";
@@ -50,7 +50,15 @@ function seededCorner(id: string): BlotCorner {
   return cornerForIndex(i);
 }
 
-function BlotImage({ src, alt, corner, zoom = 1 }: { src: string; alt: string; corner: BlotCorner; zoom?: number }) {
+// A small, stable per-thumbnail delay (0..~0.28s) so a row of sprays cascades in
+// instead of every one firing at the same instant.
+function blotDelay(id: string): number {
+  let h = 2166136261;
+  for (let k = 0; k < id.length; k++) { h ^= id.charCodeAt(k); h = Math.imul(h, 16777619); }
+  return Math.round(((h >>> 0) % 1000) / 1000 * 28) / 100;
+}
+
+function BlotImage({ src, alt, corner, zoom = 1, delay = 0 }: { src: string; alt: string; corner: BlotCorner; zoom?: number; delay?: number }) {
   const g = BLOT_GEOM[corner];
   // The body shows the centre (1/zoom) of a WIDER source image; the spray is the SAME
   // source at the SAME scale, masked to the flecks-only shape, so it spills into the
@@ -97,23 +105,9 @@ function BlotImage({ src, alt, corner, zoom = 1 }: { src: string; alt: string; c
     return () => ro.disconnect();
   }, [src, zoom, left, top]);
 
-  // Trigger the grow-out animation when the thumbnail scrolls into view.
-  useEffect(() => {
-    const ink = inkRef.current;
-    if (!ink) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      ink.dataset.in = "1";
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { ink.dataset.in = "1"; io.disconnect(); }
-      }),
-      { threshold: 0.4 }
-    );
-    io.observe(ink);
-    return () => io.disconnect();
-  }, []);
+  // data-in (which fires the CSS grow) is set by ThumbEnergy when the card first enters
+  // the viewport — a reliable scroll-based trigger, since IntersectionObserver doesn't
+  // fire against this nested .content-scroll container.
 
   return (
     <>
@@ -132,13 +126,14 @@ function BlotImage({ src, alt, corner, zoom = 1 }: { src: string; alt: string; c
           left: `${left * 100}%`,
           top: `${top * 100}%`,
           transformOrigin: `${ox * 100}% ${oy * 100}%`,
+          ["--blot-delay" as string]: `${delay}s`,
           WebkitMaskImage: `url(${url})`,
           maskImage: `url(${url})`,
           WebkitMaskSize: "100% 100%",
           maskSize: "100% 100%",
           WebkitMaskRepeat: "no-repeat",
           maskRepeat: "no-repeat",
-        }}
+        } as CSSProperties}
       />
       {/* Front layer: body = centre crop of the same photo, clipped to the rounded tile. */}
       <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 1, borderRadius: BLOT_RADIUS }}>
@@ -177,7 +172,7 @@ export function Thumb({
   const inner = (
     <div className="thumb-float w-[130px] md:w-[160px]" style={m.float}>
       <div className="thumb-card" data-blot={corner} style={m.card}>
-        <BlotImage src={src} alt={project.title} corner={corner} zoom={blotZoom ?? 1.2} />
+        <BlotImage src={src} alt={project.title} corner={corner} zoom={blotZoom ?? 1.2} delay={blotDelay(project.id)} />
       </div>
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
