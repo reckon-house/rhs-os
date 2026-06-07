@@ -32,7 +32,7 @@ export const projects: Project[] = [
   { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg`, href: "/case-studies/amber-shockey-co", tags: ["creative"] },
   { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg`, href: "/case-studies/you-by-sally", tags: ["creative"] },
   { id: "sallyOS", title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/sally-os-platform-hero.jpg`, href: "/case-studies/sally", tags: ["digital"] },
-  { id: "jeffreyCampaign2", title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg`, tags: ["creative"] },
+  { id: "jeffreyCampaign2", title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "fairviewSitting", title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg`, href: "/case-studies/fairview-sitting", tags: ["interiors"] },
   { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg`, href: "/case-studies/floor-and-decor", tags: ["interiors"] },
   { id: "fairviewBedroom", title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg`, href: "/case-studies/fairview-suite", tags: ["interiors"] },

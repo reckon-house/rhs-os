@@ -156,13 +156,14 @@ body::before {
    transform/opacity so it composites on the GPU; idle drift is gated behind
    prefers-reduced-motion. The transforms live on separate nested layers
    (float → card) so they never fight over the `transform` property. */
-/* Hover energy for the thumbnails — registered so it can transition (fade)
-   while the scroll energy (--es) stays instant. */
-@property --he {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
+/* Tab-hidden pause: when VisibilityPause flags <html data-paused>, freeze the
+   perpetual animations (SpringSolve's main-thread pen-drawing + the thumbnail
+   floats) so a backgrounded tab stops drawing power. Visible state untouched. */
+html[data-paused] .thumb-float,
+html[data-paused] div[aria-hidden] svg[viewBox="0 0 1440 900"] path {
+  animation-play-state: paused !important;
 }
+
 @keyframes thumbFloat {
   0%, 100% { transform: perspective(700px) translate3d(0, 0, 0) rotateY(calc(var(--tilt, 0deg) * var(--mf, 1))); }
   25%      { transform: perspective(700px) translate3d(calc(var(--ampX, 0px) * var(--mf, 1)), calc(var(--amp, -3px) * var(--mf, 1) * 0.55), 0) rotateY(0deg); }
@@ -182,21 +183,43 @@ body::before {
   border-radius: 23%;
   overflow: hidden;
   transform: scale(var(--rs, 1));
-  /* Figma drop shadow (X 27, Y 21, blur 32.2, spread -17, black @ 20%) driven by
-     the greater of scroll energy (--es) and hover (--he): flat at rest, blooms
-     to the exact same spec on scroll AND on hover. --es stays instant (scroll);
-     --he eases via its @property transition (hover fade). */
-  box-shadow:
-    calc(27px * max(var(--es, 0), var(--he, 0)))
-    calc(21px * max(var(--es, 0), var(--he, 0)))
-    calc(32.2px * max(var(--es, 0), var(--he, 0)))
-    calc(-17px * max(var(--es, 0), var(--he, 0)))
-    rgba(0, 0, 0, calc(0.2 * max(var(--es, 0), var(--he, 0))));
-  transition: --he 0.3s ease;
 }
 .thumb-card img { transition: filter 0.45s ease; }
-.hp-thumb:hover .thumb-card { --he: 1; } /* fades the box-shadow to full spec, no resize */
 .hp-thumb:hover .thumb-card img { filter: saturate(1.08) contrast(1.02); }
+/* Ink-splatter edge: a few thumbnails (data-blot) clip their photo to a rounded
+   card unioned with a corner splatter (<clipPath> in ThumbEnergy), giving the
+   image a ragged inky corner instead of a clean rounded one. border-radius:0
+   because the clip path now defines the whole shape. */
+/* Ink-splatter thumbnails (data-blot): a normal full-size body image sits on top
+   of an absolutely-positioned ink layer (BlotImage). The card is just a positioning
+   context with overflow visible so the splatter can spill past the corner without
+   affecting layout; the body image carries its own rounding. */
+.thumb-card[data-blot] {
+  border-radius: 0;
+  overflow: visible;
+  position: relative;
+  aspect-ratio: 1; /* both layers are absolute, so the card needs its own square */
+}
+/* The back (ink) layer starts collapsed at the body's splatter-corner (transform-origin
+   set inline by BlotImage) and grows outward when the thumbnail scrolls into view
+   (data-in set by its IntersectionObserver) — so the spray looks like it's growing
+   out of the thumbnail itself. */
+.blot-ink {
+  transform: scale(0.12);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.blot-ink[data-in="1"] {
+  animation: blotComeOut 0.9s cubic-bezier(0.16, 0.9, 0.2, 1.03) forwards;
+}
+@keyframes blotComeOut {
+  0% { transform: scale(0.12); opacity: 0; }
+  35% { opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blot-ink { transform: none; opacity: 1; animation: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .thumb-float { animation: none; }
 }

@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { CareerGalaxy } from "@/components/CareerGalaxy";
 import { HeroCarousel } from "@/components/fx/HeroCarousel";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { NowPlayingThumb } from "@/components/NowPlayingThumb";
-import { projectsById as p, type Project } from "@/data/projects";
-import { thumbMotionVars } from "@/lib/thumb-motion";
+import { projectsById as p } from "@/data/projects";
 import { ThumbEnergy } from "@/components/fx/ThumbEnergy";
+import { Thumb } from "@/components/Thumb";
 
 // Case study hero slides for the homepage carousel
 const CASE_STUDY_HEROES = [
@@ -99,38 +98,6 @@ function Asterisk({ weight = "regular" }: { weight?: "thin" | "regular" | "heavy
 
 // Project type and HP image-path constant now live in `@/data/projects`.
 
-/* ------------------------------------------------------------------ */
-/*  Thumbnail component                                                */
-/* ------------------------------------------------------------------ */
-
-function Thumb({ project }: { project: Project }) {
-  const m = thumbMotionVars(project.title);
-  const inner = (
-    <div className="thumb-float w-[130px] md:w-[160px]" style={m.float}>
-      <div className="thumb-card" style={m.card}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={project.image}
-          alt={project.title}
-          className="block w-full aspect-square object-cover"
-        />
-      </div>
-      <div className="text-center mt-2 md:mt-3">
-        <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
-        <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
-      </div>
-    </div>
-  );
-
-  if (project.href) {
-    return (
-      <Link href={project.href} className="hp-thumb group block">
-        {inner}
-      </Link>
-    );
-  }
-  return <div className="hp-thumb group cursor-default">{inner}</div>;
-}
 
 /* ------------------------------------------------------------------ */
 /*  Headline component                                                 */
@@ -255,7 +222,7 @@ function HomeContent() {
 
         {/* Row 1: 4 thumbnails */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
-          <Thumb project={p.sallyOS} />
+          <Thumb project={p.sallyOS} blot="tl2" />
           <Thumb project={p.ivyPark} />
           <Thumb project={p.arc} />
           <Thumb project={p.hillKitchen} />
@@ -363,6 +330,11 @@ function HomeContent() {
           <Thumb project={p.mountainView} />
           <Thumb project={p.neimanMarcus} />
           <NowPlayingThumb fallback={p.variousDesign} />
+        </div>
+
+        {/* Row 11: Various design → branding & graphics case study */}
+        <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.variousDesign} />
         </div>
       </div>
 

@@ -664,12 +664,13 @@ export function SpringSolve() {
 
   const onHome = pathname === "/";
   const isCase = (pathname ?? "").startsWith("/case-studies/");
+  const onCategory = (pathname ?? "").startsWith("/category/");
 
   const fragments = useMemo<FragmentDef[]>(() => {
     // Case studies carry the same desk language but reseeded, so each reads as
     // related rather than identical (no glyph-flipping mirror — that would
     // reverse the equations into mirror-writing).
-    const rng = mulberry32(isCase ? 91116007 : 20260605);
+    const rng = mulberry32(isCase ? 91116007 : onCategory ? 51730922 : 20260605);
     const cols = isMobile ? 4 : 10;
     const rows = isMobile ? 10 : 8;
     const baseS = isMobile ? 0.5 : 0.46;
@@ -712,9 +713,9 @@ export function SpringSolve() {
       }
     }
     return out;
-  }, [isMobile, isCase]);
+  }, [isMobile, isCase, onCategory]);
 
-  if (!mounted || (!onHome && !isCase)) return null;
+  if (!mounted || (!onHome && !isCase && !onCategory)) return null;
 
   return (
     <div aria-hidden className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>

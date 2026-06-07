@@ -5,36 +5,8 @@ import Link from "next/link";
 import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
-
-/* ── Thumbnail (same as homepage) ── */
-function Thumb({ project }: { project: Project }) {
-  const inner = (
-    <div className="w-[130px] md:w-[160px]">
-      <div className="relative w-full aspect-square rounded-[23%] overflow-hidden">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          sizes="(min-width: 768px) 160px, 130px"
-          className="object-cover"
-        />
-      </div>
-      <div className="text-center mt-2 md:mt-3">
-        <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
-        <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
-      </div>
-    </div>
-  );
-
-  if (project.href) {
-    return (
-      <Link href={project.href} className="hp-thumb group block">
-        {inner}
-      </Link>
-    );
-  }
-  return <div className="hp-thumb group cursor-default">{inner}</div>;
-}
+import { Thumb } from "@/components/Thumb";
+import { ThumbEnergy } from "@/components/fx/ThumbEnergy";
 
 /* ── Large featured hero image with project info ── */
 function FeaturedHero({ hero }: { hero: CategoryHero }) {
@@ -65,12 +37,12 @@ function FeaturedHero({ hero }: { hero: CategoryHero }) {
   return <div>{inner}</div>;
 }
 
-/* ── Thumbnail row (4 per row) ── */
-function ThumbRow({ items }: { items: Project[] }) {
+/* ── Thumbnail row (4 per row) ── startIndex drives the per-page L/R blot spread ── */
+function ThumbRow({ items, startIndex = 0 }: { items: Project[]; startIndex?: number }) {
   return (
     <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
-      {items.map((proj) => (
-        <Thumb key={proj.id} project={proj} />
+      {items.map((proj, i) => (
+        <Thumb key={proj.id} project={proj} blotIndex={startIndex + i} />
       ))}
       {Array.from({ length: Math.max(0, 4 - items.length) }).map((_, i) => (
         <div key={`spacer-${i}`} className="hp-thumb w-[130px] md:w-[160px]" />
@@ -112,8 +84,14 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
   const allRows = chunkRows(categoryProjects);
 
+  // Running index across every thumbnail on the page, so the ink blots alternate
+  // left/right down the whole page instead of clustering per-section.
+  let blotIdx = 0;
+
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
+      {/* Scroll-reactive thumbnail motion (writes --e to #hp-grid below) */}
+      <ThumbEnergy />
       {/* Breadcrumb */}
       <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
@@ -131,7 +109,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
       {/* Spacer for fixed breadcrumb */}
       <div className="h-[20px] md:h-[50px]" />
 
-      <div className="pb-24 space-y-10 md:space-y-[100px]">
+      <div id="hp-grid" className="pb-24 space-y-10 md:space-y-[100px]">
 
         {/* ── Overview block at top — pill + headline + body. Mirrors the
             homepage manifesto pattern. The three-column practice breakdown
@@ -198,9 +176,11 @@ export function CategoryPage({ tag }: { tag: Tag }) {
         </>
 
         {/* ── All category thumbnail rows ── */}
-        {allRows.map((row, i) => (
-          <ThumbRow key={`thumb-${i}`} items={row} />
-        ))}
+        {allRows.map((row, i) => {
+          const start = blotIdx;
+          blotIdx += row.length;
+          return <ThumbRow key={`thumb-${i}`} items={row} startIndex={start} />;
+        })}
 
         {/* ── Three-column expertise breakdown — sits BELOW the projects in
             its own cream container. Now mirrors the case-study section
@@ -265,9 +245,11 @@ export function CategoryPage({ tag }: { tag: Tag }) {
           return (
             <div key={otherTag} className="space-y-10 md:space-y-[100px]">
               <CategoryLabel tag={otherTag} />
-              {otherRows.map((row, i) => (
-                <ThumbRow key={`${otherTag}-${i}`} items={row} />
-              ))}
+              {otherRows.map((row, i) => {
+                const start = blotIdx;
+                blotIdx += row.length;
+                return <ThumbRow key={`${otherTag}-${i}`} items={row} startIndex={start} />;
+              })}
             </div>
           );
         })}

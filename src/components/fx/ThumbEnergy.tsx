@@ -85,5 +85,43 @@ export function ThumbEnergy() {
     };
   }, []);
 
-  return null;
+  // Ink-splatter clip paths for the thumbnails. clipPathUnits=objectBoundingBox
+  // so the shapes scale to each card (0..1). A rounded rect unioned with a
+  // cluster of circles at one corner gives the photo a ragged, inky edge.
+  return (
+    <svg width="0" height="0" aria-hidden focusable="false" style={{ position: "absolute" }}>
+      <clipPath id="splatTR" clipPathUnits="objectBoundingBox">
+        <rect width="1" height="1" rx="0.22" ry="0.22" />
+        <ellipse cx="0.92" cy="0.08" rx="0.13" ry="0.11" />
+        <ellipse cx="1.0" cy="0.02" rx="0.07" ry="0.06" />
+        <ellipse cx="0.84" cy="0.0" rx="0.06" ry="0.05" />
+        <ellipse cx="1.04" cy="0.16" rx="0.06" ry="0.08" />
+        <ellipse cx="0.96" cy="0.2" rx="0.05" ry="0.05" />
+        <ellipse cx="1.07" cy="0.06" rx="0.05" ry="0.018" />
+        <ellipse cx="0.79" cy="-0.03" rx="0.015" ry="0.04" />
+        <circle cx="1.1" cy="-0.02" r="0.022" />
+        <circle cx="0.73" cy="-0.05" r="0.016" />
+        <circle cx="1.08" cy="0.13" r="0.018" />
+        <circle cx="1.02" cy="0.3" r="0.02" />
+        <circle cx="0.66" cy="0.01" r="0.012" />
+        <circle cx="0.88" cy="-0.04" r="0.012" />
+      </clipPath>
+      <clipPath id="splatBL" clipPathUnits="objectBoundingBox">
+        <rect width="1" height="1" rx="0.22" ry="0.22" />
+        <ellipse cx="0.08" cy="0.92" rx="0.13" ry="0.11" />
+        <ellipse cx="0.0" cy="0.98" rx="0.07" ry="0.06" />
+        <ellipse cx="0.16" cy="1.0" rx="0.06" ry="0.05" />
+        <ellipse cx="-0.04" cy="0.84" rx="0.06" ry="0.08" />
+        <ellipse cx="0.04" cy="0.8" rx="0.05" ry="0.05" />
+        <ellipse cx="-0.07" cy="0.94" rx="0.05" ry="0.018" />
+        <ellipse cx="0.21" cy="1.03" rx="0.015" ry="0.04" />
+        <circle cx="-0.1" cy="1.02" r="0.022" />
+        <circle cx="0.27" cy="1.05" r="0.016" />
+        <circle cx="-0.08" cy="0.87" r="0.018" />
+        <circle cx="0.02" cy="0.7" r="0.02" />
+        <circle cx="0.34" cy="0.99" r="0.012" />
+        <circle cx="0.12" cy="1.04" r="0.012" />
+      </clipPath>
+    </svg>
+  );
 }
