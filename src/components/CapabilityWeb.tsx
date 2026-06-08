@@ -161,16 +161,12 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
   return (
     <div className="mb-12">
       <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
-        <ScrambleOnView text="SECTION: PRACTICE" />
+        <ScrambleOnView text="SECTION: THE PRACTICE" />
       </span>
       <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
         Putting the work first.
       </h2>
-      <p className={`mt-4 text-[14px] md:text-[16px] leading-[1.6] ${inkDim} mb-6`}>
-        It&apos;s the part I love most.
-      </p>
-
-      <div className={`text-spec ${inkSoft}`}>
+      <div className={`mt-6 text-spec ${inkSoft}`}>
         <p>
           <span className="font-bold">Studio </span>
           Reckon House  Multi-disciplinary
@@ -204,7 +200,7 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
       </div>
 
       <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
-        <p className={`font-bold ${inkClass} indent-[4em]`}>Abstract</p>
+        <p className={`font-bold ${inkClass} indent-[4em]`}>The Through-Line</p>
         <p className="indent-[4em]">
           The work means a lot of things at once - writing the code that ships an app, picking the marble that goes in a kitchen, art directing a campaign shoot, building a brand voice from scratch, designing the AI tooling that runs marketing operations at enterprise scale. These aren&apos;t separate jobs, they&apos;re the same job showing up in different rooms.
         </p>

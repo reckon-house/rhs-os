@@ -190,7 +190,7 @@ function HomeContent() {
 
         {/* Closing paragraph — personal lens, smaller secondary line treatment */}
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          The thinking and the making stay close to each other. That&apos;s the through line.
+          The thinking and the making stay close.
         </p>
 
         {/* Meta fields — left-aligned, constrained width */}
