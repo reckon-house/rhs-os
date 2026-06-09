@@ -305,10 +305,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:flex md:absolute md:right-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>all of it shipped.</Headline>
+            <Headline>I love the work.</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>all of it shipped.</Headline>
+            <Headline>I love the work.</Headline>
           </div>
         </div>
 
