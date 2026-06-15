@@ -120,6 +120,7 @@ export function MarksAndMaterials({
   markFullBleed = false,
   markImageRight,
   markAltRight,
+  markStacked = false,
 }: MarksAndMaterialsSection) {
   const titleLines = title.split("\n");
   const philosophyParagraphs = philosophyText.split("\n\n");
@@ -315,13 +316,13 @@ export function MarksAndMaterials({
               Otherwise render the single markImage spread. */}
           <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 pt-6">
             {markImageRight ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              <div className={`grid grid-cols-1 ${markStacked ? "" : "md:grid-cols-2"} gap-6 md:gap-8`}>
                 <Image
                   src={markImage}
                   alt={markAlt}
                   width={2000}
                   height={2000}
-                  sizes="(min-width: 768px) 50vw, 100vw"
+                  sizes={markStacked ? "(min-width: 1000px) 1000px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
                   className="w-full object-contain rounded-[clamp(20px,4vw,50px)]"
                   style={{ height: "auto" }}
                 />
@@ -330,7 +331,7 @@ export function MarksAndMaterials({
                   alt={markAltRight ?? ""}
                   width={2000}
                   height={2000}
-                  sizes="(min-width: 768px) 50vw, 100vw"
+                  sizes={markStacked ? "(min-width: 1000px) 1000px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
                   className="w-full object-contain rounded-[clamp(20px,4vw,50px)]"
                   style={{ height: "auto" }}
                 />

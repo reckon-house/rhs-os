@@ -63,7 +63,16 @@ export type Section =
   | ColorPermutationsSection
   | EditorialTreatmentsSection
   | LogoCarouselSection
-  | MarksAndMaterialsSection;
+  | MarksAndMaterialsSection
+  | MasonrySection
+  | MCPArchitectureSection;
+
+export interface MasonrySection extends BaseSection {
+  type: "masonry";
+  images: { src: string; alt: string }[];
+  /** Desktop column count (default 2). Mobile is always 1. */
+  columns?: number;
+}
 
 interface BaseSection {
   id: string;
@@ -382,6 +391,10 @@ export interface SystemArchitectureSection extends BaseSection {
   type: "system-architecture";
 }
 
+export interface MCPArchitectureSection extends BaseSection {
+  type: "mcp-architecture";
+}
+
 export interface BrandSystemSection extends BaseSection {
   type: "brand-system";
   label: string;
@@ -550,4 +563,6 @@ export interface MarksAndMaterialsSection extends BaseSection {
    */
   markImageRight?: string;
   markAltRight?: string;
+  /** When markImageRight is set, stack the pair vertically (full-width each) instead of side-by-side. */
+  markStacked?: boolean;
 }

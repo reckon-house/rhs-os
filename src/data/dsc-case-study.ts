@@ -1,0 +1,379 @@
+import type { CaseStudy } from "@/lib/types";
+
+export const dscCaseStudy: CaseStudy = {
+  slug: "dsc",
+  title: "Dallas Sport Collective",
+  category: { label: "Digital", href: "/category/digital" },
+  subtitle:
+    "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",
+  field: "AI Scheduling\nMCP Integration\nBrand & Web",
+  author: "Jeremy Prasatik",
+  published: "2025",
+  status: "Live  Two locations",
+  classification: [
+    "Web Design",
+    "Product Design",
+    "AI Integration",
+    "Full-Stack Engineering",
+  ],
+  services: [
+    "Web Design",
+    "Product Design",
+    "AI Integration",
+    "Full-Stack Engineering",
+  ],
+  stack: ["Next.js", "Vercel", "Model Context Protocol", "OAuth 2.0", "Claude + ChatGPT"],
+  links: [
+    { label: "dsportcollective.com", url: "https://dsportcollective.com" },
+    { label: "App walkthrough", url: "https://dsc-gym.vercel.app/showcase" },
+  ],
+  heroImage: "",
+  sections: [
+    // ── HERO ──
+    {
+      id: "hero-1",
+      type: "hero",
+      image: "/case-studies/dsc/dsc-hero-laptop-site.jpg",
+      alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
+    },
+
+    // ── META + ABSTRACT ──
+    {
+      id: "meta",
+      type: "meta",
+      field: "AI Scheduling  MCP Integration  Brand & Web",
+      author: "Jeremy Prasatik",
+      published: "2025",
+      status: "Live  Two locations",
+      classification: [
+        "Web Design",
+        "Product Design",
+        "AI Integration",
+        "Full-Stack Engineering",
+      ],
+      title: "Dallas Sport\nCollective",
+      subtitle:
+        "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",
+      abstract:
+        "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule holding it together was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers, eleven programs from NFL Combine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site that sells the room: black and white, big condensed type, photography of actual members training. A scheduling platform with two faces: an athlete app for booking sessions and an owner console for saying a week of scheduling out loud and approving each request with one tap. And the part I find genuinely fun: an MCP server with eleven tools, so athletes can paste one URL into Claude or ChatGPT and ask their own AI what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. The AI only ever asks; it never decides. Next.js on Vercel, OAuth 2.0 consent with short-lived tokens, live at two locations.",
+    },
+
+    {
+      id: "intro-editorial",
+      type: "editorial-headline",
+      text: "Enterprise plumbing\nfor a gym with six trainers",
+    },
+
+    // ════════════════════════════════════════
+    // 1. GETTING IN - the organizing first step
+    // ════════════════════════════════════════
+    {
+      id: "signup-header",
+      type: "section-header",
+      label: "SECTION 02: GETTING IN",
+      title: "Join the\nCollective",
+    },
+    {
+      id: "signup-text",
+      type: "text",
+      size: "xl",
+      content:
+        "None of the scheduling works until everyone is in the system. So the first build was the front door: athletes create their own accounts, sign the waiver on the way in, and the owner assigns each new member to a trainer before a single session books.",
+    },
+    {
+      id: "signup-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Athlete login and registration. A hundred-plus people moving off text threads and a spreadsheet into one roster the software can work with.",
+    },
+    {
+      id: "signup-images",
+      type: "dual-image",
+      native: true,
+      left: { src: "/case-studies/dsc/dsc-app-athlete-login.jpg", alt: "DSC athlete login screen, Unlock Your Peak" },
+      right: { src: "/case-studies/dsc/dsc-app-register.jpg", alt: "DSC registration form, Join the Collective" },
+    },
+
+    // ── HERO - AI divider ──
+    {
+      id: "hero-ai",
+      type: "hero",
+      image: "/case-studies/dsc/dsc-hero-scheduler-phone.jpg",
+      alt: "The DSC scheduler open on a phone, resting on concrete",
+      inline: true,
+    },
+
+    // ════════════════════════════════════════
+    // 2. SCHEDULING BY CHAT - the MCP marquee
+    // ════════════════════════════════════════
+    {
+      id: "mcp-header",
+      type: "section-header",
+      label: "SECTION 03: SCHEDULING BY CHAT",
+      title: "The Gym That\nSpeaks MCP",
+    },
+    {
+      id: "mcp-text",
+      type: "text",
+      size: "xl",
+      content:
+        "An athlete never has to open our app. They ask the AI they already use, ChatGPT or Claude, and it reads their real schedule and can put in a session request.",
+    },
+    {
+      id: "mcp-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Eleven tools cover the gym overview, the program list, trainer profiles and availability, the athlete's own sessions and pending requests, slot suggestions, booking requests, and cancellations. Reads answer instantly, writes only ever create a pending request the owner has to approve. Connecting runs through an OAuth consent screen with short-lived, rotating tokens, and access revokes from the dashboard in one tap.",
+    },
+    {
+      id: "mcp-masonry",
+      type: "masonry",
+      images: [
+        { src: "/case-studies/dsc/dsc-app-connect-to-ai.jpg", alt: "DSC in-app connect screen with the MCP server URL and live connection status" },
+        { src: "/case-studies/dsc/dsc-app-claude-consent.jpg", alt: "OAuth consent screen, Claude wants to connect, listing granted permissions" },
+        { src: "/case-studies/dsc/dsc-ai-chat-trainers.jpg", alt: "Claude listing every DSC trainer and their specialties through the connected tools" },
+        { src: "/case-studies/dsc/dsc-ai-chat-availability.jpg", alt: "Claude listing Scott's real availability for the week through the DSC tools" },
+        { src: "/case-studies/dsc/dsc-ai-chat-booking.jpg", alt: "Claude confirming a booking request, pending the trainer's approval" },
+      ],
+    },
+    {
+      id: "mcp-architecture",
+      type: "mcp-architecture",
+    },
+    {
+      id: "mcp-editorial",
+      type: "editorial-headline",
+      text: "The athlete asks Claude\nClaude asks the gym\nthe gym answers",
+    },
+
+    // ════════════════════════════════════════
+    // 3. THE ATHLETE APP - what the user sees
+    // ════════════════════════════════════════
+    {
+      id: "athlete-header",
+      type: "section-header",
+      label: "SECTION 04: THE ATHLETE APP",
+      title: "What Athletes\nSee",
+    },
+    {
+      id: "athlete-text",
+      type: "text",
+      size: "xl",
+      content:
+        "The athlete app opens on the next session and the activity around it. Past that, the full trainer roster and the program menu. The same trainer data feeds the MCP server, so a connected AI describes a coach from the record, not guesswork.",
+    },
+    {
+      id: "athlete-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "Dashboard, trainer bios, and the program list. Each trainer expands to specialties and certifications. The programs run from strength and speed work to onsite physical therapy, prenatal fitness, and Combine prep.",
+    },
+    {
+      id: "athlete-images",
+      type: "triple-image",
+      native: true,
+      images: [
+        { src: "/case-studies/dsc/dsc-app-trio-athlete.jpg", alt: "DSC athlete dashboard showing the next session and recent activity" },
+        { src: "/case-studies/dsc/dsc-app-trainer-bio.jpg", alt: "DSC athlete app trainer bio for the founder and head trainer" },
+        { src: "/case-studies/dsc/dsc-app-programs.jpg", alt: "DSC athlete app program and services list" },
+      ],
+    },
+
+    // ── HERO - owner divider ──
+    {
+      id: "hero-owner",
+      type: "hero",
+      image: "/case-studies/dsc/dsc-hero-calendar-phone.jpg",
+      alt: "DSC calendar open on a phone resting on concrete",
+      inline: true,
+    },
+
+    // ════════════════════════════════════════
+    // 4. THE OWNER CONSOLE - how the owner manages it
+    // ════════════════════════════════════════
+    {
+      id: "owner-header",
+      type: "section-header",
+      label: "SECTION 05: THE OWNER CONSOLE",
+      title: "Run It From\nthe Floor",
+    },
+    {
+      id: "owner-text",
+      type: "text",
+      size: "xl",
+      content:
+        "The owner side is built for one person managing a packed week from their phone, between sessions, on the gym floor.",
+    },
+    {
+      id: "owner-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "The queue where every request lands, a week calendar with session density per day, and a member list flagging waiver and trainer-assignment status.",
+    },
+    {
+      id: "owner-images",
+      type: "triple-image",
+      native: true,
+      images: [
+        { src: "/case-studies/dsc/dsc-app-trio-owner-home.jpg", alt: "DSC owner home with booking requests and new registrations" },
+        { src: "/case-studies/dsc/dsc-app-owner-calendar.jpg", alt: "DSC owner calendar week view with sessions per day" },
+        { src: "/case-studies/dsc/dsc-app-owner-athletes.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
+      ],
+    },
+    {
+      id: "owner-batch-text",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "The owner can say a whole week out loud: schedule Marcus with Scott every Monday, Wednesday, and Friday at 3pm for a month. The scheduler proposes the batch, accepts the ten clean slots, flags the three it skipped for conflicts, and waits for a \"commit\" before a single session lands.",
+    },
+    {
+      id: "owner-batch-image",
+      type: "image",
+      src: "/case-studies/dsc/dsc-app-owner-batch-chat.jpg",
+      alt: "DSC owner scheduler chat running a batch booking, ten accepted and three conflicts skipped",
+      aspect: "native",
+      maxWidth: 440,
+    },
+    {
+      id: "owner-editorial",
+      type: "editorial-headline",
+      text: "Back of house.\nFront and center.",
+    },
+
+    // ── HERO - brand divider ──
+    {
+      id: "hero-brand",
+      type: "hero",
+      image: "/case-studies/dsc/dsc-hero-marketing-phone.jpg",
+      alt: "The DSC marketing site open on a phone, resting on concrete",
+      inline: true,
+    },
+
+    // ════════════════════════════════════════
+    // 5. MARKS & MATERIALS - the brand system
+    // ════════════════════════════════════════
+    {
+      id: "marks-materials",
+      type: "marks-materials",
+      label: "SECTION 06: MARKS & MATERIALS",
+      title: "Black, White,\nand Loud",
+      introText:
+        "A palette with no color in it, one type family doing all the work, and photography shot on the actual gym floor. The kit holds the same at every scale.",
+      philosophyText:
+        "Pure black for type and structure, pure white for the ground, and a short ramp of greys for everything between. No accent color, because the photography and the weight of the type bring all the contrast the brand needs.\n\nType is mostly one family. Avenir Next carries the brand voice: Heavy for the wordmark and section heads, Demi Bold for subheads and CTAs, Medium for the body. A monospace sits underneath for the technical labels, the MCP URLs and session times. Weight and contrast do the job a second color usually would.",
+      colors: [
+        { name: "Ground", hex: "#000000", description: "Type, structure" },
+        { name: "Ink", hex: "#141414", description: "Dark surfaces" },
+        { name: "Steel", hex: "#8E8E8E", description: "Labels, secondary" },
+        { name: "Mist", hex: "#E6E6E6", description: "Cards, dividers" },
+        { name: "Paper", hex: "#FFFFFF", description: "Ground, negative space" },
+      ],
+      fonts: [
+        {
+          name: "Avenir Next Heavy",
+          role: "Wordmark & headlines",
+          description:
+            "The heaviest weight, set at poster scale for the DALLAS SPORT COLLECTIVE wordmark and the section heads. The loudest the system gets.",
+          family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
+          weight: 800,
+          sampleText: "DALLAS SPORT",
+          sampleSize: 46,
+        },
+        {
+          name: "Avenir Next Demi Bold",
+          role: "Subheads & CTAs",
+          description:
+            "One step down for subheads, callouts, and buttons. Structural weight that anchors a layout without shouting over the wordmark.",
+          family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
+          weight: 600,
+          sampleText: "Schedule by Chat",
+        },
+        {
+          name: "Avenir Next Medium",
+          role: "Body & UI",
+          description:
+            "The workhorse. Session details, trainer bios, running copy, interface text. Quiet enough to let the photography lead.",
+          family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
+          weight: 500,
+          sampleText: "Train. Strength. Community.",
+        },
+        {
+          name: "Mono",
+          role: "Labels & data",
+          description:
+            "A monospace under the Avenir for the technical labels and data fields: MCP SERVER URL, session times, the back-end voice surfacing in the UI.",
+          family: "'SF Mono', 'Roboto Mono', ui-monospace, monospace",
+          weight: 500,
+          sampleText: "MCP SERVER URL",
+        },
+      ],
+      markImage: "/case-studies/dsc/dsc-brand-recovery.jpg",
+      markAlt: "DSC marketing site recovery section, Get Back to Sport",
+      markImageRight: "/case-studies/dsc/dsc-brand-facilities.jpg",
+      markAltRight: "DSC marketing site facilities and equipment spread",
+      markStacked: true,
+    },
+
+    // ── STATS ──
+    {
+      id: "stats",
+      type: "stats-summary",
+      items: [
+        { value: "100+", label: "Athletes", sublabel: "Up from a handful" },
+        { value: "11", label: "MCP tools", sublabel: "Schedule, trainers, booking" },
+        { value: "6", label: "Trainers", sublabel: "One shared calendar" },
+        { value: "2", label: "TX locations", sublabel: "Frisco HQ on the way" },
+      ],
+    },
+
+    // ── CLOSING ──
+    {
+      id: "closing-header",
+      type: "section-header",
+      label: "SECTION 07: CLOSING",
+      title: "Live at\nthe Gym",
+    },
+    {
+      id: "closing-text",
+      type: "text",
+      size: "xl",
+      content:
+        "Most AI integration work this year is happening inside companies with platform teams. This one runs for a gym with six trainers.",
+    },
+    {
+      id: "closing-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "The protocol does not care how big the business is. That might be the most useful thing about it.",
+    },
+    {
+      id: "closing",
+      type: "closing",
+      services: [
+        "Web Design",
+        "Product Design",
+        "AI Integration",
+        "Full-Stack Engineering",
+      ],
+      stack: ["Next.js", "Vercel", "Model Context Protocol", "OAuth 2.0", "Claude + ChatGPT"],
+      links: [
+        { label: "dsportcollective.com", url: "https://dsportcollective.com" },
+        { label: "App walkthrough", url: "https://dsc-gym.vercel.app/showcase" },
+      ],
+      content:
+        "The platform is live. Athletes sign in and book, the owner approves from a queue or just says the week out loud, and a connected Claude reads the schedule as it actually is.\n\nThe scheduling used to be the part nobody saw: texts, notes, a spreadsheet, the after-hours work that kept the training on time. Now it is the most modern thing the gym owns. The back office became the front door, and all of it connects.",
+    },
+  ],
+};

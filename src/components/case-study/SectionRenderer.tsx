@@ -12,6 +12,7 @@ import { DualImageBlock } from "./sections/DualImageBlock";
 import { TripleImageBlock } from "./sections/TripleImageBlock";
 import { QuadImageBlock } from "./sections/QuadImageBlock";
 import { QuadGridBlock } from "./sections/QuadGridBlock";
+import { Masonry } from "./sections/Masonry";
 import { StatsSummary } from "./sections/StatsSummary";
 import { StatsBar } from "./sections/StatsBar";
 import { FeatureCards } from "./sections/FeatureCards";
@@ -29,6 +30,7 @@ import { SpeedComparison } from "./sections/SpeedComparison";
 import { DevTimeline } from "./sections/DevTimeline";
 import { BrandSystem } from "./sections/BrandSystem";
 import { SystemArchitecture } from "./sections/SystemArchitecture";
+import { MCPArchitecture } from "./sections/MCPArchitecture";
 import { EditorialHeadline } from "./sections/EditorialHeadline";
 import { AIHeatmap } from "./sections/AIHeatmap";
 import { IntelligenceFlow } from "./sections/IntelligenceFlow";
@@ -85,6 +87,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <QuadImageBlock {...section} />;
     case "quad-grid":
       return <QuadGridBlock {...section} />;
+    case "masonry":
+      return <Masonry {...section} />;
     case "stats-summary":
       return <StatsSummary {...section} />;
     case "stats-bar":
@@ -119,6 +123,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <BrandSystem {...section} />;
     case "system-architecture":
       return <SystemArchitecture />;
+    case "mcp-architecture":
+      return <MCPArchitecture />;
     case "editorial-headline":
       return <EditorialHeadline {...section} />;
     case "ai-heatmap":

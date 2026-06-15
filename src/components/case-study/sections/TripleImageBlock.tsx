@@ -41,7 +41,7 @@ export function TripleImageBlock({ images, native, transparent, blend }: TripleI
     <section className="w-full pt-4 pb-[50px] md:px-[calc(100%/24)]">
       <SwipeRow className="">{imageCards}</SwipeRow>
 
-      <div className="hidden md:grid grid-cols-3 gap-6 md:gap-10">
+      <div className="hidden md:grid grid-cols-3 gap-6 md:gap-10 items-start">
         {imageCards}
       </div>
     </section>

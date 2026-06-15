@@ -106,7 +106,7 @@ export function DualImageBlock({ left, right, native, transparent, aspect, blend
         ]}
       </SwipeRow>
 
-      <div className={`hidden md:grid grid-cols-2 ${transparent ? "gap-8" : "gap-4"}`}>
+      <div className={`hidden md:grid grid-cols-2 ${transparent ? "gap-8" : "gap-4"} items-start`}>
         <ImageSlot {...left} native={effectiveNative} transparent={transparent} aspect={effectiveAspect} blend={blend} objectFit={fit} />
         <ImageSlot {...right} native={effectiveNative} transparent={transparent} aspect={effectiveAspect} blend={blend} objectFit={fit} />
       </div>
