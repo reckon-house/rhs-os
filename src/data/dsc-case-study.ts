@@ -33,7 +33,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "hero-1",
       type: "hero",
-      image: "/case-studies/dsc/dsc-hero-laptop-site.jpg",
+      image: "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
       alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
     },
 
@@ -92,15 +92,15 @@ export const dscCaseStudy: CaseStudy = {
       id: "signup-images",
       type: "dual-image",
       native: true,
-      left: { src: "/case-studies/dsc/dsc-app-athlete-login.jpg", alt: "DSC athlete login screen, Unlock Your Peak" },
-      right: { src: "/case-studies/dsc/dsc-app-register.jpg", alt: "DSC registration form, Join the Collective" },
+      left: { src: "/case-studies/dsc/dsc-athlete-app-login-screen.jpg", alt: "DSC athlete login screen, Unlock Your Peak" },
+      right: { src: "/case-studies/dsc/dsc-athlete-app-registration-form.jpg", alt: "DSC registration form, Join the Collective" },
     },
 
     // ── HERO - AI divider ──
     {
       id: "hero-ai",
       type: "hero",
-      image: "/case-studies/dsc/dsc-hero-scheduler-phone.jpg",
+      image: "/case-studies/dsc/dsc-ai-scheduler-phone-hero.jpg",
       alt: "The DSC scheduler open on a phone, resting on concrete",
       inline: true,
     },
@@ -133,11 +133,11 @@ export const dscCaseStudy: CaseStudy = {
       id: "mcp-masonry",
       type: "masonry",
       images: [
-        { src: "/case-studies/dsc/dsc-app-connect-to-ai.jpg", alt: "DSC in-app connect screen with the MCP server URL and live connection status" },
-        { src: "/case-studies/dsc/dsc-app-claude-consent.jpg", alt: "OAuth consent screen, Claude wants to connect, listing granted permissions" },
-        { src: "/case-studies/dsc/dsc-ai-chat-trainers.jpg", alt: "Claude listing every DSC trainer and their specialties through the connected tools" },
-        { src: "/case-studies/dsc/dsc-ai-chat-availability.jpg", alt: "Claude listing Scott's real availability for the week through the DSC tools" },
-        { src: "/case-studies/dsc/dsc-ai-chat-booking.jpg", alt: "Claude confirming a booking request, pending the trainer's approval" },
+        { src: "/case-studies/dsc/dsc-athlete-app-connect-mcp-server.jpg", alt: "DSC in-app connect screen with the MCP server URL and live connection status" },
+        { src: "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg", alt: "OAuth consent screen, Claude wants to connect, listing granted permissions" },
+        { src: "/case-studies/dsc/dsc-claude-mcp-chat-trainers.jpg", alt: "Claude listing every DSC trainer and their specialties through the connected tools" },
+        { src: "/case-studies/dsc/dsc-claude-mcp-chat-trainer-availability.jpg", alt: "Claude listing Scott's real availability for the week through the DSC tools" },
+        { src: "/case-studies/dsc/dsc-claude-mcp-chat-booking-request.jpg", alt: "Claude confirming a booking request, pending the trainer's approval" },
       ],
     },
     {
@@ -179,9 +179,9 @@ export const dscCaseStudy: CaseStudy = {
       type: "triple-image",
       native: true,
       images: [
-        { src: "/case-studies/dsc/dsc-app-trio-athlete.jpg", alt: "DSC athlete dashboard showing the next session and recent activity" },
-        { src: "/case-studies/dsc/dsc-app-trainer-bio.jpg", alt: "DSC athlete app trainer bio for the founder and head trainer" },
-        { src: "/case-studies/dsc/dsc-app-programs.jpg", alt: "DSC athlete app program and services list" },
+        { src: "/case-studies/dsc/dsc-athlete-app-dashboard-next-session.jpg", alt: "DSC athlete dashboard showing the next session and recent activity" },
+        { src: "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg", alt: "DSC athlete app trainer bio for the founder and head trainer" },
+        { src: "/case-studies/dsc/dsc-athlete-app-programs-services.jpg", alt: "DSC athlete app program and services list" },
       ],
     },
 
@@ -189,7 +189,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "hero-owner",
       type: "hero",
-      image: "/case-studies/dsc/dsc-hero-calendar-phone.jpg",
+      image: "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
       alt: "DSC calendar open on a phone resting on concrete",
       inline: true,
     },
@@ -223,9 +223,9 @@ export const dscCaseStudy: CaseStudy = {
       type: "triple-image",
       native: true,
       images: [
-        { src: "/case-studies/dsc/dsc-app-trio-owner-home.jpg", alt: "DSC owner home with booking requests and new registrations" },
-        { src: "/case-studies/dsc/dsc-app-owner-calendar.jpg", alt: "DSC owner calendar week view with sessions per day" },
-        { src: "/case-studies/dsc/dsc-app-owner-athletes.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
+        { src: "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg", alt: "DSC owner home with booking requests and new registrations" },
+        { src: "/case-studies/dsc/dsc-owner-console-calendar-week-view.jpg", alt: "DSC owner calendar week view with sessions per day" },
+        { src: "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
       ],
     },
     {
@@ -239,7 +239,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "owner-batch-image",
       type: "image",
-      src: "/case-studies/dsc/dsc-app-owner-batch-chat.jpg",
+      src: "/case-studies/dsc/dsc-owner-console-batch-scheduling-chat.jpg",
       alt: "DSC owner scheduler chat running a batch booking, ten accepted and three conflicts skipped",
       aspect: "native",
       maxWidth: 440,
@@ -254,7 +254,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "hero-brand",
       type: "hero",
-      image: "/case-studies/dsc/dsc-hero-marketing-phone.jpg",
+      image: "/case-studies/dsc/dsc-marketing-site-phone-hero.jpg",
       alt: "The DSC marketing site open on a phone, resting on concrete",
       inline: true,
     },
@@ -317,9 +317,9 @@ export const dscCaseStudy: CaseStudy = {
           sampleText: "MCP SERVER URL",
         },
       ],
-      markImage: "/case-studies/dsc/dsc-brand-recovery.jpg",
+      markImage: "/case-studies/dsc/dsc-marketing-site-recovery-section.jpg",
       markAlt: "DSC marketing site recovery section, Get Back to Sport",
-      markImageRight: "/case-studies/dsc/dsc-brand-facilities.jpg",
+      markImageRight: "/case-studies/dsc/dsc-marketing-site-facilities-equipment.jpg",
       markAltRight: "DSC marketing site facilities and equipment spread",
       markStacked: true,
     },
