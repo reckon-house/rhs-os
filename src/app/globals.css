@@ -35,6 +35,112 @@ body::before {
   to   { opacity: 1; transform: scale(1) rotate(360deg); }
 }
 
+/* ── Custom asterisk cursor ──────────────────────────────────────── */
+/* Hide the native cursor only when the JS-driven custom cursor is live
+   (class added on fine-pointer devices, never on touch). */
+html.cursor-asterisk-on,
+html.cursor-asterisk-on * { cursor: none !important; }
+
+.asterisk-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483647; /* max — ties the nav dock; rendered later in the DOM so it wins the tie and sits above everything */
+  pointer-events: none;
+  mix-blend-mode: difference; /* white mark inverts against any backdrop */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+.asterisk-cursor.is-visible { opacity: 1; }
+/* hover keeps the `difference` blend (set above) so the mark flips to contrast
+   whatever's under it — a link on cream goes dark, a dark thumbnail makes it
+   light. No fixed colour, just a bigger/bolder contrast flip. */
+
+/* centered on the pointer; slow drift rotation (echoes the homepage mark);
+   grows on hover. translate / rotate / scale are individual transform
+   properties, so the hover scale composes with the rotation animation. */
+.asterisk-cursor__spin {
+  position: absolute;
+  width: 22px;
+  height: 24px;
+  translate: -50% -50%;
+  scale: 1;
+  animation: cursor-spin 48s linear infinite;
+  transition: scale 0.28s cubic-bezier(0.34, 1.4, 0.6, 1);
+}
+.asterisk-cursor.is-hover .asterisk-cursor__spin { scale: 1.7; }
+
+/* idle morph group vs. hover mark — they share the box and cross-fade */
+.asterisk-cursor__morph { position: absolute; inset: 0; opacity: 1; transition: opacity 0.18s ease; }
+.asterisk-cursor__hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  background: #fff; /* inverts via the container's difference blend to contrast the backdrop */
+  -webkit-mask: url(/case-studies/hp/asterisk-heavy.svg) center / contain no-repeat;
+  mask: url(/case-studies/hp/asterisk-heavy.svg) center / contain no-repeat;
+}
+.asterisk-cursor.is-hover .asterisk-cursor__morph { opacity: 0; }
+.asterisk-cursor.is-hover .asterisk-cursor__hover { opacity: 1; }
+
+/* three weight layers, each a white fill masked to its asterisk shape */
+.asterisk-cursor__layer {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.asterisk-cursor__layer--thin {
+  -webkit-mask-image: url(/case-studies/hp/asterisk-thin.svg);
+  mask-image: url(/case-studies/hp/asterisk-thin.svg);
+  animation: cur-thin 15s ease-in-out infinite;
+}
+.asterisk-cursor__layer--regular {
+  -webkit-mask-image: url(/case-studies/hp/asterisk-regular.svg);
+  mask-image: url(/case-studies/hp/asterisk-regular.svg);
+  animation: cur-regular 15s ease-in-out infinite;
+}
+.asterisk-cursor__layer--heavy {
+  -webkit-mask-image: url(/case-studies/hp/asterisk-heavy.svg);
+  mask-image: url(/case-studies/hp/asterisk-heavy.svg);
+  animation: cur-heavy 15s ease-in-out infinite;
+}
+
+@keyframes cursor-spin {
+  from { rotate: 0deg; }
+  to   { rotate: 360deg; }
+}
+/* thin → regular → heavy → regular → thin, cross-faded */
+@keyframes cur-thin    { 0%, 100% { opacity: 1; } 25%, 50%, 75% { opacity: 0; } }
+@keyframes cur-regular { 0%, 50%, 100% { opacity: 0; } 25%, 75% { opacity: 1; } }
+@keyframes cur-heavy   { 0%, 25%, 75%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .asterisk-cursor__spin { animation: none; }
+  .asterisk-cursor__layer { animation: none; }
+  .asterisk-cursor__layer--thin,
+  .asterisk-cursor__layer--heavy { opacity: 0; }
+  .asterisk-cursor__layer--regular { opacity: 1; }
+}
+
+/* CareerGalaxy — ambient pulse. A staggered subset of the larger dots
+   breathe in place (scale about their own center) on individual slow
+   timers, so the field feels alive without the whole chart moving. */
+@keyframes galaxy-twinkle {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .galaxy-pulse { animation: none !important; }
+}
+
 @font-face {
   font-family: 'Satoshi';
   src: url('/fonts/Satoshi-Variable.woff2') format('woff2');

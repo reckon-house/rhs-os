@@ -112,6 +112,44 @@ function Headline({ children }: { children: React.ReactNode }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Worked with / spotted by / featured in                            */
+/* ------------------------------------------------------------------ */
+
+const FEATURED_BRANDS = [
+  "Crate & Barrel",
+  "Nordstrom",
+  "Ivy Park by Beyonce",
+  "Rejuvenation",
+  "Lostine Home",
+  "Neiman Marcus",
+  "Visual Comfort",
+  "Floor & Decor",
+  "Kingston Brass",
+  "Vivir Homes",
+  "The Haven List",
+];
+
+function FeaturedBrands() {
+  return (
+    <section className="w-full px-4 md:px-0 py-12 md:py-20">
+      <p className="text-center text-[11px] md:text-[12px] tracking-[0.16em] uppercase text-foreground/45 mb-7 md:mb-9">
+        <ScrambleOnView text={"Worked with, spotted by & featured in"} />
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:gap-x-10 max-w-[1000px] mx-auto">
+        {FEATURED_BRANDS.map((name) => (
+          <span
+            key={name}
+            className="text-[15px] md:text-[20px] font-semibold tracking-[-0.01em] text-[#141414] whitespace-nowrap"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -337,6 +375,9 @@ function HomeContent() {
           <Thumb project={p.variousDesign} />
         </div>
       </div>
+
+      {/* ---- Worked with, spotted by & featured in ---- */}
+      <FeaturedBrands />
 
       {/* ---- Carousel hero — scroll-reactive, full-bleed, lifted out of the chapter card ---- */}
       <HeroCarousel

@@ -64,6 +64,7 @@ export function CareerGalaxy() {
   const { particles, rays } = useMemo(() => {
     const allParticles: {
       x: number; y: number; r: number; color: string; opacity: number; layer: number;
+      pulse: boolean; pdur: number; pdelay: number;
     }[] = [];
     const allRays: {
       x1: number; y1: number; x2: number; y2: number; color: string; opacity: number;
@@ -102,6 +103,11 @@ export function CareerGalaxy() {
         const colorIdx = Math.floor(rng() * project.colors.length);
         const opacity = 0.25 + rng() * 0.55;
         const drift = dotSize > 8 ? rng() * 15 : 0;
+        // Ambient pulse: a staggered subset of the larger dots breathe on
+        // their own slow timers. Selection + timing come from a positional
+        // hash (not the layout rng), so the field stays identical and it's
+        // SSR-stable.
+        const h = (pIdx * 23 + i * 7) % 100;
         allParticles.push({
           x: round4(center + Math.cos(angle) * (radius + drift)),
           y: round4(center + Math.sin(angle) * (radius + drift)),
@@ -109,6 +115,9 @@ export function CareerGalaxy() {
           color: project.colors[colorIdx],
           opacity,
           layer: sizeRoll > 0.85 ? 2 : sizeRoll > 0.5 ? 1 : 0,
+          pulse: dotSize > 4.5 && h < 34,
+          pdur: 5 + (h % 6),
+          pdelay: -(h % 13) * 0.7,
         });
       }
     });
@@ -246,17 +255,23 @@ export function CareerGalaxy() {
 
             {particles.filter(p => p.r > 5).map((p, i) => (
               <circle key={`shadow-${i}`} cx={p.x} cy={p.y} r={p.r * 2.2}
-                fill={p.color} opacity={p.opacity * 0.08} />
+                fill={p.color} opacity={p.opacity * 0.08}
+                className={p.pulse ? "galaxy-pulse" : undefined}
+                style={p.pulse ? { animation: `galaxy-twinkle ${p.pdur}s ease-in-out ${p.pdelay}s infinite`, transformBox: "fill-box", transformOrigin: "center" } : undefined} />
             ))}
 
             {particles.map((p, i) => (
               <circle key={`dot-${i}`} cx={p.x} cy={p.y} r={p.r}
-                fill={p.color} opacity={p.opacity * 0.85} />
+                fill={p.color} opacity={p.opacity * 0.85}
+                className={p.pulse ? "galaxy-pulse" : undefined}
+                style={p.pulse ? { animation: `galaxy-twinkle ${p.pdur}s ease-in-out ${p.pdelay}s infinite`, transformBox: "fill-box", transformOrigin: "center" } : undefined} />
             ))}
 
             {particles.filter(p => p.r > 7).map((p, i) => (
               <circle key={`core-${i}`} cx={p.x} cy={p.y} r={p.r * 0.3}
-                fill="#FFFFFF" opacity={p.opacity * 0.5} />
+                fill="#FFFFFF" opacity={p.opacity * 0.5}
+                className={p.pulse ? "galaxy-pulse" : undefined}
+                style={p.pulse ? { animation: `galaxy-twinkle ${p.pdur}s ease-in-out ${p.pdelay}s infinite`, transformBox: "fill-box", transformOrigin: "center" } : undefined} />
             ))}
 
             {labels.map((l, i) => (

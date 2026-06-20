@@ -7,6 +7,7 @@ import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
 import { SpringSolve } from "@/components/fx/SpringSolve";
 import { VisibilityPause } from "@/components/fx/VisibilityPause";
+import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default function RootLayout({
         <SpringSolve />
         <VisibilityPause />
         <HeroPreloader />
+        <CustomCursor />
         <Analytics />
       </body>
     </html>
