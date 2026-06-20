@@ -141,6 +141,24 @@ html.cursor-asterisk-on * { cursor: none !important; }
   .galaxy-pulse { animation: none !important; }
 }
 
+/* Featured-brands ticker — a slow seamless marquee so the mismatched logo
+   styles read as one quiet flow instead of a busy grid. The track holds the
+   brands twice and scrolls to -50% for a seamless loop; edges fade via mask.
+   It runs continuously and never pauses. */
+.brand-ticker {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.brand-ticker__track {
+  animation: brand-marquee 55s linear infinite;
+}
+@keyframes brand-marquee {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-ticker__track { animation: none; }
+}
+
 @font-face {
   font-family: 'Satoshi';
   src: url('/fonts/Satoshi-Variable.woff2') format('woff2');

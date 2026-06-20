@@ -115,37 +115,83 @@ function Headline({ children }: { children: React.ReactNode }) {
 /*  Worked with / spotted by / featured in                            */
 /* ------------------------------------------------------------------ */
 
-const FEATURED_BRANDS = [
-  "Crate & Barrel",
-  "Nordstrom",
-  "Ivy Park by Beyonce",
-  "Rejuvenation",
-  "Lostine Home",
-  "Neiman Marcus",
-  "Visual Comfort",
-  "Floor & Decor",
-  "Kingston Brass",
-  "Vivir Homes",
-  "The Haven List",
+// Brands carry an optional monochrome logo, forced to a single ink so the wall
+// stays consistent; otherwise the cell falls back to the name. Logos are capped
+// by height, which makes very wide wordmarks read as oversized — `scale` trims
+// those back so every logo carries similar optical weight (default 1). Drop new
+// logos in /public/brands/, transparent only (a baked-in white background can't
+// be cleaned up in CSS once it's behind the ticker's edge-fade mask). The lone
+// exception is `asIs`: a logo that lives on its own dark fill (e.g. DWR's boxed
+// mark) renders in native colors as a small chip, skipping the ink treatment.
+// A `tracked` brand has no logo file — it renders its name as an all-caps,
+// letter-spaced wordmark (e.g. HAVEN, whose mark is just type).
+const FEATURED_BRANDS: { name: string; logo?: string; scale?: number; asIs?: boolean; tracked?: boolean }[] = [
+  { name: "Crate & Barrel", logo: "/brands/crate-barrel.svg" },
+  { name: "Nordstrom", logo: "/brands/nordstrom.svg", scale: 0.7 },
+  { name: "Ivy Park by Beyonce", logo: "/brands/ivy-park.svg" },
+  { name: "Rejuvenation", logo: "/brands/rejuvenation.png", scale: 0.75 },
+  { name: "Lostine Home", logo: "/brands/lostine.avif" },
+  { name: "Neiman Marcus", logo: "/brands/neiman-marcus.svg" },
+  { name: "Visual Comfort", logo: "/brands/visual-comfort.webp", scale: 0.64 },
+  { name: "Floor & Decor", logo: "/brands/floor-decor.svg", scale: 0.85 },
+  { name: "Kingston Brass", logo: "/brands/kingston-brass.webp", scale: 0.9 },
+  { name: "Design Within Reach", logo: "/brands/dwr.jpg", asIs: true, scale: 1.05 },
+  { name: "Vivir Homes", logo: "/brands/vivir-homes.webp" },
+  { name: "HAVEN", tracked: true },
 ];
 
 function FeaturedBrands() {
+  // Doubled so the marquee loops seamlessly (the track scrolls to translateX(-50%)).
+  const row = [...FEATURED_BRANDS, ...FEATURED_BRANDS];
   return (
-    <section className="w-full px-4 md:px-0 py-12 md:py-20">
-      <p className="text-center text-[11px] md:text-[12px] tracking-[0.16em] uppercase text-foreground/45 mb-7 md:mb-9">
+    // Lives inside the career "Practice" card, below the CareerGalaxy chart.
+    // A slow ticker instead of a grid: showing a few logos at a time, in motion,
+    // lets their mismatched styles read as one quiet flow rather than a busy wall.
+    <div className="mt-14 border-t border-[#141414]/10 pt-12 md:mt-20 md:pt-16">
+      <p className="text-[11px] md:text-[12px] tracking-[0.16em] uppercase text-foreground/45 mb-7 md:mb-9">
         <ScrambleOnView text={"Worked with, spotted by & featured in"} />
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:gap-x-10 max-w-[1000px] mx-auto">
-        {FEATURED_BRANDS.map((name) => (
-          <span
-            key={name}
-            className="text-[15px] md:text-[20px] font-semibold tracking-[-0.01em] text-[#141414] whitespace-nowrap"
-          >
-            {name}
-          </span>
-        ))}
+      <div className="brand-ticker overflow-hidden">
+        <div className="brand-ticker__track flex w-max items-center [--lh:26px] md:[--lh:30px]">
+          {row.map((brand, i) => (
+            <div
+              key={i}
+              aria-hidden={i >= FEATURED_BRANDS.length}
+              className="mr-20 flex h-[40px] shrink-0 items-center justify-center md:mr-28"
+            >
+              {brand.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="w-auto"
+                  // One ink for the whole wall. maxHeight = the base row height
+                  // (--lh) times the per-brand optical scale, so wide wordmarks can
+                  // be trimmed down without shrinking the already-balanced ones.
+                  // `asIs` chips keep their native colors; the rest flatten to ink.
+                  style={{
+                    maxHeight: `calc(var(--lh) * ${brand.scale ?? 1})`,
+                    ...(brand.asIs ? { opacity: 0.9 } : { filter: "brightness(0)", opacity: 0.82 }),
+                  }}
+                />
+              ) : (
+                <span
+                  className={
+                    brand.tracked
+                      ? // all-caps, letter-spaced wordmark; pl balances the trailing
+                        // letter-spacing so it sits optically centered in the cell
+                        "whitespace-nowrap pl-[0.42em] text-[15px] font-semibold uppercase tracking-[0.42em] text-[#141414]/85 md:text-[16px]"
+                      : "whitespace-nowrap text-[16px] font-medium tracking-[-0.01em] text-[#141414]/85 md:text-[18px]"
+                  }
+                >
+                  {brand.name}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -376,9 +422,6 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* ---- Worked with, spotted by & featured in ---- */}
-      <FeaturedBrands />
-
       {/* ---- Carousel hero — scroll-reactive, full-bleed, lifted out of the chapter card ---- */}
       <HeroCarousel
         slides={CASE_STUDY_HEROES}
@@ -397,9 +440,10 @@ function HomeContent() {
             borderRadius: "clamp(30px, 5vw, 75px)",
           }}
         >
-          {/* Inner padded content — chart only */}
+          {/* Inner padded content — career chart + the brands band it earns */}
           <div style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px)" }}>
             <CareerGalaxy />
+            <FeaturedBrands />
           </div>
         </div>
       </div>
