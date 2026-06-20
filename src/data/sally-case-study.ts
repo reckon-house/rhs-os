@@ -59,6 +59,12 @@ export const sallyCaseStudy: CaseStudy = {
         "Engineering",
         "AI Strategy",
       ],
+      summary: [
+        { label: "Built", value: "Five connected platforms. Trends feed, Brand Brain, Asset Hub, ten-tool marketplace." },
+        { label: "Scope", value: "Designed, engineered, and deployed all five. AI-assisted throughout." },
+        { label: "Stack", value: "Next.js, Supabase, Vercel, Python, Streamlit. Claude, Gemini, Perplexity routed by task." },
+        { label: "Angle", value: "One loop, signal to shelf and back. The person building the tools is the person who runs the workflows, so no spec drift." },
+      ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
         "Five connected platforms that turn competitive intelligence into store-level execution.",

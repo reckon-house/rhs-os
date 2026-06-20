@@ -38,6 +38,12 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       published: "2015",
       status: "Live",
       classification: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
+      summary: [
+        { label: "Built", value: "First digital flagship for the NYC retailer. Brand system, site architecture, content engine, from zero" },
+        { label: "Scope", value: "Digital strategy, brand system, ecommerce design, UX architecture" },
+        { label: "Stack", value: "Photoshop, Illustrator, Sketch, InVision" },
+        { label: "Angle", value: "A flagship, not a storefront. The publishing system shipped before the product templates." },
+      ],
       abstract:
         "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nI started with the buying team - learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy I pitched and won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there - modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Handled the integration work alongside external partners while keeping ownership of the experience, with every interaction from wireframe to checkout prototyped to feel intentional.",
     },

@@ -51,6 +51,12 @@ export const arcCaseStudy: CaseStudy = {
         "Full-Stack Engineering",
         "Go-to-Market",
       ],
+      summary: [
+        { label: "Built", value: "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis." },
+        { label: "Scope", value: "Solo, end to end. Concept, code, brand, go-to-market." },
+        { label: "Stack", value: "Python, Streamlit, OpenAI Vision, Perceptron Mk1, Supabase, Vercel, Claude Code." },
+        { label: "Angle", value: "Nobody skips home inventory because they don't care. They skip it because the work is miserable. Remove the input problem and the rest is straightforward." },
+      ],
       title: "A.R.C.\nArchive. Ready. Cloud.",
       subtitle:
         "An app that looks at what you own and tells you whether your insurance actually covers it.",

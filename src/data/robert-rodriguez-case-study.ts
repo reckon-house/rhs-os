@@ -36,6 +36,12 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       published: "2024",
       status: "Complete",
       classification: ["Art Direction", "Photo Compositing", "Typography Design", "Campaign"],
+      summary: [
+        { label: "Built", value: "Spring campaign across social, email, retail, editorial" },
+        { label: "Scope", value: "Art direction, photo compositing, typography" },
+        { label: "Tools", value: "Photoshop, Illustrator, Capture One. Double-exposure layers, mesh color fields" },
+        { label: "Angle", value: "The mall portrait studio taken seriously, not ironically. Four studio frames recombined into a whole campaign." },
+      ],
       abstract: "The reference was the mall portrait studio - soft-focus close-ups, oversaturated color, a little too much hairspray. Kept the energy and replaced everything else.\n\nFour studio shots, one model, custom compositing. Double-exposure layers stretched the shoot into a full campaign system, with mesh color fields giving the backgrounds pop-art softness without the dated airbrush look. Typography was built for this project - playful enough to match the concept, refined enough for the brand.",
     },
 

@@ -38,6 +38,12 @@ export const cosmoProfCaseStudy: CaseStudy = {
       published: "2021",
       status: "Live",
       classification: ["Creative Direction", "Digital Design", "Photography Direction"],
+      summary: [
+        { label: "Built", value: "Digital experience for a B2B salon retailer. Homepage, shoppable video, tabbed recommendations, unified templates" },
+        { label: "Scope", value: "Creative direction, digital design, photography direction" },
+        { label: "Tools", value: "Figma, Sketch, Photoshop" },
+        { label: "Angle", value: "Photography led the refresh. Imagery built for the people who use the tools, not photographed for inventory." },
+      ],
       abstract:
         "Cosmo Prof needed a digital refresh that matched the professionals using it. The existing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery without slowing down commerce.\n\nStarted with photography - high-contrast lighting, defined shadows, cleaner compositions, product imagery that looks intentional rather than photographed for inventory. Typography shifted to Jost, and the palette paired soft neutrals with sharp black to ground the tone.\n\nThe redesigned homepage introduced tabbed recommendations personalized per stylist, shoppable video that let users explore looks and purchase during playback, and a stripped-back global header that gave screen space to content. Templates unified product photography, type, and layout across the site so promotions, brand campaigns, and education modules could all sit on the same chassis.",
     },

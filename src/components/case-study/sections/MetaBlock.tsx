@@ -9,6 +9,7 @@ export function MetaBlock({
   title,
   subtitle,
   abstract,
+  summary,
 }: MetaSection) {
   const lines = title.split("\n");
   const firstLine = lines[0] || "";
@@ -30,37 +31,51 @@ export function MetaBlock({
         </p>
       )}
 
-      {/* Meta fields — left-aligned, constrained width */}
-      <div className="text-spec text-foreground/90">
-        <p>
-          <span className="font-bold">Field </span>
-          {field}
-        </p>
-        <p>
-          <span className="font-bold">Author </span>
-          {author}
-          {"  Published: "}
-          {published}
-          {"  Status: "}
-          {status}
-        </p>
-        <p>
-          <span className="font-bold">Classification </span>
-          {classification.join(" ")}
-        </p>
-      </div>
-
-      {/* Abstract — right column, sits below meta fields */}
-      {abstractParagraphs.length > 0 && (
-        <div className="mt-6 md:mt-4 md:ml-[48%] text-body text-foreground/80 px-0">
-          <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
-          {abstractParagraphs.map((p, i) => (
-            <p key={i} className={i === 0 ? "indent-[4em]" : `mt-4`}>
-              {p}
+      {/* Two columns on desktop: spec fields + TL;DR hold the left, abstract
+          rises up beside them on the right. Stacks on mobile. */}
+      <div className="md:flex md:justify-between">
+        {/* Left column — spec fields + TL;DR */}
+        <div className="text-spec text-foreground/90 md:w-[35%]">
+          <p>
+            <span className="font-bold">Field </span>
+            {field}
+          </p>
+          <p>
+            <span className="font-bold">Author </span>
+            {author}
+            {"  Published: "}
+            {published}
+            {"  Status: "}
+            {status}
+          </p>
+          <p>
+            <span className="font-bold">Classification </span>
+            {classification.join(" ")}
+          </p>
+          {summary && summary.length > 0 && (
+            <p className="mt-3">
+              <span className="font-bold">TL;DR </span>
+              {summary.map((row, i) => (
+                <span key={i} className="mr-[1.3em]">
+                  <span className="font-semibold">{row.label}</span>→ {row.value}
+                </span>
+              ))}
             </p>
-          ))}
+          )}
         </div>
-      )}
+
+        {/* Right column — abstract */}
+        {abstractParagraphs.length > 0 && (
+          <div className="mt-8 md:mt-0 md:w-[52%] text-body text-foreground/80">
+            <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
+            {abstractParagraphs.map((p, i) => (
+              <p key={i} className={i === 0 ? "indent-[4em]" : `mt-4`}>
+                {p}
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

@@ -54,6 +54,12 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         "Material Specification",
         "Custom Millwork",
       ],
+      summary: [
+        { label: "Built", value: "Ground-up Hill Country kitchen. Cabinetry, island, dining zone, full material spec." },
+        { label: "Scope", value: "Interior design, space planning, fixture selection, construction documentation." },
+        { label: "Materials", value: "Sage green, raw white oak, Calacatta marble, unlacquered brass. Four finishes, every surface." },
+        { label: "Angle", value: "Designed the way a product gets designed. Lock the palette to four, let the constraint become the aesthetic." },
+      ],
       abstract:
         "A kitchen designed the way a product gets designed. The material palette is the design system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint. Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room.\n\nThe style mixing is deliberate. Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs. None of these elements belong to the same era - they belong to the same room because the material palette holds them together.\n\nThe space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal measure. The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full length. Every decision was made for how a family actually uses a kitchen, not how one photographs.",
     },

@@ -38,6 +38,12 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       published: "2018",
       status: "Live",
       classification: ["Brand Identity", "Logo System", "Apparel Graphics", "Photography"],
+      summary: [
+        { label: "Built", value: "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign" },
+        { label: "Scope", value: "Brand identity, logo system, apparel graphics, photography" },
+        { label: "Tools", value: "Illustrator, Photoshop, InDesign, camera. Northwest and Oldman type pairing" },
+        { label: "Angle", value: "Marks built to survive the material. Stamp, stitch, emboss, and still read at every scale." },
+      ],
       abstract:
         "Capitan needed an identity that could work as hard as the product. Boots get scuffed, stamps blur, embossing flattens - the marks had to survive all of that and still read at every scale.\n\nBuilt the system as interlocking elements - primary logo, secondary badges, typographic lockups, illustrative assets. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props, no stand-ins, no styling beyond what the place already had. The photography had to come from inside the landscape the boots are made for, not from a moodboard built around it.",
     },

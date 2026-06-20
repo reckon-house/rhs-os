@@ -54,6 +54,12 @@ export const jChristiansonCaseStudy: CaseStudy = {
         "Logo Design",
         "Graphic Design",
       ],
+      summary: [
+        { label: "Built", value: "Name, four-circle mark, color system, tree graphic, product applications" },
+        { label: "Scope", value: "Brand development, naming, logo and graphic design" },
+        { label: "Tools", value: "Adobe Illustrator, Adobe Photoshop" },
+        { label: "Angle", value: "One mark shifts its palette by context without losing recognition. One tree drawing, four colorways, doing the work of a full product line." },
+      ],
       abstract:
         "Ground-up brand development for a fashion and home goods label. Started with the name, then built the mark, color system, typography, and product graphics from there.\n\nThe logo is four circles in a tight grid - same form, different color combinations depending on where it lives. Brown circles with accent colors for one context, olive circles with the same accents for another. Flexibility was built into the identity from the first sketch, so one mark could shift its palette without losing recognition.\n\nA tree silhouette did the rest of the heavy lifting, rendered in four seasonal colorways and layered over a striped color field pulled from the brand palette. The graphic showed up on apparel, candles, hangtags, and print materials - one drawing doing the work of a full product line.",
     },

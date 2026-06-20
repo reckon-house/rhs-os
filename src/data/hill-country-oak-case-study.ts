@@ -38,6 +38,12 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       published: "2019",
       status: "Live",
       classification: ["Art Direction", "Campaign Design"],
+      summary: [
+        { label: "Built", value: "Brand campaign for a Texas barrel maker. One graphic idea sized billboard to phone screen." },
+        { label: "Scope", value: "Art direction and campaign design." },
+        { label: "Tools", value: "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal. Heavy geometric sans, vintage display face." },
+        { label: "Angle", value: "Heritage without the cosplay. Mid-century poster language carrying Texas without the Western cliché." },
+      ],
       abstract:
         "Texas oak, whiskey barrels, and the landscape that grows both. The brand needed a visual language that could carry from billboard to phone screen without losing the heritage feeling.\n\nThe system pulls from mid-century poster design - warm color blocking, silhouetted trees, geometric shapes that echo the barrel geometry. Typography stays utilitarian, and a distressed texture gives the whole thing weight without feeling forced.\n\nBuilt to scale across billboard, print, and digital out of a single graphic idea.",
     },

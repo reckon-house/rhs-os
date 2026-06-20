@@ -53,6 +53,12 @@ export const ivyParkCaseStudy: CaseStudy = {
         "Experience Design",
         "Copywriting",
       ],
+      summary: [
+        { label: "Built", value: "Scrolling brand experience, launch emails, social, in-store signage" },
+        { label: "Scope", value: "Creative direction, experience design, copywriting" },
+        { label: "Stack", value: "Nordstrom CMS, custom components, HTML/CSS/JS" },
+        { label: "Angle", value: "Nordstrom held the only US partnership, so the website was the entire launch. One polygon held the page, six weeks NDA to live." },
+      ],
       abstract:
         "Beyoncé's first activewear line, with Nordstrom holding the exclusive US retail partnership. That meant the digital experience had to carry the full weight of the launch - no other retailer had product, no other site told the story, and the website became the storefront, lookbook, and campaign rolled into one URL.\n\nFour weeks to moodboards, wireframes, and a concept pitch, then two weeks to build and ship. The brief arrived under NDA before the team had cleared their schedules. Daily calls with Ivy Park while direction locked. Photography supplied: black-and-white athlete portraits and color product against blue and gray backgrounds, with everything else - typography, layout, copy, animation, interaction - left open. That kind of latitude on a project this visible doesn't happen often.\n\nThe polygon emerged during concepting as a way to break the rectangular grid the photography sat in. Angled, rotated, animated on scroll, it carried from hero banner through product carousels into email headers. Custom CMS components built for the project entered Nordstrom's shared library and powered other launches for two years. 95% of products sold out within days.",
     },

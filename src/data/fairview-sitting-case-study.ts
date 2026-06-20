@@ -38,6 +38,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       published: "2023",
       status: "Built",
       classification: ["Interior Design", "Furniture Curation", "Finish Selection"],
+      summary: [
+        { label: "Built", value: "Sitting room built around a floor-to-ceiling stacked stone fireplace" },
+        { label: "Scope", value: "Interior design, furniture curation, finish selection" },
+        { label: "Materials", value: "Stacked stone, charcoal velvet, antiqued brass, warm oak" },
+        { label: "Angle", value: "The fire gets the seat the TV would normally take. A formal room that doesn't feel formal." },
+      ],
       abstract:
         "Texture runs the room. A ledgestone fireplace wall climbs floor to ceiling, charcoal velvet swivel chairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine. Black box beams overhead pull the contrast together.\n\nThe palette stays tight - stone, velvet, brass, warm oak, no competing colors. The materials do the talking.\n\nFurniture arranges for conversation rather than a television. Four swivels face the fire, close enough for quiet voices, with a round bar cabinet in the corner stocking what the moment calls for. Calm and slightly glam, formal without being stiff.",
     },

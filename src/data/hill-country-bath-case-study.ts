@@ -53,6 +53,12 @@ export const hillCountryBathCaseStudy: CaseStudy = {
         "Fixture Sourcing",
         "Art Selection",
       ],
+      summary: [
+        { label: "Built", value: "400 sq ft primary bath. Two vanities, freestanding tub, marble shower under a wood plank ceiling." },
+        { label: "Scope", value: "Interior design, fixture sourcing, art selection, furniture curation." },
+        { label: "Materials", value: "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling." },
+        { label: "Angle", value: "Designed to feel found, not fitted. A room that looks lived in on day one." },
+      ],
       abstract:
         "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register. Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back. Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one.\n\nCountertops in a warm-veined Calacatta, shower walls in a cooler gray-dominant slab with vertical stacking, floor in hex marble mosaic. The stones were selected as a group rather than matched, and the variation keeps 400 square feet of hard surface from reading as a showroom.\n\nWood plank ceiling overhead, globe sconces at both vanities, wall-mounted cross-handle faucets, a freestanding tub positioned under natural light with views to the property. Dried florals, an olive tree, layered vintage rugs - every object placed to feel personal rather than styled.",
     },

@@ -52,6 +52,12 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "Art Direction",
         "Print",
       ],
+      summary: [
+        { label: "Built", value: "Three lithographs, a twelve-tile pattern library" },
+        { label: "Scope", value: "Typography, pattern design, art direction" },
+        { label: "Tools", value: "Black ink and white paper. Adobe Illustrator, Photoshop" },
+        { label: "Angle", value: "Six elements simple enough for a child to draw. Without color, density does the tonal work and composition is the only variable." },
+      ],
       abstract:
         "Personal work built on a single question: how much visual range can a handful of patterns produce? Strip everything back - no color, no photography, no gradients. Just black ink, white paper, and six repeating elements simple enough for a child to draw.\n\nDots, lines, stripes, diamonds. Arranged in grids, varied in scale, alternated between positive and negative. The patterns fill letterforms, break outside them, stack into backgrounds, build rhythm across compositions. Three lithographs, each pulling from the identical library but arriving somewhere different.\n\nWithout color, density does the tonal work. A tight dot grid reads dark. A sparse one reads light. Scale determines what the eye processes first. Spacing sets the mood. Every decision in the composition carries more weight because there are fewer decisions to make.",
     },

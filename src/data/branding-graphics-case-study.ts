@@ -56,6 +56,12 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "Logo Design",
         "Photo Compositing",
       ],
+      summary: [
+        { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
+        { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
+        { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
+        { label: "Angle", value: "No single client, no single style. Each mark sounds like the client, not the designer. The point is fluency." },
+      ],
       abstract:
         "Every project here started the same way. Match the energy of something that doesn't exist yet.\n\nFour album covers, four completely different visual languages. Woodgrain collage and halftone geometry for a folk record. Grunge compositing with hand-rendered type for a pop artist. Linework landscapes stacked into depth for an ambient release. A portrait where saturated color carries the entire identity. Each one had to read at vinyl scale and survive as a thumbnail. No shared visual logic between them. That was the requirement.\n\nThe poster work follows the same approach. Atmospheric photography against dot-matrix grids. Radial color studies built from pattern. Double-exposure landscapes where texture replaces detail. These aren't decorative pieces. They're compositional puzzles solved on a deadline.\n\nLogos ranged from ornamental to blunt. Flowing botanical illustration for a fashion collective. Halftone dots and geometric sans for a DJ. A bird on a monogram for a lifestyle brand. The only consistency is that each mark sounds like the client, not the designer.\n\nThis is where the eye gets trained. Everything that came later started here.",
     },

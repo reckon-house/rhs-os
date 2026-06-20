@@ -38,6 +38,12 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       published: "2016",
       status: "Complete",
       classification: ["Content Strategy", "Brand Design", "Naming", "Design Systems"],
+      summary: [
+        { label: "Built", value: "Content taxonomy from scratch. Four named buckets, each with its own typographic mark and icon." },
+        { label: "Scope", value: "Content strategy, brand design, naming, design systems." },
+        { label: "Tools", value: "Custom-sourced typefaces, icon set, naming language. No two lockups share a face." },
+        { label: "Angle", value: "Magazine language, not menu language. The framework organized the teams before it ever reached a customer." },
+      ],
       abstract:
         "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals. All hitting email and site simultaneously with no organizing logic. Customers saw volume, not clarity.\n\nConcepted a content framework that sorted everything into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. Custom icons, dedicated typographic marks sourced specifically for the system. Magazine language, not menu language.\n\nPitched it across merchandising, marketing, and editorial. The framework became an internal organizing tool before it ever reached customers. Once it shipped, it powered homepage modules, email sections, and dedicated landing pages. Engagement lifted 22%. The vocabulary held for years.",
     },

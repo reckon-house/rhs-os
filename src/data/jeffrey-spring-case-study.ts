@@ -38,6 +38,12 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       published: "2017",
       status: "Live",
       classification: ["Art Direction", "Campaign Design", "Email & Web Templates"],
+      summary: [
+        { label: "Built", value: "Spring campaign across email, homepage, social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
+        { label: "Scope", value: "Art direction, campaign design, email and web templates" },
+        { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
+        { label: "Angle", value: "High fashion on a studio budget. Foliage as architecture, not decoration. Scale without a plane ticket." },
+      ],
       abstract:
         "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic - condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. I built it as a single system that moved cleanly across email, homepage, and social without redesign, so the same visual language could carry every format.",
     },

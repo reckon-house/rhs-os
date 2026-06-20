@@ -50,6 +50,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         "Campaign Design",
         "Design Systems",
       ],
+      summary: [
+        { label: "Built", value: "Year-long brand campaign. One tile system across social, email, in-store signage, web" },
+        { label: "Scope", value: "Creative direction, campaign design, design systems" },
+        { label: "Tools", value: "Art direction, photography licensing, editorial systems" },
+        { label: "Angle", value: "A heart does what a logo cannot. One borrowed icon, two tiers, any licensed asset." },
+      ],
       abstract:
         "The brief was emerging brand awareness - a Nordstrom mandate to lift smaller designer labels across the department store floor and the digital storefront at the same time. The solve was simpler than it sounds: borrow the heart icon from Instagram and let it carry the campaign signature.\n\nOne mark, two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising, and \"Loved by Nordstrom\" carried the hero slots that earned the extra real estate. Same icon, same typography, different emotional weight - merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template absorbed whatever the brand had already licensed - Helmut Lang shot minimal and cold, The Great shot warm and narrative, See by Chloé led with product. The frame held all of them without flattening any of them, and the campaign ran long because there was nothing to get tired of.",
     },

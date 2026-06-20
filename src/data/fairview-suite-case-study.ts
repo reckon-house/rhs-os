@@ -53,6 +53,12 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         "Fixture Sourcing",
         "Furniture Curation",
       ],
+      summary: [
+        { label: "Built", value: "600 sq ft primary suite and ensuite, vaulted to fourteen feet" },
+        { label: "Scope", value: "Interior design, finish selection, fixture sourcing, furniture curation" },
+        { label: "Materials", value: "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile" },
+        { label: "Angle", value: "Commits to one mood and follows it through every surface. Glam that earns the square footage." },
+      ],
       abstract:
         "The suite commits to a single mood and follows it through every surface - charcoal violet on every wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the property's tree canopy.\n\nThe material palette skews dark and warm. A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow - blues, grays, warm metallics.\n\nThe ensuite continues through double doors with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub beneath a crystal chandelier, and brass fixtures throughout. The bath holds the same temperature the bedroom set.",
     },

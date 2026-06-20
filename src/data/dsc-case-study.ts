@@ -51,6 +51,12 @@ export const dscCaseStudy: CaseStudy = {
         "AI Integration",
         "Full-Stack Engineering",
       ],
+      summary: [
+        { label: "Built", value: "Marketing site, scheduling platform, MCP server (11 tools)" },
+        { label: "Scope", value: "Design and full-stack, brand to backend" },
+        { label: "Stack", value: "Next.js on Vercel, MCP, OAuth 2.0" },
+        { label: "Angle", value: "Enterprise plumbing at gym scale. The AI only ever asks; one deterministic engine makes every booking." },
+      ],
       title: "Dallas Sport\nCollective",
       subtitle:
         "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",

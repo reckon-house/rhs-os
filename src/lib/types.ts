@@ -133,6 +133,9 @@ export interface MetaSection extends BaseSection {
   title: string;
   subtitle: string;
   abstract?: string;
+  // Optional scannable "at a glance" rows rendered as extra spec lines below
+  // Classification — Role / Built / Stack / Materials etc. One per study.
+  summary?: { label: string; value: string }[];
 }
 
 export interface SectionHeaderSection extends BaseSection {

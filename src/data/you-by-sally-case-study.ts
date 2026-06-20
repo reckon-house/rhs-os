@@ -38,6 +38,12 @@ export const youBySallyCaseStudy: CaseStudy = {
       published: "2021",
       status: "Live",
       classification: ["Campaign Direction", "Brand System", "Digital Design", "Retail Signage"],
+      summary: [
+        { label: "Built", value: "Hair color brand campaign. Cast portraits, oversized swatch system, brand kit across every surface." },
+        { label: "Scope", value: "Campaign direction, brand system, digital design, retail signage." },
+        { label: "Tools", value: "Photoshop, Illustrator, InDesign, studio photography. Avenir Next, pink and cyan." },
+        { label: "Angle", value: "Hair color usually sits under fluorescent lights next to the toothpaste. Treat it like a creative decision, not something you grab." },
+      ],
       abstract:
         "Hair color usually lives under fluorescent lights next to the toothpaste. The brief was to make it feel like something you choose, not something you grab.\n\nStarted with casting - real people across age, gender, and style, each paired with a signature shade. The portraits drove the campaign - saturated backgrounds, confident styling, personality leading and product following.\n\nThe swatch system turned shade exploration into a visual decision rather than a technical one. Oversized color blocks replaced tiny chips, and clean grids made browsing intuitive across mobile, desktop, and in-store signage. Avenir Next across weights anchored the type, pink and cyan held the primary chromatic register, and the system scaled from influencer bio pages to email to retail without losing recognition.",
     },

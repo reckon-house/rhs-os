@@ -53,6 +53,12 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       published: "2017",
       status: "Live",
       classification: ["Pattern Design", "Product Design", "Colorway Development"],
+      summary: [
+        { label: "Built", value: "Three tableware collections: blue florals, black linework, red dragons. Hero, secondary, accent per set" },
+        { label: "Scope", value: "Pattern design, product design, colorway development" },
+        { label: "Tools", value: "Illustrator, Photoshop, InDesign. Multiple colorways per collection" },
+        { label: "Angle", value: "Patterns built as a system, not a single print. Cream as shared ground, so a pattern only works if the next one fits." },
+      ],
       abstract:
         "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each carries multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
     },

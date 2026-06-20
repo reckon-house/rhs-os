@@ -41,6 +41,12 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       published: "2023",
       status: "Featured",
       classification: ["Interior Design", "Material Selection", "Finish Coordination"],
+      summary: [
+        { label: "Built", value: "Designer of the Quarter, Summer 2023. Hard surface selections across three residential bathrooms. Catalog, website, video interview" },
+        { label: "Scope", value: "Interior design, material selection, finish coordination" },
+        { label: "Materials", value: "Marble, dolomite, white oak, classic tile" },
+        { label: "Angle", value: "Material confidence, not material matching. One kit, three rooms that read completely different." },
+      ],
       abstract:
         "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residential bathrooms. Marble, dolomite, white oak, classic tile - the kit each project pulled from, applied three different ways. The feature ran in the summer catalog, on the Floor & Decor website, and inside a full video interview.\n\nThree projects, three directions. Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling. Each room reads as its own thing, but the underlying material logic is the same.\n\nThe focus was hard surfaces, and the projects show how tile and stone anchor everything else. Get the floors and walls right, the rest follows.",
     },

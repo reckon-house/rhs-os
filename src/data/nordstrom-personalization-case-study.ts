@@ -50,6 +50,12 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         "Art Direction",
         "Product Photography Direction",
       ],
+      summary: [
+        { label: "Built", value: "Content engine on three tile shapes. Square, hero, vertical, resizing across every breakpoint." },
+        { label: "Scope", value: "Design systems, art direction, product photography direction." },
+        { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One asset, multiple applications." },
+        { label: "Angle", value: "Personalization that stayed quiet underneath. The constraints created the freedom, so mass scale still looked hand-built." },
+      ],
       abstract:
         "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. The constraints created the freedom.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One asset, multiple applications.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
     },
