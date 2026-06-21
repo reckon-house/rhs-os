@@ -196,6 +196,15 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
           >
             IG @reckonhousestaples
           </a>
+          {"  "}
+          <a
+            href="https://www.linkedin.com/in/jeremy-prasatik-53a3962/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-[#F0EAE4] transition-colors"
+          >
+            LinkedIn /jeremy-prasatik
+          </a>
         </p>
       </div>
 
