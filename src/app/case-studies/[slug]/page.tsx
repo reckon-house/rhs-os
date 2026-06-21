@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/case-study/CaseStudyLayout";
 import { projects } from "@/data/projects";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { caseStudyJsonLd } from "@/lib/structured-data";
 import { arcCaseStudy } from "@/data/arc-case-study";
 import { sallyCaseStudy } from "@/data/sally-case-study";
 import { robertRodriguezCaseStudy } from "@/data/robert-rodriguez-case-study";
@@ -101,5 +103,13 @@ export default async function CaseStudyPage({
     notFound();
   }
 
-  return <CaseStudyLayout study={study} />;
+  const ogImage = ogImageFor(study.slug);
+  const imageAbs = ogImage ? `${SITE_URL}${ogImage}` : undefined;
+
+  return (
+    <>
+      <JsonLd data={caseStudyJsonLd(study, imageAbs)} />
+      <CaseStudyLayout study={study} />
+    </>
+  );
 }

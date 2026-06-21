@@ -10,6 +10,8 @@ import { VisibilityPause } from "@/components/fx/VisibilityPause";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { siteGraph } from "@/lib/structured-data";
 
 const SITE_DESCRIPTION =
   "Design and engineering across brand, product, and place. Apps, campaigns, brand systems, custom interiors, and AI tools by Jeremy Prasatik.";
@@ -58,6 +60,8 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Person + WebSite structured data — sitewide author entity. */}
+        <JsonLd data={siteGraph()} />
       </head>
       <body className="font-sans antialiased">
         <div className="flex h-dvh w-screen overflow-hidden">
