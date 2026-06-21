@@ -1,0 +1,56 @@
+# Reckon House — Jeremy Prasatik
+
+> Portfolio of Jeremy Prasatik. Design and engineering across brand, product, and place: apps and software, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and content infrastructure.
+
+The work spans three areas: digital products, creative direction, and interior design. Most projects are designed and built by the same person, so the design decisions and the engineering decisions stay close.
+
+This file lists the portfolio's case studies so agents and crawlers can find the full body of work. Each link is a self-contained case study with images, copy, and project detail.
+
+## Digital — apps, ecommerce, AI tools
+
+- [Sally Marketing OS](https://reckon.house/case-studies/sally): Product design and engineering. Five connected platforms in daily production use inside a Fortune 500 marketing team.
+- [A.R.C. — AI Home Inventory](https://reckon.house/case-studies/arc): App and brand development. Computer-vision home inventory, concept to live product in ten weeks.
+- [Ivy Park by Beyonce](https://reckon.house/case-studies/ivy-park): Digital design, brand launch.
+- [Nordstrom Personalization System](https://reckon.house/case-studies/nordstrom-personalization): Design system, art direction.
+- [Jeffrey NYC](https://reckon.house/case-studies/jeffrey-ecommerce): Ecommerce, web design.
+- [Nordstrom Beauty](https://reckon.house/case-studies/nordstrom-beauty): Digital design, personalization.
+- [Cosmo Prof](https://reckon.house/case-studies/cosmo-prof): Digital design, creative direction.
+- [Dallas Sport Collective](https://reckon.house/case-studies/dsc): Website and custom app.
+- [Nordstrom Framework](https://reckon.house/case-studies/nordstrom-framework): Content direction, design.
+
+## Creative — campaigns, brand identity, art direction
+
+- [Robert Rodriguez x Neiman Marcus](https://reckon.house/case-studies/robert-rodriguez): Creative direction, design.
+- [Capitan Boot Co.](https://reckon.house/case-studies/capitan-boot-co): Branding, design.
+- [Jeffrey Spring Campaign](https://reckon.house/case-studies/jeffrey-spring): Creative direction, design.
+- [Hill County Oakworks](https://reckon.house/case-studies/hill-country-oak): Campaign direction, branding.
+- [Black & White Type](https://reckon.house/case-studies/black-white-type): Custom typography, patterns.
+- [J.Christianson](https://reckon.house/case-studies/j-christianson): Brand development, design.
+- [Amber Shockey & Co.](https://reckon.house/case-studies/amber-shockey-co): Tableware design, branding.
+- [You By Sally](https://reckon.house/case-studies/you-by-sally): Brand campaign.
+- [Loved by Nordstrom](https://reckon.house/case-studies/loved-by-nordstrom): Brand campaign, design.
+- [Neiman Marcus InSite](https://reckon.house/case-studies/neiman-marcus): Editorial direction, design.
+- [Various Design](https://reckon.house/case-studies/branding-graphics): Branding, art, apparel.
+
+## Interiors — custom homes, kitchens, baths
+
+- [Hill Country Home, Kitchen](https://reckon.house/case-studies/hill-country-kitchen): Interior design, kitchen.
+- [Hill Country Home, Primary Bath](https://reckon.house/case-studies/hill-country-bath): Interior design, primary bath.
+- [Hill Country Home, Living Room](https://reckon.house/case-studies/hill-country-living): Interior design, living room.
+- [The Fairview, Sitting Room](https://reckon.house/case-studies/fairview-sitting): Interior design, sitting room.
+- [Floor & Decor](https://reckon.house/case-studies/floor-and-decor): Interiors feature.
+- [The Fairview Suite](https://reckon.house/case-studies/fairview-suite): Interior design, bedroom.
+- [The Fairview, Entry](https://reckon.house/case-studies/fairview-entry): Interior design, foyer.
+- [Mountain View](https://reckon.house/case-studies/chalet): Interior design, remodel.
+
+## Navigation
+
+- [Home](https://reckon.house/): Full project index.
+- [Digital](https://reckon.house/category/digital): Apps, ecommerce, AI tools.
+- [Creative](https://reckon.house/category/creative): Campaigns, brand identity, art direction.
+- [Interiors](https://reckon.house/category/interiors): Custom homes, kitchens, baths.
+- [Custom](https://reckon.house/custom): Custom work inquiries.
+
+## Contact
+
+- Instagram: [@reckonhousestaples](https://instagram.com/reckonhousestaples)

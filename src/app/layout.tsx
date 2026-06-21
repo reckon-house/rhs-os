@@ -9,8 +9,10 @@ import { SpringSolve } from "@/components/fx/SpringSolve";
 import { VisibilityPause } from "@/components/fx/VisibilityPause";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "RHS OS",
   description: "Portfolio operating system by Jeremy Prasatik",
 };
