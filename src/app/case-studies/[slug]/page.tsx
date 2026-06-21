@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/case-study/CaseStudyLayout";
+import { projects } from "@/data/projects";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { arcCaseStudy } from "@/data/arc-case-study";
 import { sallyCaseStudy } from "@/data/sally-case-study";
 import { robertRodriguezCaseStudy } from "@/data/robert-rodriguez-case-study";
@@ -35,6 +38,55 @@ const caseStudies = [arcCaseStudy, sallyCaseStudy, robertRodriguezCaseStudy, bla
 
 export function generateStaticParams() {
   return caseStudies.map((s) => ({ slug: s.slug }));
+}
+
+// Prefer the curated JPG thumbnail from the projects list — consistent format
+// and aspect, and reliable in social unfurls (some hero sections are AVIF/WebP,
+// which several scrapers can't render). Fall back to the first hero section.
+function ogImageFor(slug: string): string | undefined {
+  const fromProject = projects.find(
+    (p) => p.href === `/case-studies/${slug}`,
+  )?.image;
+  if (fromProject) return fromProject;
+  const study = caseStudies.find((s) => s.slug === slug);
+  const hero = study?.sections.find((s) => s.type === "hero") as
+    | { image?: string }
+    | undefined;
+  return hero?.image;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const study = caseStudies.find((s) => s.slug === slug);
+  if (!study) return {};
+
+  const url = `${SITE_URL}/case-studies/${study.slug}`;
+  const description = study.subtitle;
+  const image = ogImageFor(study.slug);
+
+  return {
+    title: study.title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      siteName: SITE_NAME,
+      url,
+      title: study.title,
+      description,
+      images: image ? [image] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: study.title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
 }
 
 export default async function CaseStudyPage({

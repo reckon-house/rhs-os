@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
@@ -6,6 +7,30 @@ import { InspirationQuoteTile } from "@/components/InspirationQuoteTile";
 import { inspiration } from "@/data/inspiration";
 import { inspirationQuotes, quoteInsertionPoints } from "@/data/inspiration-quotes";
 import { getImageDimensions } from "@/data/image-dimensions";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
+
+const INSPIRATION_DESCRIPTION =
+  "A running visual reference board. Images, marks, and quotes that feed the work.";
+
+export const metadata: Metadata = {
+  title: "Inspiration",
+  description: INSPIRATION_DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/inspiration` },
+  openGraph: {
+    title: "Inspiration",
+    description: INSPIRATION_DESCRIPTION,
+    type: "website",
+    siteName: SITE_NAME,
+    url: `${SITE_URL}/inspiration`,
+    images: inspiration[0]?.src ? [inspiration[0].src] : undefined,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Inspiration",
+    description: INSPIRATION_DESCRIPTION,
+    images: inspiration[0]?.src ? [inspiration[0].src] : undefined,
+  },
+};
 
 // Weave quotes into the image list at the configured anchor points.
 // Insertion is done before mapping so each tile gets a stable key based on

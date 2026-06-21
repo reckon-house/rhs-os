@@ -8,3 +8,6 @@
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://reckon.house"
 ).replace(/\/+$/, "");
+
+/** Brand name, used as the title-template suffix and openGraph siteName. */
+export const SITE_NAME = "Reckon*House";

@@ -9,12 +9,38 @@ import { SpringSolve } from "@/components/fx/SpringSolve";
 import { VisibilityPause } from "@/components/fx/VisibilityPause";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
+
+const SITE_DESCRIPTION =
+  "Design and engineering across brand, product, and place. Apps, campaigns, brand systems, custom interiors, and AI tools by Jeremy Prasatik.";
+const DEFAULT_OG_IMAGE =
+  "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "RHS OS",
-  description: "Portfolio operating system by Jeremy Prasatik",
+  title: {
+    default: "Design & Engineering by Jeremy Prasatik",
+    // Child pages set a bare title; this appends the brand. e.g. "A.R.C. · Reckon*House"
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Jeremy Prasatik" }],
+  creator: "Jeremy Prasatik",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: "Design & Engineering by Jeremy Prasatik",
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Design & Engineering by Jeremy Prasatik",
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
 };
 
 export default function RootLayout({
