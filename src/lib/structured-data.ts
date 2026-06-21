@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/site";
+import { categoryInfo, getProjectsByTag, type Tag } from "@/data/projects";
 import type { CaseStudy } from "@/lib/types";
 
 /**
@@ -118,5 +119,45 @@ export function caseStudyJsonLd(study: CaseStudy, imageUrl?: string) {
   return {
     "@context": "https://schema.org",
     "@graph": [creativeWork, breadcrumb],
+  };
+}
+
+function firstSentence(text: string): string {
+  const flat = text.replace(/\s+/g, " ").trim();
+  const end = flat.indexOf(". ");
+  return end === -1 ? flat : flat.slice(0, end + 1);
+}
+
+/** Category page as a CollectionPage with an ItemList of its case studies. */
+export function collectionPageJsonLd(tag: Tag) {
+  const url = `${SITE_URL}/category/${tag}`;
+  const name = tag.charAt(0).toUpperCase() + tag.slice(1);
+
+  // Pull the project list from the same source the page renders from, deduped
+  // by href (a few projects point at the same study), so it stays in sync.
+  const hrefs = Array.from(
+    new Set(
+      getProjectsByTag(tag)
+        .map((p) => p.href)
+        .filter((h): h is string => Boolean(h?.startsWith("/case-studies/"))),
+    ),
+  );
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description: firstSentence(categoryInfo[tag].body),
+    url,
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: hrefs.length,
+      itemListElement: hrefs.map((href, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE_URL}${href}`,
+      })),
+    },
   };
 }

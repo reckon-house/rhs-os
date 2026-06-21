@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { CategoryPage } from "@/components/CategoryPage";
 import { categoryInfo, type Tag } from "@/data/projects";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { collectionPageJsonLd } from "@/lib/structured-data";
 import { notFound } from "next/navigation";
 
 const validTags = ["digital", "creative", "interiors"];
@@ -59,7 +61,12 @@ export default async function Page({ params }: { params: Promise<{ tag: string }
     notFound();
   }
 
-  return <CategoryPage tag={tag as Tag} />;
+  return (
+    <>
+      <JsonLd data={collectionPageJsonLd(tag as Tag)} />
+      <CategoryPage tag={tag as Tag} />
+    </>
+  );
 }
 
 export function generateStaticParams() {
