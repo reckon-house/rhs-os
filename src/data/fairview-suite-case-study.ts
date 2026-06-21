@@ -124,7 +124,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together read as a collection, not a catalog order.",
+        "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together feel collected, not cataloged.",
     },
 
     // ── Full room shot ──
@@ -188,7 +188,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The tub is the statement piece. Hammered copper interior, matte black exterior, cast iron claw feet. It faces the glass-enclosed shower through a half-wall of hex tile. The chandelier above it is smaller than the bedroom's but reads as part of the same family. The tile covers every vertical surface, turning the wet area into a single material volume.",
+        "The tub is the statement piece. Hammered copper interior, matte black exterior, cast iron claw feet. It faces the glass-enclosed shower through a half-wall of hex tile. The chandelier above it is smaller than the bedroom's but belongs to the same family. The tile covers every vertical surface, turning the wet area into a single material volume.",
     },
 
     // ── Bath details ──

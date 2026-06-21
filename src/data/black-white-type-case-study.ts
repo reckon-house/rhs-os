@@ -215,7 +215,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The density increases. Where \"the Fancy\" floated in white space, \"stepper\" packs the frame. Large-scale polka dots fill a capital 'E.' Diagonal stripes cut across a slab-serif 'R.' The same vocabulary at higher visual volume. The patterns that read as delicate in the first print read as bold here because the letterforms demand it.",
+        "The density increases. Where \"the Fancy\" floated in white space, \"stepper\" packs the frame. Large-scale polka dots fill a capital 'E.' Diagonal stripes cut across a slab-serif 'R.' The same vocabulary at higher visual volume. The patterns that feel delicate in the first print turn bold here because the letterforms demand it.",
     },
 
     // ── PATTERN SWATCHES ──

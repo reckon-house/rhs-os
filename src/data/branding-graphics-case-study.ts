@@ -283,7 +283,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The only consistency is that each mark gets out of its own way - flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand. Range from ornamental to blunt.",
+        "Flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand. Range from ornamental to blunt.",
     },
     {
       id: "marks-footnote",
@@ -291,7 +291,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The only consistency is that each mark gets out of its own way. Whatever the brief asks for, the mark delivers without trying to add a signature. The signature is in the range, not in any one piece.",
+        "Whatever the brief asks for, the mark delivers without trying to add a signature. Five logos shown here, and nothing in the portfolio connects them except the hands that drew them. The signature lives in the range.",
     },
 
     // ── Marks — stacked vertically inside one white container.

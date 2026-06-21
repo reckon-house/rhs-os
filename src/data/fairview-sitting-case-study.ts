@@ -62,7 +62,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Texture runs the room. Four materials carry the whole composition, with no competing colors and no decorative noise.",
+        "Texture runs the room. Four materials anchor the whole composition, with no competing colors and no decorative noise.",
     },
     {
       id: "texture-footnote",
@@ -178,7 +178,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "Four Materials\nCarrying One Room.",
       introText:
-        "The room runs on four materials and one shared light, pulled tight enough to read as a single composition.",
+        "The room runs on four materials and one shared light, pulled tight enough to hold as a single composition.",
       philosophyTitle: "Material philosophy",
       philosophyText:
         "Stone for the structure, velvet for the seating, brass for the centerpiece, oak for the floor. Every other choice in the room derives from one of those four - the box beams pull from the velvet, the mantel from the oak, the bar cabinet from the brass.\n\nThe palette stays tight on purpose. Color goes in via the materials, not via accents. No throw pillow doing the work the room should already be doing.",

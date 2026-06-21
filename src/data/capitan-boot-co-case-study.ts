@@ -70,7 +70,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The system carries primary logo, secondary badges, typographic lockups, illustrative assets. Range comes before decoration. Each piece holds at small scale and at full bleed alike.",
+        "The system includes primary logo, secondary badges, typographic lockups, illustrative assets. Range comes before decoration. Each piece holds at small scale and at full bleed alike.",
     },
 
     // ── Auto-cycling logo carousel (full bleed, each slide carries its own bg)
@@ -178,7 +178,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       introText:
         "Marks made for stamp, stitch, embroidery, print. Every color, every face, every lockup tested against the process before it earned a place in the system.",
       philosophyText:
-        "The system carries primary logo, secondary badges, typographic lockups, and illustrative assets, each one holding shape under load. Range comes before decoration.\n\nNorthwest carries scale, Oldman carries character, and the bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first and an illustration second. Every choice traces back to where the boot ends up.",
+        "The system holds primary logo, secondary badges, typographic lockups, and illustrative assets, each one keeping shape under load. Range comes before decoration.\n\nNorthwest handles scale, Oldman brings character, and the bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first and an illustration second. Every choice traces back to where the boot ends up.",
       colors: [
         { name: "Cream", hex: "#EFEAD9", description: "Paper, hangtags" },
         { name: "Tan", hex: "#C4B594", description: "Photography, leather" },

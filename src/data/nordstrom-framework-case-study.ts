@@ -156,7 +156,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The framework powered homepage modules, dedicated email sections, and full landing pages built around a single bucket. Each piece carried the matching icon and lockup, so customers could read the signal anywhere they encountered it.",
+        "The framework powered homepage modules, dedicated email sections, and full landing pages built around a single bucket. Each piece held the matching icon and lockup, so customers could read the signal anywhere they encountered it.",
     },
     {
       id: "application-footnote",

@@ -166,7 +166,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       introText:
         "Five colors pulled from a Texas hour-before-sunset, one type family used at every weight the system needed - the same kit applied across every surface.",
       philosophyText:
-        "The palette had to read as Texas without leaning into red, white, and blue. Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Pulled from old highway signs and the actual color of the landscape during last-light.\n\nGreatdome carries the editorial headlines. Avenir Next runs everything else, heavy weight for the wordmark, lighter for body. The display face does the heritage work so the workhorse sans doesn't have to.",
+        "The palette had to feel like Texas without leaning into red, white, and blue. Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Pulled from old highway signs and the actual color of the landscape during last-light.\n\nGreatdome carries the editorial headlines. Avenir Next runs everything else, heavy weight for the wordmark, lighter for body. The display face does the heritage work so the workhorse sans doesn't have to.",
       colors: [
         { name: "Cream", hex: "#ECE2C5", description: "Paper, ground" },
         { name: "Mustard", hex: "#ECC265", description: "Wordmark, accents" },

@@ -90,7 +90,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
       columns: [
         {
           title: "App Design & Development",
-          content: "Native and web applications from the first idea through whatever launches at the end of it. The hard part isn't the architecture or the visuals or the code in isolation - it's keeping all three of them in conversation as the project moves, which is mostly what you do all day when you're designing and building something at the same time.\n\nA.R.C. went from concept to live product in ten weeks. Sally Marketing OS now runs five connected platforms inside a Fortune 500 marketing team in daily production use. The difference between designing an app and shipping one is the difference between a render and a room someone actually walks through.",
+          content: "Native and web applications from the first idea through whatever launches at the end of it. The hard part isn't the architecture or the visuals or the code in isolation - it's keeping all three of them in conversation as the project moves, which is mostly what you do all day when you're designing and building something at the same time.\n\nA.R.C. went from concept to live product in ten weeks. Sally Marketing OS now runs five connected platforms inside a Fortune 500 marketing team in daily production use. Designing an app and shipping one are not the same skill. One produces a render. The other produces something someone walks through.",
         },
         {
           title: "Ecommerce & Web",
@@ -98,7 +98,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
         },
         {
           title: "AI Integration",
-          content: "AI shows up in the work when the alternative can't keep up. A.R.C. uses computer vision because asking someone to type out every object in their house would have killed the product before it shipped. Sally OS uses multi-model orchestration across Claude, Gemini, and Perplexity because brand strategy moves faster than any single model can think alone.\n\nNone of it gets used because it's the new thing - it gets used because it's the thing that makes the product possible. The most interesting AI work is the kind nobody notices, because the product just works the way someone needed it to.",
+          content: "AI shows up in the work when the alternative can't keep up. A.R.C. uses computer vision because asking someone to type out every object in their house would have killed the product before it shipped. Sally OS uses multi-model orchestration across Claude, Gemini, and Perplexity because brand strategy moves faster than any single model can think alone.\n\nNone of it gets used because it's the new thing - it gets used because it's the thing that makes the product possible. The best AI work disappears. The product just works the way someone needed it to.",
         },
       ],
     },
@@ -128,7 +128,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
         },
         {
           title: "Campaigns & Art Direction",
-          content: "Art direction is mostly about controlling what the frame is allowed to contain - the lighting that flatters the right thing and ignores the rest, the wardrobe that argues for the brand without performing it, the set that disappears when it should and shows up when it shouldn't, the talent that reads in a thumbnail and holds up at billboard scale.\n\nAt Neiman Marcus, the Robert Rodriguez campaign came together as one shoot day producing four frames that ran across storefront, editorial, social, and email. The Ivy Park by Beyonce launch was the exclusive US digital rollout at Nordstrom. Sally Beauty's \"You By Sally\" campaign repositioned a brand that had drifted from itself. Different scales, same job - making sure the work survives the long trip from set to whatever screen or surface it eventually lands on.",
+          content: "Art direction is mostly about controlling what the frame is allowed to contain - the lighting that flatters the right thing and ignores the rest, the wardrobe that argues for the brand without performing it, the set that disappears when it should and shows up when it shouldn't, the talent that works in a thumbnail and holds up at billboard scale.\n\nAt Neiman Marcus, the Robert Rodriguez campaign came together as one shoot day producing four frames that ran across storefront, editorial, social, and email. The Ivy Park by Beyonce launch was the exclusive US digital rollout at Nordstrom. Sally Beauty's \"You By Sally\" campaign repositioned a brand that had drifted from itself. Different scales, same job - making sure the work survives the long trip from set to whatever screen or surface it eventually lands on.",
         },
         {
           title: "Surface & Object Design",
@@ -139,7 +139,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
   },
   interiors: {
     headline: "Rooms that work the way people live.",
-    body: "Custom homes, kitchens, and baths designed to feel collected rather than decorated. Less ornament, more time spent on the few elements that carry the weight - the stone, the wood, the way the light hits a wall in late afternoon.\n\nMost of the work happens long before the install. Choosing the palette, editing the references, deciding what gets to be loud and what stays quiet. The unglamorous part - specs, sourcing, jobsite visits - happens behind the scenes. What the room shows is the editing.",
+    body: "Custom homes, kitchens, and baths designed to feel collected rather than decorated. Less ornament, more time spent on the few elements that do the work - the stone, the wood, the way the light hits a wall in late afternoon.\n\nMost of the work happens long before the install. Choosing the palette, editing the references, deciding what gets to be loud and what stays quiet. The unglamorous part - specs, sourcing, jobsite visits - happens behind the scenes. What the room shows is the editing.",
     meta: {
       field: "Custom Homes  Kitchens  Baths",
       activeSince: "2012",
@@ -158,15 +158,15 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
       columns: [
         {
           title: "Custom Homes & Remodels",
-          content: "Each project starts with the site itself, which is a cliché in the field but happens to be true: what the light does at different hours, where the household actually lives during the week versus the weekend, what the existing structure has going for it that should probably stay. The early conversations don't have anything to do with finishes yet.\n\nWhere remodels get tricky is that some of the existing architecture has good ideas baked into it and some of it really doesn't, and sorting that out before drawing a new floor plan is the difference between a project that fights itself for eighteen months and a project that doesn't.",
+          content: "Each project starts with the site itself, what the light does at different hours, where the household actually lives during the week versus the weekend, what the existing structure has going for it that should probably stay. The early conversations don't have anything to do with finishes yet.\n\nWhere remodels get tricky is that some of the existing architecture has good ideas baked into it and some of it really doesn't, and sorting that out before drawing a new floor plan is the difference between a project that fights itself for eighteen months and a project that doesn't.",
         },
         {
           title: "Kitchen & Bath",
-          content: "Kitchens and baths are the rooms where small material decisions compound the fastest, which is why they tend to consume more of the design timeline than their square footage would suggest. A kitchen is really only four or five finishes (cabinetry, countertop, backsplash, hardware, floor) repeated across dozens of surfaces and sightlines, and a bath works the same way at smaller scale. Get the palette right at the front end and the rest of the room falls into place. Get it wrong and you produce a room someone can't quite explain why they don't like.\n\nThe reason that early call matters is that each material is carrying multiple jobs at once. A marble at install looks nothing like the same marble ten years in, brass tarnishes in ways that some people love and some people hate, white oak ambers as it ages. Most of the work is reading all of that ahead of time, before the slabs get cut.",
+          content: "Kitchens and baths are the rooms where small material decisions compound the fastest, which is why they tend to consume more of the design timeline than their square footage would suggest. A kitchen is really only four or five finishes (cabinetry, countertop, backsplash, hardware, floor) repeated across dozens of surfaces and sightlines, and a bath works the same way at smaller scale. Get the palette right at the front end and the rest of the room falls into place. Get it wrong and you produce a room someone can't quite explain why they don't like.\n\nThe reason that early call matters is that each material is carrying multiple jobs at once. A marble at install looks nothing like the same marble ten years in, brass tarnishes in ways that some people love and some people hate, white oak ambers as it ages. Most of the work is anticipating all of that before the slabs get cut.",
         },
         {
           title: "Selections & Documentation",
-          content: "The selections - the lighting plan, the hardware schedule, the paint palette, the floor coverings - are where rooms actually get designed. Which lights make a room and which ones disappear, which hardware reads quiet and which steps forward, which paint shifts depending on the light coming through whatever window happens to be closest. The taste decisions live here, not on the floor plan.\n\nDocumentation is the version that survives the install. A complete spec set translates the selections into something a builder can build without picking up the phone - paperwork to anyone who hasn't been through a chaotic install, the actual design to anyone who has.",
+          content: "The selections - the lighting plan, the hardware schedule, the paint palette, the floor coverings - are where rooms actually get designed. Which lights make a room and which ones disappear, which hardware stays quiet and which steps forward, which paint shifts depending on the light coming through whatever window happens to be closest. The taste decisions live here, not on the floor plan.\n\nDocumentation is the version that survives the install. A complete spec set translates the selections into something a builder can build without picking up the phone - paperwork to anyone who hasn't been through a chaotic install, the actual design to anyone who has.",
         },
       ],
     },

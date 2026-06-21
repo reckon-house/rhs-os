@@ -45,7 +45,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         { label: "Angle", value: "High fashion on a studio budget. Foliage as architecture, not decoration. Scale without a plane ticket." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic - condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. I built it as a single system that moved cleanly across email, homepage, and social without redesign, so the same visual language could carry every format.",
+        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
     },
 
     // ── Valentino template — campaign in context, second beat in the case

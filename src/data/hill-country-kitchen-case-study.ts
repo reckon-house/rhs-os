@@ -86,7 +86,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Constraint at the material level works the same way it works in any design system - fewer variables means stronger cohesion. A room with twelve finishes reads as decorated, a room with four reads as designed. The limitation forced every surface to carry more visual weight, and the relationships between materials became the entire aesthetic.",
+        "Constraint at the material level works the same way it works in any design system - fewer variables means stronger cohesion. A room with twelve finishes feels decorated. A room with four feels designed. The limitation forced every surface to carry more visual weight, and the relationships between materials became the entire aesthetic.",
       group: { name: "materials" },
     },
     {
@@ -169,7 +169,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Cremone bolts on the tall pantry doors are the signature hardware choice. A French mechanism on American shaker cabinets in a Texas kitchen. The style collision is intentional. The bolts add vertical visual interest to the tallest cabinet faces and give the pantry wall architectural presence that standard pulls would miss. They also function well. A single lever locks top and bottom simultaneously.",
+        "Cremone bolts on the tall pantry doors are the signature hardware choice. A French mechanism on American shaker cabinets in a Texas kitchen. The style collision is the point. The bolts add vertical visual interest to the tallest cabinet faces and give the pantry wall architectural presence that standard pulls would miss. They also function well. A single lever locks top and bottom simultaneously.",
     },
 
     // ── GROUP 2: Range + details ──
@@ -245,7 +245,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Open shelving on the working end holds plates and bowls within arm's reach of the dishwasher. A firewood cubby at the base adds texture and signals that this kitchen connects to the rest of the property. The marble top runs the full length, transitioning from food prep surface to bar seating without a material break. Four bar stools with brass-tone frames tuck under the overhang. The island reads as furniture rather than cabinetry. That distinction matters. Furniture invites interaction. Cabinetry stores things.",
+        "Open shelving on the working end holds plates and bowls within arm's reach of the dishwasher. A firewood cubby at the base adds texture and signals that this kitchen connects to the rest of the property. The marble top runs the full length, transitioning from food prep surface to bar seating without a material break. Four bar stools with brass-tone frames tuck under the overhang. The island feels like furniture, not cabinetry. That distinction matters. Furniture invites interaction. Cabinetry stores things.",
     },
     {
       id: "island-columns",
@@ -300,7 +300,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The dining area occupies the same open room but reads as its own zone, with a dark-stained turned-leg table set against the light oak and green of the kitchen. The material shift is abrupt and intentional - a different activity asking for a different material mood.",
+        "The dining area occupies the same open room but holds its own mood. A dark-stained turned-leg table set against the light oak and green of the kitchen. The shift is abrupt on purpose - a different activity, a different material temperature.",
     },
     {
       id: "dining-footnote",

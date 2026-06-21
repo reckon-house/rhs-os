@@ -270,7 +270,7 @@ function HomeContent() {
 
         {/* Disciplines paragraph — flows directly under the headline as one block */}
         <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The work spans apps and software, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and content infrastructure - and increasingly, the places where those disciplines meet.
+          The work spans apps and software, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and content infrastructure. The disciplines overlap more than they separate.
         </p>
 
         {/* Closing paragraph — personal lens, smaller secondary line treatment */}

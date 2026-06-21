@@ -276,7 +276,7 @@ export const dscCaseStudy: CaseStudy = {
       introText:
         "A palette with no color in it, one type family doing all the work, and photography shot on the actual gym floor. The kit holds the same at every scale.",
       philosophyText:
-        "Pure black for type and structure, pure white for the ground, and a short ramp of greys for everything between. No accent color, because the photography and the weight of the type bring all the contrast the brand needs.\n\nType is mostly one family. Avenir Next carries the brand voice: Heavy for the wordmark and section heads, Demi Bold for subheads and CTAs, Medium for the body. A monospace sits underneath for the technical labels, the MCP URLs and session times. Weight and contrast do the job a second color usually would.",
+        "Pure black for type and structure, pure white for the ground, and a short ramp of greys for everything between. No accent color, because the photography and the weight of the type bring all the contrast the brand needs.\n\nType is mostly one family. Avenir Next runs the brand voice: Heavy for the wordmark and section heads, Demi Bold for subheads and CTAs, Medium for the body. A monospace sits underneath for the technical labels, the MCP URLs and session times. Weight and contrast do the job a second color usually would.",
       colors: [
         { name: "Ground", hex: "#000000", description: "Type, structure" },
         { name: "Ink", hex: "#141414", description: "Dark surfaces" },

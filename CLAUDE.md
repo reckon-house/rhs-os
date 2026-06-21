@@ -208,3 +208,22 @@ Live tracking of cross-study patterns. Update as studies are added or revised.
 3. Register in `src/app/case-studies/[slug]/page.tsx`
 4. Update homepage `src/app/page.tsx` to add thumbnail to the grid
 5. Add nav thumbnail to `public/nav/` if it gets a NavRail entry
+
+
+## Cross-project context
+This project is one of several I run. Each project's profile lives inside its own repo. THIS project's profile:
+/Volumes/ReckonHouse/RHS/OS/profile/RHS-PROFILE.md
+
+Sibling project profiles (read these for cross-project questions):
+- Sally Portal: /Volumes/ReckonHouse/Sally/Sally Marketing Brain/sally-portal/profile/SALLY-PORTAL-PROFILE.md
+- ARC: /Volumes/ReckonHouse/A.R.C./ARC-Archive-Ready-Cloud/profile/ARC-PROFILE.md
+
+WHEN TO READ SIBLING PROFILES: Before answering questions about tech stack choices ("should we use X here?"), patterns already built elsewhere, model selection, or anything starting with "how does [other project] do this" — read the sibling profiles first. For pure within-project work (CSS tweaks, bug fixes, single-file edits), skip them to save context.
+
+WHEN TO UPDATE THIS PROJECT'S PROFILE (the RHS-PROFILE.md path above): Update it when any of these happen:
+- A new model, dependency, architectural pattern, or capability is added
+- A decision here explicitly mirrors OR diverges from another project — capture the divergence, that's the cross-project learning loop this whole setup exists for
+
+HOW TO UPDATE: The profile is two-tier. Leave the deep detail intact. Add dated bullets to a "## Recent Changes" section at the TOP of the file (newest first, keep roughly the last 10). That top section is the quick-read layer siblings scan first; the deep detail below is the reference.
+
+GUARDRAIL: Profiles are plain context, never deploy artifacts. NEVER put secrets, API keys, or per-environment config (DB URLs, Railway IDs, tokens) in them.

@@ -54,10 +54,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         { label: "Built", value: "Content engine on three tile shapes. Square, hero, vertical, resizing across every breakpoint." },
         { label: "Scope", value: "Design systems, art direction, product photography direction." },
         { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One asset, multiple applications." },
-        { label: "Angle", value: "Personalization that stayed quiet underneath. The constraints created the freedom, so mass scale still looked hand-built." },
+        { label: "Angle", value: "Personalization that stayed quiet underneath. Strict rules, loose output, mass scale that still looked hand-built." },
       ],
       abstract:
-        "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. The constraints created the freedom.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One asset, multiple applications.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
+        "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. Strict enough to scale, loose enough to surprise.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One asset, multiple applications.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
     },
 
     // ════════════════════════════════════════
@@ -82,7 +82,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Editorial stories, brand modules, and merchandised picks all rendered through the same three shapes. Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two. Any combination produced a layout that read as designed rather than assembled.",
+        "Editorial stories, brand modules, and merchandised picks all rendered through the same three shapes. Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two. Any combination produced a layout that looked designed, not assembled.",
     },
 
     // ── Tile collage — the system as raw composition
@@ -209,7 +209,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "White seamless, consistent eye level, the same shadow falloff on every product. Restraint that let the merchandise read first - when the same shoe appeared in a Saturday editorial story and a Sunday inventory clear-out, both placements felt intentional.",
+        "White seamless, consistent eye level, the same shadow falloff on every product. Restraint that let the merchandise read first - when the same shoe appeared in a Saturday editorial story and a Sunday inventory clear-out, both placements looked planned.",
     },
 
     // ── Product row 1 (3 — warm/playful)
@@ -265,7 +265,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Editorial Templates", "Asset Library"],
       links: [],
       content:
-        "Personalization usually shows its work - algorithmic carousels, generic recommendation rails, blocks that read as templated even when they're tailored. This system did the opposite, with the constraints living underneath and the output looking like editorial.\n\nThe rules were simple enough that any merchandiser could compose a layout in an afternoon, and strict enough that no layout looked like the others. The same engine ran the homepage, campaign sends, and the long tail of category pages.",
+        "Personalization usually shows its work - algorithmic carousels, generic recommendation rails, blocks that feel templated even when they're tailored. This system did the opposite, with the constraints living underneath and the output looking like editorial.\n\nThe rules were simple enough that any merchandiser could compose a layout in an afternoon, and strict enough that no layout looked like the others. The same engine ran the homepage, campaign sends, and the long tail of category pages.",
     },
   ],
 };

@@ -70,7 +70,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Saturated backgrounds and confident styling let the portraits carry the brand. Product photography sat second to personality, which inverted the usual hair-color shoot order.",
+        "Saturated backgrounds and confident styling let the portraits lead the brand. Product photography sat second to personality, which inverted the usual hair-color shoot order.",
     },
 
     // ── Casting hero — full bleed portrait moment
@@ -122,7 +122,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The grid logic carried the same way at every scale - from a 320px influencer bio page to a 6-foot retail sign. Same blocks, same hierarchy, just sized to the surface.",
+        "The grid logic held the same way at every scale - from a 320px influencer bio page to a 6-foot retail sign. Same blocks, same hierarchy, just sized to the surface.",
     },
 
     // ── Swatch UI screen
@@ -178,7 +178,7 @@ export const youBySallyCaseStudy: CaseStudy = {
           sampleText: "YOU BY SALLY",
           role: "Wordmark",
           description:
-            "Avenir Next Heavy at scale. Set wide, locked tight, no italics. The wordmark sits as a block of type that reads as a graphic mark before it reads as a word.",
+            "Avenir Next Heavy at scale. Set wide, locked tight, no italics. The wordmark sits as a block of type that hits as a graphic mark before it hits as a word.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },

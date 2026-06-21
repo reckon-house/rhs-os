@@ -60,7 +60,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         { label: "Angle", value: "Patterns built as a system, not a single print. Cream as shared ground, so a pattern only works if the next one fits." },
       ],
       abstract:
-        "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each carries multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
+        "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each runs multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
     },
 
     // ════════════════════════════════════════
@@ -85,7 +85,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Pairs with black linework when the set needs structure. Pairs with red dragons when the table needs heat. The cobalt anchors any combination because every other collection carries cream as the shared ground.",
+        "Pairs with black linework when the set needs structure. Pairs with red dragons when the table needs heat. The cobalt anchors any combination because every other collection shares cream as the common ground.",
     },
 
     // Inline hero: peony wallpaper pattern field
@@ -300,7 +300,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A startup needed patterns that could carry a full tableware line without locking into a single look. The system answers in three marks per collection and shared ground colors across the family. New directions slot in without breaking what came before.",
+        "A startup needed patterns that could hold a full tableware line without locking into a single look. The system answers in three marks per collection and shared ground colors across the family. New directions slot in without breaking what came before.",
     },
   ],
 };

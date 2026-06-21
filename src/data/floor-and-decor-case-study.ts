@@ -48,7 +48,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         { label: "Angle", value: "Material confidence, not material matching. One kit, three rooms that read completely different." },
       ],
       abstract:
-        "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residential bathrooms. Marble, dolomite, white oak, classic tile - the kit each project pulled from, applied three different ways. The feature ran in the summer catalog, on the Floor & Decor website, and inside a full video interview.\n\nThree projects, three directions. Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling. Each room reads as its own thing, but the underlying material logic is the same.\n\nThe focus was hard surfaces, and the projects show how tile and stone anchor everything else. Get the floors and walls right, the rest follows.",
+        "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residential bathrooms. Marble, dolomite, white oak, classic tile - the kit each project pulled from, applied three different ways. The feature ran in the summer catalog, on the Floor & Decor website, and inside a full video interview.\n\nThree projects, three directions. Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling. Each room stands on its own, but the underlying material logic is the same.\n\nThe focus was hard surfaces, and the projects show how tile and stone anchor everything else. Get the floors and walls right, the rest follows.",
     },
 
     // ════════════════════════════════════════
@@ -207,7 +207,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Marble, dolomite, white oak, classic tile - the same palette across three projects, applied with enough confidence to read as three distinct rooms.",
+        "Marble, dolomite, white oak, classic tile - the same palette across three projects, applied with enough confidence to look like three distinct rooms.",
     },
     {
       id: "closing",
@@ -216,7 +216,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Floor & Decor named the studio Designer of the Quarter on the strength of three bathrooms that share a material kit but read as three completely different rooms. The hard surface selections did the structural work - tile and stone setting the proportions, the rest of the build sitting on top of them.",
+        "Floor & Decor named the studio Designer of the Quarter on the strength of three bathrooms that share a material kit but look like three different rooms. The hard surface selections did the structural work - tile and stone setting the proportions, the rest of the build sitting on top of them.",
     },
   ],
 };

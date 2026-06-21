@@ -177,7 +177,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         "The entry runs on five materials, no more. Each one earns its place by doing one job and staying out of the others' way.",
       philosophyTitle: "Material philosophy",
       philosophyText:
-        "The oak is the floor. The iron is the frame. The brass is the light. The wool is the path. The limestone is the room.\n\nNothing decorative on top. The texture is the design. Color goes in through the materials themselves, not through accents. A foyer this size only gets one chance to introduce the house; spending it on noise would be a waste.",
+        "Oak runs unbroken to the doorway. Iron frames the doors and transom. Brass hangs alone overhead. Vintage wool anchors the path. Limestone holds the walls quiet.\n\nFive materials, nothing on top. Color comes from what the materials already are. A foyer this size gets one chance to introduce the house, and spending it on noise would be a waste.",
       colors: [
         { name: "Limestone Cream", hex: "#E7DFD2", description: "Walls, ceiling" },
         { name: "Black Iron", hex: "#1F1E1B", description: "Doors, frames, bench" },
@@ -198,7 +198,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Black Iron",
           role: "Doors, frames, bench",
           description:
-            "Steel French doors and matching transom windows define the front of the room. The leather bench frame and coat tree picks up the same line so the metalwork reads as one system, not three separate objects.",
+            "Steel French doors and matching transom windows define the front of the room. The leather bench frame and coat tree picks up the same line so the metalwork holds together as one system, not three separate objects.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 600,
         },
@@ -206,7 +206,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Antiqued Brass",
           role: "Chandelier",
           description:
-            "An alabaster pendant set in hand-rubbed brass, hung dead-center. Oversized on purpose so the room reads vertical from the doorway. The closest thing to jewelry the entry gets.",
+            "An alabaster pendant set in hand-rubbed brass, hung dead-center. Oversized on purpose so the room pulls vertical from the doorway. The closest thing to jewelry the entry gets.",
           family: "'Didot', 'Bodoni 72', 'Caslon', serif",
           weight: 400,
         },

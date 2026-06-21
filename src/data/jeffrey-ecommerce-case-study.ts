@@ -45,7 +45,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         { label: "Angle", value: "A flagship, not a storefront. The publishing system shipped before the product templates." },
       ],
       abstract:
-        "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nI started with the buying team - learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy I pitched and won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there - modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Handled the integration work alongside external partners while keeping ownership of the experience, with every interaction from wireframe to checkout prototyped to feel intentional.",
+        "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nStarted with the buying team. Learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy that won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there. Modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Integration work handled alongside external partners while keeping ownership of the experience, every interaction from wireframe to checkout prototyped to feel considered.",
     },
 
     // ════════════════════════════════════════
@@ -70,7 +70,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "I sat with the buying team to learn how the floor worked - how pieces were grouped, how seasons shifted, what made the edit read as Jeffrey. The site needed to behave like the store, which meant designing the publishing system before the product templates.",
+        "Sat with the buying team to learn how the floor worked. How pieces were grouped, how seasons shifted, what made the edit feel like Jeffrey. The site needed to behave like the store, which meant designing the publishing system before the product templates.",
     },
 
     // ── Inline scaling hero — second hero frame as visual breath.
@@ -159,7 +159,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       introText:
         "One typeface across weights, a restrained palette, and a logo lockup that sat as a graphic mark before it sat as a name. The kit ran the same way at every scale.",
       philosophyText:
-        "The palette stays narrow on purpose. Charcoal carries the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single yellow accent - pulled straight from the wordmark - ties the editorial moments together. No second accent, no decorative color - the merchandise brings whatever it needs.\n\nType is one family across weights. Avenir Next Heavy carried the wordmark and feature headlines, Demi Bold carried subheads and CTAs, Medium carried the rest. The single family kept the system tight, and the weight contrast did the work that a multi-font stack would otherwise have to.",
+        "The palette stays narrow on purpose. Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single yellow accent - pulled straight from the wordmark - ties the editorial moments together. No second accent, no decorative color - the merchandise brings whatever it needs.\n\nType is one family across weights. Avenir Next Heavy carried the wordmark and feature headlines, Demi Bold carried subheads and CTAs, Medium carried the rest. The single family kept the system tight, and the weight contrast did the work that a multi-font stack would otherwise have to.",
       colors: [
         { name: "Charcoal", hex: "#1A1A1A", description: "Type, structure" },
         { name: "Cream", hex: "#F5F2ED", description: "Paper, ground" },
@@ -253,7 +253,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "Sketch", "InVision"],
       links: [],
       content:
-        "Jeffrey's first digital channel, built to behave like the store rather than a catalog. The publishing system shipped before the product templates, which is what kept the site reading as editorial instead of inventory. A flagship, not a storefront.",
+        "The grid let merchandising publish a designer launch on Tuesday and a sale on Wednesday without either looking out of place. The type system held the editorial voice while the content underneath changed weekly. Jeffrey eventually sold the business, and the digital channel outlasted the original team that built it.",
     },
   ],
 };

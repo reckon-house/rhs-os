@@ -57,10 +57,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { label: "Built", value: "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen." },
         { label: "Scope", value: "Interior design, furniture curation, art selection, fixture sourcing." },
         { label: "Materials", value: "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass." },
-        { label: "Angle", value: "Considered, not curated. Each piece chosen for how it ages. Lived in, not staged." },
+        { label: "Angle", value: "Each piece chosen for how it ages, not how it photographs. The room collects rather than coordinates." },
       ],
       abstract:
-        "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall. The material palette carries through from the rest of the home: reclaimed 1950s pine floors, exposed wood beams, brass fixtures.\n\nFurniture blends mid-century silhouettes with textiles that lean Western. Cognac leather sofa with wood frame. Tweed armchairs. A Navajo-style throw. The mix is intentional but not matched. Each piece chosen individually rather than ordered as a set.\n\nArt on the stone wall includes an original painting by Dwight D. Eisenhower alongside landscape pieces in gilded frames. Family heirlooms sit next to new finds. The fireplace is used. The sheepskin under the bench is soft. The room has texture across the full range.\n\nLived in, not staged.",
+        "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall. The material palette carries through from the rest of the home: reclaimed 1950s pine floors, exposed wood beams, brass fixtures.\n\nFurniture blends mid-century silhouettes with textiles that lean Western. Cognac leather sofa with wood frame. Tweed armchairs. A Navajo-style throw. The mix is intentional but not matched. Each piece chosen individually rather than ordered as a set.\n\nArt on the stone wall includes an original painting by Dwight D. Eisenhower alongside landscape pieces in gilded frames. Family heirlooms sit next to new finds. The fireplace is used. The sheepskin under the bench is soft. The room has texture across the full range.",
     },
 
     // ════════════════════════════════════════
@@ -77,7 +77,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The material palette carries through from the rest of the home. Four core textures, none competing for attention.",
+        "The material palette runs through from the rest of the home. Four core textures, none competing for attention.",
     },
     {
       id: "material-footnote",
@@ -212,7 +212,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         "The room runs on five materials, each chosen for how it ages. Limestone, pine, leather, tweed, brass. Nothing chasing trend, nothing afraid of wear.",
       philosophyTitle: "Material philosophy",
       philosophyText:
-        "The material palette is the design. Color goes in through what the materials already are, not through accents. Limestone takes light without bouncing it. Pine warms underfoot. Cognac leather darkens with use. Tweed reads soft from a distance, structured up close. Brass develops a patina nobody plans for.\n\nEvery piece in the room is allowed to age. Nothing is precious, nothing is protected. The fireplace is used. The records get played. The sheepskin moves around.",
+        "Color goes in through what the materials already are, not through accents or paint. Limestone takes light without bouncing it. Pine warms underfoot. Cognac leather darkens with use. Tweed reads soft from a distance, structured up close. Brass develops a patina nobody plans for.\n\nEvery piece in the room is allowed to age. Nothing is precious, nothing is protected. The fireplace is used. The records get played. The sheepskin moves around.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
         { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams, mantel" },
@@ -290,7 +290,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "Limestone fireplace wall, reclaimed pine floors, mid-century chairs in tweed, a cognac leather sofa with a Navajo-style throw. Personal art on the stone wall. Lived in, not staged.",
+        "An Eisenhower painting on a limestone wall, vinyl records on the shelf, a sheepskin that moves around. The room looks the same after ten years of family because nothing in it was afraid of wear.",
     },
   ],
 };

@@ -205,7 +205,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
     introText:
         "A palette that lets the photography lead. A type system that scales from header lockup to catalog caption without changing voice.",
       philosophyText:
-        "Cosmo Prof sells to working professionals, so the brand had to feel premium without getting precious about it. Soft neutrals carry the warmth, sharp black does the structural lifting.\n\nJost runs the whole system - block weights for the wordmark and category nav, regular for catalog copy, light for captions and pricing meta. The single family keeps the site from fragmenting into a dozen voices the way most B2B sites do.",
+        "Cosmo Prof sells to working professionals, so the brand had to feel premium without getting precious about it. Soft neutrals bring the warmth, sharp black does the structural lifting.\n\nJost runs the whole system - block weights for the wordmark and category nav, regular for catalog copy, light for captions and pricing meta. The single family keeps the site from fragmenting into a dozen voices the way most B2B sites do.",
       colors: [
         { name: "Cream", hex: "#F8F6F2", description: "Paper, cards" },
         { name: "Blush", hex: "#F4D9DC", description: "Hero accent" },
@@ -275,7 +275,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       stack: ["Figma", "Sketch", "Photoshop"],
       links: [],
       content:
-        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh, and templates carried the system across promotions, brand campaigns, and education without breaking.",
+        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh, and templates held the system across promotions, brand campaigns, and education without breaking.",
     },
   ],
 };
