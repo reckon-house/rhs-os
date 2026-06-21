@@ -13,8 +13,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 const SITE_DESCRIPTION =
   "Design and engineering across brand, product, and place. Apps, campaigns, brand systems, custom interiors, and AI tools by Jeremy Prasatik.";
-const DEFAULT_OG_IMAGE =
-  "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg";
+const DEFAULT_OG_IMAGE = "/og-home.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
