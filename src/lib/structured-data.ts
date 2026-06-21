@@ -60,9 +60,10 @@ function websiteNode() {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     url: SITE_URL,
-    name: BRAND,
+    name: "Reckon House Staples",
+    alternateName: BRAND,
     description:
-      "Portfolio of Jeremy Prasatik. Design and engineering across brand, product, and place.",
+      "Multi-disciplinary design and engineering by Jeremy Prasatik, across brand, product, and place.",
     inLanguage: "en",
     author: { "@id": PERSON_ID },
     publisher: { "@id": ORG_ID },

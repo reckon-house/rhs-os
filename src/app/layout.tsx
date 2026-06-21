@@ -14,14 +14,15 @@ import { JsonLd } from "@/components/JsonLd";
 import { siteGraph } from "@/lib/structured-data";
 
 const SITE_DESCRIPTION =
-  "Design and engineering across brand, product, and place. Apps, campaigns, brand systems, custom interiors, and AI tools by Jeremy Prasatik.";
+  "Multi-disciplinary design and engineering by Jeremy Prasatik. Reckon House Staples works across brand, product, and place: apps, interiors, and AI tools.";
 const DEFAULT_OG_IMAGE = "/og-home.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Design & Engineering by Jeremy Prasatik",
-    // Child pages set a bare title; this appends the brand. e.g. "A.R.C. · Reckon*House"
+    // Homepage title leads with the brand so branded ("reckon house") queries
+    // surface it; child pages append the wordmark via the template below.
+    default: "Reckon House Staples · Design & Engineering",
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -30,7 +31,9 @@ export const metadata: Metadata = {
   creator: "Jeremy Prasatik",
   openGraph: {
     type: "website",
-    siteName: SITE_NAME,
+    // Clean business name for the site-name shown in Google + social unfurls
+    // (the "·" wordmark stays the title-template suffix for child pages).
+    siteName: "Reckon House Staples",
     url: SITE_URL,
     title: "Design & Engineering by Jeremy Prasatik",
     description: SITE_DESCRIPTION,
