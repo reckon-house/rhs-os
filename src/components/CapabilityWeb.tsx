@@ -169,15 +169,19 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
       <div className={`mt-6 text-spec ${inkSoft}`}>
         <p>
           <span className="font-bold">Studio </span>
-          Reckon House  Multi-disciplinary
+          Reckon House Staples, a multi-disciplinary design and engineering practice
         </p>
         <p>
           <span className="font-bold">Founded </span>
-          2002  Location: Texas / Anywhere  Status: Open for projects
+          2002, based in Texas, working anywhere
+        </p>
+        <p>
+          <span className="font-bold">Status </span>
+          Open for projects
         </p>
         <p>
           <span className="font-bold">Classification </span>
-          Digital  Branding  Interiors
+          Digital, Branding, Interiors
         </p>
         <p>
           <span className="font-bold">Contact </span>
