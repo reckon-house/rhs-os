@@ -21,7 +21,7 @@ const HERO_IMAGES = [
   "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
   "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
   "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
-  "/case-studies/fairview-suite/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+  "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
   "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
   "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
   "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg",

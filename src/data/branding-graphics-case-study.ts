@@ -33,9 +33,20 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     // ── HERO ──
     {
       id: "hero",
-      type: "hero",
-      image: `${IMG}/branding-graphics-inna-foil-zine-orange-dress-lifestyle.jpg`,
-      alt: "Inna foil-printed zine cover with woman in orange dress, held in hands against blinds",
+      type: "hero-carousel",
+      // Keep the single-hero footprint: mobile 5/4, desktop ~Inna's native 1.663
+      // aspect (5/3), so switching to a carousel doesn't change the hero's size.
+      aspectClassName: "aspect-[5/4] md:aspect-[5/3]",
+      slides: [
+        {
+          src: `${IMG}/branding-graphics-inna-foil-zine-orange-dress-lifestyle.jpg`,
+          alt: "Inna foil-printed zine cover with woman in orange dress, held in hands against blinds",
+        },
+        {
+          src: `${IMG}/okina.jpg`,
+          alt: "Okina brand identity, wordmark over an iridescent gradient",
+        },
+      ],
     },
 
     // ── META ──
