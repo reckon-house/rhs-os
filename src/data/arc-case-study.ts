@@ -345,12 +345,12 @@ export const arcCaseStudy: CaseStudy = {
       subcopy:
         "The interface should feel like something worth looking at, not a chore with a progress bar.",
       philosophyText:
-        "I wanted the product to feel editorial - closer to a magazine than a spreadsheet. Asset cards that read like collection entries, room views that feel like curated galleries, financial summaries that carry real weight without the sterility of a typical dashboard.\n\nThe same philosophy extends to the documentation experience itself. Scanning a room should feel considered, not clinical. Reviewing your inventory should feel like browsing a personal archive, not auditing a warehouse. The brand language exists to make the practical feel purposeful.",
+        "The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats data as something worth designing, not just storing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.",
       chromaticCircleImage: "/case-studies/arc/chromatic-brand-circle.png",
       colors: [
-        { name: "Primary", hex: "#B1BC94", description: "RGB 177/188/148" },
-        { name: "Warm Register", hex: "#C4A265", description: "Photography tones" },
-        { name: "Ground", hex: "#000000", description: "Structure, text" },
+        { name: "Primary", hex: "#B1BC94", description: "RGB 177/188/148", cmyk: "34 16 50 0" },
+        { name: "Warm Register", hex: "#C4A265", description: "Photography tones", cmyk: "0 17 48 23" },
+        { name: "Ground", hex: "#000000", description: "Structure, text", cmyk: "0 0 0 100" },
       ],
       fonts: [
         {
@@ -374,6 +374,7 @@ export const arcCaseStudy: CaseStudy = {
       ],
       logoConstructionImage: "/case-studies/arc/arc-logo-grid.png",
       appScreenshotImage: "/case-studies/arc/arc-app-dashboard-categories-configuration.png",
+      morphGlyphs: [{ char: "A" }, { char: "R" }, { char: "C" }],
     },
 
     // ── BUILD METHODOLOGY ──

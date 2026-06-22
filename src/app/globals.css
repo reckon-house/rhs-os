@@ -141,6 +141,18 @@ html.cursor-asterisk-on * { cursor: none !important; }
   .galaxy-pulse { animation: none !important; }
 }
 
+/* Brand-system colour swatches — a slow, gentle brightness pulse so the palette
+   reads as "alive" without distracting. Per-cell animation-delay (set inline)
+   staggers the breathing across the bands. */
+@keyframes bs-pulse {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.085); }
+}
+.bs-pulse { animation: bs-pulse 3.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bs-pulse { animation: none !important; }
+}
+
 /* Featured-brands ticker — a slow seamless marquee so the mismatched logo
    styles read as one quiet flow instead of a busy grid. The track holds the
    brands twice and scrolls to -50% for a seamless loop; edges fade via mask.

@@ -1,23 +1,60 @@
 import Image from "next/image";
 import type { BrandSystemSection } from "@/lib/types";
 import { getImageDimensions } from "@/data/image-dimensions";
+import { MorphingGlyph } from "../MorphingGlyph";
 
+// ── colour math (deterministic → SSR-safe) ─────────────────────────────────
+type RGB = [number, number, number];
+const CREAM: RGB = [238, 234, 226]; // #eeeae2, the card ground the tints mix toward
+
+function hexToRgb(hex: string): RGB {
+  const h = hex.replace("#", "");
+  const v = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return [parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16)];
+}
+function toHex(rgb: RGB): string {
+  return "#" + rgb.map((n) => Math.round(n).toString(16).padStart(2, "0")).join("");
+}
+function mix(a: RGB, b: RGB, t: number): RGB {
+  return [a[0] * t + b[0] * (1 - t), a[1] * t + b[1] * (1 - t), a[2] * t + b[2] * (1 - t)];
+}
+function luminance([r, g, b]: RGB): number {
+  const a = [r, g, b].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+}
+const textOn = (rgb: RGB) => (luminance(rgb) > 0.45 ? "#1a1a1a" : "#F0EAE4");
+
+// ── typography helpers (map data → live brand faces) ───────────────────────
+type Font = { name: string; role: string; description: string };
+function fontStyle(f: Font): { fontFamily: string; fontWeight: number } {
+  if (/ogg/i.test(f.name)) return { fontFamily: "'Ogg', Georgia, serif", fontWeight: 400 };
+  return { fontFamily: "'Avenir Next', system-ui, sans-serif", fontWeight: /demi|bold/i.test(f.role) ? 600 : 500 };
+}
+function weightLabel(f: Font): string {
+  const fam = /ogg/i.test(f.name) ? "Ogg" : "Avenir";
+  const w = /demi/i.test(f.role) ? "Demi" : /bold/i.test(f.role) ? "Bold" : /medium/i.test(f.role) ? "Medium" : "Regular";
+  return `${fam} · ${w}`;
+}
+function specimenName(f: Font): string {
+  if (/ogg/i.test(f.name)) return f.name;
+  const w = /demi/i.test(f.role) ? " Demi" : /bold/i.test(f.role) ? " Bold" : /medium/i.test(f.role) ? " Medium" : "";
+  return f.name + w;
+}
+
+// Chromatic brand circle — the colour story as one gradient sphere.
 function ChromaticCircle() {
   return (
-    <div className="relative">
-      <p className="text-[13px] font-bold text-[#141414] text-center mb-8">
-        Chromatic brand circle
-      </p>
-      <div className="flex justify-center">
-        <div
-          className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full"
-          style={{
-            background: `radial-gradient(ellipse 70% 60% at 42% 38%, #d4d4a8 0%, #B1BC94 15%, #C4A265 35%, #8B7355 55%, #5a3e25 72%, #1a0f05 90%, #000000 100%)`,
-            boxShadow: `inset 0 -20px 40px rgba(0,0,0,0.3), inset 0 20px 40px rgba(200,190,160,0.15)`,
-          }}
-        />
-      </div>
-    </div>
+    <div
+      className="bs-pulse rounded-full w-[clamp(220px,30vw,340px)] h-[clamp(220px,30vw,340px)]"
+      style={{
+        background:
+          "radial-gradient(ellipse 70% 60% at 45% 40%, #cfe0c0 0%, #B1BC94 16%, #C4A265 38%, #8B7355 58%, #5a3e25 74%, #1a0f05 92%, #000 100%)",
+        boxShadow: "inset 0 -20px 44px rgba(0,0,0,0.32), inset 0 18px 40px rgba(210,200,170,0.18)",
+      }}
+    />
   );
 }
 
@@ -25,182 +62,185 @@ export function BrandSystem({
   label,
   title,
   introText,
-  subcopy,
   philosophyText,
   colors,
   fonts,
   logoConstructionImage,
   appScreenshotImage,
+  morphGlyphs,
 }: BrandSystemSection) {
-  const titleLines = title.split("\n");
   const philosophyParagraphs = philosophyText.split("\n\n");
-
-  // Split fonts into inline descriptions (first 2) and display samples (all)
-  const typeSamples = [
-    { name: "Ogg Regular", family: "'Ogg', Georgia, serif", weight: 400, size: 48, colorInfo: "Brand grey RGB: 177/188/148\n#B1BC94 CMYK 34/16/50/0" },
-    { name: "Avenir Next Medium", family: "'Avenir Next', system-ui, sans-serif", weight: 500, size: 48, colorInfo: "Brand grey RGB: 177/188/148\n#B1BC94 CMYK 34/16/50/0" },
-    { name: "Avenir Next Demi Bold", family: "'Avenir Next', system-ui, sans-serif", weight: 600, size: 48, colorInfo: "Brand grey RGB: 177/188/148\n#B1BC94 CMYK 34/16/50/0" },
-    { name: "Avenir Next Regular", family: "'Avenir Next', system-ui, sans-serif", weight: 400, size: 24, colorInfo: "Brand grey RGB: 177/188/148\n#B1BC94 CMYK 34/16/50/0" },
-  ];
+  // One condensed role note per typeface family (top), full specimens below.
+  const families: Font[] = [];
+  fonts.forEach((f) => {
+    if (!families.some((x) => x.name === f.name)) families.push(f);
+  });
+  const [logoW, logoH] = getImageDimensions(logoConstructionImage);
+  const [appW, appH] = getImageDimensions(appScreenshotImage);
 
   return (
     <section className="w-full py-8">
-      {/* Two-tone container */}
       <div className="relative rounded-[clamp(30px,5vw,75px)] overflow-hidden">
-        {/* Background panels */}
+        {/* Two-tone split ground */}
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-[48%_52%]">
-          <div className="bg-[#efebe4]" />
-          <div className="bg-[#e7e5e2]" />
+          <div className="bg-[#eeeae2]" />
+          <div className="bg-[#e6e4e0]" />
         </div>
 
-        {/* Content overlay */}
-        <div className="relative">
-          {/* ─── HEADER ROW: spans full width ─── */}
-          <div className="px-[calc(100%/12)] pt-8 pb-0 md:p-12 lg:p-14 md:pb-0">
-            {/* Section label */}
-            <span className="inline-block text-[11px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-              {label}
-            </span>
+        <div className="relative p-[clamp(24px,4.5vw,56px)] text-[#141414]">
+          {/* ── HEADER ── */}
+          <span className="inline-block font-mono text-[13px] tracking-[0.06em] uppercase px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+            {label}
+          </span>
+          <h2 className="text-[20px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-4">
+            {title.replace(/\n/g, " ")}
+          </h2>
+          <p className="text-[16px] md:text-[18px] leading-[1.875] text-[#141414]/80 max-w-[700px]">{introText}</p>
 
-            {/* Title */}
-            <h2 className="text-[20px] md:text-[24px] leading-[1.3] tracking-[-0.02em] text-[#141414] mb-0">
-              <span className="font-bold">{titleLines[0]}</span>
-              {titleLines.length > 1 && (
-                <>
-                  {" "}
-                  <span className="font-bold">{titleLines.slice(1).join(" ")}</span>
-                </>
-              )}
-            </h2>
-
-            {/* Subhead */}
-            <p className="text-[20px] md:text-[24px] font-normal leading-[1.3] tracking-[-0.02em] text-[#141414] pt-0 pb-1">
-              {introText}
-            </p>
-
-            {/* Subcopy */}
-            {subcopy && (
-              <p className="text-[16px] leading-[24px] text-[#141414] max-w-3xl pt-1 pb-8">
-                {subcopy}
-              </p>
-            )}
-          </div>
-
-          {/* ─── TWO-COLUMN CONTENT ─── */}
-          <div className="grid grid-cols-1 md:grid-cols-[48%_52%]">
-            {/* LEFT COLUMN */}
-            <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-8">
-              {/* Chromatic Brand Circle */}
-              <div className="mb-12">
-                <ChromaticCircle />
-
-                {/* Color labels */}
-                <div className="grid grid-cols-3 gap-4 mt-8">
-                  {colors.map((color, i) => (
-                    <div key={i} className={i === 0 ? "text-left" : i === colors.length - 1 ? "text-right" : "text-center"}>
-                      <p className="text-[12px] font-bold text-[#141414] mb-0.5">{color.name}</p>
-                      <p className="text-[11px] text-[#141414]/50 leading-[16px]">{color.hex}</p>
-                      <p className="text-[11px] text-[#141414]/50 leading-[16px]">{color.description}</p>
-                    </div>
-                  ))}
+          {/* ── MORPHING GLYPH · PHILOSOPHY ── */}
+          <div className="grid grid-cols-1 md:grid-cols-[46%_54%] gap-8 md:gap-10 mt-6 md:mt-2 items-start">
+            <div className="flex items-center justify-center min-h-[240px] md:min-h-[440px] overflow-visible">
+              {morphGlyphs && morphGlyphs.length > 0 && <MorphingGlyph glyphs={morphGlyphs} />}
+            </div>
+            <div className="md:pt-12">
+              <p className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#141414]/45 mb-3.5">Brand philosophy</p>
+              {philosophyParagraphs.map((p, i) => (
+                <p key={i} className="text-[14px] leading-[1.875] text-[#141414]/80 mb-6 max-w-[560px]">
+                  {p}
+                </p>
+              ))}
+              {families.map((f, i) => (
+                <div key={i} className="mb-5 max-w-[560px]">
+                  <div className="text-[14px] leading-[1.6] mb-1">
+                    <b className="font-semibold">{f.name}</b> · {f.role.split(",")[0]}
+                  </div>
+                  <div className="text-[14px] leading-[1.875] text-[#141414]/72">{f.description}</div>
                 </div>
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN */}
-            <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-8">
-              {/* Brand philosophy */}
-              <div className="mb-10">
-                <p className="text-[13px] font-bold text-[#141414] mb-3" style={{ textIndent: "4em" }}>Brand philosophy</p>
-                {philosophyParagraphs.map((p, i) => (
-                  <p
-                    key={i}
-                    className="text-[14px] leading-[24px] text-foreground/80 mb-4"
-                    style={i === 0 ? { textIndent: "4em" } : undefined}
-                  >
-                    {p}
-                  </p>
-                ))}
-              </div>
-
-              {/* Font descriptions (inline, small) */}
-              <div className="space-y-4 mb-10">
-                {fonts.map((font, i) => (
-                  <div key={i}>
-                    <p className="text-[13px] text-[#141414]">
-                      <span className="font-bold">{font.name}</span>{" "}
-                      <span className="text-foreground/60">{font.role}</span>
-                    </p>
-                    <p className="text-[13px] leading-[22px] text-foreground/70">
-                      {font.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* ─── TYPOGRAPHY SAMPLES: right-aligned, stacked large ─── */}
-          <div className="grid grid-cols-1 md:grid-cols-[48%_52%]">
-            <div className="hidden md:block" /> {/* Empty left */}
-            <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12">
-              <div className="space-y-10">
-                {typeSamples.map((sample, i) => (
-                  <div key={i}>
-                    <p
-                      className="leading-[1.05] text-[#141414] mb-2"
-                      style={{
-                        fontFamily: sample.family,
-                        fontWeight: sample.weight,
-                        fontSize: `clamp(${Math.round(sample.size * 0.65)}px, ${sample.size / 16}vw + 16px, ${sample.size}px)`,
-                      }}
-                    >
-                      {sample.name}
-                    </p>
-                    <p className="text-[11px] text-[#141414]/50 leading-[18px] whitespace-pre-line">
-                      {sample.colorInfo}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* ─── LOGO CONSTRUCTION: centered, spans both columns ─── */}
-          <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 flex justify-center">
-            {(() => {
-              const [w, h] = getImageDimensions(logoConstructionImage);
+          {/* ── COLOUR SYSTEM: full-width bands + tint columns (pulsing) ── */}
+          <p className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#141414]/45 mt-12 md:mt-16 mb-4">
+            Colour system / values
+          </p>
+          <div className="rounded-[18px] overflow-hidden">
+            {colors.map((color, i) => {
+              const rgb = hexToRgb(color.hex);
+              const txt = textOn(rgb);
+              const tints = [75, 50, 25].map((pct) => {
+                const trgb = mix(rgb, CREAM, pct / 100);
+                return { pct, bg: toHex(trgb), txt: textOn(trgb) };
+              });
               return (
-                <Image
-                  src={logoConstructionImage}
-                  alt="A.R.C. logo construction guidelines"
-                  width={w}
-                  height={h}
-                  sizes="(min-width: 768px) 800px, 100vw"
-                  className="w-full max-w-[800px] h-auto object-contain"
-                />
+                <div key={i} className="flex flex-col md:grid md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+                  <div
+                    className="bs-pulse p-5 md:p-6 min-h-[120px] md:min-h-[184px] flex flex-col justify-between"
+                    style={{ background: color.hex, color: txt, animationDelay: `${(i * 0.3).toFixed(2)}s` }}
+                  >
+                    <span className="text-[18px] md:text-[19px] font-bold">{color.name}</span>
+                    <span className="font-mono text-[10px] md:text-[11px] leading-[1.55] opacity-[0.82]">
+                      RGB {rgb.join(" ")}
+                      <br />
+                      HEX {color.hex.toUpperCase()}
+                      {color.cmyk && (
+                        <>
+                          <br />
+                          CMYK {color.cmyk}
+                        </>
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex md:contents">
+                    {tints.map((t, j) => (
+                      <div
+                        key={t.pct}
+                        className="bs-pulse flex-1 min-h-[52px] md:min-h-0 p-4"
+                        style={{ background: t.bg, color: t.txt, animationDelay: `${(i * 0.3 + (j + 1) * 0.4).toFixed(2)}s` }}
+                      >
+                        <span className="font-mono text-[10px] opacity-70">{t.pct}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               );
-            })()}
+            })}
           </div>
 
-          {/* ─── APP SCREENSHOT: below logo, native ratio ─── */}
-          {appScreenshotImage && (
-            <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 flex justify-center">
-              {(() => {
-                const [w, h] = getImageDimensions(appScreenshotImage);
-                return (
-                  <Image
-                    src={appScreenshotImage}
-                    alt="A.R.C. app interface components"
-                    width={w}
-                    height={h}
-                    sizes="(min-width: 1280px) 1000px, 100vw"
-                    className="w-full h-auto object-contain"
-                  />
-                );
-              })()}
+          {/* ── TYPOGRAPHY: weight progression ── */}
+          <p className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#141414]/45 mt-12 md:mt-16 mb-0">
+            Typography / weight
+          </p>
+          <div
+            className="grid border-y border-[#141414]/15"
+            style={{ gridTemplateColumns: `repeat(${fonts.length}, minmax(0,1fr))` }}
+          >
+            {fonts.map((f, i) => (
+              <div key={i} className={`py-6 md:py-7 px-3 md:px-4 ${i < fonts.length - 1 ? "border-r border-[#141414]/10" : ""}`}>
+                <div style={fontStyle(f)} className="text-[clamp(40px,7vw,84px)] leading-[0.9]">
+                  Aa
+                </div>
+                <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#141414]/50 mt-3">{weightLabel(f)}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── TYPE SPECIMENS · CHROMATIC CIRCLE ── */}
+          <div className="grid grid-cols-1 md:grid-cols-[46%_54%] gap-10 md:gap-12 mt-10 md:mt-12">
+            <div>
+              {fonts.map((f, i) => (
+                <div key={i} className="mb-8 md:mb-9">
+                  <div style={fontStyle(f)} className="text-[clamp(38px,5vw,52px)] leading-[1] mb-2">
+                    {specimenName(f)}
+                  </div>
+                  <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#141414]/50 mb-2.5">{f.role}</div>
+                  <div className="text-[13px] leading-[1.65] text-[#141414]/72 max-w-[440px]">{f.description}</div>
+                </div>
+              ))}
             </div>
-          )}
+            <div className="flex flex-col items-center pt-2">
+              <p className="text-[18px] tracking-[0.04em] text-[#141414]/55 mb-6 md:mb-7" style={{ fontFamily: "'Ogg', Georgia, serif" }}>
+                Chromatic Brand Circle
+              </p>
+              <ChromaticCircle />
+              <div className="grid grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-9 w-full">
+                {colors.map((c, i) => (
+                  <div key={i}>
+                    <div className="text-[13px] font-bold mb-1">{c.name}</div>
+                    <div className="font-mono text-[11px] leading-[1.5] text-[#141414]/60">
+                      {c.hex.toUpperCase()}
+                      <br />
+                      {c.description}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── LOGO CONSTRUCTION (bare on the ground) ── */}
+          <div className="flex justify-center py-10 md:py-14">
+            <Image
+              src={logoConstructionImage}
+              alt="Logo construction grid"
+              width={logoW}
+              height={logoH}
+              sizes="(min-width: 768px) 640px, 80vw"
+              className="w-[min(640px,82%)] h-auto"
+            />
+          </div>
+
+          {/* ── APP INTERFACE ── */}
+          <div className="mt-2">
+            <Image
+              src={appScreenshotImage}
+              alt="App interface components"
+              width={appW}
+              height={appH}
+              sizes="(min-width: 768px) 1000px, 100vw"
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </div>
     </section>

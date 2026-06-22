@@ -410,6 +410,8 @@ export interface BrandSystemSection extends BaseSection {
     name: string;
     hex: string;
     description: string;
+    /** Official print CMYK, e.g. "34 16 50 0". Not derivable from hex (profile-dependent). */
+    cmyk?: string;
   }[];
   fonts: {
     name: string;
@@ -418,6 +420,10 @@ export interface BrandSystemSection extends BaseSection {
   }[];
   logoConstructionImage: string;
   appScreenshotImage: string;
+  /** Big display glyph that morphs letter-to-letter (e.g. A → R → C for a.r.c.).
+   *  Each entry is a character + optional brand face (defaults to the Ogg display
+   *  face). Omit to leave the section without an animated glyph. */
+  morphGlyphs?: { char: string; font?: "ogg" | "avenir-medium" | "avenir-demi" | "avenir-bold" }[];
 }
 
 export interface SpacerSection extends BaseSection {
