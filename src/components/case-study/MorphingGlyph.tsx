@@ -29,12 +29,17 @@ export function MorphingGlyph({
   fill = "#141414",
   hold = 1300,
   morph = 1000,
+  fallbackFontFamily = "'Ogg', Georgia, serif",
+  fallbackFontWeight = 400,
 }: {
   glyphs: MorphGlyphSpec[];
   size?: string;
   fill?: string;
   hold?: number;
   morph?: number;
+  /** Face for the SSR/pre-morph fallback letter. Defaults to the Ogg display face. */
+  fallbackFontFamily?: string;
+  fallbackFontWeight?: number;
 }) {
   const spanRef = useRef<HTMLSpanElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -194,8 +199,8 @@ export function MorphingGlyph({
       <span
         ref={spanRef}
         style={{
-          fontFamily: "'Ogg', Georgia, serif",
-          fontWeight: 400,
+          fontFamily: fallbackFontFamily,
+          fontWeight: fallbackFontWeight,
           fontSize: size,
           lineHeight: 0.8,
           color: fill,

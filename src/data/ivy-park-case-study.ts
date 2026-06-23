@@ -207,11 +207,63 @@ export const ivyParkCaseStudy: CaseStudy = {
       inline: true,
     },
 
+    // ── BRAND SYSTEM — built without a brand guide ──
+    {
+      id: "brand-system",
+      type: "brand-system-volume",
+      label: "SECTION 04: BRAND SYSTEM",
+      title: "Built Without a Brand Guide",
+      introText:
+        "No palette. No type system. No rules at all. The photography and the name arrived, the rest got invented.",
+      footText:
+        "Six weeks to build the visual language while the page itself came together. The polygon, the type set at volume, the scroll that ran from grayscale into color. One system carrying a launch that lived on a single URL.",
+      philosophyHeading: "The System",
+      philosophyText:
+        "No master file ever existed. The palette, the type, the shape, all of it got set during production and stayed consistent because the group building it was small and stayed the same.\n\nWhat follows is the working kit. The letterform behind the logo, the colors as they ran, the type at full volume, and the one shape the identity leaned on.",
+      roleLines: [
+        {
+          name: "The Polygon",
+          role: "Signature device",
+          description:
+            "One hexagon, reused at every scale. It framed portraits, masked product, capped emails, and spun a few degrees per section as the page scrolled.",
+        },
+        {
+          name: "Type at Volume",
+          role: "Voice",
+          description:
+            "Big type, mixed weights, baselines knocked off the grid. Loud enough to hold its own next to the photography instead of sitting under it.",
+        },
+      ],
+      morphGlyphs: [
+        { char: "I", font: "avenir-bold" },
+        { char: "V", font: "avenir-bold" },
+        { char: "Y", font: "avenir-bold" },
+      ],
+      colors: [
+        { name: "Signal", hex: "#18A6CC", rgb: "24 166 204" },
+        { name: "Neutral", hex: "#8E9499", rgb: "142 148 153" },
+        { name: "Ground", hex: "#0E0E0E", rgb: "14 14 14" },
+      ],
+      typeComposition: {
+        ghostWord: "IVY",
+        thinLead: "Confidence is ",
+        heavyWord: "Strength",
+        lockupTop: "Courage is",
+        lockupVertical: "POWER",
+        note: "One voice that read at 12px in an email subject line and 200px across a scrolling hero. Present tense, declarative, second person when it appeared at all.",
+      },
+      polygonSignature: {
+        name: "One Shape, Endlessly Rotated",
+        description:
+          "The hexagon was the whole identity. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
+      },
+    },
+
     // ── THE CAMPAIGN ──
     {
       id: "campaign-header",
       type: "section-header",
-      label: "SECTION 04: THE CAMPAIGN",
+      label: "SECTION 05: THE CAMPAIGN",
       title: "One System,\nEvery Format.",
     },
     {
@@ -252,7 +304,7 @@ export const ivyParkCaseStudy: CaseStudy = {
     {
       id: "closing-header",
       type: "section-header",
-      label: "SECTION 05: CLOSING",
+      label: "SECTION 06: CLOSING",
       title: "Sold Out\nin Days",
     },
     {

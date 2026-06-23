@@ -243,6 +243,17 @@ html.cursor-asterisk-on * { cursor: none !important; }
   font-style: italic;
 }
 
+/* Jost Thin — hosted hairline for the Ivy Park "type at volume" lead-ins.
+   Replaces the Mac-only Helvetica Neue UltraLight so the thin weight renders
+   for everyone. Geometric, pairs with Avenir's display weight. */
+@font-face {
+  font-family: 'Jost';
+  src: url('/fonts/Jost-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-display: swap;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'Northwest';
   src: url('/fonts/NorthwestRegular.woff2') format('woff2');

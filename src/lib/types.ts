@@ -45,6 +45,7 @@ export type Section =
   | SpeedComparisonSection
   | DevTimelineSection
   | BrandSystemSection
+  | BrandSystemVolumeSection
   | SystemArchitectureSection
   | SpacerSection
   | EditorialHeadlineSection
@@ -424,6 +425,47 @@ export interface BrandSystemSection extends BaseSection {
    *  Each entry is a character + optional brand face (defaults to the Ogg display
    *  face). Omit to leave the section without an animated glyph. */
   morphGlyphs?: { char: string; font?: "ogg" | "avenir-medium" | "avenir-demi" | "avenir-bold" }[];
+}
+
+/** Editorial "type at volume" variant of the brand system — for case studies built
+ *  without a formal brand guide (e.g. Ivy Park). Same two-tone panel + morph + palette
+ *  as {@link BrandSystemSection}, but the lower half is a graphic type composition and
+ *  a rotating polygon lattice instead of specimen grids + logo construction. */
+export interface BrandSystemVolumeSection extends BaseSection {
+  type: "brand-system-volume";
+  label: string;
+  title: string;
+  /** 24px subhead line under the title. */
+  introText: string;
+  /** 14px footnote paragraph under the subhead. */
+  footText: string;
+  /** Heading over the philosophy column (e.g. "The System"). */
+  philosophyHeading: string;
+  /** Body paragraphs, split on blank lines. */
+  philosophyText: string;
+  /** Concept role lines under the philosophy copy (name · role + description). */
+  roleLines: { name: string; role: string; description: string }[];
+  /** Big display glyph that morphs letter-to-letter (e.g. I → V → Y). */
+  morphGlyphs: { char: string; font?: "ogg" | "avenir-medium" | "avenir-demi" | "avenir-bold" }[];
+  /** Palette bands "as used" — each renders a lead cell + 75/50/25 tints. */
+  colors: { name: string; hex: string; rgb: string }[];
+  /** The graphic "type at volume" composition. */
+  typeComposition: {
+    /** Oversized ghost word behind the composition (e.g. "IVY"). */
+    ghostWord: string;
+    /** Thin lead-in run across the top (e.g. "Confidence is "). */
+    thinLead: string;
+    /** Heavy word completing the line (e.g. "Strength"). */
+    heavyWord: string;
+    /** Top line of the right-hand lockup (e.g. "Courage is"). */
+    lockupTop: string;
+    /** Vertical heavy word under the lockup (e.g. "POWER"). */
+    lockupVertical: string;
+    /** Small note paragraph, top-left. */
+    note: string;
+  };
+  /** Copy centred over the rotating polygon lattice. */
+  polygonSignature: { name: string; description: string };
 }
 
 export interface SpacerSection extends BaseSection {
