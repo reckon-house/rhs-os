@@ -88,14 +88,14 @@ export function BrandSystem({
         </div>
 
         <div className="relative p-[clamp(24px,4.5vw,56px)] text-[#141414]">
-          {/* ── HEADER ── */}
-          <span className="inline-block font-mono text-[13px] tracking-[0.06em] uppercase px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          {/* ── HEADER — matched to live SectionHeader + TextBlock(subhead) ── */}
+          <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
             {label}
           </span>
-          <h2 className="text-[20px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-4">
+          <h2 className="text-[16px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
             {title.replace(/\n/g, " ")}
           </h2>
-          <p className="text-[16px] md:text-[18px] leading-[1.875] text-[#141414]/80 max-w-[700px]">{introText}</p>
+          <p className="text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em]">{introText}</p>
 
           {/* ── MORPHING GLYPH · PHILOSOPHY ── */}
           <div className="grid grid-cols-1 md:grid-cols-[46%_54%] gap-8 md:gap-10 mt-6 md:mt-2 items-start">
