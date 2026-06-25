@@ -37,19 +37,25 @@ function seededRandom(seed: number) {
   };
 }
 
+// Round trig-derived coordinates so SSR (Node) and the client (browser) emit
+// identical attribute strings. cos/sin differ by ~1 ULP across V8/libm builds,
+// which otherwise trips React's hydration mismatch. (Same fix as the homepage
+// SpringSolve/diagram components — see profile 2026-06-15 "SSR LESSON".)
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 function describeArc(
   cx: number, cy: number,
   rOuter: number, rInner: number,
   startAngle: number, endAngle: number,
 ): string {
-  const x1o = cx + Math.cos(startAngle) * rOuter;
-  const y1o = cy + Math.sin(startAngle) * rOuter;
-  const x2o = cx + Math.cos(endAngle) * rOuter;
-  const y2o = cy + Math.sin(endAngle) * rOuter;
-  const x1i = cx + Math.cos(endAngle) * rInner;
-  const y1i = cy + Math.sin(endAngle) * rInner;
-  const x2i = cx + Math.cos(startAngle) * rInner;
-  const y2i = cy + Math.sin(startAngle) * rInner;
+  const x1o = r2(cx + Math.cos(startAngle) * rOuter);
+  const y1o = r2(cy + Math.sin(startAngle) * rOuter);
+  const x2o = r2(cx + Math.cos(endAngle) * rOuter);
+  const y2o = r2(cy + Math.sin(endAngle) * rOuter);
+  const x1i = r2(cx + Math.cos(endAngle) * rInner);
+  const y1i = r2(cy + Math.sin(endAngle) * rInner);
+  const x2i = r2(cx + Math.cos(startAngle) * rInner);
+  const y2i = r2(cy + Math.sin(startAngle) * rInner);
   const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
   return [
     `M ${x1o} ${y1o}`,
@@ -108,8 +114,8 @@ export function CampaignBlastRadius() {
     const R_VIS = 110;
     VISUAL_ELEMENTS.forEach((ve, vi) => {
       const a = -Math.PI / 2 + (Math.PI * 2 / VISUAL_ELEMENTS.length) * vi;
-      const vx = cx + Math.cos(a) * R_VIS;
-      const vy = cy + Math.sin(a) * R_VIS;
+      const vx = r2(cx + Math.cos(a) * R_VIS);
+      const vy = r2(cy + Math.sin(a) * R_VIS);
       els.push(
         <circle key={`ve-${vi}`} cx={vx} cy={vy} r={4} fill="#141414" fillOpacity={0.3} />,
         <text key={`ve-t-${vi}`} x={vx} y={vy - 10} textAnchor="middle" fill="#141414" fillOpacity={0.3} fontSize="6.5" fontFamily="var(--font-satoshi), sans-serif" fontWeight="500" letterSpacing="0.04em">
@@ -129,10 +135,10 @@ export function CampaignBlastRadius() {
         const rayAngle = ch.startAngle + rng() * span;
         const innerR = 60 + rng() * 30;
         const outerR = 300 + rng() * 80;
-        const x1 = cx + Math.cos(rayAngle) * innerR;
-        const y1 = cy + Math.sin(rayAngle) * innerR;
-        const x2 = cx + Math.cos(rayAngle) * outerR;
-        const y2 = cy + Math.sin(rayAngle) * outerR;
+        const x1 = r2(cx + Math.cos(rayAngle) * innerR);
+        const y1 = r2(cy + Math.sin(rayAngle) * innerR);
+        const x2 = r2(cx + Math.cos(rayAngle) * outerR);
+        const y2 = r2(cy + Math.sin(rayAngle) * outerR);
 
         // Color based on which visual element connects
         const veIdx = ch.elements[Math.floor(rng() * ch.elements.length)];
@@ -150,10 +156,10 @@ export function CampaignBlastRadius() {
       }
 
       // Thicker main ray per channel
-      const mx1 = cx + Math.cos(midAngle) * 60;
-      const my1 = cy + Math.sin(midAngle) * 60;
-      const mx2 = cx + Math.cos(midAngle) * 345;
-      const my2 = cy + Math.sin(midAngle) * 345;
+      const mx1 = r2(cx + Math.cos(midAngle) * 60);
+      const my1 = r2(cy + Math.sin(midAngle) * 60);
+      const mx2 = r2(cx + Math.cos(midAngle) * 345);
+      const my2 = r2(cy + Math.sin(midAngle) * 345);
       els.push(
         <line
           key={`main-ray-${ci}`}
@@ -173,8 +179,8 @@ export function CampaignBlastRadius() {
       els.push(
         <circle
           key={`p-${i}`}
-          cx={cx + Math.cos(a) * r}
-          cy={cy + Math.sin(a) * r}
+          cx={r2(cx + Math.cos(a) * r)}
+          cy={r2(cy + Math.sin(a) * r)}
           r={0.3 + rng() * 2}
           fill={isBlue ? "#0088cc" : "#141414"}
           fillOpacity={0.03 + rng() * 0.08}
@@ -259,8 +265,8 @@ export function CampaignBlastRadius() {
         els.push(
           <circle
             key={`rim-${idx++}`}
-            cx={cx + Math.cos(a) * r}
-            cy={cy + Math.sin(a) * r}
+            cx={r2(cx + Math.cos(a) * r)}
+            cy={r2(cy + Math.sin(a) * r)}
             r={0.4 + rng() * 1.5}
             fill="#141414"
             fillOpacity={0.08 + rng() * 0.15}
@@ -285,20 +291,20 @@ export function CampaignBlastRadius() {
         const R_IL = R_LABEL - 2;
         const arcStart = midAngle + textArc / 2;
         const arcEnd = midAngle - textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_IL;
-        const y1 = cy + Math.sin(arcStart) * R_IL;
-        const x2 = cx + Math.cos(arcEnd) * R_IL;
-        const y2 = cy + Math.sin(arcEnd) * R_IL;
+        const x1 = r2(cx + Math.cos(arcStart) * R_IL);
+        const y1 = r2(cy + Math.sin(arcStart) * R_IL);
+        const x2 = r2(cx + Math.cos(arcEnd) * R_IL);
+        const y2 = r2(cy + Math.sin(arcEnd) * R_IL);
         labelDefs.push(
           <path key={`blp-${i}`} id={`blastLabel-${i}`} d={`M ${x1} ${y1} A ${R_IL} ${R_IL} 0 0 0 ${x2} ${y2}`} fill="none" stroke="none" />
         );
       } else {
         const arcStart = midAngle - textArc / 2;
         const arcEnd = midAngle + textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_LABEL;
-        const y1 = cy + Math.sin(arcStart) * R_LABEL;
-        const x2 = cx + Math.cos(arcEnd) * R_LABEL;
-        const y2 = cy + Math.sin(arcEnd) * R_LABEL;
+        const x1 = r2(cx + Math.cos(arcStart) * R_LABEL);
+        const y1 = r2(cy + Math.sin(arcStart) * R_LABEL);
+        const x2 = r2(cx + Math.cos(arcEnd) * R_LABEL);
+        const y2 = r2(cy + Math.sin(arcEnd) * R_LABEL);
         labelDefs.push(
           <path key={`blp-${i}`} id={`blastLabel-${i}`} d={`M ${x1} ${y1} A ${R_LABEL} ${R_LABEL} 0 0 1 ${x2} ${y2}`} fill="none" stroke="none" />
         );
