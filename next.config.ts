@@ -2,7 +2,21 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV === "development";
 
+// Static assets get new filenames whenever they're replaced (see images note
+// below), so a 1-year immutable browser cache is safe and means repeat
+// visitors serve fonts/images from their own cache instead of re-hitting
+// Vercel — which cuts the monthly "Edge Requests" count, not just bandwidth.
+const LONG_CACHE = "public, max-age=31536000, immutable";
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
+      { source: "/case-studies/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
+      { source: "/nav/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
+      { source: "/masks/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
+    ];
+  },
   images: {
     // Allow our hero/spread widths so /_next/image doesn't 400 when components
     // request 2400px (default deviceSizes top out at 3840 but skip 2400).

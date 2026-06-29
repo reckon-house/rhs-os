@@ -5,9 +5,10 @@
  * Apple Music track. Drops into masonry grids alongside inspiration
  * imagery so it reads as just another shelf item, not a chrome chip.
  *
- * Polls /api/now-playing every 60 seconds. Renders nothing until the
- * first fetch settles or if no track is available — keeps the layout
- * from flashing an empty state.
+ * Polls /api/now-playing every 120 seconds, and pauses entirely while the
+ * tab is hidden so an abandoned background tab stops hitting the API.
+ * Renders nothing until the first fetch settles or if no track is
+ * available — keeps the layout from flashing an empty state.
  */
 
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ type Track = {
   trackId: string;
 };
 
-const POLL_INTERVAL_MS = 60_000;
+const POLL_INTERVAL_MS = 120_000;
 
 export function NowPlaying() {
   const [track, setTrack] = useState<Track | null>(null);
@@ -32,6 +33,9 @@ export function NowPlaying() {
     let cancelled = false;
 
     const fetchNow = async () => {
+      // Skip while the tab is backgrounded — otherwise an abandoned tab
+      // hits the API forever. Resumes via the visibilitychange handler.
+      if (document.hidden) return;
       try {
         const res = await fetch("/api/now-playing");
         if (!res.ok) {
@@ -50,10 +54,15 @@ export function NowPlaying() {
 
     fetchNow();
     const interval = setInterval(fetchNow, POLL_INTERVAL_MS);
+    const onVisible = () => {
+      if (!document.hidden) fetchNow();
+    };
+    document.addEventListener("visibilitychange", onVisible);
 
     return () => {
       cancelled = true;
       clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
 

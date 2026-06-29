@@ -12,7 +12,8 @@
  *   - Click-through to the Apple Music URL (opens in new tab)
  *
  * Visually identical to Thumb so it integrates seamlessly. Polls
- * /api/now-playing every 60 seconds.
+ * /api/now-playing every 120 seconds, paused while the tab is hidden so
+ * an abandoned background tab stops hitting the API.
  */
 
 import Link from "next/link";
@@ -28,7 +29,7 @@ type Track = {
   appleMusicUrl: string;
 };
 
-const POLL_INTERVAL_MS = 60_000;
+const POLL_INTERVAL_MS = 120_000;
 
 export function NowPlayingThumb({ fallback }: { fallback: Project }) {
   const [track, setTrack] = useState<Track | null>(null);
@@ -37,6 +38,9 @@ export function NowPlayingThumb({ fallback }: { fallback: Project }) {
     let cancelled = false;
 
     const fetchNow = async () => {
+      // Skip while the tab is backgrounded — otherwise an abandoned tab
+      // hits the API forever. Resumes via the visibilitychange handler.
+      if (document.hidden) return;
       try {
         const res = await fetch("/api/now-playing");
         if (!res.ok) return;
@@ -49,9 +53,14 @@ export function NowPlayingThumb({ fallback }: { fallback: Project }) {
 
     fetchNow();
     const interval = setInterval(fetchNow, POLL_INTERVAL_MS);
+    const onVisible = () => {
+      if (!document.hidden) fetchNow();
+    };
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
       cancelled = true;
       clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
 
