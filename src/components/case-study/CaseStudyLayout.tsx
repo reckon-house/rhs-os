@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { CaseStudy, Section } from "@/lib/types";
 import { SectionRenderer } from "./SectionRenderer";
+import { ScrambleOnView } from "@/components/fx/ScrambleText";
 
 /** Map section types to grid column placement.
  *  Visual/full-width sections span all 12 columns.
@@ -120,9 +121,14 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
           <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
           <span className="font-bold">{study.title}</span>
         </nav>
-        <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
-          House OS. Beta.
-        </span>
+        <a
+          href="https://www.awwwards.com/sites/reckon-house-staples"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+        >
+          <ScrambleOnView text="AWWWARDS NOMINEE" />
+        </a>
       </div>
     </div>
     <article className="relative w-full max-w-[1100px] mx-auto pb-24">

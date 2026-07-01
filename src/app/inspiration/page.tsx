@@ -77,9 +77,14 @@ export default function InspirationPage() {
             <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
             <span className="font-bold">Inspiration</span>
           </nav>
-          <span className="hidden md:inline text-[12px] leading-[1] tracking-normal text-[#141414] shrink-0">
-            House OS. Beta.
-          </span>
+          <a
+            href="https://www.awwwards.com/sites/reckon-house-staples"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+          >
+            <ScrambleOnView text="AWWWARDS NOMINEE" />
+          </a>
         </div>
       </div>
 
