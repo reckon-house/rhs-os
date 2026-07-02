@@ -42,7 +42,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "meta",
       title: "Ivy Park\nby Beyoncé",
       subtitle:
-        "Nordstrom held the exclusive US launch. An NDA before the brief landed, six weeks from moodboard to live, and most of the product gone within days.",
+        "Nordstrom held the exclusive US launch. Six weeks from moodboard to live, and most of the product gone within days.",
       field: "Creative Direction  Campaign Design  Experience Design",
       author: "Jeremy Prasatik",
       published: "2016",
@@ -57,7 +57,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         { label: "Built", value: "Scrolling brand experience, launch emails, social, in-store signage" },
         { label: "Scope", value: "Creative direction, experience design, copywriting" },
         { label: "Stack", value: "Nordstrom CMS, custom components, HTML/CSS/JS" },
-        { label: "Angle", value: "Nordstrom held the only US partnership, so the website was the entire launch. One polygon held the page, six weeks NDA to live." },
+        { label: "Angle", value: "Nordstrom held the only US partnership, so the website was the entire launch. One polygon, six weeks, no margin." },
       ],
       abstract:
         "Beyoncé's first activewear line, with Nordstrom holding the exclusive US retail partnership. That meant the digital experience had to carry the full weight of the launch - no other retailer had product, no other site told the story, and the website became the storefront, lookbook, and campaign rolled into one URL.\n\nFour weeks to moodboards, wireframes, and a concept pitch, then two weeks to build and ship. The brief arrived under NDA before the team had cleared their schedules. Daily calls with Ivy Park while direction locked. Photography supplied: black-and-white athlete portraits and color product against blue and gray backgrounds, with everything else - typography, layout, copy, animation, interaction - left open. That kind of latitude on a project this visible doesn't happen often.\n\nThe polygon emerged during concepting as a way to break the rectangular grid the photography sat in. Angled, rotated, animated on scroll, it carried from hero banner through product carousels into email headers. Custom CMS components built for the project entered Nordstrom's shared library and powered other launches for two years. 95% of products sold out within days.",
@@ -81,7 +81,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A cleared calendar and an NDA before the brief landed, Beyoncé's name on the project, a timeline that left no margin. Four weeks to pitch, two to ship.",
+        "Sign first, find out after. What the signature bought: Beyoncé's name on the project, and a schedule with no slack in it.",
       group: { name: "brief" },
     },
     {
@@ -90,7 +90,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Nordstrom held the only US retail partnership, which made the website something it usually isn't - the entire launch surface. Brand story, product showcase, campaign rollout, all on one page that hadn't existed yet. The digital experience was the launch.",
+        "Nobody in activewear had tried the position Ivy Park was staking out, luxury fashion on one side, athletic performance on the other. No precedent to reference, no competitor to copy. The design had to land in that gap without leaning toward either side.",
       group: { name: "brief" },
     },
     {
@@ -100,17 +100,17 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Timeline",
           content:
-            "Week one: references, moodboards, competitive audit. Nobody in activewear had done what Ivy Park was attempting. The brand positioned itself between luxury fashion and athletic performance, and the digital experience needed to land in that gap without leaning too far toward either side.\n\nWeeks two through four: wireframes, design concepts, copywriting, motion studies, everything presented to Beyoncé's creative team for approval. Daily calls, fast feedback, revisions turned around overnight.",
+            "Week one: references, moodboards, competitive audit. Weeks two through four: wireframes, design concepts, copywriting, motion studies, all of it presented to Beyoncé's creative team, revisions turned around overnight. Weeks five and six: build and ship.",
         },
         {
           title: "The Freedom",
           content:
-            "Beyoncé's team supplied the photography - black-and-white athlete portraits, color product shots against blue and gray backgrounds, editorial in tone with range across body types and ethnicities.\n\nEverything else was open. Typography, layout, copy, animation, interaction - that kind of latitude on a project this visible doesn't happen often. The type went larger than expected, motion lived in every scroll position, and photography got room to breathe.",
+            "The portraits came editorial in tone, with range across body types and ethnicities. Everything around them was open territory.\n\nSo the type went larger than expected, motion lived in every scroll position, and the photography kept room to breathe.",
         },
         {
           title: "The Scope",
           content:
-            "One scrolling brand experience, a series of launch emails timed to the drop, digital marketing across Nordstrom's owned channels, social assets formatted for every platform, and in-store signage for physical locations carrying the line.\n\nSix deliverable categories, all built on the same elements - the polygon, the typographic cadence, the progression from black-and-white into color.",
+            "One scrolling brand experience. Launch emails timed to the drop. Digital marketing across Nordstrom's owned channels, social cut for each platform, in-store signage for the locations carrying the line.\n\nSix deliverable categories built from the same handful of elements.",
         },
       ],
       group: { name: "brief" },
@@ -137,7 +137,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A single scrolling page doing the work of a website, a lookbook, and a launch trailer at once. The polygon emerged during concepting as a way to break the rectangular grid the photography sat in. From there it spread.",
+        "Every photo came in a rectangle. One angled shape started cutting portraits out of the grid, then took over the page.",
     },
     {
       id: "experience-footnote",
@@ -145,7 +145,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Started as a crop mask for portraits. Angled edges against the rectangular photo grid gave athlete imagery a geometric tension that matched the brand's positioning between sport and fashion. The shape animated on scroll, rotated between sections, scaled from thumbnail to full-bleed. One geometric idea handling framing, motion, and signature.",
+        "Started as a crop mask for portraits. Angled edges against straight photography gave the athlete imagery the exact tension the positioning called for. One geometric idea handling framing, motion, and signature.",
     },
 
     // ── EXPERIENCE SCREENSHOT ──
@@ -164,17 +164,17 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Polygon",
           content:
-            "A hexagonal frame. Angled, rotated, sometimes cropping a portrait tight to the jawline, sometimes opening wide enough to hold a full figure. The shape carried from the hero banner through product carousels and into email headers.\n\nAnimated on scroll. The polygon rotated slowly as the page moved, giving flat photography a sense of depth. A single CSS transform doing real design work.",
+            "A hexagonal frame, sometimes cropping a portrait tight to the jawline, sometimes opening wide enough to hold a full figure.\n\nOn scroll it rotated slowly, giving flat photography a sense of depth. A single CSS transform doing real design work.",
         },
         {
           title: "Typography at Volume",
           content:
-            "\"Confidence is Strength.\" Set large, overlapping imagery, running across the full viewport width with mixed weights and staggered baselines. The type wasn't captioning the photos - it competed with them for attention.\n\nThe brand voice came together during production. Short declarative statements, present tense, second person when it appeared at all. \"Ivy Park is for everybody. And every body.\" Copy that worked at 12px in an email subject line and at 200px across a scrolling hero.",
+            "\"Confidence is Strength.\" The voice got written during production, line by line, while the pages took shape. Short declarative lines, present tense, speaking straight to the reader when it spoke to anyone at all.",
         },
         {
           title: "CMS Legacy",
           content:
-            "The experience required components that didn't exist in Nordstrom's CMS - parallax modules, animated polygon masks, full-bleed video sections with scroll-triggered playback, type lockups with responsive scaling.\n\nBuilt them. After launch, they entered the shared library, and other brand launches and campaign pages used them for two years. The Ivy Park project paid for itself in reusable infrastructure.",
+            "The experience required components that didn't exist in Nordstrom's CMS - parallax modules, animated polygon masks, full-bleed video with scroll-triggered playback, type lockups with responsive scaling.\n\nBuilt them. The Ivy Park project paid for itself in reusable infrastructure.",
         },
       ],
     },
@@ -195,7 +195,7 @@ export const ivyParkCaseStudy: CaseStudy = {
     {
       id: "headline-polygon",
       type: "editorial-headline",
-      text: "Confidence is Strength.\nCourage is Power.",
+      text: "For everybody\nand every body",
     },
 
     // ── MOBILE HERO ──
@@ -225,7 +225,7 @@ export const ivyParkCaseStudy: CaseStudy = {
           name: "The Polygon",
           role: "Signature device",
           description:
-            "One hexagon, reused at every scale. It framed portraits, masked product, capped emails, and spun a few degrees per section as the page scrolled.",
+            "No lockup rules, no clear-space diagram. Repetition did the job a guide would have.",
         },
         {
           name: "Type at Volume",
@@ -250,7 +250,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         heavyWord: "Strength",
         lockupTop: "Courage is",
         lockupVertical: "POWER",
-        note: "One voice that read at 12px in an email subject line and 200px across a scrolling hero. Present tense, declarative, second person when it appeared at all.",
+        note: "One voice that read at 12px in an email subject line and 200px across a scrolling hero.",
       },
       polygonSignature: {
         name: "One Shape, Endlessly Rotated",
@@ -271,7 +271,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The scrolling page carried the brand, and the campaign pushed the same elements out across every channel Nordstrom owned - launch emails, digital ads, social assets, in-store screens.",
+        "The page set the rules. Everything downstream inherited them.",
     },
     {
       id: "campaign-footnote",
@@ -312,7 +312,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Six weeks from NDA to live. 95% of product gone within days.",
+        "Live in six weeks. 95% of the product gone in less.",
     },
     {
       id: "closing",
@@ -326,7 +326,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
       content:
-        "Beyoncé's team brought the photography and the brand name. The creative direction, typography, layout, motion, copy, and rollout happened in a Nordstrom office with a small team and a hard deadline. The brief was open enough to allow real decisions and tight enough on time to require them.\n\nThe polygon, the type at scale, the progression from black-and-white into color - none of it came from a brand guide. There wasn't one.\n\nAfter launch, Beyoncé sent the team a personal thank-you video. That part stays off social.",
+        "The creative direction, typography, layout, motion, copy, and rollout happened in a Nordstrom office with a small team and a hard deadline. The brief was open enough to allow real decisions and tight enough on time to require them.\n\nThe polygon, the type at scale, the progression from black-and-white into color - none of it came from a brand guide. There wasn't one.\n\nAfter launch, Beyoncé sent the team a personal thank-you video. That part stays off social.",
     },
   ],
 };

@@ -161,6 +161,13 @@ These apply to every case study, every time. Non-negotiable.
 - Footnote (`size: "base", fullWidth`): supporting detail, methodology, context, caveats.
 - They must NOT say the same thing in different words.
 
+**Allocation rules — one fact, one home (added July 2026, first applied to Ivy Park):**
+- Every fact lives at exactly one altitude. The abstract stays dense and stand-alone (that's its job), but every section below it must ADVANCE past the abstract with new material, never re-tell it. No sentence appears twice in a study, verbatim or in light disguise.
+- The subhead spine: subtitle → section subheads → closing subhead, read alone, must tell the complete story with zero repeats. Subheads are story beats, not topic summaries.
+- Section headers own their punchlines. If the header says it, the subhead directly under it can't reuse those words.
+- Bespoke sections (brand-system, viz components) count as altitudes too. When a new section borrows lines from an existing column, reallocate: one keeps the fact, the other gets rewritten. The Ivy Park brand-system initially duplicated two Typography-column lines this way.
+- Skim test before shipping: read only the big type top to bottom. If it repeats or stalls, something is in the wrong home.
+
 **Abstract:** State problem, solution, and builder context in three dense paragraphs. Numbers, tools, timelines. No filler. Like a journal abstract. Dense enough to understand the project without scrolling further.
 
 **Stats:** Real numbers only. Round numbers read as honest. "$49,630" is more credible than "$50,000." Always specify what's measured.
@@ -175,8 +182,12 @@ These apply to every case study, every time. Non-negotiable.
 
 Live tracking of cross-study patterns. Update as studies are added or revised.
 
-**Last updated:** April 2026
-**Studies in portfolio:** A.R.C., Sally Marketing OS, Robert Rodriguez, Typography & Patterns, Hill Country Kitchen
+**Last updated:** July 2026
+**Studies in portfolio:** A.R.C., Sally Marketing OS, Robert Rodriguez, Typography & Patterns, Hill Country Kitchen (+ 20+ untracked — audit as revised)
+
+**Allocation pass (one fact, one home):**
+- Ivy Park: DONE (July 2026). Before: NDA fact ×5, two verbatim duplicate sentences, "website was the entire launch" ×4. Reference study for the pattern.
+- All other studies: pending. A.R.C. next (it's the template).
 
 **Crutch words at capacity:**
 - "Constraint" — appears in nearly every study. Alternatives: "the restriction," "the limitation," "working within [specific parameter]," or just state what was limited without naming it.
