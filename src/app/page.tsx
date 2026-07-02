@@ -16,7 +16,7 @@ const CASE_STUDY_HEROES = [
   { src: "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",                                                          alt: "Robert Rodriguez at Neiman Marcus" },
   { src: "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",                                                                                                                              alt: "Black & white typography & patterns" },
   { src: "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",                                                                                                                                     alt: "Hill Country home kitchen" },
-  { src: "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",                                                                                                                                                alt: "Ivy Park by Beyonce" },
+  { src: "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",                                                                                                                                                alt: "Ivy Park by Beyoncé" },
   { src: "/case-studies/branding-graphics/okina.jpg",                                                                                                                                                                                   alt: "Okina brand identity" },
   { src: "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",                                                                                                                                      alt: "Hill Country home primary bath" },
   { src: "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",                                                                                                                                 alt: "The Fairview suite" },
@@ -129,7 +129,7 @@ function Headline({ children }: { children: React.ReactNode }) {
 const FEATURED_BRANDS: { name: string; logo?: string; scale?: number; asIs?: boolean; tracked?: boolean }[] = [
   { name: "Crate & Barrel", logo: "/brands/crate-barrel.svg" },
   { name: "Nordstrom", logo: "/brands/nordstrom.svg", scale: 0.7 },
-  { name: "Ivy Park by Beyonce", logo: "/brands/ivy-park.svg" },
+  { name: "Ivy Park by Beyoncé", logo: "/brands/ivy-park.svg" },
   { name: "Rejuvenation", logo: "/brands/rejuvenation.png", scale: 0.75 },
   { name: "Lostine Home", logo: "/brands/lostine.avif" },
   { name: "Neiman Marcus", logo: "/brands/neiman-marcus.svg" },
@@ -275,12 +275,12 @@ function HomeContent() {
 
         {/* Disciplines paragraph — flows directly under the headline as one block */}
         <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The work spans apps and software, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and content infrastructure. The disciplines overlap more than they separate.
+          The work spans apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and marketing platforms. The disciplines overlap more than they separate.
         </p>
 
         {/* Closing paragraph — personal lens, smaller secondary line treatment */}
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          The thinking and the making stay close.
+          Same desk for all of it.
         </p>
 
         {/* Meta fields — left-aligned, constrained width */}
@@ -323,10 +323,10 @@ function HomeContent() {
           <div className="hidden md:block md:w-[160px] md:h-[160px]" />
           <div className="hidden md:block md:w-[160px]" />
           <div className="hidden md:flex md:absolute md:left-0 md:w-1/2 md:h-[160px] md:items-center md:justify-center md:pointer-events-none">
-            <Headline>Designing digital and physical spaces</Headline>
+            <Headline>twenty-four years of this</Headline>
           </div>
           <div className="hp-span col-span-2 py-2 text-center md:hidden">
-            <Headline>Designing digital and physical spaces</Headline>
+            <Headline>twenty-four years of this</Headline>
           </div>
           <Thumb project={p.robertRod} />
           <Thumb project={p.nordstromPersonal} />

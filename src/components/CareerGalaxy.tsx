@@ -165,13 +165,13 @@ export function CareerGalaxy() {
       {/* Heading — case-study MetaBlock pattern: pill + title + subtitle + meta + abstract */}
       <div className="mb-12">
         <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-          <ScrambleOnView text="SECTION 02: DATA VISUALIZATION" />
+          <ScrambleOnView text="SECTION 02: CAREER DATA" />
         </span>
         <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          For 20+ years I&apos;ve worked across digital and physical spaces.
+          Twenty-four years of work on one timeline.
         </h2>
         <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          The chart below is what that actually looks like.
+          Sized by impact, colored by discipline. No highlights reel.
         </p>
 
         {/* Meta fields — left column, narrow */}
@@ -182,7 +182,7 @@ export function CareerGalaxy() {
           </p>
           <p>
             <span className="font-bold">Span </span>
-            2002 — 2026  Projects: 32  Status: Live
+            2002–2026  Projects: 33  Status: Live
           </p>
           <p>
             <span className="font-bold">Classification </span>
@@ -194,10 +194,10 @@ export function CareerGalaxy() {
         <div className="mt-6 md:mt-4 md:ml-[48%] text-body text-foreground/80">
           <p className="font-bold text-[#141414] indent-[4em]">Abstract</p>
           <p className="indent-[4em]">
-            Apps, campaigns, brand systems, custom homes - all of it plotted on a single timeline, sized by impact, colored by discipline. No filters, no highlights reel. Just the shape of one career&apos;s output, the way it really happened.
+            Apps, campaigns, brand systems, custom homes. The chart doesn&apos;t separate them because the years didn&apos;t. Just the shape of one career&apos;s output, the way it really happened.
           </p>
           <p className="mt-4">
-            Looking at it now, I&apos;m not sure I would have predicted any of this twenty years ago. The shape just kept happening. An interior project would sit next to a digital launch the same year. An app would ship near a kitchen makeover that was running in parallel. Disciplines I thought were separate kept showing up at the same moments.
+            Looking at it now, I&apos;m not sure I would have predicted any of this twenty years ago. The shape just kept happening. An interior project would sit next to a digital launch the same year. An app would ship while a kitchen remodel ran in parallel. Disciplines I thought were separate kept showing up at the same time.
           </p>
         </div>
       </div>
@@ -211,7 +211,7 @@ export function CareerGalaxy() {
             2002 — 2026
           </div>
           <div className="text-[8px] text-[#AAA] mt-1 leading-relaxed" style={{ fontFamily: "var(--font-satoshi), sans-serif" }}>
-            32 projects · 20+ disciplines<br />
+            33 projects · 20+ disciplines<br />
             Size = impact · Position = chronological
           </div>
         </div>

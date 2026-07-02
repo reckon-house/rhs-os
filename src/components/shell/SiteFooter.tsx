@@ -37,7 +37,7 @@ export function SiteFooter() {
             style={{ padding: "clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px) 0" }}
           >
             <h2 className="text-[#F0EAE4] text-[44px] md:text-[88px] font-light leading-[1.05] tracking-[-0.03em] text-center whitespace-pre-line py-12 md:py-20">
-              {"Designing across\nspace and material."}
+              {"The thinking and\nthe making stay close."}
             </h2>
 
             <CapabilityWebHeader dark />

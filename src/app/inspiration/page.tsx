@@ -105,7 +105,7 @@ export default function InspirationPage() {
 
         {/* Body — flows directly under the headline as one block, like the homepage */}
         <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The people, the work, the rooms - the things that show up in everything I make, whether I notice or not. Plus the occasional piece I write about why they matter.
+          The people, the work, the rooms - the things that show up in everything I make, whether I notice or not.
         </p>
 
         {/* Closing line — quieter, secondary lens. Acts as the tagline that
@@ -117,34 +117,34 @@ export default function InspirationPage() {
         {/* Meta fields — matches homepage pattern */}
         <div className="text-spec text-foreground/90">
           <p>
-            <span className="font-bold">Field: </span>
+            <span className="font-bold">Field </span>
             Visual Reference
           </p>
           <p>
-            <span className="font-bold">Saved by: </span>
+            <span className="font-bold">Saved by </span>
             Jeremy Prasatik
-            {" | Updated: "}
+            {"  Updated: "}
             Regularly
-            {" | Status: "}
+            {"  Status: "}
             Personal
           </p>
           <p>
-            <span className="font-bold">Classification: </span>
-            People | Rooms | Objects | Words
+            <span className="font-bold">Classification </span>
+            People  Rooms  Objects  Words
           </p>
           <p>
-            <span className="font-bold">Rights: </span>
+            <span className="font-bold">Rights </span>
             Not mine, no claim made, all credit to the makers
           </p>
           <p>
-            <span className="font-bold">Connect: </span>
+            <span className="font-bold">Connect </span>
             <a
               href="mailto:hello@reckon.house"
               className="underline underline-offset-2 hover:opacity-70 transition-opacity"
             >
               hello@reckon.house
             </a>
-            {" | 214.697.4578"}
+            {"  214.697.4578"}
           </p>
         </div>
       </section>

@@ -215,10 +215,10 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
       <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
         <p className={`font-bold ${inkClass} indent-[4em]`}>The Through-Line</p>
         <p className="indent-[4em]">
-          The work means a lot of things at once - writing the code that ships an app, picking the marble that goes in a kitchen, art directing a campaign shoot, building a brand voice from scratch, designing the AI tooling that runs marketing operations at enterprise scale. These aren&apos;t separate jobs, they&apos;re the same job showing up in different rooms.
+          The work means a lot of things at once - shipping the code behind an app, picking the marble for a kitchen, directing a campaign shoot. These aren&apos;t separate jobs. They&apos;re the same job showing up in different rooms.
         </p>
         <p className="mt-4">
-          What makes it work is the no-handoff part. Wireframing and coding happen in the same week. Picking kitchen finishes and coordinating the install happen on the same site visit. The thinking and the making stay close to each other, which is why the disciplines stay connected instead of competing for attention.
+          Wireframes and code happen in the same week. Material picks and jobsite walks belong to the same person. The disciplines stay connected because they never get separated in the first place.
         </p>
       </div>
     </div>
