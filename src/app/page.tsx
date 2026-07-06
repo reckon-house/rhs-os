@@ -240,7 +240,7 @@ function HomeContent() {
       )}
 
       {/* Breadcrumb bar */}
-      <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
+      <div className="fixed top-[10px] left-[10px] right-[10px] z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
             <span className="font-bold">House</span>
@@ -251,7 +251,7 @@ function HomeContent() {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
             <ScrambleOnView text="AWWWARDS NOMINEE" />
           </a>

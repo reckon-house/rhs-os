@@ -26,7 +26,7 @@ function FeaturedHero({ hero }: { hero: CategoryHero }) {
       </div>
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
-        <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>
+        <p className="text-[10px] leading-[14px] text-foreground/50 max-w-[46ch] mx-auto">{hero.blurb}</p>
       </div>
     </div>
   );
@@ -93,7 +93,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
       {/* Scroll-reactive thumbnail motion (writes --e to #hp-grid below) */}
       <ThumbEnergy />
       {/* Breadcrumb */}
-      <div className="fixed top-[10px] left-[10px] right-14 z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
+      <div className="fixed top-[10px] left-[10px] right-[10px] z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
         <div className="flex items-center justify-between gap-4">
           <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
             <Link href="/" className="hover:opacity-70 transition-opacity">House</Link>
@@ -104,7 +104,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
             <ScrambleOnView text="AWWWARDS NOMINEE" />
           </a>
@@ -116,10 +116,14 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
       <div id="hp-grid" className="pb-24 space-y-10 md:space-y-[100px]">
 
+        {/* ── Page header: overview + featured heroes, kept tight as one unit
+            so the heroes read as part of the header, not the first grid row. ── */}
+        <div className="space-y-6 md:space-y-10">
+
         {/* ── Overview block at top — pill + headline + body. Mirrors the
             homepage manifesto pattern. The three-column practice breakdown
             sits below the projects in its own cream container (further down). */}
-        <section className="w-full pt-4 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
+        <section className="w-full pt-4 md:pt-12 pb-0 px-4 md:px-0">
           <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
             <ScrambleOnView text="SECTION 01: OVERVIEW" />
           </span>
@@ -169,16 +173,17 @@ export function CategoryPage({ tag }: { tag: Tag }) {
               ))}
             </SwipeRow>
           </div>
-          {/* Desktop: side by side */}
-          <div className="hidden md:flex md:justify-between md:items-start">
-            <div className="md:w-[40%]">
+          {/* Desktop: connected pair filling the container width */}
+          <div className="hidden md:flex md:gap-5 md:items-start">
+            <div className="md:flex-1 md:min-w-0">
               <FeaturedHero hero={heroes[0]} />
             </div>
-            <div className="md:w-[40%]">
+            <div className="md:flex-1 md:min-w-0">
               <FeaturedHero hero={heroes[1]} />
             </div>
           </div>
         </>
+        </div>
 
         {/* ── All category thumbnail rows ── */}
         {allRows.map((row, i) => {

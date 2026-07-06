@@ -164,12 +164,12 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
         <ScrambleOnView text="SECTION: THE PRACTICE" />
       </span>
       <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
-        Putting the work first.
+        Work hands-on with the person who makes the work. Start a brand, an app, a campaign, or a kitchen with a single message.
       </h2>
       <div className={`mt-6 text-spec ${inkSoft}`}>
         <p>
           <span className="font-bold">Studio </span>
-          Reckon House Staples, a multi-disciplinary design and engineering practice
+          Reckon House Staples
         </p>
         <p>
           <span className="font-bold">Founded </span>
@@ -213,12 +213,15 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
       </div>
 
       <div className={`mt-6 md:mt-4 md:ml-[48%] text-body ${inkDim}`}>
-        <p className={`font-bold ${inkClass} indent-[4em]`}>The Through-Line</p>
+        <p className={`font-bold ${inkClass} indent-[4em]`}>The range</p>
         <p className="indent-[4em]">
-          The work means a lot of things at once - shipping the code behind an app, picking the marble for a kitchen, directing a campaign shoot. These aren&apos;t separate jobs. They&apos;re the same job showing up in different rooms.
+          Projects come in at every stage. Some start from nothing but a name; others arrive as an existing brand, system, or idea to build on. The people range the same way, from founders and marketing teams to contractors and homeowners.
         </p>
         <p className="mt-4">
-          Wireframes and code happen in the same week. Material picks and jobsite walks belong to the same person. The disciplines stay connected because they never get separated in the first place.
+          It stays that way on purpose. The client list runs from national retailers to one-room remodels, and the work gets the same attention at both ends.
+        </p>
+        <p className="mt-4">
+          The chart below maps the practice as one system: the three disciplines, the tools inside each, and the connections between them.
         </p>
       </div>
     </div>
