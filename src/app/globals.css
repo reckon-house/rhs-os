@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 /* ── Burn Melt page transition cover ────────────────────────────── */
-/* White cover hides raw content until the BurnMeltTransition burn-in runs.
-   The component sets --burn-cover to 0 once it takes over. */
+/* Transparent by default (--burn-cover: 0) so first paint is never hidden
+   waiting on JS. It used to default to 1, which — together with the white
+   overlay layer — blanked the page until the bundle hydrated AND every image
+   finished loading (window.load). That read as a multi-second blank on cold
+   loads. Page-to-page transitions use the component's own overlay layers. */
 body::before {
   content: "";
   position: fixed;
@@ -13,7 +16,7 @@ body::before {
   background: #F3F0ED;
   z-index: 2147483647;
   pointer-events: none;
-  opacity: var(--burn-cover, 1);
+  opacity: var(--burn-cover, 0);
   transition: opacity 0s linear;
 }
 

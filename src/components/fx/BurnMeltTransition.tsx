@@ -262,69 +262,18 @@ export function BurnMeltTransition() {
     return () => document.removeEventListener("click", handleClick, true);
   }, [burnDuration, easeCurve]);
 
-  // BURN IN on page load
+  // First load: reveal immediately. Both covers now default to transparent
+  // (the white overlay's opacity is 0, and body::before's --burn-cover is 0),
+  // so there is nothing to melt away on a fresh load — we just mark the
+  // transition system ready so link-click navigation still burns. The old
+  // burn-in re-covered the page and gated the reveal on hydration AND
+  // window.load (every image finishing), which showed a blank cream screen for
+  // several seconds on a cold load.
   useEffect(() => {
     if (hasBurnedIn.current) return;
-
-    const startBurnIn = () => {
-      if (hasBurnedIn.current) return;
-      hasBurnedIn.current = true;
-
-      const overlay = overlayRef.current;
-      const white = whiteRef.current;
-      if (!overlay || !white) return;
-
-      // Start with effects visible
-      overlay.style.transition = "none";
-      overlay.style.opacity = "1";
-      white.style.transition = "none";
-      white.style.opacity = "1";
-
-      void overlay.offsetHeight;
-
-      // Hide the body::before cover
-      document.body.style.setProperty("--burn-cover", "0");
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          startTurbulenceAnimation();
-
-          const whiteDuration = burnDuration * 0.35;
-          const overlayDuration = burnDuration * 0.7;
-          const overlayDelay = burnDuration * 0.15;
-
-          // Fade out white first
-          white.style.transition = `opacity ${whiteDuration}s ease-out`;
-          white.style.opacity = "0";
-
-          // Then fade out the backdrop
-          setTimeout(() => {
-            overlay.style.transition = `opacity ${overlayDuration}s ${easeCurve}`;
-            overlay.style.opacity = "0";
-          }, overlayDelay * 1000);
-
-          setTimeout(
-            () => {
-              stopTurbulenceAnimation();
-              isReady.current = true;
-            },
-            (overlayDelay + overlayDuration) * 1000
-          );
-        });
-      });
-    };
-
-    if (document.readyState === "complete") {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          startBurnIn();
-        });
-      });
-    } else {
-      window.addEventListener("load", startBurnIn);
-      return () => window.removeEventListener("load", startBurnIn);
-    }
-  }, [burnDuration, easeCurve]);
+    hasBurnedIn.current = true;
+    isReady.current = true;
+  }, []);
 
   // BURN IN on client-side navigation (pathname changes)
   useEffect(() => {
@@ -467,7 +416,9 @@ export function BurnMeltTransition() {
     pointerEvents: "none",
     background: "#F3F0ED",
     willChange: "opacity",
-    opacity: 1,
+    // Hidden on first load so it never blanks the page while the bundle
+    // hydrates. The burn-out / burn-in transitions set it to 1 explicitly.
+    opacity: 0,
   };
 
   return (
