@@ -101,6 +101,16 @@ export interface HeroSection extends BaseSection {
    * image continues beyond the visible area.
    */
   cropWide?: boolean;
+  /**
+   * nativeRatio: on desktop, show the photo at its true proportions, fully,
+   * with no crop — the container takes the image's own aspect ratio and
+   * object-cover fills it exactly (matching ratios means zero crop and zero
+   * letterbox gap). On mobile it crops to a slightly taller 4:3 so a wide
+   * landscape keeps presence instead of collapsing to a thin band. Overrides
+   * the default mobile 5:4 crop and the inline 4% zoom. Use for
+   * photography-forward studies where the frame is the point.
+   */
+  nativeRatio?: boolean;
 }
 
 /**

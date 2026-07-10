@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ImageSection } from "@/lib/types";
+import { getImageDimensions } from "@/data/image-dimensions";
 
 const aspectMap: Record<string, string> = {
   video: "aspect-video",
@@ -27,6 +28,10 @@ export function ImageBlock({ src, alt, aspect = "video", mobileAspect, bleed, bl
   // aspect container with the image filling via object-cover.
   const isNative = aspect === "native";
   const sizes = maxWidth ? `${maxWidth}px` : DEFAULT_SIZES;
+  // Reserve the box at the image's real ratio (from the dimensions manifest)
+  // so native images don't jump from a 3:2 placeholder to their true shape on
+  // load. Falls back to the manifest's own 3:2 default for anything unlisted.
+  const [natW, natH] = src ? getImageDimensions(src) : [1200, 800];
 
   // Hybrid: mobile uses a fixed aspect with object-cover (cropping sides for
   // height), desktop keeps the base behavior. Bleed variants opt out — they
@@ -61,8 +66,8 @@ export function ImageBlock({ src, alt, aspect = "video", mobileAspect, bleed, bl
             <Image
               src={src}
               alt={alt}
-              width={2400}
-              height={1600}
+              width={natW}
+              height={natH}
               sizes={sizes}
               className="w-full h-auto"
               style={{ ...(blend ? { mixBlendMode: blend } : {}), height: "auto" }}
@@ -94,8 +99,8 @@ export function ImageBlock({ src, alt, aspect = "video", mobileAspect, bleed, bl
             <Image
               src={src}
               alt={alt}
-              width={2400}
-              height={1600}
+              width={natW}
+              height={natH}
               sizes={sizes}
               className="w-full h-auto"
               style={{ ...(blend ? { mixBlendMode: blend } : {}), height: "auto" }}

@@ -42,6 +42,7 @@ export const projects: Project[] = [
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg`, href: "/case-studies/chalet", tags: ["interiors"] },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-campaign-design-neiman-marcus-editorial-design.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
+  { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"] },
 ];
 
 const CAT_IMG = "/case-studies/categories";

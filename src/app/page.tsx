@@ -422,8 +422,9 @@ function HomeContent() {
           <NowPlayingThumb fallback={p.variousDesign} />
         </div>
 
-        {/* Row 11: Various design → branding & graphics case study */}
+        {/* Row 11: West Texas photography + Various design closer */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
+          <Thumb project={p.bigBend} />
           <Thumb project={p.variousDesign} />
         </div>
       </div>

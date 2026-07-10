@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import type { HeroSection } from "@/lib/types";
 import { getImageDimensions } from "@/data/image-dimensions";
 
-export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
+export function HeroBlock({ image, alt, inline, cropWide, nativeRatio }: HeroSection) {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -112,6 +112,19 @@ export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
   const [iw, ih] = getImageDimensions(image);
   const naturalAR = `${iw}/${ih}`;
 
+  // nativeRatio: desktop shows the image's own ratio and object-cover fills it
+  // exactly (matching ratios => full frame, no crop, no gap). Mobile crops to a
+  // slightly taller 4:3 so a wide landscape doesn't collapse to a thin band on
+  // a phone — object-cover gains the height by trimming the sides.
+  // Default (no nativeRatio): 5:4 crop on mobile, natural ratio + 4% inline zoom
+  // on desktop.
+  const aspectClass = nativeRatio
+    ? "relative w-full aspect-[4/3] md:aspect-[var(--hero-ar)]"
+    : "relative w-full aspect-[5/4] md:aspect-[var(--hero-ar)]";
+  const imgFitClass = nativeRatio
+    ? "object-cover"
+    : `object-cover md:object-contain ${inline ? "scale-[1.04]" : ""}`;
+
   return (
     <section
       ref={sectionRef}
@@ -128,7 +141,7 @@ export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
       >
         {image ? (
           <div
-            className="relative w-full aspect-[5/4] md:aspect-[var(--hero-ar)]"
+            className={aspectClass}
             style={{ "--hero-ar": naturalAR } as React.CSSProperties}
           >
             <Image
@@ -138,7 +151,7 @@ export function HeroBlock({ image, alt, inline, cropWide }: HeroSection) {
               sizes="100vw"
               priority={!inline}
               loading={inline ? "lazy" : "eager"}
-              className={`object-cover md:object-contain ${inline ? "scale-[1.04]" : ""}`}
+              className={imgFitClass}
             />
           </div>
         ) : (
