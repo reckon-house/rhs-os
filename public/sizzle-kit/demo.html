@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sizzle-reel demo</title>
+<script type="module" src="./sizzle-reel.js"></script>
+<style>
+  body{margin:0;background:#14100D;color:#EDE7E2;font-family:system-ui,sans-serif;padding:40px 24px 100px}
+  .wrap{max-width:960px;margin:0 auto}
+  h1{font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;margin:0 0 6px}
+  p{color:#A6998E;max-width:60ch;margin:0 0 30px}
+  code{background:rgba(237,231,226,.1);padding:2px 6px;border-radius:6px;font-size:.9em}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>&lt;sizzle-reel&gt;</h1>
+  <p>One custom element, zero dependencies. Stills + CSS read as motion —
+     no video files. This demo uses the Ivy Park set; point
+     <code>images</code> at any URLs.</p>
+
+  <sizzle-reel
+    images="/case-studies/ivy-park/ivy-park-editorial-beanie-portrait-dancer.jpg,
+            /case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg,
+            /case-studies/ivy-park/ivy-park-shop-the-look-editorial-grid.jpg,
+            /case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg,
+            /case-studies/ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg"
+    colors="#0888B8, #181818, #38B8D8, #E8E8E8, #98A8A8"
+    headline="Courage is power"
+    aspect="16 / 9"
+    radius="18px"
+  ></sizzle-reel>
+
+  <div class="grid">
+    <sizzle-reel offset="0" radius="14px" aspect="1 / 1"
+      images="/case-studies/ivy-park/ivy-park-editorial-beanie-portrait-dancer.jpg,
+              /case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg,
+              /case-studies/ivy-park/ivy-park-shop-the-look-editorial-grid.jpg,
+              /case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg,
+              /case-studies/ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg"
+      colors="#0888B8, #181818, #38B8D8" headline="Courage is power"></sizzle-reel>
+    <sizzle-reel offset="4" radius="14px" aspect="1 / 1"
+      images="/case-studies/ivy-park/ivy-park-editorial-beanie-portrait-dancer.jpg,
+              /case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg,
+              /case-studies/ivy-park/ivy-park-shop-the-look-editorial-grid.jpg,
+              /case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg,
+              /case-studies/ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg"
+      colors="#0888B8, #181818, #38B8D8" headline="Courage is power"></sizzle-reel>
+    <sizzle-reel offset="8" radius="14px" aspect="1 / 1"
+      images="/case-studies/ivy-park/ivy-park-editorial-beanie-portrait-dancer.jpg,
+              /case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg,
+              /case-studies/ivy-park/ivy-park-shop-the-look-editorial-grid.jpg,
+              /case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg,
+              /case-studies/ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg"
+      colors="#0888B8, #181818, #38B8D8" headline="Courage is power"></sizzle-reel>
+  </div>
+</div>
+</body>
+</html>
