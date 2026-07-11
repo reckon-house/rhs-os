@@ -729,7 +729,7 @@ export function SpringSolve() {
   if (!mounted || (!onHome && !isCase && !onCategory)) return null;
 
   return (
-    <div aria-hidden className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>
+    <div aria-hidden className="fixed inset-0 pointer-events-none" style={{ zIndex: -1, opacity: 0.6 }}>
       <svg
         viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
         preserveAspectRatio="xMidYMid slice"
