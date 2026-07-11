@@ -268,20 +268,14 @@ function HomeContent() {
           <ScrambleOnView text="SECTION 01: OVERVIEW" />
         </span>
 
-        {/* Title */}
-        <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          I&apos;m Jeremy. I work across brand, product, and place.
-        </h1>
-
-        {/* Disciplines paragraph — flows directly under the headline as one block */}
-        <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The work spans apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and marketing platforms. The disciplines overlap more than they separate.
-        </p>
-
-        {/* Closing paragraph — personal lens, smaller secondary line treatment */}
-        <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
-          Same desk for all of it.
-        </p>
+        {/* Manifesto — one continuous block: bold open and close, regular
+            middle, all one size, no breaks. The opening sentence stays an
+            inline <h1> so it still carries the page heading for SEO. */}
+        <div className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-8 md:mb-10">
+          <h1 className="inline font-bold">I&apos;m Jeremy. I work across brand, product, and place.</h1>{" "}
+          The work spans apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and marketing platforms. The disciplines overlap more than they separate.{" "}
+          <span className="font-bold">Same desk for all of it.</span>
+        </div>
 
         {/* Meta fields — left-aligned, constrained width */}
         <div className="text-spec text-foreground/90">
