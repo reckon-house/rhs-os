@@ -21,7 +21,7 @@ const CS = "/case-studies";
 // createImageBitmap and handed over as a blob URL — memory-resident, instant,
 // no network fetch after the clock freezes.
 const RAW = [
-  `${CS}/nordstrom-personalization/nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg`,
+  `${CS}/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg`,
   `${CS}/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
   `${CS}/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg`,
   `${CS}/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg`,
