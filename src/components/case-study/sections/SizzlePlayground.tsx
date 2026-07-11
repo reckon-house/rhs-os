@@ -12,19 +12,23 @@ import type { SizzlePlaygroundSection } from "@/lib/types";
 // Everything runs in the visitor's browser on object URLs. Nothing uploads,
 // nothing saves, a refresh resets it.
 
-const IMG = "/case-studies/big-bend";
-const WEST_IMAGES = [
-  `${IMG}/chisos-peak-cactus.jpg`,
-  `${IMG}/rise.jpg`,
-  `${IMG}/mountain_crop.jpg`,
-  `${IMG}/desert-dusk-ridgeline.jpg`,
-  `${IMG}/hero.jpg`,
-  `${IMG}/prada.jpg`,
+const CS = "/case-studies";
+// A range reel: one strong frame from seven projects, ordered for maximum
+// contrast cut to cut (editorial, interior, figure, interior, brand, retail,
+// western) so no two adjacent frames share a register.
+const RANGE_IMAGES = [
+  `${CS}/nordstrom-personalization/nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg`,
+  `${CS}/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
+  `${CS}/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg`,
+  `${CS}/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg`,
+  `${CS}/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg`,
+  `${CS}/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
+  `${CS}/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg`,
 ];
-// Extracted offline from the six stills (same quantizer the lab runs live):
-// olive scrub, dark juniper, desert tan, haze blue, pale sky.
-const WEST_COLORS = ["#494636", "#181B14", "#756B58", "#96A6AB", "#C6C6C9"];
-const WEST_HEADLINE = "Far West Texas";
+// Extracted offline across the seven frames (same quantizer the lab runs
+// live): signature cyan, near-black, oak tan, cream, cool gray.
+const RANGE_COLORS = ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"];
+const RANGE_HEADLINE = "Reckon House Staples";
 
 const REEL_RADIUS = "clamp(30px, 5vw, 100px)";
 
@@ -33,9 +37,9 @@ const chipBase =
   "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] tracking-[0.05em] uppercase transition-colors cursor-pointer";
 
 export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
-  const [images, setImages] = useState<string[]>(WEST_IMAGES);
-  const [colors, setColors] = useState<string[]>(WEST_COLORS);
-  const [headline, setHeadline] = useState(WEST_HEADLINE);
+  const [images, setImages] = useState<string[]>(RANGE_IMAGES);
+  const [colors, setColors] = useState<string[]>(RANGE_COLORS);
+  const [headline, setHeadline] = useState(RANGE_HEADLINE);
   const [speed, setSpeed] = useState(1);
   const [extracting, setExtracting] = useState(false);
   const objectUrls = useRef<string[]>([]);
@@ -83,13 +87,13 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
       <section className="w-full pt-2 pb-6">
         <SizzleReel
           key={reelKey}
-          images={WEST_IMAGES}
-          colors={WEST_COLORS}
-          headline={WEST_HEADLINE}
+          images={RANGE_IMAGES}
+          colors={RANGE_COLORS}
+          headline={RANGE_HEADLINE}
           style={{ aspectRatio: "16 / 9", borderRadius: REEL_RADIUS }}
         />
         <p className={`${mono} mt-4 text-center`}>
-          Live render &middot; no video files &middot; the photographs are from the West Texas study
+          Live render &middot; no video files &middot; one cut across the studio
         </p>
       </section>
     );
@@ -168,7 +172,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
             Load images
           </button>
           <p className={`${mono} mt-3 normal-case tracking-[0.02em]`}>
-            {images === WEST_IMAGES ? "Running the West Texas set" : `${images.length} of yours loaded`}
+            {images === RANGE_IMAGES ? "Running the studio set" : `${images.length} of yours loaded`}
           </p>
           <p className="mt-2 max-w-[38ch] text-[12px] leading-relaxed text-foreground/45">
             Images stay in your browser. Nothing uploads, nothing saves. Refresh and they are gone.

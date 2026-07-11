@@ -13,27 +13,24 @@ import { SizzleReel, buildSequence } from "@/components/fx/SizzleReel";
 //   window.__loopMs  — one full loop duration in ms
 // Not linked anywhere; delete with the rest of src/app/sizzle when done.
 
-const IMG = "/case-studies/big-bend";
-// Two exporter constraints shape how images load here:
-//   1. Full 2560px sources decode to ~100MB of bitmaps — past the tab's
-//      decode-cache budget, and a re-decode never completes under the
-//      exporter's frozen clock. So each source is downscaled to 1080px
-//      in-page via createImageBitmap (the Next optimizer is unavailable:
-//      this project runs images.unoptimized in dev).
-//   2. Each beat layer mounts a fresh <img>, and a network fetch started
-//      under the frozen clock never delivers — so the downscaled result is
-//      handed over as a blob URL: memory-resident, instant, no network
-//      after freeze.
+const CS = "/case-studies";
+// Same range set + order as the on-site reel (SizzlePlayground).
+// Note on loading: full 2560px sources decode to ~100MB of bitmaps (past the
+// tab's decode-cache budget, and a re-decode never completes under the
+// exporter's frozen clock), so each is downscaled to 1080px in-page via
+// createImageBitmap and handed over as a blob URL — memory-resident, instant,
+// no network fetch after the clock freezes.
 const RAW = [
-  `${IMG}/chisos-peak-cactus.jpg`,
-  `${IMG}/rise.jpg`,
-  `${IMG}/mountain_crop.jpg`,
-  `${IMG}/desert-dusk-ridgeline.jpg`,
-  `${IMG}/hero.jpg`,
-  `${IMG}/prada.jpg`,
+  `${CS}/nordstrom-personalization/nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg`,
+  `${CS}/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
+  `${CS}/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg`,
+  `${CS}/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg`,
+  `${CS}/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg`,
+  `${CS}/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
+  `${CS}/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg`,
 ];
-const COLORS = ["#494636", "#181B14", "#756B58", "#96A6AB", "#C6C6C9"];
-const HEADLINE = "Far West Texas";
+const COLORS = ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"];
+const HEADLINE = "Reckon House Staples";
 
 declare global {
   interface Window {

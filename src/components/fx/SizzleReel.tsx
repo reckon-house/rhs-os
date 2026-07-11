@@ -81,8 +81,12 @@ const CSS = `
 .sz-w{display:inline-block;margin:0 .13em;animation:szWordCut calc(var(--d)*.42) steps(1,end) both,szWordPunch calc(var(--d)*.42) linear both}
 @keyframes szWordCut{0%{opacity:0}3%{opacity:1}100%{opacity:1}}
 @keyframes szWordPunch{0%{transform:translateY(12%) scale(.955)}30%{transform:translateY(-0.6%) scale(1.004)}44%{transform:none}100%{transform:none}}
+.sz-wgrp{display:inline-block;white-space:nowrap}
+.sz-wgrp+.sz-wgrp{margin-left:.28em}
+.sz-ltr{display:inline-block;animation:szLtrIn var(--ld) cubic-bezier(.18,.9,.24,1) both}
+@keyframes szLtrIn{0%{opacity:0;transform:translateY(36%) scaleY(.32)}55%{opacity:1;transform:translateY(-5%) scaleY(1.08)}100%{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
-  .sz-layer,.sz-strip,.sz-anim,.sz-slidein,.sz-w{animation:none!important}
+  .sz-layer,.sz-strip,.sz-anim,.sz-slidein,.sz-w,.sz-ltr{animation:none!important}
   .sz-shutter,.sz-curtain,.sz-ccurtainV,.sz-strip{clip-path:inset(0 0 0 0)!important}
   .sz-fade,.sz-cut{opacity:1!important}
   .sz-flashswap,.sz-pinchswap{animation:none!important;opacity:1!important}
@@ -90,7 +94,7 @@ const CSS = `
   .sz-pinchB{animation:none!important;transform:translateY(102%)!important}
   .sz-wout{animation:none!important;opacity:0!important}
   .sz-burnimg{opacity:1!important;filter:none!important;transform:none!important}
-  .sz-anim,.sz-slidein,.sz-w{opacity:1!important;transform:none!important;clip-path:none!important}
+  .sz-anim,.sz-slidein,.sz-w,.sz-ltr{opacity:1!important;transform:none!important;clip-path:none!important}
   .sz-flash,.sz-burnpop,.sz-burnwash{opacity:0!important;animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }
 `;
@@ -122,26 +126,29 @@ export function buildSequence(
   const words = headline?.trim() ? headline.trim().split(/\s+/) : [];
   const scatter = words.length >= 3;
 
+  // Photos play in array order so a curated set stays in its intended
+  // sequence, and every image gets a beat (0..6). Consecutive beats always
+  // land on different images, which the hidden-cut beats (pinch) rely on: the
+  // pinch closes over the fade's frame and parts onto the next one.
   const beats: SizzleBeat[] = [{ fx: "shutter", img: img(0), ms: 640 }];
   if (scatter) beats.push({ fx: "word", color: col(2), text: words[0], ms: 420 });
   beats.push(
     { fx: "fade", img: img(1), ms: 420 },
-    // The pinch hides a cut: top and bottom panels close to the middle like
-    // a lens, the frame swaps at the meet, and the panels part onto a
-    // different image (the 6th when there is one, else a callback to the
-    // opener). A cut that lands back on the image it covered reads as a
-    // glitch, and a bare 200ms blink read as abrupt — the mechanical
-    // close-open earns the interruption.
-    { fx: "pinch", color: col(0), img: img(5), ms: 520 },
-    { fx: "slat", img: img(2), ms: 700 }
+    { fx: "pinch", color: col(0), img: img(2), ms: 520 },
+    { fx: "slat", img: img(3), ms: 700 }
   );
   if (scatter) beats.push({ fx: "word", color: col(0), text: words[1], ms: 420 });
   beats.push(
-    { fx: "burn", img: img(3), ms: 640 },
+    { fx: "burn", img: img(4), ms: 640 },
     { fx: "ccurtain", color: col(1), ms: 380 }
   );
   if (words.length >= 4) beats.push({ fx: "word", color: col(3), text: words[2], ms: 400 });
-  beats.push({ fx: "curtain", img: img(4), ms: 720 });
+  beats.push(
+    { fx: "curtain", img: img(5), ms: 720 },
+    // 7th frame. Modulo wraps for smaller sets (repeats an earlier image,
+    // spaced far from its first showing).
+    { fx: "cut", img: img(6), ms: 460 }
+  );
   if (scatter) {
     beats.push({ fx: "wordBuild", color: col(2), text: words.join(" "), ms: 1080 });
     // The line leaves the way it arrived: words cascade out, the bare card
@@ -335,17 +342,39 @@ function BeatLayer({
       />
     );
 
-  if (beat.fx === "word" || beat.fx === "wordSlide")
+  if (beat.fx === "word" || beat.fx === "wordSlide") {
+    // Letters build in sequence — a fast rise-and-form, staggered left to
+    // right. Words stay in nowrap groups so only whole words break to a new
+    // line; the stagger runs continuously across the line. Total build is
+    // capped so a long headline still lands inside the beat.
+    const words = (beat.text ?? "").split(/\s+/).filter(Boolean);
+    const totalChars = words.reduce((n, w) => n + w.length, 0) || 1;
+    const stagger = Math.min(40, Math.round((dur * 0.5) / totalChars));
+    const ldur = Math.round(dur * 0.44);
+    let li = 0;
     return (
       <div
         className="sz-layer sz-word"
         style={{ ...d, background: beat.color, color: textColor ?? autoTextColor(beat.color) }}
       >
-        <span className={`sz-line ${beat.fx === "wordSlide" ? "sz-slidein" : "sz-anim"}`}>
-          {beat.text}
+        <span className="sz-line">
+          {words.map((w, wi) => (
+            <span key={wi} className="sz-wgrp">
+              {[...w].map((ch, ci) => (
+                <span
+                  key={ci}
+                  className="sz-ltr"
+                  style={{ animationDelay: `${li++ * stagger}ms`, ["--ld" as string]: `${ldur}ms` } as React.CSSProperties}
+                >
+                  {ch}
+                </span>
+              ))}
+            </span>
+          ))}
         </span>
       </div>
     );
+  }
 
   if (beat.fx === "pinch")
     return (

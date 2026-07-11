@@ -81,7 +81,7 @@ export const sizzleCaseStudy: CaseStudy = {
         {
           title: "The loop breathes",
           content:
-            "Six and a half seconds, eleven beats. Wipes finish at 72 percent of their hold so every frame gets a moment of rest before the next cut. At the end the built line exits, the bare card holds a breath, and the opening shutter wipes over whatever is left standing.",
+            "Seven seconds, twelve beats. Wipes finish at 72 percent of their hold so every frame gets a moment of rest before the next cut. At the end the built line exits, the bare card holds a breath, and the opening shutter wipes over whatever is left standing.",
         },
       ],
     },
@@ -100,7 +100,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Six photographs from the West Texas study are the default cut. Drop in up to eight of yours and the reel rebuilds its choreography, palette included. Chips track each beat as it fires; freeze one to study the cut.",
+        "Seven frames across the studio's work are the default cut, one from each project. Drop in up to eight of your own and the reel rebuilds its choreography, palette included. Chips track each beat as it fires; freeze one to study the cut.",
     },
     {
       id: "lab",
@@ -142,10 +142,10 @@ export const sizzleCaseStudy: CaseStudy = {
       services: ["Product Design", "Engineering"],
       stack: ["React", "TypeScript", "CSS", "Playwright"],
       links: [
-        { label: "See West Texas, the photographs in the demo", url: "/case-studies/big-bend" },
+        { label: "See the projects the reel is cut from", url: "/" },
       ],
       content:
-        "The reel on this page is the deliverable, running where it was made. A public repository is next, so the cut can run somewhere other than here.",
+        "The reel on this page is the deliverable, running where it was made, cut from seven of the projects around it. A public repository is next, so it can run somewhere other than here.",
     },
   ],
 };
