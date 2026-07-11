@@ -41,6 +41,7 @@ import { PatternMatrix } from "./sections/PatternMatrix";
 import { MaterialCircos } from "./sections/MaterialCircos";
 import { KitchenPalette } from "./sections/KitchenPalette";
 import { HexPolygon } from "./sections/HexPolygon";
+import { SizzlePlayground } from "./sections/SizzlePlayground";
 import { CampaignBlastRadius } from "./sections/CampaignBlastRadius";
 import { JeffreyFlagshipRadius } from "./sections/JeffreyFlagshipRadius";
 import { MaterialOverlap } from "./sections/MaterialOverlap";
@@ -146,6 +147,8 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <KitchenPalette />;
     case "hex-polygon":
       return <HexPolygon />;
+    case "sizzle-playground":
+      return <SizzlePlayground {...section} />;
     case "campaign-blast-radius":
       return <CampaignBlastRadius />;
     case "jeffrey-flagship-radius":

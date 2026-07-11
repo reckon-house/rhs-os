@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SizzleReel, buildSequence } from "@/components/fx/SizzleReel";
+import { extractPalette } from "@/lib/sizzle-palette";
 
 // Scratch playground: a code-only "sizzle reel" utility. Load images, pull a
 // palette out of them, type a headline, and the reel choreographs itself.
@@ -19,85 +20,6 @@ const IVY = [
 // Extracted offline (sharp, 16-level quantization over all 5 stills):
 // lead cyan, dominant dark, electric cyan, light ground, cool slate.
 const IVY_COLORS = ["#0888B8", "#181818", "#38B8D8", "#E8E8E8", "#98A8A8"];
-
-/** Canvas dominant-color extraction: downsample, quantize to 16 levels per
- *  channel, count buckets, pick the top hits that stay mutually distinct.
- *  Near-white/near-black only qualify when they truly dominate. */
-async function extractPalette(srcs: string[], count = 5): Promise<string[]> {
-  const buckets = new Map<string, { n: number; r: number; g: number; b: number }>();
-  for (const src of srcs) {
-    await new Promise<void>((resolve) => {
-      const im = new window.Image();
-      im.crossOrigin = "anonymous";
-      im.onload = () => {
-        const w = 64;
-        const h = Math.max(1, Math.round((im.naturalHeight / im.naturalWidth) * w));
-        const cv = document.createElement("canvas");
-        cv.width = w;
-        cv.height = h;
-        const cx = cv.getContext("2d");
-        if (!cx) return resolve();
-        cx.drawImage(im, 0, 0, w, h);
-        let data: Uint8ClampedArray;
-        try {
-          data = cx.getImageData(0, 0, w, h).data;
-        } catch {
-          return resolve(); // tainted canvas (cross-origin) — skip
-        }
-        for (let p = 0; p < data.length; p += 4) {
-          const r = data[p], g = data[p + 1], b = data[p + 2];
-          const key = `${r >> 4},${g >> 4},${b >> 4}`;
-          const cur = buckets.get(key) ?? { n: 0, r: 0, g: 0, b: 0 };
-          cur.n++;
-          cur.r += r;
-          cur.g += g;
-          cur.b += b;
-          buckets.set(key, cur);
-        }
-        resolve();
-      };
-      im.onerror = () => resolve();
-      im.src = src;
-    });
-  }
-  const total = [...buckets.values()].reduce((s, v) => s + v.n, 0) || 1;
-  const ranked = [...buckets.values()]
-    .map((v) => ({
-      n: v.n,
-      r: Math.round(v.r / v.n),
-      g: Math.round(v.g / v.n),
-      b: Math.round(v.b / v.n),
-    }))
-    .map((c) => {
-      const max = Math.max(c.r, c.g, c.b), min = Math.min(c.r, c.g, c.b);
-      const sat = max === 0 ? 0 : (max - min) / max;
-      const extreme = (c.r > 235 && c.g > 235 && c.b > 235) || (c.r < 20 && c.g < 20 && c.b < 20);
-      // weight: frequency x (1 + saturation boost); extremes need real dominance
-      const w = extreme && c.n / total < 0.4 ? 0 : c.n * (1 + sat * 2.2);
-      return { ...c, w };
-    })
-    .filter((c) => c.w > 0)
-    .sort((a, b) => b.w - a.w);
-  const picks: { r: number; g: number; b: number }[] = [];
-  for (const c of ranked) {
-    if (picks.length >= count) break;
-    const distinct = picks.every(
-      (p) => Math.hypot(p.r - c.r, p.g - c.g, p.b - c.b) > 60
-    );
-    if (distinct) picks.push(c);
-  }
-  // Loudest color leads: the flash/word frames read best in the most
-  // saturated pick, so order by saturation rather than raw frequency.
-  picks.sort((a, b) => {
-    const sat = (c: { r: number; g: number; b: number }) => {
-      const max = Math.max(c.r, c.g, c.b);
-      return max === 0 ? 0 : (max - Math.min(c.r, c.g, c.b)) / max;
-    };
-    return sat(b) - sat(a);
-  });
-  const hex = (v: number) => v.toString(16).padStart(2, "0");
-  return picks.map((p) => `#${hex(p.r)}${hex(p.g)}${hex(p.b)}`.toUpperCase());
-}
 
 const mono: React.CSSProperties = {
   fontFamily: "ui-monospace, monospace",

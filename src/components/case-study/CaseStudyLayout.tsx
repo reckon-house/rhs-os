@@ -41,6 +41,7 @@ function getColSpan(type: string): string {
     case "material-circos":
     case "kitchen-palette":
     case "hex-polygon":
+    case "sizzle-playground":
     case "campaign-blast-radius":
     case "color-permutations":
     case "editorial-treatments":

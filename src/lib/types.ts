@@ -57,6 +57,7 @@ export type Section =
   | MaterialCircosSection
   | KitchenPaletteSection
   | HexPolygonSection
+  | SizzlePlaygroundSection
   | CampaignBlastRadiusSection
   | JeffreyFlagshipRadiusSection
   | MaterialOverlapSection
@@ -528,6 +529,14 @@ export interface KitchenPaletteSection extends BaseSection {
 
 export interface HexPolygonSection extends BaseSection {
   type: "hex-polygon";
+}
+
+export interface SizzlePlaygroundSection extends BaseSection {
+  type: "sizzle-playground";
+  /** "hero": the live reel, big, no controls — opens the study.
+   *  "lab": reel + load-your-own-images controls, palette, headline,
+   *  speed, and the beat inspector. Everything client-side; nothing saves. */
+  variant: "hero" | "lab";
 }
 
 export interface CampaignBlastRadiusSection extends BaseSection {
