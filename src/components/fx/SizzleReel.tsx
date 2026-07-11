@@ -131,18 +131,20 @@ export function buildSequence(
   // land on different images, which the hidden-cut beats (pinch) rely on: the
   // pinch closes over the fade's frame and parts onto the next one.
   const beats: SizzleBeat[] = [{ fx: "shutter", img: img(0), ms: 640 }];
-  if (scatter) beats.push({ fx: "word", color: col(2), text: words[0], ms: 420 });
+  // Scatter words land quick (capped build) then hold — a pause before the
+  // next cut, so a word gets to breathe instead of being clipped away.
+  if (scatter) beats.push({ fx: "word", color: col(2), text: words[0], ms: 720 });
   beats.push(
     { fx: "fade", img: img(1), ms: 420 },
     { fx: "pinch", color: col(0), img: img(2), ms: 520 },
     { fx: "slat", img: img(3), ms: 700 }
   );
-  if (scatter) beats.push({ fx: "word", color: col(0), text: words[1], ms: 420 });
+  if (scatter) beats.push({ fx: "word", color: col(0), text: words[1], ms: 720 });
   beats.push(
     { fx: "burn", img: img(4), ms: 640 },
     { fx: "ccurtain", color: col(1), ms: 380 }
   );
-  if (words.length >= 4) beats.push({ fx: "word", color: col(3), text: words[2], ms: 400 });
+  if (words.length >= 4) beats.push({ fx: "word", color: col(3), text: words[2], ms: 720 });
   beats.push(
     { fx: "curtain", img: img(5), ms: 720 },
     // 7th frame. Modulo wraps for smaller sets (repeats an earlier image,
@@ -349,8 +351,11 @@ function BeatLayer({
     // capped so a long headline still lands inside the beat.
     const words = (beat.text ?? "").split(/\s+/).filter(Boolean);
     const totalChars = words.reduce((n, w) => n + w.length, 0) || 1;
-    const stagger = Math.min(40, Math.round((dur * 0.5) / totalChars));
-    const ldur = Math.round(dur * 0.44);
+    // Cap the build so a longer hold (the pause after a scatter word) doesn't
+    // slow the entrance itself — letters land quick, then the beat sits.
+    const build = Math.min(dur, 360);
+    const stagger = Math.min(38, Math.round((build * 0.5) / totalChars));
+    const ldur = Math.round(build * 0.5);
     let li = 0;
     return (
       <div
