@@ -44,15 +44,18 @@ try {
   // via a tiny DOM probe (the word line exists only on word-family beats).
   let guard = 0;
   for (;;) {
-    const state = await page.evaluate(() => {
+    const state = await page.evaluate((fx) => {
       const stage = document.querySelector(".sz-stage");
       const layer = stage && stage.querySelector(":scope > .sz-layer");
       const builds = layer ? layer.querySelectorAll(".sz-w").length : 0;
       const outs = layer ? layer.querySelectorAll(".sz-wout").length : 0;
-      return { beat: window.__beat, builds, outs };
-    });
+      // Transition beats carry a class sz-<fx> on the top layer.
+      const hasFx = !!(layer && layer.classList.contains(`sz-${fx}`));
+      return { beat: window.__beat, builds, outs, hasFx };
+    }, BEAT_FX);
     if (BEAT_FX === "wordBuild" && state.builds > 0) break;
     if (BEAT_FX === "wordOut" && state.outs > 0) break;
+    if (BEAT_FX !== "wordBuild" && BEAT_FX !== "wordOut" && state.hasFx) break;
     if (++guard > 4000) throw new Error(`never reached ${BEAT_FX}`);
     await advance(25);
   }

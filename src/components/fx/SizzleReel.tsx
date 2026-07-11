@@ -73,7 +73,7 @@ const CSS = `
 @keyframes szBurnPop{0%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}18%{opacity:1;-webkit-backdrop-filter:blur(4px) saturate(4.5) contrast(2.2);backdrop-filter:blur(4px) saturate(4.5) contrast(2.2)}100%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}}
 .sz-burnwash{position:absolute;inset:0;pointer-events:none;background:#F3F0ED;opacity:0;animation:szBurnWash var(--d) cubic-bezier(.72,0,.18,1) both}
 @keyframes szBurnWash{0%{opacity:0}16%{opacity:.95}40%{opacity:.3}100%{opacity:0}}
-.sz-word{display:grid;place-items:center;text-align:center;padding:7%;font-weight:850;text-transform:uppercase;line-height:.95;letter-spacing:-.01em;font-size:clamp(16px,15cqw,120px)}
+.sz-word{display:grid;place-items:center;text-align:center;padding:9%;font-weight:400;line-height:1.3;letter-spacing:.01em;font-size:clamp(13px,3cqw,42px)}
 .sz-word .sz-line{display:block;text-wrap:balance}
 .sz-anim{animation:szWordCut var(--d) steps(1,end) both,szWordPunch var(--d) linear both}
 .sz-slidein{display:inline-block;animation:szWordSlide calc(var(--d)*.55) cubic-bezier(.7,0,.15,1) both}
@@ -84,7 +84,7 @@ const CSS = `
 .sz-wgrp{display:inline-block;white-space:nowrap}
 .sz-wgrp+.sz-wgrp{margin-left:.28em}
 .sz-ltr{display:inline-block;animation:szLtrIn var(--ld) cubic-bezier(.18,.9,.24,1) both}
-@keyframes szLtrIn{0%{opacity:0;transform:translateY(36%) scaleY(.32)}55%{opacity:1;transform:translateY(-5%) scaleY(1.08)}100%{opacity:1;transform:none}}
+@keyframes szLtrIn{0%{opacity:0;transform:translateY(75%) scale(.86)}60%{opacity:1}100%{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   .sz-layer,.sz-strip,.sz-anim,.sz-slidein,.sz-w,.sz-ltr{animation:none!important}
   .sz-shutter,.sz-curtain,.sz-ccurtainV,.sz-strip{clip-path:inset(0 0 0 0)!important}
