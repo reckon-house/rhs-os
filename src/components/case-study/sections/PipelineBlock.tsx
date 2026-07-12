@@ -16,8 +16,8 @@ export function PipelineBlock({ steps }: PipelineSection) {
           />
         </div>
       )}
-      <h4 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-2">{step.title}</h4>
-      <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80">{step.description}</p>
+      <h4 className="text-[11px] md:text-[13px] font-bold leading-[1.875] mb-2">{step.title}</h4>
+      <p className="text-[11px] md:text-[13px] leading-[1.875] text-foreground/80">{step.description}</p>
     </div>
   ));
 
@@ -44,12 +44,12 @@ export function PipelineBlock({ steps }: PipelineSection) {
               )}
             </div>
             <div className="col-start-7 col-span-6">
-              <h4 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mb-2">{step.title}</h4>
-              <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80">{step.description}</p>
+              <h4 className="text-[11px] md:text-[13px] font-bold leading-[1.875] mb-2">{step.title}</h4>
+              <p className="text-[11px] md:text-[13px] leading-[1.875] text-foreground/80">{step.description}</p>
               {step.title2 && (
                 <>
-                  <h4 className="text-[11px] md:text-[14px] font-bold leading-[1.875] mt-6 mb-2">{step.title2}</h4>
-                  <p className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80">{step.description2}</p>
+                  <h4 className="text-[11px] md:text-[13px] font-bold leading-[1.875] mt-6 mb-2">{step.title2}</h4>
+                  <p className="text-[11px] md:text-[13px] leading-[1.875] text-foreground/80">{step.description2}</p>
                 </>
               )}
             </div>

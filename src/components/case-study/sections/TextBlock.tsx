@@ -3,8 +3,8 @@ import type { TextSection } from "@/lib/types";
 const sizeStyles = {
   base: "text-body",
   lg: "text-[14px] md:text-[18px] leading-[1.875]",
-  xl: "text-[18px] md:text-[24px] font-normal leading-[1.875]",
-  subhead: "text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em]",
+  xl: "text-[18px] md:text-[20px] font-normal leading-[1.875]",
+  subhead: "text-[18px] md:text-[20px] font-normal leading-[1.5] tracking-[-0.02em]",
 };
 
 const spacingStyles = {

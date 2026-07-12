@@ -140,25 +140,24 @@ export function MarksAndMaterials({
         <div className="relative">
           {/* ─── HEADER ROW ─── */}
           <div className="px-[calc(100%/12)] pt-8 pb-0 md:p-12 lg:p-14 md:pb-0">
-            <span className="inline-block text-[11px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-              {label}
+            <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+              {label.toLowerCase()}
             </span>
 
-            <h2 className="text-[20px] md:text-[24px] leading-[1.3] tracking-[-0.02em] text-[#141414] mb-0">
-              <span className="font-bold">{titleLines[0]}</span>
-              {titleLines.length > 1 && (
-                <>
-                  {" "}
-                  <span className="font-bold">
-                    {titleLines.slice(1).join(" ")}
-                  </span>
-                </>
-              )}
-            </h2>
-
-            <p className="text-[20px] md:text-[24px] font-normal leading-[1.3] tracking-[-0.02em] text-[#141414] pt-0 pb-1">
-              {introText}
-            </p>
+            <div className="text-[18px] md:text-[20px] leading-[1.3] tracking-[-0.02em] text-[#141414] font-normal mb-0">
+              <h2 className="inline">
+                <span className="font-bold">{titleLines[0]}</span>
+                {titleLines.length > 1 && (
+                  <>
+                    {" "}
+                    <span className="font-bold">
+                      {titleLines.slice(1).join(" ")}
+                    </span>
+                  </>
+                )}
+              </h2>
+              {" "}{introText}
+            </div>
 
             {subcopy && (
               <p className="text-[16px] leading-[24px] text-[#141414] max-w-3xl pt-1 pb-8">
@@ -224,7 +223,7 @@ export function MarksAndMaterials({
                   {philosophyParagraphs.map((p, i) => (
                     <p
                       key={i}
-                      className="text-[14px] leading-[24px] text-foreground/80 mb-4"
+                      className="text-[13px] leading-[24px] text-foreground/80 mb-4"
                       style={i === 0 ? { textIndent: "4em" } : undefined}
                     >
                       {p}

@@ -155,6 +155,10 @@ export interface SectionHeaderSection extends BaseSection {
   label: string;
   title: string;
   centered?: boolean;
+  /** Lead sentence that flows inline right after the bold title, manifesto-style.
+   *  Populated at render time by folding in the text(xl/subhead) block that used
+   *  to immediately follow — see foldSectionHeaders() in CaseStudyLayout.tsx. */
+  subhead?: string;
 }
 
 export interface TextSection extends BaseSection {

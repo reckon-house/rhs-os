@@ -436,7 +436,7 @@ body {
 }
 @media (min-width: 768px) {
   .text-spec {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 
@@ -450,7 +450,7 @@ body {
 }
 @media (min-width: 768px) {
   .text-body {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 

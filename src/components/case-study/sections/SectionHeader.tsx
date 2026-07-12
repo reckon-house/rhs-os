@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { SectionHeaderSection } from "@/lib/types";
 import { ScrambleText } from "@/components/fx/ScrambleText";
 
-export function SectionHeader({ label, title, group, centered }: SectionHeaderSection) {
+export function SectionHeader({ label, title, subhead, group, centered }: SectionHeaderSection) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   const topPad = group ? "pt-4" : "";
@@ -30,13 +30,14 @@ export function SectionHeader({ label, title, group, centered }: SectionHeaderSe
 
   return (
     <section ref={ref} className={`w-full ${topPad} pb-0 ${align}`}>
-      <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-current font-medium px-4 py-2 rounded-full bg-current/[0.06] mb-5">
-        <ScrambleText text={label} trigger={visible} />
+      <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-current font-medium px-4 py-2 rounded-full bg-current/[0.06] mb-5">
+        <ScrambleText text={label.toLowerCase()} trigger={visible} />
       </span>
       {title && (
-        <h2 className="text-[16px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          {title.replace(/\n/g, " ")}
-        </h2>
+        <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal">
+          <h2 className="inline font-bold">{title.replace(/\n/g, " ")}</h2>
+          {subhead && <>{" "}{subhead}</>}
+        </div>
       )}
     </section>
   );

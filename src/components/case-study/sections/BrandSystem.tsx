@@ -89,13 +89,13 @@ export function BrandSystem({
 
         <div className="relative p-[clamp(24px,4.5vw,56px)] text-[#141414]">
           {/* ── HEADER — matched to live SectionHeader + TextBlock(subhead) ── */}
-          <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-            {label}
+          <span className="inline-block text-[10px] tracking-[0.06em] capitalize font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+            {label.toLowerCase()}
           </span>
-          <h2 className="text-[16px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-            {title.replace(/\n/g, " ")}
-          </h2>
-          <p className="text-[16px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em]">{introText}</p>
+          <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal">
+            <h2 className="inline font-bold">{title.replace(/\n/g, " ")}</h2>
+            {" "}{introText}
+          </div>
 
           {/* ── MORPHING GLYPH · PHILOSOPHY ── */}
           <div className="grid grid-cols-1 md:grid-cols-[46%_54%] gap-8 md:gap-10 mt-6 md:mt-2 items-start">
@@ -105,16 +105,16 @@ export function BrandSystem({
             <div className="md:pt-12">
               <p className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#141414]/45 mb-3.5">Brand philosophy</p>
               {philosophyParagraphs.map((p, i) => (
-                <p key={i} className="text-[14px] leading-[1.875] text-[#141414]/80 mb-6 max-w-[560px]">
+                <p key={i} className="text-[13px] leading-[1.875] text-[#141414]/80 mb-6 max-w-[560px]">
                   {p}
                 </p>
               ))}
               {families.map((f, i) => (
                 <div key={i} className="mb-5 max-w-[560px]">
-                  <div className="text-[14px] leading-[1.6] mb-1">
+                  <div className="text-[13px] leading-[1.6] mb-1">
                     <b className="font-semibold">{f.name}</b> · {f.role.split(",")[0]}
                   </div>
-                  <div className="text-[14px] leading-[1.875] text-[#141414]/72">{f.description}</div>
+                  <div className="text-[13px] leading-[1.875] text-[#141414]/72">{f.description}</div>
                 </div>
               ))}
             </div>

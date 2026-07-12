@@ -9,7 +9,7 @@ export function TextRightBlock({ content }: TextRightSection) {
         {paragraphs.map((p, i) => (
           <p
             key={i}
-            className="text-[11px] md:text-[14px] leading-[1.875] text-foreground/80"
+            className="text-[11px] md:text-[13px] leading-[1.875] text-foreground/80"
             style={i === 0 ? { textIndent: "4em" } : undefined}
           >
             {p}

@@ -54,6 +54,31 @@ function getColSpan(type: string): string {
   }
 }
 
+/** Fold a section-header immediately followed by a text(xl/subhead) block into
+ *  ONE section-header carrying both — the bold title flows into the regular
+ *  lead sentence as a single block, manifesto-style, instead of stacking as two
+ *  separately-spaced components. The text block is dropped from the render
+ *  list; anything else after it (footnotes, images, etc.) is untouched. Runs
+ *  on the flat sections array, before grouping. */
+function foldSectionHeaders(sections: Section[]): Section[] {
+  const result: Section[] = [];
+  for (let i = 0; i < sections.length; i++) {
+    const s = sections[i];
+    const next = sections[i + 1];
+    if (
+      s.type === "section-header" &&
+      next?.type === "text" &&
+      (next.size === "xl" || next.size === "subhead")
+    ) {
+      result.push({ ...s, subhead: next.content });
+      i++;
+      continue;
+    }
+    result.push(s);
+  }
+  return result;
+}
+
 /** Group consecutive sections that share the same group.name */
 type SectionOrGroup =
   | { kind: "single"; section: Section }
@@ -104,7 +129,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  const items = groupSections(study.sections);
+  const items = groupSections(foldSectionHeaders(study.sections));
 
   return (
     <>
@@ -126,9 +151,9 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
           href="https://www.awwwards.com/sites/reckon-house-staples"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+          className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
         >
-          <ScrambleOnView text="AWWWARDS NOMINEE" />
+          <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
         </a>
       </div>
     </div>
@@ -151,7 +176,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
       {/* Content grid */}
       <div className="grid grid-cols-12 gap-x-0 md:gap-x-5">
         {items.map((item, idx) => {
-          // Add 200px spacing before section-header items (except the first few)
+          // Top gap before each new section (section-header / group / carousel).
           const isCarousel = item.kind === "single" && item.section.type === "logo-carousel";
           const isNewSection =
             (item.kind === "single" && item.section.type === "section-header") ||
@@ -163,7 +188,7 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
             (prevItem.section.type === "hero" || prevItem.section.type === "hero-carousel");
           const isBleedItem = (item.kind === "group" && item.bleed) || isCarousel;
           const sectionGap = isNewSection && idx > 0
-            ? (prevIsHero || isBleedItem) ? "pt-[40px] md:pt-[80px]" : "pt-[80px] md:pt-[200px]"
+            ? (prevIsHero || isBleedItem) ? "pt-[40px] md:pt-[80px]" : "pt-[40px] md:pt-[100px]"
             : "";
 
           if (item.kind === "single") {

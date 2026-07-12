@@ -58,13 +58,13 @@ export function ThreeColumnText({ columns }: ThreeColumnTextSection) {
         {columns.map((col, i) => (
           <div key={i} className="grid grid-cols-12 gap-x-5">
             {col.title && (
-              <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
+              <h3 className="col-span-3 text-[11px] md:text-[13px] font-bold leading-[1.875] pt-[3px]">
                 {col.title}
               </h3>
             )}
             <div className={`${col.title ? "col-start-7 col-span-6" : "col-span-12"}`}>
               {col.content.split("\n\n").map((p, j) => (
-                <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-current/80 mb-4 last:mb-0">
+                <p key={j} className="text-[11px] md:text-[13px] leading-[1.875] text-current/80 mb-4 last:mb-0">
                   {p}
                 </p>
               ))}
