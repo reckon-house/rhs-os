@@ -74,9 +74,9 @@ export default function CustomPage() {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
-            <ScrambleOnView text="AWWWARDS NOMINEE" />
+            <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
           </a>
         </div>
       </div>
@@ -89,18 +89,14 @@ export default function CustomPage() {
             SECTION 01 · OVERVIEW
             ═══════════════════════════════════════════════════════════════ */}
         <section className="w-full pt-4 md:pt-12 pb-4 md:pb-8 px-4 md:px-0">
-          <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-            <ScrambleOnView text="SECTION 01: OVERVIEW" />
+          <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+            <ScrambleOnView text={"SECTION 01: OVERVIEW".toLowerCase()} />
           </span>
-          <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-            Software shaped to your business.
-          </h1>
-          <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-            Off-the-shelf SaaS forces your business into someone else's design. Square decided what a restaurant looks like. Calendly decided how booking works. Most of the time, your actual business doesn't quite fit. You adapt. Pay monthly fees forever. Tell customers &ldquo;sorry, the system can't do that.&rdquo;
-          </p>
-          <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
+          <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-6">
+            <h1 className="inline font-bold">Software shaped to your business.</h1>{" "}
+            Off-the-shelf SaaS forces your business into someone else's design. Square decided what a restaurant looks like. Calendly decided how booking works. Most of the time, your actual business doesn't quite fit. You adapt. Pay monthly fees forever. Tell customers &ldquo;sorry, the system can't do that.&rdquo;{" "}
             Or you build the tool that actually fits. AI changed the math on what that costs. What used to be a six-month custom build is a one-week sprint. What used to need an enterprise contract starts at the price of a year of SaaS. When something needs to change, the change happens in hours, not a roadmap meeting.
-          </p>
+          </div>
 
           {/* Meta fields — mirrors the homepage manifesto pattern */}
           <div className="text-spec text-foreground/90">
@@ -139,15 +135,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)] mb-10 md:mb-14">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 02: WHAT THIS REPLACES" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 02: WHAT THIS REPLACES".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                Three ways most small businesses solve this. All three have a tradeoff that gets worse over time.
-              </h2>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">Three ways most small businesses solve this. All three have a tradeoff that gets worse over time.</h2>{" "}
                 Every business owner has tried at least one. Most have tried all three. Here's where each one breaks.
-              </p>
+              </div>
             </div>
 
             {/* Desktop columns */}
@@ -167,10 +161,10 @@ export default function CustomPage() {
                 },
               ].map((col) => (
                 <div key={col.title} className="grid grid-cols-12 gap-x-5">
-                  <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
+                  <h3 className="col-span-3 text-[11px] md:text-[13px] font-bold leading-[1.875] pt-[3px]">
                     {col.title}
                   </h3>
-                  <p className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80">
+                  <p className="col-start-7 col-span-6 text-[11px] md:text-[13px] leading-[1.875] text-current/80">
                     {col.body}
                   </p>
                 </div>
@@ -224,15 +218,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="md:px-[calc(100%/24)]">
             <div className="mb-6 md:mb-10">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 03: DEMO 01" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 03: DEMO 01".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                AI customer service that knows your business.
-              </h2>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">AI customer service that knows your business.</h2>{" "}
                 Off-the-shelf chatbots are trained on the internet. Yours should be trained on your business: hours, menu, policies, voice. Below is what that looks like for a coffee shop in East Austin. Your version answers in your tone, about your operation.
-              </p>
+              </div>
             </div>
             <AIAgentDemo />
           </div>
@@ -244,15 +236,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="md:px-[calc(100%/24)]">
             <div className="mb-6 md:mb-10">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 04: DEMO 02" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 04: DEMO 02".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                Booking that works the way you actually book.
-              </h2>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">Booking that works the way you actually book.</h2>{" "}
                 Calendly assumes everyone books the same way. Real businesses don't. Set the rules: staff schedules, service types, lunch breaks, blackout days. The booker rebuilds itself in real time. The version below is configured for a hair salon working four days a week.
-              </p>
+              </div>
             </div>
             <BookingDemo />
           </div>
@@ -264,15 +254,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="md:px-[calc(100%/24)]">
             <div className="mb-6 md:mb-10">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 05: DEMO 03" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 05: DEMO 03".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                A customer list that fits your industry.
-              </h2>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">A customer list that fits your industry.</h2>{" "}
                 A restaurant CRM is not a salon CRM is not a contractor CRM. The fields are different. The workflows are different. Pick the industry and the template configures itself. Below: a restaurant set up with allergies, favorite dishes, and visit history baked into the schema.
-              </p>
+              </div>
             </div>
             <CRMDemo />
           </div>
@@ -288,18 +276,14 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)] mb-8 md:mb-12">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 06: ONE BRANDED PORTAL" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 06: ONE BRANDED PORTAL".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                Built like an operating system, not a stack of subscriptions.
-              </h2>
-              <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-                Each demo above runs as a standalone. The real upgrade is when they live together in one branded portal, with AI keeping the data flowing between them. Start with one tool. Add the next when the business needs it. The portal evolves with the business, not against it.
-              </p>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">Built like an operating system, not a stack of subscriptions.</h2>{" "}
+                Each demo above runs as a standalone. The real upgrade is when they live together in one branded portal, with AI keeping the data flowing between them. Start with one tool. Add the next when the business needs it. The portal evolves with the business, not against it.{" "}
                 I built this model for Sally Beauty at enterprise scale: five connected platforms running signal to shelf. The architecture works at every size: one location or fifty, a single team or a whole organization. Same approach, different blast radius.
-              </p>
+              </div>
             </div>
 
             {/* Proof image — Sally Marketing OS dashboard grid */}
@@ -330,15 +314,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)] mb-10 md:mb-14">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 07: PROCESS" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 07: PROCESS".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                Day one to deployed in two weeks.
-              </h2>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">Day one to deployed in two weeks.</h2>{" "}
                 Most engagements run a two-week shape. Some are faster. Some need three. Here's the typical arc.
-              </p>
+              </div>
             </div>
 
             {/* Desktop columns */}
@@ -358,10 +340,10 @@ export default function CustomPage() {
                 },
               ].map((col) => (
                 <div key={col.title} className="grid grid-cols-12 gap-x-5">
-                  <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
+                  <h3 className="col-span-3 text-[11px] md:text-[13px] font-bold leading-[1.875] pt-[3px]">
                     {col.title}
                   </h3>
-                  <p className="col-start-7 col-span-6 text-[11px] md:text-[14px] leading-[1.875] text-current/80">
+                  <p className="col-start-7 col-span-6 text-[11px] md:text-[13px] leading-[1.875] text-current/80">
                     {col.body}
                   </p>
                 </div>
@@ -403,15 +385,13 @@ export default function CustomPage() {
             pricing before sharing this link widely. */}
         <section className="w-full px-4 md:px-0">
           <div className="md:px-[calc(100%/24)] mb-8 md:mb-10">
-            <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-              <ScrambleOnView text="SECTION 08: PRICING" />
+            <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+              <ScrambleOnView text={"SECTION 08: PRICING".toLowerCase()} />
             </span>
-            <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-              Three tiers. No surprises.
-            </h2>
-            <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
+            <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+              <h2 className="inline font-bold">Three tiers. No surprises.</h2>{" "}
               Small business pricing for small businesses. Build, deployment, hosting, and ongoing changes are bundled. No hourly billing. No per-seat fees on top.
-            </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:px-[calc(100%/24)]">
@@ -499,15 +479,13 @@ export default function CustomPage() {
         <section className="w-full px-4 md:px-0">
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-20" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             <div className="md:px-[calc(100%/24)]">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                <ScrambleOnView text="SECTION 09: LET'S TALK" />
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                <ScrambleOnView text={"SECTION 09: LET'S TALK".toLowerCase()} />
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                Tell me about your business.
-              </h2>
-              <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">Tell me about your business.</h2>{" "}
                 If any of this resonated, the next step is a thirty-minute conversation. No pitch deck. No sales call. Just talking through what you're working with and whether there's a fit.
-              </p>
+              </div>
               <div className="text-spec text-foreground/90 mt-8">
                 <p>
                   <span className="font-bold">Email: </span>

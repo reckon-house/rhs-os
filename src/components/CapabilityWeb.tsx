@@ -160,10 +160,10 @@ export function CapabilityWebHeader({ dark = false }: { dark?: boolean } = {}) {
 
   return (
     <div className="mb-12">
-      <span className={`inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
-        <ScrambleOnView text="SECTION: THE PRACTICE" />
+      <span className={`inline-block text-[10px] tracking-[0.06em] capitalize ${inkClass} font-medium px-4 py-2 rounded-full ${pillBg} mb-5`}>
+        <ScrambleOnView text={"SECTION: THE PRACTICE".toLowerCase()} />
       </span>
-      <h2 className={`text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
+      <h2 className={`text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-bold ${inkClass}`}>
         Work hands-on with the person who makes the work. Start a brand, an app, a campaign, or a kitchen with a single message.
       </h2>
       <div className={`mt-6 text-spec ${inkSoft}`}>

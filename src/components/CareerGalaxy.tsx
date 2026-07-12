@@ -164,15 +164,13 @@ export function CareerGalaxy() {
     <div className="w-full">
       {/* Heading — case-study MetaBlock pattern: pill + title + subtitle + meta + abstract */}
       <div className="mb-12">
-        <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-          <ScrambleOnView text="SECTION 02: CAREER DATA" />
+        <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          <ScrambleOnView text={"SECTION 02: CAREER DATA".toLowerCase()} />
         </span>
-        <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          Twenty-four years of work on one timeline.
-        </h2>
-        <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
+        <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-6">
+          <h2 className="inline font-bold">Twenty-four years of work on one timeline.</h2>{" "}
           Sized by impact, colored by discipline. No highlights reel.
-        </p>
+        </div>
 
         {/* Meta fields — left column, narrow */}
         <div className="text-spec text-foreground/90">

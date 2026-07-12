@@ -81,9 +81,9 @@ export default function InspirationPage() {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
-            <ScrambleOnView text="AWWWARDS NOMINEE" />
+            <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
           </a>
         </div>
       </div>
@@ -94,25 +94,16 @@ export default function InspirationPage() {
       {/* ---- Overview block — mirrors the homepage manifesto pattern ---- */}
       <section className="w-full pt-4 md:pt-12 pb-12 md:pb-20 px-4 md:px-0">
         {/* Section pill */}
-        <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-          <ScrambleOnView text="SECTION 01: OVERVIEW" />
+        <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          <ScrambleOnView text={"SECTION 01: OVERVIEW".toLowerCase()} />
         </span>
 
-        {/* Title */}
-        <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-          A shelf of staples I keep coming back to.
-        </h1>
-
-        {/* Body — flows directly under the headline as one block, like the homepage */}
-        <p className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
-          The people, the work, the rooms - the things that show up in everything I make, whether I notice or not.
-        </p>
-
-        {/* Closing line — quieter, secondary lens. Acts as the tagline that
-            frames how Reckon*House and House*Staples relate. */}
-        <p className="mt-4 text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6">
+        {/* Title + body + closing line — one continuous flowing block, like the homepage manifesto */}
+        <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-6">
+          <h1 className="inline font-bold">A shelf of staples I keep coming back to.</h1>{" "}
+          The people, the work, the rooms - the things that show up in everything I make, whether I notice or not.{" "}
           Reckon*House is what gets made. House*Staples is what holds it up.
-        </p>
+        </div>
 
         {/* Meta fields — matches homepage pattern */}
         <div className="text-spec text-foreground/90">

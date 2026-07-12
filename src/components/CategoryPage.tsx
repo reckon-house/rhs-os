@@ -59,7 +59,7 @@ function CategoryLabel({ tag }: { tag: Tag }) {
     interiors: "More interiors",
   };
   return (
-    <p className="text-[11px] md:text-[14px] text-[#141414] font-bold mb-6">
+    <p className="text-[11px] md:text-[13px] text-[#141414] font-bold mb-6">
       {labels[tag]}
     </p>
   );
@@ -84,6 +84,10 @@ export function CategoryPage({ tag }: { tag: Tag }) {
 
   const allRows = chunkRows(categoryProjects);
 
+  // All body paragraphs flow into the h1 as one continuous block — the
+  // homepage manifesto pattern, no separate smaller-tier footnote.
+  const overviewParagraphs = info.body.split("\n\n");
+
   // Running index across every thumbnail on the page, so the ink blots alternate
   // left/right down the whole page instead of clustering per-section.
   let blotIdx = 0;
@@ -104,9 +108,9 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
-            <ScrambleOnView text="AWWWARDS NOMINEE" />
+            <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
           </a>
         </div>
       </div>
@@ -124,23 +128,15 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             homepage manifesto pattern. The three-column practice breakdown
             sits below the projects in its own cream container (further down). */}
         <section className="w-full pt-4 md:pt-12 pb-0 px-4 md:px-0">
-          <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-            <ScrambleOnView text="SECTION 01: OVERVIEW" />
+          <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+            <ScrambleOnView text={"SECTION 01: OVERVIEW".toLowerCase()} />
           </span>
-          <h1 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold">
-            {info.headline.replace(/\n/g, " ")}
-          </h1>
-          {info.body.split("\n\n").map((para, i) => (
-            <p
-              key={i}
-              className={i === 0
-                ? "text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4"
-                : "text-[14px] md:text-[16px] leading-[1.6] text-foreground/70 mb-6"
-              }
-            >
-              {para}
-            </p>
-          ))}
+          <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-8 md:mb-10">
+            <h1 className="inline font-bold">{info.headline.replace(/\n/g, " ")}</h1>
+            {overviewParagraphs.map((para, i) => (
+              <span key={i}>{" "}{para}</span>
+            ))}
+          </div>
 
           {/* Meta fields — left-aligned, mirrors homepage manifesto pattern */}
           <div className="text-spec text-foreground/90">
@@ -201,30 +197,26 @@ export function CategoryPage({ tag }: { tag: Tag }) {
           <div className="max-w-[1100px] mx-auto overflow-hidden px-6 py-10 md:px-16 md:py-16" style={{ backgroundColor: "#ECE6E1", borderRadius: "clamp(30px, 5vw, 75px)" }}>
             {/* Section header — pill, headline, subhead, footnote */}
             <div className="md:px-[calc(100%/24)] mb-10 md:mb-14">
-              <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-                {info.expertise.label}
+              <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+                {info.expertise.label.toLowerCase()}
               </span>
-              <h2 className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-bold mb-2">
-                {info.expertise.title.replace(/\n/g, " ")}
-              </h2>
-              <p className="text-[22px] md:text-[24px] font-normal leading-[1.5] tracking-[-0.02em] text-[#141414] mb-4">
-                {info.expertise.subhead}
-              </p>
-              <p className="text-[14px] md:text-[16px] leading-[1.6] text-foreground/70">
-                {info.expertise.footnote}
-              </p>
+              <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414]">
+                <h2 className="inline font-bold">{info.expertise.title.replace(/\n/g, " ")}</h2>
+                {" "}{info.expertise.subhead}
+                {" "}{info.expertise.footnote}
+              </div>
             </div>
 
             {/* Desktop columns */}
             <div className="hidden md:block space-y-10 md:px-[calc(100%/24)]">
               {info.expertise.columns.map((col, i) => (
                 <div key={i} className="grid grid-cols-12 gap-x-5">
-                  <h3 className="col-span-3 text-[11px] md:text-[14px] font-bold leading-[1.875] pt-[3px]">
+                  <h3 className="col-span-3 text-[11px] md:text-[13px] font-bold leading-[1.875] pt-[3px]">
                     {col.title}
                   </h3>
                   <div className="col-start-7 col-span-6">
                     {col.content.split("\n\n").map((p, j) => (
-                      <p key={j} className="text-[11px] md:text-[14px] leading-[1.875] text-current/80 mb-4 last:mb-0">
+                      <p key={j} className="text-[11px] md:text-[13px] leading-[1.875] text-current/80 mb-4 last:mb-0">
                         {p}
                       </p>
                     ))}

@@ -149,8 +149,8 @@ function FeaturedBrands() {
     // A slow ticker instead of a grid: showing a few logos at a time, in motion,
     // lets their mismatched styles read as one quiet flow rather than a busy wall.
     <div className="mt-14 border-t border-[#141414]/10 pt-12 md:mt-20 md:pt-16">
-      <p className="text-[11px] md:text-[12px] tracking-[0.16em] uppercase text-foreground/45 mb-7 md:mb-9">
-        <ScrambleOnView text={"Worked with, spotted by & featured in"} />
+      <p className="text-[10px] tracking-[0.16em] capitalize text-foreground/45 mb-7 md:mb-9">
+        <ScrambleOnView text={"Worked with, spotted by & featured in".toLowerCase()} />
       </p>
       <div className="brand-ticker overflow-hidden">
         <div className="brand-ticker__track flex w-max items-center [--lh:26px] md:[--lh:30px]">
@@ -251,9 +251,9 @@ function HomeContent() {
             href="https://www.awwwards.com/sites/reckon-house-staples"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-[10px] tracking-[0.06em] uppercase text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
+            className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
-            <ScrambleOnView text="AWWWARDS NOMINEE" />
+            <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
           </a>
         </div>
       </div>
@@ -264,14 +264,14 @@ function HomeContent() {
       {/* ---- Manifesto block — case-study Meta pattern at portfolio scale ---- */}
       <section className="w-full pt-4 md:pt-12 pb-12 md:pb-20 px-4 md:px-0">
         {/* Section pill — matches case-study + CareerGalaxy + CapabilityWeb pattern */}
-        <span className="inline-block text-[11px] md:text-[13px] tracking-[0.06em] uppercase text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
-          <ScrambleOnView text="SECTION 01: OVERVIEW" />
+        <span className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-4 py-2 rounded-full bg-[#141414]/[0.06] mb-5">
+          <ScrambleOnView text={"SECTION 01: OVERVIEW".toLowerCase()} />
         </span>
 
         {/* Manifesto — one continuous block: bold open and close, regular
             middle, all one size, no breaks. The opening sentence stays an
             inline <h1> so it still carries the page heading for SEO. */}
-        <div className="text-[22px] md:text-[24px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-8 md:mb-10">
+        <div className="text-[18px] md:text-[20px] leading-[1.5] tracking-[-0.02em] font-normal text-[#141414] mb-8 md:mb-10">
           <h1 className="inline font-bold">I&apos;m Jeremy. I work across brand, product, and place.</h1>{" "}
           The work spans apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors and material selection, AI tools and marketing platforms. The disciplines overlap more than they separate.{" "}
           <span className="font-bold">Same desk for all of it.</span>
