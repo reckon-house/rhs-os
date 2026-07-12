@@ -262,18 +262,84 @@ export function BurnMeltTransition() {
     return () => document.removeEventListener("click", handleClick, true);
   }, [burnDuration, easeCurve]);
 
-  // First load: reveal immediately. Both covers now default to transparent
-  // (the white overlay's opacity is 0, and body::before's --burn-cover is 0),
-  // so there is nothing to melt away on a fresh load — we just mark the
-  // transition system ready so link-click navigation still burns. The old
-  // burn-in re-covered the page and gated the reveal on hydration AND
-  // window.load (every image finishing), which showed a blank cream screen for
-  // several seconds on a cold load.
+  // First load. Case-study pages open covered (see overlayStyle/whiteStyle) and
+  // melt that cover here — the burn-in reveal on a direct load / refresh. The
+  // melt is gated on the top hero image, capped at 150ms, exactly like the
+  // click-through path below; it is NOT gated on window.load (every image
+  // finishing), which is what used to blank the page for several seconds.
+  // Every other route marks ready immediately and never covers, so cold loads
+  // stay instant.
   useEffect(() => {
     if (hasBurnedIn.current) return;
     hasBurnedIn.current = true;
-    isReady.current = true;
-  }, []);
+
+    const isCaseStudy = pathname?.startsWith("/case-studies/") ?? false;
+    const overlay = overlayRef.current;
+    const white = whiteRef.current;
+    if (!isCaseStudy || !overlay || !white) {
+      isReady.current = true;
+      return;
+    }
+
+    const MAX_WAIT_MS = 150;
+    let cancelled = false;
+
+    const playBurnIn = () => {
+      if (cancelled) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          startTurbulenceAnimation();
+
+          const whiteDuration = burnDuration * 0.35;
+          const overlayDuration = burnDuration * 0.7;
+          const overlayDelay = burnDuration * 0.15;
+
+          white.style.transition = `opacity ${whiteDuration}s ease-out`;
+          white.style.opacity = "0";
+
+          setTimeout(() => {
+            overlay.style.transition = `opacity ${overlayDuration}s ${easeCurve}`;
+            overlay.style.opacity = "0";
+          }, overlayDelay * 1000);
+
+          setTimeout(() => {
+            stopTurbulenceAnimation();
+            isReady.current = true;
+          }, (overlayDelay + overlayDuration) * 1000);
+        });
+      });
+    };
+
+    // Wait for the top hero, capped tight so a slow/large image never hangs the
+    // reveal. A cached hero (typical on refresh) resolves in <50ms.
+    const heroImg = document.querySelector<HTMLImageElement>(".hero-breakout img");
+    if (heroImg && heroImg.complete && heroImg.naturalWidth > 0) {
+      playBurnIn();
+    } else if (heroImg) {
+      const onLoad = () => {
+        heroImg.removeEventListener("load", onLoad);
+        heroImg.removeEventListener("error", onLoad);
+        if (!cancelled) playBurnIn();
+      };
+      heroImg.addEventListener("load", onLoad);
+      heroImg.addEventListener("error", onLoad);
+      setTimeout(() => {
+        if (!cancelled) {
+          heroImg.removeEventListener("load", onLoad);
+          heroImg.removeEventListener("error", onLoad);
+          playBurnIn();
+        }
+      }, MAX_WAIT_MS);
+    } else {
+      setTimeout(() => {
+        if (!cancelled) playBurnIn();
+      }, MAX_WAIT_MS);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname, burnDuration, easeCurve]);
 
   // BURN IN on client-side navigation (pathname changes)
   useEffect(() => {
@@ -386,13 +452,21 @@ export function BurnMeltTransition() {
     ? "linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)"
     : undefined;
 
+  // On a direct load / refresh of a case study, open covered so the top hero
+  // reveals through the burn (the first-load effect melts it). Everywhere else
+  // — homepage included — paints instantly with no cover, which is what keeps
+  // cold loads blank-free. hasBurnedIn guards against re-covering on any
+  // re-render after the burn has already run.
+  const coverOnFirstLoad =
+    (pathname?.startsWith("/case-studies/") ?? false) && !hasBurnedIn.current;
+
   const overlayStyle: React.CSSProperties = {
     position: "fixed",
     inset: 0,
     zIndex: 2147483644,
     pointerEvents: "none",
     willChange: "opacity",
-    opacity: 0,
+    opacity: coverOnFirstLoad ? 1 : 0,
     background: "rgba(243, 240, 237, 0.35)",
     // Mobile: skip the SVG displacement filter. Backdrop-filter (the
     // saturate/contrast pop that defines the burn) is preserved. The
@@ -416,9 +490,10 @@ export function BurnMeltTransition() {
     pointerEvents: "none",
     background: "#F3F0ED",
     willChange: "opacity",
-    // Hidden on first load so it never blanks the page while the bundle
-    // hydrates. The burn-out / burn-in transitions set it to 1 explicitly.
-    opacity: 0,
+    // Transparent by default so non-study cold loads paint instantly. On a
+    // case-study direct load it opens opaque (coverOnFirstLoad) and the
+    // first-load effect melts it — the burn reveal, without the old blank.
+    opacity: coverOnFirstLoad ? 1 : 0,
   };
 
   return (
