@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // A code-only "sizzle reel": one container hard-cuts and wipes through a run
 // of stills fast enough that the eye reads it as motion. No video files.
@@ -73,6 +73,8 @@ const CSS = `
 @keyframes szBurnPop{0%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}18%{opacity:1;-webkit-backdrop-filter:blur(4px) saturate(4.5) contrast(2.2);backdrop-filter:blur(4px) saturate(4.5) contrast(2.2)}100%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}}
 .sz-burnwash{position:absolute;inset:0;pointer-events:none;background:#F3F0ED;opacity:0;animation:szBurnWash var(--d) cubic-bezier(.72,0,.18,1) both}
 @keyframes szBurnWash{0%{opacity:0}16%{opacity:.95}40%{opacity:.3}100%{opacity:0}}
+.sz-burnup{animation:szBurnUp var(--d) cubic-bezier(.2,.8,.2,1) both}
+@keyframes szBurnUp{0%{opacity:0}28%{opacity:1}100%{opacity:1}}
 .sz-word{display:grid;place-items:center;text-align:center;padding:9%;font-weight:400;line-height:1.3;letter-spacing:.01em;font-size:clamp(13px,3cqw,42px)}
 .sz-word .sz-line{display:block;text-wrap:balance}
 .sz-anim{animation:szWordCut var(--d) steps(1,end) both,szWordPunch var(--d) linear both}
@@ -88,7 +90,7 @@ const CSS = `
 @media (prefers-reduced-motion:reduce){
   .sz-layer,.sz-strip,.sz-anim,.sz-slidein,.sz-w,.sz-ltr{animation:none!important}
   .sz-shutter,.sz-curtain,.sz-ccurtainV,.sz-strip{clip-path:inset(0 0 0 0)!important}
-  .sz-fade,.sz-cut{opacity:1!important}
+  .sz-fade,.sz-cut,.sz-burnup{opacity:1!important}
   .sz-flashswap,.sz-pinchswap{animation:none!important;opacity:1!important}
   .sz-pinchT{animation:none!important;transform:translateY(-102%)!important}
   .sz-pinchB{animation:none!important;transform:translateY(102%)!important}
@@ -148,8 +150,9 @@ export function buildSequence(
   beats.push(
     { fx: "curtain", img: img(5), ms: 720 },
     // 7th frame. Modulo wraps for smaller sets (repeats an earlier image,
-    // spaced far from its first showing).
-    { fx: "cut", img: img(6), ms: 460 }
+    // spaced far from its first showing). Held a beat longer than a typical
+    // cut so the image actually registers before the title card cuts in.
+    { fx: "cut", img: img(6), ms: 640 }
   );
   if (scatter) {
     beats.push({ fx: "wordBuild", color: col(2), text: words.join(" "), ms: 1080 });
@@ -215,6 +218,13 @@ interface Props {
   index?: number | null; // controlled beat index (step/debug mode); disables the timer
   nonce?: number; // bump to replay the current beat's animation
   onBeatChange?: (index: number, beat: SizzleBeat) => void;
+  // IntersectionObserver root for the offscreen-pause check. Defaults to the
+  // viewport, which is wrong inside a clipped container (e.g. a grid bounded
+  // to a fixed aspect-ratio box via overflow:hidden) — a cell sitting past
+  // the clip is still "in the viewport" as far as the default root is
+  // concerned, so it never pauses despite being invisible. Pass the clipping
+  // element's ref here so those cells correctly read as out of view.
+  pauseRoot?: React.RefObject<HTMLElement | null>;
 }
 
 export function SizzleReel({
@@ -230,6 +240,7 @@ export function SizzleReel({
   index = null,
   nonce = 0,
   onBeatChange,
+  pauseRoot,
 }: Props) {
   useSizzleStyles();
   const seq =
@@ -244,6 +255,27 @@ export function SizzleReel({
     ? ((index % seq.length) + seq.length) % seq.length
     : i % seq.length;
 
+  // Pausing is OPT-IN via pauseRoot: pass the element that clips this reel (a
+  // grid's bounded box) and cells that fall outside it stop, so a wall of reels
+  // doesn't paint cells nobody can see. That intersection is static — the cells
+  // don't move relative to their box — so the observer fires reliably. A lone
+  // reel (the page hero, a thumbnail) passes nothing and simply runs; it's one
+  // cheap loop, and a viewport-root observer is unreliable inside the app's
+  // nested Lenis scroll anyway (it can leave a reel wrongly stuck paused).
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const el = stageRef.current;
+    const root = pauseRoot?.current;
+    if (!el || !root) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      root,
+      threshold: 0.01,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [pauseRoot]);
+
   // Warm the cache so first-pass reveals never flash empty.
   useEffect(() => {
     images.forEach((src) => {
@@ -254,6 +286,7 @@ export function SizzleReel({
 
   useEffect(() => {
     if (controlled) return; // step mode: the parent drives the beat
+    if (!inView) return; // paused off-screen; resumes from the same beat
     if (i >= seq.length) {
       setI(0);
       return;
@@ -261,7 +294,7 @@ export function SizzleReel({
     const hold = Math.max(120, seq[i].ms / Math.max(speed, 0.1));
     const t = setTimeout(() => setI((v) => (v + 1) % seq.length), hold);
     return () => clearTimeout(t);
-  }, [i, seq, speed, controlled]);
+  }, [i, seq, speed, controlled, inView]);
 
   useEffect(() => {
     onBeatChange?.(active, seq[active]);
@@ -276,7 +309,7 @@ export function SizzleReel({
   const dur = Math.round(beat.fx === "flash" ? holdMs : holdMs * 0.72);
 
   return (
-    <div className={`sz-stage ${className}`} style={style}>
+    <div ref={stageRef} className={`sz-stage ${className}`} style={style}>
       {/* All stills stay mounted; the underlay just toggles opacity. Swapping
           one img's src per beat risked a one-frame decode blank (a dark
           blink) at every photo-to-photo boundary. */}
@@ -418,18 +451,29 @@ function BeatLayer({
     // Words land one at a time; the last settles around 75% of the beat so
     // the finished line gets a real hold before the loop wraps.
     const stagger = Math.round(dur * 0.16);
+    const tc = textColor ?? autoTextColor(beat.color);
     return (
-      <div
-        className="sz-layer sz-word"
-        style={{ ...d, background: beat.color, color: textColor ?? autoTextColor(beat.color) }}
-      >
-        <span className="sz-line">
-          {words.map((w, k) => (
-            <span key={k} className="sz-w" style={{ animationDelay: `${k * stagger}ms` }}>
-              {w}
-            </span>
-          ))}
-        </span>
+      <div className="sz-layer" style={d}>
+        {/* The title card rides in under a cream burn-blink. sz-burnup brings
+            the flat card to full quickly (~28%, while the wash still covers),
+            so the cut from the previous photo into the card is hidden by the
+            bloom — replacing the old sz-cut stepped fade that left the card at
+            half opacity over the photo for half the beat, then hard-snapped.
+            That seam was the jerk between the cut and the title card. */}
+        <div
+          className="sz-layer sz-word sz-burnup"
+          style={{ ...d, background: beat.color, color: tc }}
+        >
+          <span className="sz-line">
+            {words.map((w, k) => (
+              <span key={k} className="sz-w" style={{ animationDelay: `${k * stagger}ms` }}>
+                {w}
+              </span>
+            ))}
+          </span>
+        </div>
+        <div className="sz-burnpop" style={d} />
+        <div className="sz-burnwash" style={d} />
       </div>
     );
   }
