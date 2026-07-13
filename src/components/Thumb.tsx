@@ -4,6 +4,30 @@ import { useRef, useEffect, type CSSProperties } from "react";
 import Link from "next/link";
 import { type Project } from "@/data/projects";
 import { thumbMotionVars } from "@/lib/thumb-motion";
+import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
+
+// SizzleReel's own thumbnail is a live mini reel, not a still — the tool doing
+// exactly what it does. It cuts through a few digital-tagged project thumbnails
+// already loaded on both the homepage and the digital page (zero extra image
+// weight), runs the lighter clip-path/opacity-only sequence (no burn — that's
+// the one costly effect), and pauses off-screen via SizzleReel's own observer.
+const REEL_IMAGES = [
+  "/images/thumbnails/ivyPark.jpg",
+  "/images/thumbnails/arc.jpg",
+  "/images/thumbnails/nordstromPersonal.jpg",
+  "/images/thumbnails/dsc.jpg",
+  "/images/thumbnails/nordstromBeauty.jpg",
+];
+const REEL_COLORS = ["#0AA7CA", "#181B17", "#776549"];
+const REEL_SEQ: SizzleBeat[] = [
+  { fx: "shutter", img: 0, ms: 600 },
+  { fx: "fade", img: 1, ms: 400 },
+  { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
+  { fx: "slat", img: 3, ms: 620 },
+  { fx: "ccurtain", color: "#181B17", ms: 340 },
+  { fx: "curtain", img: 4, ms: 620 },
+  { fx: "cut", img: 0, ms: 540 },
+];
 
 export type BlotCorner = "tl" | "tr" | "bl" | "br" | "tl2" | "sl1" | "sl2" | "sr1" | "sr2";
 
@@ -171,9 +195,22 @@ export function Thumb({
   const src = blotSrc ?? `/images/thumbnails/${project.id}.jpg`;
   const inner = (
     <div className="thumb-float w-[130px] md:w-[160px]" style={m.float}>
-      <div className="thumb-card" data-blot={corner} style={m.card}>
-        <BlotImage src={src} alt={project.title} corner={corner} zoom={blotZoom ?? 1.2} delay={blotDelay(project.id)} />
-      </div>
+      {project.id === "sizzle" ? (
+        // The reel plays its own thumbnail. thumb-card already clips to the
+        // rounded 23% square (overflow:hidden); aspect-square gives it height.
+        <div className="thumb-card aspect-square" style={m.card}>
+          <SizzleReel
+            images={REEL_IMAGES}
+            colors={REEL_COLORS}
+            sequence={REEL_SEQ}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
+      ) : (
+        <div className="thumb-card" data-blot={corner} style={m.card}>
+          <BlotImage src={src} alt={project.title} corner={corner} zoom={blotZoom ?? 1.2} delay={blotDelay(project.id)} />
+        </div>
+      )}
       <div className="text-center mt-2 md:mt-3">
         <p className="text-[10px] font-medium leading-[14px]">{project.title}</p>
         <p className="text-[10px] leading-[14px] text-foreground/50">{project.category}</p>

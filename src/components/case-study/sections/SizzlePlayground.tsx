@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SizzleReel, buildSequence } from "@/components/fx/SizzleReel";
+import { SizzleReel, buildSequence, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { extractPalette } from "@/lib/sizzle-palette";
 import type { SizzlePlaygroundSection } from "@/lib/types";
 
@@ -32,6 +32,43 @@ const RANGE_HEADLINE = "Reckon House Staples";
 
 const REEL_RADIUS = "clamp(30px, 5vw, 100px)";
 
+// Hero variant: a wall of small reels instead of one big one. Each cell runs
+// this lighter sequence — mostly clip-path and opacity, plus ONE burn beat.
+// Burn's backdrop-filter blur is the one genuinely expensive effect in the
+// kit, so it's rationed to a single beat of eight: with the cells desynced,
+// only ~2 of the 18 are ever mid-burn at once, so the cream-flash punctuates
+// the wall without the whole grid filtering at the same time. Skips the
+// title-card beats: eighteen copies of the same headline flashing at
+// different times would read as noise, not signal, at card scale.
+function buildGridSequence(imageCount: number, colors: string[]): SizzleBeat[] {
+  const img = (k: number) => k % Math.max(imageCount, 1);
+  const col = (k: number) => colors[k % Math.max(colors.length, 1)] ?? "#18A6CC";
+  return [
+    { fx: "shutter", img: img(0), ms: 640 },
+    { fx: "fade", img: img(1), ms: 420 },
+    { fx: "pinch", color: col(0), img: img(2), ms: 520 },
+    { fx: "slat", img: img(3), ms: 700 },
+    { fx: "ccurtain", color: col(1), ms: 380 },
+    { fx: "curtain", img: img(4), ms: 720 },
+    { fx: "cut", img: img(5), ms: 640 },
+    // The lone burn: cream blink + bloom, image settles under it. Held a beat
+    // longer than a plain cut so the pop registers at card scale.
+    { fx: "burn", img: img(6), ms: 560 },
+  ];
+}
+// A 6-column x 3-row wall on desktop (3 columns on mobile). The cards are
+// CAPPED at the homepage thumbnail size (max-width, centered in each track)
+// rather than filling 1fr — so dropping to 6 columns adds empty space around
+// them instead of stretching them wider. GRID_WIDTH_PCT runs the track
+// slightly wider than its container and GRID_SHIFT_PCT re-centers it, so the
+// outer columns bleed past the box and get clipped by its overflow:hidden —
+// a subtle "off screen" peek at each edge.
+const GRID_SIZE = 18;
+const GRID_CELL = "w-full max-w-[130px] md:max-w-[160px]";
+const GRID_RADIUS = `${(50 / 225) * 100}%`; // same ratio Thumb's BLOT_RADIUS uses
+const GRID_WIDTH_PCT = 112;
+const GRID_SHIFT_PCT = -(GRID_WIDTH_PCT - 100) / 2;
+
 const mono = "text-[11px] tracking-[0.14em] uppercase text-foreground/50";
 const chipBase =
   "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] tracking-[0.05em] uppercase transition-colors cursor-pointer";
@@ -44,6 +81,10 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   const [extracting, setExtracting] = useState(false);
   const objectUrls = useRef<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
+  // The hero grid's bounded aspect-ratio box — cells clipped by its
+  // overflow:hidden pass this as their offscreen-pause root (see SizzleReel's
+  // pauseRoot), since the default viewport-based check can't see that clip.
+  const gridBoxRef = useRef<HTMLDivElement>(null);
 
   // Beat inspector state (lab only)
   const [step, setStep] = useState(false);
@@ -83,17 +124,41 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   const beats = buildSequence(images.length, colors, headline.trim() ? headline : undefined);
 
   if (variant === "hero") {
+    const gridSeq = buildGridSequence(RANGE_IMAGES.length, RANGE_COLORS);
     return (
-      <section className="w-full pt-2 pb-6">
-        <SizzleReel
-          key={reelKey}
-          images={RANGE_IMAGES}
-          colors={RANGE_COLORS}
-          headline={RANGE_HEADLINE}
-          style={{ aspectRatio: "16 / 9", borderRadius: REEL_RADIUS }}
-        />
+      <section className="hero-breakout mt-2 mb-6">
+        {/* Bounded to 16:9 like a normal hero image. On desktop the three rows
+            are 1fr each so they distribute evenly down the full height, giving
+            each capped card the same breathing room vertically as it has
+            horizontally. overflow-hidden clips the outer columns' peek. */}
+        <div ref={gridBoxRef} className="w-full overflow-hidden" style={{ aspectRatio: "16 / 9" }}>
+          {/* Wider than the box + shifted left to re-center — the overflow on
+              each side is what lets the box's own overflow:hidden clip the
+              outer columns instead of them ending flush at the edge. */}
+          <div
+            className="grid h-full grid-cols-3 md:grid-cols-6 md:grid-rows-3 gap-4 place-items-center"
+            style={{ width: `${GRID_WIDTH_PCT}%`, marginLeft: `${GRID_SHIFT_PCT}%` }}
+          >
+            {Array.from({ length: GRID_SIZE }).map((_, k) => (
+              <SizzleReel
+                key={k}
+                images={RANGE_IMAGES}
+                colors={RANGE_COLORS}
+                sequence={gridSeq}
+                offsetBeat={k}
+                // Small, deterministic per-cell drift (0.85x-1.15x) so cells
+                // that start in the same phase (18 cells, 8 beats) don't stay
+                // locked together — their loops slowly pull apart instead.
+                speed={0.85 + (k % 7) * 0.05}
+                pauseRoot={gridBoxRef}
+                className={GRID_CELL}
+                style={{ aspectRatio: "1 / 1", borderRadius: GRID_RADIUS }}
+              />
+            ))}
+          </div>
+        </div>
         <p className={`${mono} mt-4 text-center`}>
-          Live render &middot; no video files &middot; one cut across the studio
+          Live render &middot; no video files &middot; {GRID_SIZE} cuts across the studio
         </p>
       </section>
     );

@@ -326,13 +326,12 @@ function HomeContent() {
           <Thumb project={p.nordstromPersonal} />
         </div>
 
-        {/* Row 3: cols 1, 2, *, 4 */}
+        {/* Row 3: cols 1, 2, 3, 4 — the SizzleReel tile is a live reel (see
+             Thumb), a motion piece in the slot the thin asterisk used to hold. */}
         <div className="hp-row grid grid-cols-2 gap-y-10 items-start md:flex md:justify-between md:items-start overflow-visible">
           <Thumb project={p.jeffreyNyc} />
           <Thumb project={p.capitanBoot} />
-          <div className="hp-thumb flex items-center justify-center overflow-visible md:w-[160px]">
-            <Asterisk weight="thin" />
-          </div>
+          <Thumb project={p.sizzle} />
           <Thumb project={p.jeffreyCampaign} />
         </div>
 
