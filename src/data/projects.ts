@@ -5,6 +5,11 @@ export interface Project {
   title: string;
   category: string;
   image: string;
+  // Overrides `image` for the social share card only. Use when `image` is a
+  // square tile (which crops badly to the 1.91:1 OG frame) or when the tile is
+  // a live component with no still — e.g. the Reel Tool wall renders live, so
+  // its `image` isn't shown anywhere except here.
+  ogImage?: string;
   href?: string;
   tags: Tag[];
   featured?: boolean;
@@ -43,7 +48,7 @@ export const projects: Project[] = [
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-campaign-design-neiman-marcus-editorial-design.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"] },
-  { id: "sizzle", title: "SizzleReel", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", href: "/case-studies/sizzle", tags: ["digital"] },
+  { id: "sizzle", title: "Reel Tool", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", ogImage: "/og-reel-tool.jpg", href: "/case-studies/sizzle", tags: ["digital"] },
 ];
 
 const CAT_IMG = "/case-studies/categories";

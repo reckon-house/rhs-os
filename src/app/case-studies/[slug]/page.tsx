@@ -48,9 +48,10 @@ export function generateStaticParams() {
 // and aspect, and reliable in social unfurls (some hero sections are AVIF/WebP,
 // which several scrapers can't render). Fall back to the first hero section.
 function ogImageFor(slug: string): string | undefined {
-  const fromProject = projects.find(
-    (p) => p.href === `/case-studies/${slug}`,
-  )?.image;
+  const project = projects.find((p) => p.href === `/case-studies/${slug}`);
+  // A dedicated 1.91:1 share card wins over the square tile, which social
+  // scrapers center-crop (lopping off the top and bottom).
+  const fromProject = project?.ogImage ?? project?.image;
   if (fromProject) return fromProject;
   const study = caseStudies.find((s) => s.slug === slug);
   const hero = study?.sections.find((s) => s.type === "hero") as
