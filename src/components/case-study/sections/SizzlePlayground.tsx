@@ -63,11 +63,14 @@ function buildGridSequence(imageCount: number, colors: string[]): SizzleBeat[] {
 // slightly wider than its container and GRID_SHIFT_PCT re-centers it, so the
 // outer columns bleed past the box and get clipped by its overflow:hidden —
 // a subtle "off screen" peek at each edge.
-const GRID_SIZE = 18;
+const GRID_SIZE = 18; // desktop: 6 columns x 3 rows
+const GRID_MOBILE_SIZE = 12; // mobile: 3 columns x 4 rows — a portrait wall that fits
 const GRID_CELL = "w-full max-w-[130px] md:max-w-[160px]";
 const GRID_RADIUS = `${(50 / 225) * 100}%`; // same ratio Thumb's BLOT_RADIUS uses
-const GRID_WIDTH_PCT = 112;
-const GRID_SHIFT_PCT = -(GRID_WIDTH_PCT - 100) / 2;
+// Desktop edge-peek: the grid runs 112% of the box width and shifts left 6% to
+// re-center, so the outer columns bleed past the box and its overflow:hidden
+// clips them (see the md:w-[112%] md:ml-[-6%] on the grid). Mobile is full
+// width so all three columns are fully visible.
 
 const mono = "text-[11px] tracking-[0.14em] uppercase text-foreground/50";
 const chipBase =
@@ -85,6 +88,18 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   // overflow:hidden pass this as their offscreen-pause root (see SizzleReel's
   // pauseRoot), since the default viewport-based check can't see that clip.
   const gridBoxRef = useRef<HTMLDivElement>(null);
+  // The hero wall carries fewer tiles on mobile (3x4) than desktop (6x3).
+  // Starts at the desktop count so SSR and the first client render agree (no
+  // hydration mismatch), then narrows on mount if the viewport is small — the
+  // swap lands under the first-load burn-in, so it never flashes.
+  const [gridCount, setGridCount] = useState(GRID_SIZE);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setGridCount(mq.matches ? GRID_SIZE : GRID_MOBILE_SIZE);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   // Beat inspector state (lab only)
   const [step, setStep] = useState(false);
@@ -127,19 +142,17 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
     const gridSeq = buildGridSequence(RANGE_IMAGES.length, RANGE_COLORS);
     return (
       <section className="hero-breakout mt-2 mb-6">
-        {/* Bounded to 16:9 like a normal hero image. On desktop the three rows
-            are 1fr each so they distribute evenly down the full height, giving
-            each capped card the same breathing room vertically as it has
-            horizontally. overflow-hidden clips the outer columns' peek. */}
-        <div ref={gridBoxRef} className="w-full overflow-hidden" style={{ aspectRatio: "16 / 9" }}>
-          {/* Wider than the box + shifted left to re-center — the overflow on
-              each side is what lets the box's own overflow:hidden clip the
-              outer columns instead of them ending flush at the edge. */}
-          <div
-            className="grid h-full grid-cols-3 md:grid-cols-6 md:grid-rows-3 gap-4 place-items-center"
-            style={{ width: `${GRID_WIDTH_PCT}%`, marginLeft: `${GRID_SHIFT_PCT}%` }}
-          >
-            {Array.from({ length: GRID_SIZE }).map((_, k) => (
+        {/* Desktop: bounded to 16:9 like a normal hero image, the three rows 1fr
+            each so the capped cards get even vertical breathing room, and
+            overflow-hidden clips the outer columns' peek. Mobile: no fixed
+            ratio — the grid flows to its natural height so the square cards are
+            never squeezed shorter than they are wide (which stacked them). */}
+        <div ref={gridBoxRef} className="w-full overflow-hidden md:aspect-video">
+          {/* Desktop only (md:): wider than the box + shifted left to re-center,
+              so the overflow on each side is what the box's overflow:hidden
+              clips. Mobile is full width — all three columns fully visible. */}
+          <div className="grid grid-cols-3 md:grid-cols-6 md:grid-rows-3 md:h-full w-full md:w-[112%] md:ml-[-6%] gap-4 place-items-center">
+            {Array.from({ length: gridCount }).map((_, k) => (
               <SizzleReel
                 key={k}
                 images={RANGE_IMAGES}
@@ -147,8 +160,8 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
                 sequence={gridSeq}
                 offsetBeat={k}
                 // Small, deterministic per-cell drift (0.85x-1.15x) so cells
-                // that start in the same phase (18 cells, 8 beats) don't stay
-                // locked together — their loops slowly pull apart instead.
+                // that start in the same phase don't stay locked together —
+                // their loops slowly pull apart instead.
                 speed={0.85 + (k % 7) * 0.05}
                 pauseRoot={gridBoxRef}
                 className={GRID_CELL}
@@ -158,7 +171,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
           </div>
         </div>
         <p className={`${mono} mt-4 text-center`}>
-          Live render &middot; no video files &middot; {GRID_SIZE} cuts across the studio
+          Live render &middot; no video files &middot; {gridCount} cuts across the studio
         </p>
       </section>
     );
