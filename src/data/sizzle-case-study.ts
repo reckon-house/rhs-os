@@ -42,57 +42,19 @@ export const sizzleCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "In a day, with Claude Code" },
         { label: "Ships", value: "React component, a 4.8KB web component, and a GIF/MP4 exporter" },
-        { label: "Try it", value: "Section 02 takes your own images. Nothing uploads, nothing saves" },
+        { label: "Try it", value: "Section 01 takes your own images. Nothing uploads, nothing saves" },
       ],
       abstract:
         "A sizzle reel is usually footage: shot, edited, rendered, hosted. SizzleReel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types, wipes, blinks, a burn, a lens pinch, and a title card that assembles itself, all on a timer tuned so the eye reads motion. One container, CSS animation, zero video files.\n\nIt started with a portfolio I admire that runs looping video in every project tile. I wanted that energy without a camera, an editor, or a render queue. The build took a day with Claude Code, and the finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nThis page is the product. The reel above is rendering live, and the lab below takes your own images, pulls a five-color palette out of their pixels, and recuts itself on the spot. The same engine exports a looping GIF or MP4 by stepping Chrome's clock one frame at a time.",
     },
 
     // ════════════════════════════════════════
-    // SECTION 01 — THE CUT
-    // ════════════════════════════════════════
-    {
-      id: "cut-header",
-      type: "section-header",
-      label: "SECTION 01: THE CUT",
-      title: "Editing rules,\nborrowed from film.",
-    },
-    {
-      id: "cut-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "The montage reads as video because it obeys cutting-room rules. Getting them wrong is visible instantly: the first version blinked a color frame and landed back on the same photograph, and it read as a glitch.",
-    },
-    {
-      id: "cut-rules",
-      type: "three-column-text",
-      columns: [
-        {
-          title: "Blinks hide cuts",
-          content:
-            "A flash frame earns its interruption by hiding a splice. Every blink and pinch swaps the photograph while the cover is opaque and clears onto something new. The pinch does it mechanically: top and bottom panels close to the middle, the cut happens at the meet, and the panels part onto new country.",
-        },
-        {
-          title: "Type cuts in",
-          content:
-            "Title cards never fade. Words land with a hard cut and a small settle, the way campaign film handles type. Give the reel three or more words and it scatters them through the loop as their own quick cards, then the full line assembles word by word at the close, holds, and leaves the way it came.",
-        },
-        {
-          title: "The loop breathes",
-          content:
-            "Seven seconds, twelve beats. Wipes finish at 72 percent of their hold so every frame gets a moment of rest before the next cut. At the end the built line exits, the bare card holds a breath, and the opening shutter wipes over whatever is left standing.",
-        },
-      ],
-    },
-
-    // ════════════════════════════════════════
-    // SECTION 02 — THE LAB
+    // SECTION 01 — THE LAB (the tool)
     // ════════════════════════════════════════
     {
       id: "lab-header",
       type: "section-header",
-      label: "SECTION 02: THE LAB",
+      label: "SECTION 01: THE LAB",
       title: "Load your own.",
     },
     {
@@ -109,20 +71,20 @@ export const sizzleCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 03 — THE FILE
+    // SECTION 02 — UNDER THE CUT (how it works + close)
     // ════════════════════════════════════════
     {
-      id: "file-header",
+      id: "end-header",
       type: "section-header",
-      label: "SECTION 03: THE FILE",
-      title: "From loop to file.",
+      label: "SECTION 02: UNDER THE CUT",
+      title: "Why stills read as motion.",
     },
     {
-      id: "file-subhead",
+      id: "end-subhead",
       type: "text",
       size: "subhead",
       content:
-        "A montage that only exists as CSS still needs to leave the page sometimes, for a deck, a post, an email. The exporter drives a headless Chrome, freezes its clock, and advances it in exact twentieth-of-a-second steps, so the loop closes precisely where it opened.",
+        "The reel follows cutting-room rules. Every blink and lens pinch hides a splice, swapping the photograph while the cover is shut and clearing onto something new. Type lands with a hard cut, never a fade, and each wipe rests a beat before the next one fires.",
     },
     {
       id: "file-stats",
