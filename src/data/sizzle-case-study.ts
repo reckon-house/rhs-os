@@ -6,7 +6,7 @@ import type { CaseStudy } from "@/lib/types";
 
 export const sizzleCaseStudy: CaseStudy = {
   slug: "sizzle",
-  title: "Reel Tool",
+  title: "Faux Reel",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
@@ -31,7 +31,7 @@ export const sizzleCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
-      title: "Reel Tool",
+      title: "Faux Reel",
       subtitle:
         "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
       field: "Product  Motion",
@@ -45,7 +45,7 @@ export const sizzleCaseStudy: CaseStudy = {
         { label: "Try it", value: "Section 01 takes your own images. Nothing uploads, nothing saves" },
       ],
       abstract:
-        "A sizzle reel is usually footage: shot, edited, rendered, hosted. Reel Tool skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types, wipes, blinks, a burn, a lens pinch, and a title card that assembles itself, all on a timer tuned so the eye reads motion. One container, CSS animation, zero video files.\n\nIt started with a portfolio I admire that runs looping video in every project tile. I wanted that energy without a camera, an editor, or a render queue. The build took a day with Claude Code, and the finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nThis page is the product. The reel above is rendering live, and the lab below takes your own images, pulls a five-color palette out of their pixels, and recuts itself on the spot. The same engine exports a looping GIF or MP4 by stepping Chrome's clock one frame at a time.",
+        "A sizzle reel is usually footage: shot, edited, rendered, hosted. Faux Reel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types, wipes, blinks, a burn, a lens pinch, and a title card that assembles itself, all on a timer tuned so the eye reads motion. One container, CSS animation, zero video files.\n\nIt started with a portfolio I admire that runs looping video in every project tile. I wanted that energy without a camera, an editor, or a render queue. The build took a day with Claude Code, and the finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nThis page is the product. The reel above is rendering live, and the lab below takes your own images, pulls a five-color palette out of their pixels, and recuts itself on the spot. The same engine exports a looping GIF or MP4 by stepping Chrome's clock one frame at a time.",
     },
 
     // ════════════════════════════════════════

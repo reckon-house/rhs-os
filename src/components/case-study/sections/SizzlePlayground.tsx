@@ -301,7 +301,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
         {/* ── RAIL (left on desktop, below on mobile) ── */}
         <div className="order-2 rounded-[24px] bg-surface p-6 md:p-7 lg:order-none lg:col-start-1 lg:row-start-1">
           <div className="flex items-baseline justify-between">
-            <h3 className="text-[20px] font-bold leading-none tracking-[-0.02em]">Reel Tool</h3>
+            <h3 className="text-[20px] font-bold leading-none tracking-[-0.02em]">Faux Reel</h3>
             <span className={mono}>Lab</span>
           </div>
           <p className="mt-3 max-w-[34ch] text-[12px] leading-relaxed text-foreground/55">
