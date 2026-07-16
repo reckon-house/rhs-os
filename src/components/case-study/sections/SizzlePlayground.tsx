@@ -74,7 +74,24 @@ const GRID_RADIUS = `${(50 / 225) * 100}%`; // same ratio Thumb's BLOT_RADIUS us
 
 const mono = "text-[11px] tracking-[0.14em] uppercase text-foreground/50";
 const chipBase =
-  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] tracking-[0.05em] uppercase transition-colors cursor-pointer";
+  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] tracking-[0.05em] uppercase transition-colors cursor-pointer";
+
+const toolBtn =
+  "inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-3 py-1.5 text-[11px] tracking-[0.08em] uppercase text-foreground/70 backdrop-blur shadow-sm transition-colors hover:bg-surface hover:text-foreground cursor-pointer";
+
+// A numbered control block in the left rail: "01 — IMAGES" over its inputs.
+function LabSection({ num, title, children }: { num: string; title: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-5 border-t border-foreground/10 pt-5">
+      <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-foreground/45">
+        <span className="text-foreground/70">{num}</span>
+        <span className="mx-1.5 text-foreground/25">&mdash;</span>
+        {title}
+      </p>
+      {children}
+    </div>
+  );
+}
 
 export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   const [images, setImages] = useState<string[]>(RANGE_IMAGES);
@@ -107,6 +124,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   const [nonce, setNonce] = useState(0);
   const [liveBeat, setLiveBeat] = useState(0);
   const onBeat = useCallback((k: number) => setLiveBeat(k), []);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const urls = objectUrls.current;
@@ -137,6 +155,32 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
 
   const reelKey = `${images.join("|")}~${colors.join()}~${headline}`;
   const beats = buildSequence(images.length, colors, headline.trim() ? headline : undefined);
+
+  // The paste-able embed for the current recipe. Locally-loaded images are
+  // blob: URLs that only live in this tab, so they become placeholders the
+  // user swaps for their own hosted URLs.
+  const embedCode = [
+    `<script type="module" src="sizzle-reel.js"></script>`,
+    `<sizzle-reel`,
+    `  images="${images.map((u, i) => (/^blob:/.test(u) ? `image-${i + 1}.jpg` : u)).join(", ")}"`,
+    `  colors="${colors.join(", ")}"`,
+    headline.trim() ? `  headline="${headline.trim()}"` : null,
+    speed !== 1 ? `  speed="${speed.toFixed(2)}"` : null,
+    `  aspect="16 / 9"`,
+    `  radius="20px"`,
+    `></sizzle-reel>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  function copyEmbed() {
+    navigator.clipboard
+      ?.writeText(embedCode)
+      .then(() => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1600);
+      })
+      .catch(() => {});
+  }
 
   if (variant === "hero") {
     const gridSeq = buildGridSequence(RANGE_IMAGES.length, RANGE_COLORS);
@@ -177,127 +221,151 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
     );
   }
 
-  // ── lab ──
+  // ── lab: two-panel tool — inputs on the left rail, the reel on a graph-paper
+  // stage on the right. On mobile it stacks (reel first, then the controls).
+  // px matches the case study's media gutter (md:px-[calc(100%/24)], one grid
+  // column) so the panel sits framed inside the section instead of bleeding to
+  // the column edge. ──
   return (
-    <section className="w-full py-6">
-      <SizzleReel
-        key={reelKey}
-        images={images}
-        colors={colors}
-        headline={headline.trim() ? headline : undefined}
-        speed={speed}
-        index={step ? stepIndex : null}
-        nonce={nonce}
-        onBeatChange={onBeat}
-        style={{ aspectRatio: "16 / 9", borderRadius: REEL_RADIUS }}
-      />
-
-      {/* Beat inspector */}
-      <div className="mt-5">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {beats.map((b, k) => {
-            const on = (step ? stepIndex : liveBeat) === k;
-            return (
+    <section className="w-full py-6 px-4 md:px-[calc(100%/24)]">
+      <div className="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start">
+        {/* ── STAGE (right on desktop, top on mobile) ── */}
+        <div className="relative order-1 overflow-hidden rounded-[24px] bg-surface-alt lg:order-none lg:col-start-2 lg:row-start-1">
+          {/* floating toolbar */}
+          <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+            <div className="flex overflow-hidden rounded-full bg-surface/90 text-[11px] uppercase tracking-[0.08em] backdrop-blur shadow-sm">
               <button
-                key={k}
-                onClick={() => {
-                  setStep(true);
-                  setStepIndex(k);
-                  setNonce((n) => n + 1);
-                }}
-                className={`${chipBase} ${
-                  on
-                    ? "border-foreground/60 bg-foreground/[0.06] text-foreground"
-                    : "border-foreground/15 text-foreground/45 hover:border-foreground/35"
-                }`}
+                onClick={() => setStep(false)}
+                className={`px-3 py-1.5 transition-colors ${!step ? "bg-foreground text-background" : "text-foreground/55 hover:text-foreground"}`}
               >
-                {b.color ? (
-                  <i
-                    aria-hidden
-                    className="inline-block h-2 w-2 rounded-full border border-foreground/20"
-                    style={{ background: b.color }}
-                  />
-                ) : null}
-                {k + 1} {b.fx}
-                {b.text ? ` “${b.text}”` : ""}
+                Live
               </button>
-            );
-          })}
-        </div>
-        <div className="mt-2.5 flex flex-wrap items-center gap-2">
-          {step ? (
-            <>
-              <button onClick={() => { setStepIndex((v) => (v - 1 + beats.length) % beats.length); setNonce((n) => n + 1); }} className={`${chipBase} border-foreground/25 text-foreground/70`}>&#9664; Prev</button>
-              <button onClick={() => { setStepIndex((v) => (v + 1) % beats.length); setNonce((n) => n + 1); }} className={`${chipBase} border-foreground/25 text-foreground/70`}>Next &#9654;</button>
-              <button onClick={() => setNonce((n) => n + 1)} className={`${chipBase} border-foreground/25 text-foreground/70`}>&#8635; Replay</button>
-              <button onClick={() => setStep(false)} className={`${chipBase} border-foreground/60 text-foreground`}>Resume loop</button>
-            </>
-          ) : (
-            <p className={mono}>The chips follow the cut. Click one to freeze and replay that beat.</p>
-          )}
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-7 border-t border-foreground/10 pt-7 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <p className={`${mono} mb-3`}>Your images (up to 8)</p>
-          <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFiles} className="hidden" />
-          <button
-            onClick={() => fileRef.current?.click()}
-            className="rounded-full border border-foreground/25 px-5 py-2.5 text-[13px] text-foreground/80 transition-colors hover:border-foreground/50"
-          >
-            Load images
-          </button>
-          <p className={`${mono} mt-3 normal-case tracking-[0.02em]`}>
-            {images === RANGE_IMAGES ? "Running the studio set" : `${images.length} of yours loaded`}
-          </p>
-          <p className="mt-2 max-w-[38ch] text-[12px] leading-relaxed text-foreground/45">
-            Images stay in your browser. Nothing uploads, nothing saves. Refresh and they are gone.
-          </p>
-        </div>
-        <div>
-          <p className={`${mono} mb-3`}>Palette {extracting ? "· reading the pixels…" : "· pulled from the images"}</p>
-          <div className="flex items-center gap-2">
-            {colors.map((c, k) => (
-              <input
-                key={k}
-                type="color"
-                value={c}
-                onChange={(e) => setColor(k, e.target.value)}
-                aria-label={`Palette color ${k + 1}`}
-                className="h-9 w-9 cursor-pointer rounded-lg border border-foreground/20 bg-transparent p-0"
-              />
-            ))}
+              <button
+                onClick={() => { setStep(true); setStepIndex(liveBeat); setNonce((n) => n + 1); }}
+                className={`px-3 py-1.5 transition-colors ${step ? "bg-foreground text-background" : "text-foreground/55 hover:text-foreground"}`}
+              >
+                Still
+              </button>
+            </div>
+            <button onClick={copyEmbed} className={toolBtn} title="Copy the embed code for this recipe">
+              {copied ? "Copied" : "</> Embed"}
+            </button>
           </div>
-          <button
-            onClick={() => runExtract(images)}
-            className={`${chipBase} mt-3 border-foreground/25 text-foreground/70`}
-          >
-            Re-extract
-          </button>
+
+          <div className="p-5 md:p-8">
+            <SizzleReel
+              key={reelKey}
+              images={images}
+              colors={colors}
+              headline={headline.trim() ? headline : undefined}
+              speed={speed}
+              index={step ? stepIndex : null}
+              nonce={nonce}
+              onBeatChange={onBeat}
+              className="w-full"
+              style={{ aspectRatio: "16 / 9", borderRadius: 20 }}
+            />
+
+            {/* timeline — the beat inspector reads as the loop's filmstrip */}
+            <div className="mt-4">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {beats.map((b, k) => {
+                  const on = (step ? stepIndex : liveBeat) === k;
+                  return (
+                    <button
+                      key={k}
+                      onClick={() => { setStep(true); setStepIndex(k); setNonce((n) => n + 1); }}
+                      className={`${chipBase} ${
+                        on
+                          ? "bg-foreground text-background"
+                          : "bg-foreground/[0.06] text-foreground/50 hover:bg-foreground/[0.11]"
+                      }`}
+                    >
+                      {b.color ? (
+                        <i aria-hidden className="inline-block h-2 w-2 rounded-full border border-foreground/20" style={{ background: b.color }} />
+                      ) : null}
+                      {k + 1} {b.fx}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className={`${mono} mt-2.5 normal-case tracking-[0.02em]`}>
+                {step
+                  ? `Frozen on beat ${stepIndex + 1}. Hit Live to resume, or pick another chip to study its cut.`
+                  : "The chips follow the cut. Click one to freeze and replay that beat."}
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
-          <p className={`${mono} mb-3`}>Title card</p>
-          <input
-            value={headline}
-            onChange={(e) => setHeadline(e.target.value)}
-            placeholder="Leave empty for no title card"
-            className="w-full rounded-xl border border-foreground/20 bg-transparent px-3.5 py-2.5 text-[14px] text-foreground placeholder:text-foreground/35 focus:border-foreground/50 focus:outline-none"
-          />
-          <p className={`${mono} mt-2 normal-case tracking-[0.02em]`}>
-            1&ndash;2 words slide in. 3+ scatter through the cut, then build.
+
+        {/* ── RAIL (left on desktop, below on mobile) ── */}
+        <div className="order-2 rounded-[24px] bg-surface p-6 md:p-7 lg:order-none lg:col-start-1 lg:row-start-1">
+          <div className="flex items-baseline justify-between">
+            <h3 className="text-[20px] font-bold leading-none tracking-[-0.02em]">Reel Tool</h3>
+            <span className={mono}>Lab</span>
+          </div>
+          <p className="mt-3 max-w-[34ch] text-[12px] leading-relaxed text-foreground/55">
+            Load stills, pull a palette from their pixels, set a title. The reel cuts itself. Nothing uploads, nothing saves.
           </p>
-          <p className={`${mono} mt-4 mb-2`}>Speed &times; {speed.toFixed(2)}</p>
-          <input
-            type="range"
-            min={0.5}
-            max={2}
-            step={0.05}
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+
+          <LabSection num="01" title="Images">
+            <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFiles} className="hidden" />
+            <button
+              onClick={() => fileRef.current?.click()}
+              className="rounded-full bg-foreground px-5 py-2.5 text-[13px] text-background transition-colors hover:bg-foreground/85"
+            >
+              Load images
+            </button>
+            <p className={`${mono} mt-3 normal-case tracking-[0.02em]`}>
+              {images === RANGE_IMAGES ? "Running the studio set" : `${images.length} of yours loaded`}
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-foreground/45">
+              Up to 8. They stay in your browser — a refresh clears them.
+            </p>
+          </LabSection>
+
+          <LabSection num="02" title="Palette">
+            <div className="flex items-center gap-2">
+              {colors.map((c, k) => (
+                <input
+                  key={k}
+                  type="color"
+                  value={c}
+                  onChange={(e) => setColor(k, e.target.value)}
+                  aria-label={`Palette color ${k + 1}`}
+                  className="sz-swatch h-9 w-9 cursor-pointer rounded-lg bg-transparent p-0 ring-1 ring-inset ring-foreground/15"
+                />
+              ))}
+            </div>
+            <button onClick={() => runExtract(images)} className={`${chipBase} mt-3 bg-foreground/[0.06] text-foreground/70 hover:bg-foreground/[0.11]`}>
+              {extracting ? "Reading pixels…" : "Re-extract"}
+            </button>
+          </LabSection>
+
+          <LabSection num="03" title="Title card">
+            <input
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
+              placeholder="Leave empty for no title card"
+              className="w-full rounded-xl bg-foreground/[0.05] px-3.5 py-2.5 text-[14px] text-foreground placeholder:text-foreground/35 focus:bg-foreground/[0.08] focus:outline-none"
+            />
+            <p className={`${mono} mt-2 normal-case tracking-[0.02em]`}>
+              1&ndash;2 words slide in. 3+ scatter through the cut, then build.
+            </p>
+          </LabSection>
+
+          <LabSection num="04" title={`Speed × ${speed.toFixed(2)}`}>
+            <input
+              type="range"
+              min={0.5}
+              max={2}
+              step={0.05}
+              value={speed}
+              onChange={(e) => setSpeed(Number(e.target.value))}
+              className="sz-range w-full"
+              style={{ ["--pct" as string]: `${((speed - 0.5) / 1.5) * 100}%` }}
+            />
+          </LabSection>
         </div>
       </div>
     </section>
