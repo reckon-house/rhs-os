@@ -501,12 +501,16 @@ function BeatLayer({
             className="sz-strip"
             style={{
               left: `${(k * 100) / N}%`,
-              width: `${100 / N}%`,
+              // 1px overlap into the next column hides the sub-pixel seam where
+              // two clipped strips meet; the image is sized in cqw (stage width)
+              // rather than % of the strip, so the wider strip keeps its slice
+              // aligned instead of shifting it.
+              width: `calc(${100 / N}% + 1px)`,
               animationDelay: `${Math.round(k * dur * 0.08)}ms`,
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={images[beat.img ?? 0]} alt="" aria-hidden="true" style={{ left: `${-k * 100}%`, width: `${N * 100}%` }} />
+            <img src={images[beat.img ?? 0]} alt="" aria-hidden="true" style={{ left: `${(-k * 100) / N}cqw`, width: `100cqw` }} />
           </div>
         ))}
       </div>
