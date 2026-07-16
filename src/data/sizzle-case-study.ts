@@ -84,7 +84,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The reel follows cutting-room rules. Every blink and lens pinch hides a splice, swapping the photograph while the cover is shut and clearing onto something new. Type lands with a hard cut, never a fade, and each wipe rests a beat before the next one fires.",
+        "The trick is hiding the cut. When the reel blinks a color frame or the lens pinches shut, the photo swaps behind the cover, so you never see the switch. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard instead of fading, and each frame holds for a beat before the next one.",
     },
     {
       id: "file-stats",

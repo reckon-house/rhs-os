@@ -214,9 +214,6 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
             ))}
           </div>
         </div>
-        <p className={`${mono} mt-4 text-center`}>
-          Live render &middot; no video files &middot; {gridCount} cuts across the studio
-        </p>
       </section>
     );
   }
