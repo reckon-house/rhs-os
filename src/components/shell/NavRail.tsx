@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const categories = [
-  { label: "Reckon*House", image: "/nav/logo.jpg", href: "/" },
+  { label: "House", image: "/nav/logo.jpg", href: "/" },
   { label: "Digital", image: "/nav/digital.jpg", href: "/category/digital" },
   { label: "Creative", image: "/nav/reckonhouse.jpg", href: "/category/creative" },
   { label: "Interiors", image: "/nav/interiors.jpg", href: "/category/interiors" },
@@ -17,7 +17,7 @@ const categories = [
 // will live as sections inside House*Staples.
 const utilities = [
   {
-    label: "House*Staples",
+    label: "Staples",
     href: "/inspiration",
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
