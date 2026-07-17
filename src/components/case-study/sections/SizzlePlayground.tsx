@@ -288,8 +288,8 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
               </div>
               <p className={`${mono} mt-2.5 normal-case tracking-[0.02em]`}>
                 {step
-                  ? `Frozen on beat ${stepIndex + 1}. Hit Live to resume, or pick another chip to study its cut.`
-                  : "The chips follow the cut. Click one to freeze and replay that beat."}
+                  ? `Frozen on beat ${stepIndex + 1}. Click Live to resume, or pick another chip.`
+                  : "The highlighted chip is the current beat. Click one to freeze it."}
               </p>
             </div>
           </div>
