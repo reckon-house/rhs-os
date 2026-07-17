@@ -10,6 +10,7 @@ export function MetaBlock({
   subtitle,
   abstract,
   summary,
+  links,
 }: MetaSection) {
   const abstractParagraphs = abstract ? abstract.split("\n\n") : [];
 
@@ -55,6 +56,21 @@ export function MetaBlock({
             <span className="font-bold">Classification </span>
             {classification.join(" ")}
           </p>
+          {links?.map((link, i) => {
+            const external = /^https?:\/\//.test(link.url);
+            return (
+              <p key={i}>
+                <span className="font-bold">{link.label} </span>
+                <a
+                  href={link.url}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="underline underline-offset-2 hover:text-foreground transition-colors"
+                >
+                  {link.url.replace(/^https?:\/\//, "")}
+                </a>
+              </p>
+            );
+          })}
         </div>
 
         {abstractParagraphs.length > 0 && (

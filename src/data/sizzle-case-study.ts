@@ -39,6 +39,7 @@ export const sizzleCaseStudy: CaseStudy = {
       published: "2026",
       status: "Tool",
       classification: ["Motion", "Front-End", "Tooling"],
+      links: [{ label: "Source", url: "https://github.com/reckon-house/faux-reel" }],
       summary: [
         { label: "Built", value: "In a day, with Claude Code" },
         { label: "Ships", value: "React component, a 4.8KB web component, and a GIF/MP4 exporter" },
@@ -62,7 +63,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Seven frames across the studio's work are the default cut, one from each project. Drop in up to eight of your own and the reel rebuilds its choreography, palette included. Chips track each beat as it fires; freeze one to study the cut.",
+        "The default cut is seven frames, one from each of my projects. Drop in up to eight of your own and it rebuilds around them. Each beat gets a chip below. Click one to freeze the reel on it.",
     },
     {
       id: "lab",

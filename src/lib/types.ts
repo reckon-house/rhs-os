@@ -148,6 +148,9 @@ export interface MetaSection extends BaseSection {
   // Optional scannable "at a glance" rows rendered as extra spec lines below
   // Classification — Role / Built / Stack / Materials etc. One per study.
   summary?: { label: string; value: string }[];
+  // Optional external links rendered as spec lines below Classification
+  // (e.g. Source → the public repo). Same shape as the closing's links.
+  links?: { label: string; url: string }[];
 }
 
 export interface SectionHeaderSection extends BaseSection {
