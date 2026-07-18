@@ -98,6 +98,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   const [colors, setColors] = useState<string[]>(RANGE_COLORS);
   const [headline, setHeadline] = useState(RANGE_HEADLINE);
   const [speed, setSpeed] = useState(1);
+  const [aspect, setAspect] = useState("16 / 9");
   const [extracting, setExtracting] = useState(false);
   const objectUrls = useRef<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -155,18 +156,21 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
 
   const reelKey = `${images.join("|")}~${colors.join()}~${headline}`;
   const beats = buildSequence(images.length, colors, headline.trim() ? headline : undefined);
+  // Aspect ratio → a number for the height-cap calc that keeps tall ratios contained.
+  const [aw, ah] = aspect.split("/").map((s) => parseFloat(s));
+  const arNum = (aw / ah).toFixed(4);
 
   // The paste-able embed for the current recipe. Locally-loaded images are
   // blob: URLs that only live in this tab, so they become placeholders the
   // user swaps for their own hosted URLs.
   const embedCode = [
-    `<script type="module" src="sizzle-reel.js"></script>`,
+    `<script src="sizzle-reel.js"></script>`,
     `<sizzle-reel`,
     `  images="${images.map((u, i) => (/^blob:/.test(u) ? `image-${i + 1}.jpg` : u)).join(", ")}"`,
     `  colors="${colors.join(", ")}"`,
     headline.trim() ? `  headline="${headline.trim()}"` : null,
     speed !== 1 ? `  speed="${speed.toFixed(2)}"` : null,
-    `  aspect="16 / 9"`,
+    `  aspect="${aspect}"`,
     `  radius="20px"`,
     `></sizzle-reel>`,
   ]
@@ -260,7 +264,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
               nonce={nonce}
               onBeatChange={onBeat}
               className="w-full"
-              style={{ aspectRatio: "16 / 9", borderRadius: 20 }}
+              style={{ aspectRatio: aspect, borderRadius: 20, maxWidth: `calc(min(60vh, 540px) * ${arNum})`, marginInline: "auto" }}
             />
 
             {/* timeline — the beat inspector reads as the loop's filmstrip */}
@@ -362,6 +366,27 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
               className="sz-range w-full"
               style={{ ["--pct" as string]: `${((speed - 0.5) / 1.5) * 100}%` }}
             />
+          </LabSection>
+
+          <LabSection num="05" title="Ratio">
+            <div className="flex flex-wrap gap-1.5">
+              {["16 / 9", "1 / 1", "4 / 5", "9 / 16"].map((a) => (
+                <button
+                  key={a}
+                  onClick={() => setAspect(a)}
+                  className={`${chipBase} ${
+                    aspect === a
+                      ? "bg-foreground text-background"
+                      : "bg-foreground/[0.06] text-foreground/60 hover:bg-foreground/[0.11]"
+                  }`}
+                >
+                  {a.replace(" / ", ":")}
+                </button>
+              ))}
+            </div>
+            <p className={`${mono} mt-2 normal-case tracking-[0.02em]`}>
+              Square and portrait for social, 9:16 for stories.
+            </p>
           </LabSection>
         </div>
       </div>
