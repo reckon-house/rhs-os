@@ -611,3 +611,11 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
 .sz-range::-moz-range-track { height: 5px; border-radius: 999px; background: rgba(26, 26, 26, 0.13); }
 .sz-range::-moz-range-progress { height: 5px; border-radius: 999px; background: var(--foreground); }
 .sz-range::-moz-range-thumb { width: 15px; height: 15px; border: none; border-radius: 999px; background: var(--foreground); }
+
+/* Faux Reel square framing: keep the b&w model's face (subject sits left of the
+   frame) and the composite's right panel from being clipped when a reel crops to
+   a square / portrait tile — the hero grid, and the lab at 1:1 / 4:5 / 9:16.
+   Scoped to .sz-fill so the slat transition strips are untouched; has no effect
+   at 16:9, where the image width already fills the frame. */
+.sz-fill[src*="content-framework-lockup-whats-now"] { object-position: left; }
+.sz-fill[src*="personalization-system-design"] { object-position: right; }
