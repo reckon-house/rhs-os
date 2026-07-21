@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, useId } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { scrollPageToTop } from "@/lib/lenis";
 
 /**
  * BURN MELT TRANSITION
@@ -56,6 +57,24 @@ export function BurnMeltTransition() {
   const prevPathname = useRef<string>("");
 
   const filterId = `burn-melt-filter-${uniqueId}`;
+
+  // Drop the cover immediately. The burn is only ever removed inside
+  // playBurnIn(), so a navigation that interrupts an in-flight burn used to
+  // leave the opaque cream layer pinned over the page — the "blank screen"
+  // after a few fast backs. Anything that cancels a burn now calls this.
+  const clearCover = useCallback((animated: boolean) => {
+    const overlay = overlayRef.current;
+    const white = whiteRef.current;
+    const transition = animated ? "opacity 0.2s ease-out" : "none";
+    if (overlay) {
+      overlay.style.transition = transition;
+      overlay.style.opacity = "0";
+    }
+    if (white) {
+      white.style.transition = transition;
+      white.style.opacity = "0";
+    }
+  }, []);
 
   // iOS Safari detection — must default to false on first render so SSR and
   // the initial client paint agree. Updated in useEffect after mount; the
@@ -248,9 +267,8 @@ export function BurnMeltTransition() {
       setTimeout(
         () => {
           stopTurbulenceAnimation();
-          // Scroll to top
-          const scrollEl = document.querySelector("main");
-          if (scrollEl) scrollEl.scrollTop = 0;
+          // Scroll to top — via Lenis, which owns the <main> scroller.
+          scrollPageToTop();
           // Client-side nav — layout persists, pathname change triggers burn-in
           router.push(hrefAttr);
         },
@@ -284,6 +302,17 @@ export function BurnMeltTransition() {
     const MAX_WAIT_MS = 150;
     let cancelled = false;
 
+    // A case study opens covered, and only playBurnIn() uncovers it. If this
+    // effect is torn down before that runs, hasBurnedIn is already true, so the
+    // re-run early-returns and nothing ever melts the cover — a permanently
+    // cream screen. Deliberately NOT cleared on cleanup: when the burn is
+    // cancelled, this timer is the only thing left to uncover the page.
+    const failsafeId = setTimeout(() => {
+      stopTurbulenceAnimation();
+      clearCover(true);
+      isReady.current = true;
+    }, 1500);
+
     const playBurnIn = () => {
       if (cancelled) return;
       requestAnimationFrame(() => {
@@ -303,6 +332,7 @@ export function BurnMeltTransition() {
           }, overlayDelay * 1000);
 
           setTimeout(() => {
+            clearTimeout(failsafeId);
             stopTurbulenceAnimation();
             isReady.current = true;
           }, (overlayDelay + overlayDuration) * 1000);
@@ -339,7 +369,7 @@ export function BurnMeltTransition() {
     return () => {
       cancelled = true;
     };
-  }, [pathname, burnDuration, easeCurve]);
+  }, [pathname, burnDuration, easeCurve, clearCover]);
 
   // BURN IN on client-side navigation (pathname changes)
   useEffect(() => {
@@ -352,9 +382,10 @@ export function BurnMeltTransition() {
     if (prevPathname.current === pathname) return;
     prevPathname.current = pathname;
 
-    // Scroll to top
-    const scrollEl = document.querySelector("main");
-    if (scrollEl) scrollEl.scrollTop = 0;
+    // Scroll to top. Must go through Lenis: it re-applies its own offset on
+    // the next frame, so writing main.scrollTop here did nothing and the new
+    // page inherited the previous page's scroll position.
+    scrollPageToTop();
 
     // If not mid-navigation (e.g. browser back), set up overlays first
     if (!isNavigating.current) {
@@ -373,6 +404,15 @@ export function BurnMeltTransition() {
     const overlay = overlayRef.current;
     const white = whiteRef.current;
     if (!overlay || !white) return;
+
+    // Belt and braces: if the burn never plays through for any reason, never
+    // strand the cover over the page. Cleared the moment the burn completes.
+    const failsafeId = setTimeout(() => {
+      stopTurbulenceAnimation();
+      clearCover(true);
+      isNavigating.current = false;
+      isReady.current = true;
+    }, 1500);
 
     // Tiny wait for the destination's hero image to be ready, capped tight.
     // If the hero is cached (typical), this resolves in <50ms and the burn-in
@@ -402,6 +442,7 @@ export function BurnMeltTransition() {
           }, overlayDelay * 1000);
 
           setTimeout(() => {
+            clearTimeout(failsafeId);
             stopTurbulenceAnimation();
             isNavigating.current = false;
             isReady.current = true;
@@ -439,8 +480,16 @@ export function BurnMeltTransition() {
 
     return () => {
       cancelled = true;
+      clearTimeout(failsafeId);
+      // A burn interrupted by another navigation must not leave the cover on
+      // screen. The next pathname effect re-covers and replays the burn in the
+      // same commit, so dropping it here is invisible on a normal navigation —
+      // it only rescues the case where backs arrive faster than the burn.
+      stopTurbulenceAnimation();
+      clearCover(false);
+      isNavigating.current = false;
     };
-  }, [pathname, burnDuration, easeCurve]);
+  }, [pathname, burnDuration, easeCurve, clearCover]);
 
   // Cleanup
   useEffect(() => {

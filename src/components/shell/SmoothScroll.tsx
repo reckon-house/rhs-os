@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { setLenis } from "@/lib/lenis";
 import { SiteFooter } from "@/components/shell/SiteFooter";
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,11 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       touchMultiplier: 1.5,
     });
 
+    // Publish the instance so route changes can drive the scroller through
+    // Lenis. Setting main.scrollTop directly gets overwritten on the next
+    // frame — see src/lib/lenis.ts.
+    setLenis(lenis);
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -26,6 +32,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     requestAnimationFrame(raf);
 
     return () => {
+      setLenis(null);
       lenis.destroy();
     };
   }, []);
