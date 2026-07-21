@@ -110,7 +110,7 @@ export function CategoryPage({ tag }: { tag: Tag }) {
             rel="noopener noreferrer"
             className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
           >
-            <ScrambleOnView text={"AWWWARDS NOMINEE".toLowerCase()} />
+            <ScrambleOnView text={"AWWWARDS HONORS".toLowerCase()} />
           </a>
         </div>
       </div>
