@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asterisk 3D — look lab</title>
+<style>
+  :root {
+    --cream: #F3F0ED;
+    --ink: #141414;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--cream); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+  #stage { position: fixed; inset: 0; }
+  canvas { display: block; }
+
+  /* ── control panel ─────────────────────────────────────────────── */
+  #panel {
+    position: fixed; top: 0; right: 0; height: 100%; width: 300px; z-index: 10;
+    background: rgba(243, 240, 237, 0.82);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(20, 20, 20, 0.08);
+    padding: 22px 20px 40px; overflow-y: auto;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #panel.hidden { transform: translateX(100%); }
+  #toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 11;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+    padding: 7px 13px; border-radius: 999px; border: 0; cursor: pointer;
+    background: rgba(20, 20, 20, 0.07); color: var(--ink);
+  }
+  #toggle:hover { background: rgba(20, 20, 20, 0.12); }
+  #panel.hidden ~ #toggle { right: 16px; }
+
+  h1 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+       margin: 0 0 3px; }
+  .sub { font-size: 11px; line-height: 1.45; color: rgba(20,20,20,0.5); margin: 0 0 20px; }
+
+  .group { margin-bottom: 22px; }
+  .glabel { font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 600;
+            color: rgba(20,20,20,0.4); margin-bottom: 9px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 10.5px; letter-spacing: 0.02em; padding: 7px 11px; border-radius: 999px;
+    border: 1px solid rgba(20,20,20,0.12); background: transparent; color: rgba(20,20,20,0.75);
+    cursor: pointer; transition: all 0.18s ease;
+  }
+  .chip:hover { border-color: rgba(20,20,20,0.3); }
+  .chip.on { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+
+  .row { margin-bottom: 11px; }
+  .rowtop { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+  .rowtop label { font-size: 10.5px; color: rgba(20,20,20,0.72); }
+  .rowtop output { font-size: 10px; color: rgba(20,20,20,0.4); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; height: 3px; -webkit-appearance: none; appearance: none;
+    background: rgba(20,20,20,0.13); border-radius: 2px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px;
+    border-radius: 50%; background: var(--ink); cursor: pointer; }
+
+  #hint { position: fixed; left: 20px; bottom: 18px; z-index: 10; font-size: 10.5px;
+          color: rgba(20,20,20,0.38); line-height: 1.6; }
+  #fps { position: fixed; left: 20px; top: 18px; z-index: 10; font-size: 10px;
+         color: rgba(20,20,20,0.35); font-variant-numeric: tabular-nums; }
+  #err { position: fixed; inset: auto 20px 20px 20px; z-index: 20; font-size: 12px;
+         color: #b00; white-space: pre-wrap; display: none; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="fps"></div>
+<div id="hint">drag to orbit · scroll to zoom · the mark also drifts toward your cursor</div>
+<div id="err"></div>
+
+<div id="panel">
+  <h1>Asterisk 3D</h1>
+  <p class="sub">The real mark, extruded once. Every look below is only a material change.</p>
+
+  <div class="group">
+    <div class="glabel">Look</div>
+    <div class="chips" id="presets"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Weight</div>
+    <div class="chips" id="weights"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Backdrop</div>
+    <div class="chips" id="backdrops"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Colour</div>
+    <div class="chips" id="colors"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Motion</div>
+    <div class="chips" id="motions"></div>
+    <div id="msliders" style="margin-top:11px"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Chromatic fan</div>
+    <div class="chips" id="fans"></div>
+    <div id="fsliders" style="margin-top:11px"></div>
+  </div>
+
+  <div class="group">
+    <div class="glabel">Material</div>
+    <div id="sliders"></div>
+  </div>
+</div>
+<button id="toggle">controls</button>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.min.js",
+    "three/addons/": "./vendor/addons/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const errEl = document.getElementById("err");
+window.addEventListener("error", (e) => {
+  errEl.style.display = "block";
+  errEl.textContent = "Error: " + (e.message || e);
+});
+
+/* ────────────────────────────────────────────────────────────────
+   PRESETS — the five looks. Each is just MeshPhysicalMaterial
+   settings; the geometry never changes.
+   ──────────────────────────────────────────────────────────────── */
+const PRESETS = {
+  // Braun / Rams. The whole look is matte injection-moulded ABS: no
+  // transmission, no metal, high roughness, and only a whisper of clearcoat
+  // for the soft sheen that rolls along a moulded edge. Never pure white —
+  // the warm off-white is what stops it reading as generic 3D plastic.
+  // breathe is 0 on purpose. Rams objects do not undulate; the discipline
+  // IS the look, and an organic wobble would undo it instantly.
+  "Braun plastic": {
+    color: 0xE9E5DC, transmission: 0, thickness: 1, roughness: 0.55, metalness: 0,
+    ior: 1.5, dispersion: 0, iridescence: 0, iridescenceIOR: 1.4, irThickness: 300,
+    clearcoat: 0.22, clearcoatRoughness: 0.45, envIntensity: 0.95,
+    churn: 0.15, breathe: 0.0, spectral: 0.0, bands: 2.0, depth: 0.30, bevel: 0.060,
+  },
+  // Achromatic. No spectral sheen at all — the only colour is the faint
+  // chromatic fringing from `dispersion`, which is real refraction rather
+  // than a tint, so it stays quiet against the cream. Thicker and glossier
+  // than the spectral presets because with no hue to carry it, the read
+  // comes entirely from refraction and the specular edge.
+  "Clear glass": {
+    color: 0xffffff, transmission: 1, thickness: 1.35, roughness: 0.03, metalness: 0,
+    ior: 1.5, dispersion: 3.2, iridescence: 0, iridescenceIOR: 1.5, irThickness: 400,
+    clearcoat: 1, clearcoatRoughness: 0.03, envIntensity: 1.35,
+    churn: 0.25, breathe: 0.10, spectral: 0.0, bands: 2.0, depth: 0.24, bevel: 0.050,
+  },
+  // The churn of "Alive inside" with none of the hue. Everything that makes
+  // it feel organic is still here — the drifting field being refracted, the
+  // surface-tension breathing — it just plays out in light and shadow.
+  // Thicker than Clear glass so the moving field bends more on its way
+  // through, which is what makes the motion read as internal.
+  "Alive clear": {
+    color: 0xffffff, transmission: 1, thickness: 1.9, roughness: 0.05, metalness: 0,
+    ior: 1.52, dispersion: 3.0, iridescence: 0, iridescenceIOR: 1.5, irThickness: 400,
+    clearcoat: 1, clearcoatRoughness: 0.04, envIntensity: 1.3,
+    churn: 1.5, breathe: 0.40, spectral: 0.0, bands: 2.0, depth: 0.24, bevel: 0.048,
+  },
+  "Soap film": {
+    color: 0xffffff, transmission: 1, thickness: 0.55, roughness: 0.06, metalness: 0,
+    ior: 1.28, dispersion: 2.2, iridescence: 1, iridescenceIOR: 1.9, irThickness: 620,
+    clearcoat: 1, clearcoatRoughness: 0.06, envIntensity: 1.5,
+    churn: 0.55, breathe: 0.16, spectral: 0.95, bands: 3.4, depth: 0.10, bevel: 0.030,
+  },
+  "Blown glass": {
+    color: 0xffffff, transmission: 1, thickness: 2.4, roughness: 0.02, metalness: 0,
+    ior: 1.55, dispersion: 5.0, iridescence: 0.25, iridescenceIOR: 1.5, irThickness: 380,
+    clearcoat: 1, clearcoatRoughness: 0.02, envIntensity: 1.25,
+    churn: 0.22, breathe: 0.05, spectral: 0.35, bands: 2.2, depth: 0.30, bevel: 0.055,
+  },
+  "Alive inside": {
+    color: 0xffffff, transmission: 1, thickness: 1.5, roughness: 0.14, metalness: 0,
+    ior: 1.42, dispersion: 3.6, iridescence: 0.85, iridescenceIOR: 2.0, irThickness: 900,
+    clearcoat: 0.8, clearcoatRoughness: 0.18, envIntensity: 1.35,
+    churn: 1.6, breathe: 0.42, spectral: 1.0, bands: 5.0, depth: 0.22, bevel: 0.045,
+  },
+  "Chrome": {
+    color: 0xf4f2f0, transmission: 0, thickness: 0.5, roughness: 0.045, metalness: 1,
+    ior: 2.2, dispersion: 0, iridescence: 0.7, iridescenceIOR: 2.2, irThickness: 500,
+    clearcoat: 1, clearcoatRoughness: 0.03, envIntensity: 1.5,
+    churn: 0.5, breathe: 0.05, spectral: 0.55, bands: 2.8, depth: 0.22, bevel: 0.05,
+  },
+  "Inflated": {
+    color: 0xEDE9E3, transmission: 0, thickness: 1, roughness: 0.62, metalness: 0,
+    ior: 1.45, dispersion: 0, iridescence: 0.12, iridescenceIOR: 1.4, irThickness: 300,
+    clearcoat: 0.35, clearcoatRoughness: 0.5, envIntensity: 1.0,
+    churn: 0.3, breathe: 0.75, spectral: 0.18, bands: 1.6, depth: 0.34, bevel: 0.085,
+  },
+};
+
+const SLIDERS = [
+  ["transmission", "Transmission", 0, 1, 0.01],
+  ["thickness", "Thickness", 0, 4, 0.05],
+  ["roughness", "Roughness", 0, 1, 0.01],
+  ["metalness", "Metalness", 0, 1, 0.01],
+  ["ior", "IOR", 1, 2.4, 0.01],
+  ["dispersion", "Dispersion", 0, 10, 0.1],
+  ["iridescence", "Iridescence", 0, 1, 0.01],
+  ["iridescenceIOR", "Iridescence IOR", 1, 2.4, 0.01],
+  ["irThickness", "Film thickness", 100, 1400, 10],
+  ["envIntensity", "Env intensity", 0, 3, 0.05],
+  ["spectral", "Spectral sheen", 0, 1, 0.01],
+  ["bands", "Spectral bands", 0.5, 9, 0.1],
+  ["churn", "Churn speed", 0, 3, 0.05],
+  ["breathe", "Breathe", 0, 1.2, 0.02],
+  ["depth", "Extrude depth", 0.04, 0.6, 0.01],
+  ["bevel", "Bevel", 0, 0.12, 0.005],
+];
+
+let P = { ...PRESETS["Braun plastic"] };
+let currentPreset = "Braun plastic";
+let currentWeight = "heavy";
+let currentBackdrop = "Studio";
+
+/* ── scene ─────────────────────────────────────────────────────── */
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+stage.appendChild(renderer.domElement);
+window.__renderer = renderer;
+window.__THREE = THREE;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, innerWidth / innerHeight, 0.1, 100);
+camera.position.set(0, 0, 6.2);
+
+window.__scene = scene;
+window.__camera = camera;
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.enablePan = false;
+controls.minDistance = 3;
+controls.maxDistance = 14;
+// Default motion mode is "Auto 360", which is meant to be hands-off — so
+// orbiting starts disabled and only the "Cursor drift"/"Still" modes hand
+// control back. Otherwise a stray drag knocks the camera off-axis and the
+// mark never returns to front-on.
+controls.enabled = false;
+
+// Studio environment — gives transmission something worth refracting.
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+// A soft key from upper-left. The environment alone lights the glass presets
+// beautifully but leaves matte plastic flat — diffuse material needs a
+// directional source to show its form. This is the product-shot key light.
+// Kept deliberately gentle: at 1.6 the flat petal faces clipped to pure
+// white every time they swung toward the key, which read as a blowout bug
+// rather than a highlight. The environment is already doing most of the work.
+const key = new THREE.DirectionalLight(0xffffff, 0.75);
+key.position.set(-3.2, 4.2, 3.0);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.18);
+fill.position.set(3.0, -1.5, 2.0);
+scene.add(fill);
+
+/* ── the "alive" backdrop ──────────────────────────────────────────
+   A canvas of drifting colour blobs, redrawn every frame and mapped
+   to a plane behind the mark. Transmission refracts it, so the
+   *interior* of the glass churns. This is what sells "alive" — the
+   motion is inside the object, not the object moving.
+   ──────────────────────────────────────────────────────────────── */
+const bgCanvas = document.createElement("canvas");
+bgCanvas.width = bgCanvas.height = 512;
+const bgCtx = bgCanvas.getContext("2d");
+const bgTex = new THREE.CanvasTexture(bgCanvas);
+bgTex.colorSpace = THREE.SRGBColorSpace;
+
+const BLOBS = [
+  { h: 190, r: 0.42, a: 0.0, sp: 0.21 },
+  { h: 24,  r: 0.30, a: 2.1, sp: -0.17 },
+  { h: 320, r: 0.26, a: 4.0, sp: 0.29 },
+  { h: 96,  r: 0.24, a: 1.1, sp: -0.24 },
+  { h: 268, r: 0.20, a: 5.2, sp: 0.34 },
+];
+
+function drawBackdrop(t) {
+  const W = 512, c = bgCtx;
+  if (currentBackdrop === "Cream") { c.fillStyle = "#F3F0ED"; c.fillRect(0, 0, W, W); }
+  else if (currentBackdrop === "Ink") { c.fillStyle = "#141414"; c.fillRect(0, 0, W, W); }
+  else if (currentBackdrop === "Studio") {
+    // The Braun catalogue backdrop: a soft pool of light behind the object,
+    // falling off to a cooler grey at the edges. Half the Rams look is this
+    // gradient — a matte object on a flat field just reads as untextured.
+    // Deliberately deeper than the object. A cream part on a cream ground has
+    // no value separation and the form vanishes — the Braun catalogue shots
+    // always sit the light object against a mid grey.
+    // Radius is small on purpose: the backdrop plane is 26 units wide but only
+    // its middle ~28% is ever in frame, so a wide gradient puts the entire
+    // falloff off-screen and reads as flat fill.
+    const g = c.createRadialGradient(W * 0.5, W * 0.46, W * 0.01, W * 0.5, W * 0.5, W * 0.24);
+    g.addColorStop(0, "#E4E2DD");
+    g.addColorStop(0.55, "#D2D0CA");
+    g.addColorStop(1, "#B4B2AC");
+    c.fillStyle = g; c.fillRect(0, 0, W, W);
+  }
+  else {
+    // "Alive" — drifting blobs on cream, refracted by the glass so the
+    // motion reads as happening INSIDE the mark. Mono is the same field
+    // in warm greys: identical churn, no hue. That separation matters —
+    // the aliveness comes from the movement, not from the colour.
+    const mono = currentBackdrop === "Alive mono";
+    c.fillStyle = "#F3F0ED"; c.fillRect(0, 0, W, W);
+    c.globalCompositeOperation = "multiply";
+    for (const b of BLOBS) {
+      const a = b.a + t * b.sp * P.churn;
+      const x = W / 2 + Math.cos(a) * W * 0.26 + Math.sin(a * 1.7) * W * 0.07;
+      const y = W / 2 + Math.sin(a * 1.3) * W * 0.26 + Math.cos(a * 0.9) * W * 0.07;
+      const rad = W * b.r * (1 + 0.16 * Math.sin(a * 2.1));
+      const g = c.createRadialGradient(x, y, 0, x, y, rad);
+      if (mono) {
+        // Spread the blobs across a tonal range instead of a hue wheel, and
+        // keep a trace of the cream's warmth so it never goes cold grey.
+        const L = 34 + (b.h % 360) / 360 * 40 + Math.sin(a) * 7;
+        g.addColorStop(0, `hsla(34, 9%, ${L}%, 0.94)`);
+        g.addColorStop(1, `hsla(34, 9%, ${L}%, 0)`);
+      } else {
+        g.addColorStop(0, `hsla(${b.h + Math.sin(a) * 26}, 88%, 62%, 0.92)`);
+        g.addColorStop(1, `hsla(${b.h}, 88%, 62%, 0)`);
+      }
+      c.fillStyle = g;
+      c.beginPath(); c.arc(x, y, rad, 0, Math.PI * 2); c.fill();
+    }
+    c.globalCompositeOperation = "source-over";
+  }
+  bgTex.needsUpdate = true;
+}
+
+const backdrop = new THREE.Mesh(
+  new THREE.PlaneGeometry(26, 26),
+  new THREE.MeshBasicMaterial({ map: bgTex })
+);
+backdrop.position.z = -4.5;
+scene.add(backdrop);
+
+/* ── the film-thickness map ────────────────────────────────────────
+   This is what actually makes it look ALIVE. Uniform iridescence just
+   tints the whole surface one colour; real soap-bubble banding comes
+   from the film being THICKER in some places than others. So: a
+   greyscale field of drifting blobs, fed to iridescenceThicknessMap.
+   Where the field is light the film is thick (reds/greens), where it's
+   dark it's thin (blues/violets) — and because the blobs move, the
+   bands crawl across the surface on their own.
+   ──────────────────────────────────────────────────────────────── */
+const irCanvas = document.createElement("canvas");
+irCanvas.width = irCanvas.height = 256;
+const irCtx = irCanvas.getContext("2d");
+const irTex = new THREE.CanvasTexture(irCanvas);
+irTex.wrapS = irTex.wrapT = THREE.RepeatWrapping;
+
+const CELLS = [
+  { r: 0.40, a: 0.0, sp: 0.33, d: 0.30 },
+  { r: 0.32, a: 1.7, sp: -0.41, d: 0.34 },
+  { r: 0.28, a: 3.4, sp: 0.52, d: 0.26 },
+  { r: 0.34, a: 5.0, sp: -0.29, d: 0.32 },
+  { r: 0.22, a: 2.4, sp: 0.61, d: 0.24 },
+  { r: 0.26, a: 4.3, sp: -0.47, d: 0.30 },
+];
+
+function drawFilm(t) {
+  const W = 256, c = irCtx;
+  c.fillStyle = "#000"; c.fillRect(0, 0, W, W);
+  c.globalCompositeOperation = "lighter";
+  for (const b of CELLS) {
+    const a = b.a + t * b.sp * P.churn;
+    const x = W / 2 + Math.cos(a) * W * b.d + Math.sin(a * 1.9) * W * 0.09;
+    const y = W / 2 + Math.sin(a * 1.4) * W * b.d + Math.cos(a * 1.1) * W * 0.09;
+    const rad = W * b.r * (1 + 0.22 * Math.sin(a * 2.3));
+    const g = c.createRadialGradient(x, y, 0, x, y, rad);
+    g.addColorStop(0, "rgba(255,255,255,0.85)");
+    g.addColorStop(1, "rgba(255,255,255,0)");
+    c.fillStyle = g;
+    c.beginPath(); c.arc(x, y, rad, 0, Math.PI * 2); c.fill();
+  }
+  c.globalCompositeOperation = "source-over";
+  irTex.needsUpdate = true;
+}
+
+/* ── material ──────────────────────────────────────────────────── */
+const material = new THREE.MeshPhysicalMaterial({ side: THREE.DoubleSide });
+window.__mat = material;   // live tweaking from the console
+const uTime = { value: 0 };
+const uBreathe = { value: P.breathe };
+const uSpectral = { value: P.spectral };
+const uBands = { value: P.bands };
+const uFilm = { value: irTex };
+
+/* Two injections into MeshPhysicalMaterial, keeping all its transmission /
+   refraction machinery intact:
+
+   VERTEX — surface-tension "breathing" displacement.
+
+   FRAGMENT — the spectral sheen. three's built-in `iridescence` is a
+   physically-correct thin film, and measured against a neutral studio
+   environment it moves saturation by ~0.000 (verified: 0.0148 off vs 0.0151
+   on). It simply cannot produce the oil-slick look. That look is a
+   fresnel-driven hue ramp: hue cycles with viewing angle, offset by a
+   drifting noise field so the bands crawl. Cosine palette, so it stays
+   smooth and never posterises. */
+material.onBeforeCompile = (shader) => {
+  shader.uniforms.uTime = uTime;
+  shader.uniforms.uBreathe = uBreathe;
+  shader.uniforms.uSpectral = uSpectral;
+  shader.uniforms.uBands = uBands;
+  shader.uniforms.uFilm = uFilm;
+
+  shader.vertexShader = shader.vertexShader
+    .replace("#include <common>", `
+      #include <common>
+      uniform float uTime; uniform float uBreathe;
+      varying vec3 vFilmPos;
+      vec3 wobble(vec3 p) {
+        float w = sin(p.x * 2.6 + uTime * 1.1) * cos(p.y * 2.2 - uTime * 0.9)
+                + sin(length(p.xy) * 3.4 - uTime * 1.6) * 0.5;
+        return p + normal * w * uBreathe * 0.14;
+      }
+    `)
+    .replace("#include <begin_vertex>", `
+      vec3 transformed = wobble(position);
+      vFilmPos = position;
+    `);
+
+  shader.fragmentShader = shader.fragmentShader
+    .replace("#include <common>", `
+      #include <common>
+      uniform float uTime; uniform float uSpectral; uniform float uBands;
+      uniform sampler2D uFilm;
+      varying vec3 vFilmPos;
+    `)
+    .replace("#include <dithering_fragment>", `
+      #include <dithering_fragment>
+      {
+        vec3 V = normalize( vViewPosition );
+        float fres = 1.0 - clamp( abs( dot( normalize( normal ), V ) ), 0.0, 1.0 );
+        float film = texture2D( uFilm, vFilmPos.xy * 0.34 + 0.5 ).g;
+        // Angle drives the band position; the drifting film field warps it so
+        // the colours churn instead of sitting in fixed rings.
+        float phase = fres * uBands + film * 1.35 + uTime * 0.05;
+        vec3 spectral = 0.5 + 0.5 * cos( 6.28318 * ( vec3( 0.0, 0.33, 0.67 ) + phase ) );
+        // Weight to the rim so the centre keeps its glassy read.
+        float w = uSpectral * mix( 0.35, 1.0, fres );
+        gl_FragColor.rgb = mix( gl_FragColor.rgb, gl_FragColor.rgb * 0.45 + spectral * 0.9, w );
+      }
+    `);
+};
+
+function applyMaterial() {
+  material.color.setHex(P.color);
+  material.transmission = P.transmission;
+  material.thickness = P.thickness;
+  material.roughness = P.roughness;
+  material.metalness = P.metalness;
+  material.ior = P.ior;
+  material.dispersion = P.dispersion;
+  material.iridescence = P.iridescence;
+  material.iridescenceIOR = P.iridescenceIOR;
+  material.iridescenceThicknessRange = [100, P.irThickness];
+  material.iridescenceThicknessMap = irTex;
+  material.clearcoat = P.clearcoat;
+  material.clearcoatRoughness = P.clearcoatRoughness;
+  material.envMapIntensity = P.envIntensity;
+  material.needsUpdate = true;
+  uBreathe.value = P.breathe;
+  uSpectral.value = P.spectral;
+  uBands.value = P.bands;
+}
+applyMaterial();
+
+/* ── geometry: the real asterisk path, extruded ────────────────── */
+const group = new THREE.Group();
+scene.add(group);
+window.__group = group;
+let mesh = null;
+const pathCache = {};
+
+async function buildMark(weight) {
+  const url = `/case-studies/hp/asterisk-${weight}.svg`;
+  if (!pathCache[weight]) {
+    const txt = await fetch(url).then((r) => r.text());
+    pathCache[weight] = new SVGLoader().parse(txt).paths;
+  }
+  const paths = pathCache[weight];
+  const shapes = [];
+  for (const p of paths) shapes.push(...SVGLoader.createShapes(p));
+
+  const geo = new THREE.ExtrudeGeometry(shapes, {
+    depth: P.depth * 200,
+    bevelEnabled: P.bevel > 0,
+    bevelThickness: P.bevel * 200,
+    bevelSize: P.bevel * 200,
+    bevelSegments: 8,
+    curveSegments: 26,
+  });
+  geo.center();
+  geo.computeVertexNormals();
+  // SVG Y axis points down — flip, then scale to a ~2.4 unit tall mark.
+  geo.scale(0.0125, -0.0125, 0.0125);
+
+  // ExtrudeGeometry writes UVs in SHAPE coordinates (here 0..206), so a
+  // repeat-wrapped film map tiles ~200x and averages out to flat grey — no
+  // banding at all. Re-project UVs as a normalised planar map across the
+  // mark's bounding box so the film reads as one field over the whole shape.
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox;
+  const sx = 1 / Math.max(bb.max.x - bb.min.x, 1e-6);
+  const sy = 1 / Math.max(bb.max.y - bb.min.y, 1e-6);
+  const pos = geo.attributes.position;
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < pos.count; i++) {
+    uv.setXY(i, (pos.getX(i) - bb.min.x) * sx, (pos.getY(i) - bb.min.y) * sy);
+  }
+  uv.needsUpdate = true;
+
+  if (mesh) { group.remove(mesh); mesh.geometry.dispose(); }
+  mesh = new THREE.Mesh(geo, material);
+  group.add(mesh);
+  buildGhosts();
+}
+
+/* ── chromatic fan ─────────────────────────────────────────────────
+   Ghost copies of the mark, each lagging a little further behind the
+   live rotation and tinted along a red→blue ramp. Same idea as the
+   prism shader — separate the channels by a small positional offset —
+   except the offset here is angular, so the separation only exists
+   while the mark is actually turning.
+
+   Opacity is driven by angular velocity, which is what makes it feel
+   earned: at rest every layer sits exactly under the mark and the fan
+   is invisible. It blooms open as the spin accelerates, peaks through
+   the middle, and collapses back to nothing. No timers.
+
+   Additive suits dark grounds; on cream it would just wash out, so
+   Multiply is there to give the same separation as ink instead.
+   ──────────────────────────────────────────────────────────────── */
+const GH = { count: 6, spread: 0.55, strength: 0.85 };
+let ghostBlend = "Print";
+const ghosts = [];
+const ghostGroup = new THREE.Group();
+scene.add(ghostGroup);
+window.__ghosts = ghosts;
+
+function buildGhosts() {
+  for (const g of ghosts) { ghostGroup.remove(g); g.material.dispose(); }
+  ghosts.length = 0;
+  if (!mesh || ghostBlend === "Off") return;
+  for (let i = 0; i < GH.count; i++) {
+    const k = GH.count === 1 ? 0 : i / (GH.count - 1);
+    // "Print" uses NormalBlending: three's MultiplyBlending sets
+    // blendDst = SrcColor, which ignores alpha entirely, so a multiply ghost
+    // can never fade in or out and the fan could never collapse at rest.
+    // Normal + a saturated tint reads as plate misregistration, which suits
+    // the vintage direction better than a glow anyway.
+    const col = new THREE.Color().setHSL(0.02 + k * 0.62, 0.85, 0.52);
+    const gm = new THREE.Mesh(mesh.geometry, new THREE.MeshBasicMaterial({
+      color: col, transparent: true, opacity: 0, depthWrite: false,
+      side: THREE.DoubleSide,
+      blending: ghostBlend === "Additive" ? THREE.AdditiveBlending : THREE.NormalBlending,
+    }));
+    ghostGroup.add(gm);
+    ghosts.push(gm);
+  }
+}
+
+await buildMark(currentWeight);
+
+/* ── UI ────────────────────────────────────────────────────────── */
+function chipRow(host, items, active, onPick) {
+  host.innerHTML = "";
+  for (const name of items) {
+    const b = document.createElement("button");
+    b.className = "chip" + (name === active ? " on" : "");
+    b.textContent = name;
+    b.onclick = () => {
+      [...host.children].forEach((c) => c.classList.remove("on"));
+      b.classList.add("on");
+      onPick(name);
+    };
+    host.appendChild(b);
+  }
+}
+
+chipRow(document.getElementById("presets"), Object.keys(PRESETS), currentPreset, (name) => {
+  currentPreset = name;
+  P = { ...PRESETS[name] };
+  applyMaterial();
+  buildMark(currentWeight);
+  syncSliders();
+  // Both "alive" looks are meaningless without a moving field to refract,
+  // so each one pulls in the backdrop it was tuned against.
+  if (name === "Alive inside" && currentBackdrop !== "Alive") setBackdrop("Alive");
+  if (name === "Alive clear" && currentBackdrop !== "Alive mono") setBackdrop("Alive mono");
+  if (name === "Braun plastic" && currentBackdrop !== "Studio") setBackdrop("Studio");
+});
+
+chipRow(document.getElementById("weights"), ["thin", "regular", "heavy"], currentWeight, (w) => {
+  currentWeight = w; buildMark(w);
+});
+
+function setBackdrop(name) {
+  currentBackdrop = name;
+  [...document.getElementById("backdrops").children].forEach((c) =>
+    c.classList.toggle("on", c.textContent === name));
+}
+chipRow(document.getElementById("backdrops"), ["Cream", "Studio", "Alive mono", "Alive", "Ink"], currentBackdrop, setBackdrop);
+
+/* The Rams accent palette, straight off the reference swatches. On the matte
+   preset these read as moulded colour; on the glass presets they tint it. */
+const RAMS = {
+  "Off-white": 0xE9E5DC,
+  "Grey": 0xCFCDC6,
+  "Orange": 0xED8008,
+  "Red": 0xBF1B1B,
+  "Olive": 0x736B1E,
+  "Slate": 0x3B4B59,
+  "Tan": 0xD9C3B0,
+};
+chipRow(document.getElementById("colors"), Object.keys(RAMS), "Off-white", (name) => {
+  P.color = RAMS[name];
+  applyMaterial();
+});
+
+const sliderEls = {};
+const host = document.getElementById("sliders");
+for (const [key, label, min, max, step] of SLIDERS) {
+  const row = document.createElement("div"); row.className = "row";
+  row.innerHTML = `<div class="rowtop"><label>${label}</label><output></output></div>`;
+  const input = document.createElement("input");
+  input.type = "range"; input.min = min; input.max = max; input.step = step; input.value = P[key];
+  const out = row.querySelector("output");
+  out.textContent = (+P[key]).toFixed(2);
+  input.oninput = () => {
+    P[key] = parseFloat(input.value);
+    out.textContent = P[key].toFixed(2);
+    if (key === "depth" || key === "bevel") buildMark(currentWeight);
+    else applyMaterial();
+  };
+  row.appendChild(input); host.appendChild(row);
+  sliderEls[key] = { input, out };
+}
+function syncSliders() {
+  for (const [key] of SLIDERS) {
+    if (!sliderEls[key]) continue;
+    sliderEls[key].input.value = P[key];
+    sliderEls[key].out.textContent = (+P[key]).toFixed(2);
+  }
+}
+
+const panel = document.getElementById("panel");
+document.getElementById("toggle").onclick = () => panel.classList.toggle("hidden");
+
+/* ── motion ────────────────────────────────────────────────────────
+   Auto 360: the mark sways gently, then every `spinEvery` seconds
+   commits to one full revolution. Two details make or break it —
+
+   1. The ease. easeInOutQuart is slow at both ends and fast through
+      the middle, which is exactly where the mark is edge-on and
+      unreadable. It sprints through the illegible zone and lingers
+      on the faces. A linear spin looks broken by comparison.
+   2. It always lands back on true front-on, because a full turn is
+      2*PI and we reset the offset to 0 after each one.
+
+   No pointer capture at all in this mode, so the page scrolls
+   normally over it on both desktop and touch.
+   ──────────────────────────────────────────────────────────────── */
+const M = { spinEvery: 7.0, spinTime: 2.6, sway: 0.13 };
+let motionMode = "Auto 360";
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let spinT0 = null;          // when the current revolution started
+let nextSpinAt = M.spinEvery;
+
+const easeInOutQuart = (k) =>
+  k < 0.5 ? 8 * k * k * k * k : 1 - Math.pow(-2 * k + 2, 4) / 2;
+
+chipRow(document.getElementById("motions"), ["Auto 360", "Cursor drift", "Still"], motionMode, (name) => {
+  motionMode = name;
+  controls.enabled = name !== "Auto 360";   // no grabbing while it drives itself
+  group.rotation.set(0, 0, 0);
+  spinT0 = null;
+  nextSpinAt = clock.getElapsedTime() + M.spinEvery;
+});
+
+for (const [key, label, min, max, step] of [
+  ["spinEvery", "Spin every (s)", 2, 20, 0.5],
+  ["spinTime", "Spin time (s)", 0.6, 6, 0.1],
+  ["sway", "Idle sway", 0, 0.5, 0.01],
+]) {
+  const row = document.createElement("div"); row.className = "row";
+  row.innerHTML = `<div class="rowtop"><label>${label}</label><output>${M[key].toFixed(2)}</output></div>`;
+  const input = document.createElement("input");
+  input.type = "range"; input.min = min; input.max = max; input.step = step; input.value = M[key];
+  const out = row.querySelector("output");
+  input.oninput = () => { M[key] = parseFloat(input.value); out.textContent = M[key].toFixed(2); };
+  row.appendChild(input);
+  document.getElementById("msliders").appendChild(row);
+}
+
+chipRow(document.getElementById("fans"), ["Print", "Additive", "Off"], ghostBlend, (name) => {
+  ghostBlend = name;
+  buildGhosts();
+});
+
+for (const [key, label, min, max, step] of [
+  ["count", "Layers", 0, 10, 1],
+  ["spread", "Fan spread", 0, 2, 0.05],
+  ["strength", "Fan strength", 0, 1, 0.01],
+]) {
+  const row = document.createElement("div"); row.className = "row";
+  row.innerHTML = `<div class="rowtop"><label>${label}</label><output>${GH[key]}</output></div>`;
+  const input = document.createElement("input");
+  input.type = "range"; input.min = min; input.max = max; input.step = step; input.value = GH[key];
+  const out = row.querySelector("output");
+  input.oninput = () => {
+    GH[key] = parseFloat(input.value);
+    out.textContent = key === "count" ? GH[key] : GH[key].toFixed(2);
+    if (key === "count") buildGhosts();
+  };
+  row.appendChild(input);
+  document.getElementById("fsliders").appendChild(row);
+}
+
+/* ── cursor drift + loop ───────────────────────────────────────── */
+let prevY = 0, spinVel = 0;
+const pointer = { x: 0, y: 0 };
+addEventListener("pointermove", (e) => {
+  pointer.x = (e.clientX / innerWidth) * 2 - 1;
+  pointer.y = (e.clientY / innerHeight) * 2 - 1;
+});
+addEventListener("resize", () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+const fpsEl = document.getElementById("fps");
+let frames = 0, fpsMark = performance.now();
+const clock = new THREE.Clock();
+
+renderer.setAnimationLoop(() => {
+  const t = clock.getElapsedTime();
+  uTime.value = t;
+  drawBackdrop(t);
+  drawFilm(t);
+
+  if (motionMode === "Auto 360" && !reduceMotion) {
+    let turn = 0;
+    if (spinT0 !== null) {
+      const k = Math.min((t - spinT0) / M.spinTime, 1);
+      turn = easeInOutQuart(k) * Math.PI * 2;
+      if (k >= 1) { spinT0 = null; turn = 0; nextSpinAt = t + M.spinEvery; }
+    } else if (t >= nextSpinAt) {
+      spinT0 = t;
+    }
+    // Sway rides on top, so it is never perfectly still between spins.
+    group.rotation.y = turn + Math.sin(t * 0.31) * M.sway;
+    group.rotation.x = Math.sin(t * 0.23) * M.sway * 0.45;
+  } else if (motionMode === "Cursor drift") {
+    group.rotation.y += (pointer.x * 0.5 - group.rotation.y) * 0.045 + 0.0016;
+    group.rotation.x += (pointer.y * 0.32 - group.rotation.x) * 0.045;
+  }
+
+  // Angular velocity of the mark this frame, smoothed so the fan opens and
+  // closes rather than flickering. This is the only thing driving the fan.
+  const dy = group.rotation.y - prevY;
+  prevY = group.rotation.y;
+  spinVel += (Math.abs(dy) - spinVel) * 0.25;
+
+  if (ghosts.length) {
+    const v = Math.min(spinVel * 14, 1);        // 0 at rest, 1 mid-spin
+    for (let i = 0; i < ghosts.length; i++) {
+      const lag = (i + 1) / ghosts.length;
+      const gh = ghosts[i];
+      gh.rotation.copy(group.rotation);
+      // Trail behind by an amount proportional to how fast it is turning,
+      // so the layers fan open and close with the spin itself.
+      gh.rotation.y -= dy * GH.spread * 26 * lag;
+      gh.material.opacity = v * GH.strength * (1 - lag * 0.55);
+      gh.visible = gh.material.opacity > 0.004;
+    }
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+
+  if (++frames >= 30) {
+    const now = performance.now();
+    fpsEl.textContent = Math.round((frames * 1000) / (now - fpsMark)) + " fps";
+    frames = 0; fpsMark = now;
+  }
+});
+</script>
+</body>
+</html>

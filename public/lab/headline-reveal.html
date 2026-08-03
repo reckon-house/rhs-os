@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Headline reveals — comparison</title>
+<style>
+  :root {
+    --paper: #FFFFFF; --ink: #000000;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "Menlo", monospace;
+    --dur: 1.2s;         /* per-character travel */
+    /* 6ms: the letters travel almost as one line, with just enough lead for
+       the left to arrive first. The melt carries the moment, not the wave. */
+    --stag: 6ms;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--paper); }
+  body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  .stage { min-height: 100vh; display: grid; align-content: center;
+    padding: 96px 40px 40px; border-bottom: 1px solid rgba(0,0,0,0.12); }
+  .tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(0,0,0,0.42); margin-bottom: 22px; }
+
+  h2 { font-size: clamp(38px, 7vw, 112px); line-height: 0.93; letter-spacing: -0.04em;
+    font-weight: 700; text-transform: uppercase; max-width: 12em; }
+  .ind { margin-left: 1.2em; }
+
+  /* Each line is its own mask. The padding/negative-margin pair keeps commas
+     and descenders from being sliced by the very overflow doing the masking. */
+  .ln { display: block; overflow: hidden;
+    padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  /* The melt goes on an INNER wrapper, never on .ln itself: a filter on the
+     masking element warps the mask edge too, so the letters would appear to
+     climb out of a wobbling slot instead of a clean line. */
+  .lnI { display: block; }
+  /* Characters are inline-block so they can be transformed individually —
+     but that also lets the browser break a line between any two of them.
+     Wrapping each word keeps breaks at spaces where they belong. */
+  .wd { display: inline-block; white-space: nowrap; }
+  .ch { display: inline-block; will-change: transform, opacity; }
+
+  /* ── reveal styles. Each sets a resting state; .go releases it. ── */
+  /* rise — up out of nothing, the mask does the hiding */
+  [data-fx="rise"] .ch { transform: translateY(110%); }
+  [data-fx="rise"].go .ch { transform: none;
+    transition: transform var(--dur) var(--ease) var(--d); }
+
+  /* drop — the same, arriving from above */
+  [data-fx="drop"] .ch { transform: translateY(-110%); }
+  [data-fx="drop"].go .ch { transform: none;
+    transition: transform var(--dur) var(--ease) var(--d); }
+
+  /* flip — hinged on its own baseline, rotating up into place */
+  [data-fx="flip"] .ch { transform: rotateX(-92deg); transform-origin: 50% 100%; opacity: 0; }
+  [data-fx="flip"] { perspective: 900px; }
+  [data-fx="flip"].go .ch { transform: none; opacity: 1;
+    transition: transform var(--dur) var(--ease) var(--d),
+                opacity calc(var(--dur) * 0.5) linear var(--d); }
+
+  /* wipe — a hard edge crosses the line, no per-letter motion at all */
+  [data-fx="wipe"] .ln { clip-path: inset(0 100% 0 0); }
+  [data-fx="wipe"].go .ln { clip-path: inset(0 0 0 0);
+    transition: clip-path calc(var(--dur) * 1.15) var(--ease) var(--ld); }
+
+  /* settle — rises AND eases open from a tighter track */
+  [data-fx="settle"] .ch { transform: translateY(105%); }
+  [data-fx="settle"] .ln { letter-spacing: -0.09em; }
+  [data-fx="settle"].go .ch { transform: none;
+    transition: transform var(--dur) var(--ease) var(--d); }
+  [data-fx="settle"].go .ln { letter-spacing: -0.04em;
+    transition: letter-spacing calc(var(--dur) * 1.6) var(--ease) var(--ld); }
+
+  /* ── panel ── */
+  #panel { position: fixed; right: 16px; top: 16px; z-index: 40; width: 214px;
+    background: rgba(255,255,255,0.94); backdrop-filter: blur(8px);
+    border: 1px solid rgba(0,0,0,0.14); padding: 13px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; }
+  #panel .t { font-weight: 700; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .chip { font: inherit; text-transform: uppercase; padding: 5px 8px; cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.18); background: transparent; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .row label { width: 52px; color: rgba(0,0,0,0.5); }
+  input[type=range] { flex: 1; height: 2px; -webkit-appearance: none; appearance: none;
+    background: rgba(0,0,0,0.18); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--ink); cursor: pointer; }
+  #replay { width: 100%; margin-top: 6px; font: inherit; text-transform: uppercase;
+    padding: 6px; border: 1px solid rgba(0,0,0,0.2); background: transparent; cursor: pointer; }
+  #replay:hover { background: rgba(0,0,0,0.06); }
+  .note { margin-top: 10px; color: rgba(0,0,0,0.45); line-height: 1.5; text-transform: none;
+    letter-spacing: 0; font-size: 9.5px; }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <div class="t">Headline reveal</div>
+  <div class="chips" id="fxChips"></div>
+  <div class="row"><label>Speed</label><input id="dur" type="range" min="0.35" max="1.6" step="0.05" value="1.2"></div>
+  <div class="row"><label>Stagger</label><input id="stag" type="range" min="0" max="70" step="2" value="6"></div>
+  <div class="row"><label>Melt</label><input id="melt" type="range" min="0" max="40" step="1" value="20"></div>
+  <button id="replay">replay all</button>
+  <div class="note" id="note"></div>
+</div>
+
+<section class="stage">
+  <div class="tag">Section 02 — The Brief</div>
+  <h2 data-h>One shoot day stretched into<span class="ind">an entire campaign.</span></h2>
+</section>
+
+<section class="stage">
+  <div class="tag">Section 04 — Campaign &amp; Deployment</div>
+  <h2 data-h>Four source frames<span class="ind">feeding every channel.</span></h2>
+</section>
+
+<section class="stage">
+  <div class="tag">Section 06 — Closing</div>
+  <h2 data-h>A reference taken<span class="ind">seriously, not ironically.</span></h2>
+</section>
+
+<script>
+/* ── build ──────────────────────────────────────────────────────────
+   Each headline is split into explicit LINES (so each gets its own mask)
+   and then into CHARACTERS (so each can carry its own delay). Spaces are
+   kept as real spaces rather than spans, otherwise the words run together
+   when the letters are inline-block.
+
+   The left-leads-right feel is just delay rising with character index. */
+const FX = ["rise", "settle", "flip", "drop", "wipe"];
+const NOTES = {
+  rise:   "Letters lift out of the line's own mask. Classic, calm, editorial.",
+  settle: "Rise plus the tracking easing open — arrives, then relaxes.",
+  flip:   "Each letter hinges up on its baseline. The most kinetic of these.",
+  drop:   "Same mask, arriving from above. Reads heavier, more declarative.",
+  wipe:   "No letter motion at all — one hard edge per line. The most Swiss.",
+};
+let fx = "rise";
+
+function build(h2) {
+  // split the two authored parts into lines
+  const parts = [];
+  h2.childNodes.forEach((n) => {
+    if (n.nodeType === 3 && n.textContent.trim()) parts.push({ t: n.textContent.trim(), ind: false });
+    else if (n.nodeType === 1) parts.push({ t: n.textContent.trim(), ind: n.classList.contains("ind") });
+  });
+  h2.innerHTML = "";
+  let idx = 0;
+  parts.forEach((p, li) => {
+    const line = document.createElement("span");
+    line.className = "ln" + (p.ind ? " ind" : "");
+    line.style.setProperty("--ld", (li * 90) + "ms");
+    const inner = document.createElement("span");
+    inner.className = "lnI";
+    const stag = parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue("--stag"));
+    p.t.split(" ").forEach((word, wi) => {
+      if (wi) inner.appendChild(document.createTextNode(" "));
+      const w = document.createElement("span");
+      w.className = "wd";
+      [...word].forEach((c) => {
+        const sp = document.createElement("span");
+        sp.className = "ch";
+        sp.textContent = c;
+        sp.style.setProperty("--d", (idx++ * stag) + "ms");
+        w.appendChild(sp);
+      });
+      inner.appendChild(w);
+    });
+    line.appendChild(inner);
+    h2.appendChild(line);
+  });
+  h2.dataset.fx = fx;
+}
+
+const heads = [...document.querySelectorAll("[data-h]")];
+heads.forEach(build);
+
+function restagger() {
+  const stag = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--stag"));
+  heads.forEach((h) => {
+    let i = 0;
+    h.querySelectorAll(".ch").forEach((c) => c.style.setProperty("--d", (i++ * stag) + "ms"));
+  });
+}
+
+/* ── the melt ────────────────────────────────────────────────────────
+   Same filter chain as the site's nav (#navMelt): fractal noise, smoothed,
+   used to displace the source. Here it is driven DOWN to zero across the
+   reveal, so the letters resolve out of a warp as they arrive.
+
+   Two details that matter: each headline gets its own filter instance so
+   their timings do not fight, and the filter is REMOVED once it lands —
+   text left permanently inside a filter pipeline renders slightly soft,
+   and these have to be pin-sharp at rest. */
+let meltId = 0;
+function ensureMelt(h) {
+  if (h._melt) return h._melt;
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("width", "0"); svg.setAttribute("height", "0");
+  svg.style.position = "absolute";
+  const f = document.createElementNS(NS, "filter");
+  const id = "hmelt-" + (meltId++);
+  f.setAttribute("id", id);
+  f.setAttribute("x", "-25%"); f.setAttribute("y", "-25%");
+  f.setAttribute("width", "150%"); f.setAttribute("height", "150%");
+  f.setAttribute("color-interpolation-filters", "sRGB");
+  const turb = document.createElementNS(NS, "feTurbulence");
+  turb.setAttribute("type", "fractalNoise");
+  turb.setAttribute("baseFrequency", "0.015 0.025");
+  turb.setAttribute("numOctaves", "3");
+  turb.setAttribute("seed", "8");
+  turb.setAttribute("result", "noise");
+  const blur = document.createElementNS(NS, "feGaussianBlur");
+  blur.setAttribute("in", "noise"); blur.setAttribute("stdDeviation", "2");
+  blur.setAttribute("result", "smooth");
+  const disp = document.createElementNS(NS, "feDisplacementMap");
+  disp.setAttribute("in", "SourceGraphic"); disp.setAttribute("in2", "smooth");
+  disp.setAttribute("scale", "0");
+  disp.setAttribute("xChannelSelector", "R"); disp.setAttribute("yChannelSelector", "G");
+  f.append(turb, blur, disp); svg.appendChild(f); document.body.appendChild(svg);
+  h._melt = { id, disp };
+  return h._melt;
+}
+
+function runMelt(h) {
+  const amt = parseFloat(document.getElementById("melt").value);
+  const inners = [...h.querySelectorAll(".lnI")];
+  if (!amt) { inners.forEach((el) => (el.style.filter = "none")); return; }
+  const { id, disp } = ensureMelt(h);
+  const dur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--dur")) * 1000;
+  const stag = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--stag"));
+  const total = dur + stag * h.querySelectorAll(".ch").length;
+  inners.forEach((el) => (el.style.filter = `url(#${id})`));
+  const t0 = performance.now();
+  (function step() {
+    const k = Math.min((performance.now() - t0) / total, 1);
+    disp.setAttribute("scale", (amt * Math.pow(1 - k, 2.4)).toFixed(2));
+    if (k < 1) requestAnimationFrame(step);
+    else inners.forEach((el) => (el.style.filter = "none"));   // hand back crisp text
+  })();
+}
+
+function play(h) { h.classList.remove("go"); void h.offsetWidth; h.classList.add("go"); runMelt(h); }
+function reset(h) { h.classList.remove("go"); }
+
+// fire when the headline enters, replay if it leaves and comes back
+const io = new IntersectionObserver((es) => {
+  es.forEach((e) => e.isIntersecting ? play(e.target) : reset(e.target));
+}, { threshold: 0.35 });
+heads.forEach((h) => io.observe(h));
+
+// ── controls ──
+const chips = document.getElementById("fxChips");
+FX.forEach((name) => {
+  const b = document.createElement("button");
+  b.className = "chip" + (name === fx ? " on" : "");
+  b.textContent = name;
+  b.onclick = () => {
+    fx = name;
+    [...chips.children].forEach((c) => c.classList.remove("on"));
+    b.classList.add("on");
+    heads.forEach((h) => { h.dataset.fx = fx; reset(h); });
+    document.getElementById("note").textContent = NOTES[fx];
+    requestAnimationFrame(() => heads.forEach((h) => {
+      if (h.getBoundingClientRect().top < innerHeight * 0.8) play(h);
+    }));
+  };
+  chips.appendChild(b);
+});
+document.getElementById("note").textContent = NOTES[fx];
+
+document.getElementById("dur").addEventListener("input", (e) =>
+  document.documentElement.style.setProperty("--dur", e.target.value + "s"));
+document.getElementById("stag").addEventListener("input", (e) => {
+  document.documentElement.style.setProperty("--stag", e.target.value + "ms");
+  restagger();
+});
+document.getElementById("replay").addEventListener("click", () => {
+  heads.forEach((h) => { reset(h); });
+  requestAnimationFrame(() => heads.forEach((h) => {
+    if (h.getBoundingClientRect().top < innerHeight) play(h);
+  }));
+});
+</script>
+</body>
+</html>

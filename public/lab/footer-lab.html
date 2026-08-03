@@ -1,0 +1,1652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Footer Lab — five explorations</title>
+<style>
+  /* Same tokens as swiss-spread.html so a winner ports without translation. */
+  :root {
+    --paper: #FFFFFF;
+    --ink: #000000;
+    --hair: rgba(0,0,0,0.14);
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "Menlo", monospace;
+    --r: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--paper); color: var(--ink);
+    -webkit-font-smoothing: antialiased; }
+  img { display: block; }
+  a { color: inherit; }
+
+  /* ── lab chrome (not part of any exploration) ── */
+  #labnav { position: sticky; top: 0; z-index: 99; display: flex; gap: 18px;
+    align-items: center; padding: 12px 24px; background: var(--paper);
+    border-bottom: 1px solid var(--hair);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; }
+  #labnav b { font-weight: 700; margin-right: auto; }
+  #labnav a { text-decoration: none; opacity: 0.55; }
+  #labnav a:hover { opacity: 1; }
+  .lab-label { display: flex; justify-content: space-between; align-items: baseline;
+    padding: 60px 24px 14px; border-bottom: 1px solid var(--hair);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; }
+  .lab-label .t { font-size: 12px; font-weight: 700; }
+  .lab-note { padding: 10px 24px 26px; font-family: var(--mono); font-size: 9px;
+    line-height: 1.7; letter-spacing: 0.06em; color: rgba(0,0,0,0.45);
+    max-width: 72em; }
+</style>
+</head>
+<body>
+
+<nav id="labnav">
+  <b>Footer Lab</b>
+  <a href="#x-index-grid">A · Index</a>
+  <a href="#x-hybrid">F · A×E</a>
+  <a href="#x-ledger">B · Ledger</a>
+  <a href="#x-tickers">C · Tickers</a>
+  <a href="#x-corridor">D · Corridor</a>
+  <a href="#x-wildcard">E · Wildcard</a>
+  <a href="#x-shelf">G · Shelf</a>
+</nav>
+
+<section id="x-index-grid">
+  <div class="lab-label"><span class="t">A · The Index</span><span>fx-index-grid</span></div>
+  <div class="lab-note">Numbered archive grid. Hover a thumbnail: the number swaps for the title. Sparse on purpose. A black 96-cell index, 8 columns collapsing to 4 at 760px, with 12 thumbnails scattered across digital, creative direction, interiors, type, and motion, plus three news fragments, a contact cell, and the wordmark at cell 36. Thumbs sit grayscale and take color on hover while the cell number swaps to the project title in mono; every 8 seconds one thumbnail quietly relocates to an empty cell (paused off-screen, skipped entirely under reduced motion). Knobs: swap interval (8000ms in the IIFE), cell height clamps in .ig-cell, and the filled-cell positions are just DOM order so re-scattering is a copy-paste.</div>
+  <style>
+.fx-index-grid{background:var(--ink);color:var(--paper);font-family:var(--sans);padding:0 24px;border-radius:var(--r) var(--r) 0 0;overflow:hidden}
+.fx-index-grid .ig-head{display:flex;justify-content:space-between;align-items:baseline;padding:22px 4px;border-bottom:1px solid color-mix(in srgb,var(--paper) 15%,transparent)}
+.fx-index-grid .ig-foot{display:flex;justify-content:space-between;align-items:baseline;padding:18px 4px 28px;border-top:1px solid color-mix(in srgb,var(--paper) 15%,transparent)}
+.fx-index-grid .ig-headlabel,.fx-index-grid .ig-footlabel{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.55}
+.fx-index-grid .ig-grid{display:grid;grid-template-columns:repeat(8,1fr);padding:16px 0 30px}
+.fx-index-grid .ig-cell{position:relative;min-height:clamp(88px,9vw,124px);border-radius:var(--r);transition:background-color .3s ease,opacity .6s ease,transform .6s ease}
+.fx-index-grid .ig-cell:hover{background:color-mix(in srgb,var(--paper) 6%,transparent);z-index:3}
+.fx-index-grid.ig-armed .ig-cell{opacity:0;transform:translateY(10px)}
+.fx-index-grid.ig-armed.ig-on .ig-cell{opacity:1;transform:none}
+.fx-index-grid .ig-num{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--paper);opacity:.35;transition:opacity .25s ease;pointer-events:none}
+.fx-index-grid .ig-work:hover .ig-num,.fx-index-grid .ig-work:focus-within .ig-num{opacity:0}
+.fx-index-grid .ig-payload{position:absolute;left:12px;right:26px;top:30px;bottom:14px;display:block;transition:opacity .45s ease}
+.fx-index-grid .ig-payload:focus-visible{outline:1px solid var(--paper);outline-offset:3px;border-radius:calc(var(--r) - 6px)}
+.fx-index-grid .ig-payload.ig-fade{opacity:0}
+.fx-index-grid .ig-thumb{display:block;width:100%;height:100%;object-fit:cover;border-radius:calc(var(--r) - 6px);filter:grayscale(1);transition:filter .4s ease}
+.fx-index-grid .ig-work:hover .ig-thumb,.fx-index-grid .ig-work:focus-within .ig-thumb{filter:grayscale(0)}
+.fx-index-grid .ig-title{position:absolute;top:-21px;left:0;font-family:var(--mono);font-size:8px;letter-spacing:.08em;line-height:1.4;color:var(--paper);white-space:nowrap;opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:2}
+.fx-index-grid .ig-work:hover .ig-title,.fx-index-grid .ig-work:focus-within .ig-title{opacity:1}
+.fx-index-grid .ig-frag{position:absolute;left:12px;right:8px;top:30px;margin:0;font-family:var(--mono);font-size:9px;line-height:1.6;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.fx-index-grid .ig-fraglabel{display:block;font-size:8px;letter-spacing:.16em;opacity:.4;margin-bottom:6px}
+.fx-index-grid .ig-wordmark{position:absolute;left:12px;top:30px;margin:0;font-family:var(--sans);font-weight:700;font-size:15px;line-height:1.15;letter-spacing:.02em}
+.fx-index-grid .ig-links{position:absolute;left:12px;right:6px;top:30px;margin:0;padding:0;list-style:none;font-family:var(--mono);font-size:9px;letter-spacing:.1em;line-height:1.9}
+.fx-index-grid .ig-links a{color:var(--paper);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s ease}
+.fx-index-grid .ig-links a:hover,.fx-index-grid .ig-links a:focus-visible{border-bottom-color:var(--paper)}
+.fx-index-grid .ig-sub{display:block;font-size:7px;letter-spacing:.04em;opacity:.45;word-break:break-all;line-height:1.5;margin:1px 0 5px}
+@media (max-width:760px){
+.fx-index-grid{padding:0 14px}
+.fx-index-grid .ig-grid{grid-template-columns:repeat(4,1fr);padding:12px 0 22px}
+.fx-index-grid .ig-cell{min-height:clamp(74px,23vw,94px)}
+.fx-index-grid .ig-num{font-size:8px;top:8px;left:10px}
+.fx-index-grid .ig-payload{left:10px;right:16px;top:26px;bottom:11px}
+.fx-index-grid .ig-title{font-size:7px;top:-18px}
+.fx-index-grid .ig-frag{left:10px;top:26px;font-size:8px}
+.fx-index-grid .ig-wordmark{left:10px;top:26px;font-size:13px}
+.fx-index-grid .ig-links{left:10px;top:26px;font-size:8px;line-height:1.8}
+.fx-index-grid .ig-head{padding:16px 2px}
+.fx-index-grid .ig-foot{padding:14px 2px 22px}
+}
+@media (prefers-reduced-motion: reduce){
+.fx-index-grid .ig-cell,.fx-index-grid .ig-num,.fx-index-grid .ig-payload,.fx-index-grid .ig-thumb,.fx-index-grid .ig-title,.fx-index-grid .ig-links a{transition:none !important}
+.fx-index-grid.ig-armed .ig-cell{opacity:1;transform:none}
+}
+  </style>
+<div class="fx-index-grid">
+<header class="ig-head"><span class="ig-headlabel">The Index</span><span class="ig-headlabel">End of File</span></header>
+<div class="ig-grid">
+<div class="ig-cell"><span class="ig-num">( 01 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 02 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 03 )</span><a class="ig-payload" href="/case-studies/ivy-park" aria-label="Ivy Park by Beyoncé. Digital design, brand launch."><span class="ig-title">IVY PARK BY BEYONCÉ</span><img class="ig-thumb" src="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 04 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 05 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 06 )</span></div>
+<div class="ig-cell ig-text"><span class="ig-num">( 07 )</span><p class="ig-frag"><span class="ig-fraglabel">News</span>Awwwards Honors, 2026</p></div>
+<div class="ig-cell"><span class="ig-num">( 08 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 09 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 10 )</span><a class="ig-payload" href="/case-studies/arc" aria-label="A.R.C. App and brand development."><span class="ig-title">A.R.C.</span><img class="ig-thumb" src="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 11 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 12 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 13 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 14 )</span><a class="ig-payload" href="/case-studies/big-bend" aria-label="West Texas. Landscape photography."><span class="ig-title">WEST TEXAS</span><img class="ig-thumb" src="/case-studies/big-bend/hero.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 15 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 16 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 17 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 18 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 19 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 20 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 21 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 22 )</span><a class="ig-payload" href="/case-studies/robert-rodriguez" aria-label="Robert Rodriguez x Neiman's. Creative direction."><span class="ig-title">ROBERT RODRIGUEZ X NEIMAN'S</span><img class="ig-thumb" src="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 23 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 24 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 25 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 26 )</span><a class="ig-payload" href="/case-studies/hill-country-kitchen" aria-label="Hill Country Kitchen. Interior design."><span class="ig-title">HILL COUNTRY KITCHEN</span><img class="ig-thumb" src="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 27 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 28 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 29 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 30 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 31 )</span><a class="ig-payload" href="/case-studies/nordstrom-personalization" aria-label="Nordstrom personalization. Design system."><span class="ig-title">NORDSTROM PERSONALIZATION</span><img class="ig-thumb" src="/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 32 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 33 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 34 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 35 )</span></div>
+<div class="ig-cell ig-mark"><span class="ig-num">( 36 )</span><p class="ig-wordmark">RECKON<br>HOUSE<br>STAPLES</p></div>
+<div class="ig-cell"><span class="ig-num">( 37 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 38 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 39 )</span><a class="ig-payload" href="/case-studies/jeffrey-ecommerce" aria-label="Jeffrey NYC. Ecommerce, web design."><span class="ig-title">JEFFREY NYC</span><img class="ig-thumb" src="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 40 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 41 )</span></div>
+<div class="ig-cell ig-text"><span class="ig-num">( 42 )</span><p class="ig-frag"><span class="ig-fraglabel">News</span>Faux Reel released as an open repo</p></div>
+<div class="ig-cell"><span class="ig-num">( 43 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 44 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 45 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 46 )</span><a class="ig-payload" href="/case-studies/capitan-boot-co" aria-label="Capitan Boot Co. Branding, design."><span class="ig-title">CAPITAN BOOT CO.</span><img class="ig-thumb" src="/case-studies/hp/rhs-capitan-boot-co-branding.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 47 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 48 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 49 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 50 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 51 )</span><a class="ig-payload" href="/case-studies/black-white-type" aria-label="Black and white type. Custom typography."><span class="ig-title">BLACK &amp; WHITE TYPE</span><img class="ig-thumb" src="/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 52 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 53 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 54 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 55 )</span><a class="ig-payload" href="/case-studies/sally" aria-label="Sally Marketing OS. Product design, engineering."><span class="ig-title">SALLY MARKETING OS</span><img class="ig-thumb" src="/case-studies/sally-os/heroes/sally-os-platform-hero.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 56 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 57 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 58 )</span><a class="ig-payload" href="/case-studies/loved-by-nordstrom" aria-label="Loved by Nordstrom. Brand campaign."><span class="ig-title">LOVED BY NORDSTROM</span><img class="ig-thumb" src="/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 59 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 60 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 61 )</span></div>
+<div class="ig-cell ig-text"><span class="ig-num">( 62 )</span><p class="ig-frag"><span class="ig-fraglabel">News</span>28 case studies online</p></div>
+<div class="ig-cell"><span class="ig-num">( 63 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 64 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 65 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 66 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 67 )</span></div>
+<div class="ig-cell ig-work"><span class="ig-num">( 68 )</span><a class="ig-payload" href="/case-studies/sizzle" aria-label="Faux Reel. Product design, motion."><span class="ig-title">FAUX REEL</span><img class="ig-thumb" src="/images/thumbnails/sizzle.jpg" alt="" loading="lazy"></a></div>
+<div class="ig-cell"><span class="ig-num">( 69 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 70 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 71 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 72 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 73 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 74 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 75 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 76 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 77 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 78 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 79 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 80 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 81 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 82 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 83 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 84 )</span></div>
+<div class="ig-cell ig-text ig-contact"><span class="ig-num">( 85 )</span><ul class="ig-links"><li><a href="mailto:hello@reckon.house">EMAIL<span class="ig-sub">HELLO@RECKON.HOUSE</span></a></li><li><a href="#">LINKEDIN</a></li><li><a href="#">INSTAGRAM</a></li></ul></div>
+<div class="ig-cell"><span class="ig-num">( 86 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 87 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 88 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 89 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 90 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 91 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 92 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 93 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 94 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 95 )</span></div>
+<div class="ig-cell"><span class="ig-num">( 96 )</span></div>
+</div>
+<footer class="ig-foot"><span class="ig-footlabel">© 2026 Reckon House</span><span class="ig-footlabel">Set in Helvetica and Menlo</span></footer>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('.fx-index-grid');
+  if (!root) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cells = Array.prototype.slice.call(root.querySelectorAll('.ig-cell'));
+  if (!reduce && 'IntersectionObserver' in window) {
+    root.classList.add('ig-armed');
+    cells.forEach(function (c, i) {
+      c.style.transitionDelay = ((i % 8) * 35 + Math.floor(i / 8) * 25) + 'ms';
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          root.classList.add('ig-on');
+          io.disconnect();
+          setTimeout(function () {
+            cells.forEach(function (c) { c.style.transitionDelay = ''; });
+          }, 2400);
+        }
+      });
+    }, { threshold: 0.1 });
+    io.observe(root);
+  }
+  if (reduce) return;
+  var seen = true;
+  if ('IntersectionObserver' in window) {
+    seen = false;
+    var vio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { seen = e.isIntersecting; });
+    }, { threshold: 0.05 });
+    vio.observe(root);
+  }
+  var busy = false;
+  setInterval(function () {
+    if (!seen || busy || document.hidden) return;
+    var filled = cells.filter(function (c) {
+      return c.classList.contains('ig-work') && c.querySelector('.ig-payload');
+    });
+    var empty = cells.filter(function (c) {
+      return !c.querySelector('.ig-payload') && !c.querySelector('.ig-frag') && !c.querySelector('.ig-wordmark') && !c.querySelector('.ig-links');
+    });
+    if (!filled.length || !empty.length) return;
+    var from = filled[Math.floor(Math.random() * filled.length)];
+    var to = empty[Math.floor(Math.random() * empty.length)];
+    var pay = from.querySelector('.ig-payload');
+    busy = true;
+    pay.classList.add('ig-fade');
+    setTimeout(function () {
+      from.classList.remove('ig-work');
+      to.classList.add('ig-work');
+      to.appendChild(pay);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          pay.classList.remove('ig-fade');
+          busy = false;
+        });
+      });
+    }, 480);
+  }, 8000);
+})();
+</script>
+</section>
+
+<section id="x-hybrid">
+  <div class="lab-label"><span class="t">F · Index × Spines</span><span>fx-hybrid</span></div>
+  <div class="lab-note">The A and E hybrid. Only the work is numbered, the rest of the field stays blank. Thumbnails run at mixed sizes, each with its title set vertically beside it like a spine. The wordmark climbs the left edge. No relocation, no motion beyond a one-time fade-up.</div>
+  <style>
+.fx-hybrid { background: var(--ink); color: var(--paper); font-family: var(--sans);
+  position: relative; padding: 0 24px 0 64px; border-radius: var(--r) var(--r) 0 0;
+  overflow: hidden; }
+.fx-hybrid .hy-head { display: flex; justify-content: space-between; align-items: baseline;
+  padding: 22px 4px; border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; }
+.fx-hybrid .hy-head span { opacity: 0.55; }
+
+/* The wordmark climbs the left edge, E's move. rotate(180deg) on top of
+   vertical-rl flips it to read bottom-up, the way a book spine faces you
+   when the shelf is on your right. */
+.fx-hybrid .hy-mark { position: absolute; left: 22px; bottom: 96px;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+  font-weight: 700; font-size: 13px; letter-spacing: 0.22em;
+  text-transform: uppercase; white-space: nowrap; opacity: 0.9; }
+
+/* The field. Sparse by placement: every cell is positioned by hand and the
+   grid never packs, so the emptiness is composed, not leftover. */
+.fx-hybrid .hy-grid { display: grid; grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: clamp(78px, 9.5vw, 122px); gap: 20px;
+  padding: 56px 0 72px; }
+.fx-hybrid .hy-cell { position: relative; display: block; }
+.fx-hybrid .hy-img { position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: calc(var(--r) - 6px);
+  filter: grayscale(1); transition: filter 0.4s ease; }
+.fx-hybrid .hy-cell:hover .hy-img,
+.fx-hybrid .hy-cell:focus-visible .hy-img { filter: grayscale(0); }
+.fx-hybrid .hy-cell:focus-visible { outline: 1px solid var(--paper); outline-offset: 4px;
+  border-radius: calc(var(--r) - 6px); }
+
+/* The annotations live in the blank field around each thumbnail: number
+   horizontal above, title vertical beside. Only the work gets ink. */
+.fx-hybrid .hy-num { position: absolute; top: -17px; left: 1px;
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.12em;
+  opacity: 0.4; pointer-events: none; }
+.fx-hybrid .hy-spine { position: absolute; top: 1px; right: -15px;
+  writing-mode: vertical-rl;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+  text-transform: uppercase; white-space: nowrap;
+  opacity: 0.45; transition: opacity 0.25s ease; pointer-events: none; }
+.fx-hybrid .hy-cell:hover .hy-spine,
+.fx-hybrid .hy-cell:focus-visible .hy-spine { opacity: 1; }
+
+/* one-time fade-up on arrival; order carried on --d */
+.fx-hybrid.hy-armed .hy-cell { opacity: 0; transform: translateY(12px); }
+.fx-hybrid.hy-armed.hy-on .hy-cell { opacity: 1; transform: none;
+  transition: opacity 0.7s ease var(--d, 0ms), transform 0.7s ease var(--d, 0ms); }
+
+.fx-hybrid .hy-foot { display: flex; justify-content: space-between; align-items: baseline;
+  gap: 24px; flex-wrap: wrap;
+  padding: 18px 4px 30px; border-top: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; }
+.fx-hybrid .hy-foot a { color: var(--paper); text-decoration: none;
+  border-bottom: 1px solid transparent; }
+.fx-hybrid .hy-foot a:hover { border-bottom-color: var(--paper); }
+.fx-hybrid .hy-contact { display: flex; gap: 22px; }
+.fx-hybrid .hy-news { display: flex; gap: 22px; opacity: 0.5; }
+
+@media (max-width: 760px) {
+  .fx-hybrid { padding: 0 16px 0 44px; }
+  .fx-hybrid .hy-mark { left: 12px; bottom: 72px; font-size: 11px; }
+  /* Hand placement is a desktop composition; on a phone the same cells pack
+     into four columns and the blank field compresses instead of towering. */
+  .fx-hybrid .hy-grid { grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: clamp(64px, 18vw, 92px); gap: 16px; padding: 40px 0 52px;
+    grid-auto-flow: dense; }
+  .fx-hybrid .hy-cell { grid-area: auto / auto / span var(--rs, 1) / span var(--cs, 1) !important; }
+  .fx-hybrid .hy-spine { font-size: 7px; right: -13px; }
+  .fx-hybrid .hy-num { font-size: 7.5px; top: -15px; }
+  .fx-hybrid .hy-news { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-hybrid .hy-img, .fx-hybrid .hy-spine { transition: none !important; }
+  .fx-hybrid.hy-armed .hy-cell { opacity: 1 !important; transform: none !important;
+    transition: none !important; }
+}
+  </style>
+<div class="fx-hybrid">
+  <header class="hy-head"><span>Selected Work</span><span>12 of 28</span></header>
+  <span class="hy-mark" aria-hidden="true">Reckon House Staples</span>
+  <div class="hy-grid">
+    <a class="hy-cell" style="grid-area: 1 / 2 / span 2 / span 2; --rs:2; --cs:2;" href="/case-studies/ivy-park">
+      <span class="hy-num">( 01 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg" alt="Ivy Park by Beyoncé" loading="lazy">
+      <span class="hy-spine">Ivy Park by Beyoncé</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 1 / 6 / span 1 / span 1;" href="/case-studies/arc">
+      <span class="hy-num">( 02 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg" alt="A.R.C." loading="lazy">
+      <span class="hy-spine">A.R.C.</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 2 / 7 / span 2 / span 1; --rs:2;" href="/case-studies/robert-rodriguez">
+      <span class="hy-num">( 03 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg" alt="Robert Rodriguez x Neiman's" loading="lazy">
+      <span class="hy-spine">Robert Rodriguez x Neiman's</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 3 / 4 / span 1 / span 2; --cs:2;" href="/case-studies/hill-country-kitchen">
+      <span class="hy-num">( 04 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg" alt="Hill Country Kitchen" loading="lazy">
+      <span class="hy-spine">Hill Country Kitchen</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 4 / 1 / span 1 / span 1;" href="/case-studies/sally">
+      <span class="hy-num">( 05 )</span>
+      <img class="hy-img" src="/case-studies/sally-os/heroes/sally-os-platform-hero.jpg" alt="Sally Marketing OS" loading="lazy">
+      <span class="hy-spine">Sally Marketing OS</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 4 / 8 / span 1 / span 1;" href="/case-studies/jeffrey-ecommerce">
+      <span class="hy-num">( 06 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg" alt="Jeffrey NYC" loading="lazy">
+      <span class="hy-spine">Jeffrey NYC</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 5 / 3 / span 2 / span 1; --rs:2;" href="/case-studies/black-white-type">
+      <span class="hy-num">( 07 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg" alt="Black and white type" loading="lazy">
+      <span class="hy-spine">Black &amp; White Type</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 5 / 5 / span 1 / span 2; --cs:2;" href="/case-studies/big-bend">
+      <span class="hy-num">( 08 )</span>
+      <img class="hy-img" src="/case-studies/big-bend/hero.jpg" alt="West Texas" loading="lazy">
+      <span class="hy-spine">West Texas</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 6 / 2 / span 1 / span 1;" href="/case-studies/capitan-boot-co">
+      <span class="hy-num">( 09 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-capitan-boot-co-branding.jpg" alt="Capitan Boot Co." loading="lazy">
+      <span class="hy-spine">Capitan Boot Co.</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 7 / 6 / span 1 / span 2; --cs:2;" href="/case-studies/neiman-marcus">
+      <span class="hy-num">( 10 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg" alt="Neiman Marcus" loading="lazy">
+      <span class="hy-spine">Neiman Marcus</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 7 / 4 / span 1 / span 1;" href="/case-studies/fairview-suite">
+      <span class="hy-num">( 11 )</span>
+      <img class="hy-img" src="/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg" alt="The Fairview Suite" loading="lazy">
+      <span class="hy-spine">The Fairview Suite</span>
+    </a>
+    <a class="hy-cell" style="grid-area: 8 / 1 / span 1 / span 1;" href="/case-studies/sizzle">
+      <span class="hy-num">( 12 )</span>
+      <img class="hy-img" src="/images/thumbnails/sizzle.jpg" alt="Faux Reel" loading="lazy">
+      <span class="hy-spine">Faux Reel</span>
+    </a>
+  </div>
+  <footer class="hy-foot">
+    <nav class="hy-contact">
+      <a href="mailto:hello@reckon.house">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+    </nav>
+    <div class="hy-news"><span>Awwwards Honors, 2026</span><span>Faux Reel released as an open repo</span></div>
+    <a class="hy-top" href="#top">Top ↑</a>
+  </footer>
+</div>
+<script>
+(() => {
+  const root = document.querySelector(".fx-hybrid");
+  if (!root) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cells = root.querySelectorAll(".hy-cell");
+  cells.forEach((c, i) => c.style.setProperty("--d", (i * 70) + "ms"));
+  root.classList.add("hy-armed");
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (e.isIntersecting) { root.classList.add("hy-on"); io.disconnect(); }
+    });
+  }, { threshold: 0.12 });
+  io.observe(root);
+})();
+</script>
+</section>
+
+<section id="x-ledger">
+  <div class="lab-label"><span class="t">B · The Ledger</span><span>fx-ledger</span></div>
+  <div class="lab-note">Info table up top, then one strip per discipline with a rotated vertical label. Strips scroll sideways. A one-page CV table closes the study: a four-column mono info ledger (contact, services, about, last update with the three news lines) over three discipline rows, each with a rotated vertical-rl mono label and a hidden-scrollbar thumbnail strip (8 digital, 8 creative, 7 interiors) that drag-scrolls with the mouse and swipes natively on touch. Thumbs sit grayscale and bloom to color on hover, with var(--r) as the only curve on the page. Knobs: card width (168px desktop, 132px mobile), the 0.14 hairline alpha, and the grayscale hover can be dropped for always-color strips.</div>
+  <style>
+.fx-ledger{--hair:rgba(0,0,0,0.14);background:var(--paper);color:var(--ink);font-family:var(--sans);padding:96px 48px 40px;}
+.fx-ledger .l-wrap{max-width:1400px;margin:0 auto;}
+.fx-ledger a{color:inherit;text-decoration:none;}
+
+/* ---- info table ---- */
+.fx-ledger .l-info{display:grid;grid-template-columns:1.1fr 0.9fr 1.2fr 1fr;gap:0 48px;border-top:1px solid var(--ink);padding-top:14px;}
+.fx-ledger .l-h{font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.45);margin:0 0 10px;}
+.fx-ledger .l-list{list-style:none;margin:0;padding:0;}
+.fx-ledger .l-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--hair);font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;}
+.fx-ledger .l-k{color:rgba(0,0,0,0.45);}
+.fx-ledger .l-v{white-space:nowrap;}
+.fx-ledger .l-list a{border-bottom:1px solid transparent;transition:border-color 0.2s ease;}
+.fx-ledger .l-list a:hover{border-bottom-color:var(--ink);}
+.fx-ledger .l-about{font-family:var(--mono);font-size:10px;line-height:1.7;letter-spacing:0.06em;text-transform:uppercase;padding:7px 0;border-bottom:1px solid var(--hair);margin:0;}
+.fx-ledger .l-date{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:7px 0;border-bottom:1px solid var(--hair);}
+
+/* ---- ledger rows ---- */
+.fx-ledger .l-rows{margin-top:56px;}
+.fx-ledger .l-row{display:grid;grid-template-columns:56px minmax(0,1fr);border-top:1px solid var(--ink);}
+.fx-ledger .l-row + .l-row{border-top:1px solid var(--hair);}
+.fx-ledger .l-side{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:20px 0 28px;border-right:1px solid var(--hair);}
+.fx-ledger .l-num{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:rgba(0,0,0,0.45);}
+.fx-ledger .l-vert{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;flex:1;}
+.fx-ledger .l-count{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:rgba(0,0,0,0.45);}
+.fx-ledger .l-strip{display:flex;gap:20px;overflow-x:auto;padding:20px 4px 28px 24px;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;}
+.fx-ledger .l-strip::-webkit-scrollbar{display:none;}
+.fx-ledger .l-strip.l-drag{cursor:grabbing;}
+.fx-ledger .l-card{flex:none;width:168px;}
+.fx-ledger .l-fig{aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:rgba(0,0,0,0.05);}
+.fx-ledger .l-fig img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter 0.35s ease,transform 0.35s ease;}
+.fx-ledger .l-card:hover .l-fig img{filter:grayscale(0);transform:scale(1.03);}
+.fx-ledger .l-cap{margin-top:9px;font-family:var(--mono);font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;line-height:1.6;}
+.fx-ledger .l-t{display:block;}
+.fx-ledger .l-c{display:block;color:rgba(0,0,0,0.45);}
+
+/* ---- foot ---- */
+.fx-ledger .l-foot{margin-top:32px;border-top:1px solid var(--ink);padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;}
+.fx-ledger .l-mark{font-size:15px;font-weight:700;letter-spacing:0.04em;}
+.fx-ledger .l-colo{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(0,0,0,0.45);text-align:right;}
+
+/* ---- mobile ---- */
+@media (max-width:760px){
+  .fx-ledger{padding:64px 20px 28px;}
+  .fx-ledger .l-info{grid-template-columns:1fr 1fr;gap:24px 24px;}
+  .fx-ledger .l-row{grid-template-columns:44px minmax(0,1fr);}
+  .fx-ledger .l-strip{gap:14px;padding-left:16px;}
+  .fx-ledger .l-card{width:132px;}
+  .fx-ledger .l-foot{flex-direction:column;align-items:flex-start;gap:8px;}
+  .fx-ledger .l-colo{text-align:left;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fx-ledger *{transition:none !important;animation:none !important;scroll-behavior:auto !important;}
+}
+  </style>
+<div class="fx-ledger">
+  <div class="l-wrap">
+    <div class="l-info">
+      <div class="l-col">
+        <h3 class="l-h">Contact</h3>
+        <ul class="l-list">
+          <li><span class="l-k">Email</span><a class="l-v" href="mailto:hello@reckon.house">hello@reckon.house</a></li>
+          <li><span class="l-k">LinkedIn</span><a class="l-v" href="#">&#8599;</a></li>
+          <li><span class="l-k">Instagram</span><a class="l-v" href="#">&#8599;</a></li>
+        </ul>
+      </div>
+      <div class="l-col">
+        <h3 class="l-h">Services</h3>
+        <ul class="l-list">
+          <li><span class="l-v">Art Direction</span><span class="l-k">01</span></li>
+          <li><span class="l-v">Brand Systems</span><span class="l-k">02</span></li>
+          <li><span class="l-v">Digital Design</span><span class="l-k">03</span></li>
+          <li><span class="l-v">Interiors</span><span class="l-k">04</span></li>
+        </ul>
+      </div>
+      <div class="l-col">
+        <h3 class="l-h">About</h3>
+        <p class="l-about">Independent design practice.</p>
+        <p class="l-about">Work across screens, brands, and rooms.</p>
+      </div>
+      <div class="l-col">
+        <h3 class="l-h">Last Update</h3>
+        <div class="l-date">07.2026</div>
+        <ul class="l-list">
+          <li><span class="l-v">Awwwards Honors, 2026</span></li>
+          <li><span class="l-v">Faux Reel released as an open repo</span></li>
+          <li><span class="l-v">28 case studies online</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="l-rows" aria-label="Case study index">
+      <section class="l-row">
+        <div class="l-side"><span class="l-num">01</span><span class="l-vert">Digital</span><span class="l-count">8</span></div>
+        <div class="l-strip">
+          <a class="l-card" href="/case-studies/ivy-park"><div class="l-fig"><img src="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg" alt="Ivy Park by Beyonc&#233;, digital design and brand launch" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Ivy Park by Beyonc&#233;</span><span class="l-c">Digital design, brand launch</span></div></a>
+          <a class="l-card" href="/case-studies/sally"><div class="l-fig"><img src="/case-studies/sally-os/heroes/sally-os-platform-hero.jpg" alt="Sally Marketing OS, product design and engineering" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Sally Marketing OS</span><span class="l-c">Product design, engineering</span></div></a>
+          <a class="l-card" href="/case-studies/arc"><div class="l-fig"><img src="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg" alt="A.R.C., app and brand development" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">A.R.C.</span><span class="l-c">App &amp; brand development</span></div></a>
+          <a class="l-card" href="/case-studies/nordstrom-personalization"><div class="l-fig"><img src="/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg" alt="Nordstrom personalization design system" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Nordstrom personalization</span><span class="l-c">Design system</span></div></a>
+          <a class="l-card" href="/case-studies/jeffrey-ecommerce"><div class="l-fig"><img src="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg" alt="Jeffrey NYC ecommerce and web design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Jeffrey NYC</span><span class="l-c">Ecommerce, web design</span></div></a>
+          <a class="l-card" href="/case-studies/dsc"><div class="l-fig"><img src="/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg" alt="Dallas Sport Collective website and custom app" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Dallas Sport Collective</span><span class="l-c">Website, custom app</span></div></a>
+          <a class="l-card" href="/case-studies/nordstrom-beauty"><div class="l-fig"><img src="/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg" alt="Nordstrom beauty digital design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Nordstrom beauty</span><span class="l-c">Digital design</span></div></a>
+          <a class="l-card" href="/case-studies/sizzle"><div class="l-fig"><img src="/images/thumbnails/sizzle.jpg" alt="Faux Reel, product design and motion" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Faux Reel</span><span class="l-c">Product design, motion</span></div></a>
+        </div>
+      </section>
+      <section class="l-row">
+        <div class="l-side"><span class="l-num">02</span><span class="l-vert">Creative</span><span class="l-count">8</span></div>
+        <div class="l-strip">
+          <a class="l-card" href="/case-studies/robert-rodriguez"><div class="l-fig"><img src="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg" alt="Robert Rodriguez x Neiman's, creative direction" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Robert Rodriguez x Neiman's</span><span class="l-c">Creative direction</span></div></a>
+          <a class="l-card" href="/case-studies/neiman-marcus"><div class="l-fig"><img src="/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg" alt="Neiman Marcus editorial direction" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Neiman Marcus</span><span class="l-c">Editorial direction</span></div></a>
+          <a class="l-card" href="/case-studies/capitan-boot-co"><div class="l-fig"><img src="/case-studies/hp/rhs-capitan-boot-co-branding.jpg" alt="Capitan Boot Co. branding and design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Capitan Boot Co.</span><span class="l-c">Branding, design</span></div></a>
+          <a class="l-card" href="/case-studies/jeffrey-spring"><div class="l-fig"><img src="/case-studies/hp/rhs-jeffrey-spring-campaign.jpg" alt="Jeffrey Spring Campaign creative direction" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Jeffrey Spring Campaign</span><span class="l-c">Creative direction</span></div></a>
+          <a class="l-card" href="/case-studies/loved-by-nordstrom"><div class="l-fig"><img src="/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg" alt="Loved by Nordstrom brand campaign" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Loved by Nordstrom</span><span class="l-c">Brand campaign</span></div></a>
+          <a class="l-card" href="/case-studies/you-by-sally"><div class="l-fig"><img src="/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg" alt="You By Sally brand campaign" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">You By Sally</span><span class="l-c">Brand campaign</span></div></a>
+          <a class="l-card" href="/case-studies/black-white-type"><div class="l-fig"><img src="/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg" alt="Black and white custom typography" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Black &amp; white type</span><span class="l-c">Custom typography</span></div></a>
+          <a class="l-card" href="/case-studies/j-christianson"><div class="l-fig"><img src="/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg" alt="J. Christianson brand development" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">J. Christianson</span><span class="l-c">Brand development</span></div></a>
+        </div>
+      </section>
+      <section class="l-row">
+        <div class="l-side"><span class="l-num">03</span><span class="l-vert">Interiors</span><span class="l-count">7</span></div>
+        <div class="l-strip">
+          <a class="l-card" href="/case-studies/hill-country-kitchen"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg" alt="Hill Country Kitchen interior design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Hill Country Kitchen</span><span class="l-c">Interior design</span></div></a>
+          <a class="l-card" href="/case-studies/hill-country-bath"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg" alt="Hill Country Bath interior design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Hill Country Bath</span><span class="l-c">Interior design</span></div></a>
+          <a class="l-card" href="/case-studies/hill-country-living"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-livingroom-interior.jpg" alt="Hill Country Living interior design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Hill Country Living</span><span class="l-c">Interior design</span></div></a>
+          <a class="l-card" href="/case-studies/fairview-sitting"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg" alt="The Fairview interior design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">The Fairview</span><span class="l-c">Interior design</span></div></a>
+          <a class="l-card" href="/case-studies/fairview-suite"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg" alt="The Fairview Suite interior design" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">The Fairview Suite</span><span class="l-c">Interior design</span></div></a>
+          <a class="l-card" href="/case-studies/floor-and-decor"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg" alt="Floor and Decor interiors feature" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Floor &amp; Decor</span><span class="l-c">Interiors feature</span></div></a>
+          <a class="l-card" href="/case-studies/chalet"><div class="l-fig"><img src="/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg" alt="Mountain View interior design and remodel" loading="lazy" draggable="false"></div><div class="l-cap"><span class="l-t">Mountain View</span><span class="l-c">Interior design, remodel</span></div></a>
+        </div>
+      </section>
+    </nav>
+
+    <footer class="l-foot">
+      <span class="l-mark">RECKON HOUSE STAPLES</span>
+      <span class="l-colo">Set in Helvetica Neue &amp; Menlo / Black on white / &#169; 2026</span>
+    </footer>
+  </div>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('.fx-ledger');
+  if (!root) return;
+  var strips = root.querySelectorAll('.l-strip');
+  Array.prototype.forEach.call(strips, function (strip) {
+    var down = false, moved = false, startX = 0, startLeft = 0;
+    strip.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      down = true; moved = false;
+      startX = e.clientX; startLeft = strip.scrollLeft;
+    });
+    strip.addEventListener('pointermove', function (e) {
+      if (!down || e.pointerType !== 'mouse') return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4 && !moved) {
+        moved = true;
+        strip.classList.add('l-drag');
+        try { strip.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      if (moved) strip.scrollLeft = startLeft - dx;
+    });
+    function end() { down = false; strip.classList.remove('l-drag'); }
+    strip.addEventListener('pointerup', end);
+    strip.addEventListener('pointercancel', end);
+    strip.addEventListener('click', function (e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+    }, true);
+  });
+})();
+</script>
+</section>
+
+<section id="x-tickers">
+  <div class="lab-label"><span class="t">C · The Tickers</span><span>fx-tickers</span></div>
+  <div class="lab-note">Stacked marquees, alternating direction and fill. Hover pauses a row; a thumbnail chip follows the cursor. Four ink-ground marquee rows carry all 28 case studies at clamp(48px, 9vw, 130px), alternating direction and filled versus outlined type, each drifting at its own speed (84s to 110s) so the rows fall out of phase. Hovering a row pauses it and dims everything but the hovered title while a 160px thumbnail chip with radius var(--r) trails the cursor; below sit a thin mono news marquee and a flat contact row. Knobs: per-row --t-dur custom properties for speed, the separator glyph in .t-sep, and chip size in .t-chip plus the matching w/h constants in moveChip.</div>
+  <style>
+.fx-tickers{background:var(--ink,#000);color:var(--paper,#fff);font-family:var(--sans,"Helvetica Neue",Helvetica,Arial,sans-serif);overflow:hidden;position:relative}
+.fx-tickers .t-head{display:flex;justify-content:space-between;align-items:baseline;padding:20px 40px 18px;font-family:var(--mono,Menlo,monospace);font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.65;border-bottom:1px solid rgba(255,255,255,.14)}
+.fx-tickers .t-rows{padding:clamp(28px,5vw,64px) 0}
+.fx-tickers .t-row{overflow:hidden;position:relative;padding-block:clamp(4px,.8vw,10px)}
+.fx-tickers .t-track{display:flex;width:max-content;will-change:transform;animation:fxTickersScroll var(--t-dur,90s) linear infinite}
+.fx-tickers .t-row-rev .t-track{animation-direction:reverse}
+.fx-tickers .t-row:hover .t-track{animation-play-state:paused}
+.fx-tickers .t-half{display:flex;align-items:center;flex:none}
+.fx-tickers .t-item{flex:none;color:var(--paper,#fff);text-decoration:none;font-size:clamp(48px,9vw,130px);line-height:1.02;font-weight:700;letter-spacing:-.03em;text-transform:uppercase;white-space:nowrap;transition:opacity .25s ease}
+.fx-tickers .t-row:hover .t-item{opacity:.2}
+.fx-tickers .t-row:hover .t-item:hover{opacity:1}
+.fx-tickers .t-item:focus-visible{outline:1px solid var(--paper,#fff);outline-offset:8px}
+@supports (-webkit-text-stroke:1px #fff){
+.fx-tickers .t-row-line .t-item{color:transparent;-webkit-text-stroke:1px var(--paper,#fff)}
+}
+.fx-tickers .t-sep{flex:none;font-family:var(--mono,Menlo,monospace);font-size:clamp(9px,1.1vw,14px);opacity:.55;margin-inline:clamp(20px,3vw,52px)}
+.fx-tickers .t-row-1{--t-dur:84s}
+.fx-tickers .t-row-2{--t-dur:102s}
+.fx-tickers .t-row-3{--t-dur:92s}
+.fx-tickers .t-row-4{--t-dur:110s}
+.fx-tickers .t-news{border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14);overflow:hidden;padding-block:11px}
+.fx-tickers .t-ntrack{display:flex;width:max-content;animation:fxTickersScroll 48s linear infinite}
+.fx-tickers .t-news:hover .t-ntrack{animation-play-state:paused}
+.fx-tickers .t-nhalf{display:flex;align-items:center;flex:none}
+.fx-tickers .t-nitem{font-family:var(--mono,Menlo,monospace);font-size:11px;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;opacity:.8}
+.fx-tickers .t-nsep{font-family:var(--mono,Menlo,monospace);font-size:11px;opacity:.4;margin-inline:34px}
+.fx-tickers .t-base{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:26px 40px 30px}
+.fx-tickers .t-mark{font-weight:700;font-size:12px;letter-spacing:.16em}
+.fx-tickers .t-contact{display:flex;align-items:center;gap:30px}
+.fx-tickers .t-clink{color:var(--paper,#fff);text-decoration:none;font-family:var(--mono,Menlo,monospace);font-size:11px;letter-spacing:.14em;opacity:.85;transition:opacity .2s ease}
+.fx-tickers .t-clink:hover{opacity:1;text-decoration:underline;text-underline-offset:5px}
+.fx-tickers .t-ck{letter-spacing:.2em;opacity:.5;margin-right:8px}
+.fx-tickers .t-top{background:none;border:1px solid rgba(255,255,255,.3);border-radius:var(--r,16px);padding:10px 16px;color:var(--paper,#fff);font-family:var(--mono,Menlo,monospace);font-size:10px;letter-spacing:.2em;cursor:pointer;transition:background .2s ease,color .2s ease}
+.fx-tickers .t-top:hover{background:var(--paper,#fff);color:var(--ink,#000)}
+.fx-tickers .t-chip{position:fixed;left:0;top:0;width:160px;aspect-ratio:16/11;border-radius:var(--r,16px);background-size:cover;background-position:center;background-color:rgba(255,255,255,.06);opacity:0;transform:translate3d(-300px,-300px,0);pointer-events:none;z-index:60;box-shadow:0 12px 40px rgba(0,0,0,.5);transition:transform .16s ease-out,opacity .2s ease}
+.fx-tickers .t-chip-on{opacity:1}
+@keyframes fxTickersScroll{to{transform:translateX(-50%)}}
+@media (max-width:760px){
+.fx-tickers .t-head{padding:16px 20px 14px}
+.fx-tickers .t-hr{display:none}
+.fx-tickers .t-rows{padding:28px 0}
+.fx-tickers .t-sep{margin-inline:18px}
+.fx-tickers .t-nsep{margin-inline:22px}
+.fx-tickers .t-base{flex-direction:column;align-items:flex-start;gap:18px;padding:22px 20px 26px}
+.fx-tickers .t-contact{gap:22px;flex-wrap:wrap}
+.fx-tickers .t-chip{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+.fx-tickers .t-track,.fx-tickers .t-ntrack{animation:none}
+.fx-tickers .t-item,.fx-tickers .t-chip,.fx-tickers .t-clink,.fx-tickers .t-top{transition:none}
+}
+  </style>
+<div class="fx-tickers">
+  <div class="t-head">
+    <span class="t-hl">INDEX / ALL WORK</span>
+    <span class="t-hr">HOVER TO PREVIEW</span>
+  </div>
+  <div class="t-rows">
+    <div class="t-row t-row-1">
+      <div class="t-track">
+        <div class="t-half">
+          <a class="t-item" href="/case-studies/ivy-park" data-img="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg">Ivy Park by Beyoncé</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/arc" data-img="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg">A.R.C.</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/hill-country-kitchen" data-img="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg">Hill Country Kitchen</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/robert-rodriguez" data-img="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg">Robert Rodriguez x Neiman's</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/nordstrom-personalization" data-img="/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg">Nordstrom personalization</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/jeffrey-ecommerce" data-img="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg">Jeffrey NYC</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/capitan-boot-co" data-img="/case-studies/hp/rhs-capitan-boot-co-branding.jpg">Capitan Boot Co.</a><span class="t-sep" aria-hidden="true">●</span>
+        </div>
+        <div class="t-half" aria-hidden="true">
+          <a class="t-item" tabindex="-1" href="/case-studies/ivy-park" data-img="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg">Ivy Park by Beyoncé</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/arc" data-img="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg">A.R.C.</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/hill-country-kitchen" data-img="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg">Hill Country Kitchen</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/robert-rodriguez" data-img="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg">Robert Rodriguez x Neiman's</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/nordstrom-personalization" data-img="/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg">Nordstrom personalization</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/jeffrey-ecommerce" data-img="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg">Jeffrey NYC</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/capitan-boot-co" data-img="/case-studies/hp/rhs-capitan-boot-co-branding.jpg">Capitan Boot Co.</a><span class="t-sep">●</span>
+        </div>
+      </div>
+    </div>
+    <div class="t-row t-row-2 t-row-rev t-row-line">
+      <div class="t-track">
+        <div class="t-half">
+          <a class="t-item" href="/case-studies/jeffrey-spring" data-img="/case-studies/hp/rhs-jeffrey-spring-campaign.jpg">Jeffrey Spring Campaign</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/hill-country-bath" data-img="/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg">Hill Country Bath</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/nordstrom-beauty" data-img="/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg">Nordstrom beauty</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/hill-country-oak" data-img="/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg">Hill Country Oakworks</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/cosmo-prof" data-img="/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg">Cosmo Prof</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/dsc" data-img="/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg">Dallas Sport Collective</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/black-white-type" data-img="/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg">Black &amp; white type</a><span class="t-sep" aria-hidden="true">●</span>
+        </div>
+        <div class="t-half" aria-hidden="true">
+          <a class="t-item" tabindex="-1" href="/case-studies/jeffrey-spring" data-img="/case-studies/hp/rhs-jeffrey-spring-campaign.jpg">Jeffrey Spring Campaign</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/hill-country-bath" data-img="/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg">Hill Country Bath</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/nordstrom-beauty" data-img="/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg">Nordstrom beauty</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/hill-country-oak" data-img="/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg">Hill Country Oakworks</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/cosmo-prof" data-img="/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg">Cosmo Prof</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/dsc" data-img="/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg">Dallas Sport Collective</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/black-white-type" data-img="/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg">Black &amp; white type</a><span class="t-sep">●</span>
+        </div>
+      </div>
+    </div>
+    <div class="t-row t-row-3">
+      <div class="t-track">
+        <div class="t-half">
+          <a class="t-item" href="/case-studies/hill-country-living" data-img="/case-studies/hp/rhs-interior-design-livingroom-interior.jpg">Hill Country Living</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/j-christianson" data-img="/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg">J. Christianson</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/amber-shockey-co" data-img="/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg">Amber Shockey &amp; Co.</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/you-by-sally" data-img="/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg">You By Sally</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/sally" data-img="/case-studies/sally-os/heroes/sally-os-platform-hero.jpg">Sally Marketing OS</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/fairview-sitting" data-img="/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg">The Fairview</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/floor-and-decor" data-img="/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg">Floor &amp; Decor</a><span class="t-sep" aria-hidden="true">●</span>
+        </div>
+        <div class="t-half" aria-hidden="true">
+          <a class="t-item" tabindex="-1" href="/case-studies/hill-country-living" data-img="/case-studies/hp/rhs-interior-design-livingroom-interior.jpg">Hill Country Living</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/j-christianson" data-img="/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg">J. Christianson</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/amber-shockey-co" data-img="/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg">Amber Shockey &amp; Co.</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/you-by-sally" data-img="/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg">You By Sally</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/sally" data-img="/case-studies/sally-os/heroes/sally-os-platform-hero.jpg">Sally Marketing OS</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/fairview-sitting" data-img="/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg">The Fairview</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/floor-and-decor" data-img="/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg">Floor &amp; Decor</a><span class="t-sep">●</span>
+        </div>
+      </div>
+    </div>
+    <div class="t-row t-row-4 t-row-rev t-row-line">
+      <div class="t-track">
+        <div class="t-half">
+          <a class="t-item" href="/case-studies/fairview-suite" data-img="/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg">The Fairview Suite</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/nordstrom-framework" data-img="/case-studies/hp/rhs-nordstrom-framework-content-design.jpg">Nordstrom framework</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/loved-by-nordstrom" data-img="/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg">Loved by Nordstrom</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/chalet" data-img="/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg">Mountain View</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/neiman-marcus" data-img="/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg">Neiman Marcus</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/big-bend" data-img="/case-studies/big-bend/hero.jpg">West Texas</a><span class="t-sep" aria-hidden="true">●</span>
+          <a class="t-item" href="/case-studies/sizzle" data-img="/images/thumbnails/sizzle.jpg">Faux Reel</a><span class="t-sep" aria-hidden="true">●</span>
+        </div>
+        <div class="t-half" aria-hidden="true">
+          <a class="t-item" tabindex="-1" href="/case-studies/fairview-suite" data-img="/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg">The Fairview Suite</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/nordstrom-framework" data-img="/case-studies/hp/rhs-nordstrom-framework-content-design.jpg">Nordstrom framework</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/loved-by-nordstrom" data-img="/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg">Loved by Nordstrom</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/chalet" data-img="/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg">Mountain View</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/neiman-marcus" data-img="/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg">Neiman Marcus</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/big-bend" data-img="/case-studies/big-bend/hero.jpg">West Texas</a><span class="t-sep">●</span>
+          <a class="t-item" tabindex="-1" href="/case-studies/sizzle" data-img="/images/thumbnails/sizzle.jpg">Faux Reel</a><span class="t-sep">●</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="t-news">
+    <div class="t-ntrack">
+      <div class="t-nhalf">
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep" aria-hidden="true">+</span>
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep" aria-hidden="true">+</span>
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep" aria-hidden="true">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep" aria-hidden="true">+</span>
+      </div>
+      <div class="t-nhalf" aria-hidden="true">
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep">+</span>
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep">+</span>
+        <span class="t-nitem">Awwwards Honors, 2026</span><span class="t-nsep">+</span><span class="t-nitem">Faux Reel released as an open repo</span><span class="t-nsep">+</span><span class="t-nitem">28 case studies online</span><span class="t-nsep">+</span>
+      </div>
+    </div>
+  </div>
+  <div class="t-base">
+    <span class="t-mark">RECKON HOUSE STAPLES</span>
+    <nav class="t-contact" aria-label="Contact">
+      <a class="t-clink" href="mailto:hello@reckon.house"><span class="t-ck">EMAIL</span>hello@reckon.house</a>
+      <a class="t-clink" href="#">LINKEDIN</a>
+      <a class="t-clink" href="#">INSTAGRAM</a>
+    </nav>
+    <button class="t-top" type="button">TOP ↑</button>
+  </div>
+  <div class="t-chip" aria-hidden="true"></div>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('.fx-tickers');
+  if (!root) return;
+  var chip = root.querySelector('.t-chip');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function moveChip(e) {
+    if (!chip) return;
+    var w = 172, h = 126;
+    var x = e.clientX + 18;
+    var y = e.clientY + 18;
+    if (x + w > window.innerWidth) x = e.clientX - w - 18;
+    if (y + h > window.innerHeight) y = e.clientY - h - 18;
+    chip.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+  }
+
+  root.addEventListener('mouseover', function (e) {
+    var a = e.target.closest ? e.target.closest('.t-item') : null;
+    if (!a || !root.contains(a) || !chip) return;
+    var img = a.getAttribute('data-img');
+    if (img) chip.style.backgroundImage = 'url("' + img + '")';
+    chip.classList.add('t-chip-on');
+  });
+
+  root.addEventListener('mouseout', function (e) {
+    var a = e.target.closest ? e.target.closest('.t-item') : null;
+    if (a && chip) chip.classList.remove('t-chip-on');
+  });
+
+  root.addEventListener('mouseleave', function () {
+    if (chip) chip.classList.remove('t-chip-on');
+  });
+
+  root.addEventListener('mousemove', moveChip);
+
+  var topBtn = root.querySelector('.t-top');
+  if (topBtn) {
+    topBtn.addEventListener('click', function () {
+      var el = document.scrollingElement || document.documentElement;
+      if (reduced.matches) {
+        el.scrollTop = 0;
+        window.scrollTo(0, 0);
+      } else {
+        try {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          window.scrollTo(0, 0);
+        }
+      }
+    });
+  }
+})();
+</script>
+</section>
+
+<section id="x-corridor">
+  <div class="lab-label"><span class="t">D · The Corridor</span><span>fx-corridor</span></div>
+  <div class="lab-note">Walls of drifting image slices around a quiet contact form. Hover a slice to open it. A black corridor: two walls of 20 shredded thumbnail slivers each (all 28 projects appear across the pair), drifting vertically on 40 to 80s loops, desaturated until hover widens a slice to 120px, restores color, and reveals a rotated mono title linking to the study. The center stays calm: an underlined white contact form with a mailto fallback (also the no-JS form action), the three contact links, the case-study count, and the wordmark. Knobs: wall width clamp(240px, 30vw, 480px), drift amplitude in the fx-corridor-drift keyframes (14px), hover width in the .c-slice hover rule, and the L and R index arrays that set slice order per wall.</div>
+  <style>
+.fx-corridor{display:flex;align-items:stretch;background:var(--ink);color:var(--paper);font-family:var(--sans);height:clamp(600px,92vh,860px);overflow:hidden;-webkit-font-smoothing:antialiased}
+.fx-corridor .c-wall{display:flex;flex:none;width:clamp(240px,30vw,480px);gap:2px;overflow:hidden;background:var(--ink)}
+.fx-corridor .c-wall-a{border-right:1px solid color-mix(in srgb,var(--paper) 12%,transparent)}
+.fx-corridor .c-wall-b{border-left:1px solid color-mix(in srgb,var(--paper) 12%,transparent)}
+.fx-corridor .c-slice{position:relative;display:block;flex:var(--g,1) 1 0%;min-width:8px;overflow:hidden;transition:flex-grow .55s cubic-bezier(.22,.61,.24,1),flex-basis .55s cubic-bezier(.22,.61,.24,1)}
+.fx-corridor .c-slice:hover,.fx-corridor .c-slice:focus-visible{flex:0 0 120px}
+.fx-corridor .c-slice:focus-visible{outline:1px solid var(--paper);outline-offset:-1px}
+.fx-corridor .c-img{position:absolute;inset:-24px 0;background-size:cover;background-repeat:no-repeat;filter:grayscale(1) brightness(.72) contrast(1.05);transition:filter .45s;animation:fx-corridor-drift 60s linear infinite alternate}
+.fx-corridor .c-slice:hover .c-img,.fx-corridor .c-slice:focus-visible .c-img{filter:none}
+.fx-corridor .c-slice::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,color-mix(in srgb,var(--ink) 78%,transparent),transparent);opacity:0;transition:opacity .3s;pointer-events:none}
+.fx-corridor .c-slice:hover::after,.fx-corridor .c-slice:focus-visible::after{opacity:1}
+.fx-corridor .c-name{position:absolute;left:10px;bottom:14px;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);white-space:nowrap;opacity:0;transition:opacity .3s .15s;pointer-events:none}
+.fx-corridor .c-slice:hover .c-name,.fx-corridor .c-slice:focus-visible .c-name{opacity:1}
+.fx-corridor .c-center{flex:1;display:flex;align-items:center;justify-content:center;min-width:0;padding:64px 40px}
+.fx-corridor .c-inner{width:100%;max-width:360px}
+.fx-corridor .c-tag{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 55%,transparent);margin:0}
+.fx-corridor .c-head{font-size:clamp(22px,2.2vw,30px);font-weight:500;letter-spacing:-.01em;line-height:1.15;margin:12px 0 36px;color:var(--paper)}
+.fx-corridor .c-field{display:block;margin-bottom:24px}
+.fx-corridor .c-lab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:color-mix(in srgb,var(--paper) 58%,transparent);margin-bottom:7px}
+.fx-corridor .c-in{display:block;width:100%;background:transparent;border:0;border-bottom:1px solid color-mix(in srgb,var(--paper) 28%,transparent);border-radius:0;color:var(--paper);font-family:var(--sans);font-size:15px;line-height:1.4;padding:5px 0 9px;transition:border-color .25s;outline:none}
+.fx-corridor .c-in:focus-visible{border-bottom-color:var(--paper)}
+.fx-corridor .c-area{resize:vertical;min-height:64px}
+.fx-corridor .c-send{margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--ink);background:var(--paper);border:1px solid var(--paper);border-radius:var(--r);padding:13px 34px;cursor:pointer;transition:background .25s,color .25s}
+.fx-corridor .c-send:hover,.fx-corridor .c-send:focus-visible{background:transparent;color:var(--paper)}
+.fx-corridor .c-send:focus-visible{outline:1px solid var(--paper);outline-offset:3px}
+.fx-corridor .c-note{margin:14px 0 0;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 38%,transparent)}
+.fx-corridor .c-meta{margin-top:44px;border-top:1px solid color-mix(in srgb,var(--paper) 16%,transparent);padding-top:22px}
+.fx-corridor .c-links{display:flex;flex-wrap:wrap;gap:14px 26px}
+.fx-corridor .c-link{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 70%,transparent);text-decoration:none;transition:color .25s}
+.fx-corridor .c-link:hover,.fx-corridor .c-link:focus-visible{color:var(--paper);text-decoration:underline;text-underline-offset:4px}
+.fx-corridor .c-count{margin:20px 0 0;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 38%,transparent)}
+.fx-corridor .c-mark{margin:18px 0 0;font-size:10px;font-weight:500;letter-spacing:.32em;color:color-mix(in srgb,var(--paper) 60%,transparent)}
+@keyframes fx-corridor-drift{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
+@media (max-width:760px){
+.fx-corridor{flex-direction:column;height:auto}
+.fx-corridor .c-wall{width:100%;height:150px}
+.fx-corridor .c-wall-a{border-right:0;border-bottom:1px solid color-mix(in srgb,var(--paper) 12%,transparent)}
+.fx-corridor .c-wall-b{border-left:0;border-top:1px solid color-mix(in srgb,var(--paper) 12%,transparent)}
+.fx-corridor .c-center{padding:60px 28px}
+.fx-corridor .c-slice:hover,.fx-corridor .c-slice:focus-visible{flex:0 0 90px}
+.fx-corridor .c-name{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+.fx-corridor .c-img{animation:none!important}
+.fx-corridor .c-slice,.fx-corridor .c-img,.fx-corridor .c-slice::after,.fx-corridor .c-name,.fx-corridor .c-send,.fx-corridor .c-in,.fx-corridor .c-link{transition:none!important}
+}
+  </style>
+<div class="fx-corridor">
+  <nav class="c-wall c-wall-a" aria-label="Case studies, left wall"></nav>
+  <div class="c-center">
+    <div class="c-inner">
+      <p class="c-tag">CONTACT</p>
+      <h2 class="c-head">Start a project.</h2>
+      <form class="c-form" action="mailto:hello@reckon.house" method="post" enctype="text/plain">
+        <label class="c-field"><span class="c-lab">NAME</span><input class="c-in" type="text" name="name" autocomplete="name"></label>
+        <label class="c-field"><span class="c-lab">EMAIL</span><input class="c-in" type="email" name="email" autocomplete="email"></label>
+        <label class="c-field"><span class="c-lab">MESSAGE</span><textarea class="c-in c-area" name="message" rows="3"></textarea></label>
+        <button class="c-send" type="submit">SEND</button>
+        <p class="c-note">form is a prototype</p>
+      </form>
+      <div class="c-meta">
+        <div class="c-links">
+          <a class="c-link" href="mailto:hello@reckon.house">hello@reckon.house</a>
+          <a class="c-link" href="#">LINKEDIN</a>
+          <a class="c-link" href="#">INSTAGRAM</a>
+        </div>
+        <p class="c-count">28 case studies online</p>
+        <p class="c-mark">RECKON HOUSE STAPLES</p>
+      </div>
+    </div>
+  </div>
+  <nav class="c-wall c-wall-b" aria-label="Case studies, right wall"></nav>
+</div>
+<script>
+(function(){
+  var root=document.querySelector('.fx-corridor');
+  if(!root)return;
+  var P=[
+    ["Ivy Park by Beyoncé","/case-studies/ivy-park","/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg"],
+    ["A.R.C.","/case-studies/arc","/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg"],
+    ["Hill Country Kitchen","/case-studies/hill-country-kitchen","/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg"],
+    ["Robert Rodriguez x Neiman's","/case-studies/robert-rodriguez","/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg"],
+    ["Nordstrom personalization","/case-studies/nordstrom-personalization","/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg"],
+    ["Jeffrey NYC","/case-studies/jeffrey-ecommerce","/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg"],
+    ["Capitan Boot Co.","/case-studies/capitan-boot-co","/case-studies/hp/rhs-capitan-boot-co-branding.jpg"],
+    ["Jeffrey Spring Campaign","/case-studies/jeffrey-spring","/case-studies/hp/rhs-jeffrey-spring-campaign.jpg"],
+    ["Hill Country Bath","/case-studies/hill-country-bath","/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg"],
+    ["Nordstrom beauty","/case-studies/nordstrom-beauty","/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg"],
+    ["Hill Country Oakworks","/case-studies/hill-country-oak","/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg"],
+    ["Cosmo Prof","/case-studies/cosmo-prof","/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg"],
+    ["Dallas Sport Collective","/case-studies/dsc","/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg"],
+    ["Black & white type","/case-studies/black-white-type","/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg"],
+    ["Hill Country Living","/case-studies/hill-country-living","/case-studies/hp/rhs-interior-design-livingroom-interior.jpg"],
+    ["J. Christianson","/case-studies/j-christianson","/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg"],
+    ["Amber Shockey & Co.","/case-studies/amber-shockey-co","/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg"],
+    ["You By Sally","/case-studies/you-by-sally","/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg"],
+    ["Sally Marketing OS","/case-studies/sally","/case-studies/sally-os/heroes/sally-os-platform-hero.jpg"],
+    ["The Fairview","/case-studies/fairview-sitting","/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg"],
+    ["Floor & Decor","/case-studies/floor-and-decor","/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg"],
+    ["The Fairview Suite","/case-studies/fairview-suite","/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg"],
+    ["Nordstrom framework","/case-studies/nordstrom-framework","/case-studies/hp/rhs-nordstrom-framework-content-design.jpg"],
+    ["Loved by Nordstrom","/case-studies/loved-by-nordstrom","/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg"],
+    ["Mountain View","/case-studies/chalet","/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg"],
+    ["Neiman Marcus","/case-studies/neiman-marcus","/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg"],
+    ["West Texas","/case-studies/big-bend","/case-studies/big-bend/hero.jpg"],
+    ["Faux Reel","/case-studies/sizzle","/images/thumbnails/sizzle.jpg"]
+  ];
+  var L=[0,5,10,15,20,25,2,7,12,17,22,27,4,9,14,19,24,1,6,11];
+  var R=[13,18,23,3,8,26,16,21,12,7,25,0,9,14,20,5,17,2,24,11];
+  function build(el,order,seed){
+    if(!el)return;
+    order.forEach(function(idx,k){
+      var p=P[idx],n=k+seed;
+      var a=document.createElement('a');
+      a.className='c-slice';
+      a.href=p[1];
+      a.setAttribute('aria-label',p[0]);
+      a.style.setProperty('--g',(0.7+((n*7)%12)/9).toFixed(2));
+      var img=document.createElement('span');
+      img.className='c-img';
+      img.style.backgroundImage='url("'+p[2]+'")';
+      img.style.backgroundPosition=((n*37)%101)+'% '+((n*23)%101)+'%';
+      img.style.animationDuration=(40+((n*13)%41))+'s';
+      img.style.animationDelay='-'+((n*11)%53)+'s';
+      if(n%2)img.style.animationDirection='alternate-reverse';
+      var nm=document.createElement('span');
+      nm.className='c-name';
+      nm.textContent=p[0];
+      a.appendChild(img);
+      a.appendChild(nm);
+      el.appendChild(a);
+    });
+  }
+  build(root.querySelector('.c-wall-a'),L,0);
+  build(root.querySelector('.c-wall-b'),R,3);
+  var form=root.querySelector('.c-form');
+  if(form){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var f=form.elements;
+      var name=(f.name&&f.name.value||'').trim();
+      var msg=(f.message&&f.message.value||'').trim();
+      var from=(f.email&&f.email.value||'').trim();
+      var subject='Project inquiry'+(name?' from '+name:'');
+      var body=msg+(from?'\n\nReply to: '+from:'')+(name?'\n'+name:'');
+      window.location.href='mailto:hello@reckon.house?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    });
+  }
+})();
+</script>
+</section>
+
+<section id="x-wildcard">
+  <div class="lab-label"><span class="t">E · Spine Index</span><span>fx-wildcard</span></div>
+  <div class="lab-note">Free brief: vertical type against horizontal as the core move. A black bookshelf ending to the white page: six case studies stand as vertical spines in six equal hairline columns, bottoms resting on a single white shelf rule, thumbnails tucked at the base like colophons, with the wordmark running bottom-to-top down the left rail against the horizontal mono system (label, contact, news with CSS-added period dots). Spines rise onto the shelf with a staggered reveal on scroll, and thumbnails hold grayscale until hover restores the photography&#x27;s color, the only color in the composition. Knobs: per-spine title sizes live in the .fxw-s1 through .fxw-s6 rules (desktop clamps plus fixed mobile sizes), and the shelf reveal is gated behind the fxw-anim class so it degrades to static without JS or with reduced motion.</div>
+  <style>
+.fx-wildcard{background:var(--ink);color:var(--paper);font-family:var(--sans);padding:clamp(56px,8vw,112px) clamp(20px,5vw,64px) clamp(32px,4vw,48px)}
+.fx-wildcard,.fx-wildcard *{box-sizing:border-box}
+.fx-wildcard .fxw-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,80px);max-width:1400px;margin:0 auto}
+.fx-wildcard .fxw-rail{display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:32px}
+.fx-wildcard .fxw-mark{writing-mode:vertical-rl;transform:rotate(180deg);margin:0;font-weight:700;font-size:clamp(17px,1.9vw,25px);letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;line-height:1}
+.fx-wildcard .fxw-mark::after{content:"."}
+.fx-wildcard .fxw-url{writing-mode:vertical-rl;transform:rotate(180deg);margin:0;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.45;white-space:nowrap}
+.fx-wildcard .fxw-head{display:flex;align-items:baseline;gap:22px;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:16px}
+.fx-wildcard .fxw-label{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.fx-wildcard .fxw-label::after{content:"."}
+.fx-wildcard .fxw-count{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.5}
+.fx-wildcard .fxw-top{margin-left:auto;padding:0;background:none;border:0;color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;opacity:.7;transition:opacity .3s ease}
+.fx-wildcard .fxw-top::after{content:"."}
+.fx-wildcard .fxw-top:hover{opacity:1}
+.fx-wildcard .fxw-top:focus-visible{outline:1px solid var(--paper);outline-offset:4px}
+.fx-wildcard .fxw-shelf{display:flex;align-items:flex-end;margin-top:clamp(36px,5vw,72px);border-bottom:1px solid var(--paper)}
+.fx-wildcard .fxw-spine{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:18px;padding:0 8px 24px;border-left:1px solid rgba(255,255,255,.22);text-decoration:none;color:var(--paper)}
+.fx-wildcard .fxw-spine:last-child{border-right:1px solid rgba(255,255,255,.22)}
+.fx-wildcard .fxw-spine:focus-visible{outline:1px solid var(--paper);outline-offset:-4px}
+.fx-wildcard .fxw-num{font-family:var(--mono);font-size:10px;letter-spacing:.2em;opacity:.55}
+.fx-wildcard .fxw-text{display:flex;gap:10px;align-items:flex-start}
+.fx-wildcard .fxw-title{writing-mode:vertical-rl;font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1;white-space:nowrap;opacity:.92;transition:opacity .3s ease}
+.fx-wildcard .fxw-cat{writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;line-height:1.4;white-space:nowrap;opacity:.4;transition:opacity .3s ease}
+.fx-wildcard .fxw-s1 .fxw-title{font-size:clamp(18px,2.2vw,30px)}
+.fx-wildcard .fxw-s2 .fxw-title{font-size:clamp(26px,4vw,54px)}
+.fx-wildcard .fxw-s3 .fxw-title{font-size:clamp(14px,1.7vw,22px)}
+.fx-wildcard .fxw-s4 .fxw-title{font-size:clamp(12px,1.4vw,18px)}
+.fx-wildcard .fxw-s5 .fxw-title{font-size:clamp(20px,2.9vw,40px)}
+.fx-wildcard .fxw-s6 .fxw-title{font-size:clamp(15px,2vw,26px)}
+.fx-wildcard .fxw-thumb{width:clamp(44px,5vw,68px);aspect-ratio:1/1;border-radius:var(--r);overflow:hidden;flex:none}
+.fx-wildcard .fxw-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .45s ease}
+.fx-wildcard .fxw-spine:hover .fxw-title,.fx-wildcard .fxw-spine:focus-visible .fxw-title{opacity:1;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.fx-wildcard .fxw-spine:hover .fxw-cat,.fx-wildcard .fxw-spine:focus-visible .fxw-cat{opacity:.7}
+.fx-wildcard .fxw-spine:hover .fxw-thumb img,.fx-wildcard .fxw-spine:focus-visible .fxw-thumb img{filter:none}
+.fx-wildcard .fxw-foot{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;margin-top:clamp(28px,4vw,48px)}
+.fx-wildcard .fxw-contact{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:16px}
+.fx-wildcard .fxw-contact li{display:flex;align-items:center;gap:16px}
+.fx-wildcard .fxw-contact li+li::before{content:"";width:3px;height:3px;border-radius:50%;background:var(--paper);opacity:.5;flex:none}
+.fx-wildcard .fxw-contact a{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--paper);border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:3px;transition:border-color .3s ease}
+.fx-wildcard .fxw-contact a:hover{border-color:var(--paper)}
+.fx-wildcard .fxw-contact a:focus-visible{outline:1px solid var(--paper);outline-offset:4px}
+.fx-wildcard .fxw-news{list-style:none;margin:0;padding:0;display:grid;gap:8px;text-align:right;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.55}
+.fx-wildcard .fxw-news li::after{content:"."}
+@media (prefers-reduced-motion:no-preference){
+.fx-wildcard.fxw-anim .fxw-spine{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .7s cubic-bezier(.22,.61,.2,1)}
+.fx-wildcard.fxw-anim .fxw-spine:nth-child(2){transition-delay:.06s}
+.fx-wildcard.fxw-anim .fxw-spine:nth-child(3){transition-delay:.12s}
+.fx-wildcard.fxw-anim .fxw-spine:nth-child(4){transition-delay:.18s}
+.fx-wildcard.fxw-anim .fxw-spine:nth-child(5){transition-delay:.24s}
+.fx-wildcard.fxw-anim .fxw-spine:nth-child(6){transition-delay:.3s}
+.fx-wildcard.fxw-anim.fxw-in .fxw-spine{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+.fx-wildcard *{transition:none !important;animation:none !important;transform:none !important}
+}
+@media (max-width:760px){
+.fx-wildcard{padding:56px 20px 32px}
+.fx-wildcard .fxw-grid{grid-template-columns:1fr;gap:44px}
+.fx-wildcard .fxw-rail{flex-direction:row;justify-content:space-between;align-items:baseline;gap:16px}
+.fx-wildcard .fxw-mark,.fx-wildcard .fxw-url{writing-mode:horizontal-tb;transform:none}
+.fx-wildcard .fxw-mark{font-size:15px}
+.fx-wildcard .fxw-head{gap:14px}
+.fx-wildcard .fxw-shelf{margin-top:32px}
+.fx-wildcard .fxw-spine{gap:14px;padding:0 4px 16px}
+.fx-wildcard .fxw-cat{display:none}
+.fx-wildcard .fxw-thumb{width:40px;border-radius:12px}
+.fx-wildcard .fxw-s1 .fxw-title{font-size:16px}
+.fx-wildcard .fxw-s2 .fxw-title{font-size:24px}
+.fx-wildcard .fxw-s3 .fxw-title{font-size:13px}
+.fx-wildcard .fxw-s4 .fxw-title{font-size:11px}
+.fx-wildcard .fxw-s5 .fxw-title{font-size:19px}
+.fx-wildcard .fxw-s6 .fxw-title{font-size:14px}
+.fx-wildcard .fxw-foot{flex-direction:column;gap:28px}
+.fx-wildcard .fxw-news{text-align:left}
+}
+  </style>
+<div class="fx-wildcard">
+  <div class="fxw-grid">
+    <div class="fxw-rail">
+      <p class="fxw-mark">Reckon House Staples</p>
+      <p class="fxw-url">reckon.house</p>
+    </div>
+    <div class="fxw-main">
+      <div class="fxw-head">
+        <p class="fxw-label">Selected work</p>
+        <p class="fxw-count">06 of 28</p>
+        <button class="fxw-top" type="button">Top</button>
+      </div>
+      <nav class="fxw-shelf" aria-label="Selected case studies">
+        <a class="fxw-spine fxw-s1" href="/case-studies/ivy-park">
+          <span class="fxw-num">01</span>
+          <span class="fxw-text">
+            <span class="fxw-title">Ivy Park by Beyonc&eacute;</span>
+            <span class="fxw-cat">Digital design, brand launch</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg" alt=""></span>
+        </a>
+        <a class="fxw-spine fxw-s2" href="/case-studies/arc">
+          <span class="fxw-num">02</span>
+          <span class="fxw-text">
+            <span class="fxw-title">A.R.C.</span>
+            <span class="fxw-cat">App &amp; brand development</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg" alt=""></span>
+        </a>
+        <a class="fxw-spine fxw-s3" href="/case-studies/hill-country-kitchen">
+          <span class="fxw-num">03</span>
+          <span class="fxw-text">
+            <span class="fxw-title">Hill Country Kitchen</span>
+            <span class="fxw-cat">Interior design</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg" alt=""></span>
+        </a>
+        <a class="fxw-spine fxw-s4" href="/case-studies/robert-rodriguez">
+          <span class="fxw-num">04</span>
+          <span class="fxw-text">
+            <span class="fxw-title">Robert Rodriguez x Neiman's</span>
+            <span class="fxw-cat">Creative direction</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg" alt=""></span>
+        </a>
+        <a class="fxw-spine fxw-s5" href="/case-studies/jeffrey-ecommerce">
+          <span class="fxw-num">05</span>
+          <span class="fxw-text">
+            <span class="fxw-title">Jeffrey NYC</span>
+            <span class="fxw-cat">Ecommerce, web design</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg" alt=""></span>
+        </a>
+        <a class="fxw-spine fxw-s6" href="/case-studies/capitan-boot-co">
+          <span class="fxw-num">06</span>
+          <span class="fxw-text">
+            <span class="fxw-title">Capitan Boot Co.</span>
+            <span class="fxw-cat">Branding, design</span>
+          </span>
+          <span class="fxw-thumb"><img src="/case-studies/hp/rhs-capitan-boot-co-branding.jpg" alt=""></span>
+        </a>
+      </nav>
+      <div class="fxw-foot">
+        <ul class="fxw-contact">
+          <li><a href="mailto:hello@reckon.house">Email</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+        <ul class="fxw-news">
+          <li>Awwwards Honors, 2026</li>
+          <li>Faux Reel released as an open repo</li>
+          <li>28 case studies online</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('.fx-wildcard');
+  if (!root) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var top = root.querySelector('.fxw-top');
+  if (top) {
+    top.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
+  if (!reduce && 'IntersectionObserver' in window) {
+    root.classList.add('fxw-anim');
+    var shelf = root.querySelector('.fxw-shelf');
+    if (!shelf) { root.classList.add('fxw-in'); return; }
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          root.classList.add('fxw-in');
+          io.disconnect();
+          break;
+        }
+      }
+    }, { threshold: 0.25 });
+    io.observe(shelf);
+  }
+})();
+</script>
+</section>
+
+
+<section id="x-shelf">
+  <div class="lab-label"><span class="t">G · The Shelf</span><span>fx-shelf</span></div>
+  <div class="lab-note">E as a horizontal rail of all 28. Titles sit down on their thumbnails and are bottom-anchored, so the staggered tops come free from name length rather than from hand-set offsets. Hover drops a paper curtain: the type inverts per-pixel at the curtain's edge because it is difference-blended, so running the shelf fast cascades. The title lifts a few pixels, no spin.</div>
+  <style>
+/* ── 08a the masthead — everything that is not the work ────────────
+   The shelf is one section of the footer, not the footer. This carries the
+   things a visitor actually needs: how to reach him, what he does, who has
+   run the work. Same ink ground as the shelf so the two read as one slab
+   flipping over at the end of the page. */
+.fx-mast { --mt-gap: clamp(22px, 3.4vw, 54px);
+  background: var(--ink); color: var(--paper); font-family: var(--sans);
+  border-radius: var(--r) var(--r) 0 0; padding: 0 40px; }
+.fx-mast .mt-top { display: grid; grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(30px, 5vw, 80px); padding: clamp(44px, 6vw, 78px) 0 clamp(30px, 4vw, 50px); }
+
+/* The ask, and the form under it. */
+.fx-mast .mt-say { font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
+  letter-spacing: -0.03em; font-weight: 700; max-width: 11em; margin: 0 0 30px; }
+.fx-mast .mt-say .lt { font-weight: 300; }
+.fx-mast .mt-form { display: grid; gap: 16px; max-width: 30em; }
+.fx-mast .mt-field { display: grid; gap: 6px; }
+.fx-mast .mt-field label { font-family: var(--mono); font-size: 8.5px;
+  letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.45; }
+.fx-mast .mt-field input, .fx-mast .mt-field textarea {
+  background: none; border: 0; border-bottom: 1px solid rgba(255,255,255,0.28);
+  color: var(--paper); font-family: var(--sans); font-size: 14px;
+  padding: 7px 0; border-radius: 0; }
+.fx-mast .mt-field textarea { resize: vertical; min-height: 46px; }
+.fx-mast .mt-field input:focus, .fx-mast .mt-field textarea:focus {
+  outline: none; border-bottom-color: var(--paper); }
+.fx-mast .mt-send { justify-self: start; display: inline-flex; align-items: center;
+  gap: 10px; margin-top: 6px; padding: 11px 26px; border: 0; cursor: pointer;
+  background: var(--paper); color: var(--ink); border-radius: 999px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; }
+.fx-mast .mt-send:hover { opacity: 0.82; }
+.fx-mast .mt-note { font-family: var(--mono); font-size: 8.5px;
+  letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.35; }
+
+/* The ledger columns, lifted from variant B: the densest way to carry
+   contact, services and standing info without a paragraph. */
+.fx-mast .mt-cols { display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 26px 30px; align-content: start; }
+.fx-mast .mt-col h4 { font-family: var(--mono); font-size: 8.5px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.4;
+  margin: 0 0 12px; padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255,255,255,0.16); }
+.fx-mast .mt-col ul { list-style: none; margin: 0; padding: 0;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em;
+  line-height: 2.05; text-transform: uppercase; }
+.fx-mast .mt-col a { color: var(--paper); text-decoration: none;
+  border-bottom: 1px solid transparent; }
+.fx-mast .mt-col a:hover { border-bottom-color: var(--paper); }
+.fx-mast .mt-col .dim { opacity: 0.5; }
+
+/* Featured in. Logos are forced to a single ink like the homepage wall, so
+   a dozen mismatched marks read as one row. `scale` trims the wide ones:
+   equal height is not equal optical weight. */
+.fx-mast .mt-featured { border-top: 1px solid rgba(255,255,255,0.16);
+  padding: clamp(40px, 5.5vw, 76px) 0 clamp(34px, 4.5vw, 60px); }
+/* The three section ledes are one family, set at the same display size:
+   the ask, the credits, and the work. Anything smaller and the credits
+   read as a caption on the form above them rather than as their own
+   section. */
+.fx-mast .mt-say,
+.fx-mast .mt-featured h4,
+.fx-shelf .sh-lede {
+  font-family: var(--sans); font-size: clamp(26px, 4.4vw, 62px);
+  line-height: 1.02; letter-spacing: -0.03em; font-weight: 700;
+  text-transform: none; opacity: 1; }
+.fx-mast .mt-featured h4 { max-width: 13em; margin: 0 0 clamp(26px, 3.4vw, 46px); }
+/* A ticker, not a grid: a dozen mismatched marks read as one quiet flow
+   when only a few are on screen at a time. The row is duplicated and the
+   track travels exactly -50%, which lands the copy precisely where the
+   original started, so the loop has no seam. The track and the rows carry
+   the SAME gap or the join gets a double space every cycle. */
+.fx-mast .mt-ticker { overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.fx-mast .mt-track { display: flex; width: max-content;
+  animation: fxMastRoll var(--mt-speed, 54s) linear infinite; }
+.fx-mast .mt-ticker:hover .mt-track { animation-play-state: paused; }
+/* The spacing lives on the ROW as trailing padding, never as a gap on the
+   track. A track gap sits between the two copies only, so half the track
+   comes out half a gap short of one row and the loop jumps every cycle. */
+.fx-mast .mt-wall { display: flex; align-items: center;
+  gap: var(--mt-gap); padding-right: var(--mt-gap); }
+@keyframes fxMastRoll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .fx-mast .mt-track { animation: none; flex-wrap: wrap; width: auto; }
+  .fx-mast .mt-wall[aria-hidden] { display: none; }
+  .fx-mast .mt-ticker { -webkit-mask-image: none; mask-image: none; }
+}
+.fx-mast .mt-wall img { height: 22px; width: auto; max-width: 150px;
+  object-fit: contain; opacity: 0.62;
+  filter: brightness(0) invert(1);
+  transition: opacity 0.25s ease; }
+.fx-mast .mt-wall img:hover { opacity: 1; }
+.fx-mast .mt-wall .asis { filter: none; border-radius: 3px; }
+.fx-mast .mt-wall .word { font-family: var(--sans); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.62; }
+
+@media (max-width: 760px) {
+  .fx-mast { padding: 0 20px; }
+  .fx-mast .mt-top { grid-template-columns: 1fr; gap: 34px;
+    padding: 34px 0 26px; }
+  .fx-mast .mt-cols { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .fx-mast .mt-wall img { height: 17px; }
+  .fx-mast .mt-wall .word { font-size: 11px; }
+}
+
+.fx-shelf { background: var(--ink); color: var(--paper); font-family: var(--sans);
+  overflow: hidden; }
+/* Baseline-aligned so the small meta sits on the lede's baseline rather
+   than floating at its cap height. */
+.fx-shelf .sh-head { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  padding: clamp(40px, 5.5vw, 76px) 24px clamp(22px, 2.6vw, 34px);
+  border-bottom: 1px solid rgba(255,255,255,0.15); }
+.fx-shelf .sh-meta { font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.5; }
+
+.fx-shelf .sh-rail { display: flex; gap: 0; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; cursor: grab; }
+.fx-shelf .sh-rail::-webkit-scrollbar { display: none; }
+.fx-shelf .sh-rail.sh-drag { cursor: grabbing; scroll-behavior: auto; }
+
+/* A spine. The explicit ink background is load-bearing: `isolation` opens a
+   stacking context and the difference-blended type composites against
+   whatever is painted INSIDE it. With no background the backdrop is
+   transparent, white-on-nothing stays white, and the type never inverts. */
+.fx-shelf .sh-spine { position: relative; isolation: isolate; flex: 0 0 auto;
+  background: var(--ink);
+  width: clamp(150px, 15vw, 224px); height: min(76vh, 700px);
+  display: grid; grid-template-rows: 1fr auto; row-gap: 14px;
+  padding: 30px 22px 26px 26px; text-decoration: none; color: var(--paper); }
+.fx-shelf .sh-spine::before { content: ""; position: absolute; left: 0; top: 0;
+  width: 1px; height: 100%; background: rgba(255,255,255,0.22); z-index: 2;
+  transform: scaleY(0); transform-origin: top center; }
+.fx-shelf .sh-on::before { transform: scaleY(1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
+
+/* THE CURTAIN. Paper drops from the top on hover. It sits UNDER the content,
+   which is difference-blended, so the type flips black exactly where the
+   curtain has reached rather than cross-fading. Fast on purpose: running the
+   shelf quickly should cascade. */
+.fx-shelf .sh-spine::after { content: ""; position: absolute; inset: 0;
+  background: var(--paper); z-index: 0;
+  transform: scaleY(0); transform-origin: top center;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+/* Bottom-anchored, sat down on the thumbnail. This is the whole stagger
+   mechanism: every title ends just above its image, so titles of different
+   lengths start at different heights and the skyline is a consequence of the
+   names rather than a table of offsets. */
+.fx-shelf .sh-body { position: relative; z-index: 1; align-self: end;
+  mix-blend-mode: difference; color: #fff; }
+.fx-shelf .sh-num { display: block; font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.35em; opacity: 0; margin: 0 0 12px 2px; }
+.fx-shelf .sh-on .sh-num { opacity: 0.5; transition: opacity 0.5s ease 0.2s; }
+
+.fx-shelf .sh-pair { display: flex; gap: 13px; align-items: flex-end; }
+.fx-shelf .sh-title { writing-mode: vertical-rl; white-space: nowrap;
+  font-weight: 700; font-size: calc(var(--fs, 30px) * var(--fsx, 1));
+  letter-spacing: 0.05em; text-transform: uppercase; line-height: 1;
+  clip-path: inset(-4px -4px 102% -4px); transform: translateY(-16px); }
+.fx-shelf .sh-on .sh-title { clip-path: inset(-4px); transform: none;
+  transition: clip-path 0.9s cubic-bezier(0.2, 0.55, 0.2, 1) 0.3s,
+    transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1) 0.3s; }
+.fx-shelf .sh-cat { writing-mode: vertical-rl; white-space: nowrap;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.18em;
+  text-transform: uppercase; opacity: 0; padding-bottom: 2px; }
+.fx-shelf .sh-on .sh-cat { opacity: 0.45; transition: opacity 0.5s ease 0.65s; }
+
+/* Not blended: difference would invert the photograph itself. */
+.fx-shelf .sh-thumb { position: relative; z-index: 1;
+  width: clamp(112px, 82%, 172px); aspect-ratio: 1 / 1;
+  object-fit: cover; border-radius: calc(var(--r) + 8px);
+  filter: grayscale(1); opacity: 0; transform: translateY(14px);
+  justify-self: center; align-self: end;
+  transition: filter 0.32s ease; }
+.fx-shelf .sh-on .sh-thumb { opacity: 1; transform: none;
+  transition: opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s,
+    filter 0.32s ease; }
+
+@media (hover: hover) {
+  .fx-shelf .sh-spine.sh-on:hover::after,
+  .fx-shelf .sh-spine.sh-on:focus-visible::after { transform: scaleY(1); }
+  .fx-shelf .sh-spine.sh-on:hover::before,
+  .fx-shelf .sh-spine.sh-on:focus-visible::before { background: rgba(0,0,0,0.22); }
+  /* A lift, not a spin. */
+  .fx-shelf .sh-spine.sh-on:hover .sh-title,
+  .fx-shelf .sh-spine.sh-on:focus-visible .sh-title {
+    transform: translateY(-7px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .fx-shelf .sh-spine.sh-on:hover .sh-thumb,
+  .fx-shelf .sh-spine.sh-on:focus-visible .sh-thumb {
+    filter: grayscale(0); transform: translateY(-4px);
+    transition: filter 0.32s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+}
+
+.fx-shelf .sh-end { align-content: center; }
+.fx-shelf .sh-end .sh-body { align-self: center; }
+.fx-shelf .sh-end .sh-title { font-size: calc(26px * var(--fsx, 1));
+  letter-spacing: 0.24em; clip-path: none; transform: none; }
+
+.fx-shelf .sh-foot { display: flex; justify-content: space-between; align-items: baseline;
+  padding: 16px 24px 26px; border-top: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; }
+.fx-shelf .sh-foot .sh-newsline { opacity: 0.5; }
+.fx-shelf .sh-foot a { color: var(--paper); text-decoration: none; }
+.fx-shelf .sh-foot a:hover { text-decoration: underline; }
+
+@media (max-width: 760px) {
+  .fx-shelf { --fsx: 0.62; }
+  .fx-shelf .sh-spine { width: 128px; height: min(58vh, 470px);
+    padding: 22px 14px 18px 18px; }
+  .fx-shelf .sh-thumb { width: clamp(84px, 86%, 108px); }
+  .fx-shelf .sh-head, .fx-shelf .sh-foot { padding-left: 16px; padding-right: 16px; }
+  .fx-shelf .sh-foot .sh-newsline { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-shelf .sh-spine::before, .fx-shelf .sh-spine::after, .fx-shelf .sh-num,
+  .fx-shelf .sh-title, .fx-shelf .sh-cat, .fx-shelf .sh-thumb {
+    transition: none !important; }
+  .fx-shelf .sh-spine::before { transform: scaleY(1); }
+  .fx-shelf .sh-num { opacity: 0.5; }
+  .fx-shelf .sh-title { clip-path: inset(-4px); transform: none; }
+  .fx-shelf .sh-cat { opacity: 0.45; }
+  .fx-shelf .sh-thumb { opacity: 1; transform: none; }
+}
+  </style>
+<div class="fx-mast">
+  <div class="mt-top">
+    <div class="mt-ask">
+      <p class="mt-say">Start something <span class="lt">worth</span> making.</p>
+      <form class="mt-form" action="mailto:hello@reckon.house" method="post" enctype="text/plain">
+        <span class="mt-field"><label for="mt-n">Name</label><input id="mt-n" name="name" type="text" autocomplete="name"></span>
+        <span class="mt-field"><label for="mt-e">Email</label><input id="mt-e" name="email" type="email" autocomplete="email"></span>
+        <span class="mt-field"><label for="mt-m">Project</label><textarea id="mt-m" name="message" rows="2"></textarea></span>
+        <button class="mt-send" type="submit">Send</button>
+        <span class="mt-note">Or just email · hello@reckon.house</span>
+      </form>
+    </div>
+    <div class="mt-cols">
+      <div class="mt-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@reckon.house">Email</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>Services</h4>
+        <ul>
+          <li class="dim">Art Direction</li>
+          <li class="dim">Brand Systems</li>
+          <li class="dim">Digital Design</li>
+          <li class="dim">Interiors</li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>Practice</h4>
+        <ul>
+          <li class="dim">Independent, Dallas</li>
+          <li class="dim">Design and build</li>
+          <li class="dim">Available for work</li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>News</h4>
+        <ul>
+          <li class="dim">Awwwards Honors, 2026</li>
+          <li class="dim">Faux Reel, open repo</li>
+          <li class="dim">28 case studies online</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="mt-featured">
+    <h4>Worked with, spotted by &amp; featured in.</h4>
+    <div class="mt-ticker">
+      <div class="mt-track">
+        <div class="mt-wall">
+      <img src="/brands/crate-barrel.svg" alt="Crate &amp; Barrel" loading="lazy">
+      <img src="/brands/nordstrom.svg" alt="Nordstrom" loading="lazy" style="height:16px">
+      <img src="/brands/ivy-park.svg" alt="Ivy Park by Beyoncé" loading="lazy">
+      <img src="/brands/neiman-marcus.svg" alt="Neiman Marcus" loading="lazy">
+      <img src="/brands/rejuvenation.png" alt="Rejuvenation" loading="lazy" style="height:17px">
+      <img src="/brands/lostine.avif" alt="Lostine Home" loading="lazy">
+      <img src="/brands/visual-comfort.webp" alt="Visual Comfort" loading="lazy" style="height:15px">
+      <img src="/brands/floor-decor.svg" alt="Floor &amp; Decor" loading="lazy" style="height:19px">
+      <img src="/brands/kingston-brass.webp" alt="Kingston Brass" loading="lazy" style="height:20px">
+      <img class="asis" src="/brands/dwr.jpg" alt="Design Within Reach" loading="lazy" style="height:23px">
+      <img src="/brands/vivir-homes.webp" alt="Vivir Homes" loading="lazy">
+      <span class="word">Haven</span>
+        </div>
+        <div class="mt-wall" aria-hidden="true">
+      <img src="/brands/crate-barrel.svg" alt="Crate &amp; Barrel" loading="lazy">
+      <img src="/brands/nordstrom.svg" alt="Nordstrom" loading="lazy" style="height:16px">
+      <img src="/brands/ivy-park.svg" alt="Ivy Park by Beyoncé" loading="lazy">
+      <img src="/brands/neiman-marcus.svg" alt="Neiman Marcus" loading="lazy">
+      <img src="/brands/rejuvenation.png" alt="Rejuvenation" loading="lazy" style="height:17px">
+      <img src="/brands/lostine.avif" alt="Lostine Home" loading="lazy">
+      <img src="/brands/visual-comfort.webp" alt="Visual Comfort" loading="lazy" style="height:15px">
+      <img src="/brands/floor-decor.svg" alt="Floor &amp; Decor" loading="lazy" style="height:19px">
+      <img src="/brands/kingston-brass.webp" alt="Kingston Brass" loading="lazy" style="height:20px">
+      <img class="asis" src="/brands/dwr.jpg" alt="Design Within Reach" loading="lazy" style="height:23px">
+      <img src="/brands/vivir-homes.webp" alt="Vivir Homes" loading="lazy">
+      <span class="word">Haven</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fx-shelf">
+  <header class="sh-head"><span class="sh-lede">All work.</span><span class="sh-meta">Drag or scroll · 28 titles</span></header>
+  <div class="sh-rail">
+    <span class="sh-spine sh-end sh-on"><span class="sh-body"><span class="sh-pair"><span class="sh-title">Reckon House Staples</span></span></span></span>
+  </div>
+  <footer class="sh-foot">
+    <span>© 2026 Reckon House</span>
+    <span class="sh-newsline">Awwwards Honors, 2026 · Faux Reel released as an open repo</span>
+    <a href="#top">Top ↑</a>
+  </footer>
+</div>
+<script>
+(() => {
+  const root = document.querySelector(".fx-shelf");
+  if (!root) return;
+  const rail = root.querySelector(".sh-rail");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const P = [
+    ["Ivy Park by Beyoncé","Digital, brand launch","/case-studies/ivy-park","/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg"],
+    ["A.R.C.","App & brand","/case-studies/arc","/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg"],
+    ["Hill Country Kitchen","Interior design","/case-studies/hill-country-kitchen","/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg"],
+    ["Robert Rodriguez","Creative direction","/case-studies/robert-rodriguez","/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg"],
+    ["Nordstrom personalization","Design system","/case-studies/nordstrom-personalization","/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg"],
+    ["Jeffrey NYC","Ecommerce","/case-studies/jeffrey-ecommerce","/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg"],
+    ["Capitan Boot Co.","Branding","/case-studies/capitan-boot-co","/case-studies/hp/rhs-capitan-boot-co-branding.jpg"],
+    ["Jeffrey Spring","Creative direction","/case-studies/jeffrey-spring","/case-studies/hp/rhs-jeffrey-spring-campaign.jpg"],
+    ["Hill Country Bath","Interior design","/case-studies/hill-country-bath","/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg"],
+    ["Nordstrom beauty","Digital design","/case-studies/nordstrom-beauty","/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg"],
+    ["Hill Country Oakworks","Campaign, branding","/case-studies/hill-country-oak","/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg"],
+    ["Cosmo Prof","Digital design","/case-studies/cosmo-prof","/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg"],
+    ["Dallas Sport Collective","Website, app","/case-studies/dsc","/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg"],
+    ["Black & White Type","Typography","/case-studies/black-white-type","/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg"],
+    ["Hill Country Living","Interior design","/case-studies/hill-country-living","/case-studies/hp/rhs-interior-design-livingroom-interior.jpg"],
+    ["J. Christianson","Brand development","/case-studies/j-christianson","/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg"],
+    ["Amber Shockey & Co.","Tableware, branding","/case-studies/amber-shockey-co","/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg"],
+    ["You By Sally","Brand campaign","/case-studies/you-by-sally","/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg"],
+    ["Sally Marketing OS","Product, engineering","/case-studies/sally","/case-studies/sally-os/heroes/sally-os-platform-hero.jpg"],
+    ["The Fairview","Interior design","/case-studies/fairview-sitting","/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg"],
+    ["Floor & Decor","Interiors feature","/case-studies/floor-and-decor","/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg"],
+    ["The Fairview Suite","Interior design","/case-studies/fairview-suite","/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg"],
+    ["Nordstrom framework","Content direction","/case-studies/nordstrom-framework","/case-studies/hp/rhs-nordstrom-framework-content-design.jpg"],
+    ["Loved by Nordstrom","Brand campaign","/case-studies/loved-by-nordstrom","/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg"],
+    ["Mountain View","Interior remodel","/case-studies/chalet","/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg"],
+    ["Neiman Marcus","Editorial direction","/case-studies/neiman-marcus","/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg"],
+    ["West Texas","Photography","/case-studies/big-bend","/case-studies/big-bend/hero.jpg"],
+    ["Faux Reel","Product, motion","/case-studies/sizzle","/images/thumbnails/sizzle.jpg"],
+  ];
+  const pad = (n) => (n < 10 ? "0" + n : "" + n);
+
+  // Type runs inverse to name length, and deliberately does NOT normalize
+  // extent: short names go big AND stay short. Since every title is anchored
+  // to the same baseline above its thumbnail, that length difference IS the
+  // stagger. An earlier pass hand-set offsets and had to clamp them when long
+  // titles fell off the shelf; bottom-anchoring makes both unnecessary.
+  P.forEach((p, i) => {
+    const fs = Math.max(25, Math.min(64, Math.round(400 / p[0].length)));
+    const a = document.createElement("a");
+    a.className = "sh-spine";
+    a.href = p[2];
+    a.style.setProperty("--fs", fs + "px");
+    a.innerHTML =
+      '<span class="sh-body"><span class="sh-num">' + pad(i + 1) + '</span>' +
+      '<span class="sh-pair"><span class="sh-title">' + p[0] +
+      '</span><span class="sh-cat">' + p[1] + '</span></span></span>' +
+      '<img class="sh-thumb" src="' + p[3] + '" alt="" loading="lazy">';
+    rail.appendChild(a);
+  });
+  // Contact moved up into the masthead, so the rail closes on the archive
+  // instead. A rail that simply stops reads as truncated.
+  const tail = document.createElement("a");
+  tail.className = "sh-spine sh-end";
+  tail.href = "/";
+  tail.innerHTML =
+    '<span class="sh-body"><span class="sh-pair">' +
+    '<span class="sh-title">All work →</span></span></span>';
+  rail.appendChild(tail);
+
+  // Two-stage reveal. A rail-rooted observer fires the moment a spine's box
+  // crosses the rail viewport, even while the section is still below the page
+  // fold, so the opening screenful would be spent before anyone arrived.
+  // Wait for the SECTION, walk the spines already in view one at a time, then
+  // hand the rest to the rail observer for scroll-triggered reveals.
+  if (reduce) {
+    rail.querySelectorAll(".sh-spine").forEach((s) => s.classList.add("sh-on"));
+  } else {
+    const pageIO = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      pageIO.disconnect();
+      const pending = [...rail.querySelectorAll(".sh-spine:not(.sh-on)")];
+      const L = rail.scrollLeft, Rt = L + rail.clientWidth;
+      const inView = (el) => el.offsetLeft + el.offsetWidth > L && el.offsetLeft < Rt;
+      const opening = pending.filter(inView);
+      const rest = pending.filter((el) => !inView(el));
+      opening.forEach((s, i) =>
+        setTimeout(() => s.classList.add("sh-on"), 140 + i * 130));
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add("sh-on"); io.unobserve(e.target); }
+        });
+      }, { root: rail, threshold: 0.35 });
+      rest.forEach((s) => io.observe(s));
+    }, { threshold: 0.25 });
+    pageIO.observe(root);
+  }
+
+  // Drag to travel. Links still click: a drag under 6px is a click.
+  let down = null, moved = 0;
+  rail.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse") return;
+    down = { x: e.clientX, left: rail.scrollLeft }; moved = 0;
+    rail.classList.add("sh-drag");
+  });
+  addEventListener("pointermove", (e) => {
+    if (!down) return;
+    const dx = e.clientX - down.x;
+    moved = Math.max(moved, Math.abs(dx));
+    rail.scrollLeft = down.left - dx;
+  });
+  addEventListener("pointerup", () => { down = null; rail.classList.remove("sh-drag"); });
+  rail.addEventListener("click", (e) => {
+    if (moved > 6) { e.preventDefault(); moved = 0; }
+  }, true);
+
+  // Vertical wheel drives the shelf while it can still move; at either end the
+  // event passes through untouched so the page never gets trapped.
+  rail.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const max = rail.scrollWidth - rail.clientWidth;
+    const canGo = e.deltaY > 0 ? rail.scrollLeft < max - 1 : rail.scrollLeft > 1;
+    if (!canGo) return;
+    e.preventDefault();
+    rail.scrollLeft += e.deltaY;
+  }, { passive: false });
+})();
+</script>
+</section>
+
+</body>
+</html>

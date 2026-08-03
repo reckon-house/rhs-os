@@ -1,0 +1,3463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pressing C — Robert Rodriguez, Swiss</title>
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     PRESSING C — stark Swiss. Same rule as the editorial pressing:
+     every word and image comes verbatim from
+     src/data/robert-rodriguez-case-study.ts. The photography is
+     desaturated BY THE SKIN — the color is still in the files.
+     ──────────────────────────────────────────────────────────────── */
+  :root {
+    --paper: #FFFFFF;
+    --ink: #000000;
+    --hair: rgba(0,0,0,0.9);
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* One label, one note. Every small treatment on the page resolves to
+       one of these two. There were eighteen — the same eyebrow rendered at
+       8, 8.5, 9, 9.5 and 10px with nine different trackings across two
+       families. That variety is not a system, it just reads as one. What
+       hierarchy the small type needs comes from opacity and position. */
+    --lbl: 10px;
+    --lbl-track: 0.14em;
+    --lbl-weight: 500;
+    --note: 12.5px;
+    --cap: 11px;        /* the footnote under a picture, not a marker on it */
+    --r: 16px;          /* the modern note against the Swiss grid */
+    --nav: 54px;
+    --sampleH: 208px;
+    --slab: "Archer", "Rockwell", Georgia, serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--paper); }
+  body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  /* ── masthead ──────────────────────────────────────────────────────
+     Sticky, opaque, hairline under it. Everything runs beneath — which is
+     why it needs a solid ground rather than a blend: photography passing
+     under a transparent bar turns the wordmark to soup. */
+  #nav {
+    position: sticky; top: 0; z-index: 60;
+    height: var(--nav); display: flex; align-items: center;
+    justify-content: space-between; gap: 24px;
+    padding: 0 40px;
+    font-size: var(--lbl); letter-spacing: var(--lbl-track);
+    text-transform: uppercase; font-weight: var(--lbl-weight);
+  }
+  /* The burn sits BEHIND the wordmark and links. Over flat cream a
+     saturate/contrast pump has nothing to act on, so it is invisible; over
+     photography it goes off. That asymmetry is the whole effect.
+
+     It is a pill rather than a full-width bar: --nav-overhang is how far it
+     reaches past the outermost characters. space-between parks the wordmark
+     and the meta exactly on the 40px padding edges, so the pill's inset is
+     that gutter minus the overhang. backdrop-filter clips to the border-box,
+     radius included, so the burn becomes a floating lens instead of a band. */
+  #nav { --nav-overhang: 18px; --nav-gutter: 40px; }
+  #navBurn {
+    position: absolute; pointer-events: none; z-index: 0;
+    left: calc(var(--nav-gutter) - var(--nav-overhang));
+    right: calc(var(--nav-gutter) - var(--nav-overhang));
+    top: 5px; bottom: 5px;
+    border-radius: 999px;
+  }
+  #navBurn {
+    backdrop-filter: url(#navMelt) blur(0px) saturate(1) contrast(1);
+    -webkit-backdrop-filter: blur(0px) saturate(1) contrast(1);
+    background: rgba(243, 240, 237, 0.05);
+  }
+  #nav .mark, #nav .links, #nav .meta { position: relative; z-index: 1; }
+  #nav a { color: inherit; text-decoration: none; }
+  #nav a:hover { opacity: 0.45; }
+  #nav .links { display: flex; gap: clamp(14px, 2vw, 30px); }
+  #nav .links a.on { font-weight: 700; }
+  /* A link now, not a caption. `#nav a { color: inherit }` sits later in the
+     cascade and would pull it to full ink, so this has to re-state the grey
+     and win on specificity. */
+  #nav a.meta, #nav .meta { color: rgba(0,0,0,0.42); text-decoration: none; }
+  #nav a.meta:hover { color: var(--ink); opacity: 1; }
+  /* Reversed over dark ground. mix-blend-mode would be the tidier answer but
+     cannot work here: `position: sticky` makes #nav its own stacking context,
+     so a blended child composites against the nav's empty backdrop instead of
+     the page and the type just stays white. Toggled by a driver against
+     declared dark zones instead. The transition is what keeps the handover
+     from reading as a flicker at the boundary. */
+  #nav .mark, #nav .links a, #nav .meta { transition: color 0.28s ease; }
+  #nav.nav-rev { color: var(--paper); }
+  #nav.nav-rev a.meta, #nav.nav-rev .meta { color: rgba(255,255,255,0.5); }
+  #nav.nav-rev a.meta:hover { color: var(--paper); }
+  @media (max-width: 720px) { #nav .meta { display: none; } }
+
+  .screen { min-height: calc(100vh - var(--nav)); position: relative;
+    padding: 48px 40px; overflow: hidden; }
+
+  /* .tiny and .mono differed by half a pixel and a typeface. They are one
+     label now; both class names stay because the markup uses each in
+     different places. */
+  .tiny, .mono { font-family: var(--sans); font-size: var(--lbl);
+    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight);
+    text-transform: uppercase; line-height: 1.8; }
+
+  /* A caption is running text, not a marker. Same family, but set like the
+     sentence it already is in the markup: no forced caps, no tracking, book
+     weight, and stepped back with opacity instead of shrunk. The label
+     treatment was making every photo credit announce itself like a section
+     header — right role, wrong voice. */
+  /* .mono sits on some figcaptions and inside others, so both cases are
+     listed — a bare `figcaption` loses to `.mono` on specificity. */
+  figcaption, figcaption.mono, figcaption.tiny,
+  figcaption .mono, figcaption .tiny {
+    font-size: var(--cap); font-weight: 400;
+    letter-spacing: normal; text-transform: none; line-height: 1.5; }
+  figcaption { opacity: 0.55; }
+  .slabel { position: absolute; top: 76px; left: 40px; }
+  /* Starts below the reel block and runs to the lower corner NEIMAN'S
+     never reaches. */
+  .edge-v { position: absolute; right: 40px; top: 356px; bottom: 48px;
+    writing-mode: vertical-rl; }
+
+  /* Photography runs full color — the work is the work. The starkness
+     lives in the type and the space around the plates, not on top of them. */
+  .bw { }
+
+  /* ── 01 cover ── */
+  .cover h1 {
+    position: absolute; left: 40px; bottom: 28px;   /* the mat is gone; nothing to ride */
+    font-size: clamp(84px, 13.5vw, 205px); line-height: 0.84;
+    letter-spacing: -0.045em; font-weight: 700; text-transform: uppercase;
+  }
+  /* DIRECT children only. The reveal driver nests word and character spans
+     inside each line, and an unscoped `span { display: block }` turned every
+     character into its own line — the headline came out set vertically. */
+  .cover h1 > span { display: block; }
+  .cover h1 .x { font-weight: 300; }
+  /* No fixed height — the caption sits in normal flow under the reel, so it
+     rides up and down as the box changes shape. It transitions along with
+     the box for free, since the height animation is what moves it.
+     The collision that forced this to be pinned earlier is handled by the
+     narrower thumb plus the vertical spec line starting at 400px: the
+     caption's lowest reach is ~370px. */
+  .cover .plate-thumb { position: absolute; top: 64px; right: 40px;
+    width: clamp(110px, 12vw, 170px); }
+  .cover .plate-thumb figcaption { margin-top: 8px; }
+
+  /* The preview reel. The BOX owns the shape: its height is re-set on every
+     beat to match that frame's native ratio, so the thumbnail morphs between
+     portrait and landscape as the reel cuts. Transitioning height (rather
+     than aspect-ratio) keeps it animating everywhere.
+
+     The component writes `aspect-ratio` inline on itself, so the override
+     needs !important — that is the one case where an author rule outranks an
+     inline style. Without it the box and the stage fight over the shape. */
+  .reel-box {
+    width: 100%; height: 147px; overflow: hidden;
+    border-radius: calc(var(--r) * 0.75);
+    transition: height 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reel-box sizzle-reel {
+    display: block; width: 100%; height: 100%;
+    aspect-ratio: auto !important;
+  }
+
+  /* ── 02 statement — now the second half of the pinned cover ────
+     The wrap's extra height IS the length of the handover; the sticky screen
+     holds still while the headline unbuilds and this rises in. */
+  .coverwrap { height: 210vh; position: relative; }
+  /* Below the nav, not behind it. .screen is min-height: calc(100vh - --nav)
+     and sat in flow after the sticky nav; a 100vh sticky at top:0 hangs a
+     nav's worth past the fold and drops the bottom-anchored headline off
+     the bottom of the screen. */
+  .cover-sticky { position: sticky; top: var(--nav);
+    height: calc(100vh - var(--nav)); min-height: 0; }
+  .cover-statement {
+    position: absolute; top: 22vh; left: 40px;
+    font-size: clamp(24px, 3.2vw, 44px); line-height: 1.18; letter-spacing: -0.02em;
+    font-weight: 500; max-width: 21em;
+    z-index: 2;                       /* rides OVER the headline, not under */
+    transform: translateY(86vh); will-change: transform;
+  }
+  /* The driver splits the statement into words so it can group them into
+     rendered lines and move each line on its own clock. Inline-block is what
+     makes a word transformable without disturbing its neighbours. */
+  .cover-statement .cs-w { display: inline-block; will-change: transform; }
+  .cover-idx { position: absolute; bottom: 48px; right: 40px; opacity: 0; }
+  /* The headline's lines each sit in their own overflow-hidden mask already
+     (.rln, from the reveal). Sliding the inner wrapper back down inside that
+     mask is the exact reverse of the entrance — no second mechanism. */
+  .cover h1 { z-index: 1; }
+  .cover h1 .rlnI { will-change: transform; }
+
+  /* ── 03 image as object ── */
+  .object { display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto; column-gap: 40px; align-items: center; }
+  .object figure { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+  /* No object-fit crop and no fixed height — the plate shows the WHOLE frame
+     at its native aspect. Cropping here was throwing away the composite
+     before the zoom even began. */
+  .object img { width: 100%; height: auto; display: block; }
+  .object .left { grid-column: 1; grid-row: 2; padding-bottom: 4px; }
+  /* The black numeral sits ABOVE the burn and is masked by the plate's own
+     rectangle, rewritten per frame by the zoom driver. So it is knocked out
+     exactly where the image has arrived and left solid everywhere else — the
+     transition edge IS the plate edge, to the pixel. No opacity involved:
+     fading it globally made it vanish over hundreds of pixels of scroll while
+     still sitting on cream, and switching it made it blink. */
+  .object .num { grid-column: 1; grid-row: 1; align-self: end;
+    position: relative; z-index: 34;
+    font-size: clamp(60px, 8vw, 120px); font-weight: 700;
+    letter-spacing: -0.04em; color: var(--ink);
+    mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat;
+    mask-composite: add; -webkit-mask-composite: source-over; }
+  /* The numerals melt whatever slides under them. This layer is masked to
+     the glyph shapes by the driver and sits between the plate (z 30) and
+     the numeral itself (z 35): the visible number keeps its difference
+     blend and stays legible, while its letterforms act as the lens.
+     It must NOT live inside .left — that carries mix-blend-mode, and a
+     backdrop-filter nested in a blend group composites against the group
+     rather than the page. */
+  /* Always on, never faded. Its visibility is self-limiting: a saturate and
+     contrast pump over flat cream produces nothing, and over the plate it
+     burns. That is what makes the reveal per-pixel for free.
+
+     One filter for every ink target, captions included. At 9.5px the melt
+     dissolves the letterforms and a saturate pump cannot manufacture
+     contrast on a pale backdrop, so the captions are NOT readable once the
+     image reaches them. That is deliberate — chosen for the look over the
+     legibility. An invert()-led filter keeps them readable if that trade
+     ever needs reversing. */
+  .num-burn { position: absolute; z-index: 32; pointer-events: none;
+    backdrop-filter: url(#numMelt) blur(0.6px) saturate(4.6) contrast(2.2);
+    -webkit-backdrop-filter: blur(0.6px) saturate(4.6) contrast(2.2); }
+
+  /* ── 03b the zoom ─────────────────────────────────────────────────
+     The screen inside is sticky at 100vh; the wrap's extra height is how
+     long the plate stays pinned. That height is set by JS, because it has
+     to cover two phases: growing the plate to the mat's width, and then
+     panning down through whatever hangs below the fold. Fallback below is
+     only for the first frame before measurement. */
+  .zoomwrap { height: 320vh; position: relative; }
+  /* The explicit background is load-bearing: `position: sticky` opens a new
+     stacking context, and the caption's difference blend composites against
+     whatever is painted INSIDE it. With no background the backdrop is
+     transparent, white-on-nothing stays white, and the type vanishes. */
+  .zoom-sticky { position: sticky; top: 0; min-height: 0; height: 100vh;
+    background: var(--paper); }
+  /* Anchored top-center: the plate's top edge rides to the mat's top and
+     stays there while the body grows downward — the subject's face never
+     leaves the screen. The cover-overflow hangs below and gets clipped. */
+  /* No z-index. Any z-index on .left would open a stacking context, and a
+     blended child inside one composites against THAT context's backdrop —
+     empty — instead of the page, which turned the captions pure white.
+     Painting order does the job instead: .left now comes after the figure
+     in the markup, so it lands on top without isolating anything. */
+  .zoom-fig { will-change: transform; transform-origin: 50% 0;
+    position: relative; overflow: hidden;
+    /* Starting value only. The driver rewrites it per frame, easing the
+       corner to 0 as the plate grows edge to edge. */
+    border-radius: var(--r); }
+  /* The caption stays put and the plate travels UNDER it. Same trick as the
+     site's asterisk cursor: white type on `difference` renders black against
+     the white page, then inverts itself against whatever slides beneath —
+     so the text stays legible over every part of the photograph and you can
+     watch it flip as the image arrives. z-index sits above the plate (30). */
+  /* The captions get the same treatment as the numeral: plain ink, knocked
+     out over the plate's rect, with a burn behind them. No mix-blend-mode
+     anywhere now, which is why a z-index here is finally safe — it was the
+     blending that could not survive a stacking context. */
+  .object .left { position: relative; z-index: 34; }
+  .object .left p { color: var(--ink);
+    mask-repeat: no-repeat; -webkit-mask-repeat: no-repeat;
+    mask-composite: add; -webkit-mask-composite: source-over; }
+  .object .left p.mono { color: rgba(0,0,0,0.45); }
+
+  /* ── 04 the brief — scale jump ── */
+  .brief h2 {
+    font-size: clamp(48px, 7.4vw, 118px); line-height: 0.93; letter-spacing: -0.04em;
+    font-weight: 700; text-transform: uppercase;
+    /* 9em is the measure; 100% is the track. Whichever is smaller wins, so
+       the headline always wraps INSIDE column 1 — it can neither overflow
+       into the column beside it nor lose its ends to the reveal mask's
+       overflow: hidden. Below ~1100px the track is the binding one. */
+    max-width: min(9em, 100%);
+    margin-top: 10vh;
+  }
+  /* the violated grid line — one word steps out of the block */
+  .brief h2 .out { margin-left: 1.2em; display: block; }
+  /* A real grid now, not an absolutely-positioned corner. The column carries
+     the method blocks too, so it has to be able to run taller than the screen
+     and let the section grow with it. */
+  /* minmax(0, …) on track 1, not a bare 1fr. The headline's reveal wraps each
+     line in a nowrap span, so once it has been split its min-content becomes
+     its widest LINE — which a bare 1fr honours by growing the track past its
+     fr share. The grid then overflows and column 2 is pushed off the page
+     gutter (Brief by 20px, Closing by 59px). Clamping the minimum to 0 pins
+     track 1 to the leftover width, so the splitter measures the headline at
+     its final width and every column lands on the same right-hand rule. */
+  .brief { display: grid; grid-template-columns: minmax(0, 1fr) min(380px, 40vw);
+    column-gap: clamp(28px, 5vw, 78px); align-items: start;
+    /* Rows hug their content. Without this a fixed-height .brief (the
+       deployment pin) stretches its rows to fill, and the 11px label row was
+       being handed 133px — space the headline and column then had to fight
+       over inside a 100vh box. */
+    align-content: start; }
+  /* .screen sets overflow: hidden, which makes it a scroll container and
+     silently kills sticky for anything inside it. The pin needs this one
+     section to opt out. */
+  .brief { overflow: visible; }
+  .brief > .mono { grid-column: 1 / -1; grid-row: 1; }
+  /* Headline and column share row 2 so they can occupy the same vertical
+     band: the row is as tall as the column, which is the travel the pinned
+     headline needs. In separate rows they could never overlap and the
+     headline would have nothing to stick through.
+     Sticky releases when its containing block's bottom arrives — and that
+     block is this row, whose bottom IS the column's bottom. So "the column's
+     bottom meets the headline's bottom" is the natural release, not a
+     threshold anyone has to compute. */
+  .brief h2 { grid-column: 1; grid-row: 2; align-self: start; }
+  /* OPT-IN. Add `pin` to a .brief section and its headline holds while the
+     column travels up beside it; leave it off and the section scrolls
+     normally. Worth having as a switch rather than a default: the hold only
+     earns its keep when the column is long enough to be worth reading against
+     a held headline. On a two-paragraph column it just delays the page.
+     Never add it to the deployment section — that one is already inside its
+     own .h-sticky pin with the headline driven horizontally across it, and a
+     second sticky on the same element fights that driver. */
+  .brief.pin h2 {
+    position: sticky; top: calc(var(--nav) + clamp(16px, 4vh, 54px)); }
+  /* The crossing headline lives in a 100vh pin, so its column has to fit
+     underneath inside that fixed box. 10vh of lead-in is what the growing
+     sections can afford; this one cannot. */
+  .brief.h-sticky h2 { margin-top: clamp(8px, 2.5vh, 34px); }
+  /* margin-top is written by the driver: it is the headline's measured
+     height, so the column starts just under it. The headline rewraps at
+     every breakpoint, so a fixed value drifts out of register. */
+  .brief .col { grid-column: 2; grid-row: 2; position: static; width: auto;
+    font-size: var(--note); line-height: 1.55; padding-bottom: 4vh; }
+  .brief .col p + p { margin-top: 10px; }
+
+  /* ── the crossing headline ───────────────────────────────────────
+     Same pin as the zoom: the wrap's extra height IS the duration of the
+     horizontal move. While the line travels, vertical scroll is being
+     spent sideways; when it lands, the sticky releases and the page
+     carries on down. */
+  .hwrap { height: 220vh; position: relative; }
+  .h-sticky { position: sticky; top: 0; min-height: 0; height: 100vh;
+    background: var(--paper); }
+  /* Lines are explicit rather than wrapped, so each one can carry its own
+     transform. Fixed breaks are what you want on a display headline anyway. */
+  #hHead .ln { display: block; will-change: transform; }
+  #hHead .ind { margin-left: 1.2em; }
+  /* No initial clip in CSS on purpose: if the driver never runs, the copy
+     must still be readable. JS applies the starting mask itself. */
+  #hCol p { will-change: clip-path; }
+
+  /* ── headline reveal ─────────────────────────────────────────────
+     Letters rise out of each line's own mask, with the nav's melt decaying
+     across the arrival. Classes are r-prefixed because .ln is already the
+     crossing headline's line class and means something different there. */
+  .rln { display: block; overflow: hidden;
+    padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  /* filter lives on the inner wrapper — on .rln it would warp the mask edge */
+  .rlnI { display: block; }
+  /* per-character inline-block loses word boundaries; .rwd restores them */
+  .rwd { display: inline-block; white-space: nowrap; }
+  /* The base rule carries a transition too, so the RETREAT animates. With it
+     only on the .go state, dropping that class snapped the characters back to
+     110% in a single frame — the blink. Quicker out than in: a slow retreat
+     of something the reader is leaving behind feels like lag. */
+  .rch { display: inline-block; transform: translateY(110%);
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.7, 1) var(--d); }
+  [data-reveal].go .rch { transform: none;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--d); }
+  @media (prefers-reduced-motion: reduce) {
+    .rch { transform: none !important; transition: none !important; }
+  }
+
+  /* ── 05 columns ── */
+  .cols { margin-top: clamp(34px, 5vh, 62px); }
+  .cols-label { display: block; margin-bottom: clamp(18px, 2.4vh, 28px);
+    color: rgba(0,0,0,0.42); }
+  /* Stacked, not three abreast — it lives inside the brief's column now. */
+  .cols .grid { display: grid; grid-template-columns: 1fr;
+    gap: clamp(26px, 3.4vh, 40px); }
+  /* The rule is a pseudo-element, not a border, so it can be drawn. padding
+     absorbs the 6px the border used to contribute, and the -3px margin that
+     straddled the old hairline goes with the hairline. */
+  .cols .c { position: relative; padding-top: 20px; }
+  /* Pill ends. Drawn with clip-path rather than scaleX: scaling the box
+     squashes the border-radius horizontally, so mid-draw the round ends
+     flatten into ellipses. An inset clip leaves the bar's own geometry alone
+     and just uncovers it, and the `round` on the clip gives the leading edge
+     a cap as it travels instead of a hard cut. */
+  .cols .c::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: var(--ink); border-radius: 999px;
+    clip-path: inset(0 100% 0 0 round 999px);
+    will-change: clip-path;
+  }
+  /* Drawn on entry, one rule at a time — each delay clears the one before it
+     rather than overlapping, so you read three separate marks being made
+     instead of a bar arriving in three pieces.
+
+     The curve travels at a fairly even rate and decelerates only near the
+     end. An expo-out (0.16,1,0.3,1) puts ~90% of the travel in the first
+     third whatever the duration, so lengthening it just adds a longer pause
+     at full width — the draw itself never slows down. */
+  .cols.drawn .c::before {
+    clip-path: inset(0 0 0 0 round 999px);
+    transition: clip-path 1.15s cubic-bezier(0.2, 0.55, 0.2, 1) var(--rd, 0ms);
+  }
+  .cols .c:nth-child(2)::before { --rd: 1.2s; }
+  .cols .c:nth-child(3)::before { --rd: 2.4s; }
+  @media (prefers-reduced-motion: reduce) {
+    .cols .c::before { clip-path: inset(0 0 0 0 round 999px); transition: none; }
+  }
+  .cols .c .n { font-weight: 700; font-size: 13px; margin-bottom: 14px; }
+  .cols .c h3 { font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; display: inline; }
+  .cols .c p { font-size: var(--note); line-height: 1.55; margin-top: 10px; }
+
+  /* ── full-screen plates ─────────────────────────────────────────
+     Inset to the mat rather than truly bleeding, so the rounded corner
+     survives and the frame still reads as the containing window.
+     `isolation` keeps the difference-blended tags compositing against the
+     photograph and nothing beyond it. */
+  /* Padding is 0 because the INSET is produced by the scale, exactly as the
+     live HeroBlock does it: the plate rests at 0.82 with a 60px radius and
+     grows to full bleed with square corners as it reaches the top. */
+  /* No fixed height and no cover-crop: the section hugs the image and the
+     image keeps its own ratio. Forcing these into a viewport-tall box was
+     cropping the composites — the exact thing the plates exist to show. */
+  .plate-full { padding: 0; min-height: 0; display: block; isolation: isolate; }
+  .plate-full img { width: 100%; height: auto; display: block;
+    transform-origin: center center; will-change: transform, border-radius;
+    transform: scale(0.95); border-radius: 44px; }
+
+  /* ── artwork plates — the typography and palette boards are design
+     artefacts, so they show WHOLE. No cover-crop. ── */
+  .art { padding-top: 13vh; }
+  .art .row { display: grid; grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(24px, 4vw, 60px); align-items: start; }
+  /* Capped by HEIGHT with width auto, so each board keeps its own ratio and
+     the pair ends up different widths — honest to the artwork, and it stops
+     the taller square board from pushing the footnote past the mat. */
+  .art img { max-height: 54vh; width: auto; max-width: 100%; height: auto;
+    display: block; border-radius: var(--r); }
+  .art figcaption { margin-top: 8px; }
+
+  /* ── the system index ───────────────────────────────────────────
+     No icons, no counts — just the label and a live sample of the thing
+     it names. The stagger is what keeps a list of three from reading as
+     a table. Each sample carries a small caption naming its current
+     state, which is the only text that moves. */
+  .index { padding-top: 12vh; }
+  /* Full-width hairlines with staggered content: the rule spans the measure
+     so it reads as an index, the indent keeps it from reading as a table. */
+  /* Pseudo-elements rather than borders, for the same reason as the method
+     rules: a border cannot be drawn across. The first row carries two — the
+     index opens with a rule above it as well as below. */
+  .irow-wrap { position: relative; }
+  .irow-wrap::after, .irow-wrap:first-of-type::before {
+    content: ""; position: absolute; left: 0; width: 100%; height: 1px;
+    background: rgba(0,0,0,0.14);
+    transform: scaleX(0); transform-origin: left center; will-change: transform;
+  }
+  .irow-wrap::after { bottom: 0; }
+  .irow-wrap:first-of-type::before { top: 0; }
+  /* One at a time, top to bottom, at the method section's pace. */
+  .index.drawn .irow-wrap::after,
+  .index.drawn .irow-wrap:first-of-type::before {
+    transform: scaleX(1);
+    transition: transform 1.15s cubic-bezier(0.2, 0.55, 0.2, 1) var(--rd, 0ms);
+  }
+  .irow-wrap:nth-of-type(1)::after { --rd: 1.2s; }
+  .irow-wrap:nth-of-type(2)::after { --rd: 2.4s; }
+  .irow-wrap:nth-of-type(3)::after { --rd: 3.6s; }
+  @media (prefers-reduced-motion: reduce) {
+    .irow-wrap::after, .irow-wrap:first-of-type::before {
+      transform: scaleX(1); transition: none;
+    }
+  }
+
+  .irow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: clamp(16px, 2.6vw, 46px);
+    margin-left: var(--indent, 0);
+    padding: clamp(10px, 2.2vh, 30px) 0;
+    font-size: clamp(38px, 6.4vw, 96px); line-height: 1;
+    font-weight: 700; letter-spacing: -0.04em; text-transform: uppercase;
+  }
+  /* Fixed height, content centred. The reel re-shapes every beat — without
+     a reserved box that height change reflows the whole row, and the section
+     visibly jumps as portrait frames come and go. */
+  .irow .sample { flex: 0 0 auto; position: relative; display: grid;
+    place-items: center; height: var(--sampleH); }
+  /* Inside the reserved box. At -2.1em these hung below the sample and
+     landed directly on the row's hairline. */
+  .irow .cap {
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 2px;
+    white-space: nowrap; font-family: var(--sans); font-size: var(--lbl);
+    letter-spacing: var(--lbl-track); text-transform: uppercase;
+    font-weight: var(--lbl-weight);
+    color: rgba(0,0,0,0.5); transition: opacity 0.26s ease;
+  }
+  /* logotype — the real mark: caps overlapped hard enough to interlock,
+     with the lowercase nested into the lower right. Composition lives in
+     the viewBox (see the driver) so CSS only has to scale the whole thing;
+     the two words have to share one coordinate space to overlap at all. */
+  .lock-sample { width: auto; }
+  .lock-sample .lk { display: block; }
+  .lock-sample svg { display: block; width: auto; overflow: visible; }
+  /* One box now: the two words overlap, so the composition is set inside
+     the viewBox and this only scales it. */
+  #lkSvg { height: clamp(52px, 8vw, 120px); }
+  .lock-sample .fb { font-size: 0.5em; line-height: 0.98;
+    font-family: var(--slab); font-weight: 400; letter-spacing: 0.04em; }
+  /* palette */
+  /* The swatch is an outline now, not a box — shape and colour are both
+     interpolated per frame so they arrive together. */
+  .swatch { width: clamp(64px, 7.6vw, 124px); aspect-ratio: 1 / 1; display: block; }
+  /* motion */
+  .irow .reel-box { width: clamp(68px, 8vw, 130px); height: 100px; }
+
+
+  /* ── closing ── */
+  /* In the column, under the copy. Anchored to the bottom of the screen it
+     collided with the headline, which grows with the viewport while the
+     lists stayed pinned — 15px of overlap at 1600px wide. Sitting in flow
+     under the paragraphs the collision cannot happen at any width. */
+  .closing .lists { margin-top: 26px; padding-top: 18px;
+    border-top: 1px solid rgba(0,0,0,0.16);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+  .closing .lists > div:last-child { grid-column: 1 / -1; }
+  .closing .lists .h { font-weight: 700; margin-bottom: 8px; }
+
+  /* ── 06 plates ── */
+  .plates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    padding: 48px 40px; }
+  .plates figure { position: relative; }
+  /* Each frame takes its ratio from the source file at runtime, so the box
+     is always exactly the photograph's shape — the old hardcoded 4/5 was
+     eating 17% off the top and bottom (the heels, the top of the hair).
+     --bleed is the ONLY crop, and it is the track the parallax runs on: the
+     image is that much taller than its frame and slides the difference as
+     the plate crosses the viewport. Across the scroll the whole frame gets
+     seen; at any single instant you see (100 - bleed)% of it. Set --bleed
+     to 0 and the plates go back to full-frame and stop moving — a still
+     image cannot travel inside a box that exactly fits it. */
+  .plates { --bleed: 10%; }
+  .plates .frame { display: block; position: relative; overflow: hidden;
+    border-radius: var(--r); }
+  .plates .frame img { position: absolute; inset: 0; width: 100%;
+    height: calc(100% + var(--bleed)); object-fit: cover; display: block;
+    will-change: transform; }
+  @media (prefers-reduced-motion: reduce) { .plates { --bleed: 0%; } }
+  .plates figcaption { display: flex; justify-content: space-between; margin-top: 8px; }
+
+  /* ── 07 quote poster ───────────────────────────────────────────────
+     Two big headlines back to back ran together, so this one gets its own
+     ground: a black panel rises through the pinned screen and the type
+     knocks out against it. The inversion is free — white type on
+     `difference` computes to black over white and white over black, so
+     each line flips exactly as the edge passes it. `isolation` keeps that
+     blend composited against the fill and nothing further back. */
+  .qwrap { height: 240vh; position: relative; }
+  .q-sticky { position: sticky; top: 0; height: 100vh; min-height: 0;
+    background: var(--paper); isolation: isolate; }
+  .qfill { position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+    background: var(--ink); z-index: 0; will-change: height; }
+  .quote p, .quote .idx { position: relative; z-index: 2;
+    mix-blend-mode: difference; color: #fff; }
+  .quote { display: grid; place-items: center; }
+  .quote p {
+    font-size: clamp(44px, 6.6vw, 104px); line-height: 0.96; letter-spacing: -0.04em;
+    font-weight: 700; text-transform: uppercase; max-width: 10em;
+  }
+  .quote p .indent { margin-left: 2.4em; display: block; }
+  .quote .idx { position: absolute; top: 48px; left: 40px; }
+
+  /* ── 08a the masthead — everything that is not the work ────────────
+     The shelf is one section of the footer, not the footer. This carries the
+     things a visitor actually needs: how to reach him, what he does, who has
+     run the work. Same ink ground as the shelf so the two read as one slab
+     flipping over at the end of the page. */
+  .fx-mast { --mt-gap: clamp(22px, 3.4vw, 54px);
+  background: var(--ink); color: var(--paper); font-family: var(--sans);
+    border-radius: var(--r) var(--r) 0 0; }
+  
+  /* The ask, and the form under it. */
+  /* The two beats inherit .brief wholesale — grid, pin, measured column drop.
+     Only the ink treatment and the headline scale are restated here. */
+  /* No horizontal padding here or on .fx-mast. The beats are .screen sections,
+     so they already carry the page gutter — the same 40px every case-study
+     section uses. Restating it on the wrapper double-inset the whole footer and
+     walked both columns 40px left of the ones above them. */
+  .fx-mast .mt-beat { background: var(--ink); color: var(--paper); }
+  .fx-mast .mt-beat > .mono { color: rgba(255,255,255,0.45); }
+  .fx-mast .mt-beat h2 { font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
+    letter-spacing: -0.03em; font-weight: 700; text-transform: none;
+    max-width: 11em; margin-top: clamp(24px, 5vh, 70px); }
+  .fx-mast .mt-beat h2 .l2 { margin-left: 1.2em; }
+  .fx-mast .mt-beat h2 .lt { font-weight: 300; }
+
+  /* The beats are sized by JS so that a beat still fills the screen at the
+     moment its column finishes — see the placement driver. Nothing here
+     needs to hide a headline: once the section's bottom reaches the fold
+     exactly as the two bottoms meet, the headline and column simply travel
+     out together and the next beat follows them in. */
+  /* Breathing room goes on the SECTION, never on the column. Trailing padding
+     inside the column extends its box below its visible content, and since
+     sticky releases at the box edge the headline then let go ~99px after the
+     copy had already ended — a constant, measurable drift. The section's own
+     padding sits outside the grid row, so it cannot move the release. */
+  .fx-mast .mt-beat { padding-bottom: clamp(40px, 10vh, 130px); }
+  .fx-mast .mt-say { font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
+    letter-spacing: -0.03em; font-weight: 700; max-width: 11em; margin: 0 0 30px; }
+  .fx-mast .mt-say .lt { font-weight: 300; }
+  .fx-mast .mt-form { display: grid; gap: 16px; max-width: 30em; }
+  .fx-mast .mt-field { display: grid; gap: 6px; }
+  .fx-mast .mt-field label { font-size: var(--lbl);
+    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight); text-transform: uppercase; opacity: 0.45; }
+  .fx-mast .mt-field input, .fx-mast .mt-field textarea {
+    background: none; border: 0; border-bottom: 1px solid rgba(255,255,255,0.28);
+    color: var(--paper); font-family: var(--sans); font-size: 14px;
+    padding: 7px 0; border-radius: 0; }
+  .fx-mast .mt-field textarea { resize: vertical; min-height: 46px; }
+  .fx-mast .mt-field input:focus, .fx-mast .mt-field textarea:focus {
+    outline: none; border-bottom-color: var(--paper); }
+  .fx-mast .mt-send { justify-self: start; display: inline-flex; align-items: center;
+    gap: 10px; margin-top: 6px; padding: 11px 26px; border: 0; cursor: pointer;
+    background: var(--paper); color: var(--ink); border-radius: 999px;
+    /* buttons do not inherit font-family — this one has to name it */
+    font-family: var(--sans); font-size: var(--lbl);
+    letter-spacing: var(--lbl-track);
+    font-weight: var(--lbl-weight); text-transform: uppercase; }
+  .fx-mast .mt-send:hover { opacity: 0.82; }
+  .fx-mast .mt-note { font-size: var(--lbl);
+    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight); text-transform: uppercase; opacity: 0.35; }
+  
+  /* The ledger columns, lifted from variant B: the densest way to carry
+     contact, services and standing info without a paragraph. */
+  /* Two-up inside the column, not four across the page. */
+  .fx-mast .mt-cols { display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: clamp(22px, 3vh, 34px) 26px; align-content: start;
+    margin-bottom: clamp(34px, 6vh, 72px); }
+  .fx-mast .mt-col h4 { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.4;
+    margin: 0 0 12px; padding-bottom: 9px;
+    border-bottom: 1px solid rgba(255,255,255,0.16); }
+  .fx-mast .mt-col ul { list-style: none; margin: 0; padding: 0;
+    font-size: var(--lbl); letter-spacing: var(--lbl-track);
+    font-weight: var(--lbl-weight); line-height: 2.05; text-transform: uppercase; }
+  .fx-mast .mt-col a { color: var(--paper); text-decoration: none;
+    border-bottom: 1px solid transparent; }
+  .fx-mast .mt-col a:hover { border-bottom-color: var(--paper); }
+  .fx-mast .mt-col .dim { opacity: 0.5; }
+  
+  /* Featured in. Logos are forced to a single ink like the homepage wall, so
+     a dozen mismatched marks read as one row. `scale` trims the wide ones:
+     equal height is not equal optical weight. */
+  .fx-mast .mt-featured { border-top: 0; padding: 0; }
+  /* The three section ledes are one family, set at the same display size:
+     the ask, the credits, and the work. Anything smaller and the credits
+     read as a caption on the form above them rather than as their own
+     section. */
+  .fx-mast .mt-say,
+  .fx-mast .mt-featured h4,
+  .fx-shelf .sh-lede {
+    font-family: var(--sans); font-size: clamp(26px, 4.4vw, 62px);
+    line-height: 1.02; letter-spacing: -0.03em; font-weight: 700;
+    text-transform: none; opacity: 1; }
+  .fx-mast .mt-featured h4 { max-width: 13em; margin: 0 0 clamp(26px, 3.4vw, 46px); }
+  /* ── the credits, three ways ─────────────────────────────────────
+     Three settings of the same twelve names, picked by ?credits=.
+
+     LEDGER (default): no logos at all. After the type consolidation the
+     marks were the only foreign typefaces left on the page, so the
+     credits now set like everything else — a numbered index in the house
+     grotesk. Each row's hairline draws in on arrival, one at a time, the
+     same move the method rules make. Where a pointer exists, the real
+     mark surfaces quietly at the row's right edge on hover.
+
+     TABLE (?credits=table): the logos stay but lose their float — a
+     ruled specimen sheet, every cell identical, numbered like plates.
+     The 1px grid is the gap showing through: cells paint ink over a
+     hairline-coloured ground, which gives single-thickness rules
+     everywhere without fighting border collapse. The ruled sheet sits
+     complete from the start; only the marks take their places. */
+  .fx-mast .mt-ledger ol { list-style: none; margin: 0; padding: 0; }
+  .fx-mast .mt-ledger li { position: relative;
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 15px 2px 14px; }
+  .fx-mast .mt-ledger li::after { content: ""; position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: rgba(255,255,255,0.22);
+    transform: scaleX(0); transform-origin: left center; }
+  .fx-mast .mt-ledger li.on::after { transform: scaleX(1);
+    transition: transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1); }
+  .fx-mast .mt-ledger li > span { opacity: 0; transition: opacity 0.5s ease; }
+  .fx-mast .mt-ledger li.on > span { opacity: 1; }
+  .fx-mast .lg-num { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); opacity: 0.4; min-width: 2.4em; }
+  .fx-mast .lg-name { font-size: 17px; font-weight: 500;
+    letter-spacing: -0.01em; }
+  .fx-mast .lg-mark { position: absolute; right: 2px; top: 50%;
+    transform: translateY(-50%); height: 15px; width: auto;
+    filter: brightness(0) invert(1); opacity: 0;
+    transition: opacity 0.3s ease; }
+  .fx-mast .lg-mark.asis { filter: none; border-radius: 2px; }
+  @media (hover: hover) {
+    .fx-mast .mt-ledger li:hover .lg-mark { opacity: 0.9; }
+  }
+
+  .fx-mast .mt-spec .sp-grid { display: grid;
+    grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.2); }
+  .fx-mast .sp-cell { position: relative; background: var(--ink);
+    height: clamp(84px, 11vh, 104px);
+    display: grid; place-items: center; padding: 0 14px; }
+  .fx-mast .sp-num { position: absolute; top: 9px; left: 11px;
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); opacity: 0.35; }
+  .fx-mast .sp-cell img { height: 20px; width: auto; max-width: 82%;
+    object-fit: contain; filter: brightness(0) invert(1); }
+  .fx-mast .sp-cell .asis { filter: none; border-radius: 3px; }
+  .fx-mast .sp-cell .word { font-weight: 700; font-size: 13px;
+    letter-spacing: 0.2em; text-transform: uppercase; }
+  .fx-mast .sp-cell > img, .fx-mast .sp-cell > .word { opacity: 0;
+    transition: opacity 0.55s ease; }
+  .fx-mast .sp-cell.on > img, .fx-mast .sp-cell.on > .word { opacity: 0.62; }
+  .fx-mast .sp-cell.on:hover > img, .fx-mast .sp-cell.on:hover > .word {
+    opacity: 1; transition: opacity 0.25s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    .fx-mast .mt-ledger li::after { transform: none !important;
+      transition: none !important; }
+    .fx-mast .mt-ledger li > span { opacity: 1 !important; }
+    .fx-mast .sp-cell > img, .fx-mast .sp-cell > .word {
+      opacity: 0.62 !important; }
+  }
+
+  /* FIELD (?credits=field): the whole beat becomes a texture of the names
+     themselves — set dim, repeating, drifting on their own — while the
+     headline holds the centre and does not move. Rows alternate direction,
+     never share a duration, and start mid-phase, so the drift reads as
+     weather rather than a mechanism. Same seam rule as every loop on this
+     page: spacing is trailing padding on each name, two identical sets per
+     track, -50% is exactly one set. */
+  .mt-fieldbeat { display: grid; place-items: center; }
+  .mt-fieldbeat > .mono { position: absolute; top: 48px; left: 40px;
+    color: rgba(255,255,255,0.45); }
+  .mt-fieldbeat .fld-rows { position: absolute; inset: 0; z-index: 0;
+    display: flex; flex-direction: column; justify-content: space-evenly;
+    overflow: hidden; pointer-events: none; }
+  .mt-fieldbeat .fld-track { display: flex; width: max-content;
+    will-change: transform;
+    animation: fldRun var(--dur, 80s) linear infinite;
+    animation-delay: var(--phase, 0s); }
+  .mt-fieldbeat .fld-row.rev .fld-track { animation-direction: reverse; }
+  @keyframes fldRun { from { transform: translateX(0); }
+                      to { transform: translateX(-50%); } }
+  .mt-fieldbeat .fld-set { display: flex; flex: 0 0 auto; white-space: nowrap;
+    font-size: clamp(24px, 3.2vw, 48px); font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1;
+    color: rgba(255,255,255,0.13); }
+  .mt-fieldbeat .fld-set span { padding-right: 1.1em; }
+  .mt-fieldbeat h2 { position: relative; z-index: 1;
+    font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
+    letter-spacing: -0.03em; font-weight: 700; text-transform: none;
+    margin: 0; }
+  .mt-fieldbeat h2 .l2 { display: block; margin-left: 1.2em; }
+  @media (max-width: 760px) {
+    .mt-fieldbeat > .mono { top: 30px; left: 20px; }
+    .mt-fieldbeat .fld-set { font-size: clamp(20px, 6vw, 30px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mt-fieldbeat .fld-track { animation: none; }
+  }
+  
+  @media (max-width: 760px) {
+    .fx-mast .mt-beat .col { padding-bottom: 30px; }
+    .fx-mast .mt-cols { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .fx-mast .sp-cell img { height: 17px; }
+    .fx-mast .sp-cell .word { font-size: 11px; }
+    .fx-mast .lg-name { font-size: 15px; }
+  }
+
+  /* ── 08 the shelf — all work, as a rail ── */
+.fx-shelf { background: var(--ink); color: var(--paper); font-family: var(--sans);
+  border-radius: var(--r) var(--r) 0 0; overflow: hidden; }
+/* Baseline-aligned so the small meta sits on the lede's baseline rather
+   than floating at its cap height. */
+.fx-shelf .sh-head { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  padding: clamp(40px, 5.5vw, 76px) 24px clamp(22px, 2.6vw, 34px);
+  border-bottom: 1px solid rgba(255,255,255,0.15); }
+.fx-shelf .sh-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.5; }
+
+.fx-shelf .sh-rail { display: flex; gap: 0; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; cursor: grab; }
+.fx-shelf .sh-rail::-webkit-scrollbar { display: none; }
+.fx-shelf .sh-rail.sh-drag { cursor: grabbing; scroll-behavior: auto; }
+
+/* A spine. The explicit ink background is load-bearing: `isolation` opens a
+   stacking context and the difference-blended type composites against
+   whatever is painted INSIDE it. With no background the backdrop is
+   transparent, white-on-nothing stays white, and the type never inverts. */
+.fx-shelf .sh-spine { position: relative; isolation: isolate; flex: 0 0 auto;
+  background: var(--ink);
+  width: clamp(150px, 15vw, 224px); height: min(76vh, 700px);
+  display: grid; grid-template-rows: 1fr auto; row-gap: 14px;
+  --pad-l: 26px; --pad-r: 22px;
+  --thumb-gap: 5px;   /* all that is left of the column between edge and picture */
+  padding: 30px var(--pad-r) 26px var(--pad-l);
+  text-decoration: none; color: var(--paper); }
+.fx-shelf .sh-spine::before { content: ""; position: absolute; left: 0; top: 0;
+  width: 1px; height: 100%; background: rgba(255,255,255,0.22); z-index: 2;
+  transform: scaleY(0); transform-origin: top center; }
+.fx-shelf .sh-on::before { transform: scaleY(1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
+
+/* THE CURTAIN. Paper drops from the top on hover. It sits UNDER the content,
+   which is difference-blended, so the type flips black exactly where the
+   curtain has reached rather than cross-fading. Fast on purpose: running the
+   shelf quickly should cascade. */
+.fx-shelf .sh-spine::after { content: ""; position: absolute; inset: 0;
+  background: var(--paper); z-index: 0;
+  transform: scaleY(0); transform-origin: top center;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+/* Bottom-anchored, sat down on the thumbnail. This is the whole stagger
+   mechanism: every title ends just above its image, so titles of different
+   lengths start at different heights and the skyline is a consequence of the
+   names rather than a table of offsets. */
+.fx-shelf .sh-body { position: relative; z-index: 1; align-self: end;
+  mix-blend-mode: difference; color: #fff; }
+.fx-shelf .sh-num { display: block; font-size: var(--lbl);
+  font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); opacity: 0; margin: 0 0 12px 2px; }
+.fx-shelf .sh-on .sh-num { opacity: 0.5; transition: opacity 0.5s ease 0.2s; }
+
+.fx-shelf .sh-pair { display: flex; gap: 13px; align-items: flex-end; }
+.fx-shelf .sh-title { writing-mode: vertical-rl; white-space: nowrap;
+  font-weight: 700; font-size: calc(var(--fs, 30px) * var(--fsx, 1));
+  letter-spacing: 0.05em; text-transform: uppercase; line-height: 1;
+  clip-path: inset(-4px -4px 102% -4px); transform: translateY(-16px); }
+.fx-shelf .sh-on .sh-title { clip-path: inset(-4px); transform: none;
+  transition: clip-path 0.9s cubic-bezier(0.2, 0.55, 0.2, 1) 0.3s,
+    transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1) 0.3s; }
+.fx-shelf .sh-cat { writing-mode: vertical-rl; white-space: nowrap;
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track);
+  text-transform: uppercase; opacity: 0; padding-bottom: 2px; }
+.fx-shelf .sh-on .sh-cat { opacity: 0.45; transition: opacity 0.5s ease 0.65s; }
+
+/* Not blended: difference would invert the photograph itself. */
+.fx-shelf .sh-thumb { position: relative; z-index: 1;
+  /* Break out of the spine's padding: the padding still sets the vertical
+     type, only the picture opts out of it. Width is derived rather than
+     stretched — an img carries an intrinsic ratio, so `justify-self:
+     stretch` resolves to fit-content on it and would not fill the column. */
+  width: calc(100% + var(--pad-l) + var(--pad-r) - var(--thumb-gap) * 2);
+  margin-left: calc(var(--thumb-gap) - var(--pad-l));
+  aspect-ratio: 1 / 1; object-fit: cover;
+  border-radius: calc(var(--r) + 8px);
+  opacity: 0; transform: translateY(14px);
+  justify-self: start; align-self: end; }
+.fx-shelf .sh-on .sh-thumb { opacity: 1; transform: none;
+  transition: opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s; }
+
+@media (hover: hover) {
+  .fx-shelf .sh-spine.sh-on:hover::after,
+  .fx-shelf .sh-spine.sh-on:focus-visible::after { transform: scaleY(1); }
+  .fx-shelf .sh-spine.sh-on:hover::before,
+  .fx-shelf .sh-spine.sh-on:focus-visible::before { background: rgba(0,0,0,0.22); }
+  /* A lift, not a spin. */
+  .fx-shelf .sh-spine.sh-on:hover .sh-title,
+  .fx-shelf .sh-spine.sh-on:focus-visible .sh-title {
+    transform: translateY(-7px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .fx-shelf .sh-spine.sh-on:hover .sh-thumb,
+  .fx-shelf .sh-spine.sh-on:focus-visible .sh-thumb {
+    transform: translateY(-4px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+}
+
+.fx-shelf .sh-end { align-content: center; }
+.fx-shelf .sh-end .sh-body { align-self: center; }
+.fx-shelf .sh-end .sh-title { font-size: calc(26px * var(--fsx, 1));
+  letter-spacing: 0.24em; clip-path: none; transform: none; }
+
+.fx-shelf .sh-foot { display: flex; justify-content: space-between; align-items: baseline;
+  padding: 16px 24px 26px; border-top: 1px solid rgba(255,255,255,0.15);
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track);
+  text-transform: uppercase; }
+.fx-shelf .sh-foot .sh-newsline { opacity: 0.5; }
+.fx-shelf .sh-foot a { color: var(--paper); text-decoration: none; }
+.fx-shelf .sh-foot a:hover { text-decoration: underline; }
+
+/* ── 08c the feed — the alternate ending ────────────────────────────
+   A sparse asymmetric grid instead of the horizontal rail. Six column
+   tracks, but items do not fill them: each takes a fraction of its track
+   and sits at its own inset, so the eye finds a scatter rather than a
+   grid. The negative space IS the composition, which is why this one runs
+   on paper — on ink the gaps read as void, on paper they read as air.
+
+   Images keep their true aspect ratio (measured off the files, carried in
+   on --ar), so nothing is cropped to fit a slot. Every project puts up to
+   four frames in, so the scroll is long and a project recurs rather than
+   appearing once. Swap with ?footer=shelf. */
+.fx-feed { background: var(--paper); color: var(--ink);
+  padding: clamp(40px, 5.5vw, 76px) 24px clamp(30px, 4vw, 50px); }
+.fx-feed .fd-head { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  padding-bottom: clamp(30px, 5vw, 70px); }
+.fx-feed .fd-lede { font-size: clamp(30px, 4.4vw, 62px); line-height: 1;
+  letter-spacing: -0.03em; font-weight: 700; }
+.fx-feed .fd-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.45; }
+
+.fx-feed .fd-cols { display: flex; align-items: flex-start;
+  gap: clamp(16px, 2.2vw, 40px); }
+.fx-feed .fd-col { flex: 1 1 0; min-width: 0; }
+
+/* --lead is the empty run above an item and --w its share of the track;
+   both are dealt out from a seeded sequence in the builder so the scatter
+   is stable across reloads. A live random would recompose the page every
+   refresh and there would be nothing to judge. */
+.fx-feed .fd-item { display: block; text-decoration: none; color: inherit;
+  width: var(--w, 100%); margin-top: var(--lead, 0px);
+  margin-left: var(--shift, 0px); position: relative; }
+.fx-feed .fd-item img { display: block; width: 100%; height: auto;
+  aspect-ratio: var(--ar, 1); object-fit: cover;
+  border-radius: var(--r);   /* same token as the index, so the two
+                                alternate endings compare like for like */
+  background: rgba(0,0,0,0.05); }
+
+/* Arrival: one fade per item as it comes up, ordered down each column. */
+.fx-feed .fd-item { opacity: 0; transform: translateY(18px); }
+.fx-feed .fd-item.fd-on { opacity: 1; transform: none;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2,0.55,0.2,1); }
+
+/* The caption stays out of the composition until asked for. */
+.fx-feed .fd-cap { position: absolute; left: 0; top: calc(100% + 7px);
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase;
+  white-space: nowrap; opacity: 0; transition: opacity 0.28s ease; }
+.fx-feed .fd-cap i { font-style: normal; opacity: 0.45; }
+@media (hover: hover) {
+  .fx-feed .fd-item:hover .fd-cap,
+  .fx-feed .fd-item:focus-visible .fd-cap { opacity: 1; }
+  .fx-feed .fd-item img { transition: opacity 0.3s ease; }
+  .fx-feed .fd-item:hover img { opacity: 0.82; }
+}
+.fx-feed .fd-item:focus-visible { outline: 1px solid var(--ink); outline-offset: 5px; }
+
+.fx-feed .fd-foot { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  margin-top: clamp(60px, 9vw, 130px);
+  padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.14);
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase; }
+.fx-feed .fd-foot a { color: var(--ink); text-decoration: none; }
+.fx-feed .fd-foot a:hover { text-decoration: underline; }
+.fx-feed .fd-newsline { opacity: 0.45; }
+
+/* Narrow screens get FEWER columns, never fewer frames. Culling columns in
+   CSS was hiding 72 of the 109 — two thirds of the work vanished on a phone.
+   The builder re-deals into 6 / 4 / 2 tracks instead. */
+@media (max-width: 760px) {
+  .fx-feed { padding-left: 16px; padding-right: 16px; }
+  /* no room to scatter at this width; the leads carry the rhythm alone */
+  .fx-feed .fd-item { width: 100% !important; margin-left: 0 !important;
+    margin-top: clamp(28px, 9vw, 64px) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-feed .fd-item { opacity: 1 !important; transform: none !important;
+    transition: none !important; }
+}
+
+/* ── 08d the index — the third ending ───────────────────────────────
+   Two [text | images] pairs side by side. One frame per project, numbered
+   in a reserved right gutter, right-aligned at dealt widths so the column
+   edge stays hard while the left edges rag. The small text is a second
+   voice down the left — project subtitles pulled verbatim from the case
+   study data, set for roughly a third of the projects so the white space
+   survives. Same seeded dealer discipline as the feed: identical
+   composition every load. Swap with ?footer=feed / ?footer=shelf. */
+.fx-index { background: var(--paper); color: var(--ink);
+  padding: clamp(40px, 5.5vw, 76px) 40px clamp(30px, 4vw, 50px); }
+.fx-index .ix-head { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  padding-bottom: clamp(40px, 6vw, 90px); }
+.fx-index .ix-lede { font-size: clamp(30px, 4.4vw, 62px); line-height: 1;
+  letter-spacing: -0.03em; font-weight: 700; }
+.fx-index .ix-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.45; }
+
+.fx-index .ix-cols { display: grid; grid-template-columns: 1fr 1fr;
+  column-gap: clamp(44px, 6vw, 120px); align-items: start; }
+/* --pgap is named so the rule can sit in the MIDDLE of the gutter it
+   divides rather than on a track edge. stretch (not start) is what lets
+   that rule run the full height of the pair instead of stopping at
+   whichever column happens to be shorter. */
+.fx-index .ix-pair { display: grid;
+  grid-template-columns: minmax(150px, 230px) 1fr;
+  --pgap: clamp(20px, 2.6vw, 46px);
+  column-gap: var(--pgap); align-items: stretch; }
+.fx-index .ix-txt { display: flex; flex-direction: column; min-width: 0; }
+/* 34px on the right is the number gutter — reserved, never painted.
+   The stack sits on a 5px gap — enough that each frame reads as its own
+   object rather than one column of photograph, not enough to break the
+   right edge into separate blocks. The rhythm comes from the size jumps. */
+.fx-index .ix-imgs { position: relative;
+  display: flex; flex-direction: column;
+  align-items: flex-end; min-width: 0; padding-right: 34px;
+  gap: 5px; }
+
+.fx-index .ix-blk { /* margin-top comes from the placement pass */ }
+.fx-index .ix-blk .t { display: block; font-size: var(--lbl);
+  font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+  text-transform: uppercase; opacity: 0.55; margin-bottom: 9px; }
+.fx-index .ix-blk .s { font-size: var(--note); line-height: 1.6;
+  color: rgba(0,0,0,0.72); max-width: 24em; }
+
+.fx-index .ix-it { position: relative; display: block;
+  width: var(--w, 100%); }
+.fx-index .ix-it img { display: block; width: 100%; height: auto;
+  aspect-ratio: var(--ar, 1); object-fit: cover;
+  border-radius: var(--r);
+  background: rgba(0,0,0,0.05); }
+.fx-index .ix-num { position: absolute; right: -34px; bottom: 1px;
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); opacity: 0.45; }
+@media (hover: hover) {
+  .fx-index .ix-it img { transition: opacity 0.3s ease; }
+  .fx-index .ix-it:hover img { opacity: 0.84; }
+}
+.fx-index .ix-it:focus-visible { outline: 1px solid var(--ink);
+  outline-offset: 5px; }
+
+/* arrival: the feed's quiet fade-up, one per element */
+/* The images fade only. A translateY on a stack with no gap slides each
+   one over its neighbour for the length of the transition, which tears
+   the very edge this arrangement exists to make. The text blocks still
+   travel — they have room around them. */
+.fx-index .ix-it { opacity: 0; }
+.fx-index .ix-blk { opacity: 0; transform: translateY(16px); }
+.fx-index .ix-on { opacity: 1 !important; transform: none !important;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.55, 0.2, 1); }
+
+.fx-index .ix-foot { display: flex; justify-content: space-between;
+  align-items: baseline; gap: 24px; flex-wrap: wrap;
+  margin-top: clamp(70px, 10vw, 150px);
+  padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.14);
+  font-size: var(--lbl); font-weight: var(--lbl-weight);
+  letter-spacing: var(--lbl-track); text-transform: uppercase; }
+.fx-index .ix-foot a { color: var(--ink); text-decoration: none; }
+.fx-index .ix-foot a:hover { text-decoration: underline; }
+.fx-index .ix-newsline { opacity: 0.45; }
+
+@media (max-width: 1100px) {
+  /* one pair wide; the second set continues below it */
+  .fx-index .ix-cols { grid-template-columns: 1fr; row-gap: clamp(60px, 9vw, 120px); }
+}
+@media (max-width: 760px) {
+  .fx-index { padding-left: 16px; padding-right: 16px; }
+  /* Still two columns on a phone, just one pair of them: the builder deals
+     every frame into a single stack and the practice text runs beside it.
+     Images take the wider track — the text is short blocks, the frames are
+     the reason to scroll. */
+  .fx-index .ix-cols { grid-template-columns: 1fr; }
+  .fx-index .ix-pair { grid-template-columns: 1fr 1.15fr; --pgap: 14px; }
+  .fx-index .ix-imgs { padding-right: 22px; }   /* the number gutter stays */
+  .fx-index .ix-it { width: 100% !important; }
+  .fx-index .ix-blk .s { font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-index .ix-it, .fx-index .ix-blk { opacity: 1 !important;
+    transform: none !important; transition: none !important; }
+}
+
+@media (max-width: 760px) {
+  .fx-shelf { --fsx: 0.62; }
+  .fx-shelf .sh-spine { width: 128px; height: min(58vh, 470px);
+    --pad-l: 18px; --pad-r: 14px;
+    padding: 22px var(--pad-r) 18px var(--pad-l); }
+  .fx-shelf .sh-head, .fx-shelf .sh-foot { padding-left: 16px; padding-right: 16px; }
+  .fx-shelf .sh-foot .sh-newsline { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-shelf .sh-spine::before, .fx-shelf .sh-spine::after, .fx-shelf .sh-num,
+  .fx-shelf .sh-title, .fx-shelf .sh-cat, .fx-shelf .sh-thumb {
+    transition: none !important; }
+  .fx-shelf .sh-spine::before { transform: scaleY(1); }
+  .fx-shelf .sh-num { opacity: 0.5; }
+  .fx-shelf .sh-title { clip-path: inset(-4px); transform: none; }
+  .fx-shelf .sh-cat { opacity: 0.45; }
+  .fx-shelf .sh-thumb { opacity: 1; transform: none; }
+}
+
+  /* ── mobile ────────────────────────────────────────────────────────
+     The desktop layout leans on absolute positioning and multi-column
+     grids; on a phone almost all of it wants to become one column in
+     normal flow. Anything that stays absolute has to be re-anchored. */
+  @media (max-width: 760px) {
+    :root { --nav: 48px; --sampleH: 150px; }
+    :root { --lbl: 9px; }   /* one dial shrinks every label on a phone */
+    .screen { padding: 30px 20px; }
+
+    /* nav: everything shrinks and the row scrolls sideways if it must,
+       rather than wrapping the wordmark onto three lines */
+    /* Tuned to fit a 390pt phone without scrolling — a nav you have to
+       drag sideways to see the last item reads as a bug, not an affordance.
+       overflow-x stays as the safety net for anything narrower. */
+    #nav { padding: 0 16px; gap: 9px; font-size: 7.5px; letter-spacing: 0.08em;
+      overflow-x: auto; scrollbar-width: none; }
+    #nav::-webkit-scrollbar { display: none; }
+    #nav .mark { white-space: nowrap; }
+    #nav .links { gap: 8px; white-space: nowrap; }
+    #nav .meta { display: none; }
+    /* Gutter halves here, so the pill's inset follows it. A smaller overhang
+       too — 18px reads as generous at 40px in, and as sloppy at 16px. */
+    #nav { --nav-gutter: 16px; --nav-overhang: 10px; }
+
+    /* cover: the vertical spec line crosses the headline at this width,
+       and the wordmark needs to fit NEIMAN'S — the longest line */
+    .cover h1 { left: 20px; bottom: 20px; font-size: clamp(38px, 13.6vw, 96px); }
+    .edge-v { display: none; }
+    .cover .plate-thumb { top: 58px; right: 20px; width: clamp(84px, 26vw, 130px); }
+
+    .statement p { top: 14vh; left: 20px; right: 20px; font-size: clamp(19px, 5.4vw, 30px); }
+    .statement .idx { bottom: 30px; right: 20px; }
+
+    /* the zoom plate stacks above its caption */
+    .object { grid-template-columns: 1fr; gap: 20px; align-content: center; }
+    .object figure { grid-column: 1; grid-row: 1; }
+    .object .left { grid-column: 1; grid-row: 2; align-self: start; }
+    .object .num { font-size: clamp(44px, 13vw, 72px); }
+
+    /* headlines and their trailing columns come out of absolute flow */
+    .brief h2 { margin-top: 6vh; font-size: clamp(34px, 10.4vw, 74px); max-width: none; }
+    .brief h2 .out { margin-left: 0.5em; }
+    /* One track on a phone: the headline and the column stack rather than
+       sitting beside each other. They must go back to SEPARATE rows — sharing
+       row 2 is what lets them overlap for the pin, and in a single column
+       that overlap becomes the column printed on top of the headline.
+       No pin either: there is no beside to travel up. */
+    .brief { grid-template-columns: 1fr; }
+    .brief h2 { grid-column: 1; grid-row: 2; position: static; }
+    .brief .col { grid-column: 1; grid-row: 3;
+      margin-top: 26px !important; padding-bottom: 0; }
+    #hHead .ind { margin-left: 0.5em; }
+
+    .cols { margin-top: 34px; }
+    .plates { grid-template-columns: 1fr; gap: 10px; padding: 30px 20px; }
+
+    /* index rows: less stagger, smaller samples, or the reel eats the row */
+    .slabel { top: 64px; left: 20px; }
+    .index { padding-top: 15vh; }
+    .irow { font-size: clamp(26px, 8.2vw, 52px); gap: 12px;
+      margin-left: calc(var(--indent, 0) * 0.35); padding: 12px 0; }
+    .irow .reel-box { width: clamp(52px, 16vw, 84px); }
+    .swatch { width: clamp(44px, 13vw, 74px); }
+
+    /* specimen: let the alphabets wrap rather than run off the edge */
+    .art { padding-top: 15vh; }
+    .art .row { grid-template-columns: 1fr; gap: 30px; }
+    /* A splice that removed the old specimen section ate a selector line
+       here and left its dangling tail — whose stray brace closed this
+       media block early and leaked the three rules below to ALL widths.
+       On desktop that capped the statement quote at 60px against its
+       designed 104px for days. The dead fragment is gone; the boundary
+       holds again. */
+
+    .closing .lists { grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+    .quote p { font-size: clamp(30px, 9.4vw, 60px); }
+    .quote p .indent { margin-left: 0.8em; }
+  }
+
+</style>
+</head>
+<script src="sizzle-reel.js"></script>
+<script src="/lab/vendor/lenis.min.js"></script>
+<body>
+
+<!-- ══ 01 · COVER ══ -->
+<!-- lifted verbatim from NavRail.tsx -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="navMelt" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015 0.025" numOctaves="3" seed="8" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="2" result="smoothNoise"/>
+    <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <!-- Same melt, sized for glyphs instead of a nav bar. navMelt shifts pixels
+       up to 18px, which on a ~100px numeral is nearly a fifth of its height:
+       it swamps a ~100px numeral. Finer noise suits glyph-scale detail.
+       The throw is NOT what caused the doubling — that was a 7px mask
+       misregistration, since fixed; verified clean at scale 13. -->
+  <filter id="numMelt" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04 0.055" numOctaves="3" seed="8" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="1.4" result="smoothNoise"/>
+    <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="11" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<nav id="nav">
+  <div id="navBurn" aria-hidden="true"></div>
+  <a href="#" class="mark">Reckon House Staples</a>
+  <div class="links">
+    <a href="#">House</a>
+    <a href="#" class="on">Digital</a>
+    <a href="#">Creative</a>
+    <a href="#">Interiors</a>
+    <a href="#">Staples</a>
+  </div>
+  <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
+</nav>
+
+<!-- The cover and the statement are one pinned move now: the headline
+     reveals on load, then unbuilds line by line as the statement rises into
+     the space it leaves. The reel and the vertical spec line are absolutely
+     positioned inside the sticky, so they simply stay put through it. -->
+<section class="coverwrap" id="coverwrap">
+  <div class="screen cover cover-sticky">
+    <figure class="plate-thumb">
+      <div class="reel-box" id="reelBox">
+        <sizzle-reel id="reel" radius="0" speed="1"></sizzle-reel>
+      </div>
+      <figcaption class="mono" id="reelCap">Preview — 8 frames, Spring 2024</figcaption>
+    </figure>
+    <div class="edge-v tiny">Spring Campaign · Art Direction · Photo Compositing · Capture One</div>
+    <!-- The × is its own line. It used to reach line 3 by natural wrapping, but
+         the reveal splitter gives every line its own mask, so the break has to
+         be explicit or × and NEIMAN'S share one and rise together. -->
+    <h1 data-reveal><span>Robert</span><span>Rodri&shy;guez</span><span class="x">x</span><span>Neiman&rsquo;s</span></h1>
+    <p class="cover-statement">&rsquo;80s mall glam meets high fashion &mdash; the double-exposure glamour shot reimagined with mesh color fields instead of airbrushed backdrops and couture instead of puff sleeves.</p>
+    <span class="idx mono cover-idx">02 / Statement</span>
+  </div>
+</section>
+
+<!-- ══ 02b · HERO PLATE — the storefront installation ══ -->
+<section class="screen plate-full">
+  <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg" alt="Robert Rodriguez Spring — storefront window campaign display">
+</section>
+
+<!-- ══ 03 · IMAGE AS OBJECT — scroll pins it, the plate grows to fill the
+     mat, then the filled plate scrolls away. The wrap's extra height IS the
+     zoom's duration; the sticky screen holds still while it happens. ══ -->
+<section class="zoomwrap">
+  <div class="screen object zoom-sticky">
+    <figure class="zoom-fig">
+      <img class="bw" src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg" alt="Robert Rodriguez — pink blazer editorial campaign composite">
+    </figure>
+    <div class="num">01</div>
+    <div class="left">
+      <p class="tiny">Double-exposure composite<br>Pink blazer over mesh field<br>One of four source frames</p>
+      <p class="mono" style="margin-top:18px;">Scroll — fills the mat, then travels the frame</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 04 · THE BRIEF ══ -->
+<!-- `pin` because this column carries the method blocks and runs long enough
+     that holding the headline against it reads. The shorter columns below do
+     not opt in. -->
+<section class="screen brief pin">
+  <span class="mono">03 / The Brief</span>
+  <h2 data-reveal>One shoot day stretched into<span class="out">an entire campaign.</span></h2>
+  <div class="col">
+    <p>Neiman Marcus needed a spring campaign for Robert Rodriguez that felt current without abandoning the brand&rsquo;s romantic sensibility. The budget was a single shoot day. The deliverable was a full multi-channel system: social, email, in-store, editorial.</p>
+    <p>The constraint became the concept. One model, four setups, and a compositing technique that turned four photographs into an entire visual language. Every piece of the campaign traces back to those four original frames, layered and recombined into something that feels like fifty shots instead of four.</p>
+
+    <!-- The method blocks continue the same column rather than opening their
+         own section, so the brief and the method read as one argument. The
+         .cols wrapper stays because the rule-drawing observer watches it. -->
+    <div class="cols">
+      <span class="mono cols-label">04 / Method</span>
+      <div class="grid">
+    <div class="c">
+      <div class="n">01</div>
+      <h3>The Reference.</h3>
+      <p>Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera &mdash; the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.</p>
+      <p>The brief was to take that energy seriously &mdash; the confidence and the color, the full unironic glamour &mdash; and rebuild it with contemporary craft. A translation, not a parody.</p>
+    </div>
+    <div class="c">
+      <div class="n">02</div>
+      <h3>The Technique.</h3>
+      <p>Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.</p>
+      <p>Mesh color fields replaced the airbrushed backdrops &mdash; mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.</p>
+    </div>
+    <div class="c">
+      <div class="n">03</div>
+      <h3>The System.</h3>
+      <p>Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads &mdash; each combination tells a slightly different story from the same visual DNA.</p>
+      <p>The typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.</p>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ 06 · PLATES ══ -->
+<div class="plates">
+  <figure>
+    <span class="frame"><img class="bw" src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot dress, orange backdrop"></span>
+    <figcaption><span class="mono">Plate 02 — Polka-dot dress</span><span class="mono">Spring 2024</span></figcaption>
+  </figure>
+  <figure>
+    <span class="frame"><img class="bw" src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot ruffle dress, orange backdrop"></span>
+    <figcaption><span class="mono">Plate 03 — Ruffle dress, same session</span><span class="mono">&nbsp;</span></figcaption>
+  </figure>
+</div>
+
+<!-- ══ 06b · DEPLOYMENT — the headline crosses before the page moves on ══ -->
+<section class="hwrap" id="hwrap">
+ <div class="screen brief h-sticky">
+  <span class="mono">04b / Campaign &amp; Deployment</span>
+  <h2 id="hHead"><span class="ln">Four source</span><span class="ln">frames</span><span class="ln ind">feeding every</span><span class="ln ind">channel.</span></h2>
+  <div class="col" id="hCol">
+    <p>The compositing system meant every deliverable felt like its own photograph. Social crops pulled from the layered files differently than email headers, retail signage used the color fields at full saturation, and editorial spreads let the double-exposure breathe across wide formats.</p>
+    <p>The campaign ran across Neiman Marcus social channels, email marketing, and in-store retail displays. The storefront window installation used the composites at large format. The mesh color fields held up at scale because they were mathematically generated, not resolution-dependent. A three-foot print has the same color smoothness as a phone screen.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ══ 06c · COMPOSITE PAIR ══ -->
+<div class="plates">
+  <figure>
+    <span class="frame"><img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg" alt="Robert Rodriguez — yellow blazer studio portrait"></span>
+    <figcaption><span class="mono">Plate 04 — Yellow blazer, studio</span><span class="mono">Spring 2024</span></figcaption>
+  </figure>
+  <figure>
+    <span class="frame"><img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait.jpg" alt="Robert Rodriguez — yellow blazer lookbook portrait"></span>
+    <figcaption><span class="mono">Plate 05 — Lookbook</span><span class="mono">&nbsp;</span></figcaption>
+  </figure>
+</div>
+
+<!-- ══ 06d · GRADIENT OVERLAY PLATE ══ -->
+<section class="screen plate-full">
+  <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg" alt="Robert Rodriguez — double-exposure editorial portrait">
+</section>
+
+<!-- ══ 07 · QUOTE POSTER — the ground rises and knocks the type out ══ -->
+<section class="qwrap" id="qwrap">
+ <div class="screen quote q-sticky">
+  <div class="qfill" id="qFill" data-nav-dark></div>
+  <span class="idx mono">05 / Compositing as Design System</span>
+  <p id="qText">The mall studio, <span class="indent">rebuilt for</span> the runway</p>
+ </div>
+</section>
+
+<!-- ══ 07b · TYPOGRAPHY &amp; BRAND ══ -->
+<section class="screen brief">
+  <span class="mono">05 / Typography &amp; Brand</span>
+  <h2 data-reveal>Archer Hairline<span class="out">meets mesh color field.</span></h2>
+  <div class="col">
+    <p>The typography was chosen for this campaign specifically. Archer Hairline for headlines, thin enough to sit over dense, colorful imagery without fighting for attention. Archer Book for body copy, warm rounded serifs that echo the softness of the photography.</p>
+    <p>The color palette lives in the space between coral, orange, and pink. Three colors that shouldn&rsquo;t work together but do when the transitions are smooth enough. The mesh technique creates shifts that feel organic rather than designed, the same way a sunset moves through those exact colors without any of them clashing.</p>
+  </div>
+</section>
+
+<!-- ══ 07b2 · THE SYSTEM INDEX ══ -->
+<section class="screen index">
+  <span class="mono slabel">05b / The System</span>
+
+  <div class="irow-wrap"><div class="irow" style="--indent: 3vw;">
+    <span>Logotype</span>
+    <span class="sample lock-sample" id="typeSample">
+      <span class="fb" id="typeFallback">Robert<br>rodriguez</span>
+      <span class="lk" id="lockup" hidden>
+        <svg id="lkSvg" aria-hidden="true"><g id="lkCapsG"></g><g id="lkLowerG"></g></svg>
+      </span>
+      <span class="cap" id="faceCap">&nbsp;</span>
+    </span>
+  </div></div>
+
+  <div class="irow-wrap"><div class="irow" style="--indent: 17vw;">
+    <span class="sample"><svg class="swatch" id="swatch" viewBox="0 0 100 100"><path id="swatchPath"></path></svg><span class="cap" id="swatchCap">&nbsp;</span></span>
+    <span>Palette</span>
+  </div></div>
+
+  <div class="irow-wrap"><div class="irow" style="--indent: 8vw;">
+    <span>Compositing</span>
+    <span class="sample">
+      <span class="reel-box" id="idxReelBox"><sizzle-reel id="idxReel" radius="14" speed="1"></sizzle-reel></span>
+      <span class="cap">Four source frames</span>
+    </span>
+  </div></div>
+
+</section>
+
+<!-- ══ 07b3 · THE MARK ON THE FIELD — the logo plate, pinned and grown.
+     Second instance of the zoom component; the driver measures each wrap
+     on its own, and this plate is landscape so it spills barely anything
+     and pins for far less scroll than the portrait one at 01. ══ -->
+<section class="zoomwrap">
+  <div class="screen object zoom-sticky">
+    <figure class="zoom-fig">
+      <img src="/case-studies/robert-rodriguez/robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design.jpg" alt="Robert Rodriguez — logo in Archer Hairline over Book on a mesh colour field">
+    </figure>
+    <div class="num">07</div>
+    <div class="left">
+      <p class="tiny">Logo on mesh field<br>Hairline caps over Book lowercase<br>Depth through overlap</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ 07d · GALLERY PLATE ══ -->
+<section class="screen plate-full">
+  <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-pink-curly-hair-colorful-gradient-overlay-portrait-concrete-wall-gallery.jpg" alt="Robert Rodriguez — gallery installation with gradient overlay composite">
+</section>
+
+<!-- ══ 07e · CLOSING ══ -->
+<section class="screen brief closing">
+  <span class="mono">06 / Closing</span>
+  <h2 data-reveal>A reference taken<span class="out">seriously, not ironically.</span></h2>
+  <div class="col">
+    <p>Four studio photographs became a complete campaign system through double-exposure compositing and mesh color-field backgrounds. The technique turned a single shoot day into a visual language that scaled across social, email, retail, and editorial, with each format pulling differently from the same layered source files.</p>
+    <p>Social, email, retail. One model, one concept, one day of shooting, every deliverable tracing back to four original frames.</p>
+    <div class="lists tiny">
+      <div><div class="h">Services</div>Art Direction<br>Photo Compositing<br>Typography Design<br>Campaign Design</div>
+      <div><div class="h">Stack</div>Adobe Photoshop<br>Adobe Illustrator<br>Capture One</div>
+      <div><div class="h">Client</div>Neiman Marcus</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 08 · THE SHELF — every project, as a rail ══ -->
+<div class="fx-mast" data-nav-dark>
+
+  <!-- Both footer beats reuse the case study's own pinned pattern: the
+       headline holds while its column travels up beside it, then releases when
+       the column's bottom meets the headline's bottom. Same component, same
+       `pin` opt-in, on ink instead of paper. -->
+  <section class="screen brief pin mt-beat">
+    <span class="mono">07 / Contact</span>
+    <h2><span class="rln"><span class="rlnI">Start something</span></span><span class="rln l2"><span class="rlnI"><span class="lt">worth</span> making.</span></span></h2>
+    <div class="col">
+      <div class="mt-cols">
+      <div class="mt-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@reckon.house">Email</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>Services</h4>
+        <ul>
+          <li class="dim">Art Direction</li>
+          <li class="dim">Brand Systems</li>
+          <li class="dim">Digital Design</li>
+          <li class="dim">Interiors</li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>Practice</h4>
+        <ul>
+          <li class="dim">Independent, Dallas</li>
+          <li class="dim">Design and build</li>
+          <li class="dim">Available for work</li>
+        </ul>
+      </div>
+      <div class="mt-col">
+        <h4>News</h4>
+        <ul>
+          <li class="dim">Awwwards Honors, 2026</li>
+          <li class="dim">Faux Reel, open repo</li>
+          <li class="dim">28 case studies online</li>
+        </ul>
+      </div>
+      </div>
+      <form class="mt-form" action="mailto:hello@reckon.house" method="post" enctype="text/plain">
+        <span class="mt-field"><label for="mt-n">Name</label><input id="mt-n" name="name" type="text" autocomplete="name"></span>
+        <span class="mt-field"><label for="mt-e">Email</label><input id="mt-e" name="email" type="email" autocomplete="email"></span>
+        <span class="mt-field"><label for="mt-m">Project</label><textarea id="mt-m" name="message" rows="2"></textarea></span>
+        <button class="mt-send" type="submit">Send</button>
+        <span class="mt-note">Or just email · hello@reckon.house</span>
+      </form>
+    </div>
+  </section>
+
+  <section class="screen brief pin mt-beat" data-credits-beat>
+    <span class="mono">08 / Credits</span>
+    <h2><span class="rln"><span class="rlnI">Worked with,</span></span><span class="rln l2"><span class="rlnI">spotted by &amp; featured in.</span></span></h2>
+    <div class="col">
+      <!-- Settings one and two live in this column. The third, the field,
+           replaces this whole section — see the sibling after it. ?credits=
+           picks one; the losers are removed before any driver runs. -->
+      <div class="mt-ledger" data-credits="ledger">
+        <ol>
+          <li><span class="lg-num">01</span><span class="lg-name">Crate &amp; Barrel</span><img class="lg-mark" src="/brands/crate-barrel.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">02</span><span class="lg-name">Nordstrom</span><img class="lg-mark" src="/brands/nordstrom.svg" alt="" aria-hidden="true" loading="lazy" style="height:12px"></li>
+          <li><span class="lg-num">03</span><span class="lg-name">Ivy Park by Beyoncé</span><img class="lg-mark" src="/brands/ivy-park.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">04</span><span class="lg-name">Neiman Marcus</span><img class="lg-mark" src="/brands/neiman-marcus.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">05</span><span class="lg-name">Rejuvenation</span><img class="lg-mark" src="/brands/rejuvenation.png" alt="" aria-hidden="true" loading="lazy" style="height:13px"></li>
+          <li><span class="lg-num">06</span><span class="lg-name">Lostine Home</span><img class="lg-mark" src="/brands/lostine.avif" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">07</span><span class="lg-name">Visual Comfort</span><img class="lg-mark" src="/brands/visual-comfort.webp" alt="" aria-hidden="true" loading="lazy" style="height:11px"></li>
+          <li><span class="lg-num">08</span><span class="lg-name">Floor &amp; Decor</span><img class="lg-mark" src="/brands/floor-decor.svg" alt="" aria-hidden="true" loading="lazy" style="height:14px"></li>
+          <li><span class="lg-num">09</span><span class="lg-name">Kingston Brass</span><img class="lg-mark" src="/brands/kingston-brass.webp" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">10</span><span class="lg-name">Design Within Reach</span><img class="lg-mark asis" src="/brands/dwr.jpg" alt="" aria-hidden="true" loading="lazy" style="height:17px"></li>
+          <li><span class="lg-num">11</span><span class="lg-name">Vivir Homes</span><img class="lg-mark" src="/brands/vivir-homes.webp" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-num">12</span><span class="lg-name">Haven</span></li>
+        </ol>
+      </div>
+      <div class="mt-spec" data-credits="table">
+        <div class="sp-grid">
+          <div class="sp-cell"><span class="sp-num">01</span><img src="/brands/crate-barrel.svg" alt="Crate &amp; Barrel" loading="lazy"></div>
+          <div class="sp-cell"><span class="sp-num">02</span><img src="/brands/nordstrom.svg" alt="Nordstrom" loading="lazy" style="height:16px"></div>
+          <div class="sp-cell"><span class="sp-num">03</span><img src="/brands/ivy-park.svg" alt="Ivy Park by Beyoncé" loading="lazy"></div>
+          <div class="sp-cell"><span class="sp-num">04</span><img src="/brands/neiman-marcus.svg" alt="Neiman Marcus" loading="lazy"></div>
+          <div class="sp-cell"><span class="sp-num">05</span><img src="/brands/rejuvenation.png" alt="Rejuvenation" loading="lazy" style="height:17px"></div>
+          <div class="sp-cell"><span class="sp-num">06</span><img src="/brands/lostine.avif" alt="Lostine Home" loading="lazy"></div>
+          <div class="sp-cell"><span class="sp-num">07</span><img src="/brands/visual-comfort.webp" alt="Visual Comfort" loading="lazy" style="height:15px"></div>
+          <div class="sp-cell"><span class="sp-num">08</span><img src="/brands/floor-decor.svg" alt="Floor &amp; Decor" loading="lazy" style="height:19px"></div>
+          <div class="sp-cell"><span class="sp-num">09</span><img src="/brands/kingston-brass.webp" alt="Kingston Brass" loading="lazy" style="height:20px"></div>
+          <div class="sp-cell"><span class="sp-num">10</span><img class="asis" src="/brands/dwr.jpg" alt="Design Within Reach" loading="lazy" style="height:23px"></div>
+          <div class="sp-cell"><span class="sp-num">11</span><img src="/brands/vivir-homes.webp" alt="Vivir Homes" loading="lazy"></div>
+          <div class="sp-cell"><span class="sp-num">12</span><span class="word">Haven</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen mt-fieldbeat" data-credits-only="field">
+    <span class="mono">08 / Credits</span>
+    <div class="fld-rows" aria-hidden="true"></div>
+    <h2>Worked with,<span class="l2">spotted by &amp; featured in.</span></h2>
+  </section>
+
+</div>
+
+<div class="fx-index" data-footer="index">
+  <header class="ix-head"><span class="ix-lede">All work.</span><span class="ix-meta">28 projects</span></header>
+  <div class="ix-cols">
+    <div class="ix-pair"><div class="ix-txt"></div><div class="ix-imgs"></div></div>
+    <div class="ix-pair"><div class="ix-txt"></div><div class="ix-imgs"></div></div>
+  </div>
+  <footer class="ix-foot">
+    <span>&copy; 2026 Reckon House</span>
+    <span class="ix-newsline">Awwwards Honors, 2026 &middot; Faux Reel released as an open repo</span>
+    <a href="#top">Top &uarr;</a>
+  </footer>
+</div>
+
+<div class="fx-feed" data-footer="feed">
+  <header class="fd-head"><span class="fd-lede">All work.</span><span class="fd-meta">28 projects · 109 frames</span></header>
+  <div class="fd-cols"></div>
+  <footer class="fd-foot">
+    <span>&copy; 2026 Reckon House</span>
+    <span class="fd-newsline">Awwwards Honors, 2026 &middot; Faux Reel released as an open repo</span>
+    <a href="#top">Top &uarr;</a>
+  </footer>
+</div>
+
+<div class="fx-shelf" data-nav-dark data-footer="shelf">
+  <header class="sh-head"><span class="sh-lede">All work.</span><span class="sh-meta">Drag or scroll · 28 titles</span></header>
+  <div class="sh-rail">
+    <span class="sh-spine sh-end sh-on"><span class="sh-body"><span class="sh-pair"><span class="sh-title">Reckon House Staples</span></span></span></span>
+  </div>
+  <footer class="sh-foot">
+    <span>© 2026 Reckon House</span>
+    <span class="sh-newsline">Awwwards Honors, 2026 · Faux Reel released as an open repo</span>
+    <a href="#top">Top ↑</a>
+  </footer>
+</div>
+
+<script>
+/* ── which ending ──────────────────────────────────────────────────
+   Two footers ship in the page and exactly one survives this script.
+   ?footer=shelf gives the horizontal rail, ?footer=feed (the default)
+   gives the asymmetric grid. The loser is REMOVED, not hidden: both
+   builders below start by querying for their root and bail when it is
+   missing, so a removed footer costs nothing — no spines built, no
+   observers, no images fetched. Runs before either builder. */
+(() => {
+  const want = new URLSearchParams(location.search).get("footer");
+  const pick = want === "shelf" || want === "feed" ? want : "index";
+  document.querySelectorAll("[data-footer]").forEach((el) => {
+    if (el.dataset.footer !== pick) el.remove();
+  });
+  document.documentElement.dataset.footer = pick;
+})();
+</script>
+
+<script>
+/* ── the feed ───────────────────────────────────────────────────────
+   Every frame carries its true pixel size, measured off the files, so
+   --ar reproduces the real shape and nothing is cropped into a slot.
+
+   The scatter comes from a SEEDED sequence, not Math.random: width, lead
+   and inset are dealt from one deterministic stream, so the composition
+   is identical on every load. A live random would recompose the page on
+   each refresh and leave nothing to judge. Change SEED to deal again. */
+(() => {
+  const root = document.querySelector(".fx-feed");
+  if (!root) return;
+  const wrap = root.querySelector(".fd-cols");
+  const SEED = 9;
+  // matchMedia, not innerWidth: it is the same source the stylesheet reads,
+  // so the track count can never disagree with the layout.
+  const wide = matchMedia("(min-width: 1101px)");
+  const mid = matchMedia("(min-width: 761px)");
+  const pickCols = () => (wide.matches ? 6 : mid.matches ? 4 : 2);
+
+  const F = [
+    ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg", 3080, 1864],
+    ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg", 2188, 4031],
+    ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg", 564, 1314],
+    ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-nordstrom-mobile-experience-mockup.jpg", 3108, 2074],
+    ["A.R.C.", "App & brand", "/case-studies/arc", "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg", 3840, 2363],
+    ["A.R.C.", "App & brand", "/case-studies/arc", "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg", 2594, 2606],
+    ["A.R.C.", "App & brand", "/case-studies/arc", "/case-studies/arc/arc-app-vinyl-turntable-shelves-lifestyle.jpg", 2598, 2030],
+    ["A.R.C.", "App & brand", "/case-studies/arc", "/case-studies/arc/arc-main-thumb.jpg", 380, 380],
+    ["Hill Country Kitchen", "Interior design", "/case-studies/hill-country-kitchen", "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg", 3080, 2134],
+    ["Hill Country Kitchen", "Interior design", "/case-studies/hill-country-kitchen", "/case-studies/hill-country-kitchen/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg", 1094, 1640],
+    ["Hill Country Kitchen", "Interior design", "/case-studies/hill-country-kitchen", "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-vase-cabinet-vignette.jpg", 1099, 1105],
+    ["Hill Country Kitchen", "Interior design", "/case-studies/hill-country-kitchen", "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg", 3080, 2052],
+    ["Robert Rodriguez", "Creative direction", "/case-studies/robert-rodriguez", "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg", 3080, 2052],
+    ["Robert Rodriguez", "Creative direction", "/case-studies/robert-rodriguez", "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg", 1520, 2282],
+    ["Robert Rodriguez", "Creative direction", "/case-studies/robert-rodriguez", "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg", 3078, 2570],
+    ["Robert Rodriguez", "Creative direction", "/case-studies/robert-rodriguez", "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait.jpg", 1520, 2282],
+    ["Nordstrom personalization", "Design system", "/case-studies/nordstrom-personalization", "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg", 3088, 1976],
+    ["Nordstrom personalization", "Design system", "/case-studies/nordstrom-personalization", "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-mens-fashion-essentials-sunglasses-sneakers-blazer-chinos-leather-accessories-ecommerce-lifestyle.jpg", 1520, 1520],
+    ["Nordstrom personalization", "Design system", "/case-studies/nordstrom-personalization", "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-mobile-app-interface-fashion-lookbook-handbag-blazer-white-background-product-display.jpg", 1520, 1520],
+    ["Nordstrom personalization", "Design system", "/case-studies/nordstrom-personalization", "/case-studies/nordstrom-personalization/nordstrom-personalization-product-red-leather-pashli-handbag.jpg", 1002, 1002],
+    ["Jeffrey NYC", "Ecommerce", "/case-studies/jeffrey-ecommerce", "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg", 3100, 1918],
+    ["Jeffrey NYC", "Ecommerce", "/case-studies/jeffrey-ecommerce", "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp", 6493, 2013],
+    ["Jeffrey NYC", "Ecommerce", "/case-studies/jeffrey-ecommerce", "/case-studies/jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg", 2188, 4031],
+    ["Jeffrey NYC", "Ecommerce", "/case-studies/jeffrey-ecommerce", "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-editorial-spread.jpg", 3100, 1918],
+    ["Capitan Boot Co.", "Branding", "/case-studies/capitan-boot-co", "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg", 3080, 3087],
+    ["Capitan Boot Co.", "Branding", "/case-studies/capitan-boot-co", "/case-studies/capitan-boot-co/capitan-boot-co-branding-western-logo-desert-cactus-rock-formation-vintage-outdoors-landscape-design.png", 1212, 544],
+    ["Capitan Boot Co.", "Branding", "/case-studies/capitan-boot-co", "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg", 3080, 3094],
+    ["Capitan Boot Co.", "Branding", "/case-studies/capitan-boot-co", "/case-studies/capitan-boot-co/capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg", 3080, 2810],
+    ["Jeffrey Spring", "Creative direction", "/case-studies/jeffrey-spring", "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg", 3088, 1976],
+    ["Jeffrey Spring", "Creative direction", "/case-studies/jeffrey-spring", "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg", 3076, 1814],
+    ["Jeffrey Spring", "Creative direction", "/case-studies/jeffrey-spring", "/case-studies/jeffrey-spring/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg", 766, 766],
+    ["Jeffrey Spring", "Creative direction", "/case-studies/jeffrey-spring", "/case-studies/jeffrey-spring/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png", 261, 589],
+    ["Hill Country Bath", "Interior design", "/case-studies/hill-country-bath", "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg", 3080, 2134],
+    ["Hill Country Bath", "Interior design", "/case-studies/hill-country-bath", "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg", 1099, 1105],
+    ["Hill Country Bath", "Interior design", "/case-studies/hill-country-bath", "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg", 1098, 1598],
+    ["Hill Country Bath", "Interior design", "/case-studies/hill-country-bath", "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg", 1099, 1105],
+    ["Nordstrom beauty", "Digital design", "/case-studies/nordstrom-beauty", "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg", 3080, 1852],
+    ["Nordstrom beauty", "Digital design", "/case-studies/nordstrom-beauty", "/case-studies/nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup.jpg", 3080, 1852],
+    ["Nordstrom beauty", "Digital design", "/case-studies/nordstrom-beauty", "/case-studies/nordstrom-beauty/nordstrom-beauty-glow-story-iphone-orange-table-mockup.jpg", 3080, 1852],
+    ["Nordstrom beauty", "Digital design", "/case-studies/nordstrom-beauty", "/case-studies/nordstrom-beauty/nordstrom-beauty-glow-story-mobile-products.png", 764, 1514],
+    ["Hill Country Oakworks", "Campaign, branding", "/case-studies/hill-country-oak", "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg", 3080, 1852],
+    ["Hill Country Oakworks", "Campaign, branding", "/case-studies/hill-country-oak", "/case-studies/hill-country-oak/hill-country-oakworks-wordmark-yellow-on-orange-color-block.jpg", 1530, 1530],
+    ["Hill Country Oakworks", "Campaign, branding", "/case-studies/hill-country-oak", "/case-studies/hill-country-oak/hill-country-oakworks-tree-silhouette-orange-sun-mid-century-composition.jpg", 1524, 1532],
+    ["Hill Country Oakworks", "Campaign, branding", "/case-studies/hill-country-oak", "/case-studies/hill-country-oak/hill-country-oakworks-iphone-mockup-poster-tree-color-blocks-held-against-sky.jpg", 1524, 1532],
+    ["Cosmo Prof", "Digital design", "/case-studies/cosmo-prof", "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg", 3076, 2730],
+    ["Cosmo Prof", "Digital design", "/case-studies/cosmo-prof", "/case-studies/cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters.jpg", 3076, 2653],
+    ["Cosmo Prof", "Digital design", "/case-studies/cosmo-prof", "/case-studies/cosmo-prof/cosmo-prof-ui-website-homepage-shinefinity-hero-product-mockup.png", 1999, 1424],
+    ["Cosmo Prof", "Digital design", "/case-studies/cosmo-prof", "/case-studies/cosmo-prof/cosmo-prof-ui-website-for-the-pros-shoppable-video-product-tabs.png", 1990, 1418],
+    ["Dallas Sport Collective", "Website, app", "/case-studies/dsc", "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg", 2000, 1234],
+    ["Dallas Sport Collective", "Website, app", "/case-studies/dsc", "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg", 1141, 1300],
+    ["Dallas Sport Collective", "Website, app", "/case-studies/dsc", "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg", 774, 1200],
+    ["Dallas Sport Collective", "Website, app", "/case-studies/dsc", "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg", 775, 1200],
+    ["Black & White Type", "Typography", "/case-studies/black-white-type", "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg", 3080, 1814],
+    ["Black & White Type", "Typography", "/case-studies/black-white-type", "/case-studies/black-white-type/pattern-swatch-horizontal-grouped-lines.jpg", 3078, 864],
+    ["Black & White Type", "Typography", "/case-studies/black-white-type", "/case-studies/black-white-type/pattern-swatch-large-dots-grid-black-on-white.jpg", 1528, 1528],
+    ["Black & White Type", "Typography", "/case-studies/black-white-type", "/case-studies/black-white-type/typography-patterns-white-poster-gate-lifestyle.jpg", 3080, 2672],
+    ["Hill Country Living", "Interior design", "/case-studies/hill-country-living", "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg", 3080, 2134],
+    ["Hill Country Living", "Interior design", "/case-studies/hill-country-living", "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg", 1094, 1640],
+    ["Hill Country Living", "Interior design", "/case-studies/hill-country-living", "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg", 3080, 2134],
+    ["Hill Country Living", "Interior design", "/case-studies/hill-country-living", "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg", 1100, 1654],
+    ["J. Christianson", "Brand development", "/case-studies/j-christianson", "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg", 3080, 1864],
+    ["J. Christianson", "Brand development", "/case-studies/j-christianson", "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-tagline.jpg", 1070, 1376],
+    ["J. Christianson", "Brand development", "/case-studies/j-christianson", "/case-studies/j-christianson/j-christianson-billboard-mockup-brand-pattern.jpg", 3072, 2048],
+    ["J. Christianson", "Brand development", "/case-studies/j-christianson", "/case-studies/j-christianson/j-christianson-dot-grid-pattern-brown-accents.png", 868, 1292],
+    ["Amber Shockey & Co.", "Tableware, branding", "/case-studies/amber-shockey-co", "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg", 3080, 1852],
+    ["Amber Shockey & Co.", "Tableware, branding", "/case-studies/amber-shockey-co", "/case-studies/amber-shockey-co/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg", 3074, 2074],
+    ["Amber Shockey & Co.", "Tableware, branding", "/case-studies/amber-shockey-co", "/case-studies/amber-shockey-co/amber-shockey-co-geometric-linework-circle-blue-cream-pattern-hero-mark.jpg", 1524, 1532],
+    ["Amber Shockey & Co.", "Tableware, branding", "/case-studies/amber-shockey-co", "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-halftone-dot-circle-mark.jpg", 1524, 1532],
+    ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/you-by-sally/hero.jpg", 3098, 1836],
+    ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/you-by-sally/bios.jpg", 3010, 4480],
+    ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/you-by-sally/hero2.jpg", 3096, 2214],
+    ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/you-by-sally/screen1.png", 2013, 4163],
+    ["Sally Marketing OS", "Product, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038],
+    ["Sally Marketing OS", "Product, engineering", "/case-studies/sally", "/case-studies/sally-os/sally-os-model-selection-dual-view.png", 1302, 1308],
+    ["Sally Marketing OS", "Product, engineering", "/case-studies/sally", "/case-studies/sally-os/sally-os-brand-brain-chat-dual-view.png", 1300, 1300],
+    ["Sally Marketing OS", "Product, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg", 3114, 1752],
+    ["The Fairview", "Interior design", "/case-studies/fairview-sitting", "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg", 3080, 2134],
+    ["The Fairview", "Interior design", "/case-studies/fairview-sitting", "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg", 1098, 1104],
+    ["The Fairview", "Interior design", "/case-studies/fairview-sitting", "/case-studies/fairview-sitting/fairview-sitting-black-box-beams-stone-fireplace-pampas-grass-architectural-wide.jpg", 2234, 1490],
+    ["The Fairview", "Interior design", "/case-studies/fairview-sitting", "/case-studies/fairview-sitting/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg", 2220, 1494],
+    ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg", 3080, 2072],
+    ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg", 3080, 2054],
+    ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg", 1100, 1650],
+    ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/floor-and-decor/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg", 1100, 1650],
+    ["The Fairview Suite", "Interior design", "/case-studies/fairview-suite", "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg", 3080, 2134],
+    ["The Fairview Suite", "Interior design", "/case-studies/fairview-suite", "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg", 1100, 1654],
+    ["The Fairview Suite", "Interior design", "/case-studies/fairview-suite", "/case-studies/fairview-bedroom/fairview-suite-detail-throw-chair-windows.jpg", 1099, 1105],
+    ["The Fairview Suite", "Interior design", "/case-studies/fairview-suite", "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg", 3080, 2054],
+    ["Nordstrom framework", "Content direction", "/case-studies/nordstrom-framework", "/case-studies/nordstrom-framework/hero1.png", 1540, 926],
+    ["Nordstrom framework", "Content direction", "/case-studies/nordstrom-framework", "/case-studies/nordstrom-framework/hero3.png", 1540, 926],
+    ["Nordstrom framework", "Content direction", "/case-studies/nordstrom-framework", "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg", 2418, 1612],
+    ["Nordstrom framework", "Content direction", "/case-studies/nordstrom-framework", "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-where-to-wear.jpg", 2418, 1612],
+    ["Loved by Nordstrom", "Brand campaign", "/case-studies/loved-by-nordstrom", "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg", 3840, 2324],
+    ["Loved by Nordstrom", "Brand campaign", "/case-studies/loved-by-nordstrom", "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg", 500, 654],
+    ["Loved by Nordstrom", "Brand campaign", "/case-studies/loved-by-nordstrom", "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg", 500, 654],
+    ["Loved by Nordstrom", "Brand campaign", "/case-studies/loved-by-nordstrom", "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-rag-and-bone-leather-jacket-tile.jpg", 500, 654],
+    ["Mountain View", "Interior remodel", "/case-studies/chalet", "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg", 3080, 2072],
+    ["Mountain View", "Interior remodel", "/case-studies/chalet", "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg", 1102, 1652],
+    ["Mountain View", "Interior remodel", "/case-studies/chalet", "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg", 1100, 1650],
+    ["Mountain View", "Interior remodel", "/case-studies/chalet", "/case-studies/chalet/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg", 2264, 1508],
+    ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg", 3080, 1852],
+    ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup.jpg", 3080, 1852],
+    ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-minimalism-flat-spread.jpg", 1136, 730],
+    ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-ways-to-wear-black-dress-ikat.jpg", 1336, 930],
+    ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/chisos-peak-cactus.jpg", 2560, 1712],
+    ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/chisos-range-panorama.jpg", 2560, 1449],
+    ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/rise.jpg", 2560, 1707],
+    ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/desert-dusk-ridgeline.jpg", 2560, 1712],
+    ["Faux Reel", "Product, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800]
+  ];
+
+  let seed = SEED;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+                      return seed / 0x7fffffff; };
+
+  let io = null;
+  function build() {
+    const COLS = pickCols();
+    if (io) io.disconnect();
+    wrap.innerHTML = "";
+    seed = SEED;            // re-deal from the top so the layout is repeatable
+
+    const colEls = [];
+    for (let i = 0; i < COLS; i++) {
+      const d = document.createElement("div");
+      d.className = "fd-col";
+      wrap.appendChild(d); colEls.push(d);
+    }
+
+  // Deal the frames out shuffled. Straight order would drop a project's
+  // four frames into four adjacent columns at the same height, which reads
+  // as a row of one project rather than a feed you fall through.
+    const order = F.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(rnd() * (i + 1));
+      const tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+    }
+
+    io = matchMedia("(prefers-reduced-motion: reduce)").matches ? null :
+      new IntersectionObserver((es) => {
+        es.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add("fd-on"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.06, rootMargin: "0px 0px -6% 0px" });
+
+    order.forEach((idx, n) => {
+      const r = F[idx];
+      const a = document.createElement("a");
+      a.className = "fd-item";
+      a.href = r[2];
+      const w = 0.52 + rnd() * 0.48;               // share of its column
+      const shift = rnd() * (1 - w) * 100;         // inset inside what is left
+      const lead = n < COLS ? Math.round(rnd() * 260)        // ragged top edge
+                            : Math.round(46 + rnd() * 330);  // the empty runs
+      a.style.setProperty("--ar", r[4] + " / " + r[5]);
+      a.style.setProperty("--w", (w * 100).toFixed(1) + "%");
+      a.style.setProperty("--shift", shift.toFixed(1) + "%");
+      a.style.setProperty("--lead", lead + "px");
+      a.innerHTML = '<img src="' + r[3] + '" alt="" loading="lazy" decoding="async">' +
+        '<span class="fd-cap">' + r[0] + ' <i>' + r[1] + '</i></span>';
+      colEls[n % COLS].appendChild(a);
+      if (io) io.observe(a); else a.classList.add("fd-on");
+    });
+  }
+
+  build();
+  // Re-deal only when a breakpoint is actually crossed, not on every resize
+  // frame — rebuilding 109 nodes per pixel of drag would jank the whole page.
+  [wide, mid].forEach((mq) => mq.addEventListener("change", build));
+})();
+</script>
+
+<script>
+/* ── the index ──────────────────────────────────────────────────────
+   One hero per project, dealt into stacks with the practice text beside
+   them. Desktop runs two [text | frames] pairs side by side; a phone
+   runs ONE pair — every frame in a single stack, the text alongside —
+   which is why this rebuilds on the breakpoint rather than reflowing.
+
+   The left column is no longer about the projects. Every line of it is
+   copy that already exists on the site (the meta description and the
+   masthead ledger), reordered but not rewritten — nothing here is a
+   claim about the practice that the site was not already making.
+
+   Sizes are dealt from discrete tiers with a minimum step between
+   neighbours, so the near-identical hero ratios still read as varied.
+   One seeded stream, so the composition is the same on every load. */
+(() => {
+  const root = document.querySelector(".fx-index");
+  if (!root) return;
+  const SEED = 5;
+  const pad = (n) => (n < 10 ? "0" + n : "" + n);
+
+  const R = [
+    ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg", 3080, 1864],
+    ["A.R.C.", "App & brand", "/case-studies/arc", "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg", 3840, 2363],
+    ["Hill Country Kitchen", "Interior design", "/case-studies/hill-country-kitchen", "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg", 3080, 2134],
+    ["Robert Rodriguez", "Creative direction", "/case-studies/robert-rodriguez", "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg", 3080, 2052],
+    ["Nordstrom personalization", "Design system", "/case-studies/nordstrom-personalization", "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg", 3088, 1976],
+    ["Jeffrey NYC", "Ecommerce", "/case-studies/jeffrey-ecommerce", "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg", 3100, 1918],
+    ["Capitan Boot Co.", "Branding", "/case-studies/capitan-boot-co", "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg", 3080, 3087],
+    ["Jeffrey Spring", "Creative direction", "/case-studies/jeffrey-spring", "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg", 3088, 1976],
+    ["Hill Country Bath", "Interior design", "/case-studies/hill-country-bath", "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg", 3080, 2134],
+    ["Nordstrom beauty", "Digital design", "/case-studies/nordstrom-beauty", "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg", 3080, 1852],
+    ["Hill Country Oakworks", "Campaign, branding", "/case-studies/hill-country-oak", "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg", 3080, 1852],
+    ["Cosmo Prof", "Digital design", "/case-studies/cosmo-prof", "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg", 3076, 2730],
+    ["Dallas Sport Collective", "Website, app", "/case-studies/dsc", "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg", 2000, 1234],
+    ["Black & White Type", "Typography", "/case-studies/black-white-type", "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg", 3080, 1814],
+    ["Hill Country Living", "Interior design", "/case-studies/hill-country-living", "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg", 3080, 2134],
+    ["J. Christianson", "Brand development", "/case-studies/j-christianson", "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg", 3080, 1864],
+    ["Amber Shockey & Co.", "Tableware, branding", "/case-studies/amber-shockey-co", "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg", 3074, 2284],
+    ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/you-by-sally/hero.jpg", 3098, 1836],
+    ["Sally Marketing OS", "Product, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038],
+    ["The Fairview", "Interior design", "/case-studies/fairview-sitting", "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg", 3080, 2134],
+    ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg", 3080, 2072],
+    ["The Fairview Suite", "Interior design", "/case-studies/fairview-suite", "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg", 3080, 2134],
+    ["Nordstrom framework", "Content direction", "/case-studies/nordstrom-framework", "/case-studies/nordstrom-framework/hero1.png", 1540, 926],
+    ["Loved by Nordstrom", "Brand campaign", "/case-studies/loved-by-nordstrom", "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg", 3840, 2324],
+    ["Mountain View", "Interior remodel", "/case-studies/chalet", "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg", 3080, 2072],
+    ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg", 3080, 1852],
+    ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/chisos-peak-cactus.jpg", 2560, 1712],
+    ["Faux Reel", "Product, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800]
+  ];
+
+  // Verbatim from src/app/layout.tsx and the masthead ledger above.
+  const TEXT = [
+    ["The practice", "Multi-disciplinary design and engineering by Jeremy Prasatik. Reckon House Staples works across brand, product, and place: apps, interiors, and AI tools."],
+    ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
+    ["How I work", "Independent, Dallas. Design and build. Available for work."],
+    ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
+    ["Get in touch", "hello@reckon.house"]
+  ];
+
+  const wide = matchMedia("(min-width: 761px)");
+  const cols = root.querySelector(".ix-cols");
+
+  function build() {
+    const PAIRS = wide.matches ? 2 : 1;
+    cols.innerHTML = "";
+    let seed = SEED;
+    const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+                        return seed / 0x7fffffff; };
+
+    const pairs = [];
+    for (let i = 0; i < PAIRS; i++) {
+      const pair = document.createElement("div");
+      pair.className = "ix-pair";
+      pair.innerHTML = '<div class="ix-txt"></div><div class="ix-imgs"></div>';
+      cols.appendChild(pair);
+      pairs.push(pair);
+    }
+
+    // Discrete tiers, never within MINSTEP of the last: heroes are almost
+    // all landscape at 1.44–1.70, so scale is the only variety left and a
+    // uniform random would pile it all up in the middle.
+    const TIERS = [0.38, 0.50, 0.62, 0.74, 0.86, 1.00];
+    const MINSTEP = 0.20;
+    let prevW = -1;
+    const dealW = () => {
+      let w, guard = 0;
+      do { w = TIERS[Math.floor(rnd() * TIERS.length)]; guard++; }
+      while (Math.abs(w - prevW) < MINSTEP && guard < 14);
+      prevW = w; return w;
+    };
+
+    const per = Math.ceil(R.length / PAIRS);
+    const watch = [];
+
+    R.forEach((r, i) => {
+      const pair = pairs[Math.min(PAIRS - 1, Math.floor(i / per))];
+      if (i % per === 0) prevW = -1;          // each stack starts fresh
+      const a = document.createElement("a");
+      a.className = "ix-it";
+      a.href = r[2];
+      a.setAttribute("aria-label", r[0]);
+      a.style.setProperty("--w", (dealW() * 100).toFixed(1) + "%");
+      a.style.setProperty("--ar", r[4] + " / " + r[5]);
+      a.innerHTML = '<img src="' + r[3] + '" alt="" loading="lazy" decoding="async">' +
+        '<span class="ix-num">' + pad(i + 1) + "</span>";
+      pair.querySelector(".ix-imgs").appendChild(a);
+      watch.push(a);
+    });
+
+    TEXT.forEach((t, i) => {
+      const pair = pairs[Math.min(PAIRS - 1, Math.floor(i * PAIRS / TEXT.length))];
+      const b = document.createElement("div");
+      b.className = "ix-blk";
+      const h = document.createElement("span");
+      h.className = "t"; h.textContent = t[0];
+      const par = document.createElement("p");
+      par.className = "s"; par.textContent = t[1];
+      b.append(h, par);
+      pair.querySelector(".ix-txt").appendChild(b);
+      watch.push(b);
+    });
+
+    placeText();
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      watch.forEach((el) => el.classList.add("ix-on"));
+      return;
+    }
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("ix-on"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06, rootMargin: "0px 0px -6% 0px" });
+    watch.forEach((el) => io.observe(el));
+  }
+
+  /* The blocks are placed against the MEASURED stack, not dealt a lead.
+     Dealt leads put all five in the top half and left 47% of both columns
+     running bare beside the frames — a lead cannot know how tall the stack
+     it ends up beside turned out to be. Every image declares its ratio, so
+     the stack has its true height at first layout and this can measure it
+     straight away. Each block's own height is subtracted as it goes, since
+     they share one flex column and stack on each other. */
+  function placeText() {
+    [...root.querySelectorAll(".ix-pair")].forEach((pair) => {
+      const stack = pair.querySelector(".ix-imgs");
+      const bs = [...pair.querySelectorAll(".ix-blk")];
+      const H = stack ? stack.offsetHeight : 0;
+      if (!bs.length || !H) return;
+      let y = 0;
+      bs.forEach((b, i) => {
+        b.style.marginTop = "0px";
+        const target = Math.round(H * (i + 0.28) / (bs.length - 0.05));
+        b.style.marginTop = Math.max(0, target - y) + "px";
+        y = Math.max(target, y) + b.offsetHeight;
+      });
+    });
+  }
+
+  build();
+  wide.addEventListener("change", build);
+  addEventListener("resize", placeText);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeText);
+  setTimeout(placeText, 400);
+})();
+</script>
+
+<script>
+/* ── the credits: pick a setting, then seat it ──────────────────────
+   ?credits=table — the ruled specimen sheet.
+   ?credits=field — the drifting name field; it replaces the WHOLE beat,
+                    the headline holds the centre and only the names move.
+   anything else  — the ledger.
+   Losers are REMOVED, not hidden, before any of this runs, so the
+   survivor is the only markup and the only work.
+
+   Ledger and table arrive through a strict queue rather than per-item
+   delays: an item goes on one fixed beat after the previous one,
+   whatever the scroll did. IntersectionObserver only ADMITS items to
+   the queue — the queue owns the rhythm. The field needs no queue; CSS
+   runs it, and reduced-motion stops it there. */
+(() => {
+  const q = new URLSearchParams(location.search).get("credits");
+  const pick = q === "table" || q === "field" ? q : "ledger";
+
+  document.querySelectorAll("[data-credits-only]").forEach((el) => {
+    if (el.dataset.creditsOnly !== pick) el.remove();
+  });
+  if (pick === "field") {
+    const beat = document.querySelector("[data-credits-beat]");
+    if (beat) beat.remove();
+  } else {
+    document.querySelectorAll("[data-credits]").forEach((el) => {
+      if (el.dataset.credits !== pick) el.remove();
+    });
+  }
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (pick === "field") {
+    const host = document.querySelector(".mt-fieldbeat .fld-rows");
+    if (!host) return;
+    const NAMES = ["Crate & Barrel", "Nordstrom", "Ivy Park by Beyoncé",
+      "Neiman Marcus", "Rejuvenation", "Lostine Home", "Visual Comfort",
+      "Floor & Decor", "Kingston Brass", "Design Within Reach",
+      "Vivir Homes", "Haven"];
+    const ROWS = 9;
+    const DUR = [86, 71, 94, 66, 102, 76, 90, 69, 98];
+    for (let i = 0; i < ROWS; i++) {
+      const row = document.createElement("div");
+      row.className = "fld-row" + (i % 2 ? " rev" : "");
+      const track = document.createElement("div");
+      track.className = "fld-track";
+      const dur = DUR[i % DUR.length];
+      track.style.setProperty("--dur", dur + "s");
+      // negative delay scatters the loop phases — without it every row
+      // crosses its seam at the same moment and the field pulses
+      track.style.setProperty("--phase",
+        (-(dur * ((i * 0.37) % 1))).toFixed(1) + "s");
+      for (let c = 0; c < 2; c++) {
+        const set = document.createElement("div");
+        set.className = "fld-set";
+        if (c) set.setAttribute("aria-hidden", "true");
+        // rotate the list per row so a name never stacks with itself
+        NAMES.slice(i % NAMES.length)
+          .concat(NAMES.slice(0, i % NAMES.length))
+          .forEach((n) => {
+            const sp = document.createElement("span");
+            sp.textContent = n;
+            set.appendChild(sp);
+          });
+        track.appendChild(set);
+      }
+      row.appendChild(track);
+      host.appendChild(row);
+    }
+    return;
+  }
+
+  const items = pick === "table"
+    ? [...document.querySelectorAll(".mt-spec .sp-cell")]
+    : [...document.querySelectorAll(".mt-ledger li")];
+  if (!items.length) return;
+  if (reduce) { items.forEach((el) => el.classList.add("on")); return; }
+
+  const BEAT = 110;
+  let last = 0;
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const now = performance.now();
+      const at = Math.max(now, last + BEAT);
+      last = at;
+      setTimeout(() => e.target.classList.add("on"), at - now);
+    });
+  }, { threshold: 0.4 });
+  items.forEach((el) => io.observe(el));
+})();
+</script>
+
+<script src="/lab/archer-lockup.js"></script>
+<script src="/lab/vendor/flubber.min.js"></script>
+<script>
+/* ── the system index · logotype ───────────────────────────────────
+   The actual mark, not a specimen. ROBERT's caps interlock — overlapped
+   far enough that the letters cross — and because Hairline strokes are
+   hairlines you read both letters through each other. "rodriguez" nests
+   into the lower right rather than sitting on its own line.
+
+   The animation is the mark assembling. Book at open tracking is the
+   ordinary version of the word; Hairline at tight tracking is the logo.
+   Because the two cuts are baked with DIFFERENT tracking, the existing
+   x-lerp makes the letters close up as they thin — one move, both ideas.
+   It rests on the assembled mark and only passes briefly through the
+   ordinary one.
+
+   NO FONT FILE. Outlines are baked into archer-lockup.js. Archer is
+   licensed here for desktop use, which covers converting type to outlines
+   but not serving the binary, so nothing fetchable on this page is a font.
+
+   Ring order is outer-first per letter (baked at extraction). Without it
+   the outer shape of one cut can interpolate into the COUNTER of the other
+   and the letters appear to fill themselves in. */
+(() => {
+  const D = window.ARCHER_LOCKUP;
+  const svg = document.getElementById("lkSvg");
+  const gC = document.getElementById("lkCapsG");
+  const gL = document.getElementById("lkLowerG");
+  const fb = document.getElementById("typeFallback");
+  const wrap = document.getElementById("lockup");
+  const cap = document.getElementById("faceCap");
+  if (!D || !svg || !gC || !gL || !window.flubber) return;   // live text stays
+
+  // Composition, in caps em units. Tuned against the real logo artwork.
+  const LOWER_SCALE = 0.38;   // rodriguez size relative to the caps
+  const LOWER_RIGHT = 0.02;   // how far past the caps' right edge it ends
+  const LOWER_DY = 0.12;      // its baseline below the caps baseline
+  const PAD = 40;
+
+  const cuts = D.caps.cuts, A = cuts[0], B = cuts[1];
+  const CAPH = Math.abs(Math.min(A.inkTop, B.inkTop));
+  const L = D.lower, LW = (L.inkR - L.inkL) * LOWER_SCALE;
+
+  const mk = (parent) => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    el.setAttribute("fill", "#000");
+    el.setAttribute("fill-rule", "evenodd");
+    parent.appendChild(el);
+    return el;
+  };
+  const capPaths = A.letters.map(() => mk(gC));
+  // Lowercase never morphs, but it still needs ONE PATH PER LETTER with a
+  // transform. Baking the pen offset into the path data by rewriting each
+  // subpath's moveto only moves the start point — every curve after it stays
+  // at the origin and the word collapses into a blob.
+  L.letters.forEach((l) => {
+    const el = mk(gL);
+    el.setAttribute("d", l.rings.join(" "));
+    el.setAttribute("transform", "translate(" + l.x + " 0)");
+  });
+
+  // Per-letter interpolators. Contour counts were verified equal at
+  // extraction, so this never falls back to combine/separate.
+  const hop = A.letters.map((lf, k) => {
+    const lt = B.letters[k];
+    return {
+      fns: lf.rings.map((r, ri) =>
+        window.flubber.interpolate(r, lt.rings[ri], { maxSegmentLength: 4 })),
+      xa: lf.x, xb: lt.x,
+      la: lf.lsb, lb: lt.lsb, wa: lf.w, wb: lt.w,
+    };
+  });
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+  // Geometry for a given eased t: caps positions, then rodriguez hung off
+  // the caps' CURRENT right edge so the two stay one mark at every frame
+  // rather than drifting apart mid-morph.
+  function geom(e) {
+    const xs = [], lo = { v: Infinity }, hi = { v: -Infinity };
+    for (let k = 0; k < hop.length; k++) {
+      const x = lerp(hop[k].xa, hop[k].xb, e);
+      xs.push(x);
+      const l = x + lerp(hop[k].la, hop[k].lb, e);
+      if (l < lo.v) lo.v = l;
+      const r = l + lerp(hop[k].wa, hop[k].wb, e);
+      if (r > hi.v) hi.v = r;
+    }
+    const capsW = hi.v - lo.v;
+    const lx = hi.v + LOWER_RIGHT * capsW - LW - L.inkL * LOWER_SCALE;
+    return { xs, lo: lo.v, hi: hi.v, lx: lx, ly: LOWER_DY * CAPH };
+  }
+
+  // Box the widest state so nothing clips or reflows as it breathes.
+  let vbL = Infinity, vbR = -Infinity, vbT = Infinity, vbB = -Infinity;
+  for (const e of [0, 1]) {
+    const g = geom(e);
+    vbL = Math.min(vbL, g.lo, g.lx + L.inkL * LOWER_SCALE);
+    vbR = Math.max(vbR, g.hi, g.lx + (L.inkL + (L.inkR - L.inkL)) * LOWER_SCALE);
+    vbT = Math.min(vbT, e ? B.inkTop : A.inkTop, g.ly + L.inkTop * LOWER_SCALE);
+    vbB = Math.max(vbB, 0, g.ly + L.inkBot * LOWER_SCALE);
+  }
+  const VW = vbR - vbL + PAD * 2;
+  svg.setAttribute("viewBox", (vbL - PAD) + " " + (vbT - PAD) + " " +
+                              VW + " " + (vbB - vbT + PAD * 2));
+
+  function draw(t) {
+    const e = ease(Math.max(0, Math.min(1, t)));
+    const g = geom(e);
+    // Centre the whole mark on its ink, so the caps closing up does not
+    // walk the lockup sideways inside its box.
+    const off = (vbL + vbR) / 2 - (Math.min(g.lo, g.lx + L.inkL * LOWER_SCALE) +
+                                   Math.max(g.hi, g.lx + L.inkR * LOWER_SCALE)) / 2;
+    for (let k = 0; k < capPaths.length; k++) {
+      capPaths[k].setAttribute("d", hop[k].fns.map((fn) => fn(e)).join(" "));
+      capPaths[k].setAttribute("transform",
+        "translate(" + (g.xs[k] + off).toFixed(1) + " 0)");
+    }
+    gL.setAttribute("transform",
+      "translate(" + (g.lx + off).toFixed(1) + " " + g.ly.toFixed(1) +
+      ") scale(" + LOWER_SCALE + ")");
+  }
+
+  // Draw before revealing — swapping first leaves one empty frame, and that
+  // blank frame reads as a blink.
+  const FLAT = A.name, LOCKED = "Hairline over Book";
+  draw(1);
+  cap.textContent = LOCKED;
+  fb.hidden = true; wrap.hidden = false;
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const HOLD_LOCK = 2800, BACK = 650, HOLD_FLAT = 1200, FWD = 850;
+  const CYCLE = HOLD_LOCK + BACK + HOLD_FLAT + FWD;
+  let t0 = null, named = LOCKED;
+
+  requestAnimationFrame(function frame(now) {
+    if (t0 == null) t0 = now;
+    const el = (now - t0) % CYCLE;
+    let t, label;
+    if (el < HOLD_LOCK) { t = 1; label = LOCKED; }
+    else if (el < HOLD_LOCK + BACK) { t = 1 - (el - HOLD_LOCK) / BACK; label = t < 0.5 ? FLAT : LOCKED; }
+    else if (el < HOLD_LOCK + BACK + HOLD_FLAT) { t = 0; label = FLAT; }
+    else { t = (el - HOLD_LOCK - BACK - HOLD_FLAT) / FWD; label = t > 0.5 ? LOCKED : FLAT; }
+
+    // Name the state as it crosses, not after it lands — after reads late.
+    if (label !== named) {
+      named = label;
+      cap.style.opacity = "0";
+      setTimeout(((v) => () => { cap.textContent = v; cap.style.opacity = "1"; })(label), 170);
+    }
+    draw(t);
+    requestAnimationFrame(frame);
+  });
+})();
+
+/* ── palette — colour AND shape ────────────────────────────────────
+   Four states, each a colour paired with a form. Shapes are sampled as
+   POLAR PROFILES: a radius for each of 180 angles around the centre.
+   Because every shape is star-convex about its centre, sampling by angle
+   makes point 0 of the square correspond to point 0 of the triangle, and
+   the morph becomes a straight per-angle lerp — no correspondence
+   guessing, no twisting, no collapsing corners. */
+(() => {
+  // Corners start SHARP. Dial `corner` up per shape once the silhouettes
+  // are right — it is a detail, not the defining feature — at ~40% of the
+  // shape the triangle stopped reading as a triangle. R is per-shape because
+  // equal circumradius does not mean equal optical size: a circle at R=41
+  // carries the same visual weight as a square at 47 or a triangle at 50.
+  const STATES = [
+    { hex: "#E0552F", name: "Coral",  sides: 4, R: 47, corner: 0, rot: Math.PI / 4 },
+    { hex: "#F09A3E", name: "Orange", sides: 0, R: 41, corner: 0, rot: 0 },        // 0 = circle
+    { hex: "#E8637A", name: "Pink",   sides: 3, R: 50, corner: 0, rot: -Math.PI / 2 },
+    { hex: "#241C18", name: "Ink",    sides: 6, R: 44, corner: 0, rot: Math.PI / 6 },
+  ];
+  const N = 180, CX = 50, CY = 50, HOLD = 1500, MORPH = 800;
+  const svg = document.getElementById("swatch");
+  const pathEl = document.getElementById("swatchPath");
+  const cap = document.getElementById("swatchCap");
+  if (!pathEl) return;
+
+  // Dense outline of a regular polygon. BOTH the corner arcs AND the straight
+  // edges have to be sampled: the polar profile below reads a radius per
+  // angle, so any stretch of outline with no samples gets filled in by
+  // interpolating radius — which traces an arc, not a line. Sampling corners
+  // only is what turned the square into a circle with four nubs.
+  const outline = (sides, R, cr, rot) => {
+    if (!sides) {                                   // circle
+      const pts = [];
+      for (let i = 0; i < 360; i++) {
+        const a = (i / 360) * 2 * Math.PI;
+        pts.push([CX + R * Math.cos(a), CY + R * Math.sin(a)]);
+      }
+      return pts;
+    }
+    const u = (v) => { const m = Math.hypot(v[0], v[1]) || 1; return [v[0] / m, v[1] / m]; };
+    const V = [];
+    for (let i = 0; i < sides; i++) {
+      const a = rot + (i * 2 * Math.PI) / sides;
+      V.push([CX + R * Math.cos(a), CY + R * Math.sin(a)]);
+    }
+
+    // Per vertex: where the corner arc enters, where it leaves, and its centre.
+    // cr = 0 degenerates cleanly to the bare vertex.
+    const corners = V.map((cur, i) => {
+      const prev = V[(i - 1 + sides) % sides], next = V[(i + 1) % sides];
+      const d1 = u([prev[0] - cur[0], prev[1] - cur[1]]);
+      const d2 = u([next[0] - cur[0], next[1] - cur[1]]);
+      if (cr <= 0) return { p1: cur, p2: cur, r: 0 };
+      const ang = Math.acos(Math.max(-1, Math.min(1, d1[0] * d2[0] + d1[1] * d2[1])));
+      const dist = cr / Math.tan(ang / 2);
+      const p1 = [cur[0] + d1[0] * dist, cur[1] + d1[1] * dist];
+      const p2 = [cur[0] + d2[0] * dist, cur[1] + d2[1] * dist];
+      const bis = u([d1[0] + d2[0], d1[1] + d2[1]]);
+      const off = cr / Math.sin(ang / 2);
+      const cen = [cur[0] + bis[0] * off, cur[1] + bis[1] * off];
+      let a1 = Math.atan2(p1[1] - cen[1], p1[0] - cen[0]);
+      const a2 = Math.atan2(p2[1] - cen[1], p2[0] - cen[0]);
+      let da = a2 - a1;
+      while (da > Math.PI) da -= 2 * Math.PI;
+      while (da < -Math.PI) da += 2 * Math.PI;
+      return { p1, p2, cen, a1, da, r: cr };
+    });
+
+    const pts = [];
+    for (let i = 0; i < sides; i++) {
+      const c = corners[i], nx = corners[(i + 1) % sides];
+      if (c.r > 0) {
+        for (let k = 0; k <= 18; k++) {
+          const a = c.a1 + (c.da * k) / 18;
+          pts.push([c.cen[0] + c.r * Math.cos(a), c.cen[1] + c.r * Math.sin(a)]);
+        }
+      } else {
+        pts.push([c.p1[0], c.p1[1]]);
+      }
+      // the edge — the part that was missing
+      const from = c.r > 0 ? c.p2 : c.p1, to = nx.p1;
+      for (let k = 1; k <= 60; k++) {
+        const t = k / 60;
+        pts.push([from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t]);
+      }
+    }
+    return pts;
+  };
+
+  // → one radius per angle, so shapes line up index-for-index.
+  const profile = (pts) => {
+    const polar = pts.map(([x, y]) => {
+      let a = Math.atan2(y - CY, x - CX);
+      if (a < 0) a += 2 * Math.PI;
+      return [a, Math.hypot(x - CX, y - CY)];
+    }).sort((m, n) => m[0] - n[0]);
+    const out = [];
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * 2 * Math.PI;
+      let lo = 0, hi = polar.length - 1;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (polar[m][0] < a) lo = m + 1; else hi = m; }
+      const p1 = polar[lo], p0 = polar[(lo - 1 + polar.length) % polar.length];
+      const span = p1[0] - p0[0];
+      const t = span > 0 ? Math.max(0, Math.min(1, (a - p0[0]) / span)) : 0;
+      out.push(p0[1] + (p1[1] - p0[1]) * t);
+    }
+    return out;
+  };
+
+  const profiles = STATES.map((st) => profile(outline(st.sides, st.R, st.corner, st.rot)));
+  const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const cols = STATES.map((st) => rgb(st.hex));
+
+  const toPath = (r) => {
+    let d = "";
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * 2 * Math.PI;
+      const x = (CX + r[i] * Math.cos(a)).toFixed(2);
+      const y = (CY + r[i] * Math.sin(a)).toFixed(2);
+      d += (i ? "L" : "M") + x + "," + y;
+    }
+    return d + "Z";
+  };
+
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const n = STATES.length;
+  let seg = 0, t0 = null, fired = false;
+  cap.textContent = STATES[0].name + " \u00b7 " + STATES[0].hex;
+
+  requestAnimationFrame(function frame(ts) {
+    if (t0 == null) t0 = ts;
+    const el = ts - t0;
+    let t;
+    if (el < HOLD) t = 0;
+    else if (el < HOLD + MORPH) {
+      t = (el - HOLD) / MORPH;
+      if (!fired && t > 0.35) {
+        fired = true;
+        const nx = STATES[(seg + 1) % n];
+        cap.style.opacity = "0";
+        setTimeout(() => { cap.textContent = nx.name + " \u00b7 " + nx.hex; cap.style.opacity = "1"; }, 190);
+      }
+    } else { seg = (seg + 1) % n; t0 = ts; t = 0; fired = false; }
+
+    const e = ease(t), a = profiles[seg], bpf = profiles[(seg + 1) % n];
+    pathEl.setAttribute("d", toPath(a.map((v, i) => v + (bpf[i] - v) * e)));
+    const c0 = cols[seg], c1 = cols[(seg + 1) % n];
+    pathEl.setAttribute("fill",
+      "rgb(" + c0.map((v, i) => Math.round(v + (c1[i] - v) * e)).join(",") + ")");
+    requestAnimationFrame(frame);
+  });
+})();
+
+/* compositing — the reel, re-shaping to each frame's native ratio */
+(() => {
+  const DIR = "/case-studies/robert-rodriguez";
+  const IMAGES = [
+    "neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+    "neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg",
+  ].map((f) => `${DIR}/${f}`);
+  const box = document.getElementById("idxReelBox"), reel = document.getElementById("idxReel");
+  if (!box) return;
+  const ratios = [];
+  const shape = (i) => { const r = ratios[i];
+    if (r) box.style.height = (box.getBoundingClientRect().width / r).toFixed(1) + "px"; };
+  Promise.all(IMAGES.map((src, i) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => { ratios[i] = im.naturalWidth / im.naturalHeight; res(); };
+    im.onerror = res; im.src = src;
+  }))).then(() => {
+    shape(0);
+    reel.setAttribute("images", IMAGES.join(", "));
+    reel.setAttribute("colors", "#E0552F, #F09A3E, #E8637A, #F5EAE7, #241C18");
+    reel.addEventListener("beat", (e) => {
+      const bt = e.detail && e.detail.beat;
+      if (bt && bt.img != null) shape(bt.img);
+    });
+  });
+})();
+</script>
+
+<script>
+/* Preview reel on the cover. Same engine as the Faux Reel tool, fed this
+   case study's own frames — so the thumbnail is a moving contact sheet of
+   the work rather than a single still.
+
+   The interesting part is the shape: the campaign's frames run from 0.67
+   portrait to 1.50 landscape, and rather than forcing them all into one
+   crop, the box re-shapes to each frame's native ratio on every beat. The
+   thumbnail itself becomes part of the animation. */
+(() => {
+  const DIR = "/case-studies/robert-rodriguez";
+  const IMAGES = [
+    "neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+    "neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+    "neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-pink-curly-hair-colorful-gradient-overlay-portrait-concrete-wall-gallery.jpg",
+    "neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait.jpg",
+    "robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design.jpg",
+  ].map((f) => `${DIR}/${f}`);
+
+  // Pulled from the campaign itself — coral, orange, pink, per the case study.
+  const COLORS = "#E0552F, #F09A3E, #E8637A, #F5EAE7, #241C18";
+
+  const box = document.getElementById("reelBox");
+  const reel = document.getElementById("reel");
+  const ratios = [];
+
+  function shape(i) {
+    const r = ratios[i];
+    if (!r) return;
+    box.style.height = (box.getBoundingClientRect().width / r).toFixed(1) + "px";
+  }
+
+  Promise.all(IMAGES.map((src, i) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => { ratios[i] = im.naturalWidth / im.naturalHeight; res(); };
+    im.onerror = res;
+    im.src = src;
+  }))).then(() => {
+    shape(0);
+    // Only set the attributes once the ratios are known, so the first beat
+    // already lands on a correctly-shaped box.
+    reel.setAttribute("images", IMAGES.join(", "));
+    reel.setAttribute("colors", COLORS);
+    reel.addEventListener("beat", (e) => {
+      const b = e.detail && e.detail.beat;
+      // Colour and title beats carry no image — hold the current shape
+      // through them rather than snapping to some default.
+      if (b && b.img != null) shape(b.img);
+    });
+  });
+
+  addEventListener("resize", () => {
+    const h = parseFloat(box.style.height);
+    if (h) box.style.height = "";        // let it re-derive on the next beat
+  });
+})();
+</script>
+
+<script>
+/* ── scroll feel ────────────────────────────────────────────────────
+   Two different physics, and they feel genuinely different:
+
+   GLIDE (duration + easing) — every wheel tick starts a timed tween that
+   decelerates to a dead stop. Because it actually ARRIVES, it reads as
+   weight settling into place. Higher `Settle` = harder deceleration at the
+   end, which is the "eases into the section and stops" part.
+
+   DECAY (lerp) — what the site runs today at 0.12. Exponential approach:
+   always chasing, never quite arriving. Lighter, more responsive, but it
+   never gives you that landing.
+
+   `Push` is wheelMultiplier: below 1 makes each notch cover less ground,
+   which is most of what reads as "heavy".
+
+   Settled on: duration 1.65s, easeOut^6, wheelMultiplier 0.65. The high
+   exponent holds speed through the middle and brakes hard at the very end,
+   which is the "arrives into place" part; 0.65 push is what makes each
+   notch feel like it costs something. */
+(() => {
+  if (!window.Lenis) return;
+
+  // Settled feel: a timed tween per wheel tick that decelerates to a real
+  // stop, rather than lerp's exponential chase that never quite arrives.
+  // easeOut^6 holds speed through the middle then brakes hard at the end;
+  // wheelMultiplier under 1 is what actually reads as weight.
+  const lenis = new window.Lenis({
+    smoothWheel: true,
+    duration: 1.65,
+    easing: (t) => 1 - Math.pow(1 - t, 6),
+    wheelMultiplier: 0.65,
+    touchMultiplier: 1.4,
+  });
+  (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })();
+})();
+</script>
+
+<script>
+/* ── nav burn ───────────────────────────────────────────────────────
+   Lifted from NavRail.tsx: a `heat` value that climbs while you scroll and
+   decays when you stop, driving saturate 1→8, contrast 1→3, blur 0→4px on
+   a BACKDROP filter, plus the #navMelt displacement for the melt.
+
+   Backdrop-filter is the reason it is invisible on white: pumping the
+   saturation of a flat cream field changes nothing, but the moment a
+   photograph passes underneath there is colour to push.
+
+   The site's idle sweep is deliberately left out — with the scroll burn
+   already doing the work it just competed with it.
+
+   Site version listens on main's scroll (Lenis); here it is the document. */
+(() => {
+  const burn = document.getElementById("navBurn");
+  const sweep = document.getElementById("navSweep");
+  if (!burn) return;
+
+  let heat = 0, lastScroll = 0;
+  const onInput = () => { lastScroll = Date.now(); };
+  addEventListener("scroll", onInput, { passive: true });
+  addEventListener("wheel", onInput, { passive: true });
+  addEventListener("touchmove", onInput, { passive: true });
+
+  (function animate() {
+    const since = Date.now() - lastScroll;
+    // Three stages: climb hard while moving, hold with a slow bleed for two
+    // seconds after you stop, then fade out properly. The middle stage is
+    // what stops it flickering on and off during short scroll bursts.
+    if (since < 500)       heat += (1 - heat) * 0.06;
+    else if (since < 2500) heat += (0 - heat) * 0.015;
+    else                   heat += (0 - heat) * 0.03;
+
+    if (heat < 0.005) heat = 0;
+
+    const sat = 1 + heat * 7, con = 1 + heat * 2, blr = heat * 4;
+    const css = `blur(${blr}px) saturate(${sat}) contrast(${con})`;
+    burn.style.backdropFilter = `url(#navMelt) ${css}`;
+    burn.style.webkitBackdropFilter = css;      // Safari skips the SVG ref
+    burn.style.background = `rgba(243, 240, 237, ${0.05 + heat * 0.1})`;
+
+    requestAnimationFrame(animate);
+  })();
+})();
+</script>
+
+<script>
+/* ── the single large plates ───────────────────────────────────────
+   The live HeroBlock travels 0.82 → 1.0, but that assumes a page with no
+   sticky bar and a hero that owns the whole screen. Here the plate already
+   sits close to full width, so the growth is a nudge (0.95 → 1.0, about 5%)
+   and the CORNER carries the moment: 44px → square as it reaches the top.
+   Progress is measured from the plate's own top — 0 entering at the viewport
+   bottom, 1 when it reaches the top — so it tracks scroll rather than firing
+   once on entry.
+
+   The site version listens on main's scroll because Lenis owns that
+   scroller; here it is plain rAF against the document. */
+(() => {
+  const REST = 0.95;      // resting scale — the plate is nearly full already
+  const RADIUS = 44;      // resting corner, squares off at the top
+  const plates = [...document.querySelectorAll(".plate-full")].map((sec) => ({
+    sec, img: sec.querySelector("img"),
+  })).filter((x) => x.img);
+  if (!plates.length) return;
+
+  (function tick() {
+    for (const { sec, img } of plates) {
+      const top = sec.getBoundingClientRect().top;
+      const p = Math.max(0, Math.min(1, 1 - top / innerHeight));
+      img.style.transform = `scale(${(REST + (1 - REST) * p).toFixed(4)})`;
+      img.style.borderRadius = Math.round(RADIUS * (1 - p)) + "px";
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ── headline reveal ────────────────────────────────────────────────
+   Ported from lab/headline-reveal.html at the settled values: rise, 1.2s,
+   6ms per-character lead, melt 20. Each headline splits into lines (each
+   its own mask), then words (so breaks stay at spaces), then characters
+   (so each can carry a delay).
+
+   The melt is the nav's filter chain, decayed to zero across the arrival
+   and then REMOVED — text left inside a filter pipeline renders soft, and
+   these need to be sharp at rest. One filter instance per headline so
+   their timings do not fight over a shared `scale`. */
+(() => {
+  const STAG = 6, DUR = 1200, MELT = 20;
+  const heads = [...document.querySelectorAll("[data-reveal]")];
+  if (!heads.length) return;
+  const NS = "http://www.w3.org/2000/svg";
+  let uid = 0;
+
+  heads.forEach((h) => {
+    const parts = [];
+    h.childNodes.forEach((n) => {
+      if (n.nodeType === 3 && n.textContent.trim()) parts.push({ t: n.textContent.trim(), out: false });
+      else if (n.nodeType === 1) parts.push({ t: n.textContent.trim(), out: n.classList.contains("out") });
+    });
+    h.innerHTML = "";
+    let i = 0;
+    parts.forEach((p) => {
+      const line = document.createElement("span");
+      line.className = "rln" + (p.out ? " out" : "");
+      const inner = document.createElement("span");
+      inner.className = "rlnI";
+      p.t.split(" ").forEach((word, wi) => {
+        if (wi) inner.appendChild(document.createTextNode(" "));
+        const w = document.createElement("span");
+        w.className = "rwd";
+        [...word].forEach((c) => {
+          const sp = document.createElement("span");
+          sp.className = "rch";
+          sp.textContent = c;
+          sp.style.setProperty("--d", (i++ * STAG) + "ms");
+          w.appendChild(sp);
+        });
+        inner.appendChild(w);
+      });
+      line.appendChild(inner);
+      h.appendChild(line);
+    });
+    h._chars = i;
+  });
+
+  function melt(h) {
+    if (!MELT) return;
+    if (!h._f) {
+      const svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("width", "0"); svg.setAttribute("height", "0");
+      svg.style.position = "absolute";
+      const f = document.createElementNS(NS, "filter");
+      const id = "hmelt-" + (uid++);
+      f.setAttribute("id", id);
+      f.setAttribute("x", "-25%"); f.setAttribute("y", "-25%");
+      f.setAttribute("width", "150%"); f.setAttribute("height", "150%");
+      f.setAttribute("color-interpolation-filters", "sRGB");
+      const t = document.createElementNS(NS, "feTurbulence");
+      t.setAttribute("type", "fractalNoise"); t.setAttribute("baseFrequency", "0.015 0.025");
+      t.setAttribute("numOctaves", "3"); t.setAttribute("seed", "8"); t.setAttribute("result", "n");
+      const g = document.createElementNS(NS, "feGaussianBlur");
+      g.setAttribute("in", "n"); g.setAttribute("stdDeviation", "2"); g.setAttribute("result", "sm");
+      const d = document.createElementNS(NS, "feDisplacementMap");
+      d.setAttribute("in", "SourceGraphic"); d.setAttribute("in2", "sm"); d.setAttribute("scale", "0");
+      d.setAttribute("xChannelSelector", "R"); d.setAttribute("yChannelSelector", "G");
+      f.append(t, g, d); svg.appendChild(f); document.body.appendChild(svg);
+      h._f = { id, d };
+    }
+    const { id, d } = h._f;
+    const inners = [...h.querySelectorAll(".rlnI")];
+    const total = DUR + STAG * h._chars;
+    inners.forEach((el) => (el.style.filter = `url(#${id})`));
+    const t0 = performance.now();
+    (function step() {
+      const k = Math.min((performance.now() - t0) / total, 1);
+      d.setAttribute("scale", (MELT * Math.pow(1 - k, 2.4)).toFixed(2));
+      if (k < 1) requestAnimationFrame(step);
+      else inners.forEach((el) => (el.style.filter = "none"));
+    })();
+  }
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { heads.forEach((h) => h.classList.add("go")); return; }
+
+  // Reveal at 30% in, but re-arm only once the headline is COMPLETELY clear.
+  // isIntersecting flips false at the 0.3 boundary, so the old version reset
+  // while a third of the line was still on screen and the reader watched it
+  // happen. Watching both boundaries separates the two decisions.
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (e.intersectionRatio >= 0.3) {
+        // Guard the melt: the callback fires at every boundary crossing, and
+        // re-running it on an already-revealed headline restarts the filter.
+        if (!e.target.classList.contains("go")) {
+          e.target.classList.add("go");
+          melt(e.target);
+        }
+        return;
+      }
+      if (e.intersectionRatio === 0) e.target.classList.remove("go");
+    });
+  }, { threshold: [0, 0.3] });
+  heads.forEach((h) => io.observe(h));
+})();
+</script>
+
+
+<script>
+/* ── the rising ground ──────────────────────────────────────────────
+   The panel climbs the pinned screen; the type drifts up at a fraction of
+   that for parallax, so it separates from the edge instead of riding it.
+   Nothing here sets a colour on the text — the difference blend does the
+   knockout on its own as the boundary crosses each line. */
+(() => {
+  const wrap = document.getElementById("qwrap");
+  const fill = document.getElementById("qFill");
+  const text = document.getElementById("qText");
+  if (!wrap || !fill) return;
+  const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
+
+  (function tick() {
+    const r = wrap.getBoundingClientRect();
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    // Slightly eased so it arrives rather than slamming shut at the top.
+    const e = 1 - Math.pow(1 - p, 1.4);
+    fill.style.height = (e * 100).toFixed(2) + "%";
+    text.style.transform = `translateY(${(-e * 34).toFixed(1)}px)`;
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ── the crossing headline ─────────────────────────────────────────
+   Scroll is remapped to sideways travel: the line starts a full viewport
+   off to the right and arrives at its resting position exactly as the pin
+   runs out. Deliberately LINEAR — an eased curve makes it feel like an
+   animation being played at you, where linear feels like the wheel is
+   dragging the line across, which is the point.
+
+   The body column is held back until the line has nearly landed, so the
+   two never compete for attention. */
+(() => {
+  const wrap = document.getElementById("hwrap");
+  const head = document.getElementById("hHead");
+  const col  = document.getElementById("hCol");
+  if (!wrap || !head) return;
+
+  const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
+  const lines = [...head.querySelectorAll(".ln")];
+  const paras = [...col.querySelectorAll("p")];
+  paras.forEach((el) => { el.style.clipPath = "inset(0 100% 0 0)"; });
+
+  // Each line starts a little after the one above it. The span is shortened
+  // by the total stagger so the LAST line still finishes exactly at p = 1 —
+  // otherwise the tail would still be mid-flight when the pin releases.
+  const STAGGER = 0.13;
+  const SPAN = 1 - STAGGER * (lines.length - 1);
+
+  // Ease OUT only, and gently. Easing the start would make a line crawl while
+  // the wheel is already turning, which breaks the sense that scroll is
+  // dragging it. Easing the end just lets each line settle rather than stop
+  // dead — that hard stop is what read as stiff. Exponent is the dial: 1 is
+  // linear, 2+ starts to feel like an animation playing rather than scrubbing.
+  const ease = (t) => 1 - Math.pow(1 - t, 1.6);
+
+  (function tick() {
+    const r = wrap.getBoundingClientRect();
+    const travel = r.height - innerHeight;
+    const p = clamp01(-r.top / travel);
+
+    lines.forEach((el, i) => {
+      const lp = ease(clamp01((p - i * STAGGER) / SPAN));
+      el.style.transform = `translateX(${((1 - lp) * innerWidth).toFixed(1)}px)`;
+    });
+
+    // Copy is uncovered by a hard edge travelling left to right, one
+    // paragraph after the other. Deliberately NOT eased: a mask edge is a
+    // machine part, not an object with momentum — decelerating it looks like
+    // the wipe is running out of steam. The lines settle; the edge sweeps.
+    paras.forEach((el, i) => {
+      const c = clamp01((p - (0.58 + i * 0.11)) / 0.30);
+      el.style.clipPath = `inset(0 ${((1 - c) * 100).toFixed(2)}% 0 0)`;
+    });
+
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* Scroll-driven zoom, one instance per .zoomwrap. Progress comes straight
+   from how far the viewport has travelled through the wrap — no timers, no
+   library, fully scrubbed, so it runs backwards for free when the user
+   scrolls up. Each wrap keeps its own measurements: the two plates have
+   different aspects, so they pin for different lengths. */
+(() => {
+  const zooms = Array.prototype.slice
+    .call(document.querySelectorAll(".zoomwrap"))
+    .map((wrap) => {
+      const fig = wrap.querySelector(".zoom-fig");
+      return fig ? { wrap: wrap, fig: fig,
+                     ink: Array.prototype.slice.call(wrap.querySelectorAll(".num, .left p")),
+                     box: null, scale: 1, spill: 0, zoomPx: 0, panPx: 0 } : null;
+    })
+    .filter(Boolean);
+  if (!zooms.length) return;
+
+  // Read from the custom properties rather than hard-coding: --nav drops to
+  // 48px on mobile, and a stale constant parks the plate 6px wrong. --r has
+  // no breakpoint override, so it is read once.
+  const navH = () => parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue("--nav")) || 54;
+  const baseR = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue("--r")) || 16;
+
+  // The figure's untransformed box, measured relative to its sticky screen.
+  // That offset is layout-stable no matter where the scroll is, so it only
+  // needs re-measuring on resize.
+  function measure(z) {
+    z.fig.style.transform = "none";
+    const f = z.fig.getBoundingClientRect();
+    const s = z.fig.closest(".zoom-sticky").getBoundingClientRect();
+    z.box = { x: f.left - s.left, y: f.top - s.top, w: f.width, h: f.height };
+
+    // Full-bleed; height excludes the sticky bar so the plate's top edge
+    // parks just beneath it rather than behind it.
+    const NAV = navH();
+    const matH = innerHeight - NAV;
+    // Fit the WIDTH rather than covering the box. Nothing is cropped — any
+    // height beyond the fold becomes something to scroll through instead of
+    // something thrown away. A landscape plate spills barely anything and so
+    // pins for much less scroll than a portrait one.
+    z.scale = innerWidth / z.box.w;
+    z.spill = Math.max(0, z.box.h * z.scale - matH);
+
+    z.zoomPx = innerHeight * 1.1;   // scroll spent growing the plate
+    z.panPx = z.spill;              // 1:1 — one pixel of scroll, one of image
+    z.wrap.style.height = (innerHeight + z.zoomPx + z.panPx) + "px";
+  }
+
+  const smooth = (k) => k * k * (3 - 2 * k);   // gentle at both ends
+  const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
+
+  function tick() {
+    for (let i = 0; i < zooms.length; i++) {
+      const z = zooms[i];
+      if (!z.box) measure(z);
+      const r = z.wrap.getBoundingClientRect();
+      // Skip wraps nowhere near the viewport — with two of these on the page
+      // there is no reason to write transforms for one that is offscreen.
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      const scrolled = -r.top;
+
+      // Two phases off one scroll position: grow, then travel down the image.
+      const zp = clamp01(scrolled / z.zoomPx);
+      const pp = clamp01((scrolled - z.zoomPx) / Math.max(z.panPx, 1));
+      const e = smooth(zp);
+
+      // Origin is top-center, so translate steers the plate's TOP edge to the
+      // mat's top line and scale grows it downward from there. The pan then
+      // slides that tall frame up through the mat window.
+      const tx = ((innerWidth / 2) - (z.box.x + z.box.w / 2)) * e;
+      const ty = (navH() - z.box.y) * e - z.spill * pp;
+
+      const cur = 1 + (z.scale - 1) * e;
+      z.fig.style.transform =
+        "translate(" + tx.toFixed(2) + "px, " + ty.toFixed(2) + "px) scale(" + cur.toFixed(4) + ")";
+      // The corner sharpens as the plate fills: --r at rest, 0 once it is edge
+      // to edge. Same move the site's hero makes — the rounded plate reads as
+      // an object on the page, and losing the radius is what turns it into the
+      // page. Still divided by `cur` because transform scales border-radius
+      // along with everything else, so this is the pre-scale number that LOOKS
+      // like baseR * (1 - e) on screen.
+      z.fig.style.borderRadius = ((baseR * (1 - e)) / cur).toFixed(2) + "px";
+
+      // Knock the black numeral out exactly where the plate has reached it.
+      // Four half-plane gradients — left of, right of, above, below the plate
+      // — unioned by mask-composite:add, which is every pixel OUTSIDE the
+      // plate's rect. The burn underneath is always on, so whatever this
+      // reveals is already burning: the edge between ink and burn is the
+      // plate's own edge, not a fade and not a switch.
+      // Read AFTER the transform is written, or the rect is a frame stale.
+      const fr2 = z.fig.getBoundingClientRect();
+      for (let k = 0; k < z.ink.length; k++) {
+        const el = z.ink[k], nr = el.getBoundingClientRect();
+        const l = (fr2.left - nr.left).toFixed(1), r = (fr2.right - nr.left).toFixed(1);
+        const t = (fr2.top - nr.top).toFixed(1), b = (fr2.bottom - nr.top).toFixed(1);
+        const m =
+          "linear-gradient(to right,#000 " + l + "px,transparent " + l + "px)," +
+          "linear-gradient(to right,transparent " + r + "px,#000 " + r + "px)," +
+          "linear-gradient(to bottom,#000 " + t + "px,transparent " + t + "px)," +
+          "linear-gradient(to bottom,transparent " + b + "px,#000 " + b + "px)";
+        el.style.maskImage = m;
+        el.style.webkitMaskImage = m;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  addEventListener("resize", () => { for (const z of zooms) z.box = null; });
+  requestAnimationFrame(tick);
+})();
+</script>
+
+<script>
+/* ── plate parallax ────────────────────────────────────────────────
+   The image is --bleed taller than its frame; this slides it through that
+   difference as the plate crosses the viewport, so the photograph moves
+   while the frame stays nailed to the grid.
+
+   The two plates in a pair travel in OPPOSITE directions, same speed. One
+   drifting block reads as a page glitch; two counter-weighted ones read as
+   a decision, and it gives the pair the tension the spread is built on.
+
+   Each frame takes its aspect-ratio from the file's own pixel dimensions,
+   so the box is exactly the photograph's shape and --bleed stays the only
+   crop in the system. */
+(() => {
+  const frames = Array.prototype.slice.call(document.querySelectorAll(".plates .frame"));
+  if (!frames.length) return;
+
+  const items = frames.map((el, i) => {
+    const img = el.querySelector("img");
+    const shape = () => {
+      if (img.naturalWidth) el.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight;
+    };
+    if (img.complete) shape(); else img.addEventListener("load", shape, { once: true });
+    // Index WITHIN the pair, not the page — otherwise both pairs lean the
+    // same way and the opposition disappears.
+    return { el: el, img: img, flip: i % 2 === 1 };
+  });
+
+  // --bleed is 0 under reduced motion, so there is no slack to travel and
+  // the plates simply sit full-frame.
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
+  (function tick() {
+    for (let n = 0; n < items.length; n++) {
+      const it = items[n];
+      const r = it.el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > innerHeight + 200) continue;
+      const slack = it.img.offsetHeight - r.height;        // the --bleed, in px
+      if (slack <= 0) continue;
+      const p = clamp01((innerHeight - r.top) / (innerHeight + r.height));
+      const k = it.flip ? 1 - p : p;
+      it.img.style.transform = "translate3d(0," + (-slack * k).toFixed(1) + "px,0)";
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ── ink that burns where the image reaches it ─────────────────────
+   Every target here renders as plain ink, with a burn layer behind it
+   masked to its own letterforms. The burn is ALWAYS on and needs no
+   trigger: a saturate/contrast pump over flat cream produces nothing and
+   over the plate it burns, so it reveals itself exactly where the image
+   is. The zoom driver knocks the ink out over the plate's rect, so the
+   boundary between the two is the plate's edge, to the pixel.
+
+   backdrop-filter applies to an element's BOX, not its glyph shape, so
+   the burn would be a rectangle without the mask. Masking the filtered
+   element clips it to the letterforms instead — verified: mask and
+   backdrop-filter compose on one element in Chrome.
+
+   The mask text is INLINE svg, not a data-URI. A data-URI mask is an
+   isolated document and cannot see the page's fonts, so every glyph
+   would silently render in a fallback face and stop matching. */
+(() => {
+  const targets = Array.prototype.slice.call(
+    document.querySelectorAll(".object .num, .object .left p"));
+  if (!targets.length) return;
+
+  const NS = "http://www.w3.org/2000/svg";
+  const defs = document.createElementNS(NS, "svg");
+  defs.setAttribute("aria-hidden", "true");
+  defs.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
+  document.body.appendChild(defs);
+
+  const metrics = document.createElement("canvas").getContext("2d");
+  const lineNodes = (el) => {
+    // One entry per rendered line. The captions break on explicit <br>, so
+    // the text nodes ARE the lines — no need to infer wrapping.
+    const out = [];
+    const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walk.nextNode())) if (n.nodeValue.trim()) out.push(n);
+    return out;
+  };
+
+  const items = targets.map((ink, i) => {
+    const sticky = ink.closest(".zoom-sticky");
+    if (!sticky) return null;
+    const mask = document.createElementNS(NS, "mask");
+    mask.id = "inkBurn" + i;
+    mask.setAttribute("maskUnits", "userSpaceOnUse");
+    defs.appendChild(mask);
+
+    const burn = document.createElement("div");
+    burn.setAttribute("aria-hidden", "true");
+    burn.className = "num-burn";
+    burn.style.mask = "url(#" + mask.id + ")";
+    burn.style.webkitMask = "url(#" + mask.id + ")";
+    sticky.appendChild(burn);
+    return { ink: ink, burn: burn, mask: mask, sticky: sticky, texts: [] };
+  }).filter(Boolean);
+  if (!items.length) return;
+
+  function sync() {
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      const r = it.ink.getBoundingClientRect();
+      const s = it.sticky.getBoundingClientRect();
+      const cs = getComputedStyle(it.ink);
+      const fs = parseFloat(cs.fontSize);
+
+      it.burn.style.left = (r.left - s.left).toFixed(1) + "px";
+      it.burn.style.top = (r.top - s.top).toFixed(1) + "px";
+      it.burn.style.width = r.width.toFixed(1) + "px";
+      it.burn.style.height = r.height.toFixed(1) + "px";
+      it.mask.setAttribute("x", 0);
+      it.mask.setAttribute("y", 0);
+      it.mask.setAttribute("width", r.width);
+      it.mask.setAttribute("height", r.height);
+
+      const lines = lineNodes(it.ink);
+      while (it.texts.length < lines.length) {
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("fill", "#fff");           // white keeps, black drops
+        it.mask.appendChild(t);
+        it.texts.push(t);
+      }
+      while (it.texts.length > lines.length) it.mask.removeChild(it.texts.pop());
+
+      metrics.font = cs.fontWeight + " " + fs + "px " + cs.fontFamily;
+      const m = metrics.measureText("X");
+      const lh = parseFloat(cs.lineHeight) || fs;
+      const rough = (lh - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2
+                    + m.fontBoundingBoxAscent;
+
+      for (let k = 0; k < lines.length; k++) {
+        const t = it.texts[k];
+        // text-transform is applied at RENDER time, not in the DOM value.
+        // Copying nodeValue raw put lowercase glyphs in the mask while the ink
+        // rendered uppercase — the two never lined up and the captions smeared.
+        let txt = lines[k].nodeValue;
+        const tt = cs.textTransform;
+        if (tt === "uppercase") txt = txt.toUpperCase();
+        else if (tt === "lowercase") txt = txt.toLowerCase();
+        else if (tt === "capitalize") txt = txt.replace(/\b\w/g, (c) => c.toUpperCase());
+        t.textContent = txt;
+        t.setAttribute("font-family", cs.fontFamily);
+        t.setAttribute("font-size", fs);
+        t.setAttribute("font-weight", cs.fontWeight);
+        t.setAttribute("letter-spacing", cs.letterSpacing === "normal" ? 0 : cs.letterSpacing);
+
+        // Place, then CORRECT against reality. Deriving a baseline from font
+        // metrics alone put the numeral's mask 7px high — fontBoundingBox* is
+        // the font's bounding box, not the ascent CSS uses to lay out a line
+        // box, and they disagree by different amounts per face. A mask that
+        // misses the ink reads as a second, offset copy of the text.
+        const rng = document.createRange();
+        rng.selectNode(lines[k]);
+        const lr = rng.getBoundingClientRect();       // this line's real ink
+        t.setAttribute("x", 0);
+        t.setAttribute("y", (rough + (lr.top - r.top)).toFixed(1));
+        const bb = t.getBBox();
+        if (lr.width && bb.width) {
+          t.setAttribute("x", ((lr.left - r.left) - bb.x).toFixed(1));
+          t.setAttribute("y", (rough + (lr.top - r.top) + ((lr.top - r.top) - bb.y)).toFixed(1));
+        }
+      }
+    }
+  }
+
+  sync();
+  addEventListener("resize", sync);
+  // A webfont swap changes the metrics under us; re-measure once it lands.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+})();
+</script>
+
+<script>
+/* ── the cover handover ────────────────────────────────────────────
+   The headline reveals on load (the shared [data-reveal] driver does that
+   — it observes intersection, and the cover is on screen immediately), then
+   unbuilds as you scroll while the statement rises into the space.
+
+   The exit is a clean mask-out: each line's inner wrapper slides back down
+   inside the overflow-hidden mask it rose out of, and nothing else happens
+   to it. No displacement on the way out — the melt belongs to the arrival,
+   where it reads as the type resolving; on the exit it only muddied letters
+   that were already leaving.
+   Reverse order, last line first, so the block collapses from the bottom —
+   it is bottom-anchored, and unbuilding downward is the only direction that
+   does not read as the type falling off its own baseline. */
+(() => {
+  const wrap = document.getElementById("coverwrap");
+  const h1 = wrap && wrap.querySelector("h1");
+  const copy = wrap && wrap.querySelector(".cover-statement");
+  const idx = wrap && wrap.querySelector(".cover-idx");
+  if (!wrap || !h1 || !copy) return;
+
+  const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
+  const ease = (k) => k * k * (3 - 2 * k);
+
+  // The top headline line starts leaving at (n-1) * 0.1 = 0.30 with four
+  // lines. Deriving it would couple the two loops; naming it keeps them
+  // legible, but they have to move together if the stagger changes.
+  // COPY_DRAG is a PIXEL offset, not a share of the scroll: lower lines trail
+  // by a few pixels and close that gap as the block settles. A staggered
+  // progress instead gave every line its own start and finish, which at 86vh
+  // of travel pulled them ~70px apart — four objects arriving, not a
+  // paragraph. Same start, same finish, slightly different rate between.
+  const COPY_IN = 0.30, COPY_SPAN = 0.55, COPY_DRAG = 13;
+
+  // Words, not lines: the copy wraps, so the rendered lines are not in the
+  // DOM. Split to words, then group by offsetTop to recover the real lines.
+  const words = [];
+  (function split() {
+    const text = copy.textContent;
+    copy.textContent = "";
+    text.trim().split(/\s+/).forEach((w, i, arr) => {
+      const sp = document.createElement("span");
+      sp.className = "cs-w";
+      sp.textContent = w;
+      copy.appendChild(sp);
+      words.push(sp);
+      if (i < arr.length - 1) copy.appendChild(document.createTextNode(" "));
+    });
+  })();
+  function measureLines() {
+    let ln = -1, lastTop = null;
+    for (let i = 0; i < words.length; i++) {
+      const t = Math.round(words[i].offsetTop);
+      if (t !== lastTop) { ln++; lastTop = t; }
+      words[i]._ln = ln;
+    }
+  }
+  measureLines();
+  addEventListener("resize", measureLines);
+
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let lines = [], revealed = false;
+
+  (function tick() {
+    // The reveal driver splits the headline asynchronously; pick the lines up
+    // once they exist.
+    if (!lines.length) {
+      lines = Array.prototype.slice.call(h1.querySelectorAll(".rlnI"));
+      // The splitter rebuilds from textContent, so the light-weight × lost
+      // its class. Find it by shape rather than index: the only line that is
+      // a single "x" character.
+      lines.forEach((ln) => {
+        const ch = ln.querySelectorAll(".rch");
+        if (ch.length === 1 && ch[0].textContent.trim().toLowerCase() === "x") {
+          ch[0].classList.add("x");
+        }
+      });
+    }
+
+    // That same driver's IntersectionObserver strips .go when the headline
+    // leaves the viewport, which would re-run the entrance underneath this
+    // exit. So this DEFENDS the class rather than setting it: it waits for the
+    // observer to reveal the headline once, then keeps it on.
+    //
+    // The order matters. Stamping .go unconditionally meant this tick beat the
+    // observer to it, and the observer's "only melt on the transition into go"
+    // guard then saw the class already present and skipped the melt — the
+    // cover was the one headline arriving with no displacement at all.
+    if (h1.classList.contains("go")) revealed = true;
+    else if (revealed && lines.length) h1.classList.add("go");
+
+    const r = wrap.getBoundingClientRect();
+    const p = clamp01(-r.top / Math.max(r.height - innerHeight, 1));
+
+    if (!reduce) {
+      // Each line gets its own slice of the scroll, last line first.
+      const n = lines.length || 1;
+      for (let i = 0; i < lines.length; i++) {
+        const order = n - 1 - i;                       // bottom line leads
+        const k = ease(clamp01((p - order * 0.1) / 0.55));
+        lines[i].style.transform = "translateY(" + (k * 115).toFixed(1) + "%)";
+      }
+    }
+
+    // The statement travels the full height of the screen rather than fading in
+    // place — it starts below the fold and rides up over the headline, so the
+    // two genuinely cross. Linear, not eased: an ease reads as the block
+    // deciding to stop, which breaks the illusion that it is simply the page
+    // scrolling underneath.
+    //
+    // It holds until COPY_IN, which is exactly when the top line of the
+    // headline begins to leave. Starting at 0 meant it was climbing through
+    // the whole first third while ROBERT was still sitting still, and the two
+    // just overlapped.
+    //
+    // Every line shares one clock. The only difference is a small trailing
+    // offset that decays faster than the travel does, so the lines run at
+    // slightly different rates mid-flight and come into register as they
+    // land — inertia, not a stagger.
+    copy.style.transform = "none";
+    copy.style.opacity = "1";
+    const q = clamp01((p - COPY_IN) / COPY_SPAN);
+    const settle = Math.pow(1 - q, 1.7);
+    for (let i = 0; i < words.length; i++) {
+      const drag = (settle * (words[i]._ln || 0) * COPY_DRAG).toFixed(1);
+      words[i].style.transform =
+        "translateY(calc(" + ((1 - q) * 86).toFixed(2) + "vh + " + drag + "px))";
+    }
+    if (idx) idx.style.opacity = ease(clamp01((p - 0.55) / 0.35)).toFixed(3);
+
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ── section rules draw themselves ────────────────────────────────
+   The method section's three 6px rules and the system index's four
+   hairlines, wiping in left to right as each section arrives,
+   staggered so they read as a sequence rather than a bar appearing. The
+   hairline that used to run behind them is gone — with the rules animating,
+   a static line spanning all three columns just showed where they were
+   heading. */
+(() => {
+  const secs = Array.prototype.slice.call(document.querySelectorAll(".cols, .index"));
+  if (!secs.length) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    secs.forEach((el) => el.classList.add("drawn"));
+    return;
+  }
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      // Draw once. Re-drawing every time the section scrolls back into view
+      // turns a section opener into a loop.
+      if (e.isIntersecting) { e.target.classList.add("drawn"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.18 });
+  secs.forEach((el) => io.observe(el));
+})();
+</script>
+
+<script>
+(() => {
+  const root = document.querySelector(".fx-shelf");
+  if (!root) return;
+  const rail = root.querySelector(".sh-rail");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const P = [
+    ["Ivy Park by Beyoncé","Digital, brand launch","/case-studies/ivy-park","/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg"],
+    ["A.R.C.","App & brand","/case-studies/arc","/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg"],
+    ["Hill Country Kitchen","Interior design","/case-studies/hill-country-kitchen","/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg"],
+    ["Robert Rodriguez","Creative direction","/case-studies/robert-rodriguez","/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg"],
+    ["Nordstrom personalization","Design system","/case-studies/nordstrom-personalization","/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg"],
+    ["Jeffrey NYC","Ecommerce","/case-studies/jeffrey-ecommerce","/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg"],
+    ["Capitan Boot Co.","Branding","/case-studies/capitan-boot-co","/case-studies/hp/rhs-capitan-boot-co-branding.jpg"],
+    ["Jeffrey Spring","Creative direction","/case-studies/jeffrey-spring","/case-studies/hp/rhs-jeffrey-spring-campaign.jpg"],
+    ["Hill Country Bath","Interior design","/case-studies/hill-country-bath","/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg"],
+    ["Nordstrom beauty","Digital design","/case-studies/nordstrom-beauty","/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg"],
+    ["Hill Country Oakworks","Campaign, branding","/case-studies/hill-country-oak","/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg"],
+    ["Cosmo Prof","Digital design","/case-studies/cosmo-prof","/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg"],
+    ["Dallas Sport Collective","Website, app","/case-studies/dsc","/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg"],
+    ["Black & White Type","Typography","/case-studies/black-white-type","/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg"],
+    ["Hill Country Living","Interior design","/case-studies/hill-country-living","/case-studies/hp/rhs-interior-design-livingroom-interior.jpg"],
+    ["J. Christianson","Brand development","/case-studies/j-christianson","/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg"],
+    ["Amber Shockey & Co.","Tableware, branding","/case-studies/amber-shockey-co","/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg"],
+    ["You By Sally","Brand campaign","/case-studies/you-by-sally","/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg"],
+    ["Sally Marketing OS","Product, engineering","/case-studies/sally","/case-studies/sally-os/heroes/sally-os-platform-hero.jpg"],
+    ["The Fairview","Interior design","/case-studies/fairview-sitting","/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg"],
+    ["Floor & Decor","Interiors feature","/case-studies/floor-and-decor","/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg"],
+    ["The Fairview Suite","Interior design","/case-studies/fairview-suite","/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg"],
+    ["Nordstrom framework","Content direction","/case-studies/nordstrom-framework","/case-studies/hp/rhs-nordstrom-framework-content-design.jpg"],
+    ["Loved by Nordstrom","Brand campaign","/case-studies/loved-by-nordstrom","/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg"],
+    ["Mountain View","Interior remodel","/case-studies/chalet","/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg"],
+    ["Neiman Marcus","Editorial direction","/case-studies/neiman-marcus","/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg"],
+    ["West Texas","Photography","/case-studies/big-bend","/case-studies/big-bend/hero.jpg"],
+    ["Faux Reel","Product, motion","/case-studies/sizzle","/images/thumbnails/sizzle.jpg"],
+  ];
+  const pad = (n) => (n < 10 ? "0" + n : "" + n);
+
+  // Type runs inverse to name length, and deliberately does NOT normalize
+  // extent: short names go big AND stay short. Since every title is anchored
+  // to the same baseline above its thumbnail, that length difference IS the
+  // stagger. An earlier pass hand-set offsets and had to clamp them when long
+  // titles fell off the shelf; bottom-anchoring makes both unnecessary.
+  P.forEach((p, i) => {
+    const fs = Math.max(25, Math.min(64, Math.round(400 / p[0].length)));
+    const a = document.createElement("a");
+    a.className = "sh-spine";
+    a.href = p[2];
+    a.style.setProperty("--fs", fs + "px");
+    a.innerHTML =
+      '<span class="sh-body"><span class="sh-num">' + pad(i + 1) + '</span>' +
+      '<span class="sh-pair"><span class="sh-title">' + p[0] +
+      '</span><span class="sh-cat">' + p[1] + '</span></span></span>' +
+      '<img class="sh-thumb" src="' + p[3] + '" alt="" loading="lazy">';
+    rail.appendChild(a);
+  });
+  // Contact moved up into the masthead, so the rail closes on the archive
+  // instead. A rail that simply stops reads as truncated.
+  const tail = document.createElement("a");
+  tail.className = "sh-spine sh-end";
+  tail.href = "/";
+  tail.innerHTML =
+    '<span class="sh-body"><span class="sh-pair">' +
+    '<span class="sh-title">All work →</span></span></span>';
+  rail.appendChild(tail);
+
+  // Two-stage reveal. A rail-rooted observer fires the moment a spine's box
+  // crosses the rail viewport, even while the section is still below the page
+  // fold, so the opening screenful would be spent before anyone arrived.
+  // Wait for the SECTION, walk the spines already in view one at a time, then
+  // hand the rest to the rail observer for scroll-triggered reveals.
+  if (reduce) {
+    rail.querySelectorAll(".sh-spine").forEach((s) => s.classList.add("sh-on"));
+  } else {
+    const pageIO = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      pageIO.disconnect();
+      const pending = [...rail.querySelectorAll(".sh-spine:not(.sh-on)")];
+      const L = rail.scrollLeft, Rt = L + rail.clientWidth;
+      const inView = (el) => el.offsetLeft + el.offsetWidth > L && el.offsetLeft < Rt;
+      const opening = pending.filter(inView);
+      const rest = pending.filter((el) => !inView(el));
+      opening.forEach((s, i) =>
+        setTimeout(() => s.classList.add("sh-on"), 140 + i * 130));
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add("sh-on"); io.unobserve(e.target); }
+        });
+      }, { root: rail, threshold: 0.35 });
+      rest.forEach((s) => io.observe(s));
+    }, { threshold: 0.25 });
+    pageIO.observe(root);
+  }
+
+  // Drag to travel. Links still click: a drag under 6px is a click.
+  let down = null, moved = 0;
+  rail.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse") return;
+    down = { x: e.clientX, left: rail.scrollLeft }; moved = 0;
+    rail.classList.add("sh-drag");
+  });
+  addEventListener("pointermove", (e) => {
+    if (!down) return;
+    const dx = e.clientX - down.x;
+    moved = Math.max(moved, Math.abs(dx));
+    rail.scrollLeft = down.left - dx;
+  });
+  addEventListener("pointerup", () => { down = null; rail.classList.remove("sh-drag"); });
+  rail.addEventListener("click", (e) => {
+    if (moved > 6) { e.preventDefault(); moved = 0; }
+  }, true);
+
+  // Vertical wheel drives the shelf while it can still move; at either end the
+  // event passes through untouched so the page never gets trapped.
+  rail.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const max = rail.scrollWidth - rail.clientWidth;
+    const canGo = e.deltaY > 0 ? rail.scrollLeft < max - 1 : rail.scrollLeft > 1;
+    if (!canGo) return;              // at an end: hand the gesture to the page
+    e.preventDefault();
+    e.stopPropagation();             // Lenis binds wheel on bubble, no capture
+    rail.scrollLeft += e.deltaY;
+  }, { passive: false });
+})();
+</script>
+
+<script>
+/* ── the nav reverses over dark ground ─────────────────────────────
+   Ink type is invisible on the black footer. Rather than sampling pixels,
+   the dark blocks declare themselves with data-nav-dark and this checks
+   whether any of them currently overlaps the nav's band.
+
+   The test is the nav's BAND, not its box: the burn pill is inset from the
+   nav's full height, and using the box flipped the type a few pixels before
+   the dark edge actually arrived under it. */
+(() => {
+  const nav = document.getElementById("nav");
+  if (!nav) return;
+  const zones = Array.prototype.slice.call(document.querySelectorAll("[data-nav-dark]"));
+  if (!zones.length) return;
+  let dark = false;
+  (function tick() {
+    const b = nav.getBoundingClientRect();
+    const top = b.top + 6, bot = b.bottom - 6;
+    let hit = false;
+    for (let i = 0; i < zones.length; i++) {
+      const r = zones[i].getBoundingClientRect();
+      // A zero-height zone is the quote fill before it has risen; skip it.
+      if (r.height < 2) continue;
+      if (r.top < bot && r.bottom > top) { hit = true; break; }
+    }
+    if (hit !== dark) { dark = hit; nav.classList.toggle("nav-rev", hit); }
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
+<script>
+/* ── the brief's pinned headline ───────────────────────────────────
+   The headline sticks while the column travels up beside it. CSS does the
+   pinning; this only sets where the column starts, which has to be measured
+   because the headline rewraps from two lines to six across breakpoints.
+
+   Measured with the offset cleared first: the column and the headline share
+   a grid row, so a stale margin would inflate the row and the reading would
+   compound on every resize. */
+(() => {
+  // EVERY .brief, not just the first. The grid rule applies to all of them, so
+  // measuring only one left the rest of the columns sitting at the top of
+  // their sections.
+  const briefs = Array.prototype.slice.call(document.querySelectorAll(".brief"))
+    .map((b) => ({ b: b, h2: b.querySelector("h2"), col: b.querySelector(".col") }))
+    .filter((x) => x.h2 && x.col);
+  if (!briefs.length) return;
+  const GAP = 34;
+  function place() {
+    // Phones stack the two in separate rows; the measured drop is meaningless
+    // there and the stylesheet owns the spacing.
+    if (innerWidth <= 760) {
+      briefs.forEach((x) => {
+        x.col.style.marginTop = "";
+        x.b.style.paddingBottom = "";   // no pin on a phone, nothing to hold for
+      });
+      return;
+    }
+    briefs.forEach((x) => {
+      x.col.style.marginTop = "0px";
+      // Measured from the ROW, not from the section. Both items start at the
+      // same row edge, so the offset the column needs is exactly the headline's
+      // own margin plus its height. Measuring the headline's rect against the
+      // section's rect instead folded in the label row above it AND the
+      // headline's sticky displacement, which is why the gaps came out
+      // anywhere from 39px to 221px against a 34px target.
+      const hs = getComputedStyle(x.h2);
+      let drop = parseFloat(hs.marginTop) + x.h2.offsetHeight + GAP;
+      // A section with a fixed height cannot have its column pushed by a full
+      // headline without it falling out the bottom. The sections that grow
+      // with their content have no such ceiling.
+      if (x.b.classList.contains("h-sticky")) {
+        const room = x.b.clientHeight - x.col.offsetTop - x.col.scrollHeight - 24;
+        drop = Math.min(drop, Math.max(0, room));
+      }
+      x.col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
+    });
+
+    // The footer beats hold the screen until their own column has finished.
+    // Two things have to be true at the same instant: the headline lets go
+    // exactly as the column's bottom reaches the headline's bottom, AND the
+    // section is still covering the screen right up to that frame, so nothing
+    // below starts climbing in over a column still being read.
+    //
+    // Both fall out of ONE number, the bottom padding. A sticky headline
+    // releases at its containing block's bottom — measured, that is the
+    // section's CONTENT box, not its grid row and not its border box. So the
+    // padding below the content decides two things at once: where the pin
+    // lets go, and how much taller than its content the section runs.
+    //
+    //   padding-bottom = viewport - pinOffset - headlineHeight
+    //
+    // gives a content box ending exactly at the column's bottom (the release
+    // lands on the frame the two bottoms meet) and a border box ending one
+    // viewport later (the section's bottom edge hits the fold on that same
+    // frame). Setting a height instead only moved the second one — the pin
+    // then held ~780px past the column, because padding sits below the
+    // content box the release is measured from.
+    briefs.forEach((x) => {
+      if (!x.b.classList.contains("mt-beat")) return;
+      const pin = parseFloat(getComputedStyle(x.h2).top) || 0;
+      const pad = Math.max(0, Math.round(innerHeight - pin - x.h2.offsetHeight));
+      x.b.style.paddingBottom = pad + "px";
+    });
+  }
+  place();
+  addEventListener("resize", place);
+  // The headline is split into spans by the reveal driver after this runs,
+  // which changes its height; re-measure once the fonts and that split have
+  // settled.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  setTimeout(place, 300);
+})();
+</script>
+
+</body>
+</html>

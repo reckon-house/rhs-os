@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Iridescence isolation test</title>
+<style>
+  html, body { margin:0; height:100%; background:#F3F0ED; overflow:hidden; }
+  #tag { position:fixed; left:16px; top:14px; font:12px/1.5 system-ui; color:#555; z-index:2; }
+</style>
+</head>
+<body>
+<div id="tag">left: iridescence 0 &nbsp;·&nbsp; middle: iridescence 1 (400nm) &nbsp;·&nbsp; right: iridescence 1 (650nm)</div>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xF3F0ED);
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 100);
+camera.position.set(0, 0, 8);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const geo = new THREE.SphereGeometry(1.2, 64, 64);
+
+// Three identical spheres; ONLY iridescence differs.
+const configs = [
+  { x: -3.0, iridescence: 0, thickness: 400 },
+  { x:  0.0, iridescence: 1, thickness: 400 },
+  { x:  3.0, iridescence: 1, thickness: 650 },
+];
+const mats = [];
+for (const c of configs) {
+  const m = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    metalness: 1,
+    roughness: 0.15,
+    iridescence: c.iridescence,
+    iridescenceIOR: 2.0,
+    iridescenceThicknessRange: [c.thickness, c.thickness],
+  });
+  const mesh = new THREE.Mesh(geo, m);
+  mesh.position.x = c.x;
+  scene.add(mesh);
+  mats.push(m);
+}
+
+renderer.render(scene, camera);
+
+// Measure saturation under each sphere so the answer is numeric, not vibes.
+const gl = renderer.getContext();
+function sat(cxNorm) {
+  const W = 120, H = 120;
+  const cx = Math.floor(gl.drawingBufferWidth * cxNorm - W / 2);
+  const cy = Math.floor(gl.drawingBufferHeight / 2 - H / 2);
+  const buf = new Uint8Array(W * H * 4);
+  gl.readPixels(cx, cy, W, H, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+  let s = 0, n = 0, mx2 = 0;
+  for (let i = 0; i < buf.length; i += 4) {
+    const R = buf[i], G = buf[i+1], B = buf[i+2];
+    const mx = Math.max(R,G,B), mn = Math.min(R,G,B);
+    if (mx < 10) continue;
+    const v = (mx - mn) / mx; s += v; n++; if (v > mx2) mx2 = v;
+  }
+  return { meanSat: +(s/Math.max(n,1)).toFixed(4), maxSat: +mx2.toFixed(3) };
+}
+window.__result = {
+  threeRevision: THREE.REVISION,
+  left_iridescence0: sat(0.5 - 3.0/8/ (2*Math.tan(20*Math.PI/180)*(innerWidth/innerHeight)) * 0 + 0.5 - 0.5), // placeholder
+};
+// simpler: sample at fixed screen fractions matching the three spheres
+window.__result = {
+  threeRevision: THREE.REVISION,
+  sphere_iridescence_0: sat(0.28),
+  sphere_iridescence_1_400nm: sat(0.50),
+  sphere_iridescence_1_650nm: sat(0.72),
+};
+console.log(JSON.stringify(window.__result));
+</script>
+</body>
+</html>

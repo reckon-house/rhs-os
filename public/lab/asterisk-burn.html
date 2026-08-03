@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asterisk burn spin — flat</title>
+<style>
+  :root {
+    --cream: #F3F0ED;
+    --ink: #141414;
+
+    /* tunables, driven by the panel */
+    --cycle: 3s;         /* full loop: rest + spin */
+    --spin: 22%;         /* share of the cycle spent turning */
+    --lag: 34ms;         /* time offset between trail layers */
+    --op: 0.55;          /* peak trail opacity */
+    --size: 160px;   /* matches the homepage md: size */
+    /* The site's burn easing, lifted verbatim from SizzleReel's szBurnPop. */
+    --burn-ease: cubic-bezier(.72, 0, .18, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--cream); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+
+  #stage { position: fixed; inset: 0; display: grid; place-items: center; }
+
+  /* Phases 1 and 2 are lifted verbatim from the homepage Asterisk component
+     (src/app/page.tsx) so this is the real choreography, not an approximation:
+     a 0.1 -> 1 pop with an independent 720deg entry spin, settling into a
+     28s idle rotation. The burst is the only new phase. */
+  .wrap { animation: entryPop 1400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes entryPop { from { opacity: 0; scale: .1; } to { opacity: 1; scale: 1; } }
+
+  .rot {
+    animation:
+      entrySpin 1400ms cubic-bezier(0.1, 0.9, 0.9, 0.9975) both,
+      slowSpin var(--slow, 28s) linear 1400ms infinite;
+  }
+  @keyframes entrySpin { from { rotate: 0deg; } to { rotate: 720deg; } }
+  @keyframes slowSpin  { from { rotate: 0deg; } to { rotate: 360deg; } }
+
+  #replay { position: fixed; left: 20px; bottom: 44px; z-index: 10;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    padding: 7px 13px; border-radius: 999px; border: 0; cursor: pointer;
+    background: rgba(20,20,20,.07); color: var(--ink); }
+  #replay:hover { background: rgba(20,20,20,.12); }
+
+  .mark {
+    position: relative;
+    width: var(--size); height: calc(var(--size) * 1.138);   /* 181:206 */
+  }
+  .layer {
+    position: absolute; inset: 0;
+    -webkit-mask: var(--src) center / contain no-repeat;
+            mask: var(--src) center / contain no-repeat;
+    will-change: transform, opacity;
+    animation: burnspin var(--cycle) linear infinite;
+    /* Negative delay puts each layer that many ms BEHIND on a looping
+       timeline. At rest every layer sits at rotate(0) so they stack exactly
+       and the trail is invisible — the separation only exists while the mark
+       is actually turning. That is the whole trick; no velocity maths. */
+    animation-delay: calc(var(--i) * var(--lag) - var(--cycle));
+  }
+  /* Each layer further back is blurred harder, so the trail dissolves into a
+     smear of coloured light instead of reading as six separate asterisks.
+     The blur is what turns a strobe into a burn. */
+  .layer.trail {
+    filter: blur(calc(var(--i) * var(--blur)));
+    mix-blend-mode: var(--bleed, normal);
+    animation-name: burnspin, burntrail;
+    animation-duration: var(--cycle), var(--cycle);
+    animation-timing-function: linear, linear;
+    animation-iteration-count: infinite, infinite;
+    animation-delay:
+      calc(var(--i) * var(--lag) - var(--cycle)),
+      calc(var(--i) * var(--lag) - var(--cycle));
+  }
+  .layer.main { background: var(--ink); --i: 0; }
+
+  /* burnspin / burntrail / burnwash keyframes are written by JS into #kf —
+     keyframe selectors must be literal percentages (calc() is invalid there),
+     and the rest/spin split has to move with the slider. */
+
+  /* The site's burn signature: a cream wash + a saturate/contrast pop, fired
+     on the same beat as the spin. This is what makes it read as a burn
+     rather than just a coloured smear. */
+  /* Kept faint on purpose. A full cream disc reads as a glow blob rather than
+     a burn, and on a cream page it only shows where it crosses the trail
+     anyway — the warm palette is what sells the heat. */
+  .burnwash {
+    position: absolute; inset: -8%;
+    background: radial-gradient(circle at 50% 50%, rgba(243,240,237,.75), rgba(243,240,237,0) 60%);
+    opacity: 0; pointer-events: none;
+    animation: burnwash var(--cycle) linear infinite;
+    animation-delay: calc(0ms - var(--cycle));
+  }
+
+  .frozen .layer, .frozen .burnwash { animation-play-state: paused; }
+
+  /* Film grain. A static fractal-noise tile over the whole stage — this is
+     most of what separates "vintage print" from "clean CG". Overlay keeps it
+     from flattening the values the way a plain dark tile would. */
+  #grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 5;
+    opacity: var(--grain, 0.18);
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
+  }
+
+  /* ── panel ─────────────────────────────────────────────────────── */
+  #panel { position: fixed; top: 0; right: 0; height: 100%; width: 288px; z-index: 10;
+    background: rgba(243,240,237,.85); backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(20,20,20,.08); padding: 22px 20px 40px; overflow-y: auto; }
+  h1 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; margin: 0 0 3px; }
+  .sub { font-size: 11px; line-height: 1.45; color: rgba(20,20,20,.5); margin: 0 0 20px; }
+  .glabel { font-size: 9.5px; letter-spacing: .13em; text-transform: uppercase; font-weight: 600;
+            color: rgba(20,20,20,.4); margin: 0 0 9px; }
+  .group { margin-bottom: 22px; }
+  .row { margin-bottom: 11px; }
+  .rowtop { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+  .rowtop label { font-size: 10.5px; color: rgba(20,20,20,.72); }
+  .rowtop output { font-size: 10px; color: rgba(20,20,20,.4); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; height: 3px; -webkit-appearance: none; appearance: none;
+    background: rgba(20,20,20,.13); border-radius: 2px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px;
+    border-radius: 50%; background: var(--ink); cursor: pointer; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 10.5px; padding: 7px 11px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(20,20,20,.12); background: transparent; color: rgba(20,20,20,.75); }
+  .chip.on { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+  #hint { position: fixed; left: 20px; bottom: 18px; font-size: 10.5px; color: rgba(20,20,20,.38); }
+</style>
+</head>
+<body>
+<style id="kf"></style>
+
+<!-- Pixel-bending, same technique as the site's BurnMeltTransition: a fractal
+     noise field, smoothed, then used to push each pixel of the source around.
+     scale=0 is a no-op, so the mark is untouched at rest and only warps as the
+     spin fires. The trailing feGaussianBlur is the motion blur on the mark
+     itself, rather than on the ghosts behind it. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="burnwarp" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
+    <feTurbulence id="warpNoise" type="fractalNoise" baseFrequency="0.008 0.018"
+                  numOctaves="2" seed="5" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="3" result="smoothNoise"/>
+    <feDisplacementMap id="warpMap" in="SourceGraphic" in2="smoothNoise" scale="0"
+                       xChannelSelector="R" yChannelSelector="G" result="warped"/>
+    <feGaussianBlur id="warpBlur" in="warped" stdDeviation="0"/>
+  </filter>
+</svg>
+
+<div id="stage">
+  <div class="wrap" id="wrap"><div class="rot" id="rot"><div class="mark" id="mark"></div></div></div>
+</div>
+<button id="replay">replay entry</button>
+<div id="grain"></div>
+<div id="hint">flat SVG mark · CSS only · no WebGL</div>
+
+<div id="panel">
+  <h1>Burn spin</h1>
+  <p class="sub">The flat mark, spun on the site's own burn easing. Trail layers share one animation with a time offset, so they only separate while it turns.</p>
+
+  <div class="group">
+    <div class="glabel">Weight</div>
+    <div class="chips" id="weights"></div>
+  </div>
+  <div class="group">
+    <div class="glabel">Palette</div>
+    <div class="chips" id="palettes"></div>
+  </div>
+  <div class="group">
+    <div class="glabel">Bleed</div>
+    <div class="chips" id="bleeds"></div>
+  </div>
+  <div class="group">
+    <div class="glabel">Timing</div>
+    <div id="sliders"></div>
+  </div>
+</div>
+
+<script>
+const PALETTES = {
+  // Ordered HOTTEST FIRST. Index 0 lands on the layer nearest the mark, which
+  // is the least blurred and most opaque — so that is where the saturation has
+  // to be. Leading with cream put the invisible colour where it would have
+  // shown and buried the reds under 35px of blur.
+  Burn:   ["#ED8008", "#E07B4A", "#C63A1E", "#BF1B1B", "#8A2412", "#5C1A0C"],
+  // The reel's own flash colours, saturated ones first.
+  Reel:   ["#E07B4A", "#0AA7CA", "#776549", "#8A8784", "#181B17", "#0AA7CA"],
+  // Rams swatch card.
+  Rams:   ["#ED8008", "#ED3F1C", "#BF1B1B", "#736B1E", "#3B4B59", "#D9D2C6"],
+  // No hue at all — just the mark ghosting itself.
+  Mono:   ["#141414", "#141414", "#141414", "#141414", "#141414", "#141414"],
+};
+
+const S = { slow: 28, cycle: 3, spin: 22, spread: 0.6, op: 0.9, trails: 5, blur: 3, grain: 0.18, warp: 26, mblur: 2.4 };
+let bleed = 'Light';
+let weight = "heavy";
+let palette = "Burn";
+
+const mark = document.getElementById("mark");
+
+function build() {
+  const cols = PALETTES[palette];
+  mark.style.setProperty("--src", `url(/case-studies/hp/asterisk-${weight}.svg)`);
+  let html = `<div class="burnwash"></div>`;
+  // Furthest-behind first so the freshest trail sits nearest the mark.
+  for (let i = S.trails; i >= 1; i--) {
+    const c = cols[Math.min(i - 1, cols.length - 1)];
+    html += `<div class="layer trail" style="--i:${i}; background:${c}; --op:${(S.op * (1 - (i - 1) / (S.trails + 3))).toFixed(3)}"></div>`;
+  }
+  html += `<div class="layer main"></div>`;
+  mark.innerHTML = html;
+}
+
+const BURN_EASE = "cubic-bezier(.72, 0, .18, 1)";   // verbatim from szBurnPop
+
+function writeKeyframes() {
+  const spin = S.spin;              // % of the cycle spent turning
+  const rest = 100 - spin;          // the still stretch before it
+  const at = (f) => (rest + spin * f).toFixed(2) + "%";
+  document.getElementById("kf").textContent = `
+    @keyframes burnspin {
+      0%        { rotate: 0turn; animation-timing-function: steps(1, end); }
+      ${rest}%  { rotate: 0turn; animation-timing-function: ${BURN_EASE}; }
+      100%      { rotate: 1turn; }
+    }
+    @keyframes burntrail {
+      0%, ${rest}% { opacity: 0; }
+      ${at(0.40)}  { opacity: var(--op); }
+      ${at(0.80)}  { opacity: calc(var(--op) * 0.45); }
+      100%         { opacity: 0; }
+    }
+    @keyframes burnwash {
+      0%, ${rest}% { opacity: 0; }
+      ${at(0.30)}  { opacity: .38; }
+      100%         { opacity: 0; }
+    }
+  `;
+}
+
+function applyVars() {
+  const r = document.documentElement.style;
+  r.setProperty("--cycle", S.cycle + "s");
+  // Lag is derived, never absolute. The trail has to finish inside the spin
+  // window: if the total lag exceeds the spin duration, the tail layers are
+  // still in the resting part of their own timeline, sitting at rotate(0)
+  // with opacity 0, and the trail silently disappears. Expressing it as a
+  // fraction of the spin makes that impossible to get wrong.
+  const spinMs = S.cycle * 1000 * (S.spin / 100);
+  r.setProperty("--lag", (spinMs * S.spread / Math.max(S.trails, 1)).toFixed(1) + "ms");
+  r.setProperty("--blur", S.blur + "px");
+  r.setProperty("--grain", S.grain);
+  r.setProperty("--slow", S.slow + "s");
+  // plus-lighter blooms like overexposed film; multiply behaves like ink
+  // soaking into paper. Both are "burn", they just burn in opposite directions.
+  r.setProperty("--bleed", bleed === "Light" ? "plus-lighter" : bleed === "Ink" ? "multiply" : "normal");
+  writeKeyframes();
+}
+
+function chipRow(host, items, active, onPick) {
+  host.innerHTML = "";
+  for (const name of items) {
+    const b = document.createElement("button");
+    b.className = "chip" + (name === active ? " on" : "");
+    b.textContent = name;
+    b.onclick = () => {
+      [...host.children].forEach((c) => c.classList.remove("on"));
+      b.classList.add("on");
+      onPick(name);
+    };
+    host.appendChild(b);
+  }
+}
+chipRow(document.getElementById("weights"), ["thin", "regular", "heavy"], weight, (w) => { weight = w; build(); });
+chipRow(document.getElementById("palettes"), Object.keys(PALETTES), palette, (p) => { palette = p; build(); });
+chipRow(document.getElementById("bleeds"), ["Light", "Ink", "Off"], bleed, (v) => { bleed = v; applyVars(); });
+
+for (const [key, label, min, max, step, unit] of [
+  ["slow", "Idle rotation (s)", 4, 60, 1, ""],
+  ["cycle", "Burst every (s)", 1, 10, 0.5, ""],
+  ["spin", "Spin share (%)", 6, 60, 1, ""],
+  ["spread", "Trail spread", 0, 1, 0.01, ""],
+  ["op", "Trail opacity", 0, 1, 0.01, ""],
+  ["trails", "Trail layers", 0, 10, 1, ""],
+  ["blur", "Bleed blur", 0, 14, 0.5, ""],
+  ["grain", "Grain", 0, 0.6, 0.01, ""],
+  ["warp", "Pixel warp", 0, 80, 1, ""],
+  ["mblur", "Motion blur", 0, 10, 0.1, ""],
+]) {
+  const row = document.createElement("div"); row.className = "row";
+  row.innerHTML = `<div class="rowtop"><label>${label}</label><output>${S[key]}</output></div>`;
+  const input = document.createElement("input");
+  input.type = "range"; input.min = min; input.max = max; input.step = step; input.value = S[key];
+  const out = row.querySelector("output");
+  input.oninput = () => {
+    S[key] = parseFloat(input.value);
+    out.textContent = S[key];
+    applyVars();
+    if (key === "trails" || key === "op") build();
+    if (key === "trails" || key === "spin" || key === "cycle") applyVars();
+    if (key === "blur" || key === "grain") applyVars();
+  };
+  row.appendChild(input);
+  document.getElementById("sliders").appendChild(row);
+}
+
+// ?freeze=0.78 pins the whole cycle at that fraction so a still frame can be
+// inspected mid-spin. Handy for tuning the trail without chasing it live.
+const q = new URLSearchParams(location.search);
+if (q.has("spread")) { S.spread = parseFloat(q.get("spread")); applyVars(); build(); }
+if (q.has("freeze")) {
+  const f = parseFloat(q.get("freeze"));
+  document.body.classList.add("frozen");
+  requestAnimationFrame(() => {
+    for (const el of mark.querySelectorAll(".layer, .burnwash")) {
+      // A negative delay of -D*f starts the timeline at fraction f.
+      const base = -S.cycle * f;
+      const i = parseFloat(getComputedStyle(el).getPropertyValue("--i")) || 0;
+      const lagMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--lag")) || 0;
+      const d = `${base + (i * lagMs) / 1000}s`;
+      el.style.animationDelay = el.classList.contains("trail") ? `${d}, ${d}` : d;
+    }
+  });
+}
+
+applyVars();
+build();
+
+/* ── warp driver ───────────────────────────────────────────────────
+   The filter is animated from the CSS animation's own clock rather than
+   a second timer, so the warp can never drift out of sync with the spin.
+   Both the displacement and the blur ride a sin() hump: zero at the start
+   and end of the turn, peaking through the middle where the mark is
+   moving fastest — which is exactly where real motion blur lives.
+
+   The filter is detached entirely while resting. SVG displacement is
+   expensive and there is no reason to pay for it 78% of the time. */
+const warpMap = document.getElementById("warpMap");
+const warpBlur = document.getElementById("warpBlur");
+const warpNoise = document.getElementById("warpNoise");
+let filtered = false;
+
+function driveWarp() {
+  const main = mark.querySelector(".layer.main");
+  const anim = main && main.getAnimations()[0];
+  if (anim && anim.currentTime != null) {
+    const cycleMs = S.cycle * 1000;
+    const p = ((anim.currentTime % cycleMs) + cycleMs) % cycleMs / cycleMs;
+    const start = 1 - S.spin / 100;
+    const k = p < start ? 0 : (p - start) / (1 - start);
+    const hump = k > 0 ? Math.sin(Math.PI * k) : 0;
+
+    if (hump > 0.001) {
+      if (!filtered) { mark.style.filter = "url(#burnwarp)"; filtered = true; }
+      warpMap.setAttribute("scale", (S.warp * hump).toFixed(2));
+      warpBlur.setAttribute("stdDeviation", (S.mblur * hump).toFixed(2));
+      // Churn the noise while it burns so the warp crawls instead of
+      // sliding a fixed pattern across the mark.
+      const f = 0.008 + hump * 0.010;
+      warpNoise.setAttribute("baseFrequency", `${f.toFixed(4)} ${(f * 2.2).toFixed(4)}`);
+    } else if (filtered) {
+      mark.style.filter = "none";
+      filtered = false;
+    }
+  }
+  requestAnimationFrame(driveWarp);
+}
+requestAnimationFrame(driveWarp);
+</script>
+</body>
+</html>
+
+<script>
+// Restart the entry so the full sequence can be judged from the top.
+document.getElementById("replay").onclick = () => {
+  for (const id of ["wrap", "rot"]) {
+    document.getElementById(id).getAnimations().forEach((a) => { a.cancel(); a.play(); });
+  }
+};
+</script>

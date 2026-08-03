@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pressing B — Robert Rodriguez spread</title>
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     PRESSING B — the print annual.
+     Every word and image on this page comes verbatim from
+     src/data/robert-rodriguez-case-study.ts. Only the wrapper changed.
+     ──────────────────────────────────────────────────────────────── */
+  :root {
+    --felt: #191512;            /* the table the book sits on */
+    --paper: #F7F1E5;           /* ivory stock, warmer than the site's cream */
+    --ink: #211C15;
+    --accent: #C63A1E;          /* one red, used like a rubricator's pen */
+    --hairline: rgba(33, 28, 21, 0.28);
+    --display: "Didot", "Bodoni 72", "Bodoni Moda", "Playfair Display", Georgia, serif;
+    --text: "Charter", "Iowan Old Style", Georgia, serif;
+    --mono: "Menlo", "SF Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--felt); }
+  body {
+    font-family: var(--text); color: var(--ink);
+    padding: clamp(24px, 4vw, 72px) clamp(12px, 3vw, 48px) 120px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* film grain over everything, incl. the felt */
+  #grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 50;
+    opacity: 0.14; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 240px 240px;
+  }
+
+  .spread {
+    max-width: 1480px; margin: 0 auto clamp(40px, 6vw, 96px);
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--paper);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    position: relative;
+  }
+  /* the gutter — a bound book, not a web layout */
+  .spread::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px;
+    background: linear-gradient(to right, rgba(0,0,0,0.18), rgba(0,0,0,0.02));
+  }
+  .page { padding: clamp(28px, 4vw, 64px) clamp(24px, 3.5vw, 56px); position: relative;
+    display: flex; flex-direction: column; min-height: min(88vh, 940px); }
+  .page.bleed { padding: 0; }
+  .page.bleed img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* running head + folio */
+  .running { display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: rgba(33,28,21,0.55); margin-bottom: clamp(28px, 4vh, 56px); }
+  .running .folio { color: var(--accent); }
+  .running--onimage { position: absolute; left: 28px; right: 28px; top: 22px; z-index: 2;
+    color: rgba(247,241,229,0.9); margin: 0; mix-blend-mode: normal; }
+  .running--onimage .folio { color: rgba(247,241,229,0.9); }
+
+  .kicker { font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+
+  h1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(44px, 5.6vw, 92px); line-height: 0.98; letter-spacing: -0.01em;
+    margin: 0 0 26px;
+  }
+  h1 .amp { font-style: italic; }
+
+  .standfirst {
+    font-family: var(--display); font-style: italic; font-weight: 400;
+    font-size: clamp(17px, 1.6vw, 23px); line-height: 1.42;
+    padding-top: 18px; border-top: 1px solid var(--hairline);
+    margin-bottom: 30px;
+  }
+
+  .spec { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; line-height: 2.1; color: rgba(33,28,21,0.62);
+    margin-bottom: 34px; }
+  .spec b { color: var(--ink); font-weight: 400; }
+
+  .body-cols { column-count: 2; column-gap: 34px; column-rule: 1px solid var(--hairline);
+    font-size: 13.5px; line-height: 1.66; text-align: justify; hyphens: auto; }
+  .body-cols p + p { text-indent: 1.6em; }
+  .body-cols .lede::first-letter {
+    font-family: var(--display); float: left;
+    font-size: 58px; line-height: 0.82; padding: 6px 8px 0 0; color: var(--accent);
+  }
+
+  .page-bottom { margin-top: auto; padding-top: 22px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(33,28,21,0.5); }
+
+  .caption { position: absolute; left: 28px; bottom: 20px; z-index: 2;
+    font-family: var(--text); font-style: italic; font-size: 11.5px;
+    color: rgba(247,241,229,0.92); text-shadow: 0 1px 14px rgba(0,0,0,0.5); }
+  .caption b { font-family: var(--mono); font-style: normal; font-size: 9px;
+    letter-spacing: 0.2em; margin-right: 10px; }
+
+  /* pull-quote page */
+  .quote-page { justify-content: center; align-items: center; text-align: center; }
+  .quote-page .q {
+    font-family: var(--display); font-style: italic; font-weight: 400;
+    font-size: clamp(34px, 3.6vw, 58px); line-height: 1.12; max-width: 15em;
+  }
+  .quote-page .q::before { content: "\201C"; color: var(--accent); }
+  .quote-page .q::after  { content: "\201D"; color: var(--accent); }
+  .quote-page .attr { font-family: var(--mono); font-size: 9px; letter-spacing: 0.26em;
+    text-transform: uppercase; color: rgba(33,28,21,0.5); margin-top: 26px; }
+
+  h2.section {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(30px, 3vw, 48px); line-height: 1.04; margin: 0 0 20px;
+  }
+  .subhead { font-size: 14.5px; line-height: 1.6; margin-bottom: 26px; }
+  .footnote { font-size: 12px; line-height: 1.62; text-align: justify; hyphens: auto;
+    color: rgba(33,28,21,0.8); padding-top: 16px; border-top: 1px solid var(--hairline); }
+
+  /* the three columns, set like a magazine department page */
+  .spread.full { display: block; }
+  .dept { padding: clamp(32px, 4vw, 64px) clamp(24px, 3.5vw, 56px); }
+  .dept .running { margin-bottom: 40px; }
+  .three-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .three-cols .col { border-top: 3px solid var(--ink); padding-top: 14px; }
+  .three-cols h3 { font-family: var(--display); font-weight: 400; font-style: italic;
+    font-size: 21px; margin-bottom: 12px; }
+  .three-cols p { font-size: 12.5px; line-height: 1.64; text-align: justify;
+    hyphens: auto; }
+  .three-cols p + p { text-indent: 1.5em; }
+
+  /* plates */
+  .plates { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 48px; }
+  .plate { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+  .plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .plate .caption { left: 18px; bottom: 14px; }
+
+  /* colophon — the thesis, stated plainly */
+  .colophon { max-width: 1480px; margin: 0 auto; padding: 26px 8px 0;
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(247,241,229,0.55); }
+  .colophon b { color: rgba(247,241,229,0.9); font-weight: 400; }
+
+  @media (max-width: 900px) {
+    .spread { grid-template-columns: 1fr; }
+    .spread::after { display: none; }
+    .page { min-height: 0; }
+    .page.bleed { min-height: 70vw; }
+    .body-cols { column-count: 1; }
+    .three-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="grain"></div>
+
+<!-- ══ SPREAD 1 — the opening ══ -->
+<section class="spread">
+  <div class="page">
+    <div class="running"><span>Reckon House Staples · Pressing B</span><span class="folio">004</span></div>
+    <div class="kicker">Spring Campaign · Neiman Marcus · 2024</div>
+    <h1>Robert<br>Rodriguez<br><span class="amp">x</span> Neiman&rsquo;s</h1>
+    <p class="standfirst">&rsquo;80s mall glam meets high fashion &mdash; the double-exposure glamour shot reimagined with mesh color fields instead of airbrushed backdrops and couture instead of puff sleeves.</p>
+    <div class="spec">
+      Field &nbsp;<b>Campaign Design · Art Direction · Photo Compositing</b><br>
+      Tools &nbsp;<b>Photoshop · Illustrator · Capture One</b><br>
+      Angle &nbsp;<b>Four studio frames recombined into a whole campaign</b>
+    </div>
+    <div class="body-cols">
+      <p class="lede">The reference was the mall portrait studio &mdash; soft-focus close-ups, oversaturated color, a little too much hairspray. Kept the energy and replaced everything else.</p>
+      <p>Four studio shots, one model, custom compositing. Double-exposure layers stretched the shoot into a full campaign system, with mesh color fields giving the backgrounds pop-art softness without the dated airbrush look. Typography was built for this project &mdash; playful enough to match the concept, refined enough for the brand.</p>
+    </div>
+    <div class="page-bottom"><span>Case Study No. 04</span><span>Robert Rodriguez</span></div>
+  </div>
+  <div class="page bleed">
+    <div class="running running--onimage"><span>The Spring Pressing</span><span class="folio">005</span></div>
+    <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg" alt="Robert Rodriguez Spring — storefront window campaign display">
+    <div class="caption"><b>Plate I</b>Storefront window installation, Neiman Marcus</div>
+  </div>
+</section>
+
+<!-- ══ SPREAD 2 — the brief ══ -->
+<section class="spread">
+  <div class="page bleed">
+    <div class="running running--onimage"><span>Robert Rodriguez x Neiman&rsquo;s</span><span class="folio">006</span></div>
+    <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg" alt="Robert Rodriguez — pink blazer editorial campaign composite">
+    <div class="caption"><b>Plate II</b>Double-exposure composite, pink blazer over mesh field</div>
+  </div>
+  <div class="page">
+    <div class="running"><span>The Brief</span><span class="folio">007</span></div>
+    <h2 class="section">One Shoot Day<br>Stretched Into an<br>Entire Campaign.</h2>
+    <p class="subhead">Neiman Marcus needed a spring campaign for Robert Rodriguez that felt current without abandoning the brand&rsquo;s romantic sensibility. The budget was a single shoot day. The deliverable was a full multi-channel system: social, email, in-store, editorial.</p>
+    <p class="footnote">The constraint became the concept. One model, four setups, and a compositing technique that turned four photographs into an entire visual language. Every piece of the campaign traces back to those four original frames, layered and recombined into something that feels like fifty shots instead of four.</p>
+    <div class="page-bottom"><span>Section II</span><span>The Brief</span></div>
+  </div>
+</section>
+
+<!-- ══ SPREAD 3 — pull quote, full width ══ -->
+<section class="spread full">
+  <div class="page quote-page" style="min-height: 46vh;">
+    <div class="running" style="position:absolute; left:28px; right:28px; top:22px;"><span>Reckon House Staples · Pressing B</span><span class="folio">008</span></div>
+    <p class="q">The mall studio, rebuilt for the runway</p>
+    <p class="attr">Section III · Compositing as Design System</p>
+  </div>
+</section>
+
+<!-- ══ SPREAD 4 — the department page: three columns + plates ══ -->
+<section class="spread full">
+  <div class="dept">
+    <div class="running"><span>How It Was Made</span><span class="folio">009</span></div>
+    <div class="three-cols">
+      <div class="col">
+        <h3>The Reference</h3>
+        <p>Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera &mdash; the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.</p>
+        <p>The brief was to take that energy seriously &mdash; the confidence and the color, the full unironic glamour &mdash; and rebuild it with contemporary craft. A translation, not a parody.</p>
+      </div>
+      <div class="col">
+        <h3>The Technique</h3>
+        <p>Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.</p>
+        <p>Mesh color fields replaced the airbrushed backdrops &mdash; mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.</p>
+      </div>
+      <div class="col">
+        <h3>The System</h3>
+        <p>Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads &mdash; each combination tells a slightly different story from the same visual DNA.</p>
+        <p>The typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.</p>
+      </div>
+    </div>
+    <div class="plates">
+      <div class="plate">
+        <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot dress, orange backdrop">
+        <div class="caption"><b>Plate III</b>Polka-dot dress, orange field</div>
+      </div>
+      <div class="plate">
+        <img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot ruffle dress, orange backdrop">
+        <div class="caption"><b>Plate IV</b>Ruffle dress, same session</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="colophon">
+  <span>Set from <b>src/data/robert-rodriguez-case-study.ts</b> — unchanged</span>
+  <span>Pressing A lives at <b>reckon.house/case-studies/robert-rodriguez</b></span>
+</div>
+
+</body>
+</html>

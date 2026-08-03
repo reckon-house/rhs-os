@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Brand system — index rows</title>
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     BRAND SYSTEM AS AN INDEX.
+     Each row names a part of the system and, inline, PERFORMS it —
+     the typeface row morphs a letter across its own cuts, the palette
+     row crossfades the real palette, and so on. The counts come from
+     the data, not from decoration.
+     ──────────────────────────────────────────────────────────────── */
+  :root {
+    --paper: #EEEAE2;
+    --ink: #141414;
+    --r: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Satoshi", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    padding: clamp(28px, 6vw, 90px) clamp(20px, 5vw, 80px) 140px;
+    -webkit-font-smoothing: antialiased;
+  }
+  @font-face { font-family: "Satoshi"; src: url("/fonts/Satoshi-Variable.woff2") format("woff2-variations");
+    font-weight: 300 900; font-display: swap; }
+
+  .eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 700; color: rgba(20,20,20,0.42); margin-bottom: 40px; }
+
+  /* Rows stagger horizontally — the zigzag is what stops an index from
+     reading as a table. Each row sets its own indent. */
+  .row {
+    display: flex; align-items: center; gap: clamp(14px, 2vw, 34px);
+    margin-left: var(--indent, 0);
+    padding: clamp(6px, 1.4vh, 18px) 0;
+    font-weight: 500; letter-spacing: -0.03em;
+    font-size: clamp(34px, 6.2vw, 92px); line-height: 1;
+  }
+  .row .ico { width: 0.62em; height: 0.62em; flex: 0 0 auto; opacity: 0.9; }
+  .row .count { font-variant-numeric: tabular-nums; opacity: 0.42; }
+
+  /* the inline sample — the part that performs */
+  .sample { flex: 0 0 auto; display: grid; place-items: center;
+    position: relative; }
+
+  /* ── typeface row ───────────────────────────────────────────────── */
+  .type-sample { width: clamp(90px, 12vw, 190px); }
+  .type-sample svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .type-sample .fallback { font-size: clamp(60px, 9vw, 150px); line-height: 0.8; }
+  /* the name of whatever cut is on screen, swapped in sync with the morph */
+  .face-label {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: -1.9em; white-space: nowrap;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 700; color: rgba(20,20,20,0.5);
+    transition: opacity 0.28s ease;
+  }
+
+  /* ── palette row ────────────────────────────────────────────────── */
+  .swatch { width: clamp(74px, 9.5vw, 150px); aspect-ratio: 1 / 1;
+    border-radius: var(--r); transition: background-color 0.9s ease; }
+  .swatch-label { position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: -1.9em; white-space: nowrap;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 700; color: rgba(20,20,20,0.5); font-variant-numeric: tabular-nums; }
+
+  /* ── motion row — a plate that changes shape, from the reel work ── */
+  .reel-box { width: clamp(90px, 12vw, 190px); height: 120px; overflow: hidden;
+    border-radius: var(--r);
+    transition: height 0.42s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reel-box sizzle-reel { display: block; width: 100%; height: 100%;
+    aspect-ratio: auto !important; }
+
+  /* ── grid row ───────────────────────────────────────────────────── */
+  .gridsample { width: clamp(84px, 11vw, 170px); aspect-ratio: 4 / 3; }
+  .gridsample rect { fill: var(--ink); opacity: 0.16; }
+  .gridsample rect.on { opacity: 0.85; }
+
+  .foot { margin-top: 64px; font-size: 11px; line-height: 1.7;
+    color: rgba(20,20,20,0.5); max-width: 46em; }
+  .foot b { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+<script src="/lab/sizzle-reel.js"></script>
+
+<p class="eyebrow">Section 05 — Brand System · Ivy Park</p>
+
+<div class="rows">
+  <!-- TYPEFACE — one letter, morphing across the family's own cuts -->
+  <div class="row" style="--indent: 2vw;">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg>
+    <span>Typeface</span>
+    <span class="sample type-sample" id="typeSample">
+      <span class="fallback" id="typeFallback">A</span>
+      <svg id="typeSvg" viewBox="0 0 1000 1000" style="display:none"><path id="typePath" fill="#141414" fill-rule="evenodd"></path></svg>
+      <span class="face-label" id="faceLabel">Avenir Next Medium</span>
+    </span>
+    <span class="count" id="typeCount">(00)</span>
+  </div>
+
+  <!-- PALETTE — the real palette, crossfading -->
+  <div class="row" style="--indent: 14vw;">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="9.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="9.5" r="1.4" fill="currentColor" stroke="none"/><circle cx="9.5" cy="15" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <span class="sample"><span class="swatch" id="swatch"></span><span class="swatch-label" id="swatchLabel">#000000</span></span>
+    <span>Palette</span>
+    <span class="count" id="paletteCount">(05)</span>
+  </div>
+
+  <!-- MOTION — the reel, shape-shifting to each frame's ratio -->
+  <div class="row" style="--indent: 5vw;">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg>
+    <span>Motion</span>
+    <span class="sample"><span class="reel-box" id="reelBox"><sizzle-reel id="reel" radius="14" speed="1"></sizzle-reel></span></span>
+    <span class="count">(07)</span>
+  </div>
+
+  <!-- GRID — the column structure, drawing itself -->
+  <div class="row" style="--indent: 19vw;">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="7" height="16"/><rect x="14" y="4" width="7" height="16"/></svg>
+    <span class="sample"><svg class="gridsample" id="gridSample" viewBox="0 0 120 90"></svg></span>
+    <span>Grid</span>
+    <span class="count">(12)</span>
+  </div>
+</div>
+
+<p class="foot">
+  Every row performs the thing it names. The typeface row morphs a single letter
+  across the family's own cuts — same glyph, different weight, so the outlines
+  interpolate cleanly instead of scrambling. The label beneath names whichever
+  cut is on screen. <b>Counts would come from the data</b> (families.length,
+  palette.length), never hand-written.
+</p>
+
+<script src="/lab/vendor/opentype.min.js"></script>
+<script src="/lab/vendor/flubber.min.js"></script>
+<script>
+/* ── TYPEFACE ROW ──────────────────────────────────────────────────
+   Same technique as the site's MorphingGlyph: real outlines from
+   opentype.js, interpolated with flubber. The difference here is that
+   every entry is the SAME character in a different cut — point counts
+   line up, so the morph reads as the family flexing rather than one
+   letter turning into another.
+
+   The site component keeps its segment index private, which is why the
+   label can't currently follow it. This version fires a callback on
+   every change; that hook is the one addition the real component needs. */
+(async () => {
+  const CUTS = [
+    { char: "A", url: "/fonts/AvenirNext-Medium.woff",   name: "Avenir Next Medium" },
+    { char: "A", url: "/fonts/AvenirNext-DemiBold.woff", name: "Avenir Next Demi" },
+    { char: "A", url: "/fonts/AvenirNext-Bold.woff",     name: "Avenir Next Bold" },
+    { char: "A", url: "/fonts/AvenirNext-Heavy.woff",    name: "Avenir Next Heavy" },
+  ];
+  const HOLD = 1500, MORPH = 900;
+  // Derived, never typed. This row had a hand-written (03) against four cuts
+  // — exactly the mismatch that makes an index feel decorative.
+  document.getElementById("typeCount").textContent =
+    "(" + String(CUTS.length).padStart(2, "0") + ")";
+  const label = document.getElementById("faceLabel");
+  const svg = document.getElementById("typeSvg");
+  const pathEl = document.getElementById("typePath");
+  const fallback = document.getElementById("typeFallback");
+
+  if (!window.opentype || !window.flubber) return;
+
+  // normalise a glyph into a 1000-unit box so different cuts sit on the
+  // same baseline and optical size, otherwise heavier weights jump.
+  // Rings must be ordered outer-first so the same ring morphs into the same
+  // ring across cuts. Without it the outer shape of one weight can interpolate
+  // into the COUNTER of the next, and the A appears to fill itself in.
+  const ringArea = (d) => {
+    const n = (d.match(/-?\d*\.?\d+/g) || []).map(Number);
+    let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    for (let i = 0; i + 1 < n.length; i += 2) {
+      const x = n[i], y = n[i + 1];
+      if (x < x0) x0 = x; if (x > x1) x1 = x;
+      if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+    return (x1 - x0) * (y1 - y0);
+  };
+  function ringsOf(font, ch) {
+    return font.charToGlyph(ch).getPath(0, 0, 1000).toPathData(3)
+      .split("M").filter(Boolean).map((x) => "M" + x.trim())
+      .sort((a, c) => ringArea(c) - ringArea(a));
+  }
+
+  let fonts;
+  try { fonts = await Promise.all(CUTS.map((c) => window.opentype.load(c.url))); }
+  catch (e) { return; }   // keep the live-text fallback
+
+  const sets = fonts.map((f, i) => ringsOf(f, CUTS[i].char));
+  if (sets.some((s) => !s.length)) return;
+
+  // centre the outlines in the viewBox
+  const bbox = fonts[0].charToGlyph(CUTS[0].char).getPath(0, 0, 1000).getBoundingBox();
+  svg.setAttribute("viewBox", `${bbox.x1 - 40} ${bbox.y1 - 40} ${bbox.x2 - bbox.x1 + 80} ${bbox.y2 - bbox.y1 + 80}`);
+
+  const make = (from, to) => {
+    if (from.length === to.length) {
+      const fns = from.map((f, i) => window.flubber.interpolate(f, to[i], { maxSegmentLength: 4 }));
+      return (t) => fns.map((fn) => fn(t)).join(" ");
+    }
+    if (to.length === 1) return window.flubber.combine(from, to[0], { maxSegmentLength: 4, single: true });
+    if (from.length === 1) return window.flubber.separate(from[0], to, { maxSegmentLength: 4, single: true });
+    return window.flubber.interpolate(from[0], to[0], { maxSegmentLength: 4 });
+  };
+  const n = sets.length;
+  const interps = sets.map((_, i) => make(sets[i], sets[(i + 1) % n]));
+
+  pathEl.setAttribute("d", interps[0](0));   // prime before reveal — no blank frame
+  fallback.style.display = "none";
+  svg.style.display = "block";
+
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  let seg = 0, t0 = null;
+  label.textContent = CUTS[0].name;
+
+  function onSegment(i) {
+    // swap the name at the midpoint of the morph, so the word changes while
+    // the letter is between cuts rather than after it lands.
+    label.style.opacity = "0";
+    setTimeout(() => { label.textContent = CUTS[i].name; label.style.opacity = "1"; }, 200);
+  }
+
+  function frame(ts) {
+    if (t0 == null) t0 = ts;
+    const el = ts - t0;
+    let t;
+    if (el < HOLD) t = 0;
+    else if (el < HOLD + MORPH) {
+      t = (el - HOLD) / MORPH;
+      if (!frame._fired && t > 0.35) { frame._fired = true; onSegment((seg + 1) % n); }
+    } else { seg = (seg + 1) % n; t0 = ts; t = 0; frame._fired = false; }
+    pathEl.setAttribute("d", interps[seg](ease(t)));
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ── PALETTE ROW ─────────────────────────────────────────────────── */
+(() => {
+  const PALETTE = [
+    { hex: "#B9A88F", name: "Sand" },
+    { hex: "#6E7B5B", name: "Moss" },
+    { hex: "#C2603E", name: "Clay" },
+    { hex: "#2E2A24", name: "Bark" },
+    { hex: "#E4DDD0", name: "Chalk" },
+  ];
+  const sw = document.getElementById("swatch");
+  const lb = document.getElementById("swatchLabel");
+  document.getElementById("paletteCount").textContent =
+    "(" + String(PALETTE.length).padStart(2, "0") + ")";
+  let i = 0;
+  const step = () => {
+    const c = PALETTE[i];
+    sw.style.backgroundColor = c.hex;
+    lb.textContent = c.name + " · " + c.hex.toUpperCase();
+    i = (i + 1) % PALETTE.length;
+  };
+  step();
+  setInterval(step, 1800);
+})();
+
+/* ── MOTION ROW — the shape-shifting reel from the Swiss pressing ── */
+(() => {
+  const DIR = "/case-studies/robert-rodriguez";
+  const IMAGES = [
+    "neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+    "neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
+    "neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+    "neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait.jpg",
+  ].map((f) => `${DIR}/${f}`);
+  const box = document.getElementById("reelBox");
+  const reel = document.getElementById("reel");
+  const ratios = [];
+  const shape = (i) => {
+    const r = ratios[i];
+    if (r) box.style.height = (box.getBoundingClientRect().width / r).toFixed(1) + "px";
+  };
+  Promise.all(IMAGES.map((src, i) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => { ratios[i] = im.naturalWidth / im.naturalHeight; res(); };
+    im.onerror = res; im.src = src;
+  }))).then(() => {
+    shape(0);
+    reel.setAttribute("images", IMAGES.join(", "));
+    reel.setAttribute("colors", "#B9A88F, #6E7B5B, #C2603E, #E4DDD0, #2E2A24");
+    reel.addEventListener("beat", (e) => {
+      const b = e.detail && e.detail.beat;
+      if (b && b.img != null) shape(b.img);
+    });
+  });
+})();
+
+/* ── GRID ROW — the column structure lighting up in sequence ─────── */
+(() => {
+  const svg = document.getElementById("gridSample");
+  const COLS = 12, W = 120, H = 90, gap = 2;
+  const cw = (W - gap * (COLS - 1)) / COLS;
+  const rects = [];
+  for (let i = 0; i < COLS; i++) {
+    const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r.setAttribute("x", (i * (cw + gap)).toFixed(2));
+    r.setAttribute("y", 0); r.setAttribute("width", cw.toFixed(2)); r.setAttribute("height", H);
+    svg.appendChild(r); rects.push(r);
+  }
+  let k = 0;
+  setInterval(() => {
+    rects.forEach((r, i) => r.classList.toggle("on", i <= k));
+    k = (k + 1) % (COLS + 3);   // a few frames of full-on before it resets
+  }, 220);
+})();
+</script>
+</body>
+</html>
