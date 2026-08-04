@@ -22,9 +22,9 @@
        families. That variety is not a system, it just reads as one. What
        hierarchy the small type needs comes from opacity and position. */
     --lbl: 10px;
-    --lbl-track: 0.14em;
+    --lbl-track: 0.04em;   /* caps wanted 0.14em; lowercase does not */
     --lbl-weight: 500;
-    --note: 12.5px;
+    --note: 16px;
     --cap: 11px;        /* the footnote under a picture, not a marker on it */
     --r: 16px;          /* the modern note against the Swiss grid */
     --nav: 54px;
@@ -44,8 +44,10 @@
     height: var(--nav); display: flex; align-items: center;
     justify-content: space-between; gap: 24px;
     padding: 0 40px;
-    font-size: var(--lbl); letter-spacing: var(--lbl-track);
-    text-transform: uppercase; font-weight: var(--lbl-weight);
+    /* Its own size, not --lbl: the token is shared with some forty small
+       labels that are correct at 10px. Navigation is a different job. */
+    font-size: var(--nav-size); letter-spacing: var(--lbl-track);
+    font-weight: var(--lbl-weight);
   }
   /* The burn sits BEHIND the wordmark and links. Over flat cream a
      saturate/contrast pump has nothing to act on, so it is invisible; over
@@ -56,7 +58,7 @@
      and the meta exactly on the 40px padding edges, so the pill's inset is
      that gutter minus the overhang. backdrop-filter clips to the border-box,
      radius included, so the burn becomes a floating lens instead of a band. */
-  #nav { --nav-overhang: 18px; --nav-gutter: 40px; }
+  #nav { --nav-overhang: 18px; --nav-gutter: 40px; --nav-size: 16px; }
   #navBurn {
     position: absolute; pointer-events: none; z-index: 0;
     left: calc(var(--nav-gutter) - var(--nav-overhang));
@@ -98,8 +100,7 @@
      label now; both class names stay because the markup uses each in
      different places. */
   .tiny, .mono { font-family: var(--sans); font-size: var(--lbl);
-    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight);
-    text-transform: uppercase; line-height: 1.8; }
+    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight); line-height: 1.8; }
 
   /* A caption is running text, not a marker. Same family, but set like the
      sentence it already is in the markup: no forced caps, no tracking, book
@@ -113,6 +114,46 @@
     font-size: var(--cap); font-weight: 400;
     letter-spacing: normal; text-transform: none; line-height: 1.5; }
   figcaption { opacity: 0.55; }
+  /* ── the section mark ────────────────────────────────────────────
+     A disc that draws itself round on arrival, numeral inside.
+
+     The sweep is one stroked circle at HALF the radius carrying a stroke
+     as thick as the radius: the band it paints covers the whole disc, so
+     animating stroke-dashoffset wipes it in angularly like a hand coming
+     round. That is why there is no fill here and no conic-gradient mask —
+     a dash offset on one circle does the whole thing, in CSS, with no
+     per-frame work and nothing to keep in sync.
+
+     dasharray is 41 against a 40.84 circumference: a hair over, so the
+     dash closes on itself instead of leaving a seam at twelve o'clock. */
+  .lbl { display: inline-flex; align-items: center; gap: 9px; }
+  .lbl-mark { position: relative; flex: 0 0 auto;
+    width: 26px; height: 26px; display: grid; place-items: center;
+    color: var(--ink); }
+  .lbl-mark svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .lbl-mark circle { fill: none; stroke: currentColor; stroke-width: 13;
+    transform: rotate(-90deg); transform-origin: 13px 13px;
+    stroke-dasharray: 41 41; stroke-dashoffset: 41;
+    transition: stroke-dashoffset 0.72s cubic-bezier(0.65, 0, 0.35, 1); }
+  .lbl.on .lbl-mark circle { stroke-dashoffset: 0; }
+  .lbl-mark i { position: relative; font-style: normal;
+    font-size: 8.5px; font-weight: 600; letter-spacing: 0;
+    color: var(--paper); line-height: 1;
+    opacity: 0; transition: opacity 0.3s ease 0.34s; }
+  .lbl.on .lbl-mark i { opacity: 1; }
+  /* On the ink beats the mark inverts: disc in paper, numeral in ink. */
+  .fx-mast .lbl-mark { color: rgba(255,255,255,0.92); }
+  .fx-mast .lbl-mark i { color: var(--ink); }
+  .cover-idx .lbl-mark { color: currentColor; }
+  @media (max-width: 760px) {
+    .lbl-mark { width: 22px; height: 22px; }
+    .lbl-mark i { font-size: 7.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lbl-mark circle { transition: none; stroke-dashoffset: 0; }
+    .lbl-mark i { transition: none; opacity: 1; }
+  }
+
   .slabel { position: absolute; top: 76px; left: 40px; }
   /* Starts below the reel block and runs to the lower corner NEIMAN'S
      never reaches. */
@@ -127,7 +168,7 @@
   .cover h1 {
     position: absolute; left: 40px; bottom: 28px;   /* the mat is gone; nothing to ride */
     font-size: clamp(84px, 13.5vw, 205px); line-height: 0.84;
-    letter-spacing: -0.045em; font-weight: 700; text-transform: uppercase;
+    letter-spacing: -0.045em; font-weight: 700;
   }
   /* DIRECT children only. The reveal driver nests word and character spans
      inside each line, and an unscoped `span { display: block }` turned every
@@ -165,7 +206,20 @@
   /* ── 02 statement — now the second half of the pinned cover ────
      The wrap's extra height IS the length of the handover; the sticky screen
      holds still while the headline unbuilds and this rises in. */
-  .coverwrap { height: 210vh; position: relative; }
+  /* 210vh is the SEQUENCE; the tail on top of it is the plate's climb.
+     Without it the cover's pin had to hold both at once, and the storefront
+     began entering at p=0.13 — before the copy had started, let alone
+     landed. The driver measures progress against height minus the tail, so
+     the headline and copy keep their original 910px of travel and the extra
+     room is purely time for the plate to cross. */
+  .coverwrap { height: calc(210vh + var(--rise)); position: relative; }
+  .coverwrap > .risetail { height: var(--rise); }
+  /* Same idea on the zoom wrap that a plate follows, plus the hold beat so
+     the mark is seen at rest first. This one is only a RULER — the zoom
+     driver sets its wrap's height in JS, so the tail is measured and added
+     there rather than contributing layout. */
+  .zoomwrap > .risetail { height: calc(var(--plate-hold) + var(--rise));
+    pointer-events: none; }
   /* Below the nav, not behind it. .screen is min-height: calc(100vh - --nav)
      and sat in flow after the sticky nav; a 100vh sticky at top:0 hangs a
      nav's worth past the fold and drops the bottom-anchored headline off
@@ -276,16 +330,18 @@
   /* ── 04 the brief — scale jump ── */
   .brief h2 {
     font-size: clamp(48px, 7.4vw, 118px); line-height: 0.93; letter-spacing: -0.04em;
-    font-weight: 700; text-transform: uppercase;
-    /* 9em is the measure; 100% is the track. Whichever is smaller wins, so
-       the headline always wraps INSIDE column 1 — it can neither overflow
-       into the column beside it nor lose its ends to the reveal mask's
-       overflow: hidden. Below ~1100px the track is the binding one. */
-    max-width: min(9em, 100%);
+    font-weight: 700;
+    /* Three limits, smallest wins. 9em is the measure. 100% keeps it inside
+       column 1, so it can neither overflow into the column beside it nor
+       lose its ends to the reveal mask's overflow: hidden. 50vw is the new
+       ceiling: at 9em these ran to 1062px on a 1728px screen — 61% — and
+       read as slabs. Half the screen is the widest any of them now gets. */
+    max-width: min(9em, 50vw, 100%);
     margin-top: 10vh;
   }
-  /* the violated grid line — one word steps out of the block */
-  .brief h2 .out { margin-left: 1.2em; display: block; }
+  /* The stagger is off: every headline sets flush left now. `.out` stays a
+     block because it is what forces the line break — only its indent goes. */
+  .brief h2 .out { margin-left: 0; display: block; }
   /* A real grid now, not an absolutely-positioned corner. The column carries
      the method blocks too, so it has to be able to run taller than the screen
      and let the section grow with it. */
@@ -349,7 +405,7 @@
   /* Lines are explicit rather than wrapped, so each one can carry its own
      transform. Fixed breaks are what you want on a display headline anyway. */
   #hHead .ln { display: block; will-change: transform; }
-  #hHead .ind { margin-left: 1.2em; }
+  #hHead .ind { margin-left: 0; }
   /* No initial clip in CSS on purpose: if the driver never runs, the copy
      must still be readable. JS applies the starting mask itself. */
   #hCol p { will-change: clip-path; }
@@ -358,8 +414,12 @@
      Letters rise out of each line's own mask, with the nav's melt decaying
      across the arrival. Classes are r-prefixed because .ln is already the
      crossing headline's line class and means something different there. */
+  /* 0.12em was cut for caps, which sit entirely above the baseline. In
+     sentence case the deepest descender runs ~0.195em down and the mask
+     was shaving 7px off the g in "Rodriguez". The negative margin matches
+     the padding, so widening the mask costs no layout. */
   .rln { display: block; overflow: hidden;
-    padding-bottom: 0.12em; margin-bottom: -0.12em; }
+    padding-bottom: 0.22em; margin-bottom: -0.22em; }
   /* filter lives on the inner wrapper — on .rln it would warp the mask edge */
   .rlnI { display: block; }
   /* per-character inline-block loses word boundaries; .rwd restores them */
@@ -416,9 +476,12 @@
   @media (prefers-reduced-motion: reduce) {
     .cols .c::before { clip-path: inset(0 0 0 0 round 999px); transition: none; }
   }
-  .cols .c .n { font-weight: 700; font-size: 13px; margin-bottom: 14px; }
-  .cols .c h3 { font-size: 13px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.04em; display: inline; }
+  /* Same rule as the ledgers: nothing inside a block is a different SIZE.
+     The step number is the marker, so it takes the dimmed colour that
+     "Services" and "Contact" take. The title is not a marker — it leads its
+     paragraph — so it stays at full strength and separates from the body by
+     sitting on its own line, not by shouting. */
+  .cols .c h3 { display: block; }
   .cols .c p { font-size: var(--note); line-height: 1.55; margin-top: 10px; }
 
   /* ── full-screen plates ─────────────────────────────────────────
@@ -432,6 +495,72 @@
   /* No fixed height and no cover-crop: the section hugs the image and the
      image keeps its own ratio. Forcing these into a viewport-tall box was
      cropping the composites — the exact thing the plates exist to show. */
+
+  /* ── the plates rise over what is above them ──────────────────────
+     Instead of the page carrying both, the section above HOLDS and the
+     plate climbs across it. Two of the three already pin themselves — the
+     cover and the zoom plate each have a sticky child — so the plate is
+     simply pulled up into that held stretch with a higher stacking order
+     and an opaque ground. The third follows a plain grid, which gets a
+     .pinwrap so it can hold the same way.
+
+     --rise is both the overlap and the duration: it is how much of the
+     section above the plate travels across. Kept under each pinned
+     stretch (964px and 910px measured) so the plate never starts climbing
+     before the thing beneath it has actually stopped.
+
+     The grow and the radius are untouched — they key off the plate's own
+     top edge, which the margin does not change. */
+  /* 62vh left the last ~314px of every climb unpinned: the plate is pulled
+     up by --rise, so it meets the viewport top when the wrap has --rise
+     left, and the pin releases at one screen. Anything under 100vh spends
+     the difference sliding with the page instead of across it. Set just
+     below a screen so the whole climb happens against held content, and
+     comfortably inside the shortest pinned stretch available (910px). */
+  :root { --rise: 96vh;
+    /* A beat of held, fully-visible grid BEFORE the plate starts climbing.
+       Without it the plate's top sat exactly on the grid's bottom edge, so
+       it began entering the fold at the same moment the second image
+       finished arriving — the reader never saw the pair at rest. */
+    --plate-hold: 42vh; }
+  /* No ground of its own. At rest the image is scale(0.95) with a 24px
+     radius, so the section box is bigger than the drawn image on all four
+     sides — an opaque background turned that difference into a white frame
+     around every plate. Transparent lets the held section show through it
+     instead, so the plate reads as a picture crossing the page rather than
+     a card laid on it. The image itself is opaque and does the covering. */
+  .plate-full { position: relative; z-index: 3;
+    background: transparent;
+    margin-top: calc(-1 * var(--rise)); }
+  /* The travel is a spacer ELEMENT, not padding. A sticky element is
+     constrained by its ancestor's CONTENT box, so padding-bottom on the
+     host adds nothing: the room measured 691.26 - 692 = -0.74px and the
+     pin never engaged, while a 40px probe in the same host pinned fine.
+     An in-flow spacer grows the content box, which is what sticky reads. */
+  .pinwrap { position: relative; }
+  /* hold first, then the climb — both in flow, so both extend the content
+     box that the sticky actually reads */
+  .pinwrap > .pinspacer { height: calc(var(--plate-hold) + var(--rise)); }
+  /* The sticky sits on a plain wrapper, not on .plates itself: a bare
+     injected div pins in this exact host while the grid would not engage,
+     even with position:sticky set inline. Whatever the grid is doing, it
+     is not worth fighting for a wrapper this cheap. */
+  /* Held by a driver, not by sticky. The pair is portrait at full column
+     width, so it is usually TALLER than the screen — 1349px against 946px
+     of room at 1728x1000. Pinning at the top froze it with 403px below the
+     fold, permanently out of reach; switching to bottom:0 should have held
+     it once its bottom reached the fold, and simply never engaged, twice,
+     with the offsets computing correctly and 1380px of room available.
+     A transform does the same job in a way that is verifiable, and does
+     not care how tall the element is. */
+  .pinwrap > .pinner { position: relative; will-change: transform; }
+  @media (max-width: 760px) {
+    /* No room to stage a pass on a phone: the plate just follows in flow. */
+    :root { --rise: 0px; }
+    .pinwrap > .pinner { position: static; }
+    .pinwrap > .pinspacer { display: none; }
+  }
+
   .plate-full { padding: 0; min-height: 0; display: block; isolation: isolate; }
   .plate-full img { width: 100%; height: auto; display: block;
     transform-origin: center center; will-change: transform, border-radius;
@@ -488,7 +617,7 @@
     margin-left: var(--indent, 0);
     padding: clamp(10px, 2.2vh, 30px) 0;
     font-size: clamp(38px, 6.4vw, 96px); line-height: 1;
-    font-weight: 700; letter-spacing: -0.04em; text-transform: uppercase;
+    font-weight: 700; letter-spacing: -0.04em;
   }
   /* Fixed height, content centred. The reel re-shapes every beat — without
      a reserved box that height change reflows the whole row, and the section
@@ -500,8 +629,7 @@
   .irow .cap {
     position: absolute; left: 50%; transform: translateX(-50%); bottom: 2px;
     white-space: nowrap; font-family: var(--sans); font-size: var(--lbl);
-    letter-spacing: var(--lbl-track); text-transform: uppercase;
-    font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track);    font-weight: var(--lbl-weight);
     color: rgba(0,0,0,0.5); transition: opacity 0.26s ease;
   }
   /* logotype — the real mark: caps overlapped hard enough to interlock,
@@ -529,11 +657,36 @@
      collided with the headline, which grows with the viewport while the
      lists stayed pinned — 15px of overlap at 1600px wide. Sitting in flow
      under the paragraphs the collision cannot happen at any width. */
+  /* ── the ledger, used twice ──────────────────────────────────────
+     The closing lists and the footer columns are one component on two
+     grounds: a label heading over a set of items. They had drifted — the
+     closing heading was bold black at full opacity against the footer's
+     medium grey at 0.4, and the items ran different line-heights, so the
+     same thing read as two components.
+     The items are content, not micro-labels, so they sit at body size;
+     only the heading stays on the label token. */
   .closing .lists { margin-top: 26px; padding-top: 18px;
     border-top: 1px solid rgba(0,0,0,0.16);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px 18px;
+    font-size: var(--note); font-weight: 400;
+    letter-spacing: normal; line-height: 1.55; }
   .closing .lists > div:last-child { grid-column: 1 / -1; }
-  .closing .lists .h { font-weight: 700; margin-bottom: 8px; }
+  /* The ledger heading is no longer a label. It matches its items on every
+     axis — size, weight, tracking — and separates on colour alone. Only the
+     numbered SECTION labels stay small; inside a block, a heading that is
+     also a different size is saying the same thing twice. */
+  /* Every heading INSIDE a block is one treatment — the ledger columns,
+     the closing lists, and the method steps. Body size, book weight,
+     dimmed: they separate from their content by colour alone. Kept as a
+     single declaration so the three cannot drift apart again, which is
+     exactly how they got out of step the first time. */
+  .closing .lists .h,
+  .fx-mast .mt-col h4,
+  .cols .c h3 { font-size: var(--note); font-weight: 400;
+    letter-spacing: normal; line-height: 1.55; opacity: 0.45; }
+
+  .closing .lists .h { margin: 0 0 10px; padding-bottom: 9px;
+    border-bottom: 1px solid rgba(0,0,0,0.16); }
 
   /* ── 06 plates ── */
   .plates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
@@ -572,11 +725,14 @@
   .quote p, .quote .idx { position: relative; z-index: 2;
     mix-blend-mode: difference; color: #fff; }
   .quote { display: grid; place-items: center; }
+  /* The one headline that is NOT flush left. It has no section around it —
+     it sits alone on a screen the panel climbs — so centring reads as
+     composition rather than as a line that failed to line up. */
   .quote p {
     font-size: clamp(44px, 6.6vw, 104px); line-height: 0.96; letter-spacing: -0.04em;
-    font-weight: 700; text-transform: uppercase; max-width: 10em;
+    font-weight: 700; max-width: min(10em, 50vw); text-align: center;
   }
-  .quote p .indent { margin-left: 2.4em; display: block; }
+  .quote p .indent { margin-left: 0; display: block; }
   .quote .idx { position: absolute; top: 48px; left: 40px; }
 
   /* ── 08a the masthead — everything that is not the work ────────────
@@ -599,8 +755,8 @@
   .fx-mast .mt-beat > .mono { color: rgba(255,255,255,0.45); }
   .fx-mast .mt-beat h2 { font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
     letter-spacing: -0.03em; font-weight: 700; text-transform: none;
-    max-width: 11em; margin-top: clamp(24px, 5vh, 70px); }
-  .fx-mast .mt-beat h2 .l2 { margin-left: 1.2em; }
+    max-width: min(11em, 50vw); margin-top: clamp(24px, 5vh, 70px); }
+  .fx-mast .mt-beat h2 .l2 { margin-left: 0; }
   .fx-mast .mt-beat h2 .lt { font-weight: 300; }
 
   /* The beats are sized by JS so that a beat still fills the screen at the
@@ -619,8 +775,8 @@
   .fx-mast .mt-say .lt { font-weight: 300; }
   .fx-mast .mt-form { display: grid; gap: 16px; max-width: 30em; }
   .fx-mast .mt-field { display: grid; gap: 6px; }
-  .fx-mast .mt-field label { font-size: var(--lbl);
-    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight); text-transform: uppercase; opacity: 0.45; }
+  .fx-mast .mt-field label { font-size: var(--note);
+    letter-spacing: normal; font-weight: 400; opacity: 0.45; }
   .fx-mast .mt-field input, .fx-mast .mt-field textarea {
     background: none; border: 0; border-bottom: 1px solid rgba(255,255,255,0.28);
     color: var(--paper); font-family: var(--sans); font-size: 14px;
@@ -634,10 +790,10 @@
     /* buttons do not inherit font-family — this one has to name it */
     font-family: var(--sans); font-size: var(--lbl);
     letter-spacing: var(--lbl-track);
-    font-weight: var(--lbl-weight); text-transform: uppercase; }
+    font-weight: var(--lbl-weight); }
   .fx-mast .mt-send:hover { opacity: 0.82; }
-  .fx-mast .mt-note { font-size: var(--lbl);
-    letter-spacing: var(--lbl-track); font-weight: var(--lbl-weight); text-transform: uppercase; opacity: 0.35; }
+  .fx-mast .mt-note { font-size: var(--note);
+    letter-spacing: normal; font-weight: 400; opacity: 0.35; }
   
   /* The ledger columns, lifted from variant B: the densest way to carry
      contact, services and standing info without a paragraph. */
@@ -645,13 +801,11 @@
   .fx-mast .mt-cols { display: grid; grid-template-columns: repeat(2, 1fr);
     gap: clamp(22px, 3vh, 34px) 26px; align-content: start;
     margin-bottom: clamp(34px, 6vh, 72px); }
-  .fx-mast .mt-col h4 { font-size: var(--lbl); font-weight: var(--lbl-weight);
-    letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.4;
-    margin: 0 0 12px; padding-bottom: 9px;
+  .fx-mast .mt-col h4 { margin: 0 0 10px; padding-bottom: 9px;
     border-bottom: 1px solid rgba(255,255,255,0.16); }
   .fx-mast .mt-col ul { list-style: none; margin: 0; padding: 0;
-    font-size: var(--lbl); letter-spacing: var(--lbl-track);
-    font-weight: var(--lbl-weight); line-height: 2.05; text-transform: uppercase; }
+    font-size: var(--note); font-weight: 400;
+    letter-spacing: normal; line-height: 1.55; }
   .fx-mast .mt-col a { color: var(--paper); text-decoration: none;
     border-bottom: 1px solid transparent; }
   .fx-mast .mt-col a:hover { border-bottom-color: var(--paper); }
@@ -700,9 +854,7 @@
     transition: transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .fx-mast .mt-ledger li > span { opacity: 0; transition: opacity 0.5s ease; }
   .fx-mast .mt-ledger li.on > span { opacity: 1; }
-  .fx-mast .lg-num { font-size: var(--lbl); font-weight: var(--lbl-weight);
-    letter-spacing: var(--lbl-track); opacity: 0.4; min-width: 2.4em; }
-  .fx-mast .lg-name { font-size: 17px; font-weight: 500;
+  .fx-mast .lg-name { font-size: 16px; font-weight: 500;
     letter-spacing: -0.01em; }
   .fx-mast .lg-mark { position: absolute; right: 2px; top: 50%;
     transform: translateY(-50%); height: 15px; width: auto;
@@ -727,7 +879,7 @@
     object-fit: contain; filter: brightness(0) invert(1); }
   .fx-mast .sp-cell .asis { filter: none; border-radius: 3px; }
   .fx-mast .sp-cell .word { font-weight: 700; font-size: 13px;
-    letter-spacing: 0.2em; text-transform: uppercase; }
+    letter-spacing: 0.2em; }
   .fx-mast .sp-cell > img, .fx-mast .sp-cell > .word { opacity: 0;
     transition: opacity 0.55s ease; }
   .fx-mast .sp-cell.on > img, .fx-mast .sp-cell.on > .word { opacity: 0.62; }
@@ -770,7 +922,7 @@
     font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
     letter-spacing: -0.03em; font-weight: 700; text-transform: none;
     margin: 0; }
-  .mt-fieldbeat h2 .l2 { display: block; margin-left: 1.2em; }
+  .mt-fieldbeat h2 .l2 { display: block; margin-left: 0; }
   @media (max-width: 760px) {
     .mt-fieldbeat > .mono { top: 30px; left: 20px; }
     .mt-fieldbeat .fld-set { font-size: clamp(20px, 6vw, 30px); }
@@ -797,7 +949,7 @@
   padding: clamp(40px, 5.5vw, 76px) 24px clamp(22px, 2.6vw, 34px);
   border-bottom: 1px solid rgba(255,255,255,0.15); }
 .fx-shelf .sh-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.5; }
+  letter-spacing: var(--lbl-track); opacity: 0.5; }
 
 .fx-shelf .sh-rail { display: flex; gap: 0; overflow-x: auto; overflow-y: hidden;
   scrollbar-width: none; cursor: grab; }
@@ -851,8 +1003,7 @@
     transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1) 0.3s; }
 .fx-shelf .sh-cat { writing-mode: vertical-rl; white-space: nowrap;
   font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track);
-  text-transform: uppercase; opacity: 0; padding-bottom: 2px; }
+  letter-spacing: var(--lbl-track); opacity: 0; padding-bottom: 2px; }
 .fx-shelf .sh-on .sh-cat { opacity: 0.45; transition: opacity 0.5s ease 0.65s; }
 
 /* Not blended: difference would invert the photograph itself. */
@@ -894,8 +1045,7 @@
 .fx-shelf .sh-foot { display: flex; justify-content: space-between; align-items: baseline;
   padding: 16px 24px 26px; border-top: 1px solid rgba(255,255,255,0.15);
   font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track);
-  text-transform: uppercase; }
+  letter-spacing: var(--lbl-track); }
 .fx-shelf .sh-foot .sh-newsline { opacity: 0.5; }
 .fx-shelf .sh-foot a { color: var(--paper); text-decoration: none; }
 .fx-shelf .sh-foot a:hover { text-decoration: underline; }
@@ -919,7 +1069,7 @@
 .fx-feed .fd-lede { font-size: clamp(30px, 4.4vw, 62px); line-height: 1;
   letter-spacing: -0.03em; font-weight: 700; }
 .fx-feed .fd-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.45; }
+  letter-spacing: var(--lbl-track); opacity: 0.45; }
 
 .fx-feed .fd-cols { display: flex; align-items: flex-start;
   gap: clamp(16px, 2.2vw, 40px); }
@@ -946,8 +1096,7 @@
 /* The caption stays out of the composition until asked for. */
 .fx-feed .fd-cap { position: absolute; left: 0; top: calc(100% + 7px);
   font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase;
-  white-space: nowrap; opacity: 0; transition: opacity 0.28s ease; }
+  letter-spacing: var(--lbl-track);  white-space: nowrap; opacity: 0; transition: opacity 0.28s ease; }
 .fx-feed .fd-cap i { font-style: normal; opacity: 0.45; }
 @media (hover: hover) {
   .fx-feed .fd-item:hover .fd-cap,
@@ -962,7 +1111,7 @@
   margin-top: clamp(60px, 9vw, 130px);
   padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.14);
   font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase; }
+  letter-spacing: var(--lbl-track); }
 .fx-feed .fd-foot a { color: var(--ink); text-decoration: none; }
 .fx-feed .fd-foot a:hover { text-decoration: underline; }
 .fx-feed .fd-newsline { opacity: 0.45; }
@@ -997,7 +1146,7 @@
 .fx-index .ix-lede { font-size: clamp(30px, 4.4vw, 62px); line-height: 1;
   letter-spacing: -0.03em; font-weight: 700; }
 .fx-index .ix-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase; opacity: 0.45; }
+  letter-spacing: var(--lbl-track); opacity: 0.45; }
 
 .fx-index .ix-cols { display: grid; grid-template-columns: 1fr 1fr;
   column-gap: clamp(44px, 6vw, 120px); align-items: start; }
@@ -1021,8 +1170,7 @@
 
 .fx-index .ix-blk { /* margin-top comes from the placement pass */ }
 .fx-index .ix-blk .t { display: block; font-size: var(--lbl);
-  font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
-  text-transform: uppercase; opacity: 0.55; margin-bottom: 9px; }
+  font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); opacity: 0.55; margin-bottom: 9px; }
 .fx-index .ix-blk .s { font-size: var(--note); line-height: 1.6;
   color: rgba(0,0,0,0.72); max-width: 24em; }
 
@@ -1057,7 +1205,7 @@
   margin-top: clamp(70px, 10vw, 150px);
   padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.14);
   font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); text-transform: uppercase; }
+  letter-spacing: var(--lbl-track); }
 .fx-index .ix-foot a { color: var(--ink); text-decoration: none; }
 .fx-index .ix-foot a:hover { text-decoration: underline; }
 .fx-index .ix-newsline { opacity: 0.45; }
@@ -1111,16 +1259,15 @@
     :root { --lbl: 9px; }   /* one dial shrinks every label on a phone */
     .screen { padding: 30px 20px; }
 
-    /* nav: everything shrinks and the row scrolls sideways if it must,
-       rather than wrapping the wordmark onto three lines */
-    /* Tuned to fit a 390pt phone without scrolling — a nav you have to
-       drag sideways to see the last item reads as a bug, not an affordance.
-       overflow-x stays as the safety net for anything narrower. */
-    #nav { padding: 0 16px; gap: 9px; font-size: 7.5px; letter-spacing: 0.08em;
+    /* 7.5px here was the price of fitting FIVE links plus the wordmark on a
+       390pt phone. At three there is room to spare, so the nav can be read
+       at a normal size again. overflow-x stays as the safety net for
+       anything narrower — a nav you must drag sideways reads as a bug. */
+    #nav { padding: 0 16px; gap: 10px; --nav-size: 11px; letter-spacing: 0.02em;
       overflow-x: auto; scrollbar-width: none; }
     #nav::-webkit-scrollbar { display: none; }
     #nav .mark { white-space: nowrap; }
-    #nav .links { gap: 8px; white-space: nowrap; }
+    #nav .links { gap: 13px; white-space: nowrap; }
     #nav .meta { display: none; }
     /* Gutter halves here, so the pill's inset follows it. A smaller overhang
        too — 18px reads as generous at 40px in, and as sloppy at 16px. */
@@ -1143,7 +1290,7 @@
 
     /* headlines and their trailing columns come out of absolute flow */
     .brief h2 { margin-top: 6vh; font-size: clamp(34px, 10.4vw, 74px); max-width: none; }
-    .brief h2 .out { margin-left: 0.5em; }
+    .brief h2 .out { margin-left: 0; }
     /* One track on a phone: the headline and the column stack rather than
        sitting beside each other. They must go back to SEPARATE rows — sharing
        row 2 is what lets them overlap for the pin, and in a single column
@@ -1153,7 +1300,7 @@
     .brief h2 { grid-column: 1; grid-row: 2; position: static; }
     .brief .col { grid-column: 1; grid-row: 3;
       margin-top: 26px !important; padding-bottom: 0; }
-    #hHead .ind { margin-left: 0.5em; }
+    #hHead .ind { margin-left: 0; }
 
     .cols { margin-top: 34px; }
     .plates { grid-template-columns: 1fr; gap: 10px; padding: 30px 20px; }
@@ -1211,10 +1358,8 @@
   <div id="navBurn" aria-hidden="true"></div>
   <a href="#" class="mark">Reckon House Staples</a>
   <div class="links">
-    <a href="#">House</a>
-    <a href="#" class="on">Digital</a>
-    <a href="#">Creative</a>
-    <a href="#">Interiors</a>
+    <a href="#" class="on">Work</a>
+    <a href="#">Info</a>
     <a href="#">Staples</a>
   </div>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
@@ -1240,6 +1385,9 @@
     <p class="cover-statement">&rsquo;80s mall glam meets high fashion &mdash; the double-exposure glamour shot reimagined with mesh color fields instead of airbrushed backdrops and couture instead of puff sleeves.</p>
     <span class="idx mono cover-idx">02 / Statement</span>
   </div>
+  <!-- The plate's climb room. Sits after the sticky screen so the cover
+       stays pinned through it while the storefront crosses. -->
+  <div class="risetail" aria-hidden="true"></div>
 </section>
 
 <!-- ══ 02b · HERO PLATE — the storefront installation ══ -->
@@ -1281,19 +1429,16 @@
       <span class="mono cols-label">04 / Method</span>
       <div class="grid">
     <div class="c">
-      <div class="n">01</div>
       <h3>The Reference.</h3>
       <p>Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera &mdash; the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.</p>
       <p>The brief was to take that energy seriously &mdash; the confidence and the color, the full unironic glamour &mdash; and rebuild it with contemporary craft. A translation, not a parody.</p>
     </div>
     <div class="c">
-      <div class="n">02</div>
       <h3>The Technique.</h3>
       <p>Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.</p>
       <p>Mesh color fields replaced the airbrushed backdrops &mdash; mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.</p>
     </div>
     <div class="c">
-      <div class="n">03</div>
       <h3>The System.</h3>
       <p>Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads &mdash; each combination tells a slightly different story from the same visual DNA.</p>
       <p>The typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.</p>
@@ -1308,11 +1453,11 @@
 <div class="plates">
   <figure>
     <span class="frame"><img class="bw" src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot dress, orange backdrop"></span>
-    <figcaption><span class="mono">Plate 02 — Polka-dot dress</span><span class="mono">Spring 2024</span></figcaption>
+    <figcaption><span class="mono">Polka-dot dress</span><span class="mono">Spring 2024</span></figcaption>
   </figure>
   <figure>
     <span class="frame"><img class="bw" src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-cream-polka-dot-ruffle-dress-orange-background-editorial-portrait.jpg" alt="Robert Rodriguez — polka dot ruffle dress, orange backdrop"></span>
-    <figcaption><span class="mono">Plate 03 — Ruffle dress, same session</span><span class="mono">&nbsp;</span></figcaption>
+    <figcaption><span class="mono">Ruffle dress, same session</span><span class="mono">&nbsp;</span></figcaption>
   </figure>
 </div>
 
@@ -1320,7 +1465,10 @@
 <section class="hwrap" id="hwrap">
  <div class="screen brief h-sticky">
   <span class="mono">04b / Campaign &amp; Deployment</span>
-  <h2 id="hHead"><span class="ln">Four source</span><span class="ln">frames</span><span class="ln ind">feeding every</span><span class="ln ind">channel.</span></h2>
+  <!-- Plain text: the .ln lines this animation needs are cut from the
+       RENDERED lines at runtime, so the breaks follow the width instead of
+       being frozen at four. -->
+  <h2 id="hHead">Four source frames feeding every channel.</h2>
   <div class="col" id="hCol">
     <p>The compositing system meant every deliverable felt like its own photograph. Social crops pulled from the layered files differently than email headers, retail signage used the color fields at full saturation, and editorial spreads let the double-exposure breathe across wide formats.</p>
     <p>The campaign ran across Neiman Marcus social channels, email marketing, and in-store retail displays. The storefront window installation used the composites at large format. The mesh color fields held up at scale because they were mathematically generated, not resolution-dependent. A three-foot print has the same color smoothness as a phone screen.</p>
@@ -1329,16 +1477,18 @@
 </section>
 
 <!-- ══ 06c · COMPOSITE PAIR ══ -->
-<div class="plates">
+<!-- Pin host: .plates has no sticky of its own, and needs one so the
+     plate below can climb across it rather than push it. -->
+<div class="pinwrap"><div class="pinner"><div class="plates">
   <figure>
     <span class="frame"><img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg" alt="Robert Rodriguez — yellow blazer studio portrait"></span>
-    <figcaption><span class="mono">Plate 04 — Yellow blazer, studio</span><span class="mono">Spring 2024</span></figcaption>
+    <figcaption><span class="mono">Yellow blazer, studio</span><span class="mono">Spring 2024</span></figcaption>
   </figure>
   <figure>
     <span class="frame"><img src="/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-lime-blazer-white-cropped-pants-nude-heels-studio-lookbook-portrait.jpg" alt="Robert Rodriguez — yellow blazer lookbook portrait"></span>
-    <figcaption><span class="mono">Plate 05 — Lookbook</span><span class="mono">&nbsp;</span></figcaption>
+    <figcaption><span class="mono">Lookbook</span><span class="mono">&nbsp;</span></figcaption>
   </figure>
-</div>
+</div></div><div class="pinspacer" aria-hidden="true"></div></div>
 
 <!-- ══ 06d · GRADIENT OVERLAY PLATE ══ -->
 <section class="screen plate-full">
@@ -1408,6 +1558,10 @@
       <p class="tiny">Logo on mesh field<br>Hairline caps over Book lowercase<br>Depth through overlap</p>
     </div>
   </div>
+  <!-- Ruler for the gallery plate's climb: the zoom driver adds this
+       to its computed wrap height so the mark finishes before the plate
+       starts. -->
+  <div class="risetail" aria-hidden="true"></div>
 </section>
 
 
@@ -1423,7 +1577,7 @@
   <div class="col">
     <p>Four studio photographs became a complete campaign system through double-exposure compositing and mesh color-field backgrounds. The technique turned a single shoot day into a visual language that scaled across social, email, retail, and editorial, with each format pulling differently from the same layered source files.</p>
     <p>Social, email, retail. One model, one concept, one day of shooting, every deliverable tracing back to four original frames.</p>
-    <div class="lists tiny">
+    <div class="lists">
       <div><div class="h">Services</div>Art Direction<br>Photo Compositing<br>Typography Design<br>Campaign Design</div>
       <div><div class="h">Stack</div>Adobe Photoshop<br>Adobe Illustrator<br>Capture One</div>
       <div><div class="h">Client</div>Neiman Marcus</div>
@@ -1496,18 +1650,18 @@
            picks one; the losers are removed before any driver runs. -->
       <div class="mt-ledger" data-credits="ledger">
         <ol>
-          <li><span class="lg-num">01</span><span class="lg-name">Crate &amp; Barrel</span><img class="lg-mark" src="/brands/crate-barrel.svg" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">02</span><span class="lg-name">Nordstrom</span><img class="lg-mark" src="/brands/nordstrom.svg" alt="" aria-hidden="true" loading="lazy" style="height:12px"></li>
-          <li><span class="lg-num">03</span><span class="lg-name">Ivy Park by Beyoncé</span><img class="lg-mark" src="/brands/ivy-park.svg" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">04</span><span class="lg-name">Neiman Marcus</span><img class="lg-mark" src="/brands/neiman-marcus.svg" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">05</span><span class="lg-name">Rejuvenation</span><img class="lg-mark" src="/brands/rejuvenation.png" alt="" aria-hidden="true" loading="lazy" style="height:13px"></li>
-          <li><span class="lg-num">06</span><span class="lg-name">Lostine Home</span><img class="lg-mark" src="/brands/lostine.avif" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">07</span><span class="lg-name">Visual Comfort</span><img class="lg-mark" src="/brands/visual-comfort.webp" alt="" aria-hidden="true" loading="lazy" style="height:11px"></li>
-          <li><span class="lg-num">08</span><span class="lg-name">Floor &amp; Decor</span><img class="lg-mark" src="/brands/floor-decor.svg" alt="" aria-hidden="true" loading="lazy" style="height:14px"></li>
-          <li><span class="lg-num">09</span><span class="lg-name">Kingston Brass</span><img class="lg-mark" src="/brands/kingston-brass.webp" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">10</span><span class="lg-name">Design Within Reach</span><img class="lg-mark asis" src="/brands/dwr.jpg" alt="" aria-hidden="true" loading="lazy" style="height:17px"></li>
-          <li><span class="lg-num">11</span><span class="lg-name">Vivir Homes</span><img class="lg-mark" src="/brands/vivir-homes.webp" alt="" aria-hidden="true" loading="lazy"></li>
-          <li><span class="lg-num">12</span><span class="lg-name">Haven</span></li>
+          <li><span class="lg-name">Crate &amp; Barrel</span><img class="lg-mark" src="/brands/crate-barrel.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Nordstrom</span><img class="lg-mark" src="/brands/nordstrom.svg" alt="" aria-hidden="true" loading="lazy" style="height:12px"></li>
+          <li><span class="lg-name">Ivy Park by Beyoncé</span><img class="lg-mark" src="/brands/ivy-park.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Neiman Marcus</span><img class="lg-mark" src="/brands/neiman-marcus.svg" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Rejuvenation</span><img class="lg-mark" src="/brands/rejuvenation.png" alt="" aria-hidden="true" loading="lazy" style="height:13px"></li>
+          <li><span class="lg-name">Lostine Home</span><img class="lg-mark" src="/brands/lostine.avif" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Visual Comfort</span><img class="lg-mark" src="/brands/visual-comfort.webp" alt="" aria-hidden="true" loading="lazy" style="height:11px"></li>
+          <li><span class="lg-name">Floor &amp; Decor</span><img class="lg-mark" src="/brands/floor-decor.svg" alt="" aria-hidden="true" loading="lazy" style="height:14px"></li>
+          <li><span class="lg-name">Kingston Brass</span><img class="lg-mark" src="/brands/kingston-brass.webp" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Design Within Reach</span><img class="lg-mark asis" src="/brands/dwr.jpg" alt="" aria-hidden="true" loading="lazy" style="height:17px"></li>
+          <li><span class="lg-name">Vivir Homes</span><img class="lg-mark" src="/brands/vivir-homes.webp" alt="" aria-hidden="true" loading="lazy"></li>
+          <li><span class="lg-name">Haven</span></li>
         </ol>
       </div>
       <div class="mt-spec" data-credits="table">
@@ -2046,8 +2200,138 @@
 })();
 </script>
 
+
 <script src="/lab/archer-lockup.js"></script>
+<script>
+/* ── the two-up holds at the fold ───────────────────────────────────
+   The pair scrolls all the way in, then holds once its BOTTOM edge meets
+   the bottom of the screen — which is the point the reader has actually
+   finished looking at it — while the plate climbs across. It releases
+   after the spacer is spent.
+
+   Deliberately a transform rather than position:sticky. The element is
+   routinely taller than the viewport, and sticky refused to engage here
+   from either edge despite correct offsets and ample room in the
+   containing block. This is measured every frame, so height never
+   matters. The spacer still provides the scroll length. */
+(() => {
+  const wrap = document.querySelector(".pinwrap");
+  if (!wrap) return;
+  const pin = wrap.querySelector(".pinner");
+  const spacer = wrap.querySelector(".pinspacer");
+  if (!pin || !spacer) return;
+
+  let held = 0;
+  (function tick() {
+    if (innerWidth <= 760) {
+      if (held) { held = 0; pin.style.transform = ""; }
+      return requestAnimationFrame(tick);
+    }
+    // undo the current hold to read where the element actually sits in flow
+    const natural = pin.getBoundingClientRect().bottom - held;
+    const want = Math.max(0, Math.min(spacer.offsetHeight, innerHeight - natural));
+    if (want !== held) {
+      held = want;
+      pin.style.transform = held ? "translateY(" + held.toFixed(1) + "px)" : "";
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+
 <script src="/lab/vendor/flubber.min.js"></script>
+
+<script>
+/* ── section marks ──────────────────────────────────────────────────
+   Every "NN / Name" label becomes a disc carrying the number, with the
+   name beside it. The disc wipes itself round when the label arrives.
+
+   All of the motion is CSS — this only reads the label, rebuilds it, and
+   flips one class when it comes into view. An earlier pass morphed the
+   mark between polygons whose side count encoded the section number; it
+   worked, but it asked the reader to count corners to learn something the
+   numeral already said. */
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+
+  const labels = [...document.querySelectorAll(".mono, .slabel")]
+    .filter((e) => /^\s*\d+[a-z]?\s*\//.test(e.textContent) && !e.closest("figcaption"));
+  if (!labels.length) return;
+
+  const built = [];
+  labels.forEach((el) => {
+    const m = el.textContent.trim().match(/^(\d+)([a-z]?)\s*\/\s*(.+)$/);
+    if (!m) return;
+    el.textContent = "";
+    el.classList.add("lbl");
+
+    const mark = document.createElement("span");
+    mark.className = "lbl-mark";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 26 26");
+    const c = document.createElementNS(NS, "circle");
+    // r is half the visible radius; the stroke covers the rest
+    c.setAttribute("cx", "13"); c.setAttribute("cy", "13"); c.setAttribute("r", "6.5");
+    svg.appendChild(c);
+    const n = document.createElement("i");
+    n.textContent = m[1].replace(/^0/, "") + m[2];   // "04b" -> "4b", to fit
+    mark.append(svg, n);
+
+    const name = document.createElement("span");
+    name.className = "lbl-name";
+    name.textContent = m[3];
+    el.append(mark, name);
+    built.push(el);
+  });
+  if (!built.length) return;
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    built.forEach((el) => el.classList.add("on"));
+    return;
+  }
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("on");
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.9 });
+  built.forEach((el) => io.observe(el));
+})();
+</script>
+
+<script>
+/* ── the burn numerals answer to their section ──────────────────────
+   They read 01 and 07 in the markup, which belonged to no set — there is
+   no plate 07, and nothing on the page counts to seven. Rather than
+   hard-coding a better pair, each numeral now takes the number of the
+   section marker that most recently preceded it in the document. That
+   makes it reference something real, and it cannot go stale: renumber a
+   section and the numeral follows on the next load.
+
+   Runs before the burn masks are cut, so the mask copies the new digits
+   rather than the markup's. */
+(() => {
+  const nums = [...document.querySelectorAll(".num")];
+  if (!nums.length) return;
+  const marks = [...document.querySelectorAll(".lbl")];
+  if (!marks.length) return;
+
+  nums.forEach((el) => {
+    // the last section marker that appears before this numeral
+    let owner = null;
+    for (const m of marks) {
+      if (m.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) owner = m;
+      else break;
+    }
+    if (!owner) return;
+    const badge = owner.querySelector("i");
+    if (!badge) return;
+    const n = badge.textContent.trim();
+    el.textContent = /^\d+$/.test(n) ? n.padStart(2, "0") : n;
+  });
+})();
+</script>
 <script>
 /* ── the system index · logotype ───────────────────────────────────
    The actual mark, not a specimen. ROBERT's caps interlock — overlapped
@@ -2718,15 +3002,41 @@
   if (!wrap || !head) return;
 
   const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
-  const lines = [...head.querySelectorAll(".ln")];
+
+  /* The four lines used to be hand-cut in the markup, from when this was
+     uppercase and the stagger pushed alternate lines right. Flush left in
+     sentence case that pattern stranded "frames" alone and filled only 65%
+     of the container. These are cut from the RENDERED lines instead: set
+     the words inline, read which ones share an offsetTop, then re-wrap each
+     group as a .ln block. The animation still gets its per-line elements,
+     and the breaks now answer to the width — including after a resize. */
+  const SRC = head.textContent.trim();
+  const buildLines = () => {
+    head.innerHTML = SRC.split(" ")
+      .map((w) => '<span class="w">' + w + "</span>").join(" ");
+    const groups = [];
+    let lastTop = null;
+    head.querySelectorAll(".w").forEach((w) => {
+      const t = Math.round(w.offsetTop);
+      if (t !== lastTop) { groups.push([]); lastTop = t; }
+      groups[groups.length - 1].push(w.textContent);
+    });
+    head.innerHTML = groups
+      .map((g) => '<span class="ln">' + g.join(" ") + "</span>").join("");
+    return [...head.querySelectorAll(".ln")];
+  };
+  let lines = buildLines();
+  addEventListener("resize", () => { lines = buildLines(); });
+
   const paras = [...col.querySelectorAll("p")];
   paras.forEach((el) => { el.style.clipPath = "inset(0 100% 0 0)"; });
 
   // Each line starts a little after the one above it. The span is shortened
   // by the total stagger so the LAST line still finishes exactly at p = 1 —
   // otherwise the tail would still be mid-flight when the pin releases.
+  // Recomputed per frame: the line count is no longer fixed at four.
   const STAGGER = 0.13;
-  const SPAN = 1 - STAGGER * (lines.length - 1);
+  const span = () => 1 - STAGGER * (lines.length - 1);
 
   // Ease OUT only, and gently. Easing the start would make a line crawl while
   // the wheel is already turning, which breaks the sense that scroll is
@@ -2741,7 +3051,7 @@
     const p = clamp01(-r.top / travel);
 
     lines.forEach((el, i) => {
-      const lp = ease(clamp01((p - i * STAGGER) / SPAN));
+      const lp = ease(clamp01((p - i * STAGGER) / span()));
       el.style.transform = `translateX(${((1 - lp) * innerWidth).toFixed(1)}px)`;
     });
 
@@ -2807,7 +3117,14 @@
 
     z.zoomPx = innerHeight * 1.1;   // scroll spent growing the plate
     z.panPx = z.spill;              // 1:1 — one pixel of scroll, one of image
-    z.wrap.style.height = (innerHeight + z.zoomPx + z.panPx) + "px";
+    // A wrap that a plate climbs over needs room for that climb ON TOP of
+    // its own sequence. Without it the plate is pulled up by --rise and so
+    // enters the fold --rise BEFORE the mark has finished growing — the same
+    // collision the cover had. zp and pp key off zoomPx/panPx, not this
+    // height, so the zoom keeps its tuning exactly.
+    const tailEl = z.wrap.querySelector(".risetail");
+    z.tail = tailEl ? tailEl.offsetHeight : 0;
+    z.wrap.style.height = (innerHeight + z.zoomPx + z.panPx + z.tail) + "px";
   }
 
   const smooth = (k) => k * k * (3 - 2 * k);   // gentle at both ends
@@ -3077,6 +3394,10 @@
 
   const clamp01 = (k) => Math.min(Math.max(k, 0), 1);
   const ease = (k) => k * k * (3 - 2 * k);
+  // The tail at the end of the wrap is the plate's climb room, not this
+  // sequence's. Excluding it holds the headline and copy at the travel they
+  // were tuned against, whatever --rise is set to.
+  const tail = wrap.querySelector(".risetail");
 
   // The top headline line starts leaving at (n-1) * 0.1 = 0.30 with four
   // lines. Deriving it would couple the two loops; naming it keeps them
@@ -3118,6 +3439,29 @@
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let lines = [], revealed = false;
 
+  /* How far a line must travel to be gone.
+     It slides DOWN and .rln clips it, so it has to clear the mask's bottom
+     edge — and the mask is taller than the line by its descender padding.
+     A flat 115% was tuned when that padding was 0.12em, where the mask ran
+     196.8px against a 198px travel and cleared by one pixel. Widening the
+     padding to 0.22em for sentence-case descenders took the mask to 217.3px,
+     and the travel then stopped 2.3px short: the tops of the tallest glyphs
+     stayed on screen as thin bars after the curtain had "finished".
+     Measuring the ratio instead of hard-coding it means the next change to
+     either the padding or the line-height cannot reopen this. */
+  const travel = new WeakMap();
+  const exitTravel = (inner) => {
+    let v = travel.get(inner);
+    if (v) return v;
+    const innerH = inner.offsetHeight;
+    const maskH = inner.parentElement ? inner.parentElement.offsetHeight : innerH;
+    if (!innerH) return 115;
+    v = (maskH / innerH) * 100 + 8;      // clear the mask, plus a margin
+    travel.set(inner, v);
+    return v;
+  };
+  addEventListener("resize", () => { lines.forEach((l) => travel.delete(l)); });
+
   (function tick() {
     // The reveal driver splits the headline asynchronously; pick the lines up
     // once they exist.
@@ -3147,7 +3491,8 @@
     else if (revealed && lines.length) h1.classList.add("go");
 
     const r = wrap.getBoundingClientRect();
-    const p = clamp01(-r.top / Math.max(r.height - innerHeight, 1));
+    const seq = r.height - innerHeight - (tail ? tail.offsetHeight : 0);
+    const p = clamp01(-r.top / Math.max(seq, 1));
 
     if (!reduce) {
       // Each line gets its own slice of the scroll, last line first.
@@ -3155,7 +3500,7 @@
       for (let i = 0; i < lines.length; i++) {
         const order = n - 1 - i;                       // bottom line leads
         const k = ease(clamp01((p - order * 0.1) / 0.55));
-        lines[i].style.transform = "translateY(" + (k * 115).toFixed(1) + "%)";
+        lines[i].style.transform = "translateY(" + (k * exitTravel(lines[i])).toFixed(1) + "%)";
       }
     }
 
