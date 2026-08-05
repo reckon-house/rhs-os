@@ -131,27 +131,36 @@
     width: 26px; height: 26px; display: grid; place-items: center;
     color: var(--ink); }
   .lbl-mark svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* No transition: the driver writes stroke-dashoffset every frame from the
+     label's position on screen, so the disc is scrubbed by the scroll rather
+     than played once on arrival. A transition here would lag the wheel. */
   .lbl-mark circle { fill: none; stroke: currentColor; stroke-width: 13;
     transform: rotate(-90deg); transform-origin: 13px 13px;
-    stroke-dasharray: 41 41; stroke-dashoffset: 41;
-    transition: stroke-dashoffset 0.72s cubic-bezier(0.65, 0, 0.35, 1); }
-  .lbl.on .lbl-mark circle { stroke-dashoffset: 0; }
+    stroke-dasharray: 41 41; stroke-dashoffset: 41; }
   .lbl-mark i { position: relative; font-style: normal;
     font-size: 8.5px; font-weight: 600; letter-spacing: 0;
-    color: var(--paper); line-height: 1;
-    opacity: 0; transition: opacity 0.3s ease 0.34s; }
-  .lbl.on .lbl-mark i { opacity: 1; }
-  /* On the ink beats the mark inverts: disc in paper, numeral in ink. */
+    /* colour is written per frame by the driver: ink while the disc is
+       empty (the numeral is sitting on the page), paper once the disc is
+       underneath it */
+    color: var(--ink); line-height: 1; }
+  /* On the ink beats the disc inverts; the numeral's own inversion is
+     handled by the driver, which knows which ground it is on. */
   .fx-mast .lbl-mark { color: rgba(255,255,255,0.92); }
-  .fx-mast .lbl-mark i { color: var(--ink); }
-  .cover-idx .lbl-mark { color: currentColor; }
+  /* Marks on a blended label take the label's own colour rather than ink.
+     The statement label is knocked out with mix-blend-mode: difference, and
+     a black disc inside that renders WHITE against paper — it was sweeping
+     correctly the whole time and was simply invisible. White here differences
+     to black on paper and to white on ink, which is the point of the
+     knockout. */
+  .cover-idx .lbl-mark,
+  .quote .idx .lbl-mark { color: currentColor; }
   @media (max-width: 760px) {
     .lbl-mark { width: 22px; height: 22px; }
     .lbl-mark i { font-size: 7.5px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .lbl-mark circle { transition: none; stroke-dashoffset: 0; }
-    .lbl-mark i { transition: none; opacity: 1; }
+    .lbl-mark circle { stroke-dashoffset: 0 !important; }
+    .lbl-mark i { opacity: 1 !important; }
   }
 
   .slabel { position: absolute; top: 76px; left: 40px; }
@@ -237,7 +246,10 @@
      rendered lines and move each line on its own clock. Inline-block is what
      makes a word transformable without disturbing its neighbours. */
   .cover-statement .cs-w { display: inline-block; will-change: transform; }
-  .cover-idx { position: absolute; bottom: 48px; right: 40px; opacity: 0; }
+  /* opacity: 0 here waited on the cover driver to fade it in. The driver no
+     longer writes it — the mark's own sweep is the arrival now — so without
+     this the label stayed invisible while its disc animated underneath. */
+  .cover-idx { position: absolute; bottom: 48px; right: 40px; }
   /* The headline's lines each sit in their own overflow-hidden mask already
      (.rln, from the reveal). Sliding the inner wrapper back down inside that
      mask is the exact reverse of the entrance — no second mechanism. */
@@ -521,8 +533,12 @@
     /* A beat of held, fully-visible grid BEFORE the plate starts climbing.
        Without it the plate's top sat exactly on the grid's bottom edge, so
        it began entering the fold at the same moment the second image
-       finished arriving — the reader never saw the pair at rest. */
-    --plate-hold: 42vh; }
+       finished arriving — the reader never saw the pair at rest.
+       Kept SHORT. Nothing moves during it: the pair is held and the plate
+       is still below the fold, so every pixel of it is dead scroll. At
+       42vh that was a full trackpad swipe of stall. This is a beat, not a
+       pause. */
+    --plate-hold: 13vh; }
   /* No ground of its own. At rest the image is scale(0.95) with a 24px
      radius, so the section box is bigger than the drawn image on all four
      sides — an opaque background turned that difference into a white frame
@@ -757,7 +773,6 @@
     letter-spacing: -0.03em; font-weight: 700; text-transform: none;
     max-width: min(11em, 50vw); margin-top: clamp(24px, 5vh, 70px); }
   .fx-mast .mt-beat h2 .l2 { margin-left: 0; }
-  .fx-mast .mt-beat h2 .lt { font-weight: 300; }
 
   /* The beats are sized by JS so that a beat still fills the screen at the
      moment its column finishes — see the placement driver. Nothing here
@@ -772,7 +787,6 @@
   .fx-mast .mt-beat { padding-bottom: clamp(40px, 10vh, 130px); }
   .fx-mast .mt-say { font-size: clamp(30px, 4.4vw, 62px); line-height: 1.02;
     letter-spacing: -0.03em; font-weight: 700; max-width: 11em; margin: 0 0 30px; }
-  .fx-mast .mt-say .lt { font-weight: 300; }
   .fx-mast .mt-form { display: grid; gap: 16px; max-width: 30em; }
   .fx-mast .mt-field { display: grid; gap: 6px; }
   .fx-mast .mt-field label { font-size: var(--note);
@@ -1176,6 +1190,29 @@
 
 .fx-index .ix-it { position: relative; display: block;
   width: var(--w, 100%); }
+/* Hover opens the frame and its neighbours move aside. All of it is
+   transforms: animating WIDTH did the same thing visually but reflowed the
+   whole column — and everything below it — on every frame, which is what
+   made it stutter. Transforms never touch layout, so the compositor carries
+   it.
+   transform-origin is the right edge, so the frame opens leftward and keeps
+   the hard right rule the whole index is aligned to, and opens equally above
+   and below its own centre — which is exactly the ±half the driver shifts
+   the neighbours by. The radius is divided by the scale so the corner does
+   not fatten as the frame grows. */
+.fx-index { --ix-grow: 1.5; }
+.fx-index .ix-it { transform-origin: right center; }
+@media (hover: hover) and (min-width: 761px) {
+  /* the frame's own transition is declared once, below, with the arrival */
+  .fx-index .ix-it img { transition: border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+  .fx-index .ix-it:hover { transform: scale(var(--ix-grow)); z-index: 2; }
+  /* Squares off as it opens — the same move the hero plates make when they
+     grow to fill the mat. The rounded frame reads as an object sitting on
+     the page; losing the corner is what turns it into the picture itself.
+     Was dividing --r by the scale to hold the radius visually constant,
+     which kept it an object the whole way. */
+  .fx-index .ix-it:hover img { border-radius: 0; }
+}
 .fx-index .ix-it img { display: block; width: 100%; height: auto;
   aspect-ratio: var(--ar, 1); object-fit: cover;
   border-radius: var(--r);
@@ -1183,10 +1220,10 @@
 .fx-index .ix-num { position: absolute; right: -34px; bottom: 1px;
   font-size: var(--lbl); font-weight: var(--lbl-weight);
   letter-spacing: var(--lbl-track); opacity: 0.45; }
-@media (hover: hover) {
-  .fx-index .ix-it img { transition: opacity 0.3s ease; }
-  .fx-index .ix-it:hover img { opacity: 0.84; }
-}
+/* No dim on hover. It predates the grow — back when hover did nothing but
+   highlight, a fade was the whole signal; now the frame opens and the stack
+   parts around it, and knocking the picture back to 84% while it is being
+   presented works against that. */
 .fx-index .ix-it:focus-visible { outline: 1px solid var(--ink);
   outline-offset: 5px; }
 
@@ -1197,8 +1234,23 @@
    travel — they have room around them. */
 .fx-index .ix-it { opacity: 0; }
 .fx-index .ix-blk { opacity: 0; transform: translateY(16px); }
-.fx-index .ix-on { opacity: 1 !important; transform: none !important;
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.55, 0.2, 1); }
+/* Only the text blocks travel on arrival, so only they reset a transform —
+   and NOT with !important. That blanket reset outlived the frames' own
+   travel and quietly won against everything afterwards, inline styles
+   included: a frame that had already arrived could not be scaled on hover,
+   and its neighbours could not be shifted. Frames that had not yet arrived
+   still moved, which is what made the effect look half-broken rather than
+   dead. */
+.fx-index .ix-on { opacity: 1; }
+/* ONE transition for the frame, covering both the arrival fade and the
+   hover grow. They were declared separately and the later one silently
+   replaced the earlier — transition is a shorthand, not a list that
+   accumulates — so the scale had no transition at all and snapped. */
+.fx-index .ix-it { transition: opacity 0.8s ease,
+  transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+.fx-index .ix-blk { transition: opacity 0.8s ease,
+  transform 0.8s cubic-bezier(0.2, 0.55, 0.2, 1); }
+.fx-index .ix-blk.ix-on { transform: none; }
 
 .fx-index .ix-foot { display: flex; justify-content: space-between;
   align-items: baseline; gap: 24px; flex-wrap: wrap;
@@ -1594,7 +1646,7 @@
        `pin` opt-in, on ink instead of paper. -->
   <section class="screen brief pin mt-beat">
     <span class="mono">07 / Contact</span>
-    <h2><span class="rln"><span class="rlnI">Start something</span></span><span class="rln l2"><span class="rlnI"><span class="lt">worth</span> making.</span></span></h2>
+    <h2><span class="rln"><span class="rlnI">Start something</span></span><span class="rln l2"><span class="rlnI">worth making.</span></span></h2>
     <div class="col">
       <div class="mt-cols">
       <div class="mt-col">
@@ -2020,8 +2072,13 @@
     // Discrete tiers, never within MINSTEP of the last: heroes are almost
     // all landscape at 1.44–1.70, so scale is the only variety left and a
     // uniform random would pile it all up in the middle.
-    const TIERS = [0.38, 0.50, 0.62, 0.74, 0.86, 1.00];
-    const MINSTEP = 0.20;
+    // Ceiling is 0.86, not 1.00: hover grows a frame in layout, and a frame
+    // already dealt the full track has nowhere to go — it simply did not
+    // react. The whole ladder is scaled by 0.86 rather than trimmed, so the
+    // 2.6x spread between smallest and largest survives intact and the
+    // biggest frame reaches the full track only on hover.
+    const TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+    const MINSTEP = 0.17;
     let prevW = -1;
     const dealW = () => {
       let w, guard = 0;
@@ -2103,6 +2160,55 @@
   addEventListener("resize", placeText);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeText);
   setTimeout(placeText, 400);
+})();
+</script>
+
+<script>
+/* ── index hover: the stack makes room ──────────────────────────────
+   The frame scales from its right edge, so it opens leftward and equally
+   above and below its own centre. Each neighbour then slides by HALF the
+   growth — up if it sits above, down if below — which keeps the hovered
+   frame exactly where it was and lets the stack part around it.
+
+   Nothing here changes layout. An earlier pass grew the frame's WIDTH,
+   which reflowed the column and the whole page under it every frame and
+   read as a stutter. Transforms cost the compositor only.
+
+   The growth is computed from the resting height rather than measured
+   after the class lands, since the frame is mid-transition at that point
+   and would report its old size. */
+(() => {
+  const root = document.querySelector(".fx-index");
+  if (!root) return;
+  if (!matchMedia("(hover: hover)").matches) return;
+
+  const grow = () =>
+    parseFloat(getComputedStyle(root).getPropertyValue("--ix-grow")) || 1.5;
+
+  const wire = () => {
+    root.querySelectorAll(".ix-imgs").forEach((col) => {
+      const items = [...col.querySelectorAll(".ix-it")];
+      items.forEach((a, i) => {
+        if (a._hoverWired) return;
+        a._hoverWired = true;
+        a.addEventListener("pointerenter", () => {
+          if (innerWidth <= 760) return;
+          const shift = (a.offsetHeight * (grow() - 1)) / 2;
+          items.forEach((b, k) => {
+            if (k === i) return;
+            b.style.transform =
+              "translateY(" + (k < i ? -shift : shift).toFixed(1) + "px)";
+          });
+        });
+        a.addEventListener("pointerleave", () => {
+          items.forEach((b) => { if (b !== a) b.style.transform = ""; });
+        });
+      });
+    });
+  };
+  wire();
+  // the index rebuilds itself across the 761px breakpoint, so re-wire after
+  matchMedia("(min-width: 761px)").addEventListener("change", () => setTimeout(wire, 80));
 })();
 </script>
 
@@ -2244,16 +2350,21 @@
 <script>
 /* ── section marks ──────────────────────────────────────────────────
    Every "NN / Name" label becomes a disc carrying the number, with the
-   name beside it. The disc wipes itself round when the label arrives.
+   name beside it. The disc is SCRUBBED by the scroll rather than played
+   once: empty as the label crosses the bottom of the screen, full through
+   the middle, unwinding again as it leaves the top. Scroll back up and it
+   runs backwards for free.
 
-   All of the motion is CSS — this only reads the label, rebuilds it, and
-   flips one class when it comes into view. An earlier pass morphed the
-   mark between polygons whose side count encoded the section number; it
-   worked, but it asked the reader to count corners to learn something the
-   numeral already said. */
+   It holds at full across the middle third. A knife-edge peak at dead
+   centre reads as a glitch — the disc would be whole for a single frame.
+   Below that it eases rather than ramps, so the sweep accelerates away
+   from empty instead of crawling.
+
+   An earlier pass revealed it once on an IntersectionObserver at 0.9,
+   which fired late, never reversed, and bore no relation to where the
+   label actually was on screen. */
 (() => {
   const NS = "http://www.w3.org/2000/svg";
-
   const labels = [...document.querySelectorAll(".mono, .slabel")]
     .filter((e) => /^\s*\d+[a-z]?\s*\//.test(e.textContent) && !e.closest("figcaption"));
   if (!labels.length) return;
@@ -2270,7 +2381,8 @@
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 26 26");
     const c = document.createElementNS(NS, "circle");
-    // r is half the visible radius; the stroke covers the rest
+    // r is half the visible radius and the stroke covers the rest, so
+    // winding the dash offset wipes the whole disc round like a hand
     c.setAttribute("cx", "13"); c.setAttribute("cy", "13"); c.setAttribute("r", "6.5");
     svg.appendChild(c);
     const n = document.createElement("i");
@@ -2281,22 +2393,78 @@
     name.className = "lbl-name";
     name.textContent = m[3];
     el.append(mark, name);
-    built.push(el);
+    /* A label inside a sticky screen barely moves — it is pinned — so its
+       own position on screen cannot drive anything. Three of these are
+       (the cover, the crossing headline, the statement) and all three sat
+       frozen at whatever value they pinned at. For those, progress comes
+       from the WRAP the sticky travels through instead. */
+    let host = null;
+    for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) {
+      if (getComputedStyle(n).position === "sticky") { host = n.parentElement; break; }
+    }
+    /* Two reasons to run the numeral's ramp backwards: an ink beat, where
+       the disc is the light one; or a difference-blended label, where the
+       whole mark is inverted on the way to the screen, so the numeral has to
+       be authored as its own opposite in order to arrive correct. */
+    const blended = getComputedStyle(el).mixBlendMode === "difference";
+    built.push({ el: el, c: c, n: n, last: -999, wrap: host,
+                 dark: !!el.closest(".fx-mast") || blended });
   });
   if (!built.length) return;
 
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    built.forEach((el) => el.classList.add("on"));
+    built.forEach((b) => {
+      b.c.style.strokeDashoffset = "0";
+      b.n.style.color = b.dark ? "#000" : "#fff";
+    });
     return;
   }
-  const io = new IntersectionObserver((es) => {
-    es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add("on");
-      io.unobserve(e.target);
-    });
-  }, { threshold: 0.9 });
-  built.forEach((el) => io.observe(el));
+
+  const C = 41;              // the dash, a hair over the circumference
+  const P = 0.17;            // half-width of the plateau, as a share of screen
+  const clamp01 = (k) => (k < 0 ? 0 : k > 1 ? 1 : k);
+  const smooth = (k) => k * k * (3 - 2 * k);
+
+  /* The offset runs +C -> 0 -> -C and never back the way it came. Reversing
+     rewinds the sweep, which reads as a mistake being undone; carrying on in
+     the same direction empties the disc by completing a second revolution.
+     The dash pattern does both: at +C the gap sits under the path, at 0 the
+     dash covers it, and at -C the pattern has advanced far enough that the
+     gap is under it again. */
+  (function tick() {
+    const vh = innerHeight;
+    for (let i = 0; i < built.length; i++) {
+      const b = built[i];
+      let y;
+      if (b.wrap) {
+        // pinned: read the wrap's travel instead, and flip it so the two
+        // sources agree — a wrap runs 0 to 1 downward, a screen position 1 to 0
+        const wr = b.wrap.getBoundingClientRect();
+        y = 1 - clamp01(-wr.top / Math.max(1, wr.height - vh));
+      } else {
+        const r = b.el.getBoundingClientRect();
+        y = (r.top + r.height / 2) / vh;          // 1 at the bottom, 0 at top
+      }
+      let off = C, fill = 0;
+      if (y <= 1.1 && y >= -0.1) {
+        if (y > 0.5 + P) {
+          const k = smooth(clamp01((y - (0.5 + P)) / (0.5 - P)));
+          off = C * k; fill = 1 - k;
+        } else if (y < 0.5 - P) {
+          const k = smooth(clamp01(((0.5 - P) - y) / (0.5 - P)));
+          off = -C * k; fill = 1 - k;
+        } else { off = 0; fill = 1; }
+      }
+      if (Math.abs(off - b.last) < 0.15) continue;   // skip no-op writes
+      b.last = off;
+      b.c.style.strokeDashoffset = off.toFixed(2);
+      // Ink on paper while the disc is empty, paper on ink once it is full —
+      // and the other way round on the beats, where the disc is the light one.
+      const v = Math.round((b.dark ? 1 - fill : fill) * 255);
+      b.n.style.color = "rgb(" + v + "," + v + "," + v + ")";
+    }
+    requestAnimationFrame(tick);
+  })();
 })();
 </script>
 
@@ -3528,7 +3696,10 @@
       words[i].style.transform =
         "translateY(calc(" + ((1 - q) * 86).toFixed(2) + "vh + " + drag + "px))";
     }
-    if (idx) idx.style.opacity = ease(clamp01((p - 0.55) / 0.35)).toFixed(3);
+    // The index label used to be faded in here at p > 0.55. Its disc now
+    // sweeps with the cover's own travel, and a fade layered on top of that
+    // read as the mark doing nothing but appearing. Every other section
+    // shows its label from the start; this one now does too.
 
     requestAnimationFrame(tick);
   })();
