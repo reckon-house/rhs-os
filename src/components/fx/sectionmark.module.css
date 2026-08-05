@@ -1,0 +1,111 @@
+/* ── the section mark ────────────────────────────────────────────
+   A disc that draws itself round on arrival, numeral inside.
+
+   The sweep is one stroked circle at HALF the radius carrying a stroke
+   as thick as the radius: the band it paints covers the whole disc, so
+   animating stroke-dashoffset wipes it in angularly like a hand coming
+   round. That is why there is no fill here and no conic-gradient mask —
+   a dash offset on one circle does the whole thing, in CSS, with no
+   per-frame work and nothing to keep in sync.
+
+   dasharray is 41 against a 40.84 circumference: a hair over, so the
+   dash closes on itself instead of leaving a seam at twelve o'clock. */
+
+/* The row carries its own label voice (10px, light tracking, medium
+   weight) so a mark reads the same wherever it lands. Family is
+   inherited — Satoshi here, where the prototype set Helvetica. */
+.lbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+.mark {
+  position: relative;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  color: var(--foreground, #000);
+}
+
+/* On dark grounds the disc is the light one. A prop decides this, not a
+   blend probe — the component cannot know its ground at runtime. */
+.dark {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.mark svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* No transition: the driver writes stroke-dashoffset every frame from the
+   mark's position on screen, so the disc is scrubbed by the scroll rather
+   than played once on arrival. A transition here would lag the wheel. */
+.mark circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 13;
+  transform: rotate(-90deg);
+  transform-origin: 13px 13px;
+  stroke-dasharray: 41 41;
+  stroke-dashoffset: 41;
+}
+
+/* Colour is written per frame by the driver: ink while the disc is empty
+   (the numeral is sitting on the page), paper once the disc is underneath
+   it. These are only the first-frame values. */
+.mark i {
+  position: relative;
+  font-style: normal;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--foreground, #000);
+  line-height: 1;
+}
+
+.dark .mark i {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* The name carries no styles of its own — it speaks in the row's label
+   voice. The class exists so integrators have a hook. */
+.name {
+}
+
+@media (max-width: 760px) {
+  .mark {
+    width: 22px;
+    height: 22px;
+  }
+  .mark i {
+    font-size: 7.5px;
+  }
+}
+
+/* Reduced motion renders the finished mark. The !important lines matter
+   twice over: they cover server-rendered frames before the effect runs,
+   and they outrank any inline value the driver may already have written.
+   The numeral colours are stated here too (the prototype left them to
+   its script) so the number never sits invisible on its own disc while
+   React is still hydrating. */
+@media (prefers-reduced-motion: reduce) {
+  .mark circle {
+    stroke-dashoffset: 0 !important;
+  }
+  .mark i {
+    color: #fff !important;
+  }
+  .dark .mark i {
+    color: #000 !important;
+  }
+}

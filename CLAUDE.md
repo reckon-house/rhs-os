@@ -17,7 +17,8 @@
 - Case studies are data-driven: TypeScript objects in `src/data/` define sections
 - 23+ section types in `src/lib/types.ts`, rendered by `SectionRenderer.tsx`
 - Section components live in `src/components/case-study/sections/`
-- NavRail is fixed sidebar (160px), content scrolls in main area
+- Shell: sticky top Masthead (Pressing C redesign, Aug 2026) inside the scroll content; content scrolls in `<main>`, which Lenis owns in wrapper mode (native scrollTop — sticky works, `main.scrollTop` writes get reverted; go through `getLenis()`)
+- Pre-redesign shell (bottom pill-dock NavRail) is archived at tag `site-v1` / branch `archive/site-v1`
 
 ## Figma Workflow
 - Designs use absolute positioning (not auto layout) — infer responsive layouts from spatial relationships

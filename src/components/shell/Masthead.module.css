@@ -1,0 +1,171 @@
+/* ── Masthead ──────────────────────────────────────────────────────
+   The Pressing C top bar, ported selector-for-selector from
+   public/lab/swiss-spread.html (#nav, #navBurn, .nav-rev). Every value
+   here — sizes, insets, trackings, the 0.28s crossfade — was tuned in
+   the lab; change them there first, then bring them back. */
+
+.nav {
+  /* --nav-overhang is how far the burn pill reaches past the outermost
+     characters. space-between parks the wordmark and the meta exactly on
+     the gutter edges, so the pill's inset is the gutter minus the
+     overhang. --nav-size is its own token, not the label size: navigation
+     is a different job from the page's small labels. */
+  --nav-h: 54px;
+  --nav-size: 16px;
+  --nav-gutter: 40px;
+  --nav-overhang: 18px;
+  /* The prototype's palette, deliberately: pure black on pure white, not
+     the site's #141414 / #F0EAE4. Swap these two custom properties to
+     fold the masthead into the house palette. */
+  --masthead-ink: #000000;
+  --masthead-paper: #FFFFFF;
+
+  position: sticky;
+  top: 0;
+  /* Comfortably under the site's burn overlays (z 2147483644 and up): a
+     route transition must wipe over the masthead, not behind it. */
+  z-index: 60;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 var(--nav-gutter);
+
+  /* Full bleed past main's md:px-[50px] gutters — the hero-breakout
+     technique. The content column sits centered inside <main>, so pulling
+     left by half the viewport minus half the column re-anchors a 100vw
+     strip to the screen edge. Sticky only pins the vertical axis; the
+     margin survives it. */
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(-50vw + 50%);
+
+  /* The prototype's Helvetica system stack, not Satoshi — the Swiss bar
+     keeps its own voice. */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: var(--nav-size);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  color: var(--masthead-ink);
+}
+
+/* The burn sits BEHIND the wordmark and links. Over flat cream a
+   saturate/contrast pump has nothing to act on, so it is invisible; over
+   photography it goes off. That asymmetry is the whole effect.
+
+   It is a pill rather than a full-width bar. backdrop-filter clips to the
+   border-box, radius included, so the burn becomes a floating lens instead
+   of a band. The rest state below is also the prefers-reduced-motion
+   state: the heat driver simply never writes over it. Safari cannot
+   resolve the url() filter reference in backdrop-filter, so the -webkit-
+   property carries the chain without the melt (same guard as NavRail). */
+.burn {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  left: calc(var(--nav-gutter) - var(--nav-overhang));
+  right: calc(var(--nav-gutter) - var(--nav-overhang));
+  top: 5px;
+  bottom: 5px;
+  border-radius: 999px;
+  backdrop-filter: url(#mastheadMelt) blur(0px) saturate(1) contrast(1);
+  -webkit-backdrop-filter: blur(0px) saturate(1) contrast(1);
+  background: rgba(243, 240, 237, 0.05);
+}
+
+.mark,
+.links,
+.meta {
+  position: relative;
+  z-index: 1;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+}
+.nav a:hover {
+  opacity: 0.45;
+}
+
+.links {
+  display: flex;
+  gap: clamp(14px, 2vw, 30px);
+}
+.links a.on {
+  font-weight: 700;
+}
+
+/* A link, not a caption. `.nav a { color: inherit }` would pull it to full
+   ink, so this re-states the grey and wins on specificity — same shape as
+   the prototype's `#nav a.meta` override. */
+.nav a.meta,
+.nav .meta {
+  color: rgba(0, 0, 0, 0.42);
+  text-decoration: none;
+}
+.nav a.meta:hover {
+  color: var(--masthead-ink);
+  opacity: 1;
+}
+
+/* Reversed over dark ground. mix-blend-mode would be the tidier answer but
+   cannot work here: `position: sticky` makes the bar its own stacking
+   context, so a blended child composites against the nav's empty backdrop
+   instead of the page and the type just stays white. A driver toggles the
+   class against declared [data-nav-dark] zones instead. The transition is
+   what keeps the handover from reading as a flicker at the boundary. */
+.mark,
+.links a,
+.meta {
+  transition: color 0.28s ease;
+}
+.nav.rev {
+  color: var(--masthead-paper);
+}
+.nav.rev a.meta,
+.nav.rev .meta {
+  color: rgba(255, 255, 255, 0.5);
+}
+.nav.rev a.meta:hover {
+  color: var(--masthead-paper);
+}
+
+@media (max-width: 720px) {
+  .meta {
+    display: none;
+  }
+}
+
+/* The prototype's mobile block, verbatim: three links plus the wordmark fit
+   a 390pt phone at 11px with room to spare. overflow-x stays as the safety
+   net for anything narrower — a nav you must drag sideways reads as a bug.
+   The gutter halves, so the pill's inset follows it; a smaller overhang
+   too, because 18px reads as generous at 40px in and as sloppy at 16px. */
+@media (max-width: 760px) {
+  .nav {
+    --nav-h: 48px;
+    --nav-size: 11px;
+    --nav-gutter: 16px;
+    --nav-overhang: 10px;
+    gap: 10px;
+    letter-spacing: 0.02em;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .mark {
+    white-space: nowrap;
+  }
+  .links {
+    gap: 13px;
+    white-space: nowrap;
+  }
+  .meta {
+    display: none;
+  }
+}

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { NavRail } from "@/components/shell/NavRail";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { HeroPreloader } from "@/components/shell/HeroPreloader";
 import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
@@ -73,7 +72,9 @@ export default function RootLayout({
           </SmoothScroll>
         </div>
         <BurnMeltTransition />
-        <NavRail />
+        {/* The nav is the Masthead now — sticky inside SmoothScroll's
+            content so its burn pill samples what scrolls beneath it. The
+            pre-redesign bottom dock (NavRail) is archived at tag site-v1. */}
         <FilmOverlay />
         <SpringSolve />
         <VisibilityPause />

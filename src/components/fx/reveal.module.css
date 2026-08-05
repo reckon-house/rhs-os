@@ -1,0 +1,95 @@
+/*
+  Shared masks for the two text-entry systems ported from
+  public/lab/swiss-spread.html: RevealHeadline (.rln / .rwd / .rch) and
+  BodyReveal (.bl / .bli). One file because they are one idea at two
+  registers — type rises out of an overflow-hidden mask, headlines by
+  character, body copy by rendered line — and the mask rule is identical.
+
+  Every value here is the prototype's settled value. Do not retune in place;
+  retune in the lab and port back.
+*/
+
+/* ── headline reveal ─────────────────────────────────────────────────
+   Letters rise out of each line's own mask, with the melt filter decaying
+   across the arrival. */
+
+/* 0.12em was cut for caps, which sit entirely above the baseline. In
+   sentence case the deepest descender runs ~0.195em down and the mask was
+   shaving 7px off the g in "Rodriguez". The negative margin matches the
+   padding, so widening the mask costs no layout. */
+.rln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+}
+
+/* The melt filter lives on this inner wrapper — on .rln it would warp the
+   mask edge itself. The driver writes and removes the inline filter. */
+.rlnI {
+  display: block;
+}
+
+/* Per-character inline-block loses word boundaries; .rwd restores them. */
+.rwd {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* The base rule carries a transition too, so the RETREAT animates. With it
+   only on the .go state, dropping that class snapped the characters back to
+   110% in a single frame — the blink. Quicker out than in: a slow retreat of
+   something the reader is leaving behind feels like lag. */
+.rch {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.7, 1) var(--d);
+}
+
+.head.go .rch {
+  transform: none;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--d);
+}
+
+/* The reduced-motion path has to hold before hydration too, which is why it
+   lives here and not only in the component's render branch: the server sends
+   split markup, and this keeps it readable until React swaps in the plain
+   version. */
+@media (prefers-reduced-motion: reduce) {
+  .rch {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── body copy reveal ────────────────────────────────────────────────
+   Paragraphs enter the way the headlines do, one register down: each
+   RENDERED line rises through its own mask. No melt and no per-character
+   stagger — that is the headline's signature, and at reading size the words
+   themselves should not perform. Mask padding is 0.22em for the same reason
+   the headline masks carry it: descenders. */
+.bl {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+}
+
+.bli {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.7, 1) var(--d, 0ms);
+}
+
+.bcr.on .bli {
+  transform: none;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bli {
+    transform: none !important;
+    transition: none !important;
+  }
+}

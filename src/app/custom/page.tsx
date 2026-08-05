@@ -63,27 +63,6 @@ export default function CustomPage() {
   return (
     <div className="relative w-full max-w-[1400px] mx-auto min-h-full px-[10px] pt-[10px] md:px-0 md:pt-0">
       {/* Breadcrumb — matches every other page */}
-      <div className="fixed top-[10px] left-[10px] right-[10px] z-40 md:top-[20px] md:left-[50px] md:right-[50px]">
-        <div className="flex items-center justify-between gap-4">
-          <nav className="text-[10px] md:text-[12px] leading-[1] tracking-normal text-[#141414] truncate min-w-0">
-            <Link href="/" className="hover:opacity-70 transition-opacity">House</Link>
-            <span className="mx-1 md:mx-2 text-[#141414]/40">/</span>
-            <span className="font-bold">Custom</span>
-          </nav>
-          <a
-            href="https://www.awwwards.com/sites/reckon-house-staples"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-[10px] tracking-[0.06em] capitalize text-[#141414] font-medium px-3 py-1.5 rounded-full bg-[#141414]/[0.06] hover:bg-[#141414]/[0.1] transition-colors shrink-0"
-          >
-            <ScrambleOnView text={"AWWWARDS HONORS".toLowerCase()} />
-          </a>
-        </div>
-      </div>
-
-      {/* Spacer for fixed breadcrumb */}
-      <div className="h-[20px] md:h-[50px]" />
-
       <div className="pb-24 space-y-10 md:space-y-[100px]">
         {/* ═══════════════════════════════════════════════════════════════
             SECTION 01 · OVERVIEW
