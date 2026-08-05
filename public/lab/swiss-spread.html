@@ -420,7 +420,6 @@
   #hHead .ind { margin-left: 0; }
   /* No initial clip in CSS on purpose: if the driver never runs, the copy
      must still be readable. JS applies the starting mask itself. */
-  #hCol p { will-change: clip-path; }
 
   /* ── headline reveal ─────────────────────────────────────────────
      Letters rise out of each line's own mask, with the nav's melt decaying
@@ -447,6 +446,30 @@
     transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--d); }
   @media (prefers-reduced-motion: reduce) {
     .rch { transform: none !important; transition: none !important; }
+  }
+
+  /* ── body copy reveal ─────────────────────────────────────────────
+     Paragraphs enter the way the headlines do, one register down: each
+     RENDERED line rises through its own mask. No melt and no
+     per-character stagger — that is the headline's signature, and at
+     reading size the words themselves should not perform. Lines are cut
+     at runtime so they are the real rendered lines, re-cut on resize
+     and again once fonts settle.
+
+     This replaces the crossing column's clip wipe — a hard edge
+     travelling left to right, the one horizontal gesture on a page
+     whose type otherwise rises. That column now joins this system,
+     triggered by the crossing's own choreography instead of the
+     viewport. Mask padding is 0.22em for the same reason the headline
+     masks carry it: descenders. */
+  .bcr .bl { display: block; overflow: hidden;
+    padding-bottom: 0.22em; margin-bottom: -0.22em; }
+  .bcr .bli { display: block; transform: translateY(110%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.7, 1) var(--d, 0ms); }
+  .bcr.on .bli { transform: none;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms); }
+  @media (prefers-reduced-motion: reduce) {
+    .bcr .bli { transform: none !important; transition: none !important; }
   }
 
   /* ── 05 columns ── */
@@ -1159,8 +1182,6 @@
   padding-bottom: clamp(40px, 6vw, 90px); }
 .fx-index .ix-lede { font-size: clamp(30px, 4.4vw, 62px); line-height: 1;
   letter-spacing: -0.03em; font-weight: 700; }
-.fx-index .ix-meta { font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); opacity: 0.45; }
 
 .fx-index .ix-cols { display: grid; grid-template-columns: 1fr 1fr;
   column-gap: clamp(44px, 6vw, 120px); align-items: start; }
@@ -1173,13 +1194,14 @@
   --pgap: clamp(20px, 2.6vw, 46px);
   column-gap: var(--pgap); align-items: stretch; }
 .fx-index .ix-txt { display: flex; flex-direction: column; min-width: 0; }
-/* 34px on the right is the number gutter — reserved, never painted.
+/* No number gutter any more — the frames run to the column's own right
+   edge, which is the rule the whole index aligns to.
    The stack sits on a 5px gap — enough that each frame reads as its own
    object rather than one column of photograph, not enough to break the
    right edge into separate blocks. The rhythm comes from the size jumps. */
 .fx-index .ix-imgs { position: relative;
   display: flex; flex-direction: column;
-  align-items: flex-end; min-width: 0; padding-right: 34px;
+  align-items: flex-end; min-width: 0;
   gap: 5px; }
 
 .fx-index .ix-blk { /* margin-top comes from the placement pass */ }
@@ -1204,22 +1226,32 @@
 .fx-index .ix-it { transform-origin: right center; }
 @media (hover: hover) and (min-width: 761px) {
   /* the frame's own transition is declared once, below, with the arrival */
-  .fx-index .ix-it img { transition: border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+  .fx-index .ix-it img, .fx-index .ix-it .ix-reel {
+    transition: border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   .fx-index .ix-it:hover { transform: scale(var(--ix-grow)); z-index: 2; }
   /* Squares off as it opens — the same move the hero plates make when they
      grow to fill the mat. The rounded frame reads as an object sitting on
      the page; losing the corner is what turns it into the picture itself.
      Was dividing --r by the scale to hold the radius visually constant,
      which kept it an object the whole way. */
-  .fx-index .ix-it:hover img { border-radius: 0; }
+  .fx-index .ix-it:hover img, .fx-index .ix-it:hover .ix-reel { border-radius: 0; }
 }
 .fx-index .ix-it img { display: block; width: 100%; height: auto;
   aspect-ratio: var(--ar, 1); object-fit: cover;
   border-radius: var(--r);
   background: rgba(0,0,0,0.05); }
-.fx-index .ix-num { position: absolute; right: -34px; bottom: 1px;
-  font-size: var(--lbl); font-weight: var(--lbl-weight);
-  letter-spacing: var(--lbl-track); opacity: 0.45; }
+/* Faux Reel's frame plays rather than sits still. The wrapper — not the
+   component — carries the slot's shape and the corner, for two reasons: it
+   holds the frame's size from first layout, so placeText() measures the
+   stack correctly whether or not the reel has arrived yet; and the radius
+   clips from out here, where a rule can transition it, instead of from the
+   inline --sz-radius the component writes inside its own shadow root. */
+.fx-index .ix-it .ix-reel { display: block; width: 100%;
+  aspect-ratio: var(--ar, 1); overflow: hidden;
+  border-radius: var(--r);
+  background: rgba(0,0,0,0.05); }
+.fx-index .ix-it .ix-reel sizzle-reel { display: block;
+  width: 100%; height: 100%; aspect-ratio: auto !important; }
 /* No dim on hover. It predates the grow — back when hover did nothing but
    highlight, a fade was the whole signal; now the frame opens and the stack
    parts around it, and knocking the picture back to 84% while it is being
@@ -1274,7 +1306,6 @@
      the reason to scroll. */
   .fx-index .ix-cols { grid-template-columns: 1fr; }
   .fx-index .ix-pair { grid-template-columns: 1fr 1.15fr; --pgap: 14px; }
-  .fx-index .ix-imgs { padding-right: 22px; }   /* the number gutter stays */
   .fx-index .ix-it { width: 100% !important; }
   .fx-index .ix-blk .s { font-size: 11.5px; }
 }
@@ -1744,7 +1775,7 @@
 </div>
 
 <div class="fx-index" data-footer="index">
-  <header class="ix-head"><span class="ix-lede">All work.</span><span class="ix-meta">28 projects</span></header>
+  <header class="ix-head"><span class="ix-lede">All work.</span></header>
   <div class="ix-cols">
     <div class="ix-pair"><div class="ix-txt"></div><div class="ix-imgs"></div></div>
     <div class="ix-pair"><div class="ix-txt"></div><div class="ix-imgs"></div></div>
@@ -2008,7 +2039,6 @@
   const root = document.querySelector(".fx-index");
   if (!root) return;
   const SEED = 5;
-  const pad = (n) => (n < 10 ? "0" + n : "" + n);
 
   const R = [
     ["Ivy Park by Beyoncé", "Digital, brand launch", "/case-studies/ivy-park", "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg", 3080, 1864],
@@ -2039,6 +2069,32 @@
     ["Neiman Marcus", "Editorial direction", "/case-studies/neiman-marcus", "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg", 3080, 1852],
     ["West Texas", "Photography", "/case-studies/big-bend", "/case-studies/big-bend/chisos-peak-cactus.jpg", 2560, 1712],
     ["Faux Reel", "Product, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800]
+  ];
+
+  /* Faux Reel is the one frame that plays: the tool doing the thing it does,
+     which a screenshot of it cannot show. Frames, colours and beats are the
+     live site's own thumbnail, verbatim from src/components/Thumb.tsx — it
+     cuts through five project thumbnails and runs a light clip-path/opacity
+     sequence with no burn, the one expensive effect. The manifest row keeps
+     its still and its 800x800: the still is the reduced-motion fallback, and
+     the numbers are still what --ar hands the slot. */
+  const REEL_HREF = "/case-studies/sizzle";
+  const REEL_IMAGES = [
+    "/images/thumbnails/ivyPark.jpg",
+    "/images/thumbnails/arc.jpg",
+    "/images/thumbnails/nordstromPersonal.jpg",
+    "/images/thumbnails/dsc.jpg",
+    "/images/thumbnails/nordstromBeauty.jpg"
+  ];
+  const REEL_COLORS = ["#0AA7CA", "#181B17", "#776549"];
+  const REEL_SEQ = [
+    { fx: "shutter", img: 0, ms: 600 },
+    { fx: "fade", img: 1, ms: 400 },
+    { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
+    { fx: "slat", img: 3, ms: 620 },
+    { fx: "ccurtain", color: "#181B17", ms: 340 },
+    { fx: "curtain", img: 4, ms: 620 },
+    { fx: "cut", img: 0, ms: 540 }
   ];
 
   // Verbatim from src/app/layout.tsx and the masthead ledger above.
@@ -2089,6 +2145,8 @@
 
     const per = Math.ceil(R.length / PAIRS);
     const watch = [];
+    const reels = [];
+    const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     R.forEach((r, i) => {
       const pair = pairs[Math.min(PAIRS - 1, Math.floor(i / per))];
@@ -2099,8 +2157,17 @@
       a.setAttribute("aria-label", r[0]);
       a.style.setProperty("--w", (dealW() * 100).toFixed(1) + "%");
       a.style.setProperty("--ar", r[4] + " / " + r[5]);
-      a.innerHTML = '<img src="' + r[3] + '" alt="" loading="lazy" decoding="async">' +
-        '<span class="ix-num">' + pad(i + 1) + "</span>";
+      if (r[2] === REEL_HREF && !REDUCE) {
+        // The wrapper goes in now and holds the slot; the reel drops into it
+        // later, so its five frames load on approach the way every other
+        // frame in this stack does rather than at page init.
+        const box = document.createElement("span");
+        box.className = "ix-reel";
+        a.appendChild(box);
+        reels.push(box);
+      } else {
+        a.innerHTML = '<img src="' + r[3] + '" alt="" loading="lazy" decoding="async">';
+      }
       pair.querySelector(".ix-imgs").appendChild(a);
       watch.push(a);
     });
@@ -2120,7 +2187,27 @@
 
     placeText();
 
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Load the reel on approach. Its own observer, not the arrival one below:
+    // that fires 6% into the viewport, which is right for starting a fade and
+    // far too late to start fetching five images.
+    if (reels.length) {
+      const rio = new IntersectionObserver((es, o) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          o.unobserve(e.target);
+          const rl = document.createElement("sizzle-reel");
+          rl.setAttribute("radius", "0");     // the wrapper owns the corner
+          rl.setAttribute("speed", "1");
+          rl.sequence = REEL_SEQ;
+          rl.setAttribute("colors", REEL_COLORS.join(", "));
+          rl.setAttribute("images", REEL_IMAGES.join(", "));
+          e.target.appendChild(rl);           // connecting is what starts it
+        });
+      }, { rootMargin: "600px 0px" });
+      reels.forEach((b) => rio.observe(b));
+    }
+
+    if (REDUCE) {
       watch.forEach((el) => el.classList.add("ix-on"));
       return;
     }
@@ -2209,6 +2296,102 @@
   wire();
   // the index rebuilds itself across the 761px breakpoint, so re-wire after
   matchMedia("(min-width: 761px)").addEventListener("change", () => setTimeout(wire, 80));
+})();
+</script>
+
+<script>
+/* ── body copy reveal ───────────────────────────────────────────────
+   Splits every body paragraph (and the method step titles, which would
+   otherwise pop statically above their rising copy) into its RENDERED
+   lines, then raises each line through its own mask when the paragraph
+   arrives. Word spans are laid in first only to read which words share
+   an offsetTop — the split is by real wrap, not authored breaks, and is
+   re-cut on resize and after fonts load.
+
+   Arrival is the ledger's strict queue: a paragraph starts a fixed beat
+   after the one before it, however many entered the viewport together —
+   side-by-side columns cascade instead of firing as one. Re-arms only
+   once fully out of view, the lesson from the headline blink.
+
+   The crossing column's two paragraphs are split here but NOT observed:
+   the crossing driver toggles them from its own choreography. */
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  /* Prose, the method titles, and the footer ledger — headings, list rows,
+     field labels. Anything whose job is to be READ. The closing lists are
+     deliberately absent: their items are bare text nodes separated by <br>,
+     and textContent would weld "Art Direction" to "Photo Compositing". They
+     need a <br>-aware path or a <ul>, not this one. */
+  const els = [...document.querySelectorAll(
+      ".col p, .cols .c h3, .fx-mast .mt-col h4, .fx-mast .mt-col li," +
+      " .fx-mast .mt-field label, .fx-mast .mt-note")]
+    .filter((el) => el.textContent.trim().length && !el.querySelector("br"));
+  if (!els.length) return;
+
+  const STAG = 45;
+  const items = els.map((el) => ({
+    el: el,
+    src: el.textContent.replace(/\s+/g, " ").trim(),
+    manual: !!el.closest("#hCol"),
+    w: 0
+  }));
+
+  function split(it) {
+    const el = it.el;
+    el.classList.add("bcr");
+    el.innerHTML = it.src.split(" ")
+      .map((w) => '<span class="bw">' + w + "</span>").join(" ");
+    const groups = [];
+    let top = null;
+    el.querySelectorAll(".bw").forEach((w) => {
+      const t = Math.round(w.offsetTop);
+      if (t !== top) { groups.push([]); top = t; }
+      groups[groups.length - 1].push(w.textContent);
+    });
+    /* Joined with a SPACE, not "". The lines are blocks, so whitespace
+       between them collapses away and nothing moves — but it survives in
+       textContent, which is what copy-paste, find-in-page and a screen
+       reader actually read. Without it a wrapped row came back as
+       "Awwwards Honors,2026": correct on screen, welded underneath. */
+    el.innerHTML = groups.map((g, i) =>
+      '<span class="bl"><span class="bli" style="--d:' + (i * STAG) + 'ms">' +
+      g.join(" ") + "</span></span>").join(" ");
+    it.w = el.clientWidth;
+  }
+  items.forEach(split);
+
+  let last = 0;
+  /* The queue advances by how much there is to read. A paragraph earns the
+     full beat; a one-line ledger row does not — at 90ms each, fourteen rows
+     took over a second to fill and read as a list being typed out. */
+  const beatFor = (it) => (it.el.querySelectorAll(".bl").length > 1 ? 90 : 38);
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      const it = items.find((x) => x.el === e.target);
+      if (!it) return;
+      if (e.intersectionRatio >= 0.25) {
+        if (!it.el.classList.contains("on")) {
+          const now = performance.now();
+          const at = Math.max(now, last + beatFor(it));
+          last = at;
+          setTimeout(() => it.el.classList.add("on"), at - now);
+        }
+      } else if (e.intersectionRatio === 0) {
+        it.el.classList.remove("on");
+      }
+    });
+  }, { threshold: [0, 0.25] });
+  items.forEach((it) => { if (!it.manual) io.observe(it.el); });
+
+  // Re-split only when the element's width actually changed — a re-split
+  // mid-read at the same width would rebuild identical lines for nothing.
+  // With .on already present the new lines carry no transition to run, so
+  // nothing replays.
+  addEventListener("resize", () => {
+    items.forEach((it) => { if (it.el.clientWidth !== it.w) split(it); });
+  });
+  if (document.fonts && document.fonts.ready)
+    document.fonts.ready.then(() => items.forEach(split));
 })();
 </script>
 
@@ -3197,7 +3380,6 @@
   addEventListener("resize", () => { lines = buildLines(); });
 
   const paras = [...col.querySelectorAll("p")];
-  paras.forEach((el) => { el.style.clipPath = "inset(0 100% 0 0)"; });
 
   // Each line starts a little after the one above it. The span is shortened
   // by the total stagger so the LAST line still finishes exactly at p = 1 —
@@ -3223,13 +3405,13 @@
       el.style.transform = `translateX(${((1 - lp) * innerWidth).toFixed(1)}px)`;
     });
 
-    // Copy is uncovered by a hard edge travelling left to right, one
-    // paragraph after the other. Deliberately NOT eased: a mask edge is a
-    // machine part, not an object with momentum — decelerating it looks like
-    // the wipe is running out of steam. The lines settle; the edge sweeps.
+    // The copy joins the shared body reveal (the split is done by that
+    // driver); this only decides WHEN, from the crossing's own progress —
+    // one paragraph after the other, once the lines have nearly landed.
+    // Scrubbed back above the threshold, the class drops and the lines
+    // retreat on their base transition.
     paras.forEach((el, i) => {
-      const c = clamp01((p - (0.58 + i * 0.11)) / 0.30);
-      el.style.clipPath = `inset(0 ${((1 - c) * 100).toFixed(2)}% 0 0)`;
+      el.classList.toggle("on", p > 0.58 + i * 0.11);
     });
 
     requestAnimationFrame(tick);

@@ -158,6 +158,7 @@ class SizzleReelElement extends HTMLElement {
   #beatEl = null;
   #visible = true;
   #frozen = false;
+  #custom = null;
 
   connectedCallback() { this.#setup(); }
   disconnectedCallback() { this.#teardown(); }
@@ -168,6 +169,16 @@ class SizzleReelElement extends HTMLElement {
   // beat. Setting a number freezes on that beat and replays it; setting null
   // resumes the loop. A `beat` event fires on every render with { index, beat }.
   get beats() { return this.#seq.slice(); }
+  // Hand it a hand-authored beat list instead of the generated one. Same shape
+  // as buildSequence returns: { fx, img, color, text, ms }. Set null to go back
+  // to the generated sequence. Callers that want a specific run — the site's own
+  // thumbnail keeps a light one with no burn — set this instead of `images`
+  // alone, which can only ever produce the default choreography.
+  get sequence() { return this.#custom ? this.#custom.slice() : null; }
+  set sequence(v) {
+    this.#custom = Array.isArray(v) && v.length ? v.slice() : null;
+    if (this.isConnected) this.#setup();
+  }
   get index() { return this.#i; }
   set index(v) {
     if (v == null) { this.#frozen = false; this.#render(); return; }
@@ -193,7 +204,8 @@ class SizzleReelElement extends HTMLElement {
     this.#frozen = false;
     this.#images = this.#list("images");
     const colors = this.#list("colors");
-    this.#seq = buildSequence(this.#images.length, colors.length ? colors : ["#18A6CC", "#0E0E0E"], this.#attr("headline", ""));
+    this.#seq = this.#custom
+      || buildSequence(this.#images.length, colors.length ? colors : ["#18A6CC", "#0E0E0E"], this.#attr("headline", ""));
     const off = parseInt(this.#attr("offset", "0"), 10) || 0;
     this.#i = ((off % this.#seq.length) + this.#seq.length) % this.#seq.length;
 
