@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { setLenis } from "@/lib/lenis";
-import { SiteFooter } from "@/components/shell/SiteFooter";
+import { PressingFooter } from "@/components/shell/pressing-footer/PressingFooter";
 import { Masthead } from "@/components/shell/Masthead";
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
@@ -56,11 +56,14 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
             wrapper the stick would end at that wrapper's bounds. */}
         <Masthead />
         {children}
-        {/* Global site footer — appears at the bottom of every page.
-            Lives at the SmoothScroll layer so it's a sibling of the page
-            content, free to use hero-breakout for true full-bleed
-            without being constrained by per-page wrappers. */}
-        <SiteFooter />
+        {/* The site tail — contact, credits, all work. Lives at the
+            SmoothScroll layer so it's a sibling of the page content, free
+            to use hero-breakout for true full-bleed without being
+            constrained by per-page wrappers. Its two pinned beats need
+            every ancestor up to <main> to stay free of transforms and
+            overflow clipping. The pre-redesign dark card (SiteFooter) is
+            archived at tag site-v1. */}
+        <PressingFooter />
       </div>
     </main>
   );

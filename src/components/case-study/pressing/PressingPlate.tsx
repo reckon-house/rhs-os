@@ -35,6 +35,16 @@ export interface PressingPlateProps {
   caption?: string;
   /** Climb over the previous pinned section instead of following in flow. */
   rise?: boolean;
+  /**
+   * Flow mode only: span the full viewport instead of the content column.
+   * For the big specimen plates (the Archer orange/pink board) that should
+   * land as a full image beat. The corner stays — a bleed plate at rest
+   * still reads as a plate, and the radius is what says so.
+   */
+  bleed?: boolean;
+  /** Intrinsic pixel size — the ratio is known pre-load, so no reflow. */
+  width?: number;
+  height?: number;
   /** Load eagerly — only for a plate that can be near the fold. */
   eager?: boolean;
 }
@@ -44,11 +54,14 @@ export function PressingPlate({
   alt,
   caption,
   rise = false,
+  bleed = false,
+  width,
+  height,
   eager = false,
 }: PressingPlateProps) {
   if (rise) {
     if (!caption) {
-      return <RisingPlate src={src} alt={alt} eager={eager} />;
+      return <RisingPlate src={src} alt={alt} width={width} height={height} eager={eager} />;
     }
     return (
       // Plain figure, margin 0 and no styling beyond it: the RisingPlate
@@ -56,7 +69,7 @@ export function PressingPlate({
       // the climb geometry is identical to mounting the plate bare, and
       // nothing clips or transforms between the choreography and <main>.
       <figure className={styles.riseFigure}>
-        <RisingPlate src={src} alt={alt} eager={eager} />
+        <RisingPlate src={src} alt={alt} width={width} height={height} eager={eager} />
         <figcaption className={`${styles.caption} ${styles.riseCap}`}>
           {caption}
         </figcaption>
@@ -65,16 +78,30 @@ export function PressingPlate({
   }
 
   return (
-    <figure className={styles.flowFigure}>
+    // bleed spans the viewport via the shared breakout; the figure stays
+    // margin-0 so nothing shifts, and the caption keeps the column's left
+    // edge by taking the gutter as its own padding.
+    <figure
+      className={`${styles.flowFigure} ${bleed ? "hero-breakout" : ""}`}
+    >
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         className={styles.flowImg}
       />
       {caption ? (
-        <figcaption className={styles.caption}>{caption}</figcaption>
+        // On a bleed plate the caption pads back to the page's side mat
+        // (20px phone, 50px at md — main's gutter) so it keeps the column's
+        // left rule instead of touching the viewport edge.
+        <figcaption
+          className={`${styles.caption} ${bleed ? "pl-5 md:pl-[50px]" : ""}`}
+        >
+          {caption}
+        </figcaption>
       ) : null}
     </figure>
   );

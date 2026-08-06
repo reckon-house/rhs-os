@@ -53,6 +53,14 @@ export interface PressingPlatesPairProps {
     caption?: string;
     /** Right-hand figcaption span ("Spring 2024"). */
     sub?: string;
+    /**
+     * Intrinsic pixel size (image-dimensions manifest). The frame's
+     * aspect is then correct at first layout instead of arriving with
+     * the lazy image — a frame snapping open above the viewport eats
+     * scroll delta and reads as a stall.
+     */
+    width?: number;
+    height?: number;
   }[];
   /** Render the photographs grayscale. */
   bw?: boolean;
@@ -185,6 +193,8 @@ export function PressingPlatesPair({
                 }}
                 src={im.src}
                 alt={im.alt}
+                width={im.width}
+                height={im.height}
                 loading="lazy"
                 decoding="async"
               />

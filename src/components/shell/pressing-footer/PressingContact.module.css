@@ -1,0 +1,313 @@
+/*
+  PressingContact — the first `.mt-beat` inside the `.fx-mast` block of
+  public/lab/swiss-spread.html, on ink. Every value here is that file's
+  settled value; retune in the lab first, then bring it back.
+
+  Two ports needed adjusting for the app, and both are marked at the rule:
+  the page gutter (main carries 50px on md+, where the prototype's .screen
+  carried its own 40px) and the sticky offset (the shipped Masthead is 54px,
+  standing in for the prototype's var(--nav)).
+*/
+
+/* The beat is self-sufficient on tokens. The --pp-* set is scoped to
+   `.pressing` articles, and this footer renders at the shell layer on every
+   page — homepage included — so each token is read with the pressing value
+   as its fallback. Inside a pressing article it inherits; everywhere else it
+   stands on its own. */
+.beat {
+  --mt-paper: var(--pp-paper, #ffffff);
+  --mt-ink: var(--pp-ink, #000000);
+  --mt-lbl: var(--pp-lbl, 10px);
+  --mt-lbl-track: var(--pp-lbl-track, 0.04em);
+  --mt-lbl-weight: var(--pp-lbl-weight, 500);
+  --mt-note: var(--pp-note, 16px);
+  /* The hairlines in this block are the prototype's own literals — white at
+     0.16 for the column rules, 0.28 for the field underlines. Deliberately
+     not --pp-hair, which is the strong 0.9 ink hairline and would be wrong
+     on ink. */
+
+  position: relative;
+  /* The prototype's .screen height, with the sticky 54px masthead standing in
+     for its var(--nav). dvh, not vh: the shell is h-dvh and 100vh overreaches
+     by the mobile browser-chrome delta. */
+  min-height: calc(100dvh - 54px);
+  /* Base gutter is the prototype's phone value, because <main> runs px-0
+     below md; the md+ rule below restores the page gutter this section would
+     otherwise have lost to hero-breakout. */
+  padding: 48px 20px;
+  /* Breathing room goes on the SECTION, never on the column: trailing padding
+     inside the column extends its box below its visible content, and since
+     sticky releases at the box edge the headline would let go a constant
+     ~99px after the copy had already ended. The section's padding sits
+     outside the grid row, so it cannot move the release. The placement pass
+     overwrites this inline above 760px — this value is what phones keep. */
+  padding-bottom: clamp(40px, 10dvh, 130px);
+  background: var(--mt-ink);
+  color: var(--mt-paper);
+  /* The modern note against the Swiss grid, on the slab that closes the page.
+     Safe without overflow: hidden because the beat paints its own ink — and
+     a clip here would kill the pin. */
+  border-radius: var(--pp-r, 16px) var(--pp-r, 16px) 0 0;
+
+  /* A real grid, not an absolutely-positioned corner. minmax(0, …) on track 1,
+     not a bare 1fr: the headline reveal wraps each line in a nowrap span, so
+     its min-content becomes its widest LINE, which a bare 1fr honours by
+     growing the track past its fr share — the grid then overflows and column
+     2 is pushed off the page gutter. Clamping the minimum to 0 pins track 1
+     to the leftover width. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(380px, 40vw);
+  column-gap: clamp(28px, 5vw, 78px);
+  align-items: start;
+  /* Rows hug their content. Without this a viewport-tall beat stretches its
+     rows to fill, and the label row gets handed space the headline and the
+     column then have to fight over. */
+  align-content: start;
+
+  /* NEVER overflow: hidden on this box. The prototype's .screen sets it and
+     .brief explicitly opts out, because a clipping ancestor between the
+     sticky headline and <main> (the Lenis scroller) silently kills the pin.
+     Keep this wrapper plain: no transform, no filter, no clipping. */
+}
+
+/* hero-breakout takes the section to 100vw, so main's md:px-[50px] no longer
+   applies to it. The prototype's beats carried "the page gutter — the same
+   one every section uses"; here that gutter is 50px, which is where the case
+   study content above the footer sits. Porting the literal 40px would land
+   the footer's left rule ten pixels inside everything above it. */
+@media (min-width: 768px) {
+  .beat {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+/* The label row spans both tracks so the mark sits on the page's left rule
+   while the grid below splits into headline and column. */
+.markRow {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.headline {
+  grid-column: 1;
+  /* Headline and column share row 2 so they occupy the same vertical band:
+     the row is as tall as the column, which is the travel the pinned headline
+     needs. In separate rows they could never overlap and the headline would
+     have nothing to stick through. Sticky releases when its containing
+     block's bottom arrives, so "the column's bottom meets the headline's
+     bottom" is the natural release, not a threshold anyone has to compute. */
+  grid-row: 2;
+  align-self: start;
+  font-size: clamp(30px, 4.4vw, 62px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  text-transform: none;
+  /* The prototype's own limits for this beat. The base .brief headline also
+     carries a 100% guard against overflowing track 1; the footer beats
+     restate only the measure, and at this scale the two authored lines never
+     reach the limit anyway. */
+  max-width: min(11em, 50vw);
+  margin-top: clamp(24px, 5dvh, 70px);
+  /* The pin. 54px is the sticky masthead above the page, where the prototype
+     used var(--nav). The placement pass READS this back through
+     getComputedStyle, so the offset lives here and only here. */
+  position: sticky;
+  top: calc(54px + clamp(16px, 4dvh, 54px));
+}
+
+/* margin-top is written by the placement pass: it is the headline's measured
+   height plus the gap, so the column starts just under it. The headline
+   rewraps at every breakpoint, so a fixed value drifts out of register. */
+.col {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: var(--mt-note);
+  line-height: 1.55;
+  padding-bottom: 4dvh;
+}
+
+/* ── the ledger columns ──────────────────────────────────────────────
+   Two-up inside the column, not four across the page: the densest way to
+   carry contact, services and standing info without a paragraph. */
+.cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(22px, 3dvh, 34px) 26px;
+  align-content: start;
+  margin-bottom: clamp(34px, 6dvh, 72px);
+}
+
+/* Every heading inside a block is one treatment — body size, book weight,
+   dimmed. It separates from its content by colour alone; a heading that is
+   also a different size says the same thing twice. */
+.colHead {
+  margin: 0 0 10px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: var(--mt-note);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.55;
+  opacity: 0.45;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--mt-note);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.55;
+}
+
+/* Items are content, not micro-labels, so they sit at note size; only the
+   heading takes the label voice. Dim is the whole difference between a link
+   and a statement of fact in this ledger. */
+.dim {
+  opacity: 0.5;
+}
+
+/* No underline at rest, a hairline on hover. inline-block so the border hugs
+   the text: the reveal's line masks inside the anchor are blocks, and an
+   inline anchor would draw its border around the anonymous boxes instead. */
+.link {
+  display: inline-block;
+  color: var(--mt-paper);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.link:hover {
+  border-bottom-color: var(--mt-paper);
+}
+/* Keyboard users get the ring the hover state cannot give them. The 1px
+   paper outline is the prototype's own focus idiom, inverted for ink. */
+.link:focus-visible {
+  outline: 1px solid var(--mt-paper);
+  outline-offset: 3px;
+}
+
+/* ── the form ────────────────────────────────────────────────────────
+   A real mailto form. 30em is a measure, not a layout: the fields sit in the
+   380px column and simply fill it. */
+.form {
+  display: grid;
+  gap: 16px;
+  max-width: 30em;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.fieldLabel {
+  font-size: var(--mt-note);
+  letter-spacing: normal;
+  font-weight: 400;
+  opacity: 0.45;
+}
+
+/* Form controls do NOT inherit font-family — the browser hands them a UA
+   default unless told otherwise, which is how a 13px system sans ends up
+   sitting in the middle of a Swiss column. `inherit` rather than a named
+   stack so the field speaks in whatever the page around it is set in:
+   Satoshi sitewide, Helvetica inside a pressing article. */
+.input,
+.textarea {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  color: var(--mt-paper);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 7px 0;
+  border-radius: 0;
+}
+.textarea {
+  resize: vertical;
+  min-height: 46px;
+}
+/* The outline goes because the underline replaces it: on focus the hairline
+   comes up to full paper, which is a stronger indicator than a ring on this
+   ground. */
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-bottom-color: var(--mt-paper);
+}
+
+.send {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 11px 26px;
+  border: 0;
+  cursor: pointer;
+  background: var(--mt-paper);
+  color: var(--mt-ink);
+  border-radius: 999px;
+  /* Buttons do not inherit font-family either — this one has to name it. */
+  font-family: inherit;
+  font-size: var(--mt-lbl);
+  letter-spacing: var(--mt-lbl-track);
+  font-weight: var(--mt-lbl-weight);
+}
+.send:hover {
+  opacity: 0.82;
+}
+.send:focus-visible {
+  outline: 1px solid var(--mt-paper);
+  outline-offset: 3px;
+}
+
+.note {
+  font-size: var(--mt-note);
+  letter-spacing: normal;
+  font-weight: 400;
+  opacity: 0.35;
+}
+
+/* ── phones ──────────────────────────────────────────────────────────
+   One track: the headline and the column stack rather than sitting beside
+   each other. They must go back to SEPARATE rows — sharing row 2 is what
+   lets them overlap for the pin, and in a single column that overlap becomes
+   the column printed on top of the headline. No pin either: there is no
+   beside to travel up. 760px inclusive, matching the prototype, the
+   placement pass's PIN_OFF_AT, and CHOREO_BREAKPOINT in src/lib/choreo.ts. */
+@media (max-width: 760px) {
+  .beat {
+    /* One dial shrinks every label on a phone, as the prototype's :root does. */
+    --mt-lbl: 9px;
+    grid-template-columns: 1fr;
+    padding-top: 30px;
+  }
+  .headline {
+    grid-column: 1;
+    grid-row: 2;
+    /* Same specificity as the base rule so source order decides. The
+       prototype's own phone rule lost this fight on specificity and left the
+       beat headlines sticky on a phone. */
+    position: static;
+    /* The beat's max-width is half the viewport, which on a 390pt phone is a
+       187px ribbon with no second column to protect. The base .brief phone
+       rule releases it; the prototype's cascade never let that rule land. */
+    max-width: none;
+  }
+  .col {
+    grid-column: 1;
+    grid-row: 3;
+    /* !important because the placement pass writes an inline margin; the
+       stylesheet owns the spacing on a phone even if a resize races the
+       component's own clearing of that inline value. */
+    margin-top: 26px !important;
+    padding-bottom: 30px;
+  }
+  .cols {
+    gap: 22px;
+  }
+}

@@ -54,6 +54,14 @@ const RADIUS = 44;
 type RisingPlateProps = {
   src: string;
   alt: string;
+  /**
+   * Intrinsic pixel size (image-dimensions manifest). With these the
+   * browser knows the ratio before the file arrives, so a lazy plate
+   * never reflows the page mid-scroll when it loads — a reflow above
+   * the viewport eats the scroll delta and reads as a stall.
+   */
+  width?: number;
+  height?: number;
   /** Load eagerly — only for a plate that can be near the fold. */
   eager?: boolean;
   className?: string;
@@ -62,6 +70,8 @@ type RisingPlateProps = {
 export function RisingPlate({
   src,
   alt,
+  width,
+  height,
   eager = false,
   className = "",
 }: RisingPlateProps) {
@@ -125,6 +135,8 @@ export function RisingPlate({
         ref={imgRef}
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         className="block w-full h-auto origin-center will-change-[transform,border-radius] [transform:scale(0.95)] rounded-[44px] max-[760px]:[transform:none] max-[760px]:rounded-none motion-reduce:[transform:none] motion-reduce:rounded-none"

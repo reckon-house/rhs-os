@@ -56,6 +56,18 @@ export type PressingZoomPlateProps = {
   bw?: boolean;
   /** Optional section mark, scrubbed from the zoom wrap's own travel. */
   mark?: { n: string; name: string };
+  /**
+   * Intrinsic pixel size from the image-dimensions manifest. Load-bearing
+   * for scroll feel, not just CLS: the driver sizes the wrap from the
+   * figure's measured box, and without a known ratio that measurement
+   * jumps when the lazy image arrives — the wrap shrinks mid-scroll,
+   * which eats the scroll delta and reads as the plate sticking on entry.
+   * The prototype never had this because its images were all eager.
+   */
+  width?: number;
+  height?: number;
+  /** Load the image eagerly — for the first plate after the cover. */
+  eager?: boolean;
 };
 
 /**
@@ -104,6 +116,9 @@ export function PressingZoomPlate({
   instruction,
   bw = false,
   mark,
+  width,
+  height,
+  eager = false,
 }: PressingZoomPlateProps) {
   const wrapRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -524,7 +539,9 @@ export function PressingZoomPlate({
             ref={imgRef}
             src={src}
             alt={alt}
-            loading="lazy"
+            width={width}
+            height={height}
+            loading={eager ? "eager" : "lazy"}
             decoding="async"
             className={bw ? styles.bw : undefined}
           />

@@ -84,9 +84,11 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       image: `${IMG}/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg`,
       alt: "Robert Rodriguez — pink blazer editorial campaign composite",
       inline: true,
+      // No bw flag: the prototype's .bw rule is EMPTY on purpose — its own
+      // comment says photography runs full color; the starkness lives in
+      // the type and the space, not on top of the plates.
       pressing: {
         choreo: { zoom: true },
-        bw: true,
         plate: "02",
         captions: [
           "Double-exposure composite",
@@ -165,8 +167,8 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         alt: "Robert Rodriguez — polka dot ruffle dress, orange backdrop",
       },
       pressing: {
-        bw: true,
         // One string per image; \n separates the caption's two mono spans.
+        // Full color, same reason as the zoom plate above.
         captions: ["Polka-dot dress\nSpring 2024", "Ruffle dress, same session"],
       },
     },
@@ -272,14 +274,16 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       group: { name: "brand" },
     },
 
-    // ── TYPOGRAPHY PLATE — the palette JPG the prototype dropped; every
-    //    image survives the redesign, so it renders as a quiet flow plate ──
+    // ── TYPOGRAPHY PLATE — the orange/pink Archer specimen board. The
+    //    prototype dropped this file; it comes back BIG (full-bleed image
+    //    beat after the dense brand text), not as a quiet footnote ──
     {
       id: "brand-image",
       type: "image",
       src: `${IMG}/robert-rodriguez-logo-typography-color-palette-orange-pink-gradient-archer-hairline-book-font-design-branding.jpg`,
       alt: "Robert Rodriguez — typography system and color palette",
       aspect: "native",
+      bleed: true,
       pressing: { caption: "Typography system and color palette" },
     },
 

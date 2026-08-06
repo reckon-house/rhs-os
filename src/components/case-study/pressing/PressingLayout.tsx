@@ -1,6 +1,7 @@
 "use client";
 
 import type { CaseStudy, Section } from "@/lib/types";
+import { imageDimensions } from "@/data/image-dimensions";
 import { PressingCover } from "./PressingCover";
 import { PressingPlate } from "./PressingPlate";
 import { PressingPlatesPair } from "./PressingPlatesPair";
@@ -36,6 +37,18 @@ const INDEX_REEL_IMAGES = [
   `${RR}/neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg`,
 ];
 const INDEX_REEL_COLORS = ["#E0552F", "#F09A3E", "#E8637A", "#F5EAE7", "#241C18"];
+
+/**
+ * Intrinsic size from the image-dimensions manifest. Load-bearing for the
+ * scroll feel, not just CLS: lazy plates whose ratio is unknown reflow the
+ * page when they load, and a reflow above the viewport eats the scroll
+ * delta — the "plate sticks for a beat on entry" bug. The prototype's
+ * images were all eager, so it never showed this.
+ */
+function dim(src: string): { width?: number; height?: number } {
+  const d = imageDimensions[src];
+  return d ? { width: d[0], height: d[1] } : {};
+}
 
 function splitParagraphs(content: string): string[] {
   return content
@@ -160,6 +173,8 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             instruction={p.instruction}
             bw={p.bw}
             mark={p.mark}
+            eager={i <= 2}
+            {...dim(src)}
           />
         );
       } else {
@@ -170,7 +185,9 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             alt={s.alt}
             caption={p?.caption}
             rise={p?.choreo?.rise}
+            bleed={s.type === "image" ? s.bleed : undefined}
             eager={i <= 1}
+            {...dim(src)}
           />
         );
       }
@@ -187,7 +204,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             { ...s.right, caption: p?.captions?.[1] },
           ].map((img) => {
             const cap = splitCaption(img.caption);
-            return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub };
+            return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
           bw={p?.bw}
           pinForNext={p?.choreo?.pin}
@@ -246,8 +263,12 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     <article className="pressing isolate relative w-full" style={{ background: "transparent" }}>
       <div
         aria-hidden
-        className="hero-breakout absolute top-0 bottom-0 -z-10"
-        style={{ background: "var(--pp-paper)" }}
+        // top -54px: the article starts BELOW the sticky masthead, and at
+        // scroll 0 the strip behind the bar showed main's cream (and the
+        // SpringSolve sketches behind it). The paper reaches up under the
+        // bar so the pressing page owns its whole ground.
+        className="hero-breakout absolute bottom-0 -z-10"
+        style={{ background: "var(--pp-paper)", top: "-54px" }}
       />
       {out}
     </article>

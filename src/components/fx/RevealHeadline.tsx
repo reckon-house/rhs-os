@@ -34,7 +34,6 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type ElementType,
   type ReactNode,
 } from "react";
 import styles from "./reveal.module.css";
@@ -52,20 +51,26 @@ interface RevealHeadlineProps {
 }
 
 /* React 19's JSX typing intersects a bare ElementType union into `never`
-   props, so the dynamic tag needs its prop surface spelled out. */
+   props, so the dynamic tag needs its prop surface spelled out. And not
+   via ElementType<TagProps>: that helper expands to a conditional over
+   every intrinsic tag, which checker-order-dependently blows up as
+   TS2590 ("union type too complex"). A single callable signature keeps
+   the type flat — React 19 passes ref as a plain prop, so this is the
+   whole surface the component uses. */
 type TagProps = {
   className?: string;
   children?: ReactNode;
   ref?: React.Ref<HTMLElement>;
   "aria-label"?: string;
 };
+type TagComponent = (props: TagProps) => React.JSX.Element;
 
 export function RevealHeadline({
   as = "h2",
   children,
   className,
 }: RevealHeadlineProps) {
-  const Tag = as as ElementType<TagProps>;
+  const Tag = as as unknown as TagComponent;
   const ref = useRef<HTMLElement | null>(null);
   const dispRef = useRef<SVGFEDisplacementMapElement | null>(null);
   const rafRef = useRef<number | null>(null);

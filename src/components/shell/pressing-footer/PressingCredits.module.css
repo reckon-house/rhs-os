@@ -1,0 +1,293 @@
+/*
+  PressingCredits — the credits beat of the Pressing C footer, ported from
+  the second .mt-beat (data-credits-beat) in public/lab/swiss-spread.html,
+  LEDGER setting only. The prototype's ?credits= variant machinery (the
+  ruled .mt-spec specimen sheet, the .mt-fieldbeat name marquee) is not
+  ported: the site ships one version.
+
+  Three prototype rules are collapsed into .beat here — .screen (the
+  full-height section), .brief (the two-track grid), and .fx-mast .mt-beat
+  (the ink ground and the headline scale). Where those three disagreed, the
+  most specific one won in the lab, so that is the value written here. Every
+  number is the prototype's settled value; retune in the lab first, then
+  bring it back.
+*/
+
+/* The beat carries its own tokens. The .pressing scope in globals.css
+   defines the same palette as --pp-*, but this footer sits at the bottom of
+   EVERY page, most of which are not pressing studies, so referencing those
+   would leave the ground undefined off a case study. Literals, scoped
+   here. */
+.beat {
+  --pf-ink: #000000;
+  --pf-paper: #ffffff;
+  /* The hairline each ledger row draws, and the dimmed voice of the label
+     row above the headline. */
+  --pf-hair: rgba(255, 255, 255, 0.22);
+  --pf-dim: rgba(255, 255, 255, 0.45);
+  /* The sticky masthead standing in for the prototype's var(--nav). */
+  --pf-nav: 54px;
+
+  position: relative;
+
+  /* dvh, not vh: the shell is h-dvh and the page scrolls inside <main>, so
+     100vh overreaches by the mobile browser-chrome delta. */
+  min-height: calc(100dvh - var(--pf-nav));
+
+  /* Base gutter is the prototype's phone value, because <main> runs px-0
+     below md; the md+ rule below restores the page gutter this section
+     would otherwise have lost to hero-breakout. The restored value is
+     main's own 50px, not the prototype's 40px — the footer's left rule has
+     to line up with the content column above it, and it must match the
+     contact beat's so the two halves of the slab share one rule.
+
+     Breathing room goes on the SECTION, never on the column: trailing
+     padding inside the column extends its box below its visible content,
+     and since sticky releases at the box edge the headline would let go a
+     constant ~99px after the copy had already ended. This value is what
+     phones keep — above 760px the placement pass overwrites it inline. */
+  padding: 48px 20px;
+  padding-bottom: clamp(40px, 10dvh, 130px);
+
+  /* NEVER overflow: hidden on this box. The prototype's .screen sets it and
+     .brief explicitly opts out, because a clipping ancestor between the
+     sticky headline and <main> (the Lenis scroller) silently kills the pin.
+     Keep this wrapper plain: no transform, no filter, no clipping. */
+  overflow: visible;
+
+  background: var(--pf-ink);
+  color: var(--pf-paper);
+
+  /* Helvetica, not Satoshi. The Pressing C shell keeps the prototype's own
+     voice — the same call the Masthead makes at the top of the page, and
+     the footer is its partner. */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  /* minmax(0, …) on track 1, not a bare 1fr. The headline's reveal wraps
+     each line in a nowrap span, so once split its min-content becomes its
+     widest LINE — which a bare 1fr honours by growing the track past its fr
+     share, overflowing the grid and pushing track 2 off the page gutter.
+     Clamping the minimum to 0 pins track 1 to the leftover width.
+
+     align-content: start because the rows must hug their content. Without
+     it the 10px label row is handed a share of the leftover height, which
+     the headline and the column then have to fight over. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(380px, 40vw);
+  column-gap: clamp(28px, 5vw, 78px);
+  align-items: start;
+  align-content: start;
+}
+@media (min-width: 768px) {
+  .beat {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+/* The label row spans both tracks so the mark sits on the page's left rule
+   while the grid below it splits into headline and column. The dimmed
+   colour is the prototype's `.mt-beat > .mono`; SectionMark's disc sets its
+   own brighter colour, so only the name steps back. */
+.markRow {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  color: var(--pf-dim);
+}
+
+/* Headline and column share row 2 so they occupy the same vertical band:
+   the row is as tall as the column, which is the travel the pinned headline
+   needs. In separate rows they could never overlap and the headline would
+   have nothing to stick through.
+
+   The three footer ledes are one family, set at the same display size —
+   this one, the contact beat's ask, and the work index. Anything smaller
+   and the credits read as a caption on the beat above rather than as their
+   own section. */
+.headline {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  font-size: clamp(30px, 4.4vw, 62px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  text-transform: none;
+  max-width: min(11em, 50vw);
+  margin-top: clamp(24px, 5dvh, 70px);
+
+  /* The pin. CSS does the holding; the component only measures where the
+     column starts and how far the section runs past it. 54px is the sticky
+     masthead above the page — the prototype pinned under its var(--nav).
+
+     Sticky releases when its containing block's bottom arrives. Measured,
+     that block is the section's CONTENT box, which is what the placement
+     pass's padding-bottom is computed against. */
+  position: sticky;
+  top: calc(54px + clamp(16px, 4dvh, 54px));
+}
+
+/* margin-top is written by the placement pass in the component: it is the
+   headline's measured height plus the gap, so the column starts just under
+   the headline's last line. The headline rewraps at every breakpoint, so a
+   fixed value drifts out of register. */
+.col {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 16px;
+  line-height: 1.55;
+  padding-bottom: 4dvh;
+}
+
+/* ── the ledger ──────────────────────────────────────────────────────
+   Twelve names as a numbered index in the house grotesk, no logos in the
+   flow. After the type consolidation the marks were the only foreign
+   typefaces left on the page, so the credits set like everything else. Each
+   row's hairline draws in on arrival, one at a time, the same move the
+   method rules make. Where a pointer exists, the real mark surfaces quietly
+   at the row's right edge on hover.
+
+   The list is ordered semantically and unnumbered visually: the reading
+   order is the point, a column of numerals beside it is not. */
+.ledger {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The gap is the prototype's and currently spaces nothing — the row holds a
+   single span. It stays because it is the slot a leading numeral would take
+   if one is ever put back, and removing it would silently change that. */
+.ledger li {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 15px 2px 14px;
+}
+
+/* The rule is a pseudo-element, not a border, so it can be drawn. It starts
+   collapsed and carries NO transition until the row arrives: a transition
+   on the base rule would animate the row back to zero when the class comes
+   off, and these rows never retreat. */
+.ledger li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--pf-hair);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.ledger li.on::after {
+  transform: scaleX(1);
+  transition: transform 0.9s cubic-bezier(0.2, 0.55, 0.2, 1);
+}
+
+/* The name fades with its rule. The selector is `> span` on purpose: the
+   brand mark is an <img>, so it is excluded here and owns its own opacity
+   below — it belongs to hover, not to arrival. */
+.ledger li > span {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ledger li.on > span {
+  opacity: 1;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Logos are forced to a single ink like the homepage wall, so a dozen
+   mismatched marks read as one set. Height is the only dial per logo (equal
+   height is not equal optical weight, hence the per-row overrides in the
+   component). */
+.mark {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 15px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* One mark is a photographic JPEG rather than flat art: inverting it turns
+   it to soup, so it is left as-is and given a corner instead. */
+.mark.asis {
+  filter: none;
+  border-radius: 2px;
+}
+
+/* Hover-capable pointers only. On touch there is no hover state to enter,
+   and the rule would leave every mark either permanently on or unreachable. */
+@media (hover: hover) {
+  .ledger li:hover .mark {
+    opacity: 0.9;
+  }
+}
+
+/* ── phones ──────────────────────────────────────────────────────────
+   One track: the headline and the column stack rather than sitting beside
+   each other. They must go back to SEPARATE rows — sharing row 2 is what
+   lets them overlap for the pin, and in a single column that overlap
+   becomes the column printed on top of the headline. No pin either: there
+   is no beside to travel up. 760px inclusive, matching the prototype and
+   CHOREO_BREAKPOINT in src/lib/choreo.ts. */
+@media (max-width: 760px) {
+  .beat {
+    --pf-nav: 48px;
+    grid-template-columns: 1fr;
+    padding-top: 30px;
+  }
+  .headline {
+    grid-column: 1;
+    grid-row: 2;
+    /* Same specificity as the base rule, so source order decides. In the
+       prototype `.fx-mast .mt-beat h2` outranked the phone block's
+       `.brief h2`, which is why the footer headlines stayed sticky and
+       half-viewport-wide on a phone — the phone rule never landed. */
+    position: static;
+    /* Half the viewport is a 187px ribbon on a 390pt phone, and there is no
+       second column left to protect it from. Released, matching the
+       contact beat. */
+    max-width: none;
+  }
+  .col {
+    grid-column: 1;
+    grid-row: 3;
+    /* !important because the placement pass writes an inline margin; the
+       stylesheet owns the spacing on a phone even if a resize races the
+       component's own clearing of that inline value. */
+    margin-top: 26px !important;
+    padding-bottom: 30px;
+  }
+  .name {
+    font-size: 15px;
+  }
+}
+
+/* Reduced motion renders the finished ledger: every rule drawn, every name
+   at full opacity. The !important lines matter twice over — they cover
+   server-rendered frames before the arrival driver runs, and they hold if
+   the reader flips the OS setting with the page open, after the driver has
+   already decided. */
+@media (prefers-reduced-motion: reduce) {
+  .ledger li::after {
+    transform: none !important;
+    transition: none !important;
+  }
+  .ledger li > span {
+    opacity: 1 !important;
+  }
+}
