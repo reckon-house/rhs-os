@@ -22,11 +22,24 @@
  * single-segment reveal instead.
  */
 
-import { Fragment, type ReactNode } from "react";
+import {
+  Fragment,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingClosing.module.css";
+
+/** px between the headline's last line and the column's first (prototype GAP). */
+const GAP = 34;
+
+/** useLayoutEffect warns during SSR; the measurement is client-only anyway. */
+const useIsoLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export interface PressingClosingProps {
   /** The section mark row, e.g. { n: "06", name: "Closing" }. Same shape as
@@ -67,8 +80,59 @@ export function PressingClosing({
   links,
 }: PressingClosingProps) {
   const headline = heldLine ? `${title}\n${heldLine}` : title;
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const colRef = useRef<HTMLDivElement | null>(null);
+
+  /* The placement pass, the same one every brief runs — the prototype's
+     closing IS a .brief, so it inherits the rule that the column starts
+     below the headline rather than beside its top. Without it the column
+     top-aligns with the mark and the negative space the spread is built on
+     collapses. Measured, not dealt: the headline rewraps across widths, so
+     no fixed offset survives a resize. */
+  useIsoLayoutEffect(() => {
+    const sec = sectionRef.current;
+    const col = colRef.current;
+    if (!sec || !col) return;
+    // RevealHeadline renders the tag itself, so the headline is reached the
+    // way the prototype reached it: the section's own h2.
+    const h2 = sec.querySelector("h2") as HTMLElement | null;
+    if (!h2) return;
+
+    const place = () => {
+      // Phones stack the two in separate rows; the measured drop is
+      // meaningless there and the stylesheet owns the spacing.
+      if (window.innerWidth <= 760) {
+        col.style.marginTop = "";
+        return;
+      }
+      // Cleared first: the two share a grid row, so a stale margin would
+      // inflate the row and compound on every resize.
+      col.style.marginTop = "0px";
+      const hs = getComputedStyle(h2);
+      const drop = parseFloat(hs.marginTop) + h2.offsetHeight + GAP;
+      col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
+    };
+
+    place();
+    window.addEventListener("resize", place);
+    let alive = true;
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (alive) place();
+      });
+    }
+    // The prototype's own settle pass: the reveal masks net to zero layout
+    // only once every line has landed.
+    const t = window.setTimeout(place, 300);
+
+    return () => {
+      alive = false;
+      window.removeEventListener("resize", place);
+      window.clearTimeout(t);
+    };
+  }, [title, heldLine]);
   return (
-    <section className={styles.closing}>
+    <section ref={sectionRef} className={styles.closing}>
       {mark ? (
         <div className={styles.markRow}>
           {/* Not a pinned screen, so the mark drives from its own position
@@ -79,7 +143,7 @@ export function PressingClosing({
       <RevealHeadline as="h2" className={styles.title}>
         {headline}
       </RevealHeadline>
-      <div className={styles.col}>
+      <div ref={colRef} className={styles.col}>
         {paragraphs.map((p, i) => (
           <BodyReveal key={i} className={styles.para}>
             {p}
