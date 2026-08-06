@@ -38,12 +38,12 @@ import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 
 /**
  * Fraction of scroll speed the pinned content keeps. Held content travels
- * at 5% of the page: enough that the eye never sees a hard stop, little
+ * at 8% of the page: enough that the eye never sees a hard stop, little
  * enough that the screen still reads as held. Straight multiplication, no
  * easing curve — a curve means the speed changes during the hold, and any
  * change in speed is exactly the thing this exists to remove.
  */
-export const PIN_DRIFT = 0.05;
+export const PIN_DRIFT = 0.08;
 
 export function usePinDrift(
   wrapRef: RefObject<HTMLElement | null>,

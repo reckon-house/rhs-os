@@ -41,6 +41,7 @@
 import { useEffect, useRef, useState } from "react";
 import { onTick } from "@/lib/scrub";
 import { CHOREO_BREAKPOINT, PLATE_HOLD, RISE } from "@/lib/choreo";
+import { usePinDrift } from "@/lib/pin-drift";
 
 type PinStageProps = {
   children: React.ReactNode;
@@ -61,7 +62,9 @@ export function PinStage({
   mode = "auto",
   className = "",
 }: PinStageProps) {
+  const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
+  const driftRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const [resolved, setResolved] = useState<"sticky" | "transform">(
     mode === "transform" ? "transform" : "sticky",
@@ -141,8 +144,14 @@ export function PinStage({
     };
   }, [resolved]);
 
+  /* Held content never stops dead: it keeps creeping at a fraction of
+     scroll speed so engaging the hold reads as a deceleration. The creep
+     rides an INNER layer, not the pin box — the transform mechanism writes
+     its own transform there, and two drivers on one element would fight. */
+  usePinDrift(wrapRef, driftRef);
+
   return (
-    <div className={`relative ${className}`}>
+    <div ref={wrapRef} className={`relative ${className}`}>
       <div
         ref={pinRef}
         className={
@@ -155,7 +164,7 @@ export function PinStage({
             : "relative will-change-transform"
         }
       >
-        {children}
+        <div ref={driftRef}>{children}</div>
       </div>
       {/* The climb room, in flow. Hidden below the breakpoint and under
           reduced motion; offsetHeight then reads 0, which also zeroes the
