@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import type { CaseStudy, Section } from "@/lib/types";
 import { SectionRenderer } from "./SectionRenderer";
+import { PressingLayout } from "./pressing/PressingLayout";
 
 /** Map section types to grid column placement.
  *  Visual/full-width sections span all 12 columns.
@@ -115,6 +116,11 @@ function groupSections(sections: Section[]): SectionOrGroup[] {
 export function CaseStudyLayout({ study }: { study: CaseStudy }) {
   const [showGrid, setShowGrid] = useState(false);
 
+  // Pressing studies render through their own layout and skins entirely —
+  // the classic grid, folds, and section components below never run for
+  // them. Studies migrate one at a time by setting style: "pressing".
+  const isPressing = study.style === "pressing";
+
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       // Ctrl+G or Cmd+G toggles grid overlay
@@ -126,6 +132,10 @@ export function CaseStudyLayout({ study }: { study: CaseStudy }) {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
+
+  if (isPressing) {
+    return <PressingLayout study={study} />;
+  }
 
   const items = groupSections(foldSectionHeaders(study.sections));
 

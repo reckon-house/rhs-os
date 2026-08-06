@@ -1,0 +1,163 @@
+/* Shared skin for PressingPlate and PressingPlatesPair, ported from the
+   .plate-full and .plates rules in public/lab/swiss-spread.html. Every
+   size and color that the prototype expresses as a token stays a token
+   here (--pp-cap, --pp-r, from the article.pressing scope in globals.css);
+   the raw numbers in this file are the prototype's tuned mechanism values
+   (--bleed, gaps, mats), which have no token. */
+
+/* A caption is running text, not a marker: no forced caps, no tracking,
+   book weight, stepped back with opacity instead of shrunk. The prototype
+   learned this the hard way — the label treatment made every photo credit
+   announce itself like a section header. */
+.caption {
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  opacity: 0.55;
+  margin-top: 8px;
+}
+
+/* ── PressingPlate ─────────────────────────────────────────────────── */
+
+/* The rise figure is a deliberately PLAIN wrapper: margin 0 and nothing
+   else, so the RisingPlate section's negative top margin collapses through
+   it and the climb geometry is identical to mounting the plate bare — and
+   so no transform, filter, or overflow sneaks in between the choreography
+   and <main>, which would kill the neighboring sticky. */
+.riseFigure {
+  margin: 0;
+}
+
+/* A rise plate's caption travels with the plate across the held section
+   beneath it. The held pinner is a positioned element and paints above
+   plain in-flow text regardless of DOM order, so the caption is lifted
+   into the plate's own stacking order (RisingPlate is z-index: 3). */
+.riseCap {
+  position: relative;
+  z-index: 3;
+}
+
+.flowFigure {
+  margin: 0;
+}
+
+/* Flow mode: the whole frame at its native ratio, wearing --pp-r — the
+   in-column corner every resting image in the pressing language wears.
+   No fixed height and no cover-crop, for the prototype's reason: forcing
+   plates into viewport-tall boxes cropped the exact compositions they
+   exist to show. */
+.flowImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--pp-r);
+}
+
+/* ── PressingPlatesPair (the prototype's .plates) ──────────────────── */
+
+/* --bleed is the ONLY crop, and it is the track the parallax runs on: each
+   image is that much taller than its frame and slides the difference as
+   the row crosses the viewport. Across the scroll the whole frame gets
+   seen; at any single instant you see (100 - bleed)% of it. Set --bleed to
+   0 and the plates go back to full-frame and stop moving — a still image
+   cannot travel inside a box that exactly fits it. */
+.plates {
+  --bleed: 10%;
+  /* The prototype mats the row with padding: 48px 40px, but <main> already
+     carries the 50px page gutter on md+ — porting the 40px would double
+     it. Vertical rhythm only up here; the phone block below restores the
+     gutter because main drops to px-0. */
+  padding: 48px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pairFigure {
+  position: relative;
+  margin: 0;
+}
+
+/* Each frame's aspect-ratio is written at runtime from the source file's
+   own pixel dimensions, so the box is always exactly the photograph's
+   shape — the prototype's earlier hardcoded 4/5 was eating 17% off the top
+   and bottom (the heels, the top of the hair) — and --bleed stays the only
+   crop in the system. */
+.frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--pp-r);
+}
+
+.frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: calc(100% + var(--bleed));
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+.bw .frame img {
+  filter: grayscale(1);
+}
+
+/* Left label, right-hand sub (the prototype's two mono spans). The type
+   voice comes from .caption, applied alongside this class in the JSX. */
+.pairCap {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* The mark row is a site addition — the prototype's pair carries no label
+   — so it borrows a modest drop rather than inventing a new rhythm. */
+.markRow {
+  margin-bottom: 18px;
+}
+
+/* Reduced motion: no slack, no travel. The driver also stands down per
+   tick, but this is the state that must hold even before hydration. */
+@media (prefers-reduced-motion: reduce) {
+  .plates {
+    --bleed: 0%;
+  }
+}
+
+/* The prototype's phone layout, at its own 760px line: one column, tighter
+   gap, tighter vertical rhythm. The parallax stays on at every width — it
+   is a crossing effect, not a pin, and the prototype never gates it. */
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .plates {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+/* Phone gutters flip at 767px, not the prototype's 760 — main's own gutter
+   switches at md (768px), and cutting at 760 would leave a band of widths
+   with no page gutter at all. The rise caption and the flow figure carry
+   the same mat: below md their column has no gutter of its own, while the
+   full-bleed image above them is supposed to touch the edges. */
+@media (max-width: 767px) {
+  .plates {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .flowFigure {
+    padding: 0 20px;
+  }
+  .riseCap {
+    padding: 0 20px;
+  }
+}

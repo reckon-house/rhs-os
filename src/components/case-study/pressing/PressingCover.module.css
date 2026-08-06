@@ -1,0 +1,230 @@
+/*
+  PressingCover — ported from public/lab/swiss-spread.html:
+  .coverwrap / .cover-sticky / .cover-statement / .plate-thumb / .reel-box /
+  .edge-v / .cover-idx. Every value here is the prototype's settled value;
+  retune in the lab first, then bring it back. Colors, sizes and radii come
+  from the article.pressing token scope — never hardcode them here.
+*/
+
+/* 210dvh is the SEQUENCE; the tail on top of it is the plate's climb room.
+   Without it the cover's pin had to hold both at once, and the storefront
+   plate began entering before the copy had started, let alone landed. The
+   driver measures progress against height minus the tail, so the headline
+   and copy keep their original travel and the extra room is purely time for
+   the plate to cross. dvh, not vh: the shell is h-dvh and 100vh overshoots
+   by the mobile browser-chrome delta. */
+.coverwrap {
+  height: calc(210dvh + var(--pp-rise));
+  position: relative;
+}
+
+/* The plate's climb room, in flow after the sticky screen so the cover stays
+   pinned through it while the next section's RisingPlate crosses. Its height
+   is EXCLUDED from the driver's progress math. */
+.risetail {
+  height: var(--pp-rise);
+}
+
+/* Below the masthead, not behind it: the site masthead is a sticky 54px bar
+   above the page (the prototype's --nav), so the cover pins under it and the
+   screen is sized to what is actually left. A 100dvh sticky at top:0 hangs a
+   masthead's worth past the fold and drops the bottom-anchored headline off
+   the bottom of the screen.
+
+   overflow:hidden clips the statement's below-the-fold start. Clipping ON
+   the sticky element is safe — the sticky killer is an overflow-clipping
+   ANCESTOR between the sticky and <main>, and this element clips only its
+   own children. */
+.coverSticky {
+  position: sticky;
+  top: 54px;
+  height: calc(100dvh - 54px);
+  min-height: 0;
+  padding: 48px 40px;
+  overflow: hidden;
+}
+
+/* The headline, bottom-anchored. Sits UNDER the statement (z 1 vs 2): the
+   statement rides up over it, so the two genuinely cross. */
+.h1 {
+  position: absolute;
+  left: 40px;
+  bottom: 28px;
+  z-index: 1;
+  font-size: clamp(84px, 13.5vw, 205px);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+}
+
+/* DIRECT children only: RevealHeadline nests word and character spans inside
+   each line, and an unscoped `span { display: block }` set the headline
+   vertically, one character per line. The second selector reaches the line
+   INNER wrappers (h1 > .rln > .rlnI, by structure — the hashed class names
+   live in reveal.module.css and are only addressable from JS): the exit
+   slides those inner wrappers back down inside their own overflow-hidden
+   masks, so they get will-change here the way the prototype gave .rlnI. */
+.h1 > span {
+  display: block;
+}
+.h1 > span > span {
+  will-change: transform;
+}
+
+/* The lone multiplication-sign line runs light. The driver finds it by shape
+   (the only line that is a single "x" character) and stamps this class on
+   the character span, exactly as the prototype did after its splitter
+   rebuilt the markup. */
+.x {
+  font-weight: 300;
+}
+
+/* The statement. It starts a full screen below its resting slot (the 86dvh
+   here is the pre-hydration state; the driver takes over per frame and works
+   in window.innerHeight pixels) and rides up over the headline as it
+   unbuilds. z-index 2: it crosses OVER the headline, not under. */
+.statement {
+  position: absolute;
+  top: 22dvh;
+  left: 40px;
+  z-index: 2;
+  font-size: clamp(24px, 3.2vw, 44px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  max-width: 21em;
+  transform: translateY(86dvh);
+  will-change: transform;
+}
+
+/* The driver groups the statement's words into rendered lines and moves each
+   line on its own clock. Inline-block is what makes a word transformable
+   without disturbing its neighbours. */
+.csW {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* The reel thumb. No fixed height on the figure — the caption sits in normal
+   flow under the box, so it rides up and down as the box changes shape, and
+   the height transition animates it for free. */
+.plateThumb {
+  position: absolute;
+  top: 64px;
+  right: 40px;
+  width: clamp(110px, 12vw, 170px);
+  margin: 0;
+}
+
+/* The BOX owns the shape: its height is re-set on every beat to match that
+   frame's native ratio, so the thumbnail morphs between portrait and
+   landscape as the reel cuts. Transitioning height (rather than
+   aspect-ratio) keeps it animating everywhere. */
+.reelBox {
+  width: 100%;
+  height: 147px;
+  overflow: hidden;
+  border-radius: calc(var(--pp-r) * 0.75);
+  transition: height 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* A caption is running text, not a marker: caption size, book weight, no
+   tracking, stepped back with opacity instead of shrunk. */
+.reelCap {
+  margin-top: 8px;
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.5;
+  opacity: 0.55;
+}
+
+/* The vertical spec line on the page edge. Starts below the reel block and
+   runs to the lower corner the headline never reaches. */
+.edgeV {
+  position: absolute;
+  right: 40px;
+  top: 356px;
+  bottom: 48px;
+  writing-mode: vertical-rl;
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  font-weight: var(--pp-lbl-weight);
+  line-height: 1.8;
+}
+
+/* The section mark for the statement half of the sequence. */
+.coverIdx {
+  position: absolute;
+  bottom: 48px;
+  right: 40px;
+}
+
+/* Below 760px there is no pin: headline, statement and reel stack in flow,
+   bottom-weighted so the block still reads as a cover. --pp-rise is already
+   0 here, but the tail is hidden anyway so nothing depends on the token. */
+@media (max-width: 760px) {
+  .coverwrap {
+    height: auto;
+  }
+  .risetail {
+    display: none;
+  }
+  .coverSticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 26px;
+    padding: 76px 20px 84px;
+    overflow: visible;
+  }
+  .h1 {
+    position: static;
+    font-size: clamp(38px, 13.6vw, 96px);
+  }
+  /* !important on purpose: it outranks any inline transform the driver wrote
+     before a mid-session viewport change, so the CSS state wins even if a
+     frame slips through before the driver's own cleanup runs. */
+  .statement {
+    position: static;
+    transform: none !important;
+    max-width: none;
+    font-size: clamp(19px, 5.4vw, 30px);
+  }
+  .statement .csW {
+    transform: none !important;
+  }
+  .plateThumb {
+    position: static;
+    width: clamp(84px, 26vw, 130px);
+  }
+  .edgeV {
+    display: none;
+  }
+  .coverIdx {
+    bottom: 30px;
+    right: 20px;
+  }
+}
+
+/* Reduced motion: scrubbed motion renders static. The statement sits in its
+   resting slot, the headline lines stay put (the structural selector reaches
+   the same inner wrappers the driver would move), and the reel box snaps to
+   each shape instead of animating. RevealHeadline renders its own final
+   state, so the entrance needs nothing from us. */
+@media (prefers-reduced-motion: reduce) {
+  .statement,
+  .statement .csW {
+    transform: none !important;
+  }
+  .h1 > span > span {
+    transform: none !important;
+  }
+  .reelBox {
+    transition: none;
+  }
+}

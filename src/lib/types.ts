@@ -12,6 +12,13 @@ export interface CaseStudy {
   stack: string[];
   links: { label: string; url: string }[];
   heroImage: string;
+  /**
+   * "pressing" renders the study in the Pressing C language (white paper,
+   * Helvetica, choreographed pins) via PressingLayout instead of the classic
+   * CaseStudyLayout. Studies migrate one at a time by setting this flag —
+   * absent means the classic renderer, untouched.
+   */
+  style?: "pressing";
   sections: Section[];
 }
 
@@ -67,7 +74,20 @@ export type Section =
   | LogoCarouselSection
   | MarksAndMaterialsSection
   | MasonrySection
-  | MCPArchitectureSection;
+  | MCPArchitectureSection
+  | RRSystemIndexSection;
+
+/**
+ * The Robert Rodriguez system index: staggered ledger rows each carrying a
+ * live specimen — the Archer logotype assembling itself (baked outlines
+ * morphed between cuts), a palette swatch morphing shape and color, a
+ * mini Faux Reel. Bespoke and hardcoded per the house pattern for rich
+ * showcase sections (see RHS-PROFILE 2026-06-15): a new study's system
+ * index is a new component, never a config of this one.
+ */
+export interface RRSystemIndexSection extends BaseSection {
+  type: "rr-system-index";
+}
 
 export interface MasonrySection extends BaseSection {
   type: "masonry";
@@ -86,6 +106,49 @@ interface BaseSection {
     padding?: string;
     /** Break out of the max-width article container to fill the viewport (also drops radius) */
     bleed?: boolean;
+  };
+  /**
+   * Pressing-language presentation fields. Read only by PressingLayout and
+   * the pressing/* section skins; the classic renderer ignores the whole
+   * bag, so adding these to a study is safe before it flips style:
+   * "pressing". The choreography flags are RELATIONAL — pin means "hold
+   * this section so the NEXT one can climb across it", rise means "climb
+   * over the PREVIOUS section, which must be pinned" — see src/lib/choreo.ts
+   * for the neighbor contract these encode.
+   */
+  pressing?: {
+    /** Scroll-scrubbed disc label, e.g. { n: "02", name: "Statement" } */
+    mark?: { n: string; name: string; dark?: boolean };
+    choreo?: {
+      /** Hold this section on screen while the next sibling climbs over it */
+      pin?: boolean;
+      /** Include the rest beat before the neighbor's climb (default true with pin) */
+      hold?: boolean;
+      /** Climb over the previous (pinned) section as a full-bleed plate */
+      rise?: boolean;
+      /** Pinned zoom-to-full-bleed object plate with pan-through */
+      zoom?: boolean;
+      /** Pinned horizontal crossing headline (vertical scroll remapped) */
+      crossing?: boolean;
+      /** Pinned quote poster: ink fill rises and knocks the type out */
+      quotePoster?: boolean;
+    };
+    /** Figcaption footnote under a plate ("Yellow blazer, studio") */
+    caption?: string;
+    /** Per-image captions for multi-image sections, in image order */
+    captions?: string[];
+    /** Big plate numeral on zoom plates ("01") */
+    plate?: string;
+    /** Render the image(s) grayscale */
+    bw?: boolean;
+    /** Mono instruction line on zoom plates ("Scroll — fills the mat...") */
+    instruction?: string;
+    /** The headline's separately-held final line (the prototype's .out span) */
+    heldLine?: string;
+    /** For quote posters: index of the \n-split line that takes the indent offset */
+    indent?: number;
+    /** Section counts as a dark zone: the masthead flips ink→paper over it */
+    navDark?: boolean;
   };
 }
 
@@ -151,6 +214,13 @@ export interface MetaSection extends BaseSection {
   // Optional external links rendered as spec lines below Classification
   // (e.g. Source → the public repo). Same shape as the closing's links.
   links?: { label: string; url: string }[];
+  /**
+   * Pressing cover extras: a live Faux Reel thumb beside the title (its box
+   * re-shapes to each frame's native ratio as the reel cuts) and the
+   * vertical spec line on the page edge. Ignored by the classic MetaBlock.
+   */
+  reel?: { images: string[]; colors: string[]; caption?: string };
+  specLine?: string;
 }
 
 export interface SectionHeaderSection extends BaseSection {

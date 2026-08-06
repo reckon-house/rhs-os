@@ -1,0 +1,212 @@
+/* ── the system index ─────────────────────────────────────────────
+   Ported from the .index section of public/lab/swiss-spread.html.
+   No icons, no counts — just the label and a live sample of the thing
+   it names. The stagger is what keeps a list of three from reading as
+   a table. Each sample carries a small caption naming its current
+   state, which is the only text that moves. All values here are the
+   prototype's tuned ones; tune there first, then bring them back. */
+
+.index {
+  position: relative;
+  /* The prototype's .screen: a full viewport section minus the sticky
+     54px masthead above the page. 100dvh, never 100vh — the shell is
+     h-dvh and the page scrolls inside <main>, so 100vh overreaches by
+     the mobile browser-chrome delta. */
+  min-height: calc(100dvh - 54px);
+  /* Horizontal gutters come from <main> (md:px-[50px]), so the section
+     adds none of its own — restating them would double-inset every row
+     against the sections above. Top spacing is the prototype's 12vh
+     .index override of the .screen padding, in dvh for the same reason
+     as the min-height. */
+  padding: 12dvh 0 48px;
+  overflow: hidden;
+  /* The reserved specimen box. Local to this component — the pressing
+     scope has no token for it because nothing else uses it. */
+  --sampleH: 208px;
+}
+
+/* The section mark sits where the prototype's .slabel did. Left is 0,
+   not the prototype's 40px: <main> already provides that gutter. */
+.slabel {
+  position: absolute;
+  top: 76px;
+  left: 0;
+}
+
+/* Full-width hairlines with staggered content: the rule spans the
+   measure so it reads as an index, the indent keeps it from reading as
+   a table. Pseudo-elements rather than borders, for the same reason as
+   the prototype's method rules: a border cannot be drawn across. The
+   first row carries two — the index opens with a rule above it as well
+   as below. The 0.14 black is deliberately lighter than --pp-hair
+   (0.9); it is the index's own hairline value, not the token's. */
+.wrap {
+  position: relative;
+}
+.wrap::after,
+.first::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.14);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+.wrap::after {
+  bottom: 0;
+}
+.first::before {
+  top: 0;
+}
+
+/* One at a time, top to bottom, at the method section's pace. --rd is
+   set inline per row (1.2s / 2.4s / 3.6s). */
+.drawn .wrap::after,
+.drawn .first::before {
+  transform: scaleX(1);
+  transition: transform 1.15s cubic-bezier(0.2, 0.55, 0.2, 1) var(--rd, 0ms);
+}
+/* The opening rule draws immediately. --rd lives on the row element for
+   its under-rule, and a ::before inherits custom properties from its
+   element, so without this override the top rule would wait 1.2s too. */
+.drawn .first::before {
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap::after,
+  .first::before {
+    transform: scaleX(1);
+    transition: none;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 2.6vw, 46px);
+  margin-left: var(--indent, 0px);
+  padding: clamp(10px, 2.2dvh, 30px) 0;
+  font-size: clamp(38px, 6.4vw, 96px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+/* Fixed height, content centred. The reel re-shapes every beat —
+   without a reserved box that height change reflows the whole row, and
+   the section visibly jumps as portrait frames come and go. */
+.sample {
+  flex: 0 0 auto;
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--sampleH);
+}
+
+/* Inside the reserved box. At -2.1em these hung below the sample and
+   landed directly on the row's hairline. Family is inherited from the
+   .pressing scope (Helvetica). */
+.cap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2px;
+  white-space: nowrap;
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  font-weight: var(--pp-lbl-weight);
+  color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.26s ease;
+}
+
+/* logotype — the real mark: caps overlapped hard enough to interlock,
+   with the lowercase nested into the lower right. Composition lives in
+   the viewBox (see the component) so CSS only has to scale the whole
+   thing; the two words have to share one coordinate space to overlap
+   at all. */
+.lockSample {
+  width: auto;
+}
+.lk {
+  display: block;
+}
+/* display: block above outranks the UA's [hidden] { display: none } —
+   author origin beats UA origin. The prototype had the same collision
+   but never painted it (its driver ran synchronously before first
+   paint); React hydrates after first paint, so the hidden state has to
+   actually hide or the empty svg box flashes beside the fallback. */
+.lk[hidden] {
+  display: none;
+}
+.lk svg {
+  display: block;
+  width: auto;
+  height: clamp(52px, 8vw, 120px);
+  overflow: visible;
+  /* Paths are drawn in currentColor so the ink token applies. */
+  color: var(--pp-ink);
+}
+/* Live-text fallback, shown until the outlines are drawn and kept for
+   good if flubber never arrives. The slab stack stands in for Archer
+   on machines that carry it; no font file is served. */
+.fb {
+  font-size: 0.5em;
+  line-height: 0.98;
+  font-family: "Archer", "Rockwell", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* palette — the swatch is an outline, not a box: shape and colour are
+   both interpolated per frame so they arrive together. */
+.swatch {
+  width: clamp(64px, 7.6vw, 124px);
+  aspect-ratio: 1 / 1;
+  display: block;
+}
+
+/* motion — the mini reel. The box height is written per beat from each
+   frame's native ratio; 100px is only the pre-measure placeholder. */
+.reelBox {
+  display: block;
+  width: clamp(68px, 8vw, 130px);
+  height: 100px;
+}
+/* The prototype's <sizzle-reel radius="14">: this component's radius is
+   its own 14px, tuned against the sample size — deliberately inside the
+   --pp-r 16 used on full plates. */
+.reel {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+}
+
+/* index rows on a phone: less stagger, smaller samples, or the reel
+   eats the row. Pins and climbs do not exist in this section, so the
+   rows keep this reduced treatment below 760px as the prototype did. */
+@media (max-width: 760px) {
+  .index {
+    --sampleH: 150px;
+    padding: 15dvh 0 30px;
+  }
+  .slabel {
+    top: 64px;
+  }
+  .row {
+    font-size: clamp(26px, 8.2vw, 52px);
+    gap: 12px;
+    margin-left: calc(var(--indent, 0px) * 0.35);
+    padding: 12px 0;
+  }
+  .reelBox {
+    width: clamp(52px, 16vw, 84px);
+  }
+  .swatch {
+    width: clamp(44px, 13vw, 74px);
+  }
+}

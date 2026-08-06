@@ -1,0 +1,143 @@
+/*
+  PressingQuote — ported from public/lab/swiss-spread.html
+  (.qwrap / .q-sticky / .qfill / .quote). Every value here is the
+  prototype's settled value; retune in the lab and port back. Tokens come
+  from the <article class="pressing"> scope.
+*/
+
+/* The wrap's extra height is how long the panel takes to climb the
+   pinned screen. dvh, not vh — the shell is h-dvh and 100vh overshoots
+   by the mobile chrome delta. */
+.wrap {
+  position: relative;
+  height: 240dvh;
+}
+
+/* Two declarations here are load-bearing, and the prototype documents
+   both. `isolation: isolate` keeps the difference blend composited
+   against the fill and nothing further back. The EXPLICIT paper
+   background is what the blend resolves against at rest: inside an
+   isolated context with a transparent ground, paper type differences
+   against nothing and simply stays paper — the ink-on-paper resting
+   state depends on a real white behind it.
+
+   top: 0, not the masthead height: like the prototype's q-sticky under
+   its nav, this poster slides UNDER the sticky 54px masthead. */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  min-height: 0;
+  background: var(--pp-paper);
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  padding: 48px 40px;
+}
+
+/* The rising ground. data-nav-dark rides on this element in the markup;
+   the attribute is static and the masthead driver skips zones under 2px,
+   so the resting 0-height fill never inverts the masthead. */
+.fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  background: var(--pp-ink);
+  z-index: 0;
+  will-change: height;
+}
+
+/* Paper type on difference: |paper − paper| = ink and |paper − ink| =
+   paper, so each line flips exactly as the fill's edge passes it — the
+   inversion is free, nothing ever sets a colour per line. The colour
+   must be the paper token (white); the arithmetic assumes paper is white
+   and ink is black, which is what the pressing tokens are.
+
+   The one headline on the page that is NOT flush left: it has no section
+   around it — it sits alone on a screen the panel climbs — so centring
+   reads as composition rather than as a line that failed to line up. */
+.text {
+  position: relative;
+  z-index: 2;
+  mix-blend-mode: difference;
+  color: var(--pp-paper);
+  font-size: clamp(44px, 6.6vw, 104px);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  max-width: min(10em, 50vw);
+  text-align: center;
+}
+
+.line {
+  display: block;
+}
+
+/* The indent offset at its current tuned value: the stagger was scrubbed
+   to flush on desktop and survives only on a phone (see the media block
+   below). The class stays so the `indent` prop keeps meaning at every
+   width — and so the lab can retune the desktop value in one place. */
+.indent {
+  margin-left: 0;
+}
+
+.idx {
+  position: absolute;
+  top: 48px;
+  left: 40px;
+  z-index: 2;
+}
+
+/* Static below the breakpoint: no pin, no knockout — ink on paper. The
+   poster keeps a screen-sized beat (minus the 54px masthead) so it still
+   reads as a full-screen pause in the flow. */
+@media (max-width: 760px) {
+  .wrap {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    height: auto;
+    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+    padding: 30px 20px;
+  }
+  .fill {
+    display: none;
+  }
+  .text {
+    mix-blend-mode: normal;
+    color: var(--pp-ink);
+    /* Outranks any inline parallax drift the driver wrote before a
+       mid-session breakpoint crossing caught up with it. */
+    transform: none !important;
+    font-size: clamp(30px, 9.4vw, 60px);
+  }
+  .indent {
+    margin-left: 0.8em;
+  }
+}
+
+/* Reduced motion: the fill's climb IS this section's motion, so the
+   scrub renders static at rest — ink type on paper, no panel, no pin.
+   (Final-state rendering would mean a black poster, but the resting
+   state of the page is paper; the climb is the event, not the ground.) */
+@media (prefers-reduced-motion: reduce) {
+  .wrap {
+    height: auto;
+  }
+  .sticky {
+    position: static;
+    height: auto;
+    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+  }
+  .fill {
+    display: none;
+  }
+  .text {
+    mix-blend-mode: normal;
+    color: var(--pp-ink);
+    transform: none !important;
+  }
+}

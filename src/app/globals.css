@@ -619,3 +619,35 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
    at 16:9, where the image width already fills the frame. */
 .sz-fill[src*="content-framework-lockup-whats-now"] { object-position: left; }
 .sz-fill[src*="personalization-system-design"] { object-position: right; }
+
+/* ── Pressing (the Pressing C case-study language) ─────────────────────
+   Ground + type tokens for studies with style: "pressing", ported from
+   public/lab/swiss-spread.html :root. Pressing studies run on PURE WHITE
+   paper with black ink — deliberately not the site cream — and Helvetica,
+   not Satoshi. One label, one note: every small treatment on a pressing
+   page resolves to --pp-lbl or --pp-note; hierarchy comes from opacity
+   and position, not size variety. Tune these in the lab file first, then
+   bring them back. */
+.pressing {
+  --pp-paper: #FFFFFF;
+  --pp-ink: #000000;
+  --pp-hair: rgba(0, 0, 0, 0.9);
+  --pp-lbl: 10px;
+  --pp-lbl-track: 0.04em;
+  --pp-lbl-weight: 500;
+  --pp-note: 16px;
+  --pp-cap: 11px;
+  --pp-r: 16px;
+  --pp-rise: 96dvh;
+  --pp-plate-hold: 13dvh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--pp-paper);
+  color: var(--pp-ink);
+}
+@media (max-width: 760px) {
+  .pressing {
+    --pp-lbl: 9px;
+    --pp-rise: 0px;
+    --pp-plate-hold: 0px;
+  }
+}

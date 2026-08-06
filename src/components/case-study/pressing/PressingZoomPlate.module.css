@@ -1,0 +1,229 @@
+/*
+ * PressingZoomPlate — the pinned zoom object plate, ported from
+ * public/lab/swiss-spread.html (.zoomwrap / .zoom-sticky / .zoom-fig /
+ * .object / .num / .num-burn). Every number here is the prototype's tuned
+ * value with the raw tokens re-pointed at the .pressing scope (--pp-*);
+ * retune in the lab file first, then bring changes back.
+ */
+
+/* The wrap's real height is written by the driver: one viewport + a grow
+   phase (1.1 viewports of scroll) + a 1:1 pan through the image's spill +
+   the risetail. This fallback exists only for the first frame before that
+   measurement, so it is scoped to the states where the driver runs at all —
+   on a phone or under reduced motion the section is plain flow and must
+   keep its natural height. dvh, never vh: the shell is h-dvh and vh
+   overshoots by the mobile browser-chrome delta. */
+.wrap {
+  position: relative;
+}
+@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+  .wrap {
+    height: 320dvh;
+  }
+}
+
+/* Sticky at top: 0, not under the masthead the way the prototype's cover
+   screens sit — this screen deliberately runs BEHIND the sticky 54px
+   masthead so the grown plate can slide beneath the bar; the driver parks
+   the plate's top edge at the masthead's bottom edge instead (MASTHEAD in
+   the component). The explicit background is load-bearing: position:
+   sticky opens a stacking context, and without a painted ground the held
+   screen shows the page through itself. Sticky also dies under any
+   transformed, filtered, or overflow-clipping ancestor — the wrap above
+   this stays plain, and so must everything between it and <main>. */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--pp-paper);
+  padding: 48px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  column-gap: 40px;
+  align-items: center;
+}
+
+/* Anchored top-center: the plate's top edge rides to the mat's top and
+   stays there while the body grows downward, so the subject never leaves
+   the screen; the overflow that hangs below the fold gets clipped by the
+   sticky and panned through instead. The border-radius is a starting value
+   only — the driver rewrites it per frame, easing the corner to 0 as the
+   plate grows edge to edge (pre-divided by the current scale, because
+   transform scales border-radius along with everything else). */
+.fig {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  will-change: transform;
+  border-radius: var(--pp-r);
+}
+
+/* No object-fit crop and no fixed height — the plate shows the WHOLE frame
+   at its native aspect. Cropping here throws away the composition before
+   the zoom even begins. */
+.fig img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* The bw prop. The prototype's .bw ended up empty (that page ran the
+   photography in full color), but the component keeps the switch. */
+.bw {
+  filter: grayscale(1);
+}
+
+/* The plate numeral renders as plain ink and is knocked OUT over the
+   plate's rectangle, rewritten per frame by the driver: four half-plane
+   gradients unioned by mask-composite: add, which is every pixel outside
+   the plate's rect. The transition edge IS the plate edge, to the pixel —
+   no opacity fade and no switch. The burn layer underneath (z 32) is
+   always on, so whatever the knockout reveals is already burning. */
+.num {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  position: relative;
+  z-index: 34;
+  font-size: clamp(60px, 8vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--pp-ink);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
+}
+
+/* The captions get the same treatment as the numeral: plain ink, knocked
+   out over the plate's rect, burn behind. No mix-blend-mode anywhere,
+   which is why a z-index here is safe — it was blending that could not
+   survive a stacking context. */
+.left {
+  grid-column: 1;
+  grid-row: 2;
+  padding-bottom: 4px;
+  position: relative;
+  z-index: 34;
+}
+.left p {
+  margin: 0;
+  color: var(--pp-ink);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
+}
+
+/* One label voice, from the tokens. Hierarchy comes from opacity and
+   position, never from another size. */
+.tiny {
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  font-weight: var(--pp-lbl-weight);
+  line-height: 1.8;
+}
+
+/* The mono instruction line: the prototype's rgba(0,0,0,0.45), expressed
+   from the ink token instead of a second hardcoded black. */
+.left .instr {
+  color: color-mix(in srgb, var(--pp-ink) 45%, transparent);
+  margin-top: 18px;
+}
+
+/* The burn sits between the plate and the ink (z 32 against the ink's 34)
+   and is masked to the exact letterforms by the SVG text mask the
+   component builds. Always on, never faded: a saturate and contrast pump
+   over flat paper produces nothing, and over the plate it burns — that
+   asymmetry is what makes the reveal per-pixel for free. Geometry and the
+   backdrop-filter itself (with the per-instance melt filter id, and the
+   -webkit- variant that drops the SVG reference for Safari) are written
+   inline by the component. At caption size the melt dissolves the
+   letterforms once the image reaches them — deliberate, chosen for the
+   look over the legibility, same call as the prototype. */
+.burn {
+  position: absolute;
+  z-index: 32;
+  pointer-events: none;
+}
+
+/* The hidden SVG carrying the per-instance melt filter. Absolute so it
+   never claims a grid cell. */
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The section mark rides the pinned screen the way the prototype's cover
+   index does: bottom-right, above the plate. Its sweep is driven from the
+   wrap's travel (scrollRef), because the mark itself barely moves while
+   the screen is held. */
+.markSlot {
+  position: absolute;
+  bottom: 48px;
+  right: 40px;
+  z-index: 34;
+}
+
+/* Climb room for a plate that follows, in flow after the sticky screen.
+   The driver measures this and adds it ON TOP of its own sequence, so the
+   zoom's tuning never changes with --pp-rise; the hold beat keeps the
+   finished screen at rest before the next plate starts to cross. Only a
+   ruler — it contributes no layout of its own once the driver owns the
+   wrap height. */
+.risetail {
+  height: calc(var(--pp-plate-hold) + var(--pp-rise));
+  pointer-events: none;
+}
+
+/* Below the choreography breakpoint and under reduced motion the pin and
+   the zoom are off entirely: static figure, numeral and captions as plain
+   ink, everything in flow. Pure CSS, so server markup is correct at any
+   width with no hydration flash; the driver only ever writes on top of
+   the active state and cleans up behind itself. */
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .burn,
+  .risetail {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .sticky {
+    height: auto;
+    min-height: 0;
+    padding: 30px 20px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-content: center;
+  }
+  /* The plate stacks above its caption; the numeral keeps its desktop
+     placement rules and so lands ON the image, bottom-left — the plate
+     number stamped on the frame, as the prototype has it. */
+  .fig {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .left {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: start;
+  }
+  .num {
+    font-size: clamp(44px, 13vw, 72px);
+  }
+  .markSlot {
+    bottom: 30px;
+    right: 20px;
+  }
+}
