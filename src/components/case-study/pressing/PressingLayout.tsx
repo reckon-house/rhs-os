@@ -173,6 +173,10 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             instruction={p.instruction}
             bw={p.bw}
             mark={p.mark}
+            // The climb room is only reserved when something actually
+            // climbs. Reserved with no riser after it, the tail is a
+            // screenful of dead pin once the zoom has finished.
+            reserveRise={sections[i + 1]?.pressing?.choreo?.rise === true}
             eager={i <= 2}
             {...dim(src)}
           />

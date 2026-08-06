@@ -58,6 +58,15 @@ export type PressingZoomPlateProps = {
   /** Optional section mark, scrubbed from the zoom wrap's own travel. */
   mark?: { n: string; name: string };
   /**
+   * Reserve the climb room a RISING next sibling needs. Only true when the
+   * section that follows actually rises: the tail is the ruler for that
+   * plate's climb, and with nothing climbing it is pure dead pin — the
+   * screen holds for another screenful after the zoom has already finished.
+   * The prototype makes exactly this distinction: its first zoom wrap has
+   * no tail, its second (followed by the gallery plate) does.
+   */
+  reserveRise?: boolean;
+  /**
    * Intrinsic pixel size from the image-dimensions manifest. Load-bearing
    * for scroll feel, not just CLS: the driver sizes the wrap from the
    * figure's measured box, and without a known ratio that measurement
@@ -120,6 +129,7 @@ export function PressingZoomPlate({
   width,
   height,
   eager = false,
+  reserveRise = false,
 }: PressingZoomPlateProps) {
   const wrapRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -587,7 +597,9 @@ export function PressingZoomPlate({
         )}
       </div>
 
-      <div ref={tailRef} className={styles.risetail} aria-hidden="true" />
+      {reserveRise ? (
+        <div ref={tailRef} className={styles.risetail} aria-hidden="true" />
+      ) : null}
     </section>
   );
 }
