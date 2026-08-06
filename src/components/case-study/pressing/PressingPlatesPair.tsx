@@ -64,6 +64,8 @@ export interface PressingPlatesPairProps {
   }[];
   /** Hold the row so the next sibling (a rise plate) can climb across it. */
   pinForNext?: boolean;
+  /** Keep the PLATE_HOLD rest beat before the neighbor's climb (default true). */
+  hold?: boolean;
   /** Section mark above the row; reads the pin wrapper's travel when pinned. */
   mark?: { n: string; name: string; dark?: boolean };
 }
@@ -71,6 +73,7 @@ export interface PressingPlatesPairProps {
 export function PressingPlatesPair({
   images,
   pinForNext = false,
+  hold = true,
   mark,
 }: PressingPlatesPairProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -216,7 +219,7 @@ export function PressingPlatesPair({
     // The wrapper's height is the pin plus its spacer — the full travel the
     // SectionMark scrubs against. Plain div on purpose; see the header.
     <div ref={wrapRef}>
-      <PinStage>{row}</PinStage>
+      <PinStage hold={hold}>{row}</PinStage>
     </div>
   );
 }

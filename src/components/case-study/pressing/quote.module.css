@@ -22,7 +22,7 @@
    state depends on a real white behind it.
 
    top: 0, not the masthead height: like the prototype's q-sticky under
-   its nav, this poster slides UNDER the sticky 54px masthead. */
+   its nav, this poster slides UNDER the sticky var(--nav-h) masthead. */
 .sticky {
   position: sticky;
   top: 0;
@@ -100,7 +100,7 @@
 }
 
 /* Static below the breakpoint: no pin, no knockout — ink on paper. The
-   poster keeps a screen-sized beat (minus the 54px masthead) so it still
+   poster keeps a screen-sized beat (minus the var(--nav-h) masthead) so it still
    reads as a full-screen pause in the flow. */
 @media (max-width: 760px) {
   .wrap {
@@ -109,7 +109,7 @@
   .sticky {
     position: static;
     height: auto;
-    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
     padding: 30px 20px;
   }
   .fill {
@@ -139,7 +139,7 @@
   .sticky {
     position: static;
     height: auto;
-    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
   }
   .fill {
     display: none;

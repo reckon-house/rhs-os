@@ -19,14 +19,14 @@
    would leave the ground undefined off a case study. Literals, scoped
    here. */
 .beat {
-  --pf-ink: #000000;
-  --pf-paper: #ffffff;
+  --pf-ink: var(--pp-ink);
+  --pf-paper: var(--pp-paper);
   /* The hairline each ledger row draws, and the dimmed voice of the label
      row above the headline. */
   --pf-hair: rgba(255, 255, 255, 0.22);
   --pf-dim: rgba(255, 255, 255, 0.45);
   /* The sticky masthead standing in for the prototype's var(--nav). */
-  --pf-nav: 54px;
+  --pf-nav: var(--nav-h);
 
   position: relative;
 
@@ -79,7 +79,7 @@
   align-items: start;
   align-content: start;
 }
-@media (min-width: 768px) {
+@media (min-width: 761px) {
   .beat {
     padding-left: 50px;
     padding-right: 50px;
@@ -118,14 +118,14 @@
   margin-top: clamp(24px, 5dvh, 70px);
 
   /* The pin. CSS does the holding; the component only measures where the
-     column starts and how far the section runs past it. 54px is the sticky
+     column starts and how far the section runs past it. var(--nav-h) is the sticky
      masthead above the page — the prototype pinned under its var(--nav).
 
      Sticky releases when its containing block's bottom arrives. Measured,
      that block is the section's CONTENT box, which is what the placement
      pass's padding-bottom is computed against. */
   position: sticky;
-  top: calc(54px + clamp(16px, 4dvh, 54px));
+  top: calc(var(--nav-h) + clamp(16px, 4dvh, var(--nav-h)));
 }
 
 /* margin-top is written by the placement pass in the component: it is the
@@ -246,7 +246,6 @@
    CHOREO_BREAKPOINT in src/lib/choreo.ts. */
 @media (max-width: 760px) {
   .beat {
-    --pf-nav: 48px;
     grid-template-columns: 1fr;
     padding-top: 30px;
   }

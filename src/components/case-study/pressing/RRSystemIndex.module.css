@@ -9,10 +9,10 @@
 .index {
   position: relative;
   /* The prototype's .screen: a full viewport section minus the sticky
-     54px masthead above the page. 100dvh, never 100vh — the shell is
+     var(--nav-h) masthead above the page. 100dvh, never 100vh — the shell is
      h-dvh and the page scrolls inside <main>, so 100vh overreaches by
      the mobile browser-chrome delta. */
-  min-height: calc(100dvh - 54px);
+  min-height: calc(100dvh - var(--nav-h));
   /* Horizontal gutters come from <main> (md:px-[50px]), so the section
      adds none of its own — restating them would double-inset every row
      against the sections above. Top spacing is the prototype's 12vh
@@ -189,10 +189,19 @@
 /* index rows on a phone: less stagger, smaller samples, or the reel
    eats the row. Pins and climbs do not exist in this section, so the
    rows keep this reduced treatment below 760px as the prototype did. */
+/* 761-767: the desktop layout is active but main's md gutter is not —
+   the section supplies the page's 20px mat itself in that band. */
+@media (max-width: 767px) and (min-width: 761px) {
+  .index {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
 @media (max-width: 760px) {
   .index {
     --sampleH: 150px;
-    padding: 15dvh 0 30px;
+    padding: 15dvh 20px 30px;
   }
   .slabel {
     top: 64px;

@@ -21,22 +21,7 @@ body::before {
 }
 
 /* ── Asterisk animations ─────────────────────────────────────────── */
-@keyframes asterisk-entry {
-  from {
-    opacity: 0;
-    transform: scale(0.1) rotate(0deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(720deg);
-  }
-}
 
-@keyframes asterisk-idle {
-  /* Explicitly match entry's final visual state so the handoff is invisible */
-  from { opacity: 1; transform: scale(1) rotate(0deg); }
-  to   { opacity: 1; transform: scale(1) rotate(360deg); }
-}
 
 /* ── Custom asterisk cursor ──────────────────────────────────────── */
 /* Hide the native cursor only when the JS-driven custom cursor is live
@@ -603,7 +588,12 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
    page resolves to --pp-lbl or --pp-note; hierarchy comes from opacity
    and position, not size variety. Tune these in the lab file first, then
    bring them back. */
-.pressing {
+:root {
+  /* The pressing design tokens live at :root, not on .pressing: the site
+     footer runs the same language OUTSIDE any pressing article, and tokens
+     scoped to the article made its var() reads silently resolve to
+     fallbacks that could drift. .pressing keeps only the ground: font,
+     paper, ink. */
   --pp-paper: #FFFFFF;
   --pp-ink: #000000;
   --pp-hair: rgba(0, 0, 0, 0.9);
@@ -615,12 +605,27 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
   --pp-r: 16px;
   --pp-rise: 96dvh;
   --pp-plate-hold: 13dvh;
+
+  /* The masthead's height — the ONE copy. The bar itself sizes from it and
+     every pressing screen that parks under the bar or subtracts it from a
+     viewport height reads it here. 48px below the choreography breakpoint,
+     which the hardcoded 54s never followed: pinned screens ran 6px short
+     on phones. */
+  --nav-h: 54px;
+}
+@media (max-width: 760px) {
+  :root {
+    --nav-h: 48px;
+  }
+}
+
+.pressing {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: var(--pp-paper);
   color: var(--pp-ink);
 }
 @media (max-width: 760px) {
-  .pressing {
+  :root {
     --pp-lbl: 9px;
     --pp-rise: 0px;
     --pp-plate-hold: 0px;

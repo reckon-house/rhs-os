@@ -15,13 +15,13 @@
      cream, and one label size and one note size for every small
      treatment. Swap --ix-paper / --ix-ink to fold it into the house
      palette. */
-  --ix-paper: #ffffff;
-  --ix-ink: #000000;
-  --ix-lbl: 10px;
-  --ix-lbl-track: 0.04em;
-  --ix-lbl-weight: 500;
-  --ix-note: 16px;
-  --ix-r: 16px;
+  --ix-paper: var(--pp-paper);
+  --ix-ink: var(--pp-ink);
+  --ix-lbl: var(--pp-lbl);
+  --ix-lbl-track: var(--pp-lbl-track);
+  --ix-lbl-weight: var(--pp-lbl-weight);
+  --ix-note: var(--pp-note);
+  --ix-r: var(--pp-r);
   /* How far a hovered frame opens. The neighbour-shift driver reads this
      off the computed style, so the two never drift apart. */
   --ix-grow: 1.5;

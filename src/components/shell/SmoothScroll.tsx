@@ -33,13 +33,17 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     // frame — see src/lib/lenis.ts.
     setLenis(lenis);
 
+    let rafId = 0;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      // Cancel the loop, not just the instance: a destroyed Lenis fed by a
+      // still-scheduled rAF is a leak per HMR cycle in dev.
+      cancelAnimationFrame(rafId);
       setLenis(null);
       lenis.destroy();
     };

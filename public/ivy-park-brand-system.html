@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ivy Park — Brand System</title>
+<style>
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-Medium.woff') format('woff');font-weight:500;font-display:block;}
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-DemiBold.woff') format('woff');font-weight:600;font-display:block;}
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-Bold.woff') format('woff');font-weight:700;font-display:block;}
+  @font-face{font-family:'Satoshi';src:url('/fonts/Satoshi-Variable.woff2') format('woff2');font-weight:300 900;font-display:block;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Satoshi',system-ui,sans-serif;background:#F3F0ED;padding:40px;display:flex;justify-content:center;}
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;}
+
+  .card{position:relative;width:1100px;max-width:100%;border-radius:clamp(30px,5vw,75px);overflow:hidden;color:#141414;}
+  .split{position:absolute;inset:0;display:grid;grid-template-columns:48% 52%;z-index:0;}
+  .split .l{background:#eeeae2;} .split .r{background:#e6e4e0;}
+  .inner{position:relative;z-index:1;padding:56px;}
+
+  /* header */
+  /* header type — matched exactly to live SectionHeader + TextBlock(subhead) */
+  .pill{display:inline-block;font-size:13px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:8px 16px;background:rgba(20,20,20,0.06);border-radius:999px;margin-bottom:20px;}
+  h2{font-size:24px;font-weight:700;line-height:1.5;letter-spacing:-0.02em;margin-bottom:0;}
+  .intro{font-size:24px;font-weight:400;line-height:1.5;letter-spacing:-0.02em;color:#141414;}
+  .foot{font-size:14px;line-height:1.875;color:rgba(20,20,20,0.72);margin-top:20px;max-width:880px;}
+
+  /* morph hero + philosophy */
+  .rowA{display:grid;grid-template-columns:50% 50%;gap:36px;margin-top:12px;align-items:center;min-height:560px;}
+  .bigA{position:relative;height:560px;overflow:visible;display:flex;align-items:center;justify-content:center;}
+  #bigLetter{display:inline-block;font-family:'Avenir Next',sans-serif;font-weight:700;font-size:540px;line-height:0.8;color:#141414;transition:opacity .4s ease;}
+  #morphA{display:none;height:580px;width:580px;overflow:visible;}
+  .phil{padding-top:10px;}
+  .phil h3{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(20,20,20,0.45);margin-bottom:14px;}
+  .phil p{font-size:14px;line-height:1.875;color:rgba(20,20,20,0.8);margin-bottom:24px;max-width:600px;}
+  .roleline{margin-bottom:20px;max-width:600px;}
+  .roleline .nm{font-size:14px;line-height:1.6;margin-bottom:4px;}
+  .roleline .nm b{font-weight:600;}
+  .roleline .ds{font-size:14px;line-height:1.875;color:rgba(20,20,20,0.72);}
+
+  /* section label */
+  .lbl{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(20,20,20,0.45);margin:64px 0 16px;}
+
+  /* colour bands */
+  .bands{border-radius:18px;overflow:hidden;}
+  .band{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;height:184px;}
+  .band .lead{padding:24px;display:flex;flex-direction:column;justify-content:space-between;}
+  .band .lead .nm{font-size:20px;font-weight:700;}
+  .band .lead .sp{font-size:11px;line-height:1.6;opacity:0.85;}
+  .band .tc{position:relative;}
+  .band .tc .pc{position:absolute;top:16px;left:18px;font-size:11px;opacity:0.7;}
+
+  /* type at volume — graphic composition */
+  .tv{position:relative;border-top:1px solid rgba(20,20,20,0.15);border-bottom:1px solid rgba(20,20,20,0.15);min-height:700px;overflow:hidden;padding:48px 0;}
+  .tv .ghost{position:absolute;left:-26px;bottom:-86px;font-family:'Avenir Next',sans-serif;font-weight:700;font-size:clamp(360px,58vw,720px);line-height:0.72;letter-spacing:-0.04em;color:rgba(20,20,20,0.05);z-index:0;pointer-events:none;white-space:nowrap;}
+  .tv .polyghost{position:absolute;right:-240px;bottom:-300px;width:800px;height:927px;z-index:0;pointer-events:none;overflow:visible;}
+  .tv .conf{position:absolute;bottom:54px;left:0;right:0;z-index:2;font-family:'Avenir Next',sans-serif;text-transform:uppercase;font-size:clamp(26px,3.3vw,42px);line-height:1.1;text-align:justify;text-align-last:justify;-moz-text-align-last:justify;text-justify:inter-character;}
+  .tv .conf .thin{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:100;letter-spacing:0.02em;color:rgba(20,20,20,0.72);}
+  .tv .conf .heavy{font-weight:700;color:#141414;}
+  .tv .lockup{position:absolute;right:4px;top:128px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+  .tv .lockup .cour{text-transform:uppercase;text-align:right;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:100;font-size:clamp(32px,4.2vw,58px);line-height:1.0;letter-spacing:0.02em;color:rgba(20,20,20,0.72);max-width:6em;padding-top:8px;}
+  .tv .lockup .pwr{writing-mode:vertical-rl;text-orientation:mixed;font-family:'Avenir Next',sans-serif;font-weight:700;font-size:clamp(56px,8vw,110px);letter-spacing:-0.04em;line-height:0.84;color:#141414;}
+  .tv .note{position:absolute;left:0;top:24px;z-index:2;font-size:13px;line-height:1.7;color:rgba(20,20,20,0.6);max-width:430px;}
+
+  /* polygon signature — dense concentric rotating hexagons with copy on top */
+  .polyfield{position:relative;width:100%;height:462px;margin-bottom:8px;overflow:hidden;}
+  .pgc{position:absolute;left:50%;top:50%;}
+  .pgc svg{display:block;width:100%;height:100%;overflow:visible;}
+  .polyveil{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:600px;height:270px;max-width:90%;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(235,232,225,0.62) 0%, rgba(235,232,225,0.36) 42%, rgba(235,232,225,0) 76%);}
+  .polycopy{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;text-align:center;max-width:560px;padding:0 20px;pointer-events:none;}
+  .polycopy .nm{font-size:20px;font-weight:700;margin-bottom:10px;}
+  .polycopy .ds{font-size:15px;line-height:1.7;color:rgba(20,20,20,0.78);}
+
+  /* experience closer */
+  .exp{margin-top:8px;border-radius:22px;overflow:hidden;}
+  .exp img{width:100%;height:auto;display:block;}
+
+  /* ── animation: swatch pulse ── */
+  @keyframes swpulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.085);}}
+  .pulse{animation:swpulse 3.4s ease-in-out infinite;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="split"><div class="l"></div><div class="r"></div></div>
+    <div class="inner">
+
+      <span class="pill">Section 03: Brand System</span>
+      <h2>Built Without a Brand Guide</h2>
+      <p class="intro">Beyoncé's team brought the photography and the name. No brand guide, no palette, no type system.</p>
+      <p class="foot">Six weeks meant building the visual language while the page got built. The polygon, the type at volume, the run from black-and-white into color. One system carrying a launch that lived on a single URL.</p>
+
+      <div class="rowA">
+        <div class="bigA"><span id="bigLetter">I</span><svg id="morphA" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision"><path fill="#141414" fill-rule="evenodd"></path></svg></div>
+        <div class="phil">
+          <h3>The System</h3>
+          <p>The polygon started as a crop mask for portraits. Angled edges against the rectangular photo grid gave the athlete imagery a geometric tension, sport against fashion. It rotated on scroll, scaled from thumbnail to full-bleed, and carried from the hero banner through product carousels into email headers.</p>
+          <p>Type ran large enough to compete with the photography, not caption it. Short declarative lines, present tense. The whole experience moved from black-and-white into color as it scrolled.</p>
+          <div class="roleline"><div class="nm"><b>The Polygon</b> · Signature device</div><div class="ds">One hexagon handling framing, motion, and signature. A single CSS transform doing real design work.</div></div>
+          <div class="roleline"><div class="nm"><b>Type at Volume</b> · Voice</div><div class="ds">Set large, mixed weights, staggered baselines. The copy competed with the imagery instead of captioning it.</div></div>
+        </div>
+      </div>
+
+      <div class="lbl">Colour / as used</div>
+      <div class="bands">
+        <div class="band" style="background:#18A6CC;">
+          <div class="lead pulse" style="color:#06222b;"><span class="nm">Signal</span><span class="sp mono">RGB 24 166 204<br>HEX #18A6CC</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#18A6CC 75%,#eeeae2);animation-delay:.4s;"><span class="pc mono">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#18A6CC 50%,#eeeae2);animation-delay:.8s;"><span class="pc mono">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#18A6CC 25%,#eeeae2);animation-delay:1.2s;"><span class="pc mono">25</span></div>
+        </div>
+        <div class="band" style="background:#8E9499;">
+          <div class="lead pulse" style="color:#14171a;animation-delay:.2s;"><span class="nm">Neutral</span><span class="sp mono">RGB 142 148 153<br>HEX #8E9499</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#8E9499 75%,#eeeae2);animation-delay:.6s;"><span class="pc mono">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#8E9499 50%,#eeeae2);animation-delay:1s;"><span class="pc mono">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#8E9499 25%,#eeeae2);animation-delay:1.4s;"><span class="pc mono">25</span></div>
+        </div>
+        <div class="band" style="background:#0E0E0E;">
+          <div class="lead pulse" style="color:#efebe4;animation-delay:.4s;"><span class="nm">Ground</span><span class="sp mono">RGB 14 14 14<br>HEX #0E0E0E</span></div>
+          <div class="tc pulse" style="background:#3a3a3a;animation-delay:.8s;"><span class="pc mono" style="color:#eee;">75</span></div>
+          <div class="tc pulse" style="background:#6b6b6b;animation-delay:1.2s;"><span class="pc mono" style="color:#111;">50</span></div>
+          <div class="tc pulse" style="background:#9c9c9c;animation-delay:1.6s;"><span class="pc mono" style="color:#111;">25</span></div>
+        </div>
+      </div>
+
+      <div class="lbl">Type / at volume</div>
+      <div class="tv">
+        <div class="ghost">IVY</div>
+        <svg class="polyghost" viewBox="0 0 801 928" preserveAspectRatio="none"><path d="M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z" fill="none" stroke="rgba(20,20,20,0.12)" stroke-width="1" vector-effect="non-scaling-stroke"></path></svg>
+        <div class="conf"><span class="thin">Confidence is </span><span class="heavy">Strength</span></div>
+        <div class="lockup"><span class="cour">Courage is</span><span class="pwr">POWER</span></div>
+        <div class="note">One voice that read at 12px in an email subject line and 200px across a scrolling hero. Present tense, declarative, second person when it appeared at all.</div>
+      </div>
+
+      <div class="lbl">The polygon / signature</div>
+      <div class="polyfield" id="polyField">
+        <div class="polyveil"></div>
+        <div class="polycopy">
+          <div class="nm">One Shape, Endlessly Rotated</div>
+          <div class="ds">The hexagon was the whole identity. Angled, spun, scaled, repeated. It cropped portraits, framed product, headed emails, and crops the same at 300px and 3000px.</div>
+        </div>
+      </div>
+
+      <div class="exp"><img src="/case-studies/ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg" alt="Ivy Park scrolling experience, polygon frames and typography"></div>
+
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
+<script>
+// ── polygon signature — same-size hexagons lined up across, fanning into a lattice ──
+(function(){
+  var PATH="M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
+  var field=document.getElementById('polyField'); if(!field) return;
+  var NS='http://www.w3.org/2000/svg';
+  var N=36, polyW=392, step=20, h=Math.round(polyW*928/801);
+  var TWIST=4;                                       // each hexagon rotated 4° more than the one to its left
+  var base=[], pgs=[];
+  for(var i=0;i<N;i++){
+    var offset=(i-(N-1)/2)*step;                     // same size, symmetric offsets across
+    base.push(offset);
+    var pg=document.createElement('div'); pg.className='pgc';
+    pg.style.width=polyW+'px'; pg.style.height=h+'px';
+    var svg=document.createElementNS(NS,'svg');
+    svg.setAttribute('viewBox','0 0 801 928'); svg.setAttribute('fill','none');
+    var p=document.createElementNS(NS,'path');
+    p.setAttribute('d',PATH); p.setAttribute('stroke','rgba(20,20,20,0.24)'); p.setAttribute('stroke-width','1'); p.setAttribute('fill','none'); p.setAttribute('vector-effect','non-scaling-stroke');
+    svg.appendChild(p); pg.appendChild(svg); field.appendChild(pg);
+    pg.style.transform='translate(-50%,-50%) rotate('+(i*TWIST)+'deg)'; pg.style.marginLeft=offset+'px';
+    pgs.push(pg);
+  }
+  // rotation is a gradient across the row (0°, +4°, +8° … left → right);
+  // the whole gradient drifts as a travelling wave, and the mouse speeds it up
+  var baseAng=0, boost=0, lastX=null, lastY=null;
+  field.addEventListener('mousemove', function(e){
+    if(lastX!=null){ boost=Math.min(boost + Math.hypot(e.clientX-lastX, e.clientY-lastY)*0.03, 6); }
+    lastX=e.clientX; lastY=e.clientY;
+  });
+  field.addEventListener('mouseleave', function(){ lastX=lastY=null; });
+  function anim(){
+    boost*=0.94;
+    baseAng += 0.1*(1+boost);
+    for(var i=0;i<pgs.length;i++){ pgs[i].style.transform='translate(-50%,-50%) rotate('+(baseAng + i*TWIST)+'deg)'; }
+    requestAnimationFrame(anim);
+  }
+  requestAnimationFrame(anim);
+})();
+
+// ── morphing I · V · Y hero ──
+(function(){
+  var BOLD='/fonts/AvenirNext-Bold.woff';
+  var SEQ=[{c:'I',u:BOLD},{c:'V',u:BOLD},{c:'Y',u:BOLD}];
+
+  var span=document.getElementById('bigLetter');
+  span.style.fontFamily="'Avenir Next',sans-serif"; span.style.fontWeight=700;
+  var fi=0, fade=setInterval(function(){
+    fi=(fi+1)%SEQ.length; span.style.opacity=0;
+    setTimeout(function(){ span.textContent=SEQ[fi].c; span.style.opacity=1; },400);
+  },2300);
+
+  if(typeof opentype==='undefined' || typeof flubber==='undefined') return;
+
+  function norm(font, ch){
+    var g=font.charToGlyph(ch), p=g.getPath(0,0,1000), bb=p.getBoundingBox();
+    var w=bb.x2-bb.x1, h=bb.y2-bb.y1, s=820/h;
+    var tx=(1000-w*s)/2 - bb.x1*s, ty=(1000-h*s)/2 - bb.y1*s;
+    p.commands.forEach(function(c){
+      if(c.x!=null){c.x=c.x*s+tx;} if(c.y!=null){c.y=c.y*s+ty;}
+      if(c.x1!=null){c.x1=c.x1*s+tx;} if(c.y1!=null){c.y1=c.y1*s+ty;}
+      if(c.x2!=null){c.x2=c.x2*s+tx;} if(c.y2!=null){c.y2=c.y2*s+ty;}
+    });
+    return p.toPathData(2);
+  }
+  function rings(d){ return d.split(/(?=M)/).filter(function(s){return s.trim().length;}); }
+  function ringArea(d){
+    var n=(d.match(/-?\d+\.?\d*/g)||[]).map(Number), xs=[], ys=[];
+    for(var i=0;i+1<n.length;i+=2){ xs.push(n[i]); ys.push(n[i+1]); }
+    if(!xs.length) return 0;
+    return (Math.max.apply(null,xs)-Math.min.apply(null,xs))*(Math.max.apply(null,ys)-Math.min.apply(null,ys));
+  }
+  function makeMorph(from, to){
+    var ms=2.5;
+    if(from.length===to.length){
+      var fns=from.map(function(f,i){return flubber.interpolate(f,to[i],{maxSegmentLength:ms});});
+      return function(t){ var s=''; for(var i=0;i<fns.length;i++){ s+=fns[i](t)+' '; } return s; };
+    }
+    if(to.length===1)   return flubber.combine(from, to[0], {maxSegmentLength:ms, single:true});
+    if(from.length===1) return flubber.separate(from[0], to, {maxSegmentLength:ms, single:true});
+    var fn=flubber.interpolate(from[0],to[0],{maxSegmentLength:ms});
+    return function(t){ return fn(t); };
+  }
+
+  var urls=[]; SEQ.forEach(function(g){ if(urls.indexOf(g.u)<0) urls.push(g.u); });
+  Promise.all(urls.map(function(u){return opentype.load(u);})).then(function(loaded){
+    var fontMap={}; urls.forEach(function(u,i){ fontMap[u]=loaded[i]; });
+    var glyphs=SEQ.map(function(g){ var r=rings(norm(fontMap[g.u], g.c)); r.sort(function(a,b){return ringArea(b)-ringArea(a);}); return r; });
+    if(glyphs.some(function(g){return g.length===0;})) return;
+
+    var n=glyphs.length, interps=[];
+    for(var i=0;i<n;i++){ interps.push(makeMorph(glyphs[i], glyphs[(i+1)%n])); }
+
+    clearInterval(fade); span.style.display='none';
+    var svg=document.getElementById('morphA'); svg.style.display='block';
+    var pathEl=svg.querySelector('path');
+    var seg=0, t0=null, HOLD=1300, MORPH=1000;
+    function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+    function frame(ts){
+      if(t0==null)t0=ts; var el=ts-t0, t;
+      if(el<HOLD){t=0;} else if(el<HOLD+MORPH){t=(el-HOLD)/MORPH;} else {seg=(seg+1)%n; t0=ts; t=0;}
+      pathEl.setAttribute('d', interps[seg](ease(t)));
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }).catch(function(){});
+})();
+
+// ── align CONFIDENCE IS STRENGTH to the rendered INK width of the big IVY ghost ──
+(function(){
+  var ghost=document.querySelector('.tv .ghost'), conf=document.querySelector('.tv .conf'), tv=document.querySelector('.tv');
+  if(!ghost||!conf||!tv) return;
+  var ctx=document.createElement('canvas').getContext('2d');
+  function inkBounds(){
+    var cs=getComputedStyle(ghost), ls=parseFloat(cs.letterSpacing)||0;
+    ctx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+    var s=ghost.textContent, x=0, L=Infinity, R=-Infinity;
+    for(var i=0;i<s.length;i++){
+      var m=ctx.measureText(s[i]);
+      var l=x-(m.actualBoundingBoxLeft||0), r=x+(m.actualBoundingBoxRight||0);
+      if(l<L)L=l; if(r>R)R=r;
+      x+=m.width+ls;
+    }
+    return {left:L, width:R-L};
+  }
+  function align(){
+    var b=inkBounds(); if(!b||!isFinite(b.left)) return;
+    var t=tv.getBoundingClientRect(), gh=ghost.getBoundingClientRect();
+    // left edge → IVY's ink left; right edge → container edge (where the IVY's Y resolves)
+    conf.style.left=((gh.left-t.left)+b.left)+'px'; conf.style.right='0px'; conf.style.width='auto';
+  }
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(align); }
+  align(); window.addEventListener('resize',align);
+})();
+</script>
+</body>
+</html>

@@ -22,10 +22,10 @@
    label row steals space the headline and column then fight over. */
 .brief {
   position: relative;
-  /* The prototype's .screen height, with the sticky 54px masthead standing
+  /* The prototype's .screen height, with the sticky var(--nav-h) masthead standing
      in for its var(--nav). dvh, not vh: the shell is h-dvh and 100vh
      overreaches by the mobile browser-chrome delta. */
-  min-height: calc(100dvh - 54px);
+  min-height: calc(100dvh - var(--nav-h));
   /* The prototype's .screen carries its own 40px side gutters; here <main>
      already provides md:px-[50px], so at md+ the section adds none of its
      own (doubling them pushed the page rule 90px in). Below md, main runs
@@ -82,11 +82,11 @@
 /* OPT-IN, applied only when the pin prop is set: the headline holds while
    the column travels up beside it. The hold only earns its keep when the
    column is long enough to be worth reading against a held headline; on a
-   two-paragraph column it just delays the page. 54px is the sticky masthead
+   two-paragraph column it just delays the page. var(--nav-h) is the sticky masthead
    above the page — the prototype pinned under its nav via var(--nav). */
 .held {
   position: sticky;
-  top: calc(54px + clamp(16px, 4dvh, 54px));
+  top: calc(var(--nav-h) + clamp(16px, 4dvh, var(--nav-h)));
 }
 
 /* margin-top is written by the placement pass in the component: it is the

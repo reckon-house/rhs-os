@@ -174,6 +174,12 @@ export function PressingContact({ className }: PressingContactProps) {
     // A window resize listener, deliberately: this reacts to geometry, not to
     // scroll position, so the Lenis-owns-main rule is not in play.
     window.addEventListener("resize", place);
+    /* The settle pass the credits beat always had — the review caught this
+       copy missing it. The observer covers whatever resize and fonts.ready
+       miss (late layout shifts, engines that reflow without a resize). */
+    const ro = new ResizeObserver(place);
+    const h2El = sec.querySelector("h2");
+    if (h2El) ro.observe(h2El);
     // Satoshi (or Helvetica inside a pressing article) lands after first
     // paint and moves the headline's wrap points; the late timeout is the
     // prototype's own settle pass.
@@ -188,6 +194,7 @@ export function PressingContact({ className }: PressingContactProps) {
     return () => {
       alive = false;
       window.removeEventListener("resize", place);
+      ro.disconnect();
       window.clearTimeout(t);
     };
   }, []);

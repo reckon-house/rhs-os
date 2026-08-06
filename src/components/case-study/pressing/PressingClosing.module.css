@@ -19,9 +19,9 @@
 .closing {
   position: relative;
   /* The prototype's .screen is min-height 100vh less its nav; here the nav
-     is the sticky 54px masthead above the page. dvh instead of vh so mobile
+     is the sticky var(--nav-h) masthead above the page. dvh instead of vh so mobile
      browser chrome cannot open a gap under the section. */
-  min-height: calc(100dvh - 54px);
+  min-height: calc(100dvh - var(--nav-h));
   /* .screen pads 48px 40px, but <main> already carries the 50px page gutter
      on md+ — porting the 40px would double it. Vertical padding only up
      here; the phone block below restores its own gutter because main drops

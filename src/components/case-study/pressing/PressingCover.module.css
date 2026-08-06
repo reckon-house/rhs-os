@@ -30,7 +30,7 @@
   height: var(--pp-rise);
 }
 
-/* Below the masthead, not behind it: the site masthead is a sticky 54px bar
+/* Below the masthead, not behind it: the site masthead is a sticky var(--nav-h) bar
    above the page (the prototype's --nav), so the cover pins under it and the
    screen is sized to what is actually left. A 100dvh sticky at top:0 hangs a
    masthead's worth past the fold and drops the bottom-anchored headline off
@@ -42,8 +42,8 @@
    own children. */
 .coverSticky {
   position: sticky;
-  top: 54px;
-  height: calc(100dvh - 54px);
+  top: var(--nav-h);
+  height: calc(100dvh - var(--nav-h));
   min-height: 0;
   padding: 48px 40px;
   overflow: hidden;

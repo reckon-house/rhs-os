@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand System — stitched</title>
+<style>
+  @font-face{font-family:'Ogg';src:url('/fonts/Ogg-Regular.otf') format('opentype');font-weight:400;font-display:block;}
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-Medium.woff') format('woff');font-weight:500;font-display:block;}
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-DemiBold.woff') format('woff');font-weight:600;font-display:block;}
+  @font-face{font-family:'Avenir Next';src:url('/fonts/AvenirNext-Bold.woff') format('woff');font-weight:700;font-display:block;}
+  @font-face{font-family:'Satoshi';src:url('/fonts/Satoshi-Variable.woff2') format('woff2');font-weight:300 900;font-display:block;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Satoshi',system-ui,sans-serif;background:#F3F0ED;padding:40px;display:flex;justify-content:center;}
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;}
+
+  .card{position:relative;width:1100px;max-width:100%;border-radius:clamp(30px,5vw,75px);overflow:hidden;color:#141414;}
+  .split{position:absolute;inset:0;display:grid;grid-template-columns:48% 52%;z-index:0;}
+  .split .l{background:#eeeae2;} .split .r{background:#e6e4e0;}
+  .inner{position:relative;z-index:1;padding:56px;}
+  .secLbl{font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(20,20,20,0.42);}
+
+  /* header */
+  .pill{display:inline-block;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;padding:8px 16px;background:rgba(20,20,20,0.06);border-radius:999px;margin-bottom:20px;}
+  h2{font-size:24px;font-weight:700;line-height:1.5;letter-spacing:-0.02em;margin-bottom:16px;}
+  .intro{font-size:18px;line-height:1.875;color:rgba(20,20,20,0.8);max-width:700px;}
+
+  /* big A + philosophy */
+  .rowA{display:grid;grid-template-columns:46% 54%;gap:40px;margin-top:8px;align-items:start;min-height:460px;}
+  .bigA{position:relative;height:480px;overflow:visible;display:flex;align-items:center;justify-content:center;}
+  #bigLetter{display:inline-block;font-family:'Ogg',Georgia,serif;font-weight:400;font-size:560px;line-height:0.8;color:#141414;transition:opacity .4s ease, transform .4s ease;}
+  #morphA{display:none;height:500px;width:500px;overflow:visible;}
+  .phil{padding-top:48px;}
+  .phil h3{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(20,20,20,0.45);margin-bottom:14px;}
+  .phil p{font-size:14px;line-height:1.875;color:rgba(20,20,20,0.8);margin-bottom:24px;max-width:600px;}
+  .roleline{margin-bottom:20px;max-width:600px;}
+  .roleline .nm{font-size:14px;line-height:1.6;margin-bottom:4px;}
+  .roleline .nm b{font-weight:600;}
+  .roleline .ds{font-size:14px;line-height:1.875;color:rgba(20,20,20,0.72);}
+
+  /* colour bands */
+  .bands{margin-top:40px;border-radius:18px;overflow:hidden;}
+  .band{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;height:184px;}
+  .band .lead{padding:24px;display:flex;flex-direction:column;justify-content:space-between;}
+  .band .lead .nm{font-size:20px;font-weight:700;}
+  .band .lead .sp{font-size:11px;line-height:1.6;opacity:0.85;}
+  .band .tc{position:relative;}
+  .band .tc .pc{position:absolute;top:16px;left:18px;font-size:11px;opacity:0.7;}
+
+  /* weight row */
+  .weights{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(20,20,20,0.16);border-bottom:1px solid rgba(20,20,20,0.16);margin-top:48px;}
+  .weights .w{padding:36px 20px 30px;}
+  .weights .w + .w{border-left:1px solid rgba(20,20,20,0.12);}
+  .weights .w .g{font-size:104px;line-height:0.85;}
+  .weights .w .wl{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(20,20,20,0.5);margin-top:16px;}
+
+  /* big specimens + circle */
+  .rowT{display:grid;grid-template-columns:46% 54%;gap:48px;margin-top:40px;}
+  .specs .s{margin-bottom:36px;}
+  .specs .s .nm{line-height:1;margin-bottom:8px;}
+  .specs .s .rl{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(20,20,20,0.5);margin-bottom:10px;}
+  .specs .s .ds{font-size:13px;line-height:1.6;color:rgba(20,20,20,0.72);max-width:480px;}
+  .circ{display:flex;flex-direction:column;align-items:center;padding-top:6px;}
+  .circ .h{font-family:'Ogg',serif;font-size:18px;letter-spacing:0.04em;color:rgba(20,20,20,0.55);margin-bottom:30px;}
+  .ball{width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(ellipse 70% 60% at 45% 40%, #cfe0c0 0%, #B1BC94 16%, #C4A265 38%, #8B7355 58%, #5a3e25 74%, #1a0f05 92%, #000 100%);
+    box-shadow:inset 0 -20px 44px rgba(0,0,0,0.32), inset 0 18px 40px rgba(210,200,170,0.18);}
+  .circ .names{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px;width:100%;}
+  .circ .names .nm{font-size:13px;font-weight:700;margin-bottom:5px;}
+  .circ .names .v{font-size:11px;line-height:1.5;color:rgba(20,20,20,0.6);}
+
+  /* big logo */
+  .logoWrap{display:flex;justify-content:center;padding:60px 0 40px;}
+  .logoWrap img{width:640px;max-width:80%;height:auto;}
+
+  /* app grid */
+  .app{margin-top:8px;}
+  .app img{width:100%;height:auto;display:block;}
+
+  /* ── animation: swatch pulse ── */
+  @keyframes swpulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.085);}}
+  .pulse{animation:swpulse 3.4s ease-in-out infinite;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="split"><div class="l"></div><div class="r"></div></div>
+    <div class="inner">
+
+      <span class="pill">Section 06: Brand System</span>
+      <h2>Visual Identity &amp; Design Language</h2>
+      <p class="intro">The brand had to solve a tension. Home inventory sounds like a chore. Insurance analysis sounds like a meeting with your agent. Neither association invites engagement. The visual identity needed to make documentation feel like something worth doing, not something you should get around to eventually.</p>
+
+      <div class="rowA">
+        <div class="bigA"><span id="bigLetter">A</span><svg id="morphA" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision"><path fill="#141414" fill-rule="evenodd"></path></svg></div>
+        <div class="phil">
+          <h3>Brand philosophy</h3>
+          <p>The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats data as something worth designing, not just storing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.</p>
+          <div class="roleline"><div class="nm"><b>Ogg</b> · Primary Typeface</div><div class="ds">Warm, editorial, slightly elevated. Carries the brand's emotional register. Headlines, feature names, moments of consideration.</div></div>
+          <div class="roleline"><div class="nm"><b>Avenir Next</b> · Secondary Typeface</div><div class="ds">Clean, neutral, highly legible. Carries the product's utility layer. Data labels, navigation, body text, interface clarity.</div></div>
+        </div>
+      </div>
+
+      <div class="bands">
+        <div class="band" style="background:#B1BC94;">
+          <div class="lead pulse" style="color:#1a1a1a;"><span class="nm">Primary</span><span class="sp mono">RGB 177 188 148<br>HEX #B1BC94<br>CMYK 34 16 50 0</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#B1BC94 75%,#eeeae2);animation-delay:.4s;"><span class="pc mono">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#B1BC94 50%,#eeeae2);animation-delay:.8s;"><span class="pc mono">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#B1BC94 25%,#eeeae2);animation-delay:1.2s;"><span class="pc mono">25</span></div>
+        </div>
+        <div class="band" style="background:#C4A265;">
+          <div class="lead pulse" style="color:#1a1a1a;animation-delay:.2s;"><span class="nm">Warm Register</span><span class="sp mono">RGB 196 162 101<br>HEX #C4A265<br>CMYK 0 17 48 23</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4A265 75%,#eeeae2);animation-delay:.6s;"><span class="pc mono">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4A265 50%,#eeeae2);animation-delay:1s;"><span class="pc mono">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4A265 25%,#eeeae2);animation-delay:1.4s;"><span class="pc mono">25</span></div>
+        </div>
+        <div class="band" style="background:#000;">
+          <div class="lead pulse" style="color:#efebe4;animation-delay:.4s;"><span class="nm">Ground</span><span class="sp mono">RGB 0 0 0<br>HEX #000000<br>CMYK 0 0 0 100</span></div>
+          <div class="tc pulse" style="background:#3a3a3a;animation-delay:.8s;"><span class="pc mono" style="color:#eee;">75</span></div>
+          <div class="tc pulse" style="background:#6b6b6b;animation-delay:1.2s;"><span class="pc mono" style="color:#111;">50</span></div>
+          <div class="tc pulse" style="background:#9c9c9c;animation-delay:1.6s;"><span class="pc mono" style="color:#111;">25</span></div>
+        </div>
+      </div>
+
+      <div class="weights">
+        <div class="w"><div class="g" style="font-family:'Ogg',serif;">Aa</div><div class="wl">Ogg · Regular</div></div>
+        <div class="w"><div class="g" style="font-family:'Avenir Next';font-weight:500;">Aa</div><div class="wl">Avenir · Medium</div></div>
+        <div class="w"><div class="g" style="font-family:'Avenir Next';font-weight:600;">Aa</div><div class="wl">Avenir · Demi</div></div>
+        <div class="w"><div class="g" style="font-family:'Avenir Next';font-weight:700;">Aa</div><div class="wl">Avenir · Bold</div></div>
+      </div>
+
+      <div class="rowT">
+        <div class="specs">
+          <div class="s"><div class="nm" style="font-family:'Ogg',serif;font-size:52px;">Ogg</div><div class="rl">Primary Typeface</div><div class="ds">Warm, editorial, slightly elevated. Carries the brand's emotional register. Headlines, feature names, moments of consideration.</div></div>
+          <div class="s"><div class="nm" style="font-family:'Avenir Next';font-weight:500;font-size:44px;">Avenir Next Medium</div><div class="rl">Secondary · Utility</div><div class="ds">Clean, neutral, highly legible. Carries the utility layer. Data labels, navigation, body text, interface clarity.</div></div>
+          <div class="s"><div class="nm" style="font-family:'Avenir Next';font-weight:600;font-size:44px;">Avenir Next Demi</div><div class="rl">Secondary · Emphasis</div><div class="ds">Structural emphasis. Section labels, key data points, navigational hierarchy. Weight that signals importance without shouting.</div></div>
+        </div>
+        <div class="circ">
+          <div class="h">Chromatic Brand Circle</div>
+          <div class="ball pulse"></div>
+          <div class="names">
+            <div><div class="nm">Primary</div><div class="v mono">#B1BC94<br>RGB 177/188/148</div></div>
+            <div><div class="nm">Warm Register</div><div class="v">#C4A265<br>Photography tones</div></div>
+            <div><div class="nm">Ground</div><div class="v">#000000<br>Structure, text</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="logoWrap"><img src="/case-studies/arc/arc-logo-grid.png" alt="a.r.c. logo construction"></div>
+
+      <div class="app"><img src="/case-studies/arc/arc-app-dashboard-categories-configuration.png" alt="A.R.C. app interface"></div>
+
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
+<script>
+(function(){
+  // ── the morph sequence (data-driven per case study). a.r.c. → spell A · R · C ──
+  var OGG='/fonts/Ogg-Regular.otf';
+  var SEQ=[{c:'A',u:OGG},{c:'R',u:OGG},{c:'C',u:OGG}];
+
+  var span=document.getElementById('bigLetter');
+  span.style.fontFamily="'Ogg',Georgia,serif"; span.style.fontWeight=400;
+  // ── fallback: fade-cycle the letters on the span (runs until the morph engine is ready) ──
+  var fi=0, fade=setInterval(function(){
+    fi=(fi+1)%SEQ.length; span.style.opacity=0;
+    setTimeout(function(){ span.textContent=SEQ[fi].c; span.style.opacity=1; },400);
+  },2300);
+
+  if(typeof opentype==='undefined' || typeof flubber==='undefined') return; // keep fade
+
+  // Normalise a glyph into a common 1000×1000 box (centred, equal cap height).
+  function norm(font, ch){
+    var g=font.charToGlyph(ch), p=g.getPath(0,0,1000), bb=p.getBoundingBox();
+    var w=bb.x2-bb.x1, h=bb.y2-bb.y1, s=820/h;
+    var tx=(1000-w*s)/2 - bb.x1*s, ty=(1000-h*s)/2 - bb.y1*s;
+    p.commands.forEach(function(c){
+      if(c.x!=null){c.x=c.x*s+tx;} if(c.y!=null){c.y=c.y*s+ty;}
+      if(c.x1!=null){c.x1=c.x1*s+tx;} if(c.y1!=null){c.y1=c.y1*s+ty;}
+      if(c.x2!=null){c.x2=c.x2*s+tx;} if(c.y2!=null){c.y2=c.y2*s+ty;}
+    });
+    return p.toPathData(2);
+  }
+  function rings(d){ return d.split(/(?=M)/).filter(function(s){return s.trim().length;}); }
+  function ringArea(d){
+    var n=(d.match(/-?\d+\.?\d*/g)||[]).map(Number), xs=[], ys=[];
+    for(var i=0;i+1<n.length;i+=2){ xs.push(n[i]); ys.push(n[i+1]); }
+    if(!xs.length) return 0;
+    return (Math.max.apply(null,xs)-Math.min.apply(null,xs))*(Math.max.apply(null,ys)-Math.min.apply(null,ys));
+  }
+  // Morph one glyph (1–2 rings) to the next, handling counter add/remove (A↔C) via combine/separate.
+  function makeMorph(from, to){
+    var ms=2.5;
+    if(from.length===to.length){
+      var fns=from.map(function(f,i){return flubber.interpolate(f,to[i],{maxSegmentLength:ms});});
+      return function(t){ var s=''; for(var i=0;i<fns.length;i++){ s+=fns[i](t)+' '; } return s; };
+    }
+    if(to.length===1)   return flubber.combine(from, to[0], {maxSegmentLength:ms, single:true});
+    if(from.length===1) return flubber.separate(from[0], to, {maxSegmentLength:ms, single:true});
+    var fn=flubber.interpolate(from[0],to[0],{maxSegmentLength:ms});
+    return function(t){ return fn(t); };
+  }
+
+  var urls=[]; SEQ.forEach(function(g){ if(urls.indexOf(g.u)<0) urls.push(g.u); });
+  Promise.all(urls.map(function(u){return opentype.load(u);})).then(function(loaded){
+    var fontMap={}; urls.forEach(function(u,i){ fontMap[u]=loaded[i]; });
+    // each glyph → rings, outer first (largest), so counters pair up consistently
+    var glyphs=SEQ.map(function(g){ var r=rings(norm(fontMap[g.u], g.c)); r.sort(function(a,b){return ringArea(b)-ringArea(a);}); return r; });
+    if(glyphs.some(function(g){return g.length===0;})) return; // extraction failed → keep fade
+
+    var n=glyphs.length, interps=[];
+    for(var i=0;i<n;i++){ interps.push(makeMorph(glyphs[i], glyphs[(i+1)%n])); }
+
+    clearInterval(fade); span.style.display='none';
+    var svg=document.getElementById('morphA'); svg.style.display='block';
+    var pathEl=svg.querySelector('path');
+    var seg=0, t0=null, HOLD=1300, MORPH=1000;
+    function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+    function frame(ts){
+      if(t0==null)t0=ts; var el=ts-t0, t;
+      if(el<HOLD){t=0;} else if(el<HOLD+MORPH){t=(el-HOLD)/MORPH;} else {seg=(seg+1)%n; t0=ts; t=0;}
+      pathEl.setAttribute('d', interps[seg](ease(t)));
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }).catch(function(){ /* libraries or fonts failed → fade fallback keeps running */ });
+})();
+</script>
+</body>
+</html>

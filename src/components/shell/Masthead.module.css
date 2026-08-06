@@ -10,7 +10,6 @@
      the gutter edges, so the pill's inset is the gutter minus the
      overhang. --nav-size is its own token, not the label size: navigation
      is a different job from the page's small labels. */
-  --nav-h: 54px;
   --nav-size: 16px;
   --nav-gutter: 40px;
   --nav-overhang: 18px;
@@ -133,11 +132,6 @@
   color: var(--masthead-paper);
 }
 
-@media (max-width: 720px) {
-  .meta {
-    display: none;
-  }
-}
 
 /* The prototype's mobile block, verbatim: three links plus the wordmark fit
    a 390pt phone at 11px with room to spare. overflow-x stays as the safety
@@ -146,7 +140,6 @@
    too, because 18px reads as generous at 40px in and as sloppy at 16px. */
 @media (max-width: 760px) {
   .nav {
-    --nav-h: 48px;
     --nav-size: 11px;
     --nav-gutter: 16px;
     --nav-overhang: 10px;

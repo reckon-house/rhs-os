@@ -5,7 +5,7 @@
 
   Two ports needed adjusting for the app, and both are marked at the rule:
   the page gutter (main carries 50px on md+, where the prototype's .screen
-  carried its own 40px) and the sticky offset (the shipped Masthead is 54px,
+  carried its own 40px) and the sticky offset (the shipped Masthead is var(--nav-h),
   standing in for the prototype's var(--nav)).
 */
 
@@ -27,10 +27,10 @@
      on ink. */
 
   position: relative;
-  /* The prototype's .screen height, with the sticky 54px masthead standing in
+  /* The prototype's .screen height, with the sticky var(--nav-h) masthead standing in
      for its var(--nav). dvh, not vh: the shell is h-dvh and 100vh overreaches
      by the mobile browser-chrome delta. */
-  min-height: calc(100dvh - 54px);
+  min-height: calc(100dvh - var(--nav-h));
   /* Base gutter is the prototype's phone value, because <main> runs px-0
      below md; the md+ rule below restores the page gutter this section would
      otherwise have lost to hero-breakout. */
@@ -75,7 +75,7 @@
    one every section uses"; here that gutter is 50px, which is where the case
    study content above the footer sits. Porting the literal 40px would land
    the footer's left rule ten pixels inside everything above it. */
-@media (min-width: 768px) {
+@media (min-width: 761px) {
   .beat {
     padding-left: 50px;
     padding-right: 50px;
@@ -110,11 +110,11 @@
      reach the limit anyway. */
   max-width: min(11em, 50vw);
   margin-top: clamp(24px, 5dvh, 70px);
-  /* The pin. 54px is the sticky masthead above the page, where the prototype
+  /* The pin. var(--nav-h) is the sticky masthead above the page, where the prototype
      used var(--nav). The placement pass READS this back through
      getComputedStyle, so the offset lives here and only here. */
   position: sticky;
-  top: calc(54px + clamp(16px, 4dvh, 54px));
+  top: calc(var(--nav-h) + clamp(16px, 4dvh, var(--nav-h)));
 }
 
 /* margin-top is written by the placement pass: it is the headline's measured

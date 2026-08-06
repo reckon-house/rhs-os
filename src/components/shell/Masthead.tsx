@@ -186,8 +186,7 @@ export function Masthead() {
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
-          it. Its own id — NavRail still ships #navMelt, and duplicate filter
-          ids resolve to whichever mounted first. */}
+          it. Its own id — the id is namespaced so any future second burn surface cannot collide. */}
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
         <filter
           id="mastheadMelt"

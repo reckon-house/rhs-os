@@ -39,6 +39,7 @@ import Link from "next/link";
 import { projects } from "@/data/projects";
 import { imageDimensions } from "@/data/image-dimensions";
 import { getLenis } from "@/lib/lenis";
+import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { reducedMotion } from "@/lib/scrub";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
@@ -353,7 +354,7 @@ export function PressingIndex({ className }: PressingIndexProps) {
   const onFrameEnter = useCallback(
     (e: ReactPointerEvent<HTMLAnchorElement>) => {
       const a = e.currentTarget;
-      if (window.innerWidth <= 760) return;
+      if (window.innerWidth <= CHOREO_BREAKPOINT) return;
       if (!matchMedia("(hover: hover)").matches) return;
       const col = a.parentElement;
       if (!col) return;

@@ -29,7 +29,7 @@
 }
 
 /* Sticky at top: 0, not under the masthead the way the prototype's cover
-   screens sit — this screen deliberately runs BEHIND the sticky 54px
+   screens sit — this screen deliberately runs BEHIND the sticky var(--nav-h)
    masthead so the grown plate can slide beneath the bar; the driver parks
    the plate's top edge at the masthead's bottom edge instead (MASTHEAD in
    the component). The explicit background is load-bearing: position:

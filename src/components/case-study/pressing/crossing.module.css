@@ -17,7 +17,7 @@
 
 /* The pinned screen. top: 0 rather than the masthead height on purpose:
    like the prototype's .h-sticky under its nav, this full-screen surface
-   slides UNDER the sticky 54px masthead instead of stopping below it.
+   slides UNDER the sticky var(--nav-h) masthead instead of stopping below it.
 
    overflow-x: clip is the containment the prototype lacked. Its
    .brief { overflow: visible } opt-out (needed there so a DIFFERENT
@@ -112,7 +112,7 @@
   .sticky {
     position: static;
     height: auto;
-    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
     padding: 30px 20px;
     grid-template-columns: 1fr;
   }
@@ -149,7 +149,7 @@
   .sticky {
     position: static;
     height: auto;
-    min-height: calc(100dvh - 54px); /* the sticky masthead's height */
+    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
   }
   .ln {
     transform: none !important;

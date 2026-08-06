@@ -110,6 +110,18 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           continue;
         }
         if (n.type === "three-column-text") {
+          if (columns) {
+            // The brief nests ONE method grid. Sally runs three in a row —
+            // porting it means restructuring, not silently dropping two.
+            if (process.env.NODE_ENV !== "production") {
+              console.warn(
+                `PressingLayout: a second three-column-text (${n.id}) follows ` +
+                  `the same header — only the first renders; restructure the data`
+              );
+            }
+            j += 1;
+            continue;
+          }
           columns = n.columns.map((c) => ({ title: c.title ?? "", body: c.content }));
           columnsMark = n.pressing?.mark;
           j += 1;
@@ -129,7 +141,10 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             mark={p?.mark}
             title={s.title}
             heldLine={p?.heldLine}
-            paragraphs={splitParagraphs(closing.content)}
+            // Absorbed text renders AHEAD of the closing's own copy — a
+            // study authored per the classic pattern (header, subhead,
+            // closing) was silently losing its subhead here.
+            paragraphs={[...paragraphs, ...splitParagraphs(closing.content)]}
             services={closing.services}
             stack={closing.stack}
             links={closing.links}
@@ -213,6 +228,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
           pinForNext={p?.choreo?.pin}
+          hold={p?.choreo?.hold !== false}
           mark={p?.mark}
         />
       );
@@ -247,10 +263,36 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     // A section type without a pressing skin yet: skip it loudly in dev
     // rather than rendering the classic component into the white ground.
+    // The copy is DROPPED — production renders nothing for this section.
     if (process.env.NODE_ENV !== "production") {
-      console.warn(`PressingLayout: no skin for section type "${s.type}" (${s.id}) — skipped`);
+      console.warn(
+        `PressingLayout: no skin for section type "${s.type}" (${s.id}) — ` +
+          `its content is dropped; give it a skin or restructure the data`
+      );
     }
     i += 1;
+  }
+
+  // The choreography neighbor contract, checked where the layout already
+  // has both sides: a rise section whose previous sibling neither pins,
+  // zooms, nor is the cover will slide over content that is still moving.
+  if (process.env.NODE_ENV !== "production") {
+    sections.forEach((sec, k) => {
+      if (sec.pressing?.choreo?.rise) {
+        const prev = sections[k - 1];
+        const prevHolds =
+          prev &&
+          (prev.type === "meta" ||
+            prev.pressing?.choreo?.pin ||
+            prev.pressing?.choreo?.zoom);
+        if (!prevHolds) {
+          console.warn(
+            `PressingLayout: "${sec.id}" rises but its previous section ` +
+              `does not hold (pin/zoom/cover) — the climb has nothing to cross`
+          );
+        }
+      }
+    });
   }
 
   return (

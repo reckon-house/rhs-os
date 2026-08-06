@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Capitan Boot Co. — Brand System</title>
+<style>
+  @font-face{font-family:'Northwest';src:url('/fonts/NorthwestRegular.woff2') format('woff2');font-weight:400;font-display:block;}
+  @font-face{font-family:'Northwest Round';src:url('/fonts/NorthwestRound.woff2') format('woff2');font-weight:400;font-display:block;}
+  @font-face{font-family:'Oldman';src:url('/fonts/OldMan.woff2') format('woff2');font-weight:400;font-display:block;}
+  @font-face{font-family:'Satoshi';src:url('/fonts/Satoshi-Variable.woff2') format('woff2');font-weight:300 900;font-display:block;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--cream:#EFEAD9;--tan:#C4B594;--olive:#5A5945;--darkolive:#2A2A1A;--ink:#2A2A1A;}
+  body{font-family:'Satoshi',system-ui,sans-serif;background:#E4DDC9;padding:40px;display:flex;justify-content:center;}
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;}
+
+  .card{position:relative;width:1100px;max-width:100%;border-radius:clamp(30px,5vw,75px);overflow:hidden;color:var(--ink);}
+  .split{position:absolute;inset:0;display:grid;grid-template-columns:48% 52%;z-index:0;}
+  .split .l{background:#EFEAD9;} .split .r{background:#E7DFC9;}
+  .inner{position:relative;z-index:1;padding:56px;}
+
+  /* header — matched to live SectionHeader + TextBlock(subhead) */
+  .pill{display:inline-block;font-size:13px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:8px 16px;background:rgba(42,42,26,0.07);border-radius:999px;margin-bottom:20px;}
+  h2{font-size:24px;font-weight:700;line-height:1.5;letter-spacing:-0.02em;margin-bottom:0;}
+  .intro{font-size:24px;font-weight:400;line-height:1.5;letter-spacing:-0.02em;color:var(--ink);}
+  .foot{font-size:14px;line-height:1.875;color:rgba(42,42,26,0.72);margin-top:20px;max-width:880px;}
+
+  /* hero: construction grid (leather patch) + philosophy */
+  .rowA{display:grid;grid-template-columns:46% 54%;gap:40px;margin-top:18px;align-items:center;}
+  .patch{position:relative;background:var(--darkolive);border-radius:20px;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .patch svg.grid{position:absolute;inset:0;width:100%;height:100%;}
+  .patch .grid path,.patch .grid circle,.patch .grid line,.patch .grid rect{
+    stroke:rgba(239,234,217,0.5);stroke-width:1;fill:none;vector-effect:non-scaling-stroke;
+    stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s ease forwards;}
+  .patch .grid .tick{stroke:rgba(239,234,217,0.32);}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .patch img{position:relative;z-index:2;width:54%;height:auto;opacity:0;animation:markin 1.1s ease 1.1s forwards;}
+  @keyframes markin{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
+  .patch .cap{position:absolute;left:18px;bottom:14px;z-index:3;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(239,234,217,0.5);}
+
+  .phil{padding-top:6px;}
+  .phil h3{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(42,42,26,0.45);margin-bottom:14px;}
+  .phil p{font-size:14px;line-height:1.875;color:rgba(42,42,26,0.8);margin-bottom:22px;max-width:600px;}
+  .roleline{margin-bottom:18px;max-width:600px;}
+  .roleline .nm{font-size:14px;line-height:1.6;margin-bottom:4px;}
+  .roleline .nm b{font-weight:600;}
+  .roleline .nm .face{font-family:'Northwest',sans-serif;letter-spacing:0.02em;}
+  .roleline .ds{font-size:14px;line-height:1.875;color:rgba(42,42,26,0.72);}
+
+  .lbl{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(42,42,26,0.45);margin:64px 0 16px;}
+
+  /* palette bands */
+  .bands{border-radius:18px;overflow:hidden;}
+  .band{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;height:184px;}
+  .band .lead{padding:24px;display:flex;flex-direction:column;justify-content:space-between;}
+  .band .lead .nm{font-size:20px;font-weight:700;}
+  .band .lead .sp{font-size:11px;line-height:1.6;opacity:0.85;}
+  .band .tc{position:relative;}
+  .band .tc .pc{position:absolute;top:16px;left:18px;font-size:11px;opacity:0.7;}
+
+  /* type at volume — Northwest x Oldman */
+  .tv{position:relative;border-top:1px solid rgba(42,42,26,0.15);border-bottom:1px solid rgba(42,42,26,0.15);min-height:560px;overflow:hidden;padding:48px 0;}
+  .tv .ghost{position:absolute;right:-30px;top:-40px;font-family:'Northwest',sans-serif;font-size:clamp(220px,30vw,360px);line-height:0.8;letter-spacing:0.01em;color:rgba(42,42,26,0.06);z-index:0;pointer-events:none;white-space:nowrap;text-transform:uppercase;}
+  .tv .make{position:absolute;left:0;top:64px;z-index:2;font-family:'Oldman',Georgia,serif;font-size:clamp(48px,7vw,104px);line-height:0.9;color:var(--ink);}
+  .tv .mark{position:absolute;left:0;bottom:70px;z-index:2;font-family:'Northwest',sans-serif;font-size:clamp(120px,20vw,300px);line-height:0.78;letter-spacing:0.005em;color:var(--ink);text-transform:uppercase;}
+  .tv .wo{position:absolute;right:4px;bottom:78px;z-index:2;text-align:right;}
+  .tv .wo .w{font-family:'Northwest',sans-serif;font-size:clamp(20px,2.4vw,30px);letter-spacing:0.42em;text-transform:uppercase;color:var(--ink);}
+  .tv .wo .o{font-family:'Oldman',Georgia,serif;font-size:clamp(34px,4.6vw,64px);line-height:1;color:rgba(42,42,26,0.5);}
+  .tv .note{position:absolute;right:6px;top:36px;z-index:2;font-size:13px;line-height:1.7;color:rgba(42,42,26,0.6);max-width:340px;text-align:right;}
+
+  /* signature device — rotating leather-stamp badge ring */
+  .stampwrap{background:var(--darkolive);border-radius:22px;overflow:hidden;padding:48px 0 54px;}
+  .stamp{position:relative;width:420px;max-width:86%;margin:0 auto;aspect-ratio:1/1;}
+  .stamp svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .stamp .ringtext text{fill:#EFEAD9;font-family:'Northwest',sans-serif;letter-spacing:0.06em;font-size:15px;text-transform:uppercase;}
+  .stamp .ringtext.inner text{fill:rgba(239,234,217,0.62);font-family:'Oldman',Georgia,serif;font-size:12px;letter-spacing:0.18em;}
+  .stamp .rings circle{fill:none;stroke:rgba(239,234,217,0.55);}
+  .stamp .center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;flex-direction:column;}
+  .stamp .center .star{font-size:34px;color:#EFEAD9;line-height:1;}
+  .stamp .center .cbc{font-family:'Northwest',sans-serif;font-size:40px;letter-spacing:0.04em;color:#EFEAD9;margin-top:6px;}
+  .stampcopy{text-align:center;max-width:520px;margin:26px auto 0;padding:0 20px;}
+  .stampcopy .nm{font-family:'Oldman',Georgia,serif;font-size:22px;color:#EFEAD9;margin-bottom:8px;}
+  .stampcopy .ds{font-size:14px;line-height:1.75;color:rgba(239,234,217,0.72);}
+
+  @keyframes swpulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.07);}}
+  .pulse{animation:swpulse 3.4s ease-in-out infinite;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="split"><div class="l"></div><div class="r"></div></div>
+    <div class="inner">
+
+      <span class="pill">Section 04: Marks &amp; Materials</span>
+      <h2>Identity Built for the Material</h2>
+      <p class="intro">Marks made for stamp, stitch, embroidery, print. Tested against the process before they earned a place.</p>
+      <p class="foot">Leather takes pressure. Denim takes thread. Every color, face, and lockup had to survive the surface it lands on and still read at thumbnail. Range before decoration.</p>
+
+      <div class="rowA">
+        <div class="patch">
+          <svg class="grid" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+            <circle cx="200" cy="200" r="186" pathLength="1" style="animation-delay:0s"/>
+            <circle cx="200" cy="200" r="150" pathLength="1" style="animation-delay:.15s"/>
+            <circle cx="200" cy="200" r="96"  pathLength="1" style="animation-delay:.3s"/>
+            <rect x="58" y="58" width="284" height="284" pathLength="1" style="animation-delay:.45s"/>
+            <path d="M200 14 L200 386" pathLength="1" style="animation-delay:.55s"/>
+            <path d="M14 200 L386 200" pathLength="1" style="animation-delay:.6s"/>
+            <path d="M58 58 L342 342" pathLength="1" class="tick" style="animation-delay:.7s"/>
+            <path d="M342 58 L58 342" pathLength="1" class="tick" style="animation-delay:.78s"/>
+            <path d="M200 50 L150 150 L250 150 Z" pathLength="1" style="animation-delay:.9s"/>
+            <path d="M120 296 L280 296" pathLength="1" class="tick" style="animation-delay:1s"/>
+          </svg>
+          <img src="/case-studies/capitan-boot-co/buffalo-logo.png" alt="Capitan buffalo mark">
+          <span class="cap">Constructed on a grid</span>
+        </div>
+        <div class="phil">
+          <h3>The System</h3>
+          <p>Primary logo, secondary badges, typographic lockups, illustrative assets. Each one keeps its shape under load, because range comes before decoration.</p>
+          <p>Northwest handles scale. Oldman brings character. The bull skull lockup constructs on a geometric grid, and the buffalo lives as a stamp first, an illustration second. Every choice traces back to where the boot ends up.</p>
+          <div class="roleline"><div class="nm"><b class="face">Northwest</b> · Display &amp; signage</div><div class="ds">Bold geometric sans. Carries scale on stamps, banners, and labels. Holds at any size, survives any process.</div></div>
+          <div class="roleline"><div class="nm"><b style="font-family:'Oldman',serif;">Oldman</b> · Wordmark &amp; headlines</div><div class="ds">Hand-cut serif with rough edges. Carries character on packaging and apparel. The primary wordmark.</div></div>
+        </div>
+      </div>
+
+      <div class="lbl">Palette / earned on the surface</div>
+      <div class="bands">
+        <div class="band" style="background:#EFEAD9;">
+          <div class="lead pulse" style="color:#2A2A1A;"><span class="nm">Cream</span><span class="sp mono">RGB 239 234 217<br>HEX #EFEAD9<br>Paper, hangtags</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#EFEAD9 78%,#2A2A1A);animation-delay:.4s;"><span class="pc mono" style="color:#2A2A1A;">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#EFEAD9 60%,#2A2A1A);animation-delay:.8s;"><span class="pc mono" style="color:#EFEAD9;">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#EFEAD9 40%,#2A2A1A);animation-delay:1.2s;"><span class="pc mono" style="color:#EFEAD9;">25</span></div>
+        </div>
+        <div class="band" style="background:#C4B594;">
+          <div class="lead pulse" style="color:#2A2A1A;animation-delay:.2s;"><span class="nm">Tan</span><span class="sp mono">RGB 196 181 148<br>HEX #C4B594<br>Photography, leather</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4B594 75%,#2A2A1A);animation-delay:.6s;"><span class="pc mono" style="color:#2A2A1A;">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4B594 50%,#2A2A1A);animation-delay:1s;"><span class="pc mono" style="color:#EFEAD9;">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#C4B594 30%,#2A2A1A);animation-delay:1.4s;"><span class="pc mono" style="color:#EFEAD9;">25</span></div>
+        </div>
+        <div class="band" style="background:#5A5945;">
+          <div class="lead pulse" style="color:#EFEAD9;animation-delay:.4s;"><span class="nm">Olive</span><span class="sp mono">RGB 90 89 69<br>HEX #5A5945<br>Mid-tones, accents</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#5A5945 72%,#2A2A1A);animation-delay:.8s;"><span class="pc mono" style="color:#EFEAD9;">75</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#5A5945 48%,#2A2A1A);animation-delay:1.2s;"><span class="pc mono" style="color:#EFEAD9;">50</span></div>
+          <div class="tc pulse" style="background:color-mix(in srgb,#5A5945 26%,#2A2A1A);animation-delay:1.6s;"><span class="pc mono" style="color:#EFEAD9;">25</span></div>
+        </div>
+        <div class="band" style="background:#2A2A1A;">
+          <div class="lead pulse" style="color:#EFEAD9;animation-delay:.6s;"><span class="nm">Dark Olive</span><span class="sp mono">RGB 42 42 26<br>HEX #2A2A1A<br>Structure, ground</span></div>
+          <div class="tc pulse" style="background:#3d3d2c;animation-delay:1s;"><span class="pc mono" style="color:#EFEAD9;">75</span></div>
+          <div class="tc pulse" style="background:#5f5f4b;animation-delay:1.4s;"><span class="pc mono" style="color:#EFEAD9;">50</span></div>
+          <div class="tc pulse" style="background:#8a8a73;animation-delay:1.8s;"><span class="pc mono" style="color:#2A2A1A;">25</span></div>
+        </div>
+      </div>
+
+      <div class="lbl">Type / set to carry</div>
+      <div class="tv">
+        <div class="ghost">WESTERN</div>
+        <div class="note">Northwest carries scale, Oldman carries character. Two faces, one voice, sized to read on a hangtag and across a banner alike.</div>
+        <div class="make">Make&nbsp;your</div>
+        <div class="mark">Mark</div>
+        <div class="wo"><span class="o">Western</span><br><span class="w">Original</span></div>
+      </div>
+
+      <div class="lbl">Signature / built to stamp</div>
+      <div class="stampwrap">
+        <div class="stamp" id="stamp">
+          <svg class="rings" viewBox="0 0 400 400"><circle cx="200" cy="200" r="196" stroke-width="2"/><circle cx="200" cy="200" r="150" stroke-width="1"/><circle cx="200" cy="200" r="120" stroke-width="1" stroke-dasharray="2 5"/></svg>
+          <svg class="ringtext outer" id="ringOuter" viewBox="0 0 400 400">
+            <defs><path id="op" d="M 200,200 m -172,0 a 172,172 0 1,1 344,0 a 172,172 0 1,1 -344,0"/></defs>
+            <text><textPath href="#op" startOffset="0%">CAPITAN BOOT CO ★ WESTERN ORIGINAL ★ MAKE YOUR MARK ★ HERITAGE CRAFT ★ </textPath></text>
+          </svg>
+          <svg class="ringtext inner" id="ringInner" viewBox="0 0 400 400">
+            <defs><path id="ip" d="M 200,200 m -134,0 a 134,134 0 1,0 268,0 a 134,134 0 1,0 -268,0"/></defs>
+            <text><textPath href="#ip" startOffset="0%">est • mmxx • stamp • stitch • emboss • print • est • mmxx • stamp • stitch • emboss • print • </textPath></text>
+          </svg>
+          <div class="center"><span class="star">★</span><span class="cbc">CBC</span></div>
+        </div>
+        <div class="stampcopy">
+          <div class="nm">Make Your Mark</div>
+          <div class="ds">One stamp doing the work of a logo. It brands leather, heads a hangtag, embroiders onto a cap, and reads the same pressed, stitched, or printed.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+// rotating leather stamp — opposite directions, mouse accelerates it
+(function(){
+  var outer=document.getElementById('ringOuter'), inner=document.getElementById('ringInner'), stamp=document.getElementById('stamp');
+  if(!outer||!inner) return;
+  var a=0, boost=0, lastX=null, lastY=null;
+  stamp.addEventListener('mousemove', function(e){
+    if(lastX!=null){ boost=Math.min(boost + Math.hypot(e.clientX-lastX,e.clientY-lastY)*0.04, 8); }
+    lastX=e.clientX; lastY=e.clientY;
+  });
+  stamp.addEventListener('mouseleave', function(){ lastX=lastY=null; });
+  function frame(){
+    boost*=0.93;
+    a += 0.12*(1+boost);
+    outer.style.transform='rotate('+a+'deg)';
+    inner.style.transform='rotate('+(-a*1.35)+'deg)';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

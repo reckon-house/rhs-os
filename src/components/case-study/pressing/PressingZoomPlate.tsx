@@ -79,12 +79,17 @@ export type PressingZoomPlateProps = {
 };
 
 /**
- * The site masthead: a sticky 54px bar above the page. The prototype read
- * its --nav custom property here; the live page has no such token, so the
- * height is named once. The plate's top edge parks at this line, and the
- * pan window is the viewport minus it.
+ * The masthead's height, read from the one shared token (--nav-h on :root,
+ * 54px desktop / 48px below the breakpoint). The plate's top edge parks at
+ * this line, and the pan window is the viewport minus it. Read at measure
+ * time, not module time — the token is responsive.
  */
-const MASTHEAD = 54;
+function mastheadH(): number {
+  const v = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue("--nav-h")
+  );
+  return Number.isFinite(v) ? v : 54;
+}
 
 /** The melt pump, verbatim from the prototype's .num-burn rule. */
 const BURN_PUMP = "blur(0.6px) saturate(4.6) contrast(2.2)";
@@ -214,6 +219,7 @@ export function PressingZoomPlate({
 
       /* Full-bleed; the mat height excludes the masthead so the plate's top
          edge parks just beneath the bar rather than behind it. */
+      const MASTHEAD = mastheadH();
       const matH = vh() - MASTHEAD;
       /* Fit the WIDTH rather than covering the box. Nothing is cropped —
          any height beyond the fold becomes something to scroll through
@@ -278,7 +284,7 @@ export function PressingZoomPlate({
          the mat's top line and scale grows it downward from there. The pan
          then slides that tall frame up through the mat window. */
       const tx = (window.innerWidth / 2 - (b.x + b.w / 2)) * e;
-      const ty = (MASTHEAD - b.y) * e - spill * pp;
+      const ty = (mastheadH() - b.y) * e - spill * pp;
 
       const cur = 1 + (scale - 1) * e;
       fig.style.transform =
