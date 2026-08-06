@@ -59,6 +59,7 @@ import {
 } from "react";
 import { onTick, vh } from "@/lib/scrub";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
+import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import reveal from "@/components/fx/reveal.module.css";
 import styles from "./crossing.module.css";
@@ -161,6 +162,11 @@ export function PressingCrossing({
      check the LIVE media queries before doing anything, so a phone or a
      reduced-motion user never sees a cut frame while state catches up. */
   const [mode, setMode] = useState<"scrub" | "static">("scrub");
+
+  /* The screen creeps while it holds so the pin arrives as a deceleration,
+     not a stop. The line transforms live on the .ln spans, so drifting the
+     sticky box underneath them is additive, not a conflict. */
+  usePinDrift(wrapRef, stickyRef);
 
   const headSrc = useMemo(
     () => headline.replace(/\s+/g, " ").trim(),

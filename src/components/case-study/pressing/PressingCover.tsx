@@ -41,6 +41,7 @@ import {
   useState,
 } from "react";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
+import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { onTick, vh } from "@/lib/scrub";
@@ -98,7 +99,15 @@ export function PressingCover({
   const tailRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const ratiosRef = useRef<number[]>([]);
+
+  /* The cover holds for its whole 210dvh + rise, which is the longest pin
+     on the page and so the one where a dead stop reads worst. The creep
+     keeps the screen alive under the handover; the headline unbuild and the
+     statement's climb are transforms on children, so they ride on top of it
+     rather than fighting it. */
+  usePinDrift(wrapRef, stickyRef);
   const [reelReady, setReelReady] = useState(false);
 
   /* Words, not lines: the copy wraps, so the rendered lines are not in the
@@ -353,7 +362,7 @@ export function PressingCover({
       className={`hero-breakout ${styles.coverwrap}`}
       aria-label="Cover"
     >
-      <div className={styles.coverSticky}>
+      <div ref={stickyRef} className={styles.coverSticky}>
         {/* DOM order is the mobile stacking order (headline, statement,
             reel); on desktop everything is absolutely positioned so order
             carries no layout. */}

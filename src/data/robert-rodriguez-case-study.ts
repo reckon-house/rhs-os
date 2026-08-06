@@ -274,18 +274,10 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       group: { name: "brand" },
     },
 
-    // ── TYPOGRAPHY PLATE — the orange/pink Archer specimen board. The
-    //    prototype dropped this file; it comes back BIG (full-bleed image
-    //    beat after the dense brand text), not as a quiet footnote ──
-    {
-      id: "brand-image",
-      type: "image",
-      src: `${IMG}/robert-rodriguez-logo-typography-color-palette-orange-pink-gradient-archer-hairline-book-font-design-branding.jpg`,
-      alt: "Robert Rodriguez — typography system and color palette",
-      aspect: "native",
-      bleed: true,
-      pressing: { caption: "Typography system and color palette" },
-    },
+    // The orange/pink Archer specimen board is deliberately NOT here. The
+    // system index below shows the same material live — the lockup
+    // assembling, the palette morphing — so the static board would be the
+    // second telling of it. (The file is still in public/case-studies.)
 
     // ── THE SYSTEM INDEX — live specimens ──
     {

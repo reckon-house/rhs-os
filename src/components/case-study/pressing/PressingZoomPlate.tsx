@@ -40,6 +40,7 @@
 import { Fragment, useEffect, useId, useRef } from "react";
 import { onTick, vh } from "@/lib/scrub";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
+import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingZoomPlate.module.css";
 
@@ -133,6 +134,13 @@ export function PressingZoomPlate({
      reads it per frame: with it false the ink is never knocked out, which
      IS the plain-ink fallback — nothing else to switch. */
   const burnOkRef = useRef(false);
+
+  /* The screen keeps creeping while it holds, so engaging the pin reads as
+     a deceleration rather than the page hitting a wall. Safe on the sticky
+     box itself — the zoom writes its transforms to the FIGURE, and the ink
+     knockout re-measures against live rects every frame, so both follow the
+     drift instead of fighting it. */
+  usePinDrift(wrapRef, stickyRef);
 
   /* useId's delimiters (":" or the fancy quotes React 19 uses) are not safe
      inside a CSS url(#...) reference, so they are stripped; the digits that
