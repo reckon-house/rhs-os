@@ -48,7 +48,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   return (
     <main
       ref={wrapperRef}
-      className="flex-1 overflow-y-auto overflow-x-hidden content-scroll pt-0 pb-[90px] px-0 md:px-[50px]"
+      // No bottom padding: the 90px used to be clearance for the floating
+      // NavRail dock, and with the dock archived it is just a strip of the
+      // page's own cream ground and grain showing under the footer's white.
+      className="flex-1 overflow-y-auto overflow-x-hidden content-scroll pt-0 pb-0 px-0 md:px-[50px]"
     >
       <div>
         {/* The masthead is sticky against <main> (the Lenis scroller), so it
