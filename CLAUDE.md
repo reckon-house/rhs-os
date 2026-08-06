@@ -215,11 +215,13 @@ Live tracking of cross-study patterns. Update as studies are added or revised.
 - Sally: Utilities section runs three consecutive three-column blocks. Consider compressing or using a different component for some.
 
 ### To create a new case study
-1. Create `src/data/[slug]-case-study.ts` — copy `arc-case-study.ts` as a template
-2. Add images to `public/case-studies/[slug]/`
+1. Create `src/data/[slug]-case-study.ts` — copy `robert-rodriguez-case-study.ts` (pressing) or `arc-case-study.ts` (classic) as the template
+2. Add images to `public/case-studies/[slug]/` AND register every one in `src/data/image-dimensions.ts` — for pressing studies the declared ratio is load-bearing scroll math, not just CLS
 3. Register in `src/app/case-studies/[slug]/page.tsx`
-4. Update homepage `src/app/page.tsx` to add thumbnail to the grid
-5. Add nav thumbnail to `public/nav/` if it gets a NavRail entry
+4. Update homepage `src/app/page.tsx` to add thumbnail to the grid (the all-work footer index derives from `src/data/projects.ts` automatically)
+
+### Pressing (the redesign language)
+New studies ship in the Pressing C language (`style: "pressing"` on the study object); the classic renderer still serves un-migrated studies. **The full porting guide is `PRESSING.md`** — skin matrix, the pressing bag's field semantics, choreography rules, and the porting checklist. The lab prototype `public/lab/swiss-spread.html` is the design spec: tune there, port values back.
 
 
 ## Cross-project context
