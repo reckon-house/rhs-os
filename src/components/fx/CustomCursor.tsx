@@ -3,20 +3,23 @@
 import { useEffect, useRef } from "react";
 
 /**
- * A custom cursor built from the site's own asterisk mark.
+ * A custom cursor that is one shape, slowly changing its mind about how
+ * many corners it has.
  *
- * Idle: the mark slowly morphs through its three weights (thin → regular →
- * heavy → regular → thin) by cross-fading three mask layers, and drifts in a
- * slow rotation that echoes the homepage asterisk. Rendered white and
- * composited with `mix-blend-mode: difference`, so it inverts against whatever's
- * behind it — visible on cream pages and dark case-study images alike.
+ * Idle: a single box morphs circle → squircle → square and back on a 12s
+ * loop. The corner radius is the entire animation — 50% is a circle, ~30%
+ * reads as a squircle at this size, a few percent is a square. It is
+ * rendered white and composited with `mix-blend-mode: difference`, so it
+ * inverts against whatever is behind it — visible on cream pages and dark
+ * case-study plates alike.
  *
- * Over a link / thumbnail: grows, snaps to the bold (heavy) weight, and turns
- * sage — restoring the "this is clickable" cue we lose by hiding the native
- * pointer.
+ * Over a link / thumbnail: grows, and the morph parks on the squircle. A
+ * shape that stops changing is the "this is clickable" cue, replacing the
+ * one lost by hiding the native pointer.
  *
- * Fine-pointer only (touch keeps its native cursor). Auto-motion freezes under
- * prefers-reduced-motion (handled in CSS).
+ * Fine-pointer only (touch keeps its native cursor). Under
+ * prefers-reduced-motion the shape holds the squircle and nothing animates
+ * (handled in CSS).
  */
 const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, label, summary, [data-cursor-grow]';
 
@@ -28,7 +31,7 @@ export function CustomCursor() {
     const el = ref.current;
     if (!el) return;
 
-    document.documentElement.classList.add("cursor-asterisk-on");
+    document.documentElement.classList.add("cursor-shape-on");
 
     let x = 0;
     let y = 0;
@@ -68,22 +71,13 @@ export function CustomCursor() {
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("mouseover", onOver);
       if (raf) cancelAnimationFrame(raf);
-      document.documentElement.classList.remove("cursor-asterisk-on");
+      document.documentElement.classList.remove("cursor-shape-on");
     };
   }, []);
 
   return (
-    <div ref={ref} className="asterisk-cursor" aria-hidden="true">
-      <div className="asterisk-cursor__spin">
-        {/* idle: three weights cross-fading */}
-        <div className="asterisk-cursor__morph">
-          <div className="asterisk-cursor__layer asterisk-cursor__layer--thin" />
-          <div className="asterisk-cursor__layer asterisk-cursor__layer--regular" />
-          <div className="asterisk-cursor__layer asterisk-cursor__layer--heavy" />
-        </div>
-        {/* hover: bold sage mark that fades in over the morph */}
-        <div className="asterisk-cursor__hover" />
-      </div>
+    <div ref={ref} className="shape-cursor" aria-hidden="true">
+      <div className="shape-cursor__box" />
     </div>
   );
 }

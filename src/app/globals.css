@@ -41,96 +41,71 @@ body::before {
 /* ── Custom asterisk cursor ──────────────────────────────────────── */
 /* Hide the native cursor only when the JS-driven custom cursor is live
    (class added on fine-pointer devices, never on touch). */
-html.cursor-asterisk-on,
-html.cursor-asterisk-on * { cursor: none !important; }
+html.cursor-shape-on,
+html.cursor-shape-on * { cursor: none !important; }
 
-.asterisk-cursor {
+/* ── the shape cursor ──────────────────────────────────────────────
+   A single box that morphs circle → squircle → square and back. The
+   corner radius is the whole animation: 50% is a circle, ~30% reads as
+   a squircle at this size, and a few percent is a square with the
+   corner just softened enough not to look like a stray pixel.
+
+   No rotation. The asterisk span before it drifted in a slow spin
+   because a spinning asterisk reads as one shape turning; a square
+   doing the same reads as a shape that has come loose. The morph is
+   the motion now. */
+.shape-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2147483647; /* max — ties the nav dock; rendered later in the DOM so it wins the tie and sits above everything */
+  z-index: 2147483647; /* max — rendered late in the DOM so it wins ties */
   pointer-events: none;
-  mix-blend-mode: difference; /* white mark inverts against any backdrop */
+  mix-blend-mode: difference; /* white shape inverts against any backdrop */
   opacity: 0;
   transition: opacity 0.3s ease;
   will-change: transform;
 }
-.asterisk-cursor.is-visible { opacity: 1; }
-/* hover keeps the `difference` blend (set above) so the mark flips to contrast
-   whatever's under it — a link on cream goes dark, a dark thumbnail makes it
-   light. No fixed colour, just a bigger/bolder contrast flip. */
+.shape-cursor.is-visible { opacity: 1; }
 
-/* centered on the pointer; slow drift rotation (echoes the homepage mark);
-   grows on hover. translate / rotate / scale are individual transform
-   properties, so the hover scale composes with the rotation animation. */
-.asterisk-cursor__spin {
+/* centered on the pointer; grows on hover. translate and scale are
+   individual transform properties so the hover scale composes with the
+   position transform written by the driver. */
+.shape-cursor__box {
   position: absolute;
-  width: 22px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   translate: -50% -50%;
   scale: 1;
-  animation: cursor-spin 48s linear infinite;
+  background: #fff; /* inverts through the container's difference blend */
+  border-radius: 50%;
+  animation: cursor-morph 12s ease-in-out infinite;
   transition: scale 0.28s cubic-bezier(0.34, 1.4, 0.6, 1);
 }
-.asterisk-cursor.is-hover .asterisk-cursor__spin { scale: 1.7; }
 
-/* idle morph group vs. hover mark — they share the box and cross-fade */
-.asterisk-cursor__morph { position: absolute; inset: 0; opacity: 1; transition: opacity 0.18s ease; }
-.asterisk-cursor__hover {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.28s ease;
-  background: #fff; /* inverts via the container's difference blend to contrast the backdrop */
-  -webkit-mask: url(/case-studies/hp/asterisk-heavy.svg) center / contain no-repeat;
-  mask: url(/case-studies/hp/asterisk-heavy.svg) center / contain no-repeat;
-}
-.asterisk-cursor.is-hover .asterisk-cursor__morph { opacity: 0; }
-.asterisk-cursor.is-hover .asterisk-cursor__hover { opacity: 1; }
-
-/* three weight layers, each a white fill masked to its asterisk shape */
-.asterisk-cursor__layer {
-  position: absolute;
-  inset: 0;
-  background: #fff;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-.asterisk-cursor__layer--thin {
-  -webkit-mask-image: url(/case-studies/hp/asterisk-thin.svg);
-  mask-image: url(/case-studies/hp/asterisk-thin.svg);
-  animation: cur-thin 15s ease-in-out infinite;
-}
-.asterisk-cursor__layer--regular {
-  -webkit-mask-image: url(/case-studies/hp/asterisk-regular.svg);
-  mask-image: url(/case-studies/hp/asterisk-regular.svg);
-  animation: cur-regular 15s ease-in-out infinite;
-}
-.asterisk-cursor__layer--heavy {
-  -webkit-mask-image: url(/case-studies/hp/asterisk-heavy.svg);
-  mask-image: url(/case-studies/hp/asterisk-heavy.svg);
-  animation: cur-heavy 15s ease-in-out infinite;
+/* Over a link: bigger, and the morph parks on the squircle — the shape
+   stops changing, which is the "this is clickable" cue the native
+   pointer used to carry. */
+.shape-cursor.is-hover .shape-cursor__box {
+  scale: 1.7;
+  animation-play-state: paused;
+  border-radius: 30%;
+  transition: scale 0.28s cubic-bezier(0.34, 1.4, 0.6, 1),
+              border-radius 0.28s ease;
 }
 
-@keyframes cursor-spin {
-  from { rotate: 0deg; }
-  to   { rotate: 360deg; }
+@keyframes cursor-morph {
+  0%, 100% { border-radius: 50%; }  /* circle */
+  33%      { border-radius: 30%; }  /* squircle */
+  66%      { border-radius: 6%; }   /* square */
 }
-/* thin → regular → heavy → regular → thin, cross-faded */
-@keyframes cur-thin    { 0%, 100% { opacity: 1; } 25%, 50%, 75% { opacity: 0; } }
-@keyframes cur-regular { 0%, 50%, 100% { opacity: 0; } 25%, 75% { opacity: 1; } }
-@keyframes cur-heavy   { 0%, 25%, 75%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .asterisk-cursor__spin { animation: none; }
-  .asterisk-cursor__layer { animation: none; }
-  .asterisk-cursor__layer--thin,
-  .asterisk-cursor__layer--heavy { opacity: 0; }
-  .asterisk-cursor__layer--regular { opacity: 1; }
+  /* Holds the squircle — the midpoint of the cycle, and the shape the
+     hover state uses, so nothing about the cursor moves on its own. */
+  .shape-cursor__box {
+    animation: none;
+    border-radius: 30%;
+  }
 }
 
 /* CareerGalaxy — ambient pulse. A staggered subset of the larger dots
