@@ -36,19 +36,16 @@
  * everything flows in one column.
  */
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useColumnDrop } from "@/lib/column-drop";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingBrief.module.css";
 
-/** px between the headline's last line and the column's first (prototype GAP). */
-const GAP = 34;
 
 /* The placement pass writes styles the first paint should already have, so
    it runs pre-paint on the client; the guard keeps SSR from warning. */
-const useIsoLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export interface PressingBriefProps {
   /** Section-mark label row, e.g. { n: "03", name: "The brief" }. */
@@ -60,11 +57,7 @@ export interface PressingBriefProps {
    * revealed as its own unit on its own block line, flush left.
    */
   heldLine?: string;
-  /** Column lead-in, set in the dimmed heading voice above the paragraphs. */
-  subhead?: string;
   paragraphs?: string[];
-  /** Caption-voice afterword at the column's end. */
-  footnote?: string;
   /** Hold the headline sticky while the column travels up beside it. */
   pin?: boolean;
   /** The method grid: none, or three entries nested after the paragraphs. */
@@ -77,9 +70,7 @@ export function PressingBrief({
   mark,
   title,
   heldLine,
-  subhead,
   paragraphs,
-  footnote,
   pin = false,
   columns,
   columnsMark,
@@ -94,52 +85,9 @@ export function PressingBrief({
 
   const hasCols = !!columns && columns.length > 0;
 
-  /* The placement pass. Runs for every brief, pinned or not — the grid rule
-     applies to all of them, and a column left unmeasured sits at the top of
-     its section. */
-  useIsoLayoutEffect(() => {
-    const sec = sectionRef.current;
-    const col = colRef.current;
-    if (!sec || !col) return;
-    // RevealHeadline renders the tag itself, so the headline is reached the
-    // way the prototype reached it: the section's own h2.
-    const h2 = sec.querySelector("h2") as HTMLElement | null;
-    if (!h2) return;
-
-    const place = () => {
-      // Phones stack the two in separate rows; the measured drop is
-      // meaningless there and the stylesheet owns the spacing.
-      if (window.innerWidth <= 760) {
-        col.style.marginTop = "";
-        return;
-      }
-      col.style.marginTop = "0px";
-      const hs = getComputedStyle(h2);
-      const drop = parseFloat(hs.marginTop) + h2.offsetHeight + GAP;
-      col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
-    };
-
-    place();
-    // A window resize listener, deliberately — this reacts to geometry, not
-    // scroll position, so the Lenis-owns-main rule is not in play.
-    window.addEventListener("resize", place);
-    // Fonts can move the headline's wrap points after first paint; the late
-    // timeout is the prototype's own settle pass, kept because the reveal
-    // masks net to zero layout only once everything has landed.
-    let alive = true;
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        if (alive) place();
-      });
-    }
-    const t = window.setTimeout(place, 300);
-
-    return () => {
-      alive = false;
-      window.removeEventListener("resize", place);
-      window.clearTimeout(t);
-    };
-  }, [title, heldLine]);
+  /* The brief-family placement pass, shared (src/lib/column-drop.ts).
+     stackBelow matches THIS stylesheet's 760 mobile block. */
+  useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
 
   /* The rule-drawing trigger, the prototype's observer at its tuned 0.18
      threshold. No reduced-motion branch here, unlike the prototype: the
@@ -193,11 +141,6 @@ export function PressingBrief({
       </RevealHeadline>
 
       <div ref={colRef} className={styles.col}>
-        {subhead ? (
-          <BodyReveal as="p" className={styles.subhead}>
-            {subhead}
-          </BodyReveal>
-        ) : null}
 
         {paragraphs?.map((p, i) => (
           <BodyReveal key={i} as="p">
@@ -221,18 +164,25 @@ export function PressingBrief({
                   <BodyReveal as="h3" className={styles.colTitle}>
                     {c.title}
                   </BodyReveal>
-                  <BodyReveal as="p">{c.body}</BodyReveal>
+                  {/* Authored paragraph breaks survive: the classic
+                      renderer splits column content on blank lines and the
+                      prototype set two <p> per column — rendering the body
+                      whole was silently flattening them. */}
+                  {c.body
+                    .split(/\n\n+/)
+                    .map((para) => para.trim())
+                    .filter(Boolean)
+                    .map((para, pi) => (
+                      <BodyReveal key={pi} as="p">
+                        {para}
+                      </BodyReveal>
+                    ))}
                 </div>
               ))}
             </div>
           </div>
         ) : null}
 
-        {footnote ? (
-          <BodyReveal as="p" className={styles.footnote}>
-            {footnote}
-          </BodyReveal>
-        ) : null}
       </div>
     </section>
   );

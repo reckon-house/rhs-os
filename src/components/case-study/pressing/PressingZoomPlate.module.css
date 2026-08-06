@@ -20,6 +20,12 @@
   .wrap {
     height: 320dvh;
   }
+  /* Pre-measure fallback for a plate with NO climb room reserved: the
+     driver overwrites both within a frame, but a non-rising plate that
+     briefly claims the extra ~110dvh can visibly correct the scrollbar. */
+  .wrap.noTail {
+    height: 210dvh;
+  }
 }
 
 /* Sticky at top: 0, not under the masthead the way the prototype's cover
@@ -74,11 +80,6 @@
   display: block;
 }
 
-/* The bw prop. The prototype's .bw ended up empty (that page ran the
-   photography in full color), but the component keeps the switch. */
-.bw {
-  filter: grayscale(1);
-}
 
 /* The plate numeral renders as plain ink and is knocked OUT over the
    plate's rectangle, rewritten per frame by the driver: four half-plane

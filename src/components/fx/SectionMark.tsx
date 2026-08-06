@@ -64,19 +64,23 @@ export function SectionMark({ n, name, dark = false, scrollRef }: SectionMarkPro
     const num = numRef.current;
     if (!root || !circle || !num) return;
 
-    /* Reduced motion gets the finished mark, not a frozen half-sweep: disc
-       full, numeral in its resting colour, and no subscription at all. The
-       stylesheet states the same values under the media query, so this
-       write is only repeating what CSS already guarantees pre-hydration. */
-    if (reducedMotion()) {
-      circle.style.strokeDashoffset = "0";
-      num.style.color = dark ? "#000" : "#fff";
-      return;
-    }
-
     let last = -999;
 
     return onTick(() => {
+      /* Reduced motion gets the finished mark, not a frozen half-sweep:
+         disc full, numeral in its resting colour. Checked per tick — the
+         kit convention — so a mid-session OS flip lands immediately in
+         both directions instead of freezing whatever state was current.
+         The stylesheet states the same values under the media query, so
+         these writes only repeat what CSS already guarantees. */
+      if (reducedMotion()) {
+        if (last !== 0) {
+          last = 0;
+          circle.style.strokeDashoffset = "0";
+          num.style.color = dark ? "#000" : "#fff";
+        }
+        return;
+      }
       const h = vh();
       let y: number;
       const wrap = scrollRef?.current;

@@ -22,24 +22,12 @@
  * single-segment reveal instead.
  */
 
-import {
-  Fragment,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  type ReactNode,
-} from "react";
+import { Fragment, useRef, type ReactNode } from "react";
+import { useColumnDrop } from "@/lib/column-drop";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingClosing.module.css";
-
-/** px between the headline's last line and the column's first (prototype GAP). */
-const GAP = 34;
-
-/** useLayoutEffect warns during SSR; the measurement is client-only anyway. */
-const useIsoLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export interface PressingClosingProps {
   /** The section mark row, e.g. { n: "06", name: "Closing" }. Same shape as
@@ -83,54 +71,11 @@ export function PressingClosing({
   const sectionRef = useRef<HTMLElement | null>(null);
   const colRef = useRef<HTMLDivElement | null>(null);
 
-  /* The placement pass, the same one every brief runs — the prototype's
-     closing IS a .brief, so it inherits the rule that the column starts
-     below the headline rather than beside its top. Without it the column
-     top-aligns with the mark and the negative space the spread is built on
-     collapses. Measured, not dealt: the headline rewraps across widths, so
-     no fixed offset survives a resize. */
-  useIsoLayoutEffect(() => {
-    const sec = sectionRef.current;
-    const col = colRef.current;
-    if (!sec || !col) return;
-    // RevealHeadline renders the tag itself, so the headline is reached the
-    // way the prototype reached it: the section's own h2.
-    const h2 = sec.querySelector("h2") as HTMLElement | null;
-    if (!h2) return;
-
-    const place = () => {
-      // Phones stack the two in separate rows; the measured drop is
-      // meaningless there and the stylesheet owns the spacing.
-      if (window.innerWidth <= 760) {
-        col.style.marginTop = "";
-        return;
-      }
-      // Cleared first: the two share a grid row, so a stale margin would
-      // inflate the row and compound on every resize.
-      col.style.marginTop = "0px";
-      const hs = getComputedStyle(h2);
-      const drop = parseFloat(hs.marginTop) + h2.offsetHeight + GAP;
-      col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
-    };
-
-    place();
-    window.addEventListener("resize", place);
-    let alive = true;
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        if (alive) place();
-      });
-    }
-    // The prototype's own settle pass: the reveal masks net to zero layout
-    // only once every line has landed.
-    const t = window.setTimeout(place, 300);
-
-    return () => {
-      alive = false;
-      window.removeEventListener("resize", place);
-      window.clearTimeout(t);
-    };
-  }, [title, heldLine]);
+  /* The brief-family placement pass, shared (src/lib/column-drop.ts).
+     stackBelow is 767 because THIS component's stylesheet stacks at 767
+     (main's md gutter seam), not the choreography 760 — the review caught
+     the 761-767 dead band the mismatch created. */
+  useColumnDrop(sectionRef, colRef, { stackBelow: 767 }, [title, heldLine]);
   return (
     <section ref={sectionRef} className={styles.closing}>
       {mark ? (
@@ -163,7 +108,7 @@ export function PressingClosing({
             <BodyReveal as="div">{brJoin(stack)}</BodyReveal>
           </div>
           {links && links.length > 0 ? (
-            <div>
+            <div className={styles.fullRow}>
               <BodyReveal as="div" className={styles.h}>
                 Client
               </BodyReveal>

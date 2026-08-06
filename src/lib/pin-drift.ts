@@ -48,9 +48,22 @@ export const PIN_DRIFT = 0.08;
 export function usePinDrift(
   wrapRef: RefObject<HTMLElement | null>,
   innerRef: RefObject<HTMLElement | null>,
-  opts?: { drift?: number }
+  opts?: {
+    drift?: number;
+    /**
+     * Offset into the wrap's travel (px) at which the hold ACTUALLY
+     * engages, read per tick. Sticky pins engage the moment the wrap's top
+     * passes the fold — the default 0. PinStage's transform hold engages
+     * later, when the pin's bottom meets the fold, so it passes
+     * max(0, pinHeight - viewport); without it the drift starts a partial
+     * screen early and the content visibly slips at 1.08x page speed
+     * before the hold begins.
+     */
+    startAt?: () => number;
+  }
 ) {
   const drift = opts?.drift ?? PIN_DRIFT;
+  const startAt = opts?.startAt;
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -80,17 +93,19 @@ export function usePinDrift(
       // in view would be a jump.
       if (r.bottom < 0 || r.top > vh()) return clear();
 
-      // How far into the pinned range we are. Sticky engages when the wrap's
-      // top passes the fold, so scrolled <= 0 means the wrap is still on its
-      // way in and the content is moving with the page already.
-      const scrolled = -r.top;
+      // How far into the pinned range we are, measured from where the hold
+      // actually engages (startAt: 0 for sticky, bottom-meets-fold for
+      // PinStage's transform mode). Before that point the content is moving
+      // with the page and must not drift.
+      const start = startAt ? Math.max(0, startAt()) : 0;
+      const scrolled = -r.top - start;
       if (scrolled <= 0) return clear();
 
       // Where the pin ends. Past it the offset FREEZES at what it reached
       // rather than unwinding: the screen is travelling at full scroll speed
       // again, just sitting a few dozen pixels higher than layout says, and
       // a constant offset is invisible where a reversal is not.
-      const span = Math.max(1, r.height - vh());
+      const span = Math.max(1, r.height - vh() - start);
       const held = Math.min(scrolled, span);
 
       // Straight multiplication: one pixel of scroll buys `drift` pixels of
@@ -108,5 +123,8 @@ export function usePinDrift(
       off();
       inner.style.transform = "";
     };
+    // startAt is deliberately not a dep: it is captured once and read per
+    // tick, so it must derive from refs/live DOM, never from render-scoped
+    // state — an inline closure over refs is the intended shape.
   }, [wrapRef, innerRef, drift]);
 }

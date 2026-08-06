@@ -105,9 +105,6 @@
   will-change: transform;
 }
 
-.bw .frame img {
-  filter: grayscale(1);
-}
 
 /* Left label, right-hand sub (the prototype's two mono spans). The type
    voice comes from .caption, applied alongside this class in the JSX. */

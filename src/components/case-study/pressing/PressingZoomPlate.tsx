@@ -53,8 +53,6 @@ export type PressingZoomPlateProps = {
   captionLines: string[];
   /** The mono instruction line under the captions, e.g. the scroll cue. */
   instruction?: string;
-  /** Grayscale the image. */
-  bw?: boolean;
   /** Optional section mark, scrubbed from the zoom wrap's own travel. */
   mark?: { n: string; name: string };
   /**
@@ -124,7 +122,6 @@ export function PressingZoomPlate({
   plate,
   captionLines,
   instruction,
-  bw = false,
   mark,
   width,
   height,
@@ -196,6 +193,7 @@ export function PressingZoomPlate({
     let zoomPx = 0;
     let panPx = 0;
 
+    let wrote = false;
     const invalidate = () => {
       box = null;
     };
@@ -204,6 +202,12 @@ export function PressingZoomPlate({
 
     const measure = () => {
       fig.style.transform = "none";
+      /* measure() itself WRITES (the probe transform and the wrap height),
+         so it must arm the hand-back latch: a plate measured below the fold
+         at desktop width, then flipped to mobile or reduced motion, would
+         otherwise keep a multi-thousand-px inline height that overrides the
+         static layout. */
+      wrote = true;
       const f = fig.getBoundingClientRect();
       const s = sticky.getBoundingClientRect();
       box = { x: f.left - s.left, y: f.top - s.top, w: f.width, h: f.height };
@@ -229,7 +233,6 @@ export function PressingZoomPlate({
       wrap.style.height = vh() + zoomPx + panPx + tailH + "px";
     };
 
-    let wrote = false;
     const clearWrites = () => {
       fig.style.transform = "";
       fig.style.borderRadius = "";
@@ -321,7 +324,8 @@ export function PressingZoomPlate({
       img.removeEventListener("load", invalidate);
       clearWrites();
     };
-  }, [plate, captionKey, instruction]);
+    // reserveRise mounts/unmounts the tail node this closure captured.
+  }, [plate, captionKey, instruction, reserveRise]);
 
   /* ── ink that burns where the image reaches it ───────────────────────
      Every ink target gets a burn layer behind it, masked to its own
@@ -338,6 +342,19 @@ export function PressingZoomPlate({
       instrRef.current,
     ].filter((el): el is NonNullable<typeof el> => el !== null);
     if (!inkEls.length) return;
+
+    /* No backdrop-filter, no burn — and critically, no KNOCKOUT either:
+       style.setProperty of an unsupported property is a silent no-op, so
+       nothing would throw, the tick would still mask the ink out over the
+       plate, and the text would simply vanish instead of burning. Bail to
+       plain ink up front. */
+    if (
+      typeof CSS === "undefined" ||
+      (!CSS.supports("backdrop-filter", "blur(1px)") &&
+        !CSS.supports("-webkit-backdrop-filter", "blur(1px)"))
+    ) {
+      return;
+    }
 
     let alive = true;
     let defs: SVGSVGElement | null = null;
@@ -520,7 +537,7 @@ export function PressingZoomPlate({
        to grow to true viewport width, so the whole wrap runs full-bleed.
        The breakout is plain flow (width + negative margin, no transform),
        so the sticky inside survives it. */
-    <section ref={wrapRef} className={`${styles.wrap} hero-breakout`}>
+    <section ref={wrapRef} className={`${styles.wrap} ${reserveRise ? "" : styles.noTail} hero-breakout`}>
       <div ref={stickyRef} className={styles.sticky}>
         {/* The melt, sized for glyphs — finer noise than the nav-bar melt,
             verbatim from the prototype's #numMelt. Inline in the component
@@ -561,7 +578,6 @@ export function PressingZoomPlate({
             height={height}
             loading={eager ? "eager" : "lazy"}
             decoding="async"
-            className={bw ? styles.bw : undefined}
           />
         </figure>
 

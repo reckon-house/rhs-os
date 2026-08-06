@@ -83,6 +83,9 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           reel={s.reel}
           specLine={s.specLine}
           mark={p?.mark}
+          // Climb room only when something actually climbs — same
+          // derivation as the zoom plates.
+          reserveRise={sections[i + 1]?.pressing?.choreo?.rise === true}
         />
       );
       i += 1;
@@ -171,7 +174,6 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             plate={p.plate ?? ""}
             captionLines={p.captions ?? []}
             instruction={p.instruction}
-            bw={p.bw}
             mark={p.mark}
             // The climb room is only reserved when something actually
             // climbs. Reserved with no riser after it, the tail is a
@@ -210,7 +212,6 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             const cap = splitCaption(img.caption);
             return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
-          bw={p?.bw}
           pinForNext={p?.choreo?.pin}
           mark={p?.mark}
         />

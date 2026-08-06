@@ -4,10 +4,13 @@
  * The page scrolls inside <main>, not the document (see SmoothScroll), and
  * Lenis owns that scroller in wrapper mode — it animates the element's native
  * scrollTop, so real scroll events fire on <main> while a bare window scroll
- * listener never hears anything. Every scrubbed component needs the same two
- * signals (a per-frame tick and main's scroll), and if each one wires its own
- * rAF loop the way the swiss-spread prototype does, the site ends up running
- * N loops for one page. This module is the one loop they all subscribe to.
+ * listener never hears anything. Every scrubbed component reads position per
+ * tick (getBoundingClientRect against the viewport), and if each one wires
+ * its own rAF loop the way the swiss-spread prototype does, the site ends up
+ * running N loops for one page. This module is the one loop they all
+ * subscribe to. (Components that genuinely need main's scroll EVENTS bind
+ * `document.querySelector("main")` directly, the Masthead way — an
+ * onMainScroll helper lived here once and had zero subscribers.)
  *
  * The loop honours the VisibilityPause convention: while `data-paused` sits
  * on <html> (backgrounded tab), no ticks fire and no frames are scheduled.
@@ -93,33 +96,6 @@ export function onTick(cb: Cb): () => void {
       cancelAnimationFrame(rafId);
       rafId = null;
     }
-  };
-}
-
-/**
- * Subscribe to native scroll events on <main> — the events Lenis's animated
- * scrollTop actually produces. Passive, because no subscriber may call
- * preventDefault on this scroller. If <main> isn't in the DOM yet (a
- * component effect racing the root layout), binding retries each frame until
- * it is. Returns the unsubscribe function.
- */
-export function onMainScroll(cb: Cb): () => void {
-  if (typeof window === "undefined") return () => {};
-  let bound: HTMLElement | null = null;
-  let retry = 0;
-  const bind = () => {
-    const main = document.querySelector("main");
-    if (main) {
-      bound = main;
-      main.addEventListener("scroll", cb, { passive: true });
-    } else {
-      retry = requestAnimationFrame(bind);
-    }
-  };
-  bind();
-  return () => {
-    cancelAnimationFrame(retry);
-    if (bound) bound.removeEventListener("scroll", cb);
   };
 }
 

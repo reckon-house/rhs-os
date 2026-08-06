@@ -268,9 +268,9 @@ export function PressingIndex({ className }: PressingIndexProps) {
   useIsoLayoutEffect(() => {
     placeText();
     // Resize, not scroll: the stack's height changes with the column's
-    // width, never with the scroll position. (A scroll listener would
-    // have to go through onMainScroll — the page scrolls inside <main>,
-    // and window never hears it.)
+    // width, never with the scroll position. (A scroll listener would have
+    // to bind <main> directly — the page scrolls inside it, and window
+    // never hears it.)
     window.addEventListener("resize", placeText);
     // Fonts settle after first paint and the blocks are type, so their
     // measured heights move under us once.

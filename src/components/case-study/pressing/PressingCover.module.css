@@ -17,6 +17,11 @@
   height: calc(210dvh + var(--pp-rise));
   position: relative;
 }
+/* No rising next sibling: the wrap sheds the climb room along with the
+   tail, or the cover holds a dead screenful after the handover ends. */
+.coverwrap.noTail {
+  height: 210dvh;
+}
 
 /* The plate's climb room, in flow after the sticky screen so the cover stays
    pinned through it while the next section's RisingPlate crosses. Its height
@@ -211,18 +216,49 @@
   }
 }
 
-/* Reduced motion: scrubbed motion renders static. The statement sits in its
-   resting slot, the headline lines stay put (the structural selector reaches
-   the same inner wrappers the driver would move), and the reel box snaps to
-   each shape instead of animating. RevealHeadline renders its own final
-   state, so the entrance needs nothing from us. */
+/* Reduced motion: the pin itself goes away, not just the scrubbing. The
+   handover is a three-viewport pinned sequence; static, that was three
+   screens of frozen cover with the statement's resting slot superimposed on
+   the headline. So reduce gets the same in-flow, bottom-weighted stack the
+   phone layout uses — desktop type sizes, desktop gutters — and the tail
+   is hidden to match RisingPlate's motion-reduce:mt-0 (the two halves of
+   the climb contract must switch off together). */
 @media (prefers-reduced-motion: reduce) {
-  .statement,
+  .coverwrap {
+    height: auto;
+  }
+  .risetail {
+    display: none;
+  }
+  .coverSticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 26px;
+    padding: 76px 40px 84px;
+    overflow: visible;
+  }
+  .h1 {
+    position: static;
+  }
+  .statement {
+    position: static;
+    transform: none !important;
+    max-width: 34em;
+  }
   .statement .csW {
     transform: none !important;
   }
   .h1 > span > span {
     transform: none !important;
+  }
+  .plateThumb {
+    position: static;
+    width: clamp(84px, 12vw, 150px);
   }
   .reelBox {
     transition: none;

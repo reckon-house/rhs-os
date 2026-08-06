@@ -139,8 +139,6 @@ interface BaseSection {
     captions?: string[];
     /** Big plate numeral on zoom plates ("01") */
     plate?: string;
-    /** Render the image(s) grayscale */
-    bw?: boolean;
     /** Mono instruction line on zoom plates ("Scroll — fills the mat...") */
     instruction?: string;
     /** The headline's separately-held final line (the prototype's .out span) */

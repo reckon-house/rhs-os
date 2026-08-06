@@ -147,8 +147,21 @@ export function PinStage({
   /* Held content never stops dead: it keeps creeping at a fraction of
      scroll speed so engaging the hold reads as a deceleration. The creep
      rides an INNER layer, not the pin box — the transform mechanism writes
-     its own transform there, and two drivers on one element would fight. */
-  usePinDrift(wrapRef, driftRef);
+     its own transform there, and two drivers on one element would fight.
+
+     startAt aligns the creep with the hold's real engagement: sticky
+     engages when the wrap's top passes the fold, but the transform hold
+     only engages once the pin's BOTTOM meets it. For sticky-mode stages
+     the pin is viewport-height (min-h-[100dvh]) so the formula yields ~0
+     and behavior is unchanged; for taller transform-mode content it stops
+     the drift from starting a partial screen early. Read per tick from the
+     ref, never from `resolved` — state would be stale in the closure. */
+  usePinDrift(wrapRef, driftRef, {
+    startAt: () => {
+      const pin = pinRef.current;
+      return pin ? Math.max(0, pin.offsetHeight - window.innerHeight) : 0;
+    },
+  });
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>

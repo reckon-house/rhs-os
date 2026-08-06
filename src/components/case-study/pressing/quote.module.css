@@ -88,6 +88,15 @@
   top: 48px;
   left: 40px;
   z-index: 2;
+  /* The prototype's treatment, restored: the mark rides the SAME
+     difference blend as the quote type, so it flips per-pixel as the fill
+     edge passes it. With the data's dark variant (paper disc, inverted
+     numeral ramp) that reads as ink-on-paper at rest, paper-on-ink once
+     the fill arrives, and ink again in the static branches where the fill
+     never renders — without the blend the dark mark was white-on-white
+     everywhere the fill wasn't. The sticky's isolation + explicit paper
+     background (both load-bearing, see .sticky) contain the blend. */
+  mix-blend-mode: difference;
 }
 
 /* Static below the breakpoint: no pin, no knockout — ink on paper. The

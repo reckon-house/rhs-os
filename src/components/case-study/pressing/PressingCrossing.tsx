@@ -142,14 +142,12 @@ function cutBody(el: HTMLElement, src: string) {
 export interface PressingCrossingProps {
   headline: string;
   paragraphs: string[];
-  footnote?: string;
   mark?: { n: string; name: string };
 }
 
 export function PressingCrossing({
   headline,
   paragraphs,
-  footnote,
   mark,
 }: PressingCrossingProps) {
   const wrapRef = useRef<HTMLElement | null>(null);
@@ -172,11 +170,10 @@ export function PressingCrossing({
     () => headline.replace(/\s+/g, " ").trim(),
     [headline]
   );
-  const bodyItems = useMemo(() => {
-    const items = paragraphs.map((t) => ({ text: t, footnote: false }));
-    if (footnote) items.push({ text: footnote, footnote: true });
-    return items;
-  }, [paragraphs, footnote]);
+  const bodyItems = useMemo(
+    () => paragraphs.map((t) => ({ text: t, footnote: false })),
+    [paragraphs]
+  );
   const bodyKey = bodyItems.map((it) => it.text).join("");
 
   useEffect(() => {
@@ -234,8 +231,17 @@ export function PressingCrossing({
       // paragraph after the other, once the lines have nearly landed.
       // Scrubbed back above the threshold, the class drops and the lines
       // retreat on their base transition.
+      /* The step compresses when the column overflows the tuned ladder:
+         0.58 + 0.11i passes 1.0 at the fifth item, and p is clamped, so a
+         study feeding five-plus paragraphs would leave the tail cut into
+         masks that never reveal. Identical to the prototype's values for
+         up to four items; beyond that, every item lands by p = 0.95. */
+      const step = Math.min(
+        BODY_STEP,
+        (0.95 - BODY_AT) / Math.max(1, bodyEls.length - 1)
+      );
       bodyEls.forEach((el, i) => {
-        el.classList.toggle(reveal.on, p > BODY_AT + i * BODY_STEP);
+        el.classList.toggle(reveal.on, p > BODY_AT + i * step);
       });
     };
     // The starting mask is applied by JS, before first paint (this is a

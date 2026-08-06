@@ -94,8 +94,10 @@
   line-height: 1.55;
 }
 
-/* Three lists on a two-track grid: the last takes the full row. */
-.lists > div:last-child {
+/* Three lists on a two-track grid: the CLIENT list takes the full row.
+   A class, not :last-child — with the optional Client omitted, last-child
+   is Stack, and Stack sprawling across the row was a bug, not a layout. */
+.fullRow {
   grid-column: 1 / -1;
 }
 

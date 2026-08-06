@@ -45,6 +45,7 @@ import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { onTick, vh } from "@/lib/scrub";
+import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 // The reveal system's class names, for querying the line wrappers it renders
 // and defending the revealed state. Importing the module yields the same
 // generated names RevealHeadline uses — the supported way to reach a sibling
@@ -86,6 +87,13 @@ export interface PressingCoverProps {
   specLine?: string;
   /** The section mark for the statement half of the sequence. */
   mark?: { n: string; name: string };
+  /**
+   * Reserve the climb room a RISING next sibling needs. The layout derives
+   * it from the actual next section's rise flag — never author it. With
+   * nothing climbing, the tail is a screenful of dead pin after the
+   * handover has finished (the exact stall the zoom plate had).
+   */
+  reserveRise?: boolean;
 }
 
 export function PressingCover({
@@ -94,6 +102,7 @@ export function PressingCover({
   reel,
   specLine,
   mark,
+  reserveRise = false,
 }: PressingCoverProps) {
   const wrapRef = useRef<HTMLElement>(null);
   const tailRef = useRef<HTMLDivElement>(null);
@@ -108,6 +117,30 @@ export function PressingCover({
      statement's climb are transforms on children, so they ride on top of it
      rather than fighting it. */
   usePinDrift(wrapRef, stickyRef);
+
+  /* The lone-x line's light weight, stamped OUTSIDE the scrub driver: the
+     driver never runs below the breakpoint or under reduced motion, and the
+     prototype stamped unconditionally — phones got the light x too. Both of
+     RevealHeadline's branches render one element per authored line, so the
+     stamp targets whichever line is exactly the multiplication character;
+     the observer re-stamps after RevealHeadline re-renders (a reduce flip
+     swaps its whole subtree). */
+  useEffect(() => {
+    const sticky = stickyRef.current;
+    if (!sticky) return;
+    const h1 = sticky.querySelector("h1");
+    if (!h1) return;
+    const stamp = () => {
+      for (const line of Array.from(h1.children)) {
+        const t = (line.textContent ?? "").trim().toLowerCase();
+        if (t === "x" || t === "\u00d7") line.classList.add(styles.x);
+      }
+    };
+    stamp();
+    const mo = new MutationObserver(stamp);
+    mo.observe(h1, { childList: true });
+    return () => mo.disconnect();
+  }, [title]);
   const [reelReady, setReelReady] = useState(false);
 
   /* Words, not lines: the copy wraps, so the rendered lines are not in the
@@ -128,7 +161,7 @@ export function PressingCover({
     if (!h1) return;
     const tail = tailRef.current;
 
-    const narrow = window.matchMedia("(max-width: 760px)");
+    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const wordEls = Array.from(
@@ -341,7 +374,11 @@ export function PressingCover({
       ratiosRef.current = [];
       setReelReady(false);
     };
-  }, [images, shape]);
+    // Keyed on the JOINED list, not the array identity: a parent that
+    // rebuilds an equal array inline must not tear down and re-preload the
+    // whole reel.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [images ? images.join(",") : "", shape]);
 
   const onBeat = useCallback(
     (_i: number, beat: SizzleBeat) => {
@@ -359,7 +396,7 @@ export function PressingCover({
     // stays free of transforms, filters and overflow clipping.
     <section
       ref={wrapRef}
-      className={`hero-breakout ${styles.coverwrap}`}
+      className={`hero-breakout ${styles.coverwrap} ${reserveRise ? "" : styles.noTail}`}
       aria-label="Cover"
     >
       <div ref={stickyRef} className={styles.coverSticky}>
@@ -408,7 +445,9 @@ export function PressingCover({
       </div>
       {/* The plate's climb room. Sits after the sticky screen so the cover
           stays pinned through it while the next RisingPlate crosses. */}
-      <div ref={tailRef} className={styles.risetail} aria-hidden="true" />
+      {reserveRise ? (
+        <div ref={tailRef} className={styles.risetail} aria-hidden="true" />
+      ) : null}
     </section>
   );
 }

@@ -62,8 +62,6 @@ export interface PressingPlatesPairProps {
     width?: number;
     height?: number;
   }[];
-  /** Render the photographs grayscale. */
-  bw?: boolean;
   /** Hold the row so the next sibling (a rise plate) can climb across it. */
   pinForNext?: boolean;
   /** Section mark above the row; reads the pin wrapper's travel when pinned. */
@@ -72,7 +70,6 @@ export interface PressingPlatesPairProps {
 
 export function PressingPlatesPair({
   images,
-  bw = false,
   pinForNext = false,
   mark,
 }: PressingPlatesPairProps) {
@@ -165,7 +162,7 @@ export function PressingPlatesPair({
   }, [srcKey]);
 
   const row = (
-    <div className={bw ? `${styles.plates} ${styles.bw}` : styles.plates}>
+    <div className={styles.plates}>
       {mark ? (
         <div className={styles.markRow}>
           <SectionMark
