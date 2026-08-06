@@ -15,10 +15,15 @@
  * over a long pin it is a few dozen pixels — but the arrival is a
  * deceleration instead of a stop.
  *
- * The creep is also eased OUT at the end of the pin, so releasing does not
- * introduce a second, opposite jolt: the drift returns to zero as the wrap
- * hands off, and the content is back where the layout expects it just as
- * sticky lets go.
+ * The creep only ever goes ONE WAY. An earlier version eased it back to
+ * zero before release so the content would be "home" when sticky let go —
+ * but that reverses direction mid-hold, and a held screen that drifts up
+ * and then sags back down reads as a bounce, which is worse than the clunk
+ * it was meant to fix. Once the pin ends the offset simply stays where it
+ * finished: the element is a few dozen pixels higher than layout says, it
+ * resumes travelling at full scroll speed from there, and nothing jumps.
+ * The transform is cleared only once the wrap is off screen, where there is
+ * nothing to see.
  *
  * Applied to the STICKY ELEMENT itself, which is safe: a transform on the
  * sticky box offsets what it paints without disturbing how sticky computes
@@ -32,25 +37,20 @@ import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 
 /**
- * Fraction of scroll speed the pinned content keeps. 0.06 is the value that
- * reads as "settling" rather than "sliding": high enough that the eye never
- * sees a hard stop, low enough that the content still reads as held.
+ * Fraction of scroll speed the pinned content keeps. Held content travels
+ * at 5% of the page: enough that the eye never sees a hard stop, little
+ * enough that the screen still reads as held. Straight multiplication, no
+ * easing curve — a curve means the speed changes during the hold, and any
+ * change in speed is exactly the thing this exists to remove.
  */
-export const PIN_DRIFT = 0.06;
-
-/** The creep never exceeds this, however long the pin runs. */
-export const PIN_DRIFT_MAX = 64;
-
-/** Ease the creep away over the last of the pin so release is silent too. */
-const RELEASE = 0.18;
+export const PIN_DRIFT = 0.05;
 
 export function usePinDrift(
   wrapRef: RefObject<HTMLElement | null>,
   innerRef: RefObject<HTMLElement | null>,
-  opts?: { drift?: number; max?: number }
+  opts?: { drift?: number }
 ) {
   const drift = opts?.drift ?? PIN_DRIFT;
-  const max = opts?.max ?? PIN_DRIFT_MAX;
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -75,6 +75,9 @@ export function usePinDrift(
       if (document.documentElement.hasAttribute("data-paused")) return;
 
       const r = wrap.getBoundingClientRect();
+      // Cleared only out of sight. While the wrap is anywhere on screen the
+      // offset is held, including after the pin has released — dropping it
+      // in view would be a jump.
       if (r.bottom < 0 || r.top > vh()) return clear();
 
       // How far into the pinned range we are. Sticky engages when the wrap's
@@ -83,21 +86,17 @@ export function usePinDrift(
       const scrolled = -r.top;
       if (scrolled <= 0) return clear();
 
+      // Where the pin ends. Past it the offset FREEZES at what it reached
+      // rather than unwinding: the screen is travelling at full scroll speed
+      // again, just sitting a few dozen pixels higher than layout says, and
+      // a constant offset is invisible where a reversal is not.
       const span = Math.max(1, r.height - vh());
-      const p = scrolled / span;
-      if (p >= 1) return clear();
+      const held = Math.min(scrolled, span);
 
-      // Saturating, not clamped. A hard min() would move the clunk rather
-      // than remove it: the creep would run at a constant rate and then
-      // stop dead at the cap. This approaches `max` asymptotically, so
-      // velocity starts at exactly `drift` where the pin engages and decays
-      // smoothly to nothing — there is never a second corner.
-      const creep = max * (1 - Math.exp((-scrolled * drift) / max));
-
-      // Ramp what is left away over the final RELEASE of the pin so the
-      // content is home by the time sticky lets go.
-      const fade = p > 1 - RELEASE ? (1 - p) / RELEASE : 1;
-      const y = -creep * fade;
+      // Straight multiplication: one pixel of scroll buys `drift` pixels of
+      // creep, the whole way through. Monotonic by construction — it can
+      // only ever move one direction, which is the point.
+      const y = -held * drift;
 
       const next = Math.round(y * 10) / 10;
       if (next === last) return;
@@ -109,5 +108,5 @@ export function usePinDrift(
       off();
       inner.style.transform = "";
     };
-  }, [wrapRef, innerRef, drift, max]);
+  }, [wrapRef, innerRef, drift]);
 }
