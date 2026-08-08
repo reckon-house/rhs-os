@@ -12,8 +12,12 @@
  * Keys are matched against the canonical term after aliasing, so a
  * line filed under "marble" also answers "calacatta".
  *
- * The counts stay OUT of these sentences by design: the working note
- * beside the answer carries them, so a line here never goes stale.
+ * THE ALTITUDE RULE (Aug 2026): the say explains, the working
+ * counts. No numeral appears in the top section unless Jeremy wrote
+ * it here, and a number here should be a resume fact that does not
+ * drift ("8 years at Nordstrom"), never a project count (those go
+ * stale the day a project ships). The composer warns in the console
+ * if a count ever leaks back into a say it assembled.
  */
 
 export interface VoiceLine {

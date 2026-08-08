@@ -1174,7 +1174,7 @@ const nameList = (xs) =>
   xs.length === 1 ? xs[0] :
   xs.length === 2 ? xs[0] + " and " + xs[1] :
   xs.length === 3 ? xs[0] + ", " + xs[1] + ", and " + xs[2] :
-  xs.slice(0, 2).join(", ") + ", and " + num(xs.length - 2) + " more";
+  xs.slice(0, 3).join(", ") + ", and more";
 
 /* One plan for the whole answer: what to say, what to show, and what
    the receipt can prove. Returns null when neither intents nor facts
@@ -1214,7 +1214,7 @@ function think(q) {
     const yes = plan.workIdx.length &&
       /^(do|does|can|could|did|are|is|have|has|will|would|any)\b/.test(qf);
     plan.say = (yes ? "Yes. " : "") + "\u201c" + cap(senseKey) + "\u201d files under " +
-      br.target + " here. " + num(plan.workIdx.length) + " projects carry it.";
+      br.target + " here. That work is below.";
     plan.receipt = "\u201c" + senseKey + "\u201d isn't a word the studies use, so a hand-written bridge reads it as the " +
       br.label + " kind and routes it to " + br.target + ". The index holds " + plan.workIdx.length +
       " projects for that. No model runs when you ask. Index v" + FACTS.vocabularyVersion + ".";
@@ -1286,7 +1286,8 @@ function senseBridge(qf) {
    when a title brings its own. It runs on every sentence the house
    speaks, and the working names it, because a pipeline you can show
    is part of the site's own case study. */
-const VOICE_VERSION = 2;
+/* 3: the altitude rule — the say explains, the working counts */
+const VOICE_VERSION = 3;
 function voice(s) {
   return s
     .replace(/\u2014/g, ", ")
@@ -1424,64 +1425,60 @@ function planFacts(q, f) {
        answer does the counting, so these sentences never go stale */
     say = (vl.lead || "") + (vl.tail ? " " + vl.tail : "");
   } else if (forked && w) {
-    say = "\u201c" + cap(qKey) + "\u201d goes " + num(leadTerms.length) +
-      " ways here: " + nameList(leadTerms) + ". " +
-      cap(num(w)) + (w === 1 ? " project" : " projects") + " between them.";
+    say = "\u201c" + cap(qKey) + "\u201d goes more than one way here: " +
+      nameList(leadTerms) + ". The work below carries all of them.";
   } else if (!w) {
     say = "Haven't worked that into a project yet, but " +
-      (p === 1 ? "1 inspiration example is below." : num(p) + " below are saved as inspiration.");
+      (p === 1 ? "it's saved below as inspiration."
+        : p === 2 ? "a couple below are saved as inspiration."
+        : "a few below are saved as inspiration.");
   } else if (f.and) {
-    /* two Hill Country studies share a display title, and "two
-       projects: Hill Country home" reads as a miscount; "among them"
-       carries the arithmetic honestly */
     say = w === 1
-      ? "One project holds all of that: " + titles[0] + "."
-      : w === titles.length
-        ? cap(num(w)) + " projects hold all of that: " + nameList(titles) + "."
-        : cap(num(w)) + " projects hold all of that, " + nameList(titles) + " among them.";
+      ? titles[0] + " holds all of that."
+      : nameList(titles) + " hold all of that.";
   } else if (lead === "client") {
     say = wl === 1
       ? "That's " + term + ". One project: " + tl[0] + "."
-      : ["That's " + term + ". " + cap(num(wl)) + " projects under the name.",
-         term + ": " + num(wl) + " projects. " + tl[0] + " leads.",
-         "That's " + term + ". " + cap(num(wl)) + " projects came through here."][v];
+      : ["That's " + term + ". Every project below carries the name.",
+         term + ": the work below, " + tl[0] + " in front.",
+         "That's " + term + ". All of the below came through that name."][v];
   } else if (lead === "material" || lead === "colour") {
     const it = aliased ? "It" : cap(term);
     say = bridge + (wl === 1
       ? (aliased ? "It lives in " : cap(term) + " lives in ") + tl[0] + "."
       : wl === 2
         ? it + " sits in " + tl[0] + " and " + tl[1] + "."
-        : [it + " lives in " + num(wl) + " projects. " + tl[0] + " carries the most.",
-           it + " runs through " + num(wl) + " projects. Start with " + tl[0] + ".",
-           "I've used " + (aliased ? "it" : term) + " in " + num(wl) + " projects, " + tl[0] + " among them."][v]);
+        : [it + " lives all through the work below. " + tl[0] + " carries the most.",
+           it + " runs through the work below. Start with " + tl[0] + ".",
+           "I've used " + (aliased ? "it" : term) + " in a number of projects, " + tl[0] + " most of all."][v]);
   } else if (lead === "furniture") {
     say = aliased
       ? bridge + (wl === 1 ? "There's one in " + tl[0] + "."
-        : "One sits in " + num(wl) + " projects. " + tl[0] + " first.")
+        : "There's one in every project below. " + tl[0] + " first.")
       : wl === 1 ? "There's a " + term + " in " + tl[0] + "."
       : wl === 2 ? "There's a " + term + " in " + tl[0] + " and in " + tl[1] + "."
-      : ["A " + term + " sits in " + num(wl) + " projects. " + tl[0] + " carries the most.",
-         cap(num(wl)) + " projects have a " + term + " somewhere. Start with " + tl[0] + ".",
-         capWords(plural(term)) + ": " + num(wl) + " projects. " + tl[0] + " first."][v];
+      : ["A " + term + " sits somewhere in every project below. " + tl[0] + " carries the most.",
+         "There's a " + term + " in each of these. Start with " + tl[0] + ".",
+         capWords(plural(term)) + " run all through the work below. " + tl[0] + " first."][v];
   } else if (lead === "room") {
     say = bridge + (wl === 1 ? "That's " + tl[0] + "."
       : [capWords(plural(term)) + ": " + nameList(tl) + ".",
-         cap(num(wl)) + " projects have " + term + " work in them. " + tl[0] + " leads.",
+         cap(term) + " work shows up all through the below. " + tl[0] + " leads.",
          capWords(plural(term)) + ": " + nameList(tl) + "."][v]);
   } else if (lead === "place") {
     say = bridge + capWords(term) + " work: " + nameList(tl) + ".";
   } else if (lead === "tool") {
     say = wl === 1
       ? "Built with " + term + ". One project: " + tl[0] + "."
-      : ["Built with " + term + ". It's in " + num(wl) + " projects.",
-         cap(num(wl)) + " projects went through " + term + ".",
-         term + " does work in " + num(wl) + " projects here."][v];
+      : ["Built with " + term + ", all through the work below.",
+         "Everything below went through " + term + ".",
+         term + " is in every one of these."][v];
   } else {
     say = wl === 1
       ? "That's " + term + " here. One project carries it: " + tl[0] + "."
-      : ["That's " + term + " here. " + cap(num(wl)) + " projects carry it.",
-         term + ": " + num(wl) + " projects.",
-         cap(num(wl)) + " projects sit under " + term + "."][v];
+      : ["That's " + term + " here. Everything below carries it.",
+         term + ": the work below.",
+         "The work below sits under " + term + "."][v];
   }
   /* the projects that matched the word another way, named as such */
   if (!f.and && w && others.length) {
@@ -1490,16 +1487,15 @@ function planFacts(q, f) {
   }
   const bridged = senseBridge(qKey);
   if (bridged) {
-    say += " If you meant the " + bridged.label + " kind, ask for " +
-      bridged.target + ". " + cap(num(bridged.hits)) + " projects answer to it.";
+    say += " If you meant the " + bridged.label + " kind, ask for " + bridged.target + ".";
   }
   /* the calibration's own register for the right-hand column:
      "saved as inspiration", "inspiration example". Voice-led answers
      already counted it in their count line. */
   if (w && p && !vl) {
-    say += p === 1 ? " Plus 1 inspiration example below."
+    say += p === 1 ? " Plus an inspiration example below."
       : p === 2 ? " A couple below are saved as inspiration."
-      : " " + num(p) + " below are saved as inspiration.";
+      : " A few of the frames below are saved as inspiration.";
   }
   if (f.dead && f.dead.length && (w || p)) {
     say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
@@ -1513,6 +1509,13 @@ function planFacts(q, f) {
     say = "Yes. " + say;
   }
   say = voice(say);
+  /* THE ALTITUDE RULE, one fact one home: the say explains, the
+     working counts. No numeral belongs up top unless Jeremy wrote it
+     in a voice line ("8 years at Nordstrom" is his to say). This
+     tripwire is the rule written down where it can actually fire. */
+  if (!vl && /[0-9]/.test(say)) {
+    console.warn("house voice: a count leaked into the say:", say);
+  }
   const receipt = explain({
     q: qKey, lead, term, w, p, vl, forked, and: f.and,
     dead: f.dead || [], bridged
@@ -1866,7 +1869,7 @@ function composeAnswer(a) {
   if (!total) {
     say = "Nothing in the house answers to that yet. Try a material, a room, or a discipline.";
   } else if (w >= allWorks) {
-    say = "All " + w + " projects, in the order I'd walk you through them.";
+    say = "All of it, in the order I'd walk you through.";
   } else if (hit.some((t) => t.startsWith("inspir"))) {
     say = (typeof FACTS !== "undefined" && FACTS && FACTS.voice && FACTS.voice.set.board) ||
       "These are things I love and inspired by.";
@@ -1882,7 +1885,7 @@ function composeAnswer(a) {
                    : "I've used " + key + " in " + titles[0] + " more than once.")
         : titles.length === 2
           ? "I've used " + key + " in " + titles[0] + " and " + titles[1] + "."
-          : "I've used " + key + " in " + num(w) + " projects, " + titles[0] + " among them.";
+          : "I've used " + key + " in a number of projects, " + titles[0] + " among them.";
     say = lead + " A couple below are saved as inspiration.";
   } else if (w) {
     say = titles.length === 1
@@ -1890,10 +1893,12 @@ function composeAnswer(a) {
                  : titles[0] + " answers that more than once. It's below.")
       : titles.length === 2
         ? "That's " + titles[0] + " and " + titles[1] + ". Both below."
-        : cap(num(w)) + " projects answer to that. They're below.";
+        : "The projects below answer to that, " + titles[0] + " in front.";
   } else if (p) {
     say = "Haven't worked " + key + " into a project yet, but " +
-      (p === 1 ? "1 inspiration example is below." : num(p) + " below are saved as inspiration.");
+      (p === 1 ? "it's saved below as inspiration."
+        : p === 2 ? "a couple below are saved as inspiration."
+        : "a few below are saved as inspiration.");
   } else {
     say = "That's a practice question. The notes below have it.";
   }
