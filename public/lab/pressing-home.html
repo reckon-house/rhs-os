@@ -138,7 +138,14 @@
      the module's bare centre slot */
   .ask.big #query { border-bottom-width: 2px;
     border-bottom-color: rgba(0, 0, 0, 0.14); padding-bottom: 10px; }
-  .ask.big #query::placeholder { color: var(--masthead-ink); }
+  .ask.big #query::placeholder { color: var(--masthead-ink);
+    transition: color 0.25s ease; }
+  /* Click in and the question goes grey. At display size the
+     placeholder is full ink — it reads as a statement, which is right
+     until someone means to type over it. Grey says the line is theirs
+     now. */
+  .ask.big #query:focus::placeholder { color: rgba(0, 0, 0, 0.3); }
+  #nav.rev .ask.big #query:focus::placeholder { color: rgba(255, 255, 255, 0.42); }
   /* display, not visibility: hidden it still holds its width and the
      flex gap, and the question is fitted to the width it actually has */
   .clear { display: none; background: none; border: 0; padding: 0 2px;
@@ -1463,6 +1470,15 @@ input.addEventListener("input", (e) => {
   onQuery(e.target.value);
   if (window.placeAsk) placeAsk();   /* typing at display size refits */
 });
+/* Focus completes the word before handing the line over: the typing
+   stops wherever it happens to be, and a half-typed question sitting
+   greyed under a cursor reads as a mistake rather than an invitation. */
+input.addEventListener("focus", () => {
+  if (tourFull && !input.value) {
+    input.placeholder = tourFull;
+    if (window.placeAsk) placeAsk();
+  }
+});
 input.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { input.value = ""; onQuery("", true); input.blur(); }
   if (e.key === "Enter") { e.preventDefault(); onQuery(input.value, true); input.blur(); }
@@ -1542,6 +1558,11 @@ document.getElementById("resetQ").addEventListener("click", () => {
    character and the line would wobble the entire way in — so the
    driver publishes the target and placeAsk measures that instead.
 
+   No quote marks. They framed the word as something being ASKED, and
+   the typing now says that better — and their closing mark sat hard
+   against the last character, so it jittered along with every
+   keystroke. The word is simply the headline.
+
    Work, Info and Staples ride in it because they are queries now, not
    destinations. The chips that used to spell them out are gone: a row
    of links under a field that answers questions was hedging. */
@@ -1550,10 +1571,10 @@ const TOUR = ["all work", "kitchens", "interiors", "marble", "app design",
 const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
 let tourFull = "";                     /* what placeAsk should size to */
 (() => {
-  if (REDUCE()) { input.placeholder = "“" + TOUR[0] + "”"; return; }
+  if (REDUCE()) { input.placeholder = TOUR[0]; return; }
   let k = 0, i = 0, mode = "in", timer = 0;
   const show = (n) => {
-    input.placeholder = "“" + TOUR[k].slice(0, n) + "”";
+    input.placeholder = TOUR[k].slice(0, n);
     if (window.placeAsk) placeAsk();
   };
   const step = () => {
@@ -1652,8 +1673,7 @@ let tourFull = "";                     /* what placeAsk should size to */
     const wide = live ? s.width : narrow;
     /* the WHOLE word while the tour types, so the type does not
        resize on every character */
-    const big = fitSize(
-      input.value || (tourFull ? "“" + tourFull + "”" : input.placeholder), wide);
+    const big = fitSize(input.value || tourFull || input.placeholder, wide);
     /* The masthead keeps a tighter gutter than the page does (16 against
        20 on a phone; they are both 40 on a desktop, where this is a
        no-op). So the question rides the PAGE's gutter while it is in

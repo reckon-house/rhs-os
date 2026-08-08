@@ -143,6 +143,22 @@ visual starts in `public/lab/`.)
       text block rather than right-aligned text. Deliberate: the
       alternative snaps.
 
+      v21.1: the quote marks came off, and focus greys the line.
+
+      The quotes framed the word as something being ASKED, which the
+      typing now says better — and their closing mark sat hard against
+      the last character, so it jittered along with every keystroke.
+      Without them the word is simply the headline.
+
+      Focus does two things: it completes the half-typed word (a
+      fragment sitting greyed under a cursor reads as a mistake, not
+      an invitation) and drops the placeholder from full ink to 30%.
+      At display size the line reads as a statement, which is right up
+      until someone means to type over it; grey says it is theirs now.
+      Reversed-over-dark gets its own focus colour, and it has to be a
+      more specific selector than the reversal rule or the id-heavy
+      #nav.rev #query would win on specificity.
+
       v21: the chips row under the field is GONE, and the placeholder
       types instead of fading.
 
