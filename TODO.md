@@ -888,7 +888,12 @@ visual starts in `public/lab/`.)
 - [x] **Wire the facts index into the brain.** DONE in the lab
       (Aug 2026): intents (contact, where, who) answer before lookup,
       facets compose the sentence, evidence counts rank the grid, and
-      the split answer keeps work and board apart. The React port
+      the answer renders in the ring's own rows (work left,
+      board right, receipt in the notes column as "The working"),
+      ambiguity is spoken ("development goes three ways here"), and a
+      curated sense bridge redirects the world's words to the studies'
+      ("app development files under engineering"), verified against
+      the index before it speaks. The React port
       inherits all of it through src/lib/facts.ts plus the lab's
       think()/planFacts() as the porting spec.
 
