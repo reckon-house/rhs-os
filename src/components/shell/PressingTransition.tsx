@@ -27,9 +27,12 @@
  * registered it was ever closed, so the reveal waits on a floor as
  * well as on the router. At the other end, a heavy route holds the
  * black for seconds, and a still page under a still curtain reads as
- * a hang — so the stack redraws itself while it waits, and a cycle is
- * never cut short. A ceiling gives the page back if the route never
- * arrives at all.
+ * a hang — so the stack redraws itself while it waits, and a lap is
+ * never cut short. That redraw is a KEYFRAME ANIMATION rather than a
+ * timer, and the difference is the whole reason it works: while a
+ * heavy route commits, the main thread is gone, so a JavaScript loader
+ * freezes exactly when it is needed. The compositor does not care.
+ * A ceiling gives the page back if the route never arrives at all.
  */
 
 import { useCallback, useEffect, useRef } from "react";
@@ -88,54 +91,27 @@ export function PressingTransition() {
 
   const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-  /* ── the waiting redraw ─────────────────────────────────────────
-   * A heavy route (A.R.C., with its thousand-line diagram) can take
-   * seconds behind the black, and a still page under a still curtain
-   * reads as a hang. So the stack redraws itself while it waits: the
-   * lines leave upward in sequence, then arrive again from below, and
-   * keep doing it until the route lands.
-   *
-   * A CYCLE IS NEVER CUT SHORT. The route usually resolves partway
-   * through one, and lifting the curtain then would strand half the
-   * stack mid-flight — the reader would see the interruption, which is
-   * worse than the wait. The caller checks readiness BETWEEN cycles,
-   * so whatever is in the air always finishes.
-   *
-   * Inline styles rather than a class, because the delay is per line
-   * and already lives in --d; clearing them afterwards is what hands
-   * the lines back to the stylesheet for the final beat. */
-  const redraw = useCallback(
-    async (stacks: HTMLElement[], lines: number, root: HTMLElement) => {
-      const each = (fn: (l: HTMLElement, i: number) => void) =>
-        stacks.forEach((s) => Array.from(s.children).forEach((c, i) => fn(c as HTMLElement, i)));
-
-      each((l, i) => {
-        l.style.transitionDelay = (i * STEP_OUT).toFixed(3) + "s";
-        l.style.transitionDuration = "0.22s, 0.24s";
-        l.style.opacity = "0";
-        l.style.transform = "translate3d(0, -10px, 0)";
-      });
-      await wait((lines - 1) * STEP_OUT * 1000 + OUT_TAIL_MS);
-
-      /* back to the start below the line, without animating there —
-         otherwise they slide down through the frame they just left */
-      each((l) => {
-        l.style.transition = "none";
-        l.style.transform = "translate3d(0, 14px, 0)";
-      });
-      void root.offsetHeight;
-
-      each((l, i) => {
-        l.style.transition = "";
-        l.style.transitionDuration = "";
-        l.style.transitionDelay = (i * STEP_IN).toFixed(3) + "s";
-        l.style.opacity = "1";
-        l.style.transform = "translate3d(0, 0, 0)";
-      });
-      await wait((lines - 1) * STEP_IN * 1000 + IN_TAIL_MS);
-    },
-    []
-  );
+  /* Stop the wait animation only at a lap boundary, so no line is
+     caught mid-flight. The first line has no delay, so it laps first;
+     the keyframes hold their settled state long enough that when it
+     does, every staggered line behind it is settled too. */
+  const stopWaiting = useCallback((root: HTMLElement) => {
+    return new Promise<void>((resolve) => {
+      if (!root.classList.contains("pt-wait")) return resolve();
+      const first = root.querySelector<HTMLElement>(".ptw .ptstack .ptl");
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        first?.removeEventListener("animationiteration", finish);
+        root.classList.remove("pt-wait");
+        resolve();
+      };
+      first?.addEventListener("animationiteration", finish);
+      /* a floor under the boundary wait: one lap, plus the stagger */
+      setTimeout(finish, 2000);
+    });
+  }, []);
 
   const play = useCallback(
     async (href: string, title: string, sub: string) => {
@@ -233,31 +209,30 @@ export function PressingTransition() {
           ready = true;
         });
       void routeChange;
+
+      /* The class goes on BEFORE the push. Once React starts committing
+         a heavy route the main thread is gone, and a class added after
+         that would not land until the work was already over. Started
+         here, the compositor carries it straight through. */
+      root.classList.add("pt-wait");
       router.push(href);
 
       /* the floor: a prefetched route must not snap the black open
          before the eye has registered it closed */
       const started = performance.now();
       await wait(HOLD_MIN_MS);
-      /* and then, only if it is still coming, the stack redraws. The
-         check is between cycles, so a route that lands mid-redraw
-         still gets a finished one. */
+      /* then simply wait. The stack is redrawing itself on the
+         compositor the whole time, so this loop does nothing but
+         watch the clock — which is the point: on a heavy route it
+         does not get to run at all for a while. */
       while (!ready && performance.now() - started < HOLD_MAX_MS) {
-        await redraw(stacks, lines, root as HTMLElement);
+        await wait(80);
       }
       arrived.current = null;
+      /* let the lap finish before the reveal */
+      await stopWaiting(root as HTMLElement);
 
-      /* hand the lines back to the stylesheet: the final beat is
-         driven by .pt-3, and an inline opacity would outrank it */
-      stacks.forEach((s) =>
-        Array.from(s.children).forEach((c) => {
-          const l = c as HTMLElement;
-          l.style.transition = "";
-          l.style.transitionDuration = "";
-          l.style.opacity = "";
-          l.style.transform = "";
-        })
-      );
+
       /* The arriving page starts at its own top, and it has to happen
          while the black is still down or the jump is visible. */
       document.querySelector("main")?.scrollTo({ top: 0, behavior: "auto" });
@@ -290,7 +265,7 @@ export function PressingTransition() {
       root.className = "pt";
       busy.current = false;
     },
-    [beat, redraw, router]
+    [beat, stopWaiting, router]
   );
 
   useEffect(() => {

@@ -338,6 +338,37 @@
      both are supposed to read as. */
   .ptb .ptl { -webkit-text-stroke: 0.36px currentColor; }
   .pt-1 .ptl { opacity: 1; transform: translate3d(0, 0, 0); }
+
+  /* ── the wait, and why it is CSS ─────────────────────────────────
+     While a heavy route renders, the MAIN THREAD IS BLOCKED. A.R.C.
+     commits several thousand SVG nodes in one go, and for the length
+     of that commit no timer fires and no inline style gets written —
+     which is exactly what a JavaScript-driven loader needs to do, so
+     the first version of this froze precisely when it was supposed to
+     be reassuring someone.
+
+     A keyframe animation on transform and opacity runs on the
+     compositor, off the main thread. It keeps going through the
+     commit. The main thread only has to add one class before the work
+     starts and take it off after.
+
+     The rest band is long on purpose. Lines are staggered by --d, up
+     to about 0.57s across the stack, and the animation holds its
+     settled state from 45% of a 1.8s cycle onward — a 0.99s window.
+     That is wider than the stagger, so at the moment the first line
+     completes a lap, every other line is also sitting still and
+     upright. Stopping there can never cut one mid-flight. */
+  @keyframes ptwait {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0); }
+    22%  { opacity: 0; transform: translate3d(0, -12px, 0); }
+    23%  { opacity: 0; transform: translate3d(0, 14px, 0); }
+    45%  { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  .pt-wait .ptl { animation: ptwait 1.8s var(--d, 0s) infinite both;
+    /* the entry transition would fight the keyframes for the same two
+       properties, and the keyframes are the ones in charge here */
+    transition: none; }
   .pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0);
     transition-duration: 0.22s, 0.24s; }
   .ptw .ptl { color: var(--ink); }
