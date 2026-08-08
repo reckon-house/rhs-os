@@ -1265,6 +1265,36 @@ function senseBridge(qf) {
   return r.hits.length ? { label, target, hits: r.hits.length } : null;
 }
 
+/* ── the house voice ──────────────────────────────────────────────
+   A visible stage, not a vibe. The templates below are cut from the
+   studies' own measured diction — things sit, carry, live and anchor
+   there; colon lists; contractions; "the rest" — and this pass
+   enforces the copy rules the studies are edited under, mechanically:
+   no em dashes ever, no formal is-not, one space, one full stop even
+   when a title brings its own. It runs on every sentence the house
+   speaks, and the working names it, because a pipeline you can show
+   is part of the site's own case study. */
+const VOICE_VERSION = 1;
+function voice(s) {
+  return s
+    .replace(/\u2014/g, ", ")
+    .replace(/\b(It|That|There|Here) is\b/g, "$1's")
+    .replace(/\b(does|do|is|was) not\b/g, (m, v) =>
+      ({ does: "doesn't", do: "don't", is: "isn't", was: "wasn't" }[v]))
+    .replace(/\.\.+/g, ".")
+    .replace(/  +/g, " ")
+    .trim();
+}
+/* the same question always gets the same sentence; different
+   questions get different bones. A rotation seeded by the clock would
+   make the house sound different on every visit, which reads as
+   random, not alive. */
+const vary = (q, n) => {
+  let h = 0;
+  for (const c of q) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  return h % n;
+};
+
 /* Facet-aware composition. The verb belongs to the KIND of fact:
    materials are used, furniture is simply there, clients are names,
    tools are built with. Same copy rules as everything else in the
@@ -1332,14 +1362,15 @@ function planFacts(q, f) {
     !qf.split(" ").some((wd) => fold(term).split(" ").includes(wd));
   const bridge = aliased ? "“" + cap(qf) + "” files under " + term + " here. " : "";
 
+  const v = vary(fold(q), 3);
   let say;
   if (forked && w) {
     say = "\u201c" + cap(fold(q)) + "\u201d goes " + num(leadTerms.length) +
       " ways here: " + nameList(leadTerms) + ". " +
       cap(num(w)) + (w === 1 ? " project" : " projects") + " between them.";
   } else if (!w) {
-    say = "Nothing shipped answers to " + fold(q) + " yet, but it's in the things I keep. " +
-      (p === 1 ? "One pull below." : cap(num(p)) + " pulls below.");
+    say = "Nothing shipped answers that yet. The board does" +
+      (p === 1 ? ", once." : ", " + num(p) + " times over.");
   } else if (f.and) {
     /* two Hill Country studies share a display title, and "two
        projects: Hill Country home" reads as a miscount; "among them"
@@ -1350,33 +1381,48 @@ function planFacts(q, f) {
         ? cap(num(w)) + " projects hold all of that: " + nameList(titles) + "."
         : cap(num(w)) + " projects hold all of that, " + nameList(titles) + " among them.";
   } else if (lead === "client") {
-    say = "That's " + term + ". " +
-      (wl === 1 ? "One project: " + tl[0] + "."
-                : cap(num(wl)) + " projects with their name on them.");
+    say = wl === 1
+      ? "That's " + term + ". One project: " + tl[0] + "."
+      : ["That's " + term + ". " + cap(num(wl)) + " projects under the name.",
+         term + ": " + num(wl) + " projects. " + tl[0] + " leads.",
+         "That's " + term + ". " + cap(num(wl)) + " projects came through here."][v];
   } else if (lead === "material" || lead === "colour") {
-    const it = aliased ? "it" : term;
-    say = bridge + (wl === 1 ? "I've used " + it + " in " + tl[0] + "."
-      : wl === 2 ? "I've used " + it + " in " + tl[0] + " and " + tl[1] + "."
-      : "I've used " + it + " in " + num(wl) + " projects, " + tl[0] + " among them.");
+    const it = aliased ? "It" : cap(term);
+    say = bridge + (wl === 1
+      ? (aliased ? "It lives in " : cap(term) + " lives in ") + tl[0] + "."
+      : wl === 2
+        ? it + " sits in " + tl[0] + " and " + tl[1] + "."
+        : [it + " lives in " + num(wl) + " projects. " + tl[0] + " carries the most.",
+           it + " runs through " + num(wl) + " projects. Start with " + tl[0] + ".",
+           "I've used " + (aliased ? "it" : term) + " in " + num(wl) + " projects, " + tl[0] + " among them."][v]);
   } else if (lead === "furniture") {
     say = aliased
       ? bridge + (wl === 1 ? "There's one in " + tl[0] + "."
-        : "They show up in " + num(wl) + " projects. " + tl[0] + " first.")
+        : "One sits in " + num(wl) + " projects. " + tl[0] + " first.")
       : wl === 1 ? "There's a " + term + " in " + tl[0] + "."
       : wl === 2 ? "There's a " + term + " in " + tl[0] + " and in " + tl[1] + "."
-      : capWords(plural(term)) + " show up in " + num(wl) + " projects. " + tl[0] + " first.";
+      : ["A " + term + " sits in " + num(wl) + " projects. " + tl[0] + " carries the most.",
+         cap(num(wl)) + " projects have a " + term + " somewhere. Start with " + tl[0] + ".",
+         capWords(plural(term)) + ": " + num(wl) + " projects. " + tl[0] + " first."][v];
   } else if (lead === "room") {
     say = bridge + (wl === 1 ? "That's " + tl[0] + "."
-      : capWords(plural(term)) + ": " + nameList(tl) + ".");
+      : [capWords(plural(term)) + ": " + nameList(tl) + ".",
+         cap(num(wl)) + " projects have " + term + " work in them. " + tl[0] + " leads.",
+         capWords(plural(term)) + ": " + nameList(tl) + "."][v]);
   } else if (lead === "place") {
     say = bridge + capWords(term) + " work: " + nameList(tl) + ".";
   } else if (lead === "tool") {
-    say = "Built with " + term + ". " +
-      (wl === 1 ? "One project: " + tl[0] + "." : "It's in " + num(wl) + " projects.");
+    say = wl === 1
+      ? "Built with " + term + ". One project: " + tl[0] + "."
+      : ["Built with " + term + ". It's in " + num(wl) + " projects.",
+         cap(num(wl)) + " projects went through " + term + ".",
+         term + " does work in " + num(wl) + " projects here."][v];
   } else {
-    say = "That's " + term + " here. " +
-      (wl === 1 ? "One project carries it: " + tl[0] + "."
-                : cap(num(wl)) + " projects carry it.");
+    say = wl === 1
+      ? "That's " + term + " here. One project carries it: " + tl[0] + "."
+      : ["That's " + term + " here. " + cap(num(wl)) + " projects carry it.",
+         term + ": " + num(wl) + " projects.",
+         cap(num(wl)) + " projects sit under " + term + "."][v];
   }
   /* the projects that matched the word another way, named as such */
   if (!f.and && w && others.length) {
@@ -1388,14 +1434,17 @@ function planFacts(q, f) {
     say += " If you meant the " + bridged.label + " kind, ask for " +
       bridged.target + ". " + cap(num(bridged.hits)) + " projects answer to it.";
   }
-  if (w && p) say += " There's more of it in the things I keep.";
+  /* The board is VISIBLE on the right now, so the old rider restated
+     what the eye already had, on every answer, in the same words.
+     That is the formula tell. One short line, only when the board
+     answered more than once, in the studies' own "the rest" register. */
+  if (w && p > 1) say += [" The rest is on the board.",
+    " The board carries the rest.", " The rest sits on the board."][v];
   if (f.dead && f.dead.length && (w || p)) {
     say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
   }
 
-  /* "Capitan Boot Co.." is what happens when a title's own full stop
-     meets the sentence's; English keeps one, so does this */
-  say = say.replace(/\.\.+/g, ".");
+  say = voice(say);
 
   const readings = facets.map((fa) =>
     fa + ": " + [...byFacet[fa].terms]
@@ -1406,7 +1455,8 @@ function planFacts(q, f) {
     (readings.length ? readings.join("  ·  ") : "several facts at once") +
     "  ·  " + w + (w === 1 ? " project" : " projects") +
     "  ·  " + p + (p === 1 ? " pull" : " pulls") +
-    "  ·  facts index v" + (FACTS ? FACTS.vocabularyVersion : "?");
+    "  ·  facts index v" + (FACTS ? FACTS.vocabularyVersion : "?") +
+    "  ·  house voice v" + VOICE_VERSION;
   return { say, receipt, workIdx, pullIdx, mailto: false };
 }
 
