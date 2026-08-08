@@ -350,7 +350,7 @@
        },
        {
         "section": "meta",
-        "field": "reel.images.4",
+        "field": "reel.images.5",
         "quote": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg"
        }
       ]
@@ -367,7 +367,7 @@
        },
        {
         "section": "meta",
-        "field": "reel.images.4",
+        "field": "reel.images.5",
         "quote": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg"
        }
       ]
@@ -485,6 +485,23 @@
     "furniture": [
      {
       "facet": "furniture",
+      "term": "table",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/arc/arc-app-smartphone-wooden-table-mockup.jpg"
+       },
+       {
+        "section": "problem-image-mockup",
+        "field": "src",
+        "quote": "arc app smartphone wooden table mockup"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "artwork",
       "n": 2,
       "cites": [
@@ -497,18 +514,6 @@
         "section": "stats",
         "field": "items.2.label",
         "quote": "Artwork"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "table",
-      "n": 1,
-      "cites": [
-       {
-        "section": "problem-image-mockup",
-        "field": "src",
-        "quote": "arc app smartphone wooden table mockup"
        }
       ]
      }

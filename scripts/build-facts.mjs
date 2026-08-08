@@ -15,7 +15,7 @@
  * written. That is what keeps a composer built on top of this honest:
  * it can only assert what it can point at.
  */
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
@@ -226,13 +226,30 @@ for (const file of studyFiles()) {
    is read. It is part of the template rather than a flourish one study
    happened to get, so a pressing study without one is reported here
    rather than discovered later by eye. */
-const reels = { have: [], missing: [] };
+const reels = { have: [], missing: [], transparent: [] };
+/* A frame with an alpha channel lets the reel's own dark stage through
+   and reads as the picture not filling its box. object-fit cannot save
+   it: there is nothing there to cover with. Cheap to check, so it is
+   checked rather than remembered — the PNG colour-type byte at offset
+   25 is 4 or 6 when the file carries alpha. */
+const hasAlpha = (src) => {
+  if (!/\.png$/i.test(src)) return false;
+  try {
+    const b = readFileSync("public" + src);
+    return b.slice(1, 4).toString() === "PNG" && (b[25] === 4 || b[25] === 6);
+  } catch (e) {
+    return false;
+  }
+};
 for (const file of studyFiles()) {
   const cs = await loadStudy(file);
   if (cs.style !== "pressing") continue;
   const cover = cs.sections.find((x) => x.type === "meta" || x.type === "pressing-cover");
-  (cover && cover.reel && cover.reel.images && cover.reel.images.length
-    ? reels.have : reels.missing).push(cs.slug);
+  const imgs = (cover && cover.reel && cover.reel.images) || [];
+  (imgs.length ? reels.have : reels.missing).push(cs.slug);
+  for (const src of imgs) {
+    if (hasAlpha(src)) reels.transparent.push(cs.slug + ": " + src.split("/").pop());
+  }
 }
 
 /* ── the pulls ──
@@ -301,7 +318,7 @@ const lines = [
   `statistics        ${projects.reduce((a, p) => a + p.stats.length, 0)}`,
   `pulls indexed     ${pulls.length} (${pulls.filter((p) => Object.keys(p.facets).length).length} carry facts)`,
   `voice lines       ${Object.keys(voice.terms).length} terms, ${Object.keys(voice.set).length} set pieces`,
-  `cover reels       ${reels.have.length}/${reels.have.length + reels.missing.length} pressing studies${reels.missing.length ? " — MISSING: " + reels.missing.join(", ") : ""}`,
+  `cover reels       ${reels.have.length}/${reels.have.length + reels.missing.length} pressing studies${reels.missing.length ? ", MISSING: " + reels.missing.join(", ") : ""}${reels.transparent.length ? ", TRANSPARENT FRAMES: " + reels.transparent.join("; ") : ", every frame opaque"}`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
   `query aliases     ${Object.keys(QUERY_ALIASES).length}${deadAliases.length ? " — " + deadAliases.length + " POINT AT NOTHING" : ", every one lands"}`,

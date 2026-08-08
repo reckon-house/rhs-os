@@ -126,15 +126,21 @@ export const arcCaseStudy: CaseStudy = {
       reel: {
         caption: "Preview · 8 frames · 2024",
         colors: REEL_COLORS,
+        /* EVERY FRAME IS OPAQUE. Two of these were PNG screen renders
+           with alpha — a phone with transparent corners, the mark on a
+           transparent grid — and the reel's own dark stage showed
+           straight through them, which reads as the picture failing to
+           fill its box. object-fit cannot help: there is nothing to
+           cover with. Photography and flattened mockups only. */
         images: [
           `${IMG}/arc-app-kitchen-project-selection-lifestyle.jpg`,
           `${IMG}/arc-room-scanning-interface.jpg`,
           `${IMG}/arc-app-living-room-furniture-selection.jpg`,
+          `${IMG}/arc-report-thumb.jpg`,
           `${IMG}/arc-app-vinyl-turntable-shelves-lifestyle.jpg`,
           `${IMG}/arc-app-tablet-kitchen-living-room-lifestyle.jpg`,
-          `${IMG}/arc-dashboard-screen-hero.png`,
+          `${IMG}/arc-app-smartphone-wooden-table-mockup.jpg`,
           `${IMG}/arc-multi-device-lifestyle-hero.jpg`,
-          `${IMG}/arc-logo-grid.png`,
         ],
       },
       // Summary and abstract stay authored but unrendered in pressing.

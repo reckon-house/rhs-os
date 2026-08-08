@@ -229,13 +229,23 @@ reel: {
 ```
 
 Rules that make it read as a system rather than decoration:
+- **Every frame must be OPAQUE.** A PNG with an alpha channel lets the
+  reel's dark stage through and reads as the picture failing to fill
+  its box. `object-fit: cover` cannot save it: there is nothing there
+  to cover with. Photography and flattened mockups only. Screen renders
+  with device bezels and logo files on transparent grids are the usual
+  offenders. `npm run facts` fails them by name.
 - **Colours come from the study's declared palette**, not picked to
   taste. A reel that flashes colours the brand does not use is a lie
   about the brand.
 - **Sequence it the way the work is experienced**, not the order the
   files sit in. A.R.C. runs room, scan, result, other surfaces, mark.
-- **Close on the brand frame** (logo, mark, type specimen). Both
-  studies do; it lands the sequence instead of stopping it.
+- **Close on the brand frame** (logo, mark, type specimen) when an
+  OPAQUE one exists. Robert closes on its logo-on-gradient. A.R.C. has
+  no flattened mark, so it closes on the product across every surface,
+  which lands the sequence just as well. Do not reach for a
+  transparent logo to satisfy this rule; flatten one first or close on
+  something else.
 - No dimension registration needed — the cover measures each frame's
   ratio at runtime and reshapes the box as it cuts.
 
