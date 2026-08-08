@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { PressingContact } from "./PressingContact";
 import { PressingCredits } from "./PressingCredits";
-import { PressingIndex } from "./PressingIndex";
+import { PressingReturn } from "./PressingReturn";
 
 /* ── PressingFooter ─────────────────────────────────────────────────
    The site's tail, ported from the prototype's .fx-mast + .fx-index:
@@ -13,10 +12,13 @@ import { PressingIndex } from "./PressingIndex";
    which is why they read as part of the same document rather than as
    chrome bolted underneath it.
 
-   The All work index is suppressed on the homepage: the home's dealt
-   field IS that index, promoted to the page itself, and the same thirty
-   frames twice on one route is a directory stutter. Contact and credits
-   still close the page there.
+   The third beat used to be the All-work index, suppressed on the
+   homepage because printing the same thirty frames twice on one route
+   was a directory stutter. Once the homepage BECAME that index the
+   stutter moved: every case study was ending by reprinting the front
+   page. So the tail states the loop instead of duplicating it, and the
+   route check moved inside PressingReturn, which needs it anyway to
+   know whether home is a link or the top of this page.
 
    No wrapper element around the beats. Each renders its own full-bleed
    section and manages its own ground, and an extra div here would be one
@@ -24,12 +26,11 @@ import { PressingIndex } from "./PressingIndex";
    silently kill both sticky headlines. */
 
 export function PressingFooter() {
-  const pathname = usePathname();
   return (
     <>
       <PressingContact />
       <PressingCredits />
-      {pathname === "/" ? null : <PressingIndex />}
+      <PressingReturn />
     </>
   );
 }

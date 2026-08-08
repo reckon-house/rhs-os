@@ -1,0 +1,123 @@
+/* ── the return ─────────────────────────────────────────────────────
+   The ring's closing move, and the last thing on every page.
+
+   The tokens are declared locally for the same reason PressingIndex
+   declared them: the footer sits outside .pressing, which scopes the
+   --pp-* variables to a case study's own content, so it cannot inherit
+   them. Same numbers, on purpose. */
+.beat {
+  --rt-paper: var(--pp-paper, #ffffff);
+  --rt-ink: var(--pp-ink, #000000);
+  --rt-lbl: var(--pp-lbl, 10px);
+  --rt-lbl-track: var(--pp-lbl-track, 0.04em);
+  --rt-lbl-weight: var(--pp-lbl-weight, 500);
+
+  display: block;
+  background: var(--rt-paper);
+  color: var(--rt-ink);
+  /* The Swiss shell keeps its own voice, the same call the masthead
+     and the index made. */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* 40px matches the masthead's gutter, and is not doubled against
+     main's md:px-[50px] because the root carries .hero-breakout. */
+  padding: clamp(56px, 8vw, 120px) 40px clamp(30px, 4vw, 50px);
+}
+
+/* The whole invitation is one target. A reader who has just finished a
+   study should not have to find a small link — the door is the size of
+   the sentence. */
+.door {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.eyebrow {
+  display: block;
+  font-size: var(--rt-lbl);
+  font-weight: var(--rt-lbl-weight);
+  letter-spacing: var(--rt-lbl-track);
+  opacity: 0.5;
+  padding-bottom: 14px;
+}
+
+.line {
+  margin: 0;
+  font-size: clamp(30px, 4.4vw, 62px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+/* The rule draws itself across on approach: the loop closing, stated
+   once and quietly. transform rather than width so it costs nothing
+   per frame. */
+.rule {
+  height: 1px;
+  margin-top: clamp(28px, 4vw, 54px);
+  background: currentColor;
+  opacity: 0.14;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.33, 0.28, 0.12, 1);
+}
+.on .rule {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .door:hover .line {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+  }
+}
+.door:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 8px;
+}
+
+/* The chrome that used to live under the All-work index. It is real
+   information and it outlives the index that carried it. */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: clamp(70px, 10vw, 150px);
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+  font-size: var(--rt-lbl);
+  font-weight: var(--rt-lbl-weight);
+  letter-spacing: var(--rt-lbl-track);
+}
+.newsline {
+  opacity: 0.45;
+}
+.top {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule {
+    transition: none;
+    transform: scaleX(1);
+  }
+}

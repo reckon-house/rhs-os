@@ -9,11 +9,11 @@
  * through ToInt32) is fully specified by IEEE754, so Node and the
  * browser produce the same stream.
  *
- * Used by the homepage deal. The footer index (PressingIndex) predates
- * this module and carries its own identical copy of the arithmetic —
- * consolidating it here is a known cleanup, deferred so the verified
- * footer stays untouched. If the TIERS or MINSTEP ever retune, move the
- * footer onto this module in the same change.
+ * Used by the homepage deal. The footer index (PressingIndex) used to
+ * carry its own identical copy of this arithmetic, and consolidating
+ * the two was a standing cleanup; it resolved itself in Aug 2026 when
+ * the homepage became that index and the footer's copy was retired.
+ * This module is now the only place the ladder lives.
  */
 
 /** The width ladder, as a share of the image track. Ceiling 0.86, not
