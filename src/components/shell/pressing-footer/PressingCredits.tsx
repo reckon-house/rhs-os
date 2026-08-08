@@ -277,7 +277,7 @@ export function PressingCredits({ className }: PressingCreditsProps) {
       <div className={styles.markRow}>
         {/* No scrollRef: only the headline is sticky, so this row travels
             up the screen normally and its own position is a real signal. */}
-        <SectionMark n="08" name="Credits" dark />
+        <SectionMark n="H" name="Credits" dark />
       </div>
 
       {/* The break after "Worked with," is authored — "\n" is

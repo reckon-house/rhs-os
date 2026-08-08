@@ -219,7 +219,13 @@ export function PressingContact({ className }: PressingContactProps) {
             headline is sticky — so the mark's own position on screen is a
             real signal and can drive its sweep. `dark` because the disc runs
             paper-on-ink here. */}
-        <SectionMark n="07" name="Contact" dark />
+        {/* R, not a number. The tail is the same on every route, so a
+            numeral here claimed a place in a sequence it was never in:
+            "07" made sense on the one study that happened to have six
+            sections before it and nowhere else. The two beats carry
+            the house's initials instead — R here, H on credits — which
+            is true on the homepage and on all thirty studies. */}
+        <SectionMark n="R" name="Contact" dark />
       </div>
 
       {/* "\n" is RevealHeadline's authored line break: each line gets its own

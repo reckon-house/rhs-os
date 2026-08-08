@@ -41,6 +41,10 @@ const smooth = (k: number) => k * k * (3 - 2 * k);
 interface SectionMarkProps {
   /** The number as authored, e.g. "02". A single leading zero is dropped
    *  in the disc ("04" renders as 4) — two digits do not fit at 8.5px. */
+  /** The glyph inside the disc. Usually a section number ("03"), and a
+   *  leading zero is dropped on the way in. It takes a letter just as
+   *  happily: the site's tail uses R and H, because a footer that
+   *  appears on every route has no place in any page's sequence. */
   n: string;
   name: string;
   /** On dark grounds the disc runs paper-on-ink and the numeral ramp
