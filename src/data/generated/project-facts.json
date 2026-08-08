@@ -12,6 +12,9 @@
    "kitchen": {
     "lead": "The kitchen is the heart of the home and one of my favorite projects to work on."
    },
+   "jack white": {
+    "lead": "Jack White is probably my favorite creative person, ever. A huge inspiration."
+   },
    "nordstrom": {
     "lead": "I worked at Nordstrom for 8 years in various creative leadership roles.",
     "tail": "The projects below span design systems, editorial content strategy, national brand launches and many others."
@@ -6497,7 +6500,11 @@
   {
    "src": "/case-studies/inspiration/bw-waylon-jennings-aviators-cigarette-portrait.jpg",
    "alt": "Black-and-white portrait of Waylon Jennings in aviator sunglasses with a cigarette",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Waylon Jennings"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-bespectacled-man-coca-cola-bottle-table.jpg",
@@ -6536,6 +6543,9 @@
    "src": "/case-studies/inspiration/miles-davis-suede-jacket-fur-bedspread.jpg",
    "alt": "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf",
    "facets": {
+    "muse": [
+     "Miles Davis"
+    ],
     "material": [
      "silk"
     ]
@@ -6544,7 +6554,11 @@
   {
    "src": "/case-studies/inspiration/sepia-waylon-jennings-cowboy-hat-bottle.jpg",
    "alt": "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Waylon Jennings"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/west-texas-concrete-patio-desert-loungers.webp",
@@ -6572,6 +6586,9 @@
    "facets": {
     "furniture": [
      "sofa"
+    ],
+    "muse": [
+     "Josh Brolin"
     ]
    }
   },
@@ -6598,7 +6615,11 @@
   {
    "src": "/case-studies/inspiration/jack-white-red-shirt-red-guitar-stage.jpeg",
    "alt": "Jack White on stage in red shirt with red electric guitar",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Jack White"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/infographic-large-scale-data-ridgeline.jpeg",
@@ -6608,27 +6629,47 @@
   {
    "src": "/case-studies/inspiration/dead-weather-band-portrait-ornate-room.jpg",
    "alt": "Black-and-white band portrait, four musicians in an ornate floral-walled room",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/dieter-rams-braun-radio-product-shot.jpg",
    "alt": "Dieter Rams Braun radio with circular speaker grille and aluminum knob",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Dieter Rams"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg",
    "alt": "Black-and-white portrait, suited bluesman with a motorcycle and parked cars behind",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Lightnin' Hopkins"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-mixing-desk.jpg",
    "alt": "Black-and-white portrait, man in pinstripe suit and round glasses at a studio mixing desk",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Jack White"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/johnny-cash-fishing-jacket-rifle-fall.jpg",
    "alt": "Johnny Cash holding a transistor radio outdoors in fall, hunter beside him with a rifle",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Johnny Cash"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/engraved-silver-belt-buckle-leather.webp",
@@ -6655,7 +6696,11 @@
   {
    "src": "/case-studies/inspiration/bw-dead-weather-rooftop-empire-state.jpg",
    "alt": "Black-and-white band portrait on a rooftop with the Empire State Building behind",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/editorial-leather-bass-helmet-portrait.jpg",
@@ -6686,6 +6731,11 @@
    "src": "/case-studies/inspiration/bw-dead-weather-mosshart-white-fur-coat.jpg",
    "alt": "Black-and-white portrait of Allison Mosshart and Jack White seated on concrete",
    "facets": {
+    "muse": [
+     "Alison Mosshart",
+     "Jack White",
+     "The Dead Weather"
+    ],
     "material": [
      "concrete"
     ]
@@ -6695,6 +6745,9 @@
    "src": "/case-studies/inspiration/frank-lloyd-wright-built-in-bookshelves.jpg",
    "alt": "Frank Lloyd Wright Usonian living room with built-in bookshelves and stone fireplace",
    "facets": {
+    "muse": [
+     "Frank Lloyd Wright"
+    ],
     "room": [
      "living room"
     ],
@@ -6709,7 +6762,11 @@
   {
    "src": "/case-studies/inspiration/bw-lightnin-hopkins-cigar-archtop-guitar.jpg",
    "alt": "Black-and-white portrait of bluesman in fedora smoking a cigar with an archtop guitar",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Lightnin' Hopkins"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/rrl-cattle-ranch-store-mannequins.jpg",
@@ -6731,7 +6788,11 @@
   {
    "src": "/case-studies/inspiration/bw-wes-anderson-camera-paris-courtyard.jpg",
    "alt": "Black-and-white shot of Wes Anderson with camera in a Paris courtyard",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Wes Anderson"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/richie-tenenbaum-camera-headband-yacht.jpg",
@@ -6770,6 +6831,9 @@
    "src": "/case-studies/inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif",
    "alt": "Black-and-white portrait of Wes Anderson in tweed suit on a tufted leather armchair",
    "facets": {
+    "muse": [
+     "Wes Anderson"
+    ],
     "furniture": [
      "chair"
     ],
@@ -6781,7 +6845,11 @@
   {
    "src": "/case-studies/inspiration/charley-crockett-cowboy-hat-tweed-guitar-shop.jpg",
    "alt": "Country singer in cowboy hat and tweed suit standing inside a hanging-guitar shop",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Charley Crockett"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/calacatta-viola-marble-fluted-columns.jpg",
@@ -6802,6 +6870,9 @@
    "facets": {
     "furniture": [
      "sofa"
+    ],
+    "muse": [
+     "Wes Anderson"
     ]
    }
   },
@@ -6834,12 +6905,20 @@
   {
    "src": "/case-studies/inspiration/bw-miles-davis-tweed-suit-cigarette.jpg",
    "alt": "Black-and-white portrait of Miles Davis in tweed suit smoking a cigarette",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Miles Davis"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-dead-weather-portrait-wallpaper.jpg",
    "alt": "Black-and-white band portrait, four musicians against patterned wallpaper",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-portrait-aviators-leather-jacket-beach.jpg",
@@ -6881,7 +6960,11 @@
   {
    "src": "/case-studies/inspiration/bw-dead-weather-portrait-warehouse.jpg",
    "alt": "Black-and-white band portrait of two musicians in a derelict warehouse",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California26-min.jpg",
@@ -6891,7 +6974,11 @@
   {
    "src": "/case-studies/inspiration/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg",
    "alt": "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Miles Davis"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/rrl-denim-leather-detail-rope-stitching.jpg",
@@ -6952,7 +7039,11 @@
   {
    "src": "/case-studies/inspiration/bw-dead-weather-portrait-barn-siding.jpg",
    "alt": "Black-and-white band portrait against weathered barn siding",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California25-min.jpg",
@@ -6965,6 +7056,9 @@
    "facets": {
     "material": [
      "leather"
+    ],
+    "muse": [
+     "Charley Crockett"
     ]
    }
   },
@@ -7019,7 +7113,11 @@
   {
    "src": "/case-studies/inspiration/bw-waylon-jennings-cowboy-hat-portfolio.jpg",
    "alt": "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Waylon Jennings"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/sepia-three-cowboys-walking-dirt-road.jpg",
@@ -7032,13 +7130,20 @@
    "facets": {
     "material": [
      "leather"
+    ],
+    "muse": [
+     "The Dead Weather"
     ]
    }
   },
   {
    "src": "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg",
    "alt": "No Country for Old Men film still, Josh Brolin in a straw cowboy hat crouched in dry scrubland with binoculars and a slung rifle",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Josh Brolin"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/wabi-sabi-living-room-mushroom-mirror-beams.jpeg",
@@ -7056,7 +7161,11 @@
   {
    "src": "/case-studies/inspiration/dieter-rams-palette-braun-grille-knobs.jpg",
    "alt": "Dieter Rams design palette, Braun speaker grille pattern with color knobs",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Dieter Rams"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/vintage-transparent-solar-system-chart.jpeg",
@@ -7079,6 +7188,9 @@
    "src": "/case-studies/inspiration/tarantino-king-of-golf-robe-bedroom.jpg",
    "alt": "Quentin Tarantino in a printed silk robe seated in a floral-wallpapered bedroom",
    "facets": {
+    "muse": [
+     "Quentin Tarantino"
+    ],
     "room": [
      "bedroom"
     ],
@@ -7090,7 +7202,11 @@
   {
    "src": "/case-studies/inspiration/bw-dead-weather-railroad-tracks.jpg",
    "alt": "Black-and-white shot of band members walking along railroad tracks",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "The Dead Weather"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/lee-denim-shirts-stack-button-detail.jpg",
@@ -7131,7 +7247,11 @@
   {
    "src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-fedora-guitar.jpg",
    "alt": "Black-and-white live shot, man in pinstripe suit and fedora playing electric guitar",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Jack White"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-feather-headdress-indian-motorcycle.jpg",
@@ -7146,12 +7266,19 @@
   {
    "src": "/case-studies/inspiration/wes-anderson-budapest-doorway-frame.jpeg",
    "alt": "Wes Anderson film still, narrow doorway framing a small interior scene",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Wes Anderson"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/87119dea487a846ff65070db9ec9c847.jpg",
    "alt": "No Country for Old Men film still, Josh Brolin crossing a motel lobby with the case and a shotgun, Western mural, table lamp and armchair behind",
    "facets": {
+    "muse": [
+     "Josh Brolin"
+    ],
     "furniture": [
      "chair",
      "table",
@@ -7215,6 +7342,9 @@
    "facets": {
     "furniture": [
      "counter"
+    ],
+    "muse": [
+     "Wes Anderson"
     ]
    }
   },
@@ -7231,12 +7361,20 @@
   {
    "src": "/case-studies/inspiration/bw-jack-white-third-man-records-piano.jpeg",
    "alt": "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Jack White"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/bw-miles-davis-pinstripe-suit-st-george-street.jpg",
    "alt": "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street",
-   "facets": {}
+   "facets": {
+    "muse": [
+     "Miles Davis"
+    ]
+   }
   },
   {
    "src": "/case-studies/inspiration/utah-desert-canyons-sagebrush-warm-light.jpg",

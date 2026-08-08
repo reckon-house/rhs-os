@@ -36,6 +36,11 @@ export const voiceLines: Record<string, VoiceLine> = {
   kitchen: {
     lead: "The kitchen is the heart of the home and one of my favorite projects to work on.",
   },
+  /* From his note, Aug 2026: "he's a HUGE inspiration - probably my
+     fav creative person, ever." Lightly set; redline any word. */
+  "Jack White": {
+    lead: "Jack White is probably my favorite creative person, ever. A huge inspiration.",
+  },
   Nordstrom: {
     lead: "I worked at Nordstrom for 8 years in various creative leadership roles.",
     tail: "The projects below span design systems, editorial content strategy, national brand launches and many others.",

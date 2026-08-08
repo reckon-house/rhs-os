@@ -1131,6 +1131,16 @@ function factLookup(q0) {
   const live = pairsW.filter((x) => alive(x.res));
   const dead = pairsW.filter((x) => !live.includes(x)).map((x) => x.raw);
   if (!live.length) return { hits: [], pulls: [], dead: [], and: false };
+  /* the surviving words might be ONE name: "who is jack white" keeps
+     jack and white, and they belong together before they belong to an
+     AND. Tried as a phrase first; the AND is the fallback. */
+  if (live.length > 1) {
+    const joined = live.map((x) => x.res).join(" ");
+    const rj = seek(joined);
+    if (rj.hits.length || rj.pulls.length) {
+      return { ...rj, dead, key: live.map((x) => x.raw).join(" "), and: false };
+    }
+  }
   if (live.length === 1) {
     r = seek(live[0].res);
     /* Half the question died and one word survived. Keep the answer
@@ -1320,6 +1330,7 @@ const FACET_PLAIN = {
   material: "a material", colour: "a colour", room: "a room",
   furniture: "a thing in the photographs", place: "a place",
   client: "a client", tool: "a tool", discipline: "a discipline",
+  muse: "a person I keep on the board",
 };
 function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
   const bits = [];
@@ -1373,7 +1384,24 @@ function planFacts(q, f) {
   const facets = Object.keys(byFacet).sort((a, b) =>
     (byFacet[b].n - byFacet[a].n) ||
     (FACET_RANK.indexOf(a) - FACET_RANK.indexOf(b)));
-  const lead = facets[0];
+  let lead = facets[0];
+  /* no project answered, so the board is the evidence: the speaking
+     facet and term come from the pulls that matched, or "miles davis"
+     gets told he is a material that never made it into a project */
+  if (!lead && f.pulls.length) {
+    const qTry = resolveAlias(fold(f.key || fold(q)));
+    outer: for (const pl of f.pulls) {
+      for (const fa in pl.f) {
+        for (const t of pl.f[fa]) {
+          if (namesTerm(t, qTry)) {
+            lead = fa;
+            (byFacet[fa] ??= { terms: new Set(), n: 0 }).terms.add(t);
+            break outer;
+          }
+        }
+      }
+    }
+  }
   /* speak the asker's own term when it was matched directly: someone
      who typed "table" gets tables, not the dining table that happened
      to lead the strongest project's list */
@@ -1420,18 +1448,24 @@ function planFacts(q, f) {
 
   const v = vary(qKey, 3);
   let say;
-  if (vl && w && !f.and) {
+  if (vl && !f.and && (w || p)) {
     /* his lines carry no counts on purpose: the working beside the
-       answer does the counting, so these sentences never go stale */
+       answer does the counting, so these sentences never go stale.
+       They also fire when only the BOARD answers: a muse deserves his
+       line even though no project carries him. */
     say = (vl.lead || "") + (vl.tail ? " " + vl.tail : "");
   } else if (forked && w) {
     say = "\u201c" + cap(qKey) + "\u201d goes more than one way here: " +
       nameList(leadTerms) + ". The work below carries all of them.";
   } else if (!w) {
-    say = "Haven't worked that into a project yet, but " +
-      (p === 1 ? "it's saved below as inspiration."
-        : p === 2 ? "a couple below are saved as inspiration."
-        : "a few below are saved as inspiration.");
+    /* a person is not a material: nobody works Miles Davis into a
+       project. Presence on the board is the whole claim. */
+    say = lead === "muse"
+      ? term + (p > 2 ? " is all over the board below." : " is on the board below.")
+      : "Haven't worked that into a project yet, but " +
+        (p === 1 ? "it's saved below as inspiration."
+          : p === 2 ? "a couple below are saved as inspiration."
+          : "a few below are saved as inspiration.");
   } else if (f.and) {
     say = w === 1
       ? titles[0] + " holds all of that."
@@ -1895,17 +1929,14 @@ function composeAnswer(a) {
         ? "That's " + titles[0] + " and " + titles[1] + ". Both below."
         : "The projects below answer to that, " + titles[0] + " in front.";
   } else if (p) {
-    say = "Haven't worked " + key + " into a project yet, but " +
-      (p === 1 ? "it's saved below as inspiration."
-        : p === 2 ? "a couple below are saved as inspiration."
-        : "a few below are saved as inspiration.");
+    say = "Nothing built answers to " + key + " yet. " +
+      (p === 1 ? "One save on the board below." : "The board below has a few saves.");
   } else {
     say = "That's a practice question. The notes below have it.";
   }
   /* not on the everything answer, where the notes riding along is
      the expected furniture rather than news */
   if (n && w && w < allWorks) say += " It's in the practice notes, too.";
-  if (qn && total > qn) say += " A line I've kept rides along.";
   if (a.dead.length && total) {
     say += " Nothing answered to \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.";
   }
@@ -1938,6 +1969,14 @@ function buildAnswer() {
     say = plan.say; receipt = plan.receipt; mailto = plan.mailto;
     plan.workIdx.forEach((ci) => route(ci, leftIdx));
     rightIdx = plan.pullIdx.slice();
+    /* a kept quote whose author matches the ask joins the notes
+       column. Shown, never announced: it is furniture, not news. */
+    const qw = fold(query).split(" ").filter((x) => x.length > 2);
+    cards.forEach((c, i) => {
+      if (c.kind !== "quote" || !qw.length) return;
+      const att = fold(c.att || "").split(" ");
+      if (qw.every((x) => att.includes(x))) textIdx.push(i);
+    });
   } else {
     const a = analyse(query) ||
       { idx: [], where: [], dead: [], skipped: [], held: 0, exact: 0 };

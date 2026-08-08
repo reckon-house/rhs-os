@@ -136,6 +136,27 @@ export const FACETS = {
     ["new york", ["nyc"]],
   ],
 
+  /* Who the board keeps. Mined almost entirely from the inspiration
+     pulls (their descriptions and filenames), and the claim a hit
+     makes is only PRESENCE: this face is on the board. The warmth
+     belongs to the voice file. A muse is not a client, and the two
+     never share a sentence. */
+  muse: [
+    ["Jack White", []],
+    ["Miles Davis", []],
+    ["Waylon Jennings", []],
+    ["Johnny Cash", []],
+    ["Wes Anderson", []],
+    ["Dieter Rams", []],
+    ["Josh Brolin", []],
+    ["Quentin Tarantino", ["tarantino"]],
+    ["Frank Lloyd Wright", []],
+    ["Lightnin' Hopkins", ["lightnin hopkins"]],
+    ["The Dead Weather", ["dead weather"]],
+    ["Charley Crockett", []],
+    ["Alison Mosshart", ["mosshart"]],
+  ],
+
   /* who it was for. Names are proper nouns, so a hit is unambiguous —
      which is exactly why they are worth indexing separately. */
   client: [

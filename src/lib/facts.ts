@@ -12,7 +12,8 @@
  */
 import compact from "@/data/generated/project-facts.min.json";
 
-export type Facet = "material" | "colour" | "room" | "place" | "client" | "furniture";
+export type Facet =
+  "material" | "colour" | "room" | "place" | "client" | "furniture" | "muse";
 
 /** A saved image from the inspiration board. Collected, not built — and
  *  the distinction is load-bearing, because an answer must never claim
