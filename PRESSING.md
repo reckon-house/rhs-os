@@ -1,5 +1,13 @@
 # Pressing — porting a case study
 
+**This file is the pattern library.** Before building anything on a
+case study, check §3 (the skin matrix: every section type and the
+component it becomes) and §4 (every field of the pressing bag). Most
+"we should build X" turns out to be a flag that already exists —
+`choreo.crossing` gives any section header the right-to-left drag,
+`choreo.zoom` and `choreo.rise` are already there, and the site tail
+(contact, credits, the ring) is one shared component on every route.
+
 The playbook for moving a classic study to the Pressing C language. One
 study = one data-file edit + one copy pass. The components never change
 per study; if a port seems to need a component edit, stop and re-read
@@ -124,6 +132,35 @@ attribute internally (the quote does); the field was dead.
   as the plate sticking on entry.
 - Hero-grade source files, descriptive SEO filenames, same as always.
 
+**Size the treatment to the file, not the other way round.** Native
+width ÷ 2 is the largest honest CSS width, because a retina screen asks
+for two device pixels per CSS pixel. A 768px export is crisp to ~384
+CSS and mush above it, and no CSS fixes that — the pixels are not
+there. So:
+
+| native width | treatment |
+|---|---|
+| under ~800px | a `three-column-text` column's own `image` (~380px measure) |
+| ~800–2400px | a flow plate, no bleed |
+| over ~2400px | anything, including `bleed: true` |
+
+`PressingPlate` caps a single plate at its native width as a backstop,
+so a small asset centres with air rather than stretching. A.R.C.'s
+three app screens are the worked example: they were 768px files drawn
+at 661 and 772 CSS, and they now sit in the method columns.
+
+**The cover reel is required, and every frame must be OPAQUE.** A PNG
+with an alpha channel lets the reel's dark stage through and reads as
+the picture failing to fill its box; `object-fit` cannot cover what is
+not there. Screen renders with device bezels and logos on transparent
+grids are the usual offenders. Colours come from the study's own
+declared palette. `npm run facts` reports any pressing study missing a
+reel and names any frame carrying alpha.
+
+**Known gap:** every pressing plate is a raw `<img>` while the classic
+section components use `next/image`, so pressing pages ship originals
+rather than sized AVIF. Fix before the remaining studies port over.
+
 ## 8. Copy
 
 The CLAUDE.md copy rules apply in full, plus the pressing reality: this
@@ -137,7 +174,10 @@ read the mark spine top to bottom before shipping.
 
 1. Add `pressing` bags to the study's sections (marks, choreo flags,
    captions) — commit-safe before the flip.
-2. Verify every image is in `image-dimensions.ts`.
+2. Verify every image is in `image-dimensions.ts`, and check each
+   one's native width against the treatment table in §7.
+2b. Author the cover reel: eight frames, all opaque, colours from the
+   study's palette. `npm run facts` will tell you if it is missing.
 3. Flip `style: "pressing"`.
 4. Load the page in dev; clear every PressingLayout warning.
 5. Walk it: cover handover, every pin engages and releases with drift,

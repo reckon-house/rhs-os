@@ -293,6 +293,13 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "06", name: "How it works" },
         heldLine: "recognition engine.",
+        /* The crossing: the pin remaps vertical scroll to horizontal
+           travel, so each rendered line is dragged in from a viewport
+           off to the right and lands flush left as the pin runs out.
+           It suits this headline in particular — the section is about
+           a pipeline, one stage feeding the next, and the lines arrive
+           the same way. */
+        choreo: { crossing: true },
       },
     },
     {
