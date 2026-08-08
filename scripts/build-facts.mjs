@@ -16,7 +16,7 @@
  * it can only assert what it can point at.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
-import { studyFiles, loadStudy, strings, filenameWords } from "./lib/walk-studies.mjs";
+import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
 import { terms, NEGATORS, GUARDS, VOCAB_VERSION } from "./lib/vocabulary.mjs";
 
 const OUT_DIR = "src/data/generated";
@@ -208,6 +208,26 @@ for (const file of studyFiles()) {
   });
 }
 
+/* ── the pulls ──
+ * Mined the same way and kept in their own list, because a pull is not
+ * a project and must never be answered as one. The board is where an
+ * answer goes when the honest reply is "not built, but collected". */
+const pulls = [];
+for (const p of await loadPulls()) {
+  const evidence = [
+    { section: "pull", path: "alt", value: p.alt || "" },
+    { section: "pull", path: "src", value: filenameWords(p.src) },
+  ];
+  const facts = mine(evidence, coverage);
+  for (const f of facts) {
+    coverage.facet[f.facet] = (coverage.facet[f.facet] || 0) + 1;
+    coverage.term[f.facet + ":" + f.term] = (coverage.term[f.facet + ":" + f.term] || 0) + 1;
+  }
+  const facets = {};
+  for (const f of facts) (facets[f.facet] ??= []).push(f.term);
+  pulls.push({ src: p.src, alt: p.alt, facets });
+}
+
 /* ── the report ── */
 const totalFacts = projects.reduce(
   (a, p) => a + Object.values(p.facets).reduce((b, v) => b + v.length, 0), 0);
@@ -235,6 +255,7 @@ const lines = [
   `mined facts       ${totalFacts}`,
   `structured facts  ${projects.reduce((a, p) => a + p.disciplines.length + p.tools.length, 0)}`,
   `statistics        ${projects.reduce((a, p) => a + p.stats.length, 0)}`,
+  `pulls indexed     ${pulls.length} (${pulls.filter((p) => Object.keys(p.facets).length).length} carry facts)`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
   "",
@@ -265,15 +286,28 @@ if (bad.length) {
 if (REPORT) process.exit(0);
 
 mkdirSync(OUT_DIR, { recursive: true });
-const payload = { vocabularyVersion: VOCAB_VERSION, projects };
+const payload = { vocabularyVersion: VOCAB_VERSION, projects, pulls };
 writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1));
 
 /* A second, compact file for the client. The full index carries
  * citations, which is what makes it trustworthy and also what makes it
  * large; the browser only needs the terms to match against and the
- * project to point at. Same source, two audiences. */
+ * project to point at. Same source, two audiences.
+ *
+ * The alias map ships WITH it, and that is not an optimisation. Folding
+ * aliases to their canonical term at build time is right for storage —
+ * "bathroom" and "primary bath" are one fact — but the first version
+ * dropped the aliases here, which made all 24 of them write-only. They
+ * mined perfectly and then no one could ask for them: "marfa" found
+ * nothing, so did "calacatta", "shiplap" and "neiman". An index is only
+ * worth what you can ask it. */
+const aliases = {};
+for (const { term, surface } of TERMS) {
+  if (norm(surface) !== norm(term)) aliases[surface] = term;
+}
 const compact = {
   vocabularyVersion: VOCAB_VERSION,
+  aliases,
   projects: projects.map((p) => ({
     slug: p.slug, title: p.title, href: p.href, category: p.category,
     year: p.year,
@@ -282,6 +316,8 @@ const compact = {
       Object.entries(p.facets).map(([k, v]) => [k, v.map((x) => x.term)])),
     s: p.stats.map((s) => [s.value, s.label]),
   })),
+  /* the board: src to show, alt to read out, facets to match on */
+  pulls: pulls.map((p) => ({ src: p.src, alt: p.alt, f: p.facets })),
 };
 writeFileSync(OUT_DIR + "/project-facts.min.json", JSON.stringify(compact));
 

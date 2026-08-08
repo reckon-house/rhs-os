@@ -1,5 +1,5 @@
 {
- "vocabularyVersion": 1,
+ "vocabularyVersion": 2,
  "projects": [
   {
    "slug": "amber-shockey-co",
@@ -159,6 +159,25 @@
         "section": "hero",
         "field": "slides.1.alt",
         "quote": "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Built as systems that layer, mix, and scale from single accent to full table."
+       },
+       {
+        "section": "blue-footnote",
+        "field": "content",
+        "quote": "Pairs with red dragons when the table needs heat."
        }
       ]
      }
@@ -405,6 +424,37 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "artwork",
+      "n": 2,
+      "cites": [
+       {
+        "section": "pipeline",
+        "field": "steps.2.description2",
+        "quote": "…item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tool…"
+       },
+       {
+        "section": "stats",
+        "field": "items.2.label",
+        "quote": "Artwork"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "problem-image-mockup",
+        "field": "src",
+        "quote": "arc app smartphone wooden table mockup"
+       }
+      ]
+     }
     ]
    }
   },
@@ -485,6 +535,37 @@
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Used as backdrops in the Capitan Boot Co. campaign"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "img-plant-grid",
+        "field": "src",
+        "quote": "grid plant"
+       },
+       {
+        "section": "img-chisos-panorama",
+        "field": "alt",
+        "quote": "Panorama of the Chisos range under a bright sky, a sotol plant in the foreground"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "prada-text",
+        "field": "content",
+        "quote": "It holds real Prada shoes and bags from that season, and the door has never opened."
        }
       ]
      }
@@ -577,6 +658,42 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "artwork",
+      "n": 3,
+      "cites": [
+       {
+        "section": "fancy-flat",
+        "field": "alt",
+        "quote": "Typography & Patterns, the Fancy poster, flat artwork with pattern-filled script letterforms"
+       },
+       {
+        "section": "stepper-flat",
+        "field": "alt",
+        "quote": "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 2,
+      "cites": [
+       {
+        "section": "stepper-lifestyle",
+        "field": "image",
+        "quote": "typography patterns stepper poster bench lifestyle"
+       },
+       {
+        "section": "stepper-lifestyle",
+        "field": "alt",
+        "quote": "Typography & Patterns, stepper art print displayed on wooden bench"
+       }
+      ]
+     }
     ]
    }
   },
@@ -621,6 +738,37 @@
    ],
    "stats": [],
    "facets": {
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Four album covers, posters, prints, logos, a storefront window"
+       },
+       {
+        "section": "storefront-text",
+        "field": "content",
+        "quote": "The Bokeh's Fall window translated the same atmospheric language to building scale."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "lamp",
+      "n": 1,
+      "cites": [
+       {
+        "section": "poster-balloon",
+        "field": "alt",
+        "quote": "Up Up and Away poster, hot-air balloon double-exposed with trees over yellow rapeseed field, framed on console with lamp"
+       }
+      ]
+     }
+    ],
     "colour": [
      {
       "facet": "colour",
@@ -951,6 +1099,202 @@
         "field": "src",
         "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
        },
+       {
+        "section": "kitchen",
+        "field": "alt",
+        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ntain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       },
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 8,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Paci…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       },
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pillow",
+      "n": 3,
+      "cites": [
+       {
+        "section": "living-group-one",
+        "field": "left.alt",
+        "quote": "…e living room with tufted gray sofa, walnut leaning ladder shelf, antler mount on a painted stone wall, and a yellow accent pillow"
+       },
+       {
+        "section": "living-group-two",
+        "field": "left.src",
+        "quote": "chalet living detail stag pillow tufted sofa walnut ladder shelf painted stone"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       },
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 2,
+      "cites": [
+       {
+        "section": "a-frame-ceiling",
+        "field": "src",
+        "quote": "chalet a frame ceiling sputnik chandelier triangular window tree canopy"
+       },
+       {
+        "section": "a-frame-ceiling",
+        "field": "alt",
+        "quote": "…e chalet's A-frame wood-plank ceiling with a sputnik chandelier suspended over a triangular window framing the tree canopy outside"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "beam",
+      "n": 2,
+      "cites": [
+       {
+        "section": "kitchen",
+        "field": "src",
+        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
+       },
+       {
+        "section": "kitchen",
+        "field": "alt",
+        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "coffee table",
+      "n": 2,
+      "cites": [
+       {
+        "section": "living-group-two",
+        "field": "right.src",
+        "quote": "chalet living room a frame skylight tufted sofa walnut coffee table leather sling"
+       },
+       {
+        "section": "living-group-two",
+        "field": "right.alt",
+        "quote": "…om view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall in the background"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 2,
+      "cites": [
+       {
+        "section": "living-group-two",
+        "field": "right.alt",
+        "quote": "…g room view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall in the backgr…"
+       },
+       {
+        "section": "blend-footnote",
+        "field": "content",
+        "quote": "Sputnik chandelier, Malm fireplace, walnut dining set, and the leather sling chair pull toward mid-century."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "exterior-three-quarter",
+        "field": "alt",
+        "quote": "Three-quarter view of the chalet showing the deck, white-railed stairs, and the rocky landscape grade leading up to the front door"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "backsplash",
+      "n": 1,
+      "cites": [
        {
         "section": "kitchen",
         "field": "alt",
@@ -1517,6 +1861,76 @@
       ]
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "rug",
+      "n": 13,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at le…"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 10,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…he Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floor…"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the ho…"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "pieces-footnote",
+        "field": "content",
+        "quote": "The chandelier is a single alabaster pendant set in brass, oversized for the space, hung alone."
+       },
+       {
+        "section": "marks-materials",
+        "field": "fonts.2.description",
+        "quote": "An alabaster pendant set in hand-rubbed brass, hung dead-center."
+       }
+      ]
+     }
+    ],
     "colour": [
      {
       "facet": "colour",
@@ -1696,6 +2110,202 @@
       ]
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 16,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "coffee table",
+      "n": 14,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 10,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…hairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mantel",
+      "n": 8,
+      "cites": [
+       {
+        "section": "texture-stone",
+        "field": "src",
+        "quote": "fairview sitting stone wall wood mantel mirror brass candlesticks leather tumbler detail"
+       },
+       {
+        "section": "texture-stone",
+        "field": "alt",
+        "quote": "Detail of the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and bra…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 4,
+      "cites": [
+       {
+        "section": "texture-stone",
+        "field": "src",
+        "quote": "fairview sitting stone wall wood mantel mirror brass candlesticks leather tumbler detail"
+       },
+       {
+        "section": "texture-stone",
+        "field": "alt",
+        "quote": "…the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and brass tumbler"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "beam",
+      "n": 4,
+      "cites": [
+       {
+        "section": "texture-stone",
+        "field": "alt",
+        "quote": "Detail of the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and bra…"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…led-back architectural view of the sitting room with black box beam coffered ceiling, stone fireplace, four swivel chairs around t…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 2,
+      "cites": [
+       {
+        "section": "texture-pair",
+        "field": "right.src",
+        "quote": "fairview sitting pampas grass vase blue brick window velvet detail"
+       },
+       {
+        "section": "texture-pair",
+        "field": "right.alt",
+        "quote": "Pampas grass in a stone vase by a black-framed window with painted blue brick wall behind, edge of charcoal velvet swivel in foreg…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 2,
+      "cites": [
+       {
+        "section": "texture-pair",
+        "field": "right.src",
+        "quote": "fairview sitting pampas grass vase blue brick window velvet detail"
+       },
+       {
+        "section": "texture-pair",
+        "field": "right.alt",
+        "quote": "Pampas grass in a stone vase by a black-framed window with painted blue brick wall behind, edge of charcoal velvet swivel in foreg…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "conversation-pair",
+        "field": "left.alt",
+        "quote": "…t detail of the round brass coffee table with wood top, olive plant in marble bowl, and the corner of a charcoal velvet swivel aga…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "markAlt",
+        "quote": "Round antiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplac…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bowl",
+      "n": 2,
+      "cites": [
+       {
+        "section": "conversation-pair",
+        "field": "left.alt",
+        "quote": "…round brass coffee table with wood top, olive plant in marble bowl, and the corner of a charcoal velvet swivel against the stone…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "markAlt",
+        "quote": "…tiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplace — the…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "artwork",
+      "n": 1,
+      "cites": [
+       {
+        "section": "conversation-rear",
+        "field": "alt",
+        "quote": "…around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet in view"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 1,
+      "cites": [
+       {
+        "section": "conversation-rear",
+        "field": "alt",
+        "quote": "…chairs around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet…"
+       }
+      ]
+     }
+    ],
     "colour": [
      {
       "facet": "colour",
@@ -1801,6 +2411,226 @@
         "section": "meta",
         "field": "subtitle",
         "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 14,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "tub",
+      "n": 10,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 9,
+      "cites": [
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "…ayers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading corner, cast stone fireplace on the…"
+       },
+       {
+        "section": "room-pair",
+        "field": "left.src",
+        "quote": "fairview suite reading nook chair ottoman marble table"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "ottoman",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+       },
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "…against the window wall, sofa at the foot, swivel chair and ottoman in the reading corner, cast stone fireplace on the opposite wa…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+       },
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "…he furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading corner, ca…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "headboard",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+       },
+       {
+        "section": "room-full",
+        "field": "src",
+        "quote": "fairview suite bedroom sofa chair headboard chandelier"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bed",
+      "n": 3,
+      "cites": [
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "Below it, the furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading…"
+       },
+       {
+        "section": "furniture-footnote",
+        "field": "content",
+        "quote": "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned le…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "side table",
+      "n": 3,
+      "cites": [
+       {
+        "section": "furniture-footnote",
+        "field": "content",
+        "quote": "…turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor."
+       },
+       {
+        "section": "furniture-detail-pair",
+        "field": "right.src",
+        "quote": "fairview suite detail marble side table brass"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 2,
+      "cites": [
+       {
+        "section": "room-pair",
+        "field": "left.src",
+        "quote": "fairview suite reading nook chair ottoman marble table"
+       },
+       {
+        "section": "room-pair",
+        "field": "left.alt",
+        "quote": "Reading corner, swivel chair with bouclé ottoman, marble pedestal table, charcoal violet walls"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "Below it, the furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shower",
+      "n": 1,
+      "cites": [
+       {
+        "section": "ensuite-footnote",
+        "field": "content",
+        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 1,
+      "cites": [
+       {
+        "section": "ensuite-detail-pair",
+        "field": "right.alt",
+        "quote": "Hammered copper clawfoot tub with brass faucet, charcoal hex tile backdrop"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pillow",
+      "n": 1,
+      "cites": [
+       {
+        "section": "closing-text",
+        "field": "content",
+        "quote": "A suite that picks a mood and follows it through every surface, every fixture, every throw pillow."
        }
       ]
      }
@@ -2218,6 +3048,197 @@
       ]
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "tub",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "urban southwest primary bath exposed brick matte black soaking tub"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vanity",
+      "n": 5,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       },
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "image",
+        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shower",
+      "n": 5,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       },
+       {
+        "section": "urban-southwest-shower",
+        "field": "left.src",
+        "quote": "urban southwest marble shower vertical stacked tile niche bench"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 5,
+      "cites": [
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "image",
+        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
+       },
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "alt",
+        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 3,
+      "cites": [
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "alt",
+        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
+       },
+       {
+        "section": "modern-farmhouse-details",
+        "field": "left.src",
+        "quote": "modern farmhouse vanity shiplap marble counter nickel sconces vessel sink"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 3,
+      "cites": [
+       {
+        "section": "urban-southwest-shower",
+        "field": "left.src",
+        "quote": "urban southwest marble shower vertical stacked tile niche bench"
+       },
+       {
+        "section": "urban-southwest-shower",
+        "field": "left.alt",
+        "quote": "Urban southwest marble shower with vertical stacked tile, recessed niche with hexagon detail, marble bench, and clerestory window"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sink",
+      "n": 3,
+      "cites": [
+       {
+        "section": "modern-farmhouse-details",
+        "field": "left.src",
+        "quote": "modern farmhouse vanity shiplap marble counter nickel sconces vessel sink"
+       },
+       {
+        "section": "modern-farmhouse-details",
+        "field": "left.alt",
+        "quote": "…detail with vertical shiplap, veined marble counter, polished nickel sconces with milk glass globes, vessel sink, and brass mirror"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 2,
+      "cites": [
+       {
+        "section": "quiet-glam-image",
+        "field": "src",
+        "quote": "quiet glam primary bath veined marble brass urchin chandelier"
+       },
+       {
+        "section": "quiet-glam-image",
+        "field": "alt",
+        "quote": "Quiet glam primary bath with veined marble walls, freestanding tub, brass urchin chandelier, and patterned floor tile"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "quiet-glam-text",
+        "field": "content",
+        "quote": "…ned marble runs the full height of the walls, a brass urchin pendant breaks the verticality, and a graphic star tile grounds the f…"
+       },
+       {
+        "section": "material-chart-text",
+        "field": "content",
+        "quote": "…mes from the small handful of materials that only show up once in the entire feature - exposed brick, shiplap, the urchin pendant."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "urban-southwest-shower",
+        "field": "left.alt",
+        "quote": "Urban southwest marble shower with vertical stacked tile, recessed niche with hexagon detail, marble bench, and clerestory window"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 1,
+      "cites": [
+       {
+        "section": "modern-farmhouse-details",
+        "field": "right.alt",
+        "quote": "…dern farmhouse powder room with circular brass mirror, brass cabinet pulls, brass sconce, vessel sink, and patterned hex floor til…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sconce",
+      "n": 1,
+      "cites": [
+       {
+        "section": "modern-farmhouse-details",
+        "field": "right.alt",
+        "quote": "…ern farmhouse powder room with circular brass mirror, brass cabinet pulls, brass sconce, vessel sink, and patterned hex floor tile"
+       }
+      ]
+     }
+    ],
     "client": [
      {
       "facet": "client",
@@ -2472,6 +3493,246 @@
         "section": "meta",
         "field": "abstract",
         "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "vanity",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country bath vanity marble globe sconces sage"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shower",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Countertops in a warm-veined Calacatta, shower walls in a cooler gray-dominant slab with vertical stacking, floor in hex marble mo…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "tub",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sconce",
+      "n": 5,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "left.src",
+        "quote": "hill country bath detail vase botanicals marble sconce"
+       },
+       {
+        "section": "her-details",
+        "field": "left.alt",
+        "quote": "Detail, ceramic vase with dried botanicals on marble counter, globe sconce casting shadows"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 4,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "right.src",
+        "quote": "hill country bath detail faucet marble backsplash window"
+       },
+       {
+        "section": "her-details",
+        "field": "right.alt",
+        "quote": "Detail, cross-handle wall faucet, marble backsplash, globe sconce, window reflection"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 3,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "left.alt",
+        "quote": "Detail, ceramic vase with dried botanicals on marble counter, globe sconce casting shadows"
+       },
+       {
+        "section": "her-views",
+        "field": "left.alt",
+        "quote": "Her vanity wall, sage cabinetry with glass-front cabinet, double globe sconces, marble counter"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 3,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "right.src",
+        "quote": "hill country bath detail faucet marble backsplash window"
+       },
+       {
+        "section": "her-details",
+        "field": "right.alt",
+        "quote": "Detail, cross-handle wall faucet, marble backsplash, globe sconce, window reflection"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 3,
+      "cites": [
+       {
+        "section": "shower-footnote",
+        "field": "content",
+        "quote": "The bench inside the shower uses the same slab as the walls, bookmatched at the corner."
+       },
+       {
+        "section": "shower-views",
+        "field": "left.src",
+        "quote": "hill country bath shower niche hex tile bench"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sink",
+      "n": 3,
+      "cites": [
+       {
+        "section": "shower-details",
+        "field": "left.src",
+        "quote": "hill country bath detail sink bridge faucet veined marble"
+       },
+       {
+        "section": "shower-details",
+        "field": "left.alt",
+        "quote": "Vanity detail, vessel sink with bridge faucet, dramatically veined marble slab"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 2,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "left.src",
+        "quote": "hill country bath detail vase botanicals marble sconce"
+       },
+       {
+        "section": "her-details",
+        "field": "left.alt",
+        "quote": "Detail, ceramic vase with dried botanicals on marble counter, globe sconce casting shadows"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "backsplash",
+      "n": 2,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "right.src",
+        "quote": "hill country bath detail faucet marble backsplash window"
+       },
+       {
+        "section": "her-details",
+        "field": "right.alt",
+        "quote": "Detail, cross-handle wall faucet, marble backsplash, globe sconce, window reflection"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "rug",
+      "n": 2,
+      "cites": [
+       {
+        "section": "her-views",
+        "field": "right.alt",
+        "quote": "Freestanding tub beneath wood plank ceiling, landscape painting, oriental rug, natural light"
+       },
+       {
+        "section": "objects-footnote",
+        "field": "content",
+        "quote": "…tually lives - the denim jacket on the valet stand, the vintage rug fraying at the edge, the olive tree leaning toward the window."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 2,
+      "cites": [
+       {
+        "section": "his-hero",
+        "field": "image",
+        "quote": "hill country bath his vanity valet stand antique mirror"
+       },
+       {
+        "section": "his-hero",
+        "field": "alt",
+        "quote": "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces"
        }
       ]
      }
@@ -2738,6 +3999,306 @@
       ]
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 25,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Cabinetry, island, dining zone, full material spec."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "island",
+      "n": 21,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country kitchen island pendants marble wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "hardware",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room."
+       },
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…he touchpoints and stays bright where hands don't reach, so after a year the hardware tells you exactly how the kitchen gets used."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "backsplash",
+      "n": 8,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "dining table",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…y, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs."
+       },
+       {
+        "section": "island-columns",
+        "field": "columns.1.content",
+        "quote": "From the dining table, you look through it to the backsplash."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…e traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants r…"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full lengt…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room."
+       },
+       {
+        "section": "cabinet-pair",
+        "field": "left.alt",
+        "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 5,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       },
+       {
+        "section": "cabinet-wide-pair",
+        "field": "right.src",
+        "quote": "hill country kitchen pantry wall herringbone pendant"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "rug",
+      "n": 5,
+      "cites": [
+       {
+        "section": "cabinet-pair",
+        "field": "right.alt",
+        "quote": "Full kitchen view with exposed beams, runner rug, white oak island"
+       },
+       {
+        "section": "dining-footnote",
+        "field": "content",
+        "quote": "A dark patterned rug grounds the furniture group and separates it visually from the kitchen's hardwood floor."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 4,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       },
+       {
+        "section": "cabinet-wide-pair",
+        "field": "left.alt",
+        "quote": "Sink corner with open shelving, marble backsplash, brass faucet"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sink",
+      "n": 4,
+      "cites": [
+       {
+        "section": "cabinet-wide-pair",
+        "field": "left.src",
+        "quote": "hill country kitchen sink corner shelves marble"
+       },
+       {
+        "section": "cabinet-wide-pair",
+        "field": "left.alt",
+        "quote": "Sink corner with open shelving, marble backsplash, brass faucet"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 3,
+      "cites": [
+       {
+        "section": "island-columns",
+        "field": "columns.2.content",
+        "quote": "…net island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invitation."
+       },
+       {
+        "section": "dining-text",
+        "field": "content",
+        "quote": "A dark-stained turned-leg table set against the light oak and green of the kitchen."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "refrigerator",
+      "n": 2,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.0.content",
+        "quote": "…ng on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
+       },
+       {
+        "section": "pantry-hero",
+        "field": "alt",
+        "quote": "Pantry wall with sage green floor-to-ceiling cabinetry, stainless refrigerator, pendant light"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 2,
+      "cites": [
+       {
+        "section": "dining-pair",
+        "field": "right.src",
+        "quote": "hill country kitchen dining chair leather detail"
+       },
+       {
+        "section": "dining-pair",
+        "field": "right.alt",
+        "quote": "Safari dining chair, leather back, natural oak frame"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sconce",
+      "n": 1,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "stool",
+      "n": 1,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "Even the bar stool frames pick up the brass tone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 1,
+      "cites": [
+       {
+        "section": "detail-pair",
+        "field": "right.src",
+        "quote": "hill country kitchen marble vase cabinet vignette"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "hardware-closeup",
+        "field": "alt",
+        "quote": "Unlacquered brass cremone bolt detail on sage green cabinet door"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "pantry-hero",
+        "field": "image",
+        "quote": "hill country kitchen pantry fridge pendant window"
+       }
+      ]
+     }
+    ],
     "place": [
      {
       "facet": "place",
@@ -2940,6 +4501,323 @@
         "section": "collected-armchairs",
         "field": "left.alt",
         "quote": "…Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 19,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…l Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed arm…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 17,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…oom: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed armchairs, leather bench with s…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 9,
+      "cites": [
+       {
+        "section": "material-pair",
+        "field": "left.src",
+        "quote": "hill country living limestone ladder shelf vintage globe brass fireplace tools tweed detail"
+       },
+       {
+        "section": "material-pair",
+        "field": "left.alt",
+        "quote": "Vertical detail of the limestone wall with the ladder shelf holding a vintage globe, brass fireplace tools below, and the corner o…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 7,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The sheepskin under the bench is soft."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mantel",
+      "n": 4,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…ing flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.description",
+        "quote": "Floors, beams, mantel"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 4,
+      "cites": [
+       {
+        "section": "material-pair",
+        "field": "left.alt",
+        "quote": "…the limestone wall with the ladder shelf holding a vintage globe, brass fireplace tools below, and the corner of a tweed armchair"
+       },
+       {
+        "section": "collected-armchairs",
+        "field": "left.src",
+        "quote": "hill country living limestone fireplace eisenhower tweed armchair ladder shelf vintage rug vertical"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "rug",
+      "n": 4,
+      "cites": [
+       {
+        "section": "collected-armchairs",
+        "field": "left.src",
+        "quote": "hill country living limestone fireplace eisenhower tweed armchair ladder shelf vintage rug vertical"
+       },
+       {
+        "section": "collected-armchairs",
+        "field": "left.alt",
+        "quote": "…Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "beam",
+      "n": 2,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…anked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with N…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "fonts.1.description",
+        "quote": "The same grain runs underfoot, overhead in the exposed beams, and across the mantel beam pulled over the stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-armchairs",
+        "field": "right.src",
+        "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+       },
+       {
+        "section": "collected-armchairs",
+        "field": "right.alt",
+        "quote": "Two tweed armchairs facing each other in front of a tall window looking out to the Hill Country landscape, leather stool between t…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "stool",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-armchairs",
+        "field": "right.src",
+        "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+       },
+       {
+        "section": "collected-armchairs",
+        "field": "right.alt",
+        "quote": "…r in front of a tall window looking out to the Hill Country landscape, leather stool between them, vintage patterned rug underfoot"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "left.alt",
+        "quote": "Entry vignette in an adjacent room: leather-strapped oval mirror, wood cutting board on the wall, small framed art, wood console t…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "lamp",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "left.alt",
+        "quote": "…ror, wood cutting board on the wall, small framed art, wood console table with crystal lamp, plaid throw and wicker basket beneath"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bowl",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.src",
+        "quote": "hill country living cognac sofa pampas wood bowl kitchen background detail"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "…a with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 1,
+      "cites": [
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…pas and textured pillows in the foreground, exposed wood beams overhead, green cabinetry and marble counters in the kitchen behind"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "left.alt",
+        "quote": "…ror, wood cutting board on the wall, small framed art, wood console table with crystal lamp, plaid throw and wicker basket beneath"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "coffee table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "…a with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pillow",
+      "n": 1,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "Tight detail of the cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee tab…"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 1,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "…cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to…"
        }
       ]
      }
@@ -3378,6 +5256,25 @@
       ]
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "j christianson storefront tree stripe window mockup"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
+       }
+      ]
+     }
+    ],
     "material": [
      {
       "facet": "material",
@@ -3765,6 +5662,37 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 2,
+      "cites": [
+       {
+        "section": "landing-hero",
+        "field": "image",
+        "quote": "loved by nordstrom iphone landing page corduroy couch"
+       },
+       {
+        "section": "landing-hero",
+        "field": "alt",
+        "quote": "iPhone showing By Nordstrom landing page laid on corduroy couch"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "loved-tiles",
+        "field": "right.alt",
+        "quote": "Loved by Nordstrom large format tile featuring TIBI faux fur coat on white door"
+       }
+      ]
+     }
     ]
    }
   },
@@ -3912,6 +5840,25 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 2,
+      "cites": [
+       {
+        "section": "flora-hero",
+        "field": "image",
+        "quote": "neiman marcus insite flora maxi laptop couch mockup"
+       },
+       {
+        "section": "flora-hero",
+        "field": "alt",
+        "quote": "Neiman Marcus InSite Flora Maxi story on laptop resting on black couch"
+       }
+      ]
+     }
     ]
    }
   },
@@ -3968,6 +5915,25 @@
         "section": "hero",
         "field": "alt",
         "quote": "Nordstrom Beauty hub homepage on laptop, three editorial story cards, stylists section"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 2,
+      "cites": [
+       {
+        "section": "glow-hero",
+        "field": "image",
+        "quote": "nordstrom beauty glow story iphone orange table mockup"
+       },
+       {
+        "section": "glow-hero",
+        "field": "alt",
+        "quote": "Nordstrom Beauty Get That Glow story on iPhone, orange table lifestyle mockup"
        }
       ]
      }
@@ -4132,6 +6098,37 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 2,
+      "cites": [
+       {
+        "section": "device-source-hero",
+        "field": "image",
+        "quote": "…dstrom personalization system design woman model blue floral print dress black white geometric strappy heels yellow sofa editorial"
+       },
+       {
+        "section": "device-source-hero",
+        "field": "alt",
+        "quote": "…source asset, woman in blue floral dress and geometric strappy heels on yellow sofa, paired with Drama Queen and Mac product tiles"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 1,
+      "cites": [
+       {
+        "section": "device-phones",
+        "field": "right.alt",
+        "quote": "Nordstrom mobile homepage on iPhone laid on mirror reflecting clouds, showing Savvy Mag editorial with Drama Queen and Mac modules"
+       }
+      ]
+     }
     ]
    }
   },
@@ -4191,6 +6188,25 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "…-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…iman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg"
+       },
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"
        }
       ]
      }
@@ -4445,6 +6461,785 @@
        }
       ]
      }
+    ]
+   }
+  }
+ ],
+ "pulls": [
+  {
+   "src": "/case-studies/inspiration/infographic-italian-tv-ridgeline-chart.jpeg",
+   "alt": "Italian-language infographic, circular ridgeline chart with bubble groupings",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-waylon-jennings-aviators-cigarette-portrait.jpg",
+   "alt": "Black-and-white portrait of Waylon Jennings in aviator sunglasses with a cigarette",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-bespectacled-man-coca-cola-bottle-table.jpg",
+   "alt": "Black-and-white portrait, young man in glasses at a table with a Coca-Cola bottle",
+   "facets": {
+    "furniture": [
+     "table"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/Mother-Anthropic-Claude-1-1024x782.jpg",
+   "alt": "Mother x Anthropic film still, three figures watching a model rocket launch in the desert",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/vintage-turntable-stylus-balance-tool.jpg",
+   "alt": "Vintage black-and-white photo, hand using a stylus pressure gauge on a turntable",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/e72ca366b285901ef15c1bfe0a9c5f3b.jpg",
+   "alt": "Western film still, symmetrical frontier main street, a figure in a white suit fallen in the foreground dust and a gunslinger standing far down the road",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg",
+   "alt": "Film still, man in a dark leather uniform coat exhaling smoke from an oversized meerschaum pipe",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/miles-davis-suede-jacket-fur-bedspread.jpg",
+   "alt": "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf",
+   "facets": {
+    "material": [
+     "silk"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/sepia-waylon-jennings-cowboy-hat-bottle.jpg",
+   "alt": "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/west-texas-concrete-patio-desert-loungers.webp",
+   "alt": "Concrete patio overlooking the West Texas desert with loungers and a fire pit",
+   "facets": {
+    "place": [
+     "west texas"
+    ],
+    "material": [
+     "concrete"
+    ],
+    "room": [
+     "patio"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/painted-skeleton-cowboy-sombrero-revolver.webp",
+   "alt": "Painted folk-art skeleton cowboy in sombrero with revolver and money sack",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/no-country-josh-brolin-kelly-macdonald-trailer.jpg",
+   "alt": "No Country for Old Men film still, couple seated on a trailer couch with Lone Star beer",
+   "facets": {
+    "furniture": [
+     "sofa"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/Walden-Retreats-11-1440x960.jpg",
+   "alt": "Walden Retreats living room with stone fireplace, stacked firewood, and chess board",
+   "facets": {
+    "room": [
+     "living room"
+    ],
+    "furniture": [
+     "fireplace"
+    ],
+    "material": [
+     "stone"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-southern-rock-singer-stage-spotlight.jpg",
+   "alt": "Black-and-white live shot, long-haired singer with electric guitar in stage spotlights",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/jack-white-red-shirt-red-guitar-stage.jpeg",
+   "alt": "Jack White on stage in red shirt with red electric guitar",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/infographic-large-scale-data-ridgeline.jpeg",
+   "alt": "Large-scale data visualization, ridgeline chart with bubble cluster heads",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/dead-weather-band-portrait-ornate-room.jpg",
+   "alt": "Black-and-white band portrait, four musicians in an ornate floral-walled room",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/dieter-rams-braun-radio-product-shot.jpg",
+   "alt": "Dieter Rams Braun radio with circular speaker grille and aluminum knob",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg",
+   "alt": "Black-and-white portrait, suited bluesman with a motorcycle and parked cars behind",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-mixing-desk.jpg",
+   "alt": "Black-and-white portrait, man in pinstripe suit and round glasses at a studio mixing desk",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/johnny-cash-fishing-jacket-rifle-fall.jpg",
+   "alt": "Johnny Cash holding a transistor radio outdoors in fall, hunter beside him with a rifle",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/engraved-silver-belt-buckle-leather.webp",
+   "alt": "Engraved silver and copper belt buckle on a brown leather belt",
+   "facets": {
+    "material": [
+     "leather",
+     "copper"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/menswear-store-deer-mount-velvet-chair.jpg",
+   "alt": "Eclectic menswear store interior with mounted deer head, mustard velvet chair, gallery wall",
+   "facets": {
+    "material": [
+     "velvet"
+    ],
+    "furniture": [
+     "chair"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-rooftop-empire-state.jpg",
+   "alt": "Black-and-white band portrait on a rooftop with the Empire State Building behind",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/editorial-leather-bass-helmet-portrait.jpg",
+   "alt": "Editorial portrait, figure in motorcycle helmet and leather jacket with a bass guitar",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/Bert and May Kitchen5566.jpg.webp",
+   "alt": "Bert and May kitchen with patterned tile backsplash and oak cabinetry",
+   "facets": {
+    "room": [
+     "kitchen"
+    ],
+    "furniture": [
+     "backsplash",
+     "cabinet"
+    ],
+    "material": [
+     "oak"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-mosshart-white-fur-coat.jpg",
+   "alt": "Black-and-white portrait of Allison Mosshart and Jack White seated on concrete",
+   "facets": {
+    "material": [
+     "concrete"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/frank-lloyd-wright-built-in-bookshelves.jpg",
+   "alt": "Frank Lloyd Wright Usonian living room with built-in bookshelves and stone fireplace",
+   "facets": {
+    "room": [
+     "living room"
+    ],
+    "furniture": [
+     "fireplace"
+    ],
+    "material": [
+     "stone"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-lightnin-hopkins-cigar-archtop-guitar.jpg",
+   "alt": "Black-and-white portrait of bluesman in fedora smoking a cigar with an archtop guitar",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/rrl-cattle-ranch-store-mannequins.jpg",
+   "alt": "Double RL Cattle Ranch store display with denim mannequins and antler chandelier",
+   "facets": {
+    "furniture": [
+     "chandelier"
+    ],
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-musician-studio-mic-acoustic-guitar.jpg",
+   "alt": "Black-and-white musician at studio microphone with acoustic guitar",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-wes-anderson-camera-paris-courtyard.jpg",
+   "alt": "Black-and-white shot of Wes Anderson with camera in a Paris courtyard",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/richie-tenenbaum-camera-headband-yacht.jpg",
+   "alt": "Royal Tenenbaums film still, Richie with camera, headband, and beard",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/vintage-portrait-fedora-sunglasses-profile.jpg",
+   "alt": "Black-and-white profile portrait, man in fedora and dark sunglasses",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/country-singer-cowboy-hat-honky-tonk-neon.jpg",
+   "alt": "Country singer in cowboy hat with acoustic guitar, Miller High Life neon sign behind",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/fluted-tile-kitchen-stone-counter-cutting-boards.jpeg",
+   "alt": "Modern kitchen with fluted white tile, stone counter, dark cutting boards, brass sconce",
+   "facets": {
+    "furniture": [
+     "counter",
+     "sconce"
+    ],
+    "room": [
+     "kitchen"
+    ],
+    "material": [
+     "stone",
+     "tile",
+     "brass"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif",
+   "alt": "Black-and-white portrait of Wes Anderson in tweed suit on a tufted leather armchair",
+   "facets": {
+    "furniture": [
+     "chair"
+    ],
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/charley-crockett-cowboy-hat-tweed-guitar-shop.jpg",
+   "alt": "Country singer in cowboy hat and tweed suit standing inside a hanging-guitar shop",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/calacatta-viola-marble-fluted-columns.jpg",
+   "alt": "Calacatta viola marble fluted columns in cream and burgundy veining",
+   "facets": {
+    "material": [
+     "marble"
+    ],
+    "colour": [
+     "burgundy",
+     "cream"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/wes-anderson-royal-tenenbaums-couch-portrait.jpg",
+   "alt": "Royal Tenenbaums film still, two figures seated on a couch in a red-walled room",
+   "facets": {
+    "furniture": [
+     "sofa"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/devol-shaker-kitchen-dark-blue-cabinetry.webp",
+   "alt": "DeVol Shaker kitchen with dark blue painted cabinetry and stacked firewood",
+   "facets": {
+    "furniture": [
+     "cabinet"
+    ],
+    "room": [
+     "kitchen"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/ryman-auditorium-pews-stained-glass.jpg",
+   "alt": "Empty Ryman Auditorium pews with stained-glass arched windows in primary colors",
+   "facets": {
+    "material": [
+     "glass"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/alexander-mcqueen-skull-print-scarf.jpg",
+   "alt": "Alexander McQueen black-and-white skull print scarf detail",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-miles-davis-tweed-suit-cigarette.jpg",
+   "alt": "Black-and-white portrait of Miles Davis in tweed suit smoking a cigarette",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-portrait-wallpaper.jpg",
+   "alt": "Black-and-white band portrait, four musicians against patterned wallpaper",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-portrait-aviators-leather-jacket-beach.jpg",
+   "alt": "Black-and-white portrait, man in aviator sunglasses and leather jacket at the beach",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-portrait-glasses-clasped-hands-dark-shirt.avif",
+   "alt": "Black-and-white portrait of a man in glasses with hands clasped in front of him",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-cowboy-boot-maker-workshop-leather-lasts.webp",
+   "alt": "Black-and-white photo of a cowboy boot maker shaping leather over wooden lasts",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/painted-cowgirl-orange-dress-green-sofa.webp",
+   "alt": "Painted portrait of a cowgirl in orange dress and brown hat on a green sofa",
+   "facets": {
+    "furniture": [
+     "sofa"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California19-min.jpg",
+   "alt": "Amber Interior Design, Montana residence",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-portrait-warehouse.jpg",
+   "alt": "Black-and-white band portrait of two musicians in a derelict warehouse",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California26-min.jpg",
+   "alt": "Amber Interior Design, Montana residence",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg",
+   "alt": "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/rrl-denim-leather-detail-rope-stitching.jpg",
+   "alt": "Close-up of vintage RRL denim with leather inset and rope-tied detail",
+   "facets": {
+    "material": [
+     "leather",
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-whitey-morgan-band-honky-tonk-stage.jpg",
+   "alt": "Black-and-white live shot of country band on a small honky-tonk stage",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/3a241cf6a04019e84573d7711d0b3822.jpg",
+   "alt": "Sepia-graded film still, men in Depression-era workwear singing around a vintage ribbon microphone, seated guitarist at left",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/dark-wood-paneled-room-trophy-mounts-cabinet.jpg",
+   "alt": "Dark wood-paneled hunting den with antler mounts, oil paintings, and a carved cabinet",
+   "facets": {
+    "furniture": [
+     "cabinet"
+    ],
+    "material": [
+     "wood"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-bluesman-fedora-cigar-vest-doorway.jpg",
+   "alt": "Black-and-white portrait, suited bluesman in fedora and round glasses with cigar in a doorway",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-musicians-black-rebel-motorcycle-club-marquee.jpg",
+   "alt": "Black-and-white street shot of two musicians under a Black Rebel Motorcycle Club marquee",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/felt-cowboy-hat-horsehair-brush-flat-lay.webp",
+   "alt": "Camel felt cowboy hat with horsehair brush flat lay",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/reckonhouse-asterisk-spray-mark-on-cream.jpeg",
+   "alt": "Black spray-paint asterisk mark centered on a cream background",
+   "facets": {
+    "colour": [
+     "cream"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-portrait-barn-siding.jpg",
+   "alt": "Black-and-white band portrait against weathered barn siding",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California25-min.jpg",
+   "alt": "Amber Interior Design, Montana residence",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/charley-crockett-cowboy-hat-leather-acoustic.jpg",
+   "alt": "Country singer in cowboy hat and leather jacket holding an acoustic guitar",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/tricolor-cowhide-texture-brown-white.png",
+   "alt": "Tricolor cowhide texture in brown, white, and black patches",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/vintage-clothing-store-zebra-ottoman-rack.jpg",
+   "alt": "Vintage clothing store interior with zebra-print ottoman and dark cabinetry",
+   "facets": {
+    "furniture": [
+     "ottoman",
+     "cabinet"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/leather-chesterfield-armchair-fireplace-stone.jpg",
+   "alt": "Olive leather button-tufted chair beside a stone fireplace with mounted antelope head",
+   "facets": {
+    "furniture": [
+     "fireplace",
+     "chair"
+    ],
+    "material": [
+     "leather",
+     "stone"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/rrl-denim-shirt-corduroy-collar-bandana.jpeg",
+   "alt": "Close-up of an RRL denim shirt with corduroy collar and red paisley bandana",
+   "facets": {
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-cowboy-rearing-horse-field.jpg",
+   "alt": "Black-and-white photograph, cowboy rearing on a horse in a grassy field",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/monument-valley-mittens-dawn-light.jpg",
+   "alt": "Monument Valley mittens at dawn under low cloud cover",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-waylon-jennings-cowboy-hat-portfolio.jpg",
+   "alt": "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/sepia-three-cowboys-walking-dirt-road.jpg",
+   "alt": "Sepia photograph, three cowboys walking down a dirt road",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-keyboards-live-leather.jpg",
+   "alt": "Black-and-white live shot, two band members at keyboards in leather jackets",
+   "facets": {
+    "material": [
+     "leather"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg",
+   "alt": "No Country for Old Men film still, Josh Brolin in a straw cowboy hat crouched in dry scrubland with binoculars and a slung rifle",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/wabi-sabi-living-room-mushroom-mirror-beams.jpeg",
+   "alt": "Wabi-sabi living room with exposed beams, large mushroom mirror, plaster fireplace",
+   "facets": {
+    "room": [
+     "living room"
+    ],
+    "furniture": [
+     "mirror",
+     "fireplace"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/dieter-rams-palette-braun-grille-knobs.jpg",
+   "alt": "Dieter Rams design palette, Braun speaker grille pattern with color knobs",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/vintage-transparent-solar-system-chart.jpeg",
+   "alt": "Antique educational print, transparent solar system chart with planet orbits",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/denim-glasses-portrait-bookshelf-armchair.jpg",
+   "alt": "Bearded man in denim shirt and tortoiseshell glasses, seated in a carved armchair",
+   "facets": {
+    "furniture": [
+     "chair"
+    ],
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/tarantino-king-of-golf-robe-bedroom.jpg",
+   "alt": "Quentin Tarantino in a printed silk robe seated in a floral-wallpapered bedroom",
+   "facets": {
+    "room": [
+     "bedroom"
+    ],
+    "material": [
+     "silk"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-dead-weather-railroad-tracks.jpg",
+   "alt": "Black-and-white shot of band members walking along railroad tracks",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/lee-denim-shirts-stack-button-detail.jpg",
+   "alt": "Stack of vintage Lee denim and corduroy shirts showing button and label detail",
+   "facets": {
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/rrl-vintage-vest-fedora-flat-lay.jpeg",
+   "alt": "Flat lay of vintage tweed vest, dark fedora, knit tie, and RRL striped shirt",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/organ-mountains-moonrise-orange-glow.jpg",
+   "alt": "Organ Mountains glowing orange at sunset with the moon rising behind the peaks",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/hill-country-stone-foyer-portrait-painting.jpeg",
+   "alt": "Texas Hill Country stone foyer with antique portrait, dark wood console, and a monstera leaf",
+   "facets": {
+    "place": [
+     "hill country",
+     "texas"
+    ],
+    "material": [
+     "stone",
+     "wood"
+    ],
+    "room": [
+     "entry"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-fedora-guitar.jpg",
+   "alt": "Black-and-white live shot, man in pinstripe suit and fedora playing electric guitar",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-feather-headdress-indian-motorcycle.jpg",
+   "alt": "Black-and-white photograph, figure in feather headdress arms outstretched behind an Indian motorcycle",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/swiss-typographic-grid-flag-signal-poster.jpeg",
+   "alt": "Swiss typographic poster with maritime signal flags arranged on a grid",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/wes-anderson-budapest-doorway-frame.jpeg",
+   "alt": "Wes Anderson film still, narrow doorway framing a small interior scene",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/87119dea487a846ff65070db9ec9c847.jpg",
+   "alt": "No Country for Old Men film still, Josh Brolin crossing a motel lobby with the case and a shotgun, Western mural, table lamp and armchair behind",
+   "facets": {
+    "furniture": [
+     "chair",
+     "table",
+     "lamp"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/denim-suede-jacket-rodeo-belt-buckle.webp",
+   "alt": "Torso shot, suede jacket over denim shirt with engraved rodeo belt buckle",
+   "facets": {
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/musician-acoustic-guitar-floral-wallpaper.jpg",
+   "alt": "Musician with acoustic guitar against peeling vintage floral wallpaper",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/ac0ea29344e67e06b29ddde6a22f57f9.jpg",
+   "alt": "Black-and-white magazine scan, four musicians against a blank wall in denim and cowboy hats, one seated on the kerb",
+   "facets": {
+    "material": [
+     "denim"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/leather-bench-corner-stitching-wood-detail.jpeg",
+   "alt": "Tan leather bench corner with whip-stitched seam against a raw wood block",
+   "facets": {
+    "material": [
+     "leather",
+     "wood"
+    ],
+    "furniture": [
+     "bench"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/rrl-trading-co-store-display-blankets.jpg",
+   "alt": "Double RL store interior with antlers, vintage trunks, knit hats, and a gallery wall",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/brass-zippo-lighter-shotgun-shell-detail.webp",
+   "alt": "Brass Zippo lighter open with embedded 12-gauge shotgun shell base",
+   "facets": {
+    "material": [
+     "brass"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/wes-anderson-asteroid-city-diner.jpg",
+   "alt": "Asteroid City film still, three figures at a 1950s diner counter",
+   "facets": {
+    "furniture": [
+     "counter"
+    ]
+   }
+  },
+  {
+   "src": "/case-studies/inspiration/bw-cinematic-portrait-fedora-cigarette.jpg",
+   "alt": "Black-and-white cinematic close-up, man in wide-brim hat smoking a cigarette",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-gruene-hall-water-tower-honky-tonk.jpg",
+   "alt": "Black-and-white shot of Gruene Hall dance hall with water tower behind",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-jack-white-third-man-records-piano.jpeg",
+   "alt": "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-miles-davis-pinstripe-suit-st-george-street.jpg",
+   "alt": "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/utah-desert-canyons-sagebrush-warm-light.jpg",
+   "alt": "Utah desert canyons in warm afternoon light with sagebrush in the foreground",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/5c08f1591729fa6d1ada2d377448d215.jpg",
+   "alt": "Black-and-white portrait, two filmmakers beside a 35mm projector and a mounted film reel",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/bw-3614-jackson-highway-muscle-shoals.jpg",
+   "alt": "Black-and-white photo, four musicians outside the 3614 Jackson Highway studio",
+   "facets": {}
+  },
+  {
+   "src": "/case-studies/inspiration/red-leather-bruno-mathsson-jetson-chair.jpeg",
+   "alt": "Red leather Bruno Mathsson Jetson swivel chair on wood floor",
+   "facets": {
+    "material": [
+     "leather",
+     "wood"
+    ],
+    "furniture": [
+     "chair"
     ]
    }
   }

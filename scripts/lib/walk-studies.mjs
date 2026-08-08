@@ -57,6 +57,23 @@ export function strings(node, path = [], out = []) {
   return out;
 }
 
+/* The inspiration board, which is not a case study and was therefore
+ * invisible to the whole index. 104 saved images, 96 distinct written
+ * descriptions, and not one of them queryable — the board that exists
+ * to be browsed by feel could not be asked a question.
+ *
+ * Their alt text is unusually good evidence: it describes what is IN
+ * the picture rather than what the project was about, which is exactly
+ * the register the object vocabulary matches against. */
+export async function loadPulls() {
+  const url = pathToFileURL(resolve(DATA_DIR, "inspiration.ts")).href;
+  const mod = await import(url);
+  const list = Object.values(mod).find(
+    (v) => Array.isArray(v) && v.length && typeof v[0]?.src === "string"
+  );
+  return list || [];
+}
+
 /* A filename is evidence too: these are SEO names written by hand, and
  * they carry keywords the prose never says out loud
  * (hill-country-kitchen-island-pendants-marble-wide). Splitting them

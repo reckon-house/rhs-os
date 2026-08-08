@@ -16,7 +16,9 @@
  * for "oak". Order in these arrays does not matter; length does.
  */
 
-export const VOCAB_VERSION = 1;
+/* 2: added the furniture facet, so anything caching against this
+ * version must rebuild. */
+export const VOCAB_VERSION = 2;
 
 export const FACETS = {
   /* what the work is made of */
@@ -52,6 +54,62 @@ export const FACETS = {
     ["blush", []],
     ["cobalt", []],
     ["burgundy", []],
+  ],
+
+  /* What is actually IN the photographs. This facet exists because
+   * "table" returned nothing while "dining table" sat in the alt text
+   * eight times over — the extractor was reading the word and throwing
+   * it away, because nothing was looking for it.
+   *
+   * No vision model was needed to find any of this. Every image in the
+   * portfolio already carries a written description (339 of 340 study
+   * images, 97 of 104 pulls), and those descriptions name the objects
+   * the prose never mentions. This is a vocabulary gap wearing the
+   * costume of a perception gap.
+   *
+   * Compound terms stay separate rather than folding into aliases:
+   * a coffee table is not a dining table. Query-side word matching
+   * reunites them, so "table" still finds all three. */
+  furniture: [
+    ["fireplace", []],
+    ["chandelier", []],
+    ["table", []],
+    ["dining table", []],
+    ["coffee table", []],
+    ["side table", []],
+    ["sofa", ["couch"]],
+    ["cabinet", ["cabinetry"]],
+    ["window", []],
+    ["bench", []],
+    ["rug", []],
+    ["island", []],
+    ["shelf", ["shelving", "open shelving"]],
+    ["tub", []],
+    ["vanity", []],
+    ["chair", ["armchair"]],
+    ["pendant", []],
+    ["shower", []],
+    ["mirror", []],
+    ["backsplash", []],
+    ["mantel", []],
+    ["hardware", []],
+    ["sink", []],
+    ["counter", ["countertop"]],
+    ["faucet", []],
+    ["sconce", []],
+    ["beam", []],
+    ["ottoman", []],
+    ["door", []],
+    ["pillow", []],
+    ["artwork", []],
+    ["vase", []],
+    ["bowl", []],
+    ["plant", []],
+    ["stool", []],
+    ["headboard", []],
+    ["bed", []],
+    ["lamp", []],
+    ["refrigerator", []],
   ],
 
   /* rooms and the parts of a house */
@@ -102,10 +160,21 @@ export const FACETS = {
  * which is cheaper and far more precise than deleting the term: "subway
  * tile" survives, "twelve-tile pattern library" does not.
  *
- * Three terms were deleted outright rather than guarded, because their
- * non-domain sense is the COMMON one here: "suite" (Adobe Creative
- * Suite), "deck" (Exec Deck Builder) and "canvas" ("Loved By earned the
- * bigger canvas"). A term that is usually wrong is not worth rescuing.
+ * Terms deleted outright rather than guarded, because their non-domain
+ * sense is the COMMON one here. The first three came from the materials
+ * pass: "suite" (Adobe Creative Suite), "deck" (Exec Deck Builder) and
+ * "canvas" ("Loved By earned the bigger canvas"). The furniture pass
+ * added seven more, each checked against the corpus before being cut:
+ *
+ *   art      always "Art Direction" or "art prints"
+ *   range    the Chisos range, and "how much visual range"
+ *   pull     a verb every single time: "the box beams pull the contrast"
+ *   floor    "desert floor", "floor capacity", and the client Floor & Decor
+ *   fixture  "Fixture Sourcing", a service and not an object
+ *   console  DSC's owner console, software far more often than furniture
+ *   wall     "canyon wall", "fill a wall" — rarely a thing in a room
+ *
+ * A term that is usually wrong is not worth rescuing.
  */
 export const GUARDS = {
   entry: ["archive", "data", "item", "log", "journal", "ledger"],
@@ -113,6 +182,27 @@ export const GUARDS = {
   office: ["box office", "front office"],
   stone: ["stepping"],
   paper: ["wallpaper", "newspaper", "paperwork"],
+  /* "polka dots in the bowl of the 'a'" is typography, not a serving
+     bowl; a Super Bowl is neither. */
+  bowl: ["polka", "letterform", "glyph", "super", "of the a"],
+  /* the studies talk about beaming and about box beams both */
+  beam: ["beaming"],
+  /* "the bed of the truck", and Big Bend's river beds */
+  bed: ["truck", "river", "creek"],
+  /* A design portfolio that also builds software says "window" about
+     four different things. The room's window survives (16 of 20 hits
+     are real); the model's context window, a retail decal and "the
+     response window opens" do not. */
+  window: ["context", "decal", "browser", "token", "response"],
+  /* Software borrows the furniture. "A tabbed shelf" is a UI pattern
+     and "signal to shelf and back" is a supply chain, but the chalet's
+     leaning ladder shelf is a real object holding real things. A
+     "shelf talker" is retail signage and belongs to neither. */
+  shelf: ["tabbed", "signal to", "off the", "talker"],
+  /* Kept narrow on purpose. "Front door" is a real door on a real
+     chalet, so it is not guarded — only the three places the studies
+     use a doorway as a figure of speech. */
+  door: ["out the door", "back office", "first build"],
 };
 
 /* A match inside one of these is not a fact about the work — it is a

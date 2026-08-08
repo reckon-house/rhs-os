@@ -6,8 +6,12 @@
  * scripts/build-inspiration.py (a deterministic shuffle keeps related
  * images from clustering — seed 42).
  *
- * Computer vision rename pass is pending — alt text and meaningful
- * filenames will land later. Hash filenames are placeholders.
+ * Alt text is complete: every pull describes what is IN the picture,
+ * which is what makes the board queryable. The seven hash-named files
+ * were the last "Saved image" placeholders and were described by eye.
+ * Their FILENAMES are still hashes, so they contribute nothing to the
+ * keyword layer the other pulls get for free. Renaming them is the
+ * remaining win here.
  *
  * When this list grows past ~150 items, migrate to Supabase + admin
  * upload.
@@ -27,8 +31,8 @@ export const inspiration: InspirationImage[] = [
   { type: "image", src: `${IMG}/bw-bespectacled-man-coca-cola-bottle-table.jpg`, alt: "Black-and-white portrait, young man in glasses at a table with a Coca-Cola bottle" },
   { type: "image", src: `${IMG}/Mother-Anthropic-Claude-1-1024x782.jpg`, alt: "Mother x Anthropic film still, three figures watching a model rocket launch in the desert" },
   { type: "image", src: `${IMG}/vintage-turntable-stylus-balance-tool.jpg`, alt: "Vintage black-and-white photo, hand using a stylus pressure gauge on a turntable" },
-  { type: "image", src: `${IMG}/e72ca366b285901ef15c1bfe0a9c5f3b.jpg`, alt: "Saved image" },
-  { type: "image", src: `${IMG}/1f09c02d4b42c58ce9826cceed8f3704.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/e72ca366b285901ef15c1bfe0a9c5f3b.jpg`, alt: "Western film still, symmetrical frontier main street, a figure in a white suit fallen in the foreground dust and a gunslinger standing far down the road" },
+  { type: "image", src: `${IMG}/1f09c02d4b42c58ce9826cceed8f3704.jpg`, alt: "Film still, man in a dark leather uniform coat exhaling smoke from an oversized meerschaum pipe" },
   { type: "image", src: `${IMG}/miles-davis-suede-jacket-fur-bedspread.jpg`, alt: "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf" },
   { type: "image", src: `${IMG}/sepia-waylon-jennings-cowboy-hat-bottle.jpg`, alt: "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle" },
   { type: "image", src: `${IMG}/west-texas-concrete-patio-desert-loungers.webp`, alt: "Concrete patio overlooking the West Texas desert with loungers and a fire pit" },
@@ -77,7 +81,7 @@ export const inspiration: InspirationImage[] = [
   { type: "image", src: `${IMG}/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg`, alt: "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette" },
   { type: "image", src: `${IMG}/rrl-denim-leather-detail-rope-stitching.jpg`, alt: "Close-up of vintage RRL denim with leather inset and rope-tied detail" },
   { type: "image", src: `${IMG}/bw-whitey-morgan-band-honky-tonk-stage.jpg`, alt: "Black-and-white live shot of country band on a small honky-tonk stage" },
-  { type: "image", src: `${IMG}/3a241cf6a04019e84573d7711d0b3822.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/3a241cf6a04019e84573d7711d0b3822.jpg`, alt: "Sepia-graded film still, men in Depression-era workwear singing around a vintage ribbon microphone, seated guitarist at left" },
   { type: "image", src: `${IMG}/dark-wood-paneled-room-trophy-mounts-cabinet.jpg`, alt: "Dark wood-paneled hunting den with antler mounts, oil paintings, and a carved cabinet" },
   { type: "image", src: `${IMG}/bw-bluesman-fedora-cigar-vest-doorway.jpg`, alt: "Black-and-white portrait, suited bluesman in fedora and round glasses with cigar in a doorway" },
   { type: "image", src: `${IMG}/bw-musicians-black-rebel-motorcycle-club-marquee.jpg`, alt: "Black-and-white street shot of two musicians under a Black Rebel Motorcycle Club marquee" },
@@ -95,7 +99,7 @@ export const inspiration: InspirationImage[] = [
   { type: "image", src: `${IMG}/bw-waylon-jennings-cowboy-hat-portfolio.jpg`, alt: "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio" },
   { type: "image", src: `${IMG}/sepia-three-cowboys-walking-dirt-road.jpg`, alt: "Sepia photograph, three cowboys walking down a dirt road" },
   { type: "image", src: `${IMG}/bw-dead-weather-keyboards-live-leather.jpg`, alt: "Black-and-white live shot, two band members at keyboards in leather jackets" },
-  { type: "image", src: `${IMG}/0d9081db73ef35126fc6037023b9c3ce.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/0d9081db73ef35126fc6037023b9c3ce.jpg`, alt: "No Country for Old Men film still, Josh Brolin in a straw cowboy hat crouched in dry scrubland with binoculars and a slung rifle" },
   { type: "image", src: `${IMG}/wabi-sabi-living-room-mushroom-mirror-beams.jpeg`, alt: "Wabi-sabi living room with exposed beams, large mushroom mirror, plaster fireplace" },
   { type: "image", src: `${IMG}/dieter-rams-palette-braun-grille-knobs.jpg`, alt: "Dieter Rams design palette, Braun speaker grille pattern with color knobs" },
   { type: "image", src: `${IMG}/vintage-transparent-solar-system-chart.jpeg`, alt: "Antique educational print, transparent solar system chart with planet orbits" },
@@ -110,10 +114,10 @@ export const inspiration: InspirationImage[] = [
   { type: "image", src: `${IMG}/bw-feather-headdress-indian-motorcycle.jpg`, alt: "Black-and-white photograph, figure in feather headdress arms outstretched behind an Indian motorcycle" },
   { type: "image", src: `${IMG}/swiss-typographic-grid-flag-signal-poster.jpeg`, alt: "Swiss typographic poster with maritime signal flags arranged on a grid" },
   { type: "image", src: `${IMG}/wes-anderson-budapest-doorway-frame.jpeg`, alt: "Wes Anderson film still, narrow doorway framing a small interior scene" },
-  { type: "image", src: `${IMG}/87119dea487a846ff65070db9ec9c847.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/87119dea487a846ff65070db9ec9c847.jpg`, alt: "No Country for Old Men film still, Josh Brolin crossing a motel lobby with the case and a shotgun, Western mural, table lamp and armchair behind" },
   { type: "image", src: `${IMG}/denim-suede-jacket-rodeo-belt-buckle.webp`, alt: "Torso shot, suede jacket over denim shirt with engraved rodeo belt buckle" },
   { type: "image", src: `${IMG}/musician-acoustic-guitar-floral-wallpaper.jpg`, alt: "Musician with acoustic guitar against peeling vintage floral wallpaper" },
-  { type: "image", src: `${IMG}/ac0ea29344e67e06b29ddde6a22f57f9.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/ac0ea29344e67e06b29ddde6a22f57f9.jpg`, alt: "Black-and-white magazine scan, four musicians against a blank wall in denim and cowboy hats, one seated on the kerb" },
   { type: "image", src: `${IMG}/leather-bench-corner-stitching-wood-detail.jpeg`, alt: "Tan leather bench corner with whip-stitched seam against a raw wood block" },
   { type: "image", src: `${IMG}/rrl-trading-co-store-display-blankets.jpg`, alt: "Double RL store interior with antlers, vintage trunks, knit hats, and a gallery wall" },
   { type: "image", src: `${IMG}/brass-zippo-lighter-shotgun-shell-detail.webp`, alt: "Brass Zippo lighter open with embedded 12-gauge shotgun shell base" },
@@ -123,7 +127,7 @@ export const inspiration: InspirationImage[] = [
   { type: "image", src: `${IMG}/bw-jack-white-third-man-records-piano.jpeg`, alt: "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar" },
   { type: "image", src: `${IMG}/bw-miles-davis-pinstripe-suit-st-george-street.jpg`, alt: "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street" },
   { type: "image", src: `${IMG}/utah-desert-canyons-sagebrush-warm-light.jpg`, alt: "Utah desert canyons in warm afternoon light with sagebrush in the foreground" },
-  { type: "image", src: `${IMG}/5c08f1591729fa6d1ada2d377448d215.jpg`, alt: "Saved image" },
+  { type: "image", src: `${IMG}/5c08f1591729fa6d1ada2d377448d215.jpg`, alt: "Black-and-white portrait, two filmmakers beside a 35mm projector and a mounted film reel" },
   { type: "image", src: `${IMG}/bw-3614-jackson-highway-muscle-shoals.jpg`, alt: "Black-and-white photo, four musicians outside the 3614 Jackson Highway studio" },
   { type: "image", src: `${IMG}/red-leather-bruno-mathsson-jetson-chair.jpeg`, alt: "Red leather Bruno Mathsson Jetson swivel chair on wood floor" },
 ];

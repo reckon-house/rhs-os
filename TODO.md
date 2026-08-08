@@ -880,6 +880,11 @@ visual starts in `public/lab/`.)
 
 ## Next
 
+- [ ] **Rename the seven hash-named pulls.** Their alt text is written
+      now, but the FILENAMES are still content hashes, so they miss the
+      keyword layer every other pull gets from its SEO filename. Renaming
+      means updating `image-dimensions.ts` in step.
+
 - [ ] **Wire the facts index into the brain.** The extractor
       (`npm run facts`) now emits `src/data/generated/project-facts*.json`
       and `src/lib/facts.ts` queries it. Retrieval is already better
