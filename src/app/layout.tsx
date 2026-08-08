@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { HeroPreloader } from "@/components/shell/HeroPreloader";
-import { BurnMeltTransition } from "@/components/fx/BurnMeltTransition";
+import { PressingTransition } from "@/components/shell/PressingTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
 import { SpringSolve } from "@/components/fx/SpringSolve";
 import { VisibilityPause } from "@/components/fx/VisibilityPause";
@@ -71,7 +71,12 @@ export default function RootLayout({
             {children}
           </SmoothScroll>
         </div>
-        <BurnMeltTransition />
+        {/* One transition for the whole site. The BurnMelt overlay it
+            replaces listened on document in the capture phase, so on
+            the homepage it fired alongside the curtain and then played
+            its own fade-in on the arriving page — two transitions over
+            one navigation. */}
+        <PressingTransition />
         {/* The nav is the Masthead now — sticky inside SmoothScroll's
             content so its burn pill samples what scrolls beneath it. The
             pre-redesign bottom dock (NavRail) is archived at tag site-v1. */}

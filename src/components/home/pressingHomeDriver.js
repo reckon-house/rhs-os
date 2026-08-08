@@ -1999,23 +1999,7 @@ async function playTransition(href, title, sub) {
   if (href) location.href = href;
 }
 
-/* Clicks on the work run the sequence. Modified clicks are left alone —
-   a new tab should not be preceded by a curtain on the old one. */
-document.addEventListener("click", (e) => {
-  const a = e.target.closest && e.target.closest(".ixrow a.fd-it");
-  if (!a || REDUCE()) return;
-  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-  e.preventDefault();
-  /* the destination names itself: taken off the card here, and off
-     the route's own data in an app — same fact either way */
-  const lbl = a.querySelector(".lbl");
-  const sub = lbl && lbl.querySelector(".sub");
-  const title = lbl
-    ? lbl.firstChild.textContent.trim() : a.getAttribute("aria-label") || "";
-  /* the lab has nowhere to go, so it plays the whole sequence and
-     stays; pass a.getAttribute("href") to make it navigate */
-  playTransition(null, title, sub ? sub.textContent.trim() : "");
-});
+
 
 /* ── hover: the drop and the push ─────────────────────────────────
    Two numbers the stylesheet cannot know. How far the label must slide

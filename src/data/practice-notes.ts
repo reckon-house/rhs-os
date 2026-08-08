@@ -1,0 +1,42 @@
+/* The working notes and the filter, in one place.
+ *
+ * They appear twice on the site: down the homepage's pinned column,
+ * and again in the ring that closes every page. That is the same
+ * content in two positions, not two contents, so it lives here rather
+ * than being typed out in both.
+ *
+ * The lab (public/lab/pressing-home.html) keeps its own copy, because
+ * it has to run as a standalone file with no bundler. If you change a
+ * line here, change it there. scripts/port-home.mjs --check does not
+ * cover this, which is the one seam in that arrangement.
+ */
+
+export interface PracticeNote {
+  /** the small label above the block */
+  title: string;
+  body: string;
+  /** An exact substring of `body` to set in grey. Tone is an authoring
+   *  decision — the machine only greys what the machine appended. */
+  quiet?: string;
+}
+
+/** Ordered as the column reads. The practice bio is not here: the
+ *  homepage promotes it to the cover statement, and the ring does not
+ *  repeat it under the footer. */
+export const practiceNotes: PracticeNote[] = [
+  { title: "Recently", body: "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online." },
+  { title: "Get in touch", body: "hello@reckon.house" },
+  { title: "How I work", body: "Independent, Dallas. Design and build. Available for work." },
+  { title: "What I do", body: "Art direction. Brand systems. Digital design. Interiors." },
+];
+
+/* The plain way in. The brain answers questions and a first-time
+   visitor does not always have one, so four doors sit beside the
+   field. Each is a real query rather than a separate route: the label
+   is the visitor's word, the query is the studies'. */
+export const practiceFilters: [label: string, query: string][] = [
+  ["Digital Experiences", "digital"],
+  ["App Development", "app development"],
+  ["Campaign/Creative", "campaign"],
+  ["Interiors", "interiors"],
+];

@@ -21,47 +21,7 @@
   -webkit-font-smoothing: antialiased;
   /* 40px matches the masthead's gutter, and is not doubled against
      main's md:px-[50px] because the root carries .hero-breakout. */
-  padding: clamp(56px, 8vw, 120px) 40px clamp(30px, 4vw, 50px);
-}
-
-/* The hinge: a label over the ring, saying what the reader has arrived
-   at. It is not a link any more — the work below IS the destination. */
-.head {
-  display: block;
-}
-
-.eyebrow {
-  display: block;
-  font-size: var(--rt-lbl);
-  font-weight: var(--rt-lbl-weight);
-  letter-spacing: var(--rt-lbl-track);
-  opacity: 0.5;
-  padding-bottom: 14px;
-}
-
-.line {
-  margin: 0;
-  font-size: clamp(30px, 4.4vw, 62px);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-weight: 700;
-}
-
-/* The rule draws itself across on approach: the loop closing, stated
-   once and quietly. transform rather than width so it costs nothing
-   per frame. */
-.rule {
-  height: 1px;
-  margin-top: clamp(28px, 4vw, 54px);
-  margin-bottom: clamp(40px, 6vw, 84px);
-  background: currentColor;
-  opacity: 0.14;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.9s cubic-bezier(0.33, 0.28, 0.12, 1);
-}
-.on .rule {
-  transform: scaleX(1);
+  padding: clamp(56px, 8vw, 120px) 0 clamp(30px, 4vw, 50px);
 }
 
 
@@ -70,6 +30,8 @@
 /* The chrome that used to live under the All-work index. It is real
    information and it outlives the index that carried it. */
 .foot {
+  margin-left: 40px;
+  margin-right: 40px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;

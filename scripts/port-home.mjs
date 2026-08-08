@@ -146,6 +146,19 @@ let jsOut = js;
 for (const m of ["the burn, lifted from Masthead.tsx", "the reversal, lifted too"]) {
   jsOut = stripIife(jsOut, m);
 }
+/* The transition is the shell's now (PressingTransition), and it runs
+   for every link on the site rather than only the homepage's frames.
+   The lab keeps its own copy so it still demonstrates the sequence
+   standalone; leaving it in the port would mean two handlers on one
+   click and two curtains over one navigation. */
+{
+  const marker = "/* Clicks on the work run the sequence.";
+  const at = jsOut.indexOf(marker);
+  if (at === -1) throw new Error("port: lab transition handler not found");
+  const end = jsOut.indexOf("});", jsOut.indexOf('addEventListener("click"', at));
+  if (end === -1) throw new Error("port: lab transition handler has no end");
+  jsOut = jsOut.slice(0, at) + jsOut.slice(end + 3);
+}
 /* ── 4. the facts arrive by import, not by fetch ── */
 const FETCH_RX =
   /let FACTS = null;[\s\S]*?fetch\("project-facts\.min\.json"\)[\s\S]*?\.catch\(\(\) => \{\}\);/;

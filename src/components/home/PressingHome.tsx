@@ -20,6 +20,11 @@
  *     Masthead.tsx, and the question field travels into it.
  *   · the footer's contact and credits beats, from PressingFooter.
  *   · scrolling. Lenis owns <main>, so nothing here writes scrollTop.
+ *   · the page transition. Its panels are PressingTransition's, in the
+ *     shell, because every route needs them. This page rendered a
+ *     second pair with the same id for a while, which is why the
+ *     sequence appeared dead: getElementById returned the homepage's
+ *     copy, and the handler was bound to the shell's.
  *
  * The lab keeps its own copies of all three so it can still be opened
  * alone and tuned. That is the one duplication in this arrangement,
@@ -108,16 +113,6 @@ export function PressingHome() {
         </div>
       </section>
 
-      {/* The page transition's two panels. What makes the sequence read
-          is the order of their edges, not the number of parts. */}
-      <div className="pt" id="pt" aria-hidden="true">
-        <div className="ptw">
-          <div className="ptstack" id="ptwT" />
-        </div>
-        <div className="ptb">
-          <div className="ptstack" id="ptbT" />
-        </div>
-      </div>
     </>
   );
 }

@@ -23,15 +23,17 @@
  * imported here rather than only by the homepage, so the same rules
  * dress both and there is no second definition to keep in step.
  *
- * The notes column is left out. On the homepage it holds the practice,
- * the contact line and the filter; here it would repeat the contact
- * beat that sits directly above it, so the ring runs full width and
- * says only what it is for.
+ * It is the homepage's body, repeated. Not an edited version of it and
+ * not a summary: the same notes column, the same filter, the same
+ * rows, dressed by the same stylesheet. A reader who reaches the
+ * bottom of a case study arrives at the front page, which is what a
+ * ring is.
  */
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import Link from "next/link";
 import { projects } from "@/data/projects";
+import { practiceNotes, practiceFilters } from "@/data/practice-notes";
 import { imageDimensions } from "@/data/image-dimensions";
 import { dealWidths, HOUSE_SEED } from "@/lib/deal";
 import "@/components/home/pressing-home.css";
@@ -78,7 +80,28 @@ export function PressingRing() {
   }, []);
 
   return (
-    <div className="ixbody ringonly" ref={rootRef}>
+    <div className="ixbody" ref={rootRef}>
+      {/* The pinned column, exactly as the homepage keeps it. The
+          filter's buttons are links here rather than live queries: the
+          brain lives on the homepage, so a filter pressed from the
+          tail of a case study carries its question there. */}
+      <div className="ixnotes">
+        {practiceNotes.map((n) => (
+          <div className="blk" key={n.title}>
+            <span className="tag">{n.title}</span>
+            {n.quiet ? toned(n.body, n.quiet) : n.body}
+          </div>
+        ))}
+        <div className="blk filt">
+          <span className="tag">Filter</span>
+          {practiceFilters.map(([label, query]) => (
+            <Link key={label} href={`/?q=${encodeURIComponent(query)}`}>
+              {label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div className="ixrows">
         {ROWS.map((pair, r) => (
           <div className="ixrow" key={r}>
@@ -110,6 +133,19 @@ export function PressingRing() {
         ))}
       </div>
     </div>
+  );
+}
+
+/** The authored recessive run, the same split the homepage makes. */
+function toned(body: string, quiet: string) {
+  const at = body.indexOf(quiet);
+  if (at === -1) return body;
+  return (
+    <>
+      {body.slice(0, at)}
+      <span className="q">{quiet}</span>
+      {body.slice(at + quiet.length)}
+    </>
   );
 }
 

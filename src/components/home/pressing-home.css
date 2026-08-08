@@ -336,11 +336,6 @@
      the page needs to finish before the next thing begins. */
   #stIndex { padding-bottom: 200px; }
 
-  /* The tail's ring runs full width: on the homepage the notes column
-     holds the practice and the filter, but in the footer it would
-     repeat the contact beat sitting directly above it. */
-  .ixbody.ringonly { grid-template-columns: minmax(0, 1fr); }
-
   .ixbody { display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
     padding: 0 var(--gut); }
@@ -374,13 +369,14 @@
   /* the filter reads as the column's own list: same body size, one per
      line, underlined on approach rather than boxed. A button that
      looked like a button would be the only chrome on the page. */
-  .ixnotes .filt button { display: block; width: 100%; text-align: left;
+  .ixnotes .filt button, .ixnotes .filt a { display: block; width: 100%; text-align: left;
+    text-decoration: none;
     background: none; border: 0; padding: 0 0 7px; cursor: pointer;
     font: inherit; font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
-  .ixnotes .filt button:hover { text-decoration: underline;
+  .ixnotes .filt button:hover, .ixnotes .filt a:hover { text-decoration: underline;
     text-underline-offset: 4px; }
-  .ixnotes .filt button:focus-visible { outline: 1px solid var(--ink);
+  .ixnotes .filt button:focus-visible, .ixnotes .filt a:focus-visible { outline: 1px solid var(--ink);
     outline-offset: 3px; }
 
   /* the row: notes column left empty (the notes float over it), then

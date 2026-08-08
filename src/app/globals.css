@@ -1,24 +1,13 @@
 @import "tailwindcss";
 
 /* ── Burn Melt page transition cover ────────────────────────────── */
-/* Transparent by default (--burn-cover: 0) so first paint is never hidden
-   waiting on JS. It used to default to 1, which — together with the white
-   overlay layer — blanked the page until the bundle hydrated AND every image
-   finished loading (window.load). That read as a multi-second blank on cold
-   loads. Page-to-page transitions use the component's own overlay layers. */
-body::before {
-  content: "";
-  position: fixed;
-  top: -200px;
-  right: -200px;
-  bottom: -200px;
-  left: -200px;
-  background: #F3F0ED;
-  z-index: 2147483647;
-  pointer-events: none;
-  opacity: var(--burn-cover, 0);
-  transition: opacity 0s linear;
-}
+/* The full-screen burn cover is gone with BurnMeltTransition, which was
+   the only thing that ever set --burn-cover. It was a fixed layer at
+   z-index 2147483647 held transparent by a variable nothing writes any
+   more: harmless while it sat at 0, and a whole-page cream blank the
+   moment anything set it by accident. PressingTransition covers the
+   screen with its own two panels, inside the document, at a z-index
+   that the masthead can still be seen under. */
 
 /* ── Asterisk animations ─────────────────────────────────────────── */
 

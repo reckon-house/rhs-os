@@ -11,11 +11,11 @@
  * thirty frames, thirty images, and a reader who has just finished
  * reading being handed a directory instead of a door.
  *
- * So the tail states the loop instead of duplicating it. A study ends
- * and home is one deliberate click away. On the homepage the same beat
- * returns to the top, because a ring has to close there too — and
- * because the thing at the bottom of home is the same footer, so the
- * component has to be honest about where it is.
+ * So a study ends at the front page: the homepage's body simply
+ * continues below the footer, and the reader keeps scrolling into the
+ * work. The homepage itself stops at the footer, because the ring
+ * there would be the page repeating itself — they have just scrolled
+ * through this exact object to reach it.
  *
  * NOTHING NAVIGATES HERE, and two earlier versions of this file did.
  * The first offered a link home; the second let a deliberate scroll
@@ -26,9 +26,11 @@
  * it is there, with no gesture to learn, nothing to aim at, and no
  * page that can navigate itself out from under someone mid-sentence.
  *
- * What is left here is the hinge: a label, a rule that draws itself
- * across on arrival, the ring, and the chrome that used to live under
- * the old All-work index.
+ * What is left here is the ring itself and the chrome that used to sit
+ * under the old All-work index. No label introduces it. An earlier
+ * pass put an eyebrow and a headline above the work, which was this
+ * file inventing a beat the design does not have: the homepage does
+ * not announce its own index, so neither does its repeat.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -79,17 +81,12 @@ export function PressingReturn() {
       ref={rootRef}
       className={`hero-breakout ${styles.beat}${on ? ` ${styles.on}` : ""}`}
     >
-      <div className={styles.head}>
-        <span className={styles.eyebrow}>The ring</span>
-        <p className={styles.line}>
-          {isHome ? "Round again." : "Back to the house."}
-        </p>
-      </div>
-
-      <div className={styles.rule} aria-hidden="true" />
-
-      {/* The work itself, not a link to it. */}
-      <PressingRing />
+      {/* The homepage's body, repeated — everywhere except the
+          homepage, where the reader has already scrolled through this
+          exact object to get here and a second copy would just be the
+          same page twice. A case study ends at the front page; the
+          front page ends. */}
+      {isHome ? null : <PressingRing />}
 
       <div className={styles.foot}>
         <span>&copy; 2026 Reckon House</span>
