@@ -1,0 +1,2024 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressing — the homepage, stratified</title>
+<style>
+  /*
+    The homepage, stratified. LAB FILE v4 — the design surface.
+
+    v2 mixed everything into one feed and the mix read as a mess as a
+    RESTING state. v3 fixed the state: idle, the page is a magazine of
+    strata (the work, the practice, the board), each type in its own
+    register; asked, matches from every stratum deal at the top.
+
+    v4 fixes the chrome. v3 pinned the question in a second bar under
+    the masthead — two stacked strips, and the lower one had to carry
+    paper, which is the one surface the burn pill cannot act on. So the
+    question moved INTO the masthead as its middle zone. One bar, still
+    transparent, the feed still running under it. The three links it
+    replaced did not die: they became queries, riding the same rotation
+    as "marble" and "does this company do master bedrooms?".
+
+    The bar itself is a verbatim lift of the shipped masthead — same
+    16px Helvetica, same pill, same three-stage heat, same reversal —
+    because it IS the shipped masthead with a question where the links
+    were. The matcher is what went conversational: common words
+    set aside, best tier wins unless the tier is thin, and the narrator
+    reports all of it — where each word landed, what found nothing,
+    what was skipped. Tune HERE first, port second.
+  */
+  :root {
+    --paper: #FFFFFF;
+    --ink: #000000;
+    --lbl: 10px;
+    --lbl-track: 0.04em;
+    --lbl-weight: 500;
+    --note: 16px;
+    --cap: 11px;
+    /* --pp-r in globals.css, which is what PressingIndex reads through
+       --ix-r. One radius for every framed asset on the site. */
+    --r: 16px;
+    --gap: 6px;
+    --nav: 54px;
+    --gut: 40px;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--paper); scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--ink);
+    -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  button { font-family: inherit; }
+
+  /* ── the masthead ─────────────────────────────────────────────────
+     Lifted value-for-value from src/components/shell/Masthead.module.css
+     so the lab bar and the shipped bar are the same object: 16px
+     Helvetica at 0.04em on transparent ground, the burn pill inset
+     18px past the gutter, resting at rgba(243,240,237,0.05). Nothing
+     here may drift — if one of these numbers wants tuning it gets
+     tuned in the module and copied back, the same contract every
+     other pressing value lives under.
+
+     v4's one structural change is what sits in the middle: the
+     question, where the three links used to be. It wears the bar's
+     type exactly, so at rest the centre of the bar still reads like
+     the centre of the bar. */
+  #nav { --nav-size: 16px; --nav-gutter: 40px; --nav-overhang: 18px;
+    --masthead-ink: #000000; --masthead-paper: #FFFFFF;
+    position: sticky; top: 0; z-index: 60; height: var(--nav);
+    display: grid; align-items: center;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px; padding: 0 var(--nav-gutter);
+    font-family: var(--sans); font-size: var(--nav-size);
+    letter-spacing: 0.04em; font-weight: 500;
+    -webkit-font-smoothing: antialiased; color: var(--masthead-ink); }
+
+  /* The burn sits BEHIND everything in the bar. Over flat cream a
+     saturate/contrast pump has nothing to act on, so it is invisible;
+     over photography it goes off. That asymmetry is the whole effect.
+     A pill, not a band: backdrop-filter clips to the border-box,
+     radius included, so it reads as a floating lens. */
+  #navBurn { position: absolute; pointer-events: none; z-index: 0;
+    left: calc(var(--nav-gutter) - var(--nav-overhang));
+    right: calc(var(--nav-gutter) - var(--nav-overhang));
+    top: 5px; bottom: 5px; border-radius: 999px;
+    backdrop-filter: url(#mastheadMelt) blur(0px) saturate(1) contrast(1);
+    -webkit-backdrop-filter: blur(0px) saturate(1) contrast(1);
+    background: rgba(243, 240, 237, 0.05); }
+
+  /* the field is NOT in this list — it is positioned, not merely
+     raised, and #nav .ask would out-specify the .ask rule below */
+  #nav .mark, #nav .meta { position: relative; z-index: 1; }
+  #nav a { color: inherit; text-decoration: none; }
+  #nav a:hover { opacity: 0.45; }
+  #nav .mark { grid-column: 2; justify-self: center; white-space: nowrap; }
+  #nav a.meta { grid-column: 3; justify-self: end; white-space: nowrap;
+    color: rgba(0, 0, 0, 0.42); }
+  #nav a.meta:hover { color: var(--masthead-ink); opacity: 1; }
+
+  /* ── the question, which travels ─────────────────────────────────
+     There is one field, not two. It begins at display size in the
+     cover and ends in the bar, and the only thing that moves it is
+     the page: drop is the distance from its reserved slot to the bar's
+     centre, so while the slot is on screen the field rides with the
+     document exactly like any other block, and when the slot reaches
+     the bar it simply parks. Nothing crossfades, nothing hands over.
+
+     It is absolutely positioned inside the bar rather than in the
+     cover, because the destination is the thing that has to be exact —
+     landing on the gutter to the pixel matters more than where it
+     starts. And it stays LEFT the whole way, which is what makes the
+     travel read as one move: the wordmark went to the middle to leave
+     the slot open for it.
+
+     Sizes come from the driver as custom properties. #query inherits
+     the lot, so the field and its own chrome can never disagree. */
+  #nav .ask { position: absolute; left: var(--ask-left, var(--nav-gutter)); z-index: 1;
+    top: 50%; transform: translateY(-50%) translateY(var(--ask-drop, 0px));
+    width: var(--ask-w, 420px); display: flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: var(--ask-fs, 16px);
+    font-weight: var(--ask-fw, 500); letter-spacing: var(--ask-ls, 0.04em);
+    line-height: 1.04; }
+  /* only while the answer opens or closes — never during a scroll,
+     where a transition would drag behind the page */
+  .ask.settling { transition: transform 0.45s cubic-bezier(0.2, 0.55, 0.2, 1),
+    width 0.45s cubic-bezier(0.2, 0.55, 0.2, 1), font-size 0.45s ease; }
+  #query { flex: 1 1 auto; min-width: 0; border: 0; outline: 0;
+    background: transparent; color: inherit; font: inherit;
+    letter-spacing: inherit; padding: 4px 0; border-radius: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.28s ease; }
+  #nav:hover #query { border-bottom-color: rgba(0, 0, 0, 0.22); }
+  #query:focus { border-bottom-color: var(--masthead-ink); }
+  #query::placeholder { color: rgba(0, 0, 0, 0.42); opacity: 1;
+    transition: opacity 0.3s ease; }
+  #query.cycling::placeholder { opacity: 0; }
+  /* at display size it wears a real rule; in the bar it goes back to
+     the module's bare centre slot */
+  .ask.big #query { border-bottom-width: 2px;
+    border-bottom-color: rgba(0, 0, 0, 0.14); padding-bottom: 10px; }
+  .ask.big #query::placeholder { color: var(--masthead-ink); }
+  /* display, not visibility: hidden it still holds its width and the
+     flex gap, and the question is fitted to the width it actually has */
+  .clear { display: none; background: none; border: 0; padding: 0 2px;
+    cursor: pointer; font-size: var(--nav-size); line-height: 1;
+    color: rgba(0, 0, 0, 0.42); }
+  body.asked .clear { display: block; }
+  .clear:hover { color: var(--masthead-ink); }
+
+  /* Reversed over dark ground, same as the module: mix-blend-mode
+     cannot work because sticky makes the bar its own stacking
+     context, so a driver toggles this against declared
+     [data-nav-dark] zones. The transition is what keeps the handover
+     from reading as a flicker at the boundary. */
+  #nav .mark, #nav .meta, #nav #query { transition: color 0.28s ease; }
+  #nav.rev { color: var(--masthead-paper); }
+  #nav.rev a.meta { color: rgba(255, 255, 255, 0.5); }
+  #nav.rev a.meta:hover { color: var(--masthead-paper); }
+  #nav.rev #query::placeholder { color: rgba(255, 255, 255, 0.6); }
+  #nav.rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); }
+
+  /* the vocabulary, on focus. The only opaque surface in the chrome,
+     because a menu may carry paper — it is not the bar. */
+  .suggest { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
+    display: flex; flex-wrap: wrap; gap: 9px 22px;
+    padding: 14px 0 16px; color: var(--ink);
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track);
+    opacity: 0; pointer-events: none; transition: opacity 0.18s ease; }
+  /* The only place the vocabulary is written down now. It costs
+     nothing until you engage with the field, and it is the one way to
+     find out what the house answers to without guessing. */
+  #nav.open .suggest { opacity: 1; pointer-events: auto; }
+  .suggest .sg { opacity: 0.45; }
+  .suggest button { background: none; border: 0; padding: 0; cursor: pointer;
+    font: inherit; letter-spacing: inherit; color: var(--ink); }
+  .suggest button:hover { text-decoration: underline; }
+
+  /* ── the cover: the question, and what the question is for ───────
+     Term left, definition right. The left column is the way in — the
+     field at display size, and under it what the house holds, which is
+     the same job Pentagram's "showing the latest 27 projects" does. The
+     right column says what asking does and then lists the vocabulary,
+     so the suggestions sit in the flow instead of hanging off the field
+     as an overlay. That overlay is gone, and the room it had to
+     reserve went with it. */
+  /* Height gives the question the presence a display line needs, and
+     drops the count to the foot of its column. It does NOT lengthen
+     the travel, which was the guess: the question sits at the TOP of
+     the cover, so its distance to the bar is unchanged by how tall the
+     cover is (measured: 522px cover, 130px travel). The only lever on
+     travel length is how far down the question starts, and it starts
+     at the top on purpose. */
+  /* One column now. The question, then who is asking — the two
+     paragraphs explaining the field are gone, because a field that
+     needs explaining in two paragraphs has not been designed yet. */
+  .cover { padding: clamp(34px, 5dvh, 74px) var(--gut) clamp(30px, 4dvh, 56px); }
+  body.asked .cover { display: none; }
+  /* the statement takes the field's measure, so the two hang off the
+     same right edge and the page keeps one vertical line down its
+     middle. Set below the field, not level with it: a display size
+     here would compete with the question rather than answer it. */
+  .coverR { padding-top: clamp(30px, 4dvh, 58px);
+    width: min(52%, 700px); }
+  /* The statement is set exactly as PressingCover sets it on a case
+     study — clamp(24px, 3.2vw, 44px)/1.18/-0.02em at 500, over a 21em
+     measure. Same voice in both places, so the homepage opens at the
+     scale a study opens at.
+
+     The measure is what makes 44px work here: 21em at 44px is 924px,
+     wider than the field's 52% column, so the statement is allowed
+     out past it rather than being crushed into eight short lines. */
+  .coverR { width: auto; }
+  .coverR .statement { font-size: clamp(24px, 3.2vw, 44px);
+    line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
+    max-width: 21em; }
+  .ledelbl { display: block; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    opacity: 0.5; padding-bottom: 14px; }
+  /* the field takes half the measure, so its rule stops mid-page and
+     the statement below it reads against open space */
+  #askSlot { width: min(52%, 700px);
+    height: calc(clamp(32px, 5.6vw, 88px) * 1.28); }
+
+  .statement { font-size: clamp(20px, 2.6vw, 36px); line-height: 1.2;
+    letter-spacing: -0.02em; font-weight: 500; max-width: 30em; }
+  .statement .dim { color: rgba(0, 0, 0, 0.42); }
+  .stratum .statement { padding: 0 var(--gut) clamp(26px, 4dvh, 48px); }
+
+  .explain { font-size: var(--note); line-height: 1.5;
+    color: rgba(0, 0, 0, 0.8); }
+  .explain + .explain { padding-top: 1.1em; }
+  /* the room the travelling field needs. Fixed at the largest size the
+     rotation can take, so a long question cycling in never reflows the
+     page under it. */
+
+  @media (max-width: 860px) {
+    #askSlot, .coverR { width: 100%; }
+  }
+
+  /* ── section furniture ──
+     Each stratum announces itself on one line: what it is at the left,
+     the way further in at the right, both on the page gutter so the
+     row reads as the same container the cards below it sit in. */
+  .stratum { padding-top: clamp(56px, 9dvh, 120px); }
+  .stratum .shead { display: flex; justify-content: space-between;
+    align-items: baseline; gap: 24px; flex-wrap: wrap;
+    padding: 0 var(--gut) clamp(20px, 3dvh, 36px); }
+  .stratum .slbl { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); opacity: 0.55; }
+  .stratum .slink { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-decoration: none; }
+  .stratum .slink:hover { text-decoration: underline; }
+
+  /* ── feeds (shared card grammar) ── */
+  /* The feed sits in the same container as the masthead, the question
+     and the section labels: one gutter down the whole page, so an
+     image's edge lines up with the type above it. The 6px stays
+     BETWEEN the columns, which is what keeps it reading as a feed
+     rather than a layout. */
+  .fd-cols { display: flex; gap: var(--gap); padding: 0 var(--gut); }
+  .fd-col { flex: 1 1 0; min-width: 0; display: flex;
+    flex-direction: column; gap: var(--gap); }
+
+  .fd-it { position: relative; display: block; width: var(--w, 100%);
+    text-decoration: none; }
+  .fd-it.insetR { align-self: flex-end; }
+  /* The frame holds the ratio and the clip; the image is cut taller
+     than the frame so it has somewhere to go. Nothing here moves on
+     its own — the drift driver writes the transform, and it writes it
+     to the IMAGE, never to the card, so the arrival animation on the
+     card and the drift never fight over one transform. */
+  /* No fill. The frame reserves its space through the declared ratio,
+     not through a visible plate — and with the curtain a grey ground
+     would sit there being uncovered, which draws attention to the
+     mechanism instead of the picture. */
+  .fd-it .shot { display: block; width: 100%; aspect-ratio: var(--ar, 1);
+    overflow: hidden; border-radius: var(--r); background: none; }
+  .fd-it .shot img { display: block; width: 100%;
+    height: calc(100% + var(--drift, 16%)); object-fit: cover;
+    /* the rest position is the MIDDLE of the slack, not the top: a
+       frame the driver has not reached yet — or will never reach,
+       under reduced motion — is still a centred crop rather than one
+       that has quietly lost its bottom sixth. */
+    transform: translate3d(0, calc(var(--drift, 16%) / -2), 0); }
+
+  /* ── the page transition ─────────────────────────────────────────
+     Three beats, each an edge moving in one direction:
+
+       1  white falls from the top until it covers
+       2  black rises from the bottom until it covers the white
+       3  black's BOTTOM edge rises, uncovering the next page
+
+     Beat 3 is why there are two panels. Uncovering from the bottom
+     means the last thing you see leaving is the top of the screen —
+     the opposite direction to beat 1 — and the reversal is what stops
+     the whole thing reading as one long wipe. The white exists only so
+     beat 2 has something to travel over; a black panel rising over the
+     live page would just be beat 3 played backwards.
+
+     clip-path, not transform: the panels never move, only what is
+     drawn of them, so nothing composites at 100dvh scale and the
+     edges stay exactly straight. Each beat eases hard at the end. */
+  .pt { position: fixed; inset: 0; z-index: 200; pointer-events: none;
+    visibility: hidden; }
+  .pt.pt-run { visibility: visible; pointer-events: auto; }
+  .ptw, .ptb { position: absolute; inset: 0; }
+
+  /* The destination's name, repeated down the whole page, drawn TWICE
+     — once in each panel, at identical coordinates, in the colour that
+     panel needs. Neither copy ever changes colour: the CLIP does it.
+     As a curtain's edge crosses a line, the words above the edge
+     belong to one panel and the words below to the other, so the type
+     inverts ALONG the moving edge instead of snapping when a panel
+     lands. Both stacks must register exactly or the inversion shows a
+     seam, which is why the geometry is declared once here and neither
+     panel is allowed its own.
+
+     The lines also arrive and leave in sequence, and the two
+     directions are deliberately opposite: IN from the top, chasing
+     the white curtain down the page; OUT from the bottom, running
+     just ahead of the black curtain as it lifts. Beat 3 was already
+     removing them bottom-up — its clip does exactly that — so the
+     stagger is not inventing a direction, it is making one that
+     already existed legible. */
+  .ptw, .ptb { overflow: hidden; }
+  /* The same inset all round — the gutter the rest of the page keeps.
+     The lines are then given an EXACT line-height so a whole number of
+     them fills that box: otherwise the leftover fraction sits as extra
+     air top and bottom, and the inset stops being uniform. */
+  .ptstack { position: absolute; inset: 0; padding: var(--gut);
+    display: flex; flex-direction: column; justify-content: center; }
+  .ptl { display: block; white-space: nowrap;
+    font-size: clamp(20px, 2.6vw, 38px); font-weight: 500;
+    line-height: var(--ptlh, 1.18); letter-spacing: -0.02em;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.3s ease,
+      transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--d, 0s); }
+  .pt-1 .ptl { opacity: 1; transform: none; }
+  .pt-3 .ptl { opacity: 0; transform: translateY(-10px);
+    transition-duration: 0.22s, 0.24s; }
+  .ptw .ptl { color: var(--ink); }
+  .ptw .ptl .sub { color: rgba(0, 0, 0, 0.42); }
+  .ptb .ptl { color: var(--paper); }
+  .ptb .ptl .sub { color: rgba(255, 255, 255, 0.48); }
+  .ptw { background: var(--paper); clip-path: inset(0 0 100% 0); }
+  .ptb { background: var(--ink); clip-path: inset(100% 0 0 0); }
+  /* the beats. Durations live here so the driver only sequences. */
+  .pt-run .ptw { transition: clip-path 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+  .pt-run .ptb { transition: clip-path 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+  .pt-1 .ptw { clip-path: inset(0 0 0 0); }
+  .pt-2 .ptb { clip-path: inset(0 0 0 0); }
+  /* The white is dropped instantly once the black is FULL — invisible
+     under it, and it has to be gone before beat 3 or it is what gets
+     revealed. Keyed to pt-3, not pt-2: pt-2 is added when the black
+     STARTS rising, and clearing the white then uncovers the live page
+     for the length of that beat. Measured at 95% exposed before this
+     moved. */
+  .pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
+  .pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1);
+    clip-path: inset(0 0 100% 0); }
+
+  /* ── the ring: the index as the body ───────────────────────────
+     Rows, not rails. Every row is top-aligned across the page, takes a
+     generous interval below it, and is ruled off from the next — so
+     the page has a horizontal spine instead of two columns flowing
+     past each other. Both frames in a row hang from the same line;
+     the difference in their depth falls as air, which is the same
+     move the uneven pair made, now stated with a rule under it.
+
+     The working notes are the exception, and deliberately so: they
+     hold the left column and ignore the row rhythm completely,
+     crossing the rules as they go. That is why they are laid over the
+     rows rather than placed in them — a note is not a cell. */
+  .ixbody { position: relative; padding: 0 var(--gut); }
+
+  .ixnotes { position: absolute; top: 0; left: var(--gut);
+    width: var(--ix-note-w, 200px);
+    display: flex; flex-direction: column;
+    /* 2.5x the old clamp(26px, 3vw, 46px): these are four separate
+       statements, not a list, and they need to stop reading as one */
+    gap: clamp(65px, 7.5vw, 115px); }
+  .ixnotes .blk { font-size: var(--note); line-height: 1.45;
+    color: rgba(0, 0, 0, 0.78); }
+  .ixnotes .blk .tag { display: block; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    opacity: 0.5; padding-bottom: 7px; }
+
+  /* the row: notes column left empty (the notes float over it), then
+     two frames, each hung from the top and pushed to the right of its
+     half — the two right edges are the only vertical lines the eye
+     needs to hold the grid together */
+  .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
+    display: grid; align-items: start;
+    grid-template-columns: var(--ix-note-w, 200px) 1fr 1fr;
+    column-gap: var(--ixgap);
+    row-gap: clamp(44px, 5.5vw, 96px);
+    margin-bottom: clamp(44px, 5.5vw, 96px); }
+  .ixrow:last-child { margin-bottom: 0; }
+  .ixrow .cell { display: flex; justify-content: flex-end; }
+
+  /* The rule belongs to the two frames it separates, not to the page:
+     it starts at the LEFT EDGE OF THE LEFT FRAME and runs to the right
+     edge of the right one, so it never crosses the notes column and
+     never reaches further than the pictures do.
+
+     That start moves every row, because the left frame's width is
+     dealt. The offset is written as a calc rather than measured: the
+     rule spans both cells plus the gap between them, so
+     (100% - gap) / 2 IS one cell, and one cell times the share the
+     frame did not take is exactly where its left edge falls. No
+     reflow, no resize listener — it simply stays true. */
+  .ixrule { grid-column: 2 / -1; height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.13); }
+  .ixrow:last-child .ixrule { display: none; }
+
+  .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
+    transform-origin: right center;
+    transition: opacity 0.8s ease,
+      transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+  /* arrival is opacity-ONLY: a translateY here would be overwritten by
+     the hover transform, and they are the same property */
+  .ixrow .fd-it, .ixrow .fd-it.fd-on { transform: none; }
+  .ixrow .fd-it .shot { aspect-ratio: var(--ar, 1); }
+  .ixrow .fd-it .cap { display: none; }
+  .ixrow .fd-it .lbl { display: block; padding-top: 10px;
+    font-size: var(--note); line-height: 1.35; font-weight: 600;
+    letter-spacing: -0.004em; text-align: left; }
+
+  /* ── hover: the frame opens down and left ────────────────────────
+     transform-origin is the top right corner, so the frame keeps its
+     TOP LINE — the one thing a row of top-aligned frames cannot afford
+     to lose — and opens downward and leftward from there.
+
+     The scale is on the FRAME, not the card, so the name underneath is
+     not scaled with it. It is displaced instead: the driver measures
+     how far the frame grew and slides the label down by exactly that,
+     so the type stays its own size and simply keeps its place under
+     the picture.
+
+     And the frame beside it is pushed rather than covered. The driver
+     works out whether the opening frame would actually reach its
+     neighbour and moves it only as far as it has to — a frame that
+     was never in the way does not move at all. */
+  .ixrow .fd-it, .ixrow .fd-it .shot, .ixrow .fd-it .lbl {
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+  .ixrow .fd-it .shot { transform-origin: right top; }
+
+  @media (hover: hover) and (min-width: 761px) {
+    /* the ceiling; each frame takes as much of it as it has room for */
+    .ixbody { --ix-grow-max: 1.32; }
+    .ixrow .fd-it .shot {
+      transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    .ixrow .fd-it:hover { z-index: 2; }
+    .ixrow .fd-it:hover .shot { transform: scale(var(--ix-grow, 1.32));
+      /* squares off as it opens: a rounded frame reads as an object on
+         the page, losing the corner turns it into the picture itself */
+      border-radius: 0; }
+    /* The name swings to the right edge as the frame opens — the same
+       edge every frame in the index is hung from.
+
+       It SLIDES rather than re-aligns. text-align cannot be
+       transitioned, so switching it on hover snapped the type across
+       in a single frame. The driver measures how far the text
+       actually is from the right edge and translates it there, on the
+       same transform and the same clock as the drop — so the label
+       makes one diagonal move rather than two unrelated ones. */
+    .ixrow .fd-it:hover .lbl {
+      transform: translate(var(--slide, 0px), var(--drop, 0px)); }
+  }
+
+  @media (max-width: 860px) {
+    /* no room for a floating column: the notes run first, then the
+       rows go one frame wide */
+    .ixnotes { position: static; width: auto; left: auto;
+      padding-bottom: clamp(40px, 9vw, 64px); }
+    .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
+    .ixrow .cell { justify-content: stretch; }
+    .ixrow .fd-it { width: 100%; }
+  }
+
+  /* ── the work: blocks, and the air between them ──────────────────
+     Twelve tracks, the house grid. This is not a feed any more: each
+     block owns its own rows, so blocks never interlock, and the space
+     between them is a real interval rather than a gutter.
+
+     Three shapes, and only three:
+
+       1        one image the full width
+       5|7      the uneven pair, 41/58, tops aligned
+       7|5      the pair reversed
+
+     The pair's asymmetry is not authored twice. Both frames carry a
+     landscape ratio — 4:3 for the wide one, 5:4 for the narrow — so
+     the narrow frame comes out about three quarters the depth of the
+     wide one purely BECAUSE it is narrower. That is what stops it
+     reading as a system: nobody chose "half". The ratios were chosen
+     and the proportion fell out of them.
+
+     The air under the shallow frame is simply the rest of its row, and
+     the row is as tall as the deep frame. No spacer, nothing placed —
+     which only became possible once blocks stopped sharing rows. */
+  .workrows { display: grid; align-items: start;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(12px, 1.6vw, 22px);
+    row-gap: clamp(56px, 7vw, 130px);
+    padding: 0 var(--gut); }
+
+  .workrows .fd-it.hero     { grid-column: 1 / -1; }
+  .workrows .fd-it.pNarrow  { grid-column: 1 / span 5; }
+  .workrows .fd-it.pWide    { grid-column: 6 / span 7; }
+  .workrows .fd-it.pWideL   { grid-column: 1 / span 7; }
+  .workrows .fd-it.pNarrowR { grid-column: 8 / span 5; }
+  .workrows > .cell         { grid-column: 1 / span 5; }
+
+  .workrows .fd-it.hero .shot { aspect-ratio: 2 / 1; }
+  .workrows .fd-it.pWide .shot,
+  .workrows .fd-it.pWideL .shot { aspect-ratio: 4 / 3; }
+  .workrows .fd-it.pNarrow .shot,
+  .workrows .fd-it.pNarrowR .shot,
+  .workrows > .cell .shot { aspect-ratio: 5 / 4; }
+  .workrows .fd-it.hero .shot img { --drift: 20%; }
+
+  /* the standing words, set off to one side with a row to themselves —
+     the beat between two pairs, and the only place on the page where
+     the house mentions itself in passing */
+  /* Not a card here. On the work's white ground a filled box reads as
+     one more tile in a run of tiles; the same words set plainly read
+     as an aside, which is what they are. Nothing to open either — the
+     text is simply there, at the size the rest of the page speaks in. */
+  .workrows .fd-note { aspect-ratio: auto; background: none; border: 0;
+    border-radius: 0; padding: 0; color: var(--ink);
+    display: block; cursor: default; }
+  .workrows .fd-note .word { display: block; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    opacity: 0.5; padding-bottom: 12px; }
+  .workrows .fd-note .full { display: block; font-size: var(--note);
+    font-weight: 400; line-height: 1.55; letter-spacing: 0;
+    color: rgba(0, 0, 0, 0.78); padding-top: 0; white-space: pre-line; }
+  .workrows .fd-note .full .att { display: block; margin-top: 12px;
+    font-size: var(--cap); opacity: 0.5; }
+  .workrows .fd-note.noteL { grid-column: 1 / span 4; }
+  .workrows .fd-note.noteR { grid-column: 9 / span 4; }
+
+  /* the hover caption is the board's device; the work has a real one */
+  .workrows .fd-it .cap { display: none; }
+
+  @media (max-width: 860px) {
+    .workrows { row-gap: clamp(38px, 9vw, 72px); }
+    /* one column: every block is simply the width of the page */
+    .workrows .fd-it.hero, .workrows .fd-it.pNarrow, .workrows .fd-it.pWide,
+    .workrows .fd-it.pWideL, .workrows .fd-it.pNarrowR, .workrows > .cell,
+    .workrows .fd-note.noteL, .workrows .fd-note.noteR { grid-column: 1 / span 8; }
+    .workrows .fd-it.hero .shot { aspect-ratio: 3 / 2; }
+  }
+
+  /* the standing label: the case study's body size (--pp-note is 16px
+     there), carrying more weight so it reads as a name and not as
+     running copy */
+  .fd-it .lbl { display: none; }
+  .workrows .fd-it .lbl, #answerCols .fd-it .lbl { display: block;
+    box-sizing: border-box; padding-top: 12px;
+    font-size: var(--lbl-size, var(--note)); font-weight: 600;
+    line-height: 1.35; letter-spacing: -0.004em; }
+  .fd-it .lbl .sub { opacity: 0.42; }
+  .fd-it .cap { position: absolute; left: 10px; bottom: 8px; right: 10px;
+    font-size: var(--cap); font-weight: 400; line-height: 1.5;
+    color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.55);
+    opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+  @media (hover: hover) { .fd-it:hover .cap { opacity: 1; } }
+
+  /* ── solid cards — the house's own words ──
+     Words, not pictures: solid ink, no outline, and for the info cards
+     no eyebrow either. An outlined white card on white ground reads as
+     an empty box; a solid one reads as a deliberate beat in a grid of
+     photographs. They also declare themselves dark, so the masthead's
+     reversal driver flips the wordmark as they pass under it. */
+  .fd-note { position: relative; width: var(--w, 100%);
+    border: 0; border-radius: var(--r);
+    background: var(--ink); color: var(--paper);
+    cursor: pointer; text-align: left;
+    display: flex; align-items: flex-end; padding: 22px; }
+  .fd-note { aspect-ratio: var(--nar, 4 / 3); }
+  .fd-note .word { font-size: clamp(19px, 1.7vw, 30px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.05; }
+  .fd-note .full { display: none; }
+  .fd-note .idx { position: absolute; top: 14px; left: 22px;
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); opacity: 0.5; color: inherit; }
+  /* the info cards carry no label at all — the word is the whole card */
+  .fd-note.plain .idx { display: none; }
+  .fd-note.open { aspect-ratio: auto; align-items: flex-start; }
+  .fd-note.open .word { display: none; }
+  .fd-note.open .full { display: block; font-size: var(--note);
+    font-weight: 400; line-height: 1.6; letter-spacing: 0;
+    color: rgba(255,255,255,0.82); padding-top: 26px; white-space: pre-line; }
+  .fd-note.open .full .att { display: block; margin-top: 12px;
+    font-size: var(--cap); opacity: 0.55; }
+  .fd-note:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+  .fd-note.plain.open .word { display: block; font-size: var(--note);
+    font-weight: 700; letter-spacing: 0; padding-bottom: 4px; }
+
+  /* the practice: a band of white cards, not a masonry */
+  /* ── arrival ─────────────────────────────────────────────────────
+     A curtain, not a fade. The frame is already there — its ratio is
+     declared, so it holds its space from first layout — and the
+     picture is UNCOVERED downward rather than faded up.
+
+     clip-path is the mechanism, and it goes on the frame's CONTENT —
+     which is an <img> on every card but one, and the reel's own stage
+     on that one, so the selector takes whatever is in there rather
+     than naming a tag.
+
+     Content, not the frame: the frame carries the radius, and clipping
+     it would square its corners for the length of the reveal and fight
+     the hover's own squaring-off. Clip rather than transform: the
+     drift driver already writes transform to the image and the hover
+     grow writes it to the card, and a third party on either would be
+     the two-drivers-one-property bug this kit keeps paying for. A clip
+     belongs to nobody.
+
+     The ease is the point, and the first attempt got it wrong in an
+     instructive way: cubic-bezier(.16,1,.3,1) puts its first control
+     point at y=1, which throws the output almost straight to the top
+     — 47% of the picture was uncovered in the first 120ms, so the
+     curtain appeared to BLINK to halfway and then crawl. You never
+     saw it fall.
+
+     This curve keeps a fast, readable descent through the first half
+     and saves the deceleration for the end, over nearly twice the
+     duration. The falling edge is the thing being animated; it has to
+     be legible as an edge that moves. */
+  .fd-it .plate { display: block; width: 100%; height: 100%; }
+  /* Curtain and settle together, on the same clock and the same ease:
+     the frame is uncovered downward while what is inside it comes to
+     rest from 125%. Two properties, one element, one timing — so they
+     land on the same beat rather than merely near each other. */
+  .fd-it .shot > * {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.25); transform-origin: center;
+    transition: clip-path 1.4s cubic-bezier(0.33, 0.28, 0.12, 1),
+      transform 1.4s cubic-bezier(0.33, 0.28, 0.12, 1);
+    /* A row's two frames do not arrive together. The second waits, so
+       the row reads left to right as one gesture with two beats rather
+       than as a pair of shutters dropping at once. The wait is set on
+       the card by the dealer, not here, because only the dealer knows
+       which of the two a frame is. */
+    transition-delay: var(--lag, 0s); }
+  .fd-on .shot > * { clip-path: inset(0 0 0 0); transform: none; }
+  /* the text cards keep the quiet fade — there is no picture to draw
+     back a curtain from */
+  .fd-note { opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
+  .fd-note.fd-on { opacity: 1; transform: none; }
+  /* the card itself no longer fades: the curtain IS the arrival, and a
+     fade under it would grey the picture while it was being drawn */
+  .fd-it { opacity: 1; }
+
+  /* ── the answer ──────────────────────────────────────────────────
+     Ask, and the page becomes the answer: the magazine steps back and
+     every kind assembles at the top, under the bar you asked in.
+     Heterogeneity only ever shows up as an answer, which is the one
+     place it is right. The head carries the receipts. */
+  .answer { display: none; }
+  body.asked .answer { display: block; }
+  body.asked .stratum { display: none; }
+
+  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut) clamp(18px, 3dvh, 32px); }
+  /* the transcript: the matcher reporting source by source, one line
+     at a time, each line landing WITH its cards. The lines are the
+     receipts it was already producing — sequenced now, not summarised. */
+  .anslog { max-width: 90ch; line-height: 1.8; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
+  .anslog .lg { opacity: 0; transform: translateY(7px);
+    transition: opacity 0.32s ease, transform 0.32s ease; }
+  .anslog .lg.on { opacity: 0.55; transform: none; }
+  .anslog .lg.hit.on { opacity: 0.86; }
+  .anscount { padding-top: 14px; font-size: clamp(22px, 3vw, 44px);
+    font-weight: 700; line-height: 1.08; letter-spacing: -0.035em;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease; }
+  .anscount.on { opacity: 1; transform: none; }
+
+  /* while the brain works, the field's rule runs a scan: grows from
+     the left, collapses to the right. Contained, so nothing juts. */
+  .ask::after { content: ""; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1px; background: currentColor; opacity: 0; }
+  body.working .ask::after { opacity: 0.7;
+    animation: askscan 0.8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite; }
+  @keyframes askscan {
+    0% { left: 0; width: 0; }
+    52% { left: 0; width: 100%; }
+    100% { left: 100%; width: 0; }
+  }
+  .ansback { padding-top: 16px; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
+  .ansback button { background: none; border: 0; padding: 0; cursor: pointer;
+    font: inherit; letter-spacing: inherit; color: var(--ink);
+    text-decoration: underline; }
+
+  .foot { display: flex; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap; align-items: baseline;
+    margin: clamp(70px, 10vw, 150px) 40px 0; padding: 18px 0 40px;
+    border-top: 1px solid rgba(0,0,0,0.14);
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); }
+  .foot .dim { opacity: 0.45; }
+
+  /* The module's mobile block: the nav keeps its own tighter gutter
+     (16px) while the page keeps 20px — that difference is in the real
+     stylesheet, not a slip. No overflow-x here, unlike the module: a
+     field flexes where four links could not, and the vocabulary row
+     hangs off the bar, which an overflow context would clip. */
+  @media (max-width: 760px) {
+    :root { --nav: 48px; --gut: 20px; }
+    #nav { --nav-size: 11px; --nav-gutter: 16px; --nav-overhang: 10px;
+      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em; }
+    /* 390pt cannot centre a wordmark AND seat a field beside it, so
+       the wordmark takes the right end (the mailto's slot, which is
+       hidden here anyway) and the field keeps the left gutter — the
+       travel stays a straight vertical drop on a phone too. */
+    #nav .mark { grid-column: 2; justify-self: end; }
+    #nav .meta { display: none; }
+    /* the shead and the feeds read --gut, which halves above, so the
+       only thing left to restate here is the footer's margin */
+    .foot { margin-left: var(--gut); margin-right: var(--gut); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fd-it .shot > * { clip-path: none !important;
+      transform: none !important; transition: none !important; }
+    .fd-it, .fd-note { opacity: 1 !important; transform: none !important;
+      transition: none !important; }
+    #query { transition: none; }
+    /* the travel itself is scroll position, not animation, so it stays;
+       the glide when an answer opens is animation, so it goes */
+    .ask.settling { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div id="navBurn" aria-hidden="true"></div>
+  <div class="ask">
+    <input id="query" type="text" placeholder="Ask the house."
+      autocomplete="off" autocorrect="off" spellcheck="false"
+      aria-label="Ask the house" />
+    <button type="button" class="clear" id="clearQ" aria-label="Clear">&times;</button>
+    <div class="suggest" id="suggest"><span class="sg">Try</span></div>
+  </div>
+  <a href="#top" class="mark">Reckon House Staples</a>
+  <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
+</nav>
+
+<!-- the melt: the burn pill's displacement, lifted from the masthead -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="mastheadMelt" x="-20%" y="-20%" width="140%" height="140%"
+    color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015 0.025"
+      numOctaves="3" seed="8" result="noise" />
+    <feGaussianBlur in="noise" stdDeviation="2" result="smoothNoise" />
+    <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="18"
+      xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<section class="cover">
+  <!-- the room the travelling field needs; the field itself lives in
+       the bar, which is the end of its journey and the only place its
+       position has to be exact -->
+  <div id="askSlot" aria-hidden="true"></div>
+
+  <div class="coverR">
+    <span class="ledelbl">The practice</span>
+    <p class="statement" id="infoLead"></p>
+  </div>
+</section>
+
+<!-- the answer: only in query mode, and it opens with its receipts -->
+<section class="answer">
+  <div class="anshead">
+    <div class="anslog" id="ansLog"></div>
+    <div class="anscount" id="ansCount"></div>
+    <div class="ansback"><button type="button" id="resetQ">Back to the house</button></div>
+  </div>
+  <div class="fd-cols" id="answerCols"></div>
+</section>
+
+<!-- ── the magazine ── -->
+<!-- the ring: the body of the homepage IS the case-study footer's
+     All-work index. Every study ends at this object; here it stands
+     alone with the brain above it. Enter anywhere, leave nowhere. -->
+<!-- no lede: the field IS the title. At rest the brain reads
+     "all work", which is both the name of what is below and a live
+     query for it — the title and the control are one object. -->
+<section class="stratum" id="stIndex">
+  <div class="ixbody">
+    <!-- the working notes hold the left column and ignore the row
+         rhythm entirely: they are a column of their own, not cells -->
+    <div class="ixnotes" id="ixNotes"></div>
+    <div class="ixrows" id="ixRows"></div>
+  </div>
+</section>
+
+
+<!-- the page transition. Two panels and nothing else: what makes the
+     sequence read is the ORDER of their edges, not the number of parts. -->
+<div class="pt" id="pt" aria-hidden="true">
+  <div class="ptw"><div class="ptstack" id="ptwT"></div></div>
+  <div class="ptb"><div class="ptstack" id="ptbT"></div></div>
+</div>
+
+<div class="foot">
+  <span>&copy; 2026 Reckon House</span>
+  <span class="dim">Awwwards Honors, 2026 &middot; Faux Reel released as an open repo</span>
+  <a href="#top">Top &#8593;</a>
+</div>
+
+<script src="/lab/sizzle-reel.js"></script>
+<script>
+/* ── the corpus (works hand-listed; pulls + quotes injected) ── */
+/* ── the work ──────────────────────────────────────────────────────
+   Order and images both come from the live homepage: the sequence was
+   read off reckon.house itself (Sally, Ivy, A.R.C., the kitchen, and
+   on down), and every image is the thumbnail projects.ts declares
+   rather than the case study's own hero. Heroes were a lab
+   convenience; the thumbnails are what the site actually shows, and
+   most of them are square crops made for exactly this job.
+
+   Dimensions come from image-dimensions.ts, which is what makes the
+   frames hold their space before a single file has loaded. The one
+   exception is the reel's thumbnail, which that table does not
+   declare — read off the file (800x800). */
+const WORK = [
+  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038],
+  ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg", 387, 387],
+  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg", 387, 387],
+  ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg", 291, 291],
+  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg", 387, 387],
+  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg", 194, 194],
+  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg", 194, 194],
+  ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg", 387, 387],
+  ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800],
+  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg", 389, 388],
+  ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg", 387, 387],
+  ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg", 194, 194],
+  ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg", 387, 387],
+  ["Cosmo Prof", "Digital design, creative direction", "/case-studies/cosmo-prof", "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg", 194, 191],
+  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg", 387, 387],
+  ["Black & white type", "Custom typography, patterns", "/case-studies/black-white-type", "/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg", 194, 194],
+  ["Hill Country home", "Interior design, living room", "/case-studies/hill-country-living", "/case-studies/hp/rhs-interior-design-livingroom-interior.jpg", 387, 387],
+  ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg", 194, 194],
+  ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg", 194, 194],
+  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg", 194, 194],
+  ["Jeffrey NYC", "Campaign direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg", 387, 387],
+  ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg", 387, 387],
+  ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg", 387, 387],
+  ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg", 387, 387],
+  ["The Fairview", "Interior Design, foyer", "/case-studies/fairview-entry", "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg", 387, 387],
+  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg", 387, 387],
+  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg", 194, 194],
+  ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg", 387, 387],
+  ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg", 194, 194],
+  ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-art-apparel.jpg", 387, 387],
+  ["West Texas", "Landscape photography", "/case-studies/big-bend", "/case-studies/big-bend/hero.jpg", 2560, 1707],
+];
+
+/* Injected from src/data/inspiration.ts + inspiration-quotes.ts. */
+const PULLS = [{"src": "/case-studies/inspiration/infographic-italian-tv-ridgeline-chart.jpeg", "alt": "Italian-language infographic, circular ridgeline chart with bubble groupings"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-aviators-cigarette-portrait.jpg", "alt": "Black-and-white portrait of Waylon Jennings in aviator sunglasses with a cigarette"}, {"src": "/case-studies/inspiration/bw-bespectacled-man-coca-cola-bottle-table.jpg", "alt": "Black-and-white portrait, young man in glasses at a table with a Coca-Cola bottle"}, {"src": "/case-studies/inspiration/Mother-Anthropic-Claude-1-1024x782.jpg", "alt": "Mother x Anthropic film still, three figures watching a model rocket launch in the desert"}, {"src": "/case-studies/inspiration/vintage-turntable-stylus-balance-tool.jpg", "alt": "Vintage black-and-white photo, hand using a stylus pressure gauge on a turntable"}, {"src": "/case-studies/inspiration/e72ca366b285901ef15c1bfe0a9c5f3b.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/miles-davis-suede-jacket-fur-bedspread.jpg", "alt": "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf"}, {"src": "/case-studies/inspiration/sepia-waylon-jennings-cowboy-hat-bottle.jpg", "alt": "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle"}, {"src": "/case-studies/inspiration/west-texas-concrete-patio-desert-loungers.webp", "alt": "Concrete patio overlooking the West Texas desert with loungers and a fire pit"}, {"src": "/case-studies/inspiration/painted-skeleton-cowboy-sombrero-revolver.webp", "alt": "Painted folk-art skeleton cowboy in sombrero with revolver and money sack"}, {"src": "/case-studies/inspiration/no-country-josh-brolin-kelly-macdonald-trailer.jpg", "alt": "No Country for Old Men film still, couple seated on a trailer couch with Lone Star beer"}, {"src": "/case-studies/inspiration/Walden-Retreats-11-1440x960.jpg", "alt": "Walden Retreats living room with stone fireplace, stacked firewood, and chess board"}, {"src": "/case-studies/inspiration/bw-southern-rock-singer-stage-spotlight.jpg", "alt": "Black-and-white live shot, long-haired singer with electric guitar in stage spotlights"}, {"src": "/case-studies/inspiration/jack-white-red-shirt-red-guitar-stage.jpeg", "alt": "Jack White on stage in red shirt with red electric guitar"}, {"src": "/case-studies/inspiration/infographic-large-scale-data-ridgeline.jpeg", "alt": "Large-scale data visualization, ridgeline chart with bubble cluster heads"}, {"src": "/case-studies/inspiration/dead-weather-band-portrait-ornate-room.jpg", "alt": "Black-and-white band portrait, four musicians in an ornate floral-walled room"}, {"src": "/case-studies/inspiration/dieter-rams-braun-radio-product-shot.jpg", "alt": "Dieter Rams Braun radio with circular speaker grille and aluminum knob"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg", "alt": "Black-and-white portrait, suited bluesman with a motorcycle and parked cars behind"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-mixing-desk.jpg", "alt": "Black-and-white portrait, man in pinstripe suit and round glasses at a studio mixing desk"}, {"src": "/case-studies/inspiration/johnny-cash-fishing-jacket-rifle-fall.jpg", "alt": "Johnny Cash holding a transistor radio outdoors in fall, hunter beside him with a rifle"}, {"src": "/case-studies/inspiration/engraved-silver-belt-buckle-leather.webp", "alt": "Engraved silver and copper belt buckle on a brown leather belt"}, {"src": "/case-studies/inspiration/menswear-store-deer-mount-velvet-chair.jpg", "alt": "Eclectic menswear store interior with mounted deer head, mustard velvet chair, gallery wall"}, {"src": "/case-studies/inspiration/bw-dead-weather-rooftop-empire-state.jpg", "alt": "Black-and-white band portrait on a rooftop with the Empire State Building behind"}, {"src": "/case-studies/inspiration/editorial-leather-bass-helmet-portrait.jpg", "alt": "Editorial portrait, figure in motorcycle helmet and leather jacket with a bass guitar"}, {"src": "/case-studies/inspiration/Bert and May Kitchen5566.jpg.webp", "alt": "Bert and May kitchen with patterned tile backsplash and oak cabinetry"}, {"src": "/case-studies/inspiration/bw-dead-weather-mosshart-white-fur-coat.jpg", "alt": "Black-and-white portrait of Allison Mosshart and Jack White seated on concrete"}, {"src": "/case-studies/inspiration/frank-lloyd-wright-built-in-bookshelves.jpg", "alt": "Frank Lloyd Wright Usonian living room with built-in bookshelves and stone fireplace"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-cigar-archtop-guitar.jpg", "alt": "Black-and-white portrait of bluesman in fedora smoking a cigar with an archtop guitar"}, {"src": "/case-studies/inspiration/rrl-cattle-ranch-store-mannequins.jpg", "alt": "Double RL Cattle Ranch store display with denim mannequins and antler chandelier"}, {"src": "/case-studies/inspiration/bw-musician-studio-mic-acoustic-guitar.jpg", "alt": "Black-and-white musician at studio microphone with acoustic guitar"}, {"src": "/case-studies/inspiration/bw-wes-anderson-camera-paris-courtyard.jpg", "alt": "Black-and-white shot of Wes Anderson with camera in a Paris courtyard"}, {"src": "/case-studies/inspiration/richie-tenenbaum-camera-headband-yacht.jpg", "alt": "Royal Tenenbaums film still, Richie with camera, headband, and beard"}, {"src": "/case-studies/inspiration/vintage-portrait-fedora-sunglasses-profile.jpg", "alt": "Black-and-white profile portrait, man in fedora and dark sunglasses"}, {"src": "/case-studies/inspiration/country-singer-cowboy-hat-honky-tonk-neon.jpg", "alt": "Country singer in cowboy hat with acoustic guitar, Miller High Life neon sign behind"}, {"src": "/case-studies/inspiration/fluted-tile-kitchen-stone-counter-cutting-boards.jpeg", "alt": "Modern kitchen with fluted white tile, stone counter, dark cutting boards, brass sconce"}, {"src": "/case-studies/inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif", "alt": "Black-and-white portrait of Wes Anderson in tweed suit on a tufted leather armchair"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-tweed-guitar-shop.jpg", "alt": "Country singer in cowboy hat and tweed suit standing inside a hanging-guitar shop"}, {"src": "/case-studies/inspiration/calacatta-viola-marble-fluted-columns.jpg", "alt": "Calacatta viola marble fluted columns in cream and burgundy veining"}, {"src": "/case-studies/inspiration/wes-anderson-royal-tenenbaums-couch-portrait.jpg", "alt": "Royal Tenenbaums film still, two figures seated on a couch in a red-walled room"}, {"src": "/case-studies/inspiration/devol-shaker-kitchen-dark-blue-cabinetry.webp", "alt": "DeVol Shaker kitchen with dark blue painted cabinetry and stacked firewood"}, {"src": "/case-studies/inspiration/ryman-auditorium-pews-stained-glass.jpg", "alt": "Empty Ryman Auditorium pews with stained-glass arched windows in primary colors"}, {"src": "/case-studies/inspiration/alexander-mcqueen-skull-print-scarf.jpg", "alt": "Alexander McQueen black-and-white skull print scarf detail"}, {"src": "/case-studies/inspiration/bw-miles-davis-tweed-suit-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in tweed suit smoking a cigarette"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-wallpaper.jpg", "alt": "Black-and-white band portrait, four musicians against patterned wallpaper"}, {"src": "/case-studies/inspiration/bw-portrait-aviators-leather-jacket-beach.jpg", "alt": "Black-and-white portrait, man in aviator sunglasses and leather jacket at the beach"}, {"src": "/case-studies/inspiration/bw-portrait-glasses-clasped-hands-dark-shirt.avif", "alt": "Black-and-white portrait of a man in glasses with hands clasped in front of him"}, {"src": "/case-studies/inspiration/bw-cowboy-boot-maker-workshop-leather-lasts.webp", "alt": "Black-and-white photo of a cowboy boot maker shaping leather over wooden lasts"}, {"src": "/case-studies/inspiration/painted-cowgirl-orange-dress-green-sofa.webp", "alt": "Painted portrait of a cowgirl in orange dress and brown hat on a green sofa"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California19-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-warehouse.jpg", "alt": "Black-and-white band portrait of two musicians in a derelict warehouse"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California26-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette"}, {"src": "/case-studies/inspiration/rrl-denim-leather-detail-rope-stitching.jpg", "alt": "Close-up of vintage RRL denim with leather inset and rope-tied detail"}, {"src": "/case-studies/inspiration/bw-whitey-morgan-band-honky-tonk-stage.jpg", "alt": "Black-and-white live shot of country band on a small honky-tonk stage"}, {"src": "/case-studies/inspiration/3a241cf6a04019e84573d7711d0b3822.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/dark-wood-paneled-room-trophy-mounts-cabinet.jpg", "alt": "Dark wood-paneled hunting den with antler mounts, oil paintings, and a carved cabinet"}, {"src": "/case-studies/inspiration/bw-bluesman-fedora-cigar-vest-doorway.jpg", "alt": "Black-and-white portrait, suited bluesman in fedora and round glasses with cigar in a doorway"}, {"src": "/case-studies/inspiration/bw-musicians-black-rebel-motorcycle-club-marquee.jpg", "alt": "Black-and-white street shot of two musicians under a Black Rebel Motorcycle Club marquee"}, {"src": "/case-studies/inspiration/felt-cowboy-hat-horsehair-brush-flat-lay.webp", "alt": "Camel felt cowboy hat with horsehair brush flat lay"}, {"src": "/case-studies/inspiration/reckonhouse-asterisk-spray-mark-on-cream.jpeg", "alt": "Black spray-paint asterisk mark centered on a cream background"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-barn-siding.jpg", "alt": "Black-and-white band portrait against weathered barn siding"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California25-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-leather-acoustic.jpg", "alt": "Country singer in cowboy hat and leather jacket holding an acoustic guitar"}, {"src": "/case-studies/inspiration/tricolor-cowhide-texture-brown-white.png", "alt": "Tricolor cowhide texture in brown, white, and black patches"}, {"src": "/case-studies/inspiration/vintage-clothing-store-zebra-ottoman-rack.jpg", "alt": "Vintage clothing store interior with zebra-print ottoman and dark cabinetry"}, {"src": "/case-studies/inspiration/leather-chesterfield-armchair-fireplace-stone.jpg", "alt": "Olive leather button-tufted chair beside a stone fireplace with mounted antelope head"}, {"src": "/case-studies/inspiration/rrl-denim-shirt-corduroy-collar-bandana.jpeg", "alt": "Close-up of an RRL denim shirt with corduroy collar and red paisley bandana"}, {"src": "/case-studies/inspiration/bw-cowboy-rearing-horse-field.jpg", "alt": "Black-and-white photograph, cowboy rearing on a horse in a grassy field"}, {"src": "/case-studies/inspiration/monument-valley-mittens-dawn-light.jpg", "alt": "Monument Valley mittens at dawn under low cloud cover"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-cowboy-hat-portfolio.jpg", "alt": "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio"}, {"src": "/case-studies/inspiration/sepia-three-cowboys-walking-dirt-road.jpg", "alt": "Sepia photograph, three cowboys walking down a dirt road"}, {"src": "/case-studies/inspiration/bw-dead-weather-keyboards-live-leather.jpg", "alt": "Black-and-white live shot, two band members at keyboards in leather jackets"}, {"src": "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/wabi-sabi-living-room-mushroom-mirror-beams.jpeg", "alt": "Wabi-sabi living room with exposed beams, large mushroom mirror, plaster fireplace"}, {"src": "/case-studies/inspiration/dieter-rams-palette-braun-grille-knobs.jpg", "alt": "Dieter Rams design palette, Braun speaker grille pattern with color knobs"}, {"src": "/case-studies/inspiration/vintage-transparent-solar-system-chart.jpeg", "alt": "Antique educational print, transparent solar system chart with planet orbits"}, {"src": "/case-studies/inspiration/denim-glasses-portrait-bookshelf-armchair.jpg", "alt": "Bearded man in denim shirt and tortoiseshell glasses, seated in a carved armchair"}, {"src": "/case-studies/inspiration/tarantino-king-of-golf-robe-bedroom.jpg", "alt": "Quentin Tarantino in a printed silk robe seated in a floral-wallpapered bedroom"}, {"src": "/case-studies/inspiration/bw-dead-weather-railroad-tracks.jpg", "alt": "Black-and-white shot of band members walking along railroad tracks"}, {"src": "/case-studies/inspiration/lee-denim-shirts-stack-button-detail.jpg", "alt": "Stack of vintage Lee denim and corduroy shirts showing button and label detail"}, {"src": "/case-studies/inspiration/rrl-vintage-vest-fedora-flat-lay.jpeg", "alt": "Flat lay of vintage tweed vest, dark fedora, knit tie, and RRL striped shirt"}, {"src": "/case-studies/inspiration/organ-mountains-moonrise-orange-glow.jpg", "alt": "Organ Mountains glowing orange at sunset with the moon rising behind the peaks"}, {"src": "/case-studies/inspiration/hill-country-stone-foyer-portrait-painting.jpeg", "alt": "Texas Hill Country stone foyer with antique portrait, dark wood console, and a monstera leaf"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-fedora-guitar.jpg", "alt": "Black-and-white live shot, man in pinstripe suit and fedora playing electric guitar"}, {"src": "/case-studies/inspiration/bw-feather-headdress-indian-motorcycle.jpg", "alt": "Black-and-white photograph, figure in feather headdress arms outstretched behind an Indian motorcycle"}, {"src": "/case-studies/inspiration/swiss-typographic-grid-flag-signal-poster.jpeg", "alt": "Swiss typographic poster with maritime signal flags arranged on a grid"}, {"src": "/case-studies/inspiration/wes-anderson-budapest-doorway-frame.jpeg", "alt": "Wes Anderson film still, narrow doorway framing a small interior scene"}, {"src": "/case-studies/inspiration/87119dea487a846ff65070db9ec9c847.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/denim-suede-jacket-rodeo-belt-buckle.webp", "alt": "Torso shot, suede jacket over denim shirt with engraved rodeo belt buckle"}, {"src": "/case-studies/inspiration/musician-acoustic-guitar-floral-wallpaper.jpg", "alt": "Musician with acoustic guitar against peeling vintage floral wallpaper"}, {"src": "/case-studies/inspiration/ac0ea29344e67e06b29ddde6a22f57f9.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/leather-bench-corner-stitching-wood-detail.jpeg", "alt": "Tan leather bench corner with whip-stitched seam against a raw wood block"}, {"src": "/case-studies/inspiration/rrl-trading-co-store-display-blankets.jpg", "alt": "Double RL store interior with antlers, vintage trunks, knit hats, and a gallery wall"}, {"src": "/case-studies/inspiration/brass-zippo-lighter-shotgun-shell-detail.webp", "alt": "Brass Zippo lighter open with embedded 12-gauge shotgun shell base"}, {"src": "/case-studies/inspiration/wes-anderson-asteroid-city-diner.jpg", "alt": "Asteroid City film still, three figures at a 1950s diner counter"}, {"src": "/case-studies/inspiration/bw-cinematic-portrait-fedora-cigarette.jpg", "alt": "Black-and-white cinematic close-up, man in wide-brim hat smoking a cigarette"}, {"src": "/case-studies/inspiration/bw-gruene-hall-water-tower-honky-tonk.jpg", "alt": "Black-and-white shot of Gruene Hall dance hall with water tower behind"}, {"src": "/case-studies/inspiration/bw-jack-white-third-man-records-piano.jpeg", "alt": "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar"}, {"src": "/case-studies/inspiration/bw-miles-davis-pinstripe-suit-st-george-street.jpg", "alt": "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street"}, {"src": "/case-studies/inspiration/utah-desert-canyons-sagebrush-warm-light.jpg", "alt": "Utah desert canyons in warm afternoon light with sagebrush in the foreground"}, {"src": "/case-studies/inspiration/5c08f1591729fa6d1ada2d377448d215.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/bw-3614-jackson-highway-muscle-shoals.jpg", "alt": "Black-and-white photo, four musicians outside the 3614 Jackson Highway studio"}, {"src": "/case-studies/inspiration/red-leather-bruno-mathsson-jetson-chair.jpeg", "alt": "Red leather Bruno Mathsson Jetson swivel chair on wood floor"}];
+const QUOTES = [
+  {"text": "Came up on a tornado, sunlight in the sky\nI went around all day with the moon sticking in my eye", "attribution": "Don Van Vliet, Captain Beefheart"},
+  {"text": "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", "attribution": "Jack White"},
+  {"text": "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", "attribution": "Cormac McCarthy"}
+];
+
+const NOTES = [
+  /* This is the bio that used to open the homepage. It lives here now,
+     once: the practice stratum renders it as its lead, and an answer
+     renders it as a card. Same string either way. */
+  ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Same desk for all of it."],
+  ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
+  ["How I work", "Independent, Dallas. Design and build. Available for work."],
+  ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
+  ["Get in touch", "hello@reckon.house"]
+];
+
+const REEL_HREF = "/case-studies/sizzle";
+const REEL_IMAGES = [
+  "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
+  "/images/thumbnails/nordstromPersonal.jpg", "/images/thumbnails/dsc.jpg",
+  "/images/thumbnails/nordstromBeauty.jpg"
+];
+const REEL_COLORS = "#0AA7CA, #181B17, #776549";
+const REEL_SEQ = [
+  { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
+  { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
+  { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#181B17", ms: 340 },
+  { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
+];
+
+/* ── cards ────────────────────────────────────────────────────────
+   Every card carries NAMED fields rather than one blob, so the
+   narrator can report which field a word actually landed in. "what it
+   is" is a real field too, and it is what makes the old nav words
+   searchable: ask for work and the work comes back, ask for staples
+   and the board does. */
+const norm = (s) => (" " + s + " ").toLowerCase().replace(/[-_./]/g, " ");
+const cards = [];
+WORK.forEach((r) => cards.push({
+  kind: "work", title: r[0], sub: r[1], href: r[2], img: r[3],
+  ar: r[4] + " / " + r[5],
+  fields: [["title", r[0]], ["category", r[1]],
+    ["filename", r[3].split("/").pop()],
+    ["what it is", "work project case study portfolio"]]
+}));
+PULLS.forEach((p) => cards.push({
+  kind: "pull", title: p.alt, img: p.src, ar: null,
+  fields: [["description", p.alt], ["filename", p.src.split("/").pop()],
+    ["what it is", "staple pull board inspiration reference"]]
+}));
+QUOTES.forEach((q) => cards.push({
+  kind: "quote", word: q.attribution.split(",")[0], full: q.text,
+  att: q.attribution,
+  fields: [["a kept quote", q.text], ["who said it", q.attribution],
+    ["what it is", "staple quote board words"]]
+}));
+NOTES.forEach((n) => cards.push({
+  kind: "note", word: n[0], full: n[1],
+  fields: [["the practice", n[0] + " " + n[1]],
+    ["what it is", "info about the practice studio contact"]]
+}));
+cards.forEach((c) => { c.norm = c.fields.map((f) => [f[0], norm(f[1])]); });
+
+/* ── the matcher ──────────────────────────────────────────────────
+   Written for the way people actually ask. Common words are set
+   aside, whatever survives scores a card once for every word that
+   lands in it, and no word is required to hit — so "does this company
+   do master bedrooms?" still works when only "bedrooms" is in the
+   house, and says so. Three outcomes get reported, never one: what
+   matched and in which field, what found nothing, what was skipped.
+   Swap this for embeddings later; the receipts line survives it. */
+/* "all" and "every" belong here for a structural reason, not just a
+   linguistic one: as substrings they land in wALL, DALLas, instALL —
+   and a junk hit on every card trips the best-tier rule into holding
+   back everything that only matched once. "all work", the page's own
+   resting query, was returning 7 pieces instead of 31 because of it. */
+const STOP = new Set(("a an and any all are as at be been by can could did do does " +
+  "every everything for from get got has have how i if in is it its me my of on or please " +
+  "should show some that the their them there they this to us was we what " +
+  "which who with would you your company thing things stuff").split(" "));
+
+function analyse(q) {
+  const raw = q.toLowerCase().replace(/[^a-z0-9&\s]/g, " ").split(/\s+/).filter(Boolean);
+  const toks = [], skipped = [];
+  raw.forEach((t) => ((t.length < 2 || STOP.has(t)) ? skipped : toks).push(t));
+  if (!toks.length) return null;
+  const hit = (h, t) => h.includes(t) ||
+    (t.length > 3 && t.endsWith("s") && h.includes(t.slice(0, -1)));
+  const score = new Map();
+  const where = [], dead = [];
+  toks.forEach((t) => {
+    const fields = new Set();
+    cards.forEach((c, i) => {
+      let got = false;
+      c.norm.forEach((f) => { if (hit(f[1], t)) { got = true; fields.add(f[0]); } });
+      if (got) score.set(i, (score.get(i) || 0) + 1);
+    });
+    if (fields.size) where.push([t, [...fields]]); else dead.push(t);
+  });
+  /* Best tier, unless the best tier is thin. A card that caught every
+     live word beats one that caught a single word, and mixing the two
+     ruins the answer: "jack white" would drag forty black-and-white
+     photographs in behind the nine that are actually him. But strict
+     tiers can starve — nothing in the house says "app" AND "design" in
+     one place except the practice note, and one info card is not an
+     answer to "app design". So a thin top tier keeps the near misses
+     behind it rather than throwing them away, and the receipts say
+     which is which. */
+  const rank = { work: 0, pull: 1, quote: 2, note: 3 };
+  const best = Math.max(0, ...score.values());
+  const all = [...score.keys()].sort((a, b) =>
+    (score.get(b) - score.get(a)) || (rank[cards[a].kind] - rank[cards[b].kind]));
+  const top = all.filter((i) => score.get(i) === best);
+  const thin = top.length < 3 && all.length > top.length;
+  return {
+    idx: thin ? all : top, where, dead, skipped,
+    held: thin ? 0 : all.length - top.length,
+    exact: thin ? top.length : 0
+  };
+}
+
+/* ── shared building blocks ── */
+let seedNo = 5;
+let query = "";
+const REDUCE = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SHARES = [1, 1, 1, 0.82, 0.66];
+const mkRnd = (s0) => { let s = s0;
+  return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; };
+
+function observeArrivals(els) {
+  if (REDUCE()) { els.forEach((el) => el.classList.add("fd-on")); return; }
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("fd-on"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.05, rootMargin: "0px 0px -5% 0px" });
+  els.forEach((el) => io.observe(el));
+}
+
+let reelBoxes = [];
+function imgCard(card, rnd, allowShare) {
+  /* every card knows what it is, so an answer card can find the same
+     card's rect in the magazine and travel from it */
+  const el = document.createElement(card.href ? "a" : "div");
+  el.dataset.key = card.href || card.img || card.title || "";
+  el.className = "fd-it";
+  if (card.href) { el.href = card.href; el.setAttribute("aria-label", card.title); }
+  if (allowShare) {
+    const share = SHARES[Math.floor(rnd() * SHARES.length)];
+    if (share < 1) {
+      el.style.setProperty("--w", (share * 100).toFixed(0) + "%");
+      if (rnd() > 0.5) el.classList.add("insetR");
+    }
+  }
+  const shot = document.createElement("span");
+  shot.className = "shot";
+  if (card.ar) shot.style.setProperty("--ar", card.ar);
+  el.appendChild(shot);
+  if (card.href === REEL_HREF && !REDUCE()) {
+    shot.style.setProperty("--ar", "1");
+    reelBoxes.push(shot);
+  } else {
+    /* The picture gets a PLATE to sit on. The plate is what the
+       curtain clips and what settles from 1.25 to 1; the image itself
+       is left alone, because the drift driver owns its transform and
+       two writers on one property is the bug this kit keeps paying
+       for. One element each. */
+    const plate = document.createElement("span");
+    plate.className = "plate";
+    const img = document.createElement("img");
+    img.src = card.img; img.alt = card.kind === "pull" ? card.title : "";
+    img.loading = "lazy"; img.decoding = "async";
+    plate.appendChild(img);
+    shot.appendChild(plate);
+  }
+  const cap = document.createElement("span");
+  cap.className = "cap";
+  cap.textContent = card.kind === "work"
+    ? card.title + " — " + card.sub
+    : "Pulled — " + (card.title === "Saved image" ? "the board" : card.title);
+  el.appendChild(cap);
+  /* Work gets a standing label under the frame as well. A hover
+     caption is a nice touch on a board of pulls, where the tag is a
+     bonus; on the work it is the ONLY thing naming the project, and it
+     does not exist at all on a phone. */
+  if (card.kind === "work") {
+    const lbl = document.createElement("span");
+    lbl.className = "lbl";
+    lbl.innerHTML = "";
+    lbl.appendChild(document.createTextNode(card.title));
+    const sub = document.createElement("span");
+    sub.className = "sub";
+    sub.textContent = "  " + card.sub;
+    lbl.appendChild(sub);
+    el.appendChild(lbl);
+  }
+  return el;
+}
+
+function noteCard(card, rnd) {
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "fd-note";
+  el.dataset.key = "note:" + (card.title || card.word || "");
+  el.style.setProperty("--nar", rnd && rnd() > 0.5 ? "4 / 3" : "1 / 1");
+  if (card.kind !== "quote") el.classList.add("plain");
+  /* solid ink under the bar: let the masthead reverse over it */
+  el.setAttribute("data-nav-dark", "");
+  el.innerHTML = '<span class="idx"></span><span class="word"></span><span class="full"></span>';
+  el.querySelector(".idx").textContent = "A note kept";
+  el.querySelector(".word").textContent = card.word;
+  const full = el.querySelector(".full");
+  full.textContent = card.full;
+  if (card.att) {
+    const att = document.createElement("span");
+    att.className = "att"; att.textContent = card.att;
+    full.appendChild(att);
+  }
+  el.addEventListener("click", () => el.classList.toggle("open"));
+  return el;
+}
+
+function fillCols(rootEl, els, n) {
+  rootEl.innerHTML = "";
+  const columns = [];
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement("div");
+    c.className = "fd-col"; rootEl.appendChild(c); columns.push(c);
+  }
+  els.forEach((el, i) => columns[i % n].appendChild(el));
+}
+
+function armReels() {
+  if (!reelBoxes.length) return;
+  const rio = new IntersectionObserver((es, o) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      o.unobserve(e.target);
+      e.target.style.removeProperty("--drift");
+      const rl = document.createElement("sizzle-reel");
+      rl.setAttribute("radius", "0"); rl.setAttribute("speed", "1");
+      rl.sequence = REEL_SEQ;
+      rl.setAttribute("colors", REEL_COLORS);
+      rl.setAttribute("images", REEL_IMAGES.join(", "));
+      rl.style.cssText = "display:block;width:100%;height:100%;aspect-ratio:auto";
+      e.target.appendChild(rl);
+    });
+  }, { rootMargin: "600px 0px" });
+  reelBoxes.forEach((b) => rio.observe(b));
+  reelBoxes = [];
+}
+
+/* How long the second frame in a row waits before its curtain drops.
+   0.7 was arrived at on paper and was plainly too long in the hand:
+   the left frame reached 89% before the right one moved, so the row
+   read as two events rather than one. At 0.25 the left is around a
+   third of the way down when the right starts, and the two fall
+   together while still clearly beginning apart. A reminder that the
+   measured profile tells you what a curve DOES, not how long a wait
+   feels. */
+const CURTAIN_LAG = "0.25s";
+
+/* ── the blocks ────────────────────────────────────────────────────
+   Three shapes and a rhythm. There is no three-across row any more:
+   the work runs as a hero, then a pair, then the pair the other way,
+   with a stated interval between each — closer to how a case study
+   breathes than to how a feed packs.
+
+   "n" is how many cards a block eats. Blocks never share a row, so
+   there is nothing to tile and nothing to reserve; the shapes only
+   have to take turns. */
+const BLOCKS = [
+  { w: 3, n: 2, kind: "pairA" },   /* 5|7  narrow left, wide right */
+  { w: 3, n: 2, kind: "pairB" },   /* 7|5  the same reversed */
+  { w: 2, n: 1, kind: "hero" },    /* 1    the full width */
+];
+const SHAPE = {
+  pairA: ["pNarrow", "pWide"],
+  pairB: ["pWideL", "pNarrowR"],
+  hero: ["hero"],
+};
+
+/* ── the magazine ── */
+function buildMagazine() {
+  const rnd = mkRnd(seedNo);
+
+  /* the ring's body: every project, dealt into two rails of squares
+     with the five notes as text blocks down the side rails */
+  /* No shuffle. The order is the live homepage's, and it is a
+     judgement — Sally, Ivy, A.R.C., the kitchen — not something a
+     seed should get to overturn. The deal still composes the page:
+     it sets every frame's width, which is what decides the rhythm of
+     the rows. Order is editorial, size is dealt. */
+  const workIdx = cards.map((c, i) => i).filter((i) => cards[i].kind === "work");
+
+  /* the footer's width ladder: consecutive cards at least a step and
+     a half apart, so no two neighbours read as the same size */
+  /* The shipped ladder, unchanged from PressingIndex. An earlier pass
+     here raised the floor to 0.52 to keep labels short, and it cost
+     the thing the ladder is FOR: at 0.52-1.0 the largest frames fill
+     their half completely and the page loses its white space. Rows
+     are wider cells than the old rails were, so 0.33 is no longer the
+     122px stamp it was there — it is ~175px with room to breathe
+     around it. Air first; the label wraps if it wraps. */
+  const TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+  const shares = [];
+  let prev = -1;
+  for (let i = 0; i < workIdx.length; i++) {
+    let t, guard = 0;
+    do { t = TIERS[Math.floor(rnd() * TIERS.length)]; }
+    while (Math.abs(t - prev) < 0.17 && guard++ < 24);
+    shares.push(t); prev = t;
+  }
+
+  /* the statement lives under the field; the four working notes hold
+     the left column */
+  const allNotes = cards.map((c, i) => i).filter((i) => cards[i].kind === "note");
+  const bio = allNotes.find((i) => /practice/i.test(cards[i].word || ""));
+  /* the order is authored, not the corpus's: Recently first, What I do
+     last. One array to reshuffle if the mockup meant it the other way
+     up — its own reading was ambiguous at this size. */
+  const NOTE_ORDER = ["recently", "get in touch", "how i work", "what i do"];
+  const noteIdx = allNotes
+    .filter((i) => i !== bio)
+    .sort((x, y) =>
+      NOTE_ORDER.indexOf((cards[x].word || "").toLowerCase()) -
+      NOTE_ORDER.indexOf((cards[y].word || "").toLowerCase()));
+  const lead = document.getElementById("infoLead");
+  if (bio !== undefined) {
+    lead.textContent = cards[bio].full;
+    /* keyed like any card, so the brain can travel it out of here */
+    lead.dataset.key = "note:" + cards[bio].word;
+  }
+
+  const notesEl = document.getElementById("ixNotes");
+  notesEl.innerHTML = "";
+  noteIdx.forEach((ci) => {
+    const blk = document.createElement("div");
+    blk.className = "blk";
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = cards[ci].word;
+    blk.appendChild(tag);
+    blk.appendChild(document.createTextNode(cards[ci].full));
+    /* same key noteCard writes, so a note the brain surfaces can
+       travel out of this column */
+    blk.dataset.key = "note:" + (cards[ci].word || "");
+    notesEl.appendChild(blk);
+  });
+
+  /* ROWS, two frames each, hung from one line and ruled off below.
+     The pairing is consecutive rather than split down the middle:
+     with rails, half the deck went down each side; with rows, the
+     deal order IS the reading order, left then right, top to bottom. */
+  const rowsEl = document.getElementById("ixRows");
+  rowsEl.innerHTML = "";
+  const workEls = [];
+  for (let i = 0; i < workIdx.length; i += 2) {
+    const row = document.createElement("div");
+    row.className = "ixrow";
+    /* the notes float over the first column, so it is left empty */
+    row.appendChild(document.createElement("div"));
+    [0, 1].forEach((k) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      const ci = workIdx[i + k];
+      if (ci !== undefined) {
+        const el = imgCard(cards[ci], rnd, false);
+        el.style.setProperty("--share", String(shares[i + k]));
+        /* the right-hand frame follows the left one in */
+        if (k) el.style.setProperty("--lag", CURTAIN_LAG);
+        cell.appendChild(el);
+        workEls.push(el);
+      }
+      row.appendChild(cell);
+    });
+    /* the rule starts where the left frame starts */
+    const rule = document.createElement("div");
+    rule.className = "ixrule";
+    const leftShare = shares[i] !== undefined ? shares[i] : 1;
+    rule.style.marginLeft =
+      "calc((100% - var(--ixgap)) / 2 * " + (1 - leftShare).toFixed(3) + ")";
+    row.appendChild(rule);
+    rowsEl.appendChild(row);
+  }
+  armRows(rowsEl);
+
+  observeArrivals(workEls);
+  armReels();
+  if (window.armDrift) armDrift(workEls);
+}
+
+/* ── the answer, as an act ─────────────────────────────────────────
+   The old answer was a filter: two strings and a grid, set in one
+   synchronous pass, done before you saw it think. Now asking is
+   something you watch happen. The matcher still answers instantly —
+   the data is tiny and nothing here pretends otherwise — but the
+   REPORT is sequenced: the house's sources answer one at a time, each
+   line landing together with its cards.
+
+   Two rules keep it honest. Every line is the matcher's own output —
+   its receipts, sequenced, never invented "thinking" copy. And cards
+   that were on screen when you asked TRAVEL from where they were to
+   their seat in the answer, so the page visibly reorganises rather
+   than being replaced. Cards from further down arrive from below.
+
+   Reduced motion: the whole act collapses to the old instant answer —
+   same lines, same cards, no time axis. */
+const answerColCount = () => innerWidth > 860 ? 3 : 2;
+
+let askGen = 0;
+let askTimers = [];
+function holdAsk(fn, ms) {
+  const gen = askGen;
+  askTimers.push(setTimeout(() => { if (gen === askGen) fn(); }, ms));
+}
+function cancelAsk() {
+  askGen += 1;
+  askTimers.forEach(clearTimeout);
+  askTimers = [];
+  document.body.classList.remove("working");
+}
+
+function buildAnswer() {
+  cancelAsk();
+  const a = analyse(query) ||
+    { idx: [], where: [], dead: [], skipped: [], held: 0, exact: 0 };
+  const rnd = mkRnd(seedNo + 97);
+  const colsEl = document.getElementById("answerCols");
+  const countEl = document.getElementById("ansCount");
+  const logEl = document.getElementById("ansLog");
+  const still = REDUCE();
+
+  /* where every visible card sits NOW, before the page changes —
+     an answer card with the same key travels from that seat */
+  /* captured by apply() before the jump home; empty when asked cold */
+  const seats = window.__seatRects || new Map();
+  window.__seatRects = null;
+
+  /* the sources, in the order they will speak */
+  const SOURCES = [
+    { label: "the case studies", kinds: ["work"], noun: ["work", "works"] },
+    { label: "the board", kinds: ["pull"], noun: ["pull", "pulls"] },
+    { label: "the practice", kinds: ["note", "quote"], noun: ["note", "notes"] },
+  ];
+  const waves = SOURCES.map((src) => ({
+    src, idx: a.idx.filter((ci) => src.kinds.includes(cards[ci].kind)),
+  }));
+
+  /* the whole layout is computed up front; the sequence only reveals.
+     Re-flowing the masonry per wave would move already-landed cards. */
+  const els = [], waveOf = [];
+  waves.forEach((w, wi) => w.idx.forEach((ci) => {
+    els.push((cards[ci].kind === "note" || cards[ci].kind === "quote")
+      ? noteCard(cards[ci], rnd) : imgCard(cards[ci], rnd, true));
+    waveOf.push(wi);
+  }));
+  if (els.length) {
+    fillCols(colsEl, els, Math.min(answerColCount(), Math.max(1, els.length)));
+  } else {
+    colsEl.innerHTML = "";
+  }
+  armReels();
+  if (window.armDrift) armDrift(els);
+
+  /* the transcript */
+  logEl.innerHTML = "";
+  const kindsCount = { work: 0, pull: 0, quote: 0, note: 0 };
+  cards.forEach((c) => kindsCount[c.kind]++);
+  const line = (text, hit) => {
+    const d = document.createElement("div");
+    d.className = "lg" + (hit ? " hit" : "");
+    d.textContent = text;
+    logEl.appendChild(d);
+    return d;
+  };
+  const lines = [];
+  lines.push(line("asking the house — " + kindsCount.work + " works · a board of " +
+    kindsCount.pull + " pulls · the practice"));
+  waves.forEach((w) => {
+    const n = w.idx.length;
+    lines.push(line(w.src.label + " — " +
+      (n ? n + " " + w.src.noun[n === 1 ? 0 : 1] : "nothing"), n > 0));
+  });
+  const bits = a.where.map(([t, f]) => "“" + t + "” in " + f.join(", "));
+  if (a.dead.length) bits.push("nothing for “" + a.dead.join("”, “") + "”");
+  if (a.held) bits.push(a.held + " weaker matches held back");
+  if (a.exact) bits.push(a.exact + " caught every word, the rest caught one");
+  if (a.skipped.length) {
+    bits.push("common words set aside: " + [...new Set(a.skipped)].join(", "));
+  }
+  if (bits.length) lines.push(line(bits.join("  ·  ")));
+
+  const parts = [];
+  const tally = { work: 0, pull: 0, quote: 0, note: 0 };
+  a.idx.forEach((ci) => tally[cards[ci].kind]++);
+  const say = (n, one, many) => { if (n) parts.push(n + " " + (n === 1 ? one : many)); };
+  say(tally.work, "work", "works");
+  say(tally.pull, "pull", "pulls");
+  say(tally.quote, "quote", "quotes");
+  say(tally.note, "note", "notes");
+  countEl.textContent = a.idx.length
+    ? a.idx.length + " pieces — " + parts.join(" · ")
+    : "Nothing set for “" + query.trim() + "”.";
+  countEl.classList.remove("on");
+
+  /* ── the act itself ── */
+  if (still) {
+    lines.forEach((l) => l.classList.add("on"));
+    countEl.classList.add("on");
+    els.forEach((el) => el.classList.add("fd-on"));
+    return;
+  }
+
+  /* stage every card: seated cards get their travel, the rest rise */
+  els.forEach((el) => {
+    el.classList.add("fd-on");           /* the arrival channel is ours now */
+    const to = el.getBoundingClientRect();
+    const from = seats.get(el.dataset.key);
+    el.style.transition = "none";
+    el.style.opacity = "0";
+    el.style.transform = from
+      ? "translate(" + (from.left - to.left).toFixed(1) + "px," +
+        (from.top - to.top).toFixed(1) + "px)"
+      : "translateY(34px)";
+  });
+
+  document.body.classList.add("working");
+  const BEAT = 300, STAG = 55;
+  lines.forEach((l, li) => holdAsk(() => l.classList.add("on"), li * BEAT));
+  els.forEach((el, k) => {
+    const wi = waveOf[k];
+    const at = (wi + 1) * BEAT + 90 +
+      waveOf.slice(0, k).filter((w) => w === wi).length * STAG;
+    holdAsk(() => {
+      el.style.transition =
+        "opacity 0.46s ease, transform 0.52s cubic-bezier(0.2, 0.7, 0.2, 1)";
+      el.getBoundingClientRect();        /* commit the start state */
+      el.style.opacity = "1";
+      el.style.transform = "";
+    }, at);
+    holdAsk(() => {
+      el.style.transition = ""; el.style.opacity = ""; el.style.transform = "";
+    }, at + 640);
+  });
+  const done = lines.length * BEAT + 140;
+  holdAsk(() => countEl.classList.add("on"), done);
+  holdAsk(() => document.body.classList.remove("working"), done + 260);
+}
+
+/* The deal is still here — ?deal=7 reshuffles the work order and the
+   board's hand, and the seed still rides in the URL so a composition
+   can be sent to someone. What is gone is the button: a numbered deal
+   counter is a thing the builder understands and a visitor does not. */
+
+/* ── state ──
+   Asking is COMMITTED now, not live-filtered: enter, a vocabulary
+   word, or a pause in typing fires the act once. A chatbot you are
+   still typing at does not start answering; neither does this. While
+   the pause timer runs the field already wears the working scan, so
+   the house is visibly listening before it speaks. */
+let qTimer = 0;
+let asked = false;
+function onQuery(v, now) {
+  query = v;
+  clearTimeout(qTimer);
+  if (now) { apply(); return; }
+  if (!query.trim()) { apply(); return; }   /* clearing is instant, no theatre */
+  document.body.classList.add("working");
+  qTimer = setTimeout(apply, 420);
+}
+function apply() {
+  syncUrl();
+  const next = Boolean(query.trim());
+  const changed = next !== asked;
+  if (!next) cancelAsk();
+  /* Seats are read from the page AS THE VISITOR LEFT IT — before the
+     asked class hides the strata (display:none zeroes every rect) and
+     before the jump home moves them. Order is the whole trick here:
+     capture, then change the world. */
+  window.__seatRects = new Map();
+  if (next && !REDUCE()) {
+    document.querySelectorAll(".stratum [data-key]").forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < innerHeight) {
+        __seatRects.set(el.dataset.key, r);
+      }
+    });
+  }
+  document.body.classList.toggle("asked", next);
+  if (changed && window.settleAsk) settleAsk();
+  if (next) {
+    if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
+    buildAnswer();
+  }
+  asked = next;
+}
+function syncUrl() {
+  const p = new URLSearchParams();
+  if (query.trim()) p.set("q", query.trim());
+  if (seedNo !== 5) p.set("deal", String(seedNo));
+  const s = p.toString();
+  history.replaceState(null, "", s ? "?" + s : location.pathname);
+}
+
+const nav = document.getElementById("nav");
+const input = document.getElementById("query");
+input.addEventListener("input", (e) => {
+  onQuery(e.target.value);
+  if (window.placeAsk) placeAsk();   /* typing at display size refits */
+});
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { input.value = ""; onQuery("", true); input.blur(); }
+  if (e.key === "Enter") { e.preventDefault(); onQuery(input.value, true); input.blur(); }
+});
+input.addEventListener("focus", () => nav.classList.add("open"));
+input.addEventListener("blur", () => setTimeout(() => nav.classList.remove("open"), 140));
+document.getElementById("clearQ").addEventListener("click", () => {
+  input.value = ""; onQuery("", true); input.focus();
+});
+document.getElementById("resetQ").addEventListener("click", () => {
+  input.value = ""; onQuery("", true);
+});
+/* ── the vocabulary ───────────────────────────────────────────────
+   Work, Info and Staples were three links; here they are three
+   queries, sitting in the same row as the material words and the
+   full question. Nothing is lost — asking for work still gets you
+   all of it, and now "marble" gets you something a link never could. */
+const VOCAB = ["Work", "Info", "Staples", "Kitchens", "Interiors", "Marble",
+  "App design", "West Texas", "Does this company do master bedrooms?"];
+(() => {
+  const row = document.getElementById("suggest");
+  VOCAB.forEach((v) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = v;
+    /* mousedown, not click: the input's blur would tear the row down
+       before a click ever landed. */
+    b.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      input.value = v;
+      onQuery(v, true);
+    });
+    row.appendChild(b);
+  });
+})();
+
+/* ── the burn, lifted from Masthead.tsx ────────────────────────────
+   Three stages: climb hard while the page moves, hold with a slow
+   bleed for two seconds after it stops, then fade out properly. The
+   middle stage is what stops it flickering on and off during short
+   bursts. These constants are the module's — tune them there. */
+(() => {
+  const burn = document.getElementById("navBurn");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  let heat = 0, lastScroll = 0;
+  const onInput = () => { lastScroll = Date.now(); };
+  addEventListener("scroll", onInput, { passive: true });
+  addEventListener("wheel", onInput, { passive: true });
+  addEventListener("touchmove", onInput, { passive: true });
+  const tick = () => {
+    requestAnimationFrame(tick);
+    if (document.hidden) return;
+    if (reduced.matches) { heat = 0; return; }
+    const since = Date.now() - lastScroll;
+    if (since < 500) heat += (1 - heat) * 0.06;
+    else if (since < 2500) heat += (0 - heat) * 0.015;
+    else heat += (0 - heat) * 0.03;
+    if (heat < 0.005) heat = 0;
+    const css = "blur(" + heat * 4 + "px) saturate(" + (1 + heat * 7) +
+      ") contrast(" + (1 + heat * 2) + ")";
+    burn.style.backdropFilter = "url(#mastheadMelt) " + css;
+    burn.style.setProperty("-webkit-backdrop-filter", css);
+    burn.style.background = "rgba(243, 240, 237, " + (0.05 + heat * 0.1) + ")";
+  };
+  requestAnimationFrame(tick);
+})();
+
+/* ── the reversal, lifted too ──────────────────────────────────────
+   Ink is invisible on dark ground. Rather than sampling pixels, dark
+   blocks declare themselves with [data-nav-dark] and this asks whether
+   any of them currently overlaps the bar's BAND — not its box, because
+   the pill is inset and using the box flips the type a few pixels
+   early. The homepage feed declares none yet; see the note in TODO. */
+(() => {
+  const bar = document.getElementById("nav");
+  let raf = 0, was = null;
+  const check = () => {
+    const b = bar.getBoundingClientRect();
+    const top = b.top + 6, bot = b.bottom - 6;
+    let hit = false;
+    for (const el of document.querySelectorAll("[data-nav-dark]")) {
+      const r = el.getBoundingClientRect();
+      if (r.height < 2) continue;
+      if (r.top < bot && r.bottom > top) { hit = true; break; }
+    }
+    if (hit !== was) { was = hit; bar.classList.toggle("rev", hit); }
+  };
+  const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(check); };
+  check();
+  addEventListener("scroll", onScroll, { passive: true });
+  addEventListener("resize", onScroll, { passive: true });
+})();
+
+/* ── the tour ──────────────────────────────────────────────────────
+   One field means one placeholder. At display size the rotation is
+   the page's headline; in the bar it is a quiet invitation. Same
+   string, same timer — the field just happens to be a different size
+   by then. Work, Info and Staples ride in it because they are queries
+   now, not destinations. */
+/* the resting entry is the page's own name — the tour opens on it,
+   and asking it is a real query that deals the whole house */
+const TOUR = ["all work", "kitchens", "interiors", "marble", "app design",
+  "does this company do master bedrooms?", "west texas", "staples", "info"];
+(() => {
+  let k = 0;
+  const write = () => {
+    input.placeholder = "“" + TOUR[k] + "”";
+    /* a new question is a new width, so it gets re-fitted */
+    if (window.placeAsk) placeAsk();
+  };
+  write();
+  const tick = () => {
+    if (document.activeElement === input || input.value || document.hidden) return;
+    input.classList.add("cycling");
+    setTimeout(() => {
+      k = (k + 1) % TOUR.length; write();
+      input.classList.remove("cycling");
+    }, 340);
+  };
+  if (!REDUCE()) setInterval(tick, 3200);
+})();
+/* ── the travel ───────────────────────────────────────────────────
+   Everything the field does between the cover and the bar is here.
+   Drop is measured, never authored: the distance from the reserved
+   slot's centre to the bar's centre, floored at zero. So the field
+   rides with the document while the slot is on screen and parks the
+   instant the slot arrives — the same behaviour a sticky element
+   would have, except this one also changes size on the way.
+
+   The shrink runs over the last SHRINK pixels of that approach, and
+   the narrow width is read off the wordmark rather than guessed, so
+   the field can never grow into it at any viewport. */
+(() => {
+  const bar = document.getElementById("nav");
+  const ask = document.querySelector(".ask");
+  const slot = document.getElementById("askSlot");
+  const mark = document.querySelector("#nav .mark");
+  const SMALL = 16;
+  let raf = 0, settleT = 0;
+
+  const gutter = () => parseFloat(getComputedStyle(bar).paddingLeft) || 40;
+
+  /* ── how big is big ──────────────────────────────────────────────
+     Not a constant. The rotation runs from "marble" to "does this
+     company do master bedrooms?", and an input does not wrap — at one
+     fixed display size the long one would simply be cut off. So the
+     question is set to fit its column: measure the string once at
+     100px in the same face, then take whatever size fills the width,
+     capped so short words cannot grow absurd. Short questions come in
+     huge, long ones come in smaller, which is what a typesetter would
+     have done anyway. */
+  const ghost = document.createElement("span");
+  ghost.setAttribute("aria-hidden", "true");
+  ghost.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;" +
+    "white-space:pre;font-family:inherit;font-weight:700;letter-spacing:-0.045em;" +
+    "font-size:100px";
+  document.body.appendChild(ghost);
+  const fitSize = (text, room) => {
+    const cap = Math.max(32, Math.min(88, innerWidth * 0.056));
+    ghost.textContent = text || "";
+    const per = ghost.getBoundingClientRect().width / 100;
+    if (!per || !room) return cap;
+    /* a hair under the column: fitting it exactly leaves the last
+       glyph riding the edge, and a subpixel there reads as a clip */
+    return Math.max(19, Math.min(cap, (room * 0.985) / per));
+  };
+
+  const place = () => {
+    const barH = bar.getBoundingClientRect().height;
+    /* no slot means the cover is gone (an answer is open): park it */
+    const live = slot.offsetHeight > 0;
+    const s = slot.getBoundingClientRect();
+    const drop = live ? Math.max(0, s.top + s.height / 2 - barH / 2) : 0;
+    /* The travel's full length, measured rather than authored: the
+       slot's centre in DOCUMENT space, which does not move when the
+       page does. Progress is drop over that, so the field is exactly
+       full size at the top and exactly parked when the slot arrives —
+       true at any viewport height, and it stays true if the cover
+       above it ever grows a line. */
+    const total = live
+      ? Math.max(1, s.top + scrollY + s.height / 2 - barH / 2) : 1;
+    const p = Math.min(1, drop / total);           /* 1 big, 0 parked */
+    const g = gutter();
+    const narrow = Math.max(150, mark.getBoundingClientRect().left - g - 26);
+    /* the left column IS the slot, so the big field's width is measured
+       from the layout rather than computed from the viewport */
+    const wide = live ? s.width : narrow;
+    const big = fitSize(input.value || input.placeholder, wide);
+    /* The masthead keeps a tighter gutter than the page does (16 against
+       20 on a phone; they are both 40 on a desktop, where this is a
+       no-op). So the question rides the PAGE's gutter while it is in
+       the page and the BAR's once it lands, walking the few pixels
+       between them over the travel rather than sitting wrong at one
+       end. Read off the slot, so it cannot disagree with the cards. */
+    ask.style.setProperty("--ask-left",
+      (g + ((live ? s.left : g) - g) * p).toFixed(1) + "px");
+    ask.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
+    ask.style.setProperty("--ask-w", (narrow + (wide - narrow) * p).toFixed(1) + "px");
+    ask.style.setProperty("--ask-fs", (SMALL + (big - SMALL) * p).toFixed(2) + "px");
+    /* display type wants negative tracking, the bar wants the module's
+       positive 0.04em — walk between them rather than picking one */
+    ask.style.setProperty("--ask-ls", (0.04 - 0.085 * p).toFixed(4) + "em");
+    ask.style.setProperty("--ask-fw", p > 0.35 ? "700" : "500");
+    ask.classList.toggle("big", p > 0.35);
+    document.body.classList.toggle("attop", p > 0.96);
+  };
+
+  /* the one time the move is not scroll-driven: opening or closing an
+     answer pulls the cover out from under it, so let it glide */
+  window.settleAsk = () => {
+    ask.classList.add("settling");
+    clearTimeout(settleT);
+    settleT = setTimeout(() => ask.classList.remove("settling"), 520);
+    requestAnimationFrame(place);
+  };
+
+  const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
+  addEventListener("scroll", on, { passive: true });
+  addEventListener("resize", on, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  /* exposed so the travel can be stepped and measured without waiting
+     on rAF — the geometry here is worth being able to assert on */
+  window.placeAsk = place;
+  place();
+})();
+
+/* ── the page transition ──────────────────────────────────────────
+   The driver only sequences; every duration is in the stylesheet, so
+   the two cannot drift apart. Each beat waits for its own transition
+   to actually END rather than for a matching setTimeout — a timer that
+   agrees with a CSS duration today is a timer that disagrees with it
+   after the next tuning pass.
+
+   In a real app the sequence SPLITS: beats 1 and 2 belong to the page
+   being left, the document swap happens at full black, and beat 3
+   belongs to the page arriving. Here it plays whole, so the
+   choreography can be judged in one go. */
+const PT = document.getElementById("pt");
+/* how far apart the lines arrive. Fast enough to read as one sweep
+   down the page rather than a list being typed out. */
+const PT_STEP = 0.03;
+/* the exit runs tighter than the entry: arriving is the flourish,
+   leaving should not hold the page up */
+const PT_STEP_OUT = 0.02;
+let ptLines = 0;
+
+function ptBeat(cls, el) {
+  return new Promise((res) => {
+    let done = false;
+    /* transitionend BUBBLES. Every line inside the panel finishes its
+       own transition and the event arrives here, so without this the
+       first line to land ends the beat — the sequence collapsed to
+       about a third of its length. Only the panel's own transition
+       counts. */
+    const end = (e) => { if (done || (e && e.target !== el)) return; done = true;
+      el.removeEventListener("transitionend", end); res(); };
+    el.addEventListener("transitionend", end);
+    PT.classList.add(cls);
+    /* a floor, in case the transition never fires (tab hidden, etc) */
+    setTimeout(end, 1400);
+  });
+}
+
+async function playTransition(href, title, sub) {
+  if (PT.dataset.busy) return;
+  PT.dataset.busy = "1";
+  /* What is loading, repeated until it fills the page. The count is
+     measured, not fixed: a line is whatever the type actually renders
+     at, so the stack fills a phone and a display alike. */
+  const stacks = ["ptwT", "ptbT"].map((id) => document.getElementById(id));
+  stacks.forEach((el) => { el.innerHTML = ""; });
+  const probe = document.createElement("span");
+  probe.className = "ptl";
+  probe.style.cssText = "position:absolute;visibility:hidden;opacity:1";
+  probe.textContent = title || "—";
+  stacks[0].appendChild(probe);
+  const lineH = probe.getBoundingClientRect().height || 44;
+  probe.remove();
+  /* fill the inset box exactly: round to a whole number of lines, then
+     hand back the line-height that makes them add up to it */
+  const gut = parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue("--gut")) || 40;
+  const avail = innerHeight - gut * 2;
+  const N = Math.max(3, Math.round(avail / lineH));
+  stacks.forEach((el) => el.style.setProperty("--ptlh",
+    (avail / N).toFixed(2) + "px"));
+  ptLines = N;
+  for (let i = 0; i < N; i++) {
+    stacks.forEach((el) => {
+      const line = document.createElement("span");
+      line.className = "ptl";
+      line.style.setProperty("--d", (i * PT_STEP).toFixed(3) + "s");
+      line.textContent = title || "";
+      if (sub) {
+        const t = document.createElement("span");
+        t.className = "sub";
+        t.textContent = "  " + sub;
+        line.appendChild(t);
+      }
+      el.appendChild(line);
+    });
+  }
+  const white = PT.querySelector(".ptw");
+  const black = PT.querySelector(".ptb");
+  PT.classList.add("pt-run");
+  /* Commit the lines' start state before the class that animates them.
+     Built and revealed in the same task, they have never been rendered
+     hidden, so there is nothing to transition FROM and all 22 arrive
+     at once — the stagger silently does nothing. Reading a layout
+     property forces the frame. */
+  void PT.offsetHeight;
+  await ptBeat("pt-1", white);          /* white falls */
+  await ptBeat("pt-2", black);          /* black rises over it */
+  /* ── in the app, the document swap goes HERE, under full black ── */
+  /* reverse every line's delay before the last beat: they leave from
+     the bottom, which is the direction the lifting clip already
+     removes them in */
+  /* per stack, not across both: querySelectorAll returns document
+     order, which is all of the white panel's lines and THEN all of the
+     black's — indexing across the pair would give each panel a
+     different sequence and break their registration */
+  PT.querySelectorAll(".ptstack").forEach((stack) => {
+    [...stack.children].forEach((line, i) => {
+      line.style.setProperty("--d",
+        ((ptLines - 1 - i) * PT_STEP_OUT).toFixed(3) + "s");
+    });
+  });
+  /* Beat 3 is over when BOTH the curtain and the last line are done.
+     Waiting only on the curtain reset the overlay at 0.68s while lines
+     were still leaving, and hiding the panel cut the stagger off
+     mid-flight. */
+  const outMs = ((ptLines - 1) * PT_STEP_OUT + 0.26) * 1000;
+  await Promise.all([
+    ptBeat("pt-3", black),              /* black lifts from the bottom */
+    new Promise((r) => setTimeout(r, outMs)),
+  ]);
+  PT.className = "pt";
+  delete PT.dataset.busy;
+  if (href) location.href = href;
+}
+
+/* Clicks on the work run the sequence. Modified clicks are left alone —
+   a new tab should not be preceded by a curtain on the old one. */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest && e.target.closest(".ixrow a.fd-it");
+  if (!a || REDUCE()) return;
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault();
+  /* the destination names itself: taken off the card here, and off
+     the route's own data in an app — same fact either way */
+  const lbl = a.querySelector(".lbl");
+  const sub = lbl && lbl.querySelector(".sub");
+  const title = lbl
+    ? lbl.firstChild.textContent.trim() : a.getAttribute("aria-label") || "";
+  /* the lab has nowhere to go, so it plays the whole sequence and
+     stays; pass a.getAttribute("href") to make it navigate */
+  playTransition(null, title, sub ? sub.textContent.trim() : "");
+});
+
+/* ── hover: the drop and the push ─────────────────────────────────
+   Two numbers the stylesheet cannot know. How far the label must slide
+   is how far its frame grew, which depends on that frame's dealt
+   height; and whether the neighbour needs to move at all depends on
+   whether the opening frame actually reaches it — a narrow frame never
+   does. Both are measured at the moment of hover, from resting sizes
+   (offsetHeight/Width ignore the transform, so they report the frame's
+   real size rather than its mid-animation one).
+
+   Delegated on the container, which survives a redeal; the rows
+   inside it do not. */
+function armRows(rowsEl) {
+  if (rowsEl.dataset.armed) return;
+  rowsEl.dataset.armed = "1";
+  const GAP = 24;
+  const live = () => innerWidth > 760 && matchMedia("(hover: hover)").matches;
+
+  rowsEl.addEventListener("pointerover", (e) => {
+    const card = e.target.closest && e.target.closest(".fd-it");
+    if (!card || !live()) return;
+    const row = card.closest(".ixrow");
+    const shot = card.querySelector(".shot");
+    if (!row || !shot) return;
+    let grow =
+      parseFloat(getComputedStyle(row).getPropertyValue("--ix-grow-max")) || 1.32;
+    /* EACH FRAME OPENS AS FAR AS ITS OWN ROOM ALLOWS. Capping the
+       label's drop instead was wrong: the frame kept growing past
+       where the label had stopped, so the picture covered its own
+       name. The grow itself has to be the thing that yields.
+
+       The taller frame in a row always has exactly the row-gap beneath
+       its label (79px), so at a fixed 1.32 a 457px frame needed 146px
+       and took it out of the label. Now the grow is per-frame: small
+       frames open wide, large ones open a little, and the label always
+       has somewhere to go. The biggest pictures moving least is the
+       honest outcome — they are already the loudest thing in the row. */
+    const rule = row.querySelector(".ixrule");
+    const ruled = rule && getComputedStyle(rule).display !== "none";
+    const room = ruled
+      ? rule.getBoundingClientRect().top -
+        card.querySelector(".lbl").getBoundingClientRect().bottom - 8
+      : Infinity;
+    const fits = 1 + Math.max(0, room) / shot.offsetHeight;
+    grow = Math.max(1.04, Math.min(grow, fits));
+    card.style.setProperty("--ix-grow", grow.toFixed(3));
+    card.style.setProperty("--drop",
+      (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");
+
+    /* How far the name is from the right edge. Measured with a Range
+       over the label's own contents, because the element is a full-
+       width block and its rect would say zero — the Range reports the
+       INK, which on a wrapped label is its widest line. */
+    const lbl = card.querySelector(".lbl");
+    const range = document.createRange();
+    range.selectNodeContents(lbl);
+    const ink = range.getBoundingClientRect().width;
+    const slide = Math.max(0, lbl.getBoundingClientRect().width - ink);
+    card.style.setProperty("--slide", slide.toFixed(1) + "px");
+    /* and anything to its left moves only as far as it must */
+    const hr = shot.getBoundingClientRect();
+    const openTo = hr.right - hr.width * grow;
+    [...row.querySelectorAll(".fd-it")].forEach((other) => {
+      if (other === card) return;
+      const or = other.querySelector(".shot").getBoundingClientRect();
+      if (or.right > hr.left + 1) return;          /* not to the left */
+      const push = Math.max(0, or.right + GAP - openTo);
+      other.style.transform = push
+        ? "translateX(" + (-push).toFixed(1) + "px)" : "";
+    });
+  });
+
+  rowsEl.addEventListener("pointerout", (e) => {
+    const card = e.target.closest && e.target.closest(".fd-it");
+    if (!card) return;
+    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+    const row = card.closest(".ixrow");
+    if (row) {
+      row.querySelectorAll(".fd-it").forEach((c) => { c.style.transform = ""; });
+    }
+    card.style.removeProperty("--drop");
+    card.style.removeProperty("--slide");
+    card.style.removeProperty("--ix-grow");
+  });
+}
+
+/* The neighbour-shift driver went with the rails. It existed because
+   a hovered frame in a tight 5px stack had to push its column apart to
+   have anywhere to open into. Rows are ruled off with ~90px of air
+   between them, so a frame at 1.32 opens into space that is already
+   there — and shifting a NEIGHBOURING ROW would drag its rule with it,
+   which is the one line on the page that must not move. The grow is
+   smaller here for the same reason: 1.5 was sized to a stack that
+   parted for it. */
+
+/* ── the drift ─────────────────────────────────────────────────────
+   The one piece of motion in the feed, and it is the house's own: the
+   case studies already hold content and move it at a fraction of the
+   page's speed, so a photograph sliding inside its frame is the same
+   idea at a smaller scale rather than a new trick.
+
+   Every image is cut taller than the frame that clips it. As a card
+   crosses the viewport its image walks from one end of that slack to
+   the other, centred at mid-screen, so nothing is ever revealed as an
+   edge. It costs no layout — one transform per visible image — and
+   only visible images are touched at all.
+
+   The bigger tiles drift further, which is the second half of what
+   makes them read as bigger: more depth AND more movement. How much
+   further is set in CSS, beside the tile sizes themselves.
+
+   Under reduced motion this never runs, and because the slack is in
+   the image's height rather than its position, a still frame is still
+   a correctly filled card. */
+(() => {
+  if (REDUCE()) return;
+  const live = new Set();
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (e.isIntersecting) { live.add(e.target); return; }
+      live.delete(e.target);
+      const img = e.target.querySelector("img");
+      if (img) img.style.transform = "";
+    });
+  }, { rootMargin: "12% 0px" });
+
+  window.armDrift = (els) => els.forEach((el) => {
+    const shot = el.querySelector && el.querySelector(".shot");
+    if (shot) io.observe(shot);
+  });
+
+  const tick = () => {
+    requestAnimationFrame(tick);
+    if (document.hidden || !live.size) return;
+    const h = innerHeight;
+    live.forEach((shot) => {
+      const img = shot.querySelector("img");
+      if (!img || img.tagName !== "IMG") return;
+      const r = shot.getBoundingClientRect();
+      /* 0 as the card enters from the bottom, 1 as it leaves the top */
+      const p = Math.min(1, Math.max(0, (h - r.top) / (h + r.height)));
+      /* The slack is MEASURED, not assumed. It is set in CSS beside the
+         tile sizes (--drift), and reading it back means the two can
+         never disagree — a renamed class or a new tile size needs no
+         change here. Both rects come from one layout pass, so this
+         costs nothing extra. */
+      /* offsetHeight, not the rect: the plate is mid-settle at 1.25
+         while a card arrives, and a rect would report the scaled size
+         and drift the picture too far. Layout size ignores transforms. */
+      const slack = Math.max(0, img.offsetHeight - shot.offsetHeight);
+      /* The image sits top-aligned with no transform, so the whole of
+         its travel is NEGATIVE: 0 is top-aligned, -slack is
+         bottom-aligned, and every value between covers the frame.
+         Swinging symmetrically about the middle instead would push the
+         image down past the frame's top edge for half the pass and
+         show a sliver of background there. */
+      img.style.transform =
+        "translate3d(0," + (-p * slack).toFixed(2) + "px,0)";
+    });
+  };
+  requestAnimationFrame(tick);
+})();
+
+/* boot */
+(() => {
+  const p = new URLSearchParams(location.search);
+  const q = p.get("q") || "";
+  const d = parseInt(p.get("deal") || "5", 10);
+  if (Number.isFinite(d)) seedNo = d;
+  buildMagazine();
+  if (q) { input.value = q; query = q; apply(); }
+  let rw = 0;
+  addEventListener("resize", () => {
+    clearTimeout(rw);
+    rw = setTimeout(() => { buildMagazine(); if (query.trim()) buildAnswer(); }, 180);
+  });
+})();
+</script>
+
+</body>
+</html>

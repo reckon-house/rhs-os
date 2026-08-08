@@ -1,0 +1,269 @@
+/*
+  PressingHome — ported from public/lab/pressing-home.html. Every value
+  is the lab's settled value; retune there first, then bring it back.
+  Tokens come from :root (--pp-*, --nav-h).
+*/
+
+/* ── the cover: statement, then the query as a headline ── */
+.cover {
+  padding: clamp(56px, 9dvh, 120px) 0 0;
+}
+.statement {
+  font-size: clamp(22px, 2.9vw, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  max-width: 30em;
+}
+.statement .dim,
+.dim {
+  color: rgba(0, 0, 0, 0.42);
+}
+
+/* The query: an input set like a headline. No box, no chrome — the
+   hairline under it is the page's one big rule. The placeholder is the
+   house state ("Everything."); typing replaces everything with
+   something, which is exactly what the field below then does. */
+.querywrap {
+  margin-top: clamp(40px, 7dvh, 90px);
+}
+.querylbl {
+  font-size: var(--pp-lbl);
+  font-weight: var(--pp-lbl-weight);
+  letter-spacing: var(--pp-lbl-track);
+  opacity: 0.55;
+  margin-bottom: 14px;
+}
+.query {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--pp-ink);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: clamp(44px, 7.4vw, 118px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  padding: 0 0 18px;
+  border-radius: 0;
+  border-bottom: 1px solid var(--pp-hair);
+}
+.query::placeholder {
+  color: var(--pp-ink);
+  opacity: 1;
+}
+.query:focus::placeholder {
+  opacity: 0.18;
+}
+
+/* The deal line: count, query echo, the re-deal control. The seed is
+   worn openly — the composition is dealt, and saying so (Deal № 5) is
+   the pressing move: the mechanism is part of the design. */
+.dealline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 14px 0 0;
+  font-size: var(--pp-lbl);
+  font-weight: var(--pp-lbl-weight);
+  letter-spacing: var(--pp-lbl-track);
+}
+.count {
+  opacity: 0.55;
+}
+.redealBtn {
+  font: inherit;
+  letter-spacing: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--pp-ink);
+}
+.redealBtn:hover {
+  text-decoration: underline;
+}
+
+/* ── the field: ONE wide pair ──────────────────────────────────────
+   The field is the page's main event; two pairs dealt 190px thumbnails
+   at laptop widths. The text rail holds the left, the frames take
+   everything else, and the long scroll is the point — the page is
+   titled Everything. */
+.field {
+  padding: clamp(48px, 7dvh, 90px) 0 0;
+}
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  transition: opacity 0.16s ease;
+}
+.cols.redeal {
+  opacity: 0;
+}
+.pair {
+  display: grid;
+  grid-template-columns: minmax(200px, 320px) 1fr;
+  column-gap: clamp(32px, 5vw, 110px);
+  align-items: stretch;
+}
+.txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.imgs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  gap: 5px;
+}
+
+.blk .t {
+  display: block;
+  font-size: var(--pp-lbl);
+  font-weight: var(--pp-lbl-weight);
+  letter-spacing: var(--pp-lbl-track);
+  opacity: 0.55;
+  margin-bottom: 9px;
+}
+.blk .s {
+  font-size: var(--pp-note);
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.72);
+  max-width: 24em;
+}
+
+.it {
+  position: relative;
+  display: block;
+  width: var(--w, 100%);
+  transform-origin: right center;
+}
+.field {
+  --hd-grow: 1.5;
+}
+@media (hover: hover) and (min-width: 761px) {
+  .it img,
+  .it .reelBox {
+    transition: border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .it:hover {
+    transform: scale(var(--hd-grow));
+    z-index: 2;
+  }
+  .it:hover img,
+  .it:hover .reelBox {
+    border-radius: 0;
+  }
+}
+.it img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ar, 1);
+  object-fit: cover;
+  border-radius: var(--pp-r);
+  background: rgba(0, 0, 0, 0.05);
+}
+.it:focus-visible {
+  outline: 1px solid var(--pp-ink);
+  outline-offset: 5px;
+}
+
+/* The reel frame: the wrapper owns the slot's shape and the corner, so
+   the box holds its size before the reel mounts and the radius can
+   transition from out here. */
+.reelBox {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ar, 1);
+  overflow: hidden;
+  border-radius: var(--pp-r);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Frame captions surface on hover only — the field is a composition
+   first and an index second. */
+.cap {
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  .it:hover .cap {
+    opacity: 0.55;
+  }
+}
+
+/* arrival: frames fade, text blocks travel (the index's tuned pair) */
+.it {
+  opacity: 0;
+  transition: opacity 0.8s ease,
+    transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.blk {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.55, 0.2, 1);
+}
+.on {
+  opacity: 1;
+}
+.blk.on {
+  transform: none;
+}
+
+/* nothing matched: quiet, editorial, one way back */
+.empty {
+  padding: clamp(30px, 5dvh, 60px) 0 0;
+  font-size: var(--pp-note);
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.72);
+}
+.emptyReset {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--pp-ink);
+}
+
+@media (max-width: 760px) {
+  .pair {
+    grid-template-columns: 1fr 1.15fr;
+    column-gap: 14px;
+  }
+  .it {
+    width: 100% !important;
+  }
+  .blk .s {
+    font-size: 11.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .it,
+  .blk {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .cols {
+    transition: none;
+  }
+}
