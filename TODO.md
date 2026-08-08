@@ -177,7 +177,9 @@ visual starts in `public/lab/`.)
          of 31 rows; marble's works came back, and west texas gained
          two projects whose heroes name it.
 
-      NEXT (agreed direction): the facts pass. The case studies are
+      DONE — the facts pass shipped. See the extractor entry below.
+
+      WAS: the facts pass. The case studies are
       already a database — 29 typed section files. An extraction walks
       src/data/*-case-study.ts and emits per-project facts (materials,
       rooms, disciplines, tools, stats with real numbers, places) into
@@ -877,6 +879,15 @@ visual starts in `public/lab/`.)
         attribute from it. Decide with the trackpad, not in advance.
 
 ## Next
+
+- [ ] **Wire the facts index into the brain.** The extractor
+      (`npm run facts`) now emits `src/data/generated/project-facts*.json`
+      and `src/lib/facts.ts` queries it. Retrieval is already better
+      than the lab's substring matcher: "marble" finds 7 projects
+      against the matcher's 2, "photoshop" finds 12, "supabase" 2.
+      Next is composeAnswer() citing facets by name — "Marble is in the
+      Hill Country kitchen and the Fairview suite" — and the answer
+      grid ranking by fact match rather than string hit.
 
 - [ ] **The Type Case.** Keystroke flips any pressing study to its
       annotated source — data file, marks spine, choreography flags, tuned

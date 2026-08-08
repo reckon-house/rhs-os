@@ -1,0 +1,4452 @@
+{
+ "vocabularyVersion": 1,
+ "projects": [
+  {
+   "slug": "amber-shockey-co",
+   "title": "Amber Shockey & Co.",
+   "subtitle": "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
+   "category": "Creative",
+   "href": "/case-studies/amber-shockey-co",
+   "year": "2017",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Three tableware collections: blue florals, black linework, red dragons. Hero, secondary, accent per set"
+    },
+    {
+     "label": "Scope",
+     "value": "Pattern design, product design, colorway development"
+    },
+    {
+     "label": "Tools",
+     "value": "Illustrator, Photoshop, InDesign. Multiple colorways per collection"
+    },
+    {
+     "label": "Angle",
+     "value": "Patterns built as a system, not a single print. Cream as shared ground, so a pattern only works if the next one fits."
+    }
+   ],
+   "disciplines": [
+    "Pattern Design",
+    "Product Design",
+    "Colorway Development"
+   ],
+   "tools": [
+    "Illustrator",
+    "Photoshop",
+    "InDesign"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Amber Shockey & Co.",
+      "n": 18,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "slides.0.src",
+        "quote": "amber shockey co blue florals plates stacked on peony pattern collection mockup"
+       },
+       {
+        "section": "hero",
+        "field": "slides.0.alt",
+        "quote": "Amber Shockey & Co. blue florals collection, plates layered on peony pattern background, stacked to read as a still life"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "burgundy",
+      "n": 10,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "slides.2.alt",
+        "quote": "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose"
+       },
+       {
+        "section": "red-subhead",
+        "field": "content",
+        "quote": "Burgundy dragons curled against floral filigree."
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 7,
+      "cites": [
+       {
+        "section": "blue-footnote",
+        "field": "content",
+        "quote": "The cobalt anchors any combination because every other collection shares cream as the common ground."
+       },
+       {
+        "section": "blue-marks-pair",
+        "field": "left.src",
+        "quote": "amber shockey co geometric linework circle blue cream pattern hero mark"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "slides.1.alt",
+        "quote": "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver"
+       },
+       {
+        "section": "black-subhead",
+        "field": "content",
+        "quote": "Geometric grids and halftone density on charcoal."
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cobalt",
+      "n": 5,
+      "cites": [
+       {
+        "section": "blue-footnote",
+        "field": "content",
+        "quote": "The cobalt anchors any combination because every other collection shares cream as the common ground."
+       },
+       {
+        "section": "red-footnote",
+        "field": "content",
+        "quote": "Hard against blue florals; the cobalt and burgundy fight."
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "blush",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Circle lives in blush."
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.name",
+        "quote": "Blush"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "slides.1.src",
+        "quote": "amber shockey co black linework geometric plates marble surface collection mockup"
+       },
+       {
+        "section": "hero",
+        "field": "slides.1.alt",
+        "quote": "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "arc",
+   "title": "A.R.C. Archive. Ready. Cloud.",
+   "subtitle": "An app that looks at what you own and tells you whether your insurance actually covers it.",
+   "category": "Digital",
+   "href": "/case-studies/arc",
+   "year": "2024",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis."
+    },
+    {
+     "label": "Scope",
+     "value": "Solo, end to end. Concept, code, brand, go-to-market."
+    },
+    {
+     "label": "Stack",
+     "value": "Python, Streamlit, OpenAI Vision, Perceptron Mk1, Supabase, Vercel, Claude Code."
+    },
+    {
+     "label": "Angle",
+     "value": "Nobody skips home inventory because they don't care. They skip it because the work is miserable. Remove the input problem and the rest is straightforward."
+    }
+   ],
+   "disciplines": [
+    "Product Design",
+    "Brand Identity",
+    "Full-Stack Engineering",
+    "Go-to-Market",
+    "Go-to-Market Strategy",
+    "Home Inventory",
+    "Computer Vision",
+    "Insurance Technology"
+   ],
+   "tools": [
+    "Python",
+    "Streamlit",
+    "OpenAI Vision API",
+    "Supabase",
+    "Vercel",
+    "Claude Code"
+   ],
+   "stats": [
+    {
+     "value": "$680",
+     "label": "Furniture",
+     "section": "stats"
+    },
+    {
+     "value": "$425",
+     "label": "Electronics",
+     "section": "stats"
+    },
+    {
+     "value": "$580",
+     "label": "Artwork",
+     "section": "stats"
+    },
+    {
+     "value": "$890",
+     "label": "Appliances",
+     "section": "stats"
+    },
+    {
+     "value": "$310",
+     "label": "Fixtures",
+     "section": "stats"
+    },
+    {
+     "value": "$185",
+     "label": "Textiles",
+     "section": "stats"
+    },
+    {
+     "value": "$695",
+     "label": "Collectibles",
+     "section": "stats"
+    },
+    {
+     "value": "$5,000+",
+     "label": "Vehicles",
+     "section": "stats"
+    },
+    {
+     "value": "8-12 hours",
+     "label": "Manual Inventory",
+     "section": "speed-comparison"
+    },
+    {
+     "value": "~30 minutes",
+     "label": "A.R.C. Documentation",
+     "section": "speed-comparison"
+    }
+   ],
+   "facets": {
+    "room": [
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero-1",
+        "field": "image",
+        "quote": "arc app kitchen project selection lifestyle"
+       },
+       {
+        "section": "hero-1",
+        "field": "alt",
+        "quote": "app on wooden surface with kitchen interior"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "living room",
+      "n": 6,
+      "cites": [
+       {
+        "section": "problem-screens-dual",
+        "field": "right.src",
+        "quote": "arc app living room furniture selection"
+       },
+       {
+        "section": "stats",
+        "field": "items.0.description",
+        "quote": "Average documented value per item: $680 Most common rooms: Living Room, Bedroom, Dining Room"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "bedroom",
+      "n": 3,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.0.description",
+        "quote": "Average documented value per item: $680 Most common rooms: Living Room, Bedroom, Dining Room"
+       },
+       {
+        "section": "stats",
+        "field": "items.2.description",
+        "quote": "Average documented value per item: $580 Most common rooms: Living Room, Hallway, Bedroom"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "dining room",
+      "n": 2,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.0.description",
+        "quote": "Average documented value per item: $680 Most common rooms: Living Room, Bedroom, Dining Room"
+       },
+       {
+        "section": "stats",
+        "field": "items.4.description",
+        "quote": "Average documented value per item: $310 Most common rooms: Kitchen, Bathroom, Dining Room"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "office",
+      "n": 2,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.1.description",
+        "quote": "Average documented value per item: $425 Most common rooms: Office, Living Room, Kitchen"
+       },
+       {
+        "section": "stats",
+        "field": "items.6.description",
+        "quote": "Average documented value per item: $695 Most common rooms: Office, Display areas"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "garage",
+      "n": 2,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.3.description",
+        "quote": "Average documented value per item: $890 Most common rooms: Kitchen, Laundry, Garage"
+       },
+       {
+        "section": "stats",
+        "field": "items.7.description",
+        "quote": "Average documented value per item: $5,000+ Location: Garage, Driveway, Storage"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "bath",
+      "n": 2,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.4.description",
+        "quote": "Average documented value per item: $310 Most common rooms: Kitchen, Bathroom, Dining Room"
+       },
+       {
+        "section": "stats",
+        "field": "items.5.description",
+        "quote": "Average documented value per item: $185 Most common rooms: Bedroom, Living Room, Bathroom"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "entry",
+      "n": 1,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.2.description",
+        "quote": "Average documented value per item: $580 Most common rooms: Living Room, Hallway, Bedroom"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "laundry",
+      "n": 1,
+      "cites": [
+       {
+        "section": "stats",
+        "field": "items.3.description",
+        "quote": "Average documented value per item: $890 Most common rooms: Kitchen, Laundry, Garage"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "big-bend",
+   "title": "West Texas",
+   "subtitle": "Photographs from Big Bend National Park and the desert around Marfa, later used in the Capitan Boot Co. campaign.",
+   "category": "Creative",
+   "href": "/case-studies/big-bend",
+   "year": "2022",
+   "summary": [
+    {
+     "label": "Shot",
+     "value": "Big Bend National Park, U.S. 90, and the desert around Marfa"
+    },
+    {
+     "label": "Subject",
+     "value": "The Chisos Mountains, Santa Elena Canyon, and Prada Marfa"
+    },
+    {
+     "label": "Later",
+     "value": "Used as backdrops in the Capitan Boot Co. campaign"
+    }
+   ],
+   "disciplines": [
+    "Photography",
+    "Landscape",
+    "Personal Work"
+   ],
+   "tools": [
+    "Camera"
+   ],
+   "stats": [],
+   "facets": {
+    "place": [
+     {
+      "facet": "place",
+      "term": "west texas",
+      "n": 27,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "West Texas"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Photographs from Big Bend and the desert around Marfa."
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Big Bend is the largest national park in Texas and one of the least visited in the country."
+       }
+      ]
+     }
+    ],
+    "client": [
+     {
+      "facet": "client",
+      "term": "Capitan Boot Co.",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Personal work that later fed the Capitan Boot Co. campaign."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Used as backdrops in the Capitan Boot Co. campaign"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "img-elena-grid",
+        "field": "alt",
+        "quote": "Santa Elena Canyon studies: the sheer limestone wall beside two frames of the Rio Grande below"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "black-white-type",
+   "title": "Typography & Patterns",
+   "subtitle": "Six patterns, three art prints, zero color. Type as art form, pattern as texture.",
+   "category": "Creative",
+   "href": "/case-studies/black-white-type",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Three lithographs, a twelve-tile pattern library"
+    },
+    {
+     "label": "Scope",
+     "value": "Typography, pattern design, art direction"
+    },
+    {
+     "label": "Tools",
+     "value": "Black ink and white paper. Adobe Illustrator, Photoshop"
+    },
+    {
+     "label": "Angle",
+     "value": "Six elements simple enough for a child to draw. Without color, density does the tonal work and composition is the only variable."
+    }
+   ],
+   "disciplines": [
+    "Typography Design",
+    "Pattern Design",
+    "Art Direction",
+    "Print"
+   ],
+   "tools": [
+    "Adobe Illustrator",
+    "Adobe Photoshop"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Black ink and white paper."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Just black ink, white paper, and six repeating elements simple enough for a child to draw."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "typography patterns the fancy poster wood surface lifestyle"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Typography & Patterns poster on wood surface, expressive letterforms filled with black and white patterns"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "branding-graphics",
+   "title": "Branding, Print & Apparel",
+   "subtitle": "Graphic work. Album covers, gig posters, prints, logos. No single client. No single style. The point is fluency.",
+   "category": "Creative",
+   "href": "/case-studies/branding-graphics",
+   "year": "2008 — 2018",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Four album covers, posters, prints, logos, a storefront window"
+    },
+    {
+     "label": "Scope",
+     "value": "Graphic design, album art, poster and logo design, photo compositing"
+    },
+    {
+     "label": "Tools",
+     "value": "Photoshop, Illustrator, InDesign, film camera, hand-rendering"
+    },
+    {
+     "label": "Angle",
+     "value": "No single client, no single style. Each mark sounds like the client, not the designer. The point is fluency."
+    }
+   ],
+   "disciplines": [
+    "Graphic Design",
+    "Album Art",
+    "Poster Design",
+    "Logo Design",
+    "Photo Compositing"
+   ],
+   "tools": [
+    "Photoshop",
+    "Illustrator",
+    "InDesign",
+    "Camera",
+    "Hand-rendering"
+   ],
+   "stats": [],
+   "facets": {
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "blush",
+      "n": 2,
+      "cites": [
+       {
+        "section": "tree-color-studies",
+        "field": "right.src",
+        "quote": "branding graphics tree print color variations blush wall"
+       },
+       {
+        "section": "tree-color-studies",
+        "field": "right.alt",
+        "quote": "Tree silhouette print color study, three framed prints on blush wall"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 2,
+      "cites": [
+       {
+        "section": "framed-pair-2",
+        "field": "left.src",
+        "quote": "branding graphics cloud ribbons print wood frame"
+       },
+       {
+        "section": "framed-pair-2",
+        "field": "left.alt",
+        "quote": "Cloud and ribbons illustration on dark red background, wood-framed print"
+       }
+      ]
+     }
+    ],
+    "client": [
+     {
+      "facet": "client",
+      "term": "J. Christianson",
+      "n": 1,
+      "cites": [
+       {
+        "section": "mark-j-christianson",
+        "field": "alt",
+        "quote": "J. Christianson logo, four-circle dot mark above engraved serif wordmark"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "capitan-boot-co",
+   "title": "Capitan Boot Co.",
+   "subtitle": "Western branding built to stamp, stitch, and emboss. Logo marks, typography, badges, and apparel graphics for a boot company rooted in heritage craft.",
+   "category": "Creative",
+   "href": "/case-studies/capitan-boot-co",
+   "year": "2018",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign"
+    },
+    {
+     "label": "Scope",
+     "value": "Brand identity, logo system, apparel graphics, photography"
+    },
+    {
+     "label": "Tools",
+     "value": "Illustrator, Photoshop, InDesign, camera. Northwest and Oldman type pairing"
+    },
+    {
+     "label": "Angle",
+     "value": "Marks built to survive the material. Stamp, stitch, emboss, and still read at every scale."
+    }
+   ],
+   "disciplines": [
+    "Brand Identity",
+    "Logo System",
+    "Apparel Graphics",
+    "Photography"
+   ],
+   "tools": [
+    "Illustrator",
+    "Photoshop",
+    "InDesign",
+    "Camera"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Capitan Boot Co.",
+      "n": 16,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campa…"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "west texas",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "sage",
+      "n": 4,
+      "cites": [
+       {
+        "section": "westtexas-buffalo",
+        "field": "src",
+        "quote": "capitan boot co western original buffalo silhouette desert landscape mesa mountains sage brush terrain branding campaign"
+       },
+       {
+        "section": "westtexas-buffalo",
+        "field": "alt",
+        "quote": "Cream buffalo silhouette set over a mesa-and-sage West Texas vista with Western Original arrow flourishes"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 2,
+      "cites": [
+       {
+        "section": "westtexas-buffalo",
+        "field": "alt",
+        "quote": "Cream buffalo silhouette set over a mesa-and-sage West Texas vista with Western Original arrow flourishes"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.0.name",
+        "quote": "Cream"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-subhead",
+        "field": "content",
+        "quote": "Leather takes pressure."
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.description",
+        "quote": "Photography, leather"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "denim",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-subhead",
+        "field": "content",
+        "quote": "Denim takes thread."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Paper, hangtags"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "chalet",
+   "title": "Mountain View Chalet",
+   "subtitle": "1968 Pacific Northwest chalet taken to the studs and rebuilt - exterior, interior, furnishings. Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line.",
+   "category": "Interiors",
+   "href": "/case-studies/chalet",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "1968 PNW chalet rebuilt to the studs. Exterior, interior, furnishings"
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, exterior direction, finish selection, furniture and fixture sourcing"
+    },
+    {
+     "label": "Materials",
+     "value": "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier"
+    },
+    {
+     "label": "Angle",
+     "value": "Cabin bones, mid-century sensibility. The renovation didn't compete with the setting, it framed it. The tree line becomes the loudest design choice."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Exterior Direction",
+    "Finish Selection",
+    "Furniture Curation",
+    "Fixture Sourcing"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Adobe Creative Suite"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 22,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…oom with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific North…"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 15,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 11,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific Northwest tree canopy"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 3,
+      "cites": [
+       {
+        "section": "living-group-two",
+        "field": "right.src",
+        "quote": "chalet living room a frame skylight tufted sofa walnut coffee table leather sling"
+       },
+       {
+        "section": "living-group-two",
+        "field": "right.alt",
+        "quote": "…chalet living room view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 2,
+      "cites": [
+       {
+        "section": "kitchen",
+        "field": "src",
+        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
+       },
+       {
+        "section": "kitchen",
+        "field": "alt",
+        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "living room",
+      "n": 8,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass do…"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "patio",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "New lighting mounted to catch the patio and stairs at night."
+       },
+       {
+        "section": "studs-footnote",
+        "field": "content",
+        "quote": "New lighting mounted to catch the patio and stairs at night."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 3,
+      "cites": [
+       {
+        "section": "living-secondary-hero",
+        "field": "alt",
+        "quote": "…living area with tufted gray sofa, painted stone wall, antlers, walnut leaning ladder shelf, and the kitchen visible to the right"
+       },
+       {
+        "section": "kitchen",
+        "field": "src",
+        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "cosmo-prof",
+   "title": "Cosmo Prof.",
+   "subtitle": "Digital experience for a B2B salon retailer. Elevated photography, simplified navigation, and shoppable components built for working stylists.",
+   "category": "Digital",
+   "href": "/case-studies/cosmo-prof",
+   "year": "2021",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Digital experience for a B2B salon retailer. Homepage, shoppable video, tabbed recommendations, unified templates"
+    },
+    {
+     "label": "Scope",
+     "value": "Creative direction, digital design, photography direction"
+    },
+    {
+     "label": "Tools",
+     "value": "Figma, Sketch, Photoshop"
+    },
+    {
+     "label": "Angle",
+     "value": "Photography led the refresh. Imagery built for the people who use the tools, not photographed for inventory."
+    }
+   ],
+   "disciplines": [
+    "Creative Direction",
+    "Digital Design",
+    "Photography Direction"
+   ],
+   "tools": [
+    "Figma",
+    "Sketch",
+    "Photoshop"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Cosmo Prof",
+      "n": 25,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "cosmo prof photography direction hair color brushes product detail quad composition"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Cosmo Prof photography direction, four-quadrant composition: hair color stroke, color tube detail, product lineup, and Framar appl…"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 4,
+      "cites": [
+       {
+        "section": "photo-carousel",
+        "field": "slides.0.src",
+        "quote": "cosmo prof photography direction maria nila colour masque pink cream splatters"
+       },
+       {
+        "section": "photo-carousel",
+        "field": "slides.0.alt",
+        "quote": "Maria Nila Colour Masque product photography on cream-and-blush ground with splattered pearl droplets framing the jar"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "blush",
+      "n": 2,
+      "cites": [
+       {
+        "section": "photo-carousel",
+        "field": "slides.0.alt",
+        "quote": "Maria Nila Colour Masque product photography on cream-and-blush ground with splattered pearl droplets framing the jar"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.name",
+        "quote": "Blush"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "copper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "photo-carousel",
+        "field": "slides.4.alt",
+        "quote": "Copper hair color stroke applied with brush across a white frame on pink ground, framed by pastel droplets"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Paper, cards"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.2.name",
+        "quote": "Stone"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "dsc",
+   "title": "Dallas Sport Collective",
+   "subtitle": "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",
+   "category": "Digital",
+   "href": "/case-studies/dsc",
+   "year": "2025",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Marketing site, scheduling platform, MCP server (11 tools)"
+    },
+    {
+     "label": "Scope",
+     "value": "Design and full-stack, brand to backend"
+    },
+    {
+     "label": "Stack",
+     "value": "Next.js on Vercel, MCP, OAuth 2.0"
+    },
+    {
+     "label": "Angle",
+     "value": "Enterprise plumbing at gym scale. The AI only ever asks; one deterministic engine makes every booking."
+    }
+   ],
+   "disciplines": [
+    "Web Design",
+    "Product Design",
+    "AI Integration",
+    "Full-Stack Engineering",
+    "AI Scheduling",
+    "MCP Integration",
+    "Brand & Web"
+   ],
+   "tools": [
+    "Next.js",
+    "Vercel",
+    "Model Context Protocol",
+    "OAuth 2.0",
+    "Claude + ChatGPT"
+   ],
+   "stats": [
+    {
+     "value": "100+",
+     "label": "Athletes",
+     "note": "Up from a handful",
+     "section": "stats"
+    },
+    {
+     "value": "11",
+     "label": "MCP tools",
+     "note": "Schedule, trainers, booking",
+     "section": "stats"
+    },
+    {
+     "value": "6",
+     "label": "Trainers",
+     "note": "One shared calendar",
+     "section": "stats"
+    },
+    {
+     "value": "2",
+     "label": "TX locations",
+     "note": "Frisco HQ on the way",
+     "section": "stats"
+    }
+   ],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Dallas Sport Collective",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero-1",
+        "field": "alt",
+        "quote": "The Dallas Sport Collective marketing site open on a laptop, on concrete"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Dallas Sport Collective"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "concrete",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero-1",
+        "field": "alt",
+        "quote": "The Dallas Sport Collective marketing site open on a laptop, on concrete"
+       },
+       {
+        "section": "hero-ai",
+        "field": "alt",
+        "quote": "The DSC scheduler open on a phone, resting on concrete"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.2.name",
+        "quote": "Steel"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.4.name",
+        "quote": "Paper"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "dallas",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ombine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way."
+       },
+       {
+        "section": "marks-materials",
+        "field": "fonts.0.sampleText",
+        "quote": "DALLAS SPORT"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A six-trainer gym in North Texas with a schedule you can talk to."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ombine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way."
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "office",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up."
+       },
+       {
+        "section": "closing",
+        "field": "content",
+        "quote": "The back office became the front door, and all of it connects."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "fairview-entry",
+   "title": "The Fairview: Entry.",
+   "subtitle": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
+   "category": "Interiors",
+   "href": "/case-studies/fairview-entry",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Two-story entry foyer, sized around floor-to-ceiling French ironwork doors"
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, furniture curation, finish selection"
+    },
+    {
+     "label": "Materials",
+     "value": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+    },
+    {
+     "label": "Angle",
+     "value": "Light is the design move first. The first room of the house doesn't get a second chance."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Furniture Curation",
+    "Finish Selection"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Material specification"
+   ],
+   "stats": [],
+   "facets": {
+    "room": [
+     {
+      "facet": "room",
+      "term": "entry",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 13,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 10,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geomet…"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…onwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…onwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A potted palm adds living texture against limestone-cream walls."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the ho…"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wool",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Vintage wool anchors the path."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The entry sits two stories tall, French ironwork glass running floor to ceiling at the center."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "fonts.1.description",
+        "quote": "Steel French doors and matching transom windows define the front of the room."
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A potted palm adds living texture against limestone-cream walls."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "fairview-sitting",
+   "title": "The Fairview: Sitting Room.",
+   "subtitle": "Stacked stone, velvet swivels, antiqued brass. A room built for conversation, a drink, and a fire.",
+   "category": "Interiors",
+   "href": "/case-studies/fairview-sitting",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Sitting room built around a floor-to-ceiling stacked stone fireplace"
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, furniture curation, finish selection"
+    },
+    {
+     "label": "Materials",
+     "value": "Stacked stone, charcoal velvet, antiqued brass, warm oak"
+    },
+    {
+     "label": "Angle",
+     "value": "The fire gets the seat the TV would normally take. A formal room that doesn't feel formal."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Furniture Curation",
+    "Finish Selection"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Material specification"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 25,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "velvet",
+      "n": 23,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar ca…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 23,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Stacked stone, charcoal velvet, antiqued brass, warm oak"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The palette stays tight - stone, velvet, brass, warm oak, no competing colors."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 7,
+      "cites": [
+       {
+        "section": "texture-stone",
+        "field": "src",
+        "quote": "fairview sitting stone wall wood mantel mirror brass candlesticks leather tumbler detail"
+       },
+       {
+        "section": "texture-stone",
+        "field": "alt",
+        "quote": "Detail of the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and bra…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 2,
+      "cites": [
+       {
+        "section": "texture-stone",
+        "field": "src",
+        "quote": "fairview sitting stone wall wood mantel mirror brass candlesticks leather tumbler detail"
+       },
+       {
+        "section": "texture-stone",
+        "field": "alt",
+        "quote": "…the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and brass tumbler"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 2,
+      "cites": [
+       {
+        "section": "conversation-pair",
+        "field": "left.alt",
+        "quote": "…of the round brass coffee table with wood top, olive plant in marble bowl, and the corner of a charcoal velvet swivel against the…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "markAlt",
+        "quote": "…und antiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplace…"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 11,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…view sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, blac…"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.4.name",
+        "quote": "Cream"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "living room",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "The Fairview Sitting Room."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "fairview-suite",
+   "title": "The Fairview: Primary Suite",
+   "subtitle": "Hotel glam in a 600 square foot bedroom. Vaulted ceilings, crystal chandeliers, and charcoal violet walls balanced by floor-to-ceiling views of the property.",
+   "category": "Interiors",
+   "href": "/case-studies/fairview-suite",
+   "year": "2022",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "600 sq ft primary suite and ensuite, vaulted to fourteen feet"
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, finish selection, fixture sourcing, furniture curation"
+    },
+    {
+     "label": "Materials",
+     "value": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+    },
+    {
+     "label": "Angle",
+     "value": "Commits to one mood and follows it through every surface. Glam that earns the square footage."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Finish Selection",
+    "Fixture Sourcing",
+    "Furniture Curation"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Adobe Creative Suite"
+   ],
+   "stats": [],
+   "facets": {
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 17,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 11,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…rd sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone f…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "copper",
+      "n": 10,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ensuite continues through double doors with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub beneath a cryst…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "velvet",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 5,
+      "cites": [
+       {
+        "section": "room-pair",
+        "field": "left.src",
+        "quote": "fairview suite reading nook chair ottoman marble table"
+       },
+       {
+        "section": "room-pair",
+        "field": "left.alt",
+        "quote": "Reading corner, swivel chair with bouclé ottoman, marble pedestal table, charcoal violet walls"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…lé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ery wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the property's tree canopy."
+       },
+       {
+        "section": "room-text",
+        "field": "content",
+        "quote": "…ery vertical surface - a color that shifts between cool and warm depending on the light coming through those steel-framed windows."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…- charcoal violet on every wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the…"
+       },
+       {
+        "section": "room-footnote",
+        "field": "content",
+        "quote": "Exposed wood beams run the ridge line."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "linen",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 1,
+      "cites": [
+       {
+        "section": "room-pair",
+        "field": "right.alt",
+        "quote": "Primary suite, chandelier, cast stone fireplace, faux fur throw, leather slippers"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "ensuite-footnote",
+        "field": "content",
+        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "bedroom",
+      "n": 7,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The bath holds the same temperature the bedroom set."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "bath",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The bath holds the same temperature the bedroom set."
+       },
+       {
+        "section": "ensuite-header",
+        "field": "title",
+        "quote": "The Bath Holds the Same Temperature."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "floor-and-decor",
+   "title": "Floor & Decor Feature",
+   "subtitle": "Designer of the Quarter, Summer 2023. Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile. Featured in the catalog, on the website, and in a video interview.",
+   "category": "Interiors",
+   "href": "/case-studies/floor-and-decor",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Designer of the Quarter, Summer 2023. Hard surface selections across three residential bathrooms. Catalog, website, video interview"
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, material selection, finish coordination"
+    },
+    {
+     "label": "Materials",
+     "value": "Marble, dolomite, white oak, classic tile"
+    },
+    {
+     "label": "Angle",
+     "value": "Material confidence, not material matching. One kit, three rooms that read completely different."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Material Selection",
+    "Finish Coordination"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Adobe Creative Suite"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 26,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 15,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+       },
+       {
+        "section": "directions-subhead",
+        "field": "content",
+        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Marble, dolomite, white oak, classic tile"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+       },
+       {
+        "section": "directions-subhead",
+        "field": "content",
+        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "nickel",
+      "n": 8,
+      "cites": [
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "image",
+        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
+       },
+       {
+        "section": "modern-farmhouse-hero",
+        "field": "alt",
+        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 7,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The focus was hard surfaces, and the projects show how tile and stone anchor everything else."
+       },
+       {
+        "section": "confidence-footnote",
+        "field": "content",
+        "quote": "…selecting materials together rather than sequentially - if a stone and a wood and a metal can hold each other in the moodboard, th…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "confidence-footnote",
+        "field": "content",
+        "quote": "The combinations felt risky on paper but landed perfectly in person."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "modern-farmhouse-details",
+        "field": "left.alt",
+        "quote": "…detail with vertical shiplap, veined marble counter, polished nickel sconces with milk glass globes, vessel sink, and brass mirror"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "bath",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "urban southwest primary bath exposed brick matte black soaking tub"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+       }
+      ]
+     }
+    ],
+    "client": [
+     {
+      "facet": "client",
+      "term": "Floor & Decor",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Floor & Decor Feature"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residenti…"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "hill-country-bath",
+   "title": "Hill Country Primary Bath",
+   "subtitle": "Marble surfaces, warm metal fixtures, and wood ceilings. A 400 square foot bathroom designed to feel collected rather than spec'd.",
+   "category": "Interiors",
+   "href": "/case-studies/hill-country-bath",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "400 sq ft primary bath. Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, fixture sourcing, art selection, furniture curation."
+    },
+    {
+     "label": "Materials",
+     "value": "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling."
+    },
+    {
+     "label": "Angle",
+     "value": "Designed to feel found, not fitted. A room that looks lived in on day one."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Bathroom Design",
+    "Fixture Sourcing",
+    "Art Selection",
+    "Furniture Curation"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Adobe Creative Suite"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 23,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country bath vanity marble globe sconces sage"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "nickel",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 4,
+      "cites": [
+       {
+        "section": "shower-views",
+        "field": "left.src",
+        "quote": "hill country bath shower niche hex tile bench"
+       },
+       {
+        "section": "shower-views",
+        "field": "left.alt",
+        "quote": "Marble shower, recessed niche with hex tile, bench, mixed vertical and horizontal marble"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 3,
+      "cites": [
+       {
+        "section": "vanity-footnote",
+        "field": "content",
+        "quote": "Glass-front uppers on one side for display, solid doors on the other for storage - the asymmetry is deliberate."
+       },
+       {
+        "section": "her-views",
+        "field": "left.src",
+        "quote": "hill country bath her vanity wall glass cabinet sconces"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "clay",
+      "n": 3,
+      "cites": [
+       {
+        "section": "shower-details",
+        "field": "right.src",
+        "quote": "hill country bath detail globe sconce dried botanicals clay"
+       },
+       {
+        "section": "shower-details",
+        "field": "right.alt",
+        "quote": "Detail, polished nickel double globe sconce, dried botanicals in clay pot on marble"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "denim",
+      "n": 2,
+      "cites": [
+       {
+        "section": "his-hero",
+        "field": "alt",
+        "quote": "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces"
+       },
+       {
+        "section": "objects-footnote",
+        "field": "content",
+        "quote": "…grapher arrives is a room where someone actually lives - the denim jacket on the valet stand, the vintage rug fraying at the edge,…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 1,
+      "cites": [
+       {
+        "section": "her-details",
+        "field": "left.alt",
+        "quote": "Detail, ceramic vase with dried botanicals on marble counter, globe sconce casting shadows"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "bath",
+      "n": 21,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country bath vanity marble globe sconces sage"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 13,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country bath vanity marble globe sconces sage"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "sage",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country bath vanity marble globe sconces sage"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "hill-country-kitchen",
+   "title": "Hill Country Kitchen",
+   "subtitle": "A ground-up kitchen built on material tension. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. Four finishes that shouldn't work together until they do.",
+   "category": "Interiors",
+   "href": "/case-studies/hill-country-kitchen",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Ground-up Hill Country kitchen. Cabinetry, island, dining zone, full material spec."
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, space planning, fixture selection, construction documentation."
+    },
+    {
+     "label": "Materials",
+     "value": "Sage green, raw white oak, Calacatta marble, unlacquered brass. Four finishes, every surface."
+    },
+    {
+     "label": "Angle",
+     "value": "Designed the way a product gets designed. Lock the palette to four, let the constraint become the aesthetic."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Kitchen Design",
+    "Material Specification",
+    "Custom Millwork",
+    "Space Planning",
+    "Construction Documentation",
+    "Fixture Selection"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Adobe Creative Suite"
+   ],
+   "stats": [],
+   "facets": {
+    "room": [
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 35,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country kitchen island pendants marble wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "pantry",
+      "n": 9,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.0.content",
+        "quote": "…ng on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
+       },
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…is the same finish - cabinet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms…"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "entry",
+      "n": 1,
+      "cites": [
+       {
+        "section": "island-columns",
+        "field": "columns.1.content",
+        "quote": "It's the first thing visible from the entry."
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 30,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country kitchen island pendants marble wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 23,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 20,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…y, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs."
+       },
+       {
+        "section": "dining-footnote",
+        "field": "content",
+        "quote": "Leather-and-oak safari chairs surround the table."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 5,
+      "cites": [
+       {
+        "section": "material-columns",
+        "field": "columns.0.content",
+        "quote": "…ed floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel,…"
+       },
+       {
+        "section": "cabinet-pair",
+        "field": "left.src",
+        "quote": "hill country kitchen glass cabinet clock marble"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "classification.3",
+        "quote": "Custom Millwork"
+       },
+       {
+        "section": "island-columns",
+        "field": "columns.0.content",
+        "quote": "…with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ofile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolt…"
+       },
+       {
+        "section": "hero-dining",
+        "field": "alt",
+        "quote": "Full kitchen view with dining table, island, sage green cabinetry, steel-frame windows"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "island-columns",
+        "field": "columns.2.content",
+        "quote": "A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invit…"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 21,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country kitchen island pendants marble wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal mea…"
+       },
+       {
+        "section": "hardware-footnote",
+        "field": "content",
+        "quote": "A French mechanism on American shaker cabinets in a Texas kitchen."
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "sage",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "hill-country-living",
+   "title": "Hill Country Residence: Livingroom.",
+   "subtitle": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new. Considered, not curated.",
+   "category": "Interiors",
+   "href": "/case-studies/hill-country-living",
+   "year": "2023",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen."
+    },
+    {
+     "label": "Scope",
+     "value": "Interior design, furniture curation, art selection, fixture sourcing."
+    },
+    {
+     "label": "Materials",
+     "value": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
+    },
+    {
+     "label": "Angle",
+     "value": "Each piece chosen for how it ages, not how it photographs. The room collects rather than coordinates."
+    }
+   ],
+   "disciplines": [
+    "Interior Design",
+    "Furniture Curation",
+    "Art Selection",
+    "Fixture Sourcing"
+   ],
+   "tools": [
+    "AutoCAD",
+    "SketchUp",
+    "Material specification"
+   ],
+   "stats": [],
+   "facets": {
+    "material": [
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 28,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 21,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ving room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed armchairs, leather bench…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 19,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 2,
+      "cites": [
+       {
+        "section": "architectural-hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa open kitchen green cabinets marble pampas architectural"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…pas and textured pillows in the foreground, exposed wood beams overhead, green cabinetry and marble counters in the kitchen behind"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 1,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 1,
+      "cites": [
+       {
+        "section": "collected-armchairs",
+        "field": "left.alt",
+        "quote": "…Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "living room",
+      "n": 4,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "entry",
+      "n": 2,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "left.alt",
+        "quote": "Entry vignette in an adjacent room: leather-strapped oval mirror, wood cutting board on the wall, small framed art, wood console t…"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.3.name",
+        "quote": "Charcoal Tweed"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.0.name",
+        "quote": "Limestone Cream"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "hill-country-oak",
+   "title": "Hill Country Oakworks.",
+   "subtitle": "Campaign for a Texas barrel maker. Sun-washed color, heritage silhouette, land and craft.",
+   "category": "Creative",
+   "href": "/case-studies/hill-country-oak",
+   "year": "2019",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Brand campaign for a Texas barrel maker. One graphic idea sized billboard to phone screen."
+    },
+    {
+     "label": "Scope",
+     "value": "Art direction and campaign design."
+    },
+    {
+     "label": "Tools",
+     "value": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal. Heavy geometric sans, vintage display face."
+    },
+    {
+     "label": "Angle",
+     "value": "Heritage without the cosplay. Mid-century poster language carrying Texas without the Western cliché."
+    }
+   ],
+   "disciplines": [
+    "Art Direction",
+    "Campaign Design"
+   ],
+   "tools": [
+    "Illustrator",
+    "Photoshop",
+    "InDesign"
+   ],
+   "stats": [],
+   "facets": {
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 17,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 11,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal."
+       },
+       {
+        "section": "type-pair",
+        "field": "left.alt",
+        "quote": "Live oak silhouette set against an orange sun on cream textured ground"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal."
+       },
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Texas oak, whiskey barrels, and the landscape that grows both."
+       },
+       {
+        "section": "lang-pair",
+        "field": "left.alt",
+        "quote": "Stylized mid-century landscape with teal sky, white cloud, orange foreground hills, and a live oak silhouette anchoring the right"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Paper, ground"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "ivy-park",
+   "title": "Ivy Park by Beyoncé",
+   "subtitle": "Exclusive US digital launch for Beyoncé's first activewear brand. Full campaign from concept to live in six weeks.",
+   "category": "Creative",
+   "href": "/case-studies/ivy-park",
+   "year": "2016",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Scrolling brand experience, launch emails, social, in-store signage"
+    },
+    {
+     "label": "Scope",
+     "value": "Creative direction, experience design, copywriting"
+    },
+    {
+     "label": "Stack",
+     "value": "Nordstrom CMS, custom components, HTML/CSS/JS"
+    },
+    {
+     "label": "Angle",
+     "value": "Nordstrom held the only US partnership, so the website was the entire launch. One polygon, six weeks, no margin."
+    }
+   ],
+   "disciplines": [
+    "Creative Direction",
+    "Campaign Design",
+    "Experience Design",
+    "Copywriting"
+   ],
+   "tools": [
+    "Nordstrom CMS",
+    "Custom Components",
+    "HTML/CSS/JS"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Ivy Park",
+      "n": 24,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "ivy park nordstrom laptop brand experience mockup"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 12,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "ivy park nordstrom laptop brand experience mockup"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Beyoncé",
+      "n": 6,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Ivy Park by Beyoncé"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "concrete",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+       },
+       {
+        "section": "mobile-hero",
+        "field": "alt",
+        "quote": "Ivy Park mobile experience on iPhone, Courage is Power section, concrete surface"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "office",
+      "n": 1,
+      "cites": [
+       {
+        "section": "closing",
+        "field": "content",
+        "quote": "…ive direction, typography, layout, motion, copy, and rollout happened in a Nordstrom office with a small team and a hard deadline."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "j-christianson",
+   "title": "J. Christianson",
+   "subtitle": "Brand identity for a fashion and home goods label. Name, logo, color system, and signature graphics developed from scratch.",
+   "category": "Creative",
+   "href": "/case-studies/j-christianson",
+   "year": "2019",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Name, four-circle mark, color system, tree graphic, product applications"
+    },
+    {
+     "label": "Scope",
+     "value": "Brand development, naming, logo and graphic design"
+    },
+    {
+     "label": "Tools",
+     "value": "Adobe Illustrator, Adobe Photoshop"
+    },
+    {
+     "label": "Angle",
+     "value": "One mark shifts its palette by context without losing recognition. One tree drawing, four colorways, doing the work of a full product line."
+    }
+   ],
+   "disciplines": [
+    "Brand Development",
+    "Naming",
+    "Logo Design",
+    "Graphic Design",
+    "Product Applications"
+   ],
+   "tools": [
+    "Adobe Illustrator",
+    "Adobe Photoshop"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "J. Christianson",
+      "n": 11,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "J. Christianson"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 1,
+      "cites": [
+       {
+        "section": "storefront-hero",
+        "field": "alt",
+        "quote": "J. Christianson storefront sign mockup, dot grid pattern on wood facade"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "jeffrey-ecommerce",
+   "title": "Jeffrey New York",
+   "subtitle": "First digital flagship for the NYC retailer. Full ecommerce launch - brand system, site architecture, and content engine built from zero.",
+   "category": "Digital",
+   "href": "/case-studies/jeffrey-ecommerce",
+   "year": "2015",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "First digital flagship for the NYC retailer. Brand system, site architecture, content engine, from zero"
+    },
+    {
+     "label": "Scope",
+     "value": "Digital strategy, brand system, ecommerce design, UX architecture"
+    },
+    {
+     "label": "Stack",
+     "value": "Photoshop, Illustrator, Sketch, InVision"
+    },
+    {
+     "label": "Angle",
+     "value": "A flagship, not a storefront. The publishing system shipped before the product templates."
+    }
+   ],
+   "disciplines": [
+    "Digital Strategy",
+    "Brand System",
+    "Ecommerce Design",
+    "UX Architecture"
+   ],
+   "tools": [
+    "Photoshop",
+    "Illustrator",
+    "Sketch",
+    "InVision"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Jeffrey",
+      "n": 20,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "jeffrey new york digital flagship hero"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Jeffrey New York digital flagship hero"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "new york",
+      "n": 15,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "jeffrey new york digital flagship hero"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Jeffrey New York digital flagship hero"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.0.name",
+        "quote": "Charcoal"
+       }
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.name",
+        "quote": "Cream"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "chrome",
+      "n": 1,
+      "cites": [
+       {
+        "section": "pdp-hero",
+        "field": "alt",
+        "quote": "Jeffrey New York product detail page — large imagery, minimal chrome, curated cross-sells"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.1.description",
+        "quote": "Paper, ground"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "jeffrey-spring",
+   "title": "Jeffrey Spring Campaign.",
+   "subtitle": "High fashion on a studio budget. No location shoots. No heavy production. Foliage as architecture, not decoration.",
+   "category": "Creative",
+   "href": "/case-studies/jeffrey-spring",
+   "year": "2017",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Spring campaign across email, homepage, social. Three dress stories: JW Anderson, Valentino, Simone Rocha"
+    },
+    {
+     "label": "Scope",
+     "value": "Art direction, campaign design, email and web templates"
+    },
+    {
+     "label": "Tools",
+     "value": "Photoshop, InDesign, studio photography. Color floods, extreme crops"
+    },
+    {
+     "label": "Angle",
+     "value": "High fashion on a studio budget. Foliage as architecture, not decoration. Scale without a plane ticket."
+    }
+   ],
+   "disciplines": [
+    "Art Direction",
+    "Campaign Design",
+    "Email & Web Templates"
+   ],
+   "tools": [
+    "Photoshop",
+    "InDesign",
+    "Studio photography"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Jeffrey",
+      "n": 23,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "jeffrey spring campaign hero"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Jeffrey Spring Campaign hero"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Valentino",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Three dress stories: JW Anderson, Valentino, Simone Rocha"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha."
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "blush",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "…es bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that w…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.2.name",
+        "quote": "Blush"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Ground, paper"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "new york",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "fonts.0.description",
+        "quote": "Set wide with the Atlanta/New York city tagline at smaller scale alongside."
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "loved-by-nordstrom",
+   "title": "Loved by Nordstrom",
+   "subtitle": "Year-long campaign built on one idea: the Instagram heart as editorial device. A system flexible enough to run across social, email, signage, and web using any asset type.",
+   "category": "Creative",
+   "href": "/case-studies/loved-by-nordstrom",
+   "year": "2017",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Year-long brand campaign. One tile system across social, email, in-store signage, web"
+    },
+    {
+     "label": "Scope",
+     "value": "Creative direction, campaign design, design systems"
+    },
+    {
+     "label": "Tools",
+     "value": "Art direction, photography licensing, editorial systems"
+    },
+    {
+     "label": "Angle",
+     "value": "A heart does what a logo cannot. One borrowed icon, two tiers, any licensed asset."
+    }
+   ],
+   "disciplines": [
+    "Creative Direction",
+    "Campaign Design",
+    "Design Systems"
+   ],
+   "tools": [
+    "Art Direction",
+    "Photography Licensing",
+    "Editorial Systems"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 30,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "loved by nordstrom gallery wall campaign tiles tibi center"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Loved by Nordstrom campaign gallery wall of brand tiles with two TIBI Loved By tiles at center"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 23,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "One tile system across social, email, in-store signage, web"
+       },
+       {
+        "section": "system-header",
+        "field": "title",
+        "quote": "A Tile That Worked As a Container."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 3,
+      "cites": [
+       {
+        "section": "tiles-1",
+        "field": "images.2.alt",
+        "quote": "Liked by Nordstrom tile featuring See by Chloé colorblock leather bag"
+       },
+       {
+        "section": "tiles-2",
+        "field": "images.3.src",
+        "quote": "loved by nordstrom liked by rag and bone leather jacket tile"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "denim",
+      "n": 2,
+      "cites": [
+       {
+        "section": "tiles-2",
+        "field": "images.0.src",
+        "quote": "loved by nordstrom liked by frame denim tile"
+       },
+       {
+        "section": "tiles-2",
+        "field": "images.0.alt",
+        "quote": "Liked by Nordstrom tile featuring Frame denim, black-and-white studio shot"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "neiman-marcus",
+   "title": "Neiman Marcus InSite",
+   "subtitle": "Editorial design for luxury ecommerce. Designer spotlights, seasonal stories, typography as graphic element. Magazine sensibility on a store's budget.",
+   "category": "Creative",
+   "href": "/case-studies/neiman-marcus",
+   "year": "2012",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Designer spotlights, color stories, typographic spreads, ways-to-wear grids"
+    },
+    {
+     "label": "Scope",
+     "value": "Story development, editorial design, photo and art direction, typography"
+    },
+    {
+     "label": "Tools",
+     "value": "Studio photography, Adobe InDesign, Photoshop, Illustrator"
+    },
+    {
+     "label": "Angle",
+     "value": "Make the website feel like a magazine, sell product like a store, don't let either side win. Saturated color replaced a location budget."
+    }
+   ],
+   "disciplines": [
+    "Story Development",
+    "Editorial Design",
+    "Photo Direction",
+    "Art Direction",
+    "Typography"
+   ],
+   "tools": [
+    "Adobe InDesign",
+    "Adobe Photoshop",
+    "Adobe Illustrator"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Neiman Marcus",
+      "n": 50,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "neiman marcus insite contemporary art magazine hands mockup"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Neiman Marcus InSite Contemporary Art magazine spread held in hands"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "denim",
+      "n": 5,
+      "cites": [
+       {
+        "section": "ways-text",
+        "field": "content",
+        "quote": "A black dress with a denim jacket."
+       },
+       {
+        "section": "ways-pair-1",
+        "field": "right.src",
+        "quote": "neiman marcus insite ways to wear black dress denim"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "silk",
+      "n": 5,
+      "cites": [
+       {
+        "section": "ways-text",
+        "field": "content",
+        "quote": "A silk blouse with an ikat sweater."
+       },
+       {
+        "section": "ways-pair-2",
+        "field": "left.src",
+        "quote": "neiman marcus insite ways to wear silk blouse ikat"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 2,
+      "cites": [
+       {
+        "section": "designer-kelly",
+        "field": "alt",
+        "quote": "Neiman Marcus InSite, Kelly Wearstler spotlight with geometric leather skirt"
+       },
+       {
+        "section": "theatrical-pair",
+        "field": "left.alt",
+        "quote": "Neiman Marcus InSite, The Socialite spread with red leather dress and gold serif typography"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 2,
+      "cites": [
+       {
+        "section": "color-text",
+        "field": "content",
+        "quote": "No location budgets, just studio sweeps and seamless paper."
+       },
+       {
+        "section": "type-footnote",
+        "field": "content",
+        "quote": "A quiet story got a quiet silhouette on a flat gray paper sweep, while a loud story got a saturated backdrop and a pose with room…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 2,
+      "cites": [
+       {
+        "section": "laptop-hero",
+        "field": "image",
+        "quote": "neiman marcus insite minimalism laptop steel mockup"
+       },
+       {
+        "section": "laptop-hero",
+        "field": "alt",
+        "quote": "Neiman Marcus InSite Minimalism story on laptop against stainless steel surface"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nordstrom-beauty",
+   "title": "Nordstrom Beauty",
+   "subtitle": "Editorial hub meets product tool. Virtual try-on, shoppable stories, and templates built to stay fresh without manual updates.",
+   "category": "Digital",
+   "href": "/case-studies/nordstrom-beauty",
+   "year": "2018",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Beauty editorial hub, three story templates, virtual try-on tool, shoppable drawer"
+    },
+    {
+     "label": "Scope",
+     "value": "Product, UX, and visual design"
+    },
+    {
+     "label": "Stack",
+     "value": "Nordstrom CMS, custom components, HTML/CSS/JS"
+    },
+    {
+     "label": "Angle",
+     "value": "Built a template that aged better than the content inside it. Editorial that merchandises itself."
+    }
+   ],
+   "disciplines": [
+    "Product Design",
+    "UX Design",
+    "Visual Design",
+    "Editorial Templates"
+   ],
+   "tools": [
+    "Nordstrom CMS",
+    "Custom Components",
+    "HTML/CSS/JS"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 17,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "nordstrom beauty hub laptop homepage mockup"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Nordstrom Beauty hub homepage on laptop, three editorial story cards, stylists section"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nordstrom-framework",
+   "title": "Nordstrom Content Framework",
+   "subtitle": "Content taxonomy built from scratch. Custom typeface, icon set, naming language, and a system that organized everything from homepage to email to dedicated landing pages.",
+   "category": "Digital",
+   "href": "/case-studies/nordstrom-framework",
+   "year": "2016",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Content taxonomy from scratch. Four named buckets, each with its own typographic mark and icon."
+    },
+    {
+     "label": "Scope",
+     "value": "Content strategy, brand design, naming, design systems."
+    },
+    {
+     "label": "Tools",
+     "value": "Custom-sourced typefaces, icon set, naming language. No two lockups share a face."
+    },
+    {
+     "label": "Angle",
+     "value": "Magazine language, not menu language. The framework organized the teams before it ever reached a customer."
+    }
+   ],
+   "disciplines": [
+    "Content Strategy",
+    "Brand Design",
+    "Naming",
+    "Design Systems"
+   ],
+   "tools": [],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 10,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Nordstrom Content Framework applied across the site, custom lockups powering the categorized homepage system"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Nordstrom Content Framework"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "nordstrom-personalization",
+   "title": "Nordstrom Personalization System",
+   "subtitle": "Mass scale, individual feel. A content engine built on three shapes that adapt to user, season, and story.",
+   "category": "Digital",
+   "href": "/case-studies/nordstrom-personalization",
+   "year": "2015",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Content engine on three tile shapes. Square, hero, vertical, resizing across every breakpoint."
+    },
+    {
+     "label": "Scope",
+     "value": "Design systems, art direction, product photography direction."
+    },
+    {
+     "label": "Tools",
+     "value": "Nordstrom CMS, editorial templates, asset library. One asset, multiple applications."
+    },
+    {
+     "label": "Angle",
+     "value": "Personalization that stayed quiet underneath. Strict rules, loose output, mass scale that still looked hand-built."
+    }
+   ],
+   "disciplines": [
+    "Design Systems",
+    "Art Direction",
+    "Product Photography Direction"
+   ],
+   "tools": [
+    "Nordstrom CMS",
+    "Editorial Templates",
+    "Asset Library"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 24,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "nordstrom personalization system design laptop website interface fashion ecommerce floral field outdoor lifestyle"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Nordstrom homepage on a laptop in a field of daisies, showing personalized editorial tile layout with Beauty Queen and 90s Revibe…"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 7,
+      "cites": [
+       {
+        "section": "homepage-supporting",
+        "field": "left.src",
+        "quote": "…om personalization system design mens fashion essentials sunglasses sneakers blazer chinos leather accessories ecommerce lifestyle"
+       },
+       {
+        "section": "homepage-supporting",
+        "field": "right.src",
+        "quote": "nordstrom personalization system design woman model black leather jacket handbag sunglasses heels white studio lifestyle lookbook"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 5,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…om homepage on a laptop in a field of daisies, showing personalized editorial tile layout with Beauty Queen and 90s Revibe stories"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Content engine on three tile shapes."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wool",
+      "n": 1,
+      "cites": [
+       {
+        "section": "products-row-2",
+        "field": "images.0.alt",
+        "quote": "Saint Laurent black wool varsity jacket with white striped trim on white background"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "robert-rodriguez",
+   "title": "Robert Rodriguez x Neiman’s",
+   "subtitle": "Spring Campaign",
+   "category": "Creative",
+   "href": "/case-studies/robert-rodriguez",
+   "year": "2024",
+   "disciplines": [
+    "Art Direction",
+    "Photo Compositing",
+    "Typography Design",
+    "Campaign",
+    "Campaign Design",
+    "Campaign Design Art Direction Photo Compositing"
+   ],
+   "tools": [
+    "Adobe Photoshop",
+    "Adobe Illustrator",
+    "Capture One"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Neiman Marcus",
+      "n": 19,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Robert Rodriguez x Neiman’s"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-store…"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-…"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "…-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "concrete",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "…rcus-robert-rodriguez-woman-yellow-blazer-white-pants-pink-curly-hair-colorful-gradient-overlay-portrait-concrete-wall-gallery.jpg"
+       },
+       {
+        "section": "lookbook-hero",
+        "field": "image",
+        "quote": "…n marcus robert rodriguez woman yellow blazer white pants pink curly hair colorful gradient overlay portrait concrete wall gallery"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "sally",
+   "title": "Sally Beauty Marketing OS",
+   "subtitle": "Five connected platforms that turn competitive intelligence into store-level execution.",
+   "category": "Digital",
+   "href": "/case-studies/sally",
+   "year": "2025",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Five connected platforms. Trends feed, Brand Brain, Asset Hub, ten-tool marketplace."
+    },
+    {
+     "label": "Scope",
+     "value": "Designed, engineered, and deployed all five. AI-assisted throughout."
+    },
+    {
+     "label": "Stack",
+     "value": "Next.js, Supabase, Vercel, Python, Streamlit. Claude, Gemini, Perplexity routed by task."
+    },
+    {
+     "label": "Angle",
+     "value": "One loop, signal to shelf and back. The person building the tools is the person who runs the workflows, so no spec drift."
+    }
+   ],
+   "disciplines": [
+    "Product Management",
+    "Product Design",
+    "Engineering",
+    "AI Strategy",
+    "Engineering (AI-assisted)",
+    "Design System",
+    "Marketing Technology",
+    "Enterprise Tools"
+   ],
+   "tools": [
+    "Claude Opus",
+    "Gemini",
+    "Perplexity Sonar Pro",
+    "Next.js",
+    "Supabase",
+    "Vercel",
+    "Python",
+    "Streamlit",
+    "Claude Code"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Sally Beauty",
+      "n": 7,
+      "cites": [
+       {
+        "section": "hero-1",
+        "field": "alt",
+        "quote": "Sally Beauty Marketing OS, platform overview"
+       },
+       {
+        "section": "meta",
+        "field": "title",
+        "quote": "Sally Beauty Marketing OS"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 1,
+      "cites": [
+       {
+        "section": "trends-heatmap",
+        "field": "competitors.4",
+        "quote": "Nordstrom Rack"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "slug": "sizzle",
+   "title": "Faux Reel",
+   "subtitle": "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
+   "category": "Digital",
+   "href": "/case-studies/sizzle",
+   "year": "2026",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "In a day, with Claude Code"
+    },
+    {
+     "label": "Ships",
+     "value": "React component, a 4.8KB web component, and a GIF/MP4 exporter"
+    },
+    {
+     "label": "Try it",
+     "value": "Section 01 takes your own images. Nothing uploads, nothing saves"
+    }
+   ],
+   "disciplines": [
+    "Motion",
+    "Front-End",
+    "Tooling",
+    "Product Design",
+    "Engineering",
+    "Product"
+   ],
+   "tools": [
+    "React",
+    "TypeScript",
+    "CSS",
+    "Playwright"
+   ],
+   "stats": [
+    {
+     "value": "14",
+     "label": "Transition types",
+     "note": "Wipes, blinks, burn, pinch, and four kinds of type",
+     "section": "file-stats"
+    },
+    {
+     "value": "4.8KB",
+     "label": "Web component",
+     "note": "Gzipped, zero dependencies, any webpage",
+     "section": "file-stats"
+    },
+    {
+     "value": "20fps",
+     "label": "Deterministic export",
+     "note": "131 frames stepped on a frozen clock",
+     "section": "file-stats"
+    },
+    {
+     "value": "0",
+     "label": "Video files",
+     "note": "1.3MB as GIF, 0.2MB as MP4, nothing hosted",
+     "section": "file-stats"
+    }
+   ],
+   "facets": {}
+  },
+  {
+   "slug": "you-by-sally",
+   "title": "You By Sally",
+   "subtitle": "Brand campaign turning hair dye from drugstore aisle to creative decision. Real cast, bold swatches, and a system that holds across every surface.",
+   "category": "Creative",
+   "href": "/case-studies/you-by-sally",
+   "year": "2021",
+   "summary": [
+    {
+     "label": "Built",
+     "value": "Hair color brand campaign. Cast portraits, oversized swatch system, brand kit across every surface."
+    },
+    {
+     "label": "Scope",
+     "value": "Campaign direction, brand system, digital design, retail signage."
+    },
+    {
+     "label": "Tools",
+     "value": "Photoshop, Illustrator, InDesign, studio photography. Avenir Next, pink and cyan."
+    },
+    {
+     "label": "Angle",
+     "value": "Hair color usually sits under fluorescent lights next to the toothpaste. Treat it like a creative decision, not something you grab."
+    }
+   ],
+   "disciplines": [
+    "Campaign Direction",
+    "Brand System",
+    "Digital Design",
+    "Retail Signage"
+   ],
+   "tools": [
+    "Photoshop",
+    "Illustrator",
+    "InDesign",
+    "Studio photography"
+   ],
+   "stats": [],
+   "facets": {
+    "client": [
+     {
+      "facet": "client",
+      "term": "Sally Beauty",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A hair color brand campaign for Sally Beauty."
+       },
+       {
+        "section": "bio-pair",
+        "field": "left.src",
+        "quote": "sally beauty hair color campaign influencer bio"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.3.name",
+        "quote": "Cream"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.3.description",
+        "quote": "Paper, ground"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}
