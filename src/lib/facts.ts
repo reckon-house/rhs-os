@@ -47,7 +47,6 @@ export interface FactProject {
 export interface VoiceLine {
   lead?: string;
   tail?: string;
-  counts?: boolean;
 }
 
 const DB = compact as unknown as {

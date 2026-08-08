@@ -1188,7 +1188,7 @@ function think(q) {
     return {
       say: setLines.contact ||
         "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
-      receipt: "read as: getting in touch  ·  " + ncards.length + " notes  ·  house voice v" + VOICE_VERSION,
+      receipt: "Read as reaching out, answered from the practice notes. No model runs when you ask. Voice v" + VOICE_VERSION + ".",
       workIdx: ncards, pullIdx: [], mailto: true
     };
   }
@@ -1207,9 +1207,9 @@ function think(q) {
     const plan = planFacts(br.target, factLookup(br.target));
     plan.say = "\u201c" + cap(qf) + "\u201d files under " + br.target + " here. " +
       cap(num(plan.workIdx.length)) + " projects carry it.";
-    plan.receipt = "\u201c" + qf + "\u201d read as the " + br.label + " kind, bridged to " +
-      br.target + "  \u00b7  " + plan.workIdx.length + " projects  \u00b7  facts index v" +
-      FACTS.vocabularyVersion;
+    plan.receipt = "\u201c" + qf + "\u201d isn't a word the studies use, so a hand-written bridge reads it as the " +
+      br.label + " kind and routes it to " + br.target + ". The index holds " + plan.workIdx.length +
+      " projects for that. No model runs when you ask. Index v" + FACTS.vocabularyVersion + ".";
     return plan;
   }
 
@@ -1223,8 +1223,8 @@ function think(q) {
       .filter((t) => t !== "texas" && t !== "dallas").map(capWords);
     return {
       say: "Dallas, independent. The placed work runs through " + nameList(names) + ".",
-      receipt: "read as: where  ·  place facts on " + idx.length + " projects  ·  facts index v" +
-        FACTS.vocabularyVersion,
+      receipt: "Read as a where question, answered from the place facts on " + idx.length +
+        " projects. No model runs when you ask. Index v" + FACTS.vocabularyVersion + ".",
       workIdx: [noteIdx(NOTES.findIndex((n) => n[0] === "How I work"))]
         .concat(idx).filter((i) => i != null && i >= 0),
       pullIdx: [], mailto: false
@@ -1234,7 +1234,7 @@ function think(q) {
   if (words.some((w) => WHOAMI.has(w))) {
     return {
       say: "I'm Jeremy Prasatik. The notes below have the rest.",
-      receipt: "read as: about the practice  ·  " + NOTES.length + " notes",
+      receipt: "Read as an about question, answered from the practice notes. No model runs when you ask.",
       workIdx: NOTES.map((n, i) => noteIdx(i)), pullIdx: [], mailto: false
     };
   }
@@ -1296,6 +1296,39 @@ const vary = (q, n) => {
   for (const c of q) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
   return h % n;
 };
+
+/* ── how it works, said plainly ───────────────────────────────────
+   The receipt used to be a parser's list. This is the same trace told
+   as prose, in first person because the whole page is, and every
+   clause of it is TRUE of this build: the index is cut from the case
+   studies at build time, the personal lines live in a voice file, and
+   no model runs at ask time. That last fact is the one worth saying
+   out loud. Looked up, not generated, is WHY the house can speak as
+   me without making things up. */
+const FACET_PLAIN = {
+  material: "a material", colour: "a colour", room: "a room",
+  furniture: "a thing in the photographs", place: "a place",
+  client: "a client", tool: "a tool", discipline: "a discipline",
+};
+function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
+  const bits = [];
+  const qd = "\u201c" + fold(q) + "\u201d";
+  if (and) bits.push(qd + " reads as several facts at once, and every word had to land on the same project.");
+  else if (forked) bits.push(qd + " names more than one thing here, so the fork gets said instead of silently picked.");
+  else bits.push(qd + " reads as " + (FACET_PLAIN[lead] || "a fact") +
+    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed under " + term : "") + ".");
+  bits.push("The index holds " +
+    (w ? w + " project" + (w === 1 ? "" : "s") : "no built project") +
+    (p ? " and " + p + " saved inspiration image" + (p === 1 ? "" : "s") : "") +
+    " for it, counted from the case studies at build time.");
+  if (vl) bits.push("The personal lines are mine, kept in a voice file. The counts are the index's.");
+  if (bridged) bits.push("A hand-written bridge routes the software sense to " + bridged.target + ".");
+  if (dead.length) bits.push("Nothing matched \u201c" + dead.join("\u201d, \u201c") +
+    "\u201d, so " + (dead.length === 1 ? "it was" : "they were") + " set aside.");
+  bits.push("No model runs when you ask. The answer is looked up, checked against the copy rules, and typed. Index v" +
+    (FACTS ? FACTS.vocabularyVersion : "?") + ", voice v" + VOICE_VERSION + ".");
+  return bits.join(" ");
+}
 
 /* Facet-aware composition. The verb belongs to the KIND of fact:
    materials are used, furniture is simply there, clients are names,
@@ -1376,10 +1409,9 @@ function planFacts(q, f) {
   const v = vary(fold(q), 3);
   let say;
   if (vl && w && !f.and) {
-    const countLine = vl.counts === false ? "" :
-      " You can see " + w + " below" +
-      (p ? ", along with " + inspoCount(p) + "." : ".");
-    say = (vl.lead || "") + countLine + (vl.tail ? " " + vl.tail : "");
+    /* his lines carry no counts on purpose: the working beside the
+       answer does the counting, so these sentences never go stale */
+    say = (vl.lead || "") + (vl.tail ? " " + vl.tail : "");
   } else if (forked && w) {
     say = "\u201c" + cap(fold(q)) + "\u201d goes " + num(leadTerms.length) +
       " ways here: " + nameList(leadTerms) + ". " +
@@ -1463,18 +1495,10 @@ function planFacts(q, f) {
   }
 
   say = voice(say);
-
-  const readings = facets.map((fa) =>
-    fa + ": " + [...byFacet[fa].terms]
-      .sort((a, b) => (fold(b) === qRes || fold(b) === qStem ? 1 : 0) -
-                      (fold(a) === qRes || fold(a) === qStem ? 1 : 0))
-      .slice(0, 2).join(", "));
-  const receipt = "“" + fold(q) + "” read as " +
-    (readings.length ? readings.join("  ·  ") : "several facts at once") +
-    "  ·  " + w + (w === 1 ? " project" : " projects") +
-    "  ·  " + p + " saved as inspiration" +
-    "  ·  facts index v" + (FACTS ? FACTS.vocabularyVersion : "?") +
-    "  ·  house voice v" + VOICE_VERSION;
+  const receipt = explain({
+    q, lead, term, w, p, vl, forked, and: f.and,
+    dead: f.dead || [], bridged
+  });
   return { say, receipt, workIdx, pullIdx, mailto: false };
 }
 
@@ -1806,11 +1830,19 @@ function composeAnswer(a) {
   const titles = [...new Set(by.work.map((ci) => cards[ci].title))];
   const allWorks = cards.filter((c) => c.kind === "work").length;
 
-  const bits = a.where.map(([t, f]) => "\u201c" + t + "\u201d in " + f.join(", "));
-  if (a.dead.length) bits.push("nothing for \u201c" + a.dead.join("\u201d, \u201c") + "\u201d");
-  if (a.skipped.length) bits.push("set aside: " + [...new Set(a.skipped)].join(", "));
-  bits.push(total + (total === 1 ? " piece" : " pieces"));
-  const receipt = bits.join("  \u00b7  ");
+  /* the plain-match trace, told as prose like everything else the
+     working says. Being outside the facts vocabulary is worth naming:
+     it explains why this answer reads flatter than the indexed ones. */
+  const sentences = [];
+  if (a.where.length) {
+    sentences.push("Not in the facts vocabulary, so a plain word match ran across every title, description and filename.");
+    sentences.push(a.where.map(([t, f]) =>
+      "\u201c" + t + "\u201d landed in " + f.slice(0, 3).join(", ")).join("; ") + ".");
+  }
+  if (a.dead.length) sentences.push("Nothing matched \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.");
+  if (a.skipped.length) sentences.push("Set aside as common words: " + [...new Set(a.skipped)].join(", ") + ".");
+  sentences.push((total === 1 ? "1 piece" : total + " pieces") + " below. No model runs when you ask.");
+  const receipt = sentences.join(" ");
 
   let say;
   if (!total) {
@@ -1906,8 +1938,9 @@ function buildAnswer() {
       const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
       say = setLines.miss ||
         "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.";
-      receipt = "nothing on file for “" + fold(query) + "”  ·  a comparable hand of " +
-        hand.length + "  ·  house voice v" + VOICE_VERSION;
+      receipt = "Nothing on file for “" + fold(query) + "”, in the work or the saved inspiration. " +
+        "A hand of " + hand.length + " is dealt instead, seeded by the question, so the same ask always deals the same hand. " +
+        "No model runs when you ask. Voice v" + VOICE_VERSION + ".";
     }
   }
 
@@ -1983,7 +2016,7 @@ function buildAnswer() {
   wk.className = "blk working";
   const wtag = document.createElement("span");
   wtag.className = "tag";
-  wtag.textContent = "The working";
+  wtag.textContent = "How it works";
   wk.appendChild(wtag);
   wk.appendChild(document.createTextNode(receipt));
   notesEl.appendChild(wk);

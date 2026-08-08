@@ -12,14 +12,13 @@
  * Keys are matched against the canonical term after aliasing, so a
  * line filed under "marble" also answers "calacatta".
  *
- * `counts: false` suppresses the injected count line, for entries
- * whose own tail already points below.
+ * The counts stay OUT of these sentences by design: the working note
+ * beside the answer carries them, so a line here never goes stale.
  */
 
 export interface VoiceLine {
   lead?: string;
   tail?: string;
-  counts?: boolean;
 }
 
 export const voiceLines: Record<string, VoiceLine> = {
@@ -36,7 +35,6 @@ export const voiceLines: Record<string, VoiceLine> = {
   Nordstrom: {
     lead: "I worked at Nordstrom for 8 years in various creative leadership roles.",
     tail: "The projects below span design systems, editorial content strategy, national brand launches and many others.",
-    counts: false,
   },
 };
 
