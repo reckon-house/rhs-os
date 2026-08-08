@@ -1117,18 +1117,22 @@ function factLookup(q0) {
      the live words — "kitchen island" still narrows to the one
      project with both — and the dead ones get reported, the same
      honesty the matcher has always had. */
-  const words = [...new Set(q.split(" ").map(resolveAlias)
-    .filter((w) => w.length > 2 && !FILLER.has(w) && !STOP.has(w)))];
+  /* raw kept beside resolved: matching runs on the studies' word,
+     the answer quotes the visitor's. Someone who typed "branding"
+     should never be told what "brand" goes as. */
+  const pairsW = [...new Set(q.split(" ")
+    .filter((w) => w.length > 2 && !FILLER.has(w) && !STOP.has(w)))]
+    .map((raw) => ({ raw, res: resolveAlias(raw) }));
   const alive = (w) => FACTS.projects.some((p) => factMatches(p, w).length) ||
     FACTS.pulls.some((p) => {
       for (const facet in p.f) if (p.f[facet].some((t) => namesTerm(t, w))) return true;
       return false;
     });
-  const live = words.filter(alive);
-  const dead = words.filter((w) => !live.includes(w));
+  const live = pairsW.filter((x) => alive(x.res));
+  const dead = pairsW.filter((x) => !live.includes(x)).map((x) => x.raw);
   if (!live.length) return { hits: [], pulls: [], dead: [], and: false };
   if (live.length === 1) {
-    r = seek(live[0]);
+    r = seek(live[0].res);
     /* Half the question died and one word survived. Keep the answer
        only when that word carries a MINED fact — "master bedrooms"
        loses master and still means bedrooms, because bedroom is a
@@ -1140,10 +1144,10 @@ function factLookup(q0) {
       m.facet !== "discipline" && m.facet !== "tool"))) {
       return { hits: [], pulls: [], dead: [], and: false };
     }
-    return { ...r, dead, and: false };
+    return { ...r, dead, key: live[0].raw, and: false };
   }
   const hits = FACTS.projects
-    .map((p) => ({ p, per: live.map((w) => factMatches(p, w)) }))
+    .map((p) => ({ p, per: live.map((x) => factMatches(p, x.res)) }))
     .filter((h) => h.per.every((m) => m.length))
     .map((h) => ({ p: h.p, m: h.per.flat() }));
   return { hits, pulls: [], dead, and: true };
@@ -1205,9 +1209,13 @@ function think(q) {
   const br = senseKey ? senseBridge(senseKey) : null;
   if (br) {
     const plan = planFacts(br.target, factLookup(br.target));
-    plan.say = "\u201c" + cap(qf) + "\u201d files under " + br.target + " here. " +
-      cap(num(plan.workIdx.length)) + " projects carry it.";
-    plan.receipt = "\u201c" + qf + "\u201d isn't a word the studies use, so a hand-written bridge reads it as the " +
+    /* quote the WORD that bridged, not the whole question, and a
+       question-shaped ask still gets its yes when the work backs it */
+    const yes = plan.workIdx.length &&
+      /^(do|does|can|could|did|are|is|have|has|will|would|any)\b/.test(qf);
+    plan.say = (yes ? "Yes. " : "") + "\u201c" + cap(senseKey) + "\u201d files under " +
+      br.target + " here. " + num(plan.workIdx.length) + " projects carry it.";
+    plan.receipt = "\u201c" + senseKey + "\u201d isn't a word the studies use, so a hand-written bridge reads it as the " +
       br.label + " kind and routes it to " + br.target + ". The index holds " + plan.workIdx.length +
       " projects for that. No model runs when you ask. Index v" + FACTS.vocabularyVersion + ".";
     return plan;
@@ -1257,6 +1265,8 @@ const SENSES = {
   developer: ["software", "engineering"],
   engineer: ["software", "engineering"],
   dev: ["software", "engineering"],
+  app: ["app", "engineering"],
+  apps: ["app", "engineering"],
 };
 function senseBridge(qf) {
   const sense = SENSES[qf];
@@ -1366,11 +1376,12 @@ function planFacts(q, f) {
   /* speak the asker's own term when it was matched directly: someone
      who typed "table" gets tables, not the dining table that happened
      to lead the strongest project's list */
-  const qRes = resolveAlias(fold(q));
+  const qKey = f.key || fold(q);
+  const qRes = resolveAlias(qKey);
   const leadTerms = lead ? [...byFacet[lead].terms] : [];
   const qStem = qRes.length > 3 && qRes.endsWith("s") ? qRes.slice(0, -1) : qRes;
   const exact = leadTerms.find((t) => fold(t) === qRes || fold(t) === qStem);
-  const term = exact || leadTerms[0] || fold(q);
+  const term = exact || leadTerms[0] || qKey;
   /* "Development" names two different disciplines here and neither IS
      the word typed. Picking one silently is the index deciding what
      the visitor meant; saying the fork is reasoning they can see. */
@@ -1392,7 +1403,7 @@ function planFacts(q, f) {
      "Shiplap files under wood here" is the same lookup made visible.
      Skipped when the two share a word — "bathroom files under bath"
      explains nothing. */
-  const qf = fold(q);
+  const qf = qKey;
   const aliased = resolveAlias(qf) !== qf &&
     !qf.split(" ").some((wd) => fold(term).split(" ").includes(wd));
   const bridge = aliased ? "“" + cap(qf) + "” files under " + term + " here. " : "";
@@ -1406,14 +1417,14 @@ function planFacts(q, f) {
   const inspoCount = (n) =>
     n === 1 ? "1 inspiration example" : n + " saved as inspiration";
 
-  const v = vary(fold(q), 3);
+  const v = vary(qKey, 3);
   let say;
   if (vl && w && !f.and) {
     /* his lines carry no counts on purpose: the working beside the
        answer does the counting, so these sentences never go stale */
     say = (vl.lead || "") + (vl.tail ? " " + vl.tail : "");
   } else if (forked && w) {
-    say = "\u201c" + cap(fold(q)) + "\u201d goes " + num(leadTerms.length) +
+    say = "\u201c" + cap(qKey) + "\u201d goes " + num(leadTerms.length) +
       " ways here: " + nameList(leadTerms) + ". " +
       cap(num(w)) + (w === 1 ? " project" : " projects") + " between them.";
   } else if (!w) {
@@ -1477,7 +1488,7 @@ function planFacts(q, f) {
     say += " " + nameList(others) +
       (others.length === 1 ? " answers" : " answer") + " it in a different sense.";
   }
-  const bridged = senseBridge(fold(q));
+  const bridged = senseBridge(qKey);
   if (bridged) {
     say += " If you meant the " + bridged.label + " kind, ask for " +
       bridged.target + ". " + cap(num(bridged.hits)) + " projects answer to it.";
@@ -1494,9 +1505,16 @@ function planFacts(q, f) {
     say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
   }
 
+  /* "Do you do branding?" is a yes-or-no question wearing a search.
+     When the work says yes, say yes first: the facts are the proof,
+     not the greeting. Question-shaped asks only, and only when
+     something built answers. */
+  if (w && /^(do|does|can|could|did|are|is|have|has|will|would|any)\b/.test(fold(q))) {
+    say = "Yes. " + say;
+  }
   say = voice(say);
   const receipt = explain({
-    q, lead, term, w, p, vl, forked, and: f.and,
+    q: qKey, lead, term, w, p, vl, forked, and: f.and,
     dead: f.dead || [], bridged
   });
   return { say, receipt, workIdx, pullIdx, mailto: false };

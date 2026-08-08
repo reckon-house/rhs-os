@@ -205,6 +205,17 @@ export const GUARDS = {
   door: ["out the door", "back office", "first build"],
 };
 
+/* The world's word for a service, mapped to the studies' word for
+ * it. A visitor asks "do you do branding?" and the studies answer in
+ * their own diction: Brand Identity, Brand & Web, Brand Development.
+ * Same rule as everything else here: a mapping only ships if its
+ * target is alive in the index, and the build refuses it otherwise. */
+export const QUERY_ALIASES = {
+  branding: "brand",
+  website: "web",
+  websites: "web",
+};
+
 /* A match inside one of these is not a fact about the work — it is a
  * fact about what the work is NOT. "no tile backsplash" and "instead of
  * stainless" both name a material the project deliberately does not

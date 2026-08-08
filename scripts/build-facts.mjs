@@ -19,7 +19,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
-import { terms, NEGATORS, GUARDS, VOCAB_VERSION } from "./lib/vocabulary.mjs";
+import { terms, NEGATORS, GUARDS, QUERY_ALIASES, VOCAB_VERSION } from "./lib/vocabulary.mjs";
 
 const OUT_DIR = "src/data/generated";
 const TERMS = terms();
@@ -318,6 +318,18 @@ writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1))
 const aliases = {};
 for (const { term, surface } of TERMS) {
   if (norm(surface) !== norm(term)) aliases[surface] = term;
+}
+/* service-word aliases ship only if their target answers: a bridge to
+   a dead word would route real questions into silence */
+for (const [ask, target] of Object.entries(QUERY_ALIASES)) {
+  const live = projects.some((p) =>
+    [...p.disciplines, ...p.tools].some((d) =>
+      d.toLowerCase().split(/[^a-z0-9&]+/).includes(target)));
+  if (!live) {
+    console.error(`refusing to write: query alias ${ask} -> ${target} points at nothing`);
+    process.exit(1);
+  }
+  aliases[ask] = target;
 }
 const compact = {
   vocabularyVersion: VOCAB_VERSION,
