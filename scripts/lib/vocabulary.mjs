@@ -44,6 +44,8 @@ export const FACETS = {
     ["silk", []],
     ["denim", []],
     ["clay", []],
+    ["brick", []],
+    ["wallpaper", []],
   ],
 
   /* colours, which in this portfolio behave like materials */
@@ -81,7 +83,7 @@ export const FACETS = {
     ["cabinet", ["cabinetry"]],
     ["window", []],
     ["bench", []],
-    ["rug", []],
+    ["rug", ["runner"]],
     ["island", []],
     ["shelf", ["shelving", "open shelving"]],
     ["tub", []],
@@ -110,6 +112,27 @@ export const FACETS = {
     ["bed", []],
     ["lamp", []],
     ["refrigerator", []],
+  ],
+
+  /* How interior clients actually search. The audit ran 259
+   * visitor-shaped questions and style words were the single largest
+   * miss bucket, 22 of them, because the index knew what things were
+   * made of and never what they looked like.
+   *
+   * Validated like everything else: transitional, rustic, industrial,
+   * coastal, scandinavian, japandi, southwestern, moody and minimalist
+   * are not here because they are not in the work. Two more were cut
+   * after reading them in context: "organic" is always organic color
+   * SHAPES, and "minimal" is "minimal rework" and "minimal chrome". */
+  style: [
+    ["vintage", []],
+    ["mid century", ["midcentury", "mid century modern"]],
+    ["western", []],
+    ["modern", []],
+    ["farmhouse", []],
+    ["antique", []],
+    ["traditional", []],
+    ["eclectic", []],
   ],
 
   /* rooms and the parts of a house */
@@ -224,6 +247,12 @@ export const GUARDS = {
      chalet, so it is not guarded — only the three places the studies
      use a doorway as a figure of speech. */
   door: ["out the door", "back office", "first build"],
+  /* "the most modern of the three" is a comparison, "minimal rework"
+     and "modern building" are prose. The style survives; the adjective
+     doing ordinary work does not. */
+  modern: ["most modern", "rework", "chrome"],
+  /* "Built in 1968" is a date, not joinery */
+  "built-in": ["1968", "19", "20"],
 };
 
 /* The world's word for a service, mapped to the studies' word for
@@ -235,6 +264,16 @@ export const QUERY_ALIASES = {
   branding: "brand",
   website: "web",
   websites: "web",
+  /* from the 259-question audit: words visitors used that the studies
+     do not. Each target is verified alive at build time. */
+  countertops: "counter",
+  sectional: "sofa",
+  "window treatments": "window",
+  remodel: "interior",
+  remodels: "interior",
+  residential: "interior",
+  ux: "product",
+  ui: "product",
 };
 
 /* A match inside one of these is not a fact about the work — it is a

@@ -1064,7 +1064,14 @@ fetch("project-facts.min.json")
 const fold = (s) => s.toLowerCase().replace(/[^a-z0-9&]+/g, " ").trim();
 /* alias values keep their authored casing (neiman → "Neiman Marcus"),
    and everything downstream compares folded, so fold on the way out */
-const resolveAlias = (q) => fold((FACTS && FACTS.aliases && FACTS.aliases[q]) || q);
+const resolveAlias = (q) => {
+  const A = (FACTS && FACTS.aliases) || {};
+  if (A[q]) return fold(A[q]);
+  /* "countertops" has to reach "countertop" before it can reach
+     "counter". One trailing s, nothing shorter than four letters. */
+  if (q.length > 3 && q.endsWith("s") && A[q.slice(0, -1)]) return fold(A[q.slice(0, -1)]);
+  return fold(q);
+};
 /* "dining" names "dining table" the way "interior" names "Interior
    Design": the whole word, never a fragment — "din" reaches nothing */
 const namesTerm = (t, q) => {
@@ -1172,7 +1179,11 @@ function factLookup(q0) {
    plainly, first. */
 const REACH = new Set(("contact email mail reach hire hiring hired inquiry " +
   "inquiries inquire commission collaborate touch talk call available availability").split(" "));
-const WHOAMI = new Set("who about bio yourself jeremy prasatik practice".split(" "));
+/* "who" alone is not an about question: "who inspires you" and "who
+   have you worked with" are questions about other people. The phrase
+   intents above catch those first, and this stays for the real ones. */
+const WHOAMI = new Set(("about bio yourself jeremy prasatik practice resume " +
+  "background experience story").split(" "));
 const WHERE = new Set("where based located location".split(" "));
 const rawWords = (q) => q.toLowerCase().replace(/[^a-z0-9&\s]/g, " ").split(/\s+/).filter(Boolean);
 
@@ -1193,7 +1204,12 @@ function think(q) {
   const words = rawWords(q);
   if (!words.length) return null;
 
-  if (words.some((w) => REACH.has(w))) {
+  /* "Email design" is not a request to be emailed. A reach word sitting
+     next to a craft word is a question about the work, and the facts
+     layer below owns it. */
+  const CRAFT = new Set("design designs system systems template templates work project projects strategy".split(" "));
+  const reachy = words.some((w) => REACH.has(w)) && !words.some((w) => CRAFT.has(w));
+  if (reachy) {
     const ncards = [];
     NOTES.forEach((n, i) => {
       if (n[0] === "Get in touch" || n[0] === "How I work") ncards.push(noteIdx(i));
@@ -1204,6 +1220,73 @@ function think(q) {
         "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
       receipt: "Read as reaching out, answered from the practice notes. No model runs when you ask. Voice v" + VOICE_VERSION + ".",
       workIdx: ncards, pullIdx: [], mailto: true
+    };
+  }
+
+  /* Phrase intents, ahead of the lookup because they are questions
+     about a KIND of thing rather than a term. "Who inspires you" was
+     being answered with the practice notes, because the about intent
+     saw "who" and stopped reading. */
+  const setLines0 = (FACTS && FACTS.voice && FACTS.voice.set) || {};
+  const asks = (re) => re.test(fold(q));
+  if (FACTS && asks(/\b(inspires?|inspiration|influenc|muse)\b/) ||
+      asks(/\bfavou?rite (designer|musician|artist|creative|person)\b/)) {
+    const board = FACTS ? FACTS.pulls.filter((pl) => pl.f && pl.f.muse) : [];
+    const names = [...new Set(board.flatMap((pl) => pl.f.muse.map(([t]) => t)))];
+    if (names.length) {
+      return {
+        say: setLines0.board || "These are things I love and inspired by.",
+        receipt: "Read as an inspiration question, answered from the board's own people and saves. " +
+          "No model runs when you ask.",
+        workIdx: [],
+        pullIdx: FACTS.pulls.map((pl, i) => [pl, i])
+          .filter(([pl]) => Object.keys(pl.f || {}).length)
+          .map(([pl]) => factCard.pull.get(pl.src)).filter((i) => i != null).slice(0, 24),
+        mailto: false
+      };
+    }
+  }
+  if (FACTS && asks(/\b(worked with|clients?|client list|brands?)\b/)) {
+    const withClients = FACTS.projects.filter((pr) => pr.f && pr.f.client);
+    const names = [...new Set(withClients.flatMap((pr) => pr.f.client.map(([t]) => t)))];
+    if (names.length) {
+      return {
+        say: "Names I've worked with: " + nameList(names.slice(0, 6)) + ".",
+        receipt: "Read as a client question, answered from the client facts on the case studies. " +
+          "No model runs when you ask.",
+        workIdx: withClients.map((pr) => factCard.work.get(pr.href)).filter((i) => i != null),
+        pullIdx: [], mailto: false
+      };
+    }
+  }
+  if (FACTS && asks(/\b(what (do you do|services|can you help)|services|disciplines)\b/)) {
+    const all = [...new Set(FACTS.projects.flatMap((pr) => pr.d))];
+    return {
+      say: "Art direction, brand systems, digital design, interiors. Same desk for all of it.",
+      receipt: "Read as a services question. The " + all.length +
+        " disciplines behind that sentence are curated in the case studies themselves. " +
+        "No model runs when you ask.",
+      workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work"),
+      pullIdx: [], mailto: false
+    };
+  }
+  if (FACTS && asks(/\b(tools?|stack|software do you)\b/) && asks(/\b(what|which|your)\b/)) {
+    const tools = [...new Set(FACTS.projects.flatMap((pr) => pr.t))];
+    return {
+      say: "Mostly " + nameList(tools.slice(0, 4)) + ". The rest shows up per project.",
+      receipt: "Read as a tools question, answered from the stack each case study declares. " +
+        "No model runs when you ask.",
+      workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work").slice(0, 8),
+      pullIdx: [], mailto: false
+    };
+  }
+  if (asks(/^(portfolio|best work|recent work|latest|case studies|all work|more work|can i see more)/) ||
+      asks(/\b(see more work|show me (the )?work)\b/)) {
+    return {
+      say: "All of it, in the order I'd walk you through.",
+      receipt: "Read as a show-me-everything question. No model runs when you ask.",
+      workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work"),
+      pullIdx: [], mailto: false
     };
   }
 
@@ -1249,7 +1332,7 @@ function think(q) {
     };
   }
 
-  if (words.some((w) => WHOAMI.has(w))) {
+  if (words.some((w) => WHOAMI.has(w)) || /^who (are|is) (you|jeremy|this)/.test(fold(q))) {
     return {
       say: "I'm Jeremy Prasatik. The notes below have the rest.",
       receipt: "Read as an about question, answered from the practice notes. No model runs when you ask.",
@@ -1287,6 +1370,49 @@ function senseBridge(qf) {
   return r.hits.length ? { label, target, hits: r.hits.length } : null;
 }
 
+/* ── the ask log ───────────────────────────────────────────────────
+   Every question a visitor types, kept so the house can be taught
+   what it failed to answer. This is the loop that made the brain good
+   in the first place, pointed at strangers instead of at one person
+   guessing what strangers would ask.
+
+   WHAT IS KEPT: the question, whether anything answered it, which
+   path answered, and how many frames came back. Nothing else. No
+   identifiers, no session, no fingerprint, and the answer text is not
+   stored because it is reproducible from the question.
+
+   WHAT IS NOT KEPT: anything that looks like a person. The field is
+   free text and people paste things into free text, so a query
+   carrying an email address, a phone number or a long digit run is
+   dropped rather than cleaned. A log that has to be scrubbed later is
+   a log that was collected wrong.
+
+   Fire and forget, after the answer is already on screen: the log can
+   fail, be blocked, or be switched off and the house still answers. */
+const ASK_LOG_URL = "";        /* set in production; empty keeps it local */
+const PII = /[\w.+-]+@[\w-]+\.[a-z]{2,}|\d[\d\s().-]{6,}/i;
+const askSeen = new Set();
+function logAsk(q, outcome) {
+  const query = String(q || "").trim().slice(0, 120);
+  if (!query || PII.test(query)) return;
+  const key = query.toLowerCase();
+  if (askSeen.has(key)) return;    /* one line per question per visit */
+  askSeen.add(key);
+  const row = { q: query, ...outcome, v: VOICE_VERSION };
+  try {
+    const local = JSON.parse(localStorage.getItem("rh.asks") || "[]");
+    local.push({ ...row, t: new Date().toISOString().slice(0, 10) });
+    localStorage.setItem("rh.asks", JSON.stringify(local.slice(-500)));
+  } catch (e) { /* private mode, full disk: never worth an error */ }
+  if (!ASK_LOG_URL || !navigator.sendBeacon) return;
+  try {
+    navigator.sendBeacon(ASK_LOG_URL,
+      new Blob([JSON.stringify(row)], { type: "application/json" }));
+  } catch (e) { /* blocked by a shield, and that is fine */ }
+}
+/* paste in the console to read the log: copy(askLog()) */
+window.askLog = () => JSON.parse(localStorage.getItem("rh.asks") || "[]");
+
 /* ── the house voice ──────────────────────────────────────────────
    A visible stage, not a vibe. The templates below are cut from the
    studies' own measured diction — things sit, carry, live and anchor
@@ -1296,8 +1422,9 @@ function senseBridge(qf) {
    when a title brings its own. It runs on every sentence the house
    speaks, and the working names it, because a pipeline you can show
    is part of the site's own case study. */
-/* 3: the altitude rule — the say explains, the working counts */
-const VOICE_VERSION = 3;
+/* 4: the muse and style facets, the ask log, and the 259-question
+ * audit that drove both */
+const VOICE_VERSION = 4;
 function voice(s) {
   return s
     .replace(/\u2014/g, ", ")
@@ -1331,6 +1458,7 @@ const FACET_PLAIN = {
   furniture: "a thing in the photographs", place: "a place",
   client: "a client", tool: "a tool", discipline: "a discipline",
   muse: "a person I keep on the board",
+  style: "a way the work reads",
 };
 function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
   const bits = [];
@@ -1384,7 +1512,13 @@ function planFacts(q, f) {
   const facets = Object.keys(byFacet).sort((a, b) =>
     (byFacet[b].n - byFacet[a].n) ||
     (FACET_RANK.indexOf(a) - FACET_RANK.indexOf(b)));
-  let lead = facets[0];
+  /* An EXACT term match outranks a facet that merely contains the word.
+     "Dallas" is a place; Dallas Sport Collective is a client whose name
+     happens to hold it, and the client was speaking. */
+  const qExact = resolveAlias(fold(f.key || fold(q)));
+  const exactFacets = facets.filter((fa) =>
+    [...byFacet[fa].terms].some((t) => fold(t) === qExact));
+  let lead = exactFacets[0] || facets[0];
   /* no project answered, so the board is the evidence: the speaking
      facet and term come from the pulls that matched, or "miles davis"
      gets told he is a material that never made it into a project */
@@ -1499,6 +1633,14 @@ function planFacts(q, f) {
       : [capWords(plural(term)) + ": " + nameList(tl) + ".",
          cap(term) + " work shows up all through the below. " + tl[0] + " leads.",
          capWords(plural(term)) + ": " + nameList(tl) + "."][v]);
+  } else if (lead === "style") {
+    /* a style is a read, not a possession: the work leans that way,
+       nobody "has" mid century the way a room has a fireplace */
+    say = bridge + (wl === 1
+      ? tl[0] + " reads " + term + "."
+      : [capWords(term) + " runs through the work below. " + tl[0] + " most of all.",
+         "That read is all over the below. " + tl[0] + " leans furthest into it.",
+         capWords(term) + ": " + nameList(tl.slice(0, 3)) + "."][v]);
   } else if (lead === "place") {
     say = bridge + capWords(term) + " work: " + nameList(tl) + ".";
   } else if (lead === "tool") {
@@ -1510,9 +1652,9 @@ function planFacts(q, f) {
   } else {
     say = wl === 1
       ? "That's " + term + " here. One project carries it: " + tl[0] + "."
-      : ["That's " + term + " here. Everything below carries it.",
-         term + ": the work below.",
-         "The work below sits under " + term + "."][v];
+      : ["That's " + capWords(term) + " here. Everything below carries it.",
+         capWords(term) + ": the work below.",
+         "The work below sits under " + capWords(term) + "."][v];
   }
   /* the projects that matched the word another way, named as such */
   if (!f.and && w && others.length) {
@@ -2085,6 +2227,12 @@ function buildAnswer() {
 
   armReels();
   if (window.armDrift) armDrift(els);
+
+  logAsk(query, {
+    path: plan ? (plan.mailto ? "intent" : "facts") : "matcher",
+    answered: Boolean(leftIdx.length || rightIdx.length || textIdx.length),
+    work: leftIdx.length, board: rightIdx.length
+  });
 
   /* the address becomes a live link once the line is done being
      typed: textContent while the clock runs, one anchor after */

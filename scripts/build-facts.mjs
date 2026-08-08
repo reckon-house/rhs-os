@@ -262,6 +262,23 @@ for (const p of projects) {
   }
 }
 
+/* A query alias only ships if its target actually answers. The first
+   version of this check ran too late AND looked in too few places: it
+   searched disciplines and tools only, so "countertops -> counter"
+   was refused even though counter is a furniture fact, and the
+   refusal landed after the full index had already been written,
+   leaving the two files disagreeing. A gate that fires after a write
+   is not a gate. This one runs beside the citation check, before
+   anything is written, and searches every facet. */
+const deadAliases = [];
+for (const [ask, target] of Object.entries(QUERY_ALIASES)) {
+  const live = projects.some((p) =>
+    [...p.disciplines, ...p.tools].some((d) =>
+      d.toLowerCase().split(/[^a-z0-9&]+/).includes(target)) ||
+    Object.values(p.facets).some((fs) => fs.some((f) => f.term === target)));
+  if (!live) deadAliases.push(`${ask} -> ${target}`);
+}
+
 const lines = [
   `studies read      ${coverage.studies}`,
   `projects indexed  ${projects.length}`,
@@ -272,6 +289,7 @@ const lines = [
   `voice lines       ${Object.keys(voice.terms).length} terms, ${Object.keys(voice.set).length} set pieces`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
+  `query aliases     ${Object.keys(QUERY_ALIASES).length}${deadAliases.length ? " — " + deadAliases.length + " POINT AT NOTHING" : ", every one lands"}`,
   "",
   "facts by facet:",
   ...Object.entries(coverage.facet).sort((a, b) => b[1] - a[1])
@@ -297,6 +315,11 @@ if (bad.length) {
   console.error("\nrefusing to write: citations must be checkable");
   process.exit(1);
 }
+if (deadAliases.length) {
+  console.error("\nrefusing to write: these query aliases point at nothing\n  " +
+    deadAliases.join("\n  "));
+  process.exit(1);
+}
 if (REPORT) process.exit(0);
 
 mkdirSync(OUT_DIR, { recursive: true });
@@ -319,18 +342,7 @@ const aliases = {};
 for (const { term, surface } of TERMS) {
   if (norm(surface) !== norm(term)) aliases[surface] = term;
 }
-/* service-word aliases ship only if their target answers: a bridge to
-   a dead word would route real questions into silence */
-for (const [ask, target] of Object.entries(QUERY_ALIASES)) {
-  const live = projects.some((p) =>
-    [...p.disciplines, ...p.tools].some((d) =>
-      d.toLowerCase().split(/[^a-z0-9&]+/).includes(target)));
-  if (!live) {
-    console.error(`refusing to write: query alias ${ask} -> ${target} points at nothing`);
-    process.exit(1);
-  }
-  aliases[ask] = target;
-}
+for (const [ask, target] of Object.entries(QUERY_ALIASES)) aliases[ask] = target;
 const compact = {
   vocabularyVersion: VOCAB_VERSION,
   aliases,

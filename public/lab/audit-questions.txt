@@ -1,0 +1,295 @@
+# Visitor-shaped questions for auditing the brain.
+#
+# Written as a prospective client, a recruiter, or a curious designer
+# would type them, NOT as someone who knows what the index contains.
+# That is the whole point: the questions the house fails are the ones
+# nobody thought to try.
+#
+# Run with scripts/audit/run.md (browser harness) and turn the flagged
+# rows into voice lines, aliases, or template work.
+# Lines starting with # are comments; blank lines ignored.
+
+# ── services: the money questions ──────────────────────────────────
+do you do branding?
+do you do brand identity?
+do you do logos?
+do you do websites?
+do you build websites?
+do you do web design?
+do you do app design?
+can you build an app?
+do you do product design?
+do you do ux?
+do you do ui design?
+do you do design systems?
+do you do interiors?
+do you do interior design?
+do you do kitchens?
+do you do bathrooms?
+do you do remodels?
+do you do new builds?
+do you do commercial interiors?
+do you do residential?
+do you do photography?
+do you do art direction?
+do you do campaigns?
+do you do packaging?
+do you do print?
+do you do editorial design?
+do you do motion?
+do you do video?
+do you do illustration?
+do you do murals?
+do you do signage?
+do you do ecommerce?
+do you do email design?
+do you do typography?
+do you do pattern design?
+do you do styling?
+do you do furniture?
+do you do lighting design?
+do you do landscape?
+do you do architecture?
+what services do you offer?
+what do you do?
+what can you help with?
+
+# ── materials ──────────────────────────────────────────────────────
+marble
+calacatta
+brass
+unlacquered brass
+oak
+white oak
+walnut
+leather
+velvet
+linen
+wool
+stone
+limestone
+granite
+quartzite
+soapstone
+terrazzo
+concrete
+steel
+glass
+tile
+subway tile
+zellige
+wallpaper
+plaster
+shiplap
+millwork
+copper
+nickel
+chrome
+
+# ── rooms ──────────────────────────────────────────────────────────
+kitchen
+kitchens
+bathroom
+primary bath
+powder room
+bedroom
+master bedroom
+living room
+sitting room
+dining room
+entry
+foyer
+mudroom
+laundry room
+home office
+pantry
+closet
+patio
+porch
+garage
+
+# ── things in the photographs ──────────────────────────────────────
+dining table
+coffee table
+sofa
+sectional
+armchair
+bar stools
+rug
+chandelier
+pendant lighting
+sconces
+mirror
+fireplace
+vanity
+kitchen island
+cabinets
+cabinet hardware
+backsplash
+countertops
+open shelving
+built ins
+artwork
+plants
+window treatments
+curtains
+
+# ── styles: mostly misses, and that is the finding ─────────────────
+modern
+traditional
+transitional
+farmhouse
+modern farmhouse
+mid century
+mid century modern
+minimalist
+maximalist
+rustic
+industrial
+coastal
+scandinavian
+japandi
+western
+southwestern
+eclectic
+vintage
+antique
+moody
+warm minimal
+organic modern
+
+# ── people he keeps ────────────────────────────────────────────────
+jack white
+miles davis
+waylon jennings
+johnny cash
+wes anderson
+dieter rams
+quentin tarantino
+frank lloyd wright
+who inspires you?
+what inspires you?
+who are your influences?
+favorite designer
+favorite musician
+
+# ── clients ────────────────────────────────────────────────────────
+nordstrom
+neiman marcus
+sally beauty
+cosmo prof
+ivy park
+beyonce
+jeffrey
+valentino
+capitan boot co
+floor and decor
+amber shockey
+dallas sport collective
+who have you worked with?
+what brands have you worked with?
+client list
+
+# ── tools ──────────────────────────────────────────────────────────
+figma
+photoshop
+illustrator
+indesign
+after effects
+next.js
+react
+typescript
+supabase
+tailwind
+claude
+ai
+blender
+cinema 4d
+what tools do you use?
+what's your stack?
+
+# ── practical: the questions that decide whether they email ────────
+how much do you charge?
+what are your rates?
+what does a project cost?
+do you have a minimum?
+are you available?
+are you taking new clients?
+how long does a project take?
+what's your timeline?
+where are you based?
+where are you located?
+do you travel?
+do you work remotely?
+do you work with clients outside texas?
+can we set up a call?
+what's your process?
+how do you work?
+do you have a team?
+is it just you?
+do you work with contractors?
+do you do consultations?
+do you offer hourly?
+can I see more work?
+do you have references?
+
+# ── meta ───────────────────────────────────────────────────────────
+who are you?
+about
+about you
+bio
+resume
+experience
+background
+your story
+contact
+email
+get in touch
+hire you
+how do I reach you?
+portfolio
+best work
+favorite project
+recent work
+all work
+latest project
+case studies
+
+# ── places ─────────────────────────────────────────────────────────
+dallas
+texas
+west texas
+hill country
+marfa
+big bend
+new york
+austin
+houston
+frisco
+
+# ── vague and human ────────────────────────────────────────────────
+hi
+hello
+help
+work
+design
+stuff
+show me something
+surprise me
+cool stuff
+something interesting
+your favorite thing
+what should I look at?
+
+# ── true misses: the honest-shrug path ─────────────────────────────
+neon
+skateboards
+boats
+crypto
+restaurant design
+hotel design
+yacht interiors
+wedding invitations
+tattoo design
+album covers
+book covers
