@@ -16,6 +16,8 @@
  * it can only assert what it can point at.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+import { resolve } from "node:path";
 import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
 import { terms, NEGATORS, GUARDS, VOCAB_VERSION } from "./lib/vocabulary.mjs";
 
@@ -133,6 +135,17 @@ function mine(evidence, tally) {
   }
   return [...found.values()].sort((a, b) => b.n - a.n);
 }
+
+/* The about layer rides the same pipeline: authored lines from
+ * src/data/voice-lines.ts, keys folded the same way queries are, so
+ * "Nordstrom" answers "nordstrom" and an alias reaches its line. */
+const vfold = (k) => k.toLowerCase().replace(/[^a-z0-9&]+/g, " ").trim();
+const VLINES = await import(pathToFileURL(resolve("src/data/voice-lines.ts")).href);
+const voice = {
+  terms: Object.fromEntries(
+    Object.entries(VLINES.voiceLines).map(([k, v]) => [vfold(k), v])),
+  set: VLINES.voiceSet,
+};
 
 const projects = [];
 const coverage = { facet: {}, term: {}, negated: 0, guarded: 0, studies: 0 };
@@ -256,6 +269,7 @@ const lines = [
   `structured facts  ${projects.reduce((a, p) => a + p.disciplines.length + p.tools.length, 0)}`,
   `statistics        ${projects.reduce((a, p) => a + p.stats.length, 0)}`,
   `pulls indexed     ${pulls.length} (${pulls.filter((p) => Object.keys(p.facets).length).length} carry facts)`,
+  `voice lines       ${Object.keys(voice.terms).length} terms, ${Object.keys(voice.set).length} set pieces`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
   "",
@@ -286,7 +300,7 @@ if (bad.length) {
 if (REPORT) process.exit(0);
 
 mkdirSync(OUT_DIR, { recursive: true });
-const payload = { vocabularyVersion: VOCAB_VERSION, projects, pulls };
+const payload = { vocabularyVersion: VOCAB_VERSION, voice, projects, pulls };
 writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1));
 
 /* A second, compact file for the client. The full index carries
@@ -308,6 +322,7 @@ for (const { term, surface } of TERMS) {
 const compact = {
   vocabularyVersion: VOCAB_VERSION,
   aliases,
+  voice,
   projects: projects.map((p) => ({
     slug: p.slug, title: p.title, href: p.href, category: p.category,
     year: p.year,

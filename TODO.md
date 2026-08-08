@@ -880,6 +880,13 @@ visual starts in `public/lab/`.)
 
 ## Next
 
+- [ ] **Grow the about layer.** `src/data/voice-lines.ts` holds
+      Jeremy's authored lines (calibration, Aug 2026): marble, table,
+      kitchen, Nordstrom, plus contact/board/miss set pieces. The
+      Nordstrom entry is the pattern for the rest of the resume:
+      Neiman Marcus, Sally Beauty, Jeffrey, Cosmo Prof each deserve a
+      "years and role" lead. One entry per term, npm run facts, done.
+
 - [ ] **Rename the seven hash-named pulls.** Their alt text is written
       now, but the FILENAMES are still content hashes, so they miss the
       keyword layer every other pull gets from its SEO filename. Renaming

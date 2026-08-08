@@ -1,5 +1,29 @@
 {
  "vocabularyVersion": 2,
+ "voice": {
+  "terms": {
+   "marble": {
+    "lead": "There are a number of projects using marble, as both an accent and a main surface texture.",
+    "tail": "It's one of my favorite surfaces and actually more durable and not as expensive as some might think."
+   },
+   "table": {
+    "lead": "Tables - a multipurpose anchor of many rooms - have been hand picked throughout my interior projects."
+   },
+   "kitchen": {
+    "lead": "The kitchen is the heart of the home and one of my favorite projects to work on."
+   },
+   "nordstrom": {
+    "lead": "I worked at Nordstrom for 8 years in various creative leadership roles.",
+    "tail": "The projects below span design systems, editorial content strategy, national brand launches and many others.",
+    "counts": false
+   }
+  },
+  "set": {
+   "contact": "Here's a few ways to get in touch with me. If you have a potential project or just want to chat, I would love to introduce myself and talk. hello@reckon.house.",
+   "board": "These are things I love and inspired by.",
+   "miss": "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable."
+  }
+ },
  "projects": [
   {
    "slug": "amber-shockey-co",

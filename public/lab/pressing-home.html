@@ -1184,9 +1184,11 @@ function think(q) {
     NOTES.forEach((n, i) => {
       if (n[0] === "Get in touch" || n[0] === "How I work") ncards.push(noteIdx(i));
     });
+    const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
     return {
-      say: "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
-      receipt: "read as: getting in touch  ·  " + ncards.length + " notes",
+      say: setLines.contact ||
+        "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
+      receipt: "read as: getting in touch  ·  " + ncards.length + " notes  ·  house voice v" + VOICE_VERSION,
       workIdx: ncards, pullIdx: [], mailto: true
     };
   }
@@ -1274,7 +1276,7 @@ function senseBridge(qf) {
    when a title brings its own. It runs on every sentence the house
    speaks, and the working names it, because a pipeline you can show
    is part of the site's own case study. */
-const VOICE_VERSION = 1;
+const VOICE_VERSION = 2;
 function voice(s) {
   return s
     .replace(/\u2014/g, ", ")
@@ -1362,15 +1364,29 @@ function planFacts(q, f) {
     !qf.split(" ").some((wd) => fold(term).split(" ").includes(wd));
   const bridge = aliased ? "“" + cap(qf) + "” files under " + term + " here. " : "";
 
+  /* The about layer: an authored line for this term, quoted from the
+     calibration file. When one exists it LEADS, the index injects the
+     live counts mid-sentence, and the tail closes personal. The index
+     never writes his opinions; he never has to remember his counts. */
+  const vTerms = (FACTS && FACTS.voice && FACTS.voice.terms) || {};
+  const vl = vTerms[qRes] || vTerms[fold(term)];
+  const inspoCount = (n) =>
+    n === 1 ? "1 inspiration example" : n + " saved as inspiration";
+
   const v = vary(fold(q), 3);
   let say;
-  if (forked && w) {
+  if (vl && w && !f.and) {
+    const countLine = vl.counts === false ? "" :
+      " You can see " + w + " below" +
+      (p ? ", along with " + inspoCount(p) + "." : ".");
+    say = (vl.lead || "") + countLine + (vl.tail ? " " + vl.tail : "");
+  } else if (forked && w) {
     say = "\u201c" + cap(fold(q)) + "\u201d goes " + num(leadTerms.length) +
       " ways here: " + nameList(leadTerms) + ". " +
       cap(num(w)) + (w === 1 ? " project" : " projects") + " between them.";
   } else if (!w) {
-    say = "Nothing shipped answers that yet. The board does" +
-      (p === 1 ? ", once." : ", " + num(p) + " times over.");
+    say = "Haven't worked that into a project yet, but " +
+      (p === 1 ? "1 inspiration example is below." : num(p) + " below are saved as inspiration.");
   } else if (f.and) {
     /* two Hill Country studies share a display title, and "two
        projects: Hill Country home" reads as a miscount; "among them"
@@ -1434,12 +1450,14 @@ function planFacts(q, f) {
     say += " If you meant the " + bridged.label + " kind, ask for " +
       bridged.target + ". " + cap(num(bridged.hits)) + " projects answer to it.";
   }
-  /* The board is VISIBLE on the right now, so the old rider restated
-     what the eye already had, on every answer, in the same words.
-     That is the formula tell. One short line, only when the board
-     answered more than once, in the studies' own "the rest" register. */
-  if (w && p > 1) say += [" The rest is on the board.",
-    " The board carries the rest.", " The rest sits on the board."][v];
+  /* the calibration's own register for the right-hand column:
+     "saved as inspiration", "inspiration example". Voice-led answers
+     already counted it in their count line. */
+  if (w && p && !vl) {
+    say += p === 1 ? " Plus 1 inspiration example below."
+      : p === 2 ? " A couple below are saved as inspiration."
+      : " " + num(p) + " below are saved as inspiration.";
+  }
   if (f.dead && f.dead.length && (w || p)) {
     say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
   }
@@ -1454,7 +1472,7 @@ function planFacts(q, f) {
   const receipt = "“" + fold(q) + "” read as " +
     (readings.length ? readings.join("  ·  ") : "several facts at once") +
     "  ·  " + w + (w === 1 ? " project" : " projects") +
-    "  ·  " + p + (p === 1 ? " pull" : " pulls") +
+    "  ·  " + p + " saved as inspiration" +
     "  ·  facts index v" + (FACTS ? FACTS.vocabularyVersion : "?") +
     "  ·  house voice v" + VOICE_VERSION;
   return { say, receipt, workIdx, pullIdx, mailto: false };
@@ -1766,9 +1784,10 @@ function cancelAsk() {
    speaks as Jeremy because the case studies do. House copy rules
    apply to the machine's copy too: contractions, short sentences,
    and no em dashes anywhere. */
-const NUMWORD = ["no", "one", "two", "three", "four", "five", "six",
-  "seven", "eight", "nine"];
-const num = (n) => (n < 10 ? NUMWORD[n] : String(n));
+/* Counts are typed as digits. The studies lean words for small
+   numbers, but the calibration overruled the corpus: "if we do a
+   count we would type the number - 12." His call. */
+const num = (n) => String(n);
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
 function composeAnswer(a) {
@@ -1799,7 +1818,8 @@ function composeAnswer(a) {
   } else if (w >= allWorks) {
     say = "All " + w + " projects, in the order I'd walk you through them.";
   } else if (hit.some((t) => t.startsWith("inspir"))) {
-    say = "The board is the honest answer. These are the things I keep coming back to.";
+    say = (typeof FACTS !== "undefined" && FACTS && FACTS.voice && FACTS.voice.set.board) ||
+      "These are things I love and inspired by.";
   } else if (w && p) {
     /* when the query IS a project's name, "I've used west texas in
        West Texas" is what the template says. Say the obvious thing
@@ -1813,7 +1833,7 @@ function composeAnswer(a) {
         : titles.length === 2
           ? "I've used " + key + " in " + titles[0] + " and " + titles[1] + "."
           : "I've used " + key + " in " + num(w) + " projects, " + titles[0] + " among them.";
-    say = lead + " There's more of it in the things I keep, below.";
+    say = lead + " A couple below are saved as inspiration.";
   } else if (w) {
     say = titles.length === 1
       ? (w === 1 ? "That's " + titles[0] + ". It's below."
@@ -1822,8 +1842,8 @@ function composeAnswer(a) {
         ? "That's " + titles[0] + " and " + titles[1] + ". Both below."
         : cap(num(w)) + " projects answer to that. They're below.";
   } else if (p) {
-    say = "No shipped project answers to " + key + " yet, but it's in the things I keep. " +
-      (p === 1 ? "One pull below." : cap(num(p)) + " pulls below.");
+    say = "Haven't worked " + key + " into a project yet, but " +
+      (p === 1 ? "1 inspiration example is below." : num(p) + " below are saved as inspiration.");
   } else {
     say = "That's a practice question. The notes below have it.";
   }
@@ -1872,6 +1892,23 @@ function buildAnswer() {
       .forEach((ci) => route(ci, leftIdx));
     const spoken = composeAnswer(a);
     say = spoken.say; receipt = spoken.receipt;
+    if (!leftIdx.length && !textIdx.length && query.trim()) {
+      /* The neon answer, from the calibration: an honest miss, then a
+         hand of the work that might be comparable. "Might" is doing
+         real work in that sentence. No similarity is computed and
+         none is claimed; the hedge is what keeps the offer honest.
+         The hand is seeded by the question, so the same miss always
+         deals the same six. */
+      const workAll = cards.map((c, i) => i).filter((i) => cards[i].kind === "work");
+      const r2 = mkRnd(4000 + vary(fold(query), 9973));
+      const hand = [...workAll].sort(() => r2() - 0.5).slice(0, 6).sort((x, y) => x - y);
+      hand.forEach((ci) => leftIdx.push(ci));
+      const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
+      say = setLines.miss ||
+        "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.";
+      receipt = "nothing on file for “" + fold(query) + "”  ·  a comparable hand of " +
+        hand.length + "  ·  house voice v" + VOICE_VERSION;
+    }
   }
 
   /* THE RING'S OWN ROWS. While both registers hold cards, a row is

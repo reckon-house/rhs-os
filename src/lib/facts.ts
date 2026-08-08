@@ -41,15 +41,27 @@ export interface FactProject {
   s: [string, string][];
 }
 
+/** An authored line from src/data/voice-lines.ts — the about layer.
+ *  Quoted from Jeremy, never generated; the composer leads with it
+ *  and lets the index supply the counts. */
+export interface VoiceLine {
+  lead?: string;
+  tail?: string;
+  counts?: boolean;
+}
+
 const DB = compact as unknown as {
   vocabularyVersion: number;
   /** surface form → canonical term, e.g. bathroom → bath, marfa → west texas */
   aliases: Record<string, string>;
+  voice: { terms: Record<string, VoiceLine>; set: Record<string, string> };
   projects: FactProject[];
   pulls: Pull[];
 };
 
 export const projects: FactProject[] = DB.projects;
+export const voiceTerms = DB.voice?.terms ?? {};
+export const voiceSet = DB.voice?.set ?? {};
 export const pulls: Pull[] = DB.pulls ?? [];
 export const vocabularyVersion = DB.vocabularyVersion;
 
