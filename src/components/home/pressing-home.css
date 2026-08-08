@@ -282,15 +282,27 @@
      air top and bottom, and the inset stops being uniform. */
   .ptstack { position: absolute; inset: 0; padding: var(--gut);
     display: flex; flex-direction: column; justify-content: center; }
+  /* NEVER `transform: none`. A line resting at none has no transform,
+     so Chrome discards its compositing layer and re-rasterises the
+     glyphs at different subpixel positions — which reads, unmistakably,
+     as the type changing weight the instant it lands. The measured
+     values never move (same font, same 500, same width to the
+     hundredth of a pixel); only the rasterisation does. An identity
+     translate3d keeps the layer for the whole sequence, so the text is
+     drawn one way from first frame to last. */
   .ptl { display: block; white-space: nowrap;
     font-size: clamp(20px, 2.6vw, 38px); font-weight: 500;
     line-height: var(--ptlh, 1.18); letter-spacing: -0.02em;
-    opacity: 0; transform: translateY(14px);
+    -webkit-font-smoothing: antialiased;
+    opacity: 0; transform: translate3d(0, 14px, 0);
     transition: opacity 0.3s ease,
       transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--d, 0s); }
-  .pt-1 .ptl { opacity: 1; transform: none; }
-  .pt-3 .ptl { opacity: 0; transform: translateY(-10px);
+  /* declared only while the sequence runs, so 38 layers are not held
+     for the life of the page */
+  .pt-run .ptl { will-change: transform, opacity; }
+  .pt-1 .ptl { opacity: 1; transform: translate3d(0, 0, 0); }
+  .pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0);
     transition-duration: 0.22s, 0.24s; }
   .ptw .ptl { color: var(--ink); }
   .ptw .ptl .sub { color: rgba(0, 0, 0, 0.42); }
