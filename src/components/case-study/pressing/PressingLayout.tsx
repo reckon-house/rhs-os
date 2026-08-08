@@ -11,6 +11,8 @@ import { PressingCrossing } from "./PressingCrossing";
 import { PressingQuote } from "./PressingQuote";
 import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
+import { PressingVizFrame } from "./PressingVizFrame";
+import { SectionRenderer } from "../SectionRenderer";
 
 /* ── PressingLayout ─────────────────────────────────────────────────
    Renders a study whose style is "pressing" in the Pressing C language.
@@ -37,6 +39,23 @@ const INDEX_REEL_IMAGES = [
   `${RR}/neiman-marcus-robert-rodriguez-woman-curly-blonde-hair-yellow-blazer-coral-pink-top-red-lipstick-studio-portrait.jpg`,
 ];
 const INDEX_REEL_COLORS = ["#E0552F", "#F09A3E", "#E8637A", "#F5EAE7", "#241C18"];
+
+// Classic viz sections that keep their engineering showpieces in a
+// pressing study, hosted as-is inside PressingVizFrame on the page's
+// paper. The type→component mapping stays SectionRenderer's — one source
+// of truth, the classic renderer untouched — at no new bundle cost:
+// CaseStudyLayout already ships SectionRenderer in this chunk.
+const VIZ_TYPES = new Set<Section["type"]>([
+  "dev-timeline",
+  "system-architecture",
+  "stats-bar",
+  "coverage-chart",
+  "speed-comparison",
+  "feature-cards",
+  "pipeline",
+  "brand-system",
+  "text-right",
+]);
 
 /**
  * Intrinsic size from the image-dimensions manifest. Load-bearing for the
@@ -256,6 +275,17 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           reelImages={INDEX_REEL_IMAGES}
           reelColors={INDEX_REEL_COLORS}
         />
+      );
+      i += 1;
+      continue;
+    }
+
+    // ── Classic viz sections, hosted in the pressing frame ──
+    if (VIZ_TYPES.has(s.type)) {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <SectionRenderer section={s} />
+        </PressingVizFrame>
       );
       i += 1;
       continue;

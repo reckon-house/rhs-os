@@ -1,0 +1,68 @@
+/*
+  PressingVizFrame — the bridge section that hosts a CLASSIC viz component
+  (dev-timeline, system-architecture, the arc charts) inside a pressing
+  study. The frame speaks pressing; the hosted child speaks classic,
+  untouched.
+
+  No background here, ever: the pressing article already paints --pp-paper
+  across the whole viewport behind every section, and the viz sits on that
+  paper directly — no tinted container, no surface-alt mat.
+
+  NEVER overflow (hidden, auto, or clip) on these boxes, and no transform
+  or filter either. The hosted charts carry their own horizontal scrollers
+  (overflow-x-auto around a min-w-[800px] canvas, with
+  data-lenis-prevent-touch so a touch drag pans the chart instead of the
+  page) and some bleed that scroller with negative margins (-mx-4). A
+  clipping frame would cut those off; restating the scroller here would
+  nest two scroll containers; a transform/filter would kill sticky for the
+  page (the invariant in PRESSING.md §6). The frame stays PLAIN FLOW — it
+  owns spacing and the mark row, nothing else.
+
+  Spacing is the family's, not invented: 12dvh is RRSystemIndex's .index
+  top rhythm, 48px the brief family's base block padding. dvh, never vh —
+  the shell is h-dvh and 100vh overreaches by the mobile browser-chrome
+  delta.
+*/
+.frame {
+  padding: 12dvh 20px 48px;
+}
+/* Horizontal gutters come from <main> (md:px-[50px]) at md+, so the
+   section adds none of its own — the same split PressingBrief makes. In
+   the 761–767 band the base 20px still applies, which is correct: the
+   desktop layout is active but main's md gutter is not, so the section
+   supplies the page's mat itself there. */
+@media (min-width: 768px) {
+  .frame {
+    padding: 12dvh 0 48px;
+  }
+}
+
+/* The mark sits on the page's left rule. The gap below it is the method
+   grid's clamp(34px, 5dvh, 62px) — the family's section-opening gap. */
+.labelRow {
+  margin-bottom: clamp(34px, 5dvh, 62px);
+}
+
+/* The hosted component keeps its classic voice. The .pressing scope
+   switches the inherited family to Helvetica, but these components were
+   designed against the site body stack: their SVG text pins Satoshi
+   inline while the HTML labels around it inherit — without this
+   restatement a single chart renders in two families. */
+.body {
+  font-family: 'Satoshi', system-ui, sans-serif;
+}
+
+/* Phones: choreography is off page-wide below 760 (CHOREO_BREAKPOINT),
+   but nothing here moves at any width — the static state IS the design,
+   so no behaviour switches off and no contract halves. 10dvh sits between
+   the brief's 30px and the index's 15dvh mobile tops: the mark is in
+   flow here, not parked absolute inside the padding, so the index's full
+   reserve reads as a hole. 26px is the brief's mobile column gap. */
+@media (max-width: 760px) {
+  .frame {
+    padding: 10dvh 20px 30px;
+  }
+  .labelRow {
+    margin-bottom: 26px;
+  }
+}
