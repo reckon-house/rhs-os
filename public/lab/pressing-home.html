@@ -401,11 +401,12 @@
        taller than the viewport cannot pin — the bottom simply never
        arrives. At 7.5vw the five blocks ran 915px against a 900px
        window and the filter was being cut off.
-       vh is the honest unit here: the gap now shrinks on a short
-       laptop instead of pushing the last block off the screen, and
-       the blocks still read as separate statements rather than a
-       list. */
-    gap: clamp(24px, 4vh, 48px); }
+       vh is the honest unit here: 60px is the ceiling and it holds
+       from roughly 860px of window upward, so this reads as a flat 60
+       on any normal screen. Below that it shrinks rather than pushing
+       the last block off the bottom, which is the one thing a pinned
+       column must never do. */
+    gap: clamp(28px, 7vh, 60px); }
   .ixnotes .blk { font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
   .ixnotes .blk .tag { display: block; font-size: var(--lbl);
