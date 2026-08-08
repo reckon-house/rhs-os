@@ -880,6 +880,27 @@ visual starts in `public/lab/`.)
 
 ## Next
 
+- [ ] **Work the voice-line drafts.** `src/data/voice-lines.DRAFTS.md`
+      holds the priority list from the 259-question audit, tiered.
+      Tier 1 (rates, availability, process) is 13 audit questions that
+      currently shrug and is the highest-value writing in the system.
+      The build does not read that file; a line ships only when it
+      moves into voice-lines.ts.
+
+- [ ] **Point the ask log at an endpoint before launch.** `ASK_LOG_URL`
+      in the lab is empty, so the log is localStorage-only (read it
+      with `askLog()` in the console). Production needs one URL: a
+      Next route handler writing to Supabase, or Vercel Analytics
+      custom events. The PII drop and the dedupe are already in the
+      client, so the endpoint just stores rows.
+
+- [ ] **Re-run the audit after any brain change.** Corpus lives at
+      `public/lab/audit-questions.txt`, 259 questions. Load the lab
+      and run the fetch-and-think harness. Baseline: 42% missed →
+      29% missed, zero altitude violations, zero em dashes. Extracting
+      think() into a module would make this CI-able instead of
+      browser-only, and would serve the React port at the same time.
+
 - [ ] **Grow the about layer.** `src/data/voice-lines.ts` holds
       Jeremy's authored lines (calibration, Aug 2026): marble, table,
       kitchen, Nordstrom, plus contact/board/miss set pieces. The
