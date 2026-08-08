@@ -19,7 +19,7 @@ visual starts in `public/lab/`.)
       types. `PressingVizFrame` bridge so the charts survive in pressing
       chrome. All images survive; copy takes the allocation pass.
 
-- [ ] **Homepage v21: the field types.** The question moved INTO the masthead,
+- [ ] **Homepage v22: the house speaks.** The question moved INTO the masthead,
       so the site keeps exactly one piece of persistent chrome and the
       burn pill stays the thing behind it. Work / Info / Staples became
       queries instead of links, riding the vocabulary rotation with
@@ -142,6 +142,50 @@ visual starts in `public/lab/`.)
       edge and the internal left alignment is kept — a right-positioned
       text block rather than right-aligned text. Deliberate: the
       alternative snaps.
+
+      v22: the answer is a SENTENCE, not a receipt list. composeAnswer()
+      writes first-person prose from the matcher's output and it types
+      itself out at statement scale, caret and all; the mechanical
+      receipts survive as one quiet line underneath. Every clause is
+      still derived — counts, kinds, PROJECT NAMES, dead words — so the
+      honesty rule holds in a human register: "I've used marble in
+      Hill Country home more than once. There's more of it in the
+      things I keep, below." House copy rules apply to machine copy:
+      contractions, short sentences, no em dashes. Titles repeat
+      across the portfolio, so names are DISTINCT titles and
+      repetition says "more than once" (never "Hill Country home and
+      Hill Country home").
+
+      The tour became five short statements (plus All work at rest):
+      Interior projects / App development / Kitchen design / What
+      inspires you? / Marble surfaces.
+
+      Three matcher findings, all from probing every tour entry:
+      1. TIER FLOOD. "Kitchen design" returned 36 cards: the thin-top
+         rule extended with EVERY near-miss and "design" sits in half
+         the categories. Thin now extends only with cards that caught
+         the RAREST live word (five cards say kitchen, thirty say
+         design, so kitchen carries the meaning). 36 → 4 with 32 held.
+      2. "inspires" does NOT substring "inspiration" (the e breaks
+         it). The pulls' what-it-is field now says "what inspires me",
+         so the question lands on all 104 pulls honestly.
+      3. FILENAME REGRESSION. "marble" lost its two works when the
+         live-order sync swapped case-study heroes for the square hp/
+         thumbnails: the old SEO filenames WERE the keyword layer
+         (island-pendants-marble-wide, vanity-marble-globe-sconces).
+         Recovered from the v3 snapshot as a "the images" field on 29
+         of 31 rows; marble's works came back, and west texas gained
+         two projects whose heroes name it.
+
+      NEXT (agreed direction): the facts pass. The case studies are
+      already a database — 29 typed section files. An extraction walks
+      src/data/*-case-study.ts and emits per-project facts (materials,
+      rooms, disciplines, tools, stats with real numbers, places) into
+      a generated JSON the composer cites by name. Flat JSON first:
+      versioned, SSR-honest, zero infra, instant client-side at this
+      corpus size. Supabase (already planned for the site) is where it
+      goes when it needs writes or scale; embeddings slot into
+      queryMatches without touching the interaction.
 
       v21.1: the quote marks came off, and focus greys the line.
 

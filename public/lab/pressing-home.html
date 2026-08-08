@@ -657,20 +657,24 @@
   body.asked .stratum { display: none; }
 
   .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut) clamp(18px, 3dvh, 32px); }
-  /* the transcript: the matcher reporting source by source, one line
-     at a time, each line landing WITH its cards. The lines are the
-     receipts it was already producing — sequenced now, not summarised. */
-  .anslog { max-width: 90ch; line-height: 1.8; font-size: var(--lbl);
-    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
-  .anslog .lg { opacity: 0; transform: translateY(7px);
-    transition: opacity 0.32s ease, transform 0.32s ease; }
-  .anslog .lg.on { opacity: 0.55; transform: none; }
-  .anslog .lg.hit.on { opacity: 0.86; }
-  .anscount { padding-top: 14px; font-size: clamp(22px, 3vw, 44px);
-    font-weight: 700; line-height: 1.08; letter-spacing: -0.035em;
-    opacity: 0; transform: translateY(8px);
-    transition: opacity 0.4s ease, transform 0.4s ease; }
-  .anscount.on { opacity: 1; transform: none; }
+  /* ── the answer, spoken ──────────────────────────────────────────
+     One line at the statement's own scale, typed out. The receipts
+     did not go away, they went into the writing: every clause is
+     derived from the matcher's output, and the mechanical trace keeps
+     one quiet line underneath for anyone who wants the working. */
+  .ansprose { font-size: clamp(24px, 3.2vw, 44px); font-weight: 500;
+    line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
+    min-height: 2.4em; }
+  #ansSay.typing::after { content: ""; display: inline-block;
+    width: 0.45ch; height: 0.92em; margin-left: 4px;
+    background: currentColor; vertical-align: -0.1em;
+    animation: sayblink 0.9s steps(2, start) infinite; }
+  @keyframes sayblink { 50% { opacity: 0; } }
+  .ansreceipt { padding-top: 16px; max-width: 90ch;
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); line-height: 1.8;
+    opacity: 0; transition: opacity 0.4s ease; }
+  .ansreceipt.on { opacity: 0.5; }
 
   /* while the brain works, the field's rule runs a scan: grows from
      the left, collapses to the right. Contained, so nothing juts. */
@@ -770,8 +774,8 @@
 <!-- the answer: only in query mode, and it opens with its receipts -->
 <section class="answer">
   <div class="anshead">
-    <div class="anslog" id="ansLog"></div>
-    <div class="anscount" id="ansCount"></div>
+    <p class="ansprose" id="ansSay"></p>
+    <div class="ansreceipt" id="ansReceipt"></div>
     <div class="ansback"><button type="button" id="resetQ">Back to the house</button></div>
   </div>
   <div class="fd-cols" id="answerCols"></div>
@@ -823,37 +827,37 @@
    exception is the reel's thumbnail, which that table does not
    declare — read off the file (800x800). */
 const WORK = [
-  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038],
-  ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg", 387, 387],
-  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg", 387, 387],
-  ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg", 291, 291],
-  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg", 387, 387],
-  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg", 194, 194],
-  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg", 194, 194],
-  ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg", 387, 387],
-  ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800],
-  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg", 389, 388],
-  ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg", 387, 387],
-  ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg", 194, 194],
-  ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg", 387, 387],
-  ["Cosmo Prof", "Digital design, creative direction", "/case-studies/cosmo-prof", "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg", 194, 191],
-  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg", 387, 387],
-  ["Black & white type", "Custom typography, patterns", "/case-studies/black-white-type", "/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg", 194, 194],
-  ["Hill Country home", "Interior design, living room", "/case-studies/hill-country-living", "/case-studies/hp/rhs-interior-design-livingroom-interior.jpg", 387, 387],
-  ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg", 194, 194],
-  ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg", 194, 194],
-  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg", 194, 194],
-  ["Jeffrey NYC", "Campaign direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg", 387, 387],
-  ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg", 387, 387],
-  ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg", 387, 387],
-  ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg", 387, 387],
+  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038, "sally os platform hero"],
+  ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg", 387, 387, "ivy park nordstrom laptop brand experience mockup"],
+  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg", 387, 387, "arc app kitchen project selection lifestyle"],
+  ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg", 291, 291, "hill country kitchen island pendants marble wide"],
+  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg", 387, 387, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"],
+  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg", 194, 194, "nordstrom personalization system design laptop website interface fashion ecommerce floral field outdoor lifestyle"],
+  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg", 194, 194, "jeffrey new york digital flagship hero"],
+  ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg", 387, 387, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
+  ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
+  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg", 389, 388, "jeffrey spring campaign hero"],
+  ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg", 387, 387, "hill country bath vanity marble globe sconces sage"],
+  ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg", 194, 194, "nordstrom beauty hub laptop homepage mockup"],
+  ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg", 387, 387, "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"],
+  ["Cosmo Prof", "Digital design, creative direction", "/case-studies/cosmo-prof", "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg", 194, 191, "cosmo prof photography direction hair color brushes product detail quad composition"],
+  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg", 387, 387, "dsc marketing site laptop hero"],
+  ["Black & white type", "Custom typography, patterns", "/case-studies/black-white-type", "/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg", 194, 194, "typography patterns the fancy poster wood surface lifestyle"],
+  ["Hill Country home", "Interior design, living room", "/case-studies/hill-country-living", "/case-studies/hp/rhs-interior-design-livingroom-interior.jpg", 387, 387, "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"],
+  ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg", 194, 194, "j christianson storefront tree stripe window mockup"],
+  ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg", 194, 194, "amber shockey co blue florals peony wallpaper pattern field"],
+  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg", 194, 194, "hero"],
+  ["Jeffrey NYC", "Campaign direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg", 387, 387, "jeffrey spring campaign hero"],
+  ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg", 387, 387, "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"],
+  ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg", 387, 387, "urban southwest primary bath exposed brick matte black soaking tub"],
+  ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg", 387, 387, "fairview suite bedroom chandelier fireplace windows wide"],
   ["The Fairview", "Interior Design, foyer", "/case-studies/fairview-entry", "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg", 387, 387],
-  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg", 387, 387],
-  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg", 194, 194],
-  ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg", 387, 387],
-  ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg", 194, 194],
+  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg", 387, 387, "hero1"],
+  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg", 194, 194, "loved by nordstrom gallery wall campaign tiles tibi center"],
+  ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg", 387, 387, "chalet living room a frame glass doors malm fireplace sputnik chandelier"],
+  ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg", 194, 194, "neiman marcus insite contemporary art magazine hands mockup"],
   ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-art-apparel.jpg", 387, 387],
-  ["West Texas", "Landscape photography", "/case-studies/big-bend", "/case-studies/big-bend/hero.jpg", 2560, 1707],
+  ["West Texas", "Landscape photography", "/case-studies/big-bend", "/case-studies/big-bend/hero.jpg", 2560, 1707, "chisos peak cactus"],
 ];
 
 /* Injected from src/data/inspiration.ts + inspiration-quotes.ts. */
@@ -902,12 +906,17 @@ WORK.forEach((r) => cards.push({
   ar: r[4] + " / " + r[5],
   fields: [["title", r[0]], ["category", r[1]],
     ["filename", r[3].split("/").pop()],
+    /* the case study's own hero filename, recovered when the index
+       moved to the square thumbnails: those SEO names carry the
+       keywords nobody authored (marble, island, vanity, sage), and
+       dropping them silently cost "marble" its two works */
+    ["the images", r[6] || ""],
     ["what it is", "work project case study portfolio"]]
 }));
 PULLS.forEach((p) => cards.push({
   kind: "pull", title: p.alt, img: p.src, ar: null,
   fields: [["description", p.alt], ["filename", p.src.split("/").pop()],
-    ["what it is", "staple pull board inspiration reference"]]
+    ["what it is", "staple pull board inspiration what inspires me reference kept"]]
 }));
 QUOTES.forEach((q) => cards.push({
   kind: "quote", word: q.attribution.split(",")[0], full: q.text,
@@ -948,14 +957,23 @@ function analyse(q) {
   const hit = (h, t) => h.includes(t) ||
     (t.length > 3 && t.endsWith("s") && h.includes(t.slice(0, -1)));
   const score = new Map();
+  const caught = new Map();          /* card → which words it caught */
+  const spread = new Map();          /* word → how many cards carry it */
   const where = [], dead = [];
   toks.forEach((t) => {
     const fields = new Set();
+    let n = 0;
     cards.forEach((c, i) => {
       let got = false;
       c.norm.forEach((f) => { if (hit(f[1], t)) { got = true; fields.add(f[0]); } });
-      if (got) score.set(i, (score.get(i) || 0) + 1);
+      if (got) {
+        score.set(i, (score.get(i) || 0) + 1);
+        if (!caught.has(i)) caught.set(i, new Set());
+        caught.get(i).add(t);
+        n += 1;
+      }
     });
+    spread.set(t, n);
     if (fields.size) where.push([t, [...fields]]); else dead.push(t);
   });
   /* Best tier, unless the best tier is thin. A card that caught every
@@ -973,9 +991,23 @@ function analyse(q) {
     (score.get(b) - score.get(a)) || (rank[cards[a].kind] - rank[cards[b].kind]));
   const top = all.filter((i) => score.get(i) === best);
   const thin = top.length < 3 && all.length > top.length;
+  /* A thin top tier extends with near-misses — but only the ones that
+     caught the RAREST live word. The old rule let in every near-miss,
+     and a query like "kitchen design" flooded: "design" sits in half
+     the categories on the site, so 27 projects arrived behind the two
+     that actually answer. Rarity is the tell for which word carries
+     the query's meaning: five cards say kitchen, thirty say design,
+     so the kitchen cards are the near-misses worth keeping. */
+  let idx = top;
+  if (thin) {
+    const live = toks.filter((t) => spread.get(t) > 0);
+    const rare = live.sort((a, b) => spread.get(a) - spread.get(b))[0];
+    idx = all.filter((i) =>
+      score.get(i) === best || (caught.get(i) && caught.get(i).has(rare)));
+  }
   return {
-    idx: thin ? all : top, where, dead, skipped,
-    held: thin ? 0 : all.length - top.length,
+    idx, where, dead, skipped,
+    held: all.length - idx.length,
     exact: thin ? top.length : 0
   };
 }
@@ -1282,40 +1314,105 @@ function cancelAsk() {
   document.body.classList.remove("working");
 }
 
+/* ── the answer, composed ─────────────────────────────────────────
+   Sentences, not receipts. Every clause is still DERIVED from the
+   matcher's output: counts, kinds, project names, dead words. Nothing
+   gets said that the data cannot back, which is the same honesty the
+   receipt list had, in a register a person would use. The house
+   speaks as Jeremy because the case studies do. House copy rules
+   apply to the machine's copy too: contractions, short sentences,
+   and no em dashes anywhere. */
+const NUMWORD = ["no", "one", "two", "three", "four", "five", "six",
+  "seven", "eight", "nine"];
+const num = (n) => (n < 10 ? NUMWORD[n] : String(n));
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
+function composeAnswer(a) {
+  const by = { work: [], pull: [], note: [], quote: [] };
+  a.idx.forEach((ci) => by[cards[ci].kind].push(ci));
+  const w = by.work.length, p = by.pull.length,
+        n = by.note.length, qn = by.quote.length;
+  const total = a.idx.length;
+  const hit = a.where.map(([t]) => t);
+  /* speak every word that landed, in query order — "answers to jack"
+     read as a typo when both jack and white had matched */
+  const key = hit.join(" ") || query.trim().toLowerCase();
+  /* titles repeat across the portfolio (two Hill Country homes, two
+     Fairviews), so names are DISTINCT titles, and "more than once"
+     is what repetition honestly is */
+  const titles = [...new Set(by.work.map((ci) => cards[ci].title))];
+  const allWorks = cards.filter((c) => c.kind === "work").length;
+
+  const bits = a.where.map(([t, f]) => "\u201c" + t + "\u201d in " + f.join(", "));
+  if (a.dead.length) bits.push("nothing for \u201c" + a.dead.join("\u201d, \u201c") + "\u201d");
+  if (a.skipped.length) bits.push("set aside: " + [...new Set(a.skipped)].join(", "));
+  bits.push(total + (total === 1 ? " piece" : " pieces"));
+  const receipt = bits.join("  \u00b7  ");
+
+  let say;
+  if (!total) {
+    say = "Nothing in the house answers to that yet. Try a material, a room, or a discipline.";
+  } else if (w >= allWorks) {
+    say = "All " + w + " projects, in the order I'd walk you through them.";
+  } else if (hit.some((t) => t.startsWith("inspir"))) {
+    say = "The board is the honest answer. These are the things I keep coming back to.";
+  } else if (w && p) {
+    /* when the query IS a project's name, "I've used west texas in
+       West Texas" is what the template says. Say the obvious thing
+       instead. */
+    const isName = titles.length === 1 && titles[0].toLowerCase() === key;
+    const lead = isName
+      ? "That's " + titles[0] + "."
+      : titles.length === 1
+        ? (w === 1 ? "I've used " + key + " in " + titles[0] + "."
+                   : "I've used " + key + " in " + titles[0] + " more than once.")
+        : titles.length === 2
+          ? "I've used " + key + " in " + titles[0] + " and " + titles[1] + "."
+          : "I've used " + key + " in " + num(w) + " projects, " + titles[0] + " among them.";
+    say = lead + " There's more of it in the things I keep, below.";
+  } else if (w) {
+    say = titles.length === 1
+      ? (w === 1 ? "That's " + titles[0] + ". It's below."
+                 : titles[0] + " answers that more than once. It's below.")
+      : titles.length === 2
+        ? "That's " + titles[0] + " and " + titles[1] + ". Both below."
+        : cap(num(w)) + " projects answer to that. They're below.";
+  } else if (p) {
+    say = "No shipped project answers to " + key + " yet, but it's in the things I keep. " +
+      (p === 1 ? "One pull below." : cap(num(p)) + " pulls below.");
+  } else {
+    say = "That's a practice question. The notes below have it.";
+  }
+  /* not on the everything answer, where the notes riding along is
+     the expected furniture rather than news */
+  if (n && w && w < allWorks) say += " It's in the practice notes, too.";
+  if (qn && total > qn) say += " A line I've kept rides along.";
+  if (a.dead.length && total) {
+    say += " Nothing answered to \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.";
+  }
+  return { say, receipt };
+}
+
 function buildAnswer() {
   cancelAsk();
   const a = analyse(query) ||
     { idx: [], where: [], dead: [], skipped: [], held: 0, exact: 0 };
   const rnd = mkRnd(seedNo + 97);
   const colsEl = document.getElementById("answerCols");
-  const countEl = document.getElementById("ansCount");
-  const logEl = document.getElementById("ansLog");
+  const sayEl = document.getElementById("ansSay");
+  const receiptEl = document.getElementById("ansReceipt");
   const still = REDUCE();
 
-  /* where every visible card sits NOW, before the page changes —
-     an answer card with the same key travels from that seat */
   /* captured by apply() before the jump home; empty when asked cold */
   const seats = window.__seatRects || new Map();
   window.__seatRects = null;
 
-  /* the sources, in the order they will speak */
-  const SOURCES = [
-    { label: "the case studies", kinds: ["work"], noun: ["work", "works"] },
-    { label: "the board", kinds: ["pull"], noun: ["pull", "pulls"] },
-    { label: "the practice", kinds: ["note", "quote"], noun: ["note", "notes"] },
-  ];
-  const waves = SOURCES.map((src) => ({
-    src, idx: a.idx.filter((ci) => src.kinds.includes(cards[ci].kind)),
-  }));
-
-  /* the whole layout is computed up front; the sequence only reveals.
-     Re-flowing the masonry per wave would move already-landed cards. */
-  const els = [], waveOf = [];
-  waves.forEach((w, wi) => w.idx.forEach((ci) => {
-    els.push((cards[ci].kind === "note" || cards[ci].kind === "quote")
+  /* works lead, then the board, then the practice: reading order */
+  const ORDER = { work: 0, pull: 1, note: 2, quote: 3 };
+  const sorted = [...a.idx].sort((x, y) => ORDER[cards[x].kind] - ORDER[cards[y].kind]);
+  const els = sorted.map((ci) =>
+    (cards[ci].kind === "note" || cards[ci].kind === "quote")
       ? noteCard(cards[ci], rnd) : imgCard(cards[ci], rnd, true));
-    waveOf.push(wi);
-  }));
   if (els.length) {
     fillCols(colsEl, els, Math.min(answerColCount(), Math.max(1, els.length)));
   } else {
@@ -1324,58 +1421,21 @@ function buildAnswer() {
   armReels();
   if (window.armDrift) armDrift(els);
 
-  /* the transcript */
-  logEl.innerHTML = "";
-  const kindsCount = { work: 0, pull: 0, quote: 0, note: 0 };
-  cards.forEach((c) => kindsCount[c.kind]++);
-  const line = (text, hit) => {
-    const d = document.createElement("div");
-    d.className = "lg" + (hit ? " hit" : "");
-    d.textContent = text;
-    logEl.appendChild(d);
-    return d;
-  };
-  const lines = [];
-  lines.push(line("asking the house — " + kindsCount.work + " works · a board of " +
-    kindsCount.pull + " pulls · the practice"));
-  waves.forEach((w) => {
-    const n = w.idx.length;
-    lines.push(line(w.src.label + " — " +
-      (n ? n + " " + w.src.noun[n === 1 ? 0 : 1] : "nothing"), n > 0));
-  });
-  const bits = a.where.map(([t, f]) => "“" + t + "” in " + f.join(", "));
-  if (a.dead.length) bits.push("nothing for “" + a.dead.join("”, “") + "”");
-  if (a.held) bits.push(a.held + " weaker matches held back");
-  if (a.exact) bits.push(a.exact + " caught every word, the rest caught one");
-  if (a.skipped.length) {
-    bits.push("common words set aside: " + [...new Set(a.skipped)].join(", "));
-  }
-  if (bits.length) lines.push(line(bits.join("  ·  ")));
+  const { say, receipt } = composeAnswer(a);
+  receiptEl.textContent = receipt;
+  receiptEl.classList.remove("on");
 
-  const parts = [];
-  const tally = { work: 0, pull: 0, quote: 0, note: 0 };
-  a.idx.forEach((ci) => tally[cards[ci].kind]++);
-  const say = (n, one, many) => { if (n) parts.push(n + " " + (n === 1 ? one : many)); };
-  say(tally.work, "work", "works");
-  say(tally.pull, "pull", "pulls");
-  say(tally.quote, "quote", "quotes");
-  say(tally.note, "note", "notes");
-  countEl.textContent = a.idx.length
-    ? a.idx.length + " pieces — " + parts.join(" · ")
-    : "Nothing set for “" + query.trim() + "”.";
-  countEl.classList.remove("on");
-
-  /* ── the act itself ── */
   if (still) {
-    lines.forEach((l) => l.classList.add("on"));
-    countEl.classList.add("on");
+    sayEl.classList.remove("typing");
+    sayEl.textContent = say;
+    receiptEl.classList.add("on");
     els.forEach((el) => el.classList.add("fd-on"));
     return;
   }
 
-  /* stage every card: seated cards get their travel, the rest rise */
+  /* stage every card: seated cards travel, the rest rise */
   els.forEach((el) => {
-    el.classList.add("fd-on");           /* the arrival channel is ours now */
+    el.classList.add("fd-on");
     const to = el.getBoundingClientRect();
     const from = seats.get(el.dataset.key);
     el.style.transition = "none";
@@ -1387,16 +1447,35 @@ function buildAnswer() {
   });
 
   document.body.classList.add("working");
-  const BEAT = 300, STAG = 55;
-  lines.forEach((l, li) => holdAsk(() => l.classList.add("on"), li * BEAT));
+  sayEl.textContent = "";
+  sayEl.classList.add("typing");
+
+  /* the answer types itself. One clock for the whole line, so a short
+     answer lands unhurried and a long one does not dawdle. */
+  const step = Math.max(9, Math.min(26, Math.round(2100 / Math.max(1, say.length))));
+  let i = 0;
+  const typeOn = () => {
+    i += 1;
+    sayEl.textContent = say.slice(0, i);
+    if (i < say.length) holdAsk(typeOn, step);
+    else {
+      sayEl.classList.remove("typing");
+      receiptEl.classList.add("on");
+      holdAsk(() => document.body.classList.remove("working"), 200);
+    }
+  };
+  holdAsk(typeOn, 180);
+
+  /* the cards do not wait for the sentence: they arrive while it is
+     being said. The stagger compresses for big hands, so the whole
+     board can answer without holding the page for six seconds. */
+  const STAG = els.length > 30 ? 16 : 55;
   els.forEach((el, k) => {
-    const wi = waveOf[k];
-    const at = (wi + 1) * BEAT + 90 +
-      waveOf.slice(0, k).filter((w) => w === wi).length * STAG;
+    const at = 300 + k * STAG;
     holdAsk(() => {
       el.style.transition =
         "opacity 0.46s ease, transform 0.52s cubic-bezier(0.2, 0.7, 0.2, 1)";
-      el.getBoundingClientRect();        /* commit the start state */
+      el.getBoundingClientRect();
       el.style.opacity = "1";
       el.style.transform = "";
     }, at);
@@ -1404,9 +1483,6 @@ function buildAnswer() {
       el.style.transition = ""; el.style.opacity = ""; el.style.transform = "";
     }, at + 640);
   });
-  const done = lines.length * BEAT + 140;
-  holdAsk(() => countEl.classList.add("on"), done);
-  holdAsk(() => document.body.classList.remove("working"), done + 260);
 }
 
 /* The deal is still here — ?deal=7 reshuffles the work order and the
@@ -1566,8 +1642,8 @@ document.getElementById("resetQ").addEventListener("click", () => {
    Work, Info and Staples ride in it because they are queries now, not
    destinations. The chips that used to spell them out are gone: a row
    of links under a field that answers questions was hedging. */
-const TOUR = ["all work", "kitchens", "interiors", "marble", "app design",
-  "does this company do master bedrooms?", "west texas", "staples", "info"];
+const TOUR = ["All work", "Interior projects", "App development",
+  "Kitchen design", "What inspires you?", "Marble surfaces"];
 const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
 let tourFull = "";                     /* what placeAsk should size to */
 (() => {
