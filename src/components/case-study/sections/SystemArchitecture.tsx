@@ -11,10 +11,26 @@ function seededRandom(seed: number) {
   };
 }
 
+/* ── Rounded, and that is load-bearing ──────────────────────────────
+   Math.sin and Math.cos are implementation-defined in their last bits,
+   and Node's V8 does not always agree with Chrome's. Every coordinate
+   here is trig, so the server rendered y1="456.87090252474303" and the
+   browser computed 456.8709025247431 — the same point, one ulp apart,
+   and to React a mismatched attribute.
+
+   That is not cosmetic. React reports "this won't be patched up" and
+   discards the subtree, so a 2,200-node SVG is built on the server,
+   shipped, parsed, thrown away, and built again on the client. It is
+   the visible pause on this page.
+
+   Three decimals is far finer than a 1000-unit viewBox can show and
+   makes both engines emit the same string. */
+const px = (n: number) => Math.round(n * 1000) / 1000;
+
 // ── Polar helper ─────────────────────────────────────────────────
 function polar(cx: number, cy: number, r: number, angleDeg: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  return { x: px(cx + r * Math.cos(rad)), y: px(cy + r * Math.sin(rad)) };
 }
 
 // ── Core data ────────────────────────────────────────────────────
@@ -117,8 +133,8 @@ export function SystemArchitecture() {
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.2 + rng() * 0.8);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: px(center.x + Math.cos(a) * dist),
+          y: px(center.y + Math.sin(a) * dist),
           r: node.importance >= 20 ? 2 + rng() * 5 : 1 + rng() * 3.5,
           color: node.color,
           opacity: 0.08 + rng() * 0.32,
@@ -134,8 +150,8 @@ export function SystemArchitecture() {
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.15 + rng() * 0.85);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: px(center.x + Math.cos(a) * dist),
+          y: px(center.y + Math.sin(a) * dist),
           r: 1.2 + rng() * 3.5,
           color: tech.color,
           opacity: 0.1 + rng() * 0.28,
@@ -165,8 +181,8 @@ export function SystemArchitecture() {
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.2 + rng() * 0.8);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: px(center.x + Math.cos(a) * dist),
+          y: px(center.y + Math.sin(a) * dist),
           r: 1 + rng() * 3,
           color: d.color,
           opacity: 0.08 + rng() * 0.22,
@@ -182,8 +198,8 @@ export function SystemArchitecture() {
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.2 + rng() * 0.8);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: px(center.x + Math.cos(a) * dist),
+          y: px(center.y + Math.sin(a) * dist),
           r: 1.2 + rng() * 3,
           color: p.color,
           opacity: 0.06 + rng() * 0.18,
@@ -199,8 +215,8 @@ export function SystemArchitecture() {
         const a = rng() * Math.PI * 2;
         const dist = spread * (0.3 + rng() * 0.7);
         dots.push({
-          x: center.x + Math.cos(a) * dist,
-          y: center.y + Math.sin(a) * dist,
+          x: px(center.x + Math.cos(a) * dist),
+          y: px(center.y + Math.sin(a) * dist),
           r: 0.8 + rng() * 2.5,
           color: PALETTE[Math.floor(rng() * PALETTE.length)],
           opacity: 0.05 + rng() * 0.15,

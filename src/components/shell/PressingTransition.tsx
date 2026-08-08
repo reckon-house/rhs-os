@@ -207,9 +207,31 @@ export function PressingTransition() {
       let ready = false;
       const routeChange = new Promise<void>((resolve) => {
         arrived.current = resolve;
-      }).then(() => {
-        ready = true;
-      });
+      })
+        /* The route arriving is not the same as the page being ON
+           SCREEN. A.R.C. commits its pathname while it still has
+           thousands of SVG nodes left to paint, so lifting on the
+           pathname alone handed the reader a curtain rising over a
+           page that was still assembling — the stutter moved out from
+           under the black instead of being hidden by it. Two frames
+           after the commit, the browser has painted; a timeout keeps
+           a page that never settles from holding the screen. */
+        .then(
+          () =>
+            new Promise<void>((resolve) => {
+              let done = false;
+              const go = () => {
+                if (done) return;
+                done = true;
+                resolve();
+              };
+              requestAnimationFrame(() => requestAnimationFrame(go));
+              setTimeout(go, 900);
+            })
+        )
+        .then(() => {
+          ready = true;
+        });
       void routeChange;
       router.push(href);
 

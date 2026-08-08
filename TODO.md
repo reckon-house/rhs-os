@@ -889,6 +889,21 @@ visual starts in `public/lab/`.)
       beat 3 on the arriving one. Moving the .pt panels into the shell
       is the likely shape.
 
+- [ ] **Audit the other 19 viz components for the hydration bug.**
+      SystemArchitecture rendered trig straight into SVG attributes,
+      and Node's Math.sin disagrees with Chrome's in the last bit, so
+      every load threw the subtree away and rebuilt it. Fixed there by
+      rounding to 3dp (the `px()` helper). Nineteen other components
+      under src/components/case-study/ do trig into JSX; find the real
+      ones by loading each study and watching for "A tree hydrated but
+      some attributes..." rather than editing all of them blind.
+
+- [ ] **A.R.C. renders 6,713 SVG nodes.** With hydration fixed it is
+      built once instead of twice, but it is still the slowest page on
+      the site and the transition now holds its curtain for seconds to
+      cover the paint. Thinning the particle counts in
+      SystemArchitecture is a design call, not a bug fix.
+
 - [ ] **COME BACK TO THE BRAIN.** Parked mid-flight to finish the
       homepage. Open: the Tier 1 voice lines (rates, availability,
       process — 13 audit questions that still shrug), pointing
