@@ -347,6 +347,24 @@
   /* declared only while the sequence runs, so 38 layers are not held
      for the life of the page */
   .pt-run .ptl { will-change: transform, opacity; }
+
+  /* ── the two copies have to WEIGH the same ──────────────────────
+     They already are the same: identical family, identical 500,
+     identical size, identical width to the hundredth of a pixel. The
+     only difference is the ground, and that is enough. White on black
+     with grayscale antialiasing renders visibly thinner than black on
+     white, because light type on a dark ground loses the bleed that
+     normally fattens it. As the black curtain crosses a line, the
+     words change apparent weight along the moving edge.
+
+     A smoothing property cannot fix it here: these lines are held on
+     compositing layers for the whole sequence (see above), and a
+     composited layer rasterises grayscale whatever the property says.
+     So the compensation goes on the glyphs. A hairline stroke in the
+     text's own colour puts back exactly what the inversion took, and
+     it is the light copy that gets it, because medium is the weight
+     both are supposed to read as. */
+  .ptb .ptl { -webkit-text-stroke: 0.36px currentColor; }
   .pt-1 .ptl { opacity: 1; transform: translate3d(0, 0, 0); }
   .pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0);
     transition-duration: 0.22s, 0.24s; }
