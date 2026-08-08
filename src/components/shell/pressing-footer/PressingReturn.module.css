@@ -73,6 +73,21 @@
   transform: scaleX(1);
 }
 
+/* The gauge rides inside the rule and fills over it, so the two can
+   never disagree about where the line is. Its own transform, on its
+   own element: the rule owns scaleX for the arrival and this owns it
+   for the pull, which is the one-driver-one-property rule this kit
+   keeps paying for when it is broken. */
+.gauge {
+  display: block;
+  height: 100%;
+  min-height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  transform: scaleX(var(--pull, 0));
+  transform-origin: left center;
+}
+
 @media (hover: hover) {
   .door:hover .line {
     text-decoration: underline;

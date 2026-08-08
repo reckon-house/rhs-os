@@ -880,6 +880,15 @@ visual starts in `public/lab/`.)
 
 ## Next
 
+- [ ] **Wire the page transition to real navigation.** The three-beat
+      curtain (white down, black up, black lifts to reveal) lives in
+      the homepage's own driver and only fires for links inside the
+      homepage. Case-study links, the footer's door, and the ring pull
+      all navigate plainly. The join is marked in the driver: beats 1
+      and 2 on the departing page, document swap under full black,
+      beat 3 on the arriving one. Moving the .pt panels into the shell
+      is the likely shape.
+
 - [ ] **COME BACK TO THE BRAIN.** Parked mid-flight to finish the
       homepage. Open: the Tier 1 voice lines (rates, availability,
       process — 13 audit questions that still shrug), pointing
