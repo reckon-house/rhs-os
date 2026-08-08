@@ -354,10 +354,15 @@ export function PressingZoomPlate({
        nothing would throw, the tick would still mask the ink out over the
        plate, and the text would simply vanish instead of burning. Bail to
        plain ink up front. */
+    /* `typeof CSS === "undefined"` is not enough of a guard, and this
+       is the bug that proved it: a classic script elsewhere on the site
+       declared a top-level `const CSS`, which shadows window.CSS for
+       the whole document without replacing it. CSS was very much
+       defined; it was a string. Ask for the method, not the object. */
+    if (typeof CSS === "undefined" || typeof CSS.supports !== "function") return;
     if (
-      typeof CSS === "undefined" ||
-      (!CSS.supports("backdrop-filter", "blur(1px)") &&
-        !CSS.supports("-webkit-backdrop-filter", "blur(1px)"))
+      !CSS.supports("backdrop-filter", "blur(1px)") &&
+      !CSS.supports("-webkit-backdrop-filter", "blur(1px)")
     ) {
       return;
     }

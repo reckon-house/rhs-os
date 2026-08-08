@@ -30,6 +30,28 @@
  *  Respects prefers-reduced-motion (resolves every beat to its end frame).
  */
 
+/* WRAPPED IN AN IIFE, and this is not tidiness.
+ *
+ * This file is a CLASSIC script, and a top-level `const CSS = ...` in a
+ * classic script creates a binding in the GLOBAL LEXICAL environment.
+ * That binding shadows window.CSS for every script that runs afterwards
+ * in the same document, without replacing it — so window.CSS still had
+ * its supports() and a bare `CSS.supports(...)` resolved to a string
+ * and threw.
+ *
+ * The failure only appeared on a client-side navigation away from the
+ * homepage, which is the page that loads this file: a case study opened
+ * directly was fine, and the same study reached by clicking a frame on
+ * the homepage crashed on `CSS.supports is not a function`. A global
+ * shadow outlives the route that created it.
+ *
+ * The IIFE keeps every name in here to itself. window.SizzleReelElement
+ * is still exported at the end, deliberately, because that one is meant
+ * to be shared.
+ */
+(function () {
+
+
 const CSS = `
 :host{display:block}
 .sz-stage{position:relative;overflow:hidden;background:#0E0E0E;width:100%;height:100%;container-type:inline-size;border-radius:var(--sz-radius,0)}
@@ -413,3 +435,5 @@ customElements.define("sizzle-reel", SizzleReelElement);
 // works. An ES-module script would not: browsers block module src fetches over
 // file:// (opaque origin), so the element would never register.
 if (typeof window !== "undefined") window.SizzleReelElement = SizzleReelElement;
+
+})();
