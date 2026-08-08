@@ -312,14 +312,22 @@ const compact = {
     slug: p.slug, title: p.title, href: p.href, category: p.category,
     year: p.year,
     d: p.disciplines, t: p.tools,
+    /* term AND its evidence count: the count is the ranking signal.
+       Without it the client cannot tell the living room with seventeen
+       sofa mentions from the mockup that has a couch in one photo,
+       and answers lead with the wrong project. */
     f: Object.fromEntries(
-      Object.entries(p.facets).map(([k, v]) => [k, v.map((x) => x.term)])),
+      Object.entries(p.facets).map(([k, v]) => [k, v.map((x) => [x.term, x.n])])),
     s: p.stats.map((s) => [s.value, s.label]),
   })),
   /* the board: src to show, alt to read out, facets to match on */
   pulls: pulls.map((p) => ({ src: p.src, alt: p.alt, f: p.facets })),
 };
 writeFileSync(OUT_DIR + "/project-facts.min.json", JSON.stringify(compact));
+/* The lab is a static page under public/, so it cannot import from
+ * src/. It gets its own copy, fetched at boot — same bytes, third
+ * audience. */
+writeFileSync("public/lab/project-facts.min.json", JSON.stringify(compact));
 
 const kb = (f) => (Buffer.byteLength(JSON.stringify(f)) / 1024).toFixed(1) + "kb";
 console.log(`\nwrote ${OUT_DIR}/project-facts.json      ${kb(payload)}`);

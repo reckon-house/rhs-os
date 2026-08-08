@@ -885,7 +885,14 @@ visual starts in `public/lab/`.)
       keyword layer every other pull gets from its SEO filename. Renaming
       means updating `image-dimensions.ts` in step.
 
-- [ ] **Wire the facts index into the brain.** The extractor
+- [x] **Wire the facts index into the brain.** DONE in the lab
+      (Aug 2026): intents (contact, where, who) answer before lookup,
+      facets compose the sentence, evidence counts rank the grid, and
+      the split answer keeps work and board apart. The React port
+      inherits all of it through src/lib/facts.ts plus the lab's
+      think()/planFacts() as the porting spec.
+
+- [ ] WAS: **Wire the facts index into the brain.** The extractor
       (`npm run facts`) now emits `src/data/generated/project-facts*.json`
       and `src/lib/facts.ts` queries it. Retrieval is already better
       than the lab's substring matcher: "marble" finds 7 projects

@@ -687,6 +687,33 @@
     52% { left: 0; width: 100%; }
     100% { left: 100%; width: 0; }
   }
+  /* the spoken line can carry one link: the email address, live */
+  .ansprose a { color: inherit; text-decoration: underline;
+    text-decoration-thickness: 2px; text-underline-offset: 5px; }
+
+  /* ── the split answer ────────────────────────────────────────────
+     When a question lands in both registers, the answer shows both
+     and keeps them apart: the work on the left, the board on the
+     right. The separation is the same one the index enforces — built
+     and kept are different claims — so the layout is the data's own
+     honesty made visible. Labels appear only in split mode; a plain
+     answer stays one unlabeled feed. */
+  .anslbl { display: none; padding: 0 var(--gut) 12px;
+    font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); opacity: 0.5; }
+  body.split .anslbl { display: block; }
+  body.split .ansbody { display: grid;
+    grid-template-columns: 1fr; row-gap: clamp(38px, 7vw, 64px); }
+  @media (min-width: 861px) {
+    body.split .ansbody {
+      grid-template-columns: 2fr 1fr; column-gap: 0; row-gap: 0;
+      align-items: start; }
+    /* one gutter between the zones, not two: the inner edges give
+       theirs up and the page's own gap does the separating */
+    body.split #ansWork .fd-cols { padding-right: calc(var(--gap) / 2); }
+    body.split #ansRail .fd-cols { padding-left: calc(var(--gap) / 2); }
+  }
+
   .ansback { padding-top: 16px; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
   .ansback button { background: none; border: 0; padding: 0; cursor: pointer;
@@ -778,7 +805,16 @@
     <div class="ansreceipt" id="ansReceipt"></div>
     <div class="ansback"><button type="button" id="resetQ">Back to the house</button></div>
   </div>
-  <div class="fd-cols" id="answerCols"></div>
+  <div class="ansbody">
+    <div id="ansWork">
+      <div class="anslbl">The work</div>
+      <div class="fd-cols" id="answerCols"></div>
+    </div>
+    <aside id="ansRail" hidden>
+      <div class="anslbl">From the board</div>
+      <div class="fd-cols" id="railCols"></div>
+    </aside>
+  </div>
 </section>
 
 <!-- ── the magazine ── -->
@@ -1010,6 +1046,332 @@ function analyse(q) {
     held: all.length - idx.length,
     exact: thin ? top.length : 0
   };
+}
+
+/* ── the facts layer ──────────────────────────────────────────────
+   The substring matcher above finds strings; this finds FACTS. The
+   index is built by scripts/build-facts.mjs from the case studies
+   themselves — every term in it was mined from the studies' own prose
+   and alt text, negations and metaphors already rejected — so an
+   answer composed from it can name what kind of thing was asked
+   about. "Marble" is a material, "kitchen" a room, "Nordstrom" a
+   client, and the sentence reads differently for each.
+
+   The matcher stays underneath as the safety net: the index only
+   speaks about what it verified, and everything else (a band's name,
+   "ridgeline", a half-remembered filename) still deserves an answer. */
+let FACTS = null;
+const factCard = { work: new Map(), pull: new Map() };
+cards.forEach((c, i) => {
+  if (c.kind === "work") factCard.work.set(c.href, i);
+  if (c.kind === "pull") factCard.pull.set(c.img, i);
+});
+fetch("project-facts.min.json")
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j) => {
+    FACTS = j;
+    /* a deep-linked ?q= builds its answer before this fetch lands, on
+       the matcher alone. If the facts have something better to say
+       about the standing question, say it — the rebuild happens
+       inside the first beats of arrival, not mid-read */
+    if (asked && query.trim() && think(query)) buildAnswer();
+  })
+  .catch(() => {});
+
+const fold = (s) => s.toLowerCase().replace(/[^a-z0-9&]+/g, " ").trim();
+/* alias values keep their authored casing (neiman → "Neiman Marcus"),
+   and everything downstream compares folded, so fold on the way out */
+const resolveAlias = (q) => fold((FACTS && FACTS.aliases && FACTS.aliases[q]) || q);
+/* "dining" names "dining table" the way "interior" names "Interior
+   Design": the whole word, never a fragment — "din" reaches nothing */
+const namesTerm = (t, q) => {
+  const f = fold(t);
+  if (f === q || f.split(" ").includes(q)) return true;
+  /* bedrooms finds bedroom, tables finds table: a trailing s is the
+     one bit of grammar the lookup absorbs, and nothing shorter than
+     four letters gets stemmed (gas must not find ga) */
+  if (q.length > 3 && q.endsWith("s")) {
+    const qs = q.slice(0, -1);
+    return f === qs || f.split(" ").includes(qs);
+  }
+  return false;
+};
+
+function factMatches(p, q) {
+  /* facet terms arrive as [term, evidenceCount]; the count is the
+     ranking signal. Disciplines and tools are curated, count 1. */
+  const m = [];
+  for (const facet in p.f) p.f[facet].forEach(([t, n]) => {
+    if (namesTerm(t, q)) m.push({ facet, term: t, n });
+  });
+  p.d.forEach((d) => { if (namesTerm(d, q)) m.push({ facet: "discipline", term: d, n: 1 }); });
+  p.t.forEach((t) => { if (namesTerm(t, q)) m.push({ facet: "tool", term: t, n: 1 }); });
+  return m;
+}
+const weight = (h) => h.m.reduce((a, m) => a + m.n, 0);
+/* words that shape a query without carrying it: "interior projects"
+   is a question about interiors, and requiring "projects" to land
+   somewhere would sink it */
+const FILLER = new Set(("projects project work works pieces piece " +
+  "things thing stuff surfaces surface").split(" "));
+
+function factLookup(q0) {
+  const q = resolveAlias(fold(q0));
+  if (!q || !FACTS) return { hits: [], pulls: [], dead: [], and: false };
+  const seek = (qw) => ({
+    hits: FACTS.projects.map((p) => ({ p, m: factMatches(p, qw) })).filter((h) => h.m.length),
+    pulls: FACTS.pulls.filter((p) => {
+      for (const facet in p.f) if (p.f[facet].some((t) => namesTerm(t, qw))) return true;
+      return false;
+    })
+  });
+  let r = seek(q);
+  if (r.hits.length || r.pulls.length) return { ...r, dead: [], and: false };
+  /* Several terms at once. Only words the index KNOWS anything about
+     get a vote: "does this company do master bedrooms" is a bedrooms
+     question wearing a sentence, and letting "does" veto it would be
+     the strictness defeating the point. The AND stays strict across
+     the live words — "kitchen island" still narrows to the one
+     project with both — and the dead ones get reported, the same
+     honesty the matcher has always had. */
+  const words = [...new Set(q.split(" ").map(resolveAlias)
+    .filter((w) => w.length > 2 && !FILLER.has(w) && !STOP.has(w)))];
+  const alive = (w) => FACTS.projects.some((p) => factMatches(p, w).length) ||
+    FACTS.pulls.some((p) => {
+      for (const facet in p.f) if (p.f[facet].some((t) => namesTerm(t, w))) return true;
+      return false;
+    });
+  const live = words.filter(alive);
+  const dead = words.filter((w) => !live.includes(w));
+  if (!live.length) return { hits: [], pulls: [], dead: [], and: false };
+  if (live.length === 1) {
+    r = seek(live[0]);
+    /* Half the question died and one word survived. Keep the answer
+       only when that word carries a MINED fact — "master bedrooms"
+       loses master and still means bedrooms, because bedroom is a
+       room the index dug out of the work. "App development" losing
+       app must not become a confident answer about Brand Development:
+       a fragment of a discipline's name is not the question's
+       subject. The matcher below does uncertainty better. */
+    if (dead.length && !r.hits.some((h) => h.m.some((m) =>
+      m.facet !== "discipline" && m.facet !== "tool"))) {
+      return { hits: [], pulls: [], dead: [], and: false };
+    }
+    return { ...r, dead, and: false };
+  }
+  const hits = FACTS.projects
+    .map((p) => ({ p, per: live.map((w) => factMatches(p, w)) }))
+    .filter((h) => h.per.every((m) => m.length))
+    .map((h) => ({ p: h.p, m: h.per.flat() }));
+  return { hits, pulls: [], dead, and: true };
+}
+
+/* ── intents ──────────────────────────────────────────────────────
+   Some questions are not about the work at all. "Contact" was being
+   answered with a note-card shrug and "email address" with whatever
+   pull happened to contain the word address — the house knew the
+   words and missed the point. A person asking these is trying to
+   REACH somebody, and the reasonable reply is the address, said
+   plainly, first. */
+const REACH = new Set(("contact email mail reach hire hiring hired inquiry " +
+  "inquiries inquire commission collaborate touch talk call available availability").split(" "));
+const WHOAMI = new Set("who about bio yourself jeremy prasatik practice".split(" "));
+const WHERE = new Set("where based located location".split(" "));
+const rawWords = (q) => q.toLowerCase().replace(/[^a-z0-9&\s]/g, " ").split(/\s+/).filter(Boolean);
+
+const plural = (t) => (/[^aeiou]y$/.test(t) ? t.slice(0, -1) + "ies" : t + "s");
+const capWords = (t) => t.replace(/\b[a-z]/g, (c) => c.toUpperCase());
+/* three names get said in full — "and one more" withholding a name
+   the sentence had room for reads as coyness, not economy */
+const nameList = (xs) =>
+  xs.length === 1 ? xs[0] :
+  xs.length === 2 ? xs[0] + " and " + xs[1] :
+  xs.length === 3 ? xs[0] + ", " + xs[1] + ", and " + xs[2] :
+  xs.slice(0, 2).join(", ") + ", and " + num(xs.length - 2) + " more";
+
+/* One plan for the whole answer: what to say, what to show, and what
+   the receipt can prove. Returns null when neither intents nor facts
+   have anything, and the matcher underneath takes the question. */
+function think(q) {
+  const words = rawWords(q);
+  if (!words.length) return null;
+
+  if (words.some((w) => REACH.has(w))) {
+    const ncards = [];
+    NOTES.forEach((n, i) => {
+      if (n[0] === "Get in touch" || n[0] === "How I work") ncards.push(noteIdx(i));
+    });
+    return {
+      say: "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
+      receipt: "read as: getting in touch  ·  " + ncards.length + " notes",
+      workIdx: ncards, pullIdx: [], mailto: true
+    };
+  }
+
+  const f = factLookup(q);
+  if (f.hits.length || f.pulls.length) return planFacts(q, f);
+
+  /* after facts on purpose: "where do you use marble" is a marble
+     question. Only a where with nothing else in it lands here. */
+  if (FACTS && words.some((w) => WHERE.has(w))) {
+    const placed = FACTS.projects.filter((p) => p.f.place && p.f.place.length);
+    const idx = placed.map((p) => factCard.work.get(p.href)).filter((i) => i != null)
+      .sort((a, b) => a - b);
+    const names = [...new Set(placed.flatMap((p) => p.f.place.map(([t]) => t)))]
+      .filter((t) => t !== "texas" && t !== "dallas").map(capWords);
+    return {
+      say: "Dallas, independent. The placed work runs through " + nameList(names) + ".",
+      receipt: "read as: where  ·  place facts on " + idx.length + " projects  ·  facts index v" +
+        FACTS.vocabularyVersion,
+      workIdx: [noteIdx(NOTES.findIndex((n) => n[0] === "How I work"))]
+        .concat(idx).filter((i) => i != null && i >= 0),
+      pullIdx: [], mailto: false
+    };
+  }
+
+  if (words.some((w) => WHOAMI.has(w))) {
+    return {
+      say: "I'm Jeremy Prasatik. The notes below have the rest.",
+      receipt: "read as: about the practice  ·  " + NOTES.length + " notes",
+      workIdx: NOTES.map((n, i) => noteIdx(i)), pullIdx: [], mailto: false
+    };
+  }
+  return null;
+}
+function noteIdx(i) {
+  return cards.findIndex((c) => c.kind === "note" && c.word === NOTES[i][0]);
+}
+
+/* Facet-aware composition. The verb belongs to the KIND of fact:
+   materials are used, furniture is simply there, clients are names,
+   tools are built with. Same copy rules as everything else in the
+   house: short sentences, contractions, no em dashes. */
+const FACET_RANK = ["client", "material", "furniture", "room", "colour", "place", "tool", "discipline"];
+function planFacts(q, f) {
+  /* Most evidence first, then the order the house would walk you
+     through them. Weight is the mined count riding on each term: the
+     living room with seventeen sofa mentions leads, the mockup whose
+     couch appears in one photograph follows, and A.R.C. merely
+     cataloguing the word "kitchen" never outranks the kitchen. */
+  const hits = [...f.hits].sort((a, b) =>
+    (weight(b) - weight(a)) ||
+    ((factCard.work.get(a.p.href) ?? 99) - (factCard.work.get(b.p.href) ?? 99)));
+  const workIdx = hits.map((h) => factCard.work.get(h.p.href)).filter((i) => i != null);
+  const pullIdx = f.pulls.map((p) => factCard.pull.get(p.src)).filter((i) => i != null);
+  /* w counts PROJECTS, and it must, because the grid does: two
+     Fairviews share a display title, and a sentence saying seven over
+     eight visible cards reads as a miscount, not a nuance */
+  const titles = [...new Set(workIdx.map((i) => cards[i].title))];
+  const w = workIdx.length, p = pullIdx.length;
+
+  /* which facet speaks: the one with the most projects, rank breaking
+     the tie, and the receipt lists every reading either way */
+  const byFacet = {};
+  hits.forEach((h) => h.m.forEach((m) => {
+    (byFacet[m.facet] ??= { terms: new Set(), n: 0 }).terms.add(m.term);
+    byFacet[m.facet].n += m.n || 1;
+  }));
+  const facets = Object.keys(byFacet).sort((a, b) =>
+    (byFacet[b].n - byFacet[a].n) ||
+    (FACET_RANK.indexOf(a) - FACET_RANK.indexOf(b)));
+  const lead = facets[0];
+  /* speak the asker's own term when it was matched directly: someone
+     who typed "table" gets tables, not the dining table that happened
+     to lead the strongest project's list */
+  const qRes = resolveAlias(fold(q));
+  const leadTerms = lead ? [...byFacet[lead].terms] : [];
+  const qStem = qRes.length > 3 && qRes.endsWith("s") ? qRes.slice(0, -1) : qRes;
+  const term = leadTerms.find((t) => fold(t) === qRes || fold(t) === qStem) ||
+    leadTerms[0] || fold(q);
+
+  /* The sentence only claims projects that matched the SPEAKING facet.
+     "Dining" finds a dining table in the kitchen and a dining room in
+     A.R.C.'s catalogue, and a line placing a dining table in A.R.C.
+     would be the index putting words in the house's mouth. The other
+     reading still gets shown, and gets named for what it is. */
+  const leadHits = hits.filter((h) => h.m.some((m) => m.facet === lead));
+  const tl = [...new Set(leadHits.map((h) =>
+    cards[factCard.work.get(h.p.href)]?.title).filter(Boolean))];
+  const wl = leadHits.length;
+  const others = titles.filter((t) => !tl.includes(t));
+
+  /* When an alias did the work, say so: someone who asked for shiplap
+     and got "I've used wood" watched the house change the subject.
+     "Shiplap files under wood here" is the same lookup made visible.
+     Skipped when the two share a word — "bathroom files under bath"
+     explains nothing. */
+  const qf = fold(q);
+  const aliased = resolveAlias(qf) !== qf &&
+    !qf.split(" ").some((wd) => fold(term).split(" ").includes(wd));
+  const bridge = aliased ? "“" + cap(qf) + "” files under " + term + " here. " : "";
+
+  let say;
+  if (!w) {
+    say = "Nothing shipped answers to " + fold(q) + " yet, but it's in the things I keep. " +
+      (p === 1 ? "One pull below." : cap(num(p)) + " pulls below.");
+  } else if (f.and) {
+    /* two Hill Country studies share a display title, and "two
+       projects: Hill Country home" reads as a miscount; "among them"
+       carries the arithmetic honestly */
+    say = w === 1
+      ? "One project holds all of that: " + titles[0] + "."
+      : w === titles.length
+        ? cap(num(w)) + " projects hold all of that: " + nameList(titles) + "."
+        : cap(num(w)) + " projects hold all of that, " + nameList(titles) + " among them.";
+  } else if (lead === "client") {
+    say = "That's " + term + ". " +
+      (wl === 1 ? "One project: " + tl[0] + "."
+                : cap(num(wl)) + " projects with their name on them.");
+  } else if (lead === "material" || lead === "colour") {
+    const it = aliased ? "it" : term;
+    say = bridge + (wl === 1 ? "I've used " + it + " in " + tl[0] + "."
+      : wl === 2 ? "I've used " + it + " in " + tl[0] + " and " + tl[1] + "."
+      : "I've used " + it + " in " + num(wl) + " projects, " + tl[0] + " among them.");
+  } else if (lead === "furniture") {
+    say = aliased
+      ? bridge + (wl === 1 ? "There's one in " + tl[0] + "."
+        : "They show up in " + num(wl) + " projects. " + tl[0] + " first.")
+      : wl === 1 ? "There's a " + term + " in " + tl[0] + "."
+      : wl === 2 ? "There's a " + term + " in " + tl[0] + " and in " + tl[1] + "."
+      : capWords(plural(term)) + " show up in " + num(wl) + " projects. " + tl[0] + " first.";
+  } else if (lead === "room") {
+    say = bridge + (wl === 1 ? "That's " + tl[0] + "."
+      : capWords(plural(term)) + ": " + nameList(tl) + ".");
+  } else if (lead === "place") {
+    say = bridge + capWords(term) + " work: " + nameList(tl) + ".";
+  } else if (lead === "tool") {
+    say = "Built with " + term + ". " +
+      (wl === 1 ? "One project: " + tl[0] + "." : "It's in " + num(wl) + " projects.");
+  } else {
+    say = "That's " + term + " here. " +
+      (wl === 1 ? "One project carries it: " + tl[0] + "."
+                : cap(num(wl)) + " projects carry it.");
+  }
+  /* the projects that matched the word another way, named as such */
+  if (!f.and && w && others.length) {
+    say += " " + nameList(others) +
+      (others.length === 1 ? " answers" : " answer") + " it in a different sense.";
+  }
+  if (w && p) say += " There's more of it in the things I keep.";
+  if (f.dead && f.dead.length && (w || p)) {
+    say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
+  }
+
+  /* "Capitan Boot Co.." is what happens when a title's own full stop
+     meets the sentence's; English keeps one, so does this */
+  say = say.replace(/\.\.+/g, ".");
+
+  const readings = facets.map((fa) =>
+    fa + ": " + [...byFacet[fa].terms]
+      .sort((a, b) => (fold(b) === qRes || fold(b) === qStem ? 1 : 0) -
+                      (fold(a) === qRes || fold(a) === qStem ? 1 : 0))
+      .slice(0, 2).join(", "));
+  const receipt = "“" + fold(q) + "” read as " +
+    (readings.length ? readings.join("  ·  ") : "several facts at once") +
+    "  ·  " + w + (w === 1 ? " project" : " projects") +
+    "  ·  " + p + (p === 1 ? " pull" : " pulls") +
+    "  ·  facts index v" + (FACTS ? FACTS.vocabularyVersion : "?");
+  return { say, receipt, workIdx, pullIdx, mailto: false };
 }
 
 /* ── shared building blocks ── */
@@ -1395,10 +1757,10 @@ function composeAnswer(a) {
 
 function buildAnswer() {
   cancelAsk();
-  const a = analyse(query) ||
-    { idx: [], where: [], dead: [], skipped: [], held: 0, exact: 0 };
   const rnd = mkRnd(seedNo + 97);
   const colsEl = document.getElementById("answerCols");
+  const railEl = document.getElementById("ansRail");
+  const railCols = document.getElementById("railCols");
   const sayEl = document.getElementById("ansSay");
   const receiptEl = document.getElementById("ansReceipt");
   const still = REDUCE();
@@ -1407,27 +1769,63 @@ function buildAnswer() {
   const seats = window.__seatRects || new Map();
   window.__seatRects = null;
 
-  /* works lead, then the board, then the practice: reading order */
-  const ORDER = { work: 0, pull: 1, note: 2, quote: 3 };
-  const sorted = [...a.idx].sort((x, y) => ORDER[cards[x].kind] - ORDER[cards[y].kind]);
-  const els = sorted.map((ci) =>
-    (cards[ci].kind === "note" || cards[ci].kind === "quote")
-      ? noteCard(cards[ci], rnd) : imgCard(cards[ci], rnd, true));
-  if (els.length) {
-    fillCols(colsEl, els, Math.min(answerColCount(), Math.max(1, els.length)));
+  /* the plan first: intents, then facts. The matcher answers whatever
+     the index has no opinion about. */
+  const plan = think(query);
+  let els, say, receipt, mailto = false;
+  const mk = (ci) => (cards[ci].kind === "note" || cards[ci].kind === "quote")
+    ? noteCard(cards[ci], rnd) : imgCard(cards[ci], rnd, true);
+
+  if (plan) {
+    const workEls = plan.workIdx.map(mk);
+    const railEls = plan.pullIdx.map(mk);
+    const split = railEls.length > 0;
+    if (workEls.length) {
+      fillCols(colsEl, workEls,
+        Math.min(split && innerWidth > 860 ? 2 : answerColCount(),
+          Math.max(1, workEls.length)));
+    } else colsEl.innerHTML = "";
+    if (split) fillCols(railCols, railEls, innerWidth > 860 ? 1 : 2);
+    else railCols.innerHTML = "";
+    railEl.hidden = !split;
+    document.body.classList.toggle("split", split);
+    els = workEls.concat(railEls);
+    say = plan.say; receipt = plan.receipt; mailto = plan.mailto;
   } else {
-    colsEl.innerHTML = "";
+    const a = analyse(query) ||
+      { idx: [], where: [], dead: [], skipped: [], held: 0, exact: 0 };
+    /* works lead, then the board, then the practice: reading order */
+    const ORDER = { work: 0, pull: 1, note: 2, quote: 3 };
+    const sorted = [...a.idx].sort((x, y) => ORDER[cards[x].kind] - ORDER[cards[y].kind]);
+    els = sorted.map(mk);
+    if (els.length) {
+      fillCols(colsEl, els, Math.min(answerColCount(), Math.max(1, els.length)));
+    } else {
+      colsEl.innerHTML = "";
+    }
+    railCols.innerHTML = "";
+    railEl.hidden = true;
+    document.body.classList.remove("split");
+    const spoken = composeAnswer(a);
+    say = spoken.say; receipt = spoken.receipt;
   }
   armReels();
   if (window.armDrift) armDrift(els);
 
-  const { say, receipt } = composeAnswer(a);
+  /* the address becomes a live link once the line is done being
+     typed: textContent while the clock runs, one anchor after */
+  const linkMail = () => {
+    if (!mailto) return;
+    sayEl.innerHTML = sayEl.textContent.replace("hello@reckon.house",
+      '<a href="mailto:hello@reckon.house">hello@reckon.house</a>');
+  };
   receiptEl.textContent = receipt;
   receiptEl.classList.remove("on");
 
   if (still) {
     sayEl.classList.remove("typing");
     sayEl.textContent = say;
+    linkMail();
     receiptEl.classList.add("on");
     els.forEach((el) => el.classList.add("fd-on"));
     return;
@@ -1460,6 +1858,7 @@ function buildAnswer() {
     if (i < say.length) holdAsk(typeOn, step);
     else {
       sayEl.classList.remove("typing");
+      linkMail();
       receiptEl.classList.add("on");
       holdAsk(() => document.body.classList.remove("working"), 200);
     }
@@ -1525,6 +1924,7 @@ function apply() {
     });
   }
   document.body.classList.toggle("asked", next);
+  if (!next) document.body.classList.remove("split");
   if (changed && window.settleAsk) settleAsk();
   if (next) {
     if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
@@ -1643,7 +2043,7 @@ document.getElementById("resetQ").addEventListener("click", () => {
    destinations. The chips that used to spell them out are gone: a row
    of links under a field that answers questions was hedging. */
 const TOUR = ["All work", "Interior projects", "App development",
-  "Kitchen design", "What inspires you?", "Marble surfaces"];
+  "Kitchen design", "What inspires you?", "Marble surfaces", "How do I reach you?"];
 const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
 let tourFull = "";                     /* what placeAsk should size to */
 (() => {

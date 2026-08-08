@@ -33,8 +33,10 @@ export interface FactProject {
   d: string[];
   /** tools, from the study's stack */
   t: string[];
-  /** mined facets: facet → canonical terms */
-  f: Partial<Record<Facet, string[]>>;
+  /** mined facets: facet → [canonical term, evidence count]. The count
+   *  rides along because it is the ranking signal: seventeen sofa
+   *  mentions outrank a couch that appears in one mockup photo. */
+  f: Partial<Record<Facet, [string, number][]>>;
   /** statistics as [value, label] */
   s: [string, string][];
 }
@@ -78,7 +80,7 @@ export const known: Record<string, Set<string>> = (() => {
   for (const p of projects) {
     for (const [facet, terms] of Object.entries(p.f)) {
       (out[facet] ??= new Set()).add("");
-      for (const t of terms as string[]) out[facet].add(fold(t));
+      for (const [t] of terms as [string, number][]) out[facet].add(fold(t));
     }
     (out.discipline ??= new Set());
     for (const d of p.d) out.discipline.add(fold(d));
@@ -91,8 +93,9 @@ export const known: Record<string, Set<string>> = (() => {
 
 export interface Hit {
   project: FactProject;
-  /** which facet the term was found in, and the term as indexed */
-  matches: { facet: string; term: string }[];
+  /** which facet the term was found in, the term as indexed, and how
+   *  much evidence backs it (structured facts count as 1) */
+  matches: { facet: string; term: string; n: number }[];
 }
 
 /* Which projects carry this term, and in what capacity.
@@ -128,13 +131,15 @@ export function lookup(query: string): Hit[] {
   return hits;
 }
 
-function matchesOn(p: FactProject, q: string): { facet: string; term: string }[] {
-  const matches: { facet: string; term: string }[] = [];
+function matchesOn(p: FactProject, q: string): { facet: string; term: string; n: number }[] {
+  const matches: { facet: string; term: string; n: number }[] = [];
   for (const [facet, terms] of Object.entries(p.f)) {
-    for (const t of terms as string[]) if (namesTerm(t, q)) matches.push({ facet, term: t });
+    for (const [t, n] of terms as [string, number][]) {
+      if (namesTerm(t, q)) matches.push({ facet, term: t, n });
+    }
   }
-  for (const d of p.d) if (namesTerm(d, q)) matches.push({ facet: "discipline", term: d });
-  for (const t of p.t) if (namesTerm(t, q)) matches.push({ facet: "tool", term: t });
+  for (const d of p.d) if (namesTerm(d, q)) matches.push({ facet: "discipline", term: d, n: 1 });
+  for (const t of p.t) if (namesTerm(t, q)) matches.push({ facet: "tool", term: t, n: 1 });
   return matches;
 }
 
