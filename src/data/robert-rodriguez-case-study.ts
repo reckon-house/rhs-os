@@ -52,7 +52,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       classification: ["Art Direction", "Photo Compositing", "Typography Design", "Campaign"],
       specLine: "Spring Campaign · Art Direction · Photo Compositing · Capture One",
       reel: {
-        caption: "Preview — 8 frames, Spring 2024",
+        caption: "Preview · 8 frames · Spring 2024",
         colors: REEL_COLORS,
         images: [
           `${IMG}/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg`,

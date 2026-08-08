@@ -221,6 +221,20 @@ for (const file of studyFiles()) {
   });
 }
 
+/* Every pressing study opens with a cover reel: eight or so frames cut
+   fast enough to read as motion, so the work moves before a word of it
+   is read. It is part of the template rather than a flourish one study
+   happened to get, so a pressing study without one is reported here
+   rather than discovered later by eye. */
+const reels = { have: [], missing: [] };
+for (const file of studyFiles()) {
+  const cs = await loadStudy(file);
+  if (cs.style !== "pressing") continue;
+  const cover = cs.sections.find((x) => x.type === "meta" || x.type === "pressing-cover");
+  (cover && cover.reel && cover.reel.images && cover.reel.images.length
+    ? reels.have : reels.missing).push(cs.slug);
+}
+
 /* ── the pulls ──
  * Mined the same way and kept in their own list, because a pull is not
  * a project and must never be answered as one. The board is where an
@@ -287,6 +301,7 @@ const lines = [
   `statistics        ${projects.reduce((a, p) => a + p.stats.length, 0)}`,
   `pulls indexed     ${pulls.length} (${pulls.filter((p) => Object.keys(p.facets).length).length} carry facts)`,
   `voice lines       ${Object.keys(voice.terms).length} terms, ${Object.keys(voice.set).length} set pieces`,
+  `cover reels       ${reels.have.length}/${reels.have.length + reels.missing.length} pressing studies${reels.missing.length ? " — MISSING: " + reels.missing.join(", ") : ""}`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
   `query aliases     ${Object.keys(QUERY_ALIASES).length}${deadAliases.length ? " — " + deadAliases.length + " POINT AT NOTHING" : ", every one lands"}`,

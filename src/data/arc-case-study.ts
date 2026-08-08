@@ -2,6 +2,12 @@ import type { CaseStudy } from "@/lib/types";
 
 const IMG = "/case-studies/arc";
 
+/* The cover reel's blink colours, taken from the study's own palette
+   below rather than picked to taste: Primary, Warm Register, Ground.
+   A reel that flashes colours the brand does not use is decoration
+   pretending to be a system. */
+const REEL_COLORS = ["#B1BC94", "#C4A265", "#000000"];
+
 /* ── Pressing structure ─────────────────────────────────────────────
    A.R.C. ported to the Pressing C language (style: "pressing" routes it
    to PressingLayout). The classic original is byte-preserved at
@@ -111,7 +117,26 @@ export const arcCaseStudy: CaseStudy = {
         "Go-to-Market",
       ],
       specLine: "Home Inventory · Computer Vision · Insurance Technology",
-      // No reel: A.R.C. has no reel; the field is omitted on purpose.
+      /* The cover reel. Eight frames cut fast enough to read as motion,
+         which is the standard opening for a pressing study: the work
+         moves before a word of it is read.
+         Sequenced as the product is used rather than as the files sit
+         on disk — a room, the scan that reads it, what the scan
+         produced, the same thing on other surfaces, then the mark. */
+      reel: {
+        caption: "Preview · 8 frames · 2024",
+        colors: REEL_COLORS,
+        images: [
+          `${IMG}/arc-app-kitchen-project-selection-lifestyle.jpg`,
+          `${IMG}/arc-room-scanning-interface.jpg`,
+          `${IMG}/arc-app-living-room-furniture-selection.jpg`,
+          `${IMG}/arc-app-vinyl-turntable-shelves-lifestyle.jpg`,
+          `${IMG}/arc-app-tablet-kitchen-living-room-lifestyle.jpg`,
+          `${IMG}/arc-dashboard-screen-hero.png`,
+          `${IMG}/arc-multi-device-lifestyle-hero.jpg`,
+          `${IMG}/arc-logo-grid.png`,
+        ],
+      },
       // Summary and abstract stay authored but unrendered in pressing.
       summary: [
         { label: "Built", value: "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis." },

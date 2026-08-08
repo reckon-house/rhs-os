@@ -214,6 +214,33 @@ Live tracking of cross-study patterns. Update as studies are added or revised.
 - Typography & Patterns: Abstract and Application section contain fabricated influence claims. Closing restates abstract. Three-column Application section uses identical internal structure across all columns.
 - Sally: Utilities section runs three consecutive three-column blocks. Consider compressing or using a different component for some.
 
+### The cover reel — required on every pressing study
+Every pressing study opens with a reel in the cover's top right: eight
+or so frames cut fast enough to read as motion, so the work moves
+before a word of it is read. It is part of the template, not a
+flourish one study happened to get.
+
+```ts
+reel: {
+  caption: "Preview · 8 frames · 2024",   // middle dots, never an em dash
+  colors: REEL_COLORS,                     // the STUDY's own palette hexes
+  images: [ /* 8 frames from the study's own material */ ],
+}
+```
+
+Rules that make it read as a system rather than decoration:
+- **Colours come from the study's declared palette**, not picked to
+  taste. A reel that flashes colours the brand does not use is a lie
+  about the brand.
+- **Sequence it the way the work is experienced**, not the order the
+  files sit in. A.R.C. runs room, scan, result, other surfaces, mark.
+- **Close on the brand frame** (logo, mark, type specimen). Both
+  studies do; it lands the sequence instead of stopping it.
+- No dimension registration needed — the cover measures each frame's
+  ratio at runtime and reshapes the box as it cuts.
+
+`npm run facts` reports any pressing study missing one.
+
 ### To create a new case study
 1. Create `src/data/[slug]-case-study.ts` — copy `robert-rodriguez-case-study.ts` (pressing) or `arc-case-study.ts` (classic) as the template
 2. Add images to `public/case-studies/[slug]/` AND register every one in `src/data/image-dimensions.ts` — for pressing studies the declared ratio is load-bearing scroll math, not just CLS
