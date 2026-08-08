@@ -257,6 +257,11 @@ export interface TwoColumnTextSection extends BaseSection {
 export interface ThreeColumnTextSection extends BaseSection {
   type: "three-column-text";
   columns: {
+    /** An image belonging to THIS column, rendered at column measure.
+     *  Small assets live here rather than in a full-width plate: a
+     *  768px app screen is soft stretched to 1400 and exactly crisp in
+     *  a 400px column on a retina display. Pressing renderer only. */
+    image?: { src: string; alt: string; width?: number; height?: number };
     title?: string;
     content: string;
   }[];

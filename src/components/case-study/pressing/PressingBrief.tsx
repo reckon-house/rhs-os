@@ -60,8 +60,17 @@ export interface PressingBriefProps {
   paragraphs?: string[];
   /** Hold the headline sticky while the column travels up beside it. */
   pin?: boolean;
-  /** The method grid: none, or three entries nested after the paragraphs. */
-  columns?: { title: string; body: string }[];
+  /** The method grid: none, or three entries nested after the paragraphs.
+   *  A column may carry its own image, which lands at the top of the
+   *  column at COLUMN width. That is the point of it: a 768px app
+   *  screen is soft when a full-width plate stretches it to 1400, and
+   *  exactly crisp in a 400px column on a retina display. The narrow
+   *  measure is the right home for a small asset, not a consolation. */
+  columns?: {
+    title: string;
+    body: string;
+    image?: { src: string; alt: string; width?: number; height?: number };
+  }[];
   /** Secondary mark above the columns (the prototype's "04 / Method" label). */
   columnsMark?: { n: string; name: string };
 }
@@ -161,6 +170,18 @@ export function PressingBrief({
             <div className={styles.colsGrid}>
               {columns!.map((c, i) => (
                 <div key={i} className={styles.c}>
+                  {c.image ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      className={styles.colImg}
+                      src={c.image.src}
+                      alt={c.image.alt}
+                      width={c.image.width}
+                      height={c.image.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : null}
                   <BodyReveal as="h3" className={styles.colTitle}>
                     {c.title}
                   </BodyReveal>

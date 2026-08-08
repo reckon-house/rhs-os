@@ -211,49 +211,47 @@ export const arcCaseStudy: CaseStudy = {
       columns: [
         {
           title: "The Insurance Reality",
+          image: {
+            src: `${IMG}/arc-app-smartphone-wooden-table-mockup.jpg`,
+            alt: "A.R.C. item entry on a phone, resting on a wooden table",
+            width: 772,
+            height: 772,
+          },
           content:
             "The insurance industry operates on a fundamental asymmetry. Carriers know exactly what they'll pay on a policy. Homeowners rarely know what they'd need to claim. This gap widens with every purchase, every gift, every inherited piece that enters a home without documentation.\n\nStandard homeowner's policies cover personal property at 50-70% of the dwelling coverage amount. A home insured at $400,000 carries roughly $200,000-$280,000 in personal property coverage. Whether that number is adequate depends entirely on whether the homeowner knows what they own and what it costs to replace. Most don't.\n\nThe documentation process is the barrier. Open a spreadsheet. Walk room to room. Describe each item. Research replacement values. Photograph everything. Attach receipts. The estimated time to properly inventory an average home: 40+ hours. The percentage of homeowners who complete this process: single digits.",
         },
         {
           title: "Existing Solutions",
+          image: {
+            src: `${IMG}/arc-room-scanning-interface.jpg`,
+            alt: "A.R.C. scanning a living room, items found and valued",
+            width: 768,
+            height: 772,
+          },
           content:
             "I downloaded every home inventory app I could find before building this. They all land in the same place. Some are just spreadsheets wearing a better outfit - you still type in every item, attach every photo, look up every replacement value yourself. The app adds a database and maybe cloud sync, but the actual work is identical to the spreadsheet it replaced.\n\nThe others are insurance carrier tools, built for their own ecosystem, designed to make claims processing easier for adjusters rather than documentation easier for homeowners. The interfaces feel like it - functional, dense, built for someone who already knows what they're looking at.\n\nThe shared problem is that every one of them still asks you to identify and value each item yourself, one at a time. That's the part nobody wants to do, and no amount of better UI changes it.",
         },
         {
           title: "The Vision Layer",
+          image: {
+            src: `${IMG}/arc-app-living-room-furniture-selection.jpg`,
+            alt: "A.R.C. item detail, category and replacement value",
+            width: 768,
+            height: 772,
+          },
           content:
             "The fix is changing what the person has to do. Instead of describing everything you own, you show it. The camera sees a room, the system identifies what's there, estimates values, and categorizes - and your job becomes reviewing what it found rather than entering it from scratch.\n\nVideo takes this further. Perceptron's Mk1 model was built specifically for understanding the physical world through footage - it reasons across frames, tracks objects through space, and handles the kind of spatial context that a single photo misses. Sweep a room with your phone camera and Mk1 processes the whole thing. It's genuinely fast, and the recognition quality is excellent.\n\nThat shift is what makes the difference. A full home inventory that would take 40+ hours by hand becomes a room-by-room scan that takes minutes. I built A.R.C. on the idea that if you remove the input problem, the rest of home inventory is actually straightforward.",
         },
       ],
     },
 
-    // ── FLOW PLATE — first of the old triple-image, on its own ──
-    {
-      id: "problem-image-mockup",
-      type: "image",
-      src: `${IMG}/arc-app-smartphone-wooden-table-mockup.jpg`,
-      alt: "A.R.C. app — smartphone mockup",
-      pressing: { caption: "Smartphone mockup" },
-    },
 
-    // ── APP-SCREEN PAIR — pinned so the multi-device hero can climb it ──
-    {
-      id: "problem-screens-dual",
-      type: "dual-image",
-      native: true,
-      left: {
-        src: `${IMG}/arc-room-scanning-interface.jpg`,
-        alt: "A.R.C. app — room scanning interface",
-      },
-      right: {
-        src: `${IMG}/arc-app-living-room-furniture-selection.jpg`,
-        alt: "A.R.C. app — item detail view",
-      },
-      pressing: {
-        captions: ["Room scanning interface", "Item detail view"],
-        choreo: { pin: true },
-      },
-    },
+    /* The smartphone plate and the app-screen pair used to sit here,
+       full width, stretching 768px exports to 1400. Those three images
+       are the three method columns' own now: at column measure they
+       are the size their files can carry, and the section reads as one
+       argument with its evidence beside it instead of an argument
+       followed by three pictures. */
 
     // ── MULTI-DEVICE PLATE — the page's one rise, climbs the pinned pair ──
     {

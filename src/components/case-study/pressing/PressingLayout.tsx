@@ -141,7 +141,11 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             j += 1;
             continue;
           }
-          columns = n.columns.map((c) => ({ title: c.title ?? "", body: c.content }));
+          columns = n.columns.map((c) => ({
+            title: c.title ?? "",
+            body: c.content,
+            image: c.image,
+          }));
           columnsMark = n.pressing?.mark;
           j += 1;
           continue;

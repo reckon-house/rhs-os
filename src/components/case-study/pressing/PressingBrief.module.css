@@ -242,3 +242,15 @@
     margin-top: 34px;
   }
 }
+
+/* A column's own image. It sits above the column's title at the
+   measure's full width, which for a 768px app screen is the size that
+   file can actually carry — the reason these moved out of full-width
+   plates in the first place. */
+.colImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--pp-r, 16px);
+  margin-bottom: clamp(14px, 1.6vw, 22px);
+}

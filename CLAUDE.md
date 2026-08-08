@@ -251,6 +251,30 @@ Rules that make it read as a system rather than decoration:
 
 `npm run facts` reports any pressing study missing one.
 
+### Small assets go in the column, not in a plate
+An image can only be shown as large as its pixels allow. On a retina
+screen a 768px export is crisp up to about **384 CSS pixels** and soft
+above it, so a full-width plate stretching it to 1400 is guaranteed
+mush no matter how good the photograph is.
+
+The fix is placement, not CSS. `three-column-text` columns take their
+own `image`, which renders at column measure (~380px) — exactly the
+size those files carry. A.R.C.'s three app screens live there.
+
+```ts
+columns: [
+  { title: "The Insurance Reality",
+    image: { src: `${IMG}/…`, alt: "…", width: 772, height: 772 },
+    content: "…" },
+]
+```
+
+Rules of thumb: **native width ÷ 2 is the largest honest CSS width.**
+Under ~800px native, put it in a column. Over ~2400px, a full-bleed
+plate is fine. `PressingPlate` also caps a single plate at its native
+width as a backstop, so a small asset centres in the column with air
+rather than stretching.
+
 ### To create a new case study
 1. Create `src/data/[slug]-case-study.ts` — copy `robert-rodriguez-case-study.ts` (pressing) or `arc-case-study.ts` (classic) as the template
 2. Add images to `public/case-studies/[slug]/` AND register every one in `src/data/image-dimensions.ts` — for pressing studies the declared ratio is load-bearing scroll math, not just CLS
