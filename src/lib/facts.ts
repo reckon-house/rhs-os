@@ -48,6 +48,8 @@ export interface FactProject {
 export interface VoiceLine {
   lead?: string;
   tail?: string;
+  /** exact substring to set in grey; authored, never machine-chosen */
+  quiet?: string;
 }
 
 const DB = compact as unknown as {

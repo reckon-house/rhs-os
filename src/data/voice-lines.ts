@@ -23,6 +23,12 @@
 export interface VoiceLine {
   lead?: string;
   tail?: string;
+  /** An exact substring of lead+tail to set in grey. Tone is an
+   *  authoring decision: the machine only greys clauses IT appended
+   *  (counts, caveats, dead words), never a line written here. Use
+   *  this when a line has an enumeration that should recede, the way
+   *  the practice statement's middle does. */
+  quiet?: string;
 }
 
 export const voiceLines: Record<string, VoiceLine> = {

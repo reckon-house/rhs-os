@@ -82,7 +82,13 @@ const NOTES = [
   /* This is the bio that used to open the homepage. It lives here now,
      once: the practice stratum renders it as its lead, and an answer
      renders it as a card. Same string either way. */
-  ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Same desk for all of it."],
+  /* The third element is the part that recedes. Tone is an AUTHORING
+     decision, not something a sentence counter should guess: the
+     opening claim here runs two sentences, the closer is one, and the
+     enumeration between them is what greys. Say it in the data and it
+     is right by construction. */
+  ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Same desk for all of it.",
+    "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
   ["How I work", "Independent, Dallas. Design and build. Available for work."],
   ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
@@ -148,7 +154,7 @@ QUOTES.forEach((q) => cards.push({
     ["what it is", "staple quote board words"]]
 }));
 NOTES.forEach((n) => cards.push({
-  kind: "note", word: n[0], full: n[1],
+  kind: "note", word: n[0], full: n[1], quiet: n[2],
   fields: [["the practice", n[0] + " " + n[1]],
     ["what it is", "info about the practice studio contact"]]
 }));
@@ -623,6 +629,50 @@ window.askLog = () => JSON.parse(localStorage.getItem("rh.asks") || "[]");
    hook beats the accident it replaces. */
 window.__brain = { think: (q) => think(q), analyse: (q) => analyse(q) };
 
+/* ── two tones ─────────────────────────────────────────────────────
+   The house says one thing and then qualifies it, and the type should
+   show which is which: the claim in ink, everything appended in grey.
+   Not a sentence-position guess — the composer KNOWS which clauses it
+   added, because it added them, and it hands them over as `quiet`.
+   The reader gets the answer in one glance and the caveats when they
+   want them, which is what a subordinate clause is for.
+
+   Everything routes through this, including the typewriter: the
+   segments are rebuilt at every keystroke so a clause changes colour
+   the moment it starts, rather than after the line lands. */
+const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function toneSplit(text, quiet) {
+  const marks = [];
+  (quiet || []).forEach((frag) => {
+    const f = String(frag || "").trim();
+    if (!f) return;
+    const at = text.indexOf(f);
+    if (at !== -1) marks.push([at, at + f.length]);
+  });
+  marks.sort((a, b) => a[0] - b[0]);
+  const segs = [];
+  let cur = 0;
+  for (const [a, b] of marks) {
+    if (a < cur) continue;               /* overlapping claims: first wins */
+    if (a > cur) segs.push({ t: text.slice(cur, a), q: false });
+    segs.push({ t: text.slice(a, b), q: true });
+    cur = b;
+  }
+  if (cur < text.length) segs.push({ t: text.slice(cur), q: false });
+  return segs;
+}
+function renderToned(el, segs, n) {
+  let left = n === undefined ? Infinity : n;
+  let html = "";
+  for (const s of segs) {
+    if (left <= 0) break;
+    const piece = s.t.slice(0, left);
+    left -= piece.length;
+    html += s.q ? '<span class="q">' + esc(piece) + "</span>" : esc(piece);
+  }
+  el.innerHTML = html;
+}
+
 /* ── the house voice ──────────────────────────────────────────────
    A visible stage, not a vibe. The templates below are cut from the
    studies' own measured diction — things sit, carry, live and anchor
@@ -793,6 +843,9 @@ function planFacts(q, f) {
     n === 1 ? "1 inspiration example" : n + " saved as inspiration";
 
   const v = vary(qKey, 3);
+  /* every clause this function APPENDS lands here, and the type greys
+     exactly those. The primary claim is whatever is left. */
+  const quiet = [];
   let say;
   if (vl && !f.and && (w || p)) {
     /* his lines carry no counts on purpose: the working beside the
@@ -800,6 +853,12 @@ function planFacts(q, f) {
        They also fire when only the BOARD answers: a muse deserves his
        line even though no project carries him. */
     say = (vl.lead || "") + (vl.tail ? " " + vl.tail : "");
+    /* Authored copy is never greyed by the machine. The tail is the
+       personal take — the punchline the statement puts in ink — and
+       machine-greying it would flatten exactly what a voice line is
+       for. A line that WANTS a recessive run carries its own `quiet`,
+       the same way the practice statement does. */
+    if (vl.quiet) quiet.push(vl.quiet);
   } else if (forked && w) {
     say = "\u201c" + cap(qKey) + "\u201d goes more than one way here: " +
       nameList(leadTerms) + ". The work below carries all of them.";
@@ -872,23 +931,31 @@ function planFacts(q, f) {
   }
   /* the projects that matched the word another way, named as such */
   if (!f.and && w && others.length) {
-    say += " " + nameList(others) +
+    const aside = nameList(others) +
       (others.length === 1 ? " answers" : " answer") + " it in a different sense.";
+    say += " " + aside;
+    quiet.push(aside);
   }
   const bridged = senseBridge(qKey);
   if (bridged) {
-    say += " If you meant the " + bridged.label + " kind, ask for " + bridged.target + ".";
+    const aside = "If you meant the " + bridged.label + " kind, ask for " + bridged.target + ".";
+    say += " " + aside;
+    quiet.push(aside);
   }
   /* the calibration's own register for the right-hand column:
      "saved as inspiration", "inspiration example". Voice-led answers
      already counted it in their count line. */
   if (w && p && !vl) {
-    say += p === 1 ? " Plus an inspiration example below."
-      : p === 2 ? " A couple below are saved as inspiration."
-      : " A few of the frames below are saved as inspiration.";
+    const aside = p === 1 ? "Plus an inspiration example below."
+      : p === 2 ? "A couple below are saved as inspiration."
+      : "A few of the frames below are saved as inspiration.";
+    say += " " + aside;
+    quiet.push(aside);
   }
   if (f.dead && f.dead.length && (w || p)) {
-    say += " Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
+    const aside = "Nothing answered to \u201c" + f.dead.join("\u201d, \u201c") + "\u201d.";
+    say += " " + aside;
+    quiet.push(aside);
   }
 
   /* "Do you do branding?" is a yes-or-no question wearing a search.
@@ -910,7 +977,7 @@ function planFacts(q, f) {
     q: qKey, lead, term, w, p, vl, forked, and: f.and,
     dead: f.dead || [], bridged
   });
-  return { say, receipt, workIdx, pullIdx, mailto: false };
+  return { say, quiet, receipt, workIdx, pullIdx, mailto: false };
 }
 
 /* ── shared building blocks ── */
@@ -1119,7 +1186,11 @@ function buildMagazine() {
       NOTE_ORDER.indexOf((cards[y].word || "").toLowerCase()));
   const lead = document.getElementById("infoLead");
   if (bio !== undefined) {
-    lead.textContent = cards[bio].full;
+    /* The statement's rhythm comes from NOTES, which carries the
+       recessive run as its own field. Answers mark their asides
+       because they append them; authored copy marks its own. */
+    renderToned(lead, toneSplit(cards[bio].full,
+      cards[bio].quiet ? [cards[bio].quiet] : []));
     /* keyed like any card, so the brain can travel it out of here */
     lead.dataset.key = "note:" + cards[bio].word;
   }
@@ -1311,11 +1382,17 @@ function composeAnswer(a) {
   }
   /* not on the everything answer, where the notes riding along is
      the expected furniture rather than news */
-  if (n && w && w < allWorks) say += " It's in the practice notes, too.";
-  if (a.dead.length && total) {
-    say += " Nothing answered to \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.";
+  const quiet = [];
+  if (n && w && w < allWorks) {
+    say += " It's in the practice notes, too.";
+    quiet.push("It's in the practice notes, too.");
   }
-  return { say, receipt };
+  if (a.dead.length && total) {
+    const aside = "Nothing answered to \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.";
+    say += " " + aside;
+    quiet.push(aside);
+  }
+  return { say, quiet, receipt };
 }
 
 function buildAnswer() {
@@ -1334,7 +1411,7 @@ function buildAnswer() {
      the index has no opinion about. Whichever speaks, the split is
      the same: pictures go to the rows, words go to the notes column. */
   const plan = think(query);
-  let say, receipt, mailto = false;
+  let say, receipt, mailto = false, quiet = [];
   let leftIdx = [], rightIdx = [];
   const textIdx = [];
   const route = (ci, into) =>
@@ -1342,6 +1419,7 @@ function buildAnswer() {
       ? textIdx : into).push(ci);
   if (plan) {
     say = plan.say; receipt = plan.receipt; mailto = plan.mailto;
+    quiet = plan.quiet || [];
     plan.workIdx.forEach((ci) => route(ci, leftIdx));
     rightIdx = plan.pullIdx.slice();
     /* a kept quote whose author matches the ask joins the notes
@@ -1360,7 +1438,7 @@ function buildAnswer() {
     [...a.idx].sort((x, y) => ORDER[cards[x].kind] - ORDER[cards[y].kind])
       .forEach((ci) => route(ci, leftIdx));
     const spoken = composeAnswer(a);
-    say = spoken.say; receipt = spoken.receipt;
+    say = spoken.say; receipt = spoken.receipt; quiet = spoken.quiet || [];
     if (!leftIdx.length && !textIdx.length && query.trim()) {
       /* The neon answer, from the calibration: an honest miss, then a
          hand of the work that might be comparable. "Might" is doing
@@ -1456,6 +1534,8 @@ function buildAnswer() {
   wk.appendChild(document.createTextNode(receipt));
   notesEl.appendChild(wk);
 
+  const segs = toneSplit(say, quiet);
+
   armReels();
   if (window.armDrift) armDrift(els);
 
@@ -1469,13 +1549,15 @@ function buildAnswer() {
      typed: textContent while the clock runs, one anchor after */
   const linkMail = () => {
     if (!mailto) return;
-    sayEl.innerHTML = sayEl.textContent.replace("hello@reckon.house",
+    /* the toned spans are already in place, so this rewrites the HTML
+       rather than the text: replacing textContent would flatten them */
+    sayEl.innerHTML = sayEl.innerHTML.replace("hello@reckon.house",
       '<a href="mailto:hello@reckon.house">hello@reckon.house</a>');
   };
 
   if (still) {
     sayEl.classList.remove("typing");
-    sayEl.textContent = say;
+    renderToned(sayEl, segs);
     linkMail();
     notesEl.classList.add("on");
     els.forEach((el) => el.classList.add("fd-on"));
@@ -1505,7 +1587,7 @@ function buildAnswer() {
   let i = 0;
   const typeOn = () => {
     i += 1;
-    sayEl.textContent = say.slice(0, i);
+    renderToned(sayEl, segs, i);
     if (i < say.length) holdAsk(typeOn, step);
     else {
       sayEl.classList.remove("typing");

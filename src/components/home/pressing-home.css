@@ -684,6 +684,12 @@
      did not go away, they went into the writing: every clause is
      derived from the matcher's output, and the mechanical trace keeps
      one quiet line underneath for anyone who wants the working. */
+  /* The quiet tone. Grey enough to fall back a full step, dark enough
+     to still be read — this is subordinate copy, not a disclaimer. One
+     value for both the statement and the answers, because they are the
+     same voice at the same size. */
+  .statement .q, .ansprose .q { color: rgba(0, 0, 0, 0.42); }
+
   .ansprose { font-size: clamp(24px, 3.2vw, 44px); font-weight: 500;
     line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
     min-height: 2.4em; }
