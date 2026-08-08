@@ -395,9 +395,17 @@
   .ixnotes { position: sticky; top: calc(var(--nav) + clamp(18px, 3vh, 40px));
     align-self: start;
     display: flex; flex-direction: column;
-    /* 2.5x the old clamp(26px, 3vw, 46px): these are four separate
-       statements, not a list, and they need to stop reading as one */
-    gap: clamp(65px, 7.5vw, 115px); }
+    /* Measured against the WINDOW, not the page width, because pinning
+       changed what constrains this column. It used to float and could
+       be any height; now it holds at the top, and a pinned column
+       taller than the viewport cannot pin — the bottom simply never
+       arrives. At 7.5vw the five blocks ran 915px against a 900px
+       window and the filter was being cut off.
+       vh is the honest unit here: the gap now shrinks on a short
+       laptop instead of pushing the last block off the screen, and
+       the blocks still read as separate statements rather than a
+       list. */
+    gap: clamp(24px, 4vh, 48px); }
   .ixnotes .blk { font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
   .ixnotes .blk .tag { display: block; font-size: var(--lbl);
