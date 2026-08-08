@@ -77,6 +77,19 @@ export function PressingPlate({
     );
   }
 
+  /* ── a plate never scales past the picture it has ────────────────
+     Some assets are small — old thumbnails, app screens exported at
+     772px — and a full-column plate stretched them to twice their
+     pixels, which is soft on any screen and obviously soft on a
+     retina one. The declared width in image-dimensions.ts is the
+     honest ceiling, so the plate uses it: the image sits at the size
+     it can actually carry, centred, and the column keeps the rest as
+     air. Air is a thing this language already does on purpose.
+
+     Only a real ceiling is set. A large asset has none, so nothing
+     about the existing plates changes. */
+  const capped = typeof width === "number" && width > 0 && width < 1400;
+
   return (
     // bleed spans the viewport via the shared breakout; the figure stays
     // margin-0 so nothing shifts, and the caption keeps the column's left
@@ -92,6 +105,7 @@ export function PressingPlate({
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         className={styles.flowImg}
+        style={capped ? { maxWidth: `${width}px`, margin: "0 auto" } : undefined}
       />
       {caption ? (
         // On a bleed plate the caption pads back to the page's side mat

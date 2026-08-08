@@ -889,6 +889,26 @@ visual starts in `public/lab/`.)
       beat 3 on the arriving one. Moving the .pt panels into the shell
       is the likely shape.
 
+- [ ] **Route pressing images through next/image.** Every plate in
+      src/components/case-study/pressing/ is a raw <img>; the 13
+      classic section components use next/image. So a classic page
+      ships AVIF/WebP at the size it needs and a pressing page ships
+      the original JPG at full resolution — which is why the live
+      A.R.C. hero (served via /_next/image?w=3840&q=75) can look
+      better than the same file locally. It is also the payload:
+      A.R.C. alone carries a 1.1MB hero. Worth doing before the
+      remaining studies port over, since each one inherits the plates.
+
+- [ ] **A.R.C.'s small assets need bigger sources or a smaller
+      treatment.** arc-room-scanning-interface.jpg and
+      arc-app-living-room-furniture-selection.jpg are 768px and render
+      at 661 CSS, which needs 1322 device pixels at dpr 2 — a 1.72x
+      upscale. PressingPlate now caps a single plate at its native
+      width, but the dual pair cannot be fixed by capping: to be crisp
+      they would have to render at ~384 CSS, half their current size.
+      Either re-export the sources larger or give small assets their
+      own smaller treatment.
+
 - [ ] **Audit the other 19 viz components for the hydration bug.**
       SystemArchitecture rendered trig straight into SVG attributes,
       and Node's Math.sin disagrees with Chrome's in the last bit, so
