@@ -297,7 +297,11 @@ export function CoverageChart({
                   const y = ACCUM_Y + ACCUM_H - (v / assetAmount) * ACCUM_H * 0.95;
                   const policyY = ACCUM_Y + ACCUM_H * (1 - policyPct);
                   return v > policyAmount ? `${x.toFixed(1)},${Math.min(y, policyY).toFixed(1)}` : null;
-                }).filter(Boolean).join(" "),
+                  // No inner join: this spread needs the ARRAY. Joined first,
+                  // the spread scattered the string character by character and
+                  // the polygon's points were invalid — the gap fill has been
+                  // silently absent since this chart shipped.
+                }).filter(Boolean),
                 `${ML + CW},${ACCUM_Y + ACCUM_H * (1 - policyPct)}`,
               ].join(" ")}
               fill="#8B7355" opacity={0.04}
