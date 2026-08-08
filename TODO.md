@@ -19,7 +19,7 @@ visual starts in `public/lab/`.)
       types. `PressingVizFrame` bridge so the charts survive in pressing
       chrome. All images survive; copy takes the allocation pass.
 
-- [ ] **Homepage v20: the page transition.** The question moved INTO the masthead,
+- [ ] **Homepage v21: the field types.** The question moved INTO the masthead,
       so the site keeps exactly one piece of persistent chrome and the
       burn pill stays the thing behind it. Work / Info / Staples became
       queries instead of links, riding the vocabulary rotation with
@@ -142,6 +142,29 @@ visual starts in `public/lab/`.)
       edge and the internal left alignment is kept — a right-positioned
       text block rather than right-aligned text. Deliberate: the
       alternative snaps.
+
+      v21: the chips row under the field is GONE, and the placeholder
+      types instead of fading.
+
+      The chips were hedging. A row of links sitting under a field that
+      answers questions says "or you could just click something" — and
+      the vocabulary is already in the rotation, which is the honest
+      place for it. Removed the row, its CSS, the VOCAB list, the
+      builder, the focus/blur class it existed for, and the .cycling
+      fade rule with it.
+
+      The tour now TYPES a question in, holds it, and takes it back
+      out. A fade says "here are some words"; typing says someone is
+      asking. It yields the instant the field is focused or has a
+      value, and reduced motion gets the first entry, static.
+
+      One thing it needed: the type is fitted to the WHOLE word, not
+      to the fragment typed so far. Fitting the visible characters
+      resizes the line on every keystroke and it wobbles the entire
+      way in — so the driver publishes its target and placeAsk
+      measures THAT. Verified: one font-size per word across a full
+      rotation (80.64px for the short ones, 36.36px for the long
+      question), no intermediate values.
 
       v20: a three-beat page transition, on click.
 

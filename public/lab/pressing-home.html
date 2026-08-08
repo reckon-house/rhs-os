@@ -134,7 +134,6 @@
   #query:focus { border-bottom-color: var(--masthead-ink); }
   #query::placeholder { color: rgba(0, 0, 0, 0.42); opacity: 1;
     transition: opacity 0.3s ease; }
-  #query.cycling::placeholder { opacity: 0; }
   /* at display size it wears a real rule; in the bar it goes back to
      the module's bare centre slot */
   .ask.big #query { border-bottom-width: 2px;
@@ -160,29 +159,11 @@
   #nav.rev #query::placeholder { color: rgba(255, 255, 255, 0.6); }
   #nav.rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); }
 
-  /* the vocabulary, on focus. The only opaque surface in the chrome,
-     because a menu may carry paper — it is not the bar. */
-  .suggest { position: absolute; top: 100%; left: 0; right: 0; z-index: 1;
-    display: flex; flex-wrap: wrap; gap: 9px 22px;
-    padding: 14px 0 16px; color: var(--ink);
-    font-size: var(--lbl); font-weight: var(--lbl-weight);
-    letter-spacing: var(--lbl-track);
-    opacity: 0; pointer-events: none; transition: opacity 0.18s ease; }
-  /* The only place the vocabulary is written down now. It costs
-     nothing until you engage with the field, and it is the one way to
-     find out what the house answers to without guessing. */
-  #nav.open .suggest { opacity: 1; pointer-events: auto; }
-  .suggest .sg { opacity: 0.45; }
-  .suggest button { background: none; border: 0; padding: 0; cursor: pointer;
-    font: inherit; letter-spacing: inherit; color: var(--ink); }
-  .suggest button:hover { text-decoration: underline; }
-
   /* ── the cover: the question, and what the question is for ───────
      Term left, definition right. The left column is the way in — the
      field at display size, and under it what the house holds, which is
      the same job Pentagram's "showing the latest 27 projects" does. The
      right column says what asking does and then lists the vocabulary,
-     so the suggestions sit in the flow instead of hanging off the field
      as an overlay. That overlay is gone, and the room it had to
      reserve went with it. */
   /* Height gives the question the presence a display line needs, and
@@ -750,7 +731,6 @@
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
     <button type="button" class="clear" id="clearQ" aria-label="Clear">&times;</button>
-    <div class="suggest" id="suggest"><span class="sg">Try</span></div>
   </div>
   <a href="#top" class="mark">Reckon House Staples</a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
@@ -1487,37 +1467,12 @@ input.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { input.value = ""; onQuery("", true); input.blur(); }
   if (e.key === "Enter") { e.preventDefault(); onQuery(input.value, true); input.blur(); }
 });
-input.addEventListener("focus", () => nav.classList.add("open"));
-input.addEventListener("blur", () => setTimeout(() => nav.classList.remove("open"), 140));
 document.getElementById("clearQ").addEventListener("click", () => {
   input.value = ""; onQuery("", true); input.focus();
 });
 document.getElementById("resetQ").addEventListener("click", () => {
   input.value = ""; onQuery("", true);
 });
-/* ── the vocabulary ───────────────────────────────────────────────
-   Work, Info and Staples were three links; here they are three
-   queries, sitting in the same row as the material words and the
-   full question. Nothing is lost — asking for work still gets you
-   all of it, and now "marble" gets you something a link never could. */
-const VOCAB = ["Work", "Info", "Staples", "Kitchens", "Interiors", "Marble",
-  "App design", "West Texas", "Does this company do master bedrooms?"];
-(() => {
-  const row = document.getElementById("suggest");
-  VOCAB.forEach((v) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = v;
-    /* mousedown, not click: the input's blur would tear the row down
-       before a click ever landed. */
-    b.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      input.value = v;
-      onQuery(v, true);
-    });
-    row.appendChild(b);
-  });
-})();
 
 /* ── the burn, lifted from Masthead.tsx ────────────────────────────
    Three stages: climb hard while the page moves, hold with a slow
@@ -1577,32 +1532,57 @@ const VOCAB = ["Work", "Info", "Staples", "Kitchens", "Interiors", "Marble",
 })();
 
 /* ── the tour ──────────────────────────────────────────────────────
-   One field means one placeholder. At display size the rotation is
-   the page's headline; in the bar it is a quiet invitation. Same
-   string, same timer — the field just happens to be a different size
-   by then. Work, Info and Staples ride in it because they are queries
-   now, not destinations. */
-/* the resting entry is the page's own name — the tour opens on it,
-   and asking it is a real query that deals the whole house */
+   One field, one placeholder. It TYPES the question in, holds it, then
+   takes it back out again — a fade said "here are some words"; typing
+   says someone is asking. Same string at display size and in the bar;
+   the field just happens to be a different size by then.
+
+   The size is fitted to the WHOLE word, not to what has been typed so
+   far. Fitting the visible fragment would resize the type on every
+   character and the line would wobble the entire way in — so the
+   driver publishes the target and placeAsk measures that instead.
+
+   Work, Info and Staples ride in it because they are queries now, not
+   destinations. The chips that used to spell them out are gone: a row
+   of links under a field that answers questions was hedging. */
 const TOUR = ["all work", "kitchens", "interiors", "marble", "app design",
   "does this company do master bedrooms?", "west texas", "staples", "info"];
+const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
+let tourFull = "";                     /* what placeAsk should size to */
 (() => {
-  let k = 0;
-  const write = () => {
-    input.placeholder = "“" + TOUR[k] + "”";
-    /* a new question is a new width, so it gets re-fitted */
+  if (REDUCE()) { input.placeholder = "“" + TOUR[0] + "”"; return; }
+  let k = 0, i = 0, mode = "in", timer = 0;
+  const show = (n) => {
+    input.placeholder = "“" + TOUR[k].slice(0, n) + "”";
     if (window.placeAsk) placeAsk();
   };
-  write();
-  const tick = () => {
-    if (document.activeElement === input || input.value || document.hidden) return;
-    input.classList.add("cycling");
-    setTimeout(() => {
-      k = (k + 1) % TOUR.length; write();
-      input.classList.remove("cycling");
-    }, 340);
+  const step = () => {
+    /* never type over someone who is using the field */
+    if (document.activeElement === input || input.value || document.hidden) {
+      timer = setTimeout(step, 500);
+      return;
+    }
+    const word = TOUR[k];
+    tourFull = word;
+    if (mode === "in") {
+      i += 1;
+      show(i);
+      if (i >= word.length) { mode = "hold"; timer = setTimeout(step, TYPE_HOLD); }
+      else timer = setTimeout(step, TYPE_IN);
+      return;
+    }
+    if (mode === "hold") { mode = "out"; timer = setTimeout(step, TYPE_OUT); return; }
+    i -= 1;
+    show(Math.max(0, i));
+    if (i <= 0) {
+      mode = "in";
+      k = (k + 1) % TOUR.length;
+      tourFull = TOUR[k];
+      timer = setTimeout(step, TYPE_GAP);
+    } else timer = setTimeout(step, TYPE_OUT);
   };
-  if (!REDUCE()) setInterval(tick, 3200);
+  tourFull = TOUR[0];
+  timer = setTimeout(step, 600);
 })();
 /* ── the travel ───────────────────────────────────────────────────
    Everything the field does between the cover and the bar is here.
@@ -1670,7 +1650,10 @@ const TOUR = ["all work", "kitchens", "interiors", "marble", "app design",
     /* the left column IS the slot, so the big field's width is measured
        from the layout rather than computed from the viewport */
     const wide = live ? s.width : narrow;
-    const big = fitSize(input.value || input.placeholder, wide);
+    /* the WHOLE word while the tour types, so the type does not
+       resize on every character */
+    const big = fitSize(
+      input.value || (tourFull ? "“" + tourFull + "”" : input.placeholder), wide);
     /* The masthead keeps a tighter gutter than the page does (16 against
        20 on a phone; they are both 40 on a desktop, where this is a
        no-op). So the question rides the PAGE's gutter while it is in
