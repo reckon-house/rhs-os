@@ -1,424 +1,123 @@
 "use client";
 
-/**
- * PressingHome — the homepage as a dealt field, ported from
- * public/lab/pressing-home.html (the design spec; retune there first).
+/* ── PressingHome ───────────────────────────────────────────────────
+ * The homepage. Not a port of the lab so much as the lab moved in: the
+ * markup below is its body, `pressing-home.css` is its stylesheet, and
+ * `pressingHomeDriver.js` is its script. That is deliberate. The lab is
+ * the design spec for this page, and every previous port turned a spec
+ * into a mockup the moment the two were separately maintained.
  *
- * The statement, then the query set as a headline, then every project
- * dealt into one wide [text | frames] pair. Typing re-deals the field —
- * nothing here is a results list; the page answers by recomposing.
- * Deal-again bumps the seed, the URL carries (q, deal), and the seeded
- * dealer (src/lib/deal.ts) reproduces any shared composition exactly —
- * on the server too, which is what keeps hydration honest: the house
- * deal renders in the HTML, and a URL query re-deals after mount (the
- * recompose IS the language, so the flash is the design).
+ * WHAT THIS COMPONENT OWNS: the markup, and calling init() once.
+ * Everything animated — the deal, the travelling field, the curtains,
+ * the drift, the hover, the brain — is imperative DOM work in the
+ * driver. React does not re-render any of it, which is what makes
+ * mounting a two-thousand-line driver safe: nothing it writes is
+ * something React will later reconcile away.
  *
- * The haystack is title + category + slug + the image filename's own
- * tokens — the SEO filenames are retrieval data nobody had to author.
- * Matching is deliberately dumb (see queryMatches); embeddings can
- * replace that one function later without touching the interaction.
+ * WHAT THE SHELL OWNS, and is therefore absent here:
+ *   · the masthead, including the burn and the ink reversal. The lab
+ *     lifted that bar to prototype against; the real one is
+ *     Masthead.tsx, and the question field travels into it.
+ *   · the footer's contact and credits beats, from PressingFooter.
+ *   · scrolling. Lenis owns <main>, so nothing here writes scrollTop.
  *
- * Scroll architecture: nothing here scrubs, so nothing subscribes to
- * the shared rAF loop. Arrival is IntersectionObserver + CSS, the
- * hover part writes transforms only, and Lenis never enters the
- * picture. The footer's own All work index is suppressed on this route
- * (see PressingFooter) — the field IS that index, promoted.
+ * The lab keeps its own copies of all three so it can still be opened
+ * alone and tuned. That is the one duplication in this arrangement,
+ * and it is the correct one: a spec you cannot run is not a spec.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { projects } from "@/data/projects";
-import { imageDimensions } from "@/data/image-dimensions";
-import {
-  dealWidths,
-  HOUSE_SEED,
-  queryMatches,
-} from "@/lib/deal";
-import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
-import styles from "./PressingHome.module.css";
-
-const useIsoLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
-
-/* ── the manifest ─────────────────────────────────────────────────── */
-
-interface Entry {
-  id: string;
-  title: string;
-  category: string;
-  href: string;
-  image: string;
-  ar: string;
-  hay: string;
-  isReel: boolean;
-}
-
-const REEL_HREF = "/case-studies/sizzle";
-
-/* Same derivation as the footer index: every project with somewhere to
-   go, the 800px tile when the dimension manifest knows it, the data
-   file's own image otherwise. */
-const ENTRIES: Entry[] = projects
-  .filter((p) => Boolean(p.href))
-  .map((p) => {
-    const tile = `/images/thumbnails/${p.id}.jpg`;
-    const image = imageDimensions[tile] ? tile : p.image;
-    const dim = imageDimensions[image];
-    const file = (p.image.split("/").pop() ?? "").replace(/[-_.]/g, " ");
-    return {
-      id: p.id,
-      title: p.title,
-      category: p.category,
-      href: p.href as string,
-      image,
-      ar: dim ? `${dim[0]} / ${dim[1]}` : "1 / 1",
-      hay: `${p.title} ${p.category} ${p.href} ${file}`.toLowerCase(),
-      isReel: p.href === REEL_HREF,
-    };
-  });
-
-/* The reel: verbatim from the footer index / Thumb.tsx — the light
-   sequence with no burn. */
-const REEL_IMAGES = [
-  "/images/thumbnails/ivyPark.jpg",
-  "/images/thumbnails/arc.jpg",
-  "/images/thumbnails/nordstromPersonal.jpg",
-  "/images/thumbnails/dsc.jpg",
-  "/images/thumbnails/nordstromBeauty.jpg",
-];
-const REEL_COLORS = ["#0AA7CA", "#181B17", "#776549"];
-const REEL_SEQ: SizzleBeat[] = [
-  { fx: "shutter", img: 0, ms: 600 },
-  { fx: "fade", img: 1, ms: 400 },
-  { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
-  { fx: "slat", img: 3, ms: 620 },
-  { fx: "ccurtain", color: "#181B17", ms: 340 },
-  { fx: "curtain", img: 4, ms: 620 },
-  { fx: "cut", img: 0, ms: 540 },
-];
-
-/* The second voice down the left — the practice ledger, verbatim from
-   /info and the footer. House deal only: a filtered field is an answer,
-   and the answer should be all frames. */
-const TEXT: [string, string][] = [
-  [
-    "The practice",
-    "Multi-disciplinary design and engineering by Jeremy Prasatik. Reckon House Staples works across brand, product, and place: apps, interiors, and AI tools.",
-  ],
-  ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
-  ["How I work", "Independent, Dallas. Design and build. Available for work."],
-  [
-    "Recently",
-    "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online.",
-  ],
-  ["Get in touch", "hello@reckon.house"],
-];
+import { useEffect } from "react";
+import Script from "next/script";
+import { initPressingHome } from "./pressingHomeDriver";
+import "./pressing-home.css";
 
 export function PressingHome() {
-  const [query, setQuery] = useState("");
-  const [seed, setSeed] = useState(HOUSE_SEED);
-  /* The composition actually rendered. Query/seed changes pass through
-     the dip (the field fades 160ms, then the new deal lands) — under
-     reduced motion the swap is immediate. */
-  const [dealt, setDealt] = useState({ query: "", seed: HOUSE_SEED });
-  const [dipping, setDipping] = useState(false);
-
-  const colsRef = useRef<HTMLDivElement>(null);
-  const dipTimer = useRef(0);
-  const debounce = useRef(0);
-
-  /* Boot: a shared URL reproduces its composition. The house deal is in
-     the server HTML; a q/deal URL re-deals on mount, and the recompose
-     is the language. */
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search);
-    const q = p.get("q") ?? "";
-    const d = parseInt(p.get("deal") ?? String(HOUSE_SEED), 10);
-    const s = Number.isFinite(d) ? d : HOUSE_SEED;
-    if (q || s !== HOUSE_SEED) {
-      setQuery(q);
-      setSeed(s);
-      setDealt({ query: q, seed: s });
-    }
-  }, []);
-
-  const syncUrl = useCallback((q: string, s: number) => {
-    const p = new URLSearchParams();
-    if (q.trim()) p.set("q", q.trim());
-    if (s !== HOUSE_SEED) p.set("deal", String(s));
-    const qs = p.toString();
-    window.history.replaceState(
-      null,
-      "",
-      qs ? `?${qs}` : window.location.pathname
-    );
-  }, []);
-
-  const redeal = useCallback(
-    (q: string, s: number) => {
-      syncUrl(q, s);
-      const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      if (reduce) {
-        setDealt({ query: q, seed: s });
-        return;
-      }
-      setDipping(true);
-      window.clearTimeout(dipTimer.current);
-      dipTimer.current = window.setTimeout(() => {
-        setDealt({ query: q, seed: s });
-        setDipping(false);
-      }, 170);
-    },
-    [syncUrl]
-  );
-
-  const onQuery = useCallback(
-    (v: string) => {
-      setQuery(v);
-      window.clearTimeout(debounce.current);
-      debounce.current = window.setTimeout(() => redeal(v, seed), 140);
-    },
-    [redeal, seed]
-  );
-
-  const onDealAgain = useCallback(() => {
-    const next = seed + 1;
-    setSeed(next);
-    redeal(query, next);
-  }, [query, seed, redeal]);
-
-  /* ── the composition for (dealt.query, dealt.seed) ── */
-  const comp = useMemo(() => {
-    const idxs = queryMatches(
-      ENTRIES.map((e) => e.hay),
-      dealt.query
-    );
-    const widths = dealWidths(idxs.length, dealt.seed);
-    return {
-      frames: idxs.map((ei, i) => ({ ...ENTRIES[ei], w: widths[i] })),
-      house: !dealt.query.trim(),
-    };
-  }, [dealt]);
-
-  /* Text placement: the ledger blocks sit against the MEASURED stack.
-     Re-run per deal, on resize, and after fonts settle. */
-  const stackRef = useRef<HTMLDivElement>(null);
-  const txtRef = useRef<HTMLDivElement>(null);
-  useIsoLayoutEffect(() => {
-    const stack = stackRef.current;
-    const txt = txtRef.current;
-    if (!stack || !txt) return;
-    const place = () => {
-      const bs = Array.from(txt.children) as HTMLElement[];
-      const H = stack.offsetHeight;
-      if (!bs.length || !H) return;
-      let y = 0;
-      bs.forEach((b, i) => {
-        b.style.marginTop = "0px";
-        const target = Math.round((H * (i + 0.28)) / (bs.length - 0.05));
-        b.style.marginTop = Math.max(0, target - y) + "px";
-        y = Math.max(target, y) + b.offsetHeight;
-      });
-    };
-    place();
-    window.addEventListener("resize", place);
-    const ro = new ResizeObserver(place);
-    ro.observe(stack);
-    let alive = true;
-    document.fonts?.ready.then(() => {
-      if (alive) place();
-    });
+    /* The ground. This page is white paper on pure black type, and the
+       rest of the site is not — so the flag goes on <html>, where it
+       can paint behind the sticky masthead too. Without it the shell's
+       textured ground shows through the bar's translucent burn. */
+    document.documentElement.classList.add("rh-home");
+    /* One effect, one init, and the teardown is real: React 18's dev
+       double-invoke runs this twice, so a driver that could not be
+       stopped would leave two of every timer behind. */
+    const stop = initPressingHome();
     return () => {
-      alive = false;
-      window.removeEventListener("resize", place);
-      ro.disconnect();
+      stop();
+      document.documentElement.classList.remove("rh-home");
     };
-  }, [comp]);
-
-  /* Arrival: one observer per deal. Admit-once, cascade by viewport. */
-  useEffect(() => {
-    const cols = colsRef.current;
-    if (!cols) return;
-    const els = Array.from(cols.querySelectorAll(`.${styles.it}, .${styles.blk}`));
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      els.forEach((el) => el.classList.add(styles.on));
-      return;
-    }
-    const io = new IntersectionObserver(
-      (es) => {
-        es.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add(styles.on);
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.06, rootMargin: "0px 0px -6% 0px" }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [comp]);
-
-  /* Hover: the stack parts around the grown frame — transforms only. */
-  const onEnter = useCallback((e: React.PointerEvent<HTMLAnchorElement>) => {
-    if (window.innerWidth <= 760) return;
-    if (!window.matchMedia("(hover: hover)").matches) return;
-    const a = e.currentTarget;
-    const col = a.parentElement;
-    if (!col) return;
-    const items = Array.from(col.children) as HTMLElement[];
-    const i = items.indexOf(a);
-    const shift = (a.offsetHeight * 0.5) / 2; /* (grow 1.5 − 1) / 2 */
-    items.forEach((b, k) => {
-      if (k === i) return;
-      b.style.transform = `translateY(${(k < i ? -shift : shift).toFixed(1)}px)`;
-    });
   }, []);
-  const onLeave = useCallback((e: React.PointerEvent<HTMLAnchorElement>) => {
-    const col = e.currentTarget.parentElement;
-    if (!col) return;
-    (Array.from(col.children) as HTMLElement[]).forEach((b) => {
-      if (b !== e.currentTarget) b.style.transform = "";
-    });
-  }, []);
-
-  const count = comp.frames.length;
-  const countLine = comp.house
-    ? `${count} frames / the house deal`
-    : `${count} ${count === 1 ? "frame" : "frames"} / “${dealt.query.trim()}”`;
 
   return (
-    <div>
-      <section className={styles.cover}>
-        <p className={styles.statement}>
-          I&rsquo;m Jeremy. I work across brand, product, and place.{" "}
-          <span className={styles.dim}>
-            Apps and ecommerce, campaigns and brand systems, photography and
-            art direction, custom interiors, AI tools. The disciplines
-            overlap more than they separate.
-          </span>{" "}
-          Same desk for all of it.
-        </p>
+    <>
+      {/* The reel is a custom element, not a React component: the
+          driver creates <sizzle-reel> imperatively when a frame scrolls
+          near, the same way the lab does. The React SizzleReel used by
+          the footer is a different surface with the same sequence, and
+          giving the driver its own definition keeps the two from
+          having to agree on a props contract. */}
+      <Script src="/lab/sizzle-reel.js" strategy="afterInteractive" />
 
-        <div className={styles.querywrap}>
-          <div className={styles.querylbl}>
-            01 / The index &mdash; type anything, the field answers
-          </div>
-          <input
-            className={styles.query}
-            type="text"
-            value={query}
-            placeholder="Everything."
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-            aria-label="Filter the work"
-            onChange={(e) => onQuery(e.target.value)}
-          />
-          <div className={styles.dealline}>
-            <span className={styles.count}>{countLine}</span>
-            <button
-              type="button"
-              className={styles.redealBtn}
-              onClick={onDealAgain}
-              title="Deal the field again"
-            >
-              Deal &#8470; {dealt.seed} &#8635;
-            </button>
-          </div>
+      {/* Every beat is hero-breakout, the same escape the footer's beats
+          use. <main> carries md:px-[50px] gutters and the lab's own
+          --gut is 40px; nested, that put the frames at 90px while the
+          masthead's type sat at 40, which breaks the single rule this
+          layout is built on — one gutter down the whole page, so an
+          image's edge lines up with the type above it. Breaking out
+          lets --gut be the only gutter again. */}
+
+      {/* THE COVER. The question field is not here: it lives in the
+          masthead, which is the end of its journey and the only place
+          its position has to be exact. This is the room it travels
+          through, and the driver measures the gap between the two. */}
+      <section className="hero-breakout cover">
+        <div id="askSlot" aria-hidden="true" />
+        <div className="coverR">
+          <span className="ledelbl">The practice</span>
+          <p className="statement" id="infoLead" />
         </div>
       </section>
 
-      <section className={styles.field}>
-        {count === 0 ? (
-          <div className={styles.empty}>
-            Nothing set for &ldquo;{dealt.query.trim()}&rdquo;.{" "}
-            <button
-              type="button"
-              className={styles.emptyReset}
-              onClick={() => {
-                setQuery("");
-                redeal("", seed);
-              }}
-            >
-              Deal the house
+      {/* THE ANSWER, only in query mode. It borrows the ring's own body
+          below rather than laying out differently: asking re-deals the
+          same magazine, it does not load another page. */}
+      <section className="hero-breakout answer">
+        <div className="anshead">
+          <p className="ansprose" id="ansSay" />
+          <div className="ansback">
+            <button type="button" id="resetQ">
+              Back to the house
             </button>
           </div>
-        ) : (
-          <div
-            ref={colsRef}
-            className={`${styles.cols} ${dipping ? styles.redeal : ""}`}
-          >
-            {/* Keyed by the deal so a recompose remounts the field and the
-                arrival cascade runs fresh. */}
-            <div
-              key={`${dealt.query}|${dealt.seed}`}
-              className={styles.pair}
-            >
-              <div ref={txtRef} className={styles.txt}>
-                {comp.house
-                  ? TEXT.map((t) => (
-                      <div key={t[0]} className={styles.blk}>
-                        <span className={styles.t}>{t[0]}</span>
-                        <p className={styles.s}>{t[1]}</p>
-                      </div>
-                    ))
-                  : null}
-              </div>
-              <div ref={stackRef} className={styles.imgs}>
-                {comp.frames.map((f) => (
-                  <a
-                    key={f.id}
-                    className={styles.it}
-                    href={f.href}
-                    aria-label={f.title}
-                    style={
-                      {
-                        "--w": `${(f.w * 100).toFixed(1)}%`,
-                        "--ar": f.ar,
-                      } as React.CSSProperties
-                    }
-                    onPointerEnter={onEnter}
-                    onPointerLeave={onLeave}
-                  >
-                    {f.isReel ? (
-                      <span className={styles.reelBox}>
-                        <SizzleReel
-                          images={REEL_IMAGES}
-                          colors={REEL_COLORS}
-                          sequence={REEL_SEQ}
-                          style={{ width: "100%", height: "100%" }}
-                        />
-                      </span>
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={f.image}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    )}
-                    <span className={styles.cap}>
-                      {f.title} &mdash; {f.category}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
+        <div className="ixbody">
+          <div className="ixnotes" id="ansNotes" />
+          <div className="ixrows" id="ansRows" />
+        </div>
       </section>
-    </div>
+
+      {/* THE RING. The body of the homepage IS the case-study footer's
+          All-work index, standing alone with the brain above it. A
+          study ends at this object and home begins at it, so a reader
+          who scrolls through everything arrives back at the start.
+          No lede: the field is the title. */}
+      <section className="hero-breakout stratum" id="stIndex">
+        <div className="ixbody">
+          <div className="ixnotes" id="ixNotes" />
+          <div className="ixrows" id="ixRows" />
+        </div>
+      </section>
+
+      {/* The page transition's two panels. What makes the sequence read
+          is the order of their edges, not the number of parts. */}
+      <div className="pt" id="pt" aria-hidden="true">
+        <div className="ptw">
+          <div className="ptstack" id="ptwT" />
+        </div>
+        <div className="ptb">
+          <div className="ptstack" id="ptbT" />
+        </div>
+      </div>
+    </>
   );
 }

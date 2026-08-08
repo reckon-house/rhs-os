@@ -162,3 +162,41 @@
     display: none;
   }
 }
+
+/* ── the homepage variant ───────────────────────────────────────────
+   The centre links give their seat to the question field, and the bar
+   becomes the lab's three-track grid so the wordmark sits dead centre
+   with the field free to travel underneath it. The field itself is
+   positioned by the homepage's stylesheet and driver; all this does is
+   stop the flex row from having an opinion about where it goes. */
+.nav.home {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  justify-content: initial;
+}
+.nav.home .mark {
+  grid-column: 2;
+  justify-self: center;
+  white-space: nowrap;
+}
+.nav.home .meta {
+  grid-column: 3;
+  justify-self: end;
+}
+
+@media (max-width: 760px) {
+  /* 390pt cannot centre a wordmark AND seat a field beside it, so the
+     wordmark takes the right end (the meta's slot, hidden here anyway)
+     and the field keeps the left gutter. The travel stays a straight
+     vertical drop on a phone too. */
+  .nav.home {
+    grid-template-columns: 1fr auto;
+  }
+  .nav.home .mark {
+    grid-column: 2;
+    justify-self: end;
+  }
+  .nav.home .meta {
+    display: none;
+  }
+}

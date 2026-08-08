@@ -183,6 +183,8 @@ export function Masthead() {
     };
   }, [pathname]);
 
+  const isHome = pathname === "/";
+
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
@@ -216,23 +218,56 @@ export function Masthead() {
 
       <nav
         ref={navRef}
-        className={overDark ? `${styles.nav} ${styles.rev}` : styles.nav}
+        /* id and is-rev are STABLE hooks, deliberately outside the CSS
+           module. The homepage's own stylesheet and its driver both
+           reach this bar — the question field travels into it — and a
+           hashed class name is not something another file can name. */
+        id="nav"
+        className={[styles.nav, overDark && styles.rev, overDark && "is-rev",
+          isHome && styles.home].filter(Boolean).join(" ")}
       >
         <div ref={burnRef} className={styles.burn} aria-hidden="true" />
-        <Link href="/" className={styles.mark}>
+        {/* data-mark is a stable hook for the same reason id="nav" is:
+            the homepage's field measures its travel against the
+            wordmark's left edge, and a CSS-module class name is hashed
+            at build time, so no other file can name it. */}
+        <Link href="/" data-mark className={styles.mark}>
           Reckon House Staples
         </Link>
-        <div className={styles.links}>
-          {CENTER_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={linkIsActive(link.href, pathname) ? styles.on : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        {/* On the homepage the question field takes the centre links'
+            place. It is rendered here rather than by the page because
+            this bar is where it ENDS UP: it starts big on the cover and
+            travels here as you scroll, and the only position that has
+            to be exact is this one. The page owns its behaviour; the
+            masthead owns its seat. */}
+        {isHome ? (
+          <div className="ask">
+            <input
+              id="query"
+              type="text"
+              placeholder="Ask the house."
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              aria-label="Ask the house"
+            />
+            <button type="button" className="clear" id="clearQ" aria-label="Clear">
+              &times;
+            </button>
+          </div>
+        ) : (
+          <div className={styles.links}>
+            {CENTER_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={linkIsActive(link.href, pathname) ? styles.on : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
         <a className={styles.meta} href="mailto:hello@reckon.house">
           hello@reckon.house
         </a>

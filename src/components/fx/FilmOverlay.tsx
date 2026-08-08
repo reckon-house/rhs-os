@@ -152,6 +152,12 @@ export function FilmOverlay() {
           Layer order (bottom → top): cream → graph paper grid → grain. */}
       <div
         aria-hidden
+        /* A stable hook so a route can opt out of the house ground.
+           The Pressing homepage is white paper on pure black, and the
+           cream-plus-graph-paper stack showed through the masthead's
+           translucent burn there — the one place on that page where
+           anything behind the content is visible. */
+        data-film-ground
         className="pointer-events-none fixed inset-0"
         style={{
           zIndex: -1,

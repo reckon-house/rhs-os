@@ -880,6 +880,14 @@ visual starts in `public/lab/`.)
 
 ## Next
 
+- [ ] **COME BACK TO THE BRAIN.** Parked mid-flight to finish the
+      homepage. Open: the Tier 1 voice lines (rates, availability,
+      process — 13 audit questions that still shrug), pointing
+      ASK_LOG_URL at a real endpoint before launch, and re-running the
+      259-question audit after any change (29% missed at last run).
+      The audit harness now needs `window.__brain.think`, which the
+      driver exposes deliberately.
+
 - [ ] **Work the voice-line drafts.** `src/data/voice-lines.DRAFTS.md`
       holds the priority list from the 259-question audit, tiered.
       Tier 1 (rates, availability, process) is 13 audit questions that

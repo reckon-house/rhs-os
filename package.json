@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "facts": "node --no-warnings scripts/build-facts.mjs",
-    "facts:report": "node --no-warnings scripts/build-facts.mjs --report"
+    "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
+    "port:home": "node scripts/port-home.mjs",
+    "port:home:check": "node scripts/port-home.mjs --check"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
