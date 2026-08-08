@@ -17,24 +17,23 @@
  * because the thing at the bottom of home is the same footer, so the
  * component has to be honest about where it is.
  *
- * IT PULLS, AND IT ALSO CLICKS. Keep scrolling at the bottom and the
- * ring closes on its own — which is the point, because a case study's
- * reader has finished and "back to top" would only return them to
- * something they have already read. The link stays for keyboards,
- * reduced motion, and anyone who would rather aim than scroll.
+ * NOTHING NAVIGATES HERE, and two earlier versions of this file did.
+ * The first offered a link home; the second let a deliberate scroll
+ * past the end commit to one. Both were answering the wrong question.
+ * A reader who has finished a study does not want a door and does not
+ * want the top of what they just read: they want the next thing. So
+ * the work simply continues below, as PressingRing. Keep scrolling and
+ * it is there, with no gesture to learn, nothing to aim at, and no
+ * page that can navigate itself out from under someone mid-sentence.
  *
- * The distinction that makes the pull safe is intent versus momentum,
- * and it lives in useRingPull: nothing gathers until the page is
- * genuinely at its end, pulling back up drains it, an idle gesture
- * decays, and it takes several hundred pixels of deliberate travel.
- * The progress is drawn here, so the loop is visibly coming rather
- * than sprung.
+ * What is left here is the hinge: a label, a rule that draws itself
+ * across on arrival, the ring, and the chrome that used to live under
+ * the old All-work index.
  */
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useRingPull } from "./useRingPull";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { PressingRing } from "./PressingRing";
 import styles from "./PressingReturn.module.css";
 
 export function PressingReturn() {
@@ -75,42 +74,22 @@ export function PressingReturn() {
       ?.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   };
 
-  const router = useRouter();
-  /* The pull commits to whatever the door points at, so the gesture
-     and the click can never disagree about where the ring goes. */
-  const pull = useRingPull(() => {
-    if (isHome) toTop();
-    else router.push("/");
-  }, pathname);
-
   return (
     <section
       ref={rootRef}
       className={`hero-breakout ${styles.beat}${on ? ` ${styles.on}` : ""}`}
     >
-      {isHome ? (
-        <button type="button" className={styles.door} onClick={toTop}>
-          <span className={styles.eyebrow}>The ring</span>
-          <p className={styles.line}>Back to the top.</p>
-        </button>
-      ) : (
-        <Link href="/" className={styles.door}>
-          <span className={styles.eyebrow}>The ring</span>
-          <p className={styles.line}>Back to the house.</p>
-        </Link>
-      )}
-
-      {/* The rule doubles as the pull's gauge: it draws itself across
-          on arrival, then fills again as the reader keeps going. Two
-          jobs for one line, because a second indicator would be
-          chrome announcing a gesture that should feel like the page
-          simply continuing. */}
-      <div className={styles.rule} aria-hidden="true">
-        <span
-          className={styles.gauge}
-          style={{ "--pull": String(pull) } as CSSProperties}
-        />
+      <div className={styles.head}>
+        <span className={styles.eyebrow}>The ring</span>
+        <p className={styles.line}>
+          {isHome ? "Round again." : "Back to the house."}
+        </p>
       </div>
+
+      <div className={styles.rule} aria-hidden="true" />
+
+      {/* The work itself, not a link to it. */}
+      <PressingRing />
 
       <div className={styles.foot}>
         <span>&copy; 2026 Reckon House</span>

@@ -24,20 +24,10 @@
   padding: clamp(56px, 8vw, 120px) 40px clamp(30px, 4vw, 50px);
 }
 
-/* The whole invitation is one target. A reader who has just finished a
-   study should not have to find a small link — the door is the size of
-   the sentence. */
-.door {
+/* The hinge: a label over the ring, saying what the reader has arrived
+   at. It is not a link any more — the work below IS the destination. */
+.head {
   display: block;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
-  font: inherit;
-  text-decoration: none;
 }
 
 .eyebrow {
@@ -63,6 +53,7 @@
 .rule {
   height: 1px;
   margin-top: clamp(28px, 4vw, 54px);
+  margin-bottom: clamp(40px, 6vw, 84px);
   background: currentColor;
   opacity: 0.14;
   transform: scaleX(0);
@@ -73,32 +64,8 @@
   transform: scaleX(1);
 }
 
-/* The gauge rides inside the rule and fills over it, so the two can
-   never disagree about where the line is. Its own transform, on its
-   own element: the rule owns scaleX for the arrival and this owns it
-   for the pull, which is the one-driver-one-property rule this kit
-   keeps paying for when it is broken. */
-.gauge {
-  display: block;
-  height: 100%;
-  min-height: 1px;
-  background: currentColor;
-  opacity: 0.55;
-  transform: scaleX(var(--pull, 0));
-  transform-origin: left center;
-}
 
-@media (hover: hover) {
-  .door:hover .line {
-    text-decoration: underline;
-    text-underline-offset: 8px;
-    text-decoration-thickness: 2px;
-  }
-}
-.door:focus-visible {
-  outline: 1px solid currentColor;
-  outline-offset: 8px;
-}
+
 
 /* The chrome that used to live under the All-work index. It is real
    information and it outlives the index that carried it. */

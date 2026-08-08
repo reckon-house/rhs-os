@@ -336,6 +336,11 @@
      the page needs to finish before the next thing begins. */
   #stIndex { padding-bottom: 200px; }
 
+  /* The tail's ring runs full width: on the homepage the notes column
+     holds the practice and the filter, but in the footer it would
+     repeat the contact beat sitting directly above it. */
+  .ixbody.ringonly { grid-template-columns: minmax(0, 1fr); }
+
   .ixbody { display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
     padding: 0 var(--gut); }
