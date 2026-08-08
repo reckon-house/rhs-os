@@ -1,0 +1,107 @@
+/* ── the question field, at rest ────────────────────────────────────
+ * The field is shell furniture now: it sits in the masthead on every
+ * route, so its resting appearance belongs to the masthead rather than
+ * to the homepage that happens to animate it.
+ *
+ * These rules are lifted verbatim from public/lab/pressing-home.html,
+ * and scripts/port-home.mjs strips them out of the generated homepage
+ * stylesheet so there is exactly one definition in the app. The lab
+ * keeps its copy, because the lab has to run alone.
+ *
+ * Everything is expressed against custom properties with real
+ * defaults, which is what makes the split work: on the homepage the
+ * driver writes --ask-w, --ask-fs, --ask-drop and the field travels
+ * from the cover into the bar; everywhere else nothing writes them and
+ * the field simply renders at bar size, in its seat, correct.
+ *
+ * Global selectors on purpose. The homepage's driver and its
+ * stylesheet both reach these by name, and a CSS-module hash is not a
+ * name another file can use.
+ */
+
+/* Positioned rather than merely raised, and left the whole way: the
+   wordmark sits centre so this seat stays open. */
+#nav .ask {
+  position: absolute;
+  left: var(--ask-left, var(--nav-gutter));
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%) translateY(var(--ask-drop, 0px));
+  width: var(--ask-w, 420px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: var(--ask-fs, 16px);
+  font-weight: var(--ask-fw, 500);
+  letter-spacing: var(--ask-ls, 0.04em);
+  line-height: 1.04;
+}
+
+#query {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 4px 0;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.28s ease;
+}
+#nav:hover #query {
+  border-bottom-color: rgba(0, 0, 0, 0.22);
+}
+#query:focus {
+  border-bottom-color: var(--masthead-ink);
+}
+#query::placeholder {
+  color: rgba(0, 0, 0, 0.42);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Reversed over dark ground, the same crossfade the wordmark makes. */
+#nav.is-rev #query::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+#nav.is-rev:hover #query {
+  border-bottom-color: rgba(255, 255, 255, 0.28);
+}
+#nav.is-rev #query:focus {
+  border-bottom-color: var(--masthead-paper);
+}
+
+.clear {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 0 2px;
+  cursor: pointer;
+  font-size: var(--nav-size);
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.42);
+}
+.clear:hover {
+  color: var(--masthead-ink);
+}
+#nav.is-rev .clear {
+  color: rgba(255, 255, 255, 0.42);
+}
+#nav.is-rev .clear:hover {
+  color: var(--masthead-paper);
+}
+/* The homepage shows it whenever an answer is open (body.asked); off
+   the homepage there is no answer state, so the field says it itself. */
+.ask.has-text .clear {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  #nav .ask {
+    width: var(--ask-w, min(56vw, 260px));
+  }
+}

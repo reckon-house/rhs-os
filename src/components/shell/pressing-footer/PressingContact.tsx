@@ -84,6 +84,17 @@ const useIsoLayoutEffect =
 
 /* Site chrome, not content: this copy is the same on every page, so it is
    hardcoded here rather than threaded through props. */
+/* The site's own pages. They used to live in the masthead's centre
+   links, which the question field took over: Work was always just the
+   homepage, which the wordmark reaches, but Info and Staples had no
+   other door and would have been orphaned. The footer is on every
+   route and has room to name them, which is a better home for them
+   than a bar with three words in it. */
+const PAGES = [
+  { label: "Work", href: "/", external: false },
+  { label: "Info", href: "/info", external: false },
+  { label: "Staples", href: "/inspiration", external: false },
+];
 const CONTACT = [
   { label: "Email", href: "mailto:hello@reckon.house", external: false },
   {
@@ -100,6 +111,40 @@ const CONTACT = [
 const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors"];
 const PRACTICE = ["Independent, Dallas", "Design and build", "Available for work"];
 const NEWS = ["Awwwards Honors, 2026", "Faux Reel, open repo", "28 case studies online"];
+
+/** A ledger column of LINKS. The reveal rides inside the anchor for the
+ *  same reason it does in the contact column: the splitter flattens
+ *  inline markup to text, so a link wrapped in a BodyReveal comes back
+ *  as a plain word with its href gone. */
+function LinkColumn({
+  title,
+  items,
+}: {
+  title: string;
+  items: { label: string; href: string; external: boolean }[];
+}) {
+  return (
+    <div>
+      <BodyReveal as="h4" className={styles.colHead}>
+        {title}
+      </BodyReveal>
+      <ul className={styles.list}>
+        {items.map((c) => (
+          <li key={c.label}>
+            <a
+              className={styles.link}
+              href={c.href}
+              target={c.external ? "_blank" : undefined}
+              rel={c.external ? "noreferrer noopener" : undefined}
+            >
+              <BodyReveal as="span">{c.label}</BodyReveal>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 /** A ledger column: a dimmed heading over a set of dim items. Every item is
  *  its own BodyReveal, which is what makes the fourteen rows cascade on a
@@ -262,6 +307,7 @@ export function PressingContact({ className }: PressingContactProps) {
               ))}
             </ul>
           </div>
+          <LinkColumn title="Pages" items={PAGES} />
           <LedgerColumn title="Services" items={SERVICES} />
           <LedgerColumn title="Practice" items={PRACTICE} />
           <LedgerColumn title="News" items={NEWS} />

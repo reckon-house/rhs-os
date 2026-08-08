@@ -47,6 +47,19 @@ const js = [...src.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
   .map((m) => m[1])
   .filter((s) => s.trim().length)[0];
 
+/* Selectors the shell now owns. Matched exactly, so a homepage-only
+   variant like ".ask.big #query" is never mistaken for one of them. */
+const SHARED_FIELD = [
+  "#nav .ask",
+  "#query",
+  "#nav:hover #query",
+  "#query:focus",
+  "#query::placeholder",
+  ".clear",
+  ".clear:hover",
+  "body.asked .clear",
+];
+
 /* ── 1. the masthead's own rules come out ── */
 function stripNavRules(text) {
   const out = [];
@@ -67,8 +80,13 @@ function stripNavRules(text) {
       j += 1;
     }
     const sel = text.slice(selStart, b).trim();
-    /* #nav rules go, unless they are about the travelling field */
-    if (sel.startsWith("#nav") && !sel.includes(".ask")) {
+    /* The field's RESTING rules go too: they live in
+       src/components/shell/ask-field.css now, because the field sits in
+       the masthead on every route and its appearance is shell furniture.
+       What stays is the travel — .ask.big, .ask.settling, the working
+       scan, the body.asked states — which only the homepage has. */
+    const restingField = SHARED_FIELD.some((x) => sel === x);
+    if (restingField || (sel.startsWith("#nav") && !sel.includes(".ask"))) {
       out.push(text.slice(i, selStart));
       removed += 1;
     } else {

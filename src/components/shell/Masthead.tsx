@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./Masthead.module.css";
+import "./ask-field.css";
 
 /* ------------------------------------------------------------------ */
 /*  Masthead                                                           */
@@ -23,25 +24,6 @@ import styles from "./Masthead.module.css";
 /*  {children} — sticky pins against <main>, the Lenis scroller, and   */
 /*  a per-page wrapper would end the stick at that page's bounds.      */
 /* ------------------------------------------------------------------ */
-
-const CENTER_LINKS = [
-  { label: "Work", href: "/" },
-  { label: "Info", href: "/info" },
-  { label: "Staples", href: "/inspiration" },
-];
-
-/* Work is the portfolio itself, so it owns the homepage and everything the
-   homepage grid links into: case studies and category pages. */
-function linkIsActive(href: string, pathname: string): boolean {
-  if (href === "/") {
-    return (
-      pathname === "/" ||
-      pathname.startsWith("/case-studies") ||
-      pathname.startsWith("/category")
-    );
-  }
-  return pathname === href || pathname.startsWith(href + "/");
-}
 
 export function Masthead() {
   const pathname = usePathname();
@@ -185,6 +167,35 @@ export function Masthead() {
 
   const isHome = pathname === "/";
 
+  /* Off the homepage the field has no driver behind it, so the bar
+     answers for itself: a question typed here is carried home, where
+     the brain lives. On the homepage every handler is undefined and
+     the driver owns the element outright — two sets of listeners on
+     one input would each fight the other's idea of what a keystroke
+     means. */
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [hasText, setHasText] = useState(false);
+  const onInput = () => setHasText(Boolean(inputRef.current?.value.trim()));
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      e.currentTarget.value = "";
+      setHasText(false);
+      e.currentTarget.blur();
+      return;
+    }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const q = e.currentTarget.value.trim();
+    e.currentTarget.blur();
+    router.push(q ? `/?q=${encodeURIComponent(q)}` : "/");
+  };
+  const onClear = () => {
+    if (inputRef.current) inputRef.current.value = "";
+    setHasText(false);
+    inputRef.current?.focus();
+  };
+
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
@@ -224,7 +235,7 @@ export function Masthead() {
            hashed class name is not something another file can name. */
         id="nav"
         className={[styles.nav, overDark && styles.rev, overDark && "is-rev",
-          isHome && styles.home].filter(Boolean).join(" ")}
+          styles.home].filter(Boolean).join(" ")}
       >
         <div ref={burnRef} className={styles.burn} aria-hidden="true" />
         {/* data-mark is a stable hook for the same reason id="nav" is:
@@ -234,40 +245,40 @@ export function Masthead() {
         <Link href="/" data-mark className={styles.mark}>
           Reckon House Staples
         </Link>
-        {/* On the homepage the question field takes the centre links'
-            place. It is rendered here rather than by the page because
-            this bar is where it ENDS UP: it starts big on the cover and
-            travels here as you scroll, and the only position that has
-            to be exact is this one. The page owns its behaviour; the
-            masthead owns its seat. */}
-        {isHome ? (
-          <div className="ask">
-            <input
-              id="query"
-              type="text"
-              placeholder="Ask the house."
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-              aria-label="Ask the house"
-            />
-            <button type="button" className="clear" id="clearQ" aria-label="Clear">
-              &times;
-            </button>
-          </div>
-        ) : (
-          <div className={styles.links}>
-            {CENTER_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={linkIsActive(link.href, pathname) ? styles.on : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        )}
+        {/* ONE BAR. The field is here on every route, not just the
+            homepage, because it is the way into the work now: the
+            homepage is the index and this is its door. On the homepage
+            the driver takes the field over and it travels down into the
+            cover; everywhere else it stays in its seat at bar size, and
+            asking carries the question home to be answered.
+
+            The centre links are gone with it. Work was the homepage,
+            which the wordmark already reaches, and Info and Staples
+            moved to the footer, which is on every page and has room to
+            name them properly. */}
+        <div className={`ask${hasText ? " has-text" : ""}`}>
+          <input
+            id="query"
+            ref={inputRef}
+            type="text"
+            placeholder="Ask the house."
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-label="Ask the house"
+            onInput={isHome ? undefined : onInput}
+            onKeyDown={isHome ? undefined : onKeyDown}
+          />
+          <button
+            type="button"
+            className="clear"
+            id="clearQ"
+            aria-label="Clear"
+            onClick={isHome ? undefined : onClear}
+          >
+            &times;
+          </button>
+        </div>
         <a className={styles.meta} href="mailto:hello@reckon.house">
           hello@reckon.house
         </a>

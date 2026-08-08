@@ -980,6 +980,23 @@ function planFacts(q, f) {
   return { say, quiet, receipt, workIdx, pullIdx, mailto: false };
 }
 
+/* ── where the scroll actually happens ─────────────────────────────
+   In the lab the document scrolls, so window is the right thing to
+   listen to. In the app it is not: Lenis owns <main>, the page scrolls
+   inside that element, and scroll events do NOT bubble from an element
+   to the window. Every driver here that watched window scroll went
+   deaf the moment this became a route, silently — the field simply
+   stopped travelling and nothing errored.
+
+   So listeners go on whatever is actually scrolling. resize stays on
+   window, which is the only thing that resizes. */
+const scroller = () => document.querySelector("main") || window;
+const onScrollAnywhere = (fn) => {
+  const t = scroller();
+  t.addEventListener("scroll", fn, { passive: true });
+  return () => t.removeEventListener("scroll", fn, { passive: true });
+};
+
 /* ── shared building blocks ── */
 let seedNo = 5;
 let query = "";
@@ -1858,7 +1875,7 @@ let tourFull = "";                     /* what placeAsk should size to */
   };
 
   const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
-  addEventListener("scroll", on, { passive: true });
+  onScrollAnywhere(on);
   addEventListener("resize", on, { passive: true });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
   /* exposed so the travel can be stepped and measured without waiting

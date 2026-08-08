@@ -104,24 +104,10 @@
 
      Sizes come from the driver as custom properties. #query inherits
      the lot, so the field and its own chrome can never disagree. */
-  #nav .ask { position: absolute; left: var(--ask-left, var(--nav-gutter)); z-index: 1;
-    top: 50%; transform: translateY(-50%) translateY(var(--ask-drop, 0px));
-    width: var(--ask-w, 420px); display: flex; align-items: center; gap: 8px;
-    font-family: inherit; font-size: var(--ask-fs, 16px);
-    font-weight: var(--ask-fw, 500); letter-spacing: var(--ask-ls, 0.04em);
-    line-height: 1.04; }
   /* only while the answer opens or closes — never during a scroll,
      where a transition would drag behind the page */
   .ask.settling { transition: transform 0.45s cubic-bezier(0.2, 0.55, 0.2, 1),
     width 0.45s cubic-bezier(0.2, 0.55, 0.2, 1), font-size 0.45s ease; }
-  #query { flex: 1 1 auto; min-width: 0; border: 0; outline: 0;
-    background: transparent; color: inherit; font: inherit;
-    letter-spacing: inherit; padding: 4px 0; border-radius: 0;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease, color 0.28s ease; }
-  #query:focus { border-bottom-color: var(--masthead-ink); }
-  #query::placeholder { color: rgba(0, 0, 0, 0.42); opacity: 1;
-    transition: opacity 0.3s ease; }
   /* at display size it wears a real rule; in the bar it goes back to
      the module's bare centre slot */
   .ask.big #query { border-bottom-width: 2px;
@@ -136,11 +122,6 @@
   #nav.is-rev .ask.big #query:focus::placeholder { color: rgba(255, 255, 255, 0.42); }
   /* display, not visibility: hidden it still holds its width and the
      flex gap, and the question is fitted to the width it actually has */
-  .clear { display: none; background: none; border: 0; padding: 0 2px;
-    cursor: pointer; font-size: var(--nav-size); line-height: 1;
-    color: rgba(0, 0, 0, 0.42); }
-  body.asked .clear { display: block; }
-  .clear:hover { color: var(--masthead-ink); }
 
   /* Reversed over dark ground, same as the module: mix-blend-mode
      cannot work because sticky makes the bar its own stacking
