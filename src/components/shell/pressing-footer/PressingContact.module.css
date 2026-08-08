@@ -47,7 +47,13 @@
   /* The modern note against the Swiss grid, on the slab that closes the page.
      Safe without overflow: hidden because the beat paints its own ink — and
      a clip here would kill the pin. */
-  border-radius: var(--pp-r, 16px) var(--pp-r, 16px) 0 0;
+  /* Square. The rounded top was invisible on a case study, where the
+     masthead's melt deckles this edge as it passes, and unmistakable
+     on the homepage's white ground where it read as two notches cut
+     out of the page. The footer is one component on every route, so it
+     gets one answer: the tail of the site is a full-bleed plane, not a
+     card sitting on one. */
+  border-radius: 0;
 
   /* A real grid, not an absolutely-positioned corner. minmax(0, …) on track 1,
      not a bare 1fr: the headline reveal wraps each line in a nowrap span, so

@@ -35,8 +35,18 @@
 }
 
 /* On dark grounds the disc is the light one. A prop decides this, not a
-   blend probe — the component cannot know its ground at runtime. */
+   blend probe — the component cannot know its ground at runtime.
+   
+   .dark rides the ROW, and .mark below re-declares its own colour, so
+   for as long as both existed the disc stroked #1a1a1a onto near-black
+   and was invisible on every dark beat in the site's tail. The driver
+   never writes the circle's colour — only the sweep and the numeral —
+   so nothing downstream was going to rescue it. The disc has to be
+   told here too. */
 .dark {
+  color: rgba(255, 255, 255, 0.92);
+}
+.dark .mark {
   color: rgba(255, 255, 255, 0.92);
 }
 
