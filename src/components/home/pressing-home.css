@@ -253,8 +253,26 @@
      clip-path, not transform: the panels never move, only what is
      drawn of them, so nothing composites at 100dvh scale and the
      edges stay exactly straight. Each beat eases hard at the end. */
+  /* ── the transition owns its own type ────────────────────────────
+     It must not inherit from the page it is covering, and it was.
+     The panels are children of <body>, the homepage puts .rh-home on
+     <html> while it is mounted, and that rule sets body's family,
+     colour and smoothing. So the stacked words rendered in Satoshi
+     over a case study and Helvetica over the homepage — and because
+     the class is added and removed AS THE ROUTE SWAPS, the typeface
+     changed halfway through the sequence.
+
+     That is the weight shift. Going to a case study it ended in the
+     narrower face and jumped lighter; going home it ended in the wider
+     one and jumped heavier. Measured: the same string is 358.3px in
+     one and 378.2px in the other.
+
+     Stated here, so the sequence looks the same over every route and
+     nothing a page does to <body> can reach it. */
   .pt { position: fixed; inset: 0; z-index: 200; pointer-events: none;
-    visibility: hidden; }
+    visibility: hidden;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
   .pt.pt-run { visibility: visible; pointer-events: auto; }
   .ptw, .ptb { position: absolute; inset: 0; }
 
