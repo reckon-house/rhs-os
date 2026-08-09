@@ -58,6 +58,7 @@ import {
   useState,
 } from "react";
 import { onTick, vh } from "@/lib/scrub";
+import { cutHeadline } from "@/lib/cut-lines";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -83,33 +84,6 @@ const esc = (s: string) =>
    has to land before paint so the reader never sees a half-built frame. */
 const useIsoLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
-
-/* Lays word spans in, reads which ones share an offsetTop, and rebuilds
-   the element as one block per RENDERED line. Blocks are joined with a
-   SPACE: it collapses away between blocks so nothing moves, but survives
-   in textContent, which is what copy-paste, find-in-page and a screen
-   reader actually read. (The prototype joined with "" and welded line
-   boundaries; BodyReveal documents the fix — do not regress it.) */
-function cutHeadline(el: HTMLElement, src: string, lnClass: string): HTMLElement[] {
-  el.innerHTML = src
-    .split(" ")
-    .map((w) => `<span data-hw>${esc(w)}</span>`)
-    .join(" ");
-  const groups: string[][] = [];
-  let top: number | null = null;
-  el.querySelectorAll<HTMLElement>("[data-hw]").forEach((w) => {
-    const t = Math.round(w.offsetTop);
-    if (t !== top) {
-      groups.push([]);
-      top = t;
-    }
-    groups[groups.length - 1].push(w.textContent ?? "");
-  });
-  el.innerHTML = groups
-    .map((g) => `<span class="${lnClass}">${esc(g.join(" "))}</span>`)
-    .join(" ");
-  return Array.from(el.children) as HTMLElement[];
-}
 
 /* The body cut, in BodyReveal's exact idiom: same classes from
    reveal.module.css, same per-line stagger, same space-joined lines. Only

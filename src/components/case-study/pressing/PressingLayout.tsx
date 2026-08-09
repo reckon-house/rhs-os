@@ -211,7 +211,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
                columns gets the brief's from-right variation instead:
                same entrance, one column, evidence still attached to the
                argument it belongs to. */
-            fromRight={p?.choreo?.crossing}
+            crossing={p?.choreo?.crossing}
             columns={columns}
             columnsMark={columnsMark}
           />

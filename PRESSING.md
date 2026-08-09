@@ -185,20 +185,33 @@ sets spill to zero. Ratio kept, nothing off screen, and a smaller ask
 of the file. A.R.C.'s kitchen frame is the worked example: 3840×2363,
 now drawn at 1375×846 inside a 900px-tall mat.
 
-**One section per study crosses right to left.** The pinned brief takes
-`choreo: { pin: true, crossing: true }` and its column is dragged in
-from most of a viewport off to the right, scrubbed by scroll rather
-than transitioned, landing flush as the section reaches the top of the
-screen. Scrubbed matters: a one-shot settle over 130px reads as the
-column nudging itself straight, not as a crossing. Use it ONCE per
-study — the gesture is a punctuation mark and a second one spends it.
+**One section per study crosses right to left.** The HEADLINE's lines
+are cut apart at their rendered line boxes and dragged in from a full
+viewport off to the right, staggered 0.13 apart, scrubbed by scroll.
+`cutHeadline` lives in `src/lib/cut-lines.ts` and both callers share it.
 
-The standalone `PressingCrossing` renders the headline and intro on a
-pinned screen of their own, which is right for a headline standing
-alone and wrong for a section whose column carries method columns: it
-puts the argument on one screen and its evidence on the next. A header
-asking for `crossing` that also carries columns routes to the brief
-variation automatically.
+Two homes for the same gesture, and the difference is only what happens
+after it:
+
+| | headline after landing | column |
+|---|---|---|
+| `PressingCrossing` (Robert) | leaves with its copy | short, on the pinned screen |
+| `PressingBrief` + `choreo: { pin: true, crossing: true }` | PINS | long, travels past independently |
+
+Reach for the brief form when the section carries method columns: the
+standalone crossing renders headline and intro on a screen of their own,
+which puts the argument on one screen and its evidence on the next.
+
+Under `crossing` the brief renders a plain `<h2>` instead of
+RevealHeadline — two drivers on one element's transform is the bug this
+kit keeps paying for. Animate the HEADLINE, never the column: the column
+sits ~580px below the section's top and a pinned brief is thousands of
+pixels tall, so a column-keyed crossing plays out entirely below the
+fold and the reader meets a column already at rest. Measured, not
+guessed.
+
+Use it ONCE per study. The gesture is a punctuation mark and a second
+one spends it.
 
 **An image in a column drifts inside its frame, like every other image
 on the site.** `.colFrame` owns the shape, the clip and the radius;

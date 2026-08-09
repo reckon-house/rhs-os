@@ -39,7 +39,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
+import { cutHeadline } from "@/lib/cut-lines";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
+
+/** Per-line progress lead, PressingCrossing's tuned value. */
+const X_STAGGER = 0.13;
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -66,14 +70,11 @@ export interface PressingBriefProps {
   /** Hold the headline sticky while the column travels up beside it. */
   pin?: boolean;
   /**
-   * The column arrives from the RIGHT, the crossing's gesture without
-   * the crossing's screen. A crossing renders the headline and its
-   * intro on a pinned screen of their own, which splits a section that
-   * carries method columns into two things that read as two sections.
-   * This keeps the one column — intro then columns, pinned headline
-   * beside it — and gives it the same entrance.
+   * The headline's lines cross in from the right, Robert's gesture, on
+   * a headline that then PINS while its column travels past. Use once
+   * per study.
    */
-  fromRight?: boolean;
+  crossing?: boolean;
   /** The method grid: none, or three entries nested after the paragraphs.
    *  A column may carry its own image, which lands at the top of the
    *  column at COLUMN width. That is the point of it: a 768px app
@@ -95,7 +96,7 @@ export function PressingBrief({
   heldLine,
   paragraphs,
   pin = false,
-  fromRight = false,
+  crossing = false,
   columns,
   columnsMark,
 }: PressingBriefProps) {
@@ -106,6 +107,10 @@ export function PressingBrief({
   // scrolls back into view turns a section opener into a loop. State, not a
   // classList write: a re-render must not wipe the drawn class.
   const [drawn, setDrawn] = useState(false);
+  const headRef = useRef<HTMLHeadingElement | null>(null);
+  /* One string, spaces not newlines: the cut reads RENDERED line boxes,
+     so an authored break would be a second, conflicting opinion. */
+  const headText = (heldLine ? `${title ?? ""} ${heldLine}` : title ?? "").trim();
 
   const hasCols = !!columns && columns.length > 0;
 
@@ -113,71 +118,61 @@ export function PressingBrief({
      stackBelow matches THIS stylesheet's 760 mobile block. */
   useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
 
-  /* ── the crossing, scrubbed ────────────────────────────────────
-     The column is dragged in from most of a viewport off to the right
-     and lands flush as the section reaches the top of the screen. It is
-     SCRUBBED, not a transition: a one-shot settle over 130px reads as
-     the column nudging itself straight, which is not the gesture. Tied
-     to scroll it runs backwards for free and the reader is the one
-     moving it.
+  /* ── the crossing, on the HEADLINE ─────────────────────────────
+     Robert's gesture, unchanged: the rendered lines are cut apart and
+     dragged in from a viewport off to the right, staggered, scrubbed by
+     scroll. What differs here is only what happens AFTER — Robert's
+     headline is not pinned, so it leaves with its copy; this one holds
+     while a long column of intro and method columns travels past it.
+     Same entrance, different exit.
 
-     Nothing here writes a start state in CSS. If this effect never runs
-     — no JS, an error upstream — the column simply renders in place and
-     reads fine. A CSS class parking it a viewport to the right would
-     hide the copy in exactly that case. */
+     An earlier pass animated the COLUMN instead, which was simply the
+     wrong element: the column sits ~580px below the section's top and a
+     pinned brief is thousands of pixels tall, so the whole gesture
+     played to an empty screen and the reader met a column already at
+     rest. The headline is the thing that crosses.
+
+     RevealHeadline is skipped in this mode: two drivers on one element's
+     transform is the bug this kit keeps paying for. */
   useEffect(() => {
-    if (!fromRight) return;
-    const col = colRef.current;
+    if (!crossing) return;
+    const head = headRef.current;
     const sec = sectionRef.current;
-    if (!col || !sec) return;
+    if (!head || !sec) return;
     if (reducedMotion()) return;
     const narrow = window.matchMedia("(max-width: " + (CHOREO_BREAKPOINT - 1) + "px)");
-    let wrote = false;
-    const clear = () => {
-      col.style.transform = "";
-      col.style.opacity = "";
-      col.style.willChange = "";
-      wrote = false;
-    };
+    if (narrow.matches) return;
+
+    let lines = cutHeadline(head, headText, styles.ln);
+    let last = -1;
     const off = onTick(() => {
-      /* Below the breakpoint everything stacks into one column and the
-         crossing has nowhere to come from. Checked per tick, not once:
-         a resize across the line must hand the layout back. */
       if (narrow.matches) {
-        if (wrote) clear();
+        lines.forEach((el) => (el.style.transform = ""));
         return;
       }
       if (document.documentElement.hasAttribute("data-paused")) return;
       const r = sec.getBoundingClientRect();
       const h = vh();
       if (r.bottom < 0 || r.top > h) return;
-      /* 0 as the section's top enters at the bottom of the screen, 1 as
-         it reaches the top — which is exactly when the pin engages, so
-         the column lands at the moment the headline starts to hold. */
+      /* 0 as the section's top enters at the bottom of the screen, 1 by
+         the time it reaches the top — which is where the pin takes over.
+         The lines land exactly as the headline starts to hold. */
       const p = Math.min(1, Math.max(0, (h - r.top) / h));
-      const e = p * p * (3 - 2 * p);
-      const dist = Math.min(760, window.innerWidth * 0.72);
-      if (e >= 0.999) {
-        /* Released rather than parked at translateX(0): a lingering
-           transform makes the column a containing block and re-rasters
-           its text at a new subpixel offset. The zoom plate charged us
-           for that lesson already. */
-        col.style.transform = "none";
-        col.style.willChange = "auto";
-        col.style.opacity = "1";
-      } else {
-        col.style.transform =
-          "translate3d(" + ((1 - e) * dist).toFixed(2) + "px,0,0)";
-        col.style.willChange = "transform";
-        col.style.opacity = Math.min(1, e * 2.4).toFixed(3);
-      }
-      wrote = true;
+      if (p === last) return;
+      last = p;
+      const span = Math.max(1 - X_STAGGER * (lines.length - 1), 0.0001);
+      const w = window.innerWidth;
+      lines.forEach((el, i) => {
+        const lp = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - i * X_STAGGER) / span)), 3);
+        el.style.transform =
+          lp >= 0.999 ? "" : "translateX(" + ((1 - lp) * w).toFixed(1) + "px)";
+      });
     });
     return () => {
       off();
-      clear();
+      lines.forEach((el) => (el.style.transform = ""));
     };
-  }, [fromRight]);
+  }, [crossing, headText]);
 
   /* ── the drift ───────────────────────────────────────────────────
      The picture moves inside its frame as the column travels, the same
@@ -278,12 +273,26 @@ export function PressingBrief({
           the prototype's .out span was (display: block, margin-left: 0) —
           the final line revealed as its own unit. */}
       {title ? (
-      <RevealHeadline
-        as="h2"
-        className={pin ? `${styles.headline} ${styles.held}` : styles.headline}
-      >
-        {heldLine ? `${title}\n${heldLine}` : title}
-      </RevealHeadline>
+        crossing ? (
+          /* Plain text as authored; the .ln blocks are cut from the
+             RENDERED lines at runtime, exactly as PressingCrossing does
+             it. Same reason for the key: React must never reconcile
+             against the innerHTML the effect rewrote. */
+          <h2
+            key={headText}
+            ref={headRef}
+            className={pin ? `${styles.headline} ${styles.held}` : styles.headline}
+          >
+            {headText}
+          </h2>
+        ) : (
+          <RevealHeadline
+            as="h2"
+            className={pin ? `${styles.headline} ${styles.held}` : styles.headline}
+          >
+            {heldLine ? `${title}\n${heldLine}` : title}
+          </RevealHeadline>
+        )
       ) : null}
 
       <div

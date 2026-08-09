@@ -285,3 +285,17 @@
    there is deliberately NO rule here parking the column off-screen. A
    CSS start state would hide the copy for good if the driver never ran,
    and the driver is the only thing that can bring it back. */
+
+/* The crossing's line blocks. No initial transform in CSS on purpose:
+   if the driver never runs the headline must still be readable, so JS
+   applies the starting offset itself. Mirrors crossing.module.css. */
+.ln {
+  display: block;
+  will-change: transform;
+}
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .ln {
+    transform: none !important;
+    will-change: auto;
+  }
+}
