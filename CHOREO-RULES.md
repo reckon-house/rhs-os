@@ -54,10 +54,14 @@ A `section-header` that absorbs one or more copy blocks carries
 it. This is Robert's brief pattern and it is the difference between a
 page that scrolls and a page that stages.
 
-Two exceptions, both structural:
-- A header immediately followed by a `closing` renders as
-  `PressingClosing`, which has no pin.
+One exception:
 - A `crossing` header already pins as part of that gesture.
+
+A header immediately followed by a `closing` renders as
+`PressingClosing`, which **pins unconditionally in the component** — no
+data flag, because every study's recap has a column worth holding a
+headline against. The audit therefore does not report closings, and
+`choreo.pin` on a closing header does nothing.
 
 ### 4. Charts are ink on paper — `CHART`
 
@@ -96,8 +100,5 @@ titles, and never author climb room, spacers or `--pp-*` values by hand.
 
 ## Known gaps
 
-- `PressingClosing` has no `pin`, so a closing headline cannot hold
-  while its copy travels. Rule 3 exempts it. If that reads as wrong on
-  the page, the fix is a component change, not a data one.
 - `hero-carousel` / `logo-carousel` can hold nothing and cannot rise.
   A study opening on one hands over from its cover plainly.

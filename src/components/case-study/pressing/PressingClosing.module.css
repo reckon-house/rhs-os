@@ -56,10 +56,25 @@
   font-weight: 700;
   max-width: min(9em, 50vw, 100%);
   margin: 10dvh 0 0;
+  /* The closing PINS, like every other brief on the page. It is the one
+     screen with the most to read — the recap, the services, the stack —
+     and it was the only headline that left with its copy instead of
+     holding while the copy travelled past it. The prototype's closing
+     was a .brief WITHOUT the pin opt-in, and that was carried over
+     faithfully; on a column this long it reads as the page losing its
+     title halfway through the summary.
+     Unconditional rather than a data flag: every study's closing has a
+     column worth holding a headline against, so there is nothing to
+     opt into. Same offset as PressingBrief's .held — the sticky
+     masthead plus a breath. Headline and column share row 2, so the
+     sticky's containing block bottom IS the column's bottom and the
+     release needs no computed threshold; CSS does all of it. */
+  position: sticky;
+  top: calc(var(--nav-h) + clamp(16px, 4dvh, var(--nav-h)));
 }
 
-/* Headline and column share row 2, the prototype's arrangement — inert here
-   without the pin, but it keeps the two starting on the same band. */
+/* Headline and column share row 2, the prototype's arrangement, and with
+   the pin above it is what makes the hold work. */
 .col {
   grid-column: 2;
   grid-row: 2;
@@ -141,6 +156,10 @@
     margin-top: 6dvh;
     font-size: clamp(34px, 10.4vw, 74px);
     max-width: none;
+    /* One track on a phone: the headline stacks ABOVE the column rather
+       than beside it, so a pin would hold it over its own copy. Off,
+       exactly as .held goes static in the brief. */
+    position: static;
   }
   .col {
     grid-column: 1;
