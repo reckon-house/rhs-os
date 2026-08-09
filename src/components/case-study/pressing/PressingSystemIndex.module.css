@@ -20,7 +20,19 @@
 }
 
 .head {
-  margin-bottom: clamp(28px, 4vw, 52px);
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+
+/* The section opens rather than starting mid-sentence. Same scale as
+   every other headline in the family; the ledger below is its
+   evidence. */
+.headline {
+  font-size: clamp(38px, 6.4vw, 96px);
+  line-height: 0.98;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  max-width: 14ch;
+  margin: 0 0 clamp(26px, 4vw, 48px);
 }
 /* The setup: one column of copy at reading measure, off to the right
    the way every other brief in the family sets its column. */
@@ -60,6 +72,18 @@
     clip-path: inset(0 0 0 0);
     transition: none;
   }
+}
+
+/* Odd rows lead with the SPECIMEN instead of the label. Done with
+   `order`, not `row-reverse`: reversing the direction would also flip
+   the specimens inside a multi-item row — the two typefaces would swap
+   — and it puts the label after the thing it names in focus order. */
+.flip .label {
+  order: 2;
+}
+.flip .sample {
+  order: 1;
+  justify-content: flex-end;
 }
 
 .label {
@@ -118,31 +142,24 @@
    Dots, not a matrix. The tint ramps the classic section drew were
    generated steps nobody specified, which puts them on the wrong side
    of the fabrication rule. */
+/* The swatch is an OUTLINE, not a box: colour and form are both
+   interpolated per frame so they arrive together. One path, rewritten
+   by the driver — no border-radius could morph a circle to a triangle. */
 .swatch {
-  /* block, or the width/height simply do not apply to a span and the
-     palette row renders as three captions floating over nothing */
   display: block;
-  margin: 0 auto 8px;
-  width: clamp(44px, 5vw, 76px);
-  height: clamp(44px, 5vw, 76px);
-  border-radius: 50%;
-  flex: 0 0 auto;
-  /* a pale swatch on white paper needs an edge to exist at all */
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  width: clamp(56px, 6.4vw, 104px);
+  aspect-ratio: 1 / 1;
 }
-.swatchCell {
+
+/* Both specimens stack the same way: the thing, then its caption. */
+.palStack,
+.markStack {
+  display: block;
   text-align: center;
 }
-/* The swatch carries its own gap to the caption, so the shared
-   .cap top margin would double it here. */
-.swatchCell .cap {
-  margin-top: 0;
-}
-.hex {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 9px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.palStack .cap,
+.markStack .cap {
+  margin-top: 8px;
 }
 
 @media (max-width: 760px) {

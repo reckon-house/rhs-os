@@ -315,6 +315,41 @@ component that animates scale on a large image owes the same release.
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.
 
+## 7a. The system ledger
+
+Two components, one pattern. `RRSystemIndex` is bespoke to Robert —
+its Archer lockup, its four-state palette and its reel ARE that
+campaign, hardcoded on purpose. `PressingSystemIndex` is the generic
+one: `brand-system` data in, rows out, skipping any row the data cannot
+fill. Both open with a headline, alternate label and specimen down the
+rows, and animate.
+
+**Alternate the rows.** Label left, specimen left, label left. A ledger
+where every row starts the same way is a list. Do it with `order`, not
+`flex-direction: row-reverse` — reversing would also flip the specimens
+INSIDE a multi-item row (two typefaces would swap places) and puts the
+label after the thing it names in focus order.
+
+**The palette morphs colour and form together**, on the shared
+polar-profile lerp in `src/lib/swatch-morph.ts`. Every shape is reduced
+to a radius at each of 180 angles, so any two morph index-for-index — no
+correspondence guessing, no twisting corners. What stayed private to
+Robert is the STATES table: those shapes and radii are campaign values,
+and equal circumradius is not equal optical weight (a circle at 41
+balances a square at 47). The generic component varies shapes from a
+ladder instead, because it cannot know a brand's forms but can still
+make the swatch read as a system rather than a dot.
+
+**Know when NOT to morph.** Robert's lockup interpolates because
+Archer's outlines were extracted with matching ring counts. A.R.C.'s
+mark is filled serif letterforms; interpolating those produces a smear.
+It shows its construction drawing instead, which is what that artwork
+actually is. Reach for the mechanism the material supports.
+
+Cycles run on the shared loop via `onTick` and keep time by
+accumulating capped deltas, so `html[data-paused]` stops the clock and a
+resume carries on rather than fast-forwarding through what it missed.
+
 ## 7b. The live product
 
 A study whose subject is deployed software can run that software in the
