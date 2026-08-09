@@ -36,6 +36,7 @@ export const sallyCaseStudy: CaseStudy = {
   ],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -49,6 +50,17 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 5 frames",
+        colors: ["#D2C6C7", "#C8C8C9", "#C18E7C", "#C08861", "#2C312F"],
+        images: [
+          "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+          "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+          "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
+          "/case-studies/sally-os/heroes/sally-os-asset-hub-detail.jpg",
+          "/case-studies/sally-os/heroes/sally-os-utilities-marketplace-hero.jpg",
+        ],
+      },
       field: "Marketing Technology  AI Strategy  Enterprise Tools",
       author: "Jeremy Prasatik",
       published: "2025",
@@ -87,6 +99,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
       title: "Five Problems\nWith One Root",
+      pressing: { mark: { n: "02", name: "Five Problems" } },
       group: { name: "problem" },
     },
     {
@@ -142,6 +155,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: INTELLIGENCE / TRENDS FEED",
       title: "Real-Time\nCompetitive Intelligence",
+      pressing: { mark: { n: "03", name: "Real-Time" } },
     },
     {
       id: "trends-text",
@@ -256,6 +270,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: BRAND BRAIN / JIM",
       title: "AI Strategy Partner",
+      pressing: { mark: { n: "04", name: "AI Strategy Partner" } },
       group: { name: "brand-brain" },
     },
     {
@@ -385,6 +400,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: ASSET HUB",
       title: "Digital Asset Management\nRebuilt with AI",
+      pressing: { mark: { n: "05", name: "Digital Asset Management" } },
     },
     {
       id: "asset-text",
@@ -478,6 +494,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: UTILITIES MARKETPLACE",
       title: "A Growing Library of\nInternal Tools",
+      pressing: { mark: { n: "06", name: "A Growing Library of" } },
     },
     {
       id: "utilities-text",
@@ -566,6 +583,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 08: CLOSING",
       title: "What Shipped",
+      pressing: { mark: { n: "07", name: "What Shipped" } },
     },
     {
       id: "closing-text",

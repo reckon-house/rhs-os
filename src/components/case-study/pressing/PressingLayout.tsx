@@ -64,6 +64,37 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "feature-cards",
   "pipeline",
   "text-right",
+  /* The bespoke showpieces. Hosted as-is on the page's paper rather
+     than redesigned, which is exactly what this bridge was built for:
+     a study can port TODAY without losing a section, and any one of
+     these can get a pressing skin later the way the A.R.C. charts did.
+     The alternative was leaving 14 studies unportable behind a queue of
+     chart redesigns. */
+  "ai-heatmap",
+  "app-showcase",
+  "brand",
+  "brand-system-volume",
+  "cabin-midcentury-spectrum",
+  "campaign-blast-radius",
+  "color-field-map",
+  "color-palette",
+  "color-permutations",
+  "double-exposure-anatomy",
+  "editorial-treatments",
+  "hex-polygon",
+  "intelligence-flow",
+  "jeffrey-flagship-radius",
+  "kitchen-palette",
+  "material-circos",
+  "material-overlap",
+  "mcp-architecture",
+  "pattern-matrix",
+  "sizzle-playground",
+  "tech-chart",
+  "tech-stack",
+  "timeline",
+  "two-column-text",
+  "typography",
 ]);
 
 /**
@@ -299,7 +330,17 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     /* triple-image needs no component of its own: PressingPlatesPair
        already maps over N images and only its grid was fixed at two. */
-    if (s.type === "dual-image" || s.type === "triple-image") {
+    /* Every image-list section is the same thing at a different count,
+       and PressingPlatesPair already maps over N with a grid that
+       follows. masonry carries its own column count; the rest take
+       one column per image. */
+    if (
+      s.type === "dual-image" ||
+      s.type === "triple-image" ||
+      s.type === "quad-image" ||
+      s.type === "quad-grid" ||
+      s.type === "masonry"
+    ) {
       out.push(
         <PressingPlatesPair
           key={s.id}
@@ -313,6 +354,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             const cap = splitCaption(img.caption);
             return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
+          cols={s.type === "masonry" ? s.columns : undefined}
           pinForNext={p?.choreo?.pin}
           hold={p?.choreo?.hold !== false}
           mark={p?.mark}
@@ -381,7 +423,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
-    if (s.type === "hero-carousel") {
+    if (s.type === "hero-carousel" || s.type === "logo-carousel") {
       out.push(
         <PressingCarouselPlate
           key={s.id}

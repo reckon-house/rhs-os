@@ -25,6 +25,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
   stack: ["Art Direction", "Photography Licensing", "Editorial Systems"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -38,6 +39,20 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#DAD7D2", "#605C66", "#BBAA8B", "#AF987F", "#CAC4BE"],
+        images: [
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-helmut-lang-beige-jacket-tile.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-colorblock-bag-tile.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-rag-and-bone-red-jersey-tile.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg",
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-saddle-bag-tile.jpg",
+        ],
+      },
       title: "Loved by\nNordstrom",
       subtitle:
         "One icon borrowed from Instagram, twelve months of brand merchandising built on top of it.",
@@ -66,6 +81,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE IDEA",
       title: "The Heart Was\nAlready a Verb.",
+      pressing: { mark: { n: "02", name: "The Heart Was" } },
     },
     {
       id: "idea-text",
@@ -98,6 +114,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
       title: "A Tile That Worked\nAs a Container.",
+      pressing: { mark: { n: "03", name: "A Tile That Worked" } },
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
     },
     {
@@ -161,6 +178,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
       title: "Two Tiers Giving\nMerchandising a Lever.",
+      pressing: { mark: { n: "04", name: "Two Tiers Giving" } },
     },
     {
       id: "loved-text",
@@ -200,6 +218,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: ACROSS CHANNELS",
       title: "A Customer Saw It Twice\nin Two Days.",
+      pressing: { mark: { n: "05", name: "A Customer Saw It Twice" } },
     },
     {
       id: "channels-text",
@@ -232,6 +251,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "A Year on\nOne Icon.",
+      pressing: { mark: { n: "06", name: "A Year on" } },
     },
     {
       id: "closing-text",

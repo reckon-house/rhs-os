@@ -17,6 +17,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -33,6 +34,19 @@ export const floorAndDecorCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 7 frames",
+        colors: ["#C0C1C3", "#A3A4A6", "#5F6363", "#D4DBE5", "#817D78"],
+        images: [
+          "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg",
+          "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg",
+          "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg",
+          "/case-studies/floor-and-decor/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg",
+          "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg",
+          "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg",
+          "/case-studies/floor-and-decor/modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg",
+        ],
+      },
       title: "Floor & Decor\nFeature",
       subtitle:
         "Designer of the Quarter, Summer 2023. Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile. Featured in the catalog, on the website, and in a video interview.",
@@ -62,6 +76,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
       title: "Three Projects,\nThree Directions.",
+      pressing: { mark: { n: "02", name: "Three Projects" } },
     },
     {
       id: "directions-subhead",
@@ -104,6 +119,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
       title: "Material Confidence,\nNot Material Matching.",
+      pressing: { mark: { n: "03", name: "Material Confidence" } },
     },
     {
       id: "confidence-subhead",
@@ -201,6 +217,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: CLOSING",
       title: "One Material Kit,\nThree Different Rooms.",
+      pressing: { mark: { n: "04", name: "One Material Kit" } },
     },
     {
       id: "closing-subhead",

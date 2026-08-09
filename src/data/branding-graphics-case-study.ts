@@ -29,6 +29,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
   stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -53,6 +54,20 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#DCDDDD", "#380F03", "#9DB3AD", "#A89B8F", "#BBCFC9"],
+        images: [
+          "/case-studies/branding-graphics/branding-graphics-inna-foil-zine-orange-dress-lifestyle.jpg",
+          "/case-studies/branding-graphics/okina.jpg",
+          "/case-studies/branding-graphics/branding-graphics-abc-123-typography-poster-lifestyle.jpg",
+          "/case-studies/branding-graphics/branding-graphics-tree-print-color-variations-green-wall.jpg",
+          "/case-studies/branding-graphics/branding-graphics-tree-print-color-variations-blush-wall.jpg",
+          "/case-studies/branding-graphics/branding-graphics-posters-sky-is-the-limit-abacus-pair.jpg",
+          "/case-studies/branding-graphics/branding-graphics-verse02-light-waves-stripes-print.jpg",
+          "/case-studies/branding-graphics/branding-graphics-candy-paint-sunburst-print.jpg",
+        ],
+      },
       title: "Branding,\nPrint &\nApparel",
       subtitle:
         "Graphic work. Album covers, gig posters, prints, logos. No single client. No single style. The point is fluency.",
@@ -85,6 +100,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: POSTERS & PRINTS",
       title: "Each One Started\nWith a Blank Page.",
+      pressing: { mark: { n: "02", name: "Each One Started" } },
     },
     {
       id: "posters-text",
@@ -197,6 +213,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: COVERS",
       title: "Four Records.\nNothing in Common.",
+      pressing: { mark: { n: "03", name: "Four Records" } },
     },
     {
       id: "covers-text",
@@ -241,6 +258,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: STOREFRONT",
       title: "From a 4x6\nto a Building.",
+      pressing: { mark: { n: "04", name: "From a 4x6" } },
     },
     {
       id: "storefront-text",
@@ -277,6 +295,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: MARKS",
       title: "Logos that sound like the client.\nNot the designer.",
+      pressing: { mark: { n: "05", name: "Logos that sound like the" } },
     },
     {
       id: "marks-text",
@@ -355,6 +374,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "Where the Instincts\nGet Built.",
+      pressing: { mark: { n: "06", name: "Where the Instincts" } },
     },
     {
       id: "closing-text",

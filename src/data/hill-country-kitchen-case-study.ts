@@ -28,6 +28,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -41,6 +42,20 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#35412B", "#585D3E", "#C1B7A9", "#A99D8E", "#372810"],
+        images: [
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-full-view-beams-runner-island.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-range-stove-brass-knobs-marble.jpg",
+          "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg",
+        ],
+      },
       title: "Hill Country\nKitchen",
       subtitle:
         "Four materials applied across every surface, fixture, and finish. The constraint held the room together.",
@@ -70,6 +85,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
       title: "A Four-Finish Palette\nLocked Before Drawing.",
+      pressing: { mark: { n: "02", name: "A Four-Finish Palette" } },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -155,6 +171,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: CABINETRY / HARDWARE",
       title: "Shaker Cabinets,\nBrass at Every Touchpoint.",
+      pressing: { mark: { n: "03", name: "Shaker Cabinets" } },
     },
     {
       id: "hardware-text",
@@ -231,6 +248,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
       title: "Raw Oak Anchoring\nthe Whole Room.",
+      pressing: { mark: { n: "04", name: "Raw Oak Anchoring" } },
     },
     {
       id: "island-text",
@@ -294,6 +312,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
       title: "A Dining Zone on\nthe Same Palette.",
+      pressing: { mark: { n: "05", name: "A Dining Zone on" } },
     },
     {
       id: "dining-text",
@@ -353,6 +372,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "Systems Thinking\nApplied to a Room",
+      pressing: { mark: { n: "06", name: "Systems Thinking" } },
     },
     {
       id: "closing-text",

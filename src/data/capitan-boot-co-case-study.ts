@@ -17,6 +17,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
   stack: ["Illustrator", "Photoshop", "InDesign", "Camera"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,18 @@ export const capitanBootCoCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 6 frames",
+        colors: ["#EFEAD9", "#C4B594", "#5A5945", "#2A2A1A"],
+        images: [
+          "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg",
+          "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg",
+          "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg",
+          "/case-studies/capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign.jpg",
+          "/case-studies/capitan-boot-co/capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg",
+          "/case-studies/capitan-boot-co/capitan-boot-co-branding-system-color-palette-logo-western-original-bull-skull-horns-arrows-dark-green-beige-geometric-grid-design.jpg",
+        ],
+      },
       title: "Capitan\nBoot Co.",
       subtitle:
         "Western branding built to stamp, stitch, and emboss. Logo marks, typography, badges, and apparel graphics for a boot company rooted in heritage craft.",
@@ -56,6 +69,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE MARKS",
       title: "Marks Built\nto Hold.",
+      pressing: { mark: { n: "02", name: "Marks Built" } },
     },
     {
       id: "marks-subhead",
@@ -102,6 +116,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: WEST TEXAS",
       title: "Quiet. Weathered.\nReal.",
+      pressing: { mark: { n: "03", name: "Quiet. Weathered" } },
     },
     {
       id: "westtexas-subhead",
@@ -233,6 +248,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "Built for Where\nthe Boots Go.",
+      pressing: { mark: { n: "04", name: "Built for Where" } },
     },
     {
       id: "closing-subhead",

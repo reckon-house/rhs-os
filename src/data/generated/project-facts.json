@@ -737,7 +737,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "hero",
@@ -755,6 +755,23 @@
     "furniture": [
      {
       "facet": "furniture",
+      "term": "bench",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/black-white-type/typography-patterns-stepper-poster-bench-lifestyle.jpg"
+       },
+       {
+        "section": "stepper-lifestyle",
+        "field": "image",
+        "quote": "typography patterns stepper poster bench lifestyle"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "artwork",
       "n": 3,
       "cites": [
@@ -767,23 +784,6 @@
         "section": "stepper-flat",
         "field": "alt",
         "quote": "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "bench",
-      "n": 2,
-      "cites": [
-       {
-        "section": "stepper-lifestyle",
-        "field": "image",
-        "quote": "typography patterns stepper poster bench lifestyle"
-       },
-       {
-        "section": "stepper-lifestyle",
-        "field": "alt",
-        "quote": "Typography & Patterns, stepper art print displayed on wooden bench"
        }
       ]
      }
@@ -866,17 +866,17 @@
      {
       "facet": "colour",
       "term": "blush",
-      "n": 2,
+      "n": 3,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/branding-graphics/branding-graphics-tree-print-color-variations-blush-wall.jpg"
+       },
        {
         "section": "tree-color-studies",
         "field": "right.src",
         "quote": "branding graphics tree print color variations blush wall"
-       },
-       {
-        "section": "tree-color-studies",
-        "field": "right.alt",
-        "quote": "Tree silhouette print color study, three framed prints on blush wall"
        }
       ]
      }
@@ -973,7 +973,7 @@
      {
       "facet": "client",
       "term": "Capitan Boot Co.",
-      "n": 16,
+      "n": 28,
       "cites": [
        {
         "section": "hero",
@@ -992,7 +992,7 @@
      {
       "facet": "style",
       "term": "western",
-      "n": 12,
+      "n": 18,
       "cites": [
        {
         "section": "hero",
@@ -1001,8 +1001,8 @@
        },
        {
         "section": "meta",
-        "field": "subtitle",
-        "quote": "Western branding built to stamp, stitch, and emboss."
+        "field": "reel.images.0",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants…"
        }
       ]
      },
@@ -1047,17 +1047,17 @@
      {
       "facet": "colour",
       "term": "sage",
-      "n": 4,
+      "n": 6,
       "cites": [
        {
-        "section": "westtexas-buffalo",
-        "field": "src",
-        "quote": "capitan boot co western original buffalo silhouette desert landscape mesa mountains sage brush terrain branding campaign"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "…ot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg"
        },
        {
-        "section": "westtexas-buffalo",
-        "field": "alt",
-        "quote": "Cream buffalo silhouette set over a mesa-and-sage West Texas vista with Western Original arrow flourishes"
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "…/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign.jpg"
        }
       ]
      },
@@ -1167,7 +1167,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 22,
+      "n": 24,
       "cites": [
        {
         "section": "hero",
@@ -1176,32 +1176,32 @@
        },
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier"
+        "field": "reel.images.6",
+        "quote": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg"
        }
       ]
      },
      {
       "facet": "material",
       "term": "stone",
-      "n": 15,
+      "n": 18,
       "cites": [
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier"
+        "field": "reel.images.3",
+        "quote": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg"
        },
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+        "field": "reel.images.4",
+        "quote": "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg"
        }
       ]
      },
      {
       "facet": "material",
       "term": "glass",
-      "n": 11,
+      "n": 13,
       "cites": [
        {
         "section": "hero",
@@ -1250,30 +1250,11 @@
       ]
      }
     ],
-    "style": [
-     {
-      "facet": "style",
-      "term": "mid century",
-      "n": 10,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line."
-       },
-       {
-        "section": "meta",
-        "field": "summary.3.value",
-        "quote": "Cabin bones, mid-century sensibility."
-       }
-      ]
-     }
-    ],
     "furniture": [
      {
       "facet": "furniture",
       "term": "chandelier",
-      "n": 9,
+      "n": 11,
       "cites": [
        {
         "section": "hero",
@@ -1289,25 +1270,8 @@
      },
      {
       "facet": "furniture",
-      "term": "sofa",
-      "n": 9,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       },
-       {
-        "section": "interior-footnote",
-        "field": "content",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "fireplace",
-      "n": 8,
+      "n": 10,
       "cites": [
        {
         "section": "hero",
@@ -1323,18 +1287,52 @@
      },
      {
       "facet": "furniture",
-      "term": "shelf",
-      "n": 8,
+      "term": "sofa",
+      "n": 10,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg"
+       },
        {
         "section": "meta",
         "field": "abstract",
         "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg"
        },
        {
-        "section": "interior-footnote",
-        "field": "content",
+        "section": "meta",
+        "field": "abstract",
         "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg"
+       },
+       {
+        "section": "a-frame-ceiling",
+        "field": "src",
+        "quote": "chalet a frame ceiling sputnik chandelier triangular window tree canopy"
        }
       ]
      },
@@ -1369,23 +1367,6 @@
         "section": "interior-footnote",
         "field": "content",
         "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "window",
-      "n": 2,
-      "cites": [
-       {
-        "section": "a-frame-ceiling",
-        "field": "src",
-        "quote": "chalet a frame ceiling sputnik chandelier triangular window tree canopy"
-       },
-       {
-        "section": "a-frame-ceiling",
-        "field": "alt",
-        "quote": "…e chalet's A-frame wood-plank ceiling with a sputnik chandelier suspended over a triangular window framing the tree canopy outside"
        }
       ]
      },
@@ -1469,7 +1450,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 8,
+      "n": 10,
       "cites": [
        {
         "section": "hero",
@@ -1486,17 +1467,17 @@
      {
       "facet": "room",
       "term": "patio",
-      "n": 6,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "New lighting mounted to catch the patio and stairs at night."
+        "field": "reel.images.3",
+        "quote": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg"
        },
        {
-        "section": "studs-footnote",
-        "field": "content",
-        "quote": "New lighting mounted to catch the patio and stairs at night."
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg"
        }
       ]
      },
@@ -1514,6 +1495,25 @@
         "section": "kitchen",
         "field": "src",
         "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
+       }
+      ]
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "mid century",
+      "n": 10,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line."
+       },
+       {
+        "section": "meta",
+        "field": "summary.3.value",
+        "quote": "Cabin bones, mid-century sensibility."
        }
       ]
      }
@@ -3100,7 +3100,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 26,
+      "n": 31,
       "cites": [
        {
         "section": "hero",
@@ -3109,66 +3109,83 @@
        },
        {
         "section": "meta",
-        "field": "subtitle",
-        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        }
       ]
      },
      {
       "facet": "material",
       "term": "brass",
-      "n": 15,
+      "n": 18,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
-       },
-       {
-        "section": "directions-subhead",
-        "field": "content",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "tile",
-      "n": 12,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        },
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Marble, dolomite, white oak, classic tile"
+        "field": "reel.images.4",
+        "quote": "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
        }
       ]
      },
      {
       "facet": "material",
       "term": "wood",
-      "n": 12,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        },
        {
-        "section": "directions-subhead",
-        "field": "content",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 13,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "nickel",
+      "n": 11,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg"
        }
       ]
      },
      {
       "facet": "material",
       "term": "brick",
-      "n": 8,
+      "n": 9,
       "cites": [
        {
         "section": "hero",
@@ -3179,23 +3196,6 @@
         "section": "hero",
         "field": "alt",
         "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "nickel",
-      "n": 8,
-      "cites": [
-       {
-        "section": "modern-farmhouse-hero",
-        "field": "image",
-        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
-       },
-       {
-        "section": "modern-farmhouse-hero",
-        "field": "alt",
-        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
        }
       ]
      },
@@ -3262,34 +3262,34 @@
      {
       "facet": "style",
       "term": "farmhouse",
-      "n": 9,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        },
        {
-        "section": "directions-subhead",
-        "field": "content",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
        }
       ]
      },
      {
       "facet": "style",
       "term": "modern",
-      "n": 9,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        },
        {
-        "section": "directions-subhead",
-        "field": "content",
-        "quote": "Modern farmhouse with shiplap, brass fixtures, and patterned floor tile."
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
        }
       ]
      }
@@ -3298,7 +3298,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 6,
+      "n": 9,
       "cites": [
        {
         "section": "hero",
@@ -3317,7 +3317,7 @@
      {
       "facet": "furniture",
       "term": "tub",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "hero",
@@ -3334,7 +3334,7 @@
      {
       "facet": "furniture",
       "term": "vanity",
-      "n": 5,
+      "n": 7,
       "cites": [
        {
         "section": "hero",
@@ -3342,16 +3342,16 @@
         "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
        },
        {
-        "section": "modern-farmhouse-hero",
-        "field": "image",
-        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "shower",
-      "n": 5,
+      "n": 7,
       "cites": [
        {
         "section": "hero",
@@ -3359,94 +3359,94 @@
         "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
        },
        {
-        "section": "urban-southwest-shower",
-        "field": "left.src",
-        "quote": "urban southwest marble shower vertical stacked tile niche bench"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "mirror",
-      "n": 5,
+      "n": 7,
       "cites": [
        {
-        "section": "modern-farmhouse-hero",
-        "field": "image",
-        "quote": "modern farmhouse vanity shiplap marble nickel sconces brass mirror"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
        },
        {
-        "section": "modern-farmhouse-hero",
-        "field": "alt",
-        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "counter",
-      "n": 3,
-      "cites": [
-       {
-        "section": "modern-farmhouse-hero",
-        "field": "alt",
-        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
-       },
-       {
-        "section": "modern-farmhouse-details",
-        "field": "left.src",
-        "quote": "modern farmhouse vanity shiplap marble counter nickel sconces vessel sink"
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "bench",
-      "n": 3,
+      "n": 4,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+       },
        {
         "section": "urban-southwest-shower",
         "field": "left.src",
         "quote": "urban southwest marble shower vertical stacked tile niche bench"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
        },
        {
-        "section": "urban-southwest-shower",
-        "field": "left.alt",
-        "quote": "Urban southwest marble shower with vertical stacked tile, recessed niche with hexagon detail, marble bench, and clerestory window"
+        "section": "modern-farmhouse-hero",
+        "field": "alt",
+        "quote": "…house vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "sink",
-      "n": 3,
+      "n": 4,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
+       },
        {
         "section": "modern-farmhouse-details",
         "field": "left.src",
         "quote": "modern farmhouse vanity shiplap marble counter nickel sconces vessel sink"
-       },
-       {
-        "section": "modern-farmhouse-details",
-        "field": "left.alt",
-        "quote": "…detail with vertical shiplap, veined marble counter, polished nickel sconces with milk glass globes, vessel sink, and brass mirror"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "chandelier",
-      "n": 2,
+      "n": 3,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
+       },
        {
         "section": "quiet-glam-image",
         "field": "src",
         "quote": "quiet glam primary bath veined marble brass urchin chandelier"
-       },
-       {
-        "section": "quiet-glam-image",
-        "field": "alt",
-        "quote": "Quiet glam primary bath with veined marble walls, freestanding tub, brass urchin chandelier, and patterned floor tile"
        }
       ]
      },
@@ -4135,7 +4135,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 35,
+      "n": 51,
       "cites": [
        {
         "section": "hero",
@@ -4152,17 +4152,17 @@
      {
       "facet": "room",
       "term": "pantry",
-      "n": 9,
+      "n": 10,
       "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg"
+       },
        {
         "section": "material-columns",
         "field": "columns.0.content",
         "quote": "…ng on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
-       },
-       {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…is the same finish - cabinet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms…"
        }
       ]
      },
@@ -4179,11 +4179,47 @@
       ]
      }
     ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 37,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "image",
+        "quote": "hill country kitchen island pendants marble wide"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal mea…"
+       },
+       {
+        "section": "hardware-footnote",
+        "field": "content",
+        "quote": "A French mechanism on American shaker cabinets in a Texas kitchen."
+       }
+      ]
+     }
+    ],
     "material": [
      {
       "facet": "material",
       "term": "marble",
-      "n": 30,
+      "n": 36,
       "cites": [
        {
         "section": "hero",
@@ -4200,7 +4236,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 23,
+      "n": 24,
       "cites": [
        {
         "section": "hero",
@@ -4209,8 +4245,8 @@
        },
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+        "field": "reel.images.6",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-range-stove-brass-knobs-marble.jpg"
        }
       ]
      },
@@ -4233,6 +4269,23 @@
      },
      {
       "facet": "material",
+      "term": "glass",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg"
+       },
+       {
+        "section": "material-columns",
+        "field": "columns.0.content",
+        "quote": "…ed floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel,…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "leather",
       "n": 6,
       "cites": [
@@ -4245,23 +4298,6 @@
         "section": "dining-footnote",
         "field": "content",
         "quote": "Leather-and-oak safari chairs surround the table."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "glass",
-      "n": 5,
-      "cites": [
-       {
-        "section": "material-columns",
-        "field": "columns.0.content",
-        "quote": "…ed floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel,…"
-       },
-       {
-        "section": "cabinet-pair",
-        "field": "left.src",
-        "quote": "hill country kitchen glass cabinet clock marble"
        }
       ]
      },
@@ -4316,7 +4352,7 @@
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 25,
+      "n": 26,
       "cites": [
        {
         "section": "hero",
@@ -4325,15 +4361,15 @@
        },
        {
         "section": "meta",
-        "field": "summary.0.value",
-        "quote": "Cabinetry, island, dining zone, full material spec."
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg"
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "island",
-      "n": 21,
+      "n": 24,
       "cites": [
        {
         "section": "hero",
@@ -4344,6 +4380,23 @@
         "section": "hero",
         "field": "alt",
         "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "backsplash",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg"
        }
       ]
      },
@@ -4366,18 +4419,18 @@
      },
      {
       "facet": "furniture",
-      "term": "backsplash",
+      "term": "rug",
       "n": 8,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-full-view-beams-runner-island.jpg"
        },
        {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "…the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint."
+        "section": "cabinet-pair",
+        "field": "right.src",
+        "quote": "hill country kitchen full view beams runner island"
        }
       ]
      },
@@ -4417,18 +4470,52 @@
      },
      {
       "facet": "furniture",
-      "term": "rug",
-      "n": 7,
+      "term": "sink",
+      "n": 6,
       "cites": [
        {
-        "section": "cabinet-pair",
-        "field": "right.src",
-        "quote": "hill country kitchen full view beams runner island"
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble.jpg"
        },
        {
-        "section": "cabinet-pair",
-        "field": "right.alt",
-        "quote": "Full kitchen view with exposed beams, runner rug, white oak island"
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg"
+       },
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg"
+       },
+       {
+        "section": "material-columns",
+        "field": "columns.2.content",
+        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
        }
       ]
      },
@@ -4446,57 +4533,6 @@
         "section": "cabinet-pair",
         "field": "left.alt",
         "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "pendant",
-      "n": 5,
-      "cites": [
-       {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
-       },
-       {
-        "section": "cabinet-wide-pair",
-        "field": "right.src",
-        "quote": "hill country kitchen pantry wall herringbone pendant"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "faucet",
-      "n": 4,
-      "cites": [
-       {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
-       },
-       {
-        "section": "cabinet-wide-pair",
-        "field": "left.alt",
-        "quote": "Sink corner with open shelving, marble backsplash, brass faucet"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "sink",
-      "n": 4,
-      "cites": [
-       {
-        "section": "cabinet-wide-pair",
-        "field": "left.src",
-        "quote": "hill country kitchen sink corner shelves marble"
-       },
-       {
-        "section": "cabinet-wide-pair",
-        "field": "left.alt",
-        "quote": "Sink corner with open shelving, marble backsplash, brass faucet"
        }
       ]
      },
@@ -4608,42 +4644,6 @@
         "section": "pantry-hero",
         "field": "image",
         "quote": "hill country kitchen pantry fridge pendant window"
-       }
-      ]
-     }
-    ],
-    "place": [
-     {
-      "facet": "place",
-      "term": "hill country",
-      "n": 21,
-      "cites": [
-       {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country kitchen island pendants marble wide"
-       },
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       }
-      ]
-     },
-     {
-      "facet": "place",
-      "term": "texas",
-      "n": 3,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal mea…"
-       },
-       {
-        "section": "hardware-footnote",
-        "field": "content",
-        "quote": "A French mechanism on American shaker cabinets in a Texas kitchen."
        }
       ]
      }
@@ -5591,7 +5591,7 @@
      {
       "facet": "client",
       "term": "Ivy Park",
-      "n": 24,
+      "n": 40,
       "cites": [
        {
         "section": "hero",
@@ -5608,7 +5608,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 12,
+      "n": 14,
       "cites": [
        {
         "section": "hero",
@@ -5736,7 +5736,7 @@
      {
       "facet": "furniture",
       "term": "window",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "hero",
@@ -5829,7 +5829,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 20,
+      "n": 30,
       "cites": [
        {
         "section": "hero",
@@ -5848,7 +5848,7 @@
      {
       "facet": "place",
       "term": "new york",
-      "n": 15,
+      "n": 20,
       "cites": [
        {
         "section": "hero",
@@ -6090,7 +6090,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 30,
+      "n": 46,
       "cites": [
        {
         "section": "hero",
@@ -6109,17 +6109,34 @@
      {
       "facet": "material",
       "term": "tile",
-      "n": 23,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
-        "field": "summary.0.value",
-        "quote": "One tile system across social, email, in-store signage, web"
+        "field": "reel.images.2",
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-helmut-lang-beige-jacket-tile.jpg"
        },
        {
-        "section": "system-header",
-        "field": "title",
-        "quote": "A Tile That Worked As a Container."
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "denim",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg"
+       },
+       {
+        "section": "tiles-2",
+        "field": "images.0.src",
+        "quote": "loved by nordstrom liked by frame denim tile"
        }
       ]
      },
@@ -6137,23 +6154,6 @@
         "section": "tiles-2",
         "field": "images.3.src",
         "quote": "loved by nordstrom liked by rag and bone leather jacket tile"
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "denim",
-      "n": 2,
-      "cites": [
-       {
-        "section": "tiles-2",
-        "field": "images.0.src",
-        "quote": "loved by nordstrom liked by frame denim tile"
-       },
-       {
-        "section": "tiles-2",
-        "field": "images.0.alt",
-        "quote": "Liked by Nordstrom tile featuring Frame denim, black-and-white studio shot"
        }
       ]
      }
@@ -6234,7 +6234,7 @@
      {
       "facet": "client",
       "term": "Neiman Marcus",
-      "n": 50,
+      "n": 66,
       "cites": [
        {
         "section": "hero",

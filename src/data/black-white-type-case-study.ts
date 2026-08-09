@@ -26,6 +26,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   stack: ["Adobe Illustrator", "Adobe Photoshop"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -39,6 +40,20 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#C1C1C1", "#515151", "#D9D9D9", "#838383", "#4B4744"],
+        images: [
+          "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+          "/case-studies/black-white-type/pattern-swatch-diamonds-white-on-black.jpg",
+          "/case-studies/black-white-type/pattern-swatch-vertical-hairlines.jpg",
+          "/case-studies/black-white-type/pattern-swatch-dense-dots-white-on-black.jpg",
+          "/case-studies/black-white-type/pattern-swatch-horizontal-grouped-lines.jpg",
+          "/case-studies/black-white-type/typography-patterns-stepper-poster-bench-lifestyle.jpg",
+          "/case-studies/black-white-type/pattern-swatch-horizontal-lines-white-on-black.jpg",
+          "/case-studies/black-white-type/pattern-swatch-large-dots-grid-black-on-white.jpg",
+        ],
+      },
       title: "Typography\n& Patterns",
       subtitle:
         "Six patterns. Three art prints. Black and white only. A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
@@ -68,6 +83,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE RULES",
       title: "Six Patterns.\nOne Restriction.",
+      pressing: { mark: { n: "02", name: "Six Patterns" } },
       group: { name: "rules", bg: "#141414", radius: 75, padding: "60px" },
     },
     {
@@ -123,6 +139,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: ART PRINT 01 / THE FANCY",
       title: "Script Meets\nGeometric Fill",
+      pressing: { mark: { n: "03", name: "Script Meets" } },
     },
     {
       id: "fancy-text",
@@ -201,6 +218,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: ART PRINT 02 / STEPPER",
       title: "Vertical Stack.\nBold Geometry.",
+      pressing: { mark: { n: "04", name: "Vertical Stack" } },
     },
     {
       id: "stepper-text",
@@ -279,6 +297,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: ART PRINT 03 / WHITE",
       title: "Calligraphic Sweep.\nArchitectural Anchor.",
+      pressing: { mark: { n: "05", name: "Calligraphic Sweep" } },
     },
     {
       id: "white-text",
@@ -343,6 +362,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: HOW THE SYSTEM WORKS",
       title: "Same Ingredients.\nDifferent Meals.",
+      pressing: { mark: { n: "06", name: "Same Ingredients" } },
       group: { name: "system", bg: "#141414", radius: 75, padding: "60px" },
     },
     {
@@ -391,6 +411,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 07: CLOSING",
       title: "Three Prints.\nSix Patterns.",
+      pressing: { mark: { n: "07", name: "Three Prints" } },
     },
     {
       id: "closing-text",

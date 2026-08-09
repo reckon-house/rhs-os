@@ -17,6 +17,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
   stack: ["Photoshop", "Illustrator", "Sketch", "InVision"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,17 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 5 frames",
+        colors: ["#1A1A1A", "#F5F2ED", "#FFFF40", "#8C8578"],
+        images: [
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg",
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp",
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg",
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-editorial-spread.jpg",
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup.jpg",
+        ],
+      },
       title: "Jeffrey\nNew York",
       subtitle:
         "First digital flagship for the NYC retailer. Full ecommerce launch - brand system, site architecture, and content engine built from zero.",
@@ -56,6 +68,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE STRATEGY",
       title: "Storytelling Over\nTransaction.",
+      pressing: { mark: { n: "02", name: "Storytelling Over" } },
     },
     {
       id: "strategy-subhead",
@@ -102,6 +115,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
       title: "Modular Grids,\nCurated Navigation.",
+      pressing: { mark: { n: "03", name: "Modular Grids" } },
     },
     {
       id: "system-subhead",
@@ -217,6 +231,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE BUILD RADIUS",
       title: "One System,\nEvery Surface.",
+      pressing: { mark: { n: "04", name: "One System" } },
     },
     {
       id: "build-subhead",
@@ -238,6 +253,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "A Digital Flagship\nBuilt Like the Store.",
+      pressing: { mark: { n: "05", name: "A Digital Flagship" } },
     },
     {
       id: "closing-subhead",

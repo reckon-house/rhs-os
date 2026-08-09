@@ -27,6 +27,7 @@ export const ivyParkCaseStudy: CaseStudy = {
   stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -40,6 +41,20 @@ export const ivyParkCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#1B1B1B", "#605D5C", "#363D45", "#B4B4B4", "#B9B9B9"],
+        images: [
+          "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+          "/case-studies/ivy-park/ivy-park-campaign-assets-grid-overview.jpg",
+          "/case-studies/ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg",
+          "/case-studies/ivy-park/ivy-park-experience-page-hero-product-grid.jpg",
+          "/case-studies/ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg",
+          "/case-studies/ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg",
+          "/case-studies/ivy-park/ivy-park-nordstrom-mobile-experience-mockup.jpg",
+          "/case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg",
+        ],
+      },
       title: "Ivy Park\nby Beyoncé",
       subtitle:
         "Nordstrom held the exclusive US launch. Six weeks from moodboard to live, and most of the product gone within days.",
@@ -74,6 +89,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
       title: "An NDA Before\nthe Brief Landed.",
+      pressing: { mark: { n: "02", name: "An NDA Before" } },
       group: { name: "brief", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -131,6 +147,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE EXPERIENCE",
       title: "The Polygon Held\nthe Page Together.",
+      pressing: { mark: { n: "03", name: "The Polygon Held" } },
     },
     {
       id: "experience-text",
@@ -265,6 +282,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE CAMPAIGN",
       title: "One System,\nEvery Format.",
+      pressing: { mark: { n: "04", name: "One System" } },
     },
     {
       id: "campaign-text",
@@ -306,6 +324,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "Sold Out\nin Days",
+      pressing: { mark: { n: "05", name: "Sold Out" } },
     },
     {
       id: "closing-text",

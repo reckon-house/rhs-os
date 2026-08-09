@@ -29,6 +29,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
   stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -42,6 +43,20 @@ export const neimanMarcusCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#DCD9D2", "#9EA7AF", "#DCD3C9", "#B8C1C4", "#84868C"],
+        images: [
+          "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-designer-spotlight-theyskens-theory.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-designer-spotlight-derek-lam.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-designer-spotlight-rag-and-bone.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-designer-spotlight-helmut-lang.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-designer-spotlight-kelly-wearstler.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup.jpg",
+          "/case-studies/neiman-marcus/neiman-marcus-insite-color-story-hot-pink.jpg",
+        ],
+      },
       title: "Neiman Marcus\nInSite",
       subtitle:
         "A luxury retailer's digital editorial hub from 2012. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
@@ -72,6 +87,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: DESIGNER SPOTLIGHTS",
       title: "Spotlights That Read\nLike Print Profiles.",
+      pressing: { mark: { n: "02", name: "Spotlights That Read" } },
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -157,6 +173,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: COLOR STORIES",
       title: "Saturated Color Did the Work\nof a Location Scout.",
+      pressing: { mark: { n: "03", name: "Saturated Color Did the Work" } },
     },
     {
       id: "color-text",
@@ -214,6 +231,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: TYPOGRAPHY",
       title: "Type That Set the\nVolume of the Page.",
+      pressing: { mark: { n: "04", name: "Type That Set the" } },
     },
     {
       id: "type-text",
@@ -286,6 +304,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: WAYS TO WEAR",
       title: "One Garment, Styled\nFour Different Directions.",
+      pressing: { mark: { n: "05", name: "One Garment, Styled" } },
     },
     {
       id: "ways-text",
@@ -356,6 +375,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "Editorial Commerce\nBefore It Was a Category.",
+      pressing: { mark: { n: "06", name: "Editorial Commerce" } },
     },
     {
       id: "closing-text",

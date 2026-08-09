@@ -17,6 +17,7 @@ export const chaletCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
     // 16-foot glass doors framing the tree canopy, Malm fireplace, walnut
@@ -32,6 +33,20 @@ export const chaletCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#CCC4C1", "#AEA4A2", "#BDACA0", "#764226", "#667C72"],
+        images: [
+          "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
+          "/case-studies/chalet/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg",
+          "/case-studies/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape.jpg",
+          "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg",
+          "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg",
+          "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg",
+          "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg",
+          "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg",
+        ],
+      },
       title: "Mountain View\nChalet",
       subtitle:
         "1968 Pacific Northwest chalet taken to the studs and rebuilt - exterior, interior, furnishings. Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line.",
@@ -59,6 +74,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
       title: "An Exterior That\nStops Disappearing.",
+      pressing: { mark: { n: "02", name: "An Exterior That" } },
     },
     {
       id: "studs-subhead",
@@ -120,6 +136,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE INTERIOR",
       title: "Tree Canopy as the\nFocal Point.",
+      pressing: { mark: { n: "03", name: "Tree Canopy as the" } },
     },
     {
       id: "interior-subhead",
@@ -216,6 +233,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: THE BLEND",
       title: "Cabin Bones,\nMid-Century Sensibility.",
+      pressing: { mark: { n: "04", name: "Cabin Bones" } },
     },
     {
       id: "blend-subhead",
@@ -245,6 +263,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Chalet That\nLooks Out.",
+      pressing: { mark: { n: "05", name: "A Chalet That" } },
     },
     {
       id: "closing-subhead",

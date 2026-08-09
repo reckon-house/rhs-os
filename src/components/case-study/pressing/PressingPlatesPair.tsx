@@ -46,6 +46,8 @@ const CULL = 200;
 const clamp01 = (k: number) => Math.min(Math.max(k, 0), 1);
 
 export interface PressingPlatesPairProps {
+  /** Column count. Defaults to one per image; masonry declares its own. */
+  cols?: number;
   images: {
     src: string;
     alt: string;
@@ -71,6 +73,7 @@ export interface PressingPlatesPairProps {
 }
 
 export function PressingPlatesPair({
+  cols,
   images,
   pinForNext = false,
   hold = true,
@@ -180,7 +183,7 @@ export function PressingPlatesPair({
       ) : null}
       <div
         className={styles.grid}
-        style={{ "--cols": images.length } as CSSProperties}
+        style={{ "--cols": cols ?? images.length } as CSSProperties}
       >
         {images.map((im, i) => (
           <figure key={`${im.src}-${i}`} className={styles.pairFigure}>

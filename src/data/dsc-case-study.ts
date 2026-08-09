@@ -28,6 +28,7 @@ export const dscCaseStudy: CaseStudy = {
     { label: "App walkthrough", url: "https://dsc-gym.vercel.app/showcase" },
   ],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -41,6 +42,20 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#000000", "#141414", "#8E8E8E", "#E6E6E6", "#FFFFFF"],
+        images: [
+          "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
+          "/case-studies/dsc/dsc-athlete-app-login-screen.jpg",
+          "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
+          "/case-studies/dsc/dsc-ai-scheduler-phone-hero.jpg",
+          "/case-studies/dsc/dsc-athlete-app-connect-mcp-server.jpg",
+          "/case-studies/dsc/dsc-claude-oauth-consent-screen.jpg",
+          "/case-studies/dsc/dsc-claude-mcp-chat-trainers.jpg",
+          "/case-studies/dsc/dsc-claude-mcp-chat-trainer-availability.jpg",
+        ],
+      },
       field: "AI Scheduling  MCP Integration  Brand & Web",
       author: "Jeremy Prasatik",
       published: "2025",
@@ -78,6 +93,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: GETTING IN",
       title: "Join the\nCollective",
+      pressing: { mark: { n: "02", name: "Join the" } },
     },
     {
       id: "signup-text",
@@ -119,6 +135,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: SCHEDULING BY CHAT",
       title: "The Gym That\nSpeaks MCP",
+      pressing: { mark: { n: "03", name: "The Gym That" } },
     },
     {
       id: "mcp-text",
@@ -164,6 +181,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: THE ATHLETE APP",
       title: "What Athletes\nSee",
+      pressing: { mark: { n: "04", name: "What Athletes" } },
     },
     {
       id: "athlete-text",
@@ -208,6 +226,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE OWNER CONSOLE",
       title: "Run It From\nthe Floor",
+      pressing: { mark: { n: "05", name: "Run It From" } },
     },
     {
       id: "owner-text",
@@ -348,6 +367,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 07: CLOSING",
       title: "Live at\nthe Gym",
+      pressing: { mark: { n: "06", name: "Live at" } },
     },
     {
       id: "closing-text",

@@ -28,6 +28,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
   stack: ["Adobe Illustrator", "Adobe Photoshop"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -41,6 +42,20 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#DCA23D", "#2D2B27", "#E5D443", "#593D19", "#B6B548"],
+        images: [
+          "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
+          "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-breakout.jpg",
+          "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-tagline.jpg",
+          "/case-studies/j-christianson/j-christianson-four-seasonal-tree-circles-flat.jpg",
+          "/case-studies/j-christianson/j-christianson-billboard-mockup-brand-pattern.jpg",
+          "/case-studies/j-christianson/j-christianson-brand-pattern-logo-four-colors.jpg",
+          "/case-studies/j-christianson/j-christianson-storefront-sign-dot-grid-brown.jpg",
+          "/case-studies/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles.jpg",
+        ],
+      },
       title: "J. Christianson",
       subtitle:
         "Mid-century warmth without the nostalgia trap. A brand identity built from the name outward, designed to live on a storefront sign and a clothing tag with equal presence.",
@@ -70,6 +85,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE TREE",
       title: "One Drawing\nCarrying a Full Range.",
+      pressing: { mark: { n: "02", name: "One Drawing" } },
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -131,6 +147,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE MARK",
       title: "A Mark That Shifts\nIts Palette by Context.",
+      pressing: { mark: { n: "03", name: "A Mark That Shifts" } },
     },
     {
       id: "mark-text",
@@ -212,6 +229,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: CLOSING",
       title: "From a Name\nto a Storefront.",
+      pressing: { mark: { n: "04", name: "From a Name" } },
     },
     {
       id: "closing-text",
