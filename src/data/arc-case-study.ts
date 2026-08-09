@@ -177,6 +177,28 @@ export const arcCaseStudy: CaseStudy = {
       },
     },
 
+    /* ── MULTI-DEVICE PLATE — the page's one rise, climbs the plate-02 zoom ──
+       This sat under the problem columns and climbed the scanning/detail
+       pair that used to be there. Those images are the columns' own now,
+       so the pair that held went with them and the plate was left pulling
+       itself up 96dvh across a moving text column: a brief's `pin` sticks
+       its HEADLINE, which is not a held screen, and every other riser in
+       the portfolio climbs a PinStage pair, a zoom, or the cover.
+       The zoom is the page's other hold, and it sits one cluster up. The
+       two images run in the order the reel already uses — the app on a
+       counter, then the same app across every surface — so the climb
+       lands inside the study's own sequence rather than beside it.
+       Adjacent, per the contract; hero-1 derives its climb room from this
+       section's rise flag, which is why none is authored there. */
+    {
+      id: "problem-hero-group",
+      type: "hero",
+      image: `${IMG}/arc-multi-device-lifestyle-hero.jpg`,
+      alt: "A.R.C. app lifestyle scenes — mobile interfaces in context",
+      inline: true,
+      pressing: { choreo: { rise: true } },
+    },
+
     // ── PROBLEM — pinned brief, columns nested in the column ──
     {
       id: "problem-header",
@@ -255,19 +277,11 @@ export const arcCaseStudy: CaseStudy = {
        are the three method columns' own now: at column measure they
        are the size their files can carry, and the section reads as one
        argument with its evidence beside it instead of an argument
-       followed by three pictures. */
+       followed by three pictures. The multi-device plate that climbed
+       that pair moved up to the zoom for the same reason: its hold left
+       with them. */
 
-    // ── MULTI-DEVICE PLATE — the page's one rise, climbs the pinned pair ──
-    {
-      id: "problem-hero-group",
-      type: "hero",
-      image: `${IMG}/arc-multi-device-lifestyle-hero.jpg`,
-      alt: "A.R.C. app lifestyle scenes — mobile interfaces in context",
-      inline: true,
-      pressing: { choreo: { rise: true } },
-    },
-
-    // ── BLEED PLATE — the big beat before the quote ──
+    // ── BLEED PLATE — the cluster's image beat, before the quote ──
     {
       id: "problem-mobile-screens",
       type: "image",

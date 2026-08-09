@@ -141,6 +141,8 @@ export function PressingZoomPlate({
   const wrapRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const figRef = useRef<HTMLElement>(null);
+  /** Holds the resting plate's space in the grid; see .slot in the CSS. */
+  const slotRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const tailRef = useRef<HTMLDivElement>(null);
   const numRef = useRef<HTMLDivElement>(null);
@@ -176,6 +178,7 @@ export function PressingZoomPlate({
     const fig = figRef.current;
     const img = imgRef.current;
     const tail = tailRef.current;
+    const slot = slotRef.current;
     if (!wrap || !sticky || !fig || !img) return;
 
     const inkEls: HTMLElement[] = [
@@ -198,7 +201,16 @@ export function PressingZoomPlate({
        so it only needs re-measuring on resize (and once the image has real
        dimensions — height: auto means the box is wrong before load). */
     let box: { x: number; y: number; w: number; h: number } | null = null;
-    let scale = 1;
+    /* The RESTING box, read off the .slot element that holds its place in
+       the grid. The plate itself is laid out full-bleed (see the module
+       CSS) and scaled down onto this, which is what keeps the raster
+       honest — nothing here is ever magnified. */
+    let rest = { x: 0, y: 0, w: 0, h: 0 };
+    /* Scale at rest (< 1, a minify) and at park (1, or less under
+       `contain`). The old code ran 1 → widthFit, magnifying as it went. */
+    let s0 = 1;
+    let endScale = 1;
+    let parkX = 0;
     let spill = 0;
     /* Where the plate's TOP edge parks, in sticky coords. Width-fit
        plates park under the masthead and pan down from there; a
@@ -224,9 +236,24 @@ export function PressingZoomPlate({
          otherwise keep a multi-thousand-px inline height that overrides the
          static layout. */
       wrote = true;
+      /* The slot carries no intrinsic height of its own, so without a
+         declared ratio it collapses and the resting plate has nothing to
+         centre against. Declared dimensions cover every registered image;
+         this is the fallback for one that loaded without them. */
+      if (slot && !slot.style.aspectRatio && img.naturalWidth && img.naturalHeight) {
+        slot.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+      }
       const f = fig.getBoundingClientRect();
       const s = sticky.getBoundingClientRect();
       box = { x: f.left - s.left, y: f.top - s.top, w: f.width, h: f.height };
+      if (slot) {
+        const sl = slot.getBoundingClientRect();
+        rest = { x: sl.left - s.left, y: sl.top - s.top, w: sl.width, h: sl.height };
+      } else {
+        rest = { x: box.x, y: box.y, w: box.w, h: box.h };
+      }
+      /* A minify, always: the plate is laid out at the size it ENDS at. */
+      s0 = box.w > 0 ? rest.w / box.w : 1;
 
       /* Full-bleed; the mat height excludes the masthead so the plate's top
          edge parks just beneath the bar rather than behind it. */
@@ -253,18 +280,24 @@ export function PressingZoomPlate({
          width and stopped with paper showing either side. Measured
          against the whole screen a 1.625 frame fills the width with
          height to spare, so it parks edge to edge, centred, whole. */
-      const widthFit = window.innerWidth / box.w;
+      /* The plate is ALREADY the viewport's width at rest in layout terms,
+         so a width fit is scale 1 — there is no growing past the raster.
+         `contain` still shrinks below that when the whole frame has to
+         stay on screen. */
       if (fit === "contain") {
-        scale = Math.min(widthFit, vh() / box.h);
+        endScale = Math.min(1, vh() / box.h);
         spill = 0;
         /* centred: the masthead floats over the picture rather than
            pushing it down, which is what a full-bleed frame wants */
-        parkY = (vh() - box.h * scale) / 2;
+        parkY = (vh() - box.h * endScale) / 2;
       } else {
-        scale = widthFit;
-        spill = Math.max(0, box.h * scale - matH);
+        endScale = 1;
+        spill = Math.max(0, box.h * endScale - matH);
         parkY = MASTHEAD;
       }
+      /* A contained plate is narrower than the screen and centres; a
+         width-fit plate starts at the viewport's left edge. */
+      parkX = (window.innerWidth - box.w * endScale) / 2;
 
       zoomPx = vh() * 1.1; // scroll spent growing the plate
       /* The pan used to be 1:1 — one pixel of scroll for one of image —
@@ -330,13 +363,16 @@ export function PressingZoomPlate({
       const e = smooth(zp);
       const b = box!;
 
-      /* Origin is top-center, so translate steers the plate's TOP edge to
-         its park line and scale grows it downward from there. The pan
-         then slides that tall frame up through the mat window. */
-      const tx = (window.innerWidth / 2 - (b.x + b.w / 2)) * e;
-      const ty = (parkY - b.y) * e - spill * pp;
+      /* Origin is top-LEFT, so translate steers the plate's top-left corner
+         from the slot to its park position while the scale runs from the
+         resting minify up to 1. Written as "where the corner should be,
+         minus where layout already put it", which cancels the sticky's
+         padding without needing to know about it. The pan then slides a
+         tall frame up through the mat window. */
+      const tx = (rest.x * (1 - e) + parkX * e) - b.x;
+      const ty = (rest.y * (1 - e) + parkY * e) - b.y - spill * pp;
 
-      const cur = 1 + (scale - 1) * e;
+      const cur = s0 + (endScale - s0) * e;
       /* THE RASTER RELEASE. will-change pins the layer's raster to the
          scale it had when promoted, which is the plate at rest in its
          column, so the grown plate is that small bitmap magnified 2x:
@@ -649,6 +685,17 @@ export function PressingZoomPlate({
             />
           </filter>
         </svg>
+
+        {/* Holds the resting plate's place in the grid so the figure itself
+            can be laid out at full-bleed size and scaled DOWN onto it. The
+            ratio has to be declared or the slot collapses; the driver fills
+            it in from the decoded image if these props are missing. */}
+        <div
+          ref={slotRef}
+          className={styles.slot}
+          aria-hidden="true"
+          style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+        />
 
         <figure ref={figRef} className={styles.fig}>
           <img
