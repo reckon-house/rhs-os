@@ -89,8 +89,11 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "brief-header",
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
-      title: "An NDA Before\nthe Brief Landed.",
-      pressing: { mark: { n: "02", name: "An NDA Before" } },
+      title: "An NDA Before",
+      pressing: {
+        mark: { n: "02", name: "An NDA Before" },
+        heldLine: "the Brief Landed.",
+      },
       group: { name: "brief", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -140,6 +143,19 @@ export const ivyParkCaseStudy: CaseStudy = {
       image: `${IMG}/ivy-park-campaign-assets-grid-overview.jpg`,
       alt: "Ivy Park campaign assets grid: brand experience, emails, social, product photography, editorial",
       inline: true,
+      // The zoom. An assets grid is a contact sheet of the whole campaign,
+      // and every cell in it is unreadable until the frame fills the mat.
+      // No zoomFit: the frame is near-square, so the spill is a short pan.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Campaign assets",
+          "Experience, email, social",
+          "Product and editorial",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
     // ── THE EXPERIENCE ──
@@ -147,8 +163,13 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "experience-header",
       type: "section-header",
       label: "SECTION 03: THE EXPERIENCE",
-      title: "The Polygon Held\nthe Page Together.",
-      pressing: { mark: { n: "03", name: "The Polygon Held" } },
+      title: "The Polygon Held",
+      // The study's one crossing, on the shape that IS the argument.
+      pressing: {
+        mark: { n: "03", name: "The Polygon Held" },
+        heldLine: "the Page Together.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "experience-text",
@@ -207,22 +228,29 @@ export const ivyParkCaseStudy: CaseStudy = {
         { src: `${IMG}/ivy-park-experience-confidence-strength-inclusivity.jpg`, alt: "Ivy Park experience, Confidence is Strength section, product specs, inclusivity messaging" },
         { src: `${IMG}/ivy-park-experience-courage-power-polygon-frames.jpg`, alt: "Ivy Park experience, Courage is Power section with polygon portrait frames" },
       ],
+      // Held so the phone climbs across the desktop pages. Same system,
+      // smaller screen, and the climb is what puts them in that order.
+      pressing: {
+        captions: ["Hero and product grid", "Confidence is Strength", "Courage is Power"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── EDITORIAL HEADLINE ──
-    {
-      id: "headline-polygon",
-      type: "editorial-headline",
-      text: "For everybody\nand every body",
-    },
-
-    // ── MOBILE HERO ──
+    // ── MOBILE HERO — climbs across the held desktop screens
     {
       id: "mobile-hero",
       type: "hero",
       image: `${IMG}/ivy-park-nordstrom-mobile-experience-mockup.jpg`,
       alt: "Ivy Park mobile experience on iPhone, Courage is Power section, concrete surface",
       inline: true,
+      pressing: { choreo: { rise: true } },
+    },
+
+    // ── EDITORIAL HEADLINE — the palate cleanser after the climb
+    {
+      id: "headline-polygon",
+      type: "editorial-headline",
+      text: "For everybody\nand every body",
     },
 
     // ── BRAND SYSTEM — built without a brand guide ──

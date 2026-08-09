@@ -92,6 +92,19 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       image: `${IMG}/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg`,
       alt: "Jeffrey Spring Campaign hero collage: 3x4 grid weaving JW Anderson, Valentino, and Simone Rocha dress shots with cropped monstera leaves on studio white",
       inline: true,
+      // The zoom. A twelve-cell collage is unreadable at plate size and
+      // legible at mat size, which is the whole case for this gesture.
+      // contain, landscape frame.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Campaign hero collage",
+          "Three designers, one grid",
+          "Monstera on studio white",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ════════════════════════════════════════
@@ -103,8 +116,20 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 02: THREE STORIES",
-      title: "One System Holding\nThree Designer Stories.",
-      pressing: { mark: { n: "02", name: "One System Holding" } },
+      title: "One System Holding",
+      // The study's one crossing. It is also the only section header here,
+      // so the choice is which staging, not which beat: standalone,
+      // because it carries no method columns.
+      //
+      // No mid-page climb: the only dual-image with a plate after it is
+      // followed by the Simone desktop capture, which is 1003px native and
+      // already on the resolution report as thin at plate size. Drawing it
+      // full-bleed as a riser would make that three times worse.
+      pressing: {
+        mark: { n: "02", name: "One System Holding" },
+        heldLine: "Three Designer Stories.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "stories-subhead",
@@ -251,8 +276,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "A Campaign Built\nfor the Studio.",
-      pressing: { mark: { n: "03", name: "A Campaign Built" } },
+      title: "A Campaign Built",
+      pressing: {
+        mark: { n: "03", name: "A Campaign Built" },
+        heldLine: "for the Studio.",
+      },
     },
     {
       id: "closing-subhead",

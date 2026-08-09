@@ -68,8 +68,11 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "strategy-header",
       type: "section-header",
       label: "SECTION 02: THE STRATEGY",
-      title: "Storytelling Over\nTransaction.",
-      pressing: { mark: { n: "02", name: "Storytelling Over" } },
+      title: "Storytelling Over",
+      pressing: {
+        mark: { n: "02", name: "Storytelling Over" },
+        heldLine: "Transaction.",
+      },
     },
     {
       id: "strategy-subhead",
@@ -98,6 +101,21 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       alt: "Jeffrey New York site in context — homepage with editorial hero and curated grid",
       inline: true,
       cropWide: true,
+      // The zoom, and at 6493px native the best-resourced one in the
+      // portfolio by a wide margin. No zoomFit: the frame is a 3.2-ratio
+      // strip of templates, so filling the viewport width leaves nothing
+      // hanging below the fold to pan, and contain would shrink a wide
+      // schematic to a ribbon.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Homepage templates",
+          "Editorial hero and curated grid",
+          "The system in context",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
     // ── Editorial headline — replaces the original closing's
@@ -115,8 +133,19 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "Modular Grids,\nCurated Navigation.",
-      pressing: { mark: { n: "03", name: "Modular Grids" } },
+      title: "Modular Grids,",
+      // The study's one crossing, on section 03 rather than the thesis
+      // header, which already sits directly above the zoom plate.
+      //
+      // No mid-page climb: this study has no dual-image anywhere, so the
+      // only hold available is a zoom, and the one file positioned to be
+      // that hold is 2188px native. Drawing it to fill the mat is the
+      // exact overdraw the resolution gate exists to catch.
+      pressing: {
+        mark: { n: "03", name: "Modular Grids" },
+        heldLine: "Curated Navigation.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "system-subhead",
@@ -231,8 +260,11 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "build-header",
       type: "section-header",
       label: "SECTION 05: THE BUILD RADIUS",
-      title: "One System,\nEvery Surface.",
-      pressing: { mark: { n: "04", name: "One System" } },
+      title: "One System,",
+      pressing: {
+        mark: { n: "04", name: "One System" },
+        heldLine: "Every Surface.",
+      },
     },
     {
       id: "build-subhead",
@@ -253,8 +285,11 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "A Digital Flagship\nBuilt Like the Store.",
-      pressing: { mark: { n: "05", name: "A Digital Flagship" } },
+      title: "A Digital Flagship",
+      pressing: {
+        mark: { n: "05", name: "A Digital Flagship" },
+        heldLine: "Built Like the Store.",
+      },
     },
     {
       id: "closing-subhead",

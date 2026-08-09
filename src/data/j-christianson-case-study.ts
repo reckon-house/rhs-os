@@ -85,8 +85,11 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "tree-header",
       type: "section-header",
       label: "SECTION 02: THE TREE",
-      title: "One Drawing\nCarrying a Full Range.",
-      pressing: { mark: { n: "02", name: "One Drawing" } },
+      title: "One Drawing",
+      pressing: {
+        mark: { n: "02", name: "One Drawing" },
+        heldLine: "Carrying a Full Range.",
+      },
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -120,8 +123,15 @@ export const jChristiansonCaseStudy: CaseStudy = {
         src: `${IMG}/j-christianson-tree-stripe-graphic-tagline.jpg`,
         alt: "J. Christianson tree stripe graphic with tagline, Heavenly Inspired Fashion and Design",
       },
+      // Held so the four seasonal circles climb across it. The spacer that
+      // used to sit between them moved below: pressing checks the climb
+      // contract against the ADJACENT section, and a spacer in the gap
+      // reads as "nothing holds this" even though the layout consumes it.
+      pressing: {
+        captions: ["Tree breaking the stripe", "Tagline lockup"],
+        choreo: { pin: true },
+      },
     },
-    { id: "tree-spacer", type: "spacer", height: 60, group: { name: "tree" } },
     {
       id: "seasonal-flat",
       type: "image",
@@ -131,7 +141,9 @@ export const jChristiansonCaseStudy: CaseStudy = {
       maxWidth: 400,
       blend: "multiply",
       group: { name: "tree" },
+      pressing: { choreo: { rise: true } },
     },
+    { id: "tree-spacer", type: "spacer", height: 60, group: { name: "tree" } },
 
     // ── BILLBOARD HERO (old hero, now inline) ──
     {
@@ -147,8 +159,14 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "mark-header",
       type: "section-header",
       label: "SECTION 03: THE MARK",
-      title: "A Mark That Shifts\nIts Palette by Context.",
-      pressing: { mark: { n: "03", name: "A Mark That Shifts" } },
+      title: "A Mark That Shifts",
+      // The study's one crossing. A mark that changes with its setting is
+      // the whole identity argument here.
+      pressing: {
+        mark: { n: "03", name: "A Mark That Shifts" },
+        heldLine: "Its Palette by Context.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "mark-text",
@@ -229,8 +247,11 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "From a Name\nto a Storefront.",
-      pressing: { mark: { n: "04", name: "From a Name" } },
+      title: "From a Name",
+      pressing: {
+        mark: { n: "04", name: "From a Name" },
+        heldLine: "to a Storefront.",
+      },
     },
     {
       id: "closing-text",

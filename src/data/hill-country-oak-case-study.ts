@@ -73,8 +73,11 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "lang-header",
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
-      title: "Mid-Century Posters\nMeet Workshop Type.",
-      pressing: { mark: { n: "02", name: "Mid-Century Posters" } },
+      title: "Mid-Century Posters",
+      pressing: {
+        mark: { n: "02", name: "Mid-Century Posters" },
+        heldLine: "Meet Workshop Type.",
+      },
     },
     {
       id: "lang-subhead",
@@ -108,13 +111,26 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       },
     },
 
-    // ── Inline hero: mid-century tree poster (visual beat between sections)
+    // ── Mid-century tree poster — the zoom. This study has exactly one
+    // adjacency where a gesture can land, so the choice is zoom or climb,
+    // and the frame decides it: a printed poster is artwork, and artwork
+    // wants to be seen at size. contain, landscape frame.
     {
       id: "lang-poster-hero",
       type: "hero",
       image: `${IMG}/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg`,
       alt: "Hill Country Oakworks campaign poster, oak silhouette against teal-orange-red color blocked sky in mid-century print style",
       inline: true,
+      pressing: {
+        plate: "02",
+        captions: [
+          "Campaign poster",
+          "Oak silhouette, blocked sky",
+          "Teal, orange, red",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── 2-up: tree+sun composition paired with the brand tagline
@@ -147,8 +163,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "app-header",
       type: "section-header",
       label: "SECTION 03: APPLICATION",
-      title: "One System Sized for\nBillboard to Phone Screen.",
-      pressing: { mark: { n: "03", name: "One System Sized for" } },
+      title: "One System Sized for",
+      // The study's one crossing, held back to section 03 so it does not
+      // land on the same beat as the poster zoom above.
+      pressing: {
+        mark: { n: "03", name: "One System Sized for" },
+        heldLine: "Billboard to Phone Screen.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "app-subhead",
@@ -238,8 +260,11 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Heritage Without\nthe Cosplay.",
-      pressing: { mark: { n: "04", name: "Heritage Without" } },
+      title: "Heritage Without",
+      pressing: {
+        mark: { n: "04", name: "Heritage Without" },
+        heldLine: "the Cosplay.",
+      },
     },
     {
       id: "closing-subhead",
