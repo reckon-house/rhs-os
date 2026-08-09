@@ -16,6 +16,10 @@
 
 .wrap {
   --si-hair: rgba(0, 0, 0, 0.14);
+  /* RRSystemIndex's reserved sample height. Every row's specimen sits
+     in a box of this height, so nothing a specimen does can move the
+     row. */
+  --sampleH: 208px;
   padding: clamp(40px, 7dvh, 90px) 0;
 }
 
@@ -106,14 +110,19 @@
   order: 1;
 }
 
-/* Whatever the row shows, centred on the label's own line. It must NOT
-   grow: a flex item that stretches puts the label at the far edge and
-   the row stops reading as "a label and the thing it names". */
+/* Fixed height, content centred — RRSystemIndex's treatment. Its reason
+   was the reel reshaping every beat; the reason holds for any specimen
+   that can change size, and reserving the box means none of them can
+   ever move the row.
+   It must NOT grow either: a flex item that stretches puts the label at
+   the far edge and the row stops reading as "a label and the thing it
+   names". */
 .sample {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: clamp(14px, 2.4vw, 40px);
-  flex: 0 1 auto;
+  height: var(--sampleH);
 }
 
 /* The caption under a specimen. Robert's type values — it is the same
@@ -121,7 +130,10 @@
    block replacement dropped it and every caption inherited the row's
    96px display size. */
 .cap {
-  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
   white-space: nowrap;
   font-size: var(--pp-lbl, 10px);
   letter-spacing: var(--pp-lbl-track, 0.04em);
@@ -188,15 +200,15 @@
   border-radius: 14px;
 }
 
-/* Both specimens stack the same way: the thing, then its caption. */
+/* Each specimen gets the full reserved height with its subject centred,
+   and its caption pinned to the bottom — absolute, so a caption that
+   wraps to two lines cannot push the row taller either. */
 .palStack,
 .markStack {
-  display: block;
-  text-align: center;
-}
-.palStack .cap,
-.markStack .cap {
-  margin-top: 8px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
 }
 
 /* RRSystemIndex's mobile block, its numbers. */
@@ -212,6 +224,9 @@
   }
   .swatch {
     width: clamp(44px, 13vw, 74px);
+  }
+  .wrap {
+    --sampleH: 150px;
   }
   .intro {
     margin-left: 0;

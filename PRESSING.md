@@ -386,6 +386,20 @@ one scale, and a sample that outgrows the others stops being a
 specimen. If a size genuinely needs to change, change it in
 RRSystemIndex too so the family stays one family.
 
+**The row must not move.** Two reserves, both needed. `--sampleH` (208px,
+150 on mobile, RRSystemIndex's) fixes every specimen's box so nothing a
+specimen does can reflow its row, and captions are absolutely positioned
+inside it so a two-line caption cannot push it either. On top of that,
+the reel is sized ONCE to the TALLEST frame and left alone.
+
+That second part departs from Robert, and here is when to depart: he
+reshapes per beat because his four frames are near enough the same
+proportion that it reads as the reel breathing. A pattern library holds
+UI panels — a stats card at ratio 2.01 beside an account panel at 0.60 —
+and the same behaviour is the box lurching every few seconds. Height
+comes from the SMALLEST ratio so every frame fits and none is cropped,
+and it is recomputed on resize because the box width is a vw clamp.
+
 Frames must be OPAQUE. Cutting them out of a transparent contact sheet
 means flattening onto white on the way out; `npm run facts` rejects
 alpha by name.
