@@ -19,14 +19,6 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg`,
-      alt: "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower",
-    },
-
     // ── META + ABSTRACT ──
     // Abstract carries the F&D feature context (Designer of the Quarter,
     // catalog, website, video interview) so we don't need a dedicated
@@ -63,6 +55,15 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       ],
       abstract:
         "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residential bathrooms. Marble, dolomite, white oak, classic tile - the kit each project pulled from, applied three different ways. The feature ran in the summer catalog, on the Floor & Decor website, and inside a full video interview.\n\nThree projects, three directions. Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling. Each room stands on its own, but the underlying material logic is the same.\n\nThe focus was hard surfaces, and the projects show how tile and stone anchor everything else. Get the floors and walls right, the rest follows.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg`,
+      alt: "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

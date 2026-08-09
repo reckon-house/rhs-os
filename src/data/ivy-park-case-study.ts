@@ -29,14 +29,6 @@ export const ivyParkCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg`,
-      alt: "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -76,6 +68,15 @@ export const ivyParkCaseStudy: CaseStudy = {
       ],
       abstract:
         "Beyoncé's first activewear line, with Nordstrom holding the exclusive US retail partnership. That meant the digital experience had to carry the full weight of the launch - no other retailer had product, no other site told the story, and the website became the storefront, lookbook, and campaign rolled into one URL.\n\nFour weeks to moodboards, wireframes, and a concept pitch, then two weeks to build and ship. The brief arrived under NDA before the team had cleared their schedules. Daily calls with Ivy Park while direction locked. Photography supplied: black-and-white athlete portraits and color product against blue and gray backgrounds, with everything else - typography, layout, copy, animation, interaction - left open. That kind of latitude on a project this visible doesn't happen often.\n\nThe polygon emerged during concepting as a way to break the rectangular grid the photography sat in. Angled, rotated, animated on scroll, it carried from hero banner through product carousels into email headers. Custom CMS components built for the project entered Nordstrom's shared library and powered other launches for two years. 95% of products sold out within days.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg`,
+      alt: "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE BRIEF — grouped ──

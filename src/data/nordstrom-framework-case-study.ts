@@ -19,14 +19,6 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/hero1.png`,
-      alt: "Nordstrom Content Framework applied across the site, custom lockups powering the categorized homepage system",
-    },
-
     // ── META + ABSTRACT ──
     {
       id: "meta",
@@ -56,6 +48,15 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       ],
       abstract:
         "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals. All hitting email and site simultaneously with no organizing logic. Customers saw volume, not clarity.\n\nConcepted a content framework that sorted everything into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. Custom icons, dedicated typographic marks sourced specifically for the system. Magazine language, not menu language.\n\nPitched it across merchandising, marketing, and editorial. The framework became an internal organizing tool before it ever reached customers. Once it shipped, it powered homepage modules, email sections, and dedicated landing pages. Engagement lifted 22%. The vocabulary held for years.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/hero1.png`,
+      alt: "Nordstrom Content Framework applied across the site, custom lockups powering the categorized homepage system",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

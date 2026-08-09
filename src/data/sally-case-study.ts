@@ -38,14 +38,6 @@ export const sallyCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero-1",
-      type: "hero",
-      image: "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
-      alt: "Sally Beauty Marketing OS, platform overview",
-    },
-
     // ── META + ABSTRACT ──
     {
       id: "meta",
@@ -82,6 +74,15 @@ export const sallyCaseStudy: CaseStudy = {
         "Five connected platforms that turn competitive intelligence into store-level execution.",
       abstract:
         "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero-1",
+      type: "hero",
+      image: "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+      alt: "Sally Beauty Marketing OS, platform overview",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── PROBLEM STATEMENT - grouped in ECE6E1 container ──

@@ -31,14 +31,6 @@ export const neimanMarcusCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg`,
-      alt: "Neiman Marcus InSite Contemporary Art magazine spread held in hands",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -79,6 +71,15 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       ],
       abstract:
         "InSite was Neiman Marcus's digital editorial hub. The mandate read like a contradiction - make the website feel like a magazine, sell product like a store, don't let either side win.\n\nEvery piece started with the story. Designer spotlights introducing names like Derek Lam and Helmut Lang to a broader luxury audience, seasonal trend narratives organized around color or silhouette, ways-to-wear features that styled a single garment multiple directions. The concept came first, then the shoot, the styling, and the layout followed.\n\nAll studio photography, no location budgets. Graphic color blocks stood in for environments a different production might have flown to, and pixelated saturated fields built mood when a sunset wasn't in the cards. Typography did the rest - designer names built as compositions instead of headlines, letters interlocking with photography, overlapping garments, sometimes breaking the grid and trusting that the shopper would still find the price.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg`,
+      alt: "Neiman Marcus InSite Contemporary Art magazine spread held in hands",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── DESIGNER SPOTLIGHTS — grouped ──

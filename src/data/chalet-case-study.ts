@@ -19,16 +19,6 @@ export const chaletCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
-    // 16-foot glass doors framing the tree canopy, Malm fireplace, walnut
-    // dining set. The whole project's argument in one frame.
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg`,
-      alt: "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific Northwest tree canopy",
-    },
-
     // ── META + ABSTRACT ──
     {
       id: "meta",
@@ -63,6 +53,17 @@ export const chaletCaseStudy: CaseStudy = {
       ],
       abstract:
         "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.\n\nTook it down to the studs. Exterior repainted in warm gray with white railings for contrast against the PNW green. New lighting mounted to catch the patio and stairs at night. Reclaimed PNW pine in mixed plank widths across the main level. A Malm fireplace and sputnik chandelier overhead. 16-foot sliding glass doors installed on the main wall - the tree canopy becomes the focal point from every seat in the room.\n\nFurniture kept simple on purpose. Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The surroundings carry the energy. The interior stays quiet enough to let them. Original footprint gained over 400 square feet.",
+    },
+
+        // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
+    // 16-foot glass doors framing the tree canopy, Malm fireplace, walnut
+    // dining set. The whole project's argument in one frame.
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg`,
+      alt: "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific Northwest tree canopy",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

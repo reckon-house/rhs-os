@@ -19,14 +19,6 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/jeffrey-spring-campaign-hero.jpg`,
-      alt: "Jeffrey Spring Campaign hero",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -59,6 +51,15 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       ],
       abstract:
         "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/jeffrey-spring-campaign-hero.jpg`,
+      alt: "Jeffrey Spring Campaign hero",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Valentino template — campaign in context, second beat in the case

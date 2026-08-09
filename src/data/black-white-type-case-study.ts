@@ -28,14 +28,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg`,
-      alt: "Typography & Patterns poster on wood surface, expressive letterforms filled with black and white patterns",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -75,6 +67,15 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       ],
       abstract:
         "Personal work built on a single question: how much visual range can a handful of patterns produce? Strip everything back - no color, no photography, no gradients. Just black ink, white paper, and six repeating elements simple enough for a child to draw.\n\nDots, lines, stripes, diamonds. Arranged in grids, varied in scale, alternated between positive and negative. The patterns fill letterforms, break outside them, stack into backgrounds, build rhythm across compositions. Three lithographs, each pulling from the identical library but arriving somewhere different.\n\nWithout color, density does the tonal work. A tight dot grid reads dark. A sparse one reads light. Scale determines what the eye processes first. Spacing sets the mood. Every decision in the composition carries more weight because there are fewer decisions to make.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg`,
+      alt: "Typography & Patterns poster on wood surface, expressive letterforms filled with black and white patterns",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE RULES — grouped in black container ──

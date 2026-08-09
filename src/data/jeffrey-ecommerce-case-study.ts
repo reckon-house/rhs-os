@@ -19,14 +19,6 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/jeffrey-new-york-digital-flagship-hero.jpg`,
-      alt: "Jeffrey New York digital flagship hero",
-    },
-
     // ── META + ABSTRACT ──
     {
       id: "meta",
@@ -58,6 +50,15 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       ],
       abstract:
         "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nStarted with the buying team. Learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy that won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there. Modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Integration work handled alongside external partners while keeping ownership of the experience, every interaction from wireframe to checkout prototyped to feel considered.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/jeffrey-new-york-digital-flagship-hero.jpg`,
+      alt: "Jeffrey New York digital flagship hero",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

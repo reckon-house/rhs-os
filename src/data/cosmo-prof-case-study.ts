@@ -19,14 +19,6 @@ export const cosmoProfCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg`,
-      alt: "Cosmo Prof photography direction, four-quadrant composition: hair color stroke, color tube detail, product lineup, and Framar applicator brushes",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -59,6 +51,15 @@ export const cosmoProfCaseStudy: CaseStudy = {
       ],
       abstract:
         "Cosmo Prof needed a digital refresh that matched the professionals using it. The existing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery without slowing down commerce.\n\nStarted with photography - high-contrast lighting, defined shadows, cleaner compositions, product imagery that looks intentional rather than photographed for inventory. Typography shifted to Jost, and the palette paired soft neutrals with sharp black to ground the tone.\n\nThe redesigned homepage introduced tabbed recommendations personalized per stylist, shoppable video that let users explore looks and purchase during playback, and a stripped-back global header that gave screen space to content. Templates unified product photography, type, and layout across the site so promotions, brand campaigns, and education modules could all sit on the same chassis.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg`,
+      alt: "Cosmo Prof photography direction, four-quadrant composition: hair color stroke, color tube detail, product lineup, and Framar applicator brushes",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

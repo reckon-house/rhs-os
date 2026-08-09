@@ -30,14 +30,6 @@ export const jChristiansonCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
-      alt: "J. Christianson tree stripe graphic in storefront window, natural light",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -77,6 +69,15 @@ export const jChristiansonCaseStudy: CaseStudy = {
       ],
       abstract:
         "Ground-up brand development for a fashion and home goods label. Started with the name, then built the mark, color system, typography, and product graphics from there.\n\nThe logo is four circles in a tight grid - same form, different color combinations depending on where it lives. Brown circles with accent colors for one context, olive circles with the same accents for another. Flexibility was built into the identity from the first sketch, so one mark could shift its palette without losing recognition.\n\nA tree silhouette did the rest of the heavy lifting, rendered in four seasonal colorways and layered over a striped color field pulled from the brand palette. The graphic showed up on apparel, candles, hangtags, and print materials - one drawing doing the work of a full product line.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/j-christianson-storefront-tree-stripe-window-mockup.jpg`,
+      alt: "J. Christianson tree stripe graphic in storefront window, natural light",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE TREE — grouped in white container ──

@@ -19,14 +19,6 @@ export const fairviewEntryCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/hero1.avif`,
-      alt: "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -57,6 +49,15 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       ],
       abstract:
         "The entry sits two stories tall, French ironwork glass running floor to ceiling at the center. Light is the design move first. Everything else is sized and placed to let it through.\n\nA vintage rug runner anchors the floor without crowding it. A brass and alabaster chandelier hangs alone overhead. White oak boards run unbroken to the doorway. A potted palm adds living texture against limestone-cream walls.\n\nTwo pieces of art on the side wall tell stories without explaining themselves: a slatted wood geometric piece, a dark abstract in a thick frame. The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the house.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/hero1.avif`,
+      alt: "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

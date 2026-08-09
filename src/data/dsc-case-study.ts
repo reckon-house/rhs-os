@@ -30,14 +30,6 @@ export const dscCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero-1",
-      type: "hero",
-      image: "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
-      alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
-    },
-
     // ── META + ABSTRACT ──
     {
       id: "meta",
@@ -77,6 +69,15 @@ export const dscCaseStudy: CaseStudy = {
         "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",
       abstract:
         "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule holding it together was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers, eleven programs from NFL Combine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site that sells the room: black and white, big condensed type, photography of actual members training. A scheduling platform with two faces: an athlete app for booking sessions and an owner console for saying a week of scheduling out loud and approving each request with one tap. And the part I find genuinely fun: an MCP server with eleven tools, so athletes can paste one URL into Claude or ChatGPT and ask their own AI what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. The AI only ever asks; it never decides. Next.js on Vercel, OAuth 2.0 consent with short-lived tokens, live at two locations.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero-1",
+      type: "hero",
+      image: "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
+      alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
+      pressing: { choreo: { rise: true } },
     },
 
     {

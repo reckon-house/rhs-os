@@ -19,14 +19,6 @@ export const capitanBootCoCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg`,
-      alt: "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -59,6 +51,15 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       ],
       abstract:
         "Capitan needed an identity that could work as hard as the product. Boots get scuffed, stamps blur, embossing flattens - the marks had to survive all of that and still read at every scale.\n\nBuilt the system as interlocking elements - primary logo, secondary badges, typographic lockups, illustrative assets. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props, no stand-ins, no styling beyond what the place already had. The photography had to come from inside the landscape the boots are made for, not from a moodboard built around it.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg`,
+      alt: "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

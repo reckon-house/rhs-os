@@ -29,14 +29,6 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg`,
-      alt: "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -76,6 +68,15 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       ],
       abstract:
         "The suite commits to a single mood and follows it through every surface - charcoal violet on every wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the property's tree canopy.\n\nThe material palette skews dark and warm. A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall. The layers stack without competing because the tonal range stays narrow - blues, grays, warm metallics.\n\nThe ensuite continues through double doors with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub beneath a crystal chandelier, and brass fixtures throughout. The bath holds the same temperature the bedroom set.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg`,
+      alt: "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE ROOM — grouped ──

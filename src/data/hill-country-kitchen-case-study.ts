@@ -30,14 +30,6 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/hill-country-kitchen-island-pendants-marble-wide.jpg`,
-      alt: "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -77,6 +69,15 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       ],
       abstract:
         "A kitchen designed the way a product gets designed. The material palette is the design system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint. Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room.\n\nThe style mixing is deliberate. Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs. None of these elements belong to the same era - they belong to the same room because the material palette holds them together.\n\nThe space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal measure. The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full length. Every decision was made for how a family actually uses a kitchen, not how one photographs.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/hill-country-kitchen-island-pendants-marble-wide.jpg`,
+      alt: "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE MATERIAL SYSTEM — grouped ──

@@ -29,14 +29,6 @@ export const hillCountryBathCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
-      alt: "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -76,6 +68,15 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       ],
       abstract:
         "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register. Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back. Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one.\n\nCountertops in a warm-veined Calacatta, shower walls in a cooler gray-dominant slab with vertical stacking, floor in hex marble mosaic. The stones were selected as a group rather than matched, and the variation keeps 400 square feet of hard surface from reading as a showroom.\n\nWood plank ceiling overhead, globe sconces at both vanities, wall-mounted cross-handle faucets, a freestanding tub positioned under natural light with views to the property. Dried florals, an olive tree, layered vintage rugs - every object placed to feel personal rather than styled.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/hill-country-bath-vanity-marble-globe-sconces-sage.jpg`,
+      alt: "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── GROUPING 1: Her vanity + tub — warm light, details ──

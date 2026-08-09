@@ -130,8 +130,8 @@ export function RisingPlate({
       // plate that kept its -RISE pull-up would statically cover the last
       // ~screen of the held section's content. The margin and the spacer
       // are two halves of one contract and must switch off together.
-      className={`hero-breakout relative isolate z-[3] bg-transparent mt-[calc(-1*var(--choreo-rise))] max-[760px]:mt-0 motion-reduce:mt-0 ${className}`}
-      style={{ "--choreo-rise": RISE } as React.CSSProperties}
+      className={`hero-breakout relative isolate z-[3] bg-transparent max-[760px]:!mt-0 motion-reduce:!mt-0 ${className}`}
+      style={{ "--choreo-rise": RISE, marginTop: `calc(-1 * ${RISE})` } as React.CSSProperties}
     >
       {/* No fixed height and no cover-crop: the section hugs the image and
           the image keeps its own ratio. Forcing plates into viewport-tall

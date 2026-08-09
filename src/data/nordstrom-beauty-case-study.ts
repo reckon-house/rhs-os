@@ -29,14 +29,6 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/nordstrom-beauty-hub-laptop-homepage-mockup.jpg`,
-      alt: "Nordstrom Beauty hub homepage on laptop, three editorial story cards, stylists section",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -71,6 +63,15 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       ],
       abstract:
         "Beauty content ages fast. New products launch weekly, trends shift seasonally, and static editorial goes stale before it publishes. The answer wasn't faster publishing - it was a template that aged better than the content inside it.\n\nThree modular story formats, each designed with editorial voice but built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the underlying product grid stayed current. Content that looked curated but actually ran on rails.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it applied, buy without leaving the modal. Stories opened into a shoppable drawer rather than navigating away, so the flow kept customers inside the narrative instead of bouncing them through product pages.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/nordstrom-beauty-hub-laptop-homepage-mockup.jpg`,
+      alt: "Nordstrom Beauty hub homepage on laptop, three editorial story cards, stylists section",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE HUB — grouped ──

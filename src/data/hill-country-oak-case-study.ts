@@ -19,14 +19,6 @@ export const hillCountryOakCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero",
-      image: `${IMG}/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg`,
-      alt: "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -61,6 +53,15 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       ],
       abstract:
         "Texas oak, whiskey barrels, and the landscape that grows both. The brand needed a visual language that could carry from billboard to phone screen without losing the heritage feeling.\n\nThe system pulls from mid-century poster design - warm color blocking, silhouetted trees, geometric shapes that echo the barrel geometry. Typography stays utilitarian, and a distressed texture gives the whole thing weight without feeling forced.\n\nBuilt to scale across billboard, print, and digital out of a single graphic idea.",
+    },
+
+        // ── HERO ──
+    {
+      id: "hero",
+      type: "hero",
+      image: `${IMG}/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg`,
+      alt: "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

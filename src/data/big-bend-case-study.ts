@@ -26,15 +26,6 @@ export const bigBendCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO — a Chisos peak, full bleed (non-inline: animates 60px → 0) ──
-    {
-      id: "hero",
-      type: "hero",
-      nativeRatio: true,
-      image: `${IMG}/chisos-peak-cactus.jpg`,
-      alt: "A lone peak in the Chisos Mountains rising over desert scrub and cactus, clouds stacked behind it",
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -68,6 +59,16 @@ export const bigBendCaseStudy: CaseStudy = {
       ],
       abstract:
         "Photographs from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa.\n\nBig Bend is the largest national park in Texas and one of the least visited in the country. The same stretch of desert is where There Will Be Blood and No Country for Old Men were shot.\n\nThe trip was personal. A few of these photographs later became the backdrops for the Capitan Boot Co. campaign, shot in the same country.",
+    },
+
+        // ── HERO — a Chisos peak, full bleed (non-inline: animates 60px → 0) ──
+    {
+      id: "hero",
+      type: "hero",
+      nativeRatio: true,
+      image: `${IMG}/chisos-peak-cactus.jpg`,
+      alt: "A lone peak in the Chisos Mountains rising over desert scrub and cactus, clouds stacked behind it",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── The park: full-bleed heroes alternating with centered frames ──
