@@ -66,8 +66,11 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: THE PROBLEM",
-      title: "Volume Without\nVocabulary.",
-      pressing: { mark: { n: "02", name: "Volume Without" } },
+      title: "Volume Without",
+      pressing: {
+        mark: { n: "02", name: "Volume Without" },
+        heldLine: "Vocabulary.",
+      },
     },
     {
       id: "problem-subhead",
@@ -103,8 +106,18 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "framework-header",
       type: "section-header",
       label: "SECTION 03: THE FRAMEWORK",
-      title: "Four Buckets,\nFour Identities.",
-      pressing: { mark: { n: "03", name: "Four Buckets" } },
+      title: "Four Buckets,",
+      // The study's one crossing, on the move that solved the problem.
+      //
+      // No mid-page climb: the only plate sitting after the zoom is
+      // hero4.png at 1540px native, which is already on the resolution
+      // report as thin at plate size; drawing it full-bleed as a riser
+      // would nearly treble the overdraw.
+      pressing: {
+        mark: { n: "03", name: "Four Buckets" },
+        heldLine: "Four Identities.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "framework-subhead",
@@ -162,8 +175,11 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "application-header",
       type: "section-header",
       label: "SECTION 04: APPLICATION",
-      title: "Homepage,\nEmail, Landing.",
-      pressing: { mark: { n: "04", name: "Homepage" } },
+      title: "Homepage,",
+      pressing: {
+        mark: { n: "04", name: "Homepage" },
+        heldLine: "Email, Landing.",
+      },
     },
     {
       id: "application-subhead",
@@ -187,6 +203,20 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "image",
       src: `${IMG}/hero2.png`,
       alt: "Nordstrom Content Framework applied across a full vertical landing page, lockups and category icons anchoring each module",
+      // The zoom. A full vertical landing page is exactly the frame the
+      // default fit was built for: it fills the width and leaves most of
+      // its height below the fold, so scrolling travels the page the way
+      // a customer would. No zoomFit.
+      pressing: {
+        plate: "04",
+        captions: [
+          "The framework applied",
+          "Full landing page",
+          "Lockup and icon per module",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
       aspect: "native",
       padded: true,
     },
@@ -206,8 +236,11 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Names Before\nTemplates.",
-      pressing: { mark: { n: "05", name: "Names Before" } },
+      title: "Names Before",
+      pressing: {
+        mark: { n: "05", name: "Names Before" },
+        heldLine: "Templates.",
+      },
     },
     {
       id: "closing-subhead",

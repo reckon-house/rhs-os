@@ -83,8 +83,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 02: THE SYSTEM",
-      title: "Three Shapes Driving\nEvery Composition.",
-      pressing: { mark: { n: "02", name: "Three Shapes Driving" } },
+      title: "Three Shapes Driving",
+      pressing: {
+        mark: { n: "02", name: "Three Shapes Driving" },
+        heldLine: "Every Composition.",
+      },
     },
     {
       id: "system-text",
@@ -110,6 +113,20 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       alt: "Composed tile layout showing Beauty Queen editorial story, 90s Revibe lifestyle module, watches, and kicks for him product tiles",
       aspect: "native",
       padded: true,
+      // The zoom. Three shapes assembling into one composition is the
+      // section's claim, and the individual tiles have to be readable for
+      // it to be checkable. No zoomFit: the frame is square, so filling
+      // the width leaves a modest spill to pan.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Composed tile layout",
+          "Editorial, lifestyle, product",
+          "One grid, three shapes",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
     // ════════════════════════════════════════
@@ -119,8 +136,18 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "assembled-header",
       type: "section-header",
       label: "SECTION 03: ASSEMBLED",
-      title: "One Engine Driving\nThree Different Audiences.",
-      pressing: { mark: { n: "03", name: "One Engine Driving" } },
+      title: "One Engine Driving",
+      // The study's one crossing, on the claim the system exists to make.
+      //
+      // No mid-page climb: every dual-image here is followed by an
+      // editorial headline or a section header, and the one plate that
+      // could be reordered into place is 1520px native, already flagged
+      // thin at plate size.
+      pressing: {
+        mark: { n: "03", name: "One Engine Driving" },
+        heldLine: "Three Different Audiences.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "assembled-text",
@@ -170,8 +197,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "devices-header",
       type: "section-header",
       label: "SECTION 04: ACROSS DEVICES",
-      title: "The Same Composition\nLogic on a Phone.",
-      pressing: { mark: { n: "04", name: "The Same Composition" } },
+      title: "The Same Composition",
+      pressing: {
+        mark: { n: "04", name: "The Same Composition" },
+        heldLine: "Logic on a Phone.",
+      },
     },
     {
       id: "devices-text",
@@ -213,8 +243,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "products-header",
       type: "section-header",
       label: "SECTION 05: PRODUCT PHOTOGRAPHY",
-      title: "Photography Built to\nDouble as Editorial.",
-      pressing: { mark: { n: "05", name: "Photography Built to" } },
+      title: "Photography Built to",
+      pressing: {
+        mark: { n: "05", name: "Photography Built to" },
+        heldLine: "Double as Editorial.",
+      },
     },
     {
       id: "products-text",
@@ -265,8 +298,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Mass Scale That Still\nLooked Hand-Built.",
-      pressing: { mark: { n: "06", name: "Mass Scale That Still" } },
+      title: "Mass Scale That Still",
+      pressing: {
+        mark: { n: "06", name: "Mass Scale That Still" },
+        heldLine: "Looked Hand-Built.",
+      },
     },
     {
       id: "closing-text",

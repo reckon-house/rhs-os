@@ -79,8 +79,11 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "hub-header",
       type: "section-header",
       label: "SECTION 02: THE HUB",
-      title: "The Templates Aged Better\nThan the Content.",
-      pressing: { mark: { n: "02", name: "The Templates Aged Better" } },
+      title: "The Templates Aged Better",
+      pressing: {
+        mark: { n: "02", name: "The Templates Aged Better" },
+        heldLine: "Than the Content.",
+      },
       group: { name: "hub", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -119,6 +122,19 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       image: `${IMG}/nordstrom-beauty-tryon-iphone-color-selector-mockup.jpg`,
       alt: "Nordstrom Beauty virtual try-on tool on iPhone, color gradient selector, lipstick preview",
       inline: true,
+      // The zoom. A colour selector is the one interface in this study
+      // where the individual swatches are the content, and at plate size
+      // they are a stripe. contain, landscape frame.
+      pressing: {
+        plate: "03",
+        captions: [
+          "Virtual try-on",
+          "Colour gradient selector",
+          "Lipstick preview",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── THE TRY-ON TOOL ──
@@ -126,8 +142,11 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "tryon-header",
       type: "section-header",
       label: "SECTION 03: VIRTUAL TRY-ON",
-      title: "Color Discovery That\nLived on the Customer's Face.",
-      pressing: { mark: { n: "03", name: "Color Discovery That" } },
+      title: "Color Discovery That",
+      pressing: {
+        mark: { n: "03", name: "Color Discovery That" },
+        heldLine: "Lived on the Customer's Face.",
+      },
     },
     {
       id: "tryon-text",
@@ -176,8 +195,17 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 04: SHOPPABLE STORIES",
-      title: "The Customer Never\nLeft the Story.",
-      pressing: { mark: { n: "04", name: "The Customer Never" } },
+      title: "The Customer Never",
+      // The study's one crossing.
+      //
+      // No mid-page climb: the only two dual-images sit back to back at
+      // the end of the study with a section header after them, so there is
+      // no plate adjacent to a hold.
+      pressing: {
+        mark: { n: "04", name: "The Customer Never" },
+        heldLine: "Left the Story.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "stories-text",
@@ -230,8 +258,11 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Hub That Stayed Fresh\nWithout Manual Updates.",
-      pressing: { mark: { n: "05", name: "A Hub That Stayed Fresh" } },
+      title: "A Hub That Stayed Fresh",
+      pressing: {
+        mark: { n: "05", name: "A Hub That Stayed Fresh" },
+        heldLine: "Without Manual Updates.",
+      },
     },
     {
       id: "closing-text",

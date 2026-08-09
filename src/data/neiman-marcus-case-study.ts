@@ -87,8 +87,11 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "designers-header",
       type: "section-header",
       label: "SECTION 02: DESIGNER SPOTLIGHTS",
-      title: "Spotlights That Read\nLike Print Profiles.",
-      pressing: { mark: { n: "02", name: "Spotlights That Read" } },
+      title: "Spotlights That Read",
+      pressing: {
+        mark: { n: "02", name: "Spotlights That Read" },
+        heldLine: "Like Print Profiles.",
+      },
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -166,6 +169,19 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       image: `${IMG}/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup.jpg`,
       alt: "Neiman Marcus InSite Rainbow story displayed on laptop against blue chairs",
       inline: true,
+      // The zoom. The section below argues that saturated colour replaced
+      // a location budget, and the claim only lands at a size where the
+      // colour is the whole screen. contain, landscape frame.
+      pressing: {
+        plate: "03",
+        captions: [
+          "Rainbow story",
+          "Colour carrying the set",
+          "InSite, on the laptop",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── COLOR STORIES ──
@@ -173,8 +189,14 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "color-header",
       type: "section-header",
       label: "SECTION 03: COLOR STORIES",
-      title: "Saturated Color Did the Work\nof a Location Scout.",
-      pressing: { mark: { n: "03", name: "Saturated Color Did the Work" } },
+      title: "Saturated Color Did the Work",
+      // The study's one crossing. Colour standing in for a location budget
+      // is the sharpest thing this case has to say.
+      pressing: {
+        mark: { n: "03", name: "Saturated Color Did the Work" },
+        heldLine: "of a Location Scout.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "color-text",
@@ -231,8 +253,11 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "type-header",
       type: "section-header",
       label: "SECTION 04: TYPOGRAPHY",
-      title: "Type That Set the\nVolume of the Page.",
-      pressing: { mark: { n: "04", name: "Type That Set the" } },
+      title: "Type That Set the",
+      pressing: {
+        mark: { n: "04", name: "Type That Set the" },
+        heldLine: "Volume of the Page.",
+      },
     },
     {
       id: "type-text",
@@ -288,15 +313,22 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         src: `${IMG}/neiman-marcus-insite-classic-beauty-spread.jpg`,
         alt: "Neiman Marcus InSite, Classic Beauty spread with large italic script on dark gray",
       },
+      // Held so the laptop mockup climbs across it: two spreads flat,
+      // then the same work on the screen it shipped to.
+      pressing: {
+        captions: ["The Socialite\nRed leather", "Classic Beauty"],
+        choreo: { pin: true },
+      },
     },
 
-    // Laptop hero
+    // Laptop hero — climbs across the held spreads
     {
       id: "laptop-hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-insite-minimalism-laptop-steel-mockup.jpg`,
       alt: "Neiman Marcus InSite Minimalism story on laptop against stainless steel surface",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── WAYS TO WEAR ──
@@ -304,8 +336,11 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "ways-header",
       type: "section-header",
       label: "SECTION 05: WAYS TO WEAR",
-      title: "One Garment, Styled\nFour Different Directions.",
-      pressing: { mark: { n: "05", name: "One Garment, Styled" } },
+      title: "One Garment, Styled",
+      pressing: {
+        mark: { n: "05", name: "One Garment, Styled" },
+        heldLine: "Four Different Directions.",
+      },
     },
     {
       id: "ways-text",
@@ -351,15 +386,23 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         src: `${IMG}/neiman-marcus-insite-ways-to-wear-silk-blouse-denim.jpg`,
         alt: "Neiman Marcus InSite, Silk Blouse plus Denim Jacket plus Printed Jean styling",
       },
+      // The second and last hold, thirty sections after the first. Two
+      // stylings of one blouse rest while the Flora Maxi feature arrives
+      // over them, which is the turn into the closing beat.
+      pressing: {
+        captions: ["Silk blouse + ikat", "Silk blouse + denim"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── FLORA MAXI feature ──
+    // ── FLORA MAXI feature — climbs across the held stylings
     {
       id: "flora-hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-insite-flora-maxi-laptop-couch-mockup.jpg`,
       alt: "Neiman Marcus InSite Flora Maxi story on laptop resting on black couch",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "flora-spread",
@@ -375,8 +418,11 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Editorial Commerce\nBefore It Was a Category.",
-      pressing: { mark: { n: "06", name: "Editorial Commerce" } },
+      title: "Editorial Commerce",
+      pressing: {
+        mark: { n: "06", name: "Editorial Commerce" },
+        heldLine: "Before It Was a Category.",
+      },
     },
     {
       id: "closing-text",

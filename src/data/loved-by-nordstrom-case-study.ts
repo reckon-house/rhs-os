@@ -81,8 +81,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "idea-header",
       type: "section-header",
       label: "SECTION 02: THE IDEA",
-      title: "The Heart Was\nAlready a Verb.",
-      pressing: { mark: { n: "02", name: "The Heart Was" } },
+      title: "The Heart Was",
+      pressing: {
+        mark: { n: "02", name: "The Heart Was" },
+        heldLine: "Already a Verb.",
+      },
     },
     {
       id: "idea-text",
@@ -107,6 +110,19 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       image: `${IMG}/loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg`,
       alt: "iPhone showing TIBI Loved by Nordstrom story on Instagram laid on a beige trench coat",
       inline: true,
+      // The zoom, placed early because this study opens on a long run of
+      // copy. A phone photographed on the coat it is selling only reads
+      // as that once the frame fills the mat. contain, landscape frame.
+      pressing: {
+        plate: "02",
+        captions: [
+          "TIBI story on Instagram",
+          "The tile in the wild",
+          "Shot on the trench",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── THE SYSTEM ──
@@ -114,8 +130,17 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "A Tile That Worked\nAs a Container.",
-      pressing: { mark: { n: "03", name: "A Tile That Worked" } },
+      title: "A Tile That Worked",
+      // The study's one crossing, on the idea the whole system rests on.
+      //
+      // No mid-page climb: the tile grids here are quad-images, which hold
+      // but cannot rise, and the one dual-image is followed by a section
+      // header rather than a plate.
+      pressing: {
+        mark: { n: "03", name: "A Tile That Worked" },
+        heldLine: "As a Container.",
+        choreo: { crossing: true },
+      },
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
     },
     {
@@ -178,8 +203,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "loved-header",
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
-      title: "Two Tiers Giving\nMerchandising a Lever.",
-      pressing: { mark: { n: "04", name: "Two Tiers Giving" } },
+      title: "Two Tiers Giving",
+      pressing: {
+        mark: { n: "04", name: "Two Tiers Giving" },
+        heldLine: "Merchandising a Lever.",
+      },
     },
     {
       id: "loved-text",
@@ -218,8 +246,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "channels-header",
       type: "section-header",
       label: "SECTION 05: ACROSS CHANNELS",
-      title: "A Customer Saw It Twice\nin Two Days.",
-      pressing: { mark: { n: "05", name: "A Customer Saw It Twice" } },
+      title: "A Customer Saw It Twice",
+      pressing: {
+        mark: { n: "05", name: "A Customer Saw It Twice" },
+        heldLine: "in Two Days.",
+      },
     },
     {
       id: "channels-text",
@@ -251,8 +282,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "A Year on\nOne Icon.",
-      pressing: { mark: { n: "06", name: "A Year on" } },
+      title: "A Year on",
+      pressing: {
+        mark: { n: "06", name: "A Year on" },
+        heldLine: "One Icon.",
+      },
     },
     {
       id: "closing-text",
