@@ -281,35 +281,7 @@
 }
 
 /* ── the column arrives from the right ────────────────────────────
-   The crossing's gesture, kept inside the brief. The crossing itself
-   scrubs each rendered LINE across a pinned screen of its own, which
-   is the right move for a headline standing alone and the wrong one
-   for a section whose column carries method columns underneath: it
-   puts the argument on one screen and its evidence on the next, and
-   they stop reading as one thing.
-
-   Transform lives on .col and nowhere else — one element, one animated
-   property — and it goes to `none` on arrival rather than to
-   translateX(0). A lingering transform makes .col a containing block
-   and re-rasterizes everything inside it at a new subpixel offset; the
-   plate taught that lesson the expensive way this session. */
-.fromRight {
-  transform: translate3d(clamp(40px, 9vw, 130px), 0, 0);
-  opacity: 0;
-  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.75s ease;
-  will-change: transform;
-}
-.landed {
-  transform: none;
-  opacity: 1;
-  will-change: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fromRight {
-    transform: none;
-    opacity: 1;
-    transition: none;
-  }
-}
+   Driven entirely by the component's scrub (see PressingBrief.tsx), so
+   there is deliberately NO rule here parking the column off-screen. A
+   CSS start state would hide the copy for good if the driver never ran,
+   and the driver is the only thing that can bring it back. */

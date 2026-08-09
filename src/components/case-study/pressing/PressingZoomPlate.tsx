@@ -267,7 +267,18 @@ export function PressingZoomPlate({
       }
 
       zoomPx = vh() * 1.1; // scroll spent growing the plate
-      panPx = spill; // 1:1 — one pixel of scroll, one of image
+      /* The pan used to be 1:1 — one pixel of scroll for one of image —
+         which is right for a tall frame with hundreds of pixels hanging
+         below the fold. A LANDSCAPE frame spills barely anything: on a
+         wide, short laptop a 1.625 picture overshoots by around 150px,
+         and at 1:1 that whole reveal is over in 150px of scroll. It
+         never registers as a pan. What registers is a picture with its
+         bottom cut off, which is exactly the complaint this plate has
+         collected twice.
+         So the pan gets a FLOOR: however small the spill, it is spread
+         over at least half a viewport of scrolling. Big spills keep
+         their 1:1 honesty; small ones finally read. */
+      panPx = spill > 0 ? Math.max(spill, vh() * 0.5) : 0;
 
       /* A wrap that a plate climbs over needs room for that climb ON TOP
          of its own sequence; without it the following plate enters before

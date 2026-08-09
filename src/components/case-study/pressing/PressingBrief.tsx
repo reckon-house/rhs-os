@@ -38,6 +38,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
+import { onTick, reducedMotion, vh } from "@/lib/scrub";
+import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -104,10 +106,6 @@ export function PressingBrief({
   // scrolls back into view turns a section opener into a loop. State, not a
   // classList write: a re-render must not wipe the drawn class.
   const [drawn, setDrawn] = useState(false);
-  /* The from-right entrance. Its own latch rather than `drawn`: that one
-     watches the METHOD GRID so the rules draw as the columns arrive, and
-     the whole column has to start moving well before then. */
-  const [entered, setEntered] = useState(false);
 
   const hasCols = !!columns && columns.length > 0;
 
@@ -115,29 +113,70 @@ export function PressingBrief({
      stackBelow matches THIS stylesheet's 760 mobile block. */
   useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
 
-  /* Admit the column once, on arrival. Viewport-rooted, which is safe
-     with the page scrolling inside <main>: main spans the viewport, so
-     the two intersection tests are the same one. */
+  /* ── the crossing, scrubbed ────────────────────────────────────
+     The column is dragged in from most of a viewport off to the right
+     and lands flush as the section reaches the top of the screen. It is
+     SCRUBBED, not a transition: a one-shot settle over 130px reads as
+     the column nudging itself straight, which is not the gesture. Tied
+     to scroll it runs backwards for free and the reader is the one
+     moving it.
+
+     Nothing here writes a start state in CSS. If this effect never runs
+     — no JS, an error upstream — the column simply renders in place and
+     reads fine. A CSS class parking it a viewport to the right would
+     hide the copy in exactly that case. */
   useEffect(() => {
     if (!fromRight) return;
-    const el = colRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setEntered(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          setEntered(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.04 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const col = colRef.current;
+    const sec = sectionRef.current;
+    if (!col || !sec) return;
+    if (reducedMotion()) return;
+    const narrow = window.matchMedia("(max-width: " + (CHOREO_BREAKPOINT - 1) + "px)");
+    let wrote = false;
+    const clear = () => {
+      col.style.transform = "";
+      col.style.opacity = "";
+      col.style.willChange = "";
+      wrote = false;
+    };
+    const off = onTick(() => {
+      /* Below the breakpoint everything stacks into one column and the
+         crossing has nowhere to come from. Checked per tick, not once:
+         a resize across the line must hand the layout back. */
+      if (narrow.matches) {
+        if (wrote) clear();
+        return;
+      }
+      if (document.documentElement.hasAttribute("data-paused")) return;
+      const r = sec.getBoundingClientRect();
+      const h = vh();
+      if (r.bottom < 0 || r.top > h) return;
+      /* 0 as the section's top enters at the bottom of the screen, 1 as
+         it reaches the top — which is exactly when the pin engages, so
+         the column lands at the moment the headline starts to hold. */
+      const p = Math.min(1, Math.max(0, (h - r.top) / h));
+      const e = p * p * (3 - 2 * p);
+      const dist = Math.min(760, window.innerWidth * 0.72);
+      if (e >= 0.999) {
+        /* Released rather than parked at translateX(0): a lingering
+           transform makes the column a containing block and re-rasters
+           its text at a new subpixel offset. The zoom plate charged us
+           for that lesson already. */
+        col.style.transform = "none";
+        col.style.willChange = "auto";
+        col.style.opacity = "1";
+      } else {
+        col.style.transform =
+          "translate3d(" + ((1 - e) * dist).toFixed(2) + "px,0,0)";
+        col.style.willChange = "transform";
+        col.style.opacity = Math.min(1, e * 2.4).toFixed(3);
+      }
+      wrote = true;
+    });
+    return () => {
+      off();
+      clear();
+    };
   }, [fromRight]);
 
   /* ── the drift ───────────────────────────────────────────────────
@@ -249,11 +288,7 @@ export function PressingBrief({
 
       <div
         ref={colRef}
-        className={
-          fromRight
-            ? `${styles.col} ${styles.fromRight}${entered ? " " + styles.landed : ""}`
-            : styles.col
-        }
+        className={styles.col}
       >
 
         {paragraphs?.map((p, i) => (

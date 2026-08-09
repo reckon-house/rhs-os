@@ -157,7 +157,23 @@ grids are the usual offenders. Colours come from the study's own
 declared palette. `npm run facts` reports any pressing study missing a
 reel and names any frame carrying alpha.
 
-**A landscape zoom plate needs `zoomFit: "contain"`.** The plate's
+**A full-bleed plate fills the WIDTH, and the leftover height is
+panned.** On a wide, short laptop the arithmetic is unforgiving: 2000
+CSS of width at 1.625 needs 1231 of height and the screen has ~1065.
+Something has to give, and it is not the width — a plate that letterboxes
+is not a plate. So the overshoot becomes something to scroll through.
+The pan has a FLOOR of half a viewport of scroll: at the old 1:1 a
+150px spill was over in 150px of scrolling and never registered as a
+pan, which is precisely why it read as the bottom being cut off. Big
+spills keep 1:1; small ones finally read.
+
+`zoomFit: "contain"` still exists for a frame that genuinely must stay
+whole on screen, and it fits the FULL viewport rather than the
+masthead-shortened mat. Reach for it rarely: on most laptop
+proportions it letterboxes a landscape frame, which is the complaint it
+was invented to fix arriving from the other direction.
+
+**The old note, kept because the reasoning still applies:** The plate's
 default is to fit the VIEWPORT WIDTH and treat the leftover height as
 spill to pan through, which is right for a tall frame. Give a wide one
 the same treatment and the sums stop working twice over: the spill is
@@ -168,6 +184,21 @@ also goes soft. `contain` scales until the WHOLE frame fits the mat and
 sets spill to zero. Ratio kept, nothing off screen, and a smaller ask
 of the file. A.R.C.'s kitchen frame is the worked example: 3840×2363,
 now drawn at 1375×846 inside a 900px-tall mat.
+
+**One section per study crosses right to left.** The pinned brief takes
+`choreo: { pin: true, crossing: true }` and its column is dragged in
+from most of a viewport off to the right, scrubbed by scroll rather
+than transitioned, landing flush as the section reaches the top of the
+screen. Scrubbed matters: a one-shot settle over 130px reads as the
+column nudging itself straight, not as a crossing. Use it ONCE per
+study — the gesture is a punctuation mark and a second one spends it.
+
+The standalone `PressingCrossing` renders the headline and intro on a
+pinned screen of their own, which is right for a headline standing
+alone and wrong for a section whose column carries method columns: it
+puts the argument on one screen and its evidence on the next. A header
+asking for `crossing` that also carries columns routes to the brief
+variation automatically.
 
 **An image in a column drifts inside its frame, like every other image
 on the site.** `.colFrame` owns the shape, the clip and the radius;
