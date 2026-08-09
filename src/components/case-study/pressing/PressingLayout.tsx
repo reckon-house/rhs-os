@@ -16,6 +16,7 @@ import { PressingSystemIndex } from "./PressingSystemIndex";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
+import { PressingMaterialSpan } from "./viz/PressingMaterialSpan";
 import dynamic from "next/dynamic";
 
 const PressingLiveApp = dynamic(
@@ -86,7 +87,6 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "jeffrey-flagship-radius",
   "kitchen-palette",
   "material-circos",
-  "material-overlap",
   "mcp-architecture",
   "pattern-matrix",
   "sizzle-playground",
@@ -440,6 +440,16 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           mark={p?.mark}
           caption={p?.captions?.[0]}
         />
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "material-overlap") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingMaterialSpan />
+        </PressingVizFrame>
       );
       i += 1;
       continue;
