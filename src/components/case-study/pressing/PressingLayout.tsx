@@ -196,16 +196,13 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
         }
         if (n.type === "three-column-text") {
           if (columns) {
-            // The brief nests ONE method grid. Sally runs three in a row —
-            // porting it means restructuring, not silently dropping two.
-            if (process.env.NODE_ENV !== "production") {
-              console.warn(
-                `PressingLayout: a second three-column-text (${n.id}) follows ` +
-                  `the same header — only the first renders; restructure the data`
-              );
-            }
-            j += 1;
-            continue;
+            /* The brief nests ONE method grid, so a second one under the
+               same header stops the absorb loop and renders standalone
+               below. It used to `j += 1; continue`, which swallowed it
+               and threw it away — Sally runs three in a row and lost
+               two. A warning that content is being discarded is not a
+               substitute for not discarding it. */
+            break;
           }
           columns = n.columns.map((c) => ({
             title: c.title ?? "",
@@ -364,13 +361,21 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
-    if (s.type === "editorial-headline" && p?.choreo?.quotePoster) {
+    /* An editorial headline is a quote poster, always. The flag used to
+       gate it, which meant 33 authored headlines across the portfolio
+       rendered as NOTHING — they fell straight through to the drop
+       branch below. That is the whole reason this skin exists: the copy
+       rules describe editorial-headline as a palate cleanser, 2-3 lines,
+       pull-quote feel, which is precisely what PressingQuote draws. A
+       flag that can only ever be "yes, render my content" is not a
+       choice, it is a trapdoor. */
+    if (s.type === "editorial-headline") {
       out.push(
         <PressingQuote
           key={s.id}
           text={s.text}
-          indent={p.indent}
-          mark={p.mark}
+          indent={p?.indent}
+          mark={p?.mark}
         />
       );
       i += 1;
@@ -503,6 +508,61 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           <SectionRenderer section={s} />
         </PressingVizFrame>
       );
+      i += 1;
+      continue;
+    }
+
+    /* ── absorbed types, rendered standalone ──
+       text, three-column-text and closing are normally swallowed by a
+       preceding section-header. When one is NOT preceded by a header —
+       a second three-column-text under one header, a text block after a
+       plate, a closing that opens its own cluster — it used to reach the
+       drop branch and disappear. They render on their own now.
+       Measured before this change: 44 sections across 20 studies. */
+    if (s.type === "text" || s.type === "text-right") {
+      out.push(
+        <PressingBrief key={s.id} paragraphs={splitParagraphs(s.content)} mark={p?.mark} />
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "three-column-text") {
+      out.push(
+        <PressingBrief
+          key={s.id}
+          columns={s.columns.map((c) => ({
+            title: c.title ?? "",
+            body: c.content,
+            image: c.image,
+          }))}
+          columnsMark={p?.mark}
+        />
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "closing") {
+      out.push(
+        <PressingClosing
+          key={s.id}
+          mark={p?.mark}
+          /* A standalone closing has no header above it to borrow a
+             title from, so it leads with its own copy. */
+          title=""
+          paragraphs={splitParagraphs(s.content)}
+          services={s.services}
+          stack={s.stack}
+          links={s.links}
+        />
+      );
+      i += 1;
+      continue;
+    }
+    /* A spacer is deliberate air in the classic layout. Pressing sets
+       its own rhythm, so the air is already there — consuming it
+       silently is correct, but it must be consumed EXPLICITLY rather
+       than falling through the drop branch and tripping the warning. */
+    if (s.type === "spacer") {
       i += 1;
       continue;
     }
