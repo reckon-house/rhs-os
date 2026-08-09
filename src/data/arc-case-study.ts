@@ -591,6 +591,22 @@ export const arcCaseStudy: CaseStudy = {
       ],
       logoConstructionImage: `${IMG}/arc-logo-grid.png`,
       appScreenshotImage: `${IMG}/arc-app-dashboard-categories-configuration.png`,
+      /* Cut out of the contact sheet above and flattened onto white.
+         The sheet showed all nine at a tenth the size and could not
+         move; these cycle, so each component gets the whole box for a
+         beat. Sequenced the way the product is used: what you own, the
+         projects it lives in, the shell, then what the archive gives
+         back — insight, stats, a report, proof it is safe. */
+      patternLibrary: [
+        `${IMG}/arc-ui-most-valuable-items-card.jpg`,
+        `${IMG}/arc-ui-select-your-project.jpg`,
+        `${IMG}/arc-ui-nav-grid-account-summary.jpg`,
+        `${IMG}/arc-ui-category-insights-top-values.jpg`,
+        `${IMG}/arc-ui-quick-stats.jpg`,
+        `${IMG}/arc-ui-report-configuration-pdf.jpg`,
+        `${IMG}/arc-ui-backup-status-account-info.jpg`,
+        `${IMG}/arc-ui-document-ai-scan-upload.jpg`,
+      ],
       morphGlyphs: [{ char: "A" }, { char: "R" }, { char: "C" }],
     },
 

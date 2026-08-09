@@ -36,10 +36,11 @@
  * motion holds the first state.
  */
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import type { BrandSystemSection } from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
+import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { imageDimensions } from "@/data/image-dimensions";
 import { outline, profile, toPath, rgb } from "@/lib/swatch-morph";
@@ -92,6 +93,62 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   }, []);
 
   const colors = section.colors ?? [];
+
+  /* ── the pattern library reel ──────────────────────────────────
+     RRSystemIndex's plumbing, copied rather than re-derived. The box's
+     height is written per beat from each frame's NATIVE ratio: the
+     frames are different shapes (a stats card is wide, an account panel
+     is tall), and without a measured box every reshape reflows the
+     whole row. Ratios are read once, up front, and the reel only mounts
+     when they are all in — a reel that starts before it knows its
+     shapes jumps on its first two beats. */
+  const reelBoxRef = useRef<HTMLSpanElement>(null);
+  const ratiosRef = useRef<number[]>([]);
+  const [reelReady, setReelReady] = useState(false);
+
+  const shape = useCallback((i: number) => {
+    const box = reelBoxRef.current;
+    const r = ratiosRef.current[i];
+    if (box && r) {
+      box.style.height = `${(box.getBoundingClientRect().width / r).toFixed(1)}px`;
+    }
+  }, []);
+
+  const onBeat = useCallback(
+    (_i: number, beat: SizzleBeat) => {
+      if (beat.img != null) shape(beat.img);
+    },
+    [shape]
+  );
+
+  const libKey = (section.patternLibrary ?? []).join("|");
+  useEffect(() => {
+    const srcs = libKey ? libKey.split("|") : [];
+    if (!srcs.length) return;
+    let cancelled = false;
+    ratiosRef.current = [];
+    Promise.all(
+      srcs.map(
+        (src: string, i: number) =>
+          new Promise<void>((res) => {
+            const im = new window.Image();
+            im.onload = () => {
+              ratiosRef.current[i] = im.naturalWidth / im.naturalHeight;
+              res();
+            };
+            im.onerror = () => res();
+            im.src = src;
+          })
+      )
+    ).then(() => {
+      if (cancelled) return;
+      shape(0);
+      setReelReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [libKey, shape]);
 
   /* ── the palette: colour AND form, together ────────────────────── */
   useEffect(() => {
@@ -229,26 +286,26 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     });
   }
 
-  if (section.appScreenshotImage) {
-    const dim = imageDimensions[section.appScreenshotImage];
+  const library = section.patternLibrary ?? [];
+  if (library.length) {
     rows.push({
-      label: "In use",
+      label: "Pattern library",
       body: (
         <span className={styles.markStack}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={styles.markImg}
-            style={
-              { "--native": dim ? `${Math.floor(dim[0] / 2)}px` : undefined } as CSSProperties
-            }
-            src={section.appScreenshotImage}
-            alt="The system applied in the product"
-            width={dim?.[0]}
-            height={dim?.[1]}
-            loading="lazy"
-            decoding="async"
-          />
-          <span className={styles.cap}>Applied</span>
+          <span ref={reelBoxRef} className={styles.reelBox}>
+            {reelReady ? (
+              <SizzleReel
+                images={library}
+                colors={(section.colors ?? []).map((c) => c.hex)}
+                speed={1}
+                className={styles.reel}
+                onBeatChange={onBeat}
+              />
+            ) : null}
+          </span>
+          <span className={styles.cap}>
+            {library.length} components
+          </span>
         </span>
       ),
     });

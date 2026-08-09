@@ -365,6 +365,27 @@ balances a square at 47). The generic component varies shapes from a
 ladder instead, because it cannot know a brand's forms but can still
 make the swatch read as a system rather than a dot.
 
+**The pattern library cycles; it is not a contact sheet.** A single
+sheet of all the components shows each at a tenth its size and cannot
+move. `patternLibrary: string[]` feeds the individual frames to
+`SizzleReel` — Robert's Compositing row exactly — and the box's height
+is rewritten per beat from each frame's NATIVE ratio, because a stats
+card is wide and an account panel is tall and an unmeasured box reflows
+the whole row on every cut. Ratios are read once up front and the reel
+only mounts when they are all in.
+
+Two numbers differ from Robert's on purpose: the box is
+`clamp(150px, 19vw, 300px)` against his `clamp(68px, 8vw, 130px)`,
+because his frames are photography and read at any size while a UI
+component you cannot read is a texture, not a library. Everything else
+is his, `.reel { width: 100%; height: 100% }` included — omit those two
+and the reel collapses to nothing and looks like a broken image rather
+than a bug.
+
+Frames must be OPAQUE. Cutting them out of a transparent contact sheet
+means flattening onto white on the way out; `npm run facts` rejects
+alpha by name.
+
 **Know when NOT to morph.** Robert's lockup interpolates because
 Archer's outlines were extracted with matching ring counts. A.R.C.'s
 mark is filled serif letterforms; interpolating those produces a smear.

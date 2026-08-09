@@ -340,13 +340,13 @@
     "room": [
      {
       "facet": "room",
-      "term": "living room",
-      "n": 9,
+      "term": "kitchen",
+      "n": 10,
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg"
+        "field": "reel.images.0",
+        "quote": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg"
        },
        {
         "section": "meta",
@@ -357,13 +357,13 @@
      },
      {
       "facet": "room",
-      "term": "kitchen",
-      "n": 8,
+      "term": "living room",
+      "n": 9,
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg"
+        "field": "reel.images.2",
+        "quote": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg"
        },
        {
         "section": "meta",
@@ -514,6 +514,18 @@
         "section": "stats",
         "field": "items.2.label",
         "quote": "Artwork"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 1,
+      "cites": [
+       {
+        "section": "live-app",
+        "field": "posterAlt",
+        "quote": "running on a phone, resting on a kitchen counter"
        }
       ]
      }

@@ -549,6 +549,15 @@ export interface BrandSystemSection extends BaseSection {
   }[];
   logoConstructionImage: string;
   appScreenshotImage: string;
+  /**
+   * The pattern library: individual UI frames cut apart and cycled, the
+   * way Robert's Compositing row cycles its source frames. A single
+   * contact sheet shows the same screens at a tenth the size and cannot
+   * move; these are the panels themselves. Every frame must be OPAQUE —
+   * a PNG with alpha lets the reel's stage through and reads as a
+   * failed image, and `npm run facts` rejects it by name.
+   */
+  patternLibrary?: string[];
   /** Big display glyph that morphs letter-to-letter (e.g. A → R → C for a.r.c.).
    *  Each entry is a character + optional brand face (defaults to the Ogg display
    *  face). Omit to leave the section without an animated glyph. */

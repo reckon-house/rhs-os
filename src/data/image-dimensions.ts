@@ -580,6 +580,15 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/nav/logo copy.jpg": [100, 100],
   "/nav/logo.jpg": [200, 200],
   "/nav/reckonhouse.jpg": [100, 100],
+  "/case-studies/arc/arc-ui-most-valuable-items-card.jpg": [808, 425],
+  "/case-studies/arc/arc-ui-nav-grid-account-summary.jpg": [808, 911],
+  "/case-studies/arc/arc-ui-pro-tip-carousel.jpg": [808, 242],
+  "/case-studies/arc/arc-ui-document-ai-scan-upload.jpg": [808, 483],
+  "/case-studies/arc/arc-ui-select-your-project.jpg": [891, 725],
+  "/case-studies/arc/arc-ui-quick-stats.jpg": [891, 443],
+  "/case-studies/arc/arc-ui-report-configuration-pdf.jpg": [891, 920],
+  "/case-studies/arc/arc-ui-category-insights-top-values.jpg": [826, 924],
+  "/case-studies/arc/arc-ui-backup-status-account-info.jpg": [826, 1383],
 };
 
 /**
