@@ -27,6 +27,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -40,6 +41,20 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#282923", "#58635A", "#3D4039", "#565C48", "#657765"],
+        images: [
+          "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-reading-nook-chair-ottoman-marble-table.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-detail-throw-chair-windows.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-detail-marble-side-table-brass.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+          "/case-studies/fairview-bedroom/fairview-suite-detail-bath-chandelier-hex-tile.jpg",
+        ],
+      },
       title: "The Fairview\nPrimary Suite",
       subtitle:
         "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub. 600 square feet designed for mood.",
@@ -69,6 +84,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE ROOM",
       title: "One Color\non Every Wall.",
+      pressing: { mark: { n: "02", name: "One Color" } },
       group: { name: "room", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -110,6 +126,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
       title: "Three Decades\non One Floor.",
+      pressing: { mark: { n: "03", name: "Three Decades" } },
     },
     {
       id: "furniture-text",
@@ -174,6 +191,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
       title: "The Bath Holds the\nSame Temperature.",
+      pressing: { mark: { n: "04", name: "The Bath Holds the" } },
     },
     {
       id: "ensuite-text",
@@ -212,6 +230,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "One Mood,\nAcross Two Rooms.",
+      pressing: { mark: { n: "05", name: "One Mood" } },
     },
     {
       id: "closing-text",

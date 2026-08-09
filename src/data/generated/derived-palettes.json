@@ -1,0 +1,121 @@
+{
+ "big-bend": [
+  "#9AA0A2",
+  "#4D402C",
+  "#645138",
+  "#292B22",
+  "#7F95A1"
+ ],
+ "black-white-type": [
+  "#C1C1C1",
+  "#515151",
+  "#D9D9D9",
+  "#838383",
+  "#4B4744"
+ ],
+ "branding-graphics": [
+  "#DCDDDD",
+  "#380F03",
+  "#9DB3AD",
+  "#A89B8F",
+  "#BBCFC9"
+ ],
+ "chalet": [
+  "#CCC4C1",
+  "#AEA4A2",
+  "#BDACA0",
+  "#764226",
+  "#667C72"
+ ],
+ "fairview-suite": [
+  "#282923",
+  "#58635A",
+  "#3D4039",
+  "#565C48",
+  "#657765"
+ ],
+ "floor-and-decor": [
+  "#C0C1C3",
+  "#A3A4A6",
+  "#5F6363",
+  "#D4DBE5",
+  "#817D78"
+ ],
+ "hill-country-bath": [
+  "#959085",
+  "#B0ACAD",
+  "#8F8577",
+  "#605C5B",
+  "#A39D90"
+ ],
+ "hill-country-kitchen": [
+  "#35412B",
+  "#585D3E",
+  "#C1B7A9",
+  "#A99D8E",
+  "#372810"
+ ],
+ "ivy-park": [
+  "#1B1B1B",
+  "#605D5C",
+  "#363D45",
+  "#B4B4B4",
+  "#B9B9B9"
+ ],
+ "j-christianson": [
+  "#DCA23D",
+  "#2D2B27",
+  "#E5D443",
+  "#593D19",
+  "#B6B548"
+ ],
+ "loved-by-nordstrom": [
+  "#DAD7D2",
+  "#605C66",
+  "#BBAA8B",
+  "#AF987F",
+  "#CAC4BE"
+ ],
+ "neiman-marcus": [
+  "#DCD9D2",
+  "#9EA7AF",
+  "#DCD3C9",
+  "#B8C1C4",
+  "#84868C"
+ ],
+ "nordstrom-beauty": [
+  "#787878",
+  "#848486",
+  "#2E2E2E",
+  "#ADA5A1",
+  "#C5C1C0"
+ ],
+ "nordstrom-framework": [
+  "#E5DCD3",
+  "#6E706E",
+  "#918C88",
+  "#61605E",
+  "#403934"
+ ],
+ "nordstrom-personalization": [
+  "#DEDBDA",
+  "#3E4412",
+  "#C6C6CB",
+  "#615D24",
+  "#D7C572"
+ ],
+ "robert-rodriguez": [
+  "#C2BDBB",
+  "#D5D0CD",
+  "#D4D1D2",
+  "#F36843",
+  "#F4CFBC"
+ ],
+ "sally": [
+  "#D2C6C7",
+  "#C8C8C9",
+  "#C18E7C",
+  "#C08861",
+  "#2C312F"
+ ]
+}

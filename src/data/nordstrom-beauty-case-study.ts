@@ -27,6 +27,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
   stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -40,6 +41,15 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 3 frames",
+        colors: ["#787878", "#848486", "#2E2E2E", "#ADA5A1", "#C5C1C0"],
+        images: [
+          "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg",
+          "/case-studies/nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup.jpg",
+          "/case-studies/nordstrom-beauty/nordstrom-beauty-glow-story-iphone-orange-table-mockup.jpg",
+        ],
+      },
       title: "Nordstrom\nBeauty",
       subtitle:
         "A beauty editorial hub where every story sells. Built to stay current without a content team rebuilding pages each week.",
@@ -69,6 +79,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE HUB",
       title: "The Templates Aged Better\nThan the Content.",
+      pressing: { mark: { n: "02", name: "The Templates Aged Better" } },
       group: { name: "hub", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -115,6 +126,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: VIRTUAL TRY-ON",
       title: "Color Discovery That\nLived on the Customer's Face.",
+      pressing: { mark: { n: "03", name: "Color Discovery That" } },
     },
     {
       id: "tryon-text",
@@ -164,6 +176,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: SHOPPABLE STORIES",
       title: "The Customer Never\nLeft the Story.",
+      pressing: { mark: { n: "04", name: "The Customer Never" } },
     },
     {
       id: "stories-text",
@@ -217,6 +230,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Hub That Stayed Fresh\nWithout Manual Updates.",
+      pressing: { mark: { n: "05", name: "A Hub That Stayed Fresh" } },
     },
     {
       id: "closing-text",

@@ -17,6 +17,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
   stack: [],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,15 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 3 frames",
+        colors: ["#E5DCD3", "#6E706E", "#918C88", "#61605E", "#403934"],
+        images: [
+          "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg",
+          "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-where-to-wear.jpg",
+          "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-on-our-list.jpg",
+        ],
+      },
       title: "Nordstrom\nContent Framework",
       subtitle:
         "Content taxonomy built from scratch. Custom typeface, icon set, naming language, and a system that organized everything from homepage to email to dedicated landing pages.",
@@ -56,6 +66,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE PROBLEM",
       title: "Volume Without\nVocabulary.",
+      pressing: { mark: { n: "02", name: "Volume Without" } },
     },
     {
       id: "problem-subhead",
@@ -92,6 +103,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE FRAMEWORK",
       title: "Four Buckets,\nFour Identities.",
+      pressing: { mark: { n: "03", name: "Four Buckets" } },
     },
     {
       id: "framework-subhead",
@@ -150,6 +162,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: APPLICATION",
       title: "Homepage,\nEmail, Landing.",
+      pressing: { mark: { n: "04", name: "Homepage" } },
     },
     {
       id: "application-subhead",
@@ -193,6 +206,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "Names Before\nTemplates.",
+      pressing: { mark: { n: "05", name: "Names Before" } },
     },
     {
       id: "closing-subhead",

@@ -17,6 +17,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
   stack: ["Illustrator", "Photoshop", "InDesign"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO CAROUSEL ──
     // Auto-cycles through the three collection mockups. Tells the brand's range
@@ -45,6 +46,20 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#1F4D78", "#D87A82", "#8E3F40", "#1F2434", "#ECE6D5"],
+        images: [
+          "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-geometric-linework-circle-blue-cream-pattern-hero-mark.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-geometric-diamond-blue-cream-accent-mark.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-halftone-dot-circle-mark.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-diamond-cross-pattern-mark.jpg",
+        ],
+      },
       title: "Amber Shockey\n& Co.",
       subtitle:
         "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
@@ -71,6 +86,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: BLUE FLORALS",
       title: "Peonies and\nGeometry.",
+      pressing: { mark: { n: "02", name: "Peonies and" } },
     },
     {
       id: "blue-subhead",
@@ -121,6 +137,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: BLACK LINEWORK",
       title: "Linework\nand Dots.",
+      pressing: { mark: { n: "03", name: "Linework" } },
     },
     {
       id: "black-subhead",
@@ -171,6 +188,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: RED DRAGONS",
       title: "Dragons\nand Florals.",
+      pressing: { mark: { n: "04", name: "Dragons" } },
     },
     {
       id: "red-subhead",
@@ -285,6 +303,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "The Set Builds Itself.",
+      pressing: { mark: { n: "05", name: "The Set Builds Itself" } },
     },
     {
       id: "closing-subhead",

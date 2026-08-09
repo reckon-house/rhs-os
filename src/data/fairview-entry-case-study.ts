@@ -17,6 +17,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Material specification"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,16 @@ export const fairviewEntryCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 4 frames",
+        colors: ["#E7DFD2", "#1F1E1B", "#A87A45", "#C0A47C", "#4B4A52"],
+        images: [
+          "/case-studies/fairview-entry/3.webp",
+          "/case-studies/fairview-entry/6.webp",
+          "/case-studies/fairview-entry/7.webp",
+          "/case-studies/fairview-entry/hero5.webp",
+        ],
+      },
       title: "The Fairview\nEntry.",
       subtitle:
         "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
@@ -56,6 +67,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: LIGHT",
       title: "The Whole Room\nServes the Light.",
+      pressing: { mark: { n: "02", name: "The Whole Room" } },
     },
     {
       id: "light-subhead",
@@ -110,6 +122,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: PIECES",
       title: "Found Pieces\nThat Tell Stories.",
+      pressing: { mark: { n: "03", name: "Found Pieces" } },
     },
     {
       id: "pieces-subhead",
@@ -240,6 +253,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Threshold\nThat Does the Work.",
+      pressing: { mark: { n: "04", name: "A Threshold" } },
     },
     {
       id: "closing-subhead",

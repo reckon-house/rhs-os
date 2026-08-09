@@ -17,6 +17,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
   stack: ["Illustrator", "Photoshop", "InDesign"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,20 @@ export const hillCountryOakCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#ECE2C5", "#ECC265", "#DA8849", "#D45E3D", "#3B2F1F"],
+        images: [
+          "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-wordmark-yellow-on-orange-color-block.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-tree-silhouette-orange-sun-mid-century-composition.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-typography-oak-barrels-master-craft-heritage-whiskey-orange-cream-tagline.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-iphone-mockup-poster-tree-color-blocks-held-against-sky.jpg",
+          "/case-studies/hill-country-oak/hill-country-oakworks-cowboy-hat-man-branded-shirt-portrait.jpg",
+        ],
+      },
       title: "Hill Country\nOakworks.",
       subtitle:
         "Campaign for a Texas barrel maker. Sun-washed color, heritage silhouette, land and craft.",
@@ -58,6 +73,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
       title: "Mid-Century Posters\nMeet Workshop Type.",
+      pressing: { mark: { n: "02", name: "Mid-Century Posters" } },
     },
     {
       id: "lang-subhead",
@@ -131,6 +147,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: APPLICATION",
       title: "One System Sized for\nBillboard to Phone Screen.",
+      pressing: { mark: { n: "03", name: "One System Sized for" } },
     },
     {
       id: "app-subhead",
@@ -221,6 +238,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "Heritage Without\nthe Cosplay.",
+      pressing: { mark: { n: "04", name: "Heritage Without" } },
     },
     {
       id: "closing-subhead",

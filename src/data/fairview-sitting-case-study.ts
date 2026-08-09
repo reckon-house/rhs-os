@@ -17,6 +17,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Material specification"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,20 @@ export const fairviewSittingCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#B4ACA0", "#3F3E37", "#A87A45", "#A67E55", "#ECE6D5"],
+        images: [
+          "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-black-box-beams-stone-fireplace-pampas-grass-architectural-wide.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg",
+          "/case-studies/fairview-sitting/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg",
+        ],
+      },
       title: "The Fairview\nSitting Room.",
       subtitle:
         "Stacked stone, velvet swivels, antiqued brass. A room built for conversation, a drink, and a fire.",
@@ -56,6 +71,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: TEXTURE",
       title: "Stone, Velvet,\nBrass, Oak.",
+      pressing: { mark: { n: "02", name: "Stone, Velvet" } },
     },
     {
       id: "texture-subhead",
@@ -116,6 +132,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
       title: "A Grouping Built\nAround the Fire.",
+      pressing: { mark: { n: "03", name: "A Grouping Built" } },
     },
     {
       id: "conversation-subhead",
@@ -236,6 +253,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Room Built\nfor the Hour.",
+      pressing: { mark: { n: "04", name: "A Room Built" } },
     },
     {
       id: "closing-subhead",

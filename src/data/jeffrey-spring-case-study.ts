@@ -17,6 +17,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   stack: ["Photoshop", "InDesign", "Studio photography"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,18 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 6 frames",
+        colors: ["#F5F2EC", "#A8B8C8", "#E8C4B8", "#3E5A39", "#1A1A18"],
+        images: [
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg",
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg",
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg",
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg",
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg",
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-palm-frond-texture-detail.jpg",
+        ],
+      },
       title: "Jeffrey Spring\nCampaign.",
       subtitle:
         "High fashion on a studio budget. No location shoots. No heavy production. Foliage as architecture, not decoration.",
@@ -90,6 +103,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THREE STORIES",
       title: "One System Holding\nThree Designer Stories.",
+      pressing: { mark: { n: "02", name: "One System Holding" } },
     },
     {
       id: "stories-subhead",
@@ -237,6 +251,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: CLOSING",
       title: "A Campaign Built\nfor the Studio.",
+      pressing: { mark: { n: "03", name: "A Campaign Built" } },
     },
     {
       id: "closing-subhead",

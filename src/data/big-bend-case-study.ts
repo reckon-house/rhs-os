@@ -24,6 +24,7 @@ export const bigBendCaseStudy: CaseStudy = {
   stack: ["Camera"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO — a Chisos peak, full bleed (non-inline: animates 60px → 0) ──
     {
@@ -38,6 +39,20 @@ export const bigBendCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#9AA0A2", "#4D402C", "#645138", "#292B22", "#7F95A1"],
+        images: [
+          "/case-studies/big-bend/chisos-peak-cactus.jpg",
+          "/case-studies/big-bend/elena_wide.jpg",
+          "/case-studies/big-bend/hero2.jpg",
+          "/case-studies/big-bend/grid_plant.jpg",
+          "/case-studies/big-bend/chisos-range-panorama.jpg",
+          "/case-studies/big-bend/elena_grid.jpg",
+          "/case-studies/big-bend/mountain_crop.jpg",
+          "/case-studies/big-bend/square_mountain.jpg",
+        ],
+      },
       title: "West Texas",
       subtitle:
         "Photographs from Big Bend and the desert around Marfa. Personal work that later fed the Capitan Boot Co. campaign.",
@@ -178,6 +193,7 @@ export const bigBendCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: PRADA MARFA",
       title: "The Store on\nHighway 90.",
+      pressing: { mark: { n: "02", name: "The Store on" } },
     },
     {
       id: "prada-text",

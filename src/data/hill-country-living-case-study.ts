@@ -27,6 +27,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Material specification"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -40,6 +41,20 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#E5DDC9", "#9B6F47", "#8B4F32", "#4A4540", "#A87A45"],
+        images: [
+          "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+          "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+          "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg",
+          "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg",
+          "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg",
+          "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg",
+          "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg",
+          "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg",
+        ],
+      },
       title: "Hill Country Residence\nLivingroom.",
       subtitle:
         "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new. Considered, not curated.",
@@ -71,6 +86,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: MATERIAL",
       title: "Stone, Pine,\nBrass, Leather.",
+      pressing: { mark: { n: "02", name: "Stone, Pine" } },
     },
     {
       id: "material-subhead",
@@ -132,6 +148,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: COLLECTED",
       title: "Considered,\nNot Curated.",
+      pressing: { mark: { n: "03", name: "Considered" } },
     },
     {
       id: "collected-subhead",
@@ -275,6 +292,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Room You\nLive In.",
+      pressing: { mark: { n: "04", name: "A Room You" } },
     },
     {
       id: "closing-subhead",

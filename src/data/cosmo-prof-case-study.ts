@@ -17,6 +17,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
   stack: ["Figma", "Sketch", "Photoshop"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,18 @@ export const cosmoProfCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 6 frames",
+        colors: ["#F8F6F2", "#F4D9DC", "#DBC5C8", "#E5D6C9", "#000000"],
+        images: [
+          "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg",
+          "/case-studies/cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters.jpg",
+          "/case-studies/cosmo-prof/carousel/cosmo-prof-photography-shine-zero-lift-tubes-droplet-twin-macro.jpg",
+          "/case-studies/cosmo-prof/carousel/cosmo-prof-photography-framar-applicator-brushes-gold-pink-trio.jpg",
+          "/case-studies/cosmo-prof/carousel/cosmo-prof-photography-wella-shinefinity-product-tube-box-lineup.jpg",
+          "/case-studies/cosmo-prof/carousel/cosmo-prof-photography-hair-color-mask-application.jpg",
+        ],
+      },
       title: "Cosmo Prof.",
       subtitle:
         "Digital experience for a B2B salon retailer. Elevated photography, simplified navigation, and shoppable components built for working stylists.",
@@ -56,6 +69,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: PHOTOGRAPHY DIRECTION",
       title: "Photography That Stops\nLooking Like Inventory.",
+      pressing: { mark: { n: "02", name: "Photography That Stops" } },
     },
     {
       id: "photo-subhead",
@@ -118,6 +132,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
       title: "A Header That Gets Out\nof Its Own Way.",
+      pressing: { mark: { n: "03", name: "A Header That Gets Out" } },
     },
     {
       id: "home-subhead",
@@ -170,6 +185,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: MOBILE",
       title: "The Same System,\nResized for Pocket.",
+      pressing: { mark: { n: "04", name: "The Same System" } },
     },
     {
       id: "mobile-subhead",
@@ -260,6 +276,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "B2B That Reads\nLike Brand Work.",
+      pressing: { mark: { n: "05", name: "B2B That Reads" } },
     },
     {
       id: "closing-subhead",

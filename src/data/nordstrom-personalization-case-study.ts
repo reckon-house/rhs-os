@@ -25,6 +25,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
   stack: ["Nordstrom CMS", "Editorial Templates", "Asset Library"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -38,6 +39,20 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#DEDBDA", "#3E4412", "#C6C6CB", "#615D24", "#D7C572"],
+        images: [
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-womens-fashion-lifestyle-products-floral-print-pajamas-pink-sweater-red-dress-black-boots-accessories-shopping-interface.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-mens-fashion-essentials-sunglasses-sneakers-blazer-chinos-leather-accessories-ecommerce-lifestyle.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-black-leather-jacket-handbag-sunglasses-heels-white-studio-lifestyle-lookbook.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-mobile-app-interface-fashion-lookbook-handbag-blazer-white-background-product-display.jpg",
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-mobile-phone-fashion-shopping-app-interface-white-surface-daisies-outdoor-lifestyle.jpg",
+        ],
+      },
       title: "Nordstrom\nPersonalization\nSystem",
       subtitle:
         "Mass scale, individual feel. A content engine built on three shapes that adapt to user, season, and story.",
@@ -68,6 +83,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE SYSTEM",
       title: "Three Shapes Driving\nEvery Composition.",
+      pressing: { mark: { n: "02", name: "Three Shapes Driving" } },
     },
     {
       id: "system-text",
@@ -103,6 +119,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: ASSEMBLED",
       title: "One Engine Driving\nThree Different Audiences.",
+      pressing: { mark: { n: "03", name: "One Engine Driving" } },
     },
     {
       id: "assembled-text",
@@ -153,6 +170,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: ACROSS DEVICES",
       title: "The Same Composition\nLogic on a Phone.",
+      pressing: { mark: { n: "04", name: "The Same Composition" } },
     },
     {
       id: "devices-text",
@@ -195,6 +213,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: PRODUCT PHOTOGRAPHY",
       title: "Photography Built to\nDouble as Editorial.",
+      pressing: { mark: { n: "05", name: "Photography Built to" } },
     },
     {
       id: "products-text",
@@ -246,6 +265,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "Mass Scale That Still\nLooked Hand-Built.",
+      pressing: { mark: { n: "06", name: "Mass Scale That Still" } },
     },
     {
       id: "closing-text",

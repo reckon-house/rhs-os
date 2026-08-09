@@ -27,6 +27,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
   stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -40,6 +41,20 @@ export const hillCountryBathCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 8 frames",
+        colors: ["#959085", "#B0ACAD", "#8F8577", "#605C5B", "#A39D90"],
+        images: [
+          "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-detail-vase-botanicals-marble-sconce.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-detail-sink-bridge-faucet-veined-marble.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg",
+          "/case-studies/hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg",
+        ],
+      },
       title: "Hill Country\nPrimary Bath",
       subtitle:
         "Three marbles, two vanities, one freestanding tub under a wood plank ceiling. 400 square feet designed to feel found, not fitted.",
@@ -69,6 +84,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE VANITY",
       title: "An East-Facing Vanity\nDoing Its Own Lighting.",
+      pressing: { mark: { n: "02", name: "An East-Facing Vanity" } },
       group: { name: "vanity", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -132,6 +148,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE SHOWER",
       title: "The Marble Selection\nTook the Longest.",
+      pressing: { mark: { n: "03", name: "The Marble Selection" } },
     },
     {
       id: "shower-text",
@@ -192,6 +209,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
       title: "Objects Chosen by the\nPerson Who Lives Here.",
+      pressing: { mark: { n: "04", name: "Objects Chosen by the" } },
     },
     {
       id: "objects-text",
@@ -215,6 +233,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Quieter Room\nin the Same Family.",
+      pressing: { mark: { n: "05", name: "A Quieter Room" } },
     },
     {
       id: "closing-text",

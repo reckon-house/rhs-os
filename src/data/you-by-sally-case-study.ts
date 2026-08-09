@@ -17,6 +17,7 @@ export const youBySallyCaseStudy: CaseStudy = {
   stack: ["Photoshop", "Illustrator", "InDesign", "Studio photography"],
   links: [],
   heroImage: "",
+  style: "pressing",
   sections: [
     // ── HERO ──
     {
@@ -30,6 +31,16 @@ export const youBySallyCaseStudy: CaseStudy = {
     {
       id: "meta",
       type: "meta",
+      reel: {
+        caption: "Preview · 4 frames",
+        colors: ["#E91E63", "#00B8D4", "#141414", "#F5F2ED"],
+        images: [
+          "/case-studies/you-by-sally/hero.jpg",
+          "/case-studies/you-by-sally/bios.jpg",
+          "/case-studies/you-by-sally/hero2.jpg",
+          "/case-studies/you-by-sally/lockup.jpg",
+        ],
+      },
       title: "You By\nSally",
       subtitle:
         "A hair color brand campaign for Sally Beauty. Real cast, oversized swatches, and a system built to scale from influencer bio pages to retail signage without losing recognition.",
@@ -56,6 +67,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE CAST",
       title: "Real People,\nSignature Shades.",
+      pressing: { mark: { n: "02", name: "Real People" } },
     },
     {
       id: "cast-subhead",
@@ -108,6 +120,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: THE SWATCH SYSTEM",
       title: "Shade Exploration\nat Eye Level.",
+      pressing: { mark: { n: "03", name: "Shade Exploration" } },
     },
     {
       id: "swatch-subhead",
@@ -212,6 +225,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: CLOSING",
       title: "A Brand That Treats\nColor as a Choice.",
+      pressing: { mark: { n: "04", name: "A Brand That Treats" } },
     },
     {
       id: "closing-subhead",
