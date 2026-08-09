@@ -34,9 +34,14 @@ import styles from "./PressingViz.module.css";
  * rules, 8 technologies, 5 modules), placed at angles chosen to look
  * even and wired together by a CONNECTIONS array of literal index pairs.
  * None of that is measured, so none of it can be honestly placed on a
- * scale, and it does not survive here. Neither do the ~3,900 seeded
+ * scale, and it does not survive here. Neither do the 1,734 seeded
  * particles, the 90 random web lines, the two legends, or the ten-colour
  * palette — the study's colour lives in the reel.
+ * (1,734 counted from the classic's own arrays, not estimated: 898 from
+ * the 23 data nodes, 176 tech, 350 loop, 160 decisions, 90 modules, 60
+ * pipeline. An earlier draft said ~3,900, which was 2.25x over — a
+ * fabricated number inside a paragraph arguing against fabricated
+ * density.)
  *
  * No accent. This chart has no single datum to point at; the schematic
  * is the point, so it stays pure ink.

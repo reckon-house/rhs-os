@@ -18,9 +18,11 @@ import styles from "./PressingViz.module.css";
  * Verbatim from JeffreyFlagshipRadius: the eight surface names and
  * their asset counts, the six visual-system element names, and every
  * membership in the `elements` arrays. Nothing is sorted — the columns
- * stay in the authored order, which is the order a customer meets them
- * (homepage, designer, product, editorial, buying edit, email,
- * navigation, cart). Ranking them would be a different chart. The 358
+ * stay in the order the classic authored them. That order carries no
+ * stated meaning (it was angular position on a circle, `angle: 0…7`),
+ * so none is claimed here; an earlier draft of this comment called it
+ * "the order a customer meets them", which was invented and is not even
+ * true of the sequence. Ranking them would be a different chart. The 358
  * total is summed from the counts rather than restated, so it cannot
  * drift from them.
  *
@@ -35,8 +37,12 @@ import styles from "./PressingViz.module.css";
  *
  * No accent. The section argues that one kit reached every surface, not
  * that one surface matters most, so there is no single datum for the
- * press red to sit on. Modular Grid running the full width of the
- * element rows is the finding, and it is legible in plain ink.
+ * press red to sit on. An earlier draft justified that by claiming
+ * Modular Grid "runs the full width of the element rows" — it does not.
+ * It appears in seven of the eight surfaces; email campaigns is
+ * [0, 1, 2, 4] and has no 3, and the gap is visible in the drawing. The
+ * reason for no accent stands on its own without a headline that the
+ * data contradicts.
  */
 
 /** The six visual-system elements, verbatim, in authored order. */

@@ -19,7 +19,14 @@ import styles from "./PressingViz.module.css";
  * lowercase snake_case because that is the identifier — uppercasing it
  * would be a different string, not a styling choice.
  *
- * The one deviation from the exemplar's grammar, named out loud: the
+ * The deviation from the ASSIGNMENT, named out loud: VIZ-PASS.md asks
+ * for "servers and clients as lines, calls as dots". Every entity is
+ * drawn as a dot here and there are no call marks at all, because the
+ * study authors no call-volume data — drawing calls would be exactly
+ * the generated density the kit rules out. The shape is the assigned
+ * one; the thing it has no numbers for is simply absent.
+ *
+ * The deviation from the exemplar's grammar, also named out loud: the
  * spectrum alternates sides purely to keep labels apart, and here the
  * side is the datum. The two writes hang BELOW the spine, because
  * read-versus-write is the only distinction the classic legend spelled

@@ -74,11 +74,11 @@ than two studies portfolio-wide.
 | `material-overlap` | floor-and-decor | range bars (DONE — exemplar) | the one material in all three rooms |
 | `ai-heatmap` | sally | **square matrix**: competitors × categories, one filled square per signal | the row with the most signal |
 | `intelligence-flow` | sally | **season wheel**: the six pipeline stages as arc tracks around the hub | none — the schematic is the point |
-| `material-circos` | hill-country-kitchen | **season wheel**: zones as arc tracks, materials as rim segments | none |
+| `material-circos` | hill-country-kitchen | **season wheel**: the four FINISHES as arc tracks, the fifteen surfaces as rim segments (the build inverted the original assignment and argues why in its docblock — four tracks read, fifteen do not) | none |
 | `campaign-blast-radius` | ivy-park | **stepped mass**: channels ranked by reach, one silhouette | none — the step shape IS the argument |
 | `jeffrey-flagship-radius` | jeffrey-ecommerce | **ruled columns**: one rule per surface, a block at its value | none |
 | `editorial-treatments` | neiman-marcus | **ruled columns**: treatments ruled quiet → loud, block at each | none |
-| `mcp-architecture` | dsc | **drop-line field**: servers and clients as lines, calls as dots | none |
+| `mcp-architecture` | dsc | **drop-line field**: tools, checks, records and clients as dots on one spine. No call marks — the study authors no call volume, and inventing one is the density this kit exists to refuse | none |
 | `kitchen-palette` | hill-country-kitchen | swatch ledger, NOT a chart — colour is the datum, so colour stays; see PressingSystemIndex's swatch row | — |
 | `color-permutations` | j-christianson | swatch ledger, same reasoning | — |
 | `pattern-matrix` | black-white-type | keep as artwork — the patterns ARE the content; reframe on paper only | — |

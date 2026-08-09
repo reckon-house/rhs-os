@@ -36,8 +36,11 @@ import styles from "./PressingViz.module.css";
  * measurement), the 300 inner particles, the sub-bar texture on tracks 1
  * through 4 whose heights were also random, the four finish hexes and
  * the legend that decoded them (one ink needs no decoding, and the
- * palette lives in the reel), and the RNG itself, whose float strings
- * cost the classic version a hydration mismatch on every load.
+ * palette lives in the reel), and the RNG, which is gone because the
+ * density it generated was decoration, not because it was unsafe: its
+ * Lehmer LCG runs on integers below 2^53, so it is bit-identical in
+ * Node and Chrome. An earlier draft of this comment blamed it for a
+ * hydration mismatch, which was not true of this component.
  *
  * No accent. There is no single surface or finish this chart exists to
  * point at — the argument is the interlock, and the interlock is the
@@ -158,7 +161,12 @@ export function PressingMaterialWheel() {
           viewBox={`0 0 ${W} ${W}`}
           width="100%"
           role="img"
-          aria-label="The kitchen's four finishes as concentric tracks around fifteen surfaces, each surface a rim segment sized by how much of the room it covers; a track runs solid where that finish is used and hairline where it is not"
+          /* "sized by how much of the room it covers" was a measurement
+             claim nobody made. The classic annotates the field as
+             `weight: number; // relative arc size` — a drawing
+             parameter — and the study never quantifies coverage. The
+             label now says what the segment IS, not what it proves. */
+          aria-label="The kitchen's four finishes as concentric tracks around fifteen surfaces, each surface a rim segment at its authored relative arc size; a track runs solid where that finish is used and hairline where it is not"
         >
           <defs>
             {SEGS.map((s) => (

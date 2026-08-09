@@ -141,7 +141,13 @@ export function PressingEditorialRange() {
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
           role="img"
-          aria-label="Twenty InSite stories ruled from restrained to theatrical typography, each carrying a block at its colour saturation, showing that saturation does not follow typographic intensity"
+          /* Describes what is drawn and stops. The first version ended
+             "...showing that saturation does not follow typographic
+             intensity" — a finding nobody authored, and one the study's
+             own copy does not support, delivered to screen readers as
+             fact. The classic captioned the same data neutrally: "20
+             stories · 5 categories · typographic vs color intensity". */
+          aria-label="Twenty InSite stories ruled from restrained to theatrical typography, each carrying a block at its colour saturation. Five categories."
         >
           {/* The fixed grid: one full-height hairline per story. */}
           {ORDER.map((s, i) => (
