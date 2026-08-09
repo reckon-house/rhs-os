@@ -15,6 +15,7 @@ import { PressingVizFrame } from "./PressingVizFrame";
 import { PressingSystemIndex } from "./PressingSystemIndex";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
+import { PressingSpectrum } from "./viz/PressingSpectrum";
 import dynamic from "next/dynamic";
 
 const PressingLiveApp = dynamic(
@@ -74,7 +75,6 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "app-showcase",
   "brand",
   "brand-system-volume",
-  "cabin-midcentury-spectrum",
   "campaign-blast-radius",
   "color-field-map",
   "color-palette",
@@ -440,6 +440,16 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           mark={p?.mark}
           caption={p?.captions?.[0]}
         />
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "cabin-midcentury-spectrum") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSpectrum />
+        </PressingVizFrame>
       );
       i += 1;
       continue;
