@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * MaterialOverlap — Dense particle-cluster diagram showing the material
@@ -121,7 +122,7 @@ export function MaterialOverlap() {
 
         // Opacity varies — closer to the anchor tends to be slightly more
         // opaque, but with enough randomness to avoid an obvious gradient.
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = px(Math.sqrt(dx * dx + dy * dy));
         const distanceFalloff = Math.max(0, 1 - distance / (m.clusterRadiusX * 1.4));
         const opacity = 0.12 + rng() * 0.45 + distanceFalloff * 0.15;
 

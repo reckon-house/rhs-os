@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { CoverageChartSection } from "@/lib/types";
+import { px } from "@/lib/px";
 
 /* ── Deterministic RNG ── */
 function makeRng(seed: number) {
@@ -248,7 +249,7 @@ export function CoverageChart({
 
           {/* Grid lines in accumulation zone */}
           {valueTicks.map((t, i) => (
-            <line key={`ag-${i}`}
+            <line key={`ag-${px(i)}`}
               x1={t.x} y1={ACCUM_Y} x2={t.x} y2={ACCUM_Y + ACCUM_H}
               stroke="#141414" strokeWidth={0.3} opacity={0.03} />
           ))}
@@ -319,7 +320,7 @@ export function CoverageChart({
 
           {/* Accumulation scale labels */}
           {[0, 0.25, 0.5, 0.75, 1].map((pct, i) => (
-            <text key={`as-${i}`}
+            <text key={`as-${px(i)}`}
               x={ML - 2} y={ACCUM_Y + ACCUM_H - pct * ACCUM_H + 3}
               fill="#141414" fontSize={8} opacity={0.4}
               textAnchor="end">
@@ -345,7 +346,7 @@ export function CoverageChart({
 
           {/* Category column headers */}
           {categorySegments.map((seg, i) => (
-            <text key={`ch-${i}`}
+            <text key={`ch-${px(i)}`}
               x={seg.x + seg.w / 2} y={BAR_Y - 14}
               fill="#141414" fontSize={8} opacity={0.5}
               textAnchor="middle"
@@ -357,7 +358,7 @@ export function CoverageChart({
           {/* Column grid lines through both bars */}
           {categorySegments.map((seg, i) => (
             i > 0 && (
-              <line key={`cg-${i}`}
+              <line key={`cg-${px(i)}`}
                 x1={seg.x - SEG_GAP / 2} y1={BAR_Y - 10}
                 x2={seg.x - SEG_GAP / 2} y2={BAR_Y + BAR_H * 2 + BAR_GAP + 4}
                 stroke="#141414" strokeWidth={0.3} opacity={0.04} />
@@ -366,16 +367,16 @@ export function CoverageChart({
 
           {/* Asset bar — segmented by category */}
           {categorySegments.map((seg, i) => (
-            <g key={`ab-${i}`}>
+            <g key={`ab-${px(i)}`}>
               <rect x={seg.x} y={BAR_Y} width={seg.w} height={BAR_H}
                 rx={3} fill={seg.color} opacity={0.35} />
               {/* Wave texture inside each segment */}
-              <clipPath id={`ac-${i}`}>
+              <clipPath id={`ac-${px(i)}`}>
                 <rect x={seg.x} y={BAR_Y} width={seg.w} height={BAR_H} rx={3} />
               </clipPath>
               <g clipPath={`url(#ac-${i})`}>
                 {Array.from({ length: 6 }).map((_, j) => (
-                  <path key={`aw-${i}-${j}`}
+                  <path key={`aw-${px(i)}-${px(j)}`}
                     d={wavePath(seg.x, seg.w, BAR_Y + (BAR_H / 7) * (j + 1), 3.7 + i * 1.3 + j * 0.5, 2)}
                     fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={0.5} />
                 ))}
@@ -461,7 +462,7 @@ export function CoverageChart({
 
           {/* Category dots */}
           {categoryDots.map((d, i) => (
-            <circle key={`cd-${i}`}
+            <circle key={`cd-${px(i)}`}
               cx={d.x} cy={d.y} r={d.r}
               fill={d.color}
              
@@ -470,7 +471,7 @@ export function CoverageChart({
 
           {/* Category stream lines */}
           {categoryStreams.map((s, i) => (
-            <g key={`cs-${i}`}>
+            <g key={`cs-${px(i)}`}>
               <path
                 d={wavePath(ML, CW, s.baseY, 2 + i * 1.3, 1.5)}
                 fill="none" stroke={s.cat.color} strokeWidth={0.6}

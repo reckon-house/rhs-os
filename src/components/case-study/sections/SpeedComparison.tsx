@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { SpeedComparisonSection } from "@/lib/types";
+import { px as rnd } from "@/lib/px"; // local `px` here is a cursor, not a rounder
 
 // ── Seeded random ───────────────────────────────────────────────
 function seededRandom(seed: number) {
@@ -67,12 +68,12 @@ function genWave(seed: number, pts: number, amp: number): number[] {
 
 function wavePath(pts: number[], xStart: number, xEnd: number, yBase: number): string {
   const step = (xEnd - xStart) / (pts.length - 1);
-  let d = `M${xStart},${yBase + pts[0]}`;
+  let d = `M${rnd(xStart)},${rnd(yBase + pts[0])}`;
   for (let i = 1; i < pts.length; i++) {
     const x = xStart + i * step;
     const y = yBase + pts[i];
     const cpx = x - step * 0.5;
-    d += ` C${cpx},${yBase + pts[i - 1]} ${cpx},${y} ${x},${y}`;
+    d += ` C${rnd(cpx)},${rnd(yBase + pts[i - 1])} ${rnd(cpx)},${rnd(y)} ${rnd(x)},${rnd(y)}`;
   }
   return d;
 }
@@ -152,7 +153,7 @@ export function SpeedComparison({ title }: SpeedComparisonSection) {
       const ex = ML + rng() * CW * 0.05;
       const ey = scatterY + scatterH * 0.6 + rng() * scatterH * 0.35;
       const cpx = ML + CW * 0.04;
-      streams.push(`M${sx},${sy} C${cpx},${sy} ${cpx},${ey} ${ex},${ey}`);
+      streams.push(`M${rnd(sx)},${rnd(sy)} C${rnd(cpx)},${rnd(sy)} ${rnd(cpx)},${rnd(ey)} ${rnd(ex)},${rnd(ey)}`);
     }
 
     return { statsY, phaseBlocks, waterfallY, waterfallH, viewStrips, stripY, stripH, stripGap, scatterDots, scatterY, scatterH, streams };

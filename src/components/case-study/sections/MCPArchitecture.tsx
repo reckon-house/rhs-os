@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 // ── Seeded random for deterministic particle generation ──────────
 function seededRandom(seed: number) {
@@ -188,7 +189,7 @@ export function MCPArchitecture() {
 
           {/* ambient dust field */}
           {ambient.map((p, i) => (
-            <circle key={`am${i}`} cx={p.x} cy={p.y} r={p.r} fill={p.color} opacity={p.opacity} />
+            <circle key={`am${px(i)}`} cx={p.x} cy={p.y} r={p.r} fill={p.color} opacity={p.opacity} />
           ))}
 
           {/* particles (data clusters) */}
@@ -267,7 +268,7 @@ export function MCPArchitecture() {
             const p = polar(CX, CY, R_CHECK, angle);
             const line = polar(CX, CY, 70, angle);
             return (
-              <g key={`c${i}`}>
+              <g key={`c${px(i)}`}>
                 <line x1={p.x} y1={p.y} x2={line.x} y2={line.y} stroke={STEEL_D} strokeWidth={1} opacity={0.5} />
                 <circle cx={p.x} cy={p.y} r={4.5} fill={STEEL_D} opacity={0.9} />
                 <text x={p.x} y={p.y - 9} textAnchor="middle" fill={INK} fontSize={10} fontWeight={500} opacity={0.62} letterSpacing={0.3}>
@@ -282,7 +283,7 @@ export function MCPArchitecture() {
             const p = polar(CX, CY, R_AI, ai.angle);
             const w = ai.label.length * 6.6 + 22;
             return (
-              <g key={`ai${i}`}>
+              <g key={`ai${px(i)}`}>
                 <rect x={p.x - w / 2} y={p.y - 11} width={w} height={22} rx={11} fill="#FFFFFF" filter="url(#chipShadow)" />
                 <text x={p.x} y={p.y + 3.5} textAnchor="middle" fill={INK} fontSize={11} fontWeight={600} letterSpacing={0.3}>
                   {ai.label}

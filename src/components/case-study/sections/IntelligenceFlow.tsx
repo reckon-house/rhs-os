@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { IntelligenceFlowSection } from "@/lib/types";
+import { px } from "@/lib/px";
 
 // ── Seeded random ──────────────────────────────────────────────
 function seededRandom(seed: number) {
@@ -354,8 +355,8 @@ export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
             const to = polar(CX, CY, R1 + 32, pipe.angle);
             const ctrl = polar(CX, CY, (R1 + R2) * 0.38, (tech.angle + pipe.angle) / 2);
             return (
-              <path key={`conn-${i}`}
-                d={`M${from.x},${from.y} Q${ctrl.x},${ctrl.y} ${to.x},${to.y}`}
+              <path key={`conn-${px(i)}`}
+                d={`M${px(from.x)},${px(from.y)} Q${px(ctrl.x)},${px(ctrl.y)} ${px(to.x)},${px(to.y)}`}
                 fill="none" stroke={tech.color}
                 strokeWidth={0.9} opacity={0.18}
               />
@@ -395,9 +396,9 @@ export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
             const n = ((mod.angle % 360) + 360) % 360;
             const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
             return (
-              <g key={`mod-${i}`}>
+              <g key={`mod-${px(i)}`}>
                 <path
-                  d={`M${arcStart.x},${arcStart.y} A${R5},${R5} 0 0,1 ${arcEnd.x},${arcEnd.y}`}
+                  d={`M${px(arcStart.x)},${px(arcStart.y)} A${px(R5)},${px(R5)} 0 0,1 ${px(arcEnd.x)},${px(arcEnd.y)}`}
                   fill="none" stroke={mod.color}
                   strokeWidth={14} opacity={0.25}
                   strokeLinecap="round"
@@ -423,7 +424,7 @@ export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
             const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
             const labelPos = polar(CX, CY, R4 + 16, decision.angle);
             return (
-              <g key={`ai-${i}`}>
+              <g key={`ai-${px(i)}`}>
                 <circle cx={pos.x} cy={pos.y} r={12} fill={decision.color} opacity={0.05} />
                 <circle cx={pos.x} cy={pos.y} r={7} fill={decision.color} opacity={0.1} />
                 <circle cx={pos.x} cy={pos.y} r={3.5} fill={decision.color} opacity={0.5} />
@@ -491,7 +492,7 @@ export function IntelligenceFlow({ stages }: IntelligenceFlowSection) {
               <g key={`pipe-${i}`}>
                 {i < 5 && (
                   <path
-                    d={`M${a1.x},${a1.y} A${R1},${R1} 0 0,1 ${a2.x},${a2.y}`}
+                    d={`M${px(a1.x)},${px(a1.y)} A${px(R1)},${px(R1)} 0 0,1 ${px(a2.x)},${px(a2.y)}`}
                     fill="none" stroke="#141414"
                     strokeWidth={0.6} opacity={0.08}
                     strokeDasharray="2,4"

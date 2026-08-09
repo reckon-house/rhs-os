@@ -1,6 +1,7 @@
 "use client";
 
 import type { AIHeatmapSection } from "@/lib/types";
+import { px } from "@/lib/px";
 
 // Deterministic pseudo-random from seed
 function seededRandom(seed: number) {
@@ -53,8 +54,8 @@ function generateCluster(
     const t = i / count;
     const angle = rng() * Math.PI * 2;
     const dist = rng() * spreadFactor * Math.min(w, h) * (0.3 + value * 0.7);
-    const cx = x + w / 2 + Math.cos(angle) * dist + (rng() - 0.5) * w * 0.2;
-    const cy = y + h / 2 + Math.sin(angle) * dist + (rng() - 0.5) * h * 0.2;
+    const cx = px(x + w / 2 + Math.cos(angle) * dist + (rng() - 0.5) * w * 0.2);
+    const cy = px(y + h / 2 + Math.sin(angle) * dist + (rng() - 0.5) * h * 0.2);
 
     // Larger circles with more size variance — some really big, some tiny
     const baseR = 4 + value * 24;
@@ -177,7 +178,7 @@ export function AIHeatmap({
                     <g key={ci}>
                       {/* Clip only low-value cells; high values bleed freely */}
                       {!shouldBleed && (
-                        <clipPath id={`cell-${ri}-${ci}`}>
+                        <clipPath id={`cell-${px(ri)}-${px(ci)}`}>
                           <rect x={x} y={rowY} width={cellW} height={cellH} rx={12} />
                         </clipPath>
                       )}

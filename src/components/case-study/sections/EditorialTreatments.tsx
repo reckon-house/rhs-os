@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * EditorialTreatments — Scatter map plotting every InSite story
@@ -134,7 +135,7 @@ export function EditorialTreatments() {
       catStories.forEach((s) => {
         els.push(
           <line
-            key={`link-${idx++}`}
+            key={`link-${px(idx++)}`}
             x1={cx} y1={cy}
             x2={toX(s.typeIntensity)} y2={toY(s.colorSaturation)}
             stroke={CATEGORIES[cat as Category].color}
@@ -160,8 +161,8 @@ export function EditorialTreatments() {
         els.push(
           <circle
             key={`particle-${si}-${k}`}
-            cx={cx + Math.cos(angle) * offset}
-            cy={cy + Math.sin(angle) * offset}
+            cx={px(cx + Math.cos(angle) * offset)}
+            cy={px(cy + Math.sin(angle) * offset)}
             r={0.5 + rng() * 1.5}
             fill={color}
             fillOpacity={0.15 + rng() * 0.15}
@@ -178,7 +179,7 @@ export function EditorialTreatments() {
 
       // Halo
       els.push(
-        <circle key={`halo-${si}`} cx={cx} cy={cy} r={10} fill={color} fillOpacity={0.12} />
+        <circle key={`halo-${px(si)}`} cx={cx} cy={cy} r={10} fill={color} fillOpacity={0.12} />
       );
       // Main dot
       els.push(
@@ -190,7 +191,7 @@ export function EditorialTreatments() {
       const labelAnchor = s.typeIntensity > 0.7 ? "end" : "start";
       els.push(
         <text
-          key={`label-${si}`}
+          key={`label-${px(si)}`}
           x={cx + labelDx}
           y={cy + 3}
           textAnchor={labelAnchor}
@@ -210,7 +211,7 @@ export function EditorialTreatments() {
     const legend: React.ReactNode[] = [];
     Object.entries(CATEGORIES).forEach(([cat, info], i) => {
       legend.push(
-        <g key={`leg-${i}`}>
+        <g key={`leg-${px(i)}`}>
           <circle cx={20} cy={PAD_T + 10 + i * 16} r={4} fill={info.color} fillOpacity={0.8} />
           <text
             x={30}

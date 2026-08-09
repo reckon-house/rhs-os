@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { StatsBarSection } from "@/lib/types";
+import { px } from "@/lib/px";
 
 // ── Seeded random ───────────────────────────────────────────────
 function seededRandom(seed: number) {
@@ -77,7 +78,7 @@ function areaPath(curve: number[], x0: number, x1: number, base: number): string
     const x = x0 + (i / (curve.length - 1)) * w;
     return `${x.toFixed(1)},${(base - v).toFixed(1)}`;
   });
-  return `M${x0},${base} L${pts.join(" L")} L${x1},${base} Z`;
+  return `M${px(x0)},${px(base)} L${pts.join(" L")} L${px(x1)},${px(base)} Z`;
 }
 
 function linePath(curve: number[], x0: number, x1: number, base: number): string {
@@ -140,7 +141,7 @@ export function StatsBar({ items }: StatsBarSection) {
       const y2 = CHART_Y + 40 + (ci2 / (N - 1)) * (CHART_H - 80);
       const mx = (x1 + x2) / 2 + (r() - 0.5) * 100;
       result.push({
-        d: `M${x1},${y1} Q${mx},${(y1 + y2) / 2} ${x2},${y2}`,
+        d: `M${px(x1)},${px(y1)} Q${px(mx)},${px((y1 + y2) / 2)} ${px(x2)},${px(y2)}`,
         color: CATEGORIES[ci1].color,
         opacity: 0.03 + r() * 0.05,
       });
@@ -152,7 +153,7 @@ export function StatsBar({ items }: StatsBarSection) {
       const ci = Math.floor(r() * N);
       const y2 = CHART_Y + 20 + r() * 80;
       result.push({
-        d: `M${x1},${HEADER_H} C${x1},${HEADER_H + 8} ${x2},${y2 - 8} ${x2},${y2}`,
+        d: `M${px(x1)},${px(HEADER_H)} C${px(x1)},${px(HEADER_H + 8)} ${px(x2)},${px(y2 - 8)} ${px(x2)},${px(y2)}`,
         color: CATEGORIES[ci].color,
         opacity: 0.02 + r() * 0.04,
       });
@@ -209,7 +210,7 @@ export function StatsBar({ items }: StatsBarSection) {
           {/* ═══ LAYER 0: Background grid ═══ */}
           {Array.from({ length: 25 }).map((_, i) => (
             <line
-              key={`vg${i}`}
+              key={`vg${px(i)}`}
               x1={ML + (i / 24) * CW} y1={0}
               x2={ML + (i / 24) * CW} y2={TOTAL_H}
               stroke="#141414" strokeWidth={0.3}
@@ -218,7 +219,7 @@ export function StatsBar({ items }: StatsBarSection) {
           ))}
           {Array.from({ length: 18 }).map((_, i) => (
             <line
-              key={`hg${i}`}
+              key={`hg${px(i)}`}
               x1={ML - 20} y1={(i / 17) * TOTAL_H}
               x2={W - MR + 20} y2={(i / 17) * TOTAL_H}
               stroke="#141414" strokeWidth={0.3} opacity={0.025}
@@ -255,7 +256,7 @@ export function StatsBar({ items }: StatsBarSection) {
 
           {/* ═══ LAYER 1: Room heatmap bands (background color columns) ═══ */}
           {heatCols.map((col, ri) => (
-            <g key={`hcol-${ri}`}>
+            <g key={`hcol-${px(ri)}`}>
               {/* Room column label at top */}
               <text x={col.x + col.w / 2} y={CHART_Y + 8} fill="#141414"
                 fontSize={8} opacity={0.4} textAnchor="middle" letterSpacing={0.5}>
@@ -267,7 +268,7 @@ export function StatsBar({ items }: StatsBarSection) {
                 const rectH = bandH * 0.7;
                 return (
                   <rect
-                    key={`hr-${ri}-${ci}`}
+                    key={`hr-${px(ri)}-${px(ci)}`}
                     x={col.x + 2}
                     y={cell.baseline - rectH / 2}
                     width={col.w - 4}
@@ -353,7 +354,7 @@ export function StatsBar({ items }: StatsBarSection) {
           {CATEGORIES.map((cat, i) => {
             const baseline = CHART_Y + 40 + (i / (N - 1)) * (CHART_H - 80);
             return (
-              <g key={`lbl-${i}`}>
+              <g key={`lbl-${px(i)}`}>
                 <text x={8} y={baseline - 3} fill="#141414"
                   fontSize={9} fontWeight={600} opacity={0.65}>
                   {cat.label}
@@ -394,7 +395,7 @@ export function StatsBar({ items }: StatsBarSection) {
           {["Capture", "Classify", "Validate", "Value", "Archive", "Monitor"].map((label, i) => {
             const x = ML + (i / 5) * CW;
             return (
-              <g key={`ax-${i}`}>
+              <g key={`ax-${px(i)}`}>
                 <line x1={x} y1={TOTAL_H - 14} x2={x} y2={TOTAL_H - 6}
                   stroke="#141414" strokeWidth={0.4} opacity={0.1} />
                 <text x={x} y={TOTAL_H} fill="#141414"

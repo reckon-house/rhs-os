@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { DevTimelineSection } from "@/lib/types";
+import { px } from "@/lib/px";
 
 // ── Seeded random ───────────────────────────────────────────────
 function seededRandom(seed: number) {
@@ -228,7 +229,7 @@ export function DevTimeline({ label, duration }: DevTimelineSection) {
       const x1 = weekToX(week);
       const x2 = x1 + (rng() - 0.5) * 60;
       result.push({
-        d: `M${x1},${COMMIT_Y + COMMIT_H} C${x1},${COMMIT_Y + COMMIT_H + 10} ${x2},${TECH_Y - 10} ${x2},${TECH_Y}`,
+        d: `M${px(x1)},${px(COMMIT_Y + COMMIT_H)} C${px(x1)},${px(COMMIT_Y + COMMIT_H + 10)} ${px(x2)},${px(TECH_Y - 10)} ${px(x2)},${px(TECH_Y)}`,
         color: PHASES[phaseIdx].color,
         opacity: 0.03 + rng() * 0.04,
       });
@@ -240,7 +241,7 @@ export function DevTimeline({ label, duration }: DevTimelineSection) {
       const x1 = weekToX(week);
       const x2 = x1 + (rng() - 0.5) * 40;
       result.push({
-        d: `M${x1},${TECH_Y + TECH_H} C${x1},${TECH_Y + TECH_H + 8} ${x2},${FEATURE_Y - 8} ${x2},${FEATURE_Y + FEATURE_H * 0.5}`,
+        d: `M${px(x1)},${px(TECH_Y + TECH_H)} C${px(x1)},${px(TECH_Y + TECH_H + 8)} ${px(x2)},${px(FEATURE_Y - 8)} ${px(x2)},${px(FEATURE_Y + FEATURE_H * 0.5)}`,
         color: PHASES[phaseIdx].color,
         opacity: 0.02 + rng() * 0.04,
       });
@@ -322,14 +323,14 @@ export function DevTimeline({ label, duration }: DevTimelineSection) {
           </text>
           {/* Density ticks */}
           {commitTicks.map((t, i) => (
-            <line key={`ct-${i}`}
+            <line key={`ct-${px(i)}`}
               x1={t.x} y1={COMMIT_Y + COMMIT_H}
               x2={t.x} y2={COMMIT_Y + COMMIT_H - t.h}
               stroke={t.color} strokeWidth={0.5} opacity={t.opacity} />
           ))}
           {/* Scatter dots */}
           {commits.map((c, i) => (
-            <circle key={`cm-${i}`}
+            <circle key={`cm-${px(i)}`}
               cx={c.x} cy={c.y} r={c.size}
               fill={c.color} opacity={c.opacity} />
           ))}
@@ -411,7 +412,7 @@ export function DevTimeline({ label, duration }: DevTimelineSection) {
             const pct = completed / MILESTONES.length;
             const y = FEATURE_Y + FEATURE_H - pct * FEATURE_H;
             return (
-              <g key={`ms-${i}`}>
+              <g key={`ms-${px(i)}`}>
                 <circle cx={x} cy={y} r={2} fill="#6B8060" opacity={0.5} />
                 <line x1={x} y1={y} x2={x} y2={FEATURE_Y + FEATURE_H}
                   stroke="#6B8060" strokeWidth={0.3} opacity={0.12} />
@@ -460,9 +461,9 @@ export function DevTimeline({ label, duration }: DevTimelineSection) {
               const y = LOC_Y + LOC_H - v;
               return `${x.toFixed(1)},${y.toFixed(1)}`;
             });
-            const areaPath = `M${ML},${LOC_Y + LOC_H} L${pts.join(" L")} L${ML + CW},${LOC_Y + LOC_H} Z`;
+            const areaPath = `M${px(ML)},${px(LOC_Y + LOC_H)} L${pts.join(" L")} L${px(ML + CW)},${px(LOC_Y + LOC_H)} Z`;
             return (
-              <g key={`loc-${li}`}>
+              <g key={`loc-${px(li)}`}>
                 <path d={areaPath} fill={lc.color} opacity={0.08} />
                 <polyline points={pts.join(" ")} fill="none"
                   stroke={lc.color} strokeWidth={0.8} opacity={0.35} />

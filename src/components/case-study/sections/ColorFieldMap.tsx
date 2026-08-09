@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 function seededRandom(seed: number) {
   let s = seed;
@@ -114,7 +115,7 @@ export function ColorFieldMap() {
       for (let j = i + 1; j < Math.min(i + 8, dots.length); j++) {
         const dx = dots[i].x - dots[j].x;
         const dy = dots[i].y - dots[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = px(Math.sqrt(dx * dx + dy * dy));
         if (dist < 60 && rng() > 0.6) {
           lines.push({
             x1: dots[i].x, y1: dots[i].y,
@@ -190,7 +191,7 @@ export function ColorFieldMap() {
 
           {/* Network lines */}
           {data.lines.map((line, i) => (
-            <line key={`l-${i}`}
+            <line key={`l-${px(i)}`}
               x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
               stroke={line.color} strokeWidth={0.4} opacity={line.opacity}
             />
@@ -216,7 +217,7 @@ export function ColorFieldMap() {
             return (
               <g key={`del-${i}`}>
                 <path
-                  d={`M${arcStart.x},${arcStart.y} A430,430 0 0,1 ${arcEnd.x},${arcEnd.y}`}
+                  d={`M${px(arcStart.x)},${px(arcStart.y)} A430,430 0 0,1 ${px(arcEnd.x)},${px(arcEnd.y)}`}
                   fill="none" stroke={COLORS[i * 2].hex}
                   strokeWidth={8} opacity={0.15} strokeLinecap="round"
                 />

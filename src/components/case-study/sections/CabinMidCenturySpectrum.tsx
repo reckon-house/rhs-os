@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * CabinMidCenturySpectrum — Horizontal spectrum chart showing where each
@@ -140,7 +141,7 @@ export function CabinMidCenturySpectrum() {
         const sizeRoll = rng();
         const r = 1 + Math.pow(sizeRoll, 2.5) * 12;
 
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distance = px(Math.sqrt(dx * dx + dy * dy));
         const distanceFalloff = Math.max(0, 1 - distance / (e.clusterRadiusX * 1.4));
         const opacity = 0.12 + rng() * 0.45 + distanceFalloff * 0.15;
 

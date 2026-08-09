@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 function seededRandom(seed: number) {
   let s = seed;
@@ -43,7 +44,7 @@ function generateGradientWave(seed: number, steps: number) {
   for (let i = 0; i < steps; i++) {
     const t = i / steps;
     // Smooth sine waves — calm, even
-    const base = 0.3 + Math.sin(t * Math.PI * 2) * 0.1 + Math.sin(t * Math.PI * 5) * 0.05;
+    const base = px(0.3 + Math.sin(t * Math.PI * 2) * 0.1 + Math.sin(t * Math.PI * 5) * 0.05);
     const noise = (rng() - 0.5) * 0.04;
     points.push(Math.max(0.05, Math.min(0.6, base + noise)));
   }
@@ -195,11 +196,11 @@ export function DoubleExposureAnatomy() {
           {/* Grid */}
           {Array.from({ length: 11 }).map((_, i) => {
             const x = leftGutter + (i / 10) * chartW;
-            return <line key={`vg-${i}`} x1={x} y1={topPad - 10} x2={x} y2={H - 40} stroke="#141414" strokeWidth={0.3} opacity={0.06} />;
+            return <line key={`vg-${px(i)}`} x1={x} y1={topPad - 10} x2={x} y2={H - 40} stroke="#141414" strokeWidth={0.3} opacity={0.06} />;
           })}
           {Array.from({ length: 20 }).map((_, i) => {
             const y = topPad + (i / 19) * (LAYERS.length * (bandH + bandGap) - bandGap);
-            return <line key={`hg-${i}`} x1={leftGutter} y1={y} x2={W - rightPad} y2={y} stroke="#141414" strokeWidth={0.2} opacity={0.04} />;
+            return <line key={`hg-${px(i)}`} x1={leftGutter} y1={y} x2={W - rightPad} y2={y} stroke="#141414" strokeWidth={0.2} opacity={0.04} />;
           })}
 
           {/* Flow lines between layers */}
@@ -256,7 +257,7 @@ export function DoubleExposureAnatomy() {
                     return `${x},${y}`;
                   });
                   const linePath = `M ${points.join(" L ")}`;
-                  const fillPath = `M ${leftGutter},${bandY + bandH} L ${points.join(" L ")} L ${leftGutter + chartW},${bandY + bandH} Z`;
+                  const fillPath = `M ${px(leftGutter)},${px(bandY + bandH)} L ${points.join(" L ")} L ${px(leftGutter + chartW)},${px(bandY + bandH)} Z`;
 
                   return (
                     <g key={`wave-${li}-${wi}`}>
@@ -279,7 +280,7 @@ export function DoubleExposureAnatomy() {
                       const x = leftGutter + (si / (steps - 1)) * chartW;
                       const y = bandY + bandH - val * bandH * 0.85;
                       markers.push(
-                        <g key={`mk-${li}-${si}`}>
+                        <g key={`mk-${px(li)}-${px(si)}`}>
                           <circle cx={x} cy={y} r={3} fill={layer.color} opacity={0.4} />
                           <circle cx={x} cy={y} r={1.2} fill={layer.color} opacity={0.7} />
                           <line x1={x} y1={y} x2={x} y2={bandY + bandH}

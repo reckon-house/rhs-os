@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * KitchenPalette — Dense circos-style color spectrum.
@@ -70,20 +71,20 @@ function describeArc(
   rOuter: number, rInner: number,
   startAngle: number, endAngle: number,
 ): string {
-  const x1o = cx + Math.cos(startAngle) * rOuter;
-  const y1o = cy + Math.sin(startAngle) * rOuter;
-  const x2o = cx + Math.cos(endAngle) * rOuter;
-  const y2o = cy + Math.sin(endAngle) * rOuter;
-  const x1i = cx + Math.cos(endAngle) * rInner;
-  const y1i = cy + Math.sin(endAngle) * rInner;
-  const x2i = cx + Math.cos(startAngle) * rInner;
-  const y2i = cy + Math.sin(startAngle) * rInner;
+  const x1o = px(cx + Math.cos(startAngle) * rOuter);
+  const y1o = px(cy + Math.sin(startAngle) * rOuter);
+  const x2o = px(cx + Math.cos(endAngle) * rOuter);
+  const y2o = px(cy + Math.sin(endAngle) * rOuter);
+  const x1i = px(cx + Math.cos(endAngle) * rInner);
+  const y1i = px(cy + Math.sin(endAngle) * rInner);
+  const x2i = px(cx + Math.cos(startAngle) * rInner);
+  const y2i = px(cy + Math.sin(startAngle) * rInner);
   const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
   return [
-    `M ${x1o} ${y1o}`,
-    `A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${x2o} ${y2o}`,
-    `L ${x1i} ${y1i}`,
-    `A ${rInner} ${rInner} 0 ${largeArc} 0 ${x2i} ${y2i}`,
+    `M ${px(x1o)} ${px(y1o)}`,
+    `A ${px(rOuter)} ${px(rOuter)} 0 ${px(largeArc)} 1 ${px(x2o)} ${px(y2o)}`,
+    `L ${px(x1i)} ${px(y1i)}`,
+    `A ${px(rInner)} ${px(rInner)} 0 ${px(largeArc)} 0 ${px(x2i)} ${px(y2i)}`,
     `Z`,
   ].join(" ");
 }
@@ -193,8 +194,8 @@ export function KitchenPalette() {
         els.push(
           <circle
             key={`t4-${idx++}`}
-            cx={cx + Math.cos(a) * r}
-            cy={cy + Math.sin(a) * r}
+            cx={px(cx + Math.cos(a) * r)}
+            cy={px(cy + Math.sin(a) * r)}
             r={0.4 + rng() * 1.8}
             fill={color}
             fillOpacity={0.15 + rng() * 0.35}
@@ -219,22 +220,22 @@ export function KitchenPalette() {
         const R_IL = R_LABEL - 2;
         const arcStart = midAngle + textArc / 2;
         const arcEnd = midAngle - textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_IL;
-        const y1 = cy + Math.sin(arcStart) * R_IL;
-        const x2 = cx + Math.cos(arcEnd) * R_IL;
-        const y2 = cy + Math.sin(arcEnd) * R_IL;
+        const x1 = px(cx + Math.cos(arcStart) * R_IL);
+        const y1 = px(cy + Math.sin(arcStart) * R_IL);
+        const x2 = px(cx + Math.cos(arcEnd) * R_IL);
+        const y2 = px(cy + Math.sin(arcEnd) * R_IL);
         labelDefs.push(
-          <path key={`klp-${i}`} id={`kLabelPath-${i}`} d={`M ${x1} ${y1} A ${R_IL} ${R_IL} 0 0 0 ${x2} ${y2}`} fill="none" stroke="none" />
+          <path key={`klp-${i}`} id={`kLabelPath-${i}`} d={`M ${px(x1)} ${px(y1)} A ${px(R_IL)} ${px(R_IL)} 0 0 0 ${px(x2)} ${px(y2)}`} fill="none" stroke="none" />
         );
       } else {
         const arcStart = midAngle - textArc / 2;
         const arcEnd = midAngle + textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_LABEL;
-        const y1 = cy + Math.sin(arcStart) * R_LABEL;
-        const x2 = cx + Math.cos(arcEnd) * R_LABEL;
-        const y2 = cy + Math.sin(arcEnd) * R_LABEL;
+        const x1 = px(cx + Math.cos(arcStart) * R_LABEL);
+        const y1 = px(cy + Math.sin(arcStart) * R_LABEL);
+        const x2 = px(cx + Math.cos(arcEnd) * R_LABEL);
+        const y2 = px(cy + Math.sin(arcEnd) * R_LABEL);
         labelDefs.push(
-          <path key={`klp-${i}`} id={`kLabelPath-${i}`} d={`M ${x1} ${y1} A ${R_LABEL} ${R_LABEL} 0 0 1 ${x2} ${y2}`} fill="none" stroke="none" />
+          <path key={`klp-${i}`} id={`kLabelPath-${i}`} d={`M ${px(x1)} ${px(y1)} A ${px(R_LABEL)} ${px(R_LABEL)} 0 0 1 ${px(x2)} ${px(y2)}`} fill="none" stroke="none" />
         );
       }
 
@@ -259,9 +260,9 @@ export function KitchenPalette() {
         const dotR = 1.5 + rng() * 12;
         colorDots.push(
           <circle
-            key={`cd-${fi}-${k}`}
-            cx={cx + Math.cos(a) * r}
-            cy={cy + Math.sin(a) * r}
+            key={`cd-${px(fi)}-${px(k)}`}
+            cx={px(cx + Math.cos(a) * r)}
+            cy={px(cy + Math.sin(a) * r)}
             r={dotR}
             fill={color}
             fillOpacity={0.1 + rng() * 0.3}
@@ -284,10 +285,10 @@ export function KitchenPalette() {
         const aB = famB.startAngle + rng() * spanB;
         const r1 = 340 + (rng() - 0.5) * 10;
         const r2 = 340 + (rng() - 0.5) * 10;
-        const x1 = cx + Math.cos(aA) * r1;
-        const y1 = cy + Math.sin(aA) * r1;
-        const x2 = cx + Math.cos(aB) * r2;
-        const y2 = cy + Math.sin(aB) * r2;
+        const x1 = px(cx + Math.cos(aA) * r1);
+        const y1 = px(cy + Math.sin(aA) * r1);
+        const x2 = px(cx + Math.cos(aB) * r2);
+        const y2 = px(cy + Math.sin(aB) * r2);
         const ctrl = 0.02 + rng() * 0.3;
         const qx = cx + (x1 + x2 - 2 * cx) * ctrl;
         const qy = cy + (y1 + y2 - 2 * cy) * ctrl;
@@ -295,7 +296,7 @@ export function KitchenPalette() {
         chordEls.push(
           <path
             key={`kch-${idx++}`}
-            d={`M ${x1} ${y1} Q ${qx} ${qy} ${x2} ${y2}`}
+            d={`M ${px(x1)} ${px(y1)} Q ${px(qx)} ${px(qy)} ${px(x2)} ${px(y2)}`}
             fill="none"
             stroke={color}
             strokeWidth={0.3 + rng() * 0.5}

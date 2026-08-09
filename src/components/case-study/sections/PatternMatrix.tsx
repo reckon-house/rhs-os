@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * PatternMatrix — A constraint-map visualization for the Black & White Type case study.
@@ -139,7 +140,7 @@ export function PatternMatrix() {
         const d = density[patIdx];
         conns.push(
           <line
-            key={`conn-${pi}-${patIdx}`}
+            key={`conn-${px(pi)}-${px(patIdx)}`}
             x1={poster.x}
             y1={poster.y}
             x2={pat.x}
@@ -187,8 +188,8 @@ export function PatternMatrix() {
       orbitDots.push(
         <circle
           key={`orbit-${i}`}
-          cx={cx + Math.cos(angle) * r}
-          cy={cy + Math.sin(angle) * r}
+          cx={px(cx + Math.cos(angle) * r)}
+          cy={px(cy + Math.sin(angle) * r)}
           r={rng() * 1.2 + 0.3}
           fill="#fff"
           fillOpacity={rng() * 0.2 + 0.05}
@@ -203,8 +204,8 @@ export function PatternMatrix() {
       orbitDots.push(
         <circle
           key={`inner-orbit-${i}`}
-          cx={cx + Math.cos(angle) * r}
-          cy={cy + Math.sin(angle) * r}
+          cx={px(cx + Math.cos(angle) * r)}
+          cy={px(cy + Math.sin(angle) * r)}
           r={rng() * 0.8 + 0.3}
           fill="#fff"
           fillOpacity={rng() * 0.15 + 0.05}
@@ -309,7 +310,7 @@ export function PatternMatrix() {
           LINE WEIGHT = VISUAL PROMINENCE
         </text>
         {[0.2, 0.5, 0.8].map((d, i) => (
-          <g key={`leg-${i}`}>
+          <g key={`leg-${px(i)}`}>
             <line x1={20 + i * 60} y1={H - 18} x2={50 + i * 60} y2={H - 18} stroke="#fff" strokeWidth={d * 2.5 + 0.5} strokeOpacity={d * 0.4 + 0.1} />
             <text x={55 + i * 60} y={H - 14} fill="#fff" fillOpacity="0.25" fontSize="7" fontFamily="var(--font-satoshi), sans-serif">
               {["LOW", "MED", "HIGH"][i]}

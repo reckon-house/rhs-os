@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 /**
  * MaterialCircos — Dense circos-style chord diagram.
@@ -159,8 +160,8 @@ export function MaterialCircos() {
         els.push(
           <circle
             key={`t4-${idx++}`}
-            cx={cx + Math.cos(a) * r}
-            cy={cy + Math.sin(a) * r}
+            cx={px(cx + Math.cos(a) * r)}
+            cy={px(cy + Math.sin(a) * r)}
             r={0.5 + rng() * 1.5}
             fill={MATERIALS[mi].color}
             fillOpacity={0.15 + rng() * 0.3}
@@ -189,15 +190,15 @@ export function MaterialCircos() {
         const R_INNER_LABEL = R_LABEL - 2;
         const arcStart = midAngle + textArc / 2;
         const arcEnd = midAngle - textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_INNER_LABEL;
-        const y1 = cy + Math.sin(arcStart) * R_INNER_LABEL;
-        const x2 = cx + Math.cos(arcEnd) * R_INNER_LABEL;
-        const y2 = cy + Math.sin(arcEnd) * R_INNER_LABEL;
+        const x1 = px(cx + Math.cos(arcStart) * R_INNER_LABEL);
+        const y1 = px(cy + Math.sin(arcStart) * R_INNER_LABEL);
+        const x2 = px(cx + Math.cos(arcEnd) * R_INNER_LABEL);
+        const y2 = px(cy + Math.sin(arcEnd) * R_INNER_LABEL);
         labelDefs.push(
           <path
-            key={`lp-${i}`}
-            id={`labelPath-${i}`}
-            d={`M ${x1} ${y1} A ${R_INNER_LABEL} ${R_INNER_LABEL} 0 0 0 ${x2} ${y2}`}
+            key={`lp-${px(i)}`}
+            id={`labelPath-${px(i)}`}
+            d={`M ${px(x1)} ${px(y1)} A ${px(R_INNER_LABEL)} ${px(R_INNER_LABEL)} 0 0 0 ${px(x2)} ${px(y2)}`}
             fill="none"
             stroke="none"
           />
@@ -206,15 +207,15 @@ export function MaterialCircos() {
         // Top half: text on outer arc, normal direction
         const arcStart = midAngle - textArc / 2;
         const arcEnd = midAngle + textArc / 2;
-        const x1 = cx + Math.cos(arcStart) * R_LABEL;
-        const y1 = cy + Math.sin(arcStart) * R_LABEL;
-        const x2 = cx + Math.cos(arcEnd) * R_LABEL;
-        const y2 = cy + Math.sin(arcEnd) * R_LABEL;
+        const x1 = px(cx + Math.cos(arcStart) * R_LABEL);
+        const y1 = px(cy + Math.sin(arcStart) * R_LABEL);
+        const x2 = px(cx + Math.cos(arcEnd) * R_LABEL);
+        const y2 = px(cy + Math.sin(arcEnd) * R_LABEL);
         labelDefs.push(
           <path
-            key={`lp-${i}`}
-            id={`labelPath-${i}`}
-            d={`M ${x1} ${y1} A ${R_LABEL} ${R_LABEL} 0 0 1 ${x2} ${y2}`}
+            key={`lp-${px(i)}`}
+            id={`labelPath-${px(i)}`}
+            d={`M ${px(x1)} ${px(y1)} A ${px(R_LABEL)} ${px(R_LABEL)} 0 0 1 ${px(x2)} ${px(y2)}`}
             fill="none"
             stroke="none"
           />
@@ -223,7 +224,7 @@ export function MaterialCircos() {
 
       labelTexts.push(
         <text
-          key={`label-${i}`}
+          key={`label-${px(i)}`}
           fill="#141414"
           fillOpacity={0.5}
           fontSize="8"
@@ -263,10 +264,10 @@ export function MaterialCircos() {
             const aB = zones[j].startAngle + rng() * spanB;
             const r1 = R_CHORD + (rng() - 0.5) * 6;
             const r2 = R_CHORD + (rng() - 0.5) * 6;
-            const x1 = cx + Math.cos(aA) * r1;
-            const y1 = cy + Math.sin(aA) * r1;
-            const x2 = cx + Math.cos(aB) * r2;
-            const y2 = cy + Math.sin(aB) * r2;
+            const x1 = px(cx + Math.cos(aA) * r1);
+            const y1 = px(cy + Math.sin(aA) * r1);
+            const x2 = px(cx + Math.cos(aB) * r2);
+            const y2 = px(cy + Math.sin(aB) * r2);
 
             // Control point pulled toward center
             const ctrl = 0.02 + rng() * 0.35;
@@ -275,8 +276,8 @@ export function MaterialCircos() {
 
             chordEls.push(
               <path
-                key={`ch-${idx++}`}
-                d={`M ${x1} ${y1} Q ${qx} ${qy} ${x2} ${y2}`}
+                key={`ch-${px(idx++)}`}
+                d={`M ${px(x1)} ${px(y1)} Q ${px(qx)} ${px(qy)} ${px(x2)} ${px(y2)}`}
                 fill="none"
                 stroke={MATERIALS[matIdx].color}
                 strokeWidth={0.3 + rng() * 0.5}
@@ -297,8 +298,8 @@ export function MaterialCircos() {
       particleEls.push(
         <circle
           key={`p-${i}`}
-          cx={cx + Math.cos(a) * r}
-          cy={cy + Math.sin(a) * r}
+          cx={px(cx + Math.cos(a) * r)}
+          cy={px(cy + Math.sin(a) * r)}
           r={0.3 + rng() * 1.8}
           fill={MATERIALS[mi].lightColor}
           fillOpacity={0.04 + rng() * 0.1}
@@ -328,7 +329,7 @@ export function MaterialCircos() {
     const legend = (
       <g>
         {MATERIALS.map((mat, i) => (
-          <g key={`leg-${i}`}>
+          <g key={`leg-${px(i)}`}>
             <rect x={20 + i * 145} y={H - 28} width={10} height={10} rx={2} fill={mat.color} fillOpacity={0.7} />
             <text x={34 + i * 145} y={H - 19} fill="#141414" fillOpacity={0.3} fontSize="8" fontFamily="var(--font-satoshi), sans-serif" fontWeight="500" letterSpacing="0.04em">
               {mat.name.toUpperCase()}
@@ -391,20 +392,20 @@ function describeArc(
   rOuter: number, rInner: number,
   startAngle: number, endAngle: number,
 ): string {
-  const x1o = cx + Math.cos(startAngle) * rOuter;
-  const y1o = cy + Math.sin(startAngle) * rOuter;
-  const x2o = cx + Math.cos(endAngle) * rOuter;
-  const y2o = cy + Math.sin(endAngle) * rOuter;
-  const x1i = cx + Math.cos(endAngle) * rInner;
-  const y1i = cy + Math.sin(endAngle) * rInner;
-  const x2i = cx + Math.cos(startAngle) * rInner;
-  const y2i = cy + Math.sin(startAngle) * rInner;
+  const x1o = px(cx + Math.cos(startAngle) * rOuter);
+  const y1o = px(cy + Math.sin(startAngle) * rOuter);
+  const x2o = px(cx + Math.cos(endAngle) * rOuter);
+  const y2o = px(cy + Math.sin(endAngle) * rOuter);
+  const x1i = px(cx + Math.cos(endAngle) * rInner);
+  const y1i = px(cy + Math.sin(endAngle) * rInner);
+  const x2i = px(cx + Math.cos(startAngle) * rInner);
+  const y2i = px(cy + Math.sin(startAngle) * rInner);
   const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
   return [
-    `M ${x1o} ${y1o}`,
-    `A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${x2o} ${y2o}`,
-    `L ${x1i} ${y1i}`,
-    `A ${rInner} ${rInner} 0 ${largeArc} 0 ${x2i} ${y2i}`,
+    `M ${px(x1o)} ${px(y1o)}`,
+    `A ${px(rOuter)} ${px(rOuter)} 0 ${px(largeArc)} 1 ${px(x2o)} ${px(y2o)}`,
+    `L ${px(x1i)} ${px(y1i)}`,
+    `A ${px(rInner)} ${px(rInner)} 0 ${px(largeArc)} 0 ${px(x2i)} ${px(y2i)}`,
     `Z`,
   ].join(" ");
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { px } from "@/lib/px";
 
 // ── Seeded random for deterministic particle generation ──────────
 function seededRandom(seed: number) {
@@ -25,7 +26,6 @@ function seededRandom(seed: number) {
 
    Three decimals is far finer than a 1000-unit viewBox can show and
    makes both engines emit the same string. */
-const px = (n: number) => Math.round(n * 1000) / 1000;
 
 // ── Polar helper ─────────────────────────────────────────────────
 function polar(cx: number, cy: number, r: number, angleDeg: number) {
@@ -377,17 +377,17 @@ export function SystemArchitecture() {
           {/* ── Traveling signal dots — two orbiting the chart ── */}
           {(() => {
             // Long path that winds through the rings
-            const p1 = `M${polar(CX,CY,R1,0).x},${polar(CX,CY,R1,0).y} `
-              + `A${R1},${R1} 0 0,1 ${polar(CX,CY,R1,120).x},${polar(CX,CY,R1,120).y} `
-              + `L${polar(CX,CY,R3,140).x},${polar(CX,CY,R3,140).y} `
-              + `A${R3},${R3} 0 0,1 ${polar(CX,CY,R3,280).x},${polar(CX,CY,R3,280).y} `
-              + `L${polar(CX,CY,R5,300).x},${polar(CX,CY,R5,300).y} `
-              + `A${R5},${R5} 0 0,1 ${polar(CX,CY,R5,60).x},${polar(CX,CY,R5,60).y} `
-              + `L${polar(CX,CY,R2,40).x},${polar(CX,CY,R2,40).y} `
-              + `A${R2},${R2} 0 0,1 ${polar(CX,CY,R2,200).x},${polar(CX,CY,R2,200).y} `
-              + `L${polar(CX,CY,R4,220).x},${polar(CX,CY,R4,220).y} `
-              + `A${R4},${R4} 0 0,1 ${polar(CX,CY,R4,350).x},${polar(CX,CY,R4,350).y} `
-              + `L${polar(CX,CY,R1,0).x},${polar(CX,CY,R1,0).y}`;
+            const p1 = `M${px(polar(CX,CY,R1,0).x)},${px(polar(CX,CY,R1,0).y)} `
+              + `A${px(R1)},${px(R1)} 0 0,1 ${px(polar(CX,CY,R1,120).x)},${px(polar(CX,CY,R1,120).y)} `
+              + `L${px(polar(CX,CY,R3,140).x)},${px(polar(CX,CY,R3,140).y)} `
+              + `A${px(R3)},${px(R3)} 0 0,1 ${px(polar(CX,CY,R3,280).x)},${px(polar(CX,CY,R3,280).y)} `
+              + `L${px(polar(CX,CY,R5,300).x)},${px(polar(CX,CY,R5,300).y)} `
+              + `A${px(R5)},${px(R5)} 0 0,1 ${px(polar(CX,CY,R5,60).x)},${px(polar(CX,CY,R5,60).y)} `
+              + `L${px(polar(CX,CY,R2,40).x)},${px(polar(CX,CY,R2,40).y)} `
+              + `A${px(R2)},${px(R2)} 0 0,1 ${px(polar(CX,CY,R2,200).x)},${px(polar(CX,CY,R2,200).y)} `
+              + `L${px(polar(CX,CY,R4,220).x)},${px(polar(CX,CY,R4,220).y)} `
+              + `A${px(R4)},${px(R4)} 0 0,1 ${px(polar(CX,CY,R4,350).x)},${px(polar(CX,CY,R4,350).y)} `
+              + `L${px(polar(CX,CY,R1,0).x)},${px(polar(CX,CY,R1,0).y)}`;
 
             return (
               <>
@@ -410,8 +410,8 @@ export function SystemArchitecture() {
             const ctrl = polar(CX, CY, (R1 + R2) * 0.38, (tech.angle + pipe.angle) / 2);
             return (
               <path
-                key={`conn-${i}`}
-                d={`M${from.x},${from.y} Q${ctrl.x},${ctrl.y} ${to.x},${to.y}`}
+                key={`conn-${px(i)}`}
+                d={`M${px(from.x)},${px(from.y)} Q${px(ctrl.x)},${px(ctrl.y)} ${px(to.x)},${px(to.y)}`}
                 fill="none" stroke={tech.color}
                 strokeWidth={0.9} opacity={0.18}
               />
@@ -455,7 +455,7 @@ export function SystemArchitecture() {
             return (
               <g key={`dev-${i}`}>
                 <path
-                  d={`M${arcStart.x},${arcStart.y} A${R5},${R5} 0 0,1 ${arcEnd.x},${arcEnd.y}`}
+                  d={`M${px(arcStart.x)},${px(arcStart.y)} A${px(R5)},${px(R5)} 0 0,1 ${px(arcEnd.x)},${px(arcEnd.y)}`}
                   fill="none" stroke={phase.color}
                   strokeWidth={14} opacity={0.25}
                   strokeLinecap="round"
@@ -487,7 +487,7 @@ export function SystemArchitecture() {
             const anchor = n > 90 && n < 270 ? "end" as const : "start" as const;
             const labelPos = polar(CX, CY, R4 + 16, decision.angle);
             return (
-              <g key={`ai-${i}`}>
+              <g key={`ai-${px(i)}`}>
                 <circle cx={pos.x} cy={pos.y} r={12} fill={decision.color} opacity={0.05} />
                 <circle cx={pos.x} cy={pos.y} r={7} fill={decision.color} opacity={0.1} />
                 <circle cx={pos.x} cy={pos.y} r={3.5} fill={decision.color} opacity={0.5} />
@@ -564,7 +564,7 @@ export function SystemArchitecture() {
               <g key={`pipe-${i}`}>
                 {i < 5 && (
                   <path
-                    d={`M${a1.x},${a1.y} A${R1},${R1} 0 0,1 ${a2.x},${a2.y}`}
+                    d={`M${px(a1.x)},${px(a1.y)} A${px(R1)},${px(R1)} 0 0,1 ${px(a2.x)},${px(a2.y)}`}
                     fill="none" stroke="#141414"
                     strokeWidth={0.6} opacity={0.08}
                     strokeDasharray="2,4"
