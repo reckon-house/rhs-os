@@ -51,12 +51,28 @@
   border-top: 1px solid var(--si-hair);
 }
 
+/* ── the row ───────────────────────────────────────────────────────
+   RRSystemIndex's, verbatim. The display size lives on the ROW and the
+   label inherits it, items sit ADJACENT with one gap, and the whole row
+   carries a per-row indent.
+
+   This was reinvented once and got it wrong in a way worth recording:
+   `justify-content: flex-end` on the specimen flung it to the far edge,
+   so a row read as two things at opposite ends of the page instead of a
+   label and the thing it names. The alternation is order plus indent —
+   never alignment. Robert is the foundation study; when its version
+   works, copy the numbers rather than re-deriving them. */
 .row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(16px, 2.6vw, 46px);
-  padding: clamp(14px, 3dvh, 38px) 0;
+  margin-left: var(--indent, 0px);
+  padding: clamp(10px, 2.2dvh, 30px) 0;
+  font-size: clamp(38px, 6.4vw, 96px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
   border-bottom: 1px solid var(--si-hair);
   /* the rule draws itself in, staggered, the same gesture the index
      rows and the brief's column rules make */
@@ -74,41 +90,43 @@
   }
 }
 
-/* Odd rows lead with the SPECIMEN instead of the label. Done with
-   `order`, not `row-reverse`: reversing the direction would also flip
-   the specimens inside a multi-item row — the two typefaces would swap
-   — and it puts the label after the thing it names in focus order. */
+/* The label is just text at the row's own size — no second scale. */
+.label {
+  flex: 0 0 auto;
+}
+
+/* Odd rows lead with the SPECIMEN. `order`, not `row-reverse`:
+   reversing would also flip the specimens inside a multi-item row (the
+   two typefaces would swap) and puts the label after the thing it names
+   in focus order. */
 .flip .label {
   order: 2;
 }
 .flip .sample {
   order: 1;
-  justify-content: flex-end;
 }
 
-.label {
-  font-size: clamp(34px, 5.4vw, 84px);
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  flex: 0 0 auto;
-}
-
-/* Whatever the row is showing, centred on the label's own line. */
+/* Whatever the row shows, centred on the label's own line. It must NOT
+   grow: a flex item that stretches puts the label at the far edge and
+   the row stops reading as "a label and the thing it names". */
 .sample {
   display: flex;
   align-items: center;
   gap: clamp(14px, 2.4vw, 40px);
-  flex-wrap: wrap;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
 }
 
+/* The caption under a specimen. Robert's type values — it is the same
+   voice, so it takes the same numbers. Restoring this after a careless
+   block replacement dropped it and every caption inherited the row's
+   96px display size. */
 .cap {
   display: block;
-  margin-top: 8px;
-  font-size: var(--pp-lbl);
-  letter-spacing: var(--pp-lbl-track);
-  font-weight: var(--pp-lbl-weight);
+  white-space: nowrap;
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  line-height: 1.4;
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -163,7 +181,10 @@
 }
 
 @media (max-width: 760px) {
+  /* Robert's own mobile treatment: the indent scales rather than
+     disappearing, so the ladder survives a phone. */
   .row {
+    margin-left: calc(var(--indent, 0px) * 0.35);
     gap: 14px;
   }
   .intro {

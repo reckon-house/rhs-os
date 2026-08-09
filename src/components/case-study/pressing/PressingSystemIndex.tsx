@@ -159,6 +159,11 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
      rules exist to catch — and is dropped. */
   const setup = [section.introText, section.philosophyText].filter(Boolean);
 
+  /* Robert's indents — 3vw, 17vw, 8vw — extended by one for a fourth
+     row. Deliberately NOT monotonic: a staircase reads as a list
+     working its way across, where a varied ladder reads as an index. */
+  const INDENT = ["3vw", "17vw", "8vw", "21vw"];
+
   const rows: { label: string; body: React.ReactNode }[] = [];
 
   if (section.logoConstructionImage) {
@@ -282,7 +287,12 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
                same way is a list. */
             className={`${styles.row} ${i % 2 ? styles.flip : ""}`}
             key={r.label}
-            style={{ "--lag": `${(i * 0.12).toFixed(2)}s` } as CSSProperties}
+            style={
+              {
+                "--lag": `${(i * 0.12).toFixed(2)}s`,
+                "--indent": INDENT[i % INDENT.length],
+              } as CSSProperties
+            }
           >
             <span className={styles.label}>{r.label}</span>
             <span className={styles.sample}>{r.body}</span>

@@ -315,6 +315,22 @@ component that animates scale on a large image owes the same release.
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.
 
+## 7. Robert is the foundation study
+
+**When Robert already does a thing, copy its numbers. Do not re-derive
+them.** Every re-derivation this kit has attempted has cost an hour and
+landed somewhere subtly wrong: a crossing rebuilt on the wrong element
+and animating below the fold, a system ledger whose rows were flung to
+opposite page edges by an invented `justify-content: flex-end`, an ease
+exponent of 3 against Robert's 1.6. The values in
+`RRSystemIndex.module.css` and `crossing.module.css` are tuned against
+the lab prototype. Read them, lift them, and put the shared mechanism in
+`src/lib/` so there is one copy.
+
+What is legitimately per-study is CONTENT and taste: Robert's palette
+STATES, its lockup outlines, its reel. What is not: row geometry, gaps,
+indents, easing curves, stagger. Those are the language.
+
 ## 7a. The system ledger
 
 Two components, one pattern. `RRSystemIndex` is bespoke to Robert —
@@ -329,6 +345,15 @@ where every row starts the same way is a list. Do it with `order`, not
 `flex-direction: row-reverse` — reversing would also flip the specimens
 INSIDE a multi-item row (two typefaces would swap places) and puts the
 label after the thing it names in focus order.
+
+**Alternation is order plus INDENT, never alignment.** The row is a
+plain flex line: label and specimen sit adjacent with one
+`clamp(16px, 2.6vw, 46px)` gap, and the whole row carries a per-row
+`--indent` (Robert's are 3vw, 17vw, 8vw — varied, not a staircase, so
+it reads as an index rather than a list working its way across). The
+display size lives on the ROW and the label inherits it. Pushing the
+specimen to the far edge with `justify-content` splits the row into two
+things at opposite ends of the page; it was tried and it was wrong.
 
 **The palette morphs colour and form together**, on the shared
 polar-profile lerp in `src/lib/swatch-morph.ts`. Every shape is reduced
