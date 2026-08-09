@@ -284,6 +284,31 @@ rather than stretching.
 ### Pressing (the redesign language)
 New studies ship in the Pressing C language (`style: "pressing"` on the study object); the classic renderer still serves un-migrated studies. **The full porting guide is `PRESSING.md`** — skin matrix, the pressing bag's field semantics, choreography rules, and the porting checklist. The lab prototype `public/lab/swiss-spread.html` is the design spec: tune there, port values back.
 
+**Robert Rodriguez is the reference implementation. Read it before you
+build.** Before creating or altering ANY pressing section, open the
+equivalent in `RRSystemIndex.tsx` / `RRSystemIndex.module.css` /
+`PressingCrossing.tsx` / `crossing.module.css` and copy its values.
+Those numbers are tuned against the lab prototype. Do not re-derive
+them, and do not invent a "better" one — a plausible argument for
+changing a tuned value is exactly how every one of these goes wrong.
+
+Deviating is allowed, but name the MATERIAL difference first, out loud,
+in the code comment. "UI reads differently than photography" is a real
+reason to reshape a box; it is not a reason to pick a new clamp. If a
+size genuinely needs to change, change it in Robert too, so the family
+stays one family.
+
+Shared MECHANISM belongs in `src/lib/` so it cannot drift —
+`cut-lines.ts` (the crossing), `swatch-morph.ts` (the palette morph).
+Shared TASTE does not: Robert's palette STATES, his lockup outlines and
+his reel are hardcoded because they ARE that campaign.
+
+**Measure the right quantity.** `getBoundingClientRect()` includes
+ancestor transforms. A scaled element reports its PAINTED size, not the
+size it was rasterized at, so it will happily tell you an image is
+crisp while the browser is magnifying a bitmap half that size. Check
+`offsetWidth` against `naturalWidth` when the question is resolution.
+
 
 ## Cross-project context
 This project is one of several I run. Each project's profile lives inside its own repo. THIS project's profile:
