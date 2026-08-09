@@ -159,6 +159,7 @@ export const sallyCaseStudy: CaseStudy = {
       image: "/case-studies/sally-os/sally-os-briefing-portal-fullscreen.png",
       alt: "Sally Marketing OS, intelligence feed and competitive dashboard",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "trends-header",

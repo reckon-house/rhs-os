@@ -30,6 +30,7 @@ import { PressingGapColumn } from "./viz/PressingGapColumn";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
+import { ClimbRoom } from "@/components/fx/ClimbRoom";
 
 /* ── PressingLayout ─────────────────────────────────────────────────
    Renders a study whose style is "pressing" in the Pressing C language.
@@ -280,6 +281,18 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             columnsMark={columnsMark}
           />
         );
+      }
+      /* The brief's half of the climb contract. A plate rising after a
+         brief pulls itself up by RISE and covers whatever is there —
+         which, for a brief, is the tail of its copy column. Reserving
+         the room here is the same move the cover and the zoom plate
+         already make for their own risers; it stays OUTSIDE the brief so
+         its tuned headline/column grid is untouched.
+         Keyed off the section the FOLD ended on, not `s`: a brief
+         absorbs a run of texts, so the riser's real neighbour is
+         sections[j], not sections[i + 1]. */
+      if (sections[j]?.pressing?.choreo?.rise === true) {
+        out.push(<ClimbRoom key={s.id + "-climb"} />);
       }
       i = j;
       continue;
@@ -606,11 +619,28 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     sections.forEach((sec, k) => {
       if (sec.pressing?.choreo?.rise) {
         const prev = sections[k - 1];
+        /* A brief absorbs the run of texts after its header, so a riser
+           that follows one has a TEXT as its array neighbour while its
+           rendered neighbour is the brief. Walk back over the absorbed
+           types to find what actually precedes it on the page. */
+        let b = k - 1;
+        while (
+          b >= 0 &&
+          (sections[b].type === "text" ||
+            sections[b].type === "text-right" ||
+            sections[b].type === "three-column-text" ||
+            sections[b].type === "spacer")
+        ) {
+          b -= 1;
+        }
+        const rendered = sections[b];
         const prevHolds =
           prev &&
           (prev.type === "meta" ||
             prev.pressing?.choreo?.pin ||
-            prev.pressing?.choreo?.zoom);
+            prev.pressing?.choreo?.zoom ||
+            /* a brief reserves ClimbRoom for its riser (see the fold) */
+            rendered?.type === "section-header");
         if (!prevHolds) {
           console.warn(
             `PressingLayout: "${sec.id}" rises but its previous section ` +
