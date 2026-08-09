@@ -515,13 +515,20 @@ export const arcCaseStudy: CaseStudy = {
       policyAmount: 38000,
     },
 
-    /* The claim above, made operable. The coverage chart states the
-       gap; this lets the reader move it. Placed immediately after so the
-       assertion and the proof are the same beat, not two. */
+    /* The product itself, shipped and running, framed in the study. The
+       homepage it loads carries A.R.C.'s own public AI demo, so a reader
+       can photograph their own room and watch the real model name what
+       is in it — the exact mechanic every section above describes. No
+       port, no fixture, nothing to keep in sync: it is the deployment. */
     {
-      id: "archive-demo",
-      type: "live-demo",
-      demo: "arc-archive",
+      id: "live-app",
+      type: "live-app",
+      src: "https://arcready.app",
+      title: "A.R.C., live",
+      origin: "arcready.app",
+      poster: `${IMG}/arc-app-kitchen-project-selection-lifestyle.jpg`,
+      posterAlt: "A.R.C. running on a phone, resting on a kitchen counter",
+      instruction: "Upload a photo of a room and the model will itemise it.",
       pressing: { mark: { n: "08", name: "Financial intelligence" } },
     },
 

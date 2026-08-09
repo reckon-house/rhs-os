@@ -54,7 +54,7 @@ export type Section =
   | BrandSystemSection
   | BrandSystemVolumeSection
   | SystemArchitectureSection
-  | LiveDemoSection
+  | LiveAppSection
   | SpacerSection
   | EditorialHeadlineSection
   | AIHeatmapSection
@@ -497,13 +497,26 @@ export interface DevTimelineSection extends BaseSection {
 }
 
 /**
- * A working piece of the product, running in the page. `demo` names
- * which one — the renderer maps it to a component and loads it lazily,
- * so only the study that asks for it pays the bundle.
+ * The shipped product, framed and running in the page. It is the real
+ * deployment, not a port of it, so there is nothing to keep in sync and
+ * nothing to invent. Held behind a click: no other origin is contacted
+ * until the reader asks.
  */
-export interface LiveDemoSection extends BaseSection {
-  type: "live-demo";
-  demo: "arc-archive";
+export interface LiveAppSection extends BaseSection {
+  type: "live-app";
+  /** The deployed URL. */
+  src: string;
+  /** What the reader is about to load. */
+  title: string;
+  /** Host shown in the frame's chrome, so the origin is never hidden. */
+  origin: string;
+  /** A still from the study, held until activation. */
+  poster: string;
+  posterAlt: string;
+  /** Stage height in dvh. */
+  tall?: number;
+  /** One line: what to actually try once it is live. */
+  instruction?: string;
 }
 
 export interface SystemArchitectureSection extends BaseSection {

@@ -315,53 +315,51 @@ component that animates scale on a large image owes the same release.
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.
 
-## 7b. Live demos
+## 7b. The live product
 
-A study whose subject is software can run a piece of that software in
-the page. A.R.C. does: `{ type: "live-demo", demo: "arc-archive" }`
-mounts the app's REAL `ItemCard` with the study's real numbers, and the
-reader edits a value and watches the coverage gap move. The section
-above it states the mechanic; this one hands it over.
+A study whose subject is deployed software can run that software in the
+page. A.R.C. does: `{ type: "live-app", src: "https://arcready.app", … }`
+frames the real deployment. The homepage it loads carries A.R.C.'s own
+public AI demo, so a reader photographs their own room and watches the
+real model itemise it — the exact mechanic every section above only
+describes.
 
-**Three tiers, and the middle one is almost always right.**
+**Frame the deployment. Do not port it.** The first attempt here ported
+a few of the app's cards and fed them data I wrote, and it failed twice
+over. The item names were invented and paired with photographs of
+something else, which is fabricated content inside a working interface —
+the place a made-up number is MOST likely to be read as real. And the
+interaction was backwards: a list you edit, when the product's actual
+mechanic is that you photograph a room and the model tells you what is
+in it. A port is a fork the day it lands, it needs fixtures, and
+fixtures are where invention creeps in. The deployment needs none of
+that and cannot drift, because it is the thing itself.
 
-1. *Static* — the real component fed fixed props. A screenshot that
-   happens to be live.
-2. *Interactive, local state* — real component, real logic, no server.
-   **Use this.**
-3. *Live backend* — the real endpoint. On a public portfolio that means
-   keys within reach of a browser and a per-view bill for anyone who
-   finds the page. Gate it or skip it.
-
-**What made the port cheap, and what to check before the next one.**
-A.R.C.'s classes are all stock Tailwind (`gray-500`, `rounded-2xl`) and
-its palette lives in inline styles, while RHS's `@theme` only ADDS
-semantic tokens and never redefines Tailwind's own. The two systems pass
-through each other untouched. Before porting from any other app, check
-exactly that: does it use custom theme tokens, and does its font come
-from a class or an inline style? ItemCard sets Avenir Next inline, which
-is why `.pressing`'s Helvetica cannot reach it.
+**Before reaching for it, check two headers.** `curl -I` the target: an
+`X-Frame-Options` or a CSP `frame-ancestors` will refuse the frame, and
+that refusal belongs to whoever runs the site. A.R.C. sends neither, and
+its `/api/demo-analyze` answers 400 rather than 401, which is what a
+deliberately public demo endpoint looks like.
 
 **Rules.**
-- Strip the server, keep the behaviour. The demo drops signed URLs and
-  fetches; it KEEPS the emoji stripper, the image-error fallback, the
-  stopPropagation, the Enter/Space handling. A demo that quietly drops
-  those is a mock-up wearing the component's name.
-- Inline two icons rather than adding an icon library for two glyphs.
-- Real numbers only, and say where they came from. A made-up figure
-  inside a working interface reads as a real one — this is the
-  fabrication rule at its sharpest.
-- Always dynamic-import it (`ssr: false`). It drags in the app's
-  component tree and no other study should pay for that.
-- Give the reader a way back. Someone WILL delete everything, and an
-  empty archive with no reset is a dead end mid-study.
-- It is a fork the day it lands. Date it, and re-check against the app
-  when the study is next revised.
+- **Click to activate.** Nothing is requested from another origin until
+  the reader asks. No third-party connection on the way past the
+  section, no cost, and a heavy external app never competes with the
+  study for first paint. The poster is the study's own photography, so
+  the slot reads as intentional rather than broken.
+- **Show the origin.** The host sits in the frame's chrome. A reader
+  should always be able to see whose software is running inside the
+  page.
+- `allow-scripts allow-same-origin` together is effectively full trust
+  of the framed origin. Correct for your own product, a real decision
+  every time, never a default to paste onto someone else's site.
+- Offer the escape hatch — a plain link to open it in its own tab.
+- Dynamic-import it; the frame is client state and has nothing to render
+  on a server.
 
-**Why this matters beyond one study:** a live component is text and
-vector. It is sharp at any size on any screen, needs no export, no
-`image-dimensions.ts` entry and no resolution gate. Every UI screenshot
-it replaces is one fewer file to keep big enough.
+**Why it matters beyond one study:** the study stops asserting and
+starts handing over. And a framed app is text and vector at any size, so
+every UI screenshot it replaces is one fewer file to keep big enough.
 
 ## 8. Copy
 
