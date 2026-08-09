@@ -202,6 +202,17 @@ Reach for the brief form when the section carries method columns: the
 standalone crossing renders headline and intro on a screen of their own,
 which puts the argument on one screen and its evidence on the next.
 
+**One definition, so the two cannot drift.** The cut, the curve, the
+stagger and the travel all live in `src/lib/cut-lines.ts`
+(`LINE_STAGGER` 0.13, `LINE_EXP` 1.6, `LINE_SPAN_VH` 1.2, `lineOffset`).
+Both components call it. They HAD drifted — the brief was written with
+an ease exponent of 3 against Robert's 1.6, which decelerates far
+harder: most of the distance covered early, then a crawl. Same stagger,
+same distance, visibly different move. A gesture used once per study is
+met with a long gap in between, which is exactly when a drifted curve
+stops reading as the same thing. Tune in the lab, change it here, and
+both stagings move together.
+
 Under `crossing` the brief renders a plain `<h2>` instead of
 RevealHeadline — two drivers on one element's transform is the bug this
 kit keeps paying for. Animate the HEADLINE, never the column: the column

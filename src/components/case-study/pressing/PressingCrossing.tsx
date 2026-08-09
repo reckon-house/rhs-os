@@ -58,7 +58,7 @@ import {
   useState,
 } from "react";
 import { onTick, vh } from "@/lib/scrub";
-import { cutHeadline } from "@/lib/cut-lines";
+import { cutHeadline, lineOffset, LINE_STAGGER } from "@/lib/cut-lines";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -66,8 +66,11 @@ import reveal from "@/components/fx/reveal.module.css";
 import styles from "./crossing.module.css";
 
 /* Tuned in the lab; change them only with the prototype open. */
-const STAGGER = 0.13; // per-line progress lead
-const LINE_EXP = 1.6; // ease-out exponent — 1 is linear, 2+ reads as played
+/* The crossing's own numbers live in @/lib/cut-lines so the brief's
+   staging of the same gesture cannot drift from this one. STAGGER is
+   re-exported under the old name because the BODY ladder below keys off
+   it too. */
+const STAGGER = LINE_STAGGER;
 const BODY_AT = 0.58; // progress where the first paragraph joins
 const BODY_STEP = 0.11; // per-paragraph delay after that
 const LINE_STAG = 45; // ms per rendered line inside one paragraph (BodyReveal's beat)
@@ -75,7 +78,6 @@ const GAP = 34; // px between the headline's last line and the column's first
 const ROOM_PAD = 24; // breathing room the column keeps off the screen's bottom
 
 const clamp01 = (k: number) => (k < 0 ? 0 : k > 1 ? 1 : k);
-const easeOut = (t: number) => 1 - Math.pow(1 - t, LINE_EXP);
 
 const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -195,11 +197,9 @@ export function PressingCrossing({
       // The span is shortened by the total stagger so the last line still
       // finishes exactly at p = 1. Recomputed per pass: the line count is
       // not fixed — it follows the rendered wrap.
-      const span = Math.max(1 - STAGGER * (lines.length - 1), 0.0001);
       const w = window.innerWidth;
       lines.forEach((el, i) => {
-        const lp = easeOut(clamp01((p - i * STAGGER) / span));
-        el.style.transform = `translateX(${((1 - lp) * w).toFixed(1)}px)`;
+        el.style.transform = `translateX(${lineOffset(p, i, lines.length, w).toFixed(1)}px)`;
       });
       // The crossing's own choreography decides WHEN the copy joins — one
       // paragraph after the other, once the lines have nearly landed.

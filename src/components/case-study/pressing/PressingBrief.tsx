@@ -39,11 +39,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
-import { cutHeadline } from "@/lib/cut-lines";
+import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 
-/** Per-line progress lead, PressingCrossing's tuned value. */
-const X_STAGGER = 0.13;
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -154,18 +152,18 @@ export function PressingBrief({
       const r = sec.getBoundingClientRect();
       const h = vh();
       if (r.bottom < 0 || r.top > h) return;
-      /* 0 as the section's top enters at the bottom of the screen, 1 by
-         the time it reaches the top — which is where the pin takes over.
-         The lines land exactly as the headline starts to hold. */
-      const p = Math.min(1, Math.max(0, (h - r.top) / h));
+      /* 0 as the section's top enters at the bottom of the screen. The
+         span is Robert's, in viewports, so the two stagings of this
+         gesture take the same amount of scrolling — the pin engages at
+         one viewport and the last line lands shortly after, which reads
+         as the headline settling rather than as a separate event. */
+      const p = Math.min(1, Math.max(0, (h - r.top) / (h * LINE_SPAN_VH)));
       if (p === last) return;
       last = p;
-      const span = Math.max(1 - X_STAGGER * (lines.length - 1), 0.0001);
       const w = window.innerWidth;
       lines.forEach((el, i) => {
-        const lp = 1 - Math.pow(1 - Math.min(1, Math.max(0, (p - i * X_STAGGER) / span)), 3);
-        el.style.transform =
-          lp >= 0.999 ? "" : "translateX(" + ((1 - lp) * w).toFixed(1) + "px)";
+        const x = lineOffset(p, i, lines.length, w);
+        el.style.transform = x < 0.5 ? "" : "translateX(" + x.toFixed(1) + "px)";
       });
     });
     return () => {
