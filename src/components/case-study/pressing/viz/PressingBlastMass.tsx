@@ -158,17 +158,16 @@ export function PressingBlastMass() {
                 >
                   {c.name}
                 </text>
-                {/* Below the baseline, the second authored quantity: how
-                    much of the five-part system this channel carries.
-                    The biggest channel carries the fewest. */}
-                <text
-                  x={x}
-                  y={BASE + 26}
-                  textAnchor="middle"
-                  className={styles.schemNum}
-                >
-                  {`${c.elements.length}/${ELEMENTS.length}`}
-                </text>
+                {/* No element-count row here, deliberately. The classic
+                    component's `elements` arrays were never drawn: they
+                    only picked a ray's stroke colour
+                    (CampaignBlastRadius.tsx:145). Printing their lengths
+                    as "2/5" turns decorative-only metadata into a stated
+                    fact, and the study's own images on this very screen
+                    contradict it — the product-page shot carries the
+                    polygon frame and a black-and-white portrait that the
+                    array omits. Asset counts are authored and rendered
+                    above; the element memberships are not a finding. */}
               </g>
             );
           })}
