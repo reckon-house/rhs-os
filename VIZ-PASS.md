@@ -13,7 +13,7 @@ component (`PressingCoverageChart.tsx` is the smallest) and
 `PressingViz.module.css`, whose tokens (`--pv-hair` 14%, `--pv-faint`
 8%, `--pv-grey` 45%, `--pv-acc` press red) are the entire palette.
 
-## The three reference shapes (user-supplied, 2026-08-09)
+## The six reference shapes (user-supplied, 2026-08-09)
 
 1. **The season wheel** — a radial calendar: concentric arc tracks
    sweeping a shared angular scale, month/segment labels around the rim
@@ -29,6 +29,26 @@ component (`PressingCoverageChart.tsx` is the smallest) and
    ground, mono numerals on a sparse scale, no grid beyond the baseline.
    Already in the vocabulary as "floating range bars when a value is
    honestly a range."
+4. **The stepped mass** — a ranked series drawn as ONE continuous
+   stepped silhouette in solid ink rather than separate bars: no gaps,
+   the steps themselves carry the comparison, and the labels sit
+   REVERSED INSIDE the mass at each tread. Enormous flat fields of ink
+   against enormous flat fields of paper. Use when the story is a rank
+   order and the shape of the decline is the point.
+5. **The ruled columns** — one full-height hairline per item, a rotated
+   label riding up its rule, and a single solid black block parked at
+   the item's value. The rules are a fixed grid, so the eye reads the
+   blocks' heights against each other with nothing else drawn. Use for
+   a scatter of one value across many named items.
+6. **The square matrix** — a small-multiples grid of filled squares, one
+   panel per group, marking presence or intensity at each row/column
+   intersection. Filled or empty, no shading between; density is read
+   from how many squares are black, not from how dark they are. Use for
+   membership or intensity across two categorical axes.
+
+Shapes 4, 5 and 6 arrived after the first two exemplars shipped and are
+why the wheel is no longer assigned to three studies at once. A shape
+used everywhere stops being a shape.
 
 All three are already ink-and-type charts. The kit's rules apply
 unchanged: one drawing colour, hierarchy by opacity, one accent at most
@@ -45,20 +65,23 @@ in `pressing/viz/`, registered as its own branch in PressingLayout and
 removed from the `VIZ_TYPES` bridge set. Exactly how the A.R.C. charts
 were done.
 
+Assigned so no shape repeats inside one study and no shape carries more
+than two studies portfolio-wide.
+
 | type | study | shape | the one accent |
 |---|---|---|---|
-| `cabin-midcentury-spectrum` | chalet | drop-line field (DONE — the exemplar) | the element sitting exactly between the poles |
-| `material-circos` | hill-country-kitchen | season wheel: zones as arc tracks, materials as rim segments | none — the schematic is the point |
-| `campaign-blast-radius` | ivy-park | season wheel: channels as tracks radiating from the campaign hub | launch date, if authored |
-| `jeffrey-flagship-radius` | jeffrey-ecommerce | season wheel | none |
+| `cabin-midcentury-spectrum` | chalet | drop-line field (DONE — exemplar) | the element between the poles |
+| `material-overlap` | floor-and-decor | range bars (DONE — exemplar) | the one material in all three rooms |
+| `ai-heatmap` | sally | **square matrix**: competitors × categories, one filled square per signal | the row with the most signal |
+| `intelligence-flow` | sally | **season wheel**: the six pipeline stages as arc tracks around the hub | none — the schematic is the point |
+| `material-circos` | hill-country-kitchen | **season wheel**: zones as arc tracks, materials as rim segments | none |
+| `campaign-blast-radius` | ivy-park | **stepped mass**: channels ranked by reach, one silhouette | none — the step shape IS the argument |
+| `jeffrey-flagship-radius` | jeffrey-ecommerce | **ruled columns**: one rule per surface, a block at its value | none |
+| `editorial-treatments` | neiman-marcus | **ruled columns**: treatments ruled quiet → loud, block at each | none |
+| `mcp-architecture` | dsc | **drop-line field**: servers and clients as lines, calls as dots | none |
 | `kitchen-palette` | hill-country-kitchen | swatch ledger, NOT a chart — colour is the datum, so colour stays; see PressingSystemIndex's swatch row | — |
 | `color-permutations` | j-christianson | swatch ledger, same reasoning | — |
-| `ai-heatmap` | sally | range bars: intensity per period as a floating bar | the peak period |
-| `material-overlap` | floor-and-decor | range bars: each material's span across the three rooms | the one material in all three |
-| `intelligence-flow` | sally | drop-line field: stages as columns, the flow as dots descending | none |
-| `mcp-architecture` | dsc | drop-line field: servers/clients as lines, calls as dots | none |
-| `editorial-treatments` | neiman-marcus | drop-line field: treatments positioned quiet ↔ loud | none |
-| `pattern-matrix` | black-white-type | keep as artwork — the patterns ARE the content, like the palette ledgers; reframe on paper if needed | — |
+| `pattern-matrix` | black-white-type | keep as artwork — the patterns ARE the content; reframe on paper only | — |
 | `hex-polygon` | ivy-park | keep as artwork — it is the brand's own mark construction | — |
 | `brand-system-volume` | ivy-park | normalise through PressingSystemIndex's ledger if its data fits toLedger(); else keep | — |
 
