@@ -204,6 +204,8 @@ export function PressingZoomPlate({
     let panPx = 0;
 
     let wrote = false;
+    /* the inline will-change currently written; "" means the class rules */
+    let wcNow = "";
     const invalidate = () => {
       box = null;
     };
@@ -262,6 +264,7 @@ export function PressingZoomPlate({
     const clearWrites = () => {
       fig.style.transform = "";
       fig.style.borderRadius = "";
+      fig.style.willChange = "";
       wrap.style.height = "";
       for (const el of inkEls) {
         el.style.maskImage = "";
@@ -307,6 +310,26 @@ export function PressingZoomPlate({
       const ty = (mastheadH() - b.y) * e - spill * pp;
 
       const cur = 1 + (scale - 1) * e;
+      /* THE RASTER RELEASE. will-change pins the layer's raster to the
+         scale it had when promoted, which is the plate at rest in its
+         column, so the grown plate is that small bitmap magnified 2x:
+         the 3840px source never gets decoded past the 660px box and the
+         full-bleed frame ships about half its device pixels. The eye
+         forgives it while the plate is MOVING; parked, it reads as a
+         soft image, which for a while looked like a bad source file.
+         So: the hint stays on while the plate is between states, and
+         comes OFF whenever it parks (rest, full bleed, or pan done).
+         Dropping the hint lets Chrome re-raster at the settled scale,
+         and scrubbing back re-promotes from that sharper bitmap, so the
+         shrink direction only ever minifies. Written on change, not per
+         tick — rewriting the same value would re-promote every frame
+         and never release anything. */
+      const settled = zp <= 0 || (zp >= 1 && (panPx === 0 || pp <= 0 || pp >= 1));
+      const wcNext = settled ? "auto" : "";
+      if (wcNext !== wcNow) {
+        wcNow = wcNext;
+        fig.style.willChange = wcNext;
+      }
       fig.style.transform =
         "translate(" + tx.toFixed(2) + "px, " + ty.toFixed(2) + "px) scale(" + cur.toFixed(4) + ")";
       /* The corner sharpens as the plate fills: --pp-r at rest, 0 once it
