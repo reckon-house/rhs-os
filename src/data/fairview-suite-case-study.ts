@@ -204,7 +204,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. A view THROUGH a doorway is the one composition where
       // filling the mat changes what you can see — the second room arrives
-      // at the size the doorway was promising. contain, landscape frame.
+      // at the size the doorway was promising.
       pressing: {
         plate: "04",
         captions: [
@@ -213,7 +213,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
           "Charcoal hex tile",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

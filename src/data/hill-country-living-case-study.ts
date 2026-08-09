@@ -119,7 +119,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
       // The zoom. A symmetrical elevation is the one composition that
       // rewards filling the mat: the symmetry only reads when the whole
-      // wall is the same size as the screen. contain, landscape frame.
+      // wall is the same size as the screen.
       pressing: {
         plate: "02",
         captions: [
@@ -128,7 +128,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
           "Brass pendant overhead",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

@@ -171,7 +171,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. The section below argues that saturated colour replaced
       // a location budget, and the claim only lands at a size where the
-      // colour is the whole screen. contain, landscape frame.
+      // colour is the whole screen.
       pressing: {
         plate: "03",
         captions: [
@@ -180,7 +180,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
           "InSite, on the laptop",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

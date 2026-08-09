@@ -294,8 +294,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
 
     // ── Bokeh's Fall storefront — the zoom. The section's copy is about a
     // 4x6 film frame blown out to street size, and filling the mat then
-    // travelling the frame is that sentence as a gesture. contain because
-    // the window is landscape (PRESSING.md §7).
+    // travelling the frame is that sentence as a gesture.
     {
       id: "storefront-hero",
       type: "hero",
@@ -310,7 +309,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
           "Photograph at street size",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

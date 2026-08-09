@@ -99,7 +99,6 @@ export const chaletCaseStudy: CaseStudy = {
     // ── Front exterior — the zoom. The section argues that the exterior
     // stopped disappearing against the PNW green, and filling the mat is
     // what lets the warm gray read at the scale the argument claims.
-    // contain because the frame is landscape (PRESSING.md §7).
     {
       id: "exterior-front-hero",
       type: "hero",
@@ -114,7 +113,7 @@ export const chaletCaseStudy: CaseStudy = {
           "Pacific Northwest",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

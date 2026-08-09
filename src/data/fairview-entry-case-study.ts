@@ -122,8 +122,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. The section argues the whole room serves the light, and
       // this is the frame that carries the art wall end to end — filling
-      // the mat is what makes that legible. contain because the frame is
-      // landscape (PRESSING.md §7).
+      // the mat is what makes that legible.
       pressing: {
         plate: "02",
         captions: [
@@ -132,7 +131,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           "Leather bench beneath",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

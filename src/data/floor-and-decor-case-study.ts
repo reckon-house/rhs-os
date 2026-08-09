@@ -114,7 +114,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // The zoom, and this study's held screen. Four finishes meet in one
       // frame here — shiplap, reclaimed ceiling, marble, nickel and brass —
       // and the argument that they can disagree only lands at a size where
-      // you can see all four at once. contain, landscape frame.
+      // you can see all four at once.
       pressing: {
         plate: "02",
         captions: [
@@ -123,7 +123,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
           "Nickel sconces, brass mirror",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

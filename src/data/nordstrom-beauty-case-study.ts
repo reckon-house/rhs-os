@@ -124,7 +124,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. A colour selector is the one interface in this study
       // where the individual swatches are the content, and at plate size
-      // they are a stripe. contain, landscape frame.
+      // they are a stripe.
       pressing: {
         plate: "03",
         captions: [
@@ -133,7 +133,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
           "Lipstick preview",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

@@ -112,7 +112,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       inline: true,
       // The zoom, placed early because this study opens on a long run of
       // copy. A phone photographed on the coat it is selling only reads
-      // as that once the frame fills the mat. contain, landscape frame.
+      // as that once the frame fills the mat.
       pressing: {
         plate: "02",
         captions: [
@@ -121,7 +121,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
           "Shot on the trench",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

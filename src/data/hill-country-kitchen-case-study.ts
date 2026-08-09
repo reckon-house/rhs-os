@@ -247,7 +247,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. Floor-to-ceiling cabinetry is a full elevation, and the
       // four-finish palette the study opened with only reads as a system
-      // when the whole wall is on screen at once. contain, landscape.
+      // when the whole wall is on screen at once.
       pressing: {
         plate: "03",
         captions: [
@@ -256,7 +256,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
           "Brass, oak, marble, sage",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

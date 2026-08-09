@@ -50,7 +50,30 @@ Each study, after its pass:
    the header absorbs method columns. See PRESSING.md §7's table for
    which is which.
 2. **At least one zoom plate**, on the study's most detail-bearing
-   image. Landscape frames take `zoomFit: "contain"`.
+   image. **Never set `zoomFit`.**
+
+   **On `zoomFit: "contain"` (corrected 2026-08-09, after the pass).**
+   This quota originally said landscape frames take
+   `zoomFit: "contain"`, and 14 studies shipped that way before the
+   error was caught on screen. It was wrong. A contained plate parks
+   INSET — mat visible left, right and below — and PRESSING.md §7 says
+   plainly that "a plate that letterboxes is not a plate," warning to
+   reach for `contain` rarely because it letterboxes landscape frames
+   on most laptop proportions. The reasoning that produced it ("contain
+   asks less of the file, so it is gentler on resolution") is precisely
+   the plausible-argument-for-overriding-a-tuned-default that CLAUDE.md
+   warns about, and the resolution worry was hollow anyway: a 3080px
+   file filling a 1083–1900px viewport is well inside its honest width.
+
+   The zoom always fills the viewport WIDTH and pans whatever hangs
+   below the fold. Robert's does exactly this — 1083px wide in a 1083px
+   viewport, left edge at −3. A frame wider than about 1.3:1 will end up
+   shorter than the viewport once it fills the width, so the mat shows
+   above and below; that is the geometry of a wide picture, not a
+   defect, and cropping it to cover would throw away the composition.
+
+   `zoomFit` remains in the type for a frame that genuinely must stay
+   whole on screen. Nothing in this pass qualified.
 
    **On the floor (decided 2026-08-09, mid-pass).** This quota
    originally read "IF an image clears 3200px native," citing

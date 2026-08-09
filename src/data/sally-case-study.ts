@@ -500,7 +500,6 @@ export const sallyCaseStudy: CaseStudy = {
       // which can rise — so the climb below had to be built on a zoom.
       // A full interface overview also earns it: the tagging and search
       // controls are the content, and they are a blur at plate size.
-      // contain, landscape frame.
       pressing: {
         plate: "05",
         captions: [
@@ -509,7 +508,7 @@ export const sallyCaseStudy: CaseStudy = {
           "AI tagging and search",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

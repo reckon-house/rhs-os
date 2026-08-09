@@ -232,8 +232,8 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     // Red dragons plates — the zoom. This study's most ornamental frame, and
     // a plate stacked on its own pattern backdrop is the one image where
     // filling the mat and then travelling the frame actually shows something
-    // new: the motif at object scale, then at print scale. contain because
-    // the frame is landscape (PRESSING.md §7).
+    // new: the motif at object scale, then at print scale. It fills the
+    // viewport width and pans the spill, like every zoom here.
     {
       id: "red-hero",
       type: "hero",
@@ -248,7 +248,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           "Burgundy and rose",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

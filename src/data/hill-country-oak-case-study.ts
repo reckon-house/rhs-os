@@ -114,7 +114,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
     // ── Mid-century tree poster — the zoom. This study has exactly one
     // adjacency where a gesture can land, so the choice is zoom or climb,
     // and the frame decides it: a printed poster is artwork, and artwork
-    // wants to be seen at size. contain, landscape frame.
+    // wants to be seen at size.
     {
       id: "lang-poster-hero",
       type: "hero",
@@ -129,7 +129,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
           "Teal, orange, red",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

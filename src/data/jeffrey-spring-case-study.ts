@@ -94,7 +94,6 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. A twelve-cell collage is unreadable at plate size and
       // legible at mat size, which is the whole case for this gesture.
-      // contain, landscape frame.
       pressing: {
         plate: "02",
         captions: [
@@ -103,7 +102,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           "Monstera on studio white",
         ],
         instruction: "Scroll — fills the mat, then travels the frame",
-        choreo: { zoom: true, zoomFit: "contain" },
+        choreo: { zoom: true },
       },
     },
 

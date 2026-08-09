@@ -16,9 +16,13 @@ const REEL_COLORS = ["#B1BC94", "#C4A265", "#000000"];
      plate (zoom). The vinyl/turntable coverage lifestyle is the second
      and last zoom (plate 08, inheriting its governing mark's n, same
      convention as RR's logo plate).
-   - One rise on the whole page: the multi-device hero climbs the pinned
-     scanning/detail pair. A.R.C. is chart-heavy and charts do not climb;
-     everything else flows.
+   - One rise on the whole page: the multi-device hero climbs the plate-02
+     zoom. It used to climb a scanning/detail pair under the problem
+     columns; those 768px exports became the columns' own images, and the
+     pair that held for the climb went with them, leaving the plate rising
+     over a text column that is still moving. The zoom is the page's other
+     hold. A.R.C. is chart-heavy and charts do not climb; everything else
+     flows.
    - The old triple-image is now one flow plate + one dual pair (all
      three images survive; triple-image has no pressing skin).
    - Viz sections (pipeline, system-architecture, stats-bar,
