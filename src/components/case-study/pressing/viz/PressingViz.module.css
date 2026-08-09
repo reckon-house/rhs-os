@@ -66,6 +66,17 @@
   min-width: 800px;
 }
 
+/* ── the wheel (radial tracks) ─────────────────────────────────────
+   A square canvas cannot take the page's full measure: given 1500px of
+   column it would stand 1500px tall and render its 9px type at 15. The
+   wheel caps at the size it was drawn and centres; .wide still carries
+   it past a phone's width on the scroller. */
+.wheel {
+  display: block;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
 /* ── the row: label · rule · value ─────────────────────────────────
    The unit every bar-shaped chart is built from. A full-width hairline
    is the scale; the ink rule on top of it is the measure; the value

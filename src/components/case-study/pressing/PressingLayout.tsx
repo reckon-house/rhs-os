@@ -17,6 +17,13 @@ import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
 import { PressingMaterialSpan } from "./viz/PressingMaterialSpan";
+import { PressingIntelligenceWheel } from "./viz/PressingIntelligenceWheel";
+import { PressingBlastMass } from "./viz/PressingBlastMass";
+import { PressingMaterialWheel } from "./viz/PressingMaterialWheel";
+import { PressingEditorialRange } from "./viz/PressingEditorialRange";
+import { PressingMCPPath } from "./viz/PressingMCPPath";
+import { PressingSurfaceLoad } from "./viz/PressingSurfaceLoad";
+import { PressingSignalMatrix } from "./viz/PressingSignalMatrix";
 import dynamic from "next/dynamic";
 
 const PressingLiveApp = dynamic(
@@ -73,22 +80,15 @@ const VIZ_TYPES = new Set<Section["type"]>([
      these can get a pressing skin later the way the A.R.C. charts did.
      The alternative was leaving 14 studies unportable behind a queue of
      chart redesigns. */
-  "ai-heatmap",
   "app-showcase",
   "brand",
   "brand-system-volume",
-  "campaign-blast-radius",
   "color-field-map",
   "color-palette",
   "color-permutations",
   "double-exposure-anatomy",
-  "editorial-treatments",
   "hex-polygon",
-  "intelligence-flow",
-  "jeffrey-flagship-radius",
   "kitchen-palette",
-  "material-circos",
-  "mcp-architecture",
   "pattern-matrix",
   "sizzle-playground",
   "tech-chart",
@@ -468,10 +468,80 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
+    if (s.type === "material-circos") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingMaterialWheel />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "ai-heatmap") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSignalMatrix section={s} />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
     if (s.type === "cabin-midcentury-spectrum") {
       out.push(
         <PressingVizFrame key={s.id} mark={p?.mark}>
           <PressingSpectrum />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "intelligence-flow") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingIntelligenceWheel section={s} />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "campaign-blast-radius") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingBlastMass />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "editorial-treatments") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingEditorialRange />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "mcp-architecture") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingMCPPath />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "jeffrey-flagship-radius") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSurfaceLoad />
         </PressingVizFrame>
       );
       i += 1;
