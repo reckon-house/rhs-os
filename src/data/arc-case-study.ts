@@ -515,6 +515,16 @@ export const arcCaseStudy: CaseStudy = {
       policyAmount: 38000,
     },
 
+    /* The claim above, made operable. The coverage chart states the
+       gap; this lets the reader move it. Placed immediately after so the
+       assertion and the proof are the same beat, not two. */
+    {
+      id: "archive-demo",
+      type: "live-demo",
+      demo: "arc-archive",
+      pressing: { mark: { n: "08", name: "Financial intelligence" } },
+    },
+
     // ── IMAGE AS OBJECT — the coverage lifestyle, second zoom, plate 08 ──
     {
       id: "financial-image",

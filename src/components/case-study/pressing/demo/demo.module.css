@@ -1,0 +1,166 @@
+/*
+ * The demo's frame — the pressing side of the seam.
+ *
+ * Everything INSIDE an A.R.C. component keeps A.R.C.'s look: white
+ * cards, Avenir Next, its own grays. That is the point of showing the
+ * real thing. Everything AROUND it is pressing: 10px caps labels, ink on
+ * paper, hairlines, tabular figures. The two never negotiate, which is
+ * why the port cost nothing — the app's classes are stock Tailwind and
+ * its palette is inline, so the case study's tokens pass straight
+ * through without touching it.
+ *
+ * The stage is a light neutral rather than the page's paper: A.R.C.'s
+ * cards are #FFFFFF, and white cards on white paper have no edges.
+ */
+
+.wrap {
+  --dm-hair: rgba(0, 0, 0, 0.14);
+  --dm-grey: rgba(0, 0, 0, 0.45);
+  --dm-acc: #e0552f;
+  background: #f2f1ee;
+  border-radius: var(--pp-r, 16px);
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--dm-hair);
+}
+
+.lbl {
+  display: block;
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  color: var(--dm-grey);
+}
+
+.reset {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  color: var(--dm-grey);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.reset:hover {
+  color: #000;
+}
+
+/* The ledger reads in the viz kit's voice — same figures, same caps
+   labels — because it IS one of the charts, just a live one. */
+.ledger {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: clamp(20px, 3vw, 32px) 0;
+}
+.big {
+  font-size: clamp(26px, 3.4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+  /* the number changes under the reader's finger; a hard cut reads as a
+     glitch, a slow fade reads as lag */
+  transition: color 0.25s ease;
+}
+.quiet {
+  color: var(--dm-grey);
+}
+.over {
+  color: var(--dm-acc);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.slot {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Passed to ItemCard as its className, which is exactly how the app
+   passes a surface colour in. The card's own rule reads: if a className
+   arrives, do not force #FFFFFF — so this is the supported seam, not a
+   workaround. */
+.card {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.editor {
+  background: #fff;
+  border-radius: 0 0 16px 16px;
+  margin-top: -10px;
+  padding: 16px 16px 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+.input {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 7px 9px;
+  border: 1px solid var(--dm-hair);
+  border-radius: 8px;
+  background: #fff;
+  color: #000;
+  /* A.R.C.'s secondary face, because this panel is the app speaking. */
+  font-family: "Avenir Next", system-ui, sans-serif;
+  font-size: 15px;
+}
+.input:focus {
+  outline: 2px solid rgba(0, 0, 0, 0.5);
+  outline-offset: 1px;
+}
+.range {
+  width: 100%;
+  accent-color: #000;
+}
+
+.empty {
+  margin: clamp(24px, 4vw, 40px) 0;
+  text-align: center;
+  color: var(--dm-grey);
+  font-size: var(--pp-note, 16px);
+}
+
+.foot {
+  margin: clamp(20px, 3vw, 30px) 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--dm-hair);
+  font-size: var(--pp-cap, 11px);
+  line-height: 1.5;
+  color: var(--dm-grey);
+}
+.foot code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .ledger {
+    grid-template-columns: 1fr 1fr;
+  }
+}

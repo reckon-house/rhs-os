@@ -54,6 +54,7 @@ export type Section =
   | BrandSystemSection
   | BrandSystemVolumeSection
   | SystemArchitectureSection
+  | LiveDemoSection
   | SpacerSection
   | EditorialHeadlineSection
   | AIHeatmapSection
@@ -493,6 +494,16 @@ export interface DevTimelineSection extends BaseSection {
     weeks: string;
     color: string;
   }[];
+}
+
+/**
+ * A working piece of the product, running in the page. `demo` names
+ * which one — the renderer maps it to a component and loads it lazily,
+ * so only the study that asks for it pays the bundle.
+ */
+export interface LiveDemoSection extends BaseSection {
+  type: "live-demo";
+  demo: "arc-archive";
 }
 
 export interface SystemArchitectureSection extends BaseSection {

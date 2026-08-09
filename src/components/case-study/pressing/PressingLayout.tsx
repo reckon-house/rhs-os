@@ -13,6 +13,12 @@ import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
 import { PressingSystemIndex } from "./PressingSystemIndex";
+import dynamic from "next/dynamic";
+
+const ArcArchiveDemo = dynamic(
+  () => import("./demo/ArcArchiveDemo").then((m) => m.ArcArchiveDemo),
+  { ssr: false }
+);
 import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
@@ -316,6 +322,20 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     // (src/components/case-study/pressing/viz — ink, hairlines, type,
     // one accent at most. The classic showpieces these replace stay
     // untouched for un-migrated studies.)
+    // A working piece of the product. Loaded on demand: the demo drags
+    // in the app's own component tree and no other study should pay for
+    // it. `ssr: false` because it is a local-state toy — there is
+    // nothing to render on a server and its first paint is the seed.
+    if (s.type === "live-demo") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <ArcArchiveDemo />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
     if (s.type === "system-architecture") {
       out.push(
         <PressingVizFrame key={s.id} mark={p?.mark}>
