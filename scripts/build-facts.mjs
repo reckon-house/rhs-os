@@ -241,6 +241,72 @@ const hasAlpha = (src) => {
     return false;
   }
 };
+/* ── the resolution gate ──
+ * An image can only be shown as large as its pixels allow: a retina
+ * screen asks TWO device pixels per CSS pixel, so native width / 2 is
+ * the largest honest CSS width and no amount of CSS buys more. The
+ * classic layout never tested that, because it drew everything inside
+ * the column. Pressing full-bleeds things, which asks a great deal
+ * more of the same file, and the difference shows up as "the live one
+ * looks sharper" — the live one was simply never asked to fill a
+ * screen.
+ *
+ * So the treatment is checked against the file, per section, at build
+ * time. Named here it costs a minute; found by eye after a study
+ * ships it costs the study. The bar is the widest screen the work
+ * should look right on: 3200 native carries 1600 CSS at 2x, which
+ * covers a laptop and most desktops.
+ *
+ * PNG/JPEG headers are read directly rather than decoded — the width
+ * lives in the first few dozen bytes of both.
+ */
+const BLEED_MIN = 3200; // full-bleed plates and zoom plates
+const PLATE_MIN = 1600; // in-column flow plates (~800 CSS)
+const COLUMN_MIN = 760; // a brief/method column image (~380 CSS)
+const nativeWidth = (src) => {
+  try {
+    const b = readFileSync("public" + src);
+    if (b.slice(1, 4).toString() === "PNG") return b.readUInt32BE(16);
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      let i = 2;
+      while (i < b.length - 9) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const m = b[i + 1];
+        // SOF0..SOF15, minus the non-frame markers in that range
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc)
+          return b.readUInt16BE(i + 7);
+        i += 2 + b.readUInt16BE(i + 2);
+      }
+    }
+  } catch (e) { /* missing file is the route's problem, not this gate's */ }
+  return 0;
+};
+const thin = [];
+/* Walk a section's own shape rather than guessing from the type name:
+   the choreo bag is what actually decides how big the thing is drawn. */
+const checkSection = (slug, s) => {
+  const ch = s.pressing?.choreo || {};
+  const bleeds = ch.zoom || s.pressing?.bleed || s.bleed;
+  const need = bleeds ? BLEED_MIN : PLATE_MIN;
+  const how = bleeds ? "full-bleed/zoom" : "flow plate";
+  const srcs = [];
+  if (typeof s.src === "string") srcs.push([s.src, need, how]);
+  if (typeof s.image === "string") srcs.push([s.image, need, how]);
+  /* Column images are held to their own, much lower bar: the whole
+     point of the column is that a small file is honest there. It is
+     still a bar — under ~760 a file is soft even at column measure. */
+  for (const c of s.columns || [])
+    if (c.image && c.image.src) srcs.push([c.image.src, COLUMN_MIN, "column image"]);
+  for (const [src, min, label] of srcs) {
+    const w = nativeWidth(src);
+    if (w && w < min)
+      thin.push(
+        `${slug}: ${src.split("/").pop()} is ${w}px, ${label} wants ${min}px ` +
+        `(honest to ${Math.floor(w / 2)} CSS)`
+      );
+  }
+};
+
 for (const file of studyFiles()) {
   const cs = await loadStudy(file);
   if (cs.style !== "pressing") continue;
@@ -250,6 +316,7 @@ for (const file of studyFiles()) {
   for (const src of imgs) {
     if (hasAlpha(src)) reels.transparent.push(cs.slug + ": " + src.split("/").pop());
   }
+  for (const s of cs.sections) checkSection(cs.slug, s);
 }
 
 /* ── the pulls ──
@@ -341,6 +408,10 @@ if (empty.length) {
     ...empty.map((p) => "  " + p.slug));
 }
 if (bad.length) lines.push("", "BROKEN CITATIONS:", ...bad.slice(0, 8).map((b) => "  " + b));
+if (thin.length)
+  lines.push("", "images drawn larger than their pixels allow:",
+    ...thin.map((t) => "  " + t),
+    "  fix: re-export bigger, or drop the bleed so it draws at plate size");
 console.log(lines.join("\n"));
 
 if (bad.length) {

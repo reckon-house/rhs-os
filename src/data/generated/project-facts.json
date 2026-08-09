@@ -507,8 +507,8 @@
       "cites": [
        {
         "section": "pipeline",
-        "field": "steps.2.description2",
-        "quote": "…item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tool…"
+        "field": "columns.2.content",
+        "quote": "…item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools…"
        },
        {
         "section": "stats",

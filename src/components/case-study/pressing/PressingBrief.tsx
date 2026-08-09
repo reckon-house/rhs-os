@@ -50,8 +50,11 @@ import styles from "./PressingBrief.module.css";
 export interface PressingBriefProps {
   /** Section-mark label row, e.g. { n: "03", name: "The brief" }. */
   mark?: { n: string; name: string };
-  /** Headline text; "\n" is an authored line break (RevealHeadline's contract). */
-  title: string;
+  /** Headline text; "\n" is an authored line break (RevealHeadline's contract).
+   *  Empty renders the block with NO headline — the columns-only form,
+   *  which is how a crossing header's absorbed method grid gets into the
+   *  copy column without a second headline announcing it. */
+  title?: string;
   /**
    * The headline's separately-held final line — the prototype's .out span,
    * revealed as its own unit on its own block line, flush left.
@@ -196,12 +199,14 @@ export function PressingBrief({
           authored line as its own flush-left block, which is exactly what
           the prototype's .out span was (display: block, margin-left: 0) —
           the final line revealed as its own unit. */}
+      {title ? (
       <RevealHeadline
         as="h2"
         className={pin ? `${styles.headline} ${styles.held}` : styles.headline}
       >
         {heldLine ? `${title}\n${heldLine}` : title}
       </RevealHeadline>
+      ) : null}
 
       <div ref={colRef} className={styles.col}>
 

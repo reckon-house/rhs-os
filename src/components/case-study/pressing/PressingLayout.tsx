@@ -182,6 +182,22 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             mark={p?.mark}
           />
         );
+        /* A crossing pins for 220dvh and scrubs its column line by line,
+           so a method grid cannot nest inside it the way it does in a
+           brief. It used to be absorbed here and then silently DROPPED —
+           A.R.C.'s six pipeline stages vanished from the page that way,
+           data present, nothing rendered. They follow the crossing
+           instead, in the headline-less brief: same copy column, same
+           column-measure images, no second headline announcing them. */
+        if (columns) {
+          out.push(
+            <PressingBrief
+              key={s.id + "-columns"}
+              columns={columns}
+              columnsMark={columnsMark}
+            />
+          );
+        }
       } else {
         out.push(
           <PressingBrief

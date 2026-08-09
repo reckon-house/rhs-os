@@ -216,6 +216,31 @@ past where the data ends — the scale continues, the work does not);
 dumbbells for two-point comparisons; floating range bars when a value
 is honestly a range; dot-on-a-line for positions between two poles.
 
+**Resolution is gated at build time, per treatment.** `npm run facts`
+reads every pressing image's header and checks its native width against
+how the section draws it:
+
+| treatment | native floor | honest CSS |
+|---|---|---|
+| full-bleed / zoom plate | 3200 | 1600 |
+| flow plate | 1600 | 800 |
+| column image | 760 | 380 |
+
+It reports, by study and filename, anything drawn larger than its pixels
+allow, with the fix ("re-export bigger, or drop the bleed"). This exists
+because the classic layout never tested any of it — it drew everything
+inside the column, so a 2600px file looked fine there and only went soft
+once pressing full-bleeded it. "The live one looks sharper" usually
+means the live one was never asked to fill a screen.
+
+**A composited scale animation rasterizes ONCE, at the scale it was
+promoted at.** `will-change: transform` is the instruction not to
+re-raster, so a plate laid out small and scaled up paints a small bitmap
+magnified — the source never gets decoded past the layout box, and a
+3840px file can ship half its pixels. The zoom plate drops the hint
+whenever it parks so Chrome re-rasters at the settled scale. Any new
+component that animates scale on a large image owes the same release.
+
 **Known gap:** every pressing plate is a raw `<img>` while the classic
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.

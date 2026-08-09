@@ -200,6 +200,10 @@ export function PressingZoomPlate({
     let box: { x: number; y: number; w: number; h: number } | null = null;
     let scale = 1;
     let spill = 0;
+    /* Where the plate's TOP edge parks, in sticky coords. Width-fit
+       plates park under the masthead and pan down from there; a
+       contained plate centres in the viewport instead. */
+    let parkY = 0;
     let zoomPx = 0;
     let panPx = 0;
 
@@ -237,17 +241,29 @@ export function PressingZoomPlate({
          exists. A landscape frame spills only a little, so the pan is
          over before the eye reads it as a pan, and what registers is
          the bottom of the picture being cut. `contain` grows the plate
-         until the WHOLE frame fits the mat instead: no spill, no pan,
-         nothing off screen. It also asks less of the file — a smaller
-         final scale needs fewer device pixels than the source has to
-         supply, which is the same reason the plate looked soft. */
+         until the WHOLE frame fits instead: no spill, no pan, nothing
+         off screen.
+
+         And it fits against the FULL viewport, not the mat. The mat
+         gives up the masthead's strip so a tall plate's top edge lands
+         below the bar rather than behind it — but a plate that fits
+         the screen entirely has no top edge to protect, and charging
+         it that strip is what made the first contain pass park short
+         of BOTH side edges: it ran out of height before it ran out of
+         width and stopped with paper showing either side. Measured
+         against the whole screen a 1.625 frame fills the width with
+         height to spare, so it parks edge to edge, centred, whole. */
       const widthFit = window.innerWidth / box.w;
       if (fit === "contain") {
-        scale = Math.min(widthFit, matH / box.h);
+        scale = Math.min(widthFit, vh() / box.h);
         spill = 0;
+        /* centred: the masthead floats over the picture rather than
+           pushing it down, which is what a full-bleed frame wants */
+        parkY = (vh() - box.h * scale) / 2;
       } else {
         scale = widthFit;
         spill = Math.max(0, box.h * scale - matH);
+        parkY = MASTHEAD;
       }
 
       zoomPx = vh() * 1.1; // scroll spent growing the plate
@@ -304,10 +320,10 @@ export function PressingZoomPlate({
       const b = box!;
 
       /* Origin is top-center, so translate steers the plate's TOP edge to
-         the mat's top line and scale grows it downward from there. The pan
+         its park line and scale grows it downward from there. The pan
          then slides that tall frame up through the mat window. */
       const tx = (window.innerWidth / 2 - (b.x + b.w / 2)) * e;
-      const ty = (mastheadH() - b.y) * e - spill * pp;
+      const ty = (parkY - b.y) * e - spill * pp;
 
       const cur = 1 + (scale - 1) * e;
       /* THE RASTER RELEASE. will-change pins the layer's raster to the

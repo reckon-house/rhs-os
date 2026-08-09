@@ -317,41 +317,49 @@ export const arcCaseStudy: CaseStudy = {
       content:
         "The image passes through vision processing, object identification, value estimation, and archival. Each stage feeds the next. Each decision point governed by confidence thresholds. Processing time measured under typical indoor lighting conditions.",
     },
-    // Viz — awaits the PressingVizFrame bridge; content untouched.
+    /* The six stages, in the copy column rather than in cream cards.
+       Each column carries its own image at column measure and takes two
+       consecutive stages: the schematic below draws where they sit, the
+       columns say what each one does. The second stage in a column leads
+       with its name, which is the brief's own convention for a heading
+       inside a block. */
     {
       id: "pipeline",
-      type: "pipeline",
+      type: "three-column-text",
       pressing: { mark: { n: "06", name: "How it works" } },
-      steps: [
+      columns: [
         {
-          number: "01",
           title: "Image Capture",
-          description:
-            "User photographs a room or individual item using their device camera. No special hardware. No calibration. Standard smartphone optics.",
-          title2: "Archive Entry",
-          description2:
-            "The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
-          image: `${IMG}/arc-pipeline-ai-categorization-step.jpg`,
+          image: {
+            src: `${IMG}/arc-pipeline-photo-capture-step.jpg`,
+            alt: "A.R.C. capturing a room from a phone camera",
+            width: 388,
+            height: 388,
+          },
+          content:
+            "User photographs a room or individual item using their device camera. No special hardware. No calibration. Standard smartphone optics.\n\nArchive Entry. The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
         },
         {
-          number: "02",
           title: "Vision Processing",
-          description:
-            "OpenAI Vision API receives the image and returns structured analysis. Object identification, material detection, style classification, condition assessment, estimated era or manufacture period.",
-          title2: "Financial Analysis",
-          description2:
-            "Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the shortfall shows up as a specific dollar amount. The homeowner sees it before a disaster reveals it.",
-          image: `${IMG}/arc-pipeline-cloud-sync-step.jpg`,
+          image: {
+            src: `${IMG}/arc-pipeline-ai-categorization-step.jpg`,
+            alt: "A.R.C. reading a photograph and naming what it finds",
+            width: 388,
+            height: 388,
+          },
+          content:
+            "OpenAI Vision API receives the image and returns structured analysis. Object identification, material detection, style classification, condition assessment, estimated era or manufacture period.\n\nFinancial Analysis. Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the shortfall shows up as a specific dollar amount. The homeowner sees it before a disaster reveals it.",
         },
         {
-          number: "03",
           title: "Value Estimation",
-          description:
-            "Identified objects are matched against market replacement data. The system estimates current replacement cost, not depreciated value or original purchase price. Replacement cost is the insurance-relevant metric.",
-          title2: "Category Assignment",
-          description2:
-            "Each item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents. Sub-categories provide additional granularity.",
-          image: `${IMG}/arc-pipeline-photo-capture-step.jpg`,
+          image: {
+            src: `${IMG}/arc-pipeline-cloud-sync-step.jpg`,
+            alt: "A.R.C. pricing a documented room and totalling it",
+            width: 388,
+            height: 388,
+          },
+          content:
+            "Identified objects are matched against market replacement data. The system estimates current replacement cost, not depreciated value or original purchase price. Replacement cost is the insurance-relevant metric.\n\nCategory Assignment. Each item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents. Sub-categories provide additional granularity.",
         },
       ],
     },
