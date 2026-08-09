@@ -67,8 +67,11 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "cast-header",
       type: "section-header",
       label: "SECTION 02: THE CAST",
-      title: "Real People,\nSignature Shades.",
-      pressing: { mark: { n: "02", name: "Real People" } },
+      title: "Real People,",
+      pressing: {
+        mark: { n: "02", name: "Real People" },
+        heldLine: "Signature Shades.",
+      },
     },
     {
       id: "cast-subhead",
@@ -94,15 +97,30 @@ export const youBySallyCaseStudy: CaseStudy = {
       alt: "You By Sally cast portraits — real people paired with signature hair color shades on saturated backgrounds",
       aspect: "native",
       padded: true,
+      // The zoom. A stack of cast portraits is 3010x4480 — the tallest
+      // frame in the portfolio — so the default fit is right: it fills
+      // the width and leaves most of the cast below the fold, and
+      // scrolling walks down the faces one at a time.
+      pressing: {
+        plate: "02",
+        captions: [
+          "The cast",
+          "Real people, signature shades",
+          "Saturated grounds",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
-    // ── Inline scaling hero — second cast frame as visual breath
+    // ── Second cast frame — climbs across the held portraits
     {
       id: "cast-inline",
       type: "hero",
       image: `${IMG}/hero2.jpg`,
       alt: "You By Sally campaign — additional cast frame on saturated color ground",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Editorial headline — replaces the original "Color as identity / Not color as chore"
@@ -120,8 +138,14 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "swatch-header",
       type: "section-header",
       label: "SECTION 03: THE SWATCH SYSTEM",
-      title: "Shade Exploration\nat Eye Level.",
-      pressing: { mark: { n: "03", name: "Shade Exploration" } },
+      title: "Shade Exploration",
+      // The study's one crossing, held to section 03 so it does not land
+      // on the same beat as the zoom above it.
+      pressing: {
+        mark: { n: "03", name: "Shade Exploration" },
+        heldLine: "at Eye Level.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "swatch-subhead",
@@ -225,8 +249,11 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Brand That Treats\nColor as a Choice.",
-      pressing: { mark: { n: "04", name: "A Brand That Treats" } },
+      title: "A Brand That Treats",
+      pressing: {
+        mark: { n: "04", name: "A Brand That Treats" },
+        heldLine: "Color as a Choice.",
+      },
     },
     {
       id: "closing-subhead",

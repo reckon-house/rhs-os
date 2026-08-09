@@ -99,8 +99,17 @@ export const sallyCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Five Problems\nWith One Root",
-      pressing: { mark: { n: "02", name: "Five Problems" } },
+      title: "Five Problems",
+      // The study's one crossing, in the BRIEF form (pin + crossing): this
+      // header carries method columns, and PRESSING.md §7 reserves the
+      // standalone staging for headers whose copy is short. Every header
+      // in this study carries columns, so the choice was which beat, and
+      // the opening diagnosis is the one everything below answers.
+      pressing: {
+        mark: { n: "02", name: "Five Problems" },
+        heldLine: "With One Root",
+        choreo: { pin: true, crossing: true },
+      },
       group: { name: "problem" },
     },
     {
@@ -155,8 +164,11 @@ export const sallyCaseStudy: CaseStudy = {
       id: "trends-header",
       type: "section-header",
       label: "SECTION 03: INTELLIGENCE / TRENDS FEED",
-      title: "Real-Time\nCompetitive Intelligence",
-      pressing: { mark: { n: "03", name: "Real-Time" } },
+      title: "Real-Time",
+      pressing: {
+        mark: { n: "03", name: "Real-Time" },
+        heldLine: "Competitive Intelligence",
+      },
     },
     {
       id: "trends-text",
@@ -400,8 +412,11 @@ export const sallyCaseStudy: CaseStudy = {
       id: "asset-header",
       type: "section-header",
       label: "SECTION 05: ASSET HUB",
-      title: "Digital Asset Management\nRebuilt with AI",
-      pressing: { mark: { n: "05", name: "Digital Asset Management" } },
+      title: "Digital Asset Management",
+      pressing: {
+        mark: { n: "05", name: "Digital Asset Management" },
+        heldLine: "Rebuilt with AI",
+      },
     },
     {
       id: "asset-text",
@@ -480,22 +495,42 @@ export const sallyCaseStudy: CaseStudy = {
       src: "/case-studies/sally-os/heroes/sally-os-asset-hub-detail.jpg",
       alt: "Asset Hub, full interface overview with AI tagging and search",
       aspect: "native",
+      // The zoom, and this study's only available hold. Every dual-image
+      // here is followed by a chart, a quote or a column grid, none of
+      // which can rise — so the climb below had to be built on a zoom.
+      // A full interface overview also earns it: the tagging and search
+      // controls are the content, and they are a blur at plate size.
+      // contain, landscape frame.
+      pressing: {
+        plate: "05",
+        captions: [
+          "Asset Hub",
+          "Full interface overview",
+          "AI tagging and search",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
-    // ── UTILITIES MARKETPLACE ──
+    // ── UTILITIES MARKETPLACE — climbs across the held Asset Hub zoom
     {
       id: "utilities-hero-image",
       type: "hero",
       image: "/case-studies/sally-os/heroes/sally-os-utilities-marketplace-hero.jpg",
       alt: "Utilities Marketplace, internal tools platform",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "utilities-header",
       type: "section-header",
       label: "SECTION 06: UTILITIES MARKETPLACE",
-      title: "A Growing Library of\nInternal Tools",
-      pressing: { mark: { n: "06", name: "A Growing Library of" } },
+      title: "A Growing Library of",
+      pressing: {
+        mark: { n: "06", name: "A Growing Library of" },
+        heldLine: "Internal Tools",
+      },
     },
     {
       id: "utilities-text",
