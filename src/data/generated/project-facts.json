@@ -71,14 +71,14 @@
       "n": 34,
       "cites": [
        {
-        "section": "hero",
-        "field": "slides.0.src",
-        "quote": "amber shockey co blue florals plates stacked on peony pattern collection mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg"
        },
        {
-        "section": "hero",
-        "field": "slides.0.alt",
-        "quote": "Amber Shockey & Co. blue florals collection, plates layered on peony pattern background, stacked to read as a still life"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg"
        }
       ]
      }
@@ -177,14 +177,14 @@
       "n": 5,
       "cites": [
        {
-        "section": "hero",
-        "field": "slides.1.src",
-        "quote": "amber shockey co black linework geometric plates marble surface collection mockup"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg"
        },
        {
         "section": "hero",
-        "field": "slides.1.alt",
-        "quote": "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver"
+        "field": "slides.1.src",
+        "quote": "amber shockey co black linework geometric plates marble surface collection mockup"
        }
       ]
      },
@@ -740,14 +740,14 @@
       "n": 3,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "typography patterns the fancy poster wood surface lifestyle"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg"
        },
        {
         "section": "hero",
-        "field": "alt",
-        "quote": "Typography & Patterns poster on wood surface, expressive letterforms filled with black and white patterns"
+        "field": "image",
+        "quote": "typography patterns the fancy poster wood surface lifestyle"
        }
       ]
      }
@@ -976,14 +976,14 @@
       "n": 28,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campa…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants…"
        }
       ]
      }
@@ -995,14 +995,14 @@
       "n": 18,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campa…"
-       },
-       {
         "section": "meta",
         "field": "reel.images.0",
         "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants…"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyl…"
        }
       ]
      },
@@ -1031,14 +1031,14 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Four-panel West Texas landscape collage with the Capitan Boot Co. cattle skull lockup centered across the seam"
-       },
-       {
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Shot the campaign in West Texas."
        }
       ]
      }
@@ -1170,14 +1170,14 @@
       "n": 24,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…oom with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific North…"
-       },
-       {
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
        }
       ]
      },
@@ -1204,14 +1204,14 @@
       "n": 13,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Pacific Northwest tree canopy"
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
        }
       ]
      },
@@ -1257,14 +1257,14 @@
       "n": 11,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ntain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors…"
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg"
        }
       ]
      },
@@ -1274,14 +1274,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass doors framing the Paci…"
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
        }
       ]
      },
@@ -1453,14 +1453,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "chalet living room a frame glass doors malm fireplace sputnik chandelier"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Mountain View chalet living room with A-frame ceiling, sputnik chandelier, Malm fireplace, walnut dining set, and 16-foot glass do…"
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
        }
       ]
      },
@@ -1503,7 +1503,7 @@
      {
       "facet": "style",
       "term": "mid century",
-      "n": 10,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -1564,14 +1564,14 @@
       "n": 37,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "cosmo prof photography direction hair color brushes product detail quad composition"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Cosmo Prof photography direction, four-quadrant composition: hair color stroke, color tube detail, product lineup, and Framar appl…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/cosmo-prof/cosmo-prof-photography-direction-hair-color-brushes-product-detail-quad-composition.jpg"
        }
       ]
      }
@@ -1741,14 +1741,14 @@
       "n": 4,
       "cites": [
        {
-        "section": "hero-1",
-        "field": "alt",
-        "quote": "The Dallas Sport Collective marketing site open on a laptop, on concrete"
-       },
-       {
         "section": "meta",
         "field": "title",
         "quote": "Dallas Sport Collective"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule holding it together was a pile of…"
        }
       ]
      }
@@ -1897,14 +1897,14 @@
       "n": 19,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-entry/3.webp"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/fairview-entry/6.webp"
        }
       ]
      }
@@ -1916,14 +1916,14 @@
       "n": 19,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at le…"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A vintage rug runner anchors the floor without crowding it."
        }
       ]
      },
@@ -1933,14 +1933,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…he Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floor…"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A brass and alabaster chandelier hangs alone overhead."
        }
       ]
      },
@@ -1986,14 +1986,14 @@
       "n": 13,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood co…"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
        }
       ]
      }
@@ -2005,14 +2005,14 @@
       "n": 13,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview entry: two-story foyer with brass and alabaster chandelier, French ironwork doors, vintage gray rug on white oak floo…"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
        }
       ]
      },
@@ -2022,14 +2022,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ster chandelier, French ironwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geomet…"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
        }
       ]
      },
@@ -2039,9 +2039,9 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…onwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right"
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…art on the side wall tell stories without explaining themselves: a slatted wood geometric piece, a dark abstract in a thick frame."
        },
        {
         "section": "hero",
@@ -2191,14 +2191,14 @@
       "n": 28,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar ca…"
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg"
        }
       ]
      },
@@ -2208,14 +2208,14 @@
       "n": 28,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
        }
       ]
      },
@@ -2225,14 +2225,14 @@
       "n": 27,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
        }
       ]
      },
@@ -2329,14 +2329,14 @@
       "n": 21,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg"
        }
       ]
      },
@@ -2346,14 +2346,14 @@
       "n": 16,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg"
        }
       ]
      },
@@ -2363,14 +2363,14 @@
       "n": 12,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, black bar cabinet on the left"
-       },
-       {
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg"
        }
       ]
      },
@@ -2525,14 +2525,14 @@
       "n": 12,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…view sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee table, blac…"
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Stacked stone, charcoal velvet, antiqued brass, warm oak"
        }
       ]
      },
@@ -2556,14 +2556,14 @@
       "n": 4,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview sitting room: floor-to-ceiling stacked stone fireplace, charcoal velvet swivel chairs around a round brass coffee tab…"
-       },
-       {
         "section": "meta",
         "field": "title",
         "quote": "The Fairview Sitting Room."
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Sitting room built around a floor-to-ceiling stacked stone fireplace"
        }
       ]
      }
@@ -2615,14 +2615,14 @@
       "n": 19,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg"
        }
       ]
      },
@@ -2666,14 +2666,14 @@
       "n": 8,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg"
        }
       ]
      },
@@ -2835,9 +2835,9 @@
       "n": 18,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "fairview suite bedroom chandelier fireplace windows wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg"
        },
        {
         "section": "meta",
@@ -2871,14 +2871,14 @@
       "n": 17,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
        }
       ]
      }
@@ -2975,14 +2975,14 @@
       "n": 4,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
-       },
-       {
         "section": "meta",
         "field": "abstract",
         "quote": "…lé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall."
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "The Fairview primary suite, charcoal violet walls, crystal chandelier, cast stone fireplace, floor-to-ceiling windows"
        }
       ]
      },
@@ -3103,14 +3103,14 @@
       "n": 31,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
-       },
-       {
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
        }
       ]
      },
@@ -3188,14 +3188,14 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "urban southwest primary bath exposed brick matte black soaking tub"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Urban southwest with exposed brick and a matte black soaking tub."
        }
       ]
      },
@@ -3205,14 +3205,14 @@
       "n": 7,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
-       },
-       {
         "section": "meta",
         "field": "subtitle",
         "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Marble, dolomite, white oak, classic tile"
        }
       ]
      },
@@ -3301,14 +3301,14 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "urban southwest primary bath exposed brick matte black soaking tub"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
        }
       ]
      }
@@ -3320,14 +3320,14 @@
       "n": 7,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "urban southwest primary bath exposed brick matte black soaking tub"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Urban southwest with exposed brick and a matte black soaking tub."
        }
       ]
      },
@@ -3337,31 +3337,14 @@
       "n": 7,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
-       },
-       {
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "shower",
-      "n": 7,
-      "cites": [
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Urban southwest primary bath with exposed brick wall, matte black freestanding soaking tub, white oak vanity, and marble shower"
        },
        {
         "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+        "field": "reel.images.5",
+        "quote": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg"
        }
       ]
      },
@@ -3379,6 +3362,23 @@
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/floor-and-decor/modern-farmhouse-powder-room-circular-brass-mirror-patterned-hex-floor.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shower",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg"
        }
       ]
      },
@@ -3571,14 +3571,14 @@
       "n": 37,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country bath vanity marble globe sconces sage"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        }
       ]
      },
@@ -3607,14 +3607,14 @@
       "n": 29,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country bath vanity marble globe sconces sage"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        }
       ]
      }
@@ -3626,14 +3626,14 @@
       "n": 27,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country bath vanity marble globe sconces sage"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-vase-botanicals-marble-sconce.jpg"
        }
       ]
      },
@@ -3788,14 +3788,14 @@
       "n": 17,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country bath vanity marble globe sconces sage"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg"
        }
       ]
      },
@@ -3822,14 +3822,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
-       },
-       {
         "section": "meta",
         "field": "reel.images.3",
         "quote": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling."
        }
       ]
      },
@@ -4028,14 +4028,14 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country bath vanity marble globe sconces sage"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country primary bath, marble vanity with globe sconces, sage cabinetry, dried botanicals"
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Three marbles, polished nickel, lighter sage cabinetry, wood plank ceiling."
        }
       ]
      }
@@ -4138,14 +4138,14 @@
       "n": 51,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country kitchen island pendants marble wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        }
       ]
      },
@@ -4186,14 +4186,14 @@
       "n": 37,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country kitchen island pendants marble wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        }
       ]
      },
@@ -4222,14 +4222,14 @@
       "n": 36,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country kitchen island pendants marble wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg"
        }
       ]
      },
@@ -4239,14 +4239,14 @@
       "n": 24,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       },
-       {
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-range-stove-brass-knobs-marble.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
        }
       ]
      },
@@ -4256,14 +4256,14 @@
       "n": 20,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       },
-       {
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…sign system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling th…"
        }
       ]
      },
@@ -4355,14 +4355,14 @@
       "n": 26,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       },
-       {
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Cabinetry, island, dining zone, full material spec."
        }
       ]
      },
@@ -4372,14 +4372,14 @@
       "n": 24,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country kitchen island pendants marble wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-full-view-beams-runner-island.jpg"
        }
       ]
      },
@@ -4389,14 +4389,14 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       },
-       {
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint."
        }
       ]
      },
@@ -4655,14 +4655,14 @@
       "n": 15,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country kitchen, sage green cabinetry with marble backsplash, white oak island, brass pendants"
-       },
-       {
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The material palette is the design system - sage green setting the dominant surface, raw white oak providing the warm counterpoint…"
        }
       ]
      }
@@ -4764,14 +4764,14 @@
       "n": 33,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jp…"
        }
       ]
      },
@@ -4781,14 +4781,14 @@
       "n": 25,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ving room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed armchairs, leather bench…"
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.…"
        }
       ]
      },
@@ -4798,14 +4798,14 @@
       "n": 20,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
-       },
-       {
         "section": "meta",
         "field": "reel.images.7",
         "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
        }
       ]
      },
@@ -4815,14 +4815,14 @@
       "n": 16,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
-       },
-       {
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
        }
       ]
      },
@@ -4875,14 +4875,14 @@
       "n": 31,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
        }
       ]
      }
@@ -4894,14 +4894,14 @@
       "n": 23,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…l Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed arm…"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "…case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
        }
       ]
      },
@@ -4911,14 +4911,14 @@
       "n": 21,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jp…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…oom: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed armchairs, leather bench with s…"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "…case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
        }
       ]
      },
@@ -4928,14 +4928,14 @@
       "n": 11,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg"
        }
       ]
      },
@@ -4962,31 +4962,14 @@
       "n": 9,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide"
-       },
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…ather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floors"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "bench",
-      "n": 6,
-      "cites": [
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
        },
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "The sheepskin under the bench is soft."
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg"
        }
       ]
      },
@@ -5004,6 +4987,23 @@
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The sheepskin under the bench is soft."
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
        }
       ]
      },
@@ -5281,14 +5281,14 @@
       "n": 4,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country Residence living room: floor-to-ceiling limestone fireplace wall, cognac leather sofa with Navajo-style throw, tweed…"
-       },
-       {
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall."
        }
       ]
      },
@@ -5386,14 +5386,14 @@
       "n": 33,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
        }
       ]
      },
@@ -5403,14 +5403,14 @@
       "n": 12,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…ase-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Hill Country Oakworks outdoor banner, color-blocked whiskey barrel composition with TEXAS BORN OAKCRAFT tagline at scale"
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Campaign for a Texas barrel maker."
        }
       ]
      }
@@ -5594,14 +5594,14 @@
       "n": 40,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "ivy park nordstrom laptop brand experience mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg"
        }
       ]
      },
@@ -5611,14 +5611,14 @@
       "n": 14,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "ivy park nordstrom laptop brand experience mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/ivy-park/ivy-park-nordstrom-mobile-experience-mockup.jpg"
        }
       ]
      },
@@ -5628,14 +5628,14 @@
       "n": 6,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Ivy Park by Beyoncé, Nordstrom brand experience on laptop, concrete surface"
-       },
-       {
         "section": "meta",
         "field": "title",
         "quote": "Ivy Park by Beyoncé"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Beyoncé's first activewear line, with Nordstrom holding the exclusive US retail partnership."
        }
       ]
      }
@@ -5720,14 +5720,14 @@
       "n": 11,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
-       },
-       {
         "section": "meta",
         "field": "title",
         "quote": "J. Christianson"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
        }
       ]
      }
@@ -5739,14 +5739,14 @@
       "n": 3,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "j christianson storefront tree stripe window mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg"
        },
        {
         "section": "hero",
-        "field": "alt",
-        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
+        "field": "image",
+        "quote": "j christianson storefront tree stripe window mockup"
        }
       ]
      }
@@ -5832,14 +5832,14 @@
       "n": 30,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "jeffrey new york digital flagship hero"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Jeffrey New York digital flagship hero"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
        }
       ]
      }
@@ -5851,14 +5851,14 @@
       "n": 20,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "jeffrey new york digital flagship hero"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Jeffrey New York digital flagship hero"
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp"
        }
       ]
      }
@@ -5971,14 +5971,14 @@
       "n": 35,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "jeffrey spring campaign hero"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Jeffrey Spring Campaign hero"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg"
        }
       ]
      },
@@ -6093,14 +6093,14 @@
       "n": 46,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "loved by nordstrom gallery wall campaign tiles tibi center"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Loved by Nordstrom campaign gallery wall of brand tiles with two TIBI Loved By tiles at center"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg"
        }
       ]
      }
@@ -6237,14 +6237,14 @@
       "n": 66,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "neiman marcus insite contemporary art magazine hands mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Neiman Marcus InSite Contemporary Art magazine spread held in hands"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup.jpg"
        }
       ]
      }
@@ -6402,14 +6402,14 @@
       "n": 23,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "nordstrom beauty hub laptop homepage mockup"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Nordstrom Beauty hub homepage on laptop, three editorial story cards, stylists section"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup.jpg"
        }
       ]
      }
@@ -6476,9 +6476,9 @@
       "n": 16,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Nordstrom Content Framework applied across the site, custom lockups powering the categorized homepage system"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg"
        },
        {
         "section": "meta",
@@ -6534,14 +6534,14 @@
       "n": 40,
       "cites": [
        {
-        "section": "hero",
-        "field": "image",
-        "quote": "nordstrom personalization system design laptop website interface fashion ecommerce floral field outdoor lifestyle"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-…"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "Nordstrom homepage on a laptop in a field of daisies, showing personalized editorial tile layout with Beauty Queen and 90s Revibe…"
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-…"
        }
       ]
      }
@@ -6570,14 +6570,14 @@
       "n": 5,
       "cites": [
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…om homepage on a laptop in a field of daisies, showing personalized editorial tile layout with Beauty Queen and 90s Revibe stories"
-       },
-       {
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Content engine on three tile shapes."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Built a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobi…"
        }
       ]
      },
@@ -6782,14 +6782,14 @@
       "n": 7,
       "cites": [
        {
-        "section": "hero-1",
-        "field": "alt",
-        "quote": "Sally Beauty Marketing OS, platform overview"
-       },
-       {
         "section": "meta",
         "field": "title",
         "quote": "Sally Beauty Marketing OS"
+       },
+       {
+        "section": "hero-1",
+        "field": "alt",
+        "quote": "Sally Beauty Marketing OS, platform overview"
        }
       ]
      },

@@ -31,25 +31,6 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO ──
-    {
-      id: "hero",
-      type: "hero-carousel",
-      // Keep the single-hero footprint: mobile 5/4, desktop ~Inna's native 1.663
-      // aspect (5/3), so switching to a carousel doesn't change the hero's size.
-      aspectClassName: "aspect-[5/4] md:aspect-[5/3]",
-      slides: [
-        {
-          src: `${IMG}/branding-graphics-inna-foil-zine-orange-dress-lifestyle.jpg`,
-          alt: "Inna foil-printed zine cover with woman in orange dress, held in hands against blinds",
-        },
-        {
-          src: `${IMG}/okina.jpg`,
-          alt: "Okina brand identity, wordmark over an iridescent gradient",
-        },
-      ],
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -92,6 +73,29 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "Every project here started the same way. Match the energy of something that doesn't exist yet.\n\nFour album covers, four completely different visual languages. Woodgrain collage and halftone geometry for a folk record. Grunge compositing with hand-rendered type for a pop artist. Linework landscapes stacked into depth for an ambient release. A portrait where saturated color carries the entire identity. Each one had to read at vinyl scale and survive as a thumbnail. No shared visual logic between them. That was the requirement.\n\nThe poster work follows the same approach. Atmospheric photography against dot-matrix grids. Radial color studies built from pattern. Double-exposure landscapes where texture replaces detail. These aren't decorative pieces. They're compositional puzzles solved on a deadline.\n\nLogos ranged from ornamental to blunt. Flowing botanical illustration for a fashion collective. Halftone dots and geometric sans for a DJ. A bird on a monogram for a lifestyle brand. The only consistency is that each mark sounds like the client, not the designer.\n\nThis is where the eye gets trained. Everything that came later started here.",
     },
 
+    // ── HERO CAROUSEL ──
+    // After the cover, not before it: the cover opens every study in this
+    // language. A carousel has no climb of its own, so the handover here is
+    // the plain one.
+    {
+      id: "hero",
+      type: "hero-carousel",
+      // Keep the single-hero footprint: mobile 5/4, desktop ~Inna's native 1.663
+      // aspect (5/3), so switching to a carousel doesn't change the hero's size.
+      aspectClassName: "aspect-[5/4] md:aspect-[5/3]",
+      slides: [
+        {
+          src: `${IMG}/branding-graphics-inna-foil-zine-orange-dress-lifestyle.jpg`,
+          alt: "Inna foil-printed zine cover with woman in orange dress, held in hands against blinds",
+        },
+        {
+          src: `${IMG}/okina.jpg`,
+          alt: "Okina brand identity, wordmark over an iridescent gradient",
+        },
+      ],
+      pressing: { captions: ["Zine cover and wordmark"] },
+    },
+
     // ════════════════════════════════════════
     // SECTION 02 — POSTERS & PRINTS
     // ════════════════════════════════════════
@@ -99,8 +103,11 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "posters-header",
       type: "section-header",
       label: "SECTION 02: POSTERS & PRINTS",
-      title: "Each One Started\nWith a Blank Page.",
-      pressing: { mark: { n: "02", name: "Each One Started" } },
+      title: "Each One Started",
+      pressing: {
+        mark: { n: "02", name: "Each One Started" },
+        heldLine: "With a Blank Page.",
+      },
     },
     {
       id: "posters-text",
@@ -167,9 +174,15 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         src: `${IMG}/branding-graphics-candy-paint-sunburst-print.jpg`,
         alt: "Candy Paint sunburst print, radial pastel rays with halftone patterns",
       },
+      // Held so the lake prints climb across it. The poster section is a long
+      // even run of plates; this is the one lift in it.
+      pressing: {
+        captions: ["Verse02\nWas It The Light", "Candy Paint"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── Autumn lake reflection prints — already a baked pair photo
+    // ── Autumn lake reflection prints — climbs across the held pair
     {
       id: "poster-autumn-lake",
       type: "image",
@@ -177,6 +190,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       alt: "Autumn lake reflection prints, two framed pieces showing gold and red foliage mirrored in water",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Cloud + Green Tree framed pair — dual, native aspect
@@ -212,8 +226,15 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "covers-header",
       type: "section-header",
       label: "SECTION 03: COVERS",
-      title: "Four Records.\nNothing in Common.",
-      pressing: { mark: { n: "03", name: "Four Records" } },
+      title: "Four Records.",
+      // The study's one crossing. Four sleeves with no shared logic IS the
+      // fluency argument the whole study makes, so the gesture lands here
+      // rather than on the marks section that only restates it.
+      pressing: {
+        mark: { n: "03", name: "Four Records" },
+        heldLine: "Nothing in Common.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "covers-text",
@@ -257,8 +278,11 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "storefront-header",
       type: "section-header",
       label: "SECTION 04: STOREFRONT",
-      title: "From a 4x6\nto a Building.",
-      pressing: { mark: { n: "04", name: "From a 4x6" } },
+      title: "From a 4x6",
+      pressing: {
+        mark: { n: "04", name: "From a 4x6" },
+        heldLine: "to a Building.",
+      },
     },
     {
       id: "storefront-text",
@@ -268,16 +292,30 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "The Bokeh's Fall window translated the same atmospheric language to building scale. The source image is below, hand-shot on film. The window is what happened when it got blown out to street size and waited for foot traffic to find it.",
     },
 
-    // ── Bokeh's Fall storefront — inline hero
+    // ── Bokeh's Fall storefront — the zoom. The section's copy is about a
+    // 4x6 film frame blown out to street size, and filling the mat then
+    // travelling the frame is that sentence as a gesture. contain because
+    // the window is landscape (PRESSING.md §7).
     {
       id: "storefront-hero",
       type: "hero",
       image: `${IMG}/branding-graphics-bokehs-fall-storefront-window-display.jpg`,
       alt: "Bokeh's Fall storefront window display, large bokeh light photograph with overlay typography in modern building",
       inline: true,
+      pressing: {
+        plate: "04",
+        captions: [
+          "Bokeh's Fall",
+          "Storefront window",
+          "Photograph at street size",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
-    // ── Source bokeh photo
+    // ── Source bokeh photo — climbs across the held window. The order is the
+    // argument: the building first, then the 4x6 it came from.
     {
       id: "storefront-source",
       type: "image",
@@ -285,6 +323,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       alt: "Bokeh lights source photograph, warm orange and pink defocused points of light against dark background",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -294,8 +333,11 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 05: MARKS",
-      title: "Logos that sound like the client.\nNot the designer.",
-      pressing: { mark: { n: "05", name: "Logos that sound like the" } },
+      title: "Logos that sound like the client.",
+      pressing: {
+        mark: { n: "05", name: "Logos that sound like the" },
+        heldLine: "Not the designer.",
+      },
     },
     {
       id: "marks-text",
@@ -373,8 +415,11 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Where the Instincts\nGet Built.",
-      pressing: { mark: { n: "06", name: "Where the Instincts" } },
+      title: "Where the Instincts",
+      pressing: {
+        mark: { n: "06", name: "Where the Instincts" },
+        heldLine: "Get Built.",
+      },
     },
     {
       id: "closing-text",

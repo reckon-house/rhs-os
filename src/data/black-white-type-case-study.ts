@@ -83,8 +83,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "rules-header",
       type: "section-header",
       label: "SECTION 02: THE RULES",
-      title: "Six Patterns.\nOne Restriction.",
-      pressing: { mark: { n: "02", name: "Six Patterns" } },
+      title: "Six Patterns.",
+      // The study's one crossing, in the BRIEF form (pin + crossing) rather
+      // than standalone: this header carries the method columns, and
+      // PRESSING.md §7 reserves the standalone crossing for headers whose
+      // copy is short. Headline crosses, then pins while the vocabulary
+      // travels past it.
+      pressing: {
+        mark: { n: "02", name: "Six Patterns" },
+        heldLine: "One Restriction.",
+        choreo: { pin: true, crossing: true },
+      },
       group: { name: "rules", bg: "#141414", radius: 75, padding: "60px" },
     },
     {
@@ -139,8 +148,11 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "fancy-header",
       type: "section-header",
       label: "SECTION 03: ART PRINT 01 / THE FANCY",
-      title: "Script Meets\nGeometric Fill",
-      pressing: { mark: { n: "03", name: "Script Meets" } },
+      title: "Script Meets",
+      pressing: {
+        mark: { n: "03", name: "Script Meets" },
+        heldLine: "Geometric Fill",
+      },
     },
     {
       id: "fancy-text",
@@ -171,6 +183,13 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         src: `${IMG}/pattern-swatch-vertical-hairlines.jpg`,
         alt: "Pattern swatch, vertical hairlines on white",
       },
+      // Held so the dense-dot swatch climbs across it: two swatches at rest,
+      // then the densest one crosses them. The section is about what changes
+      // when only density changes.
+      pressing: {
+        captions: ["Diamonds\nWhite on black", "Vertical hairlines"],
+        choreo: { pin: true },
+      },
     },
     {
       id: "fancy-swatch-3",
@@ -179,6 +198,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, dense dots, white on black",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "fancy-swatch-4",
@@ -206,20 +226,37 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       text: "Dots, lines, stripes, diamonds.\nThe whole vocabulary.",
     },
 
-    // ── POSTER 2: "stepper" — hero first ──
+    // ── POSTER 2: "stepper" — the zoom. A print photographed in a room is
+    // the one frame where filling the mat changes what you can read: the
+    // object in its setting, then the letterforms at print scale. No
+    // zoomFit — the frame is near-square, so filling the width leaves a
+    // modest spill to pan rather than a landscape's worth.
     {
       id: "stepper-lifestyle",
       type: "hero",
       image: `${IMG}/typography-patterns-stepper-poster-bench-lifestyle.jpg`,
       alt: "Typography & Patterns, stepper art print displayed on wooden bench",
       inline: true,
+      pressing: {
+        plate: "04",
+        captions: [
+          "Stepper, art print 02",
+          "Slab capitals and script",
+          "Photographed on the bench",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
     {
       id: "stepper-header",
       type: "section-header",
       label: "SECTION 04: ART PRINT 02 / STEPPER",
-      title: "Vertical Stack.\nBold Geometry.",
-      pressing: { mark: { n: "04", name: "Vertical Stack" } },
+      title: "Vertical Stack.",
+      pressing: {
+        mark: { n: "04", name: "Vertical Stack" },
+        heldLine: "Bold Geometry.",
+      },
     },
     {
       id: "stepper-text",
@@ -297,8 +334,11 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-header",
       type: "section-header",
       label: "SECTION 05: ART PRINT 03 / WHITE",
-      title: "Calligraphic Sweep.\nArchitectural Anchor.",
-      pressing: { mark: { n: "05", name: "Calligraphic Sweep" } },
+      title: "Calligraphic Sweep.",
+      pressing: {
+        mark: { n: "05", name: "Calligraphic Sweep" },
+        heldLine: "Architectural Anchor.",
+      },
     },
     {
       id: "white-text",
@@ -328,6 +368,11 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/pattern-swatch-vertical-bar-stripes.jpg`,
         alt: "Pattern swatch, vertical bar stripes",
+      },
+      // Captions only. The fancy section already spends the pin, and three
+      // identical climbs would turn a gesture into a template.
+      pressing: {
+        captions: ["Large circles\nWhite on black", "Vertical bar stripes"],
       },
     },
     {

@@ -74,8 +74,11 @@ export const chaletCaseStudy: CaseStudy = {
       id: "studs-header",
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
-      title: "An Exterior That\nStops Disappearing.",
-      pressing: { mark: { n: "02", name: "An Exterior That" } },
+      title: "An Exterior That",
+      pressing: {
+        mark: { n: "02", name: "An Exterior That" },
+        heldLine: "Stops Disappearing.",
+      },
     },
     {
       id: "studs-subhead",
@@ -93,16 +96,29 @@ export const chaletCaseStudy: CaseStudy = {
         "Exterior repainted in warm gray with white railings for contrast against the PNW green. New lighting mounted to catch the patio and stairs at night. The original footprint gained over 400 square feet, mostly through reworking the deck line and pulling more of the main level out toward the trees.",
     },
 
-    // ── Front exterior, inline scaling hero
+    // ── Front exterior — the zoom. The section argues that the exterior
+    // stopped disappearing against the PNW green, and filling the mat is
+    // what lets the warm gray read at the scale the argument claims.
+    // contain because the frame is landscape (PRESSING.md §7).
     {
       id: "exterior-front-hero",
       type: "hero",
       image: `${IMG}/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg`,
       alt: "Front of the chalet repainted in warm gray with white railings, surrounded by Pacific Northwest evergreens and rocky landscape",
       inline: true,
+      pressing: {
+        plate: "02",
+        captions: [
+          "Warm gray, white railings",
+          "Repainted for contrast",
+          "Pacific Northwest",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
-    // ── Three-quarter angle, standalone (the dramatic landscape view)
+    // ── Three-quarter angle — climbs across the held front elevation
     {
       id: "exterior-three-quarter",
       type: "image",
@@ -110,6 +126,7 @@ export const chaletCaseStudy: CaseStudy = {
       alt: "Three-quarter view of the chalet showing the deck, white-railed stairs, and the rocky landscape grade leading up to the front door",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── 2-up: side details (string lights + back deck)
@@ -125,6 +142,9 @@ export const chaletCaseStudy: CaseStudy = {
         src: `${IMG}/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg`,
         alt: "Back-side view of the chalet showing the deck overhang, white-railed staircase down to a stone patio, and the landscaped garden line",
       },
+      pressing: {
+        captions: ["String lights, stone patio", "Back deck\nStair to the patio"],
+      },
     },
 
     // ════════════════════════════════════════
@@ -136,8 +156,11 @@ export const chaletCaseStudy: CaseStudy = {
       id: "interior-header",
       type: "section-header",
       label: "SECTION 03: THE INTERIOR",
-      title: "Tree Canopy as the\nFocal Point.",
-      pressing: { mark: { n: "03", name: "Tree Canopy as the" } },
+      title: "Tree Canopy as the",
+      pressing: {
+        mark: { n: "03", name: "Tree Canopy as the" },
+        heldLine: "Focal Point.",
+      },
     },
     {
       id: "interior-subhead",
@@ -166,7 +189,8 @@ export const chaletCaseStudy: CaseStudy = {
       padded: true,
     },
 
-    // ── 2-up: group 1 verticals (sofa detail + wide living view)
+    // ── 2-up: group 1 verticals (sofa detail + wide living view). Held, so
+    // the room entire can climb across the two details it is made of.
     {
       id: "living-group-one",
       type: "dual-image",
@@ -179,23 +203,28 @@ export const chaletCaseStudy: CaseStudy = {
         src: `${IMG}/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg`,
         alt: "Wide view of the chalet living room with a walnut dining set, the Malm fireplace, sputnik chandelier overhead, and 16-foot glass doors opening to the deck",
       },
+      pressing: {
+        captions: ["Ladder shelf, painted stone", "Walnut dining set\nMalm fireplace"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── Editorial headline acting as the pivot from "the architecture beat"
-    // to "the quieter furnishings beat"
-    {
-      id: "headline-quiet",
-      type: "editorial-headline",
-      text: "Quiet enough to let\nthe surroundings lead",
-    },
-
-    // ── hero2 inline — the secondary living moment
+    // ── The secondary living moment — climbs across the held pair
     {
       id: "living-secondary-hero",
       type: "hero",
       image: `${IMG}/chalet-living-room-tufted-gray-sofa-painted-stone-antlers-ladder-shelf.jpg`,
       alt: "Chalet living area with tufted gray sofa, painted stone wall, antlers, walnut leaning ladder shelf, and the kitchen visible to the right",
       inline: true,
+      pressing: { choreo: { rise: true } },
+    },
+
+    // ── Editorial headline — the palate cleanser after the climb, pivoting
+    // from the architecture beat to the quieter furnishings beat
+    {
+      id: "headline-quiet",
+      type: "editorial-headline",
+      text: "Quiet enough to let\nthe surroundings lead",
     },
 
     // ── Kitchen, standalone (group 2 horizontal)
@@ -233,8 +262,15 @@ export const chaletCaseStudy: CaseStudy = {
       id: "blend-header",
       type: "section-header",
       label: "SECTION 04: THE BLEND",
-      title: "Cabin Bones,\nMid-Century Sensibility.",
-      pressing: { mark: { n: "04", name: "Cabin Bones" } },
+      title: "Cabin Bones,",
+      // The study's one crossing. The blend IS the argument — cabin form,
+      // mid-century pieces — and it is the only section that names both
+      // halves at once, so the gesture belongs on the synthesis beat.
+      pressing: {
+        mark: { n: "04", name: "Cabin Bones" },
+        heldLine: "Mid-Century Sensibility.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "blend-subhead",
@@ -263,8 +299,11 @@ export const chaletCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Chalet That\nLooks Out.",
-      pressing: { mark: { n: "05", name: "A Chalet That" } },
+      title: "A Chalet That",
+      pressing: {
+        mark: { n: "05", name: "A Chalet That" },
+        heldLine: "Looks Out.",
+      },
     },
     {
       id: "closing-subhead",

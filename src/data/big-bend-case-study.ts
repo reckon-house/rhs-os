@@ -80,6 +80,7 @@ export const bigBendCaseStudy: CaseStudy = {
       src: `${IMG}/elena_wide.jpg`,
       aspect: "native",
       alt: "The Rio Grande winding out of Santa Elena Canyon through the Big Bend desert",
+      pressing: { caption: "Santa Elena Canyon\nRio Grande" },
     },
     // F
     {
@@ -106,6 +107,7 @@ export const bigBendCaseStudy: CaseStudy = {
       inline: true,
       image: `${IMG}/chisos-range-panorama.jpg`,
       alt: "Panorama of the Chisos range under a bright sky, a sotol plant in the foreground",
+      pressing: { caption: "The Chisos range\nSotol in the foreground" },
     },
 
     // type break
@@ -193,8 +195,21 @@ export const bigBendCaseStudy: CaseStudy = {
       id: "prada-header",
       type: "section-header",
       label: "SECTION 02: PRADA MARFA",
-      title: "The Store on\nHighway 90.",
-      pressing: { mark: { n: "02", name: "The Store on" } },
+      title: "The Store on",
+      // The study's one crossing, and its only section header. Everything
+      // before it is landscape held at one cadence; the sculpture is the
+      // turn, so the gesture marks it.
+      //
+      // No zoom plate and no mid-page climb in this study: every file here
+      // is 2560px native (under the working floor for a plate that fills
+      // the mat), and the composition is all single plates — nothing that
+      // pins, so nothing a riser could cross. The alternating full-bleed /
+      // column cadence IS this study's rhythm and a pin would fight it.
+      pressing: {
+        mark: { n: "02", name: "The Store on" },
+        heldLine: "Highway 90.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "prada-text",
@@ -211,6 +226,7 @@ export const bigBendCaseStudy: CaseStudy = {
       inline: true,
       image: `${IMG}/hero.jpg`,
       alt: "Prada Marfa, the sealed fake boutique standing alone beside U.S. 90 in the West Texas desert",
+      pressing: { caption: "Prada Marfa\nU.S. 90 near Valentine" },
     },
     // C — up close
     {

@@ -50,11 +50,30 @@ Each study, after its pass:
    the header absorbs method columns. See PRESSING.md §7's table for
    which is which.
 2. **At least one zoom plate**, on the study's most detail-bearing
-   image — IF an image with native width ≥ 3200px exists (check
-   `src/data/image-dimensions.ts` BEFORE flagging; the §7 floor table
-   is enforced by `npm run facts`). Landscape frames take
-   `zoomFit: "contain"`. If no image qualifies, skip the zoom and say
-   so in the commit message — a soft zoom is worse than none.
+   image. Landscape frames take `zoomFit: "contain"`.
+
+   **On the floor (decided 2026-08-09, mid-pass).** This quota
+   originally read "IF an image clears 3200px native," citing
+   PRESSING.md §7. Checked against the portfolio, that rule turned out
+   to be written on a false premise: only 2 of 27 studies clear 3200,
+   and **both reference implementations already fail it** — Robert's
+   two zoom plates are 3078px and 3070px, A.R.C.'s are 2598–2632px,
+   and all five sit on `npm run facts`'s "re-export bigger" list
+   today. The gesture the whole language is tuned around ships below
+   its own stated bar.
+
+   So the working floor is **~3000px, Robert's actual bar**, not 3200.
+   Prefer `zoomFit: "contain"` on landscape frames: it draws to about
+   1375 CSS rather than full viewport width, which a 3080px file
+   carries honestly. The facts gate does not model `zoomFit` (it only
+   reads `choreo.zoom`), so it will report those plates as thin
+   regardless — expect the report to grow by roughly 25 advisory lines
+   beside the Robert and A.R.C. entries already there. That is a
+   re-export backlog, not a regression, and it is the pre-existing
+   condition of the reference studies.
+
+   Under ~3000px native, still skip the zoom and say so in the commit
+   message. A soft zoom is worse than none.
 3. **At least one mid-page pin → rise pair.** A `dual-image` takes
    `choreo: { pin: true }` and the NEXT sibling (a `hero` or `image`)
    takes `choreo: { rise: true }`. Adjacent, always — a rise whose

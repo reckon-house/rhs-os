@@ -19,29 +19,6 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
   heroImage: "",
   style: "pressing",
   sections: [
-    // ── HERO CAROUSEL ──
-    // Auto-cycles through the three collection mockups. Tells the brand's range
-    // in the first 15 seconds of the page. Same scroll-reactive scale + radius
-    // animation as a single hero, but multi-image.
-    {
-      id: "hero",
-      type: "hero-carousel",
-      slides: [
-        {
-          src: `${IMG}/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg`,
-          alt: "Amber Shockey & Co. blue florals collection, plates layered on peony pattern background, stacked to read as a still life",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
-          alt: "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver",
-        },
-        {
-          src: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
-          alt: "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
-        },
-      ],
-    },
-
     // ── META ──
     {
       id: "meta",
@@ -78,6 +55,32 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each runs multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
     },
 
+    // ── HERO CAROUSEL ──
+    // Auto-cycles through the three collection mockups. Tells the brand's range
+    // in the first 15 seconds of the page. It sits after the cover, not before
+    // it: the cover opens every study in this language, and a carousel cannot
+    // rise (PressingCarouselPlate has no climb), so the handover here is the
+    // plain one rather than a plate climbing the pinned cover.
+    {
+      id: "hero",
+      type: "hero-carousel",
+      slides: [
+        {
+          src: `${IMG}/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. blue florals collection, plates layered on peony pattern background, stacked to read as a still life",
+        },
+        {
+          src: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. black linework collection, geometric plates on marble surface in charcoal and silver",
+        },
+        {
+          src: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
+          alt: "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
+        },
+      ],
+      pressing: { captions: ["Three collections, one system"] },
+    },
+
     // ════════════════════════════════════════
     // SECTION 02 — BLUE FLORALS
     // ════════════════════════════════════════
@@ -85,8 +88,11 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "blue-header",
       type: "section-header",
       label: "SECTION 02: BLUE FLORALS",
-      title: "Peonies and\nGeometry.",
-      pressing: { mark: { n: "02", name: "Peonies and" } },
+      title: "Peonies and",
+      pressing: {
+        mark: { n: "02", name: "Peonies and" },
+        heldLine: "Geometry.",
+      },
     },
     {
       id: "blue-subhead",
@@ -104,16 +110,9 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         "Pairs with black linework when the set needs structure. Pairs with red dragons when the table needs heat. The cobalt anchors any combination because every other collection shares cream as the common ground.",
     },
 
-    // Inline hero: peony wallpaper pattern field
-    {
-      id: "blue-hero",
-      type: "hero",
-      image: `${IMG}/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg`,
-      alt: "Blue florals peony pattern at wallpaper scale, full repeat tile showing the rhythm of the print",
-      inline: true,
-    },
-
-    // 2-up: geometric blue marks (the system inside the colorway)
+    // 2-up: geometric blue marks (the system inside the colorway). Held, so
+    // the wallpaper field can climb across it — the two marks are the parts,
+    // the field is what they add up to, and the climb states that order.
     {
       id: "blue-marks-pair",
       type: "dual-image",
@@ -127,6 +126,20 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         src: `${IMG}/amber-shockey-co-geometric-diamond-blue-cream-accent-mark.jpg`,
         alt: "Clean blue diamond accent mark on grey-blue, the simplest geometric form in the blue family",
       },
+      pressing: {
+        captions: ["Linework circle\nBlue and cream", "Diamond accent"],
+        choreo: { pin: true },
+      },
+    },
+
+    // Peony wallpaper pattern field — climbs across the held marks
+    {
+      id: "blue-hero",
+      type: "hero",
+      image: `${IMG}/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg`,
+      alt: "Blue florals peony pattern at wallpaper scale, full repeat tile showing the rhythm of the print",
+      inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -136,8 +149,15 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "black-header",
       type: "section-header",
       label: "SECTION 03: BLACK LINEWORK",
-      title: "Linework\nand Dots.",
-      pressing: { mark: { n: "03", name: "Linework" } },
+      title: "Linework",
+      // The study's one crossing. The reductive collection is the argument
+      // the other two lean on — it sits under everything without competing —
+      // so the gesture lands on the middle beat rather than an outer one.
+      pressing: {
+        mark: { n: "03", name: "Linework" },
+        heldLine: "and Dots.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "black-subhead",
@@ -187,8 +207,11 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "red-header",
       type: "section-header",
       label: "SECTION 04: RED DRAGONS",
-      title: "Dragons\nand Florals.",
-      pressing: { mark: { n: "04", name: "Dragons" } },
+      title: "Dragons",
+      pressing: {
+        mark: { n: "04", name: "Dragons" },
+        heldLine: "and Florals.",
+      },
     },
     {
       id: "red-subhead",
@@ -206,13 +229,27 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         "Lands well with black linework underneath as a setting. Hard against blue florals; the cobalt and burgundy fight. Pair with the cream pieces in either collection to break the contrast.",
     },
 
-    // Inline hero: red dragons plates mockup
+    // Red dragons plates — the zoom. This study's most ornamental frame, and
+    // a plate stacked on its own pattern backdrop is the one image where
+    // filling the mat and then travelling the frame actually shows something
+    // new: the motif at object scale, then at print scale. contain because
+    // the frame is landscape (PRESSING.md §7).
     {
       id: "red-hero",
       type: "hero",
       image: `${IMG}/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg`,
       alt: "Red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
       inline: true,
+      pressing: {
+        plate: "04",
+        captions: [
+          "Red dragons collection",
+          "Plates on the dragon repeat",
+          "Burgundy and rose",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // 2-up: red dragons marks
@@ -228,6 +265,9 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/amber-shockey-co-red-dragons-burgundy-floral-diamond-secondary-mark.jpg`,
         alt: "Red dragons secondary mark, burgundy floral diamond on muted rose ground",
+      },
+      pressing: {
+        captions: ["Dragon mandala\nHero mark", "Floral diamond, secondary"],
       },
     },
 
@@ -293,6 +333,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       ],
       markImage: `${IMG}/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg`,
       markAlt: "Geometric diamond accent mark with construction grid behind, showing the underlying geometry that holds the system together",
+      pressing: { mark: { n: "05", name: "A Family of Shapes" } },
     },
 
     // ════════════════════════════════════════
@@ -303,7 +344,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: CLOSING",
       title: "The Set Builds Itself.",
-      pressing: { mark: { n: "05", name: "The Set Builds Itself" } },
+      pressing: { mark: { n: "06", name: "The Set Builds Itself" } },
     },
     {
       id: "closing-subhead",
