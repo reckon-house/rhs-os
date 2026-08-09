@@ -92,6 +92,10 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Peonies and" },
         heldLine: "Geometry.",
+        // Pinned: the headline holds while the pattern-on-pattern copy
+        // travels past it. This is the collection that layers, so the
+        // brief that introduces it should behave like the print does.
+        choreo: { pin: true },
       },
     },
     {
@@ -153,10 +157,14 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       // The study's one crossing. The reductive collection is the argument
       // the other two lean on — it sits under everything without competing —
       // so the gesture lands on the middle beat rather than an outer one.
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is
+      // the A.R.C. convention for saying so in the data, which is what
+      // the audit reads.
       pressing: {
         mark: { n: "03", name: "Linework" },
         heldLine: "and Dots.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -175,13 +183,20 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         "Mixes into any other collection without competing. The graphic flatness lets blue florals or red dragons sit on top of a black linework setting without losing color depth.",
     },
 
-    // Inline hero: black linework plates mockup
+    // Inline hero: black linework plates mockup. Climbs the crossing
+    // headline above it, so the reductive collection arrives over the
+    // sentence that claims it sits under everything else.
+    // Rise, not zoom, although the file is wide enough for one: the red
+    // dragons mockup takes this study's zoom, and two plates-on-backdrop
+    // shots pinning for 320dvh each would read as the layout rather than
+    // as a gesture spent on the frame that earns it.
     {
       id: "black-hero",
       type: "hero",
       image: `${IMG}/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg`,
       alt: "Black linework collection, geometric plates on marble surface in charcoal and silver",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // 2-up: black linework marks
@@ -211,6 +226,10 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Dragons" },
         heldLine: "and Florals.",
+        // Pinned. The pairing notes are the fussiest copy in the study
+        // and they need the headline still on screen to hang off, right
+        // before the zoom takes the frame.
+        choreo: { pin: true },
       },
     },
     {

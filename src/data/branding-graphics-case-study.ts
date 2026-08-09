@@ -107,6 +107,9 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Each One Started" },
         heldLine: "With a Blank Page.",
+        // Held so the blank-page line stays put while its copy travels,
+        // and so the ABC poster underneath has a screen to climb.
+        choreo: { pin: true },
       },
     },
     {
@@ -125,7 +128,15 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "Not decorative. The pieces here range from collaged landscapes to typographic exercises to atmospheric prints. Different formal puzzles, same toolkit. Each one started with a blank page and a deadline, and the question was always which direction the piece would turn before the time ran out.",
     },
 
-    // ── ABC 123 typography poster — single, padded
+    // ── ABC 123 typography poster — single, padded.
+    // The poster wall already alternates plate, pair, plate, pair all
+    // the way down, so it choreographs as one contract: every pair holds
+    // and every plate climbs the pair above it. This first plate has no
+    // pair above it and climbs the brief instead, which is the only hold
+    // at the top of the run.
+    // Rise, not zoom — the file is 2520px, under the zoom floor, and the
+    // study's single zoom is spent where the copy asks for it (the
+    // storefront, blown out to street size).
     {
       id: "poster-abc",
       type: "image",
@@ -133,6 +144,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       alt: "ABC 123 typography poster with patterned letterforms in pink, blue, and yellow, framed on speckled wall with monstera leaves",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Tree print color studies — dual, native aspect
@@ -149,6 +161,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         src: `${IMG}/branding-graphics-tree-print-color-variations-blush-wall.jpg`,
         alt: "Tree silhouette print color study, three framed prints on blush wall",
       },
+      // Held for the Sky / Abacus plate. Two colorways of one print is a
+      // comparison, and holding it lets the reader finish the comparison
+      // before the next poster crosses it.
+      pressing: { choreo: { pin: true } },
     },
 
     // ── Sky / Abacus framed pair — already a baked-in pair photo
@@ -159,6 +175,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       alt: "Sky is the Limit cityscape poster paired with Abacus halftone dot poster, framed and hung on neutral wall",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Verse02 + Candy Paint — dual
@@ -174,8 +191,9 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         src: `${IMG}/branding-graphics-candy-paint-sunburst-print.jpg`,
         alt: "Candy Paint sunburst print, radial pastel rays with halftone patterns",
       },
-      // Held so the lake prints climb across it. The poster section is a long
-      // even run of plates; this is the one lift in it.
+      // Held so the lake prints climb across it. The captions live here
+      // and nowhere else in the run: this is the marquee pair, and a
+      // label under every frame turns a poster wall into an inventory.
       pressing: {
         captions: ["Verse02\nWas It The Light", "Candy Paint"],
         choreo: { pin: true },
@@ -207,9 +225,13 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         src: `${IMG}/branding-graphics-green-tree-vines-print-white-frame.jpg`,
         alt: "Green tree silhouette over half-sun with vines, white-framed print",
       },
+      // Last hold of the run, for the balloon poster that closes it.
+      pressing: { choreo: { pin: true } },
     },
 
-    // ── Up Up & Away balloon — single, padded closer for the section
+    // ── Up Up & Away balloon — single, padded closer for the section.
+    // Climbs the pair above and lands the section on a double exposure,
+    // which is the loudest frame in the wall and belongs at the end.
     {
       id: "poster-balloon",
       type: "image",
@@ -217,6 +239,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       alt: "Up Up and Away poster, hot-air balloon double-exposed with trees over yellow rapeseed field, framed on console with lamp",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -233,7 +256,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "Four Records" },
         heldLine: "Nothing in Common.",
-        choreo: { crossing: true },
+        // pin declares what the crossing already does — it holds the
+        // headline while the column scrubs past — so the flag matches
+        // the behaviour instead of the skin being the only record of it.
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -282,6 +308,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "From a 4x6" },
         heldLine: "to a Building.",
+        // Held, so "to a Building." is still on screen when the window
+        // below it starts filling the mat. The two halves of the same
+        // sentence should not be a scroll apart.
+        choreo: { pin: true },
       },
     },
     {
@@ -336,6 +366,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "Logos that sound like the" },
         heldLine: "Not the designer.",
+        choreo: { pin: true },
       },
     },
     {
@@ -354,57 +385,50 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         "Whatever the brief asks for, the mark delivers without trying to add a signature. Five logos shown here, and nothing in the portfolio connects them except the hands that drew them. The signature lives in the range.",
     },
 
-    // ── Marks — stacked vertically inside one white container.
-    // Source files have wildly different aspects, so straight stack keeps each readable.
+    // ── Marks — two rows, not five plates.
+    // The five logo files run 557px to 1160px native, and neither plate
+    // treatment fits a file that small: a riser draws full-bleed at
+    // viewport width, and five resting plates in a column is exactly the
+    // stack this language exists to break up. Rows are the third option
+    // and the honest one, because each mark lands near column measure,
+    // which is the size these exports can actually carry. Three across
+    // then two, so the ornamental Spear linework stays legible and the
+    // authored order survives.
+    //
+    // Rows also HOLD, which is why nothing here rises. The argument is
+    // the range across five marks seen together, and range is a thing
+    // you compare, not a thing you cross.
     {
-      id: "mark-spear",
-      type: "image",
-      src: `${IMG}/branding-graphics-logo-spear-collective-art-nouveau-vines.jpg`,
-      alt: "Spear Collective logo, art-nouveau script wordmark wrapped with vines and flowers",
-      aspect: "native",
-      maxWidth: 300,
-      noRadius: true,
-      group: { name: "marks-grid", bg: "#FFFFFF", radius: 60, padding: "60px" },
+      id: "marks-row-1",
+      type: "triple-image",
+      transparent: true,
+      images: [
+        {
+          src: `${IMG}/branding-graphics-logo-spear-collective-art-nouveau-vines.jpg`,
+          alt: "Spear Collective logo, art-nouveau script wordmark wrapped with vines and flowers",
+        },
+        {
+          src: `${IMG}/branding-graphics-logo-hey-sd-stellar-jay-bird.jpg`,
+          alt: "Hey SD logo, bold serif monogram with stellar jay bird perched on letterforms",
+        },
+        {
+          src: `${IMG}/branding-graphics-logo-okina-orbit-wordmark.jpg`,
+          alt: "Okina logo, planet-and-orbit wordmark in heavy black sans",
+        },
+      ],
     },
     {
-      id: "mark-hey-sd",
-      type: "image",
-      src: `${IMG}/branding-graphics-logo-hey-sd-stellar-jay-bird.jpg`,
-      alt: "Hey SD logo, bold serif monogram with stellar jay bird perched on letterforms",
-      aspect: "native",
-      maxWidth: 300,
-      noRadius: true,
-      group: { name: "marks-grid" },
-    },
-    {
-      id: "mark-okina",
-      type: "image",
-      src: `${IMG}/branding-graphics-logo-okina-orbit-wordmark.jpg`,
-      alt: "Okina logo, planet-and-orbit wordmark in heavy black sans",
-      aspect: "native",
-      maxWidth: 300,
-      noRadius: true,
-      group: { name: "marks-grid" },
-    },
-    {
-      id: "mark-dj-mia",
-      type: "image",
-      src: `${IMG}/branding-graphics-logo-dj-mia-halftone-dots.jpg`,
-      alt: "DJ MIA logo, geometric sans wordmark above pink halftone dot fade",
-      aspect: "native",
-      maxWidth: 300,
-      noRadius: true,
-      group: { name: "marks-grid" },
-    },
-    {
-      id: "mark-j-christianson",
-      type: "image",
-      src: `${IMG}/branding-graphics-logo-j-christianson-four-circle-mark.jpg`,
-      alt: "J. Christianson logo, four-circle dot mark above engraved serif wordmark",
-      aspect: "native",
-      maxWidth: 300,
-      noRadius: true,
-      group: { name: "marks-grid" },
+      id: "marks-row-2",
+      type: "dual-image",
+      transparent: true,
+      left: {
+        src: `${IMG}/branding-graphics-logo-dj-mia-halftone-dots.jpg`,
+        alt: "DJ MIA logo, geometric sans wordmark above pink halftone dot fade",
+      },
+      right: {
+        src: `${IMG}/branding-graphics-logo-j-christianson-four-circle-mark.jpg`,
+        alt: "J. Christianson logo, four-circle dot mark above engraved serif wordmark",
+      },
     },
 
     // ════════════════════════════════════════

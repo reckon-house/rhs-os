@@ -72,15 +72,20 @@ export const cosmoProfCaseStudy: CaseStudy = {
       title: "Photography That Stops",
       // The study's one crossing, on the argument the whole case rests on.
       //
-      // No zoom plate and no mid-page climb here: every UI capture is
-      // ~1990px native, well under the working floor for a plate that
-      // fills the mat, and the only file that clears it is the cover's own
-      // riser. The single dual-image is followed by the system ledger,
-      // which cannot climb. Quota bent, on the record.
+      // No zoom plate anywhere in this study: every UI capture is ~1990px
+      // native, well under the working floor for a plate that fills the
+      // mat, and the photography that does clear it is already spent on
+      // the cover riser and the carousel. Quota bent, on the record. The
+      // mid-page climb lives in the homepage section instead, off a pair.
+      //
+      // pin declared beside crossing: the crossing pins its own headline
+      // as part of that gesture, so the flag changes nothing on the page.
+      // It is the A.R.C. convention for saying so in the data, which is
+      // what the audit reads.
       pressing: {
         mark: { n: "02", name: "Photography That Stops" },
         heldLine: "Looking Like Inventory.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -147,6 +152,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "A Header That Gets Out" },
         heldLine: "of Its Own Way.",
+        // Holds the headline while the two copy blocks travel up beside
+        // it. The section's own argument is about a header getting out of
+        // the way, so letting this one sit still while the copy moves is
+        // the beat, not just the rule.
+        choreo: { pin: true },
       },
     },
     {
@@ -165,15 +175,34 @@ export const cosmoProfCaseStudy: CaseStudy = {
         "Personalization runs as a tabbed shelf, not a take-over. A stylist sees what they buy first, then the catalog underneath. The homepage doesn't pretend to know more than it does.",
     },
 
+    // Three desktop captures used to stack here as three plain plates.
+    // The two full-page views pair instead: they are the same page top and
+    // bottom, which is the pairing the mobile row already uses, and at
+    // 1999px native neither one can honestly fill the mat alone. Side by
+    // side they land near half a column, inside what the file carries.
+    // Pinned, so the module below has a held screen to climb.
     {
-      id: "home-hero",
-      type: "image",
-      src: `${IMG}/cosmo-prof-ui-website-homepage-shinefinity-hero-product-mockup.png`,
-      alt: "Cosmo Prof homepage with stripped global header, Shinefinity launch hero, and product mockup at right",
-      aspect: "native",
-      padded: true,
+      id: "home-desktop-pair",
+      type: "dual-image",
+      native: true,
+      left: {
+        src: `${IMG}/cosmo-prof-ui-website-homepage-shinefinity-hero-product-mockup.png`,
+        alt: "Cosmo Prof homepage with stripped global header, Shinefinity launch hero, and product mockup at right",
+      },
+      right: {
+        src: `${IMG}/cosmo-prof-ui-website-homepage-2.png`,
+        alt: "Cosmo Prof homepage variant showing further down the page with category cards and editorial features",
+      },
+      pressing: {
+        captions: ["Homepage\nShinefinity launch", "Same page, further down"],
+        choreo: { pin: true },
+      },
     },
 
+    // Moved below the pair from the middle of the run, so the climb has
+    // something held to cross. It reads better last anyway: the shoppable
+    // video and its tabs are what the subhead's third line promises, and
+    // they now arrive as the payoff rather than in passing.
     {
       id: "home-pros",
       type: "image",
@@ -181,15 +210,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       alt: "For The Pros shoppable video module with tabbed product recommendations: Shop The Video, Featured Products, Bestsellers, Sale",
       aspect: "native",
       padded: true,
-    },
-
-    {
-      id: "home-secondary",
-      type: "image",
-      src: `${IMG}/cosmo-prof-ui-website-homepage-2.png`,
-      alt: "Cosmo Prof homepage variant showing further down the page with category cards and editorial features",
-      aspect: "native",
-      padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -203,6 +224,9 @@ export const cosmoProfCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "The Same System" },
         heldLine: "Resized for Pocket.",
+        // One absorbed block, so the hold is short. Left unpinned it read
+        // as the only header on the page that scrolls away from its copy.
+        choreo: { pin: true },
       },
     },
     {

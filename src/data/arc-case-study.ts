@@ -16,13 +16,26 @@ const REEL_COLORS = ["#B1BC94", "#C4A265", "#000000"];
      plate (zoom). The vinyl/turntable coverage lifestyle is the second
      and last zoom (plate 08, inheriting its governing mark's n, same
      convention as RR's logo plate).
-   - One rise on the whole page: the multi-device hero climbs the plate-02
-     zoom. It used to climb a scanning/detail pair under the problem
-     columns; those 768px exports became the columns' own images, and the
-     pair that held for the climb went with them, leaving the plate rising
-     over a text column that is still moving. The zoom is the page's other
-     hold. A.R.C. is chart-heavy and charts do not climb; everything else
-     flows.
+   - Five climbs, each crossing a held screen. The multi-device hero
+     climbs the plate-02 zoom; the other four plates climb the briefs
+     that introduce them (problem, classification, build, usage). A brief
+     reserving ClimbRoom is the fourth thing that holds under
+     CHOREO-RULES rule 2, and on this page it does most of the work: the
+     cover and the two zooms are the only other holds, and A.R.C. is
+     chart-heavy, so a plate left sitting next to a chart has nothing to
+     cross. Two plates were moved one slot up the array to sit against
+     their brief rather than against a chart. See each one at its site.
+   - NO PLATE HERE ZOOMS ON SIZE ALONE. Of the four plates fixed in the
+     choreography pass, none clears the ~3000px native floor (2600 down
+     to 1612), so all four rise. A soft zoom is worse than none.
+   - BLOCK COMMENTS IN THIS ARRAY CARRY NO APOSTROPHES. choreo-audit
+     reads the file as text and treats a lone quote as a string
+     delimiter, so "the reel's stage" inside a block comment swallowed
+     every brace after it. The array failed to close, the audit parsed
+     ZERO sections, and it reported a false clean while the file carried
+     four bare plates and three unpinned briefs. Line comments are
+     skipped outright and are safe. Every other pressing study already
+     writes its block comments this way.
    - The old triple-image is now one flow plate + one dual pair (all
      three images survive; triple-image has no pressing skin).
    - Viz sections (pipeline, system-architecture, stats-bar,
@@ -132,7 +145,7 @@ export const arcCaseStudy: CaseStudy = {
         colors: REEL_COLORS,
         /* EVERY FRAME IS OPAQUE. Two of these were PNG screen renders
            with alpha — a phone with transparent corners, the mark on a
-           transparent grid — and the reel's own dark stage showed
+           transparent grid — and the dark stage under the reel showed
            straight through them, which reads as the picture failing to
            fill its box. object-fit cannot help: there is nothing to
            cover with. Photography and flattened mockups only. */
@@ -177,19 +190,19 @@ export const arcCaseStudy: CaseStudy = {
       },
     },
 
-    /* ── MULTI-DEVICE PLATE — the page's one rise, climbs the plate-02 zoom ──
+    /* ── MULTI-DEVICE PLATE — the first climb, over the plate-02 zoom ──
        This sat under the problem columns and climbed the scanning/detail
-       pair that used to be there. Those images are the columns' own now,
+       pair that used to be there. Those images belong to the columns now,
        so the pair that held went with them and the plate was left pulling
-       itself up 96dvh across a moving text column: a brief's `pin` sticks
-       its HEADLINE, which is not a held screen, and every other riser in
-       the portfolio climbs a PinStage pair, a zoom, or the cover.
-       The zoom is the page's other hold, and it sits one cluster up. The
-       two images run in the order the reel already uses — the app on a
-       counter, then the same app across every surface — so the climb
-       lands inside the study's own sequence rather than beside it.
-       Adjacent, per the contract; hero-1 derives its climb room from this
-       section's rise flag, which is why none is authored there. */
+       itself up 96dvh across a moving text column. The zoom is the hold
+       instead, and it sits one cluster up. The two images run in the
+       order the reel already uses — the app on a counter, then the same
+       app across every surface — so the climb lands inside the sequence
+       of the study rather than beside it.
+       This is the only climb here that crosses a zoom; the four below
+       cross briefs, which reserve ClimbRoom for exactly this.
+       Adjacent, per the contract; hero-1 derives its climb room from the
+       rise flag on this section, which is why none is authored there. */
     {
       id: "problem-hero-group",
       type: "hero",
@@ -274,20 +287,25 @@ export const arcCaseStudy: CaseStudy = {
 
     /* The smartphone plate and the app-screen pair used to sit here,
        full width, stretching 768px exports to 1400. Those three images
-       are the three method columns' own now: at column measure they
+       belong to the three method columns now: at column measure they
        are the size their files can carry, and the section reads as one
        argument with its evidence beside it instead of an argument
        followed by three pictures. The multi-device plate that climbed
        that pair moved up to the zoom for the same reason: its hold left
        with them. */
 
-    // ── BLEED PLATE — the cluster's image beat, before the quote ──
+    // ── BLEED PLATE — the image beat of the cluster, before the quote ──
     {
       id: "problem-mobile-screens",
       type: "image",
       src: `${IMG}/arc-three-screen-lifestyle-mockup.png`,
       alt: "A.R.C. mobile app screens overview",
       bleed: true,
+      /* Climbs the problem brief, which reserves the room for it. At
+         2600px native it is under the ~3000 zoom floor, so it rises;
+         the full mat belongs to the quote poster directly below, and
+         two staged screens back to back would blunt both. */
+      pressing: { choreo: { rise: true } },
     },
 
     // ── QUOTE POSTER — the ground rises and knocks the type out ──
@@ -341,8 +359,8 @@ export const arcCaseStudy: CaseStudy = {
        Each column carries its own image at column measure and takes two
        consecutive stages: the schematic below draws where they sit, the
        columns say what each one does. The second stage in a column leads
-       with its name, which is the brief's own convention for a heading
-       inside a block. */
+       with its name, which is the convention the brief already uses for
+       a heading inside a block. */
     {
       id: "pipeline",
       type: "three-column-text",
@@ -391,7 +409,7 @@ export const arcCaseStudy: CaseStudy = {
       pressing: { mark: { n: "06", name: "How it works" } },
     },
 
-    // ── CLASSIFICATION — unpinned brief ──
+    // ── CLASSIFICATION — pinned brief, the interface plate climbs it ──
     {
       id: "classification-header",
       type: "section-header",
@@ -400,6 +418,10 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "07", name: "Classification system" },
         heldLine: "system.",
+        /* Pinned: the headline holds while the taxonomy argument travels
+           up beside it. The pin is also what reserves ClimbRoom for the
+           plate now directly below. */
+        choreo: { pin: true },
       },
     },
     {
@@ -416,6 +438,28 @@ export const arcCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "Sub-categories provide the granularity needed for accurate valuation without requiring specialized knowledge from the user. Aligned with classifications used by major U.S. carriers.",
+    },
+    /* Flow plate — tall dashboard screenshot (1612x3620); see risks.
+       Moved ABOVE the ridgeline chart it used to sit under. A chart
+       holds nothing, so down there the plate was bare with no way to
+       fix it in place: 1612px wide is nowhere near the ~3000 zoom
+       floor, and maxWidth 700 (classic-only, pressing ignores it)
+       records that someone already measured this file and found it
+       small. Against the brief it climbs.
+       The order that produces is the better read anyway. The taxonomy
+       is stated, the interface carrying it rises over the statement,
+       then the ridgeline counts what the taxonomy sorted. */
+    {
+      id: "classification-hero",
+      type: "image",
+      src: `${IMG}/arc-dashboard-screen-hero.png`,
+      alt: "A.R.C. classification system interface",
+      aspect: "native",
+      maxWidth: 700,
+      pressing: {
+        caption: "Classification system interface",
+        choreo: { rise: true },
+      },
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched.
     {
@@ -479,18 +523,8 @@ export const arcCaseStudy: CaseStudy = {
         },
       ],
     },
-    // Flow plate — tall dashboard screenshot (1612x3620); see risks.
-    {
-      id: "classification-hero",
-      type: "image",
-      src: `${IMG}/arc-dashboard-screen-hero.png`,
-      alt: "A.R.C. classification system interface",
-      aspect: "native",
-      maxWidth: 700,
-      pressing: { caption: "Classification system interface" },
-    },
 
-    // ── FINANCIAL INTELLIGENCE — unpinned brief ──
+    // ── FINANCIAL INTELLIGENCE — pinned brief ──
     {
       id: "financial-header",
       type: "section-header",
@@ -537,7 +571,7 @@ export const arcCaseStudy: CaseStudy = {
     },
 
     /* The product itself, shipped and running, framed in the study. The
-       homepage it loads carries A.R.C.'s own public AI demo, so a reader
+       homepage it loads carries the public A.R.C. AI demo, so a reader
        can photograph their own room and watch the real model name what
        is in it — the exact mechanic every section above describes. No
        port, no fixture, nothing to keep in sync: it is the deployment. */
@@ -679,17 +713,23 @@ export const arcCaseStudy: CaseStudy = {
         },
       ],
     },
-    // Bleed plate — the five-screen showcase is the build section's beat.
+    /* Bleed plate — the five-screen showcase closes the build section.
+       Climbs the build brief. 2632px native, under the ~3000 floor, and
+       a strip five screens wide gains nothing from filling the mat: at
+       plate width each screen is already as large as its file allows. */
     {
       id: "build-app-screens",
       type: "image",
       src: `${IMG}/arc-five-screen-app-showcase.png`,
       alt: "Five A.R.C. application screens showing dashboard, item entry, room view, project selection, and document library",
       bleed: true,
-      pressing: { caption: "Five application screens" },
+      pressing: {
+        caption: "Five application screens",
+        choreo: { rise: true },
+      },
     },
 
-    // ── PRODUCT INTERFACE — unpinned brief ──
+    // ── PRODUCT INTERFACE — pinned brief ──
     {
       id: "product-header",
       type: "section-header",
@@ -698,6 +738,9 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "12", name: "Product interface" },
         heldLine: "data architecture.",
+        /* Pinned: the headline holds while the interface argument
+           travels. Nothing climbs this one, so no ClimbRoom follows. */
+        choreo: { pin: true },
       },
     },
     {
@@ -748,7 +791,7 @@ export const arcCaseStudy: CaseStudy = {
       ],
     },
 
-    // ── USAGE DATA — unpinned brief; the speed chart lives here now ──
+    // ── USAGE DATA — pinned brief; the speed chart lives here now ──
     {
       id: "usage-header",
       type: "section-header",
@@ -757,6 +800,9 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "13", name: "Usage data" },
         heldLine: "observations.",
+        /* Pinned: the headline holds while the reduction numbers travel,
+           and the pin reserves ClimbRoom for the plate below. */
+        choreo: { pin: true },
       },
     },
     {
@@ -773,6 +819,25 @@ export const arcCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "Metrics reflect V1 usage since launch. Early-stage numbers. Presented without inflation.",
+    },
+    /* ── FLOW PLATE — the last photograph, climbing the usage brief ──
+       Moved up over the two charts it used to follow. A chart holds
+       nothing, so under dev-timeline this plate was bare, and at 2600px
+       native it is below the ~3000 floor, so a zoom was not the way out
+       either. A.R.C. already spends both of its zooms, on plate 02 and
+       plate 08; a third would stop being a gesture.
+       The cost is real and worth naming: the usage numbers and the
+       speed chart that draws them no longer touch. They stay in the
+       same cluster, the chart is still the first thing after the plate,
+       and the trade buys the closing run-up its one human beat. The
+       alternative was ending the study on two charts. */
+    {
+      id: "closing-lifestyle",
+      type: "hero",
+      image: `${IMG}/arc-app-tablet-kitchen-living-room-lifestyle.jpg`,
+      alt: "A.R.C. app lifestyle — smartphone and tablet",
+      inline: true,
+      pressing: { choreo: { rise: true } },
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched. Moved
     // here from the product-interface cluster: the usage brief states
@@ -804,14 +869,6 @@ export const arcCaseStudy: CaseStudy = {
       ],
     },
 
-    // ── FLOW PLATE — the tablet lifestyle beat before the closing ──
-    {
-      id: "closing-lifestyle",
-      type: "hero",
-      image: `${IMG}/arc-app-tablet-kitchen-living-room-lifestyle.jpg`,
-      alt: "A.R.C. app lifestyle — smartphone and tablet",
-      inline: true,
-    },
 
     // ── CLOSING ──
     {

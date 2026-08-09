@@ -77,9 +77,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
       title: "Three Projects,",
+      // Pins so "Three Directions." holds while the subhead and footnote
+      // travel up beside it. Nothing climbs this brief — the hold is for
+      // the copy, which is where the three projects get named.
       pressing: {
         mark: { n: "02", name: "Three Projects" },
         heldLine: "Three Directions.",
+        choreo: { pin: true },
       },
     },
     {
@@ -140,15 +144,14 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // The study's one crossing, on the sentence the whole feature exists
       // to argue.
       //
-      // No mid-page climb: the two dual-images here are each followed by
-      // an editorial headline and a text block, neither of which can rise,
-      // and the one reorder that would manufacture adjacency would put the
-      // quiet-glam headline AFTER the room it introduces. The zoom below
-      // supplies the held screen instead.
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is the
+      // A.R.C. convention for saying so in the data, which is what the
+      // audit reads.
       pressing: {
         mark: { n: "03", name: "Material Confidence" },
         heldLine: "Not Material Matching.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -167,7 +170,8 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         "The combinations felt risky on paper but landed perfectly in person. A matte black tub reads softer when it sits between hard brick and warm oak than it ever does in a render. Patterned floor tile reads quieter under shiplap and a vaulted ceiling than under flat drywall. The trick was selecting materials together rather than sequentially - if a stone and a wood and a metal can hold each other in the moodboard, they hold each other in the room.",
     },
 
-    // ── Urban Southwest shower details — first 2-up
+    // ── Urban Southwest shower details — first 2-up. Holds, so the quiet
+    // glam room has a still screen to climb.
     {
       id: "urban-southwest-shower",
       type: "dual-image",
@@ -180,16 +184,20 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         src: `${IMG}/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg`,
         alt: "Urban southwest marble shower with horizontal running bond tile, handheld polished nickel fixture, and marble bench",
       },
+      pressing: { choreo: { pin: true } },
     },
 
     // ── Quiet Glam subsection — sits between the two 2-ups as its own
-    // editorial moment. Static image (not a scrolling hero), with a brief
-    // text passage describing the marble approach.
-    {
-      id: "headline-quiet-glam",
-      type: "editorial-headline",
-      text: "Quiet glam,\nveined marble floor to ceiling",
-    },
+    // editorial moment.
+    //
+    // The plate climbs the urban southwest pair, which is the study's
+    // argument made as movement: the text below says quiet glam sits
+    // opposite the brick-and-black register, so the one room arrives over
+    // the other on the same material kit.
+    //
+    // Rise, not zoom. The file is 2254px native, under the working floor
+    // for a plate that fills the mat, and the farmhouse vanity above
+    // already spends this study's zoom.
     {
       id: "quiet-glam-image",
       type: "image",
@@ -197,6 +205,15 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       alt: "Quiet glam primary bath with veined marble walls, freestanding tub, brass urchin chandelier, and patterned floor tile",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+    // The headline slides one slot below the climb. It named the room
+    // before; now it lands on the room already on screen, and the passage
+    // that follows picks it straight up.
+    {
+      id: "headline-quiet-glam",
+      type: "editorial-headline",
+      text: "Quiet glam,\nveined marble floor to ceiling",
     },
     {
       id: "quiet-glam-text",

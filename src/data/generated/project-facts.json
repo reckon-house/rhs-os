@@ -670,8 +670,8 @@
       "n": 1,
       "cites": [
        {
-        "section": "img-elena-grid",
-        "field": "alt",
+        "section": "chisos-elena-pair",
+        "field": "right.alt",
         "quote": "Santa Elena Canyon studies: the sheer limestone wall beside two frames of the Rio Grande below"
        }
       ]
@@ -921,8 +921,8 @@
       "n": 1,
       "cites": [
        {
-        "section": "mark-j-christianson",
-        "field": "alt",
+        "section": "marks-row-2",
+        "field": "right.alt",
         "quote": "J. Christianson logo, four-circle dot mark above engraved serif wordmark"
        }
       ]
@@ -1372,23 +1372,6 @@
      },
      {
       "facet": "furniture",
-      "term": "beam",
-      "n": 2,
-      "cites": [
-       {
-        "section": "kitchen",
-        "field": "src",
-        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
-       },
-       {
-        "section": "kitchen",
-        "field": "alt",
-        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "coffee table",
       "n": 2,
       "cites": [
@@ -1418,6 +1401,23 @@
         "section": "blend-footnote",
         "field": "content",
         "quote": "Sputnik chandelier, Malm fireplace, walnut dining set, and the leather sling chair pull toward mid-century."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "beam",
+      "n": 2,
+      "cites": [
+       {
+        "section": "kitchen",
+        "field": "src",
+        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
+       },
+       {
+        "section": "kitchen",
+        "field": "alt",
+        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
        }
       ]
      },

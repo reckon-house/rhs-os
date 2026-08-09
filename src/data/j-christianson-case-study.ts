@@ -86,9 +86,13 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE TREE",
       title: "One Drawing",
+      // Pinned because this is the study's long argument: the headline
+      // holds while four colorways, four surfaces, and the breakout
+      // detail travel past it as one column.
       pressing: {
         mark: { n: "02", name: "One Drawing" },
         heldLine: "Carrying a Full Range.",
+        choreo: { pin: true },
       },
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -146,12 +150,26 @@ export const jChristiansonCaseStudy: CaseStudy = {
     { id: "tree-spacer", type: "spacer", height: 60, group: { name: "tree" } },
 
     // ── BILLBOARD HERO (old hero, now inline) ──
+    // Zoomed rather than risen for two reasons. The tree group ends on the
+    // seasonal-circle riser, so nothing above this holds and a climb would
+    // cross a section still moving. And a billboard is the one frame in
+    // the study built to be read at full size: 3072px native carries it.
     {
       id: "billboard-hero",
       type: "hero",
       image: `${IMG}/j-christianson-billboard-mockup-brand-pattern.jpg`,
       alt: "J. Christianson brand identity on billboard, organic color shapes with four-dot logo",
       inline: true,
+      pressing: {
+        plate: "02",
+        captions: [
+          "Brand pattern at billboard scale",
+          "Four-dot mark centered",
+          "Organic color shapes",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
     // ── THE MARK ──
@@ -162,10 +180,13 @@ export const jChristiansonCaseStudy: CaseStudy = {
       title: "A Mark That Shifts",
       // The study's one crossing. A mark that changes with its setting is
       // the whole identity argument here.
+      // pin rides with the crossing: PressingCrossing holds its own
+      // headline, and the brand-pattern plate below climbs the room this
+      // cluster reserves.
       pressing: {
         mark: { n: "03", name: "A Mark That Shifts" },
         heldLine: "Its Palette by Context.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -184,7 +205,9 @@ export const jChristiansonCaseStudy: CaseStudy = {
         "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid, not the fill. Fewer locked variations meant more places the mark could land without redrawing.",
     },
 
-    // ── BRAND PATTERN ──
+    // ── BRAND PATTERN — climbs the mark section it belongs to ──
+    // Rise, not zoom: the artwork is 1868px native, under the width where
+    // a full-mat frame stays crisp. It reads fine at plate size.
     {
       id: "brand-pattern",
       type: "image",
@@ -193,6 +216,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       aspect: "native",
       padded: true,
       blend: "multiply",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── DOT GRID PAIR (these two stay together) ──
@@ -209,21 +233,29 @@ export const jChristiansonCaseStudy: CaseStudy = {
         src: `${IMG}/j-christianson-dot-grid-pattern-olive-accents.png`,
         alt: "J. Christianson dot grid pattern, olive with yellow, orange, red, teal accents",
       },
+      // Held so the storefront sign can climb it. The pair states the two
+      // colorways flat, the sign arrives carrying the brown one, and the
+      // climb is the argument: pattern to signage in one move.
+      pressing: { choreo: { pin: true } },
     },
 
-    // ── COLOR PERMUTATIONS CHART ──
-    {
-      id: "color-permutations",
-      type: "color-permutations",
-    },
-
-    // ── STOREFRONT HERO ──
+    // ── STOREFRONT HERO — climbs across the held dot-grid pair ──
+    // Moved above the permutations chart. The climb contract reads the
+    // ADJACENT section, and a chart holds nothing; sitting next to the
+    // pair is what earns this plate its rise.
     {
       id: "storefront-hero",
       type: "hero",
       image: `${IMG}/j-christianson-storefront-sign-dot-grid-brown.jpg`,
       alt: "J. Christianson storefront sign mockup, dot grid pattern on wood facade",
       inline: true,
+      pressing: { choreo: { rise: true } },
+    },
+
+    // ── COLOR PERMUTATIONS CHART ──
+    {
+      id: "color-permutations",
+      type: "color-permutations",
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -233,13 +265,25 @@ export const jChristiansonCaseStudy: CaseStudy = {
       text: "Type that feels found\nrather than designed",
     },
 
-    // ── OUTDOOR SIGN HERO ──
+    // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──
+    // The study's second and final zoom. A quote poster holds nothing, so
+    // this cannot climb, and it is the right frame to grow anyway: the
+    // seasonal circles from section 02 fabricated and lit. 3080px native.
     {
       id: "outdoor-hero",
       type: "hero",
       image: `${IMG}/j-christianson-outdoor-sign-seasonal-tree-circles.jpg`,
       alt: "J. Christianson outdoor sign mockup, four seasonal tree circles, evening lighting",
       inline: true,
+      pressing: {
+        plate: "03",
+        captions: [
+          "Four seasonal circles as signage",
+          "Evening light on the facade",
+          "The tree graphic, fabricated",
+        ],
+        choreo: { zoom: true },
+      },
     },
 
     // ── CLOSING ──

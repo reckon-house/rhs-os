@@ -78,6 +78,7 @@ export const chaletCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "An Exterior That" },
         heldLine: "Stops Disappearing.",
+        choreo: { pin: true },
       },
     },
     {
@@ -159,6 +160,7 @@ export const chaletCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "Tree Canopy as the" },
         heldLine: "Focal Point.",
+        choreo: { pin: true },
       },
     },
     {
@@ -178,7 +180,10 @@ export const chaletCaseStudy: CaseStudy = {
     },
 
     // ── A-frame ceiling shot, standalone (the showpiece looking up at the
-    // sputnik through the triangular window framing the trees)
+    // sputnik through the triangular window framing the trees). It climbs
+    // the interior brief: the copy claims the canopy is the focal point,
+    // and the plate arriving over that claim is the proof. Rise, not zoom
+    // - the file is 2254px native, under the bar a zoom needs.
     {
       id: "a-frame-ceiling",
       type: "image",
@@ -186,6 +191,7 @@ export const chaletCaseStudy: CaseStudy = {
       alt: "Looking up at the chalet's A-frame wood-plank ceiling with a sputnik chandelier suspended over a triangular window framing the tree canopy outside",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── 2-up: group 1 verticals (sofa detail + wide living view). Held, so
@@ -226,17 +232,11 @@ export const chaletCaseStudy: CaseStudy = {
       text: "Quiet enough to let\nthe surroundings lead",
     },
 
-    // ── Kitchen, standalone (group 2 horizontal)
-    {
-      id: "kitchen",
-      type: "image",
-      src: `${IMG}/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg`,
-      alt: "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight wide)
+    // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight
+    // wide). Held. The kitchen used to sit here and the pair followed it,
+    // but the quote poster above holds nothing, so the kitchen plate had
+    // no screen to climb. Swapping the two gives it one and keeps the
+    // furnishings detail next to the headline that introduces it.
     {
       id: "living-group-two",
       type: "dual-image",
@@ -249,6 +249,21 @@ export const chaletCaseStudy: CaseStudy = {
         src: `${IMG}/chalet-living-room-a-frame-skylight-tufted-sofa-walnut-coffee-table-leather-sling.jpg`,
         alt: "Wider chalet living room view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall in the background",
       },
+      pressing: { choreo: { pin: true } },
+    },
+
+    // ── Kitchen, standalone (group 2 horizontal). The interior's last
+    // room, climbing across the two furnishing details it sits behind.
+    // Rise again rather than a second zoom: 2264px native, and one pinned
+    // zoom per study is the gesture's whole value.
+    {
+      id: "kitchen",
+      type: "image",
+      src: `${IMG}/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg`,
+      alt: "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -265,10 +280,14 @@ export const chaletCaseStudy: CaseStudy = {
       // The study's one crossing. The blend IS the argument — cabin form,
       // mid-century pieces — and it is the only section that names both
       // halves at once, so the gesture belongs on the synthesis beat.
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is
+      // the A.R.C. convention for saying so in the data, which is what
+      // the audit reads.
       pressing: {
         mark: { n: "04", name: "Cabin Bones" },
         heldLine: "Mid-Century Sensibility.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {

@@ -181,7 +181,11 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       title: "Four source frames feeding every channel.",
       pressing: {
         mark: { n: "05", name: "Campaign & Deployment" },
-        choreo: { crossing: true },
+        // The crossing's 220dvh wrap already IS the hold, so `pin` changes
+        // nothing about how this renders — PressingCrossing never reads it.
+        // It is here so the contract can be read straight off the data: this
+        // header holds its screen, same as any other brief carrying copy.
+        choreo: { crossing: true, pin: true },
       },
     },
     {
@@ -242,7 +246,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       },
     },
 
-    // ── TYPOGRAPHY & BRAND — unpinned brief ──
+    // ── TYPOGRAPHY & BRAND — pinned brief ──
     {
       id: "brand-header",
       type: "section-header",
@@ -252,6 +256,10 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "07", name: "Typography & Brand" },
         heldLine: "meets mesh color field.",
+        // The type pairing is the claim the two paragraphs below it argue,
+        // so the headline holds while they travel past. No riser follows —
+        // the system index does — so this pin is staging, not a climb.
+        choreo: { pin: true },
       },
     },
     {

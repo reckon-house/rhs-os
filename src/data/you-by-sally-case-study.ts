@@ -71,6 +71,11 @@ export const youBySallyCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Real People" },
         heldLine: "Signature Shades.",
+        // The casting claim holds while its two blocks travel past it.
+        // The headline says who the cast is; the copy underneath says why
+        // that inverted the usual shoot order. Split across two screens
+        // they read as unrelated, so the headline stays put.
+        choreo: { pin: true },
       },
     },
     {
@@ -140,11 +145,13 @@ export const youBySallyCaseStudy: CaseStudy = {
       label: "SECTION 03: THE SWATCH SYSTEM",
       title: "Shade Exploration",
       // The study's one crossing, held to section 03 so it does not land
-      // on the same beat as the zoom above it.
+      // on the same beat as the zoom above it. pin declared alongside it:
+      // the crossing already holds its headline for 220dvh, and saying so
+      // out loud gives the swatch screen below a named holder to climb.
       pressing: {
         mark: { n: "03", name: "Shade Exploration" },
         heldLine: "at Eye Level.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -163,7 +170,7 @@ export const youBySallyCaseStudy: CaseStudy = {
         "The grid logic held the same way at every scale - from a 320px influencer bio page to a 6-foot retail sign. Same blocks, same hierarchy, just sized to the surface.",
     },
 
-    // ── Swatch UI screen
+    // ── Swatch UI screen — climbs the crossing that describes it
     {
       id: "swatch-screen",
       type: "image",
@@ -171,6 +178,12 @@ export const youBySallyCaseStudy: CaseStudy = {
       alt: "You By Sally swatch system on mobile — oversized color blocks in a clean grid",
       aspect: "native",
       padded: true,
+      // Rise, not zoom. A tall grid of colour blocks is the kind of frame
+      // a zoom rewards, but the export is 2013px wide — short of the
+      // 3000px bar — so pinning it at full mat would magnify a bitmap.
+      // Climbing lays the grid over the argument for it instead, and the
+      // study's one zoom stays on the cast, where the pixels are.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Influencer bio pair — two mobile mockups side by side, matchHeight'd.

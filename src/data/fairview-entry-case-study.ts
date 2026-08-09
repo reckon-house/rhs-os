@@ -71,10 +71,13 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       // This study's one crossing, on its opening argument. Its sibling
       // (fairview-sitting) crosses its SECOND header instead — two rooms
       // in one house should not choreograph identically.
+      // `pin` alongside `crossing`: the crossing already holds its headline
+      // for 220dvh, so the flag changes nothing on the page. Saying it out
+      // loud in the data names the holder the rug plate below climbs.
       pressing: {
         mark: { n: "02", name: "The Whole Room" },
         heldLine: "Serves the Light.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -93,9 +96,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         "Most foyers fight their own architecture. This one was sized around the front doors. The room is tall because the doors are tall. The walls are limestone-cream because limestone takes light without bouncing it back. The rug is dark enough to ground the floor, woven loose enough to read on a cloudy afternoon.",
     },
 
-    // Two vertical light compositions as standalone singles, stacked.
-    // First pulls back to show the rug anchoring the floor; second
-    // frames the chandelier and full-height doors more tightly.
+    // Two vertical light compositions, one either side of the zoom below.
+    // They used to sit stacked, which left the second one with a moving
+    // plate above it and nothing to climb.
+    // First pulls back to show the rug anchoring the floor. It climbs the
+    // crossing headline, so the runner arrives over the sentence about
+    // nothing on the floor competing for the sun.
+    // Rise, not zoom: the export is 2220px wide, short of the 3000px bar,
+    // and pinning it at full mat would magnify a bitmap.
     {
       id: "light-rug",
       type: "image",
@@ -103,14 +111,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       alt: "Vertical view straight through the foyer to the French doors with the brass chandelier overhead and the full vintage rug runner anchoring the floor",
       aspect: "native",
       padded: true,
-    },
-    {
-      id: "light-chandelier",
-      type: "image",
-      src: `${IMG}/4.avif`,
-      alt: "Vertical composition looking up at the brass and alabaster chandelier with French double doors and transom windows running the full two-story height",
-      aspect: "native",
-      padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Inline hero: side angle showing the art wall + bench composition
@@ -122,7 +123,8 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. The section argues the whole room serves the light, and
       // this is the frame that carries the art wall end to end — filling
-      // the mat is what makes that legible.
+      // the mat is what makes that legible. 3082px native, the only file
+      // in the room with the pixels for it.
       pressing: {
         plate: "02",
         captions: [
@@ -135,6 +137,20 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       },
     },
 
+    // The tighter vertical, framing the chandelier and the doors at full
+    // two-story height. Climbs the zoom's held screen, so a section arguing
+    // the room is sized around its light closes looking up at the source.
+    // Rise for the rug plate's reason: 2220px native.
+    {
+      id: "light-chandelier",
+      type: "image",
+      src: `${IMG}/4.avif`,
+      alt: "Vertical composition looking up at the brass and alabaster chandelier with French double doors and transom windows running the full two-story height",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+
     // ════════════════════════════════════════
     // SECTION 03 — PIECES
     // ════════════════════════════════════════
@@ -143,9 +159,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: PIECES",
       title: "Found Pieces",
+      // Pinned: the headline holds while the copy about the rug, the light
+      // and the two pieces of art travels up beside it. The section is a
+      // list of objects, so the name of the list should stay on screen for
+      // the whole of it.
       pressing: {
         mark: { n: "03", name: "Found Pieces" },
         heldLine: "That Tell Stories.",
+        choreo: { pin: true },
       },
     },
     {

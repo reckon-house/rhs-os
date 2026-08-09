@@ -78,6 +78,28 @@ export function RisingPlate({
   const secRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  /* ── a riser never scales past the picture it has ─────────────────
+     The same backstop PressingPlate's flow branch has carried all
+     along, and the gap that let it be missed here: a bare plate was
+     capped at its native width, and flagging it `rise` moved it to
+     this component, which drew it at the FULL viewport instead. The
+     conformance pass flagged twenty-five plates that way and stretched
+     files as small as 1003px across the screen — the exact overdraw
+     the flow branch exists to prevent, arriving through the other door.
+     PRESSING.md states the principle for every image slot, not for one
+     branch of one component: the declared width is the honest ceiling.
+     A capped riser still climbs; it simply climbs at the size it can
+     carry, centred, with the page either side of it.
+
+     No threshold here, unlike the flow branch. Flow plates live in a
+     ~1100px column, so `< 1400` is a fair proxy for "smaller than its
+     box". A riser's box is the VIEWPORT, which is 980 on this laptop
+     and 2560 on a studio display — no constant is right for both.
+     max-width at the native pixels simply never binds until the
+     viewport actually exceeds them, which is the rule stated directly
+     rather than approximated. */
+  const ceiling = typeof width === "number" && width > 0 ? width : undefined;
+
   useEffect(() => {
     const sec = secRef.current;
     const img = imgRef.current;
@@ -113,7 +135,17 @@ export function RisingPlate({
       if (p === lastP) return;
       lastP = p;
       img.style.transform = `scale(${(REST + (1 - REST) * p).toFixed(4)})`;
-      img.style.borderRadius = Math.round(RADIUS * (1 - p)) + "px";
+      /* Square the corner only for a plate that actually REACHES the
+         viewport edges. One held back by its own pixels never does, and
+         squaring it there would read as a clipping bug rather than a
+         bleed — the inverse of the reason a full-bleed plate must
+         square. Measured per tick against the section rather than
+         decided from a constant, so the same file behaves correctly on
+         a laptop and on a display wide enough to out-run it. */
+      const bleeds = img.offsetWidth >= sec.offsetWidth - 1;
+      img.style.borderRadius = bleeds
+        ? Math.round(RADIUS * (1 - p)) + "px"
+        : RADIUS + "px";
     });
     return () => {
       off();
@@ -144,7 +176,12 @@ export function RisingPlate({
         height={height}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
+        // The static states square the corner because a full-bleed plate
+        // at rest touches the viewport edges. A CAPPED plate never does,
+        // so its inline borderRadius below overrides them — inline beats
+        // the class, in every state, which is exactly what is wanted.
         className="block w-full h-auto origin-center will-change-[transform,border-radius] [transform:scale(0.95)] rounded-[44px] max-[760px]:[transform:none] max-[760px]:rounded-none motion-reduce:[transform:none] motion-reduce:rounded-none"
+        style={ceiling ? { maxWidth: `${ceiling}px`, margin: "0 auto" } : undefined}
       />
     </section>
   );

@@ -87,6 +87,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Three Shapes Driving" },
         heldLine: "Every Composition.",
+        // The headline holds while both copy blocks travel up beside it.
+        // "Three shapes" has to stay on screen through the paragraph that
+        // names them, or the claim and its list never share a frame.
+        choreo: { pin: true },
       },
     },
     {
@@ -139,14 +143,13 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       title: "One Engine Driving",
       // The study's one crossing, on the claim the system exists to make.
       //
-      // No mid-page climb: every dual-image here is followed by an
-      // editorial headline or a section header, and the one plate that
-      // could be reordered into place is 1520px native, already flagged
-      // thin at plate size.
+      // pin declares in the data what the crossing already does, hold the
+      // headline while the column scrubs past. The skin is unchanged; the
+      // flag is there so the hold is readable without opening the layout.
       pressing: {
         mark: { n: "03", name: "One Engine Driving" },
         heldLine: "Three Different Audiences.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -165,6 +168,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       alt: "Nordstrom women's homepage for the young customer, Savvy Mag editorial with Drama Queen, Mac, and Summer Flings modules and personalized product grid",
       aspect: "native",
       padded: true,
+      // Climbs the crossing brief above. This is the first checkable
+      // instance of the three-audiences claim, so it arrives over the
+      // argument rather than a screen after it. Rise, not zoom: the file
+      // is 1520px native and a zoom would draw it at twice its pixels.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Supporting: Men's + Designer-brand women's — dual
@@ -201,6 +209,9 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "The Same Composition" },
         heldLine: "Logic on a Phone.",
+        // Holds the headline through its copy, and the cluster reserves
+        // the room the editorial source plate below climbs into.
+        choreo: { pin: true },
       },
     },
     {
@@ -218,6 +229,11 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       image: `${IMG}/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg`,
       alt: "Savvy Mag editorial source asset, woman in blue floral dress and geometric strappy heels on yellow sofa, paired with Drama Queen and Mac product tiles",
       inline: true,
+      // Rises across the devices brief. Order stays source then phones,
+      // so the climb lands the desktop asset on the sentence about
+      // restacking and the pair below shows the restack. 2982px native
+      // is 18 short of the zoom bar, so it climbs instead of pinning.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Two device mockups side by side — same system, different surfaces
@@ -247,6 +263,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "Photography Built to" },
         heldLine: "Double as Editorial.",
+        // Held headline, two blocks travelling. Nothing climbs out of
+        // this one: the product rows below are specimens laid on the
+        // page, and a plate crossing them would read as a fourth shape.
+        choreo: { pin: true },
       },
     },
     {

@@ -62,30 +62,14 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       pressing: { choreo: { rise: true } },
     },
 
-    // ── Valentino template — campaign in context, second beat in the case
-    // study. Shows the system working at desktop scale before the foliage
-    // breakdown that follows.
-    {
-      id: "valentino-template",
-      type: "image",
-      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png`,
-      alt: "Jeffrey desktop homepage featuring the Valentino pink lace dress alongside cropped monstera leaves with the IN SEASON BOLD READY & NOW headline",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ── Editorial palate cleanser
-    {
-      id: "headline-global",
-      type: "editorial-headline",
-      text: "Scale without\na plane ticket",
-    },
-
-    // ── Inline scaling hero — 3x4 grid of all three dress stories (JW Anderson,
-    // Valentino, Simone Rocha) interleaved with monstera leaves. Lifted out of
-    // the top hero slot and parked here as a visual breath after the editorial
-    // headline. inline:true keeps the radius rounded at rest and animates on
-    // scroll instead of full-bleeding.
+    // ── 3x4 grid of all three dress stories (JW Anderson, Valentino,
+    // Simone Rocha) interleaved with monstera leaves. Moved up to the
+    // second beat: the collage is the whole campaign at once, and every
+    // section after it is that same kit in one format at a time, so it
+    // reads as the premise rather than a recap. Being here also gives the
+    // Valentino plate below it something that holds — a zoom reserves its
+    // own risetail. inline:true is a classic-renderer field; pressing
+    // ignores it.
     {
       id: "hero-grid-inline",
       type: "hero",
@@ -94,6 +78,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       inline: true,
       // The zoom. A twelve-cell collage is unreadable at plate size and
       // legible at mat size, which is the whole case for this gesture.
+      // 3076px native, clear of the ~3000px floor.
       pressing: {
         plate: "02",
         captions: [
@@ -104,6 +89,29 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         instruction: "Scroll — fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
+    },
+
+    // ── Valentino template — one story pulled out of the grid above and
+    // shown at desktop scale. Climbs the zoom plate's tail, so the capture
+    // arrives out of the collage it belongs to instead of sitting under it.
+    // 2000px native, under the zoom floor, so it rises.
+    {
+      id: "valentino-template",
+      type: "image",
+      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png`,
+      alt: "Jeffrey desktop homepage featuring the Valentino pink lace dress alongside cropped monstera leaves with the IN SEASON BOLD READY & NOW headline",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+
+    // ── Editorial palate cleanser. Dropped below the climb so the plate
+    // above it neighbours the zoom; it now lands as the beat between the
+    // opening run and Section 02, which is where a palate cleanser belongs.
+    {
+      id: "headline-global",
+      type: "editorial-headline",
+      text: "Scale without\na plane ticket",
     },
 
     // ════════════════════════════════════════
@@ -120,14 +128,13 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       // so the choice is which staging, not which beat: standalone,
       // because it carries no method columns.
       //
-      // No mid-page climb: the only dual-image with a plate after it is
-      // followed by the Simone desktop capture, which is 1003px native and
-      // already on the resolution report as thin at plate size. Drawing it
-      // full-bleed as a riser would make that three times worse.
+      // `pin` alongside `crossing` changes nothing on the page — the
+      // crossing already holds its own headline for the gesture. It names
+      // the hold in the data, which is what the audit reads.
       pressing: {
         mark: { n: "02", name: "One System Holding" },
         heldLine: "Three Designer Stories.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -173,12 +180,15 @@ export const jeffreySpringCaseStudy: CaseStudy = {
 
     // ── JW Anderson pair: dress shot (left) + mobile mockup (right, scaled down).
     // Mirrors the simone-pair layout with the mockup on the opposite side
-    // for visual rhythm.
+    // for visual rhythm. Pinned because it is the second of the two pairs,
+    // so the section's last beat climbs both phone stories rather than
+    // interrupting between them.
     {
       id: "jw-pair",
       type: "dual-image",
       transparent: true,
       matchHeight: true,
+      pressing: { choreo: { pin: true } },
       left: {
         src: `${IMG}/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg`,
         alt: "JW Anderson blue striped asymmetric dress framed by monstera leaves",
@@ -191,7 +201,14 @@ export const jeffreySpringCaseStudy: CaseStudy = {
 
     // ── Desktop mockup — third beat below the 4-grid. Anchors the section
     // by showing the same campaign system at full desktop scale after the
-    // dress-to-mobile pairings above.
+    // dress-to-mobile pairings above. This is the study's mid-page climb:
+    // it rises across the pinned JW pair, which is the right neighbour for
+    // it, since the payoff of two phone stories is the desktop they share.
+    //
+    // Noted, not hidden: the file is 1003px native and already on the
+    // resolution report as thin, so a full-bleed climb stretches it
+    // further. Rule 1 makes no exception for small plates, and the fix for
+    // the softness is a bigger export, not a plate that sits.
     {
       id: "simone-desktop",
       type: "image",
@@ -199,6 +216,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       alt: "Jeffrey desktop homepage featuring the Simone Rocha dress with the IN SEASON BOLD READY & NOW headline alongside the monstera frame",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

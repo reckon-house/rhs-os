@@ -89,6 +89,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "A Four-Finish Palette" },
         heldLine: "Locked Before Drawing.",
+        choreo: { pin: true },
       },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -215,6 +216,9 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       alt: "Professional range with brass knobs, marble backsplash, sage green cabinetry",
       aspect: "native",
       padded: true,
+      // Climbs the crossing above it. The crossing argues brass at every
+      // touchpoint, so the range knobs arrive over the end of that line.
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "detail-pair",
@@ -228,6 +232,9 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-kitchen-marble-vase-cabinet-vignette.jpg`,
         alt: "Marble counter vignette with dried arrangement, glass cabinet, brass hardware",
       },
+      // Held so the bolt closeup climbs it. Two rooms-in-use frames at
+      // rest, then the piece of hardware both of them are wearing.
+      pressing: { choreo: { pin: true } },
     },
     {
       id: "hardware-closeup",
@@ -236,6 +243,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       alt: "Unlacquered brass cremone bolt detail on sage green cabinet door",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── PANTRY WALL ──
@@ -282,6 +290,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Raw Oak Anchoring" },
         heldLine: "the Whole Room.",
+        choreo: { pin: true },
       },
     },
     {
@@ -329,6 +338,9 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       alt: "Brass cremone bolt and cabinet hardware detail on sage green panels",
       aspect: "native",
       padded: true,
+      // Climbs the island brief. A 2220px file, so it rises rather than
+      // zooms: at full mat width the bolt would go soft.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── HERO 3: Wide dining ──
@@ -338,6 +350,18 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       image: `${IMG}/hill-country-kitchen-wide-dining-island-windows.jpg`,
       alt: "Full kitchen view with dining table, island, sage green cabinetry, steel-frame windows",
       inline: true,
+      // The second zoom, and the handover into the dining section. This is
+      // the only frame holding both zones at once, so the four finishes
+      // read as one system here or nowhere. 3080px carries the full mat.
+      pressing: {
+        plate: "04",
+        captions: [
+          "The whole room",
+          "Dining table to range wall",
+          "Both zones, one frame",
+        ],
+        choreo: { zoom: true },
+      },
     },
 
     // ── THE DINING ZONE ──
@@ -349,6 +373,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "A Dining Zone on" },
         heldLine: "the Same Palette.",
+        choreo: { pin: true },
       },
     },
     {
@@ -380,6 +405,9 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-kitchen-dining-chair-leather-detail.jpg`,
         alt: "Safari dining chair, leather back, natural oak frame",
       },
+      // Held so the assembled table climbs it. Leg and chair studied
+      // separately, then the group they add up to.
+      pressing: { choreo: { pin: true } },
     },
     {
       id: "dining-full",
@@ -388,6 +416,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       alt: "Full dining table with leather safari chairs on dark patterned rug",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── COLOR SPECTRUM CHART ──

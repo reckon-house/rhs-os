@@ -74,9 +74,13 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
       title: "Mid-Century Posters",
+      // Pinned: the headline names the reference set, and the two copy
+      // blocks under it spend their length arguing for it. The claim has
+      // to still be on screen when the landscape and wordmark arrive.
       pressing: {
         mark: { n: "02", name: "Mid-Century Posters" },
         heldLine: "Meet Workshop Type.",
+        choreo: { pin: true },
       },
     },
     {
@@ -166,10 +170,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       title: "One System Sized for",
       // The study's one crossing, held back to section 03 so it does not
       // land on the same beat as the poster zoom above.
+      //
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is the
+      // convention for saying so in the data, which is what the audit reads.
       pressing: {
         mark: { n: "03", name: "One System Sized for" },
         heldLine: "Billboard to Phone Screen.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {

@@ -70,9 +70,12 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE MARKS",
       title: "Marks Built",
+      // Pinned: the headline holds while the two copy blocks travel up
+      // beside it. That hold is also what the badge plate below climbs.
       pressing: {
         mark: { n: "02", name: "Marks Built" },
         heldLine: "to Hold.",
+        choreo: { pin: true },
       },
     },
     {
@@ -89,6 +92,28 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "The system includes primary logo, secondary badges, typographic lockups, illustrative assets. Range comes before decoration. Each piece holds at small scale and at full bleed alike.",
+    },
+
+    // ── Diamond badge over Big Bend. Climbs the marks brief, which
+    // reserves the room for it.
+    //
+    // It used to close the West Texas run. Four plates there needed a
+    // second hold, and section 03 carries one plate numeral, so the
+    // second hold would have been a second zoom fighting the mark spine.
+    // The badge belongs to the marks anyway: the footnote directly above
+    // claims these hold at full bleed, so show that first and let the
+    // carousel run the same badges at thumbnail underneath it.
+    {
+      id: "westtexas-diamond-badge",
+      type: "image",
+      src: `${IMG}/capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg`,
+      alt: "Capitan Boot Co. diamond badge logo with bison and Western Original lockup, set over Big Bend desert landscape at golden hour",
+      aspect: "native",
+      padded: true,
+      pressing: {
+        caption: "Diamond badge\nBison and lockup",
+        choreo: { rise: true },
+      },
     },
 
     // ── Auto-cycling logo carousel (full bleed, each slide carries its own bg)
@@ -123,10 +148,15 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       // The study's one crossing. Three words that ARE the brand brief, on
       // the beat where the photography arrives — the shortest headline in
       // the study, so the cut reads cleanly.
+      //
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is
+      // the A.R.C. convention for saying so in the data, which is what
+      // the audit reads.
       pressing: {
         mark: { n: "03", name: "Quiet. Weathered" },
         heldLine: "Real.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -145,14 +175,22 @@ export const capitanBootCoCaseStudy: CaseStudy = {
         "No props. No stand-ins. The location was the styling. Same hands on the marks, same hands on the camera.",
     },
 
-    // ── Inline hero: Golden grassland with framed Western Original inset
+    // ── Inline hero: Golden grassland with framed Western Original inset.
+    // Climbs the crossing, which reserves the room for it. This is the
+    // first photograph after the argument for the photography, so the
+    // climb is the arrival. It rises rather than zooms because the frame
+    // is a wide vista that reads whole at flow width; the mat would only
+    // give it a longer horizon.
     {
       id: "westtexas-grassland",
       type: "hero",
       image: `${IMG}/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg`,
       alt: "Golden grassland and mountain horizon with a framed Western Original inset hovering over the same terrain",
       inline: true,
-      pressing: { caption: "Golden grassland\nWestern Original inset" },
+      pressing: {
+        caption: "Golden grassland\nWestern Original inset",
+        choreo: { rise: true },
+      },
     },
 
     // ── Buffalo silhouette over desert — the zoom. No dual-image in this
@@ -187,17 +225,6 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       alt: "Big Bend river bottom at dusk with Western Original typographic lockup centered over rolling hills and sage terrain",
       inline: true,
       pressing: { choreo: { rise: true } },
-    },
-
-    // ── Synthesis image: diamond badge over Big Bend
-    {
-      id: "westtexas-diamond-badge",
-      type: "image",
-      src: `${IMG}/capitan-boot-co-western-original-logo-design-buffalo-bison-diamond-badge-mountain-desert-landscape-branding.jpg`,
-      alt: "Capitan Boot Co. diamond badge logo with bison and Western Original lockup, set over Big Bend desert landscape at golden hour",
-      aspect: "native",
-      padded: true,
-      pressing: { caption: "Diamond badge\nBison and lockup" },
     },
 
     // ── Editorial palate cleanser

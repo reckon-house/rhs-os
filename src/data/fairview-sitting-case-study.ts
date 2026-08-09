@@ -72,9 +72,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: TEXTURE",
       title: "Stone, Velvet,",
+      // Pinned so the headline holds while the four-material list travels
+      // up beside it, and so the stone detail below has a holder to climb.
       pressing: {
         mark: { n: "02", name: "Stone, Velvet" },
         heldLine: "Brass, Oak.",
+        choreo: { pin: true },
       },
     },
     {
@@ -93,7 +96,11 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         "Stone wall floor to ceiling, charcoal velvet on the swivels with enough sheen to catch light, antiqued brass adding warmth without shine, warm oak underfoot. Each material does one job and stays out of the others' way.",
     },
 
-    // Material detail image — stone wall + mantel close-up
+    // Material detail image — stone wall + mantel close-up.
+    // Climbs the brief it follows: the copy names the four materials, then
+    // the first of them lands on top of the words that named it. Rises
+    // rather than zooms because the file is 1098px native, well under the
+    // floor for a plate that fills the mat.
     {
       id: "texture-stone",
       type: "image",
@@ -101,6 +108,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       alt: "Detail of the stacked stone fireplace wall with wood beam mantel, round mirror, and brass candlesticks alongside a leather and brass tumbler",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // 2-up: mantel symmetry + pampas detail
@@ -150,10 +158,15 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       // No zoom here: apart from the cover's own riser, every frame in
       // this study is 2234px native or less, under the working floor for
       // a plate that fills the mat.
+      //
+      // `pin` alongside `crossing`: the crossing already holds its headline
+      // for its own 220dvh, so the flag changes nothing on the page. It is
+      // the house convention for naming the holder in the data, which is
+      // what the rear view below climbs.
       pressing: {
         mark: { n: "03", name: "A Grouping Built" },
         heldLine: "Around the Fire.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -172,6 +185,21 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         "The fire gets the seat the TV would normally take. The brass coffee table sits at the center because that's where everyone reaches, and the furniture is arranged as architecture for conversation rather than for staring at a screen.",
     },
 
+    // Single: rear view of the grouping showing the room composition.
+    // Moved ahead of the 2-up so it climbs the held crossing. The headline
+    // says a grouping built around the fire, and the grouping arrives over
+    // the words. It also puts the whole room on screen before the details
+    // take it apart.
+    {
+      id: "conversation-rear",
+      type: "image",
+      src: `${IMG}/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg`,
+      alt: "Rear view of the four charcoal velvet swivel chairs around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet in view",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+
     // 2-up: brass table detail + grouping front
     {
       id: "conversation-pair",
@@ -186,21 +214,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         src: `${IMG}/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg`,
         alt: "Front view of the conversation grouping with the round black bar cabinet on the left, two swivels around the brass coffee table, fireplace beyond",
       },
-      // Captions only. The texture section already spends this study's
-      // climb, and two identical holds would read as a template.
+      // Captions only, and it lands last on purpose. Texture holds its pair
+      // and lets the wide shot climb across it; conversation runs the same
+      // parts in reverse, so the two sections never stage identically.
       pressing: {
         captions: ["Brass coffee table\nVelvet swivel", "Bar cabinet, front view"],
       },
-    },
-
-    // Single: rear view of the grouping showing the room composition
-    {
-      id: "conversation-rear",
-      type: "image",
-      src: `${IMG}/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg`,
-      alt: "Rear view of the four charcoal velvet swivel chairs around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet in view",
-      aspect: "native",
-      padded: true,
     },
 
     // ── Editorial palate cleanser

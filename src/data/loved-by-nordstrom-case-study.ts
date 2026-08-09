@@ -82,9 +82,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE IDEA",
       title: "The Heart Was",
+      // Held: the headline is the whole claim, and the column under it is
+      // the proof. The claim stays on screen while the proof travels past.
       pressing: {
         mark: { n: "02", name: "The Heart Was" },
         heldLine: "Already a Verb.",
+        choreo: { pin: true },
       },
     },
     {
@@ -136,10 +139,15 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       // No mid-page climb: the tile grids here are quad-images, which hold
       // but cannot rise, and the one dual-image is followed by a section
       // header rather than a plate.
+      //
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is the
+      // A.R.C. convention for saying so in the data, which is what the
+      // audit reads.
       pressing: {
         mark: { n: "03", name: "A Tile That Worked" },
         heldLine: "As a Container.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
     },
@@ -204,9 +212,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
       title: "Two Tiers Giving",
+      // Held because the tier is a lever, and a lever reads as one thing
+      // only if the name of it stays put while the mechanics scroll by.
       pressing: {
         mark: { n: "04", name: "Two Tiers Giving" },
         heldLine: "Merchandising a Lever.",
+        choreo: { pin: true },
       },
     },
     {
@@ -247,9 +258,13 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: ACROSS CHANNELS",
       title: "A Customer Saw It Twice",
+      // Held, and it is also the hold the landing page climbs. The point of
+      // the section is recognition across surfaces, so the phone arriving
+      // over a headline that has not moved is the argument acting itself out.
       pressing: {
         mark: { n: "05", name: "A Customer Saw It Twice" },
         heldLine: "in Two Days.",
+        choreo: { pin: true },
       },
     },
     {
@@ -275,6 +290,11 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       image: `${IMG}/loved-by-nordstrom-iphone-landing-page-corduroy-couch.jpg`,
       alt: "iPhone showing By Nordstrom landing page laid on corduroy couch",
       inline: true,
+      // Climbs the channels brief. The file is 3080px native, so it could
+      // zoom, but the trench-coat plate above already spent this study's
+      // zoom on a near-identical frame: phone, fabric, tile in the wild.
+      // Repeating the pin here would read as the layout, not a gesture.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── CLOSING ──

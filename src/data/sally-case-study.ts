@@ -93,6 +93,22 @@ export const sallyCaseStudy: CaseStudy = {
       alt: "Sally Marketing OS, five connected platforms overview",
       bleedTop: true,
       noRadius: true,
+      // The opening hero is still climbing when this arrives, so there is
+      // nothing here for a rise to cross. Zoom is what the frame wants
+      // anyway: five platform screens in one grid at 3048px native is a
+      // contact sheet of the whole system, and every one of them is a smear
+      // at plate size. Plate number follows the section mark it opens, the
+      // same convention the Asset Hub zoom uses below.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Marketing OS",
+          "Dashboard grid overview",
+          "Five platforms, one screen",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
       group: { name: "problem", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -169,6 +185,7 @@ export const sallyCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "Real-Time" },
         heldLine: "Competitive Intelligence",
+        choreo: { pin: true },
       },
     },
     {
@@ -270,21 +287,19 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
     // ── BRAND BRAIN / JIM - grouped in ECE6E1 container ──
-    {
-      id: "brain-hero",
-      type: "image",
-      src: "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
-      alt: "Brand Brain, AI strategy interface for Sally Beauty",
-      aspect: "native",
-      bleedTop: true,
-      group: { name: "brand-brain", bg: "#ECE6E1", radius: 75, padding: "60px" },
-    },
+    // The section opens on its brief instead of its plate: the heatmap
+    // above holds nothing, so a plate leading here would have had to sit
+    // bare. The brief leads instead and its plate follows, climbing the
+    // room the brief reserves for it (see brain-hero below).
     {
       id: "brain-header",
       type: "section-header",
       label: "SECTION 04: BRAND BRAIN / JIM",
       title: "AI Strategy Partner",
-      pressing: { mark: { n: "04", name: "AI Strategy Partner" } },
+      pressing: {
+        mark: { n: "04", name: "AI Strategy Partner" },
+        choreo: { pin: true },
+      },
       group: { name: "brand-brain" },
     },
     {
@@ -325,6 +340,19 @@ export const sallyCaseStudy: CaseStudy = {
         },
       ],
       group: { name: "brand-brain" },
+    },
+    // Climbs the brief it was moved below. bleedTop is the classic
+    // renderer's field for the top of the ECE6E1 container and is left
+    // alone; pressing ignores groups and reads the choreo bag.
+    {
+      id: "brain-hero",
+      type: "image",
+      src: "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+      alt: "Brand Brain, AI strategy interface for Sally Beauty",
+      aspect: "native",
+      bleedTop: true,
+      pressing: { choreo: { rise: true } },
+      group: { name: "brand-brain", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
       id: "brain-chat-2up",
@@ -402,13 +430,12 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
     // ── ASSET HUB ──
-    {
-      id: "asset-hero-image",
-      type: "hero",
-      image: "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
-      alt: "Asset Hub, AI-powered digital asset management",
-      inline: true,
-    },
+    // Same problem as Brand Brain above, answered a different way so the
+    // two sections do not read as one recipe: the sankey holds nothing,
+    // so the establishing plate moves below the two library views and
+    // climbs the PAIR instead of the brief. Across the study that puts
+    // each of the four things that can hold to work once: the cover, a
+    // brief, a pinned pair, a zoom.
     {
       id: "asset-header",
       type: "section-header",
@@ -417,6 +444,7 @@ export const sallyCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "Digital Asset Management" },
         heldLine: "Rebuilt with AI",
+        choreo: { pin: true },
       },
     },
     {
@@ -468,6 +496,15 @@ export const sallyCaseStudy: CaseStudy = {
         src: "/case-studies/sally-os/sally-os-product-asset-library.png",
         alt: "Asset Hub, AI studio photography pipeline",
       },
+      pressing: { choreo: { pin: true } },
+    },
+    {
+      id: "asset-hero-image",
+      type: "hero",
+      image: "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
+      alt: "Asset Hub, AI-powered digital asset management",
+      inline: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "asset-columns-2",
@@ -530,6 +567,7 @@ export const sallyCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "06", name: "A Growing Library of" },
         heldLine: "Internal Tools",
+        choreo: { pin: true },
       },
     },
     {

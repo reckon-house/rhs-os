@@ -87,9 +87,13 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: MATERIAL",
       title: "Stone, Pine,",
+      // Pinned so the four-material list travels up beside the headline
+      // instead of under it. The names have to be readable against the
+      // headline that groups them, and holding is what puts them there.
       pressing: {
         mark: { n: "02", name: "Stone, Pine" },
         heldLine: "Brass, Leather.",
+        choreo: { pin: true },
       },
     },
     {
@@ -174,10 +178,15 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       title: "Considered,",
       // The study's one crossing. Two words that draw the line the whole
       // room is arguing for.
+      //
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is the
+      // A.R.C. convention for saying so in the data, which is what the
+      // audit reads.
       pressing: {
         mark: { n: "03", name: "Considered" },
         heldLine: "Not Curated.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -226,6 +235,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-living-cognac-sofa-pampas-wood-bowl-kitchen-background-detail.jpg`,
         alt: "Tight detail of the cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind",
       },
+      // Held so the record-player shelf climbs across it. The pair is the
+      // section's widest scatter, entry to sofa, so the closing detail
+      // arrives over a held screen rather than after a third flat pair.
+      pressing: { choreo: { pin: true } },
     },
 
     // Single: record-player + Eisenhower detail (personality closer for collected section)
@@ -236,6 +249,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       alt: "Tight detail of the mid-century record-player shelf against the limestone wall, vinyl records below including Sturgill Simpson and ZZ Top, cactus and small framed landscape painting to the side, edge of the Eisenhower painting visible above",
       aspect: "native",
       padded: true,
+      // Climbs rather than zooms. The file is 2220px native, under the
+      // floor for a plate that fills the mat, and the study already spends
+      // its zoom on the fireplace elevation. The shelf reads at column
+      // scale anyway: it is a detail, not an elevation.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Editorial palate cleanser

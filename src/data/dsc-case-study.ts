@@ -97,6 +97,10 @@ export const dscCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Join the" },
         heldLine: "Collective",
+        // Held while the column travels. Nothing in the study works until
+        // everyone is in the system, so the headline saying so stays put
+        // through the copy that explains it.
+        choreo: { pin: true },
       },
     },
     {
@@ -206,6 +210,7 @@ export const dscCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "What Athletes" },
         heldLine: "See",
+        choreo: { pin: true },
       },
     },
     {
@@ -232,10 +237,9 @@ export const dscCaseStudy: CaseStudy = {
         { src: "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg", alt: "DSC athlete app trainer bio for the founder and head trainer" },
         { src: "/case-studies/dsc/dsc-athlete-app-programs-services.jpg", alt: "DSC athlete app program and services list" },
       ],
-      // The second and last climb in this study. Thirty-three sections is
-      // room for two; the athlete's three screens hold while the owner's
-      // side arrives over the top of them, which is the turn the next
-      // section makes anyway.
+      // The athlete's three screens hold while the owner's side arrives
+      // over the top of them, which is the turn the next section makes
+      // anyway.
       pressing: {
         captions: ["Dashboard\nNext session", "Trainer bio", "Programs"],
         choreo: { pin: true },
@@ -263,6 +267,7 @@ export const dscCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "Run It From" },
         heldLine: "the Floor",
+        choreo: { pin: true },
       },
     },
     {
@@ -280,16 +285,9 @@ export const dscCaseStudy: CaseStudy = {
       content:
         "The queue where every request lands, a week calendar with session density per day, and a member list flagging waiver and trainer-assignment status.",
     },
-    {
-      id: "owner-images",
-      type: "triple-image",
-      native: true,
-      images: [
-        { src: "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg", alt: "DSC owner home with booking requests and new registrations" },
-        { src: "/case-studies/dsc/dsc-owner-console-calendar-week-view.jpg", alt: "DSC owner calendar week view with sessions per day" },
-        { src: "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
-      ],
-    },
+    // Moved up out of the image run so the whole owner argument arrives in
+    // one column: the queue first, then the week said out loud. The chat
+    // screen it describes is the last frame in the row below.
     {
       id: "owner-batch-text",
       type: "text",
@@ -298,27 +296,40 @@ export const dscCaseStudy: CaseStudy = {
       content:
         "The owner can say a whole week out loud: schedule Marcus with Scott every Monday, Wednesday, and Friday at 3pm for a month. The scheduler proposes the batch, accepts the ten clean slots, flags the three it skipped for conflicts, and waits for a \"commit\" before a single session lands.",
     },
-    {
-      id: "owner-batch-image",
-      type: "image",
-      src: "/case-studies/dsc/dsc-owner-console-batch-scheduling-chat.jpg",
-      alt: "DSC owner scheduler chat running a batch booking, ten accepted and three conflicts skipped",
-      aspect: "native",
-      maxWidth: 440,
-    },
+    // The turn between the argument and the evidence. It sits ahead of the
+    // screens rather than after them because the row below has to stay
+    // next to the brand divider that climbs it.
     {
       id: "owner-editorial",
       type: "editorial-headline",
       text: "Back of house.\nFront and center.",
     },
+    {
+      id: "owner-images",
+      type: "quad-image",
+      native: true,
+      images: [
+        { src: "/case-studies/dsc/dsc-owner-console-home-booking-requests.jpg", alt: "DSC owner home with booking requests and new registrations" },
+        { src: "/case-studies/dsc/dsc-owner-console-calendar-week-view.jpg", alt: "DSC owner calendar week view with sessions per day" },
+        { src: "/case-studies/dsc/dsc-owner-console-athlete-roster.jpg", alt: "DSC owner athlete list with waiver and trainer-assignment status" },
+        { src: "/case-studies/dsc/dsc-owner-console-batch-scheduling-chat.jpg", alt: "DSC owner scheduler chat running a batch booking, ten accepted and three conflicts skipped" },
+      ],
+      // Four owner screens, one row. The batch chat used to be a plate of
+      // its own and could not stay one: at 776px native it has no pixels
+      // for a full-bleed climb, and nothing in this study clears the
+      // 3000px floor a zoom needs. At quarter measure it is shown at a
+      // size it can carry, and the row holds for the divider below.
+      pressing: { choreo: { pin: true } },
+    },
 
-    // ── HERO - brand divider ──
+    // ── HERO - brand divider — climbs across the held owner screens ──
     {
       id: "hero-brand",
       type: "hero",
       image: "/case-studies/dsc/dsc-marketing-site-phone-hero.jpg",
       alt: "The DSC marketing site open on a phone, resting on concrete",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

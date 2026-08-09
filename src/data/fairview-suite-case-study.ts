@@ -88,6 +88,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "One Color" },
         heldLine: "on Every Wall.",
+        // The headline is the whole claim of the section, so it holds while
+        // the column travels up beside it. Paint first, then the fourteen
+        // foot vault and the furniture layers arriving under it as evidence.
+        choreo: { pin: true },
       },
       group: { name: "room", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -136,7 +140,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "Three Decades" },
         heldLine: "on One Floor.",
-        choreo: { crossing: true },
+        // `pin` alongside `crossing`: the crossing already holds its headline
+        // for 220dvh, so the flag changes nothing on the page. Saying it in
+        // the data names the hold, which is what the audit reads.
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -226,6 +233,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "The Bath Holds the" },
         heldLine: "Same Temperature.",
+        // Held because the zoom just handed the second room over at full
+        // size. Keeping the headline put while the tile and tub copy runs
+        // past it reads as one suite continuing, not a new study starting.
+        choreo: { pin: true },
       },
     },
     {

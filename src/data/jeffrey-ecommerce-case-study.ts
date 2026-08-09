@@ -69,9 +69,14 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE STRATEGY",
       title: "Storytelling Over",
+      // pin so the thesis headline holds while its two paragraphs travel
+      // up beside it. Nothing climbs this brief — the zoom two beats down
+      // reserves its own room — so the flag is staging for the headline
+      // rather than a hold handed to a riser.
       pressing: {
         mark: { n: "02", name: "Storytelling Over" },
         heldLine: "Transaction.",
+        choreo: { pin: true },
       },
     },
     {
@@ -137,14 +142,16 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       // The study's one crossing, on section 03 rather than the thesis
       // header, which already sits directly above the zoom plate.
       //
-      // No mid-page climb: this study has no dual-image anywhere, so the
-      // only hold available is a zoom, and the one file positioned to be
-      // that hold is 2188px native. Drawing it to fill the mat is the
-      // exact overdraw the resolution gate exists to catch.
+      // This is also the study's mid-page hold. There is no dual-image
+      // anywhere in Jeffrey, so a pair can never do it — but a brief
+      // reserves ClimbRoom for its riser, and the PDP plate below climbs
+      // across this one. `pin` declared alongside `crossing`: the crossing
+      // already holds its headline for 220dvh, so the flag changes nothing
+      // on the page. It is the A.R.C. convention for saying so in the data.
       pressing: {
         mark: { n: "03", name: "Modular Grids" },
         heldLine: "Curated Navigation.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -163,7 +170,10 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         "The grid let merchandising compose seasonal layouts without touching the underlying templates - swap photography, swap copy, ship. Type stayed structural rather than decorative, which is what kept the site from drifting toward catalog feel as the store grew.",
     },
 
-    // ── PDP screen — static centered image, not an animated hero
+    // ── PDP screen — climbs the crossing above it.
+    // Rise, not zoom: at 2188px native this file is under the resolution
+    // bar, and drawing it to fill the mat is the exact overdraw the gate
+    // exists to catch. The climb shows the page arriving instead.
     {
       id: "pdp-hero",
       type: "image",
@@ -171,18 +181,36 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       alt: "Jeffrey New York product detail page — large imagery, minimal chrome, curated cross-sells",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
-    // ── Hero3 inline — third frame as a third visual beat
+    // ── Hero3 inline — the second zoom, and the hold for the plate below.
+    // A riser cannot follow a riser, so this middle frame of the run has to
+    // hold, and at 3100px native it is the only file in the run that clears
+    // the bar to be drawn at full size. It earns it on material too: a whole
+    // homepage laid out as an editorial page rewards being read, not glanced.
     {
       id: "hero3-inline",
       type: "hero",
       image: `${IMG}/jeffrey-new-york-homepage-editorial-spread.jpg`,
       alt: "Jeffrey New York site in context — additional editorial hero",
       inline: true,
+      pressing: {
+        plate: "03",
+        captions: [
+          "Homepage editorial spread",
+          "Designer launch as the lead moment",
+          "Photography carries the page",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
-    // ── System screens — multiple page templates in context
+    // ── System screens — climbs the zoom's held screen.
+    // Three templates rendered together, so the frame reads at a glance and
+    // wants the climb rather than the pin. 2298px native rules out the zoom
+    // regardless.
     {
       id: "system-screens",
       type: "image",
@@ -190,6 +218,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       alt: "Jeffrey New York system spread — homepage, designer page, and product templates rendered together",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -261,9 +290,13 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE BUILD RADIUS",
       title: "One System,",
+      // pin: the radius diagram below is not a riser, so this holds the
+      // header while its one paragraph travels, the same staging every
+      // other brief in the study gets.
       pressing: {
         mark: { n: "04", name: "One System" },
         heldLine: "Every Surface.",
+        choreo: { pin: true },
       },
     },
     {

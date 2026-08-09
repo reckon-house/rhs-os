@@ -152,6 +152,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "03", name: "Script Meets" },
         heldLine: "Geometric Fill",
+        // Holds while the fill list travels past it, then the print itself
+        // climbs the column that just described it.
+        choreo: { pin: true },
       },
     },
     {
@@ -170,7 +173,53 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "The print reads \"the Fancy\" in a Didone-influenced script. Every letterform gets a different pattern fill: polka dots in the bowl of the 'a,' diagonal stripes in the crossbar of the 'F,' vertical hairlines in the descender of the 'y.' Six elements, rearranged. The word comes alive.",
     },
 
+    // ── FLAT ART — the print arrives before the swatches that built it.
+    // The footnote above has just named every fill in it, so the artwork
+    // climbs the column while that list is still on screen. Prints 02 and
+    // 03 run the other way round, vocabulary first.
+    {
+      id: "fancy-flat",
+      type: "image",
+      src: `${IMG}/typography-patterns-the-fancy-poster-flat.png`,
+      alt: "Typography & Patterns, the Fancy poster, flat artwork with pattern-filled script letterforms",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+
     // ── PATTERN SWATCHES ──
+    // The zoom goes on a swatch rather than a poster. The study's claim is
+    // that density alone does the tonal work, and a tight grid reading dark
+    // is something you check at full size instead of taking on trust.
+    // 3080px native, so it carries the mat.
+    {
+      id: "fancy-swatch-3",
+      type: "image",
+      src: `${IMG}/pattern-swatch-dense-dots-white-on-black.jpg`,
+      alt: "Pattern swatch, dense dots, white on black",
+      aspect: "native",
+      padded: true,
+      pressing: {
+        plate: "03",
+        captions: [
+          "Dense dots, white on black",
+          "A tight grid reads dark",
+          "One of twelve tiles",
+        ],
+        choreo: { zoom: true },
+      },
+    },
+    {
+      id: "fancy-swatch-4",
+      type: "image",
+      src: `${IMG}/pattern-swatch-horizontal-grouped-lines.jpg`,
+      alt: "Pattern swatch, horizontal grouped lines",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+    // Two swatches at rest to close the section. Nothing climbs them, so no
+    // pin: the quote poster below names the vocabulary they just showed.
     {
       id: "fancy-swatches-pair",
       type: "dual-image",
@@ -183,40 +232,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         src: `${IMG}/pattern-swatch-vertical-hairlines.jpg`,
         alt: "Pattern swatch, vertical hairlines on white",
       },
-      // Held so the dense-dot swatch climbs across it: two swatches at rest,
-      // then the densest one crosses them. The section is about what changes
-      // when only density changes.
       pressing: {
         captions: ["Diamonds\nWhite on black", "Vertical hairlines"],
-        choreo: { pin: true },
       },
-    },
-    {
-      id: "fancy-swatch-3",
-      type: "image",
-      src: `${IMG}/pattern-swatch-dense-dots-white-on-black.jpg`,
-      alt: "Pattern swatch, dense dots, white on black",
-      aspect: "native",
-      padded: true,
-      pressing: { choreo: { rise: true } },
-    },
-    {
-      id: "fancy-swatch-4",
-      type: "image",
-      src: `${IMG}/pattern-swatch-horizontal-grouped-lines.jpg`,
-      alt: "Pattern swatch, horizontal grouped lines",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ── FLAT ART ──
-    {
-      id: "fancy-flat",
-      type: "image",
-      src: `${IMG}/typography-patterns-the-fancy-poster-flat.png`,
-      alt: "Typography & Patterns, the Fancy poster, flat artwork with pattern-filled script letterforms",
-      aspect: "native",
-      padded: true,
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -248,6 +266,18 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         choreo: { zoom: true },
       },
     },
+    // The stripes cross the print they fill. The swatch climbs the zoom's
+    // held screen, and the brief that explains the composition arrives after
+    // the eye has already met it.
+    {
+      id: "stepper-swatch-3",
+      type: "image",
+      src: `${IMG}/pattern-swatch-diagonal-stripes-white-on-black.jpg`,
+      alt: "Pattern swatch, diagonal stripes, white on black",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
     {
       id: "stepper-header",
       type: "section-header",
@@ -256,6 +286,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Vertical Stack" },
         heldLine: "Bold Geometry.",
+        choreo: { pin: true },
       },
     },
     {
@@ -276,6 +307,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
 
     // ── PATTERN SWATCHES ──
     {
+      id: "stepper-swatch-4",
+      type: "image",
+      src: `${IMG}/pattern-swatch-halftone-dots-black-on-white.jpg`,
+      alt: "Pattern swatch, halftone dots, black on white",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
+    },
+    // Held so the finished print can climb them. Two tiles at rest, then the
+    // composition they end up inside crosses the screen.
+    {
       id: "stepper-swatches-pair",
       type: "dual-image",
       native: true,
@@ -287,22 +329,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         src: `${IMG}/pattern-swatch-large-dots-grid-black-on-white.jpg`,
         alt: "Pattern swatch, large dots grid, black on white",
       },
-    },
-    {
-      id: "stepper-swatch-3",
-      type: "image",
-      src: `${IMG}/pattern-swatch-diagonal-stripes-white-on-black.jpg`,
-      alt: "Pattern swatch, diagonal stripes, white on black",
-      aspect: "native",
-      padded: true,
-    },
-    {
-      id: "stepper-swatch-4",
-      type: "image",
-      src: `${IMG}/pattern-swatch-halftone-dots-black-on-white.jpg`,
-      alt: "Pattern swatch, halftone dots, black on white",
-      aspect: "native",
-      padded: true,
+      pressing: { choreo: { pin: true } },
     },
 
     // ── FLAT ART ──
@@ -313,6 +340,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -322,14 +350,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       text: "Same six elements.\nThree different rooms to stand in.",
     },
 
-    // ── POSTER 3: "white" — hero first ──
-    {
-      id: "white-lifestyle",
-      type: "hero",
-      image: `${IMG}/typography-patterns-white-poster-gate-lifestyle.jpg`,
-      alt: "Typography & Patterns, white art print leaning against metal gate outdoors",
-      inline: true,
-    },
+    // ── POSTER 3: "white" — brief first, and the photograph climbs it.
+    // Print 02 opened on its image; this one opens on the argument, so the
+    // two adjacent sections do not stage the same way.
     {
       id: "white-header",
       type: "section-header",
@@ -338,6 +361,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "Calligraphic Sweep" },
         heldLine: "Architectural Anchor.",
+        choreo: { pin: true },
       },
     },
     {
@@ -356,6 +380,19 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "The dot grid background is the most open of the three prints. Sparse pinpoints on a wide field. The white space does the most work here, giving the calligraphic strokes room to breathe while the geometric letters sit heavy at the bottom. Pattern fills are selective. Not every stroke gets filled. The restraint makes the filled elements land harder.",
     },
 
+    // The print in the world, climbing the brief that describes it. It is a
+    // riser rather than the section's second zoom: print 02 already spends
+    // the object-in-a-room gesture, and two of them back to back would read
+    // as the layout rather than as a choice.
+    {
+      id: "white-lifestyle",
+      type: "hero",
+      image: `${IMG}/typography-patterns-white-poster-gate-lifestyle.jpg`,
+      alt: "Typography & Patterns, white art print leaning against metal gate outdoors",
+      inline: true,
+      pressing: { choreo: { rise: true } },
+    },
+
     // ── PATTERN SWATCHES ──
     {
       id: "white-swatches-pair",
@@ -369,10 +406,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         src: `${IMG}/pattern-swatch-vertical-bar-stripes.jpg`,
         alt: "Pattern swatch, vertical bar stripes",
       },
-      // Captions only. The fancy section already spends the pin, and three
-      // identical climbs would turn a gesture into a template.
       pressing: {
         captions: ["Large circles\nWhite on black", "Vertical bar stripes"],
+        choreo: { pin: true },
       },
     },
     {
@@ -382,7 +418,12 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, thick horizontal stripes",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
+    // The second zoom answers the first. Section 03 held the dense dot grid
+    // at full size; this is the same element at the open end of the range,
+    // shown the same way so the two are comparable. The copy above calls
+    // this print the most open of the three. 3080px native.
     {
       id: "white-swatch-4",
       type: "image",
@@ -390,6 +431,15 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, sparse dots, white on black",
       aspect: "native",
       padded: true,
+      pressing: {
+        plate: "05",
+        captions: [
+          "Sparse dots, white on black",
+          "Pinpoints on a wide field",
+          "Dots at the open scale",
+        ],
+        choreo: { zoom: true },
+      },
     },
 
     // ── FLAT ART ──
@@ -400,6 +450,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, white poster, flat artwork with calligraphic and geometric letterforms",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── HOW THE SYSTEM WORKS — grouped in black container ──
@@ -408,7 +459,12 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 06: HOW THE SYSTEM WORKS",
       title: "Same Ingredients.\nDifferent Meals.",
-      pressing: { mark: { n: "06", name: "Same Ingredients" } },
+      // The headline holds while three columns of evidence travel past it.
+      // Nothing climbs this one, so no climb room is derived.
+      pressing: {
+        mark: { n: "06", name: "Same Ingredients" },
+        choreo: { pin: true },
+      },
       group: { name: "system", bg: "#141414", radius: 75, padding: "60px" },
     },
     {

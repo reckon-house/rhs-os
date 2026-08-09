@@ -91,6 +91,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Spotlights That Read" },
         heldLine: "Like Print Profiles.",
+        choreo: { pin: true },
       },
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -113,23 +114,25 @@ export const neimanMarcusCaseStudy: CaseStudy = {
     },
 
     // Designer spotlight spreads
+    // Theyskens and Derek Lam were two full-width plates in a row. Both
+    // files are 1336px native, so a plate drew them past their honest
+    // width and softened the type the whole section is about. Paired,
+    // each lands near column measure, which is the size the file carries.
+    // The pairing is also what gives this run its second hold.
     {
-      id: "designer-theyskens",
-      type: "image",
-      src: `${IMG}/neiman-marcus-insite-designer-spotlight-theyskens-theory.jpg`,
-      alt: "Neiman Marcus InSite, Theyskens Theory designer spotlight spread with tweed jacket",
-      aspect: "native",
-      padded: true,
+      id: "designer-pair-intro",
+      type: "dual-image",
+      native: true,
+      transparent: true,
       group: { name: "designers" },
-    },
-    {
-      id: "designer-derek-lam",
-      type: "image",
-      src: `${IMG}/neiman-marcus-insite-designer-spotlight-derek-lam.jpg`,
-      alt: "Neiman Marcus InSite, 10 Crosby Derek Lam spotlight with striped jacket and floral",
-      aspect: "native",
-      padded: true,
-      group: { name: "designers" },
+      left: {
+        src: `${IMG}/neiman-marcus-insite-designer-spotlight-theyskens-theory.jpg`,
+        alt: "Neiman Marcus InSite, Theyskens Theory designer spotlight spread with tweed jacket",
+      },
+      right: {
+        src: `${IMG}/neiman-marcus-insite-designer-spotlight-derek-lam.jpg`,
+        alt: "Neiman Marcus InSite, 10 Crosby Derek Lam spotlight with striped jacket and floral",
+      },
     },
     {
       id: "designer-pair",
@@ -145,6 +148,9 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         src: `${IMG}/neiman-marcus-insite-designer-spotlight-helmut-lang.jpg`,
         alt: "Neiman Marcus InSite, Helmut Lang spotlight with asymmetric black and white dress",
       },
+      // Held so the fifth designer climbs across the other four. The run
+      // closes on a move instead of a fourth flat spread.
+      pressing: { choreo: { pin: true } },
     },
     {
       id: "designer-kelly",
@@ -154,6 +160,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       aspect: "native",
       padded: true,
       group: { name: "designers" },
+      pressing: { choreo: { rise: true } },
     },
 
     // ── EDITORIAL TREATMENT CHART ──
@@ -257,6 +264,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Type That Set the" },
         heldLine: "Volume of the Page.",
+        choreo: { pin: true },
       },
     },
     {
@@ -289,6 +297,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         src: `${IMG}/neiman-marcus-insite-structure-piazza-sempione-spread.jpg`,
         alt: "Neiman Marcus InSite, Structure Piazza Sempione spread with sharp black silhouettes",
       },
+      // The two quiet spreads hold while the loud one climbs over them.
+      // The copy above splits type into whisper and theater, so the
+      // section plays the split instead of listing it.
+      pressing: { choreo: { pin: true } },
     },
 
     // Theatrical type trio
@@ -299,6 +311,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       alt: "Neiman Marcus InSite, The Rocker spread with oversized serif letters wrapped into portrait",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
     {
       id: "theatrical-pair",
@@ -340,6 +353,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "05", name: "One Garment, Styled" },
         heldLine: "Four Different Directions.",
+        choreo: { pin: true },
       },
     },
     {
@@ -386,23 +400,30 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         src: `${IMG}/neiman-marcus-insite-ways-to-wear-silk-blouse-denim.jpg`,
         alt: "Neiman Marcus InSite, Silk Blouse plus Denim Jacket plus Printed Jean styling",
       },
-      // The second and last hold, thirty sections after the first. Two
-      // stylings of one blouse rest while the Flora Maxi feature arrives
-      // over them, which is the turn into the closing beat.
+      // No hold here. The ways-to-wear beat is about a template that
+      // stayed identical across dozens of variations, so four stylings
+      // sit flat and the gesture waits for the Flora Maxi turn below.
       pressing: {
         captions: ["Silk blouse + ikat", "Silk blouse + denim"],
-        choreo: { pin: true },
       },
     },
 
-    // ── FLORA MAXI feature — climbs across the held stylings
+    // ── FLORA MAXI feature — the closing zoom, then the spread over it
     {
       id: "flora-hero",
       type: "hero",
       image: `${IMG}/neiman-marcus-insite-flora-maxi-laptop-couch-mockup.jpg`,
       alt: "Neiman Marcus InSite Flora Maxi story on laptop resting on black couch",
       inline: true,
-      pressing: { choreo: { rise: true } },
+      // The study's second and last zoom. 3080px native carries the full
+      // mat honestly, and the hub running on a screen is the right thing
+      // to hold at that size going into the closing.
+      pressing: {
+        plate: "05",
+        captions: ["Flora Maxi feature", "Outline type arching over the dress"],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
     {
       id: "flora-spread",
@@ -411,6 +432,9 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       alt: "Neiman Marcus InSite, Flora Maxi editorial with outline type arching over floral dress",
       aspect: "native",
       padded: true,
+      // Climbs the zoom's held screen: the printed spread arrives over
+      // the shipped page it became.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── CLOSING ──

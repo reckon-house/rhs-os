@@ -70,6 +70,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "Volume Without" },
         heldLine: "Vocabulary.",
+        // Holds while the column travels, and reserves the room the
+        // homepage plate below needs to climb. Fitting for a brief whose
+        // subject is a page carrying too much at once.
+        choreo: { pin: true },
       },
     },
     {
@@ -88,15 +92,16 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
         "Customers were getting volume without context. Merchandising, marketing, and editorial each pushed in parallel with no shared language for what any of it was. Email ran its own cadence. Landing pages followed a separate lifecycle. The only thread connecting any of it was the date on the calendar.",
     },
 
-    // Visual beat showing the volume of modules — promoted to a scroll-
-    // animated hero so the phone-in-hand becomes a full-bleed moment as
-    // the user scrolls past, then re-tucks. Same scale + radius animation
-    // as the page's top hero.
+    // Visual beat showing the volume of modules. Climbs the problem brief:
+    // the copy names the pile-up, then the homepage slides up over it and
+    // shows it. hero3 is 1540 native, far short of the 3000 a zoom asks
+    // for, so it rises.
     {
       id: "problem-image",
       type: "hero",
       image: `${IMG}/hero3.png`,
       alt: "Nordstrom homepage with multiple content modules running side by side under the new framework",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -109,14 +114,14 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       title: "Four Buckets,",
       // The study's one crossing, on the move that solved the problem.
       //
-      // No mid-page climb: the only plate sitting after the zoom is
-      // hero4.png at 1540px native, which is already on the resolution
-      // report as thin at plate size; drawing it full-bleed as a riser
-      // would nearly treble the overdraw.
+      // Pinned as well as crossing, which is PRESSING.md's brief form of
+      // the gesture: the four-bucket argument is the longest column in
+      // the study, so the headline holds and the column travels past it
+      // rather than sharing one screen with it.
       pressing: {
         mark: { n: "03", name: "Four Buckets" },
         heldLine: "Four Identities.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -142,30 +147,39 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       text: "Magazine language,\nnot menu language",
     },
 
-    // ── The 3 lockups, stacked
+    // ── The 3 lockups, as a specimen row
+    // They were three stacked full-width plates, which the choreography
+    // rules cannot hold: a plate either climbs the section above it or
+    // grows out of the column, and three in a row leaves the second and
+    // third with nothing above them that holds still. Nothing in the
+    // study can sit between them either, so the set becomes one row.
+    //
+    // The row is also the honest size for these files. 2418px native is
+    // crisp to about 1200 CSS and a full-width plate draws past that; at
+    // a third of the row they are well inside their own pixels. And the
+    // claim the set exists to make, that no two lockups share a face,
+    // only reads when the three marks are side by side.
+    //
+    // No pin: nothing climbs it. This is the one row in the study that
+    // holds nothing.
     {
-      id: "lockup-whats-now",
-      type: "image",
-      src: `${IMG}/nordstrom-content-framework-lockup-whats-now.jpg`,
-      alt: "What's Now lockup, custom typographic mark and category icon for the trending brands and new arrivals bucket",
-      aspect: "native",
-      padded: true,
-    },
-    {
-      id: "lockup-where-to-wear",
-      type: "image",
-      src: `${IMG}/nordstrom-content-framework-lockup-where-to-wear.jpg`,
-      alt: "Where to Wear lockup, custom typographic mark and category icon for the occasion dressing bucket",
-      aspect: "native",
-      padded: true,
-    },
-    {
-      id: "lockup-on-our-list",
-      type: "image",
-      src: `${IMG}/nordstrom-content-framework-lockup-on-our-list.jpg`,
-      alt: "On Our List lockup, custom typographic mark and category icon for the seasonal picks bucket",
-      aspect: "native",
-      padded: true,
+      id: "lockups",
+      type: "triple-image",
+      native: true,
+      images: [
+        {
+          src: `${IMG}/nordstrom-content-framework-lockup-whats-now.jpg`,
+          alt: "What's Now lockup, custom typographic mark and category icon for the trending brands and new arrivals bucket",
+        },
+        {
+          src: `${IMG}/nordstrom-content-framework-lockup-where-to-wear.jpg`,
+          alt: "Where to Wear lockup, custom typographic mark and category icon for the occasion dressing bucket",
+        },
+        {
+          src: `${IMG}/nordstrom-content-framework-lockup-on-our-list.jpg`,
+          alt: "On Our List lockup, custom typographic mark and category icon for the seasonal picks bucket",
+        },
+      ],
     },
 
     // ════════════════════════════════════════
@@ -179,6 +193,11 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Homepage" },
         heldLine: "Email, Landing.",
+        // Pins for the headline alone. Three surfaces get named in the
+        // column and the landing page below answers all three, so the
+        // title should still be on screen when the reader reaches it.
+        // Nothing climbs this brief: the zoom plate reserves its own room.
+        choreo: { pin: true },
       },
     },
     {
@@ -221,12 +240,18 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       padded: true,
     },
 
-    // Final supporting hero
+    // Final supporting hero. Climbs the zoom plate's held screen, which is
+    // the only hold in the study taken from a plate rather than a brief.
+    // hero4 is 1540 native and already on the resolution report, so the
+    // climb draws it larger than its pixels really allow. Rule 1 has no
+    // exception for a small file, and zoom is not available to it either
+    // (that wants 3000+), so it rises and the file is the thing to fix.
     {
       id: "application-secondary",
       type: "hero",
       image: `${IMG}/hero4.png`,
       alt: "Nordstrom Content Framework section showing email and landing treatment with custom lockup and icon",
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

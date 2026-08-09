@@ -88,6 +88,11 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "An East-Facing Vanity" },
         heldLine: "Doing Its Own Lighting.",
+        // Held so the claim about the light stays on screen while the two
+        // paragraphs describing it travel up beside it. The four detail
+        // frames below are the evidence, and the argument has to still be
+        // up there when they arrive.
+        choreo: { pin: true },
       },
       group: { name: "vanity", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -159,10 +164,14 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       // his-vanity frame, and it is spent as the riser below. Four
       // dual-images run back to back in this study, so breaking that run
       // with a climb reads better than a zoom would.
+      //
+      // `pin` alongside `crossing`: the crossing already holds as part of
+      // its own gesture, so the flag changes nothing on the page. It is the
+      // convention for saying so in the data, which is what the audit reads.
       pressing: {
         mark: { n: "03", name: "The Marble Selection" },
         heldLine: "Took the Longest.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -235,6 +244,11 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "04", name: "Objects Chosen by the" },
         heldLine: "Person Who Lives Here.",
+        // The last brief, and the only one with no photograph after it, so
+        // the copy carries the beat alone. Held: the headline keeps its
+        // claim while the valet stand, the painting, and the clay pot go by
+        // in the column.
+        choreo: { pin: true },
       },
     },
     {

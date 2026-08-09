@@ -80,9 +80,13 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 02: THE HUB",
       title: "The Templates Aged Better",
+      // Pinned: the argument for the template runs two blocks long, so the
+      // headline holds while the column travels, and the hub screenshot
+      // below has a named holder to climb.
       pressing: {
         mark: { n: "02", name: "The Templates Aged Better" },
         heldLine: "Than the Content.",
+        choreo: { pin: true },
       },
       group: { name: "hub", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -113,6 +117,11 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       aspect: "native",
       padded: true,
       group: { name: "hub" },
+      // Rise, not zoom. The three-card grid is exactly the dense layout a
+      // zoom rewards, but the export is 1610px wide and the bar is 3000, so
+      // pinning it at full mat would magnify a bitmap. Climbing drops the
+      // built page over the paragraph describing it instead.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── TRY-ON HERO ──
@@ -143,9 +152,14 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: VIRTUAL TRY-ON",
       title: "Color Discovery That",
+      // Pinned. The zoom above it has just held one frame for 320dvh, so
+      // the copy arrives on a screen that is already still. Holding the
+      // headline keeps that stillness through the explanation, then hands
+      // it to the desktop plate that climbs out of it.
       pressing: {
         mark: { n: "03", name: "Color Discovery That" },
         heldLine: "Lived on the Customer's Face.",
+        choreo: { pin: true },
       },
     },
     {
@@ -172,6 +186,9 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       alt: "Nordstrom Beauty Lips That Pop desktop experience with virtual try-on tool and product detail",
       aspect: "native",
       padded: true,
+      // Rise. Same 1604px ceiling as the hub screenshot, and the study's
+      // one zoom is already spent on the selector this page wraps around.
+      pressing: { choreo: { rise: true } },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -181,30 +198,23 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       text: "Editorial that\nmerchandises itself",
     },
 
-    // ── GLOW STORY HERO ──
-    {
-      id: "glow-hero",
-      type: "hero",
-      image: `${IMG}/nordstrom-beauty-glow-story-iphone-orange-table-mockup.jpg`,
-      alt: "Nordstrom Beauty Get That Glow story on iPhone, orange table lifestyle mockup",
-      inline: true,
-    },
-
     // ── SHOPPABLE STORIES ──
     {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 04: SHOPPABLE STORIES",
       title: "The Customer Never",
-      // The study's one crossing.
+      // The study's one crossing, on the move the whole hub rests on.
       //
-      // No mid-page climb: the only two dual-images sit back to back at
-      // the end of the study with a section header after them, so there is
-      // no plate adjacent to a hold.
+      // pin declared alongside it: the crossing already holds its headline
+      // for 220dvh, and naming it gives the glow plate below a holder to
+      // climb. The plate used to sit ABOVE this header with nothing under
+      // it; moved down, the drawer argument stays on screen while the
+      // story it describes rises over the top of it.
       pressing: {
         mark: { n: "04", name: "The Customer Never" },
         heldLine: "Left the Story.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -221,6 +231,20 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "The drawer pattern kept engagement metrics inside the editorial experience. Time on page, scroll depth, and conversion all measured within the story context rather than fragmenting across product detail pages. Merchandising could track which editorial angles drove the most adds-to-bag without attribution guesswork.",
+    },
+
+    // ── GLOW STORY HERO — climbs the crossing that argues for it ──
+    // Rise, not zoom, even at 3080px: this is a phone on a table, a room
+    // photograph rather than a page to be read, and the study's zoom
+    // belongs on the selector where the swatches are the content. It also
+    // lands the glow story one beat ahead of its own mobile screens.
+    {
+      id: "glow-hero",
+      type: "hero",
+      image: `${IMG}/nordstrom-beauty-glow-story-iphone-orange-table-mockup.jpg`,
+      alt: "Nordstrom Beauty Get That Glow story on iPhone, orange table lifestyle mockup",
+      inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── MOBILE SCREENS: 2 stacked dual-image pairs, native size ──

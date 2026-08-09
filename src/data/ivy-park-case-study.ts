@@ -93,6 +93,10 @@ export const ivyParkCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "02", name: "An NDA Before" },
         heldLine: "the Brief Landed.",
+        // Pinned. The signature is the fixed point of this beat, so the
+        // headline holds while the timeline, the freedom and the scope
+        // travel up past it.
+        choreo: { pin: true },
       },
       group: { name: "brief", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
@@ -165,10 +169,13 @@ export const ivyParkCaseStudy: CaseStudy = {
       label: "SECTION 03: THE EXPERIENCE",
       title: "The Polygon Held",
       // The study's one crossing, on the shape that IS the argument.
+      // pin declared alongside it: the crossing already holds its headline
+      // for 220dvh, and saying so out loud is what gives the page plate
+      // below a named holder to climb.
       pressing: {
         mark: { n: "03", name: "The Polygon Held" },
         heldLine: "the Page Together.",
-        choreo: { crossing: true },
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -194,6 +201,11 @@ export const ivyParkCaseStudy: CaseStudy = {
       src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
       alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
       aspect: "native",
+      // Rises across the crossing it answers: the claim holds on screen
+      // while the page that proves it climbs over the top. Not a zoom —
+      // the file is 2188px native, under the 3000 bar, and a zoom would
+      // magnify a screenshot past what its pixels carry.
+      pressing: { choreo: { rise: true } },
     },
 
     {
@@ -311,7 +323,9 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 05: THE CAMPAIGN",
       title: "One System,\nEvery Format.",
-      pressing: { mark: { n: "04", name: "One System" } },
+      // Pinned. "One System" stays on screen while every format it fed
+      // scrolls past underneath, which is the section's whole point.
+      pressing: { mark: { n: "04", name: "One System" }, choreo: { pin: true } },
     },
     {
       id: "campaign-text",
