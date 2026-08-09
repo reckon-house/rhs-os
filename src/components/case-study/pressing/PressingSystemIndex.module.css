@@ -165,7 +165,7 @@
    by the driver — no border-radius could morph a circle to a triangle. */
 .swatch {
   display: block;
-  width: clamp(56px, 6.4vw, 104px);
+  width: clamp(64px, 7.6vw, 124px);
   aspect-ratio: 1 / 1;
 }
 
@@ -174,11 +174,7 @@
    — the 100 is only the pre-measure placeholder. */
 .reelBox {
   display: block;
-  /* Wider than Robert's clamp(68px, 8vw, 130px), and deliberately: his
-     frames are photography, which reads at any size. These are UI
-     components, and a component you cannot read is not a pattern
-     library — it is a texture. */
-  width: clamp(150px, 19vw, 300px);
+  width: clamp(68px, 8vw, 130px);
   height: 100px;
 }
 /* RRSystemIndex's rule, verbatim. The width/height are the load-bearing
@@ -203,12 +199,19 @@
   margin-top: 8px;
 }
 
+/* RRSystemIndex's mobile block, its numbers. */
 @media (max-width: 760px) {
-  /* Robert's own mobile treatment: the indent scales rather than
-     disappearing, so the ladder survives a phone. */
   .row {
+    font-size: clamp(26px, 8.2vw, 52px);
+    gap: 12px;
     margin-left: calc(var(--indent, 0px) * 0.35);
-    gap: 14px;
+    padding: 12px 0;
+  }
+  .reelBox {
+    width: clamp(52px, 16vw, 84px);
+  }
+  .swatch {
+    width: clamp(44px, 13vw, 74px);
   }
   .intro {
     margin-left: 0;

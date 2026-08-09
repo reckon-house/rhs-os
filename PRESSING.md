@@ -374,13 +374,17 @@ card is wide and an account panel is tall and an unmeasured box reflows
 the whole row on every cut. Ratios are read once up front and the reel
 only mounts when they are all in.
 
-Two numbers differ from Robert's on purpose: the box is
-`clamp(150px, 19vw, 300px)` against his `clamp(68px, 8vw, 130px)`,
-because his frames are photography and read at any size while a UI
-component you cannot read is a texture, not a library. Everything else
-is his, `.reel { width: 100%; height: 100% }` included — omit those two
-and the reel collapses to nothing and looks like a broken image rather
-than a bug.
+Every number is Robert's: `.reelBox` at `clamp(68px, 8vw, 130px)`,
+`.swatch` at `clamp(64px, 7.6vw, 124px)`, his mobile block, and
+`.reel { width: 100%; height: 100% }` — omit those last two and the reel
+collapses to nothing, which looks like a broken image rather than a bug.
+
+I invented larger sizes here first, reasoning that UI needs to read
+bigger than photography. It was a plausible argument for changing a
+tuned value and it was still wrong: the row is a ledger of specimens at
+one scale, and a sample that outgrows the others stops being a
+specimen. If a size genuinely needs to change, change it in
+RRSystemIndex too so the family stays one family.
 
 Frames must be OPAQUE. Cutting them out of a transparent contact sheet
 means flattening onto white on the way out; `npm run facts` rejects

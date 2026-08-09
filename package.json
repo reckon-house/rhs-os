@@ -10,7 +10,8 @@
     "facts": "node --no-warnings scripts/build-facts.mjs",
     "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
     "port:home": "node scripts/port-home.mjs",
-    "port:home:check": "node scripts/port-home.mjs --check"
+    "port:home:check": "node scripts/port-home.mjs --check",
+    "dims": "python3 scripts/build-image-dimensions.py"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
