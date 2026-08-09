@@ -323,7 +323,10 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
-    if (s.type === "brand-system") {
+    /* marks-materials is brand-system under other field names, and it
+       appears in 11 studies — the single highest-leverage skin in the
+       portfolio. Both normalise through toLedger(). */
+    if (s.type === "brand-system" || s.type === "marks-materials") {
       out.push(<PressingSystemIndex key={s.id} section={s} mark={p?.mark} />);
       i += 1;
       continue;

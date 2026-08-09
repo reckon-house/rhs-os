@@ -37,7 +37,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import type { BrandSystemSection } from "@/lib/types";
+import type { BrandSystemSection, MarksAndMaterialsSection } from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
@@ -60,12 +60,78 @@ const LADDER = [
 const SW_HOLD = 1600;
 const SW_MORPH = 850;
 
+/**
+ * The ledger's own shape. Two section types feed it — `brand-system` and
+ * `marks-materials` — and they are the same content under different
+ * field names, so they are normalised here rather than the component
+ * learning both vocabularies. `marks-materials` alone appears in 11
+ * studies, which is why this adapter exists at all: it is the single
+ * highest-leverage skin in the portfolio.
+ */
+export interface SystemLedgerData {
+  title?: string;
+  /** the setup paragraphs, in reading order */
+  intro: string[];
+  colors: { name: string; hex: string }[];
+  fonts: { name: string; role: string }[];
+  /** the primary mark, and what to call its row */
+  mark?: { src: string; label: string; caption: string };
+  /** an optional second image row (marks-materials pairs two shots) */
+  markRight?: { src: string; label: string; caption: string };
+  /** individual UI frames, cycled */
+  library?: string[];
+}
+
+/* The union of the two sections' FIELDS, all optional. Intersecting the
+   section types themselves collapses to `never` — their `type` literals
+   conflict — so the reader is structural. */
+type LedgerFields = {
+  title?: string;
+  introText?: string;
+  philosophyText?: string;
+  colors?: { name: string; hex: string }[];
+  fonts?: { name: string; role: string }[];
+  logoConstructionImage?: string;
+  markImage?: string;
+  markAlt?: string;
+  markImageRight?: string;
+  patternLibrary?: string[];
+};
+
+/** brand-system | marks-materials → one ledger shape. */
+export function toLedger(
+  s: BrandSystemSection | MarksAndMaterialsSection
+): SystemLedgerData {
+  const anyS = s as unknown as LedgerFields;
+  return {
+    title: anyS.title,
+    /* subcopy is deliberately dropped: in every study carrying it, it
+       restates the intro in fewer words, which is the duplication the
+       allocation rules exist to catch. */
+    intro: [anyS.introText, anyS.philosophyText].filter(
+      (t): t is string => typeof t === "string" && t.length > 0
+    ),
+    colors: (anyS.colors ?? []).map((c) => ({ name: c.name, hex: c.hex })),
+    fonts: (anyS.fonts ?? []).map((f) => ({ name: f.name, role: f.role })),
+    mark: anyS.logoConstructionImage
+      ? { src: anyS.logoConstructionImage, label: "Logotype", caption: "Construction" }
+      : anyS.markImage
+        ? { src: anyS.markImage, label: "Mark", caption: anyS.markAlt ? "The mark" : "" }
+        : undefined,
+    markRight: anyS.markImageRight
+      ? { src: anyS.markImageRight, label: "Materials", caption: "Paired study" }
+      : undefined,
+    library: anyS.patternLibrary,
+  };
+}
+
 export interface PressingSystemIndexProps {
-  section: BrandSystemSection;
+  section: BrandSystemSection | MarksAndMaterialsSection;
   mark?: { n: string; name: string };
 }
 
 export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps) {
+  const data = toLedger(section);
   const ref = useRef<HTMLElement>(null);
   const swatchRef = useRef<SVGPathElement>(null);
   const swatchCapRef = useRef<HTMLSpanElement>(null);
@@ -92,7 +158,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     return () => io.disconnect();
   }, []);
 
-  const colors = section.colors ?? [];
+  const colors = data.colors;
 
   /* ── the pattern library reel ──────────────────────────────────
      RRSystemIndex's plumbing, copied rather than re-derived. The box's
@@ -140,7 +206,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     root.style.setProperty("--sampleH", `${Math.ceil(h)}px`);
   }, []);
 
-  const libKey = (section.patternLibrary ?? []).join("|");
+  const libKey = (data.library ?? []).join("|");
   useEffect(() => {
     const srcs = libKey ? libKey.split("|") : [];
     if (!srcs.length) return;
@@ -238,7 +304,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
      the argument and philosophy is the answer, so both read. The subcopy
      restated the intro in fewer words — the duplication the allocation
      rules exist to catch — and is dropped. */
-  const setup = [section.introText, section.philosophyText].filter(Boolean);
+  const setup = data.intro;
 
   /* Robert's indents — 3vw, 17vw, 8vw — extended by one for a fourth
      row. Deliberately NOT monotonic: a staircase reads as a list
@@ -247,10 +313,10 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
 
   const rows: { label: string; body: React.ReactNode }[] = [];
 
-  if (section.logoConstructionImage) {
-    const dim = imageDimensions[section.logoConstructionImage];
+  if (data.mark) {
+    const dim = imageDimensions[data.mark.src];
     rows.push({
-      label: "Logotype",
+      label: data.mark.label,
       body: (
         <span className={styles.markStack}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -259,24 +325,24 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
             style={
               { "--native": dim ? `${Math.floor(dim[0] / 2)}px` : undefined } as CSSProperties
             }
-            src={section.logoConstructionImage}
-            alt="Logotype construction"
+            src={data.mark.src}
+            alt={data.mark.label + " construction"}
             width={dim?.[0]}
             height={dim?.[1]}
             loading="lazy"
             decoding="async"
           />
-          <span className={styles.cap}>Construction</span>
+          <span className={styles.cap}>{data.mark!.caption}</span>
         </span>
       ),
     });
   }
 
-  if (section.fonts?.length) {
+  if (data.fonts.length) {
     /* One entry per FACE, not per weight: three rows for two families
        reads as three typefaces at a glance. */
     const seen = new Set<string>();
-    const faces = section.fonts.filter((f) =>
+    const faces = data.fonts.filter((f) =>
       seen.has(f.name) ? false : (seen.add(f.name), true)
     );
     rows.push({
@@ -310,7 +376,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     });
   }
 
-  const library = section.patternLibrary ?? [];
+  const library = data.library ?? [];
   if (library.length) {
     rows.push({
       label: "Pattern library",
@@ -320,7 +386,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
             {reelReady ? (
               <SizzleReel
                 images={library}
-                colors={(section.colors ?? []).map((c) => c.hex)}
+                colors={colors.map((c) => c.hex)}
                 speed={1}
                 className={styles.reel}
                 onBeatChange={onBeat}
@@ -346,9 +412,9 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
         </div>
       ) : null}
 
-      {section.title ? (
+      {data.title ? (
         <RevealHeadline as="h2" className={styles.headline}>
-          {section.title}
+          {data.title}
         </RevealHeadline>
       ) : null}
 
