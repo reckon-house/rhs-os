@@ -295,6 +295,49 @@ done
 Then `node scripts/drop-check.mjs` (must report 0), `npm run facts`
 (no new resolution or reel findings), and `npx tsc --noEmit`.
 
+## Next: no full-width plate just sits (NOT DONE — read this first)
+
+The standing instruction, in the user's words: *"full width images should
+enlarge and move over the section above it at the very least. some should
+be converted to the component where they start small on the right side and
+grow. we need to mix the case studies up so they aren't just stacked
+images."* Named examples, all in hill-country-kitchen: `range-detail`,
+`brass-hero`, `hero-dining`, `dining-full`, `hardware-closeup`.
+
+**A codemod for this was written, dry-run, applied, and reverted.** The
+rule it used is wrong, and the trap is worth naming so it is not walked
+into twice:
+
+> If the previous section holds → rise. If the previous is a pair → pin
+> it and rise. Otherwise → rise anyway, crossing the brief above.
+
+That last clause breaks on a RUN of consecutive plates. A risen plate is
+not a hold — it is moving, carrying its own −96dvh pull-up — so the next
+riser climbs a moving neighbour and the overlaps stack. big-bend has
+fourteen plates in a row and every one of them came out `rise: true`.
+
+The alternation that IS correct (zoom, rise, zoom, rise — a zoom is a
+hold) costs 320dvh per zoom. Across the portfolio that produced 54 zoom
+plates, about 22 screens of pinned zoom in big-bend alone. The gesture
+stops being a gesture at that density.
+
+So the real fix is compositional, not mechanical, and it differs per
+study:
+
+- **Runs of 2–3 plates**: pin the first as a zoom ONLY where the file
+  clears ~3000px, let the rest rise. This is the safe case and the
+  measured plan was 16 rise / 4 zoom / 11 new pins — that part was sound.
+- **Long runs (big-bend's fourteen, branding-graphics' poster wall)**:
+  neither treatment scales. Consider pairing adjacent plates into
+  `dual-image` sections, which hold, so alternate plates can climb them.
+  That changes the composition and needs a per-study eye.
+- **Lone plate under a brief**: nothing above it pins. Either accept the
+  climb across the brief's tail (visually untested — check what it
+  covers before committing) or leave it in flow.
+
+Do NOT reach for a codemod again without solving the consecutive-run
+case first. The safe subset above is worth landing on its own.
+
 ## Forbidden moves
 
 - **No component edits.** If a study seems to need one, stop and
