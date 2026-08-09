@@ -340,13 +340,13 @@
     "room": [
      {
       "facet": "room",
-      "term": "kitchen",
-      "n": 8,
+      "term": "living room",
+      "n": 9,
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg"
+        "field": "reel.images.2",
+        "quote": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg"
        },
        {
         "section": "meta",
@@ -357,13 +357,13 @@
      },
      {
       "facet": "room",
-      "term": "living room",
+      "term": "kitchen",
       "n": 8,
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg"
+        "field": "reel.images.0",
+        "quote": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg"
        },
        {
         "section": "meta",
@@ -486,7 +486,7 @@
      {
       "facet": "furniture",
       "term": "table",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "meta",
@@ -494,8 +494,8 @@
         "quote": "/case-studies/arc/arc-app-smartphone-wooden-table-mockup.jpg"
        },
        {
-        "section": "problem-image-mockup",
-        "field": "src",
+        "section": "problem-columns",
+        "field": "columns.0.image.src",
         "quote": "arc app smartphone wooden table mockup"
        }
       ]

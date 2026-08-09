@@ -212,6 +212,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             plate={p.plate ?? ""}
             captionLines={p.captions ?? []}
             instruction={p.instruction}
+            fit={p.choreo?.zoomFit}
             mark={p.mark}
             // The climb room is only reserved when something actually
             // climbs. Reserved with no riser after it, the tail is a

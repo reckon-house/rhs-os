@@ -98,6 +98,60 @@ export function PressingBrief({
      stackBelow matches THIS stylesheet's 760 mobile block. */
   useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
 
+  /* ── the drift ───────────────────────────────────────────────────
+     The picture moves inside its frame as the column travels, the same
+     way every other image on the site does. The offset can only ever
+     be NEGATIVE: a symmetric swing about centre pushes the image below
+     the frame's top edge and exposes the ground behind it, which is
+     the bug this kit has already paid for once. y = -p * slack keeps
+     it inside the slack at both ends.
+
+     Only frames on screen are written, and only through rAF — a
+     transform per element per scroll event is how a page starts
+     stuttering on a long study. */
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const imgs = Array.from(root.querySelectorAll<HTMLElement>("[data-col-drift]"));
+    if (!imgs.length) return;
+
+    const live = new Set<HTMLElement>();
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => {
+        if (e.isIntersecting) live.add(e.target as HTMLElement);
+        else live.delete(e.target as HTMLElement);
+      }),
+      { rootMargin: "120px 0px" }
+    );
+    imgs.forEach((im) => io.observe(im));
+
+    let raf = 0;
+    let alive = true;
+    const tick = () => {
+      if (!alive) return;
+      raf = requestAnimationFrame(tick);
+      if (document.hidden || !live.size) return;
+      const h = window.innerHeight;
+      live.forEach((im) => {
+        const frame = im.parentElement;
+        if (!frame) return;
+        const r = frame.getBoundingClientRect();
+        /* 0 as the frame enters the bottom, 1 as it leaves the top */
+        const p = Math.min(1, Math.max(0, (h - r.top) / (h + r.height)));
+        const slack = im.offsetHeight - r.height;
+        im.style.transform =
+          "translate3d(0," + (-p * slack).toFixed(2) + "px,0)";
+      });
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      alive = false;
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
+  }, []);
+
   /* The rule-drawing trigger, the prototype's observer at its tuned 0.18
      threshold. No reduced-motion branch here, unlike the prototype: the
      stylesheet forces the drawn final state (and kills the transition)
@@ -171,16 +225,19 @@ export function PressingBrief({
               {columns!.map((c, i) => (
                 <div key={i} className={styles.c}>
                   {c.image ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      className={styles.colImg}
-                      src={c.image.src}
-                      alt={c.image.alt}
-                      width={c.image.width}
-                      height={c.image.height}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <span className={styles.colFrame}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className={styles.colImg}
+                        data-col-drift
+                        src={c.image.src}
+                        alt={c.image.alt}
+                        width={c.image.width}
+                        height={c.image.height}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </span>
                   ) : null}
                   <BodyReveal as="h3" className={styles.colTitle}>
                     {c.title}

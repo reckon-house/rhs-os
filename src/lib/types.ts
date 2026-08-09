@@ -128,6 +128,16 @@ interface BaseSection {
       rise?: boolean;
       /** Pinned zoom-to-full-bleed object plate with pan-through */
       zoom?: boolean;
+      /** How far the zoom plate grows.
+       *  Default (unset) fits the VIEWPORT WIDTH and pans the overflow
+       *  through — full bleed, and correct for a portrait plate with a
+       *  lot of height to travel. "contain" grows only until the WHOLE
+       *  frame fits the mat, so nothing ever leaves the screen. Use it
+       *  for landscape plates, where the width fit spills too little to
+       *  read as a pan and reads as the bottom being cut off instead.
+       *  It also asks less of the file: a smaller final scale needs
+       *  fewer device pixels than the source has to supply. */
+      zoomFit?: "contain";
       /** Pinned horizontal crossing headline (vertical scroll remapped) */
       crossing?: boolean;
       /** Pinned quote poster: ink fill rises and knocks the type out */

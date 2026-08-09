@@ -162,7 +162,7 @@ export const arcCaseStudy: CaseStudy = {
       image: `${IMG}/arc-app-kitchen-project-selection-lifestyle.jpg`,
       alt: "A.R.C. app on wooden surface with kitchen interior",
       pressing: {
-        choreo: { zoom: true },
+        choreo: { zoom: true, zoomFit: "contain" },
         plate: "02",
         captions: [
           "A.R.C. app",

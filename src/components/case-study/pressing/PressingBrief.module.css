@@ -247,10 +247,35 @@
    measure's full width, which for a 768px app screen is the size that
    file can actually carry — the reason these moved out of full-width
    plates in the first place. */
+/* The frame holds the shape and the clip; the picture inside is cut
+   TALLER than the frame so it has somewhere to travel. Same
+   arrangement as every other image on the site: the frame owns the
+   radius, the image owns the transform, and neither writes the
+   other's property. */
+.colFrame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--pp-r, 16px);
+  aspect-ratio: 1 / 1;
+  margin-bottom: clamp(14px, 1.6vw, 22px);
+}
 .colImg {
   display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
-  border-radius: var(--pp-r, 16px);
-  margin-bottom: clamp(14px, 1.6vw, 22px);
+  /* the slack. 112% leaves 12% of height to drift through, which at
+     this measure is about 45px of travel — enough to read as movement,
+     small enough that the crop never loses the subject. */
+  height: 112%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colImg {
+    height: 100%;
+    transform: none !important;
+  }
 }

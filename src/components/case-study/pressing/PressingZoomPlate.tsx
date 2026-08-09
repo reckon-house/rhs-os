@@ -64,6 +64,10 @@ export type PressingZoomPlateProps = {
    * no tail, its second (followed by the gallery plate) does.
    */
   reserveRise?: boolean;
+  /** "contain" grows the plate only until the WHOLE frame fits the mat,
+   *  so nothing leaves the screen. Default fits the width and pans the
+   *  overflow through. See ChoreoBag.zoomFit. */
+  fit?: "contain";
   /**
    * Intrinsic pixel size from the image-dimensions manifest. Load-bearing
    * for scroll feel, not just CLS: the driver sizes the wrap from the
@@ -132,6 +136,7 @@ export function PressingZoomPlate({
   height,
   eager = false,
   reserveRise = false,
+  fit,
 }: PressingZoomPlateProps) {
   const wrapRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -224,9 +229,24 @@ export function PressingZoomPlate({
       /* Fit the WIDTH rather than covering the box. Nothing is cropped —
          any height beyond the fold becomes something to scroll through
          instead of something thrown away. A landscape plate spills barely
-         anything and so pins for much less scroll than a portrait one. */
-      scale = window.innerWidth / box.w;
-      spill = Math.max(0, box.h * scale - matH);
+         anything and so pins for much less scroll than a portrait one.
+
+         Which is exactly where that premise breaks, and why `contain`
+         exists. A landscape frame spills only a little, so the pan is
+         over before the eye reads it as a pan, and what registers is
+         the bottom of the picture being cut. `contain` grows the plate
+         until the WHOLE frame fits the mat instead: no spill, no pan,
+         nothing off screen. It also asks less of the file — a smaller
+         final scale needs fewer device pixels than the source has to
+         supply, which is the same reason the plate looked soft. */
+      const widthFit = window.innerWidth / box.w;
+      if (fit === "contain") {
+        scale = Math.min(widthFit, matH / box.h);
+        spill = 0;
+      } else {
+        scale = widthFit;
+        spill = Math.max(0, box.h * scale - matH);
+      }
 
       zoomPx = vh() * 1.1; // scroll spent growing the plate
       panPx = spill; // 1:1 — one pixel of scroll, one of image

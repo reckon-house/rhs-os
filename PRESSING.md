@@ -157,6 +157,27 @@ grids are the usual offenders. Colours come from the study's own
 declared palette. `npm run facts` reports any pressing study missing a
 reel and names any frame carrying alpha.
 
+**A landscape zoom plate needs `zoomFit: "contain"`.** The plate's
+default is to fit the VIEWPORT WIDTH and treat the leftover height as
+spill to pan through, which is right for a tall frame. Give a wide one
+the same treatment and the sums stop working twice over: the spill is
+too small to read as a pan, so the missing bottom registers as a crop
+rather than as something still to come, and fitting a 1.6-ratio frame
+to the width asks for far more device pixels than the file has, so it
+also goes soft. `contain` scales until the WHOLE frame fits the mat and
+sets spill to zero. Ratio kept, nothing off screen, and a smaller ask
+of the file. A.R.C.'s kitchen frame is the worked example: 3840×2363,
+now drawn at 1375×846 inside a 900px-tall mat.
+
+**An image in a column drifts inside its frame, like every other image
+on the site.** `.colFrame` owns the shape, the clip and the radius;
+`.colImg` is cut to 112% of it and owns the transform. One driver per
+property, and the offset is only ever NEGATIVE — a symmetric swing
+about centre pushes the picture off the frame's top edge and exposes
+the ground behind it, which this kit has already paid for once. Only
+frames on screen are written, and only inside a rAF: a transform per
+element per scroll event is how a long study starts to stutter.
+
 **Known gap:** every pressing plate is a raw `<img>` while the classic
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.
@@ -172,6 +193,8 @@ read the mark spine top to bottom before shipping.
 
 ## 9. The porting checklist
 
+1. Size every image against the table in §7 BEFORE placing it, and
+   set `zoomFit: "contain"` on any landscape zoom plate.
 1. Add `pressing` bags to the study's sections (marks, choreo flags,
    captions) — commit-safe before the flip.
 2. Verify every image is in `image-dimensions.ts`, and check each
