@@ -16,9 +16,11 @@
 
 .wrap {
   --si-hair: rgba(0, 0, 0, 0.14);
-  /* RRSystemIndex's reserved sample height. Every row's specimen sits
-     in a box of this height, so nothing a specimen does can move the
-     row. */
+  /* RRSystemIndex's reserved sample height: every specimen sits in a box
+     of this height so nothing it does can move the row. Robert's 208 is
+     the fallback — the pattern-library reel overwrites it with its own
+     tallest frame, measured, since a generic component cannot know the
+     frames in advance. */
   --sampleH: 208px;
   padding: clamp(40px, 7dvh, 90px) 0;
 }

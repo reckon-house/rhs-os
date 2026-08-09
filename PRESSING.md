@@ -386,19 +386,20 @@ one scale, and a sample that outgrows the others stops being a
 specimen. If a size genuinely needs to change, change it in
 RRSystemIndex too so the family stays one family.
 
-**The row must not move.** Two reserves, both needed. `--sampleH` (208px,
-150 on mobile, RRSystemIndex's) fixes every specimen's box so nothing a
-specimen does can reflow its row, and captions are absolutely positioned
-inside it so a two-line caption cannot push it either. On top of that,
-the reel is sized ONCE to the TALLEST frame and left alone.
+**Frames flex; the row holds.** These are two different boxes and it
+matters. Each frame keeps its OWN proportion — `shape()` rewrites the
+reel's height per beat, exactly as RRSystemIndex does, because showing a
+stats card and an account panel at their true shapes is the point and
+one shared box would crop or letterbox every one. The ROW is what stays
+still, via `--sampleH`: every specimen sits in a box of that height with
+captions absolutely positioned inside, so nothing a specimen does can
+reflow anything.
 
-That second part departs from Robert, and here is when to depart: he
-reshapes per beat because his four frames are near enough the same
-proportion that it reads as the reel breathing. A pattern library holds
-UI panels — a stats card at ratio 2.01 beside an account panel at 0.60 —
-and the same behaviour is the box lurching every few seconds. Height
-comes from the SMALLEST ratio so every frame fits and none is cropped,
-and it is recomputed on resize because the box width is a vw clamp.
+Robert hardcodes `--sampleH: 208px`, tuned against his four frames. A
+generic component cannot hardcode it, so it MEASURES: the tallest
+frame's height at the current box width, recomputed on resize since the
+box is a vw clamp. Same mechanism, sized from the data instead of by
+hand.
 
 Frames must be OPAQUE. Cutting them out of a transparent contact sheet
 means flattening onto white on the way out; `npm run facts` rejects

@@ -40,7 +40,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import type { BrandSystemSection } from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
-import { SizzleReel } from "@/components/fx/SizzleReel";
+import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { imageDimensions } from "@/data/image-dimensions";
 import { outline, profile, toPath, rgb } from "@/lib/swatch-morph";
@@ -106,20 +106,38 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const ratiosRef = useRef<number[]>([]);
   const [reelReady, setReelReady] = useState(false);
 
-  /* Sized ONCE, to the tallest frame, and left alone. Robert reshapes
-     his box per beat because his four frames are near enough the same
-     proportion that it reads as the reel breathing. These are UI panels
-     — a stats card at 2.01 next to an account panel at 0.60 — so the
-     same behaviour is the row lurching every few seconds.
-     Height comes from the SMALLEST ratio (widest ÷ tallest is the
-     tallest box), so every frame fits and none is ever cropped by the
-     container. */
-  const fitTallest = useCallback(() => {
+  /* Each frame gets its OWN height — RRSystemIndex's shape(), verbatim.
+     The frames are different shapes and showing each at its true
+     proportion is the point; flattening them all to one box would crop
+     or letterbox every one. */
+  const shape = useCallback((i: number) => {
     const box = reelBoxRef.current;
+    const r = ratiosRef.current[i];
+    if (box && r) {
+      box.style.height = `${(box.getBoundingClientRect().width / r).toFixed(1)}px`;
+    }
+  }, []);
+
+  const onBeat = useCallback(
+    (_i: number, beat: SizzleBeat) => {
+      if (beat.img != null) shape(beat.img);
+    },
+    [shape]
+  );
+
+  /* What the ROW reserves. Robert hardcodes --sampleH at 208px, tuned
+     against his four frames; a generic component cannot hardcode it
+     because it does not know the frames. So it is measured: the tallest
+     frame's height at the current box width, which is the smallest
+     ratio. The reel then breathes INSIDE a box that never changes, so
+     frames flex and the row holds. */
+  const reserve = useCallback(() => {
+    const box = reelBoxRef.current;
+    const root = ref.current;
     const rs = ratiosRef.current.filter((r) => r > 0);
-    if (!box || !rs.length) return;
-    const tallest = Math.min(...rs);
-    box.style.height = `${(box.getBoundingClientRect().width / tallest).toFixed(1)}px`;
+    if (!box || !root || !rs.length) return;
+    const h = box.getBoundingClientRect().width / Math.min(...rs);
+    root.style.setProperty("--sampleH", `${Math.ceil(h)}px`);
   }, []);
 
   const libKey = (section.patternLibrary ?? []).join("|");
@@ -143,18 +161,18 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
       )
     ).then(() => {
       if (cancelled) return;
-      fitTallest();
+      reserve();
+      shape(0);
       setReelReady(true);
     });
-    /* The box is a vw clamp, so its width moves with the window and the
-       reserved height has to follow or the tallest frame starts
-       overflowing. */
-    window.addEventListener("resize", fitTallest);
+    /* The box width is a vw clamp, so the reserve has to follow the
+       window or the tallest frame starts overflowing its row. */
+    window.addEventListener("resize", reserve);
     return () => {
       cancelled = true;
-      window.removeEventListener("resize", fitTallest);
+      window.removeEventListener("resize", reserve);
     };
-  }, [libKey, fitTallest]);
+  }, [libKey, reserve, shape]);
 
   /* ── the palette: colour AND form, together ────────────────────── */
   useEffect(() => {
@@ -305,6 +323,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
                 colors={(section.colors ?? []).map((c) => c.hex)}
                 speed={1}
                 className={styles.reel}
+                onBeatChange={onBeat}
               />
             ) : null}
           </span>
