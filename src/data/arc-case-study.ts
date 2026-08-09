@@ -293,13 +293,15 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "06", name: "How it works" },
         heldLine: "recognition engine.",
-        /* The crossing: the pin remaps vertical scroll to horizontal
-           travel, so each rendered line is dragged in from a viewport
-           off to the right and lands flush left as the pin runs out.
-           It suits this headline in particular — the section is about
-           a pipeline, one stage feeding the next, and the lines arrive
-           the same way. */
-        choreo: { crossing: true },
+        /* Pinned, not crossing. The crossing renders the headline and
+           its intro on a screen of their own, which split this section
+           in two: the argument up in the crossing, the six stages in a
+           column underneath it, reading as separate sections. Pinned,
+           the headline holds while ONE column travels past it carrying
+           the intro and then the stages — the pattern the rest of the
+           study already uses, and the reason the stages belong to this
+           headline is now visible rather than implied. */
+        choreo: { pin: true, crossing: true },
       },
     },
     {
@@ -326,7 +328,9 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "pipeline",
       type: "three-column-text",
-      pressing: { mark: { n: "06", name: "How it works" } },
+      /* No mark. The header above already carries 06 / How it works, and
+         nesting the columns under the same headline put it on screen
+         twice — the header owns its punchline. */
       columns: [
         {
           title: "Image Capture",

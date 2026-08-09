@@ -12,6 +12,7 @@ import { PressingQuote } from "./PressingQuote";
 import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
+import { PressingSystemIndex } from "./PressingSystemIndex";
 import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
@@ -53,7 +54,6 @@ const INDEX_REEL_COLORS = ["#E0552F", "#F09A3E", "#E8637A", "#F5EAE7", "#241C18"
 const VIZ_TYPES = new Set<Section["type"]>([
   "feature-cards",
   "pipeline",
-  "brand-system",
   "text-right",
 ]);
 
@@ -173,7 +173,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             links={closing.links}
           />
         );
-      } else if (p?.choreo?.crossing) {
+      } else if (p?.choreo?.crossing && !columns) {
         out.push(
           <PressingCrossing
             key={s.id}
@@ -207,6 +207,11 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             heldLine={p?.heldLine}
             paragraphs={paragraphs}
             pin={p?.choreo?.pin}
+            /* A header asking for `crossing` that ALSO carries method
+               columns gets the brief's from-right variation instead:
+               same entrance, one column, evidence still attached to the
+               argument it belongs to. */
+            fromRight={p?.choreo?.crossing}
             columns={columns}
             columnsMark={columnsMark}
           />
@@ -285,6 +290,12 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           mark={p.mark}
         />
       );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "brand-system") {
+      out.push(<PressingSystemIndex key={s.id} section={s} mark={p?.mark} />);
       i += 1;
       continue;
     }

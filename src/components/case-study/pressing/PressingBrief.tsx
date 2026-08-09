@@ -63,6 +63,15 @@ export interface PressingBriefProps {
   paragraphs?: string[];
   /** Hold the headline sticky while the column travels up beside it. */
   pin?: boolean;
+  /**
+   * The column arrives from the RIGHT, the crossing's gesture without
+   * the crossing's screen. A crossing renders the headline and its
+   * intro on a pinned screen of their own, which splits a section that
+   * carries method columns into two things that read as two sections.
+   * This keeps the one column — intro then columns, pinned headline
+   * beside it — and gives it the same entrance.
+   */
+  fromRight?: boolean;
   /** The method grid: none, or three entries nested after the paragraphs.
    *  A column may carry its own image, which lands at the top of the
    *  column at COLUMN width. That is the point of it: a 768px app
@@ -84,6 +93,7 @@ export function PressingBrief({
   heldLine,
   paragraphs,
   pin = false,
+  fromRight = false,
   columns,
   columnsMark,
 }: PressingBriefProps) {
@@ -94,12 +104,41 @@ export function PressingBrief({
   // scrolls back into view turns a section opener into a loop. State, not a
   // classList write: a re-render must not wipe the drawn class.
   const [drawn, setDrawn] = useState(false);
+  /* The from-right entrance. Its own latch rather than `drawn`: that one
+     watches the METHOD GRID so the rules draw as the columns arrive, and
+     the whole column has to start moving well before then. */
+  const [entered, setEntered] = useState(false);
 
   const hasCols = !!columns && columns.length > 0;
 
   /* The brief-family placement pass, shared (src/lib/column-drop.ts).
      stackBelow matches THIS stylesheet's 760 mobile block. */
   useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
+
+  /* Admit the column once, on arrival. Viewport-rooted, which is safe
+     with the page scrolling inside <main>: main spans the viewport, so
+     the two intersection tests are the same one. */
+  useEffect(() => {
+    if (!fromRight) return;
+    const el = colRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setEntered(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          setEntered(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.04 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [fromRight]);
 
   /* ── the drift ───────────────────────────────────────────────────
      The picture moves inside its frame as the column travels, the same
@@ -208,7 +247,14 @@ export function PressingBrief({
       </RevealHeadline>
       ) : null}
 
-      <div ref={colRef} className={styles.col}>
+      <div
+        ref={colRef}
+        className={
+          fromRight
+            ? `${styles.col} ${styles.fromRight}${entered ? " " + styles.landed : ""}`
+            : styles.col
+        }
+      >
 
         {paragraphs?.map((p, i) => (
           <BodyReveal key={i} as="p">

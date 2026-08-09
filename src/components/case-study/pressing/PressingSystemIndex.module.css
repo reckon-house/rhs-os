@@ -1,0 +1,155 @@
+/*
+ * PressingSystemIndex — the generic system ledger.
+ *
+ * The row proportions are RRSystemIndex's, deliberately: that section is
+ * the house pattern for "here is the system, one line per part", and a
+ * second brand section inventing its own would make two languages where
+ * the site has one. What is NOT copied is Robert's content — that file
+ * hardcodes its lockup, palette cycle and reel because they are bespoke
+ * to it. This one takes rows from whatever brand data the study carries.
+ *
+ * Big label left, the specimen itself right, hairline under. Nothing
+ * animates but the rules drawing in, which is the whole point: the
+ * classic brand-system was a two-tone panel with a philosophy column, a
+ * swatch matrix and tint ramps, and it read like the old site.
+ */
+
+.wrap {
+  --si-hair: rgba(0, 0, 0, 0.14);
+  padding: clamp(40px, 7dvh, 90px) 0;
+}
+
+.head {
+  margin-bottom: clamp(28px, 4vw, 52px);
+}
+/* The setup: one column of copy at reading measure, off to the right
+   the way every other brief in the family sets its column. */
+.intro {
+  margin-left: auto;
+  max-width: 46ch;
+  font-size: var(--pp-note);
+  line-height: 1.55;
+}
+.intro p + p {
+  margin-top: 12px;
+}
+
+.rows {
+  margin-top: clamp(36px, 6vw, 80px);
+  border-top: 1px solid var(--si-hair);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 2.6vw, 46px);
+  padding: clamp(14px, 3dvh, 38px) 0;
+  border-bottom: 1px solid var(--si-hair);
+  /* the rule draws itself in, staggered, the same gesture the index
+     rows and the brief's column rules make */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--lag, 0s);
+}
+.drawn .row {
+  clip-path: inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+  }
+}
+
+.label {
+  font-size: clamp(34px, 5.4vw, 84px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  flex: 0 0 auto;
+}
+
+/* Whatever the row is showing, centred on the label's own line. */
+.sample {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 40px);
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+.cap {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  font-weight: var(--pp-lbl-weight);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* ── the logotype row ─────────────────────────────────────────────
+   The mark's own artwork, capped at its native width so a small file
+   is never stretched — the site rule, applied here rather than
+   rediscovered. */
+.markImg {
+  display: block;
+  width: auto;
+  /* A LEDGER LINE, not a plate. The row's job is to name a part of the
+     system and show enough of it to recognise; a 2050px logo sheet left
+     to its own devices made a row 1162px tall and the ledger stopped
+     being a ledger. Height leads, width follows, and the native cap
+     stays as the backstop so nothing is ever stretched. */
+  max-height: clamp(110px, 20dvh, 210px);
+  max-width: min(100%, var(--native, 420px));
+  object-fit: contain;
+}
+
+/* ── the typeface row ─────────────────────────────────────────────
+   Set the name IN its own face where the study names a real one, so
+   the specimen is the evidence. */
+.specimen {
+  font-size: clamp(28px, 3.6vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* ── the palette row ──────────────────────────────────────────────
+   Dots, not a matrix. The tint ramps the classic section drew were
+   generated steps nobody specified, which puts them on the wrong side
+   of the fabrication rule. */
+.swatch {
+  /* block, or the width/height simply do not apply to a span and the
+     palette row renders as three captions floating over nothing */
+  display: block;
+  margin: 0 auto 8px;
+  width: clamp(44px, 5vw, 76px);
+  height: clamp(44px, 5vw, 76px);
+  border-radius: 50%;
+  flex: 0 0 auto;
+  /* a pale swatch on white paper needs an edge to exist at all */
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.swatchCell {
+  text-align: center;
+}
+/* The swatch carries its own gap to the caption, so the shared
+   .cap top margin would double it here. */
+.swatchCell .cap {
+  margin-top: 0;
+}
+.hex {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .row {
+    gap: 14px;
+  }
+  .intro {
+    margin-left: 0;
+  }
+}
