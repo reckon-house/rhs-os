@@ -69,8 +69,19 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "photo-header",
       type: "section-header",
       label: "SECTION 02: PHOTOGRAPHY DIRECTION",
-      title: "Photography That Stops\nLooking Like Inventory.",
-      pressing: { mark: { n: "02", name: "Photography That Stops" } },
+      title: "Photography That Stops",
+      // The study's one crossing, on the argument the whole case rests on.
+      //
+      // No zoom plate and no mid-page climb here: every UI capture is
+      // ~1990px native, well under the working floor for a plate that
+      // fills the mat, and the only file that clears it is the cover's own
+      // riser. The single dual-image is followed by the system ledger,
+      // which cannot climb. Quota bent, on the record.
+      pressing: {
+        mark: { n: "02", name: "Photography That Stops" },
+        heldLine: "Looking Like Inventory.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "photo-subhead",
@@ -132,8 +143,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "home-header",
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
-      title: "A Header That Gets Out\nof Its Own Way.",
-      pressing: { mark: { n: "03", name: "A Header That Gets Out" } },
+      title: "A Header That Gets Out",
+      pressing: {
+        mark: { n: "03", name: "A Header That Gets Out" },
+        heldLine: "of Its Own Way.",
+      },
     },
     {
       id: "home-subhead",
@@ -185,8 +199,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "mobile-header",
       type: "section-header",
       label: "SECTION 04: MOBILE",
-      title: "The Same System,\nResized for Pocket.",
-      pressing: { mark: { n: "04", name: "The Same System" } },
+      title: "The Same System,",
+      pressing: {
+        mark: { n: "04", name: "The Same System" },
+        heldLine: "Resized for Pocket.",
+      },
     },
     {
       id: "mobile-subhead",
@@ -208,6 +225,9 @@ export const cosmoProfCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/cosmo-prof-ui-website-homepage-mobile2.png`,
         alt: "Cosmo Prof mobile homepage, scrolled view showing personalized recommendations and category navigation",
+      },
+      pressing: {
+        captions: ["Mobile homepage\nPrimary view", "Scrolled to recommendations"],
       },
     },
 
@@ -276,8 +296,11 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "B2B That Reads\nLike Brand Work.",
-      pressing: { mark: { n: "05", name: "B2B That Reads" } },
+      title: "B2B That Reads",
+      pressing: {
+        mark: { n: "05", name: "B2B That Reads" },
+        heldLine: "Like Brand Work.",
+      },
     },
     {
       id: "closing-subhead",

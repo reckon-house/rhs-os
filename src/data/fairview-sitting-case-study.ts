@@ -71,8 +71,11 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "texture-header",
       type: "section-header",
       label: "SECTION 02: TEXTURE",
-      title: "Stone, Velvet,\nBrass, Oak.",
-      pressing: { mark: { n: "02", name: "Stone, Velvet" } },
+      title: "Stone, Velvet,",
+      pressing: {
+        mark: { n: "02", name: "Stone, Velvet" },
+        heldLine: "Brass, Oak.",
+      },
     },
     {
       id: "texture-subhead",
@@ -114,15 +117,22 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         src: `${IMG}/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg`,
         alt: "Pampas grass in a stone vase by a black-framed window with painted blue brick wall behind, edge of charcoal velvet swivel in foreground",
       },
+      // Held so the pulled-back view climbs across the two material
+      // details. Materials first, then the room they add up to.
+      pressing: {
+        captions: ["Mantel and mirror\nStacked stone", "Pampas grass, blue brick"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── Inline hero: architectural pulled-back view
+    // ── Architectural pulled-back view — climbs across the held details
     {
       id: "architectural-hero",
       type: "hero",
       image: `${IMG}/fairview-sitting-black-box-beams-stone-fireplace-pampas-grass-architectural-wide.jpg`,
       alt: "Pulled-back architectural view of the sitting room with black box beam coffered ceiling, stone fireplace, four swivel chairs around the brass coffee table, and pampas grass anchoring the corner",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -132,8 +142,19 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "conversation-header",
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
-      title: "A Grouping Built\nAround the Fire.",
-      pressing: { mark: { n: "03", name: "A Grouping Built" } },
+      title: "A Grouping Built",
+      // This study's one crossing, on its SECOND header. Its sibling
+      // (fairview-entry) crosses its first and zooms its architectural
+      // frame; two rooms in one house get different staging on purpose.
+      //
+      // No zoom here: apart from the cover's own riser, every frame in
+      // this study is 2234px native or less, under the working floor for
+      // a plate that fills the mat.
+      pressing: {
+        mark: { n: "03", name: "A Grouping Built" },
+        heldLine: "Around the Fire.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "conversation-subhead",
@@ -164,6 +185,11 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg`,
         alt: "Front view of the conversation grouping with the round black bar cabinet on the left, two swivels around the brass coffee table, fireplace beyond",
+      },
+      // Captions only. The texture section already spends this study's
+      // climb, and two identical holds would read as a template.
+      pressing: {
+        captions: ["Brass coffee table\nVelvet swivel", "Bar cabinet, front view"],
       },
     },
 
@@ -253,8 +279,11 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Room Built\nfor the Hour.",
-      pressing: { mark: { n: "04", name: "A Room Built" } },
+      title: "A Room Built",
+      pressing: {
+        mark: { n: "04", name: "A Room Built" },
+        heldLine: "for the Hour.",
+      },
     },
     {
       id: "closing-subhead",

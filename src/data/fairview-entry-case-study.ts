@@ -67,8 +67,15 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "light-header",
       type: "section-header",
       label: "SECTION 02: LIGHT",
-      title: "The Whole Room\nServes the Light.",
-      pressing: { mark: { n: "02", name: "The Whole Room" } },
+      title: "The Whole Room",
+      // This study's one crossing, on its opening argument. Its sibling
+      // (fairview-sitting) crosses its SECOND header instead — two rooms
+      // in one house should not choreograph identically.
+      pressing: {
+        mark: { n: "02", name: "The Whole Room" },
+        heldLine: "Serves the Light.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "light-subhead",
@@ -113,6 +120,20 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       image: `${IMG}/hero5.webp`,
       alt: "Side angle of the entry showing the full art wall: slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground",
       inline: true,
+      // The zoom. The section argues the whole room serves the light, and
+      // this is the frame that carries the art wall end to end — filling
+      // the mat is what makes that legible. contain because the frame is
+      // landscape (PRESSING.md §7).
+      pressing: {
+        plate: "02",
+        captions: [
+          "The art wall, full width",
+          "Slatted wood and dark abstract",
+          "Leather bench beneath",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ════════════════════════════════════════
@@ -122,8 +143,11 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "pieces-header",
       type: "section-header",
       label: "SECTION 03: PIECES",
-      title: "Found Pieces\nThat Tell Stories.",
-      pressing: { mark: { n: "03", name: "Found Pieces" } },
+      title: "Found Pieces",
+      pressing: {
+        mark: { n: "03", name: "Found Pieces" },
+        heldLine: "That Tell Stories.",
+      },
     },
     {
       id: "pieces-subhead",
@@ -157,10 +181,15 @@ export const fairviewEntryCaseStudy: CaseStudy = {
         src: `${IMG}/7.webp`,
         alt: "Tight detail of the potted palm, wood coat tree, and the corner of the vintage rug catching morning sunlight on white oak floors",
       },
+      // Held so the wide view climbs across the two details it contains.
+      pressing: {
+        captions: ["Leather bench\nSheepskin throw", "Palm and coat tree"],
+        choreo: { pin: true },
+      },
     },
 
-    // Wide architectural context shot after the pair — pulls the viewer
-    // back to see how the pieces sit in the full foyer.
+    // Wide architectural context shot — climbs across the held details,
+    // pulling the viewer back to see how the pieces sit in the full foyer.
     {
       id: "pieces-context",
       type: "image",
@@ -168,6 +197,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       alt: "Horizontal architectural view of the entry: French doors at center, vintage rug runner, palm on the left, coat tree against the side wall",
       aspect: "native",
       padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Editorial palate cleanser
@@ -253,8 +283,11 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Threshold\nThat Does the Work.",
-      pressing: { mark: { n: "04", name: "A Threshold" } },
+      title: "A Threshold",
+      pressing: {
+        mark: { n: "04", name: "A Threshold" },
+        heldLine: "That Does the Work.",
+      },
     },
     {
       id: "closing-subhead",

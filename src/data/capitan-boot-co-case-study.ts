@@ -69,8 +69,11 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 02: THE MARKS",
-      title: "Marks Built\nto Hold.",
-      pressing: { mark: { n: "02", name: "Marks Built" } },
+      title: "Marks Built",
+      pressing: {
+        mark: { n: "02", name: "Marks Built" },
+        heldLine: "to Hold.",
+      },
     },
     {
       id: "marks-subhead",
@@ -116,8 +119,15 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "westtexas-header",
       type: "section-header",
       label: "SECTION 03: WEST TEXAS",
-      title: "Quiet. Weathered.\nReal.",
-      pressing: { mark: { n: "03", name: "Quiet. Weathered" } },
+      title: "Quiet. Weathered.",
+      // The study's one crossing. Three words that ARE the brand brief, on
+      // the beat where the photography arrives — the shortest headline in
+      // the study, so the cut reads cleanly.
+      pressing: {
+        mark: { n: "03", name: "Quiet. Weathered" },
+        heldLine: "Real.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "westtexas-subhead",
@@ -142,9 +152,14 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       image: `${IMG}/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg`,
       alt: "Golden grassland and mountain horizon with a framed Western Original inset hovering over the same terrain",
       inline: true,
+      pressing: { caption: "Golden grassland\nWestern Original inset" },
     },
 
-    // ── Buffalo silhouette over desert
+    // ── Buffalo silhouette over desert — the zoom. No dual-image in this
+    // study to hold a riser, so the zoom is the hold (PRESSING.md §5), and
+    // the mark over open country is the frame worth filling the mat with.
+    // No zoomFit: the frame is near-square, so the spill is a short pan
+    // rather than a landscape's worth.
     {
       id: "westtexas-buffalo",
       type: "image",
@@ -152,15 +167,26 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       alt: "Cream buffalo silhouette set over a mesa-and-sage West Texas vista with Western Original arrow flourishes",
       aspect: "native",
       padded: true,
+      pressing: {
+        plate: "03",
+        captions: [
+          "Buffalo silhouette",
+          "Mesa and sage terrain",
+          "Western Original arrows",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
-    // ── Inline hero: WESTERN × ORIGINAL river landscape
+    // ── WESTERN × ORIGINAL river landscape — climbs across the held buffalo
     {
       id: "westtexas-river-hero",
       type: "hero",
       image: `${IMG}/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign.jpg`,
       alt: "Big Bend river bottom at dusk with Western Original typographic lockup centered over rolling hills and sage terrain",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Synthesis image: diamond badge over Big Bend
@@ -171,6 +197,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       alt: "Capitan Boot Co. diamond badge logo with bison and Western Original lockup, set over Big Bend desert landscape at golden hour",
       aspect: "native",
       padded: true,
+      pressing: { caption: "Diamond badge\nBison and lockup" },
     },
 
     // ── Editorial palate cleanser
@@ -248,8 +275,11 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Built for Where\nthe Boots Go.",
-      pressing: { mark: { n: "04", name: "Built for Where" } },
+      title: "Built for Where",
+      pressing: {
+        mark: { n: "04", name: "Built for Where" },
+        heldLine: "the Boots Go.",
+      },
     },
     {
       id: "closing-subhead",

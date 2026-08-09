@@ -93,8 +93,11 @@ export const dscCaseStudy: CaseStudy = {
       id: "signup-header",
       type: "section-header",
       label: "SECTION 02: GETTING IN",
-      title: "Join the\nCollective",
-      pressing: { mark: { n: "02", name: "Join the" } },
+      title: "Join the",
+      pressing: {
+        mark: { n: "02", name: "Join the" },
+        heldLine: "Collective",
+      },
     },
     {
       id: "signup-text",
@@ -117,15 +120,22 @@ export const dscCaseStudy: CaseStudy = {
       native: true,
       left: { src: "/case-studies/dsc/dsc-athlete-app-login-screen.jpg", alt: "DSC athlete login screen, Unlock Your Peak" },
       right: { src: "/case-studies/dsc/dsc-athlete-app-registration-form.jpg", alt: "DSC registration form, Join the Collective" },
+      // Held so the scheduler climbs across the two screens an athlete
+      // signs up on. Sign-up first, then the thing they signed up for.
+      pressing: {
+        captions: ["Login\nUnlock Your Peak", "Registration"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── HERO - AI divider ──
+    // ── HERO - AI divider — climbs across the held sign-up pair ──
     {
       id: "hero-ai",
       type: "hero",
       image: "/case-studies/dsc/dsc-ai-scheduler-phone-hero.jpg",
       alt: "The DSC scheduler open on a phone, resting on concrete",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -135,8 +145,19 @@ export const dscCaseStudy: CaseStudy = {
       id: "mcp-header",
       type: "section-header",
       label: "SECTION 03: SCHEDULING BY CHAT",
-      title: "The Gym That\nSpeaks MCP",
-      pressing: { mark: { n: "03", name: "The Gym That" } },
+      title: "The Gym That",
+      // The study's one crossing. Of everything here, a gym a trainer can
+      // book from inside a chat window is the claim nobody else is making,
+      // so the gesture marks it.
+      //
+      // No zoom plate: every capture in this study is 2000px native or
+      // less, well under the working floor for a plate that fills the mat.
+      // The climbs below carry the choreography instead.
+      pressing: {
+        mark: { n: "03", name: "The Gym That" },
+        heldLine: "Speaks MCP",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "mcp-text",
@@ -181,8 +202,11 @@ export const dscCaseStudy: CaseStudy = {
       id: "athlete-header",
       type: "section-header",
       label: "SECTION 04: THE ATHLETE APP",
-      title: "What Athletes\nSee",
-      pressing: { mark: { n: "04", name: "What Athletes" } },
+      title: "What Athletes",
+      pressing: {
+        mark: { n: "04", name: "What Athletes" },
+        heldLine: "See",
+      },
     },
     {
       id: "athlete-text",
@@ -208,15 +232,24 @@ export const dscCaseStudy: CaseStudy = {
         { src: "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg", alt: "DSC athlete app trainer bio for the founder and head trainer" },
         { src: "/case-studies/dsc/dsc-athlete-app-programs-services.jpg", alt: "DSC athlete app program and services list" },
       ],
+      // The second and last climb in this study. Thirty-three sections is
+      // room for two; the athlete's three screens hold while the owner's
+      // side arrives over the top of them, which is the turn the next
+      // section makes anyway.
+      pressing: {
+        captions: ["Dashboard\nNext session", "Trainer bio", "Programs"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── HERO - owner divider ──
+    // ── HERO - owner divider — climbs across the held athlete screens ──
     {
       id: "hero-owner",
       type: "hero",
       image: "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
       alt: "DSC calendar open on a phone resting on concrete",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -226,8 +259,11 @@ export const dscCaseStudy: CaseStudy = {
       id: "owner-header",
       type: "section-header",
       label: "SECTION 05: THE OWNER CONSOLE",
-      title: "Run It From\nthe Floor",
-      pressing: { mark: { n: "05", name: "Run It From" } },
+      title: "Run It From",
+      pressing: {
+        mark: { n: "05", name: "Run It From" },
+        heldLine: "the Floor",
+      },
     },
     {
       id: "owner-text",
@@ -367,8 +403,11 @@ export const dscCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 07: CLOSING",
-      title: "Live at\nthe Gym",
-      pressing: { mark: { n: "06", name: "Live at" } },
+      title: "Live at",
+      pressing: {
+        mark: { n: "06", name: "Live at" },
+        heldLine: "the Gym",
+      },
     },
     {
       id: "closing-text",
