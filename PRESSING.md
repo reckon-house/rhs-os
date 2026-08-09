@@ -470,6 +470,44 @@ statement, abstract stays authored but unrendered, closing drops any
 paragraph the prototype's composition would drop. Marks are story beats:
 read the mark spine top to bottom before shipping.
 
+## 8b. Porting at scale
+
+Two scripts, and between them they did 27 of the 29 ports.
+
+`node scripts/port-audit.mjs [--full]` — reads every study, ranks by how
+much hand-work a port needs, and lists section types with NO pressing
+skin. That last list is the important one: **PressingLayout renders
+nothing for a type it does not recognise**, so an unported type is not a
+rough edge, it is content that silently vanishes. The skins list is read
+out of PressingLayout at runtime so it cannot rot.
+
+`node scripts/port-study.mjs <slug>|--all-clean [--dry]` — does the
+mechanical half: `style: "pressing"`, a cover reel, and marks numbered
+down the section headers. It REFUSES any study with an unskinned type,
+for the reason above. It does NOT do choreography — which section pins,
+which rises across it, which headline crosses are decisions about a
+specific study's rhythm, and a script guessing would produce confident
+nonsense that reads as intentional. **Ports come out correct and quiet;
+choreography is added by hand afterwards.**
+
+Reel frames come from the study's OWN referenced images in source
+order, never a folder named after the slug: fairview-suite keeps its
+images in fairview-bedroom, and a folder scan picks up files the study
+never uses. Source order is the order the work is experienced.
+
+`python3 scripts/derive-palettes.py` — six studies declare no palette,
+and a reel flashing colours the work does not use is a lie about the
+work. This quantises each study's own photography instead, dropping the
+near-white and near-black that dominate every interior shot because
+those are the paper and the shadow. Derived from the work, not invented
+on top of it.
+
+**Anything computed from trig must be rounded before it reaches
+markup** — `px()` in `src/lib/px.ts`. Round at SERIALISATION, not at the
+trig: MaterialCircos rounded its endpoints and still mismatched, because
+its control points were computed FROM those and reached the path raw.
+Inside an SVG path template every interpolation is a coordinate.
+
 ## 9. The porting checklist
 
 1. Size every image against the table in §7 BEFORE placing it, and
