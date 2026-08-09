@@ -13,6 +13,8 @@ import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
 import { PressingSystemIndex } from "./PressingSystemIndex";
+import { PressingCarouselPlate } from "./PressingCarouselPlate";
+import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import dynamic from "next/dynamic";
 
 const PressingLiveApp = dynamic(
@@ -93,6 +95,11 @@ function splitCaption(caption?: string): { label: string; sub?: string } | undef
 export function PressingLayout({ study }: { study: CaseStudy }) {
   const out: React.ReactNode[] = [];
   const sections = study.sections;
+  /* The cover reel declares the study's palette; the carousel plate
+     borrows it rather than inventing one. */
+  const coverReelColors = (
+    sections.find((x) => x.type === "meta") as { reel?: { colors?: string[] } } | undefined
+  )?.reel?.colors;
   let i = 0;
 
   while (i < sections.length) {
@@ -290,14 +297,19 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
-    if (s.type === "dual-image") {
+    /* triple-image needs no component of its own: PressingPlatesPair
+       already maps over N images and only its grid was fixed at two. */
+    if (s.type === "dual-image" || s.type === "triple-image") {
       out.push(
         <PressingPlatesPair
           key={s.id}
-          images={[
-            { ...s.left, caption: p?.captions?.[0] },
-            { ...s.right, caption: p?.captions?.[1] },
-          ].map((img) => {
+          images={(s.type === "dual-image"
+            ? [
+                { ...s.left, caption: p?.captions?.[0] },
+                { ...s.right, caption: p?.captions?.[1] },
+              ]
+            : s.images.map((im, k) => ({ ...im, caption: p?.captions?.[k] }))
+          ).map((img) => {
             const cap = splitCaption(img.caption);
             return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
@@ -363,6 +375,33 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             tall={s.tall}
             instruction={s.instruction}
           />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "hero-carousel") {
+      out.push(
+        <PressingCarouselPlate
+          key={s.id}
+          slides={s.slides}
+          /* the study's own palette, taken off the cover reel it
+             already declares — a carousel flashing colours the brand
+             does not use is a lie about the brand */
+          colors={coverReelColors}
+          mark={p?.mark}
+          caption={p?.captions?.[0]}
+        />
+      );
+      i += 1;
+      continue;
+    }
+
+    if (s.type === "stats-summary") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingStatsSummary section={s} />
         </PressingVizFrame>
       );
       i += 1;

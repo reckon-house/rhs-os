@@ -1,0 +1,26 @@
+/*
+ * The carousel plate's own frame. Everything else — the mark row, the
+ * caption — comes from PressingPlates.module.css, because this IS a
+ * plate; only what sits inside the frame differs.
+ */
+
+.figure {
+  margin: 0;
+}
+
+/* The reserved box. Height is written once by the component from the
+   TALLEST slide, so slides of different shapes cycle without the page
+   reflowing on a timer. 300px is only the pre-measure placeholder. */
+.box {
+  display: block;
+  width: 100%;
+  height: 300px;
+  border-radius: var(--pp-r, 16px);
+  overflow: hidden;
+}
+
+.reel {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--pp-r, 16px);
+}

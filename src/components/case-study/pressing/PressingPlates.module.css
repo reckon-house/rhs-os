@@ -72,10 +72,19 @@
   padding: 48px 0;
 }
 
+/* The component already maps over N images; this was the only thing
+   holding it to two. `triple-image` appears in 4 studies and needed no
+   new component, just a column count that follows the content. */
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(var(--cols, 2), 1fr);
   gap: 12px;
+}
+@media (max-width: 760px) {
+  /* three across a phone is three thumbnails; two is a comparison */
+  .grid {
+    grid-template-columns: repeat(min(var(--cols, 2), 2), 1fr);
+  }
 }
 
 .pairFigure {

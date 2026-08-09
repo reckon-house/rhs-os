@@ -34,7 +34,7 @@
  * crossing effect, not a pin.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef , type CSSProperties } from "react";
 import { onTick, vh } from "@/lib/scrub";
 import { PinStage } from "@/components/fx/PinStage";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -178,7 +178,10 @@ export function PressingPlatesPair({
           />
         </div>
       ) : null}
-      <div className={styles.grid}>
+      <div
+        className={styles.grid}
+        style={{ "--cols": images.length } as CSSProperties}
+      >
         {images.map((im, i) => (
           <figure key={`${im.src}-${i}`} className={styles.pairFigure}>
             <span
