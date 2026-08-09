@@ -178,6 +178,44 @@ the ground behind it, which this kit has already paid for once. Only
 frames on screen are written, and only inside a rAF: a transform per
 element per scroll event is how a long study starts to stutter.
 
+## The viz kit (charts and graphs)
+
+`src/components/case-study/pressing/viz/` — one stylesheet, five
+components so far. The classic showpieces (ridgeline, particle cloud)
+stay untouched for un-migrated studies; a study that goes pressing gets
+these automatically through PressingLayout.
+
+The system:
+
+- **Ink on paper.** One drawing colour. Hierarchy is opacity: 45%
+  recessive, 14% hairline, 8% faintest grid — the ladder the captions
+  already climb. The study's palette lives in the reel, not the charts.
+- **One accent per chart, at most**, and only on the datum the chart
+  exists to show: the coverage gap, the 30-minute bar, the launch dot.
+  Press red #E0552F. A chart with no single point gets none — the
+  schematic is pure ink.
+- **Hairlines, dots, type.** No area fills, no gradients, no decorative
+  density, no legends. One ink needs no decoding, so labels sit on the
+  data.
+- **Type carries the number.** Values at display weight, labels at the
+  10px caps standard. When a figure has no stated scale, the number IS
+  the chart: draw a ruled spec row, not a bar pretending to measure.
+- **Real numbers only.** The old ridgeline's density waves were
+  generated, not measured — decoration that looks like data is a
+  fabrication in a suit. If the study didn't author it, don't draw it.
+- **Deterministic geometry.** Coordinates rounded to 1/1000px, no
+  randomness: Node's trig and Chrome's disagree in the last bit, and
+  the classic architecture component paid for that with a triple
+  hydration mismatch every load.
+- Wide canvases keep the intentional horizontal scroll
+  (`.scroller`/`.wide`, `data-lenis-prevent-touch`), same as always.
+
+Vocabulary on the shelf (use when the data genuinely has that shape):
+tick rulers with mono numerals for time (the scale may run on faintly
+past where the data ends — the scale continues, the work does not);
+dumbbells for two-point comparisons; floating range bars when a value
+is honestly a range; dot-on-a-line for positions between two poles.
+
 **Known gap:** every pressing plate is a raw `<img>` while the classic
 section components use `next/image`, so pressing pages ship originals
 rather than sized AVIF. Fix before the remaining studies port over.

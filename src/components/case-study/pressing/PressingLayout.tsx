@@ -12,6 +12,11 @@ import { PressingQuote } from "./PressingQuote";
 import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
+import { PressingArchitecture } from "./viz/PressingArchitecture";
+import { PressingStatsBar } from "./viz/PressingStatsBar";
+import { PressingCoverageChart } from "./viz/PressingCoverageChart";
+import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
+import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
 
 /* ── PressingLayout ─────────────────────────────────────────────────
@@ -46,11 +51,6 @@ const INDEX_REEL_COLORS = ["#E0552F", "#F09A3E", "#E8637A", "#F5EAE7", "#241C18"
 // of truth, the classic renderer untouched — at no new bundle cost:
 // CaseStudyLayout already ships SectionRenderer in this chunk.
 const VIZ_TYPES = new Set<Section["type"]>([
-  "dev-timeline",
-  "system-architecture",
-  "stats-bar",
-  "coverage-chart",
-  "speed-comparison",
   "feature-cards",
   "pipeline",
   "brand-system",
@@ -280,6 +280,56 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           reelImages={INDEX_REEL_IMAGES}
           reelColors={INDEX_REEL_COLORS}
         />
+      );
+      i += 1;
+      continue;
+    }
+
+    // ── The viz kit: charts drawn in the pressing language ──
+    // (src/components/case-study/pressing/viz — ink, hairlines, type,
+    // one accent at most. The classic showpieces these replace stay
+    // untouched for un-migrated studies.)
+    if (s.type === "system-architecture") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingArchitecture />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "stats-bar") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingStatsBar section={s} />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "coverage-chart") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingCoverageChart section={s} />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "speed-comparison") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSpeedComparison section={s} />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "dev-timeline") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingDevTimeline section={s} />
+        </PressingVizFrame>
       );
       i += 1;
       continue;

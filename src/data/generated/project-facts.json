@@ -380,12 +380,12 @@
        {
         "section": "stats",
         "field": "items.0.description",
-        "quote": "Average documented value per item: $680 Most common rooms: Living Room, Bedroom, Dining Room"
+        "quote": "Most common rooms: Living Room, Bedroom, Dining Room"
        },
        {
         "section": "stats",
         "field": "items.2.description",
-        "quote": "Average documented value per item: $580 Most common rooms: Living Room, Hallway, Bedroom"
+        "quote": "Most common rooms: Living Room, Hallway, Bedroom"
        }
       ]
      },
@@ -397,12 +397,12 @@
        {
         "section": "stats",
         "field": "items.0.description",
-        "quote": "Average documented value per item: $680 Most common rooms: Living Room, Bedroom, Dining Room"
+        "quote": "Most common rooms: Living Room, Bedroom, Dining Room"
        },
        {
         "section": "stats",
         "field": "items.4.description",
-        "quote": "Average documented value per item: $310 Most common rooms: Kitchen, Bathroom, Dining Room"
+        "quote": "Most common rooms: Kitchen, Bathroom, Dining Room"
        }
       ]
      },
@@ -414,12 +414,12 @@
        {
         "section": "stats",
         "field": "items.1.description",
-        "quote": "Average documented value per item: $425 Most common rooms: Office, Living Room, Kitchen"
+        "quote": "Most common rooms: Office, Living Room, Kitchen"
        },
        {
         "section": "stats",
         "field": "items.6.description",
-        "quote": "Average documented value per item: $695 Most common rooms: Office, Display areas"
+        "quote": "Most common rooms: Office, Display areas"
        }
       ]
      },
@@ -431,12 +431,12 @@
        {
         "section": "stats",
         "field": "items.3.description",
-        "quote": "Average documented value per item: $890 Most common rooms: Kitchen, Laundry, Garage"
+        "quote": "Most common rooms: Kitchen, Laundry, Garage"
        },
        {
         "section": "stats",
         "field": "items.7.description",
-        "quote": "Average documented value per item: $5,000+ Location: Garage, Driveway, Storage"
+        "quote": "Location: Garage, Driveway, Storage"
        }
       ]
      },
@@ -448,12 +448,12 @@
        {
         "section": "stats",
         "field": "items.4.description",
-        "quote": "Average documented value per item: $310 Most common rooms: Kitchen, Bathroom, Dining Room"
+        "quote": "Most common rooms: Kitchen, Bathroom, Dining Room"
        },
        {
         "section": "stats",
         "field": "items.5.description",
-        "quote": "Average documented value per item: $185 Most common rooms: Bedroom, Living Room, Bathroom"
+        "quote": "Most common rooms: Bedroom, Living Room, Bathroom"
        }
       ]
      },
@@ -465,7 +465,7 @@
        {
         "section": "stats",
         "field": "items.2.description",
-        "quote": "Average documented value per item: $580 Most common rooms: Living Room, Hallway, Bedroom"
+        "quote": "Most common rooms: Living Room, Hallway, Bedroom"
        }
       ]
      },
@@ -477,7 +477,7 @@
        {
         "section": "stats",
         "field": "items.3.description",
-        "quote": "Average documented value per item: $890 Most common rooms: Kitchen, Laundry, Garage"
+        "quote": "Most common rooms: Kitchen, Laundry, Garage"
        }
       ]
      }

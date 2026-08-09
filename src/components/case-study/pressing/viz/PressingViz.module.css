@@ -1,0 +1,304 @@
+/*
+ * The pressing viz kit — one stylesheet for every chart in the family.
+ *
+ * The system, so the next chart doesn't have to rediscover it:
+ * - INK ON PAPER. One drawing colour. Hierarchy is opacity: 45% for the
+ *   recessive voice, 14% for hairlines, 8% for the faintest grid — the
+ *   same ladder the captions and instruction lines already climb.
+ * - ONE ACCENT PER CHART, at most, and only on the datum the chart
+ *   exists to show. The press red, the same one the index reel flashes.
+ *   A chart with no single point gets no accent at all.
+ * - HAIRLINES, DOTS, TYPE. No area fills, no gradients, no decorative
+ *   density, no legends: with one ink there is nothing to decode, so
+ *   the label sits on the data.
+ * - TYPE CARRIES THE NUMBER. Values at display scale, labels at the
+ *   10px caps standard (--pp-lbl). The family face, inherited.
+ * - The charts hold REAL numbers only. Decoration that looks like data
+ *   is a fabrication in a suit.
+ */
+
+.viz {
+  --pv-hair: color-mix(in srgb, var(--pp-ink) 14%, transparent);
+  --pv-faint: color-mix(in srgb, var(--pp-ink) 8%, transparent);
+  --pv-grey: color-mix(in srgb, var(--pp-ink) 45%, transparent);
+  --pv-acc: #e0552f;
+  color: var(--pp-ink);
+}
+
+.lbl {
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  font-weight: var(--pp-lbl-weight);
+  text-transform: uppercase;
+}
+.grey {
+  color: var(--pv-grey);
+}
+.acc {
+  color: var(--pv-acc);
+}
+.mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+.val {
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.big {
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* The horizontal-scroll wrapper for wide canvases (the CLAUDE.md
+   pattern: intentional scroll on mobile, never a squeeze). */
+.scroller {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.wide {
+  min-width: 800px;
+}
+
+/* ── the row: label · rule · value ─────────────────────────────────
+   The unit every bar-shaped chart is built from. A full-width hairline
+   is the scale; the ink rule on top of it is the measure; the value
+   sits at the row's end at display weight. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  column-gap: 18px;
+  row-gap: 8px;
+}
+.track {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 2px;
+  background: var(--pv-hair);
+}
+.bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: currentColor;
+}
+/* the spec row: a ruled line of the sheet, label left, number right.
+   No bar — when a figure has no stated scale, the number IS the
+   chart, and a rule pretending to measure it would be decoration. */
+.specRow {
+  border-top: 1px solid var(--pv-hair);
+  padding-top: 14px;
+  align-items: baseline;
+}
+.note {
+  grid-column: 1 / -1;
+  font-size: var(--pp-lbl);
+  letter-spacing: var(--pp-lbl-track);
+  color: var(--pv-grey);
+  margin: 0;
+}
+
+/* ── stats ledger (stats-bar) ──────────────────────────────────── */
+.totals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-bottom: clamp(36px, 5vw, 64px);
+}
+.totals .sub {
+  display: block;
+  margin-top: 6px;
+  color: var(--pv-grey);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+.ledger {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: clamp(40px, 6vw, 90px);
+  row-gap: clamp(28px, 3.4vw, 44px);
+}
+@media (max-width: 760px) {
+  .totals {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ledger {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── coverage (the gap chart) ──────────────────────────────────────
+   Two rows off one scale, a vertical hairline at the policy limit,
+   and the overshoot past it drawn in the accent — the one number this
+   chart exists to show. */
+.cov {
+  position: relative;
+  display: grid;
+  row-gap: clamp(36px, 5vw, 56px);
+}
+.limit {
+  position: absolute;
+  top: -14px;
+  bottom: -14px;
+  width: 1px;
+  background: var(--pv-hair);
+}
+.limitLbl {
+  position: absolute;
+  top: -14px;
+  transform: translate(12px, -100%);
+  white-space: nowrap;
+}
+.gapLine {
+  justify-self: end;
+  color: var(--pv-acc);
+}
+
+/* ── the weeks (dev timeline) ──────────────────────────────────────
+   One ink rule per phase stepping down the rows, a tick RULER along
+   the bottom the way an instrument carries its scale — day ticks
+   faint, week ticks grey, mono numerals under the baseline — and the
+   launch as the single accent dot at the end of the last rule. The
+   ruler runs on past the last phase at the faintest opacity: the
+   scale continues, the build does not. */
+.weeks {
+  position: relative;
+}
+.gridline {
+  position: absolute;
+  top: 0;
+  bottom: 34px;
+  width: 1px;
+  background: var(--pv-faint);
+}
+.ruler {
+  position: relative;
+  height: 34px;
+}
+.rulerBase {
+  position: absolute;
+  top: 0;
+  height: 1px;
+  background: var(--pv-hair);
+}
+.tick {
+  position: absolute;
+  bottom: 100%;
+  width: 1px;
+  height: 5px;
+  background: var(--pv-faint);
+}
+.tickWk {
+  height: 9px;
+  background: var(--pv-hair);
+}
+.wknum {
+  position: absolute;
+  top: 8px;
+  transform: translateX(-50%);
+  color: var(--pv-grey);
+}
+.phase {
+  position: relative;
+  height: 44px;
+}
+.phaseBar {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  background: var(--pp-ink);
+}
+.phaseLbl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-160%);
+  white-space: nowrap;
+}
+.phaseWks {
+  position: absolute;
+  top: 50%;
+  transform: translate(10px, -50%);
+  white-space: nowrap;
+  color: var(--pv-grey);
+}
+.launch {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translate(-3px, -2px);
+  background: var(--pv-acc);
+}
+.tlHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+
+/* ── the schematic (system architecture) ─────────────────────────── */
+.schemOrbit {
+  fill: none;
+  stroke: var(--pv-hair);
+}
+.schemSpoke {
+  stroke: var(--pv-faint);
+}
+.schemDot {
+  fill: var(--pp-ink);
+}
+.schemNum {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  fill: var(--pv-grey);
+}
+.schemLbl {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  text-transform: uppercase;
+  fill: var(--pp-ink);
+}
+/* The wordmark is the brand's own serif lockup, quoted, not the site
+   speaking — the same reason a logo plate keeps its letterforms. */
+.schemWordmark {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 36px;
+  letter-spacing: 0.08em;
+  fill: var(--pp-ink);
+}
+.schemSub {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 8px;
+  letter-spacing: 0.32em;
+  fill: var(--pv-grey);
+}
+.schemStack {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: clamp(18px, 2.6vw, 30px);
+  padding-top: 14px;
+  border-top: 1px solid var(--pv-hair);
+}
+
+/* ── shared vertical rhythm inside the frame ─────────────────────── */
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: clamp(24px, 3.4vw, 40px);
+}

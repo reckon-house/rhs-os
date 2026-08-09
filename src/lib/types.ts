@@ -351,6 +351,9 @@ export interface QuadGridSection extends BaseSection {
 
 export interface StatsBarSection extends BaseSection {
   type: "stats-bar";
+  /** Topline figures set as type above the ledger. Moved here from the
+   *  classic component's hardcoded TOTALS: numbers belong in the data. */
+  totals?: { value: string; label: string; sub?: string }[];
   items: {
     label: string;
     value: string;
