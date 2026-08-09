@@ -271,6 +271,21 @@ past where the data ends — the scale continues, the work does not);
 dumbbells for two-point comparisons; floating range bars when a value
 is honestly a range; dot-on-a-line for positions between two poles.
 
+**The renderer will not overdraw.** Every image slot caps itself at
+`native ÷ 2` CSS pixels — a retina screen asks two device pixels per CSS
+pixel, so that is the largest honest width and no CSS buys more. Column
+frames take `--col-native`, plates cap at their native width, ledger rows
+cap on height. An undersized file therefore renders SMALL AND SHARP
+rather than large and soft.
+
+This backstop is why the problem stops recurring. Without it the
+renderer draws whatever it is given at whatever width the layout has, so
+the same undersized file turns up soft in every new place it is put —
+once in a plate, again in a column, again when the layout stacks on a
+phone and the column goes full width. Fixing the placement never fixed
+the cause. Now an overdraw is impossible by construction, and the build
+report below tells you which files to re-export to get the size back.
+
 **Resolution is gated at build time, per treatment.** `npm run facts`
 reads every pressing image's header and checks its native width against
 how the section draws it:

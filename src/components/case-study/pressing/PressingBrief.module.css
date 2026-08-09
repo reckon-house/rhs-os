@@ -259,6 +259,15 @@
   border-radius: var(--pp-r, 16px);
   aspect-ratio: 1 / 1;
   margin-bottom: clamp(14px, 1.6vw, 22px);
+  /* THE BACKSTOP. A frame is never wider than its file can honestly
+     fill: native ÷ 2, because a retina screen asks two device pixels
+     per CSS pixel. Without it the column simply draws whatever it is
+     given at whatever width it has — which is why an undersized file
+     kept turning up soft in each new place it was put, rather than
+     once. Small file, small frame, sharp either way. --col-native is
+     written by the component from the declared width; 100% when a
+     study has not declared one, which is the old behaviour. */
+  max-width: min(100%, var(--col-native, 100%));
 }
 .colImg {
   display: block;

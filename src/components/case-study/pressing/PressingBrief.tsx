@@ -36,7 +36,7 @@
  * everything flows in one column.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
@@ -318,7 +318,14 @@ export function PressingBrief({
               {columns!.map((c, i) => (
                 <div key={i} className={styles.c}>
                   {c.image ? (
-                    <span className={styles.colFrame}>
+                    <span
+                      className={styles.colFrame}
+                      style={
+                        c.image.width
+                          ? ({ "--col-native": `${Math.floor(c.image.width / 2)}px` } as CSSProperties)
+                          : undefined
+                      }
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className={styles.colImg}
