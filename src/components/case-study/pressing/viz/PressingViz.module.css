@@ -302,3 +302,118 @@
   gap: 24px;
   margin-bottom: clamp(24px, 3.4vw, 40px);
 }
+
+/* ── the gap, upright (PressingGapColumn) ─────────────────────────
+   The narrow form of the coverage chart, for the copy column. A
+   horizontal bar has nowhere to go at column measure; upright, the
+   drawing says what the section says — documented value climbing past
+   a limit that was set once and never moved. */
+.gapCol {
+  margin: clamp(28px, 4vw, 44px) 0 clamp(8px, 1.4vw, 16px);
+}
+
+.gapPlot {
+  position: relative;
+  /* Tall enough that the overshoot is a legible distance rather than a
+     sliver. Below this the accent segment stops being a measurement
+     and becomes a highlight. */
+  height: clamp(230px, 34dvh, 330px);
+  /* nothing to reserve: the two label columns are absolutely
+     positioned and the plot is the full column measure */
+  padding-right: 0;
+}
+
+/* The bar IS the documented value: full height of the plot, so the
+   scale needs no axis. */
+.gapBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: clamp(34px, 4.4vw, 58px);
+  background: var(--pp-ink);
+}
+
+/* Everything above the policy line. The one coloured thing in the
+   section, and the only number the chart exists to show. */
+.gapOver {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: var(--limit);
+  background: var(--pv-acc);
+}
+
+.gapLimit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--limit);
+  height: 1px;
+  background: var(--pv-hair);
+}
+
+/* Labels hang off the bar's right, each on the line it belongs to.
+   TWO columns, and that is the load-bearing part: the overshoot band is
+   only ~23% of the plot, so a gap callout centred in it lands on top of
+   the value label sitting at the plot's top. Stacking them vertically
+   cannot be made to fit — at any plot height the two bands stay in the
+   same proportion. Separate columns, and they can never collide. */
+.gapTopLbl,
+.gapLimitLbl {
+  position: absolute;
+  left: calc(clamp(34px, 4.4vw, 58px) + 16px);
+  width: 44%;
+}
+.gapTopLbl {
+  top: 0;
+}
+.gapLimitLbl {
+  bottom: var(--limit);
+  transform: translateY(50%);
+}
+
+/* The second column: the gap, beside the band it measures. */
+.gapCallout {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--limit) + (100% - var(--limit)) / 2);
+  transform: translateY(50%);
+  text-align: right;
+}
+
+.gapTopLbl .lbl,
+.gapLimitLbl .lbl {
+  display: block;
+  margin-top: 5px;
+}
+.gapCallout .lbl {
+  display: block;
+  margin: 0 0 3px;
+}
+
+.valSm {
+  display: block;
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  /* one column on a phone: the gap drops under its value rather than
+     competing for a measure that is not there */
+  .gapCallout {
+    right: auto;
+    left: calc(clamp(34px, 4.4vw, 58px) + 16px);
+    text-align: left;
+    bottom: auto;
+    top: calc(100% + 14px);
+    transform: none;
+  }
+  .gapPlot {
+    margin-bottom: 52px;
+  }
+}

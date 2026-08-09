@@ -481,6 +481,9 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "08", name: "Financial intelligence" },
         heldLine: "gap analysis.",
+        /* Pinned: the headline holds while the argument and the chart
+           that proves it travel past together. */
+        choreo: { pin: true },
       },
     },
     {

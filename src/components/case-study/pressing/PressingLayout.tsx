@@ -22,6 +22,7 @@ const PressingLiveApp = dynamic(
 import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
+import { PressingGapColumn } from "./viz/PressingGapColumn";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
@@ -125,12 +126,33 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       const paragraphs: string[] = [];
       let columns: { title: string; body: string }[] | undefined;
       let columnsMark: { n: string; name: string } | undefined;
+      /* A narrow chart absorbed into the copy column. Only the forms
+         that HAVE a narrow variant qualify; a full-measure chart keeps
+         its own frame. */
+      let viz: React.ReactNode | undefined;
       let closing: Extract<Section, { type: "closing" }> | undefined;
       let j = i + 1;
       while (j < sections.length) {
         const n = sections[j];
-        if (n.type === "text") {
+        if (n.type === "text" || n.type === "text-right") {
+          /* text-right is body copy that happened to carry a mark. It
+             was breaking the absorb loop and rendering as its own
+             full-width block, which split an argument from the copy
+             that set it up. */
           paragraphs.push(...splitParagraphs(n.content));
+          j += 1;
+          continue;
+        }
+        if (n.type === "coverage-chart") {
+          viz = (
+            <PressingGapColumn
+              key={n.id}
+              assetValue={n.assetValue}
+              assetAmount={n.assetAmount}
+              policyLimit={n.policyLimit}
+              policyAmount={n.policyAmount}
+            />
+          );
           j += 1;
           continue;
         }
@@ -212,6 +234,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             title={s.title}
             heldLine={p?.heldLine}
             paragraphs={paragraphs}
+            viz={viz}
             pin={p?.choreo?.pin}
             /* A header asking for `crossing` that ALSO carries method
                columns gets the brief's from-right variation instead:

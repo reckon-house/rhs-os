@@ -36,7 +36,7 @@
  * everything flows in one column.
  */
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
@@ -86,6 +86,14 @@ export interface PressingBriefProps {
   }[];
   /** Secondary mark above the columns (the prototype's "04 / Method" label). */
   columnsMark?: { n: string; name: string };
+  /**
+   * A chart, rendered INSIDE the copy column after the paragraphs. A
+   * viz that belongs to an argument reads better beside it than as its
+   * own full-width section two beats later — the reader stops having to
+   * carry the claim across a gap to reach its evidence. It has to be a
+   * narrow-form chart; a full-measure one has nowhere to go here.
+   */
+  viz?: ReactNode;
 }
 
 export function PressingBrief({
@@ -97,6 +105,7 @@ export function PressingBrief({
   crossing = false,
   columns,
   columnsMark,
+  viz,
 }: PressingBriefProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const colRef = useRef<HTMLDivElement | null>(null);
@@ -303,6 +312,8 @@ export function PressingBrief({
             {p}
           </BodyReveal>
         ))}
+
+        {viz}
 
         {hasCols ? (
           <div
