@@ -84,8 +84,11 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "room-header",
       type: "section-header",
       label: "SECTION 02: THE ROOM",
-      title: "One Color\non Every Wall.",
-      pressing: { mark: { n: "02", name: "One Color" } },
+      title: "One Color",
+      pressing: {
+        mark: { n: "02", name: "One Color" },
+        heldLine: "on Every Wall.",
+      },
       group: { name: "room", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -126,8 +129,15 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "furniture-header",
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
-      title: "Three Decades\non One Floor.",
-      pressing: { mark: { n: "03", name: "Three Decades" } },
+      title: "Three Decades",
+      // This study's one crossing, on its MIDDLE header. The three Fairview
+      // rooms cross at three different points — entry first, sitting
+      // second, suite third — so the set never reads as one template.
+      pressing: {
+        mark: { n: "03", name: "Three Decades" },
+        heldLine: "on One Floor.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "furniture-text",
@@ -145,17 +155,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together feel collected, not cataloged.",
     },
 
-    // ── Full room shot ──
-    {
-      id: "room-full",
-      type: "image",
-      src: `${IMG}/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg`,
-      alt: "Primary suite, tufted headboard, sofa, swivel chair, crystal chandelier, charcoal violet walls",
-      aspect: "native",
-      padded: true,
-    },
-
-    // ── Detail pair ──
+    // ── Detail pair — held so the full room can climb across it. Moved
+    // ahead of room-full for the adjacency the climb requires; the section
+    // reads better this way too, since the details are what the wide shot
+    // is then asked to account for.
     {
       id: "furniture-detail-pair",
       type: "dual-image",
@@ -168,6 +171,21 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         src: `${IMG}/fairview-suite-detail-marble-side-table-brass.jpg`,
         alt: "Marble pedestal side table, brass swivel chair base, charcoal velvet upholstery",
       },
+      pressing: {
+        captions: ["Throw and velvet chair\nSteel-frame windows", "Marble side table, brass"],
+        choreo: { pin: true },
+      },
+    },
+
+    // ── The room entire — climbs across the held details
+    {
+      id: "room-full",
+      type: "image",
+      src: `${IMG}/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg`,
+      alt: "Primary suite, tufted headboard, sofa, swivel chair, crystal chandelier, charcoal violet walls",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -184,6 +202,19 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       image: `${IMG}/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg`,
       alt: "View through double doors to ensuite, copper clawfoot tub, crystal chandelier, charcoal hex tile",
       inline: true,
+      // The zoom. A view THROUGH a doorway is the one composition where
+      // filling the mat changes what you can see — the second room arrives
+      // at the size the doorway was promising. contain, landscape frame.
+      pressing: {
+        plate: "04",
+        captions: [
+          "Through the double doors",
+          "Copper clawfoot tub",
+          "Charcoal hex tile",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── THE ENSUITE ──
@@ -191,8 +222,11 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "The Bath Holds the\nSame Temperature.",
-      pressing: { mark: { n: "04", name: "The Bath Holds the" } },
+      title: "The Bath Holds the",
+      pressing: {
+        mark: { n: "04", name: "The Bath Holds the" },
+        heldLine: "Same Temperature.",
+      },
     },
     {
       id: "ensuite-text",

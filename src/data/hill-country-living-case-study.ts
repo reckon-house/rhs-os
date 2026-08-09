@@ -86,8 +86,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: MATERIAL",
-      title: "Stone, Pine,\nBrass, Leather.",
-      pressing: { mark: { n: "02", name: "Stone, Pine" } },
+      title: "Stone, Pine,",
+      pressing: {
+        mark: { n: "02", name: "Stone, Pine" },
+        heldLine: "Brass, Leather.",
+      },
     },
     {
       id: "material-subhead",
@@ -114,6 +117,19 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "hero",
       image: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
       alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
+      // The zoom. A symmetrical elevation is the one composition that
+      // rewards filling the mat: the symmetry only reads when the whole
+      // wall is the same size as the screen. contain, landscape frame.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Limestone fireplace wall",
+          "Eisenhower painting, oak mantel",
+          "Brass pendant overhead",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // 2-up: stone-wall vertical details (the 2x22 pair)
@@ -130,15 +146,22 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg`,
         alt: "Vertical detail of the limestone wall, the Eisenhower painting and a smaller landscape framed in gilt, mid-century record-player shelf below, brass pendant chandelier overhead, edge of the gray sofa in the foreground",
       },
+      // Held so the open-plan view climbs across it: the wall in close-up,
+      // then the room it opens out of.
+      pressing: {
+        captions: ["Ladder shelf\nVintage globe", "Record-player shelf"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── Inline hero: open-to-kitchen architectural view
+    // ── Open-to-kitchen architectural view — climbs across the held pair
     {
       id: "architectural-hero",
       type: "hero",
       image: `${IMG}/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg`,
       alt: "View from the living room into the open kitchen beyond: cognac leather sofa with pampas and textured pillows in the foreground, exposed wood beams overhead, green cabinetry and marble counters in the kitchen behind",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════
@@ -148,8 +171,14 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "collected-header",
       type: "section-header",
       label: "SECTION 03: COLLECTED",
-      title: "Considered,\nNot Curated.",
-      pressing: { mark: { n: "03", name: "Considered" } },
+      title: "Considered,",
+      // The study's one crossing. Two words that draw the line the whole
+      // room is arguing for.
+      pressing: {
+        mark: { n: "03", name: "Considered" },
+        heldLine: "Not Curated.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "collected-subhead",
@@ -292,8 +321,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Room You\nLive In.",
-      pressing: { mark: { n: "04", name: "A Room You" } },
+      title: "A Room You",
+      pressing: {
+        mark: { n: "04", name: "A Room You" },
+        heldLine: "Live In.",
+      },
     },
     {
       id: "closing-subhead",

@@ -84,8 +84,11 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "vanity-header",
       type: "section-header",
       label: "SECTION 02: THE VANITY",
-      title: "An East-Facing Vanity\nDoing Its Own Lighting.",
-      pressing: { mark: { n: "02", name: "An East-Facing Vanity" } },
+      title: "An East-Facing Vanity",
+      pressing: {
+        mark: { n: "02", name: "An East-Facing Vanity" },
+        heldLine: "Doing Its Own Lighting.",
+      },
       group: { name: "vanity", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -148,8 +151,19 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "shower-header",
       type: "section-header",
       label: "SECTION 03: THE SHOWER",
-      title: "The Marble Selection\nTook the Longest.",
-      pressing: { mark: { n: "03", name: "The Marble Selection" } },
+      title: "The Marble Selection",
+      // The study's one crossing. The most human line in it, and the only
+      // one that admits what the work actually cost.
+      //
+      // No zoom plate: the one file clearing the working floor is the
+      // his-vanity frame, and it is spent as the riser below. Four
+      // dual-images run back to back in this study, so breaking that run
+      // with a climb reads better than a zoom would.
+      pressing: {
+        mark: { n: "03", name: "The Marble Selection" },
+        heldLine: "Took the Longest.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "shower-text",
@@ -193,15 +207,23 @@ export const hillCountryBathCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-bath-shower-rain-head-marble-tile.jpg`,
         alt: "Marble shower, rain head and hand shower, polished nickel fixtures, large format marble tile",
       },
+      // Held for the climb, and the reason it lands here: four dual-images
+      // run consecutively in this study, and this is the last of them. The
+      // his-vanity plate crossing the pair is what breaks the run.
+      pressing: {
+        captions: ["Shower niche\nHex tile bench", "Rain head, nickel fixtures"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── HIS VANITY HERO ──
+    // ── HIS VANITY — climbs across the held shower views
     {
       id: "his-hero",
       type: "hero",
       image: `${IMG}/hill-country-bath-his-vanity-valet-stand-antique-mirror.jpg`,
       alt: "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── THE OBJECTS ──
@@ -209,8 +231,11 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "objects-header",
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
-      title: "Objects Chosen by the\nPerson Who Lives Here.",
-      pressing: { mark: { n: "04", name: "Objects Chosen by the" } },
+      title: "Objects Chosen by the",
+      pressing: {
+        mark: { n: "04", name: "Objects Chosen by the" },
+        heldLine: "Person Who Lives Here.",
+      },
     },
     {
       id: "objects-text",

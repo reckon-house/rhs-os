@@ -85,8 +85,11 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
-      title: "A Four-Finish Palette\nLocked Before Drawing.",
-      pressing: { mark: { n: "02", name: "A Four-Finish Palette" } },
+      title: "A Four-Finish Palette",
+      pressing: {
+        mark: { n: "02", name: "A Four-Finish Palette" },
+        heldLine: "Locked Before Drawing.",
+      },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
     },
     {
@@ -155,15 +158,22 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         src: `${IMG}/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg`,
         alt: "Pantry wall with sage green cabinetry, herringbone floor, pendant light",
       },
+      // Held so the marble wall climbs across it. Two cabinet elevations
+      // at rest, then the finish that runs behind both of them.
+      pressing: {
+        captions: ["Sink corner\nOpen shelves", "Pantry wall, herringbone"],
+        choreo: { pin: true },
+      },
     },
 
-    // ── HERO 2: Marble + sink ──
+    // ── HERO 2: Marble + sink — climbs across the held cabinet pair
     {
       id: "hero-marble",
       type: "hero",
       image: `${IMG}/hill-country-kitchen-marble-backsplash-sink-detail.jpg`,
       alt: "Marble backsplash detail with brass sconces, farmhouse sink, sage green cabinetry",
       inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── CABINETRY & HARDWARE ──
@@ -171,8 +181,15 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "hardware-header",
       type: "section-header",
       label: "SECTION 03: CABINETRY / HARDWARE",
-      title: "Shaker Cabinets,\nBrass at Every Touchpoint.",
-      pressing: { mark: { n: "03", name: "Shaker Cabinets" } },
+      title: "Shaker Cabinets,",
+      // The study's one crossing. Standalone rather than the brief form:
+      // this is the only header here that carries no method columns, and
+      // PRESSING.md §7 puts short-copy headers in the standalone staging.
+      pressing: {
+        mark: { n: "03", name: "Shaker Cabinets" },
+        heldLine: "Brass at Every Touchpoint.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "hardware-text",
@@ -228,6 +245,19 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       image: `${IMG}/hill-country-kitchen-pantry-fridge-pendant-window.jpg`,
       alt: "Pantry wall with sage green floor-to-ceiling cabinetry, stainless refrigerator, pendant light",
       inline: true,
+      // The zoom. Floor-to-ceiling cabinetry is a full elevation, and the
+      // four-finish palette the study opened with only reads as a system
+      // when the whole wall is on screen at once. contain, landscape.
+      pressing: {
+        plate: "03",
+        captions: [
+          "Pantry wall",
+          "Floor-to-ceiling sage cabinetry",
+          "Brass, oak, marble, sage",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -248,8 +278,11 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "island-header",
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
-      title: "Raw Oak Anchoring\nthe Whole Room.",
-      pressing: { mark: { n: "04", name: "Raw Oak Anchoring" } },
+      title: "Raw Oak Anchoring",
+      pressing: {
+        mark: { n: "04", name: "Raw Oak Anchoring" },
+        heldLine: "the Whole Room.",
+      },
     },
     {
       id: "island-text",
@@ -312,8 +345,11 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "A Dining Zone on\nthe Same Palette.",
-      pressing: { mark: { n: "05", name: "A Dining Zone on" } },
+      title: "A Dining Zone on",
+      pressing: {
+        mark: { n: "05", name: "A Dining Zone on" },
+        heldLine: "the Same Palette.",
+      },
     },
     {
       id: "dining-text",
@@ -372,8 +408,11 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Systems Thinking\nApplied to a Room",
-      pressing: { mark: { n: "06", name: "Systems Thinking" } },
+      title: "Systems Thinking",
+      pressing: {
+        mark: { n: "06", name: "Systems Thinking" },
+        heldLine: "Applied to a Room",
+      },
     },
     {
       id: "closing-text",

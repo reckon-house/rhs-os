@@ -76,8 +76,11 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "Three Projects,\nThree Directions.",
-      pressing: { mark: { n: "02", name: "Three Projects" } },
+      title: "Three Projects,",
+      pressing: {
+        mark: { n: "02", name: "Three Projects" },
+        heldLine: "Three Directions.",
+      },
     },
     {
       id: "directions-subhead",
@@ -108,6 +111,20 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       image: `${IMG}/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg`,
       alt: "Modern farmhouse vanity with vertical shiplap walls, reclaimed wood ceiling, marble counter, polished nickel sconces, and brass-framed mirror",
       inline: true,
+      // The zoom, and this study's held screen. Four finishes meet in one
+      // frame here — shiplap, reclaimed ceiling, marble, nickel and brass —
+      // and the argument that they can disagree only lands at a size where
+      // you can see all four at once. contain, landscape frame.
+      pressing: {
+        plate: "02",
+        captions: [
+          "Modern farmhouse vanity",
+          "Shiplap, marble, reclaimed wood",
+          "Nickel sconces, brass mirror",
+        ],
+        instruction: "Scroll — fills the mat, then travels the frame",
+        choreo: { zoom: true, zoomFit: "contain" },
+      },
     },
 
     // ════════════════════════════════════════
@@ -119,8 +136,20 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "confidence-header",
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
-      title: "Material Confidence,\nNot Material Matching.",
-      pressing: { mark: { n: "03", name: "Material Confidence" } },
+      title: "Material Confidence,",
+      // The study's one crossing, on the sentence the whole feature exists
+      // to argue.
+      //
+      // No mid-page climb: the two dual-images here are each followed by
+      // an editorial headline and a text block, neither of which can rise,
+      // and the one reorder that would manufacture adjacency would put the
+      // quiet-glam headline AFTER the room it introduces. The zoom below
+      // supplies the held screen instead.
+      pressing: {
+        mark: { n: "03", name: "Material Confidence" },
+        heldLine: "Not Material Matching.",
+        choreo: { crossing: true },
+      },
     },
     {
       id: "confidence-subhead",
@@ -217,8 +246,11 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "One Material Kit,\nThree Different Rooms.",
-      pressing: { mark: { n: "04", name: "One Material Kit" } },
+      title: "One Material Kit,",
+      pressing: {
+        mark: { n: "04", name: "One Material Kit" },
+        heldLine: "Three Different Rooms.",
+      },
     },
     {
       id: "closing-subhead",
