@@ -298,6 +298,14 @@ export const ivyParkCaseStudy: CaseStudy = {
     },
 
     // ── BRAND SYSTEM — built without a brand guide ──
+    // Draws through PressingSystemIndex, the same ledger every other
+    // pressing study uses. It reads title, introText, philosophyText,
+    // colors and fonts. footText, philosophyHeading, roleLines,
+    // morphGlyphs and typeComposition below are NOT rendered anywhere
+    // any more: the old two-tone panel was the only thing that drew
+    // them, and the polygon they described now has its own hex-polygon
+    // and polygon-lattice sections upstream. Kept, not deleted, because
+    // the copy is authored and worth reallocating rather than binning.
     {
       id: "brand-system",
       type: "brand-system-volume",
@@ -334,6 +342,11 @@ export const ivyParkCaseStudy: CaseStudy = {
         { name: "Neutral", hex: "#8E9499", rgb: "142 148 153" },
         { name: "Ground", hex: "#0E0E0E", rgb: "14 14 14" },
       ],
+      // The face the study's own display type is already set in: the
+      // morphGlyphs above declare avenir-bold, and globals.css loads
+      // Avenir Next across six weights. Naming it here is the ledger
+      // reading data the study already holds, not a new claim.
+      fonts: [{ name: "Avenir Next", role: "Display and body, six weights" }],
       typeComposition: {
         ghostWord: "IVY",
         thinLead: "Confidence is ",

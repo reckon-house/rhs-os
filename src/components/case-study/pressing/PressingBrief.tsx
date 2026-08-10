@@ -41,6 +41,7 @@ import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
+import { usePinDrift } from "@/lib/pin-drift";
 
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
@@ -115,6 +116,16 @@ export function PressingBrief({
   // classList write: a re-render must not wipe the drawn class.
   const [drawn, setDrawn] = useState(false);
   const headRef = useRef<HTMLHeadingElement | null>(null);
+  /* usePinDrift needs a stable ref every render (rules of hooks forbid
+     calling the hook conditionally), but must only ever touch the
+     CROSSING headline: that is the only branch below that wires headRef
+     at all — RevealHeadline's branch never attaches it, so headRef.current
+     is already null there and this ref only exists to keep the "off"
+     case explicit rather than relying on that being incidental. Gated on
+     pin as well as crossing: a crossing with no pin renders the same <h2>
+     but it is not position:sticky, and drifting a non-sticky element
+     would be a small, wrong, extra creep on top of its normal scroll. */
+  const noDriftRef = useRef<HTMLElement | null>(null);
   /* One string, spaces not newlines: the cut reads RENDERED line boxes,
      so an authored break would be a second, conflicting opinion. */
   const headText = (heldLine ? `${title ?? ""} ${heldLine}` : title ?? "").trim();
@@ -124,6 +135,13 @@ export function PressingBrief({
   /* The brief-family placement pass, shared (src/lib/column-drop.ts).
      stackBelow matches THIS stylesheet's 760 mobile block. */
   useColumnDrop(sectionRef, colRef, { stackBelow: 760 }, [title, heldLine]);
+
+  /* Restores what the brief-form crossing lost when it moved off
+     PressingCrossing (which has always called this): the pinned headline
+     keeps creeping upward at PIN_DRIFT instead of hitting a hard stop.
+     Same wrap/inner shape as PressingCrossing's own call — sectionRef is
+     the pinned range, headRef the sticky element the transform lands on. */
+  usePinDrift(sectionRef, pin && crossing ? headRef : noDriftRef);
 
   /* ── the crossing, on the HEADLINE ─────────────────────────────
      Robert's gesture, unchanged: the rendered lines are cut apart and

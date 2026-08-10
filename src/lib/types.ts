@@ -587,6 +587,10 @@ export interface BrandSystemVolumeSection extends BaseSection {
   morphGlyphs: { char: string; font?: "ogg" | "avenir-medium" | "avenir-demi" | "avenir-bold" }[];
   /** Palette bands "as used" — each renders a lead cell + 75/50/25 tints. */
   colors: { name: string; hex: string; rgb: string }[];
+  /** The faces, for the ledger's Typeface row. Named to match
+   *  BrandSystemSection so toLedger reads all three vocabularies
+   *  structurally. */
+  fonts?: { name: string; role: string }[];
   /** The graphic "type at volume" composition. */
   typeComposition: {
     /** Oversized ghost word behind the composition (e.g. "IVY"). */

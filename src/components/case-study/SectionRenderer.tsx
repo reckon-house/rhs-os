@@ -29,7 +29,6 @@ import { CoverageChart } from "./sections/CoverageChart";
 import { SpeedComparison } from "./sections/SpeedComparison";
 import { DevTimeline } from "./sections/DevTimeline";
 import { BrandSystem } from "./sections/BrandSystem";
-import { BrandSystemVolume } from "./sections/BrandSystemVolume";
 import { SystemArchitecture } from "./sections/SystemArchitecture";
 import { MCPArchitecture } from "./sections/MCPArchitecture";
 import { EditorialHeadline } from "./sections/EditorialHeadline";
@@ -124,8 +123,6 @@ export function SectionRenderer({ section }: { section: Section }) {
       return <DevTimeline {...section} />;
     case "brand-system":
       return <BrandSystem {...section} />;
-    case "brand-system-volume":
-      return <BrandSystemVolume {...section} />;
     case "system-architecture":
       return <SystemArchitecture />;
     case "mcp-architecture":

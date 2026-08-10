@@ -37,7 +37,11 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import type { BrandSystemSection, MarksAndMaterialsSection } from "@/lib/types";
+import type {
+  BrandSystemSection,
+  BrandSystemVolumeSection,
+  MarksAndMaterialsSection,
+} from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
@@ -61,12 +65,13 @@ const SW_HOLD = 1600;
 const SW_MORPH = 850;
 
 /**
- * The ledger's own shape. Two section types feed it — `brand-system` and
- * `marks-materials` — and they are the same content under different
- * field names, so they are normalised here rather than the component
- * learning both vocabularies. `marks-materials` alone appears in 11
- * studies, which is why this adapter exists at all: it is the single
- * highest-leverage skin in the portfolio.
+ * The ledger's own shape. Three section types feed it —
+ * `brand-system`, `marks-materials` and `brand-system-volume` — and they
+ * are the same content under different field names, so they are
+ * normalised here rather than the component learning three
+ * vocabularies. `marks-materials` alone appears in 11 studies, which is
+ * why this adapter exists at all: it is the single highest-leverage
+ * skin in the portfolio.
  */
 export interface SystemLedgerData {
   title?: string;
@@ -98,9 +103,9 @@ type LedgerFields = {
   patternLibrary?: string[];
 };
 
-/** brand-system | marks-materials → one ledger shape. */
+/** brand-system | marks-materials | brand-system-volume → one ledger shape. */
 export function toLedger(
-  s: BrandSystemSection | MarksAndMaterialsSection
+  s: BrandSystemSection | MarksAndMaterialsSection | BrandSystemVolumeSection
 ): SystemLedgerData {
   const anyS = s as unknown as LedgerFields;
   return {
@@ -126,7 +131,7 @@ export function toLedger(
 }
 
 export interface PressingSystemIndexProps {
-  section: BrandSystemSection | MarksAndMaterialsSection;
+  section: BrandSystemSection | MarksAndMaterialsSection | BrandSystemVolumeSection;
   mark?: { n: string; name: string };
 }
 

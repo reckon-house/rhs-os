@@ -82,7 +82,6 @@ const VIZ_TYPES = new Set<Section["type"]>([
      chart redesigns. */
   "app-showcase",
   "brand",
-  "brand-system-volume",
   "color-field-map",
   "color-palette",
   "color-permutations",
@@ -398,8 +397,15 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     /* marks-materials is brand-system under other field names, and it
        appears in 11 studies — the single highest-leverage skin in the
-       portfolio. Both normalise through toLedger(). */
-    if (s.type === "brand-system" || s.type === "marks-materials") {
+       portfolio. brand-system-volume is a third set of names for the
+       same content; it briefly rode the viz bridge instead, which left
+       Ivy Park as the last study still drawing the pre-pressing brand
+       panel. All three normalise through toLedger(). */
+    if (
+      s.type === "brand-system" ||
+      s.type === "marks-materials" ||
+      s.type === "brand-system-volume"
+    ) {
       out.push(<PressingSystemIndex key={s.id} section={s} mark={p?.mark} />);
       i += 1;
       continue;

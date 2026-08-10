@@ -435,3 +435,29 @@
     margin-bottom: 52px;
   }
 }
+
+/* ── DRAW-IN — a chart arrives instead of just being there ────────────
+   The method grid's rule already draws itself left to right on arrival
+   (PressingBrief.module.css .c::before); this is the same gesture —
+   same clip-path mechanism, same curve, same duration — applied to
+   whatever a chart wraps in one <g>. Generic and shared rather than
+   named after the first chart to use it (PressingBlastMass), so the
+   next chart that wants to arrive rather than sit static drops these
+   two classes on its own group with no new CSS.
+   Percent insets, not a transform: clip-path reveals the drawn ink
+   without ever making the group's own bounding box (hence the SVG's
+   layout) larger than its settled size, which a scaleX would. */
+.drawIn {
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+.drawInShown {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawIn {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+  }
+}

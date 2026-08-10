@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
@@ -37,6 +40,13 @@ import styles from "./PressingViz.module.css";
  *
  * No accent. The step shape is the whole point and no single datum
  * carries it, so the chart gets none.
+ *
+ * Draws in left to right on arrival, the same clip-path gesture (and the
+ * exact curve/duration) as the method grid's rules — PressingViz.module.css
+ * .drawIn/.drawInShown, generic there for exactly this reuse. One IO on
+ * the whole chart group rather than per-step: the treads are one
+ * continuous fact, and staggering them would draw a bar chart's story
+ * onto a shape that deliberately has no gaps.
  */
 
 /** The visual system, verbatim from CampaignBlastRadius. */
@@ -105,8 +115,34 @@ const MASS = (() => {
 })();
 
 export function PressingBlastMass() {
+  /* Observe the FRAME, never the clipped group. The group's own
+     clip-path takes it to zero width, so its intersection ratio is
+     pinned at 0 and a threshold it must cross to un-clip itself can
+     never be met. PressingBrief watches its section for the same
+     reason. */
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setShown(true);
+            io.disconnect();
+          }
+        }
+      },
+      { threshold: 0.18 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={frameRef}>
       <div className={styles.head}>
         <span className={styles.lbl}>Campaign blast radius</span>
         <span className={`${styles.lbl} ${styles.grey}`}>
@@ -122,6 +158,7 @@ export function PressingBlastMass() {
           role="img"
           aria-label="The campaign's eight channels ranked by asset volume as one stepped silhouette, from 42 product-page assets down to the single scrolling experience"
         >
+          <g className={`${styles.drawIn} ${shown ? styles.drawInShown : ""}`}>
           <path d={MASS} fill="var(--pp-ink)" />
 
           {RANKED.map((c, i) => {
@@ -191,6 +228,7 @@ export function PressingBlastMass() {
           >
             {ELEMENTS.join(" · ")}
           </text>
+          </g>
         </svg>
       </div>
     </div>
