@@ -81,11 +81,6 @@ export const ivyParkCaseStudy: CaseStudy = {
 
     // ── THE BRIEF — grouped ──
     {
-      id: "brief-polygon",
-      type: "hex-polygon",
-      group: { name: "brief", bg: "#ECE6E1", radius: 75, padding: "60px" },
-    },
-    {
       id: "brief-header",
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
@@ -167,14 +162,18 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "experience-header",
       type: "section-header",
       label: "SECTION 03: THE EXPERIENCE",
-      title: "The Polygon Held",
+      // "Held the page together" overstated what the shape actually did:
+      // it was never structural. It started as a crop mask (an accent)
+      // and got reused until it read as the visual language, which is
+      // the claim the header should make instead.
+      title: "One Shape Became",
       // The study's one crossing, on the shape that IS the argument.
       // pin declared alongside it: the crossing already holds its headline
       // for 220dvh, and saying so out loud is what gives the page plate
       // below a named holder to climb.
       pressing: {
-        mark: { n: "03", name: "The Polygon Held" },
-        heldLine: "the Page Together.",
+        mark: { n: "03", name: "One Shape Became" },
+        heldLine: "the Whole Language.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -206,6 +205,26 @@ export const ivyParkCaseStudy: CaseStudy = {
       // the file is 2188px native, under the 3000 bar, and a zoom would
       // magnify a screenshot past what its pixels carry.
       pressing: { choreo: { rise: true } },
+    },
+
+    // ── THE POLYGON DEVICE — both polygon motion pieces, moved here from
+    // elsewhere on the page so they sit where the section actually names
+    // them. The framed portrait was previously the page's own opening
+    // beat, ahead of THE BRIEF; the lattice lived inside the brand-system
+    // section, several beats past where anyone had explained what it was.
+    {
+      id: "experience-hex-frame",
+      type: "hex-polygon",
+    },
+    {
+      id: "experience-polygon-lattice",
+      type: "polygon-lattice",
+      name: "One Shape, Endlessly Rotated",
+      // The overstated first sentence ("was the whole identity") is gone;
+      // see the header comment above for the same correction. The rest of
+      // the paragraph was never in question.
+      description:
+        "The hexagon was an accent that grew into the system. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
     },
 
     {
@@ -309,11 +328,6 @@ export const ivyParkCaseStudy: CaseStudy = {
         lockupTop: "Courage is",
         lockupVertical: "POWER",
         note: "One voice that read at 12px in an email subject line and 200px across a scrolling hero.",
-      },
-      polygonSignature: {
-        name: "One Shape, Endlessly Rotated",
-        description:
-          "The hexagon was the whole identity. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
       },
     },
 

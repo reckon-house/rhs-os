@@ -65,6 +65,7 @@ export type Section =
   | MaterialCircosSection
   | KitchenPaletteSection
   | HexPolygonSection
+  | PolygonLatticeSection
   | SizzlePlaygroundSection
   | CampaignBlastRadiusSection
   | JeffreyFlagshipRadiusSection
@@ -601,8 +602,6 @@ export interface BrandSystemVolumeSection extends BaseSection {
     /** Small note paragraph, top-left. */
     note: string;
   };
-  /** Copy centred over the rotating polygon lattice. */
-  polygonSignature: { name: string; description: string };
 }
 
 export interface SpacerSection extends BaseSection {
@@ -655,6 +654,16 @@ export interface KitchenPaletteSection extends BaseSection {
 
 export interface HexPolygonSection extends BaseSection {
   type: "hex-polygon";
+}
+
+/** The signature shape at scale — same hexagon repeated across a field,
+ *  each copy rotated a few degrees past its neighbour. Copy sits centred
+ *  over it. Standalone so it can be placed wherever the study's own
+ *  polygon device lives, rather than nested inside brand-system-volume. */
+export interface PolygonLatticeSection extends BaseSection {
+  type: "polygon-lattice";
+  name: string;
+  description: string;
 }
 
 export interface SizzlePlaygroundSection extends BaseSection {

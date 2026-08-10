@@ -88,6 +88,7 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "color-permutations",
   "double-exposure-anatomy",
   "hex-polygon",
+  "polygon-lattice",
   "kitchen-palette",
   "pattern-matrix",
   "sizzle-playground",

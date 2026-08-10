@@ -1,7 +1,6 @@
 import type { BrandSystemVolumeSection } from "@/lib/types";
 import { MorphingGlyph } from "../MorphingGlyph";
 import { TypeAtVolume } from "../TypeAtVolume";
-import { PolygonLattice } from "../PolygonLattice";
 
 // ── colour math (deterministic → SSR-safe tints toward the card ground) ──────
 type RGB = [number, number, number];
@@ -39,7 +38,6 @@ export function BrandSystemVolume({
   morphGlyphs,
   colors,
   typeComposition,
-  polygonSignature,
 }: BrandSystemVolumeSection) {
   const philosophyParagraphs = philosophyText.split("\n\n");
 
@@ -135,10 +133,6 @@ export function BrandSystemVolume({
           {/* ── TYPE AT VOLUME — graphic composition ── */}
           <p className={LABEL}>Type / at volume</p>
           <TypeAtVolume {...typeComposition} />
-
-          {/* ── POLYGON SIGNATURE — rotating lattice ── */}
-          <p className={LABEL}>The polygon / signature</p>
-          <PolygonLattice name={polygonSignature.name} description={polygonSignature.description} />
         </div>
       </div>
     </section>

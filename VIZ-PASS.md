@@ -83,6 +83,7 @@ than two studies portfolio-wide.
 | `color-permutations` | j-christianson | swatch ledger, same reasoning | — |
 | `pattern-matrix` | black-white-type | keep as artwork — the patterns ARE the content; reframe on paper only | — |
 | `hex-polygon` | ivy-park | keep as artwork — it is the brand's own mark construction | — |
+| `polygon-lattice` | ivy-park | keep as artwork — the same mark repeated and rotated at scale; standalone type so it can sit next to `hex-polygon` where the study actually explains the shape, not nested inside brand-system-volume | — |
 | `brand-system-volume` | ivy-park | normalise through PressingSystemIndex's ledger if its data fits toLedger(); else keep | — |
 
 `feature-cards` and `text-right` (A.R.C.) are layout sections, not
