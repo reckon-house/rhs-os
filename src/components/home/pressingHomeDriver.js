@@ -1329,6 +1329,7 @@ function buildMagazine() {
     linkLeadTerms(lead, LEAD_TERMS, (label, q) => {
       const el = document.getElementById("query");
       if (el) el.value = label;
+      askSource = "chip";   /* navigation: the template answers */
       onQuery(q, true);
     });
   }
@@ -1364,6 +1365,7 @@ function buildMagazine() {
     b.addEventListener("click", () => {
       const el = document.getElementById("query");
       if (el) el.value = label;
+      askSource = "chip";   /* navigation: the template answers */
       onQuery(fq, true);
     });
     filt.appendChild(b);
@@ -1436,7 +1438,31 @@ function cancelAsk() {
   askGen += 1;
   askTimers.forEach(clearTimeout);
   askTimers = [];
+  if (askAbort) { askAbort.abort(); askAbort = null; }
   document.body.classList.remove("working");
+}
+
+/* ── the model half ────────────────────────────────────────────────
+   The matcher deals instantly and its receipts stay the ground truth.
+   What it cannot do is answer a QUESTION — "did you shoot the Ivy Park
+   photography?" has no template. Those go to /api/ask, where the
+   server re-reads the matched projects from its own copy of the facts
+   index and Claude writes the one line, under the house copy rules.
+   The client sends hrefs, never facts: the server drops anything not
+   in its own index, so the model only ever sees what the build
+   generated. Chips and filter clicks never come here — they are
+   navigation, and the template line is the honest, instant answer for
+   a noun. On any failure the template stands; a fallback sentence
+   pretending to be the model would be worse than the template. */
+let askAbort = null;
+let askSource = "typed";
+function questionShaped(q) {
+  const s = q.trim();
+  if (!s) return false;
+  if (/\?$/.test(s)) return true;
+  if (/^(do|does|can|could|did|are|is|was|were|how|what|which|who|whose|when|where|why|have|has|will|would|should|tell|what's|who's|how's)\b/i.test(s)) return true;
+  /* four words of free typing is a sentence, not a keyword */
+  return s.split(/\s+/).length >= 4;
 }
 
 /* ── the answer, composed ─────────────────────────────────────────
@@ -1683,6 +1709,69 @@ function buildAnswer() {
     work: leftIdx.length, board: rightIdx.length
   });
 
+  /* ── hand a QUESTION to the model, template as the floor ─────────
+     Fired now, before the template even starts typing, so the round
+     trip overlaps the theatre. If the model comes back while the
+     template line is mid-type, the typewriter hands over at its next
+     tick; if it comes back after, the line retypes. If it never comes
+     back, nothing happens at all — the template answer was already
+     honest. Intents (plan) keep their authored voice lines; chips are
+     navigation and never come here. */
+  let modelSay = null;
+  let lineDone = false;
+  const typeModel = () => {
+    const t = modelSay;
+    if (!t) return;
+    modelSay = null;
+    const segs2 = [{ t, q: false }];
+    const step2 = Math.max(9, Math.min(26, Math.round(2100 / Math.max(1, t.length))));
+    let j = 0;
+    sayEl.classList.add("typing");
+    const on = () => {
+      j += 1;
+      renderToned(sayEl, segs2, j);
+      if (j < t.length) { holdAsk(on, step2); return; }
+      sayEl.classList.remove("typing");
+      notesEl.classList.add("on");
+      holdAsk(() => document.body.classList.remove("working"), 200);
+    };
+    on();
+  };
+  if (!plan && askSource === "typed" && questionShaped(query)) {
+    const hrefs = [...new Set(
+      leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
+    if (askAbort) askAbort.abort();
+    const ac = new AbortController();
+    askAbort = ac;
+    const gen = askGen;
+    fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: query, hrefs }),
+      signal: ac.signal
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (!j || !j.answer || gen !== askGen) return;
+        /* the model's line goes through the same mechanical voice
+           pass as the house's own — the rules don't care who typed */
+        modelSay = voice(String(j.answer));
+        const wk = notesEl.querySelector(".blk.working");
+        if (wk && wk.lastChild) {
+          wk.lastChild.nodeValue = (j.used && j.used.length
+            ? "Claude wrote that from the " + j.used.length +
+              (j.used.length === 1 ? " study" : " studies") +
+              " the index pulled: " + nameList(j.used) +
+              ". The facts are the index's, counted when the site built; the words are the model's, written under the house copy rules."
+            : "Nothing matched, so Claude got the shelf list: every title the house holds and nothing else. The words are the model's, written under the house copy rules.") +
+            " Model " + (j.model || "claude") + ".";
+        }
+        if (still) { renderToned(sayEl, [{ t: modelSay, q: false }]); modelSay = null; return; }
+        if (lineDone) typeModel();
+      })
+      .catch(() => {});
+  }
+
   /* the address becomes a live link once the line is done being
      typed: textContent while the clock runs, one anchor after */
   const linkMail = () => {
@@ -1724,10 +1813,14 @@ function buildAnswer() {
   const step = Math.max(9, Math.min(26, Math.round(2100 / Math.max(1, say.length))));
   let i = 0;
   const typeOn = () => {
+    /* the model's line took over between ticks: hand the clock to it
+       mid-sentence rather than finishing a line about to be replaced */
+    if (modelSay) { typeModel(); return; }
     i += 1;
     renderToned(sayEl, segs, i);
     if (i < say.length) holdAsk(typeOn, step);
     else {
+      lineDone = true;
       sayEl.classList.remove("typing");
       linkMail();
       notesEl.classList.add("on");
@@ -1813,6 +1906,7 @@ function syncUrl() {
 const nav = document.getElementById("nav");
 const input = document.getElementById("query");
 input.addEventListener("input", (e) => {
+  askSource = "typed";   /* a hand on the keys can reach the model */
   onQuery(e.target.value);
   if (window.placeAsk) placeAsk();   /* typing at display size refits */
 });
