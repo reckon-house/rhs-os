@@ -832,20 +832,21 @@ const FACET_PLAIN = {
 };
 function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
   const bits = [];
-  const qd = "\u201c" + fold(q) + "\u201d";
-  if (and) bits.push(qd + " reads as several facts at once, and every word had to land on the same project.");
-  else if (forked) bits.push(qd + " names more than one thing here, so the fork gets said instead of silently picked.");
-  else bits.push(qd + " reads as " + (FACET_PLAIN[lead] || "a fact") +
-    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed under " + term : "") + ".");
-  bits.push("The index holds " +
-    (w ? w + " project" + (w === 1 ? "" : "s") : "no built project") +
-    (p ? " and " + p + " saved inspiration image" + (p === 1 ? "" : "s") : "") +
-    " for it, counted from the case studies at build time.");
-  if (vl) bits.push("The personal lines are mine, kept in a voice file. The counts are the index's.");
-  if (bridged) bits.push("A hand-written bridge routes the software sense to " + bridged.target + ".");
+  /* quoted back as TYPED \u2014 fold() turned "AI" into "ai" here */
+  const qd = "\u201c" + (String(q).trim() || fold(q)) + "\u201d";
+  if (and) bits.push(qd + " is a few facts at once, so every word had to land on the same project.");
+  else if (forked) bits.push(qd + " means more than one thing here. I'd rather say so than pick one quietly.");
+  else bits.push("I filed " + qd + " as " + (FACET_PLAIN[lead] || "a fact") +
+    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", under " + term : "") + ".");
+  bits.push("That's " +
+    (w ? w + " project" + (w === 1 ? "" : "s") : "nothing built") +
+    (p ? " and " + p + " saved image" + (p === 1 ? "" : "s") : "") +
+    ", counted off the case studies when the site built.");
+  if (vl) bits.push("The personal lines are mine, written down in a voice file. The counts aren't.");
+  if (bridged) bits.push("I wrote a bridge by hand so the software sense lands on " + bridged.target + ".");
   if (dead.length) bits.push("Nothing matched \u201c" + dead.join("\u201d, \u201c") +
-    "\u201d, so " + (dead.length === 1 ? "it was" : "they were") + " set aside.");
-  bits.push("No model runs when you ask. The answer is looked up, checked against the copy rules, and typed. Index v" +
+    "\u201d, so " + (dead.length === 1 ? "it sat out" : "they sat out") + ".");
+  bits.push("No model runs when you ask. It looks the answer up, runs it past the copy rules, and types it. Index v" +
     (FACTS ? FACTS.vocabularyVersion : "?") + ", voice v" + VOICE_VERSION + ".");
   return bits.join(" ");
 }
@@ -969,8 +970,11 @@ function planFacts(q, f) {
        the same way the practice statement does. */
     if (vl.quiet) quiet.push(vl.quiet);
   } else if (forked && w) {
-    say = "\u201c" + cap(qKey) + "\u201d goes more than one way here: " +
-      nameList(leadTerms) + ". The work below carries all of them.";
+    /* The question is quoted back the way it was TYPED, not through
+       fold-then-capitalise \u2014 that pipeline turned "AI" into "Ai",
+       which reads as a machine mishandling a word no person would. */
+    say = "\u201c" + (String(q).trim() || cap(qKey)) + "\u201d means a few things here: " +
+      nameList(leadTerms) + ". All of it's below.";
   } else if (!w) {
     /* a person is not a material: nobody works Miles Davis into a
        project. Presence on the board is the whole claim. */
@@ -987,7 +991,7 @@ function planFacts(q, f) {
   } else if (lead === "client") {
     say = wl === 1
       ? "That's " + term + ". One project: " + tl[0] + "."
-      : ["That's " + term + ". Every project below carries the name.",
+      : ["That's " + term + ". Everything below is theirs.",
          term + ": the work below, " + tl[0] + " in front.",
          "That's " + term + ". All of the below came through that name."][v];
   } else if (lead === "material" || lead === "colour") {
@@ -996,16 +1000,16 @@ function planFacts(q, f) {
       ? (aliased ? "It lives in " : cap(term) + " lives in ") + tl[0] + "."
       : wl === 2
         ? it + " sits in " + tl[0] + " and " + tl[1] + "."
-        : [it + " lives all through the work below. " + tl[0] + " carries the most.",
+        : [it + " shows up all through the below. Most of it in " + tl[0] + ".",
            it + " runs through the work below. Start with " + tl[0] + ".",
-           "I've used " + (aliased ? "it" : term) + " in a number of projects, " + tl[0] + " most of all."][v]);
+           "I've used " + (aliased ? "it" : term) + " on a few of these, " + tl[0] + " most of all."][v]);
   } else if (lead === "furniture") {
     say = aliased
       ? bridge + (wl === 1 ? "There's one in " + tl[0] + "."
         : "There's one in every project below. " + tl[0] + " first.")
       : wl === 1 ? "There's a " + term + " in " + tl[0] + "."
       : wl === 2 ? "There's a " + term + " in " + tl[0] + " and in " + tl[1] + "."
-      : ["A " + term + " sits somewhere in every project below. " + tl[0] + " carries the most.",
+      : ["There's a " + term + " somewhere in every project below. Best one's in " + tl[0] + ".",
          "There's a " + term + " in each of these. Start with " + tl[0] + ".",
          capWords(plural(term)) + " run all through the work below. " + tl[0] + " first."][v];
   } else if (lead === "room") {
@@ -1033,15 +1037,14 @@ function planFacts(q, f) {
          term + " is in every one of these."][v];
   } else {
     say = wl === 1
-      ? "That's " + term + " here. One project carries it: " + tl[0] + "."
-      : ["That's " + capWords(term) + " here. Everything below carries it.",
-         capWords(term) + ": the work below.",
-         "The work below sits under " + capWords(term) + "."][v];
+      ? "One project: " + tl[0] + "."
+      : ["That's the work below.",
+         "All of the below is " + term + ".",
+         capWords(term) + ", top to bottom."][v];
   }
   /* the projects that matched the word another way, named as such */
   if (!f.and && w && others.length) {
-    const aside = nameList(others) +
-      (others.length === 1 ? " answers" : " answer") + " it in a different sense.";
+    const aside = nameList(others) + " came up on another meaning of the word.";
     say += " " + aside;
     quiet.push(aside);
   }
@@ -1083,7 +1086,9 @@ function planFacts(q, f) {
     console.warn("house voice: a count leaked into the say:", say);
   }
   const receipt = explain({
-    q: qKey, lead, term, w, p, vl, forked, and: f.and,
+    /* the RAW query, so the receipt quotes what was typed — qKey is
+       folded, and folded "AI" prints as "ai" */
+    q, lead, term, w, p, vl, forked, and: f.and,
     dead: f.dead || [], bridged
   });
   return { say, quiet, receipt, workIdx, pullIdx, mailto: false };
