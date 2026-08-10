@@ -91,7 +91,11 @@ export const arcCaseStudy: CaseStudy = {
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "An app that looks at what you own and tells you whether your insurance actually covers it.",
-  field: "Home Inventory\nComputer Vision\nInsurance Technology",
+  // "AI Home Inventory", matching the homepage grid's own name for it.
+  // The facts miner reads this line, and without the word the index
+  // could not put the portfolio's one shipped AI product under "AI" —
+  // the query that most deserves it.
+  field: "AI Home Inventory\nComputer Vision\nInsurance Technology",
   author: "Jeremy Prasatik",
   published: "2024",
   status: "V1 Live  In market",
@@ -123,7 +127,7 @@ export const arcCaseStudy: CaseStudy = {
       title: "A.R.C.\nArchive.\nReady.\nCloud.",
       subtitle:
         "An app that looks at what you own and tells you whether your insurance actually covers it.",
-      field: "Home Inventory Computer Vision Insurance Technology",
+      field: "AI Home Inventory Computer Vision Insurance Technology",
       author: "Jeremy Prasatik",
       published: "2024",
       status: "V1 Live  In market",
@@ -133,7 +137,7 @@ export const arcCaseStudy: CaseStudy = {
         "Full-Stack Engineering",
         "Go-to-Market",
       ],
-      specLine: "Home Inventory · Computer Vision · Insurance Technology",
+      specLine: "AI Home Inventory · Computer Vision · Insurance Technology",
       /* The cover reel. Eight frames cut fast enough to read as motion,
          which is the standard opening for a pressing study: the work
          moves before a word of it is read.
