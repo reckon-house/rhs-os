@@ -36,7 +36,14 @@
  * motion holds the first state.
  */
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type {
   BrandSystemSection,
   BrandSystemVolumeSection,
@@ -45,6 +52,7 @@ import type {
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
+import { MeltFilter } from "@/components/fx/MeltFilter";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { imageDimensions } from "@/data/image-dimensions";
 import { outline, profile, toPath, rgb } from "@/lib/swatch-morph";
@@ -66,9 +74,17 @@ const SW_MORPH = 850;
 
 /* The type specimen's clock. Shorter hold than the palette's: a word is
    read in one glance where a colour needs looking at, and running both
-   rows on the same beat would make the section pulse. */
+   rows on the same beat would make the section pulse. The swap is long
+   enough for a melt to go out and come back — at the fade's old 420 the
+   liquefy read as a glitch rather than a transformation. */
 const TY_HOLD = 1150;
-const TY_SWAP = 420;
+const TY_SWAP = 620;
+
+/* How far the letterforms displace at the peak of a swap. The word has
+   to stop being legible in the middle or the change of glyphs shows as
+   a cut underneath the effect; 26 smears them past reading without
+   throwing ink outside the filter's 150% box. */
+const TY_MELT = 26;
 
 /* Fallback cuts for a face whose study did not declare its weights.
    Regular and bold is the pair every family ships. */
@@ -194,7 +210,9 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const swatchRef = useRef<SVGPathElement>(null);
   const swatchCapRef = useRef<HTMLSpanElement>(null);
   const typeRef = useRef<HTMLSpanElement>(null);
+  const typeDispRef = useRef<SVGFEDisplacementMapElement | null>(null);
   const elemRef = useRef<SVGSVGElement>(null);
+  const meltId = `psi-melt-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
@@ -361,12 +379,21 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   }, [colors]);
 
   /* ── the type specimen: word AND weight, together ──────────────────
-     The face's own cuts, stepped one per word. Avenir Next ships as six
-     separate files rather than a variable axis, so a weight transition
-     would snap mid-word however it was written; the swap is therefore a
-     dip to nothing and back, which makes the step the gesture instead of
-     something the browser failed to smooth. The words are the campaign's
-     own, so the row specimens the voice as well as the face. */
+     The face's own cuts, stepped one per word, the words the campaign's
+     own — so the row specimens the voice as well as the face.
+
+     The swap MELTS rather than fades: the nav's displacement chain run
+     up to peak and back down, so the letterforms liquefy, exchange
+     underneath the smear, and re-form as the next word. It is the same
+     filter RevealHeadline arrives on, shared from MeltFilter so the two
+     cannot drift apart. That also solves the weight step for free —
+     Avenir Next is six separate files rather than a variable axis, so a
+     cut can only ever snap, and the peak of the melt is exactly where a
+     snap cannot be seen.
+
+     The element leaves the filter pipeline between swaps. Text left
+     inside one renders soft, and a specimen has to be sharp at rest;
+     this is RevealHeadline's lesson, not a fresh discovery. */
   const words = data.specimenWords ?? [];
   const wordKey = words.join("|");
   const faceName = data.fonts[0]?.name;
@@ -393,6 +420,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     let elapsed = 0;
     let prev: number | null = null;
     let shownLast = 0;
+    let melted = false;
     return onTick(() => {
       const now = performance.now();
       if (prev != null) elapsed += Math.min(now - prev, 100);
@@ -401,26 +429,39 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
       const t = elapsed % (span * ws.length);
       const idx = Math.floor(t / span);
       const within = t - idx * span;
+
       if (within <= TY_HOLD) {
-        el.style.opacity = "1";
+        if (melted) {
+          melted = false;
+          el.style.filter = "";
+        }
         if (shownLast !== idx) {
           shownLast = idx;
           paint(idx);
         }
         return;
       }
-      /* Through the swap the word dips to nothing and comes back as the
-         next one, so the cut changes at the trough where no glyph is on
-         screen to be caught changing. */
+
+      if (!melted) {
+        melted = true;
+        el.style.filter = `url(#${meltId})`;
+      }
+      /* Out and back on a sine, so the melt leaves and returns to
+         exactly zero displacement — ending on a residue is what would
+         leave the word permanently a little soft. */
       const e = (within - TY_HOLD) / TY_SWAP;
-      el.style.opacity = String(Math.abs(2 * e - 1));
+      typeDispRef.current?.setAttribute(
+        "scale",
+        (TY_MELT * Math.sin(Math.PI * e)).toFixed(2)
+      );
+      // Swapped at peak displacement, where the glyphs are illegible.
       const shown = e < 0.5 ? idx : (idx + 1) % ws.length;
       if (shown !== shownLast) {
         shownLast = shown;
         paint(shown);
       }
     });
-  }, [wordKey, weightKey]);
+  }, [wordKey, weightKey, meltId]);
 
   /* ── the elements row: the shape, repeating ────────────────────────
      Each turns at its own rate from its own start angle, so the three
@@ -515,6 +556,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
               {words.reduce((a, b) => (b.length > a.length ? b : a), "")}
             </span>
             <span className={styles.word} ref={typeRef} />
+            <MeltFilter id={meltId} dispRef={typeDispRef} />
           </span>
           <span className={styles.cap}>{faces[0].role}</span>
         </span>

@@ -177,13 +177,13 @@
   width: clamp(68px, 8vw, 130px);
   height: 100px;
 }
-/* The prototype's <sizzle-reel radius="14">: this component's radius is
-   its own 14px, tuned against the sample size — deliberately inside the
-   --pp-r 16 used on full plates. */
+/* The prototype's <sizzle-reel radius="14"> — now the house reel corner
+   rather than this component's own number, so the cover's thumb and
+   both ledgers round the same. */
 .reel {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: var(--pp-r-reel);
 }
 
 /* index rows on a phone: less stagger, smaller samples, or the reel

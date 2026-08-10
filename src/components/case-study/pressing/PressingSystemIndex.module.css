@@ -255,7 +255,7 @@
 .reel {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: var(--pp-r-reel);
 }
 
 /* Each specimen gets the full reserved height with its subject centred,

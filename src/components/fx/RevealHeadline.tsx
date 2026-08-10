@@ -36,6 +36,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { MeltFilter } from "./MeltFilter";
 import styles from "./reveal.module.css";
 
 const STAG = 6; // ms of lead per character
@@ -237,42 +238,9 @@ export function RevealHeadline({
           </span>
         </span>
       ))}
-      {/* The melt filter, one instance per headline. Values are the nav
-          chain's: fractalNoise 0.015 0.025, three octaves, seed 8, blur 2.
-          Only `scale` animates, driven by the rAF loop above. */}
-      <svg
-        width="0"
-        height="0"
-        aria-hidden="true"
-        focusable="false"
-        style={{ position: "absolute" }}
-      >
-        <filter
-          id={filterId}
-          x="-25%"
-          y="-25%"
-          width="150%"
-          height="150%"
-          colorInterpolationFilters="sRGB"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.015 0.025"
-            numOctaves={3}
-            seed={8}
-            result="n"
-          />
-          <feGaussianBlur in="n" stdDeviation={2} result="sm" />
-          <feDisplacementMap
-            ref={dispRef}
-            in="SourceGraphic"
-            in2="sm"
-            scale={0}
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </svg>
+      {/* One instance per headline — see MeltFilter on why the id has to
+          be unique. Only `scale` animates, driven by the rAF loop above. */}
+      <MeltFilter id={filterId} dispRef={dispRef} />
     </Tag>
   );
 }

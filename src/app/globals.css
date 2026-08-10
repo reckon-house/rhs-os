@@ -592,6 +592,13 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
   --pp-note: 16px;
   --pp-cap: 11px;
   --pp-r: 16px;
+  /* Every reel thumb's corner, in one place. A reel box is always
+     smaller than a plate and its radius has to come down with it or the
+     corners eat the picture, so it sits deliberately inside --pp-r.
+     This was three separate hardcodes before — the cover on 12, both
+     ledgers on 14 — which is how the small box ended up rounder than
+     the big one. Change it here or not at all. */
+  --pp-r-reel: calc(var(--pp-r) * 0.75);
   --pp-rise: 96dvh;
   --pp-plate-hold: 13dvh;
 
