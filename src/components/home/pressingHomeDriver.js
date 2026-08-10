@@ -108,6 +108,115 @@ const FILTERS = [
   ["Interiors", "interiors"],
 ];
 
+/* The practice statement's own nouns, wired to the field. The words a
+   visitor would type are already sitting in the opening paragraph, so
+   they may as well BE the search: clicking one types it into the house
+   and the same machinery answers, exactly as the filter buttons do.
+
+   Second element is the QUERY, which is not always the phrase. "place"
+   is the statement's word for interiors and would find nothing on its
+   own; "brand systems" reaches the work through the studies' own
+   "branding". The visitor's words stay in the copy, the studies' words
+   go to the brain — the same split FILTERS makes.
+
+   Every query here was checked against the live corpus rather than
+   guessed. Two of the obvious picks were wrong: "design system" for
+   brand systems and "photography direction" for the photography run
+   each returned a single card, where "branding" and "art direction"
+   return seven. "ecommerce" DOES return one and keeps it, because
+   widening it to pad the shelf would answer a different question than
+   the one clicked.
+
+   Order does not matter to the matcher (earliest start wins, longest
+   phrase at a tie), but it is written longest-first anyway so a reader
+   can see that "brand systems" is meant to beat "brand" and "custom
+   interiors" to beat "interiors". */
+const LEAD_TERMS = [
+  ["photography and art direction", "art direction"],
+  ["custom interiors", "interior design"],
+  ["brand systems", "branding"],
+  ["ecommerce", "ecommerce"],
+  ["campaigns", "campaign"],
+  ["AI tools", "AI"],
+  ["product", "product design"],
+  ["Apps", "app"],
+  ["brand", "brand"],
+  ["place", "interior design"],
+];
+
+/* Wraps every LEAD_TERMS phrase found under `root` in a control, in
+   place. It walks TEXT NODES rather than rewriting innerHTML for two
+   reasons: the lead already carries <span class="q"> for its recessive
+   run and a string pass would have to parse around it, and the copy
+   reaches this function already escaped — putting it back through a
+   string concatenation is how escaping gets undone by accident.
+
+   A SPAN carrying role=button, not a <button>. Chrome forces a real
+   button to inline-block whatever the stylesheet asks for, and an
+   inline-block in running text is one atomic box: the comma after
+   "custom interiors" wrapped to the next line on its own, and a phrase
+   as long as "photography and art direction" could never break across
+   lines the way the sentence around it does. A span is inline, so it
+   wraps mid-phrase and keeps its punctuation. The role and the key
+   handler put back what the element gives up.
+
+   Matches must sit on word boundaries, or "brand" would light up the
+   first five letters of a "branding" the copy is free to gain later. */
+function linkLeadTerms(root, terms, onPick) {
+  const letter = (c) => !!c && /[A-Za-z]/.test(c);
+  const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) nodes.push(n);
+
+  nodes.forEach((node) => {
+    const s = node.nodeValue || "";
+    const frag = document.createDocumentFragment();
+    let i = 0;
+    let hit = false;
+
+    while (i < s.length) {
+      let best = null;
+      for (const [phrase, q] of terms) {
+        let at = i - 1;
+        for (;;) {
+          at = s.indexOf(phrase, at + 1);
+          if (at === -1) break;
+          if (!letter(s[at - 1]) && !letter(s[at + phrase.length])) break;
+        }
+        if (at === -1) continue;
+        if (!best || at < best.at ||
+            (at === best.at && phrase.length > best.phrase.length)) {
+          best = { at, phrase, q };
+        }
+      }
+      if (!best) {
+        frag.appendChild(document.createTextNode(s.slice(i)));
+        break;
+      }
+      hit = true;
+      if (best.at > i) frag.appendChild(document.createTextNode(s.slice(i, best.at)));
+      const b = document.createElement("span");
+      b.className = "term";
+      b.setAttribute("role", "button");
+      b.tabIndex = 0;
+      b.textContent = best.phrase;
+      const label = best.phrase;
+      const query = best.q;
+      const fire = () => onPick(label, query);
+      b.addEventListener("click", fire);
+      b.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        fire();
+      });
+      frag.appendChild(b);
+      i = best.at + best.phrase.length;
+    }
+
+    if (hit && node.parentNode) node.parentNode.replaceChild(frag, node);
+  });
+}
+
 const REEL_HREF = "/case-studies/sizzle";
 const REEL_IMAGES = [
   "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
@@ -1210,6 +1319,13 @@ function buildMagazine() {
       cards[bio].quiet ? [cards[bio].quiet] : []));
     /* keyed like any card, so the brain can travel it out of here */
     lead.dataset.key = "note:" + cards[bio].word;
+    /* AFTER renderToned, never before: it sets innerHTML, so controls
+       added first would be thrown away on the next render. */
+    linkLeadTerms(lead, LEAD_TERMS, (label, q) => {
+      const el = document.getElementById("query");
+      if (el) el.value = label;
+      onQuery(q, true);
+    });
   }
 
   const notesEl = document.getElementById("ixNotes");

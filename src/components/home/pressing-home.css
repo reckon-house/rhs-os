@@ -751,6 +751,25 @@
      same voice at the same size. */
   .statement .q, .ansprose .q { color: rgba(0, 0, 0, 0.42); }
 
+  /* The statement's nouns, clickable. They have to read as the sentence
+     first and as controls second, so they take the paragraph's type
+     whole and carry a hairline underneath — more than a hover cue, less
+     than a link. Colour is INHERITED, not set: most of them sit inside
+     the recessive run above and have to grey with it, or the sentence
+     grows a second tone it never asked for. */
+  .statement .term { display: inline; color: inherit; cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, 0.22);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+    transition: text-decoration-color 0.22s ease; }
+  .statement .term:hover { text-decoration-color: currentColor; }
+  .statement .term:focus-visible { outline: 1px solid var(--ink);
+    outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .statement .term { transition: none; }
+  }
+
   .ansprose { font-size: clamp(24px, 3.2vw, 44px); font-weight: 500;
     line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
     min-height: 2.4em; }
