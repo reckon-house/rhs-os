@@ -230,31 +230,28 @@ export const ivyParkCaseStudy: CaseStudy = {
       ],
     },
 
-    // ── EXPERIENCE SCREENSHOT — now the visual proof AFTER the full
-    // argument (header, subhead, footnote, all three columns) rather than
-    // sitting between the footnote and its own columns. ──
+    // ── THE POLYGON DEVICE — moved here from the page's opening beat,
+    // ahead of THE BRIEF, so it sits where the section actually names it,
+    // directly after the brief cluster and ahead of the screenshot it
+    // introduces.
+    {
+      id: "experience-hex-frame",
+      type: "hex-polygon",
+    },
+
+    // ── EXPERIENCE SCREENSHOT — climbs the hex device above it. PressingLayout's
+    // viz bridge now reserves ClimbRoom whenever a rise follows a bridged
+    // section (added for this exact adjacency — measured before the fix,
+    // the pull-up landed 794px into the device's own 1167px-tall frame,
+    // covering most of the visible artwork, not trailing padding). Not a
+    // zoom — the file is 2188px native, under the 3000 bar. ──
     {
       id: "experience-page-1",
       type: "image",
       src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
       alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
       aspect: "native",
-      // Rises across the brief it answers: the argument holds on screen
-      // while the page that proves it climbs over the top. Not a zoom —
-      // the file is 2188px native, under the 3000 bar, and a zoom would
-      // magnify a screenshot past what its pixels carry.
       pressing: { choreo: { rise: true } },
-    },
-
-    // ── THE POLYGON DEVICE — both polygon motion pieces, moved here from
-    // elsewhere on the page so they sit where the section actually names
-    // them, right after the screenshot proves the claim. The framed
-    // portrait was previously the page's own opening beat, ahead of THE
-    // BRIEF; the lattice lived inside the brand-system section, several
-    // beats past where anyone had explained what it was.
-    {
-      id: "experience-hex-frame",
-      type: "hex-polygon",
     },
     {
       id: "experience-polygon-lattice",

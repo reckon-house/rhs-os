@@ -612,6 +612,17 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           <SectionRenderer section={s} />
         </PressingVizFrame>
       );
+      /* The same half of the climb contract the brief keeps: a rise
+         pulls up by RISE regardless of what is actually behind it, and a
+         bridged viz section (hex-polygon, the wheels, the ledgers) has
+         no pin of its own to reserve that room. Measured on ivy-park:
+         the hex device's own frame was 1167px tall and the next
+         section's -793.92px pull-up landed inside its visible artwork,
+         not in trailing padding — the exact bug ClimbRoom exists to
+         prevent, just behind a different kind of predecessor. */
+      if (sections[i + 1]?.pressing?.choreo?.rise === true) {
+        out.push(<ClimbRoom key={s.id + "-climb"} />);
+      }
       i += 1;
       continue;
     }
@@ -711,7 +722,9 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             prev.pressing?.choreo?.pin ||
             prev.pressing?.choreo?.zoom ||
             /* a brief reserves ClimbRoom for its riser (see the fold) */
-            rendered?.type === "section-header");
+            rendered?.type === "section-header" ||
+            /* so does a bridged viz section (see the VIZ_TYPES branch) */
+            VIZ_TYPES.has(prev.type));
         if (!prevHolds) {
           console.warn(
             `PressingLayout: "${sec.id}" rises but its previous section ` +
