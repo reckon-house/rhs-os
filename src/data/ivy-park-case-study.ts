@@ -367,7 +367,22 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Once the page locked, the rest was format adaptation. Polygon, type, photography already established - email templates, banner ads, and social formats became execution rather than invention. The visuals scaled because the elements were simple: a polygon crops the same at 300px and 3000px, bold type reads at any size, black-and-white photography converts to any aspect ratio.",
+        "Once the page locked, the rest was format adaptation. Polygon, type, photography already established - email templates, banner ads, social formats, and signage became execution rather than invention. The visuals scaled because the elements were simple: a polygon crops the same at 300px and 3000px, bold type reads at any size, black-and-white photography converts to any aspect ratio.",
+    },
+
+    // ── SIGNAGE — the "Confidence is Strength" typography-at-volume
+    // system in situ. First image anywhere in the study to show it as
+    // more than a quoted line: brief-columns names in-store signage as
+    // one of the six deliverable categories, and the Typography at
+    // Volume column quotes this exact line, but neither had a picture
+    // until now. Rises across the brief above it, which already holds.
+    {
+      id: "campaign-signage",
+      type: "image",
+      src: `${IMG}/ivy-signage.jpg`,
+      alt: "Ivy Park 'Confidence is Strength' typography system on a transit signage mockup",
+      aspect: "native",
+      pressing: { choreo: { rise: true } },
     },
 
     // ── CAMPAIGN IMAGES — 3 across ──
