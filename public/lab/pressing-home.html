@@ -458,8 +458,13 @@
   /* Air before the footer. The credits beat is full-bleed ink and it
      was starting the frame after the last caption, which cropped the
      name off the final project. 200px is the interval, not a margin:
-     the page needs to finish before the next thing begins. */
-  #stIndex { padding-bottom: 200px; }
+     the page needs to finish before the next thing begins.
+
+     The ANSWER takes the same interval from the same declaration, for
+     the same reason and not a similar one: it is the ring re-dealt,
+     and the same ink footer follows it. Written as one selector so the
+     two cannot drift into two slightly different intervals. */
+  #stIndex, .answer { padding-bottom: 200px; }
 
   .ixbody { display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
