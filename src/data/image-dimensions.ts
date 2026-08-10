@@ -382,6 +382,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/ivy-park/ivy-park-product-detail-leggings-choice-system.jpg": [564, 1314],
   "/case-studies/ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg": [2188, 4031],
   "/case-studies/ivy-park/ivy-park-shop-the-look-editorial-grid.jpg": [564, 1314],
+  "/case-studies/ivy-park/ivy-signage.jpg": [2300, 3450],
   "/case-studies/j-christianson/j-christianson-billboard-mockup-brand-pattern.jpg": [3072, 2048],
   "/case-studies/j-christianson/j-christianson-brand-pattern-logo-four-colors.jpg": [1868, 1868],
   "/case-studies/j-christianson/j-christianson-dot-grid-pattern-brown-accents.jpg": [868, 1342],

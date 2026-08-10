@@ -149,7 +149,7 @@ export function SectionRenderer({ section }: { section: Section }) {
     case "hex-polygon":
       return <HexPolygon />;
     case "polygon-lattice":
-      return <PolygonLattice name={section.name} description={section.description} />;
+      return <PolygonLattice />;
     case "sizzle-playground":
       return <SizzlePlayground {...section} />;
     case "campaign-blast-radius":

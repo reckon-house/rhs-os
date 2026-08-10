@@ -254,14 +254,12 @@ export const ivyParkCaseStudy: CaseStudy = {
       pressing: { choreo: { rise: true } },
     },
     {
+      // No copy over the pattern any more — the name/description here
+      // said "was an accent that grew into the system," which the header
+      // and columns right above it already say. Pure pattern now, filling
+      // its box edge to edge instead of sitting centred in a fixed span.
       id: "experience-polygon-lattice",
       type: "polygon-lattice",
-      name: "One Shape, Endlessly Rotated",
-      // The overstated first sentence ("was the whole identity") is gone;
-      // see the header comment above for the same correction. The rest of
-      // the paragraph was never in question.
-      description:
-        "The hexagon was an accent that grew into the system. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
     },
 
     // ── EXPERIENCE SCREENS — 3 across ──

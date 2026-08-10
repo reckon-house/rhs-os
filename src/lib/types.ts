@@ -657,13 +657,12 @@ export interface HexPolygonSection extends BaseSection {
 }
 
 /** The signature shape at scale — same hexagon repeated across a field,
- *  each copy rotated a few degrees past its neighbour. Copy sits centred
- *  over it. Standalone so it can be placed wherever the study's own
- *  polygon device lives, rather than nested inside brand-system-volume. */
+ *  each copy rotated a few degrees past its neighbour, filling its box
+ *  edge to edge. No copy over it (see PolygonLattice.tsx). Standalone so
+ *  it can be placed wherever the study's own polygon device lives,
+ *  rather than nested inside brand-system-volume. */
 export interface PolygonLatticeSection extends BaseSection {
   type: "polygon-lattice";
-  name: string;
-  description: string;
 }
 
 export interface SizzlePlaygroundSection extends BaseSection {
