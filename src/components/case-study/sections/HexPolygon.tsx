@@ -122,8 +122,15 @@ export function HexPolygon() {
   }
 
   return (
-    <div className="w-full px-4 md:px-0 py-8">
-      <div className="max-w-[550px] mx-auto" style={{ aspectRatio: "801 / 928" }}>
+    // flex + justify-center, not mx-auto: mx-auto compiled to margin:0 on
+    // this box (confirmed against the built stylesheet — the rule never
+    // generated at all), leaving the frame flush against the section's
+    // left edge instead of centred. Same failure class as the two other
+    // Tailwind-arbitrary-value misses this session; the fix here is to
+    // stop depending on the fragile utility rather than chase why this
+    // one string didn't scan. 825px is 550 at 1.5x.
+    <div className="w-full px-4 md:px-0 py-8 flex justify-center">
+      <div className="w-full max-w-[825px]" style={{ aspectRatio: "801 / 928" }}>
         <div
           ref={containerRef}
           style={{

@@ -164,16 +164,27 @@ export const ivyParkCaseStudy: CaseStudy = {
       label: "SECTION 03: THE EXPERIENCE",
       // "Held the page together" overstated what the shape actually did:
       // it was never structural. It started as a crop mask (an accent)
-      // and got reused until it read as the visual language, which is
-      // the claim the header should make instead.
-      title: "One Shape Became",
-      // The study's one crossing, on the shape that IS the argument.
-      // pin declared alongside it: the crossing already holds its headline
-      // for 220dvh, and saying so out loud is what gives the page plate
-      // below a named holder to climb.
+      // and got reused until it read as the visual language.
+      //
+      // That first rewrite ("One Shape Became the Whole Language") was
+      // still scoped to the shape alone, and this header now carries the
+      // full three-column breakdown below it (Polygon, Typography, CMS) —
+      // only one of those three is actually about the shape. Claiming the
+      // shape became "the whole language" while two-thirds of the
+      // evidence is about something else is the same overreach in a new
+      // sentence. "Led" / "backed it up" states the true relationship: the
+      // shape is the signature the study leads with, and the other two
+      // systems supported it. Nobody claims one built the other.
+      title: "One Shape Led.",
+      // Brief-form crossing, matching black-white-type and Sally: the
+      // headline still cuts in from the right (crossing), then pins while
+      // the copy AND the nested three-column grid travel past it — one
+      // continuous reading unit rather than a standalone thesis screen
+      // followed by images before the reader ever reaches its own
+      // supporting columns.
       pressing: {
-        mark: { n: "03", name: "One Shape Became" },
-        heldLine: "the Whole Language.",
+        mark: { n: "03", name: "One Shape Led" },
+        heldLine: "The Rest Backed It Up.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -193,40 +204,10 @@ export const ivyParkCaseStudy: CaseStudy = {
         "Started as a crop mask for portraits. Angled edges against straight photography gave the athlete imagery the exact tension the positioning called for. One geometric idea handling framing, motion, and signature.",
     },
 
-    // ── EXPERIENCE SCREENSHOT ──
-    {
-      id: "experience-page-1",
-      type: "image",
-      src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
-      alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
-      aspect: "native",
-      // Rises across the crossing it answers: the claim holds on screen
-      // while the page that proves it climbs over the top. Not a zoom —
-      // the file is 2188px native, under the 3000 bar, and a zoom would
-      // magnify a screenshot past what its pixels carry.
-      pressing: { choreo: { rise: true } },
-    },
-
-    // ── THE POLYGON DEVICE — both polygon motion pieces, moved here from
-    // elsewhere on the page so they sit where the section actually names
-    // them. The framed portrait was previously the page's own opening
-    // beat, ahead of THE BRIEF; the lattice lived inside the brand-system
-    // section, several beats past where anyone had explained what it was.
-    {
-      id: "experience-hex-frame",
-      type: "hex-polygon",
-    },
-    {
-      id: "experience-polygon-lattice",
-      type: "polygon-lattice",
-      name: "One Shape, Endlessly Rotated",
-      // The overstated first sentence ("was the whole identity") is gone;
-      // see the header comment above for the same correction. The rest of
-      // the paragraph was never in question.
-      description:
-        "The hexagon was an accent that grew into the system. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
-    },
-
+    // Directly after the footnote, no image between them, so the fold
+    // absorbs this as the header's own nested method grid — the column
+    // reads as one continuous unit with the header, not a separate block
+    // reached after a run of images.
     {
       id: "experience-columns",
       type: "three-column-text",
@@ -247,6 +228,43 @@ export const ivyParkCaseStudy: CaseStudy = {
             "The experience required components that didn't exist in Nordstrom's CMS - parallax modules, animated polygon masks, full-bleed video with scroll-triggered playback, type lockups with responsive scaling.\n\nBuilt them. The Ivy Park project paid for itself in reusable infrastructure.",
         },
       ],
+    },
+
+    // ── EXPERIENCE SCREENSHOT — now the visual proof AFTER the full
+    // argument (header, subhead, footnote, all three columns) rather than
+    // sitting between the footnote and its own columns. ──
+    {
+      id: "experience-page-1",
+      type: "image",
+      src: `${IMG}/ivy-park-scrolling-experience-polygon-typography.jpg`,
+      alt: "Ivy Park scrolling experience detail, polygon portrait frames, Courage is Power typography",
+      aspect: "native",
+      // Rises across the brief it answers: the argument holds on screen
+      // while the page that proves it climbs over the top. Not a zoom —
+      // the file is 2188px native, under the 3000 bar, and a zoom would
+      // magnify a screenshot past what its pixels carry.
+      pressing: { choreo: { rise: true } },
+    },
+
+    // ── THE POLYGON DEVICE — both polygon motion pieces, moved here from
+    // elsewhere on the page so they sit where the section actually names
+    // them, right after the screenshot proves the claim. The framed
+    // portrait was previously the page's own opening beat, ahead of THE
+    // BRIEF; the lattice lived inside the brand-system section, several
+    // beats past where anyone had explained what it was.
+    {
+      id: "experience-hex-frame",
+      type: "hex-polygon",
+    },
+    {
+      id: "experience-polygon-lattice",
+      type: "polygon-lattice",
+      name: "One Shape, Endlessly Rotated",
+      // The overstated first sentence ("was the whole identity") is gone;
+      // see the header comment above for the same correction. The rest of
+      // the paragraph was never in question.
+      description:
+        "The hexagon was an accent that grew into the system. One angle, rotated and rescaled until it read as a logo, a frame, and a motion system at once. One mark doing the job usually split across three.",
     },
 
     // ── EXPERIENCE SCREENS — 3 across ──
