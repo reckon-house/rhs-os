@@ -64,6 +64,40 @@ const LADDER = [
 const SW_HOLD = 1600;
 const SW_MORPH = 850;
 
+/* The type specimen's clock. Shorter hold than the palette's: a word is
+   read in one glance where a colour needs looking at, and running both
+   rows on the same beat would make the section pulse. */
+const TY_HOLD = 1150;
+const TY_SWAP = 420;
+
+/* Fallback cuts for a face whose study did not declare its weights.
+   Regular and bold is the pair every family ships. */
+const WEIGHT_LADDER = [400, 700];
+
+/* The elements row: three of the shape, at three sizes, each turning
+   from its own start angle. Repetition is the specimen — the shape is
+   already drawn large upstream, so this row's job is to show it
+   behaving as a unit rather than to draw it again.
+
+   cx and R are in the 190x100 viewBox and they have to be read
+   together: a polygon never reaches past R from its centre, so the
+   three occupy 2-70, 76-124 and 135-169. Picked so no pair touches and
+   nothing crosses the box edge — the first cut of these numbers had all
+   three overlapping and the row read as one blob rather than as three
+   of a thing. */
+const ELEM = [
+  { R: 34, cx: 36, spin: 0.055, phase: 0 },
+  { R: 24, cx: 100, spin: -0.08, phase: 0.9 },
+  { R: 17, cx: 152, spin: 0.11, phase: 1.9 },
+];
+
+/* Room under a specimen for its caption. The caption is positioned at
+   the bottom of the reserved sample box, so anything allowed to fill
+   that box lands underneath it — which is what the reel's tallest frame
+   did. Kept in step with .markStack/.palStack's padding-bottom in the
+   stylesheet; they are the same measurement seen from two sides. */
+const CAP_ROOM = 22;
+
 /**
  * The ledger's own shape. Three section types feed it —
  * `brand-system`, `marks-materials` and `brand-system-volume` — and they
@@ -78,13 +112,20 @@ export interface SystemLedgerData {
   /** the setup paragraphs, in reading order */
   intro: string[];
   colors: { name: string; hex: string }[];
-  fonts: { name: string; role: string }[];
+  fonts: { name: string; role: string; weights?: number[] }[];
+  /** words the type specimen cycles, one per weight step */
+  specimenWords?: string[];
+  /** the identity's repeating geometric element */
+  elements?: { label: string; caption: string; sides: number };
   /** the primary mark, and what to call its row */
   mark?: { src: string; label: string; caption: string };
   /** an optional second image row (marks-materials pairs two shots) */
   markRight?: { src: string; label: string; caption: string };
   /** individual UI frames, cycled */
   library?: string[];
+  /** what to call the reel row, and what to count under it */
+  libraryLabel?: string;
+  libraryCaption?: string;
 }
 
 /* The union of the two sections' FIELDS, all optional. Intersecting the
@@ -95,12 +136,16 @@ type LedgerFields = {
   introText?: string;
   philosophyText?: string;
   colors?: { name: string; hex: string }[];
-  fonts?: { name: string; role: string }[];
+  fonts?: { name: string; role: string; weights?: number[] }[];
+  specimenWords?: string[];
+  elements?: { label: string; caption: string; sides: number };
   logoConstructionImage?: string;
   markImage?: string;
   markAlt?: string;
   markImageRight?: string;
   patternLibrary?: string[];
+  patternLibraryLabel?: string;
+  patternLibraryCaption?: string;
 };
 
 /** brand-system | marks-materials | brand-system-volume → one ledger shape. */
@@ -117,7 +162,13 @@ export function toLedger(
       (t): t is string => typeof t === "string" && t.length > 0
     ),
     colors: (anyS.colors ?? []).map((c) => ({ name: c.name, hex: c.hex })),
-    fonts: (anyS.fonts ?? []).map((f) => ({ name: f.name, role: f.role })),
+    fonts: (anyS.fonts ?? []).map((f) => ({
+      name: f.name,
+      role: f.role,
+      weights: f.weights,
+    })),
+    specimenWords: anyS.specimenWords,
+    elements: anyS.elements,
     mark: anyS.logoConstructionImage
       ? { src: anyS.logoConstructionImage, label: "Logotype", caption: "Construction" }
       : anyS.markImage
@@ -127,6 +178,8 @@ export function toLedger(
       ? { src: anyS.markImageRight, label: "Materials", caption: "Paired study" }
       : undefined,
     library: anyS.patternLibrary,
+    libraryLabel: anyS.patternLibraryLabel,
+    libraryCaption: anyS.patternLibraryCaption,
   };
 }
 
@@ -140,6 +193,8 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const ref = useRef<HTMLElement>(null);
   const swatchRef = useRef<SVGPathElement>(null);
   const swatchCapRef = useRef<HTMLSpanElement>(null);
+  const typeRef = useRef<HTMLSpanElement>(null);
+  const elemRef = useRef<SVGSVGElement>(null);
   const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
@@ -208,7 +263,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     const rs = ratiosRef.current.filter((r) => r > 0);
     if (!box || !root || !rs.length) return;
     const h = box.getBoundingClientRect().width / Math.min(...rs);
-    root.style.setProperty("--sampleH", `${Math.ceil(h)}px`);
+    root.style.setProperty("--sampleH", `${Math.ceil(h) + CAP_ROOM}px`);
   }, []);
 
   const libKey = (data.library ?? []).join("|");
@@ -305,6 +360,100 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     });
   }, [colors]);
 
+  /* ── the type specimen: word AND weight, together ──────────────────
+     The face's own cuts, stepped one per word. Avenir Next ships as six
+     separate files rather than a variable axis, so a weight transition
+     would snap mid-word however it was written; the swap is therefore a
+     dip to nothing and back, which makes the step the gesture instead of
+     something the browser failed to smooth. The words are the campaign's
+     own, so the row specimens the voice as well as the face. */
+  const words = data.specimenWords ?? [];
+  const wordKey = words.join("|");
+  const faceName = data.fonts[0]?.name;
+  const weightKey = (data.fonts[0]?.weights ?? WEIGHT_LADDER).join("|");
+
+  useEffect(() => {
+    const el = typeRef.current;
+    if (!el) return;
+    const ws = wordKey ? wordKey.split("|") : [];
+    const cuts = weightKey.split("|").map(Number);
+    if (ws.length === 0) return;
+
+    const paint = (i: number) => {
+      el.textContent = ws[i];
+      el.style.fontWeight = String(cuts[i % cuts.length]);
+    };
+    paint(0);
+    el.style.opacity = "1";
+
+    // One word has nowhere to step to.
+    if (reducedMotion() || ws.length < 2) return;
+
+    const span = TY_HOLD + TY_SWAP;
+    let elapsed = 0;
+    let prev: number | null = null;
+    let shownLast = 0;
+    return onTick(() => {
+      const now = performance.now();
+      if (prev != null) elapsed += Math.min(now - prev, 100);
+      prev = now;
+
+      const t = elapsed % (span * ws.length);
+      const idx = Math.floor(t / span);
+      const within = t - idx * span;
+      if (within <= TY_HOLD) {
+        el.style.opacity = "1";
+        if (shownLast !== idx) {
+          shownLast = idx;
+          paint(idx);
+        }
+        return;
+      }
+      /* Through the swap the word dips to nothing and comes back as the
+         next one, so the cut changes at the trough where no glyph is on
+         screen to be caught changing. */
+      const e = (within - TY_HOLD) / TY_SWAP;
+      el.style.opacity = String(Math.abs(2 * e - 1));
+      const shown = e < 0.5 ? idx : (idx + 1) % ws.length;
+      if (shown !== shownLast) {
+        shownLast = shown;
+        paint(shown);
+      }
+    });
+  }, [wordKey, weightKey]);
+
+  /* ── the elements row: the shape, repeating ────────────────────────
+     Each turns at its own rate from its own start angle, so the three
+     never line up and the row reads as a unit behaving rather than a
+     motif stamped three times. Rotation is an SVG transform on a path
+     serialised once — the palette rewrites its `d` every frame because
+     it is interpolating BETWEEN shapes, which this is not. */
+  const elemSides = data.elements?.sides;
+  useEffect(() => {
+    const svg = elemRef.current;
+    if (!svg || elemSides == null) return;
+    const gs = [...svg.querySelectorAll<SVGGElement>("g[data-elem]")];
+    if (!gs.length) return;
+
+    const place = (turns: number) =>
+      gs.forEach((g, i) => {
+        const cfg = ELEM[i];
+        const deg = ((turns * cfg.spin + cfg.phase) * 360) % 360;
+        g.setAttribute("transform", `rotate(${deg.toFixed(2)} ${cfg.cx} 50)`);
+      });
+    place(0);
+    if (reducedMotion()) return;
+
+    let elapsed = 0;
+    let prev: number | null = null;
+    return onTick(() => {
+      const now = performance.now();
+      if (prev != null) elapsed += Math.min(now - prev, 100);
+      prev = now;
+      place(elapsed / 1000);
+    });
+  }, [elemSides]);
+
   /* The setup. The classic section carried three prose fields; intro is
      the argument and philosophy is the answer, so both read. The subcopy
      restated the intro in fewer words — the duplication the allocation
@@ -352,7 +501,24 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     );
     rows.push({
       label: "Typeface",
-      body: (
+      body: words.length ? (
+        /* A study that named the words the campaign set gets the face
+           SPEAKING them rather than spelling its own name — the specimen
+           and the voice in one box. The box is reserved at the widest
+           word so a short one cannot pull the row in. */
+        <span className={styles.markStack}>
+          <span
+            className={styles.wordBox}
+            style={{ fontFamily: `"${faceName}", serif` }}
+          >
+            <span className={styles.wordGhost} aria-hidden="true">
+              {words.reduce((a, b) => (b.length > a.length ? b : a), "")}
+            </span>
+            <span className={styles.word} ref={typeRef} />
+          </span>
+          <span className={styles.cap}>{faces[0].role}</span>
+        </span>
+      ) : (
         <>
           {faces.map((f) => (
             <span key={f.name}>
@@ -381,10 +547,38 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     });
   }
 
+  if (data.elements) {
+    const el = data.elements;
+    rows.push({
+      label: el.label,
+      body: (
+        <span className={styles.markStack}>
+          <svg
+            className={styles.elems}
+            viewBox="0 0 190 100"
+            ref={elemRef}
+            aria-hidden="true"
+          >
+            {ELEM.map((cfg, i) => (
+              <g key={i} data-elem="">
+                <path
+                  d={toPath(profile(outline(el.sides, cfg.R, 0, 0)))}
+                  fill="var(--pp-ink)"
+                  transform={`translate(${cfg.cx - 50} 0)`}
+                />
+              </g>
+            ))}
+          </svg>
+          <span className={styles.cap}>{el.caption}</span>
+        </span>
+      ),
+    });
+  }
+
   const library = data.library ?? [];
   if (library.length) {
     rows.push({
-      label: "Pattern library",
+      label: data.libraryLabel ?? "Pattern library",
       body: (
         <span className={styles.markStack}>
           <span ref={reelBoxRef} className={styles.reelBox}>
@@ -399,7 +593,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
             ) : null}
           </span>
           <span className={styles.cap}>
-            {library.length} components
+            {data.libraryCaption ?? `${library.length} components`}
           </span>
         </span>
       ),

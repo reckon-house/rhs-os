@@ -299,13 +299,15 @@ export const ivyParkCaseStudy: CaseStudy = {
 
     // ── BRAND SYSTEM — built without a brand guide ──
     // Draws through PressingSystemIndex, the same ledger every other
-    // pressing study uses. It reads title, introText, philosophyText,
-    // colors and fonts. footText, philosophyHeading, roleLines,
-    // morphGlyphs and typeComposition below are NOT rendered anywhere
-    // any more: the old two-tone panel was the only thing that drew
-    // them, and the polygon they described now has its own hex-polygon
-    // and polygon-lattice sections upstream. Kept, not deleted, because
-    // the copy is authored and worth reallocating rather than binning.
+    // pressing study uses: four rows, Typeface / Palette / The Polygon
+    // / Surfaces, each with a live specimen.
+    //
+    // footText, philosophyHeading, roleLines, morphGlyphs and
+    // typeComposition below are NOT rendered any more — the old
+    // two-tone panel was the only thing that drew them. They stay
+    // because the ledger is fed FROM them: roleLines' polygon entry is
+    // now the elements row, and specimenWords is typeComposition's own
+    // vocabulary. Delete either and the row above loses its source.
     {
       id: "brand-system",
       type: "brand-system-volume",
@@ -346,7 +348,38 @@ export const ivyParkCaseStudy: CaseStudy = {
       // morphGlyphs above declare avenir-bold, and globals.css loads
       // Avenir Next across six weights. Naming it here is the ledger
       // reading data the study already holds, not a new claim.
-      fonts: [{ name: "Avenir Next", role: "Display and body, six weights" }],
+      // The four weights are the UPRIGHT cuts globals.css actually
+      // loads; the other two files are italics of 700 and 800, so
+      // listing them would step the specimen through a weight twice.
+      fonts: [
+        { name: "Avenir Next", role: "One face, four cuts", weights: [500, 600, 700, 800] },
+      ],
+      // Every word the campaign actually set, and nothing else. IVY /
+      // Confidence / Strength / Courage / POWER are the typeComposition
+      // below, verbatim; Everybody is the editorial headline upstream.
+      // The row is a specimen of the voice, not a place to write new
+      // lines.
+      specimenWords: ["IVY", "Confidence", "Strength", "Courage", "POWER", "Everybody"],
+      // Reallocated from the roleLines above, which nothing renders any
+      // more. The lattice upstream is the artwork; this is the ledger
+      // entry for it, which is the difference between showing a shape
+      // and specifying one.
+      elements: { label: "The Polygon", caption: "Signature device", sides: 6 },
+      // Four surfaces the one system had to hold at: in-store signage,
+      // phone, desktop, and the campaign sheet. All opaque JPGs, all
+      // wildly different ratios, which is what the reel measures and
+      // reshapes for.
+      patternLibrary: [
+        `${IMG}/ivy-signage.jpg`,
+        `${IMG}/ivy-park-nordstrom-mobile-experience-mockup.jpg`,
+        `${IMG}/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg`,
+        `${IMG}/ivy-park-campaign-assets-grid-overview.jpg`,
+      ],
+      // Not "pattern library": the section's whole argument is that no
+      // master file existed, so naming a component library here would
+      // contradict the copy three inches above it.
+      patternLibraryLabel: "Surfaces",
+      patternLibraryCaption: "Four of them",
       typeComposition: {
         ghostWord: "IVY",
         thinLead: "Confidence is ",

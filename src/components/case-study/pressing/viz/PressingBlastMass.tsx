@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
@@ -123,22 +124,35 @@ export function PressingBlastMass() {
   const frameRef = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
+  /* Starts the draw a HALF SCREEN BELOW the fold, so the chart is
+     already drawing itself as it rides up and arrives finished.
+
+     Not an IntersectionObserver, and the reason is worth keeping: the
+     page scrolls inside <main>, not the document, and an ancestor that
+     clips also clips the observer's intersection rect. rootMargin on
+     the viewport root therefore buys nothing past main's own bottom
+     edge — measured, it moved the trigger by 33px against the 413 it
+     was asked for. A rect check on the shared scrub loop has no such
+     ceiling, and it is the mechanism the rest of the family already
+     runs on: one rAF, and html[data-paused] stops it. */
   useEffect(() => {
     const el = frameRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setShown(true);
-            io.disconnect();
-          }
-        }
-      },
-      { threshold: 0.18 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    if (reducedMotion()) {
+      setShown(true);
+      return;
+    }
+    const LEAD = 0.5;
+    const check = () => {
+      if (el.getBoundingClientRect().top > vh() * (1 + LEAD)) return false;
+      setShown(true);
+      return true;
+    };
+    if (check()) return;
+    const off = onTick(() => {
+      if (check()) off();
+    });
+    return off;
   }, []);
 
   return (

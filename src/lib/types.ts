@@ -566,9 +566,13 @@ export interface BrandSystemSection extends BaseSection {
 }
 
 /** Editorial "type at volume" variant of the brand system — for case studies built
- *  without a formal brand guide (e.g. Ivy Park). Same two-tone panel + morph + palette
- *  as {@link BrandSystemSection}, but the lower half is a graphic type composition and
- *  a rotating polygon lattice instead of specimen grids + logo construction. */
+ *  without a formal brand guide (e.g. Ivy Park).
+ *
+ *  Draws through PressingSystemIndex like {@link BrandSystemSection} and
+ *  {@link MarksAndMaterialsSection}; toLedger reads all three structurally, so the
+ *  ledger fields below are named to match theirs. The fields that fed the old
+ *  two-tone panel (footText, philosophyHeading, roleLines, morphGlyphs,
+ *  typeComposition) are no longer rendered by anything. */
 export interface BrandSystemVolumeSection extends BaseSection {
   type: "brand-system-volume";
   label: string;
@@ -587,10 +591,28 @@ export interface BrandSystemVolumeSection extends BaseSection {
   morphGlyphs: { char: string; font?: "ogg" | "avenir-medium" | "avenir-demi" | "avenir-bold" }[];
   /** Palette bands "as used" — each renders a lead cell + 75/50/25 tints. */
   colors: { name: string; hex: string; rgb: string }[];
-  /** The faces, for the ledger's Typeface row. Named to match
-   *  BrandSystemSection so toLedger reads all three vocabularies
-   *  structurally. */
-  fonts?: { name: string; role: string }[];
+  /** The faces, for the ledger's Typeface row. `weights` are the cuts the
+   *  face actually ships in this build — the specimen steps through them,
+   *  so a weight not loaded in globals.css would render as a repeat of
+   *  the nearest one that is. */
+  fonts?: { name: string; role: string; weights?: number[] }[];
+  /** Words the Typeface specimen cycles, one per weight step. Every entry
+   *  must be a word the campaign actually set; the row is a specimen, not
+   *  a place to write new copy. Omit and the specimen holds the face name. */
+  specimenWords?: string[];
+  /** The repeating geometric element the identity leans on, as a ledger
+   *  specimen: `sides` feeds the same outline() the palette swatch uses
+   *  (0 for a circle). */
+  elements?: { label: string; caption: string; sides: number };
+  /** Frames for the reel row — Robert's Compositing row, generalised. Every
+   *  frame must be OPAQUE; a PNG with alpha lets the stage through and
+   *  reads as a failed image. `npm run facts` rejects it by name. */
+  patternLibrary?: string[];
+  /** What to call the reel row and what to count under it. Defaults to
+   *  "Pattern library" / "N components", which is wrong for any study that
+   *  never shipped a component library. */
+  patternLibraryLabel?: string;
+  patternLibraryCaption?: string;
   /** The graphic "type at volume" composition. */
   typeComposition: {
     /** Oversized ghost word behind the composition (e.g. "IVY"). */

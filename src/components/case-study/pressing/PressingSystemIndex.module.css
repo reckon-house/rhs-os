@@ -170,6 +170,47 @@
   letter-spacing: -0.02em;
 }
 
+/* Where the study names the words the campaign set, the specimen speaks
+   them instead of spelling the face's own name.
+
+   The box is sized by a GHOST copy of the longest word, laid out in
+   normal flow at the heaviest cut, with the live word absolutely
+   positioned over it. Without that, every swap resizes the flex item and
+   the label beside it walks left and right for as long as the page is
+   open. Reserving the widest state is the same move .sample makes with
+   --sampleH, one axis over. */
+.wordBox {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(28px, 3.6vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.wordGhost {
+  visibility: hidden;
+  /* the heaviest cut the ladder can reach, so the reservation holds at
+     every step rather than only at the light end */
+  font-weight: 800;
+}
+.word {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* ── the elements row ─────────────────────────────────────────────
+   The identity's one shape, three times, turning. Sized against the
+   swatch beside it rather than independently: they are both specimens
+   of a form, and a row where one dwarfs the other reads as an accident.
+   The width is the swatch's clamp times 1.9 so that dividing by the
+   19:10 viewBox lands the two at the SAME height. */
+.elems {
+  display: block;
+  width: clamp(122px, 14.44vw, 236px);
+  aspect-ratio: 19 / 10;
+}
+
 /* ── the palette row ──────────────────────────────────────────────
    Dots, not a matrix. The tint ramps the classic section drew were
    generated steps nobody specified, which puts them on the wrong side
@@ -190,6 +231,21 @@
   display: block;
   width: clamp(68px, 8vw, 130px);
   height: 100px;
+  /* The height is rewritten per beat from the incoming frame's native
+     ratio, so it has to EASE or the box snaps to its new shape while the
+     picture inside is still cross-fading into it — the box arriving
+     before its contents, which reads as a stutter rather than a cut.
+     Robert never needed this: his four source frames are all much the
+     same shape, so his box barely moves. A row showing deliberately
+     unlike surfaces swings between a tall signage plate and a wide
+     laptop, and that swing has to be part of the transition.
+     420ms is SizzleReel's fade beat, matched on purpose. */
+  transition: height 420ms cubic-bezier(0.2, 0.55, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reelBox {
+    transition: none;
+  }
 }
 /* RRSystemIndex's rule, verbatim. The width/height are the load-bearing
    part: without them the reel element has no size, collapses, and
@@ -205,12 +261,20 @@
 /* Each specimen gets the full reserved height with its subject centred,
    and its caption pinned to the bottom — absolute, so a caption that
    wraps to two lines cannot push the row taller either. */
+/* The caption is pinned to the BOTTOM of this box, so the specimen has
+   to be kept out of that strip — otherwise anything sized to fill the
+   reserved height prints underneath its own caption, which is exactly
+   what the reel's tallest frame did. Padding, not a smaller specimen:
+   the box is the reservation and the caption is part of what it
+   reserves for. Matches CAP_ROOM in the component. */
 .palStack,
 .markStack {
   position: relative;
   display: grid;
   place-items: center;
   height: 100%;
+  padding-bottom: 22px;
+  box-sizing: border-box;
 }
 
 /* RRSystemIndex's mobile block, its numbers. */
