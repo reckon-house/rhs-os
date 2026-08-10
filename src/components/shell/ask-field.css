@@ -95,8 +95,14 @@
   color: var(--masthead-paper);
 }
 /* The homepage shows it whenever an answer is open (body.asked); off
-   the homepage there is no answer state, so the field says it itself. */
-.ask.has-text .clear {
+   the homepage there is no answer state, so the field says it itself.
+   BOTH rules have to live HERE: on the homepage the lab driver owns
+   the field, Masthead's onInput is disconnected, and has-text is never
+   set — and the lab's own body.asked rule sits in its masthead block,
+   which the port script deliberately drops. That combination is
+   exactly how the x disappeared once already. */
+.ask.has-text .clear,
+body.asked .clear {
   display: block;
 }
 
