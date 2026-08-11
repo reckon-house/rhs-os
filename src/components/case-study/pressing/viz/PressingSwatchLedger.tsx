@@ -92,7 +92,7 @@ export function PressingSwatchLedger({
                 } as CSSProperties
               }
             >
-              {f.colors.map((c) => (
+              {f.colors.map((c, ci) => (
                 <span className={styles.swCell} key={c}>
                   {/* the ONE coloured mark on the page */}
                   <span
@@ -100,7 +100,14 @@ export function PressingSwatchLedger({
                     style={{ background: c }}
                     aria-hidden="true"
                   />
-                  <span className={`${styles.mono} ${styles.swHex}`}>{c}</span>
+                  {/* the density budget: hexes print at the run's ENDS
+                      only. Forty-nine printed values was caption noise
+                      the sheet never allows; the endpoints state the
+                      run's range and the chips carry everything
+                      between. The full list stays in the data. */}
+                  {ci === 0 || ci === f.colors.length - 1 ? (
+                    <span className={`${styles.mono} ${styles.swHex}`}>{c}</span>
+                  ) : null}
                 </span>
               ))}
             </span>

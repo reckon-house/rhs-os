@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { onTick, reducedMotion, vh } from "@/lib/scrub";
+import { useRef, type CSSProperties } from "react";
 import { px } from "@/lib/px";
+import { useVizArrival, useReadingHead } from "@/lib/viz-motion";
 import styles from "./PressingViz.module.css";
 
 /**
- * @shape mass — conforms to lab/viz-system.html
+ * @shape stripes — conforms to lab/viz-system.html
  *
- * PressingBlastMass — the pressing skin for `campaign-blast-radius`, and
- * the exemplar for the stepped-mass shape (VIZ-PASS.md).
+ * PressingBlastMass — the pressing skin for `campaign-blast-radius`,
+ * redrawn as the sheet's STRIPES (§03) after the solid stepped mass
+ * failed the user's own test against the drawn specimens. The mass had
+ * been grandfathered in prose — "the stripes family's solid-ink
+ * sibling" — and a prose exemption is exactly how a system erodes: held
+ * against the sheet it was a slab with square corners and labels buried
+ * in the ink. The sheet's stripes specimen was drawn FROM this very
+ * data, so this component now implements that specimen, extended from
+ * the top four channels to all eight.
  *
  * Every channel the Ivy Park system shipped through, ranked by asset
  * volume and drawn as ONE continuous silhouette rather than eight bars.
@@ -17,12 +24,7 @@ import styles from "./PressingViz.module.css";
  * forty-two product-page assets to a single scrolling experience is the
  * argument the section makes.
  *
- * Type sits reversed INSIDE the mass, riding each tread at a fixed depth
- * below it. One rule governs every label and there is no exception: the
- * type is set in paper where there is ink behind it and in ink where the
- * step has run out. Only SCROLLING EXPERIENCE flips — one asset against
- * forty-two leaves nothing to reverse out of — and that flip is the
- * datum, not a layout patch.
+
  *
  * Kept verbatim from CampaignBlastRadius: the eight channel names, their
  * asset counts, the five visual-element names, and which elements each
@@ -44,12 +46,11 @@ import styles from "./PressingViz.module.css";
  * No accent. The step shape is the whole point and no single datum
  * carries it, so the chart gets none.
  *
- * Draws in left to right on arrival, the same clip-path gesture (and the
- * exact curve/duration) as the method grid's rules — PressingViz.module.css
- * .drawIn/.drawInShown, generic there for exactly this reuse. One IO on
- * the whole chart group rather than per-step: the treads are one
- * continuous fact, and staggering them would draw a bar chart's story
- * onto a shape that deliberately has no gaps.
+ * Each channel is a stripe mass capped by the horizontal round-capped
+ * bar — one mark, lying down, riding just above its texture. Numeral
+ * and name sit ABOVE the cap in ink, level, per the density budget: no
+ * type reversed inside ink, nothing on a slant. Arrival fills each mass
+ * and lands its cap after; the reading head walks the eight names.
  */
 
 /** The visual system, verbatim from CampaignBlastRadius. */
@@ -83,82 +84,27 @@ const RANKED = [...CHANNELS].sort((a, b) => b.assets - a.assets);
 const TOTAL = CHANNELS.reduce((n, c) => n + c.assets, 0);
 const PEAK = RANKED[0].assets;
 
-/* Wider than the exemplars' 1100 for a material reason, not taste:
-   eight columns must each hold a twenty-character channel name set
-   horizontally inside the ink, and 1100 leaves SCROLLING EXPERIENCE
-   touching both column edges. Everything else is the family's. */
 const W = 1240;
-const H = 600;
-const PAD_L = 40;
-const PAD_R = 40;
-const BASE = 500;
-const PLOT_H = 456;
-const COL_W = (W - PAD_L - PAD_R) / RANKED.length;
+const PAD = 56;
+const GAP = 24;
+const COL = (W - PAD * 2 - GAP * 7) / 8; // 120
+const BASE = 470;
+const PLOT = 320;
+const CAP_H = 16;
+const CAP_GAP = 5;
+const PITCH = 9;
+const SW = 2.5;
+const H = 560;
 
-/* Depth of each label below its own tread. The numeral leads, the name
-   follows; flipped above the tread they keep the same order. */
-const NUM_DY = 26;
-const NAME_DY = 42;
-
-const edgeX = (i: number) => PAD_L + i * COL_W;
-const midX = (i: number) => PAD_L + (i + 0.5) * COL_W;
-const topY = (assets: number) => BASE - (assets / PEAK) * PLOT_H;
-
-/* One path, one field of ink: up the left riser, across each tread, down
-   each step, and back along the baseline. Rounding happens here, at
-   serialisation, so the string is identical on both engines. */
-const MASS = (() => {
-  const d = [`M ${px(PAD_L)} ${px(BASE)}`];
-  RANKED.forEach((c, i) => {
-    const y = px(topY(c.assets));
-    d.push(`L ${px(edgeX(i))} ${y}`, `L ${px(edgeX(i + 1))} ${y}`);
-  });
-  d.push(`L ${px(W - PAD_R)} ${px(BASE)}`, "Z");
-  return d.join(" ");
-})();
+const colX = (i: number) => PAD + i * (COL + GAP);
 
 export function PressingBlastMass() {
-  /* Observe the FRAME, never the clipped group. The group's own
-     clip-path takes it to zero width, so its intersection ratio is
-     pinned at 0 and a threshold it must cross to un-clip itself can
-     never be met. PressingBrief watches its section for the same
-     reason. */
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-
-  /* Starts the draw a HALF SCREEN BELOW the fold, so the chart is
-     already drawing itself as it rides up and arrives finished.
-
-     Not an IntersectionObserver, and the reason is worth keeping: the
-     page scrolls inside <main>, not the document, and an ancestor that
-     clips also clips the observer's intersection rect. rootMargin on
-     the viewport root therefore buys nothing past main's own bottom
-     edge — measured, it moved the trigger by 33px against the 413 it
-     was asked for. A rect check on the shared scrub loop has no such
-     ceiling, and it is the mechanism the rest of the family already
-     runs on: one rAF, and html[data-paused] stops it. */
-  useEffect(() => {
-    const el = frameRef.current;
-    if (!el) return;
-    if (reducedMotion()) {
-      setShown(true);
-      return;
-    }
-    const LEAD = 0.5;
-    const check = () => {
-      if (el.getBoundingClientRect().top > vh() * (1 + LEAD)) return false;
-      setShown(true);
-      return true;
-    };
-    if (check()) return;
-    const off = onTick(() => {
-      if (check()) off();
-    });
-    return off;
-  }, []);
+  const ref = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(ref);
+  const head = useReadingHead(ref, RANKED.length);
 
   return (
-    <div className={styles.viz} ref={frameRef}>
+    <div className={styles.viz} ref={ref}>
       <div className={styles.head}>
         <span className={styles.lbl}>Campaign blast radius</span>
         <span className={`${styles.lbl} ${styles.grey}`}>
@@ -172,79 +118,105 @@ export function PressingBlastMass() {
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
           role="img"
-          aria-label="The campaign's eight channels ranked by asset volume as one stepped silhouette, from 42 product-page assets down to the single scrolling experience"
+          aria-label="The campaign's eight channels ranked by asset volume as stripe masses, from 42 product-page assets down to the single scrolling experience"
         >
-          <g className={`${styles.drawIn} ${shown ? styles.drawInShown : ""}`}>
-          <path d={MASS} fill="var(--pp-ink)" />
+          <line
+            x1={PAD - 16}
+            y1={BASE}
+            x2={W - PAD + 16}
+            y2={BASE}
+            stroke="var(--pv-ink)"
+            strokeWidth="var(--pv-fine)"
+          />
 
           {RANKED.map((c, i) => {
-            const top = topY(c.assets);
-            /* Inside iff the name still has ink under it with room to
-               breathe. Nothing else decides the label's colour. */
-            const inside = top + NAME_DY <= BASE - 10;
-            const x = px(midX(i));
-            const ink = inside ? "var(--pp-paper)" : "var(--pp-ink)";
+            const x = colX(i);
+            const h = (c.assets / PEAK) * PLOT;
+            const capY = BASE - h;
+            const stripes: number[] = [];
+            for (let y = capY + CAP_H + CAP_GAP; y <= BASE - SW; y += PITCH) {
+              stripes.push(y);
+            }
+            const mid = px(x + COL / 2);
             return (
               <g key={c.name}>
-                {/* Type carries the number: the count at display weight,
-                    the channel at the mono voice under it. */}
+                {/* the cap: the stick lying down, the value's own mark */}
+                <rect
+                  className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                  x={px(x)}
+                  y={px(capY)}
+                  rx={CAP_H / 2}
+                  width={px(COL)}
+                  height={CAP_H}
+                  fill="var(--pv-ink)"
+                  style={{ "--lag": `${(0.4 + i * 0.07).toFixed(2)}s` } as CSSProperties}
+                />
+                {/* the mass: round-capped stripes, inset for their caps */}
+                {stripes.map((y, s) => (
+                  <line
+                    key={y}
+                    className={styles.draw}
+                    x1={px(x + SW / 2)}
+                    y1={px(y)}
+                    x2={px(x + COL - SW / 2)}
+                    y2={px(y)}
+                    stroke="var(--pv-ink)"
+                    strokeWidth={SW}
+                    strokeLinecap="round"
+                    strokeDasharray={px(COL - SW)}
+                    strokeDashoffset={drawn ? 0 : px(COL - SW)}
+                    style={{ "--lag": `${(i * 0.07 + s * 0.006).toFixed(3)}s` } as CSSProperties}
+                  />
+                ))}
                 <text
-                  x={x}
-                  y={px(inside ? top + NUM_DY : top - 32)}
+                  x={mid}
+                  y={px(capY - 34)}
                   textAnchor="middle"
-                  fontSize={24}
-                  fontWeight={500}
+                  fontSize={18}
+                  fontWeight={600}
                   style={{
-                    fill: ink,
+                    fill: "var(--pv-ink)",
                     letterSpacing: "-0.01em",
                     fontVariantNumeric: "tabular-nums",
                   }}
                 >
-                  {String(c.assets)}
+                  {c.assets}
                 </text>
                 <text
-                  x={x}
-                  y={px(inside ? top + NAME_DY : top - 12)}
+                  x={mid}
+                  y={px(capY - 14)}
                   textAnchor="middle"
-                  className={styles.schemNum}
-                  style={{ fill: ink }}
+                  className={styles.schemLbl}
+                  style={{
+                    fill: head === i ? "var(--pv-ink)" : undefined,
+                    transition: "fill 0.32s ease",
+                  }}
                 >
                   {c.name}
                 </text>
-                {/* No element-count row here, deliberately. The classic
-                    component's `elements` arrays were never drawn: they
-                    only picked a ray's stroke colour
-                    (CampaignBlastRadius.tsx:145). Printing their lengths
-                    as "2/5" turns decorative-only metadata into a stated
-                    fact, and the study's own images on this very screen
-                    contradict it — the product-page shot carries the
-                    polygon frame and a black-and-white portrait that the
-                    array omits. Asset counts are authored and rendered
-                    above; the element memberships are not a finding. */}
               </g>
             );
           })}
 
           <line
-            x1={PAD_L}
+            x1={PAD - 16}
             y1={BASE + 56}
-            x2={W - PAD_R}
+            x2={W - PAD + 16}
             y2={BASE + 56}
-            stroke="var(--pp-ink)"
-            strokeOpacity="0.14"
+            stroke="var(--pv-ink)"
+            strokeWidth="var(--pv-fine)"
           />
-          <text x={PAD_L} y={BASE + 78} className={styles.schemLbl}>
+          <text x={PAD - 16} y={BASE + 78} className={styles.schemLbl}>
             SYSTEM ELEMENTS PER CHANNEL
           </text>
           <text
-            x={W - PAD_R}
+            x={W - PAD + 16}
             y={BASE + 78}
             textAnchor="end"
             className={styles.schemNum}
           >
-            {ELEMENTS.join(" · ")}
+            {ELEMENTS.join(" \u00b7 ")}
           </text>
-          </g>
         </svg>
       </div>
     </div>
