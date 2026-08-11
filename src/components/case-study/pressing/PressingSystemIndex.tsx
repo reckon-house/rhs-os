@@ -163,13 +163,19 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
     return (
       <span className={`${styles.word} ${styles.wordBare}`} style={d}>
         <span
-          className={`${styles.word} ${styles.paperCard} sz-pinchswap`}
+          className={`${styles.word} sz-pinchswap`}
           style={{ ...face, ...d }}
         >
           {step.text}
         </span>
-        <span className={`sz-pinchP sz-pinchT ${styles.paperCard}`} style={d} />
-        <span className={`sz-pinchP sz-pinchB ${styles.paperCard}`} style={d} />
+        <span
+          className={`sz-pinchP sz-pinchT ${styles.paperCard} ${styles.panelTop}`}
+          style={d}
+        />
+        <span
+          className={`sz-pinchP sz-pinchB ${styles.paperCard} ${styles.panelBottom}`}
+          style={d}
+        />
       </span>
     );
   }
@@ -184,7 +190,7 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
         {Array.from({ length: TY_SLATS }).map((_, k) => (
           <span
             key={k}
-            className={`sz-strip ${styles.paperCard}`}
+            className={`sz-strip ${styles.paperCard} ${styles.slatBleed}`}
             style={
               {
                 left: `${(k * 100) / TY_SLATS}%`,

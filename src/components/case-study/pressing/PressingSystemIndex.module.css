@@ -218,27 +218,53 @@
   position: absolute;
   inset: 0;
   display: block;
-  /* OPAQUE, and that is the load-bearing part. Every layer in the reel
-     is a photograph or a solid card, so a wipe that uncovers half the
-     box hides whatever was under it. Type on transparent paper does
-     not: the arriving word and the standing word both print, and the
-     reader gets two words struck over each other.
-
-     --pp-paper, NOT --background: a pressing study paints its own sheet
-     across the viewport from that token, and the page ground behind it
-     is a different colour. Matching the page put a cream card on white
-     paper, which is exactly as visible as it sounds. */
-  background: var(--pp-paper);
+  /* scopes the card's z-index below the text and NOWHERE else — without
+     it a negative z-index escapes the layer and paints behind the word
+     it is meant to cover. */
+  isolation: isolate;
 }
 
-/* A cut with moving parts — the slat's blinds, the pinch's panels — must
-   NOT carry the card on its parent: the parent's own background would
-   cover the box before a single part moved. The parts carry it. */
-.wordBare {
-  background: none;
+/* THE CARD. It bleeds past the box, and that measurement is the reason:
+   the box is a line box at 1.05, tighter than the natural line box of
+   any face set in it, so ink escapes it — measured at 6.5px above and
+   6.1px below on Ivy's Avenir. A card at inset 0 covers the box exactly
+   and leaves those overhangs standing, which showed up as fragments of
+   the previous word hanging under the new one.
+
+   A pseudo-element rather than a taller layer: the layer's inset is
+   what positions the type, so growing it would move every word. This
+   grows only the paint. */
+.word::before {
+  content: "";
+  position: absolute;
+  inset: -0.5em -0.06em;
+  background: var(--pp-paper);
+  z-index: -1;
+}
+
+/* A cut with moving parts — the slat's blinds, the pinch's panels —
+   carries no card on its parent: the parent's own would cover the box
+   before a single part moved. The parts carry it, and they bleed the
+   same way for the same reason. */
+.wordBare::before {
+  content: none;
 }
 .paperCard {
   background: var(--pp-paper);
+}
+/* Doubled selectors: these override .sz-strip / .sz-pinchP, which are
+   injected at runtime and can land after the module sheet. */
+.slatBleed.slatBleed {
+  top: -0.5em;
+  height: calc(100% + 1em);
+}
+.panelTop.panelTop {
+  top: -0.5em;
+  height: calc(50.5% + 0.5em);
+}
+.panelBottom.panelBottom {
+  bottom: -0.5em;
+  height: calc(50.5% + 0.5em);
 }
 
 /* Inside a slat strip: a whole copy of the word, shifted left by the
@@ -246,7 +272,11 @@
    offset inline, since both depend on the strip count. */
 .slatWord {
   position: absolute;
-  top: 0;
+  /* cancels the band's bleed. The band starts half an em above the box
+     so its card covers the overhang; the copy inside would ride up with
+     it and set the word half an em high, which measured as ink 26px
+     above the box against a card reaching 19.5. */
+  top: 0.5em;
   display: block;
   white-space: nowrap;
 }
