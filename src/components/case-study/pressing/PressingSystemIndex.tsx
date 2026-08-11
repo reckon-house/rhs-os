@@ -93,7 +93,7 @@ const SEP = "\u001f";
    These are the shipped .sz-* classes, driven by the same --d variable
    and remounted by key the same way BeatLayer remounts. Nothing here
    re-implements a wipe. */
-const TY_FX = ["curtain", "letters", "shutter", "slat", "ccurtainV"] as const;
+const TY_FX = ["curtain", "pinch", "shutter", "slat", "ccurtainV"] as const;
 type TyFx = (typeof TY_FX)[number];
 
 /** SizzleReel's slat count, so the blinds read at the same rhythm. */
@@ -139,9 +139,9 @@ type Step = { text: string; family: string; weight: number; cap?: string };
  * what restarts its animation.
  *
  * Every class here is SizzleReel's, and so is every timing constant.
- * The letters build and the slat stagger are lifted from BeatLayer's
- * word and slat branches verbatim; the only thing changed is what sits
- * inside the strip, a span of type rather than a slice of photograph.
+ * The slat stagger and the pinch's panel timing are lifted from
+ * BeatLayer's own branches verbatim; the only thing changed is what sits
+ * inside a strip, a span of type rather than a slice of photograph.
  */
 function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
   const face: CSSProperties = {
@@ -150,35 +150,26 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
   };
   const d = { "--d": `${TY_SWAP}ms` } as CSSProperties;
 
-  if (fx === "letters") {
-    /* BeatLayer's numbers: the build is capped so letters land quick and
-       the word then sits, rather than crawling for the whole swap. */
-    const words = step.text.split(/\s+/).filter(Boolean);
-    const chars = words.reduce((n, w) => n + w.length, 0) || 1;
-    const build = Math.min(TY_SWAP, 360);
-    const stagger = Math.min(38, Math.round((build * 0.5) / chars));
-    const ldur = Math.round(build * 0.5);
-    let li = 0;
+  if (fx === "pinch") {
+    /* The reel's hidden cut. Two panels close to the middle, the word
+       swaps while they are shut, and they part onto the new one. On a
+       photograph the panels read as a colour; on paper they are the
+       paper, so what shows is the old word being eaten from both edges
+       and the new one growing back out of the centre line.
+
+       The parent stays bare and the WORD carries the card: a card on
+       the parent would cover the box before the panels moved, which is
+       the same trap the slat sets. */
     return (
-      <span className={styles.word} style={{ ...face, ...d }}>
-        {words.map((w, wi) => (
-          <span key={wi} className="sz-wgrp">
-            {[...w].map((ch, ci) => (
-              <span
-                key={ci}
-                className="sz-ltr"
-                style={
-                  {
-                    animationDelay: `${li++ * stagger}ms`,
-                    "--ld": `${ldur}ms`,
-                  } as CSSProperties
-                }
-              >
-                {ch}
-              </span>
-            ))}
-          </span>
-        ))}
+      <span className={`${styles.word} ${styles.wordBare}`} style={d}>
+        <span
+          className={`${styles.word} ${styles.paperCard} sz-pinchswap`}
+          style={{ ...face, ...d }}
+        >
+          {step.text}
+        </span>
+        <span className={`sz-pinchP sz-pinchT ${styles.paperCard}`} style={d} />
+        <span className={`sz-pinchP sz-pinchB ${styles.paperCard}`} style={d} />
       </span>
     );
   }
@@ -193,7 +184,7 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
         {Array.from({ length: TY_SLATS }).map((_, k) => (
           <span
             key={k}
-            className={`sz-strip ${styles.slatBand}`}
+            className={`sz-strip ${styles.paperCard}`}
             style={
               {
                 left: `${(k * 100) / TY_SLATS}%`,
@@ -577,8 +568,8 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
      leaving, which is arriving, and which of the reel's transitions
      carries it. Everything visual is then a render, the way BeatLayer
      works — no imperative style writes, so a transition can be a clip
-     path one beat and a stagger of letters the next without the driver
-     knowing the difference.
+     path one beat and a pair of closing panels the next without the
+     driver knowing the difference.
 
      It keeps the shared scrub loop rather than a timer, so
      html[data-paused] stops the clock and a resume carries on. */

@@ -222,18 +222,23 @@
      is a photograph or a solid card, so a wipe that uncovers half the
      box hides whatever was under it. Type on transparent paper does
      not: the arriving word and the standing word both print, and the
-     reader gets two words struck over each other. The card is the page
-     ground, so it is invisible except for the job it does. */
-  background: var(--background);
+     reader gets two words struck over each other.
+
+     --pp-paper, NOT --background: a pressing study paints its own sheet
+     across the viewport from that token, and the page ground behind it
+     is a different colour. Matching the page put a cream card on white
+     paper, which is exactly as visible as it sounds. */
+  background: var(--pp-paper);
 }
 
-/* The slat's parent must NOT carry the card — its own background would
-   cover the box before a single blind opened. The bands carry it. */
+/* A cut with moving parts — the slat's blinds, the pinch's panels — must
+   NOT carry the card on its parent: the parent's own background would
+   cover the box before a single part moved. The parts carry it. */
 .wordBare {
   background: none;
 }
-.slatBand {
-  background: var(--background);
+.paperCard {
+  background: var(--pp-paper);
 }
 
 /* Inside a slat strip: a whole copy of the word, shifted left by the
