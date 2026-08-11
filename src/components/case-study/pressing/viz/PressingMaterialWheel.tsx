@@ -1,7 +1,10 @@
 import { px } from "@/lib/px";
+import { RING_FINE, RING_INK, RING_SCALE } from "@/lib/rings";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape rings — conforms to lab/viz-system.html
+ *
  * PressingMaterialWheel — the pressing skin for `material-circos`, drawn
  * as the season wheel (VIZ-PASS.md, shape 1).
  *
@@ -203,8 +206,8 @@ export function PressingMaterialWheel() {
                 y1={px(y0)}
                 x2={px(x1)}
                 y2={px(y1)}
-                stroke="var(--pp-ink)"
-                strokeOpacity="0.08"
+                stroke={RING_SCALE}
+                strokeWidth={RING_FINE}
               />
             );
           })}
@@ -215,8 +218,8 @@ export function PressingMaterialWheel() {
               key={`rim-${s.name}`}
               d={arcPath(R_RIM, s.a0, s.a1)}
               fill="none"
-              stroke="var(--pp-ink)"
-              strokeOpacity="0.14"
+              stroke={RING_INK}
+              strokeWidth={RING_FINE}
             />
           ))}
 
@@ -230,9 +233,9 @@ export function PressingMaterialWheel() {
                   key={`tr-${mi}-${s.name}`}
                   d={arcPath(TRACK_R[mi], s.a0, s.a1)}
                   fill="none"
-                  stroke="var(--pp-ink)"
-                  strokeWidth={on ? BAND : 1}
-                  strokeOpacity={on ? 0.8 : 0.08}
+                  stroke={RING_INK}
+                  strokeWidth={on ? BAND : RING_FINE}
+                  strokeLinecap={on ? "round" : "butt"}
                 />
               );
             })
@@ -265,8 +268,8 @@ export function PressingMaterialWheel() {
             cy={CY}
             r={R_HUB}
             fill="none"
-            stroke="var(--pp-ink)"
-            strokeOpacity="0.14"
+            stroke={RING_INK}
+            strokeWidth={RING_FINE}
           />
           <text className={styles.schemLbl} x={CX} y={CY - 4} textAnchor="middle">
             MATERIAL SYSTEM

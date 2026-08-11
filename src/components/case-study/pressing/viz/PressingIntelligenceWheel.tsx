@@ -1,8 +1,11 @@
 import type { IntelligenceFlowSection } from "@/lib/types";
 import { px } from "@/lib/px";
+import { RING_FINE, RING_INK, RING_DROP, RING_SCALE } from "@/lib/rings";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape rings — conforms to lab/viz-system.html
+ *
  * PressingIntelligenceWheel — the pressing skin for `intelligence-flow`,
  * drawn as the season wheel (VIZ-PASS.md shape 1).
  *
@@ -152,8 +155,8 @@ export function PressingIntelligenceWheel({
               <g key={`tick-${k}`}>
                 <line
                   x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-                  stroke="var(--pp-ink)"
-                  strokeOpacity={k === 0 ? 0.14 : 0.08}
+                  stroke={k === 0 ? RING_INK : RING_SCALE}
+                  strokeWidth={RING_FINE}
                 />
                 <text
                   x={at.x} y={at.y}
@@ -187,22 +190,23 @@ export function PressingIntelligenceWheel({
                 {prev < SWEEP && (
                   <path
                     d={arc(r, prev, SWEEP)}
-                    fill="none" stroke="var(--pp-ink)"
-                    strokeWidth={BAND} strokeOpacity={0.08}
+                    fill="none" stroke={RING_INK}
+                    strokeWidth={RING_FINE}
                   />
                 )}
                 {/* what the stage outside it carried and this one does not */}
                 {prev > end && (
                   <path
                     d={arc(r, end, prev)}
-                    fill="none" stroke="var(--pp-ink)"
-                    strokeWidth={BAND} strokeOpacity={0.45}
+                    fill="none" stroke={RING_DROP}
+                    strokeWidth={BAND}
                   />
                 )}
                 {/* the volume this stage carries: the datum */}
                 <path
                   d={arc(r, 0, end)}
-                  fill="none" stroke="var(--pp-ink)" strokeWidth={BAND}
+                  fill="none" stroke={RING_INK} strokeWidth={BAND}
+                  strokeLinecap="round"
                 />
                 <circle cx={dot.x} cy={dot.y} r={4} className={styles.schemDot} />
                 {/* Full ink, against the grey of the rim scale: the
