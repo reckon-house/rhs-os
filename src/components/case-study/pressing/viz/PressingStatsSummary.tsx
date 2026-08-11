@@ -2,6 +2,8 @@ import type { StatsSummarySection } from "@/lib/types";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape voice — conforms to lab/viz-system.html
+ *
  * The topline row — the pressing skin for `stats-summary`.
  *
  * It is the same block `PressingStatsBar` already sets above its

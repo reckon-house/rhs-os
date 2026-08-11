@@ -2,6 +2,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape voice — conforms to lab/viz-system.html
+ *
  * PressingMCPPath — the pressing skin for `mcp-architecture` (dsc),
  * drawn as the drop-line field (VIZ-PASS.md).
  *
@@ -151,7 +153,7 @@ export function PressingMCPPath() {
           {/* The spine. A path, not a scale: no end ticks, no poles. */}
           <line
             x1={PAD_X} y1={AXIS_Y} x2={W - PAD_X} y2={AXIS_Y}
-            stroke="var(--pp-ink)" strokeOpacity="0.14"
+            stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
           />
 
           {LAID.map(({ band, xs }) =>
@@ -163,7 +165,7 @@ export function PressingMCPPath() {
                 <g key={`${band.name}-${n.label}`}>
                   <line
                     x1={x} y1={n.below ? AXIS_Y + 7 : AXIS_Y - 7} x2={x} y2={yEnd}
-                    stroke="var(--pp-ink)" strokeOpacity="0.14"
+                    stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
                   />
                   <circle cx={x} cy={AXIS_Y} r={3} fill="var(--pp-ink)" />
                   {/* Rotated mono label, reading away from the spine. */}
@@ -186,7 +188,7 @@ export function PressingMCPPath() {
               legend. */}
           <line
             x1={BRACE_L} y1={BRACE_Y} x2={BRACE_R} y2={BRACE_Y}
-            stroke="var(--pp-ink)" strokeOpacity="0.14"
+            stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
           />
           <text
             x={px((BRACE_L + BRACE_R) / 2)} y={BRACE_Y + 14}
@@ -204,10 +206,10 @@ export function PressingMCPPath() {
               <g key={band.name}>
                 <line
                   x1={l} y1={STRIP_Y} x2={r} y2={STRIP_Y}
-                  stroke="var(--pp-ink)" strokeOpacity="0.14"
+                  stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
                 />
-                <line x1={l} y1={STRIP_Y} x2={l} y2={STRIP_Y - 5} stroke="var(--pp-ink)" strokeOpacity="0.14" />
-                <line x1={r} y1={STRIP_Y} x2={r} y2={STRIP_Y - 5} stroke="var(--pp-ink)" strokeOpacity="0.14" />
+                <line x1={l} y1={STRIP_Y} x2={l} y2={STRIP_Y - 5} stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)" />
+                <line x1={r} y1={STRIP_Y} x2={r} y2={STRIP_Y - 5} stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)" />
                 <text x={l} y={STRIP_LBL} textAnchor="start" className={styles.schemLbl}>
                   {band.name}
                 </text>

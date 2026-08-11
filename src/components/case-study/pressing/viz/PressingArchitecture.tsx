@@ -1,6 +1,8 @@
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape voice — conforms to lab/viz-system.html
+ *
  * The schematic — the pressing skin for `system-architecture`.
  *
  * What it replaces: the 6,713-node particle cloud with two legends and

@@ -1,16 +1,22 @@
 /*
  * The pressing viz kit — one stylesheet for every chart in the family.
  *
- * The system, so the next chart doesn't have to rediscover it:
- * - INK ON PAPER. One drawing colour. Hierarchy is opacity: 45% for the
- *   recessive voice, 14% for hairlines, 8% for the faintest grid — the
- *   same ladder the captions and instruction lines already climb.
- * - ONE ACCENT PER CHART, at most, and only on the datum the chart
- *   exists to show. The press red, the same one the index reel flashes.
- *   A chart with no single point gets no accent at all.
- * - HAIRLINES, DOTS, TYPE. No area fills, no gradients, no decorative
- *   density, no legends: with one ink there is nothing to decode, so
- *   the label sits on the data.
+ * The system, so the next chart doesn't have to rediscover it. The
+ * drawn spec is public/lab/viz-system.html; this is its summary.
+ * - INK ON PAPER. One drawing colour, and hierarchy is SIZE — fine 2px
+ *   for structure, heavy 9px for the datum, both at full ink. Structure
+ *   recedes by being thin, never by fading.
+ * - GREY IS A DATA STATE. 45%, and only for a value the data actually
+ *   carries: a before, a remainder, a superseded phase. Never a way to
+ *   push structure into the background.
+ * - NO ACCENT. Emphasis is the pill — one reversed label, at most, on
+ *   the datum the chart exists to show.
+ * - FOUR SHAPES. Rings, sticks, stripes, dots. Every chart is one of
+ *   them, or is a schematic/ledger that takes the voice without
+ *   claiming a shape. `npm run viz-audit` enforces the tag.
+ * - MARKS, DOTS, TYPE. No gradients, no decorative density, no legends:
+ *   with one ink there is nothing to decode, so the label sits on the
+ *   data.
  * - TYPE CARRIES THE NUMBER. Values at display scale, labels at the
  *   10px caps standard (--pp-lbl). The family face, inherited.
  * - The charts hold REAL numbers only. Decoration that looks like data
@@ -34,18 +40,6 @@
      a ruler may draw ONE set of these, and must argue for it in its own
      docblock. Never for tracks, baselines or rules — those are fine. */
   --pv-rule: color-mix(in srgb, var(--pp-ink) 10%, transparent);
-
-  /* DEPRECATED, and deliberately still defined. Twenty-eight places in
-     this file and six components still name these; deleting them would
-     resolve to nothing and paint the whole kit wrong in one commit.
-     Pointed at the new system instead, so every chart conforms NOW —
-     the ghosted tracks become fine full ink, the fills become the
-     ruler, and the red is gone everywhere at once. The conformance pass
-     renames the call sites and deletes these three lines. Nothing new
-     may use them. */
-  --pv-hair: var(--pv-ink);
-  --pv-faint: var(--pv-rule);
-  --pv-acc: var(--pv-ink);
   color: var(--pp-ink);
 }
 
@@ -88,8 +82,10 @@
 .grey {
   color: var(--pv-grey);
 }
+/* The accent class survives only so call sites keep compiling; it is
+   plain ink now, and nothing new may use it. */
 .acc {
-  color: var(--pv-acc);
+  color: var(--pv-ink);
 }
 /* THE FAMILY FACE, everywhere. The kit's own header states it — "the
    family face, inherited" — and these three rules were the only places
@@ -180,7 +176,7 @@
    No bar — when a figure has no stated scale, the number IS the
    chart, and a rule pretending to measure it would be decoration. */
 .specRow {
-  border-top: 1px solid var(--pv-hair);
+  border-top: var(--pv-fine) solid var(--pv-ink);
   padding-top: 14px;
   align-items: baseline;
 }
@@ -235,8 +231,8 @@
   position: absolute;
   top: -14px;
   bottom: -14px;
-  width: 1px;
-  background: var(--pv-hair);
+  width: var(--pv-fine);
+  background: var(--pv-ink);
 }
 .limitLbl {
   position: absolute;
@@ -246,7 +242,7 @@
 }
 .gapLine {
   justify-self: end;
-  color: var(--pv-acc);
+  color: var(--pv-ink);
 }
 
 /* ── the weeks (dev timeline) ──────────────────────────────────────
@@ -356,13 +352,20 @@
   margin-bottom: clamp(20px, 3vw, 34px);
 }
 
-/* ── the schematic (system architecture) ─────────────────────────── */
+/* ── the schematic (system architecture) ─────────────────────────
+   Not charts — they encode no quantity — but they live on the same
+   paper and take the same scale. The orbit is structure, so FINE at
+   full ink. The spokes are the schematic's ruler: they only say which
+   node connects to which, and a diagram with every link at full weight
+   reads as a solid web, so they take the one sanctioned faint step. */
 .schemOrbit {
   fill: none;
-  stroke: var(--pv-hair);
+  stroke: var(--pv-ink);
+  stroke-width: var(--pv-fine);
 }
 .schemSpoke {
-  stroke: var(--pv-faint);
+  stroke: var(--pv-rule);
+  stroke-width: var(--pv-fine);
 }
 .schemDot {
   fill: var(--pp-ink);
@@ -402,7 +405,7 @@
   flex-wrap: wrap;
   margin-top: clamp(18px, 2.6vw, 30px);
   padding-top: 14px;
-  border-top: 1px solid var(--pv-hair);
+  border-top: var(--pv-fine) solid var(--pv-ink);
 }
 
 /* ── shared vertical rhythm inside the frame ─────────────────────── */

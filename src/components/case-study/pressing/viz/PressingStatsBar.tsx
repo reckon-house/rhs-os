@@ -2,6 +2,8 @@ import type { StatsBarSection } from "@/lib/types";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape voice — conforms to lab/viz-system.html
+ *
  * The stats ledger — the pressing skin for `stats-bar`.
  *
  * What it replaces: the classic ridgeline, nine colour-ramped density
