@@ -218,37 +218,34 @@
   position: absolute;
   inset: 0;
   display: block;
-  /* scopes the card's z-index below the text and NOWHERE else — without
-     it a negative z-index escapes the layer and paints behind the word
-     it is meant to cover. */
-  isolation: isolate;
 }
 
-/* THE CARD. It bleeds past the box, and that measurement is the reason:
-   the box is a line box at 1.05, tighter than the natural line box of
-   any face set in it, so ink escapes it — measured at 6.5px above and
-   6.1px below on Ivy's Avenir. A card at inset 0 covers the box exactly
-   and leaves those overhangs standing, which showed up as fragments of
-   the previous word hanging under the new one.
+/* THE CARD, and it has to be the layer's OWN BOX rather than a pseudo
+   behind it. Two measurements forced that:
 
-   A pseudo-element rather than a taller layer: the layer's inset is
-   what positions the type, so growing it would move every word. This
-   grows only the paint. */
-.word::before {
-  content: "";
-  position: absolute;
+   1. The box is a line box at 1.05, tighter than the natural line box of
+      any face set in it, so ink escapes it — 6.5px above and 6.1px below
+      on Ivy's Avenir. A card stopping at the box leaves those overhangs
+      standing, which is the previous word showing under the new one.
+   2. Every cut but the pinch is a clip-path animation, and all of them
+      REST at inset(0) — which clips to the border box. A bleeding
+      pseudo-element is therefore trimmed back to the box the moment a
+      cut runs, so the first fix looked right in the DOM and changed
+      nothing on screen.
+
+   So the layer itself grows and pads the type back into place. With
+   border-box sizing the content box lands exactly where inset 0 put it,
+   so no word moves; the paint and the clip both take the larger box. */
+.wordCard {
   inset: -0.5em -0.06em;
+  padding: 0.5em 0.06em;
   background: var(--pp-paper);
-  z-index: -1;
 }
 
 /* A cut with moving parts — the slat's blinds, the pinch's panels —
    carries no card on its parent: the parent's own would cover the box
    before a single part moved. The parts carry it, and they bleed the
    same way for the same reason. */
-.wordBare::before {
-  content: none;
-}
 .paperCard {
   background: var(--pp-paper);
 }

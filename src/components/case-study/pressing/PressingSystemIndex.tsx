@@ -157,13 +157,13 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
        paper, so what shows is the old word being eaten from both edges
        and the new one growing back out of the centre line.
 
-       The parent stays bare and the WORD carries the card: a card on
-       the parent would cover the box before the panels moved, which is
-       the same trap the slat sets. */
+       The parent carries no card and the WORD does: a card on the
+       parent would cover the box before the panels moved, which is the
+       same trap the slat sets. */
     return (
-      <span className={`${styles.word} ${styles.wordBare}`} style={d}>
+      <span className={styles.word} style={d}>
         <span
-          className={`${styles.word} sz-pinchswap`}
+          className={`${styles.word} ${styles.wordCard} sz-pinchswap`}
           style={{ ...face, ...d }}
         >
           {step.text}
@@ -186,7 +186,7 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
        bands reassemble into one line — the reel's trick with the photo,
        done with type. The 1px overlap hides the sub-pixel seam. */
     return (
-      <span className={`${styles.word} ${styles.wordBare}`} style={face}>
+      <span className={styles.word} style={face}>
         {Array.from({ length: TY_SLATS }).map((_, k) => (
           <span
             key={k}
@@ -230,7 +230,10 @@ function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
           ? "sz-ccurtainV"
           : "";
   return (
-    <span className={`${styles.word} ${cut}`} style={{ ...face, ...d }}>
+    <span
+      className={`${styles.word} ${styles.wordCard} ${cut}`}
+      style={{ ...face, ...d }}
+    >
       {step.text}
     </span>
   );
