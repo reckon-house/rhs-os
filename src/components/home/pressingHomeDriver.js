@@ -1405,17 +1405,13 @@ function buildMagazine() {
       }
       row.appendChild(cell);
     });
-    /* the rule starts where the left frame starts — read the same
-       authored-or-dealt size the left card actually rendered at */
+    /* One length for every rule: the full width of the image area. It
+       used to start under the left frame, indented by that frame's
+       size, so each rule ran a different length; the ask was to make
+       them uniform, so the indent is gone and grid-column 1/-1 runs
+       every rule the whole width — the longest a rule could be. */
     const rule = document.createElement("div");
     rule.className = "ixrule";
-    const leftCi = workIdx[i];
-    const leftShare =
-      leftCi !== undefined && cards[leftCi].size != null
-        ? cards[leftCi].size
-        : shares[i] !== undefined ? shares[i] : 1;
-    rule.style.marginLeft =
-      "calc((100% - var(--ixgap)) / 2 * " + (1 - leftShare).toFixed(3) + ")";
     row.appendChild(rule);
     rowsEl.appendChild(row);
   }
@@ -1670,10 +1666,9 @@ function buildAnswer() {
       }
       row.appendChild(cell);
     });
+    /* full width, uniform — same rule length as the resting deal */
     const rule = document.createElement("div");
     rule.className = "ixrule";
-    rule.style.marginLeft =
-      "calc((100% - var(--ixgap)) / 2 * " + (1 - shares[r * 2]).toFixed(3) + ")";
     row.appendChild(rule);
     rowsEl.appendChild(row);
   });

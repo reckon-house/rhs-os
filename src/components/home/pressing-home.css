@@ -475,26 +475,27 @@
      two frames, each hung from the top and pushed to the right of its
      half — the two right edges are the only vertical lines the eye
      needs to hold the grid together */
+  /* The band is top-anchored, not centred. row-gap is the air BELOW a
+     row's pictures (before its own rule); margin-bottom is the air
+     below the rule (before the next row's pictures). They used to be
+     equal, which floated each row in the middle of its band. Weighting
+     the gap under the pictures and tightening the gap under the rule
+     pulls every row up to the line above it, with the white space
+     falling below — which is the ask. */
   .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap);
-    row-gap: clamp(44px, 5.5vw, 96px);
-    margin-bottom: clamp(44px, 5.5vw, 96px); }
+    row-gap: clamp(56px, 6.6vw, 108px);
+    margin-bottom: clamp(18px, 2.1vw, 34px); }
   .ixrow:last-child { margin-bottom: 0; }
   .ixrow .cell { display: flex; justify-content: flex-end; }
 
-  /* The rule belongs to the two frames it separates, not to the page:
-     it starts at the LEFT EDGE OF THE LEFT FRAME and runs to the right
-     edge of the right one, so it never crosses the notes column and
-     never reaches further than the pictures do.
-
-     That start moves every row, because the left frame's width is
-     dealt. The offset is written as a calc rather than measured: the
-     rule spans both cells plus the gap between them, so
-     (100% - gap) / 2 IS one cell, and one cell times the share the
-     frame did not take is exactly where its left edge falls. No
-     reflow, no resize listener — it simply stays true. */
+  /* One rule, one length: the full width of the image area, every row.
+     grid-column 1/-1 spans both cells and the gap between them; nothing
+     indents it any more, so a small left frame and a large one sit over
+     rules of exactly the same length. It still lives inside .ixrow, in
+     the content column, so it never crosses the notes column. */
   .ixrule { grid-column: 1 / -1; height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.13); }
   .ixrow:last-child .ixrule { display: none; }
