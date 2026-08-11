@@ -1113,9 +1113,9 @@ function planFacts(q, f) {
    window, which is the only thing that resizes. */
 const scroller = () => document.querySelector("main") || window;
 const onScrollAnywhere = (fn) => {
-  const t = scroller();
-  t.addEventListener("scroll", fn, { passive: true });
-  return () => t.removeEventListener("scroll", fn, { passive: true });
+  /* <main> is the SHELL's element, not this page's, so it is still
+     there after the route changes and so is anything bound to it. */
+  listen(scroller(), "scroll", fn, { passive: true });
 };
 
 /* ── shared building blocks ── */
@@ -1287,6 +1287,8 @@ function dealShares(n, rnd) {
 
 /* ── the magazine ── */
 function buildMagazine() {
+  /* the debounced resize can land after the route changed */
+  if (!alive) return;
   const rnd = mkRnd(seedNo);
 
   /* the ring's body: every project, dealt into two rails of squares
@@ -1323,6 +1325,13 @@ function buildMagazine() {
       NOTE_ORDER.indexOf((cards[x].word || "").toLowerCase()) -
       NOTE_ORDER.indexOf((cards[y].word || "").toLowerCase()));
   const lead = document.getElementById("infoLead");
+  /* The ring's own columns. `alive` above is the real gate; this is
+     the belt to its braces, because the crash it prevents is not a
+     dead animation but a page of dead animations: an uncaught throw
+     here is a throw inside React's commit, and it takes down every
+     effect on the route that is arriving. */
+  if (!lead || !document.getElementById("ixNotes") ||
+      !document.getElementById("ixRows")) return;
   if (bio !== undefined) {
     /* The statement's rhythm comes from NOTES, which carries the
        recessive run as its own field. Answers mark their asides
@@ -1441,8 +1450,9 @@ function buildMagazine() {
 let askGen = 0;
 let askTimers = [];
 function holdAsk(fn, ms) {
+  if (!alive) return;
   const gen = askGen;
-  askTimers.push(setTimeout(() => { if (gen === askGen) fn(); }, ms));
+  askTimers.push(setTimeout(() => { if (gen === askGen && alive) fn(); }, ms));
 }
 function cancelAsk() {
   askGen += 1;
@@ -1571,10 +1581,15 @@ function composeAnswer(a) {
 
 function buildAnswer() {
   cancelAsk();
+  /* The field is the masthead's, so it is still on screen and still
+     typeable on a case study. A keystroke there used to arrive here
+     420ms later, find `ansRows` gone with the homepage, and throw. */
+  if (!alive) return;
   const rnd = mkRnd(seedNo + 97);
   const rowsEl = document.getElementById("ansRows");
   const notesEl = document.getElementById("ansNotes");
   const sayEl = document.getElementById("ansSay");
+  if (!rowsEl || !notesEl || !sayEl) return;
   const still = REDUCE();
 
   /* captured by apply() before the jump home; empty when asked cold */
@@ -1871,6 +1886,7 @@ function buildAnswer() {
 let qTimer = 0;
 let asked = false;
 function onQuery(v, now) {
+  if (!alive) return;
   query = v;
   clearTimeout(qTimer);
   if (now) { apply(); return; }
@@ -1879,6 +1895,10 @@ function onQuery(v, now) {
   qTimer = setTimeout(apply, 420);
 }
 function apply() {
+  /* Before syncUrl, not after. The pause timer can land on another
+     route, and syncUrl writes the query string with replaceState —
+     it would rewrite the case study's own address to `?q=`. */
+  if (!alive) return;
   syncUrl();
   const next = Boolean(query.trim());
   const changed = next !== asked;
@@ -1914,7 +1934,13 @@ function syncUrl() {
 
 const nav = document.getElementById("nav");
 const input = document.getElementById("query");
-input.addEventListener("input", (e) => {
+/* THE FIELD IS NOT THIS PAGE'S. It sits in the masthead, which is
+   shell furniture on every route, so these three outlive the homepage
+   unless they are taken off it — and a visitor who types into the bar
+   on a case study was, until this, typing at a page that had been
+   unmounted. `resetQ` below is the homepage's own and dies with it;
+   it goes through the same door for the sake of one rule. */
+listen(input, "input", (e) => {
   askSource = "typed";   /* a hand on the keys can reach the model */
   onQuery(e.target.value);
   if (window.placeAsk) placeAsk();   /* typing at display size refits */
@@ -1922,20 +1948,20 @@ input.addEventListener("input", (e) => {
 /* Focus completes the word before handing the line over: the typing
    stops wherever it happens to be, and a half-typed question sitting
    greyed under a cursor reads as a mistake rather than an invitation. */
-input.addEventListener("focus", () => {
+listen(input, "focus", () => {
   if (tourFull && !input.value) {
     input.placeholder = tourFull;
     if (window.placeAsk) placeAsk();
   }
 });
-input.addEventListener("keydown", (e) => {
+listen(input, "keydown", (e) => {
   if (e.key === "Escape") { input.value = ""; onQuery("", true); input.blur(); }
   if (e.key === "Enter") { e.preventDefault(); onQuery(input.value, true); input.blur(); }
 });
-document.getElementById("clearQ").addEventListener("click", () => {
+listen(document.getElementById("clearQ"), "click", () => {
   input.value = ""; onQuery("", true); input.focus();
 });
-document.getElementById("resetQ").addEventListener("click", () => {
+listen(document.getElementById("resetQ"), "click", () => {
   input.value = ""; onQuery("", true);
 });
 
@@ -1974,6 +2000,10 @@ let tourFull = "";                     /* what placeAsk should size to */
     if (window.placeAsk) placeAsk();
   };
   const step = () => {
+    /* The other chain that re-arms forever, and it types into the
+       masthead's placeholder — so left running it would keep asking
+       the homepage's questions from the top of a case study. */
+    if (!alive) return;
     /* never type over someone who is using the field */
     if (document.activeElement === input || input.value || document.hidden) {
       timer = setTimeout(step, 500);
@@ -2048,6 +2078,12 @@ let tourFull = "";                     /* what placeAsk should size to */
   };
 
   const place = () => {
+    /* `bar`, `ask` and `mark` are all the masthead's, and only `slot`
+       belongs to this page — so a stale place() does not throw, it
+       does something worse and quiet: it goes on sizing the live
+       field from a detached slot and can leave the bar wearing
+       display type on a route that never asked for it. */
+    if (!alive) return;
     const barH = bar.getBoundingClientRect().height;
     /* no slot means the cover is gone (an answer is open): park it */
     const live = slot.offsetHeight > 0;
@@ -2100,7 +2136,7 @@ let tourFull = "";                     /* what placeAsk should size to */
 
   const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
   onScrollAnywhere(on);
-  addEventListener("resize", on, { passive: true });
+  listen(window, "resize", on, { passive: true });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
   /* exposed so the travel can be stepped and measured without waiting
      on rAF — the geometry here is worth being able to assert on */
@@ -2356,8 +2392,8 @@ function armRows(rowsEl) {
   });
 
   const tick = () => {
-    /* the one loop that re-arms unconditionally. In the lab that was
-       right: it was the only page in the document. On a route it has
+    /* the one loop that re-arms unconditionally. In the lab that is
+       right: it is the only page in the document. On a route it has
        to be able to stop. */
     if (!alive) return;
     requestAnimationFrame(tick);
@@ -2400,12 +2436,24 @@ function armRows(rowsEl) {
   buildMagazine();
   if (q) { input.value = q; query = q; apply(); }
   let rw = 0;
-  addEventListener("resize", () => {
+  /* The redeal on resize. window outlives the route, and this handler
+     rebuilds BOTH columns from scratch — it was the shortest path
+     from a route change to `rowsEl.innerHTML` on a null. */
+  listen(window, "resize", () => {
     clearTimeout(rw);
     rw = setTimeout(() => { buildMagazine(); if (query.trim()) buildAnswer(); }, 180);
   });
 })();
 
+  /* THE TEARDOWN. Three moves, and the order is the point.
+     `alive` first, so any callback already in flight — the pause
+     before an answer composes, the debounced redeal, the next tick of
+     a chain that re-arms itself — finds the door shut when it lands.
+     Then the ask timers, which are the ones with a handle worth
+     clearing. Then the listeners, which is what `listen` was for:
+     the question field and the scroller both belong to the shell and
+     survive this page, so what is bound to them has to come off by
+     hand or it goes on calling into a page that is gone. */
   return () => {
     alive = false;
     try { cancelAsk(); } catch (e) { /* never armed */ }

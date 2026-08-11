@@ -1000,6 +1000,32 @@
 
 <script src="/lab/sizzle-reel.js"></script>
 <script>
+/* ── liveness, and why a lab needs it ──────────────────────────────
+   This file is one page in one document. It mounts once, never
+   unmounts, and every listener it hangs on window, on the scroller
+   and on the question field is meant to outlive anything it touches.
+   So here `alive` is a constant truth and `listen` is
+   addEventListener wearing a longer name.
+
+   In the app the same script is a ROUTE, and leaving one has to
+   actually stop it. The port replaces this block with the pair that
+   does: an `alive` the teardown clears, and a `listen` that remembers
+   what it bound so the teardown can unbind it. Write against that
+   contract even here, because the two things that survive a route
+   change are exactly the two the lab cannot see — the resize handler,
+   and the field itself, which lives in the masthead and is still
+   under someone's fingers on the next page. Both called back into a
+   page that no longer existed. buildAnswer read `ansRows`, got null,
+   and threw setting innerHTML on it; an uncaught throw at that moment
+   takes React's hydration down with it, so every effect on the page
+   that had just arrived went dead until a hard reload.
+
+   Two defences, deliberately overlapping. Listeners come off at
+   teardown, so nothing fires. And the handful of functions that write
+   the page check `alive` on the way in, because a timer already in
+   flight when the route changed still lands. */
+let alive = true;
+const listen = (target, type, fn, opts) => target.addEventListener(type, fn, opts);
 /* ── the corpus (works hand-listed; pulls + quotes injected) ── */
 /* ── the work ──────────────────────────────────────────────────────
    Order and images both come from the live homepage: the sequence was
@@ -2097,9 +2123,9 @@ function planFacts(q, f) {
    window, which is the only thing that resizes. */
 const scroller = () => document.querySelector("main") || window;
 const onScrollAnywhere = (fn) => {
-  const t = scroller();
-  t.addEventListener("scroll", fn, { passive: true });
-  return () => t.removeEventListener("scroll", fn, { passive: true });
+  /* <main> is the SHELL's element, not this page's, so it is still
+     there after the route changes and so is anything bound to it. */
+  listen(scroller(), "scroll", fn, { passive: true });
 };
 
 /* ── shared building blocks ── */
@@ -2271,6 +2297,8 @@ function dealShares(n, rnd) {
 
 /* ── the magazine ── */
 function buildMagazine() {
+  /* the debounced resize can land after the route changed */
+  if (!alive) return;
   const rnd = mkRnd(seedNo);
 
   /* the ring's body: every project, dealt into two rails of squares
@@ -2307,6 +2335,13 @@ function buildMagazine() {
       NOTE_ORDER.indexOf((cards[x].word || "").toLowerCase()) -
       NOTE_ORDER.indexOf((cards[y].word || "").toLowerCase()));
   const lead = document.getElementById("infoLead");
+  /* The ring's own columns. `alive` above is the real gate; this is
+     the belt to its braces, because the crash it prevents is not a
+     dead animation but a page of dead animations: an uncaught throw
+     here is a throw inside React's commit, and it takes down every
+     effect on the route that is arriving. */
+  if (!lead || !document.getElementById("ixNotes") ||
+      !document.getElementById("ixRows")) return;
   if (bio !== undefined) {
     /* The statement's rhythm comes from NOTES, which carries the
        recessive run as its own field. Answers mark their asides
@@ -2425,8 +2460,9 @@ function buildMagazine() {
 let askGen = 0;
 let askTimers = [];
 function holdAsk(fn, ms) {
+  if (!alive) return;
   const gen = askGen;
-  askTimers.push(setTimeout(() => { if (gen === askGen) fn(); }, ms));
+  askTimers.push(setTimeout(() => { if (gen === askGen && alive) fn(); }, ms));
 }
 function cancelAsk() {
   askGen += 1;
@@ -2555,10 +2591,15 @@ function composeAnswer(a) {
 
 function buildAnswer() {
   cancelAsk();
+  /* The field is the masthead's, so it is still on screen and still
+     typeable on a case study. A keystroke there used to arrive here
+     420ms later, find `ansRows` gone with the homepage, and throw. */
+  if (!alive) return;
   const rnd = mkRnd(seedNo + 97);
   const rowsEl = document.getElementById("ansRows");
   const notesEl = document.getElementById("ansNotes");
   const sayEl = document.getElementById("ansSay");
+  if (!rowsEl || !notesEl || !sayEl) return;
   const still = REDUCE();
 
   /* captured by apply() before the jump home; empty when asked cold */
@@ -2855,6 +2896,7 @@ function buildAnswer() {
 let qTimer = 0;
 let asked = false;
 function onQuery(v, now) {
+  if (!alive) return;
   query = v;
   clearTimeout(qTimer);
   if (now) { apply(); return; }
@@ -2863,6 +2905,10 @@ function onQuery(v, now) {
   qTimer = setTimeout(apply, 420);
 }
 function apply() {
+  /* Before syncUrl, not after. The pause timer can land on another
+     route, and syncUrl writes the query string with replaceState —
+     it would rewrite the case study's own address to `?q=`. */
+  if (!alive) return;
   syncUrl();
   const next = Boolean(query.trim());
   const changed = next !== asked;
@@ -2898,7 +2944,13 @@ function syncUrl() {
 
 const nav = document.getElementById("nav");
 const input = document.getElementById("query");
-input.addEventListener("input", (e) => {
+/* THE FIELD IS NOT THIS PAGE'S. It sits in the masthead, which is
+   shell furniture on every route, so these three outlive the homepage
+   unless they are taken off it — and a visitor who types into the bar
+   on a case study was, until this, typing at a page that had been
+   unmounted. `resetQ` below is the homepage's own and dies with it;
+   it goes through the same door for the sake of one rule. */
+listen(input, "input", (e) => {
   askSource = "typed";   /* a hand on the keys can reach the model */
   onQuery(e.target.value);
   if (window.placeAsk) placeAsk();   /* typing at display size refits */
@@ -2906,20 +2958,20 @@ input.addEventListener("input", (e) => {
 /* Focus completes the word before handing the line over: the typing
    stops wherever it happens to be, and a half-typed question sitting
    greyed under a cursor reads as a mistake rather than an invitation. */
-input.addEventListener("focus", () => {
+listen(input, "focus", () => {
   if (tourFull && !input.value) {
     input.placeholder = tourFull;
     if (window.placeAsk) placeAsk();
   }
 });
-input.addEventListener("keydown", (e) => {
+listen(input, "keydown", (e) => {
   if (e.key === "Escape") { input.value = ""; onQuery("", true); input.blur(); }
   if (e.key === "Enter") { e.preventDefault(); onQuery(input.value, true); input.blur(); }
 });
-document.getElementById("clearQ").addEventListener("click", () => {
+listen(document.getElementById("clearQ"), "click", () => {
   input.value = ""; onQuery("", true); input.focus();
 });
-document.getElementById("resetQ").addEventListener("click", () => {
+listen(document.getElementById("resetQ"), "click", () => {
   input.value = ""; onQuery("", true);
 });
 
@@ -3011,6 +3063,10 @@ let tourFull = "";                     /* what placeAsk should size to */
     if (window.placeAsk) placeAsk();
   };
   const step = () => {
+    /* The other chain that re-arms forever, and it types into the
+       masthead's placeholder — so left running it would keep asking
+       the homepage's questions from the top of a case study. */
+    if (!alive) return;
     /* never type over someone who is using the field */
     if (document.activeElement === input || input.value || document.hidden) {
       timer = setTimeout(step, 500);
@@ -3085,6 +3141,12 @@ let tourFull = "";                     /* what placeAsk should size to */
   };
 
   const place = () => {
+    /* `bar`, `ask` and `mark` are all the masthead's, and only `slot`
+       belongs to this page — so a stale place() does not throw, it
+       does something worse and quiet: it goes on sizing the live
+       field from a detached slot and can leave the bar wearing
+       display type on a route that never asked for it. */
+    if (!alive) return;
     const barH = bar.getBoundingClientRect().height;
     /* no slot means the cover is gone (an answer is open): park it */
     const live = slot.offsetHeight > 0;
@@ -3137,7 +3199,7 @@ let tourFull = "";                     /* what placeAsk should size to */
 
   const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
   onScrollAnywhere(on);
-  addEventListener("resize", on, { passive: true });
+  listen(window, "resize", on, { passive: true });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
   /* exposed so the travel can be stepped and measured without waiting
      on rAF — the geometry here is worth being able to assert on */
@@ -3409,6 +3471,10 @@ function armRows(rowsEl) {
   });
 
   const tick = () => {
+    /* the one loop that re-arms unconditionally. In the lab that is
+       right: it is the only page in the document. On a route it has
+       to be able to stop. */
+    if (!alive) return;
     requestAnimationFrame(tick);
     if (document.hidden || !live.size) return;
     const h = innerHeight;
@@ -3449,7 +3515,10 @@ function armRows(rowsEl) {
   buildMagazine();
   if (q) { input.value = q; query = q; apply(); }
   let rw = 0;
-  addEventListener("resize", () => {
+  /* The redeal on resize. window outlives the route, and this handler
+     rebuilds BOTH columns from scratch — it was the shortest path
+     from a route change to `rowsEl.innerHTML` on a null. */
+  listen(window, "resize", () => {
     clearTimeout(rw);
     rw = setTimeout(() => { buildMagazine(); if (query.trim()) buildAnswer(); }, 180);
   });
