@@ -200,10 +200,50 @@
   visibility: hidden;
   white-space: nowrap;
 }
+/* THE CUT. Two layers in one box: the word still standing underneath,
+   the incoming word on top, arriving on one of SizzleReel's transitions.
+
+   It replaces a melt filter, and the reason is a measurement rather than
+   taste — the melt returned to 0.09 displacement before the filter came
+   off, so the visible jump was never the easing. It was the filter
+   TOGGLING: text rasterized through an SVG filter gets greyscale
+   antialiasing and no subpixel rendering, so the glyphs pop the instant
+   the pipeline is removed, at any displacement. No curve can smooth a
+   rasterization boundary; the only fix is not to cross one.
+
+   The cuts themselves are NOT written here. They are the shipped .sz-*
+   classes, so the specimen changes when the reel changes, and a wipe
+   never has to be invented twice. */
 .word {
   position: absolute;
   inset: 0;
   display: block;
+  /* OPAQUE, and that is the load-bearing part. Every layer in the reel
+     is a photograph or a solid card, so a wipe that uncovers half the
+     box hides whatever was under it. Type on transparent paper does
+     not: the arriving word and the standing word both print, and the
+     reader gets two words struck over each other. The card is the page
+     ground, so it is invisible except for the job it does. */
+  background: var(--background);
+}
+
+/* The slat's parent must NOT carry the card — its own background would
+   cover the box before a single blind opened. The bands carry it. */
+.wordBare {
+  background: none;
+}
+.slatBand {
+  background: var(--background);
+}
+
+/* Inside a slat strip: a whole copy of the word, shifted left by the
+   strips before it so the six bands reassemble into one line. Sized and
+   offset inline, since both depend on the strip count. */
+.slatWord {
+  position: absolute;
+  top: 0;
+  display: block;
+  white-space: nowrap;
 }
 
 /* ── the elements row ─────────────────────────────────────────────

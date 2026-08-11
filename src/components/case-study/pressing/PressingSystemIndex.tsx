@@ -39,7 +39,6 @@
 import {
   useCallback,
   useEffect,
-  useId,
   useRef,
   useState,
   type CSSProperties,
@@ -51,8 +50,11 @@ import type {
 } from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { SectionMark } from "@/components/fx/SectionMark";
-import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
-import { MeltFilter } from "@/components/fx/MeltFilter";
+import {
+  SizzleReel,
+  useSizzleStyles,
+  type SizzleBeat,
+} from "@/components/fx/SizzleReel";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { imageDimensions } from "@/data/image-dimensions";
 import { outline, profile, toPath, rgb } from "@/lib/swatch-morph";
@@ -77,14 +79,28 @@ const SW_MORPH = 850;
    rows on the same beat would make the section pulse. The swap is long
    enough for a melt to go out and come back — at the fade's old 420 the
    liquefy read as a glitch rather than a transformation. */
+/** Field separator inside specKey. Unit separator: never in a font name. */
+const SEP = "\u001f";
+
+/* THE SPECIMEN'S CUTS, lifted from SizzleReel rather than invented.
+   What makes that reel read as film is not any one wipe — it is that
+   consecutive beats arrive DIFFERENTLY, so the eye never learns the
+   move. A specimen cycling one transition forever is a slideshow no
+   matter how good the transition is, so this rotates the reel's own
+   classes and its own timings. Five entries against four faces or six
+   words means the pairing keeps shifting rather than locking to a loop.
+
+   These are the shipped .sz-* classes, driven by the same --d variable
+   and remounted by key the same way BeatLayer remounts. Nothing here
+   re-implements a wipe. */
+const TY_FX = ["curtain", "letters", "shutter", "slat", "ccurtainV"] as const;
+type TyFx = (typeof TY_FX)[number];
+
+/** SizzleReel's slat count, so the blinds read at the same rhythm. */
+const TY_SLATS = 6;
+
 const TY_HOLD = 1150;
 const TY_SWAP = 620;
-
-/* How far the letterforms displace at the peak of a swap. The word has
-   to stop being legible in the middle or the change of glyphs shows as
-   a cut underneath the effect; 26 smears them past reading without
-   throwing ink outside the filter's 150% box. */
-const TY_MELT = 26;
 
 /* Fallback cuts for a face whose study did not declare its weights.
    Regular and bold is the pair every family ships. */
@@ -113,6 +129,115 @@ const ELEM = [
    did. Kept in step with .markStack/.palStack's padding-bottom in the
    stylesheet; they are the same measurement seen from two sides. */
 const CAP_ROOM = 22;
+
+type Step = { text: string; family: string; weight: number; cap?: string };
+
+/**
+ * One layer of the specimen: a word, optionally arriving on one of the
+ * reel's cuts. Two of these stack in the box — the standing word with no
+ * cut, the incoming word with one — and remounting the top by key is
+ * what restarts its animation.
+ *
+ * Every class here is SizzleReel's, and so is every timing constant.
+ * The letters build and the slat stagger are lifted from BeatLayer's
+ * word and slat branches verbatim; the only thing changed is what sits
+ * inside the strip, a span of type rather than a slice of photograph.
+ */
+function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
+  const face: CSSProperties = {
+    fontFamily: `"${step.family}", serif`,
+    fontWeight: step.weight,
+  };
+  const d = { "--d": `${TY_SWAP}ms` } as CSSProperties;
+
+  if (fx === "letters") {
+    /* BeatLayer's numbers: the build is capped so letters land quick and
+       the word then sits, rather than crawling for the whole swap. */
+    const words = step.text.split(/\s+/).filter(Boolean);
+    const chars = words.reduce((n, w) => n + w.length, 0) || 1;
+    const build = Math.min(TY_SWAP, 360);
+    const stagger = Math.min(38, Math.round((build * 0.5) / chars));
+    const ldur = Math.round(build * 0.5);
+    let li = 0;
+    return (
+      <span className={styles.word} style={{ ...face, ...d }}>
+        {words.map((w, wi) => (
+          <span key={wi} className="sz-wgrp">
+            {[...w].map((ch, ci) => (
+              <span
+                key={ci}
+                className="sz-ltr"
+                style={
+                  {
+                    animationDelay: `${li++ * stagger}ms`,
+                    "--ld": `${ldur}ms`,
+                  } as CSSProperties
+                }
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  if (fx === "slat") {
+    /* The blinds. Each strip clips a vertical band of the box and holds
+       a full copy of the word shifted left by its own width, so the six
+       bands reassemble into one line — the reel's trick with the photo,
+       done with type. The 1px overlap hides the sub-pixel seam. */
+    return (
+      <span className={`${styles.word} ${styles.wordBare}`} style={face}>
+        {Array.from({ length: TY_SLATS }).map((_, k) => (
+          <span
+            key={k}
+            className={`sz-strip ${styles.slatBand}`}
+            style={
+              {
+                left: `${(k * 100) / TY_SLATS}%`,
+                width: `calc(${100 / TY_SLATS}% + 1px)`,
+                animationDelay: `${Math.round(k * TY_SWAP * 0.08)}ms`,
+                "--sd": `${Math.round(TY_SWAP * 0.7)}ms`,
+              } as CSSProperties
+            }
+          >
+            <span
+              className={styles.slatWord}
+              /* Both measurements SUBTRACT the overlap, so the copies
+                 stay registered to the box rather than walking 1px per
+                 band. The reel dodges this by sizing its slice in cqw,
+                 which is not available here: making the box a size
+                 container would sever it from the ghost stack that
+                 gives it its width in the first place. */
+              style={{
+                left: `calc(${-k} * (100% - 1px))`,
+                width: `calc(${TY_SLATS} * 100% - ${TY_SLATS}px)`,
+              }}
+            >
+              {step.text}
+            </span>
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  const cut =
+    fx === "curtain"
+      ? "sz-curtain"
+      : fx === "shutter"
+        ? "sz-shutter"
+        : fx === "ccurtainV"
+          ? "sz-ccurtainV"
+          : "";
+  return (
+    <span className={`${styles.word} ${cut}`} style={{ ...face, ...d }}>
+      {step.text}
+    </span>
+  );
+}
 
 /**
  * The ledger's own shape. Three section types feed it —
@@ -209,11 +334,21 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const ref = useRef<HTMLElement>(null);
   const swatchRef = useRef<SVGPathElement>(null);
   const swatchCapRef = useRef<HTMLSpanElement>(null);
-  const typeRef = useRef<HTMLSpanElement>(null);
-  const typeCapRef = useRef<HTMLSpanElement>(null);
-  const typeDispRef = useRef<SVGFEDisplacementMapElement | null>(null);
+  /* prev is the word still standing, cur the one arriving, fx the cut
+     carrying it, n the beat counter — remounting the arriving layer by
+     key is what restarts a CSS animation, exactly as the reel does it. */
+  /* The specimen cuts with the reel's classes, and a study with no
+     pattern library never mounts a reel — so the sheet is asked for
+     here rather than relied on arriving with one. */
+  useSizzleStyles();
+
+  const [beat, setBeat] = useState<{
+    prev: number;
+    cur: number;
+    fx: TyFx | null;
+    n: number;
+  }>({ prev: 0, cur: 0, fx: null, n: 0 });
   const elemRef = useRef<SVGSVGElement>(null);
-  const meltId = `psi-melt-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
@@ -383,18 +518,21 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
      The face's own cuts, stepped one per word, the words the campaign's
      own — so the row specimens the voice as well as the face.
 
-     The swap MELTS rather than fades: the nav's displacement chain run
-     up to peak and back down, so the letterforms liquefy, exchange
-     underneath the smear, and re-form as the next word. It is the same
-     filter RevealHeadline arrives on, shared from MeltFilter so the two
-     cannot drift apart. That also solves the weight step for free —
-     Avenir Next is six separate files rather than a variable axis, so a
-     cut can only ever snap, and the peak of the melt is exactly where a
-     snap cannot be seen.
+     The swap CUTS rather than melts, and that is a measured decision.
+     The melt returned to 0.09 displacement on its last frame before the
+     filter came off, so the visible jump was never the easing curve —
+     it was the filter toggling. Text rasterized through an SVG filter
+     gets greyscale antialiasing and loses subpixel rendering, so the
+     glyphs pop the instant the pipeline is removed, at any
+     displacement. No curve smooths a rasterization boundary.
 
-     The element leaves the filter pipeline between swaps. Text left
-     inside one renders soft, and a specimen has to be sharp at rest;
-     this is RevealHeadline's lesson, not a fresh discovery. */
+     So the incoming word wipes in over the standing one on a clip
+     path: pure compositing, nothing re-rasterizes, and it is the same
+     gesture every chart in the system draws with. It carries the weight
+     step for free too — Avenir Next is six files rather than a variable
+     axis, so a cut can only ever snap, and a wipe hides the snap behind
+     its own edge. RevealHeadline keeps the melt; a headline arriving
+     once can afford a filter, a specimen cycling forever cannot. */
   const words = data.specimenWords ?? [];
   /* One entry per FACE, not per weight — deduped here because both the
      specimen driver and the row builder need the list. */
@@ -413,7 +551,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
        stacking specimens above it. The caption follows each face's
        authored role. */
   const cuts = data.fonts[0]?.weights ?? WEIGHT_LADDER;
-  const steps: { text: string; family: string; weight: number; cap?: string }[] =
+  const steps: Step[] =
     words.length
       ? words.map((w, i) => ({
           text: w,
@@ -426,80 +564,59 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
           weight: 400,
           cap: f.role,
         }));
+  /* The steps, packed to a primitive so the effect below can depend on
+     their VALUES rather than on a fresh array identity every render.
+     SEP is escaped rather than typed: a literal control character in the
+     source is invisible, and an invisible separator that stops matching
+     its own split is exactly the bug this once shipped. */
   const specKey = steps
-    .map((s) => `${s.text}${s.family}${s.weight}${s.cap ?? ""}`)
+    .map((s) => [s.text, s.family, s.weight, s.cap ?? ""].join(SEP))
     .join("|");
 
+  /* The specimen's clock. It only ever announces a CUT: which step is
+     leaving, which is arriving, and which of the reel's transitions
+     carries it. Everything visual is then a render, the way BeatLayer
+     works — no imperative style writes, so a transition can be a clip
+     path one beat and a stagger of letters the next without the driver
+     knowing the difference.
+
+     It keeps the shared scrub loop rather than a timer, so
+     html[data-paused] stops the clock and a resume carries on. */
   useEffect(() => {
-    const el = typeRef.current;
-    if (!el) return;
-    const ws = specKey
-      ? specKey.split("|").map((row) => {
-          const [text, family, weight, cap] = row.split("");
-          return { text, family, weight, cap };
-        })
-      : [];
-    if (ws.length === 0) return;
-
-    const cap = typeCapRef.current;
-    const paint = (i: number) => {
-      el.textContent = ws[i].text;
-      el.style.fontFamily = `"${ws[i].family}", serif`;
-      el.style.fontWeight = ws[i].weight;
-      if (cap && ws[i].cap) cap.textContent = ws[i].cap;
-    };
-    paint(0);
-    el.style.opacity = "1";
-
-    // One step has nowhere to melt to.
-    if (reducedMotion() || ws.length < 2) return;
+    const n = specKey ? specKey.split("|").length : 0;
+    if (reducedMotion() || n < 2) return;
 
     const span = TY_HOLD + TY_SWAP;
     let elapsed = 0;
-    let prev: number | null = null;
-    let shownLast = 0;
-    let melted = false;
+    let last: number | null = null;
+    let cutting = false;
     return onTick(() => {
       const now = performance.now();
-      if (prev != null) elapsed += Math.min(now - prev, 100);
-      prev = now;
+      if (last != null) elapsed += Math.min(now - last, 100);
+      last = now;
 
-      const t = elapsed % (span * ws.length);
+      const t = elapsed % (span * n);
       const idx = Math.floor(t / span);
       const within = t - idx * span;
 
       if (within <= TY_HOLD) {
-        if (melted) {
-          melted = false;
-          el.style.filter = "";
-        }
-        if (shownLast !== idx) {
-          shownLast = idx;
-          paint(idx);
-        }
+        cutting = false;
         return;
       }
-
-      if (!melted) {
-        melted = true;
-        el.style.filter = `url(#${meltId})`;
-      }
-      /* Out and back on a sine, so the melt leaves and returns to
-         exactly zero displacement — ending on a residue is what would
-         leave the word permanently a little soft. */
-      const e = (within - TY_HOLD) / TY_SWAP;
-      typeDispRef.current?.setAttribute(
-        "scale",
-        (TY_MELT * Math.sin(Math.PI * e)).toFixed(2)
-      );
-      // Swapped at peak displacement, where the glyphs are illegible.
-      const shown = e < 0.5 ? idx : (idx + 1) % ws.length;
-      if (shown !== shownLast) {
-        shownLast = shown;
-        paint(shown);
-      }
+      if (cutting) return;
+      cutting = true;
+      /* prev comes from the CLOCK, not from the last beat: the clock is
+         the authority on which word is standing, so state that has
+         drifted (a remount, a changed study) corrects itself on the next
+         cut rather than staying wrong. */
+      setBeat((b) => ({
+        prev: idx,
+        cur: (idx + 1) % n,
+        fx: TY_FX[b.n % TY_FX.length],
+        n: b.n + 1,
+      }));
     });
-  }, [specKey, meltId]);
+  }, [specKey]);
 
   /* ── the elements row: the shape, repeating ────────────────────────
      Each turns at its own rate from its own start angle, so the three
@@ -603,11 +720,19 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
                 </span>
               ))}
             </span>
-            <span className={styles.word} ref={typeRef} />
-            <MeltFilter id={meltId} dispRef={typeDispRef} />
+            {/* the word still standing, and the one arriving over it.
+                Both are always mounted; only the top one carries a cut,
+                and its key is the beat number so React remounts it and
+                the CSS animation restarts. */}
+            <SpecimenLayer step={steps[beat.prev % steps.length]} fx={null} />
+            <SpecimenLayer
+              key={beat.n}
+              step={steps[beat.cur % steps.length]}
+              fx={beat.fx}
+            />
           </span>
-          <span className={styles.cap} ref={typeCapRef}>
-            {steps[0].cap ?? data.fonts[0].role}
+          <span className={styles.cap}>
+            {steps[beat.cur % steps.length].cap ?? data.fonts[0].role}
           </span>
         </span>
       ),

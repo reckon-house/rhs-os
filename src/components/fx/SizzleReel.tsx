@@ -101,7 +101,10 @@ const CSS = `
 }
 `;
 
-function useSizzleStyles() {
+/** Inject the reel's stylesheet. Exported because the Typeface specimen in
+ *  PressingSystemIndex cuts type with these same classes and may be the only
+ *  thing on the page using them — the sheet has to arrive without a reel. */
+export function useSizzleStyles() {
   useEffect(() => {
     if (document.getElementById(STYLE_ID)) return;
     const el = document.createElement("style");
