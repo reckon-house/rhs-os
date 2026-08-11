@@ -160,7 +160,10 @@ function Frame({
    *  as one gesture with two beats rather than two shutters at once */
   lag: string;
 }) {
-  const dim = imageDimensions[project.image];
+  // strip any ?v= cache-bust before the lookup — the registry is keyed by
+  // the clean path, while a project.image may carry a version query so a
+  // recropped thumbnail defeats the immutable cache.
+  const dim = imageDimensions[project.image.split("?")[0]];
   const ar = dim ? `${dim[0]} / ${dim[1]}` : "1";
   return (
     <Link

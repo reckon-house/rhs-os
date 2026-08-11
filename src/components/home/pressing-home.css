@@ -34,11 +34,19 @@
   :root {
     --paper: #FFFFFF;
     --ink: #000000;
-    --lbl: 10px;
+    /* The small-type tokens scale with the viewport the way the
+       statement does, rather than sitting at one fixed px. The captions
+       under the thumbnails and the whole left rail read these, so the
+       secondary type shrinks on a narrow screen instead of staying
+       laptop-sized next to copy that has already come down. Max holds at
+       the old fixed value, so desktop is unchanged; the floor is the
+       mobile size. --lbl barely travels on purpose — a 10px label has
+       nowhere to shrink to and stay legible. */
+    --lbl: clamp(9px, 0.75vw, 10px);
     --lbl-track: 0.04em;
     --lbl-weight: 500;
-    --note: 16px;
-    --cap: 11px;
+    --note: clamp(12px, 1.2vw, 16px);
+    --cap: clamp(10px, 0.82vw, 11px);
     /* --pp-r in globals.css, which is what PressingIndex reads through
        --ix-r. One radius for every framed asset on the site. */
     --r: 16px;
