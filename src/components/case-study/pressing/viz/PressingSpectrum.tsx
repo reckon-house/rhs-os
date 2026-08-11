@@ -2,6 +2,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape dots — conforms to lab/viz-system.html
+ *
  * PressingSpectrum — the pressing skin for `cabin-midcentury-spectrum`,
  * and the exemplar for the drop-line field shape (VIZ-PASS.md).
  *
@@ -102,12 +104,12 @@ export function PressingSpectrum() {
               <g key={e.name}>
                 <line
                   x1={x} y1={up ? AXIS_Y - 7 : AXIS_Y + 7} x2={x} y2={yEnd}
-                  stroke={isAcc ? "var(--pv-acc)" : "var(--pp-ink)"}
-                  strokeOpacity={isAcc ? 0.8 : 0.14}
+                  stroke="var(--pv-ink)"
+                  strokeWidth="var(--pv-fine)"
                 />
                 <circle
-                  cx={x} cy={AXIS_Y} r={isAcc ? 4 : 3}
-                  fill={isAcc ? "var(--pv-acc)" : "var(--pp-ink)"}
+                  cx={x} cy={AXIS_Y} r={4}
+                  fill="var(--pv-ink)"
                 />
                 {/* Rotated mono label, reading away from the axis. The
                     class fill (grey) yields to the inline style on the
@@ -119,7 +121,7 @@ export function PressingSpectrum() {
                   textAnchor={up ? "start" : "end"}
                   dominantBaseline="middle"
                   className={styles.schemNum}
-                  style={isAcc ? { fill: "var(--pv-acc)" } : undefined}
+                  style={isAcc ? { fontWeight: 700 } : undefined}
                 >
                   {e.name}
                 </text>

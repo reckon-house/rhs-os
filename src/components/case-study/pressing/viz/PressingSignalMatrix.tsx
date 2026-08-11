@@ -3,7 +3,19 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape dots — conforms to lab/viz-system.html
+ *
  * PressingSignalMatrix — the pressing skin for `ai-heatmap`.
+ *
+ * MATERIAL DIFFERENCE, named as the rule asks: the spec's dot matrix
+ * carries PRESENCE in exactly two sizes, a small point for a slot and a
+ * large disc for a hit. This data is not presence — it is forty
+ * continuous signal indices — and two sizes would throw all forty away.
+ * So the mark is the spec's dot and the SIZE stays proportional. Radius
+ * scales with the square root of the value, which is the correction the
+ * square version needed anyway: a mark read as area must scale as area,
+ * and side-proportional squares (like radius-proportional circles)
+ * overstate a large value against a small one.
  *
  * Forty numbers, forty marks. One square per retailer/category cell,
  * its side proportional to the authored signal index, on a field of
@@ -60,7 +72,7 @@ export function PressingSignalMatrix({ section }: { section: AIHeatmapSection })
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
           role="img"
-          aria-label={`Competitive signal across ${categories.length} categories for ${competitors.length} retailers. Each square is sized to its signal index. The strongest is ${competitors[accR]} in ${categories[accC]}.`}
+          aria-label={`Competitive signal across ${categories.length} categories for ${competitors.length} retailers. Each dot is sized to its signal index. The strongest is ${competitors[accR]} in ${categories[accC]}.`}
         >
           {/* Category labels, along the top. */}
           {categories.map((cat, c) => (
@@ -70,7 +82,7 @@ export function PressingSignalMatrix({ section }: { section: AIHeatmapSection })
               y={TOP - MAX_SIDE / 2 - 26}
               textAnchor="middle"
               className={styles.schemLbl}
-              style={c === accC ? { fill: "var(--pv-acc)" } : undefined}
+
             >
               {cat.toUpperCase()}
             </text>
@@ -84,31 +96,25 @@ export function PressingSignalMatrix({ section }: { section: AIHeatmapSection })
                     kit: it aligns the eye and says nothing else. */}
                 <line
                   x1={LEFT - 24} y1={y} x2={W - RIGHT} y2={y}
-                  stroke="var(--pp-ink)" strokeOpacity="0.08"
+                  stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
                 />
                 <text
                   x={LEFT - 44} y={y}
                   textAnchor="end" dominantBaseline="middle"
                   className={styles.schemLbl}
-                  style={r === accR ? { fill: "var(--pv-acc)" } : undefined}
                 >
                   {name.toUpperCase()}
                 </text>
 
-                {data[r].map((v, c) => {
-                  const side = px(MAX_SIDE * v);
-                  const isAcc = r === accR && c === accC;
-                  return (
-                    <rect
-                      key={c}
-                      x={px(cx(c) - side / 2)}
-                      y={px(y - side / 2)}
-                      width={side}
-                      height={side}
-                      fill={isAcc ? "var(--pv-acc)" : "var(--pp-ink)"}
-                    />
-                  );
-                })}
+                {data[r].map((v, c) => (
+                  <circle
+                    key={c}
+                    cx={cx(c)}
+                    cy={y}
+                    r={px((MAX_SIDE / 2) * Math.sqrt(Math.max(0, v)))}
+                    fill="var(--pv-ink)"
+                  />
+                ))}
               </g>
             );
           })}
