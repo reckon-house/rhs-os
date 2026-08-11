@@ -130,7 +130,14 @@ const ELEM = [
    stylesheet; they are the same measurement seen from two sides. */
 const CAP_ROOM = 22;
 
-type Step = { text: string; family: string; weight: number; cap?: string };
+type Step = {
+  text: string;
+  /** the CSS stack to SET it in — not the face's display name */
+  family: string;
+  weight: number;
+  italic?: boolean;
+  cap?: string;
+};
 
 /**
  * One layer of the specimen: a word, optionally arriving on one of the
@@ -143,11 +150,21 @@ type Step = { text: string; family: string; weight: number; cap?: string };
  * BeatLayer's own branches verbatim; the only thing changed is what sits
  * inside a strip, a span of type rather than a slice of photograph.
  */
-function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
-  const face: CSSProperties = {
-    fontFamily: `"${step.family}", serif`,
+/* A study may author a bare family name ("Northwest") or a whole stack
+   ("'Caslon', 'Adobe Caslon Pro', serif"). Quoting the second would
+   make it one absurd family name and drop the study straight to the
+   fallback, so only a bare name gets quoted. */
+function faceStyle(step: Step): CSSProperties {
+  const stack = /[,'"]/.test(step.family) ? step.family : `"${step.family}"`;
+  return {
+    fontFamily: `${stack}, serif`,
     fontWeight: step.weight,
+    fontStyle: step.italic ? "italic" : undefined,
   };
+}
+
+function SpecimenLayer({ step, fx }: { step: Step; fx: TyFx | null }) {
+  const face = faceStyle(step);
   const d = { "--d": `${TY_SWAP}ms` } as CSSProperties;
 
   if (fx === "pinch") {
@@ -253,7 +270,19 @@ export interface SystemLedgerData {
   /** the setup paragraphs, in reading order */
   intro: string[];
   colors: { name: string; hex: string }[];
-  fonts: { name: string; role: string; weights?: number[] }[];
+  /** name is what the face is CALLED; family is what to SET it in. They
+      are different strings in 11 of 13 studies — "Jost ExtraBold" is a
+      name, 'Jost' at 800 is the style — so a specimen that sets the name
+      renders in the fallback serif and proves nothing. */
+  fonts: {
+    name: string;
+    role: string;
+    weights?: number[];
+    family?: string;
+    weight?: number;
+    italic?: boolean;
+    sampleText?: string;
+  }[];
   /** words the type specimen cycles, one per weight step */
   specimenWords?: string[];
   /** the identity's repeating geometric element */
@@ -277,7 +306,19 @@ type LedgerFields = {
   introText?: string;
   philosophyText?: string;
   colors?: { name: string; hex: string }[];
-  fonts?: { name: string; role: string; weights?: number[] }[];
+  /** name is what the face is CALLED; family is what to SET it in. They
+      are different strings in 11 of 13 studies — "Jost ExtraBold" is a
+      name, 'Jost' at 800 is the style — so a specimen that sets the name
+      renders in the fallback serif and proves nothing. */
+  fonts?: {
+    name: string;
+    role: string;
+    weights?: number[];
+    family?: string;
+    weight?: number;
+    italic?: boolean;
+    sampleText?: string;
+  }[];
   specimenWords?: string[];
   elements?: { label: string; caption: string; sides: number };
   logoConstructionImage?: string;
@@ -307,6 +348,10 @@ export function toLedger(
       name: f.name,
       role: f.role,
       weights: f.weights,
+      family: f.family,
+      weight: f.weight,
+      italic: f.italic,
+      sampleText: f.sampleText,
     })),
     specimenWords: anyS.specimenWords,
     elements: anyS.elements,
@@ -551,26 +596,36 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
        stacking specimens above it. The caption follows each face's
        authored role. */
   const cuts = data.fonts[0]?.weights ?? WEIGHT_LADDER;
-  const steps: Step[] =
-    words.length
-      ? words.map((w, i) => ({
-          text: w,
-          family: data.fonts[0].name,
-          weight: cuts[i % cuts.length],
-        }))
-      : faces.map((f) => ({
-          text: f.name,
-          family: f.name,
-          weight: 400,
-          cap: f.role,
-        }));
+  /* family falls back to name, because two studies (A.R.C., Ivy Park)
+     name their face with its actual CSS family and author no separate
+     stack. Everywhere else the two differ and the stack is the one that
+     makes the specimen evidence rather than decoration. */
+  const stackOf = (f: SystemLedgerData["fonts"][number]) => f.family ?? f.name;
+  const steps: Step[] = words.length
+    ? words.map((w, i) => ({
+        text: w,
+        family: stackOf(data.fonts[0]),
+        weight: cuts[i % cuts.length],
+        italic: data.fonts[0].italic,
+      }))
+    : faces.map((f) => ({
+        text: f.sampleText ?? f.name,
+        family: stackOf(f),
+        /* the authored cut, so Cosmo's four Jost weights read as four
+           weights rather than as one word printed four times. */
+        weight: f.weight ?? 400,
+        italic: f.italic,
+        cap: f.role,
+      }));
   /* The steps, packed to a primitive so the effect below can depend on
      their VALUES rather than on a fresh array identity every render.
      SEP is escaped rather than typed: a literal control character in the
      source is invisible, and an invisible separator that stops matching
      its own split is exactly the bug this once shipped. */
   const specKey = steps
-    .map((s) => [s.text, s.family, s.weight, s.cap ?? ""].join(SEP))
+    .map((s) =>
+      [s.text, s.family, s.weight, s.italic ? "i" : "", s.cap ?? ""].join(SEP)
+    )
     .join("|");
 
   /* The specimen's clock. It only ever announces a CUT: which step is
@@ -711,10 +766,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
                 <span
                   key={`${s.text}-${s.family}`}
                   className={styles.wordGhost}
-                  style={{
-                    fontFamily: `"${s.family}", serif`,
-                    fontWeight: s.weight,
-                  }}
+                  style={faceStyle(s)}
                 >
                   {s.text}
                 </span>
