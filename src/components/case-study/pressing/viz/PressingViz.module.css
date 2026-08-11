@@ -259,13 +259,8 @@
 .weeks {
   position: relative;
 }
-.gridline {
-  position: absolute;
-  top: 0;
-  bottom: 34px;
-  width: 1px;
-  background: var(--pv-faint);
-}
+/* The week cage is gone — the system draws no grids through data. The
+   ruler below carries the scale alone, which is what a ruler is for. */
 .ruler {
   position: relative;
   height: 34px;
@@ -273,19 +268,23 @@
 .rulerBase {
   position: absolute;
   top: 0;
-  height: 1px;
-  background: var(--pv-hair);
+  height: var(--pv-fine);
+  background: var(--pv-ink);
 }
+/* the stretch past the build: the scale kept counting, the work
+   stopped — a remainder, which is a data state, which is grey */
+.rulerRunOn {
+  background: var(--pv-grey);
+}
+/* WEEK ticks only, at fine full ink. The old day ticks sat at 8%
+   opacity, and a mark you can barely see is a mark the system says not
+   to draw. Minor divisions claimed nothing; now they say nothing. */
 .tick {
   position: absolute;
   bottom: 100%;
-  width: 1px;
-  height: 5px;
-  background: var(--pv-faint);
-}
-.tickWk {
+  width: var(--pv-fine);
   height: 9px;
-  background: var(--pv-hair);
+  background: var(--pv-ink);
 }
 .wknum {
   position: absolute;
@@ -295,35 +294,59 @@
 }
 .phase {
   position: relative;
-  height: 44px;
+  height: 52px;
 }
+/* The phase is a STICK lying down: the heavy round-capped mark, the
+   same object the vertical bars use. Width animates for arrival — a
+   div cannot dash-draw, and transitioning width grows the bar without
+   thinning it the way a scaleX would. */
 .phaseBar {
   position: absolute;
   top: 50%;
-  height: 2px;
+  height: var(--pv-heavy);
+  transform: translateY(-50%);
+  border-radius: 999px;
   background: var(--pp-ink);
+  transition: width 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+  transition-delay: var(--lag, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .phaseBar {
+    transition: none;
+  }
 }
 .phaseLbl {
   position: absolute;
   top: 50%;
-  transform: translateY(-160%);
+  transform: translateY(-190%);
   white-space: nowrap;
 }
 .phaseWks {
   position: absolute;
   top: 50%;
-  transform: translate(10px, -50%);
+  transform: translate(12px, -50%);
   white-space: nowrap;
   color: var(--pv-grey);
 }
+/* the launch: a heavy ink dot at the end of the last stick — the one
+   moment the timeline exists to reach. The accent it wore is retired. */
 .launch {
   position: absolute;
   top: 50%;
-  width: 6px;
-  height: 6px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  transform: translate(-3px, -2px);
-  background: var(--pv-acc);
+  transform: translate(-6px, -50%);
+  background: var(--pp-ink);
+}
+/* the reading head's footprint here: phase names rest grey and lift to
+   ink as the cursor passes — labels move, marks never do */
+.walk {
+  color: var(--pv-grey);
+  transition: color 0.32s ease;
+}
+.walkOn {
+  color: var(--pp-ink);
 }
 .tlHead {
   display: flex;

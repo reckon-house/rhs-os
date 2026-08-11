@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef, type CSSProperties } from "react";
 import type { DevTimelineSection } from "@/lib/types";
+import { useVizArrival, useReadingHead } from "@/lib/viz-motion";
 import styles from "./PressingViz.module.css";
 
 /** Weeks the ruler keeps counting past the last phase. The scale
@@ -6,20 +10,28 @@ import styles from "./PressingViz.module.css";
 const RUN_ON = 2;
 
 /**
- * The weeks — the pressing skin for `dev-timeline`.
+ * @shape sticks — conforms to lab/viz-system.html
  *
- * One ink rule per phase stepping down the rows, and a tick ruler
- * along the bottom the way an instrument carries its scale: day ticks
- * at the faintest grey, week ticks a step darker, mono numerals under
- * the baseline. Only the ruler is drawn at day pitch — minor divisions
- * are what make a ruler a ruler, and they claim nothing about the
- * work. The launch is the single accent dot, at the end of the last
- * rule.
+ * The weeks — the pressing skin for `dev-timeline`, redrawn as
+ * horizontal floating STICKS: each phase is the heavy round-capped mark
+ * spanning its start to its end on the week scale, the same object the
+ * vertical bars use, lying down. One fine-ink ruler along the bottom
+ * carries the scale alone — the week cage that used to run through the
+ * rows is gone (no grids through data), and the old day ticks with it:
+ * a tick at 8% opacity is a mark the system says not to draw. The
+ * stretch past the build keeps its baseline in grey, because a scale
+ * that kept counting after the work stopped is a remainder, and a
+ * remainder is a data state.
  *
- * The classic sage colour ramp is gone: phases are sequential, so
- * position already encodes everything the ramp pretended to. Spans
- * parse out of the authored `weeks` strings ("2 wks") and run
- * consecutively, which is how the study describes the build. The
+ * Arrival replays the schedule: each stick's delay is proportional to
+ * its own start week, so the build assembles in the order it was built,
+ * compressed. The reading head walks the five phase names — they rest
+ * grey and lift to ink as the cursor passes; the sticks never move.
+ * The launch dot is ink now, not accent, and grew to earn its place as
+ * the one moment the timeline exists to reach.
+ *
+ * Spans still parse out of the authored `weeks` strings ("2 wks") and
+ * run consecutively, which is how the study describes the build. The
  * canvas keeps the intentional horizontal scroll on mobile.
  */
 export function PressingDevTimeline({
@@ -27,6 +39,10 @@ export function PressingDevTimeline({
 }: {
   section: DevTimelineSection;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(ref);
+  const head = useReadingHead(ref, section.phases.length);
+
   const spans = section.phases.map((p) => {
     const n = parseFloat(p.weeks);
     return Number.isFinite(n) && n > 0 ? n : 1;
@@ -42,7 +58,7 @@ export function PressingDevTimeline({
   const pct = (w: number) => ((w / SPAN) * 100).toFixed(3) + "%";
 
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={ref}>
       <div className={styles.tlHead}>
         <span className={styles.lbl}>{section.label}</span>
         <span className={`${styles.lbl} ${styles.grey}`}>
@@ -53,24 +69,24 @@ export function PressingDevTimeline({
       <div className={styles.scroller} data-lenis-prevent-touch>
         <div className={styles.wide}>
           <div className={styles.weeks}>
-            {/* faint week verticals through the rows, so a rule's span
-                can be read against the scale without following it down */}
-            {Array.from({ length: total + 1 }, (_, w) => (
-              <div
-                key={w}
-                className={styles.gridline}
-                style={{ left: pct(w) }}
-              />
-            ))}
-
             {phases.map((p, i) => (
               <div className={styles.phase} key={p.name}>
                 <span
                   className={styles.phaseBar}
-                  style={{ left: pct(p.start), width: pct(p.end - p.start) }}
+                  style={
+                    {
+                      left: pct(p.start),
+                      width: drawn ? pct(p.end - p.start) : "0%",
+                      /* the schedule replayed: later phases start their
+                         draw later, in proportion */
+                      "--lag": `${((p.start / total) * 0.8).toFixed(2)}s`,
+                    } as CSSProperties
+                  }
                 />
                 <span
-                  className={`${styles.lbl} ${styles.phaseLbl}`}
+                  className={`${styles.lbl} ${styles.phaseLbl} ${styles.walk} ${
+                    head === i ? styles.walkOn : ""
+                  }`}
                   style={{ left: pct(p.start) }}
                 >
                   {p.name}
@@ -82,41 +98,25 @@ export function PressingDevTimeline({
                   {p.weeks}
                 </span>
                 {i === phases.length - 1 ? (
-                  <span
-                    className={styles.launch}
-                    style={{ left: pct(p.end) }}
-                  />
+                  <span className={styles.launch} style={{ left: pct(p.end) }} />
                 ) : null}
               </div>
             ))}
 
-            {/* the ruler: baseline, day ticks, week ticks, numerals.
-                The stretch past the build keeps only its ticks and
-                fades to the faintest step. */}
+            {/* the ruler: fine baseline, week ticks, numerals — and the
+                run-on in grey, a scale outliving its subject */}
             <div className={styles.ruler}>
               <div
                 className={styles.rulerBase}
                 style={{ left: 0, width: pct(total) }}
               />
               <div
-                className={styles.rulerBase}
-                style={{
-                  left: pct(total),
-                  width: pct(RUN_ON),
-                  background: "var(--pv-faint)",
-                }}
+                className={`${styles.rulerBase} ${styles.rulerRunOn}`}
+                style={{ left: pct(total), width: pct(RUN_ON) }}
               />
-              {Array.from({ length: SPAN * 7 + 1 }, (_, d) => {
-                const week = d % 7 === 0;
-                const past = d / 7 > total;
-                return (
-                  <i
-                    key={d}
-                    className={`${styles.tick} ${week && !past ? styles.tickWk : ""}`}
-                    style={{ left: pct(d / 7) }}
-                  />
-                );
-              })}
+              {Array.from({ length: total + 1 }, (_, w) => (
+                <i key={w} className={styles.tick} style={{ left: pct(w) }} />
+              ))}
               {Array.from({ length: total }, (_, w) => (
                 <span
                   key={w}
