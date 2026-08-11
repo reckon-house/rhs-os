@@ -187,11 +187,18 @@
   letter-spacing: -0.02em;
   white-space: nowrap;
 }
+/* One ghost per step, overlapped in a single grid cell so the box
+   takes the WIDEST step's size. A lone ghost cannot reserve for steps
+   that change family — the same string is a different width in a
+   different face — so every step sizes itself and the tallest/widest
+   wins. Each ghost carries its own family and weight inline. */
+.ghostStack {
+  display: grid;
+}
 .wordGhost {
+  grid-area: 1 / 1;
   visibility: hidden;
-  /* the heaviest cut the ladder can reach, so the reservation holds at
-     every step rather than only at the light end */
-  font-weight: 800;
+  white-space: nowrap;
 }
 .word {
   position: absolute;

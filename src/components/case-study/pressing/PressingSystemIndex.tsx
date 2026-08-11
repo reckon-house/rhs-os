@@ -210,6 +210,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const swatchRef = useRef<SVGPathElement>(null);
   const swatchCapRef = useRef<HTMLSpanElement>(null);
   const typeRef = useRef<HTMLSpanElement>(null);
+  const typeCapRef = useRef<HTMLSpanElement>(null);
   const typeDispRef = useRef<SVGFEDisplacementMapElement | null>(null);
   const elemRef = useRef<SVGSVGElement>(null);
   const meltId = `psi-melt-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -395,25 +396,62 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
      inside one renders soft, and a specimen has to be sharp at rest;
      this is RevealHeadline's lesson, not a fresh discovery. */
   const words = data.specimenWords ?? [];
-  const wordKey = words.join("|");
-  const faceName = data.fonts[0]?.name;
-  const weightKey = (data.fonts[0]?.weights ?? WEIGHT_LADDER).join("|");
+  /* One entry per FACE, not per weight — deduped here because both the
+     specimen driver and the row builder need the list. */
+  const faces = (() => {
+    const seen = new Set<string>();
+    return data.fonts.filter((f) =>
+      seen.has(f.name) ? false : (seen.add(f.name), true)
+    );
+  })();
+  /* THE STEPS the specimen cycles. Two sources, one mechanism:
+     - a study that authored specimenWords gets the campaign's own words
+       stepping through the first face's cuts (Ivy's treatment);
+     - a study with several faces and no words gets the FACE NAMES
+       themselves, each set in its own family, so the one box beside the
+       label melts through the whole palette of voices instead of
+       stacking specimens above it. The caption follows each face's
+       authored role. */
+  const cuts = data.fonts[0]?.weights ?? WEIGHT_LADDER;
+  const steps: { text: string; family: string; weight: number; cap?: string }[] =
+    words.length
+      ? words.map((w, i) => ({
+          text: w,
+          family: data.fonts[0].name,
+          weight: cuts[i % cuts.length],
+        }))
+      : faces.map((f) => ({
+          text: f.name,
+          family: f.name,
+          weight: 400,
+          cap: f.role,
+        }));
+  const specKey = steps
+    .map((s) => `${s.text}${s.family}${s.weight}${s.cap ?? ""}`)
+    .join("|");
 
   useEffect(() => {
     const el = typeRef.current;
     if (!el) return;
-    const ws = wordKey ? wordKey.split("|") : [];
-    const cuts = weightKey.split("|").map(Number);
+    const ws = specKey
+      ? specKey.split("|").map((row) => {
+          const [text, family, weight, cap] = row.split("");
+          return { text, family, weight, cap };
+        })
+      : [];
     if (ws.length === 0) return;
 
+    const cap = typeCapRef.current;
     const paint = (i: number) => {
-      el.textContent = ws[i];
-      el.style.fontWeight = String(cuts[i % cuts.length]);
+      el.textContent = ws[i].text;
+      el.style.fontFamily = `"${ws[i].family}", serif`;
+      el.style.fontWeight = ws[i].weight;
+      if (cap && ws[i].cap) cap.textContent = ws[i].cap;
     };
     paint(0);
     el.style.opacity = "1";
 
-    // One word has nowhere to step to.
+    // One step has nowhere to melt to.
     if (reducedMotion() || ws.length < 2) return;
 
     const span = TY_HOLD + TY_SWAP;
@@ -461,7 +499,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
         paint(shown);
       }
     });
-  }, [wordKey, weightKey, meltId]);
+  }, [specKey, meltId]);
 
   /* ── the elements row: the shape, repeating ────────────────────────
      Each turns at its own rate from its own start angle, so the three
@@ -533,44 +571,45 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
     });
   }
 
-  if (data.fonts.length) {
-    /* One entry per FACE, not per weight: three rows for two families
-       reads as three typefaces at a glance. */
-    const seen = new Set<string>();
-    const faces = data.fonts.filter((f) =>
-      seen.has(f.name) ? false : (seen.add(f.name), true)
-    );
+  if (steps.length) {
+    /* ONE box beside the label, whatever the study holds. A study that
+       authored specimenWords gets the face speaking them; a study with
+       several faces gets the face names melting through their own
+       families — the treatment that used to belong to Ivy alone.
+       Several faces set side by side wrapped on narrow measures and
+       STACKED ABOVE the label, which is the layout this replaces.
+
+       The box reserves the widest step so no swap can pull the row in:
+       one ghost PER STEP, each in its own family and weight, stacked in
+       one grid cell — a single ghost cannot size a box whose steps
+       change family, because the same string is a different width in a
+       different face. */
     rows.push({
       label: "Typeface",
-      body: words.length ? (
-        /* A study that named the words the campaign set gets the face
-           SPEAKING them rather than spelling its own name — the specimen
-           and the voice in one box. The box is reserved at the widest
-           word so a short one cannot pull the row in. */
+      body: (
         <span className={styles.markStack}>
-          <span
-            className={styles.wordBox}
-            style={{ fontFamily: `"${faceName}", serif` }}
-          >
-            <span className={styles.wordGhost} aria-hidden="true">
-              {words.reduce((a, b) => (b.length > a.length ? b : a), "")}
+          <span className={styles.wordBox}>
+            <span className={styles.ghostStack} aria-hidden="true">
+              {steps.map((s) => (
+                <span
+                  key={`${s.text}-${s.family}`}
+                  className={styles.wordGhost}
+                  style={{
+                    fontFamily: `"${s.family}", serif`,
+                    fontWeight: s.weight,
+                  }}
+                >
+                  {s.text}
+                </span>
+              ))}
             </span>
             <span className={styles.word} ref={typeRef} />
             <MeltFilter id={meltId} dispRef={typeDispRef} />
           </span>
-          <span className={styles.cap}>{faces[0].role}</span>
+          <span className={styles.cap} ref={typeCapRef}>
+            {steps[0].cap ?? data.fonts[0].role}
+          </span>
         </span>
-      ) : (
-        <>
-          {faces.map((f) => (
-            <span key={f.name}>
-              <span className={styles.specimen} style={{ fontFamily: `"${f.name}", serif` }}>
-                {f.name}
-              </span>
-              <span className={styles.cap}>{f.role}</span>
-            </span>
-          ))}
-        </>
       ),
     });
   }
