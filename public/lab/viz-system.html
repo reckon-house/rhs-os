@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RHS chart system — ink on paper</title>
+<style>
+  /* ── THE SHEET ────────────────────────────────────────────────────
+     The chart system's design spec, drawn once at full size so it can
+     be argued with. Tune HERE, then port the values into
+     PressingViz.module.css and the kit components.
+
+     THE CONSTITUTION (agreed 2026-08-10):
+       · one ink, one paper — hierarchy by SIZE, never by hue
+       · FINE line ~2px at FULL ink: tracks, rings, baselines. It
+         recedes by being thin, never by being grey. Nothing wispy —
+         the Rams rule. Ghosted hairlines are dead as structure.
+       · HEAVY mark 4–5x fine: the datum. Round caps.
+       · grey (~45%) only for SECONDARY DATA STATES and captions
+       · texture (stripes, dots) carries volume; solid ink carries
+         the primary datum
+       · one emphasis device: the black pill on a single label
+       · accent colour: none. Pure ink. (Colour appears only where
+         hue IS the datum — palette charts — on ink bones.)
+       · escape hatch: if a chart truly cannot be read without a
+         ruler, ONE set of fine lines at 10% — and it must be argued
+         in the component's comment.
+  */
+  :root {
+    --paper: #FFFFFF;
+    --ink: #000000;
+    --grey: rgba(0, 0, 0, 0.45);
+    --cap: 11px;
+    --lbl: 10px;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: #EDEBE8; }
+  body { font-family: var(--sans); color: var(--ink);
+    -webkit-font-smoothing: antialiased; padding: 48px 16px 120px; }
+  .sheet { background: var(--paper); max-width: 1240px; margin: 0 auto;
+    padding: clamp(40px, 6vw, 96px); }
+  h1 { font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em;
+    line-height: 1.05; margin-bottom: 10px; }
+  .sub { font-size: 14px; color: var(--grey); max-width: 62ch; line-height: 1.5; }
+  .law { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px 40px; margin: 40px 0 8px; padding-top: 24px;
+    border-top: 2px solid var(--ink); }
+  .law div { font-size: 13px; line-height: 1.45; }
+  .law b { display: block; font-size: var(--lbl); letter-spacing: 0.04em;
+    font-weight: 500; color: var(--grey); text-transform: uppercase;
+    margin-bottom: 3px; }
+  section { margin-top: clamp(56px, 7vw, 96px); }
+  .shead { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 24px; flex-wrap: wrap; border-top: 2px solid var(--ink);
+    padding-top: 14px; margin-bottom: 6px; }
+  .shead h2 { font-size: 20px; letter-spacing: -0.01em; }
+  .shead .n { font-size: var(--lbl); letter-spacing: 0.04em; font-weight: 500;
+    color: var(--grey); }
+  .rules { font-size: 13px; color: var(--grey); line-height: 1.5;
+    max-width: 74ch; margin-bottom: 28px; }
+  .rules b { color: var(--ink); font-weight: 600; }
+  svg { display: block; width: 100%; height: auto; }
+  .src { font-size: var(--cap); color: var(--grey); margin-top: 14px; }
+  /* every specimen shares one type voice */
+  text { font-family: var(--sans); }
+  .tl { font-size: 10px; letter-spacing: 0.06em; font-weight: 500;
+    fill: var(--grey); }
+  .tn { font-size: 15px; font-weight: 600; fill: var(--ink);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .tp { font-size: 10px; letter-spacing: 0.06em; font-weight: 600;
+    fill: var(--paper); }
+
+  /* ── MOTION ───────────────────────────────────────────────────────
+     Two tiers, and the second one is the rule that keeps this from
+     becoming a fidget.
+
+     TIER 1 · ARRIVAL. Every chart draws itself once, in the direction
+     its own logic runs: arcs sweep from twelve o'clock, sticks grow off
+     the baseline, a stripe mass fills and THEN its cap lands, dots put
+     down the empty grid before the hits. Same curve as the rest of the
+     site (1.15s, the method-grid rule draw). It happens once and stops.
+
+     TIER 2 · THE READING HEAD. A slow travelling emphasis that steps
+     item to item and repeats for as long as the chart is on screen —
+     the movement for someone who stays. It is allowed ONLY on a chart
+     with a series worth walking; a single-datum chart has nothing to
+     step through and gets arrival alone.
+
+     The head moves LABELS, never marks. Lifting a bar or thickening an
+     arc would misstate the data to make a point about attention, and
+     the numbers are the one thing on this page that cannot move. So the
+     label lifts grey → ink and everything drawn holds still.
+
+     The authored pill is immune: it is an editorial claim about which
+     datum matters, so a passing cursor does not get to borrow it. */
+  .mo { transition: stroke-dashoffset 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+    transition-delay: var(--lag, 0s); }
+  .dot { transform: scale(0); transform-origin: center; transform-box: fill-box;
+    transition: transform 0.5s cubic-bezier(0.2, 0.55, 0.2, 1);
+    transition-delay: var(--lag, 0s); }
+  .go .dot { transform: scale(1); }
+  .cap { opacity: 0; transition: opacity 0.5s ease; transition-delay: var(--lag, 0s); }
+  .go .cap { opacity: 1; }
+  .tl { transition: fill 0.32s ease; }
+  .tl.read { fill: var(--ink); }
+  @media (prefers-reduced-motion: reduce) {
+    .mo, .dot, .cap { transition: none; }
+    .dot { transform: scale(1); }
+    .cap { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <h1>The chart system<br>Ink on paper</h1>
+  <p class="sub">Four shapes, one constitution. Every chart on the site is one of
+  these, drawn from the same stroke scale. Specimens below use real shipped
+  numbers only.</p>
+
+  <div class="law">
+    <div><b>Fine line · 2px full ink</b>Tracks, rings, baselines, rules.
+      Recedes by being thin, never by being grey. Nothing wispy.</div>
+    <div><b>Heavy mark · 9px, round caps</b>The datum. Four to five times the
+      fine weight. Solid ink, no outlines, no fills-with-borders.</div>
+    <div><b>Grey · 45%, data only</b>Second phases, remainders, captions.
+      Structure never fades — grey is a data state, not a background voice.</div>
+    <div><b>One emphasis · the pill</b>A single label may sit reversed in a
+      black pill. That is the whole emphasis kit. No accent colour anywhere.</div>
+  </div>
+
+  <!-- ── 01 · RINGS ─────────────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Rings — the circle form</h2><span class="n">01 · REPLACES EVERY WHEEL, DONUT, PIE, BUBBLE</span></div>
+    <p class="rules">Concentric <b>fine tracks</b>, each running the full circle.
+      The value is the <b>same circle drawn heavy</b> over an arc — share of the
+      whole, start fixed at 12 o'clock, clockwise. Hub stays empty or holds one
+      stat. A second phase on the same ring is grey; two greys maximum, never a
+      second hue. Read outside-in, largest first.</p>
+    <svg viewBox="0 0 1100 560" role="img" aria-label="Ring specimen: eight concentric tracks, arc length is each channel's share of 116 assets">
+      <g transform="translate(300 280)">
+        <!-- fine tracks, full ink -->
+        <circle cx="0" cy="0" r="240" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="212" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="184" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="156" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="128" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="100" fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="72"  fill="none" stroke="#000" stroke-width="2"/>
+        <circle cx="0" cy="0" r="44"  fill="none" stroke="#000" stroke-width="2"/>
+        <!-- heavy arcs = share of 116, from 12 o'clock -->
+        <g transform="rotate(-90)">
+          <circle cx="0" cy="0" r="240" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="546.1 962"/>
+          <circle cx="0" cy="0" r="212" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="275.6 1057"/>
+          <circle cx="0" cy="0" r="184" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="179.4 977"/>
+          <circle cx="0" cy="0" r="156" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="101.4 879"/>
+          <circle cx="0" cy="0" r="128" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="55.5 749"/>
+          <circle cx="0" cy="0" r="100" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="32.5 596"/>
+          <circle cx="0" cy="0" r="72"  fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="19.5 433"/>
+          <circle cx="0" cy="0" r="44"  fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-dasharray="2.4 274"/>
+        </g>
+      </g>
+      <!-- ledger right: numeral leads, name follows -->
+      <g data-read>
+        <text class="tn" x="640" y="66">42</text><text class="tl" x="700" y="66">PRODUCT PAGES · 36%</text>
+        <text class="tn" x="640" y="122">24</text><text class="tl" x="700" y="122">SOCIAL ASSETS · 21%</text>
+        <text class="tn" x="640" y="178">18</text><text class="tl" x="700" y="178">DIGITAL ADS · 16%</text>
+        <text class="tn" x="640" y="234">12</text><text class="tl" x="700" y="234">SITE PLACEMENTS · 10%</text>
+        <text class="tn" x="640" y="290">8</text><text class="tl" x="700" y="290">IN-STORE DIGITAL · 7%</text>
+        <text class="tn" x="640" y="346">6</text><text class="tl" x="700" y="346">LAUNCH EMAILS · 5%</text>
+        <text class="tn" x="640" y="402">5</text><text class="tl" x="700" y="402">CMS COMPONENTS · 4%</text>
+        <text class="tn" x="640" y="458">1</text><text class="tl" x="700" y="458">SCROLLING EXPERIENCE · 1%</text>
+      </g>
+      <!-- the axis caption sits OUTSIDE data-read: the head walks data
+           rows, and a caption is not one of them -->
+      <g>
+        <line x1="640" y1="486" x2="1040" y2="486" stroke="#000" stroke-width="2"/>
+        <text class="tl" x="640" y="516">SHARE OF 116 CAMPAIGN ASSETS</text>
+      </g>
+    </svg>
+    <p class="src">Source: Ivy Park campaign, 8 channels · 116 assets (shipped in campaign-blast-radius).</p>
+  </section>
+
+  <!-- ── 02 · STICKS ────────────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Sticks — the default bar</h2><span class="n">02 · TWO POSTURES, ONE MARK</span></div>
+    <p class="rules">Bars are <b>heavy strokes, not rectangles</b> — round caps,
+      air between them, one fine baseline, no grid. <b>Grounded</b> rises from the
+      baseline; <b>floating</b> spans min to max when the value is honestly a
+      range. The one emphasis: a single label in the black pill.</p>
+    <svg viewBox="0 0 1100 470" role="img" aria-label="Stick specimen: the eight channel counts as grounded sticks">
+      <!-- grounded -->
+      <line x1="60" y1="380" x2="1040" y2="380" stroke="#000" stroke-width="2"/>
+      <g stroke="#000" stroke-width="10" stroke-linecap="round">
+        <line x1="100"  y1="373" x2="100"  y2="80"/>
+        <line x1="230"  y1="373" x2="230"  y2="209"/>
+        <line x1="360"  y1="373" x2="360"  y2="251"/>
+        <line x1="490"  y1="373" x2="490"  y2="294"/>
+        <line x1="620"  y1="373" x2="620"  y2="323"/>
+        <line x1="750"  y1="373" x2="750"  y2="337"/>
+        <line x1="880"  y1="373" x2="880"  y2="344"/>
+        <line x1="1010" y1="373" x2="1010" y2="366"/>
+      </g>
+      <g text-anchor="middle" data-read>
+        <text class="tn" x="100" y="58">42</text>
+        <text class="tn" x="230" y="187">24</text>
+        <text class="tn" x="360" y="229">18</text>
+        <text class="tn" x="490" y="272">12</text>
+        <text class="tn" x="620" y="301">8</text>
+        <text class="tn" x="750" y="315">6</text>
+        <text class="tn" x="880" y="322">5</text>
+        <text class="tn" x="1010" y="344">1</text>
+        <text class="tl" x="100" y="412">PRODUCT</text>
+        <text class="tl" x="230" y="412">SOCIAL</text>
+        <text class="tl" x="360" y="412">ADS</text>
+        <text class="tl" x="490" y="412">SITE</text>
+        <text class="tl" x="620" y="412">IN-STORE</text>
+        <text class="tl" x="750" y="412">EMAIL</text>
+        <text class="tl" x="880" y="412">CMS</text>
+        <!-- the pill: emphasis is a choice, not the maximum -->
+        <rect x="962" y="398" rx="10" ry="10" width="96" height="20" fill="#000"/>
+        <text class="tp" x="1010" y="412">SCROLLING</text>
+      </g>
+    </svg>
+    <svg viewBox="0 0 1100 400" style="margin-top:12px" role="img" aria-label="Floating stick specimen: the homepage type tokens, minimum to maximum pixel size">
+      <!-- floating: the homepage type scale, min→max px (y = 360 − v·7) -->
+      <line x1="60" y1="360" x2="1040" y2="360" stroke="#000" stroke-width="2"/>
+      <g stroke="#000" stroke-width="10" stroke-linecap="round">
+        <line x1="150" y1="297" x2="150" y2="290"/>
+        <line x1="370" y1="290" x2="370" y2="283"/>
+        <line x1="590" y1="276" x2="590" y2="248"/>
+        <line x1="810" y1="220" x2="810" y2="108"/>
+        <line x1="1030" y1="192" x2="1030" y2="52"/>
+      </g>
+      <g text-anchor="middle" data-read>
+        <text class="tn" x="150" y="270">9–10</text>
+        <text class="tn" x="370" y="263">10–11</text>
+        <text class="tn" x="590" y="228">12–16</text>
+        <text class="tn" x="810" y="88">20–36</text>
+        <text class="tn" x="1030" y="32">24–44</text>
+        <text class="tl" x="150" y="392">LABEL</text>
+        <text class="tl" x="370" y="392">CAPTION</text>
+        <text class="tl" x="590" y="392">NOTE</text>
+        <text class="tl" x="810" y="392">STATEMENT</text>
+        <text class="tl" x="1030" y="392">COVER</text>
+      </g>
+    </svg>
+    <p class="src">Sources: the same eight channel counts (grounded) · the homepage type tokens, px at narrowest to widest viewport (floating).</p>
+  </section>
+
+  <!-- ── 03 · STRIPES ───────────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Stripes — the editorial bar</h2><span class="n">03 · ONE PER STUDY, AT MOST</span></div>
+    <p class="rules">When a bar must carry <b>mass</b> rather than mark a position:
+      the value is <b>the same heavy mark as the sticks, lying down</b> — a
+      round-capped bar riding just above a panel of fine stripes. One mark,
+      two postures; only the mass is textured. The poster voice — used once
+      per study, for the hero magnitude. The shipped stepped mass (blast
+      radius) is this family's solid-ink sibling and stays.</p>
+    <svg viewBox="0 0 1100 470" role="img" aria-label="Stripe specimen: the four largest channels as stripe masses, each capped by a horizontal round-capped bar at its value">
+      <line x1="60" y1="380" x2="1040" y2="380" stroke="#000" stroke-width="2"/>
+      <!-- heights ∝ count (300 max); the cap is a horizontal stick (18px,
+           fully rounded), the mass below is round-capped stripes at a calm
+           pitch. NOT a <pattern> fill: a pattern tiles across the column
+           and clips each tile at its own edge, so round caps would come
+           out as a field of dashes. Every stripe is a real line, inset by
+           half its stroke so the caps land inside the column measure. -->
+      <g id="masses"
+         data-cols="120,80|380,209|640,251|900,294"
+         data-w="150" data-cap="18" data-gap="5"
+         data-base="380" data-pitch="10" data-stroke="3">
+        <rect x="120" y="80"  rx="9" width="150" height="18" fill="#000"/>
+        <rect x="380" y="209" rx="9" width="150" height="18" fill="#000"/>
+        <rect x="640" y="251" rx="9" width="150" height="18" fill="#000"/>
+        <rect x="900" y="294" rx="9" width="150" height="18" fill="#000"/>
+      </g>
+      <g data-read>
+        <text class="tn" x="120" y="58">42</text><text class="tl" x="158" y="58">PRODUCT PAGES</text>
+        <text class="tn" x="380" y="187">24</text><text class="tl" x="418" y="187">SOCIAL</text>
+        <text class="tn" x="640" y="229">18</text><text class="tl" x="676" y="229">ADS</text>
+        <text class="tn" x="900" y="272">12</text><text class="tl" x="936" y="272">SITE</text>
+      </g>
+    </svg>
+    <p class="src">Source: the four largest of the same eight channels — a stated subset, not a re-count.</p>
+  </section>
+
+  <!-- ── 04 · DOTS ──────────────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Dots — the matrix</h2><span class="n">04 · PRESENCE ACROSS TWO AXES</span></div>
+    <p class="rules">Rows by columns, dots in exactly <b>two sizes</b> — the small
+      dot is a slot, the large disc is a hit. Both are <b>solid ink</b>: small
+      means small, never faint. No shading between the two sizes; density is how
+      many discs, not how dark. For membership, coverage, anything true/false
+      with texture.</p>
+    <svg viewBox="0 0 1100 400" role="img" aria-label="Dot matrix specimen: which Avenir cut each ledger specimen word wears">
+      <g text-anchor="middle">
+        <text class="tl" x="500" y="52">500</text>
+        <text class="tl" x="680" y="52">600</text>
+        <text class="tl" x="860" y="52">700</text>
+        <text class="tl" x="1040" y="52">800</text>
+      </g>
+      <g text-anchor="end" data-read>
+        <text class="tl" x="360" y="104">IVY</text>
+        <text class="tl" x="360" y="152">CONFIDENCE</text>
+        <text class="tl" x="360" y="200">STRENGTH</text>
+        <text class="tl" x="360" y="248">COURAGE</text>
+        <text class="tl" x="360" y="296">POWER</text>
+        <text class="tl" x="360" y="344">EVERYBODY</text>
+      </g>
+      <g fill="#000">
+        <circle cx="500" cy="100" r="9"/><circle cx="680" cy="100" r="2.5"/><circle cx="860" cy="100" r="2.5"/><circle cx="1040" cy="100" r="2.5"/>
+        <circle cx="500" cy="148" r="2.5"/><circle cx="680" cy="148" r="9"/><circle cx="860" cy="148" r="2.5"/><circle cx="1040" cy="148" r="2.5"/>
+        <circle cx="500" cy="196" r="2.5"/><circle cx="680" cy="196" r="2.5"/><circle cx="860" cy="196" r="9"/><circle cx="1040" cy="196" r="2.5"/>
+        <circle cx="500" cy="244" r="2.5"/><circle cx="680" cy="244" r="2.5"/><circle cx="860" cy="244" r="2.5"/><circle cx="1040" cy="244" r="9"/>
+        <circle cx="500" cy="292" r="9"/><circle cx="680" cy="292" r="2.5"/><circle cx="860" cy="292" r="2.5"/><circle cx="1040" cy="292" r="2.5"/>
+        <circle cx="500" cy="340" r="2.5"/><circle cx="680" cy="340" r="9"/><circle cx="860" cy="340" r="2.5"/><circle cx="1040" cy="340" r="2.5"/>
+      </g>
+    </svg>
+    <p class="src">Source: the Ivy Park ledger's type specimen — six campaign words stepping through Avenir Next's four upright cuts, as shipped.</p>
+  </section>
+
+  <!-- ── MOTION ─────────────────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Motion</h2><span class="n">TWO TIERS · THE SECOND ONE IS RATIONED</span></div>
+    <p class="rules">Every chart on this sheet is animating. <b>Arrival</b> runs
+      once, in the direction the chart's own logic runs — arcs sweep from twelve
+      o'clock, sticks grow off the baseline, a stripe mass fills and its cap
+      lands last, dots put the empty grid down before the hits. Then it stops.
+      <b>The reading head</b> is the part that repeats: a slow cursor stepping
+      one item at a time for as long as the chart is on screen, so a reader who
+      stays is walked through the series.</p>
+    <div class="law">
+      <div><b>It moves labels, never marks</b>Lifting a bar to say "look here"
+        would misstate the number. The label goes grey → ink; everything drawn
+        holds perfectly still.</div>
+      <div><b>Only where there is a series</b>A single-datum chart has nothing
+        to walk and gets arrival alone. Rationing is what keeps a repeat from
+        becoming a fidget.</div>
+      <div><b>The pill is immune</b>It is an authored claim about which datum
+        matters. A passing cursor does not get to borrow that emphasis.</div>
+      <div><b>Off screen it stops</b>The clock releases when the chart leaves,
+        holds under reduced motion, and accumulates capped deltas so a
+        backgrounded tab never fast-forwards.</div>
+    </div>
+  </section>
+
+  <!-- ── WHAT THIS RETIRES ──────────────────────────────────────── -->
+  <section>
+    <div class="shead"><h2>Retired</h2><span class="n">ON ADOPTION</span></div>
+    <p class="rules">Ghosted hairlines as structure (the kit's 14%/8% tokens) ·
+      opacity as hierarchy · the press-red accent · pies, donuts, wheels, bubble
+      fields · square caps · rectangles-with-fills as bars · legends. Colour
+      survives only where hue is the datum — palette charts keep real swatches
+      on ink bones. Emphasis is the pill, hierarchy is size, and everything
+      drawn is solid.</p>
+  </section>
+
+</div>
+
+<script>
+/* The stripe masses, drawn as real round-capped lines. Written here
+   rather than by hand because the spec's job is to make the NUMBERS
+   arguable — pitch, stroke, gap — not to hide them in sixty lines of
+   markup. Port carries the numbers, not this loop. */
+(() => {
+  const g = document.getElementById("masses");
+  const w = +g.dataset.w, cap = +g.dataset.cap, gap = +g.dataset.gap;
+  const base = +g.dataset.base, pitch = +g.dataset.pitch, sw = +g.dataset.stroke;
+  const NS = "http://www.w3.org/2000/svg";
+  g.dataset.cols.split("|").forEach((pair) => {
+    const [x, capY] = pair.split(",").map(Number);
+    /* the caps extend half a stroke past each endpoint, so the line is
+       inset by that much and the mass stays exactly the column measure */
+    const x1 = x + sw / 2, x2 = x + w - sw / 2;
+    for (let y = capY + cap + gap; y <= base - sw / 2; y += pitch) {
+      const l = document.createElementNS(NS, "line");
+      l.setAttribute("x1", x1); l.setAttribute("x2", x2);
+      l.setAttribute("y1", y);  l.setAttribute("y2", y);
+      l.setAttribute("stroke", "#000");
+      l.setAttribute("stroke-width", sw);
+      l.setAttribute("stroke-linecap", "round");
+      g.appendChild(l);
+    }
+  });
+  /* the cap lands AFTER its own mass has filled — the value arriving
+     last is the chart's punchline, so it is the last thing drawn */
+  [...g.querySelectorAll("rect")].forEach((r, i) => {
+    r.classList.add("cap");
+    r.style.setProperty("--lag", (0.55 + i * 0.08).toFixed(2) + "s");
+  });
+})();
+
+/* ── TIER 1 · ARRIVAL ────────────────────────────────────────────
+   Every stroked mark draws with the dash trick: dasharray is the mark's
+   own length, dashoffset starts at that length (nothing shown) and
+   transitions to zero (fully drawn). One mechanism for arcs, sticks and
+   stripes alike, and it never touches stroke-width — a scaleY would
+   have thinned every line as it grew. */
+(() => {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll("svg").forEach((svg) => {
+    const marks = [];
+
+    /* arcs: dasharray already carries the arc length, so read it back
+       rather than recomputing what the spec already states */
+    svg.querySelectorAll("circle[stroke-dasharray]").forEach((c) => {
+      marks.push({ el: c, len: parseFloat(c.getAttribute("stroke-dasharray")) });
+    });
+    /* sticks and stripes: length is the line's own run */
+    svg.querySelectorAll("line").forEach((l) => {
+      const dx = +l.getAttribute("x2") - +l.getAttribute("x1");
+      const dy = +l.getAttribute("y2") - +l.getAttribute("y1");
+      const len = Math.hypot(dx, dy);
+      if (len > 0) marks.push({ el: l, len });
+    });
+
+    marks.forEach((m, i) => {
+      if (!m.el.getAttribute("stroke-dasharray")) {
+        m.el.setAttribute("stroke-dasharray", m.len);
+      }
+      m.el.style.strokeDashoffset = reduce ? 0 : m.len;
+      m.el.classList.add("mo");
+      m.el.style.setProperty("--lag", (i * 0.035).toFixed(3) + "s");
+    });
+
+    /* dots: the empty grid goes down first, the hits land after — the
+       field of possibilities resolving into the answer */
+    svg.querySelectorAll("circle:not([stroke-dasharray])").forEach((c) => {
+      const big = +c.getAttribute("r") > 5;
+      c.classList.add("dot");
+      c.style.setProperty("--lag",
+        ((big ? 0.5 : 0) + +c.getAttribute("cy") / 4000).toFixed(3) + "s");
+    });
+
+    const draw = () => {
+      svg.classList.add("go");
+      marks.forEach((m) => { m.el.style.strokeDashoffset = 0; });
+    };
+
+    if (reduce) { draw(); return; }
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) { draw(); io.disconnect(); } });
+    }, { threshold: 0.25 });
+    io.observe(svg);
+  });
+})();
+
+/* ── TIER 2 · THE READING HEAD ───────────────────────────────────
+   Steps one label at a time and repeats while the chart is on screen.
+   It stops dead when the chart scrolls away — a clock running against
+   nobody is just work — and holds still entirely under reduced motion.
+   Delta-accumulated so a tab left in the background does not fast
+   forward through the series on return. */
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const HOLD = 1500;
+
+  document.querySelectorAll("svg [data-read]").forEach((group) => {
+    const labels = [...group.querySelectorAll(".tl")];
+    if (labels.length < 2) return;   // nothing worth walking
+    const svg = group.ownerSVGElement;
+
+    let live = false, elapsed = 0, prev = null, shown = -1;
+    new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        live = e.isIntersecting;
+        if (!live) {
+          prev = null;
+          labels.forEach((l) => l.classList.remove("read"));
+          shown = -1;
+        }
+      });
+    }, { threshold: 0.25 }).observe(svg);
+
+    const tick = (now) => {
+      requestAnimationFrame(tick);
+      if (!live || document.hidden) { prev = null; return; }
+      if (prev != null) elapsed += Math.min(now - prev, 100);
+      prev = now;
+      const i = Math.floor(elapsed / HOLD) % labels.length;
+      if (i !== shown) {
+        if (shown >= 0) labels[shown].classList.remove("read");
+        labels[i].classList.add("read");
+        shown = i;
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+})();
+</script>
+</body>
+</html>
