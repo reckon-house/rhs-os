@@ -13,6 +13,8 @@ import { RRSystemIndex } from "./RRSystemIndex";
 import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
 import { PressingSystemIndex } from "./PressingSystemIndex";
+import { PressingSwatchLedger } from "./viz/PressingSwatchLedger";
+import { KITCHEN_FAMILIES, JC_PALETTE } from "./viz/palettes";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
@@ -84,11 +86,9 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "brand",
   "color-field-map",
   "color-palette",
-  "color-permutations",
   "double-exposure-anatomy",
   "hex-polygon",
   "polygon-lattice",
-  "kitchen-palette",
   "pattern-matrix",
   "sizzle-playground",
   "tech-chart",
@@ -407,6 +407,35 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       s.type === "brand-system-volume"
     ) {
       out.push(<PressingSystemIndex key={s.id} section={s} mark={p?.mark} />);
+      i += 1;
+      continue;
+    }
+
+    /* The two colour-subject sections: hue IS the datum here, so they
+       leave the classic bridge for the swatch ledger rather than for a
+       one-ink chart that could not show its own palette. */
+    if (s.type === "kitchen-palette") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSwatchLedger
+            label="The palette, as specified"
+            families={KITCHEN_FAMILIES}
+            weightLabel="PRESENCE"
+          />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+    if (s.type === "color-permutations") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark}>
+          <PressingSwatchLedger
+            label="The palette"
+            families={JC_PALETTE}
+          />
+        </PressingVizFrame>
+      );
       i += 1;
       continue;
     }
