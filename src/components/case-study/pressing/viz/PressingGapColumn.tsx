@@ -1,6 +1,8 @@
 "use client";
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * PressingGapColumn — the coverage gap, drawn narrow, for the copy
  * column.
  *

@@ -6,6 +6,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape mass — conforms to lab/viz-system.html
+ *
  * PressingBlastMass — the pressing skin for `campaign-blast-radius`, and
  * the exemplar for the stepped-mass shape (VIZ-PASS.md).
  *

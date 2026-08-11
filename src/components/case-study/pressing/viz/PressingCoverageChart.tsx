@@ -9,6 +9,8 @@ import styles from "./PressingViz.module.css";
 const usd = (n: number) => "$" + n.toLocaleString("en-US");
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * The gap chart — the pressing skin for `coverage-chart`, redrawn as a
  * single grounded STICK crossed by a level line (lab/viz-system.html
  * §02).

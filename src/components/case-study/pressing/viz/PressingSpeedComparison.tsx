@@ -7,6 +7,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * The speed chart — the pressing skin for `speed-comparison`, redrawn
  * as grounded STICKS (lab/viz-system.html §02).
  *
