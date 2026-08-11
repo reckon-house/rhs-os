@@ -17,11 +17,35 @@
  *   is a fabrication in a suit.
  */
 
+/* THE STROKE SCALE — public/lab/viz-system.html is the drawn spec.
+   Structure recedes by being THIN, never by fading: --pv-fine is full
+   ink at 2px, and the 14%/8% ghosts it replaces are gone. Even the
+   smallest mark on a Braun dial is a confident object, not a wisp.
+   --pv-grey survives for SECOND DATA STATES (a before, a remainder, a
+   superseded phase) and captions — it is a value the data carries, not
+   a way to push structure into the background.
+   There is no accent. Emphasis is the pill; hierarchy is size. */
 .viz {
-  --pv-hair: color-mix(in srgb, var(--pp-ink) 14%, transparent);
-  --pv-faint: color-mix(in srgb, var(--pp-ink) 8%, transparent);
+  --pv-fine: 2px;
+  --pv-heavy: 9px;
+  --pv-ink: var(--pp-ink);
   --pv-grey: color-mix(in srgb, var(--pp-ink) 45%, transparent);
-  --pv-acc: #e0552f;
+  /* The one escape hatch: a chart that genuinely cannot be read without
+     a ruler may draw ONE set of these, and must argue for it in its own
+     docblock. Never for tracks, baselines or rules — those are fine. */
+  --pv-rule: color-mix(in srgb, var(--pp-ink) 10%, transparent);
+
+  /* DEPRECATED, and deliberately still defined. Twenty-eight places in
+     this file and six components still name these; deleting them would
+     resolve to nothing and paint the whole kit wrong in one commit.
+     Pointed at the new system instead, so every chart conforms NOW —
+     the ghosted tracks become fine full ink, the fills become the
+     ruler, and the red is gone everywhere at once. The conformance pass
+     renames the call sites and deletes these three lines. Nothing new
+     may use them. */
+  --pv-hair: var(--pv-ink);
+  --pv-faint: var(--pv-rule);
+  --pv-acc: var(--pv-ink);
   color: var(--pp-ink);
 }
 
@@ -95,15 +119,31 @@
   column-gap: 18px;
   row-gap: 8px;
 }
+/* STICKS, lying down. The track is the FINE structure — full ink, thin —
+   and the value is the HEAVY round-capped mark riding over it. They must
+   not be the same weight: when the hairline token went to full ink these
+   were both 2px, and a bar the same weight as its own track cannot be
+   read at all. Fine is the measure, heavy is the datum. */
 .track {
   grid-column: 1 / -1;
   position: relative;
-  height: 2px;
-  background: var(--pv-hair);
+  height: var(--pv-heavy);
+}
+.track::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto 0;
+  height: var(--pv-fine);
+  background: var(--pv-ink);
 }
 .bar {
   position: absolute;
-  inset: 0 auto 0 0;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--pv-heavy);
+  border-radius: 999px;
   background: currentColor;
 }
 /* the spec row: a ruled line of the sheet, label left, number right.
