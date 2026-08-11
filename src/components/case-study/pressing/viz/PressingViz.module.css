@@ -49,6 +49,36 @@
   color: var(--pp-ink);
 }
 
+/* ── ARRIVAL, tier 1 ──────────────────────────────────────────────
+   The component sets stroke-dasharray to the mark's own length and
+   flips stroke-dashoffset from that length to zero when useVizArrival
+   fires; this class carries the shared clock so sixteen charts draw on
+   one curve. Never scale a mark to animate it — a scaleY would thin
+   the stroke as it grew. */
+.draw {
+  transition: stroke-dashoffset 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+  transition-delay: var(--lag, 0s);
+  will-change: stroke-dashoffset;
+}
+/* non-stroke arrivals (a pill, a caption) ride the same clock */
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: var(--lag, 0s);
+}
+.fadeIn {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .draw,
+  .fade {
+    transition: none;
+  }
+  .fade {
+    opacity: 1;
+  }
+}
+
 .lbl {
   font-size: var(--pp-lbl);
   letter-spacing: var(--pp-lbl-track);
@@ -381,35 +411,40 @@
   padding-right: 0;
 }
 
-/* The bar IS the documented value: full height of the plot, so the
-   scale needs no axis. */
+/* The documented value as a STICK, not a slab: the heavy mark at its
+   own weight, round-capped, standing the full height of the plot so the
+   scale needs no axis. It was a 58px-wide block of ink, which is the
+   shape the system now reserves for a stripe MASS — a single value gets
+   a single mark. */
 .gapBar {
   position: absolute;
   left: 0;
   bottom: 0;
   top: 0;
-  width: clamp(34px, 4.4vw, 58px);
-  background: var(--pp-ink);
+  width: var(--pv-heavy);
+  border-radius: 999px;
+  background: var(--pv-ink);
 }
 
-/* Everything above the policy line. The one coloured thing in the
-   section, and the only number the chart exists to show. */
+/* The overshoot needs no fill of its own. It used to be the section's
+   one colour; with the accent gone, the distance between the limit line
+   and the top of the stick IS the gap, and the pill names it. A second
+   fill here would only restate what the geometry already says. */
 .gapOver {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: var(--limit);
-  background: var(--pv-acc);
+  display: none;
 }
 
+/* The policy limit: a FINE line at full ink, run wide of the stick on
+   both sides so it reads as a level the value stands out of rather than
+   a tick on the bar. Grey, because a superseded limit is a second data
+   state — the one thing grey is still for. */
 .gapLimit {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: calc(var(--pv-heavy) * -1.6);
+  right: 34%;
   bottom: var(--limit);
-  height: 1px;
-  background: var(--pv-hair);
+  height: var(--pv-fine);
+  background: var(--pv-grey);
 }
 
 /* Labels hang off the bar's right, each on the line it belongs to.
@@ -421,7 +456,8 @@
 .gapTopLbl,
 .gapLimitLbl {
   position: absolute;
-  left: calc(clamp(34px, 4.4vw, 58px) + 16px);
+  /* follows the stick, not the retired slab width */
+  left: calc(var(--pv-heavy) + 18px);
   width: 44%;
 }
 .gapTopLbl {
@@ -433,12 +469,21 @@
 }
 
 /* The second column: the gap, beside the band it measures. */
+/* THE PILL. The overshoot is what this section exists to say, and the
+   pill is the system's one emphasis device now that the accent is gone.
+   Reversed out of ink, sitting beside the band it measures. */
 .gapCallout {
   position: absolute;
   right: 0;
   bottom: calc(var(--limit) + (100% - var(--limit)) / 2);
   transform: translateY(50%);
-  text-align: right;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--pv-ink);
+  color: var(--pp-paper);
 }
 
 .gapTopLbl .lbl,
@@ -446,9 +491,14 @@
   display: block;
   margin-top: 5px;
 }
+/* inside the pill the two run on one line, both reversed */
 .gapCallout .lbl {
-  display: block;
-  margin: 0 0 3px;
+  margin: 0;
+  color: var(--pp-paper);
+}
+.gapCallout .valSm {
+  display: inline;
+  color: var(--pp-paper);
 }
 
 .valSm {

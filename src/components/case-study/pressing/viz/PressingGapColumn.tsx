@@ -12,10 +12,14 @@
  * overshoot is the distance above a line that was set once and never
  * touched again.
  *
- * The viz kit's rules hold — one ink, hairlines, one accent, and the
- * accent lands only on the datum the chart exists to show. Everything
- * above the policy line is the gap, and it is the only coloured thing
- * in the section.
+ * Redrawn to the chart system (lab/viz-system.html §02): the value is a
+ * STICK at the heavy weight, round-capped, not the 58px slab of ink it
+ * was — a slab is the shape reserved for a stripe mass, and a single
+ * value gets a single mark. The policy limit is a fine grey level cut
+ * across it, grey because a superseded limit is a second data state.
+ * The overshoot carries no fill of its own: the distance between the
+ * level and the top of the stick IS the gap, and the pill names it.
+ * One ink, no accent, emphasis by pill.
  *
  * Numbers are the study's own and the gap is computed from them, so it
  * cannot drift from the copy beside it.
@@ -73,8 +77,8 @@ export function PressingGapColumn({
 
         {gap > 0 ? (
           <div className={styles.gapCallout}>
-            <span className={`${styles.lbl} ${styles.acc}`}>Gap</span>
-            <span className={`${styles.valSm} ${styles.acc}`}>{usd(gap)}</span>
+            <span className={styles.lbl}>Gap</span>
+            <span className={styles.valSm}>{usd(gap)}</span>
           </div>
         ) : null}
       </div>
