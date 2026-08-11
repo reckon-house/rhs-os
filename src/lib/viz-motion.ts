@@ -40,6 +40,14 @@ export const VIZ_STAGGER_MS = 35;
 export const VIZ_HOLD_MS = 1500;
 /** Fewer than this and there is no series worth walking. */
 export const VIZ_MIN_SERIES = 3;
+/**
+ * And more than this and it stops being a cursor. Twenty stories at a
+ * 1.5s rest is a thirty-second lap — long enough that a reader never
+ * sees it return, which is not a reading head, it is a slideshow. Above
+ * the ceiling a chart gets arrival only, or walks a coarser series (its
+ * category runs) instead of every item.
+ */
+export const VIZ_MAX_SERIES = 10;
 
 /** Fires true once the element has reached the fold. Never resets. */
 export function useVizArrival(ref: RefObject<Element | null>): boolean {
@@ -86,7 +94,7 @@ export function useReadingHead(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (count < VIZ_MIN_SERIES || reducedMotion()) {
+    if (count < VIZ_MIN_SERIES || count > VIZ_MAX_SERIES || reducedMotion()) {
       setActive(-1);
       return;
     }

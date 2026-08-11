@@ -2,6 +2,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * PressingMaterialSpan — the pressing skin for `material-overlap`, and
  * the exemplar for the range-bar shape (VIZ-PASS.md).
  *
@@ -17,8 +19,11 @@ import styles from "./PressingViz.module.css";
  * the row it skips, dots only at its true members — the UpSet grammar
  * for exactly this case.
  *
- * One accent: MARBLE, the only material in all three rooms — the
- * through-line the section's copy argues from.
+ * The one emphasis: MARBLE, the only material in all three rooms — the
+ * through-line the section's copy argues from — now carried by the pill
+ * rather than the retired accent colour. Fine vs heavy carries the
+ * gapped-membership distinction that dimmed ink used to; a real
+ * membership never reads as a weak one.
  */
 
 const ROOMS = ["URBAN SOUTHWEST", "MODERN FARMHOUSE", "QUIET GLAM"] as const;
@@ -65,9 +70,12 @@ export function PressingMaterialSpan() {
           {/* Room rows: hairline rules with their labels. */}
           {ROOMS.map((room, r) => (
             <g key={room}>
+              {/* the room's rule: FINE at full ink. It read at 8%
+                  opacity before, which is a structure that recedes by
+                  fading — the one thing the stroke scale replaces. */}
               <line
                 x1={LEFT} y1={rowY(r)} x2={W - RIGHT} y2={rowY(r)}
-                stroke="var(--pp-ink)" strokeOpacity="0.08"
+                stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
               />
               <text
                 x={LEFT - 18} y={rowY(r)}
@@ -84,20 +92,21 @@ export function PressingMaterialSpan() {
             const first = Math.min(...m.rooms);
             const last = Math.max(...m.rooms);
             const gapped = last - first + 1 > m.rooms.length;
-            const isAcc = m.name === "MARBLE";
-            const ink = isAcc ? "var(--pv-acc)" : "var(--pp-ink)";
+            const isDatum = m.name === "MARBLE";
             return (
               <g key={m.name}>
-                {/* The span. A gapped membership gets a hairline pass-
-                    through instead of the full bar — the bar claims
-                    every room it covers, and HEX MOSAIC must not claim
-                    the middle one. */}
+                {/* The span, at the heavy weight in one ink. A gapped
+                    membership gets a FINE pass-through instead of the
+                    full mark — the mark claims every room it covers, and
+                    HEX MOSAIC must not claim the middle one. Fine and
+                    heavy carry that difference now; the old version also
+                    dimmed the ink, which made a real membership look
+                    like a weak one. */}
                 {m.rooms.length > 1 && (
                   <line
                     x1={x} y1={rowY(first)} x2={x} y2={rowY(last)}
-                    stroke={ink}
-                    strokeWidth={gapped ? 1 : 9}
-                    strokeOpacity={gapped ? 0.45 : isAcc ? 1 : 0.8}
+                    stroke="var(--pv-ink)"
+                    strokeWidth={gapped ? 2 : 9}
                     strokeLinecap="round"
                   />
                 )}
@@ -105,7 +114,7 @@ export function PressingMaterialSpan() {
                   <circle
                     key={r}
                     cx={x} cy={rowY(r)} r={5.5}
-                    fill={ink}
+                    fill="var(--pv-ink)"
                   />
                 ))}
                 {/* Rotated mono label above the matrix, reading up. */}
@@ -114,23 +123,32 @@ export function PressingMaterialSpan() {
                   transform={`rotate(-90 ${x} ${TOP - 26})`}
                   textAnchor="start" dominantBaseline="middle"
                   className={styles.schemNum}
-                  style={isAcc ? { fill: "var(--pv-acc)" } : undefined}
                 >
                   {m.name}
                 </text>
+                {/* THE PILL, on the one material in all three rooms —
+                    the through-line the section argues from, and what
+                    the retired accent used to carry. */}
+                {isDatum && (
+                  <g>
+                    <rect
+                      x={px(x - 62)} y={px(rowY(2) + 26)}
+                      rx={10} width={124} height={20}
+                      fill="var(--pv-ink)"
+                    />
+                    <text
+                      x={x} y={px(rowY(2) + 40)}
+                      textAnchor="middle"
+                      fontSize={10} fontWeight={600} letterSpacing="0.06em"
+                      fill="var(--pp-paper)"
+                    >
+                      ALL THREE ROOMS
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
-
-          {/* The one figure worth stating: the through-line. */}
-          <text
-            x={colX(MATERIALS.length - 1)} y={rowY(2) + 40}
-            textAnchor="middle"
-            className={styles.schemNum}
-            style={{ fill: "var(--pv-acc)" }}
-          >
-            ALL THREE ROOMS
-          </text>
         </svg>
       </div>
     </div>

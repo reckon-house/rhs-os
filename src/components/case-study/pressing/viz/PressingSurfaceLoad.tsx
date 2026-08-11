@@ -2,6 +2,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * PressingSurfaceLoad — the pressing skin for `jeffrey-flagship-radius`,
  * drawn in the ruled-columns shape (VIZ-PASS.md).
  *
@@ -111,7 +113,7 @@ export function PressingSurfaceLoad() {
             <g key={name}>
               <line
                 x1={LEFT} y1={rowY(r)} x2={W - RIGHT} y2={rowY(r)}
-                stroke="var(--pp-ink)" strokeOpacity="0.08"
+                stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
               />
               <text
                 x={LEFT - 18} y={rowY(r)}
@@ -127,7 +129,7 @@ export function PressingSurfaceLoad() {
               between the two readings. */}
           <line
             x1={LEFT} y1={BASE} x2={W - RIGHT} y2={BASE}
-            stroke="var(--pp-ink)" strokeOpacity="0.14"
+            stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
           />
           {/* Zone captions, in the gutter, grey: they name the two
               readings, and the ink is reserved for the data. ASSETS
@@ -157,7 +159,7 @@ export function PressingSurfaceLoad() {
                 {/* The rule: one per surface, full height, fixed grid. */}
                 <line
                   x1={x} y1={TOP - 22} x2={x} y2={rowY(ELEMENTS.length - 1) + 16}
-                  stroke="var(--pp-ink)" strokeOpacity="0.14"
+                  stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
                 />
                 {/* The name, riding up the top of its rule. */}
                 <text
@@ -172,7 +174,8 @@ export function PressingSurfaceLoad() {
                 <rect
                   x={px(x - BLOCK_W / 2)} y={px(y - BLOCK_H / 2)}
                   width={BLOCK_W} height={BLOCK_H}
-                  fill="var(--pp-ink)"
+                  rx={BLOCK_H / 2}
+                  fill="var(--pv-ink)"
                 />
                 {/* Type carries the number: the block gives the shape,
                     the numeral gives the figure, so six and eight stay

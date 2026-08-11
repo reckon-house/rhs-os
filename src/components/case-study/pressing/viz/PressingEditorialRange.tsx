@@ -2,6 +2,8 @@ import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
+ * @shape sticks — conforms to lab/viz-system.html
+ *
  * PressingEditorialRange — the pressing skin for `editorial-treatments`,
  * drawn in the ruled-columns shape (VIZ-PASS.md #5).
  *
@@ -154,14 +156,14 @@ export function PressingEditorialRange() {
             <line
               key={`rule-${s.name}`}
               x1={px(cx(i))} y1={TOP} x2={px(cx(i))} y2={RULE_BOT}
-              stroke="var(--pp-ink)" strokeOpacity="0.08"
+              stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
             />
           ))}
 
           {/* Zero on the saturation scale — the ground the blocks stand on. */}
           <line
             x1={LEFT} y1={BASE} x2={W - RIGHT} y2={BASE}
-            stroke="var(--pp-ink)" strokeOpacity="0.14"
+            stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
           />
           <text
             x={LEFT - 18} y={TOP}
@@ -187,12 +189,15 @@ export function PressingEditorialRange() {
             const lx = px(cx(i) + 5);
             return (
               <g key={s.name}>
+                {/* the value mark: the heavy stick, round-capped, the
+                    same object every other chart parks at a value */}
                 <rect
                   x={px(cx(i) - BLOCK_W / 2)}
                   y={px(yAt(s.colorSaturation) - BLOCK_H / 2)}
                   width={BLOCK_W}
                   height={BLOCK_H}
-                  fill="var(--pp-ink)"
+                  rx={BLOCK_H / 2}
+                  fill="var(--pv-ink)"
                 />
                 <text
                   x={lx} y={LABEL_TOP}
@@ -213,7 +218,7 @@ export function PressingEditorialRange() {
             <g key={r.label}>
               <line
                 x1={px(cx(r.from))} y1={BRACKET_Y} x2={px(cx(r.to))} y2={BRACKET_Y}
-                stroke="var(--pp-ink)" strokeOpacity="0.14"
+                stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
               />
               <text
                 x={px((cx(r.from) + cx(r.to)) / 2)} y={RUN_LBL_Y}
