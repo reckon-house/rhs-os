@@ -1,51 +1,33 @@
+"use client";
+
+import { useRef, type CSSProperties } from "react";
+import { useVizArrival } from "@/lib/viz-motion";
 import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
- * @shape sticks — conforms to lab/viz-system.html
+ * @shape dots — conforms to lab/viz-system.html
  *
- * PressingEditorialRange — the pressing skin for `editorial-treatments`,
- * drawn in the ruled-columns shape (VIZ-PASS.md #5).
+ * PressingEditorialRange — twenty InSite stories, transposed under the
+ * density budget. The ruled columns set every story name on a slant;
+ * rotated label fields are the form the budget retires, and the user's
+ * call was to KEEP the labels — so the chart turns sideways. Each story
+ * is a row: name level on the left, a fine track running MONOCHROME to
+ * SATURATED, the heavy dot parked at the story's authored colour
+ * saturation.
  *
- * Twenty InSite stories, one full-height hairline each, ordered quiet to
- * loud by the story's typographic intensity. The single solid block on
- * each rule is parked at that story's colour saturation, so the blocks'
- * heights read against each other across a fixed grid: type gets louder
- * left to right and colour does NOT follow it. The color stories sit in a
- * spike at mid-intensity, the theatrical four run near-monochrome at the
- * loud end. That independence is the section's whole argument, and it is
- * the thing the classic scatter buried under five hues.
+ * Rows stay ordered quiet to loud by typographic intensity — the
+ * classic's own sort — so the section's argument survives the turn
+ * intact: type gets louder DOWN the page and the dots do not drift
+ * right with it. The colour stories spike mid-list, the theatrical four
+ * run near-monochrome at the loud end. Category runs are found by
+ * scanning, never assumed, and each run opens with its own ruled
+ * divider — the bracket, lying down.
  *
- * Kept verbatim from EditorialTreatments: all twenty story names, their
- * category memberships, both authored 0–1 values, and the classic's own
- * axis words (RESTRAINED / THEATRICAL, MONOCHROME / SATURATED) and
- * category labels. Nothing is rounded, extended or interpolated.
- *
- * What this deliberately does not carry over:
- * - The five category colours. Hue is not available in one ink — and it
- *   turned out not to be needed: sorted by intensity, every category
- *   falls in ONE unbroken run, so the brackets under the grid say what
- *   the colours said. The runs are found by scanning for consecutive
- *   equal categories, never by assuming a span, so an interleaved
- *   category would print two brackets rather than a false one.
- * - The eight particle halos per point and the seeded RNG that placed
- *   them. Generated density that reads as data is a fabrication in a
- *   suit, and the float strings cost the classic version a hydration
- *   mismatch every load. Every coordinate here is arithmetic through
- *   px(), rounded where it reaches the attribute.
- * - The per-category centroid markers and their spokes. A mean of five
- *   hand-set numbers is a derived shape, not an authored datum.
- * - The dashed quintile grid, the background 12×10 grid and the legend.
- *   One ink needs no decoding, so the label sits on the data.
- *
- * One reduction, named: typographic intensity survives as the rules'
- * ORDER rather than as a measured position, because the shape's rules
- * are a fixed grid. No numeral row was added under them — this shape
- * draws the rules, the labels and the blocks, and nothing else.
- *
- * No accent. VIZ-PASS assigns none: there is no single story this chart
- * exists to show, so the press red would be pointing at a favourite
- * rather than at a finding.
+ * Data verbatim from EditorialTreatments: all twenty names, categories,
+ * both authored 0–1 values, the axis words, the category labels.
+ * Arrival lands the dots row by row. No reading head: twenty rows is
+ * over the ceiling.
  */
 
 type Cat = "designer" | "color" | "theatrical" | "minimal" | "ways";
@@ -59,16 +41,13 @@ const CATEGORY_LABEL: Record<Cat, string> = {
   ways: "Ways to Wear",
 };
 
-interface Story {
+type Story = {
   name: string;
   category: Cat;
-  /** 0 = restrained, 1 = theatrical */
   typeIntensity: number;
-  /** 0 = monochrome, 1 = saturated */
   colorSaturation: number;
-}
+};
 
-/** The twenty stories, verbatim from EditorialTreatments' STORIES. */
 const STORIES: Story[] = [
   { name: "Theyskens' Theory", category: "designer", typeIntensity: 0.55, colorSaturation: 0.28 },
   { name: "Rag & Bone", category: "designer", typeIntensity: 0.52, colorSaturation: 0.48 },
@@ -96,14 +75,12 @@ const STORIES: Story[] = [
   { name: "Silk Blouse + Denim", category: "ways", typeIntensity: 0.28, colorSaturation: 0.25 },
 ];
 
-/* Quiet to loud. Two stories share 0.28, so the source index breaks the
-   tie explicitly rather than leaning on sort stability. */
+/** Quiet to loud, the classic's own sort; ties keep authored order. */
 const ORDER: Story[] = STORIES.map((s, i) => ({ s, i }))
   .sort((a, b) => a.s.typeIntensity - b.s.typeIntensity || a.i - b.i)
   .map((e) => e.s);
 
-/* Category runs, found by scanning — never assumed. Each is the span of
-   rules a bracket may honestly claim. */
+/* Category runs, found by scanning — never assumed. */
 const RUNS: { label: string; from: number; to: number }[] = [];
 ORDER.forEach((s, i) => {
   const open = RUNS[RUNS.length - 1];
@@ -112,138 +89,112 @@ ORDER.forEach((s, i) => {
 });
 
 const W = 1100;
-const LEFT = 124;   // the saturation scale's words live left of the grid
-const RIGHT = 44;
-const TOP = 44;     // the rules' top edge IS saturation 1.0
-const BASE = 424;   // and their crossing of the baseline is 0
-const PLOT_H = BASE - TOP;
-const PITCH = (W - LEFT - RIGHT) / STORIES.length;
+const LEFT = 250;
+const RIGHT = 60;
+const TOP = 80;
+const ROW = 30;
+const DIV = 40;
+const DOT_R = 6;
 
-const LABEL_TOP = BASE + 14;  // rotated names hang from here, reading up
-const RULE_BOT = 572;         // past the longest of them (19 mono chars)
-const BRACKET_Y = 590;
-const RUN_LBL_Y = 611;
-const NOTE_Y = 638;
-const H = 654;
+/** y of a story row, accounting for every divider opened at or before it. */
+const rowY = (i: number) => {
+  const divsBefore = RUNS.filter((r) => r.from <= i).length;
+  return TOP + divsBefore * DIV + i * ROW;
+};
+const H = rowY(ORDER.length - 1) + 26;
 
-const BLOCK_W = 22;
-const BLOCK_H = 11;
-
-/* Raw geometry. Rounding happens where a value reaches an attribute, so
-   a block's edges are not derived from an already-rounded centre. */
-const cx = (i: number) => LEFT + (i + 0.5) * PITCH;
-const yAt = (sat: number) => BASE - sat * PLOT_H;
+const xAt = (v: number) => px(LEFT + v * (W - LEFT - RIGHT));
 
 export function PressingEditorialRange() {
+  const ref = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(ref);
+
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={ref}>
+      <div className={styles.head}>
+        <span className={styles.lbl}>Editorial treatments</span>
+        <span className={`${styles.lbl} ${styles.grey}`}>
+          RULED QUIET TO LOUD BY TYPOGRAPHIC INTENSITY
+        </span>
+      </div>
+
       <div className={styles.scroller} data-lenis-prevent-touch>
         <svg
           className={styles.wide}
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
           role="img"
-          /* Describes what is drawn and stops. The first version ended
-             "...showing that saturation does not follow typographic
-             intensity" — a finding nobody authored, and one the study's
-             own copy does not support, delivered to screen readers as
-             fact. The classic captioned the same data neutrally: "20
-             stories · 5 categories · typographic vs color intensity". */
-          aria-label="Twenty InSite stories ruled from restrained to theatrical typography, each carrying a block at its colour saturation. Five categories."
+          aria-label="Twenty InSite stories ordered quiet to loud by typographic intensity; each dot marks the story's colour saturation, which does not rise with the loudness"
         >
-          {/* The fixed grid: one full-height hairline per story. */}
-          {ORDER.map((s, i) => (
-            <line
-              key={`rule-${s.name}`}
-              x1={px(cx(i))} y1={TOP} x2={px(cx(i))} y2={RULE_BOT}
-              stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
-            />
-          ))}
-
-          {/* Zero on the saturation scale — the ground the blocks stand on. */}
-          <line
-            x1={LEFT} y1={BASE} x2={W - RIGHT} y2={BASE}
-            stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
-          />
+          <text x={LEFT} y={TOP - 34} className={styles.schemLbl}>
+            MONOCHROME
+          </text>
           <text
-            x={LEFT - 18} y={TOP}
-            textAnchor="end" dominantBaseline="middle"
+            x={W - RIGHT}
+            y={TOP - 34}
+            textAnchor="end"
             className={styles.schemLbl}
           >
             SATURATED
           </text>
-          <text
-            x={LEFT - 18} y={BASE}
-            textAnchor="end" dominantBaseline="middle"
-            className={styles.schemLbl}
-          >
-            MONOCHROME
-          </text>
 
-          {ORDER.map((s, i) => {
-            /* The label rides BESIDE its rule, not on it. Both exemplars
-               centre a rotated label on its line, but their lines stop
-               short of the type; a full-height rule would run straight
-               through these glyphs. Material difference, so the label
-               steps clear by half a block. */
-            const lx = px(cx(i) + 5);
-            return (
-              <g key={s.name}>
-                {/* the value mark: the heavy stick, round-capped, the
-                    same object every other chart parks at a value */}
-                <rect
-                  x={px(cx(i) - BLOCK_W / 2)}
-                  y={px(yAt(s.colorSaturation) - BLOCK_H / 2)}
-                  width={BLOCK_W}
-                  height={BLOCK_H}
-                  rx={BLOCK_H / 2}
-                  fill="var(--pv-ink)"
-                />
-                <text
-                  x={lx} y={LABEL_TOP}
-                  transform={`rotate(-90 ${lx} ${LABEL_TOP})`}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className={styles.schemNum}
-                >
-                  {s.name.toUpperCase()}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* The five categories, each an unbroken run of the sort. This
-              is the position the colours used to be. */}
           {RUNS.map((r) => (
             <g key={r.label}>
               <line
-                x1={px(cx(r.from))} y1={BRACKET_Y} x2={px(cx(r.to))} y2={BRACKET_Y}
-                stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
+                x1={40}
+                y1={px(rowY(r.from) - ROW / 2 - 8)}
+                x2={W - 40}
+                y2={px(rowY(r.from) - ROW / 2 - 8)}
+                stroke="var(--pv-ink)"
+                strokeWidth="var(--pv-fine)"
               />
               <text
-                x={px((cx(r.from) + cx(r.to)) / 2)} y={RUN_LBL_Y}
-                textAnchor="middle" dominantBaseline="hanging"
+                x={40}
+                y={px(rowY(r.from) - ROW / 2 + 8)}
                 className={styles.schemLbl}
+                style={{ fill: "var(--pv-ink)" }}
               >
-                {r.label}
+                {r.label.toUpperCase()}
               </text>
             </g>
           ))}
 
-          {/* Both encodings, stated once each. No legend follows from
-              them: there is one ink, so there is nothing to decode. */}
-          <text x={LEFT} y={NOTE_Y} className={styles.schemNum}>
-            RULED BY TYPOGRAPHIC INTENSITY · RESTRAINED TO THEATRICAL
-          </text>
-          <text
-            x={W - RIGHT} y={NOTE_Y}
-            textAnchor="end"
-            className={styles.schemNum}
-          >
-            BLOCK HEIGHT · COLOR SATURATION
-          </text>
+          {ORDER.map((s, i) => {
+            const y = px(rowY(i));
+            return (
+              <g key={s.name}>
+                <text
+                  x={LEFT - 30}
+                  y={y}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className={styles.schemLbl}
+                >
+                  {s.name.toUpperCase()}
+                </text>
+                <line
+                  x1={LEFT}
+                  y1={y}
+                  x2={W - RIGHT}
+                  y2={y}
+                  stroke="var(--pv-ink)"
+                  strokeWidth="var(--pv-fine)"
+                />
+                <circle
+                  className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                  cx={xAt(s.colorSaturation)}
+                  cy={y}
+                  r={DOT_R}
+                  fill="var(--pv-ink)"
+                  style={{ "--lag": `${(i * 0.035).toFixed(3)}s` } as CSSProperties}
+                />
+              </g>
+            );
+          })}
         </svg>
       </div>
     </div>
   );
 }
+
+export default PressingEditorialRange;

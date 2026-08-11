@@ -92,8 +92,9 @@
    that broke it, reaching for a mono stack that put a second typeface on
    a page whose entire argument is one. Helvetica with tabular figures
    gives the column alignment the mono was there for, without the voice
-   change. Only the brand wordmark below keeps a face of its own, and it
-   keeps it because it is a quotation, not the site speaking. */
+   change. Nothing keeps a face of its own any more — the schematic hub
+   set a serif until the density pass, and the user's call was one
+   voice: brand letterforms live on logo plates, not in charts. */
 .mono {
   font-size: 9px;
   letter-spacing: 0.06em;
@@ -389,12 +390,16 @@
   text-transform: uppercase;
   fill: var(--pp-ink);
 }
-/* The wordmark is the brand's own serif lockup, quoted, not the site
-   speaking — the same reason a logo plate keeps its letterforms. */
+/* The hub names the system in the FAMILY FACE. The serif lockup that
+   sat here argued it was a brand quotation; the user's call is that the
+   charts speak one voice, so the name is set like every other label —
+   the brand's own letterforms live on the logo plates, where quotation
+   actually applies. */
 .schemWordmark {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 36px;
-  letter-spacing: 0.08em;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   fill: var(--pp-ink);
 }
 .schemSub {

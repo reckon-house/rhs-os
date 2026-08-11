@@ -92,10 +92,10 @@ export function PressingArchitecture() {
             y={CY + 6}
             textAnchor="middle"
           >
-            a. r. c.
+            A.R.C.
           </text>
           <text className={styles.schemSub} x={CX} y={CY + 32} textAnchor="middle">
-            archive ready cloud
+            ARCHIVE READY CLOUD
           </text>
         </svg>
       </div>

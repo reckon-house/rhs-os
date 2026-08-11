@@ -1,40 +1,32 @@
+"use client";
+
+import { useRef, type CSSProperties } from "react";
+import { useVizArrival } from "@/lib/viz-motion";
 import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
  * @shape dots — conforms to lab/viz-system.html
  *
- * PressingSpectrum — the pressing skin for `cabin-midcentury-spectrum`,
- * and the exemplar for the drop-line field shape (VIZ-PASS.md).
+ * PressingSpectrum — every element of the chalet between its two poles,
+ * transposed under the density budget. The drop-line field set nineteen
+ * rotated labels above and below one axis; rotated label fields are the
+ * form the budget retires. Now each element is a ROW — label level on
+ * the left, a fine track running CABIN BONES to MID-CENTURY SENSIBILITY,
+ * and the heavy dot parked at the element's authored lean. Same axis,
+ * same nineteen positions, read down a ledger instead of around a
+ * poster.
  *
- * Every element of the chalet plotted between its two poles. The DOT on
- * the axis is the datum — the authored lean, kept verbatim from the
- * classic component. The vertical hairline is only a leader from dot to
- * label, alternating above and below in three stagger tiers so eighteen
- * labels never collide; its length means nothing, and no scale runs
- * vertically to suggest it does.
+ * The element nearest dead centre — the one the section's copy calls
+ * the hinge — takes weight in its label, nothing more. Position already
+ * says it; a pill would restate the geometry.
  *
- * What the classic component had and this one deliberately does not:
- * the particle clouds (generated density that reads as data — the old
- * ridgeline lesson), the per-element colors (the palette lives in the
- * reel), and the seeded RNG whose float strings cost the classic
- * version a hydration mismatch on every load. Pure arithmetic through
- * px(), so server and client emit identical markup.
- *
- * One accent: the element sitting exactly between the poles — the
- * blend is the argument the section makes, and the middle is where it
- * lives.
+ * Rows are authored order (roughly cabin to mid-century), so the dots
+ * walk right as the eye walks down — the drift IS the argument.
+ * Arrival lands the dots row by row. No reading head: nineteen rows is
+ * over the ceiling, and the drift reads itself.
  */
 
-const W = 1100;
-/* Tall enough that the longest rotated label clears the edge from the
-   deepest tier: 184 + 6 + ~115px of 9px mono. The first cut of this
-   file used 560 and clipped "16-FT GLASS DOORS" at the top edge. */
-const H = 680;
-const AXIS_Y = H / 2;
-const PAD_X = 84;
-
-/** The authored leans, verbatim from CabinMidCenturySpectrum. */
 const ELEMENTS: { name: string; lean: number }[] = [
   { name: "RECLAIMED PNW PINE", lean: 0.04 },
   { name: "ANTLERS", lean: 0.06 },
@@ -57,87 +49,86 @@ const ELEMENTS: { name: string; lean: number }[] = [
   { name: "SPUTNIK CHANDELIER", lean: 0.96 },
 ];
 
-/** The single accented datum: closest to dead centre. */
+/** The hinge: the element closest to dead centre. */
 const ACCENT = ELEMENTS.reduce((best, e) =>
   Math.abs(e.lean - 0.5) < Math.abs(best.lean - 0.5) ? e : best
 );
 
-const xAt = (lean: number) => px(PAD_X + lean * (W - PAD_X * 2));
+const W = 1100;
+const LEFT = 250;
+const RIGHT = 60;
+const TOP = 76;
+const ROW = 32;
+const DOT_R = 6;
+const H = TOP + ELEMENTS.length * ROW + 16;
 
-/* Leader tiers. Elements alternate above/below the axis in source
-   order, and within each side cycle three lengths, so neighbours in
-   lean-order never share a tier. Layout, not data. */
-const TIERS = [72, 128, 184];
+const xAt = (lean: number) => px(LEFT + lean * (W - LEFT - RIGHT));
 
 export function PressingSpectrum() {
+  const ref = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(ref);
+
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={ref}>
       <div className={styles.scroller} data-lenis-prevent-touch>
         <svg
           className={styles.wide}
           viewBox={`0 0 ${W} ${H}`}
           width="100%"
           role="img"
-          aria-label="Every design element of the chalet placed on the axis from cabin bones to mid-century sensibility"
+          aria-label={`Every element of the chalet placed between cabin bones and mid-century sensibility; ${ACCENT.name} sits closest to the centre`}
         >
-          {/* The axis, with end ticks. */}
-          <line
-            x1={PAD_X} y1={AXIS_Y} x2={W - PAD_X} y2={AXIS_Y}
-            stroke="var(--pp-ink)" strokeOpacity="0.14"
-          />
-          {[PAD_X, W - PAD_X].map((x) => (
-            <line
-              key={x}
-              x1={x} y1={AXIS_Y - 5} x2={x} y2={AXIS_Y + 5}
-              stroke="var(--pp-ink)" strokeOpacity="0.45"
-            />
-          ))}
+          {/* the poles, once, above the track column */}
+          <text x={LEFT} y={TOP - 34} className={styles.schemLbl}>
+            CABIN BONES
+          </text>
+          <text
+            x={W - RIGHT}
+            y={TOP - 34}
+            textAnchor="end"
+            className={styles.schemLbl}
+          >
+            MID-CENTURY SENSIBILITY
+          </text>
 
           {ELEMENTS.map((e, i) => {
-            const x = xAt(e.lean);
-            const up = i % 2 === 0;
-            const len = TIERS[Math.floor(i / 2) % TIERS.length];
-            const yEnd = up ? AXIS_Y - len : AXIS_Y + len;
-            const yLbl = up ? yEnd - 6 : yEnd + 6;
-            const isAcc = e === ACCENT;
+            const y = TOP + i * ROW;
+            const hinge = e === ACCENT;
             return (
               <g key={e.name}>
+                <text
+                  x={LEFT - 30}
+                  y={y}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className={styles.schemLbl}
+                  style={hinge ? { fill: "var(--pv-ink)", fontWeight: 700 } : undefined}
+                >
+                  {e.name}
+                </text>
                 <line
-                  x1={x} y1={up ? AXIS_Y - 7 : AXIS_Y + 7} x2={x} y2={yEnd}
+                  x1={LEFT}
+                  y1={y}
+                  x2={W - RIGHT}
+                  y2={y}
                   stroke="var(--pv-ink)"
                   strokeWidth="var(--pv-fine)"
                 />
                 <circle
-                  cx={x} cy={AXIS_Y} r={4}
+                  className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                  cx={xAt(e.lean)}
+                  cy={y}
+                  r={DOT_R}
                   fill="var(--pv-ink)"
+                  style={{ "--lag": `${(i * 0.04).toFixed(2)}s` } as CSSProperties}
                 />
-                {/* Rotated mono label, reading away from the axis. The
-                    class fill (grey) yields to the inline style on the
-                    accent — SVG presentation attributes lose to CSS, so
-                    the override must be a style, not an attribute. */}
-                <text
-                  x={x} y={yLbl}
-                  transform={`rotate(-90 ${x} ${yLbl})`}
-                  textAnchor={up ? "start" : "end"}
-                  dominantBaseline="middle"
-                  className={styles.schemNum}
-                  style={isAcc ? { fontWeight: 700 } : undefined}
-                >
-                  {e.name}
-                </text>
               </g>
             );
           })}
-
-          {/* The poles, on the axis ends. */}
-          <text x={PAD_X} y={AXIS_Y + 26} textAnchor="start" className={styles.schemLbl}>
-            CABIN BONES
-          </text>
-          <text x={W - PAD_X} y={AXIS_Y + 26} textAnchor="end" className={styles.schemLbl}>
-            MID-CENTURY SENSIBILITY
-          </text>
         </svg>
       </div>
     </div>
   );
 }
+
+export default PressingSpectrum;

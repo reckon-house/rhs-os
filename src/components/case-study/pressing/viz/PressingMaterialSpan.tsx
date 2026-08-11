@@ -1,29 +1,33 @@
+"use client";
+
+import { useRef, type CSSProperties } from "react";
+import { useVizArrival } from "@/lib/viz-motion";
 import { px } from "@/lib/px";
 import styles from "./PressingViz.module.css";
 
 /**
- * @shape sticks — conforms to lab/viz-system.html
+ * @shape dots — conforms to lab/viz-system.html
  *
- * PressingMaterialSpan — the pressing skin for `material-overlap`, and
- * the exemplar for the range-bar shape (VIZ-PASS.md).
+ * PressingMaterialSpan — the Floor & Decor set-membership matrix,
+ * transposed under the density budget. Thirteen rotated material names
+ * stood over three room rows; rotated label fields are the form the
+ * budget retires, so the matrix turns: thirteen material ROWS with
+ * level labels, three room COLUMNS headed once, a dot at every true
+ * membership and the heavy span connecting a material's rooms. The
+ * UpSet grammar, lying down.
  *
- * The three Floor & Decor rooms as rows, the thirteen materials as
- * columns, a dot where a material appears and a thick rounded bar
- * spanning its member rooms — the set-membership matrix the classic
- * Venn drew as particle clouds, redrawn as ink. The bar IS the datum:
- * which rooms share the material. Nothing else is encoded, so nothing
- * else is drawn.
- *
- * HEX MOSAIC is the one non-contiguous membership (Urban Southwest and
- * Quiet Glam without Modern Farmhouse); its connector runs thin through
- * the row it skips, dots only at its true members — the UpSet grammar
- * for exactly this case.
+ * HEX MOSAIC keeps its honest gap: Urban Southwest and Quiet Glam
+ * without Modern Farmhouse, so its connector runs FINE through the
+ * column it skips, dots only at its true members. Fine versus heavy
+ * carries the distinction; nothing is dimmed.
  *
  * The one emphasis: MARBLE, the only material in all three rooms — the
- * through-line the section's copy argues from — now carried by the pill
- * rather than the retired accent colour. Fine vs heavy carries the
- * gapped-membership distinction that dimmed ink used to; a real
- * membership never reads as a weak one.
+ * through-line the section's copy argues from — takes the pill at the
+ * end of its own row.
+ *
+ * Memberships verbatim from MaterialOverlap's regions. Arrival lands
+ * dots and spans row by row. No reading head: thirteen rows is over
+ * the ceiling.
  */
 
 const ROOMS = ["URBAN SOUTHWEST", "MODERN FARMHOUSE", "QUIET GLAM"] as const;
@@ -46,19 +50,29 @@ const MATERIALS: { name: string; rooms: number[] }[] = [
 ];
 
 const W = 1100;
-const H = 560;
-const LEFT = 214;   // room labels live left of the matrix
-const RIGHT = 40;
-const TOP = 190;    // rotated material labels live above it
-const ROW_GAP = 96;
+const LEFT = 260;
+const COL0 = 380;
+const COL_PITCH = 210;
+const TOP = 84;
+const ROW = 38;
+const DOT_R = 6.5;
+const H = TOP + MATERIALS.length * ROW + 20;
 
-const colX = (i: number) =>
-  px(LEFT + ((i + 0.5) * (W - LEFT - RIGHT)) / MATERIALS.length);
-const rowY = (r: number) => TOP + r * ROW_GAP;
+const colX = (c: number) => px(COL0 + c * COL_PITCH);
 
 export function PressingMaterialSpan() {
+  const ref = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(ref);
+
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={ref}>
+      <div className={styles.head}>
+        <span className={styles.lbl}>Materials, by room</span>
+        <span className={`${styles.lbl} ${styles.grey}`}>
+          {`${MATERIALS.length} materials · ${ROOMS.length} rooms`}
+        </span>
+      </div>
+
       <div className={styles.scroller} data-lenis-prevent-touch>
         <svg
           className={styles.wide}
@@ -67,79 +81,80 @@ export function PressingMaterialSpan() {
           role="img"
           aria-label="Which of the three rooms each material appears in; marble is the only material in all three"
         >
-          {/* Room rows: hairline rules with their labels. */}
-          {ROOMS.map((room, r) => (
-            <g key={room}>
-              {/* the room's rule: FINE at full ink. It read at 8%
-                  opacity before, which is a structure that recedes by
-                  fading — the one thing the stroke scale replaces. */}
-              <line
-                x1={LEFT} y1={rowY(r)} x2={W - RIGHT} y2={rowY(r)}
-                stroke="var(--pv-ink)" strokeWidth="var(--pv-fine)"
-              />
-              <text
-                x={LEFT - 18} y={rowY(r)}
-                textAnchor="end" dominantBaseline="middle"
-                className={styles.schemLbl}
-              >
-                {room}
-              </text>
-            </g>
+          {ROOMS.map((room, c) => (
+            <text
+              key={room}
+              x={colX(c)}
+              y={TOP - 34}
+              textAnchor="middle"
+              className={styles.schemLbl}
+            >
+              {room}
+            </text>
           ))}
 
-          {MATERIALS.map((m, i) => {
-            const x = colX(i);
+          {MATERIALS.map((m, r) => {
+            const y = TOP + r * ROW;
             const first = Math.min(...m.rooms);
             const last = Math.max(...m.rooms);
             const gapped = last - first + 1 > m.rooms.length;
             const isDatum = m.name === "MARBLE";
+            const lag = `${(r * 0.035).toFixed(3)}s`;
             return (
               <g key={m.name}>
-                {/* The span, at the heavy weight in one ink. A gapped
-                    membership gets a FINE pass-through instead of the
-                    full mark — the mark claims every room it covers, and
-                    HEX MOSAIC must not claim the middle one. Fine and
-                    heavy carry that difference now; the old version also
-                    dimmed the ink, which made a real membership look
-                    like a weak one. */}
-                {m.rooms.length > 1 && (
-                  <line
-                    x1={x} y1={rowY(first)} x2={x} y2={rowY(last)}
-                    stroke="var(--pv-ink)"
-                    strokeWidth={gapped ? 2 : 9}
-                    strokeLinecap="round"
-                  />
-                )}
-                {m.rooms.map((r) => (
-                  <circle
-                    key={r}
-                    cx={x} cy={rowY(r)} r={5.5}
-                    fill="var(--pv-ink)"
-                  />
-                ))}
-                {/* Rotated mono label above the matrix, reading up. */}
                 <text
-                  x={x} y={TOP - 26}
-                  transform={`rotate(-90 ${x} ${TOP - 26})`}
-                  textAnchor="start" dominantBaseline="middle"
-                  className={styles.schemNum}
+                  x={LEFT - 30}
+                  y={y}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className={styles.schemLbl}
                 >
                   {m.name}
                 </text>
-                {/* THE PILL, on the one material in all three rooms —
-                    the through-line the section argues from, and what
-                    the retired accent used to carry. */}
+                {m.rooms.length > 1 && (
+                  <line
+                    className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                    x1={colX(first)}
+                    y1={y}
+                    x2={colX(last)}
+                    y2={y}
+                    stroke="var(--pv-ink)"
+                    strokeWidth={gapped ? 2 : 9}
+                    strokeLinecap="round"
+                    style={{ "--lag": lag } as CSSProperties}
+                  />
+                )}
+                {m.rooms.map((c) => (
+                  <circle
+                    key={c}
+                    className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                    cx={colX(c)}
+                    cy={y}
+                    r={DOT_R}
+                    fill="var(--pv-ink)"
+                    style={{ "--lag": lag } as CSSProperties}
+                  />
+                ))}
                 {isDatum && (
-                  <g>
+                  <g
+                    className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                    style={{ "--lag": "0.75s" } as CSSProperties}
+                  >
                     <rect
-                      x={px(x - 62)} y={px(rowY(2) + 26)}
-                      rx={10} width={124} height={20}
+                      x={px(COL0 + 2 * COL_PITCH + 40)}
+                      y={px(y - 10)}
+                      rx={10}
+                      width={124}
+                      height={20}
                       fill="var(--pv-ink)"
                     />
                     <text
-                      x={x} y={px(rowY(2) + 40)}
+                      x={px(COL0 + 2 * COL_PITCH + 40 + 62)}
+                      y={px(y + 4)}
                       textAnchor="middle"
-                      fontSize={10} fontWeight={600} letterSpacing="0.06em"
+                      fontSize={10}
+                      fontWeight={600}
+                      letterSpacing="0.06em"
                       fill="var(--pp-paper)"
                     >
                       ALL THREE ROOMS
@@ -154,3 +169,5 @@ export function PressingMaterialSpan() {
     </div>
   );
 }
+
+export default PressingMaterialSpan;
