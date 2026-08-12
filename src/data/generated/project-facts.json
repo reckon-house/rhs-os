@@ -174,7 +174,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -185,6 +185,11 @@
         "section": "hero",
         "field": "slides.1.src",
         "quote": "amber shockey co black linework geometric plates marble surface collection mockup"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+        "quote": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them."
        }
       ]
      },
@@ -204,6 +209,37 @@
         "quote": "amber shockey co blue florals peony wallpaper pattern field"
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+        "quote": "Overhead flat-lay, plates set in a loose row with two cropped by the left and right edges, the largest charger dominating just left of centre."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+        "quote": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+        "quote": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them."
+       }
+      ],
+      "observed": true
      }
     ],
     "furniture": [
@@ -223,9 +259,40 @@
         "quote": "Pairs with red dragons when the table needs heat."
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bowl",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+        "quote": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them."
+       }
+      ],
+      "observed": true
      }
     ],
     "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+        "quote": "Overhead flat-lay, plates set in a loose row with two cropped by the left and right edges, the largest charger dominating just left of centre."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+        "quote": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them."
+       }
+      ],
+      "observed": true
+     },
      {
       "facet": "style",
       "term": "western",
@@ -237,6 +304,19 @@
         "quote": "Pulls Eastern textile work into a Western tableware context."
        }
       ]
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+        "quote": "Overhead flat-lay, plates set in a loose row with two cropped by the left and right edges, the largest charger dominating just left of centre."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -341,7 +421,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 10,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -352,6 +432,11 @@
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
        }
       ]
      },
@@ -529,15 +614,61 @@
      },
      {
       "facet": "furniture",
+      "term": "shelf",
+      "n": 3,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg",
+        "quote": "Straight overhead vantage, the phone centred and near-symmetrical in the square frame, the screen taking most of the height."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
       "term": "counter",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "live-app",
         "field": "posterAlt",
         "quote": "running on a phone, resting on a kitchen counter"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
      },
      {
       "facet": "furniture",
@@ -555,19 +686,6 @@
      {
       "facet": "furniture",
       "term": "mantel",
-      "n": 1,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
-        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "furniture",
-      "term": "shelf",
       "n": 1,
       "cites": [
        {
@@ -645,13 +763,104 @@
      },
      {
       "facet": "furniture",
-      "term": "pendant",
+      "term": "island",
       "n": 1,
       "cites": [
        {
         "section": "image",
-        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
-        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "cabinet",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "stool",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "sink",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "backsplash",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "bowl",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
        }
       ],
       "observed": true
@@ -700,18 +909,54 @@
        }
       ],
       "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "farmhouse",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
      }
     ],
     "material": [
      {
       "facet": "material",
-      "term": "stone",
-      "n": 1,
+      "term": "glass",
+      "n": 3,
       "cites": [
        {
         "section": "image",
         "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
         "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg",
+        "quote": "Straight overhead vantage, the phone centred and near-symmetrical in the square frame, the screen taking most of the height."
        }
       ],
       "observed": true
@@ -719,12 +964,17 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "image",
         "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
         "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
        }
       ],
       "observed": true
@@ -732,6 +982,24 @@
      {
       "facet": "material",
       "term": "marble",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "stone",
       "n": 1,
       "cites": [
        {
@@ -757,13 +1025,26 @@
      },
      {
       "facet": "material",
-      "term": "glass",
+      "term": "oak",
       "n": 1,
       "cites": [
        {
         "section": "image",
-        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
-        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
        }
       ],
       "observed": true
@@ -856,7 +1137,7 @@
      {
       "facet": "furniture",
       "term": "plant",
-      "n": 3,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -867,6 +1148,11 @@
         "section": "img-plant-grid",
         "field": "src",
         "quote": "grid plant"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/chisos-peak-cactus.jpg",
+        "quote": "Eye-level wide vantage from the flat, horizon low and centred, the single peak dominating and the range falling away right into low hills."
        }
       ]
      },
@@ -887,14 +1173,57 @@
      {
       "facet": "material",
       "term": "stone",
-      "n": 1,
+      "n": 3,
       "cites": [
        {
         "section": "chisos-elena-pair",
         "field": "right.alt",
         "quote": "Santa Elena Canyon studies: the sheer limestone wall beside two frames of the Rio Grande below"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/chisos-peak-cactus.jpg",
+        "quote": "Eye-level wide vantage from the flat, horizon low and centred, the single peak dominating and the range falling away right into low hills."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/elena_wide.jpg",
+        "quote": "High vantage from a bluff looking downriver, horizon set high with stacked pale ranges behind, sky taking the top third and the river entering at the lower right."
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "clay",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/elena_wide.jpg",
+        "quote": "High vantage from a bluff looking downriver, horizon set high with stacked pale ranges behind, sky taking the top third and the river entering at the lower right."
+       }
+      ],
+      "observed": true
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "western",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/chisos-peak-cactus.jpg",
+        "quote": "Eye-level wide vantage from the flat, horizon low and centred, the single peak dominating and the range falling away right into low hills."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/elena_wide.jpg",
+        "quote": "High vantage from a bluff looking downriver, horizon set high with stacked pale ranges behind, sky taking the top third and the river entering at the lower right."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -940,7 +1269,7 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -951,13 +1280,18 @@
         "section": "meta",
         "field": "abstract",
         "quote": "Just black ink, white paper, and six repeating elements simple enough for a child to draw."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+        "quote": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner."
        }
       ]
      },
      {
       "facet": "material",
       "term": "wood",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -968,6 +1302,11 @@
         "section": "hero",
         "field": "image",
         "quote": "typography patterns the fancy poster wood surface lifestyle"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+        "quote": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner."
        }
       ]
      }
@@ -1006,6 +1345,19 @@
         "quote": "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms"
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+        "quote": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -1212,7 +1564,7 @@
      {
       "facet": "style",
       "term": "western",
-      "n": 19,
+      "n": 21,
       "cites": [
        {
         "section": "meta",
@@ -1324,6 +1676,24 @@
      },
      {
       "facet": "material",
+      "term": "stone",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg",
+        "quote": "Four square landscape frames butted into a 2x2 grid with seams crossing at the middle, the lockup centred on that crossing."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg",
+        "quote": "Landscape frame with a centred rectangular plate floating over a tiled repeat of a second horizon photograph, tagline set across the plate's midline."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
       "term": "denim",
       "n": 1,
       "cites": [
@@ -1345,6 +1715,19 @@
         "quote": "Paper, hangtags"
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg",
+        "quote": "Landscape frame with a centred rectangular plate floating over a tiled repeat of a second horizon photograph, tagline set across the plate's midline."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -2413,7 +2796,7 @@
      {
       "facet": "material",
       "term": "velvet",
-      "n": 28,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -2424,13 +2807,18 @@
         "section": "meta",
         "field": "reel.images.3",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "material",
       "term": "brass",
-      "n": 27,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -2441,13 +2829,18 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "material",
       "term": "stone",
-      "n": 27,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -2458,13 +2851,18 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "material",
       "term": "wood",
-      "n": 9,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -2475,13 +2873,18 @@
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "material",
       "term": "oak",
-      "n": 7,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -2492,13 +2895,18 @@
         "section": "meta",
         "field": "abstract",
         "quote": "The palette stays tight - stone, velvet, brass, warm oak, no competing colors."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "material",
       "term": "leather",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -2509,6 +2917,11 @@
         "section": "texture-stone",
         "field": "src",
         "quote": "fairview sitting stone wall wood mantel mirror brass candlesticks leather tumbler detail"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+        "quote": "Square-on close vantage with the mantel as a single horizontal near the lower third, the wall filling the frame edge to edge and the circle of the mirror cropped at the right."
        }
       ]
      },
@@ -2532,7 +2945,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "conversation-pair",
@@ -2543,15 +2956,90 @@
         "section": "marks-materials",
         "field": "markAlt",
         "quote": "…und antiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplace…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+        "quote": "Square-on close vantage with the mantel as a single horizontal near the lower third, the wall filling the frame edge to edge and the circle of the mirror cropped at the right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "wool",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "linen",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
      }
     ],
     "furniture": [
      {
       "facet": "furniture",
       "term": "fireplace",
-      "n": 21,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -2562,13 +3050,18 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "coffee table",
-      "n": 16,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -2579,13 +3072,18 @@
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -2596,13 +3094,18 @@
         "section": "meta",
         "field": "reel.images.7",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "mantel",
-      "n": 10,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -2613,13 +3116,18 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "mirror",
-      "n": 6,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -2630,13 +3138,18 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "beam",
-      "n": 4,
+      "n": 6,
       "cites": [
        {
         "section": "texture-stone",
@@ -2647,6 +3160,11 @@
         "section": "architectural-hero",
         "field": "alt",
         "quote": "…led-back architectural view of the sitting room with black box beam coffered ceiling, stone fireplace, four swivel chairs around t…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
@@ -2687,7 +3205,7 @@
      {
       "facet": "furniture",
       "term": "plant",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "conversation-pair",
@@ -2698,13 +3216,18 @@
         "section": "marks-materials",
         "field": "markAlt",
         "quote": "Round antiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplac…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "bowl",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "conversation-pair",
@@ -2715,6 +3238,28 @@
         "section": "marks-materials",
         "field": "markAlt",
         "quote": "…tiqued brass coffee table with wood top, olive plant in marble bowl, charcoal velvet swivel against stacked stone fireplace — the…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 2,
+      "cites": [
+       {
+        "section": "conversation-rear",
+        "field": "alt",
+        "quote": "…chairs around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
      },
@@ -2732,15 +3277,42 @@
      },
      {
       "facet": "furniture",
-      "term": "chair",
+      "term": "rug",
       "n": 1,
       "cites": [
        {
-        "section": "conversation-rear",
-        "field": "alt",
-        "quote": "…chairs around the brass coffee table, throw blanket over one chair, large black abstract artwork on the wall behind, bar cabinet…"
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
-      ]
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "pillow",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ],
+      "observed": true
      }
     ],
     "colour": [
@@ -2778,7 +3350,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 4,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -2789,8 +3361,51 @@
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Sitting room built around a floor-to-ceiling stacked stone fireplace"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
        }
       ]
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+        "quote": "Square-on close vantage with the mantel as a single horizontal near the lower third, the wall filling the frame edge to edge and the circle of the mirror cropped at the right."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+        "quote": "Square-on close vantage with the mantel as a single horizontal near the lower third, the wall filling the frame edge to edge and the circle of the mirror cropped at the right."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -5268,7 +5883,7 @@
      {
       "facet": "material",
       "term": "stone",
-      "n": 33,
+      "n": 35,
       "cites": [
        {
         "section": "meta",
@@ -5279,13 +5894,18 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jp…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "material",
       "term": "leather",
-      "n": 24,
+      "n": 26,
       "cites": [
        {
         "section": "meta",
@@ -5296,13 +5916,18 @@
         "section": "meta",
         "field": "reel.images.4",
         "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "material",
       "term": "wood",
-      "n": 20,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -5313,13 +5938,18 @@
         "section": "meta",
         "field": "subtitle",
         "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "material",
       "term": "brass",
-      "n": 15,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -5330,6 +5960,11 @@
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
@@ -5352,27 +5987,117 @@
      },
      {
       "facet": "material",
-      "term": "oak",
-      "n": 1,
-      "cites": [
-       {
-        "section": "material-fireplace",
-        "field": "alt",
-        "quote": "…painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather…"
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "ceramic",
-      "n": 1,
+      "n": 3,
       "cites": [
        {
         "section": "collected-armchairs",
         "field": "left.alt",
         "quote": "…Eisenhower painting and a small landscape, tweed armchair beside it, ladder shelf with ceramic vessels, dark patterned vintage rug"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 2,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wool",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "linen",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "clay",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
      }
     ],
     "place": [
@@ -5398,7 +6123,7 @@
      {
       "facet": "furniture",
       "term": "fireplace",
-      "n": 23,
+      "n": 25,
       "cites": [
        {
         "section": "meta",
@@ -5409,13 +6134,18 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "…case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "sofa",
-      "n": 21,
+      "n": 23,
       "cites": [
        {
         "section": "meta",
@@ -5426,6 +6156,33 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "…case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 13,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "…tudies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
@@ -5448,25 +6205,8 @@
      },
      {
       "facet": "furniture",
-      "term": "shelf",
-      "n": 11,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.5",
-        "quote": "…tudies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "chandelier",
-      "n": 9,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -5477,13 +6217,18 @@
         "section": "meta",
         "field": "reel.images.3",
         "quote": "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "rug",
-      "n": 6,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -5494,13 +6239,18 @@
         "section": "meta",
         "field": "reel.images.6",
         "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "bench",
-      "n": 6,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -5511,13 +6261,18 @@
         "section": "hero",
         "field": "alt",
         "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "chair",
-      "n": 5,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -5528,13 +6283,18 @@
         "section": "material-pair",
         "field": "left.alt",
         "quote": "…the limestone wall with the ladder shelf holding a vintage globe, brass fireplace tools below, and the corner of a tweed armchair"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "mantel",
-      "n": 4,
+      "n": 6,
       "cites": [
        {
         "section": "material-fireplace",
@@ -5545,13 +6305,40 @@
         "section": "marks-materials",
         "field": "colors.1.description",
         "quote": "Floors, beams, mantel"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "lamp",
+      "n": 5,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "window",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -5562,13 +6349,18 @@
         "section": "collected-armchairs",
         "field": "right.src",
         "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "stool",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -5579,6 +6371,33 @@
         "section": "collected-armchairs",
         "field": "right.src",
         "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bowl",
+      "n": 4,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.src",
+        "quote": "hill country living cognac sofa pampas wood bowl kitchen background detail"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "…a with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
@@ -5601,25 +6420,8 @@
      },
      {
       "facet": "furniture",
-      "term": "lamp",
-      "n": 3,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
-       },
-       {
-        "section": "collected-vignettes",
-        "field": "left.src",
-        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "beam",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "material-fireplace",
@@ -5630,25 +6432,110 @@
         "section": "marks-materials",
         "field": "fonts.1.description",
         "quote": "The same grain runs underfoot, overhead in the exposed beams, and across the mantel beam pulled over the stone."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "furniture",
-      "term": "bowl",
+      "term": "pillow",
+      "n": 3,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "Tight detail of the cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee tab…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 3,
+      "cites": [
+       {
+        "section": "collected-vignettes",
+        "field": "right.alt",
+        "quote": "…cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
       "n": 2,
       "cites": [
        {
         "section": "collected-vignettes",
-        "field": "right.src",
-        "quote": "hill country living cognac sofa pampas wood bowl kitchen background detail"
+        "field": "left.alt",
+        "quote": "…ror, wood cutting board on the wall, small framed art, wood console table with crystal lamp, plaid throw and wicker basket beneath"
        },
        {
-        "section": "collected-vignettes",
-        "field": "right.alt",
-        "quote": "…a with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to the kitchen behind"
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "artwork",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
      },
      {
       "facet": "furniture",
@@ -5659,18 +6546,6 @@
         "section": "architectural-hero",
         "field": "alt",
         "quote": "…pas and textured pillows in the foreground, exposed wood beams overhead, green cabinetry and marble counters in the kitchen behind"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "table",
-      "n": 1,
-      "cites": [
-       {
-        "section": "collected-vignettes",
-        "field": "left.alt",
-        "quote": "…ror, wood cutting board on the wall, small framed art, wood console table with crystal lamp, plaid throw and wicker basket beneath"
        }
       ]
      },
@@ -5688,27 +6563,16 @@
      },
      {
       "facet": "furniture",
-      "term": "pillow",
+      "term": "plant",
       "n": 1,
       "cites": [
        {
-        "section": "collected-vignettes",
-        "field": "right.alt",
-        "quote": "Tight detail of the cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee tab…"
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
        }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "vase",
-      "n": 1,
-      "cites": [
-       {
-        "section": "collected-vignettes",
-        "field": "right.alt",
-        "quote": "…cognac leather sofa with checkered pillow and pampas in a wood vase set in a black wood bowl on the coffee table, view through to…"
-       }
-      ]
+      ],
+      "observed": true
      }
     ],
     "style": [
@@ -5732,6 +6596,28 @@
      {
       "facet": "style",
       "term": "mid century",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "style",
+      "term": "western",
       "n": 6,
       "cites": [
        {
@@ -5743,25 +6629,39 @@
         "section": "meta",
         "field": "abstract",
         "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
      {
       "facet": "style",
-      "term": "western",
-      "n": 4,
+      "term": "farmhouse",
+      "n": 1,
       "cites": [
        {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
-      ]
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ],
+      "observed": true
      }
     ],
     "room": [
@@ -5785,7 +6685,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 4,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -5796,6 +6696,11 @@
         "section": "meta",
         "field": "abstract",
         "quote": "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
@@ -6151,7 +7056,7 @@
      {
       "facet": "material",
       "term": "concrete",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "hero",
@@ -6162,8 +7067,39 @@
         "section": "mobile-hero",
         "field": "alt",
         "quote": "Ivy Park mobile experience on iPhone, Courage is Power section, concrete surface"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+        "quote": "Raised three-quarter vantage looking down at a laptop set on the floor at a diagonal, the open screen taking the upper half of the frame."
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+        "quote": "Raised three-quarter vantage looking down at a laptop set on the floor at a diagonal, the open screen taking the upper half of the frame."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+        "quote": "Raised three-quarter vantage looking down at a laptop set on the floor at a diagonal, the open screen taking the upper half of the frame."
+       }
+      ],
+      "observed": true
      }
     ],
     "room": [
@@ -6178,6 +7114,26 @@
         "quote": "…ive direction, typography, layout, motion, copy, and rollout happened in a Nordstrom office with a small team and a hard deadline."
        }
       ]
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+        "quote": "Raised three-quarter vantage looking down at a laptop set on the floor at a diagonal, the open screen taking the upper half of the frame."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/ivy-park/ivy-park-campaign-assets-grid-overview.jpg",
+        "quote": "Flat overhead grid of page layouts on white, three rows of unequal panels, several running off the right and left edges."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -7198,7 +8154,7 @@
      {
       "facet": "furniture",
       "term": "window",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -7209,8 +8165,39 @@
         "section": "hero",
         "field": "image",
         "quote": "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
+       }
+      ],
+      "observed": true
      }
     ],
     "material": [
@@ -7234,12 +8221,76 @@
      {
       "facet": "material",
       "term": "silk",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "image",
         "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
         "quote": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+        "quote": "Square frame split roughly down the middle, full-length figure at left against an extreme facial crop filling the right, the wordmark set on the seam."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
+       }
+      ],
+      "observed": true
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+        "quote": "Square frame split roughly down the middle, full-length figure at left against an extreme facial crop filling the right, the wordmark set on the seam."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+        "quote": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third."
        }
       ],
       "observed": true
@@ -7329,6 +8380,24 @@
     "style": [
      {
       "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+        "quote": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
       "term": "traditional",
       "n": 1,
       "cites": [
@@ -7338,6 +8407,72 @@
         "quote": "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implem…"
        }
       ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+        "quote": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       }
+      ],
+      "observed": true
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+        "quote": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -8776,6 +9911,1579 @@
    "light": "",
    "focal": "",
    "balance": ""
+  },
+  {
+   "src": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+   "slug": "hill-country-living",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "leather",
+     "wood",
+     "wool",
+     "brass",
+     "glass",
+     "ceramic",
+     "linen",
+     "oak"
+    ],
+    "furniture": [
+     "fireplace",
+     "chandelier",
+     "mantel",
+     "artwork",
+     "sofa",
+     "chair",
+     "bench",
+     "rug",
+     "shelf",
+     "lamp",
+     "pillow",
+     "window",
+     "door",
+     "stool",
+     "vase",
+     "bowl",
+     "beam"
+    ],
+    "style": [
+     "western",
+     "mid century",
+     "farmhouse"
+    ],
+    "room": [
+     "living room"
+    ]
+   },
+   "subjects": [
+    "painting of horseback riders under a storm sky",
+    "gilt frames",
+    "sheepskin hide",
+    "dried grasses",
+    "record player",
+    "vinyl records",
+    "leaning ladder shelf",
+    "plaid pinch-pleat curtain",
+    "sliding glass doors onto a covered porch",
+    "lawn",
+    "fire logs on andirons",
+    "copper vessel"
+   ],
+   "text": [],
+   "palette": [
+    "#e3d9c6",
+    "#f4f1ea",
+    "#a0602f",
+    "#4a3324",
+    "#8a857e"
+   ],
+   "colours": [
+    "cream",
+    "cognac",
+    "walnut",
+    "greige",
+    "charcoal",
+    "olive"
+   ],
+   "mood": [
+    "warm",
+    "settled",
+    "collected"
+   ],
+   "composition": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left.",
+   "density": "layered",
+   "texture": [
+    "rough-cut limestone block",
+    "smooth cognac leather",
+    "loose-weave wool throw",
+    "curly sheepskin",
+    "houndstooth tweed",
+    "planed wood mantel",
+    "blown glass globes",
+    "speckled matte ceramic",
+    "painted tongue-and-groove boards",
+    "checked linen drapery"
+   ],
+   "contrast": [
+    "rough stone against smooth leather",
+    "matte textiles against glossy glass and brass",
+    "pale wall against dark plank floor",
+    "gilt ornament against a plain masonry plane",
+    "warm leather against cool grey rug"
+   ],
+   "paletteLogic": "earth range",
+   "light": "soft daylight",
+   "focal": "The eye lands on the large gilt-framed monochrome painting centred over the mantel, and the two smaller gold frames flanking it keep it there.",
+   "balance": "The gallery wall, bookshelf and ladder shelf crowd the centre and right, and the blank stone field beside the fireplace plus the open dark floor in front of it pay for that crowding."
+  },
+  {
+   "src": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+   "slug": "hill-country-living",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "leather",
+     "wood",
+     "wool",
+     "brass",
+     "glass",
+     "ceramic",
+     "clay",
+     "paper"
+    ],
+    "furniture": [
+     "fireplace",
+     "chandelier",
+     "mantel",
+     "artwork",
+     "sofa",
+     "chair",
+     "shelf",
+     "rug",
+     "pillow",
+     "lamp",
+     "vase",
+     "bowl",
+     "door",
+     "table",
+     "bench",
+     "plant"
+    ],
+    "style": [
+     "western",
+     "mid century",
+     "traditional"
+    ],
+    "room": [
+     "living room"
+    ]
+   },
+   "subjects": [
+    "painting of four riders on horseback under a storm sky",
+    "two small gilt-framed landscape paintings",
+    "record player",
+    "stacked vinyl records",
+    "black speaker",
+    "chevron-patterned wool blanket",
+    "sheepskin hide",
+    "dried pampas-type grasses in a stoneware vase",
+    "brass fireplace tool set",
+    "leaning ladder shelf",
+    "potted cactus in a doorway",
+    "stacked books"
+   ],
+   "text": [
+    "GREAT NOWITZKI",
+    "BRITISH DESIGNERS AT HOME",
+    "Juanita"
+   ],
+   "palette": [
+    "#e5dbc9",
+    "#f5f2ec",
+    "#9d5c2c",
+    "#cdbfa6",
+    "#3f342a"
+   ],
+   "colours": [
+    "cream",
+    "cognac",
+    "taupe",
+    "olive",
+    "brass",
+    "charcoal"
+   ],
+   "mood": [
+    "symmetrical",
+    "warm",
+    "quiet"
+   ],
+   "composition": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically.",
+   "density": "layered",
+   "texture": [
+    "rough-cut limestone block",
+    "smooth cognac leather",
+    "flat-weave wool blanket with fringe",
+    "curly sheepskin",
+    "houndstooth tweed",
+    "planed cedar mantel",
+    "blown glass globes",
+    "unglazed stoneware",
+    "polished brass",
+    "printed paper book jackets"
+   ],
+   "contrast": [
+    "ornament against plane, gilt frames on a bare stone field",
+    "warm leather against cool grey-white masonry",
+    "hard stone against soft fringed textiles",
+    "small dense shelf clutter against the wide empty wall above the mantel"
+   ],
+   "paletteLogic": "earth range",
+   "light": "soft daylight",
+   "focal": "The eye goes straight to the wide monochrome riders painting on axis above the mantel, and the chandelier hanging directly over it locks the centre line.",
+   "balance": "Objects pile up in the lower third and on the two flanking shelves, while the broad blank stone between the mantel and the ceiling gives the frame its rest."
+  },
+  {
+   "src": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+   "slug": "fairview-sitting",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "velvet",
+     "brass",
+     "wood",
+     "oak",
+     "wool",
+     "ceramic",
+     "marble",
+     "glass",
+     "linen",
+     "steel"
+    ],
+    "furniture": [
+     "fireplace",
+     "mantel",
+     "beam",
+     "chair",
+     "coffee table",
+     "cabinet",
+     "mirror",
+     "rug",
+     "pillow",
+     "plant",
+     "bowl",
+     "shelf"
+    ],
+    "style": [
+     "modern",
+     "traditional"
+    ],
+    "room": [
+     "living room"
+    ]
+   },
+   "subjects": [
+    "herringbone brick firebox",
+    "stacked fire logs on a black grate",
+    "olive branches in a white pot",
+    "round black-framed mirror cropped by the frame",
+    "arched cane-front cabinet on an iron stand",
+    "speckled black and white bowl",
+    "brass candlestick",
+    "glass hurricane candle",
+    "copper-handled fireplace tools",
+    "open book on a chair arm",
+    "striped fringed throw"
+   ],
+   "text": [],
+   "palette": [
+    "#9a938a",
+    "#4a4643",
+    "#b08337",
+    "#e6e0d6",
+    "#c9a06a"
+   ],
+   "colours": [
+    "charcoal",
+    "greige",
+    "brass",
+    "cream",
+    "camel",
+    "black"
+   ],
+   "mood": [
+    "hushed",
+    "tailored",
+    "cool"
+   ],
+   "composition": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right.",
+   "density": "measured",
+   "texture": [
+    "dry-stacked ledger stone",
+    "crushed charcoal velvet",
+    "brushed brass drum",
+    "rift-sawn oak flooring",
+    "looped wool rug",
+    "woven cane door panels",
+    "speckled glazed ceramic",
+    "honed stone tray with a gilt rim",
+    "ribbed cotton pillow",
+    "slubbed striped throw"
+   ],
+   "contrast": [
+    "warm brass against cool grey stone and charcoal velvet",
+    "hard mineral wall against deep pile upholstery",
+    "the round table and round chair backs against the rectilinear stone coursing",
+    "matte black cabinet against a plain white plaster wall"
+   ],
+   "paletteLogic": "one accent",
+   "light": "soft daylight",
+   "focal": "The brass drum base of the round coffee table pulls first as the only bright warm mass, then the black firebox opening behind it takes over and holds the middle distance.",
+   "balance": "The stone wall carries all the visual noise across the top and right, and the flat white plaster wall at left plus the bare oak floor beneath the cabinet answer it."
+  },
+  {
+   "src": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+   "slug": "fairview-sitting",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "wood",
+     "brass",
+     "glass",
+     "leather"
+    ],
+    "furniture": [
+     "mantel",
+     "mirror",
+     "beam"
+    ],
+    "style": [
+     "modern",
+     "traditional"
+    ],
+    "room": [
+     "living room"
+    ]
+   },
+   "subjects": [
+    "two ivory taper candles",
+    "black vessel with a polished gold rim and a stitched seam",
+    "round black-framed mirror reflecting dark ceiling beams and white ceiling"
+   ],
+   "text": [],
+   "palette": [
+    "#a99a86",
+    "#c9a978",
+    "#7d7268",
+    "#b8913f",
+    "#1c1a19"
+   ],
+   "colours": [
+    "stone grey",
+    "sand",
+    "honey",
+    "brass",
+    "black",
+    "ivory"
+   ],
+   "mood": [
+    "still",
+    "spare",
+    "tactile"
+   ],
+   "composition": "Square-on close vantage with the mantel as a single horizontal near the lower third, the wall filling the frame edge to edge and the circle of the mirror cropped at the right.",
+   "density": "spare",
+   "texture": [
+    "dry-stacked ledger stone with sawn faces",
+    "planed fir beam with visible grain and knots",
+    "brushed brass candlesticks",
+    "high-polish gold rim",
+    "stitched leather wrap",
+    "flat mirror glass"
+   ],
+   "contrast": [
+    "busy stone coursing against three clean silhouettes",
+    "matte mineral against high-gloss metal",
+    "warm honey beam against cool grey stone",
+    "the mirror's flat reflected planes against the wall's relief"
+   ],
+   "paletteLogic": "tonal",
+   "light": "soft daylight",
+   "focal": "The eye lands on the black vessel and the pair of brass candlesticks, the tallest candle tip carrying it up, and the mirror's dark edge stops it from leaving right.",
+   "balance": "The right third is loaded with the mirror and the objects, and the wide empty run of stone at left, plus the uninterrupted beam beneath, pays for it."
+  },
+  {
+   "src": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+   "slug": "arc",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "oak",
+     "wood",
+     "marble",
+     "glass",
+     "ceramic"
+    ],
+    "furniture": [
+     "island",
+     "cabinet",
+     "pendant",
+     "counter",
+     "stool",
+     "sink",
+     "backsplash",
+     "shelf",
+     "window",
+     "bowl",
+     "faucet"
+    ],
+    "style": [
+     "modern",
+     "farmhouse"
+    ],
+    "room": [
+     "kitchen"
+    ]
+   },
+   "subjects": [
+    "phone held upright in a top-down shot",
+    "rift-sawn oak table surface",
+    "app screen showing project cards",
+    "kitchen photograph with green cabinetry and a plaster range hood",
+    "bowl of oranges",
+    "woven-seat counter stools",
+    "stacked firewood"
+   ],
+   "text": [
+    "a r c.",
+    "archive ready cloud",
+    "select your project",
+    "+ Project",
+    "My Home",
+    "687 items",
+    "Vacation Home",
+    "456 items",
+    "my home",
+    "+ Room",
+    "Keep your inventory current – tap into your rooms below to manage items, edit details, and attach documents."
+   ],
+   "palette": [
+    "#c99a5e",
+    "#a87740",
+    "#faf8f5",
+    "#1b1b1d",
+    "#4a5548"
+   ],
+   "colours": [
+    "honey oak",
+    "white",
+    "black",
+    "forest green",
+    "orange"
+   ],
+   "mood": [
+    "clean",
+    "warm",
+    "product-forward"
+   ],
+   "composition": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left.",
+   "density": "spare",
+   "texture": [
+    "rift-sawn oak with straight ribbon grain",
+    "matte black phone bezel",
+    "glossy screen glass",
+    "flat white interface panels",
+    "veined marble in the on-screen counter",
+    "milk glass pendant globes"
+   ],
+   "contrast": [
+    "warm wood field against a cool white screen",
+    "one small dense rectangle against a large empty plane",
+    "the soft cast shadow against the flat grain",
+    "black bezel edging the bright display"
+   ],
+   "paletteLogic": "two-tone",
+   "light": "soft daylight",
+   "focal": "The lit phone screen is the only bright thing in the frame and the app's stacked cards and photograph carry the eye down its length.",
+   "balance": "Everything happens in the narrow central column of the phone, and the broad unbroken oak on both sides is the rest that pays for it."
+  },
+  {
+   "src": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg",
+   "slug": "arc",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "glass"
+    ],
+    "furniture": [
+     "shelf"
+    ],
+    "style": [],
+    "room": []
+   },
+   "subjects": [
+    "smartphone",
+    "app interface",
+    "woven textile backdrop",
+    "interior photo banner inside the screen",
+    "item thumbnail cards",
+    "search icon",
+    "hamburger menu icon",
+    "pencil and trash icons"
+   ],
+   "text": [
+    "a.r.c.",
+    "archive ready cloud",
+    "$23,575",
+    "Total Value",
+    "17",
+    "Items",
+    "10",
+    "Photos",
+    "Living Room",
+    "Select how you'd like to add your photo inventory:",
+    "+ AI Photo",
+    "+ Manual",
+    "Item Profile",
+    "Every detail counts. Fill in the essentials so you're always backed up.",
+    "Bookshelf",
+    "Furniture",
+    "$200"
+   ],
+   "palette": [
+    "#b3b0aa",
+    "#8e8b85",
+    "#333b45",
+    "#ffffff",
+    "#a89377"
+   ],
+   "colours": [
+    "grey",
+    "charcoal",
+    "white",
+    "navy",
+    "warm beige"
+   ],
+   "mood": [
+    "quiet",
+    "utilitarian",
+    "tactile"
+   ],
+   "composition": "Straight overhead vantage, the phone centred and near-symmetrical in the square frame, the screen taking most of the height.",
+   "density": "measured",
+   "texture": [
+    "coarse basket-weave cloth",
+    "polished screen glass",
+    "matte dark metal phone rail",
+    "flat white interface panels"
+   ],
+   "contrast": [
+    "dark device against pale weave",
+    "flat glass against textile tooth",
+    "warm banner photograph against cool grey ground"
+   ],
+   "paletteLogic": "tonal",
+   "light": "soft daylight",
+   "focal": "The eye lands on the lit white screen and is held by the dark stat row reading $23,575 and the bold Living Room heading directly under it.",
+   "balance": "The middle third is busy where the interface stacks card on card, and the plain woven field around and below the phone rests, its shallow vignette pulling attention back inward."
+  },
+  {
+   "src": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+   "slug": "sally",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "oak",
+     "wood",
+     "glass"
+    ],
+    "furniture": [
+     "chair"
+    ],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "open laptop",
+    "asset library grid",
+    "nail polish bottles",
+    "gel polish bottle lineup",
+    "shampoo bottle",
+    "acrylic powder jars",
+    "model portraits",
+    "sidebar navigation",
+    "search bar",
+    "tag chips",
+    "sunlight patch across the wood"
+   ],
+   "text": [
+    "SALLY.",
+    "Asset Hub",
+    "Search assets by name, brand, category, tag, campaign...",
+    "Library",
+    "Upload",
+    "Collections",
+    "Workflows",
+    "Vendor Uploads",
+    "REFINE",
+    "All brands",
+    "All categories",
+    "All statuses",
+    "Briefing",
+    "Trends",
+    "Assets",
+    "Utilities",
+    "Solutions",
+    "Sally Beauty",
+    "hair color",
+    "hair care",
+    "nail polish",
+    "gel polish",
+    "gel builder",
+    "nail products",
+    "acrylic powder",
+    "Kiara Sky",
+    "blonde hair",
+    "wavy hair",
+    "long hair",
+    "dark brown hair",
+    "curly hair",
+    "nails",
+    "nail art",
+    "leopard print",
+    "holiday",
+    "christmas",
+    "catalog",
+    "lifestyle",
+    "No salon required"
+   ],
+   "palette": [
+    "#c08d55",
+    "#8a5c2e",
+    "#f7f6f5",
+    "#d1272e",
+    "#e6b3ad"
+   ],
+   "colours": [
+    "honey oak",
+    "silver",
+    "white",
+    "red",
+    "blush pink"
+   ],
+   "mood": [
+    "bright",
+    "orderly",
+    "sunlit"
+   ],
+   "composition": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds.",
+   "density": "layered",
+   "texture": [
+    "open-grain pale oak",
+    "brushed aluminium laptop shell",
+    "glossy screen glass",
+    "matte photographic tiles on screen"
+   ],
+   "contrast": [
+    "cool white interface against warm oak",
+    "hard sunlight against deep slat shadow",
+    "dense image grid against plain wood field",
+    "small red mark against a large neutral spread"
+   ],
+   "paletteLogic": "one accent",
+   "light": "hard sun",
+   "focal": "The eye lands on the bright screen and is held by the top row of faces, which run left to right across the grid and pull the read along with them.",
+   "balance": "The screen carries nearly all the incident in its packed grid, and the broad empty plank at lower left plus the shadowed slatted back behind pay for it with two large unmarked areas."
+  },
+  {
+   "src": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+   "slug": "sally",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "glass"
+    ],
+    "furniture": [
+     "chair"
+    ],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "open laptop",
+    "chat interface",
+    "campaign type list",
+    "send button",
+    "backlit keyboard",
+    "trackpad",
+    "upholstered chair headrest",
+    "slim dark chair post"
+   ],
+   "text": [
+    "SALLY.",
+    "Select campaign",
+    "Monthly Promo",
+    "Seasonal Tent-Pole",
+    "New Store Opening",
+    "CRM Journey",
+    "In-Store / Signage",
+    "Test & Learn / MVT",
+    "Seasonal Brand",
+    "Product Launch",
+    "App Feature Launch",
+    "Social-Only Activation",
+    "Local / Field Activation",
+    "Other",
+    "Load existing brief",
+    "Briefing",
+    "Trends",
+    "Assets",
+    "Utilities",
+    "Solutions",
+    "Ask me about seasonal campaign ideas.",
+    "Responding to Ulta's \"Beauty Roster\" Play",
+    "Why Ulta's Play Has a Weakness",
+    "Strategic Response Framework",
+    "The Core Insight",
+    "Send",
+    "Reply",
+    "Output"
+   ],
+   "palette": [
+    "#b9b8b6",
+    "#f2f1ef",
+    "#1c1c1e",
+    "#d8232a",
+    "#9a7a5c"
+   ],
+   "colours": [
+    "grey",
+    "white",
+    "red",
+    "black",
+    "warm tan"
+   ],
+   "mood": [
+    "focused",
+    "quiet",
+    "corporate"
+   ],
+   "composition": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower.",
+   "density": "measured",
+   "texture": [
+    "flecked grey upholstery weave",
+    "matte black keycaps",
+    "glossy screen glass",
+    "brushed aluminium edge"
+   ],
+   "contrast": [
+    "black keyboard against pale screen",
+    "warm tan floor against cool grey upholstery",
+    "text-dense panel against plain padded ground",
+    "single red pill against grey type"
+   ],
+   "paletteLogic": "one accent",
+   "light": "soft daylight",
+   "focal": "The eye lands on the tilted screen at its brightest point and is held by the two red headings, then dropped to the red Send pill at the lower right.",
+   "balance": "The screen's centre is dense with small grey type, and the wide unbroken chair back above it and the soft empty floor below carry no incident at all, which is what lets the text block read as the only event."
+  },
+  {
+   "src": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+   "slug": "black-white-type",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "paper",
+     "wood"
+    ],
+    "furniture": [
+     "table"
+    ],
+    "style": [],
+    "room": []
+   },
+   "subjects": [
+    "printed poster",
+    "overlapping letterforms",
+    "halftone dot fill",
+    "fine stripe fill",
+    "checkerboard fill",
+    "polka dot fill",
+    "script swash",
+    "distress speckle",
+    "table edge",
+    "knotted plank"
+   ],
+   "text": [
+    "typography & patterns",
+    "jeremy prasatik"
+   ],
+   "palette": [
+    "#ebe9e6",
+    "#1a1a1a",
+    "#8a5f38",
+    "#2a1a10",
+    "#6e6a66"
+   ],
+   "colours": [
+    "black",
+    "white",
+    "warm brown",
+    "charcoal"
+   ],
+   "mood": [
+    "graphic",
+    "tactile",
+    "monochrome"
+   ],
+   "composition": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner.",
+   "density": "layered",
+   "texture": [
+    "smooth matte poster paper",
+    "open-grain raw wood with knots",
+    "halftone dot fills",
+    "fine engraved line hatching",
+    "distressed ink speckle"
+   ],
+   "contrast": [
+    "ornament against plane",
+    "black ink against warm wood",
+    "hard geometric fills against loose script curves",
+    "busy lower field against empty upper paper"
+   ],
+   "paletteLogic": "high contrast",
+   "light": "soft daylight",
+   "focal": "The eye lands where the swashes knot at the centre and is held by the large dotted bowl beside them, the densest black in the sheet.",
+   "balance": "The lower two thirds crowds with overlapping letterforms while the upper right stays bare white paper, and the plain dark wood running down the right edge gives the whole tangle a quiet border to sit against."
+  },
+  {
+   "src": "/case-studies/black-white-type/pattern-swatch-diamonds-white-on-black.jpg",
+   "slug": "black-white-type",
+   "kind": "pattern",
+   "f": {
+    "material": [],
+    "furniture": [],
+    "style": [],
+    "room": []
+   },
+   "subjects": [
+    "diamond grid",
+    "six by six array",
+    "square block of marks"
+   ],
+   "text": [],
+   "palette": [
+    "#000000",
+    "#ffffff"
+   ],
+   "colours": [
+    "black",
+    "white"
+   ],
+   "mood": [
+    "stark",
+    "graphic"
+   ],
+   "composition": "Flat-on vantage, a centred square of six rows by six columns, symmetrical on both axes.",
+   "density": "spare",
+   "texture": [
+    "flat unmodulated black field",
+    "hard-edged vector diamonds"
+   ],
+   "contrast": [
+    "white marks against black field",
+    "regular grid against open margin"
+   ],
+   "paletteLogic": "monochrome",
+   "light": "flat",
+   "focal": "The eye lands on the block of diamonds at centre and stays there, since nothing else occupies the field.",
+   "balance": "All the incident sits in the centre square and the four black margins around it are equal and empty, so the grid reads as held rather than floating."
+  },
+  {
+   "src": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+   "slug": "robert-rodriguez",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "glass",
+     "stone"
+    ],
+    "furniture": [
+     "window",
+     "door",
+     "pendant"
+    ],
+    "style": [
+     "traditional",
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "storefront window",
+    "framed campaign panel",
+    "clothing rail",
+    "globe pendant lights",
+    "carved acanthus capital",
+    "grey paving slabs"
+   ],
+   "text": [
+    "RBRT",
+    "rodriguez"
+   ],
+   "palette": [
+    "#16171a",
+    "#e8592f",
+    "#f4dcc2",
+    "#ef8fb4",
+    "#b5b4b2"
+   ],
+   "colours": [
+    "black",
+    "coral",
+    "pink",
+    "cream",
+    "amber",
+    "grey"
+   ],
+   "mood": [
+    "sleek",
+    "luminous",
+    "urban"
+   ],
+   "composition": "Straight-on frontal vantage, near symmetrical about the framed panel, the black facade dominating while the campaign image holds the centre third.",
+   "density": "measured",
+   "texture": [
+    "gloss black painted millwork",
+    "plate glass reflection",
+    "carved acanthus capital",
+    "sawn grey paving stone",
+    "backlit photographic print"
+   ],
+   "contrast": [
+    "saturated print against matte black plane",
+    "warm interior glow against cool grey street",
+    "carved ornament against flat panelled field",
+    "sharp storefront geometry against soft reflected facade"
+   ],
+   "paletteLogic": "one accent",
+   "light": "mixed",
+   "focal": "The eye lands on the lit campaign panel and is held by the red mouth and pink blazer at its middle.",
+   "balance": "The centre panel and the reflected building at right carry all the incident, and the wide black panelled base and empty paving below pay for them with flat quiet."
+  },
+  {
+   "src": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign.jpg",
+   "slug": "robert-rodriguez",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "silk"
+    ],
+    "furniture": [],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "polka dot cowl-neck dress",
+    "satin blazer",
+    "red lipstick",
+    "curled updo",
+    "oversized face crop",
+    "hairline wordmark"
+   ],
+   "text": [
+    "RBRT",
+    "rodriguez"
+   ],
+   "palette": [
+    "#f2683c",
+    "#f08fa8",
+    "#d8b189",
+    "#f6e8d4",
+    "#e2411f"
+   ],
+   "colours": [
+    "coral",
+    "orange",
+    "blush pink",
+    "cream",
+    "tan",
+    "red"
+   ],
+   "mood": [
+    "hot",
+    "glossy",
+    "editorial"
+   ],
+   "composition": "Square frame split roughly down the middle, full-length figure at left against an extreme facial crop filling the right, the wordmark set on the seam.",
+   "density": "measured",
+   "texture": [
+    "liquid satin lapel",
+    "matte silk crepe",
+    "blown-out photographic haze",
+    "hairline drawn letterforms",
+    "loose spiral curls"
+   ],
+   "contrast": [
+    "sharp figure against blurred giant crop",
+    "cool pink against hot orange",
+    "small scale against enormous scale",
+    "thin white line against soft photographic wash"
+   ],
+   "paletteLogic": "saturated field",
+   "light": "studio strobe",
+   "focal": "The eye lands on the model's face at the left edge, then is dragged right to the red mouth in the enlarged crop.",
+   "balance": "The left half is dense with figure, dots and drapery; the right half burns out to a near-empty wash, and that emptiness is what gives the thin type room to sit."
+  },
+  {
+   "src": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-desert-landscape-cattle-skull-logo-prickly-pear-cactus-agave-plants-arid-mountains-branding-campaign.jpg",
+   "slug": "capitan-boot-co",
+   "kind": "logo",
+   "f": {
+    "material": [
+     "stone"
+    ],
+    "furniture": [],
+    "style": [
+     "western"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "cattle skull mark",
+    "crossed arrows",
+    "ocotillo canes",
+    "sotol rosette",
+    "prickly pear paddles",
+    "desert ridgelines",
+    "four-up grid"
+   ],
+   "text": [
+    "CAPITAN",
+    "BOOT CO",
+    "WESTERN",
+    "ORIGINAL"
+   ],
+   "palette": [
+    "#8a8b79",
+    "#63664f",
+    "#b0a693",
+    "#a3aeb6",
+    "#efeade"
+   ],
+   "colours": [
+    "sage",
+    "olive",
+    "taupe",
+    "dust grey",
+    "bone",
+    "slate blue"
+   ],
+   "mood": [
+    "arid",
+    "weathered",
+    "still"
+   ],
+   "composition": "Four square landscape frames butted into a 2x2 grid with seams crossing at the middle, the lockup centred on that crossing.",
+   "density": "layered",
+   "texture": [
+    "thorned ocotillo canes",
+    "bladed sotol spines",
+    "waxy cactus paddles",
+    "loose gravel scree",
+    "dry bunchgrass",
+    "hand-hatched skull drawing"
+   ],
+   "contrast": [
+    "drawn mark against photographic field",
+    "vertical spines against horizontal ridgelines",
+    "bone white against olive dust",
+    "tangled foreground against smooth distant range"
+   ],
+   "paletteLogic": "earth range",
+   "light": "flat",
+   "focal": "The eye lands on the white skull mark at dead centre, held there by the four picture seams that cross behind it.",
+   "balance": "Every quadrant is snarled with foreground growth; the banded mountains along the top and the pale bleached scrub at bottom right are the rests, and the mark takes the one quiet crossing."
+  },
+  {
+   "src": "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyle-campaign.jpg",
+   "slug": "capitan-boot-co",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "wood",
+     "stone"
+    ],
+    "furniture": [],
+    "style": [
+     "western"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "fence posts",
+    "wire fence line",
+    "oak canopy",
+    "bare mesquite branches",
+    "cumulus bank",
+    "tiled repeat border",
+    "arrow tagline badge"
+   ],
+   "text": [
+    "WESTERN",
+    "ORIGINAL"
+   ],
+   "palette": [
+    "#7d8b98",
+    "#a2814f",
+    "#48513f",
+    "#d6d7d3",
+    "#8b8574"
+   ],
+   "colours": [
+    "slate blue",
+    "ochre",
+    "tan",
+    "olive",
+    "white",
+    "grey green"
+   ],
+   "mood": [
+    "open",
+    "weathered",
+    "expansive"
+   ],
+   "composition": "Landscape frame with a centred rectangular plate floating over a tiled repeat of a second horizon photograph, tagline set across the plate's midline.",
+   "density": "layered",
+   "texture": [
+    "dense glossy oak foliage",
+    "brittle bare branchwork",
+    "dry bunchgrass",
+    "split weathered fence post",
+    "crumbling rock face",
+    "piled cumulus"
+   ],
+   "contrast": [
+    "single plate against repeating tile",
+    "dark evergreen mass against pale dead branches",
+    "cool sky against ochre grassland",
+    "crisp drawn arrows against soft distance"
+   ],
+   "paletteLogic": "earth range",
+   "light": "soft daylight",
+   "focal": "The eye lands in the notch of pale sky between the two peaks at centre, and the outward-pointing arrows of the tagline hold it there.",
+   "balance": "The left of the inner plate is a heavy dark canopy and the right an open lit slope; the border repeat is uniform enough to read as texture, which lets the centre plate breathe."
+  },
+  {
+   "src": "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+   "slug": "amber-shockey-co",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "ceramic"
+    ],
+    "furniture": [],
+    "style": [
+     "modern",
+     "traditional"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "dinner plates",
+    "charger",
+    "peony repeat",
+    "diamond medallion",
+    "concentric linework",
+    "cast contact shadows"
+   ],
+   "text": [],
+   "palette": [
+    "#1b3e6b",
+    "#3c6396",
+    "#8ba4c6",
+    "#e8e5dc",
+    "#f5f3ee"
+   ],
+   "colours": [
+    "navy",
+    "cornflower blue",
+    "cream",
+    "off-white",
+    "slate blue"
+   ],
+   "mood": [
+    "crisp",
+    "ordered",
+    "decorative"
+   ],
+   "composition": "Overhead flat-lay, plates set in a loose row with two cropped by the left and right edges, the largest charger dominating just left of centre.",
+   "density": "dense",
+   "texture": [
+    "glazed ceramic",
+    "chalky cream glaze",
+    "printed floral repeat",
+    "engraved-fine linework",
+    "soft cast shadow"
+   ],
+   "contrast": [
+    "geometric medallion against floral repeat",
+    "flat plane against banded rings",
+    "deep navy against pale cream",
+    "hard circle against an all-over field"
+   ],
+   "paletteLogic": "two-tone",
+   "light": "flat",
+   "focal": "The eye lands on the large charger left of centre and is held by its bullseye of navy well and white geometric medallion.",
+   "balance": "The background pattern runs busy edge to edge, and the plain navy and cream rings inside each plate are the only still areas, which is what lifts the plates off the field."
+  },
+  {
+   "src": "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
+   "slug": "amber-shockey-co",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "ceramic",
+     "marble",
+     "stone"
+    ],
+    "furniture": [
+     "bowl"
+    ],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "dinner plates",
+    "salad plates",
+    "concentric rings",
+    "halftone dot band",
+    "interlocking square medallion",
+    "diamond emblem",
+    "marble veining"
+   ],
+   "text": [],
+   "palette": [
+    "#ece7e0",
+    "#15171b",
+    "#767d88",
+    "#f4f5f5",
+    "#b9a184"
+   ],
+   "colours": [
+    "black",
+    "charcoal",
+    "slate grey",
+    "white",
+    "cream",
+    "blush pink",
+    "forest green",
+    "tan"
+   ],
+   "mood": [
+    "graphic",
+    "precise",
+    "formal"
+   ],
+   "composition": "Flat overhead vantage, plates arranged in two horizontal registers and cropped hard at both side edges, the stone's diagonal veining crossing under them.",
+   "density": "layered",
+   "texture": [
+    "flat glazed ceramic",
+    "polished veined marble",
+    "printed halftone dots",
+    "matte black glaze",
+    "satin grey slip"
+   ],
+   "contrast": [
+    "ornament against plane",
+    "circle against diagonal vein",
+    "black field against pale stone",
+    "large plate against small stacked one",
+    "monochrome band against pink and green band"
+   ],
+   "paletteLogic": "high contrast",
+   "light": "studio strobe",
+   "focal": "The eye lands on the big plate left of centre, held by its concentric medallion sitting at the exact middle of the ring stack.",
+   "balance": "The upper band gives four large plates room to breathe against open marble, and the lower band packs the small ware into a tight frieze that pays for that air."
+  },
+  {
+   "src": "/case-studies/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup.jpg",
+   "slug": "ivy-park",
+   "kind": "mockup",
+   "f": {
+    "material": [
+     "wood",
+     "concrete",
+     "glass"
+    ],
+    "furniture": [],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "open laptop",
+    "fluted slat wall",
+    "concrete floor",
+    "hairline floor crack",
+    "roller skates",
+    "knee pad",
+    "hamburger menu icon",
+    "search field"
+   ],
+   "text": [
+    "NORDSTROM",
+    "IVY PARK",
+    "PHYSICAL ACCOMPLISHMENT",
+    "SHARPENS MENTAL FOCUS"
+   ],
+   "palette": [
+    "#3a2820",
+    "#6d4a33",
+    "#9b9691",
+    "#f1f1f1",
+    "#54575b"
+   ],
+   "colours": [
+    "walnut brown",
+    "charcoal",
+    "grey",
+    "white",
+    "black"
+   ],
+   "mood": [
+    "athletic",
+    "editorial",
+    "understated"
+   ],
+   "composition": "Raised three-quarter vantage looking down at a laptop set on the floor at a diagonal, the open screen taking the upper half of the frame.",
+   "density": "measured",
+   "texture": [
+    "fluted dark wood battens",
+    "poured concrete with hairline crack",
+    "matte anodised laptop shell",
+    "glossy screen glass",
+    "grained black and white photography"
+   ],
+   "contrast": [
+    "warm slats against cool concrete",
+    "vertical ribbing against unbroken floor",
+    "lit screen against dim room",
+    "white type against dark photograph"
+   ],
+   "paletteLogic": "two-tone",
+   "light": "soft daylight",
+   "focal": "The eye lands on the lit screen and is held low-left by the stacked IVY PARK lockup, the brightest solid type in the frame.",
+   "balance": "The left third beats out a dense vertical rhythm of battens, the right half is bare floor, and the laptop sits on the seam between them."
+  },
+  {
+   "src": "/case-studies/ivy-park/ivy-park-campaign-assets-grid-overview.jpg",
+   "slug": "ivy-park",
+   "kind": "mockup",
+   "f": {
+    "material": [],
+    "furniture": [],
+    "style": [
+     "modern"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "roller skates",
+    "chain-link fence",
+    "hoodie",
+    "sports bra",
+    "leggings",
+    "gymnastic rings",
+    "ball cap",
+    "one-piece swimsuit",
+    "mesh overlay",
+    "sprinkler spray",
+    "Pinterest icon",
+    "Instagram icon",
+    "shop buttons"
+   ],
+   "text": [
+    "IVY PARK",
+    "INTRODUCING A NEW ACTIVEWEAR BRAND DESIGNED TO SUPPORT WOMEN OF ALL SHAPES AND SIZES WITH EFFORTLESSLY COOL PIECES CUT FROM HIGH-PERFORMANCE TECHNICAL FABRICS.",
+    "SHOP IVY PARK",
+    "CONFIDENCE",
+    "IVY PARK IS FOR EVERY",
+    "AND EVERY B",
+    "THE ENTIRE LINE IS AVAILABLE IN A BROAD RANGE OF SIZES A",
+    "ARPENS MENTAL FOCUS",
+    "SHOP THE COLLECTION",
+    "CHECK OUT THE DEBUT COLLECTION",
+    "SHOP THE LOOK"
+   ],
+   "palette": [
+    "#ffffff",
+    "#191919",
+    "#8d9296",
+    "#12a3d6",
+    "#c9ced1"
+   ],
+   "colours": [
+    "black",
+    "white",
+    "grey",
+    "cyan",
+    "silver"
+   ],
+   "mood": [
+    "athletic",
+    "urban",
+    "high contrast"
+   ],
+   "composition": "Flat overhead grid of page layouts on white, three rows of unequal panels, several running off the right and left edges.",
+   "density": "dense",
+   "texture": [
+    "open mesh knit",
+    "brushed fleece",
+    "chain-link wire",
+    "wet concrete",
+    "ribbed jersey",
+    "grained monochrome film"
+   ],
+   "contrast": [
+    "monochrome fields against cyan blocks",
+    "photographic grain against flat white gutters",
+    "condensed white type over dark image",
+    "cropped body against full figure"
+   ],
+   "paletteLogic": "one accent",
+   "light": "mixed",
+   "focal": "The eye lands on the large stacked IVY PARK lockup at the top centre, held there by the lone full-length figure and her cast shadow beside it.",
+   "balance": "The top and bottom rows are packed edge to edge, and the middle row opens up with white gutters and a small pair of product frames floating in the gap."
+  },
+  {
+   "src": "/case-studies/big-bend/chisos-peak-cactus.jpg",
+   "slug": "big-bend",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone"
+    ],
+    "furniture": [
+     "plant"
+    ],
+    "style": [
+     "western"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "prickly pear",
+    "sotol",
+    "yucca",
+    "cumulus clouds",
+    "rock outcrop",
+    "grassland saddle",
+    "sunlit summit",
+    "creosote scrub"
+   ],
+   "text": [],
+   "palette": [
+    "#a9c0c4",
+    "#a99372",
+    "#6e7a63",
+    "#b5ae86",
+    "#ededea"
+   ],
+   "colours": [
+    "sage",
+    "olive",
+    "tan",
+    "dove grey",
+    "pale blue",
+    "cream",
+    "straw"
+   ],
+   "mood": [
+    "arid",
+    "still",
+    "wide"
+   ],
+   "composition": "Eye-level wide vantage from the flat, horizon low and centred, the single peak dominating and the range falling away right into low hills.",
+   "density": "layered",
+   "texture": [
+    "fibrous grass tuft",
+    "spined prickly pear pad",
+    "fractured weathered rock",
+    "dry brittle brush",
+    "soft piled cloud"
+   ],
+   "contrast": [
+    "warm lit rock against cool sky",
+    "busy scrub against open air",
+    "sharp spines against soft cloud",
+    "grey shaded ridge against straw hillside"
+   ],
+   "paletteLogic": "earth range",
+   "light": "soft daylight",
+   "focal": "The eye lands on the sunlit face of the peak right of centre, held by the dark fissures running down its shoulder.",
+   "balance": "The lower half is a continuous mat of scrub with no rest in it, the upper half is open sky, and the broken rock band across the middle trades one for the other."
+  },
+  {
+   "src": "/case-studies/big-bend/elena_wide.jpg",
+   "slug": "big-bend",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "clay"
+    ],
+    "furniture": [
+     "plant"
+    ],
+    "style": [
+     "western"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "river bend",
+    "sandbar",
+    "cut bank",
+    "mesa ridgeline",
+    "river cane",
+    "desert willow scrub",
+    "footpath",
+    "gravel bar",
+    "rock outcrop"
+   ],
+   "text": [],
+   "palette": [
+    "#a9bec6",
+    "#93a5a6",
+    "#c9b79a",
+    "#5e6b57",
+    "#8fa0a2"
+   ],
+   "colours": [
+    "sage",
+    "olive",
+    "sand",
+    "dusty blue",
+    "pale lilac",
+    "buff"
+   ],
+   "mood": [
+    "quiet",
+    "hazy",
+    "expansive"
+   ],
+   "composition": "High vantage from a bluff looking downriver, horizon set high with stacked pale ranges behind, sky taking the top third and the river entering at the lower right.",
+   "density": "measured",
+   "texture": [
+    "cracked silt flat",
+    "fine river sand",
+    "dry feathery brush",
+    "rough bedrock",
+    "still glazed water"
+   ],
+   "contrast": [
+    "cool water against warm sand",
+    "dense brush against open channel",
+    "near detail against hazy distance",
+    "dark scrub against bleached bar"
+   ],
+   "paletteLogic": "tonal",
+   "light": "flat",
+   "focal": "The eye lands on the pale sandbar at the right and follows the channel's curve back into the haze.",
+   "balance": "The left and bottom are crowded with brush, the water and the empty upper sky rest, and the flat sandbar between them carries the weight across."
   }
  ]
 }

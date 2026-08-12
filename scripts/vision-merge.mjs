@@ -42,6 +42,47 @@ const oneOf = (list, v) => (list.includes(v) ? v : undefined);
 const arr = (v) => (Array.isArray(v) ? v.filter((x) => typeof x === "string" && x.trim()) : []);
 const str = (v) => (typeof v === "string" && v.trim() ? v.trim() : "");
 
+/* ── the verdict filter ────────────────────────────────────────────
+ * The brief forbids intent, outcome and praise, and an adversarial read
+ * of the pilot found it broken in three consistent ways. Prompts alone
+ * did not hold, so the rule is enforced here too — a violation that
+ * survives the brief still cannot reach the index.
+ *
+ * THE BIAS WORTH NAMING: taste adjectives showed up almost exclusively
+ * on frames with a CLIENT attached. Big Bend got "arid, still, wide";
+ * the brand work got "sleek", "precise", "understated". The reader was
+ * flattering the commercial work. mood is a register, not a grade.
+ */
+const TASTE = new Set([
+  "sleek", "precise", "tailored", "understated", "collected", "orderly",
+  "crisp", "clean", "polished", "refined", "elegant", "sophisticated",
+  "striking", "beautiful", "effective", "successful", "confident",
+  "product-forward", "premium", "luxurious", "impactful", "bold",
+]);
+
+/* palette_logic values that kept leaking into mood, where they would
+   corrupt any query on the string: one record read palette_logic "one
+   accent" while mood claimed "high contrast". */
+const NOT_MOOD = new Set(PALETTE_LOGIC.map((t) => t.toLowerCase()));
+
+/* A balance sentence is allowed to say WHERE the frame is busy and
+   where it rests. It is not allowed to close with a verdict on whether
+   that works. Seven of twenty pilot records ended on exactly this
+   construction, so the trailing clause is cut when it both hangs off
+   one of these joints AND carries an approval verb. Conservative on
+   purpose: no joint, no cut. */
+const JOINT = /,\s*(which is what|and that\b[^,]*is what|so (?:the|it|they)\b|which lets|which gives|letting|giving)\s/i;
+const APPROVAL = /\b(lets?|gives?|allows?|makes? it work|breathe|room to|reads? as held|lifts?)\b/i;
+let verdictsCut = 0;
+function observationOnly(sentence) {
+  const m = JOINT.exec(sentence);
+  if (!m) return sentence;
+  const tail = sentence.slice(m.index);
+  if (!APPROVAL.test(tail)) return sentence;
+  verdictsCut += 1;
+  return sentence.slice(0, m.index).replace(/[\s,]+$/, "") + ".";
+}
+
 const dropped = new Map();
 function facet(name, value) {
   const out = [];
@@ -80,7 +121,9 @@ for (const f of files) {
       palette: arr(r.palette).filter((h) => /^#[0-9a-f]{6}$/i.test(h)),
       subjects: arr(r.subjects),
       text: arr(r.text),
-      mood: arr(r.mood),
+      mood: arr(r.mood)
+        .map((t) => t.toLowerCase().trim())
+        .filter((t) => !TASTE.has(t) && !NOT_MOOD.has(t)),
       /* the read layer */
       density: oneOf(DENSITY, str(r.density)),
       texture_mix: arr(r.texture_mix),
@@ -88,7 +131,7 @@ for (const f of files) {
       palette_logic: oneOf(PALETTE_LOGIC, str(r.palette_logic)),
       light: oneOf(LIGHT, str(r.light)),
       focal: str(r.focal),
-      balance: str(r.balance),
+      balance: observationOnly(str(r.balance)),
       composition: str(r.composition),
       confidence: oneOf(["high", "medium", "low"], str(r.confidence)) || "medium",
     };
@@ -119,6 +162,8 @@ const show = (label, rows, min) => {
 show("contrast relationships seen 3+ times:", tally("contrast"), 3);
 show("textures named 3+ times:", tally("texture_mix"), 3);
 show("subjects seen 5+ times (facet candidates):", tally("subjects"), 5);
+
+if (verdictsCut) console.log(`\nverdict clauses cut from balance: ${verdictsCut}`);
 
 if (dropped.size) {
   console.log(`\nterms dropped as outside the vocabulary:`);

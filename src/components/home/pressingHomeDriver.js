@@ -1510,7 +1510,12 @@ function imgCard(card, rnd, allowShare) {
     const plate = document.createElement("span");
     plate.className = "plate";
     const img = document.createElement("img");
-    img.src = card.img; img.alt = card.kind === "pull" ? card.title : "";
+    /* `shot` overrides the cover: when a question was answered by
+       something INSIDE a study, the card shows that frame instead of
+       the project's thumbnail. The card stops being a cover and starts
+       being the evidence, and it still links where it always did. */
+    img.src = card.shot || card.img;
+    img.alt = card.kind === "pull" ? card.title : "";
     img.loading = "lazy"; img.decoding = "async";
     plate.appendChild(img);
     shot.appendChild(plate);
@@ -1746,7 +1751,9 @@ function buildMagazine() {
       cell.className = "cell";
       const ci = workIdx[i + k];
       if (ci !== undefined) {
-        const el = imgCard(cards[ci], rnd, false);
+        const c = cards[ci];
+        const shot = c.href && window.__evidence && window.__evidence.get(c.href);
+        const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
         /* an authored size wins over the dealt tier */
         const sz = cards[ci].size != null ? cards[ci].size : shares[i + k];
         el.style.setProperty("--share", String(sz));
@@ -1996,6 +2003,19 @@ function buildAnswer() {
      kept, side by side and never mixed. Whatever remains pairs with
      its own kind, and an odd tail rides alone with air beside it,
      which is the uneven pair's move. */
+  /* Which frame inside each study answered the question. Computed
+     once, used twice: the cards wear these, and the model is told
+     which ones are on screen so it can describe them. Only for
+     questions with words in them — the resting deal shows covers. */
+  const evidence = new Map();
+  if (query.trim()) {
+    for (const fr of frameMatch(query)) {
+      const href = "/case-studies/" + fr.slug;
+      if (!evidence.has(href)) evidence.set(href, fr.src);
+    }
+  }
+  window.__evidence = evidence;
+
   /* what "those" means next time: this answer, in dealt order. Set
      after think() ran, so the question that was ABOUT the previous
      answer read the right one. */
