@@ -1,32 +1,36 @@
 /**
- * /api/ask-compare — the same question, answered twice.
+ * /api/ask-compare — the same question, answered by every model on the bench.
  *
- * A bench, not a product surface. It exists to answer one question that
- * benchmarks cannot: given THIS voice contract, THIS facts blob and THIS
- * question, whose prose sounds like the house?
+ * A bench, not a product surface. It answers the one question benchmarks
+ * cannot: given THIS voice contract, THIS facts blob and THIS question,
+ * whose prose sounds like the house?
  *
- * BOTH SIDES GET BYTE-IDENTICAL INPUT. The system prompt, the shelf and
- * the facts builder are imported from @/lib/ask-context, the same module
- * /api/ask reads, so neither provider is handed a version of the rules
- * the other did not see. Anything else makes the comparison a comparison
- * of prompts rather than of models.
+ * EVERY SIDE GETS BYTE-IDENTICAL INPUT, imported from @/lib/ask-context,
+ * the same module /api/ask reads. Neither provider sees a version of the
+ * rules the other did not.
  *
- * WHAT IT DELIBERATELY DOES NOT EQUALISE, because the difference is the
- * point:
+ * WHAT IS DELIBERATELY NOT EQUALISED, because the difference is the
+ * measurement:
  *
- * - Claude gets its prompt-cache breakpoint on the shelf. That is a real
- *   property of running this workload on Claude, and hiding it to make
- *   the token counts line up would flatter the other side.
- * - Reasoning stays at each provider's default. This task is three
- *   sentences from a supplied blob; turning reasoning up buys latency on
- *   work that has none to do. If one model needs its dial moved to sound
- *   right, that is a finding, not a setup error.
+ * - The Anthropic models keep their prompt-cache breakpoint on the shelf.
+ *   That is a real property of running this workload on Claude, and the
+ *   first bench run proved it is the whole ball game: Grok re-paid for
+ *   ~4,000 shelf tokens on every question and came out four times more
+ *   expensive per answer despite a cheaper sticker price.
+ * - Reasoning stays at each provider's default. The task is three
+ *   sentences from a supplied blob. A model needing its dial moved to
+ *   sound right is a finding, not a setup error.
  *
- * Cost per answer is computed from published list prices at the top of
- * the file rather than read back from either API, so the figures are
- * only as current as those constants. They are labelled with the date
- * they were taken and Sonnet's introductory rate expires — check them
- * before quoting a number at anyone.
+ * WHY HAIKU IS ON THE BENCH. Its cache minimum is 4,096 tokens and this
+ * prefix measures ~4,407 — seven percent of headroom. Caching below the
+ * minimum fails SILENTLY: no error, the only symptom is
+ * cache_read_input_tokens staying at zero. Running it here turns that
+ * warning into a reading. If Haiku's cacheRead comes back 0 while
+ * Sonnet's does not, the shelf has already drifted too close to the line.
+ *
+ * Prices are constants, dated, taken from published list rates. Sonnet's
+ * is the introductory rate and reverts on 2026-08-31; nothing else in
+ * this file will notice when it does.
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -38,57 +42,85 @@ import {
 
 export const runtime = "nodejs";
 
-const CLAUDE_MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
-const GROK_MODEL = process.env.GROK_MODEL || "grok-4.6";
+/* 300 was too tight: on a question that wants a short preamble the model
+   spent the whole allowance thinking about the answer and returned an
+   empty text block with stop_reason max_tokens. The answer is still one
+   to three sentences; the ceiling just stops truncating them. */
+const MAX_TOKENS = 500;
 
-/* xAI speaks the OpenAI chat-completions shape, so this is a plain fetch
-   rather than another SDK dependency for one bench route. */
 const XAI_URL = "https://api.x.ai/v1/chat/completions";
 
 /* The key was added in Vercel as `Grok_RHS_Brain`. Node's env is
    case-sensitive, so the exact name is tried first and the conventional
-   ones after, rather than assuming whoever reads this next used the same
-   one. */
+   ones after. */
 const GROK_KEY =
   process.env.Grok_RHS_Brain ||
   process.env.GROK_RHS_BRAIN ||
   process.env.XAI_API_KEY ||
   process.env.GROK_API_KEY;
 
-/* Published list prices, USD per million tokens, taken 2026-08-12.
-   Sonnet's is the introductory rate and reverts to 3.00/15.00 after
-   2026-08-31 — after that date these numbers are wrong and this comment
-   is the only thing that will say so. */
-const PRICE = {
-  claude: { in: 2.0, out: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
-  grok: { in: 2.0, out: 6.0, cacheRead: null as number | null, cacheWrite: null as number | null },
-};
+/* USD per million tokens, list price, taken 2026-08-12. cacheRead is
+   0.1x base input and cacheWrite 1.25x, which is where the Anthropic
+   models earn their keep on a workload that is two-thirds fixed prefix. */
+interface Spec {
+  key: string;
+  provider: "anthropic" | "xai";
+  model: string;
+  price: { in: number; out: number; cacheRead: number | null; cacheWrite: number | null };
+  /* the published minimum cacheable prefix, so the reading below can be
+     read against the thing it is testing */
+  cacheMin?: number;
+}
+
+const BENCH: Spec[] = [
+  {
+    key: "sonnet", provider: "anthropic", model: "claude-sonnet-5",
+    price: { in: 2.0, out: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
+    cacheMin: 1024,
+  },
+  {
+    key: "haiku", provider: "anthropic", model: "claude-haiku-4-5",
+    price: { in: 1.0, out: 5.0, cacheRead: 0.1, cacheWrite: 1.25 },
+    cacheMin: 4096,
+  },
+  {
+    key: "grok", provider: "xai", model: process.env.GROK_MODEL || "grok-4.6",
+    price: { in: 2.0, out: 6.0, cacheRead: null, cacheWrite: null },
+  },
+];
 
 const usd = (n: number) => Number(n.toFixed(6));
 
-interface Side {
+export interface Side {
+  key: string;
   provider: string;
   model: string;
   answer: string | null;
   ms: number;
   usage: Record<string, number> | null;
   costUsd: number | null;
+  cacheMin: number | null;
   error: string | null;
 }
 
-async function askClaude(facts: string, q: string, trail: string[]): Promise<Side> {
+const prompt = (facts: string, q: string, trail: string[]) =>
+  `FACTS:\n${facts}` +
+  (trail.length ? `\n\nTRAIL (lingered on this visit): ${trail.join(", ")}` : "") +
+  `\n\nVISITOR'S QUESTION: ${q}`;
+
+async function runAnthropic(s: Spec, facts: string, q: string, trail: string[]): Promise<Side> {
   const t0 = Date.now();
   const base: Side = {
-    provider: "anthropic", model: CLAUDE_MODEL,
-    answer: null, ms: 0, usage: null, costUsd: null, error: null,
+    key: s.key, provider: s.provider, model: s.model, answer: null,
+    ms: 0, usage: null, costUsd: null, cacheMin: s.cacheMin ?? null, error: null,
   };
   if (!process.env.ANTHROPIC_API_KEY) {
     return { ...base, ms: Date.now() - t0, error: "ANTHROPIC_API_KEY not set" };
   }
   try {
     const res = await new Anthropic().messages.create({
-      model: CLAUDE_MODEL,
-      max_tokens: 300,
+      model: s.model,
+      max_tokens: MAX_TOKENS,
       system: [
         { type: "text", text: SYSTEM },
         {
@@ -102,21 +134,25 @@ async function askClaude(facts: string, q: string, trail: string[]): Promise<Sid
     const u = res.usage;
     const read = u.cache_read_input_tokens ?? 0;
     const write = u.cache_creation_input_tokens ?? 0;
+    const answer = res.content
+      .filter((b): b is Anthropic.TextBlock => b.type === "text")
+      .map((b) => b.text).join("").trim();
     return {
       ...base,
       ms: Date.now() - t0,
-      answer: res.content
-        .filter((b): b is Anthropic.TextBlock => b.type === "text")
-        .map((b) => b.text).join("").trim(),
+      /* An empty answer with stop_reason max_tokens is a truncation, not
+         a refusal, and saying so beats rendering a blank column. */
+      answer: answer || (res.stop_reason === "max_tokens"
+        ? `(truncated at ${MAX_TOKENS} tokens before any text)` : null),
       usage: {
         input: u.input_tokens, output: u.output_tokens,
         cacheRead: read, cacheWrite: write,
       },
       costUsd: usd(
-        (u.input_tokens * PRICE.claude.in +
-          read * PRICE.claude.cacheRead +
-          write * PRICE.claude.cacheWrite +
-          u.output_tokens * PRICE.claude.out) / 1e6
+        (u.input_tokens * s.price.in +
+          read * (s.price.cacheRead ?? 0) +
+          write * (s.price.cacheWrite ?? 0) +
+          u.output_tokens * s.price.out) / 1e6
       ),
     };
   } catch (e) {
@@ -124,28 +160,23 @@ async function askClaude(facts: string, q: string, trail: string[]): Promise<Sid
   }
 }
 
-async function askGrok(facts: string, q: string, trail: string[]): Promise<Side> {
+async function runXai(s: Spec, facts: string, q: string, trail: string[]): Promise<Side> {
   const t0 = Date.now();
   const base: Side = {
-    provider: "xai", model: GROK_MODEL,
-    answer: null, ms: 0, usage: null, costUsd: null, error: null,
+    key: s.key, provider: s.provider, model: s.model, answer: null,
+    ms: 0, usage: null, costUsd: null, cacheMin: null, error: null,
   };
-  if (!GROK_KEY) {
-    return { ...base, ms: Date.now() - t0, error: "Grok_RHS_Brain not set" };
-  }
+  if (!GROK_KEY) return { ...base, ms: Date.now() - t0, error: "Grok_RHS_Brain not set" };
   try {
     /* The chat-completions shape has no separate cached-prefix channel,
        so the shelf rides in the system message with the rules. Same
-       bytes, different envelope. */
+       bytes, different envelope, and it is billed in full every time. */
     const r = await fetch(XAI_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${GROK_KEY}`,
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${GROK_KEY}` },
       body: JSON.stringify({
-        model: GROK_MODEL,
-        max_tokens: 300,
+        model: s.model,
+        max_tokens: MAX_TOKENS,
         messages: [
           {
             role: "system",
@@ -167,23 +198,16 @@ async function askGrok(facts: string, q: string, trail: string[]): Promise<Side>
       ms: Date.now() - t0,
       answer: (j.choices?.[0]?.message?.content ?? "").trim() || null,
       usage: { input: inTok, output: outTok },
-      costUsd: usd((inTok * PRICE.grok.in + outTok * PRICE.grok.out) / 1e6),
+      costUsd: usd((inTok * s.price.in + outTok * s.price.out) / 1e6),
     };
   } catch (e) {
     return { ...base, ms: Date.now() - t0, error: String(e).slice(0, 200) };
   }
 }
 
-const prompt = (facts: string, q: string, trail: string[]) =>
-  `FACTS:\n${facts}` +
-  (trail.length ? `\n\nTRAIL (lingered on this visit): ${trail.join(", ")}` : "") +
-  `\n\nVISITOR'S QUESTION: ${q}`;
-
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (limited(ip)) {
-    return NextResponse.json({ error: "rate limited" }, { status: 429 });
-  }
+  if (limited(ip)) return NextResponse.json({ error: "rate limited" }, { status: 429 });
 
   let body: AskBody;
   try {
@@ -205,24 +229,24 @@ export async function POST(req: NextRequest) {
 
   const { text, used } = contextFor(hrefs, frames);
 
-  /* In parallel: the point is the prose, and serialising them would only
-     make the latency figures a function of call order. */
-  const [claude, grok] = await Promise.all([
-    askClaude(text, q, trail),
-    askGrok(text, q, trail),
-  ]);
+  /* In parallel: serialising would make the latency figures a function
+     of call order rather than of the models. */
+  const sides = await Promise.all(
+    BENCH.map((s) =>
+      s.provider === "anthropic"
+        ? runAnthropic(s, text, q, trail)
+        : runXai(s, text, q, trail))
+  );
 
   console.log(
     `[compare] q=${JSON.stringify(q)} ` +
-    `claude=${claude.ms}ms/${claude.usage?.output ?? "-"}tok ` +
-    `grok=${grok.ms}ms/${grok.usage?.output ?? "-"}tok`
+    sides.map((s) => `${s.key}=${s.ms}ms/${s.usage?.output ?? "-"}tok`).join(" ")
   );
 
   return NextResponse.json({
     question: q,
     used,
     factsTokensApprox: Math.round(text.length / 3.6),
-    claude,
-    grok,
+    sides,
   });
 }

@@ -54,12 +54,16 @@ function grade(answer: string | null) {
 }
 
 interface Side {
+  key: string;
   provider: string;
   model: string;
   answer: string | null;
   ms: number;
   usage: Record<string, number> | null;
   costUsd: number | null;
+  /* the model's published minimum cacheable prefix, so a zero cacheRead
+     can be read against the thing that would explain it */
+  cacheMin: number | null;
   error: string | null;
 }
 
@@ -67,8 +71,7 @@ interface Result {
   question: string;
   used: string[];
   factsTokensApprox: number;
-  claude: Side;
-  grok: Side;
+  sides: Side[];
 }
 
 /* The questions worth asking, and why each one is here. */
@@ -104,10 +107,25 @@ export default function ComparePage() {
     }
   };
 
-  const col = (s: Side) => {
+  const col = (s: Side, all: Side[]) => {
     const marks = grade(s.answer);
+    /* Cheapest and fastest are called out because the interesting result
+       of the first bench run was that the model with the lower sticker
+       price came out four times dearer. Relative is the only reading
+       that shows that. */
+    const costs = all.map((x) => x.costUsd).filter((n): n is number => n != null);
+    const times = all.filter((x) => !x.error).map((x) => x.ms);
+    const cheapest = costs.length > 1 && s.costUsd === Math.min(...costs);
+    const fastest = times.length > 1 && s.ms === Math.min(...times);
+    /* A zero cacheRead on a model that publishes a minimum is the silent
+       failure worth shouting about: no error is raised when a prefix
+       falls under the line. */
+    const cacheDead =
+      s.cacheMin != null && s.usage != null &&
+      s.usage.cacheRead === 0 && s.usage.cacheWrite === 0;
+
     return (
-      <div style={{ flex: "1 1 380px", minWidth: 0 }}>
+      <div key={s.key} style={{ flex: "1 1 320px", minWidth: 0 }}>
         <div style={{ ...S.lbl, display: "flex", justifyContent: "space-between" }}>
           <span>{s.provider}</span><span>{s.model}</span>
         </div>
@@ -120,14 +138,16 @@ export default function ComparePage() {
           {s.error ? null : marks.length
             ? marks.map((m) => <span key={m} style={S.bad}>{m}</span>)
             : <span style={S.ok}>clean</span>}
+          {cacheDead ? <span style={S.bad}>NO CACHE (min {s.cacheMin})</span> : null}
         </div>
         <div style={S.meta}>
-          <span>{s.ms} ms</span>
+          <span style={fastest ? S.win : undefined}>{s.ms} ms</span>
           {s.usage ? <span>in {s.usage.input}</span> : null}
           {s.usage ? <span>out {s.usage.output}</span> : null}
           {s.usage?.cacheRead != null
             ? <span>cache r{s.usage.cacheRead}/w{s.usage.cacheWrite}</span> : null}
-          {s.costUsd != null ? <span>${s.costUsd.toFixed(5)}</span> : null}
+          {s.costUsd != null
+            ? <span style={cheapest ? S.win : undefined}>${s.costUsd.toFixed(5)}</span> : null}
         </div>
       </div>
     );
@@ -170,7 +190,7 @@ export default function ComparePage() {
 
       {res ? (
         <>
-          <div style={S.cols}>{col(res.claude)}{col(res.grok)}</div>
+          <div style={S.cols}>{res.sides.map((s) => col(s, res.sides))}</div>
           <div style={S.foot}>
             facts ~{res.factsTokensApprox} tokens
             {res.used.length ? ` · matched ${res.used.join(", ")}` : " · no project matched, shelf only"}
@@ -205,7 +225,8 @@ const S: Record<string, React.CSSProperties> = {
   ok: { fontSize: 11, fontWeight: 600, padding: "3px 9px", background: "rgba(0,0,0,.07)",
     color: "rgba(0,0,0,.5)" },
   meta: { display: "flex", gap: 14, fontSize: 11, color: "rgba(0,0,0,.4)",
-    fontVariantNumeric: "tabular-nums" },
+    fontVariantNumeric: "tabular-nums", flexWrap: "wrap" },
+  win: { color: "#141414", fontWeight: 700 },
   foot: { marginTop: 34, paddingTop: 14, borderTop: "1px solid rgba(0,0,0,.14)",
     fontSize: 11, color: "rgba(0,0,0,.4)" },
   err: { padding: 14, background: "#fee", border: "1px solid #b00", fontSize: 13,
