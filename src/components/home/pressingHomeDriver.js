@@ -694,7 +694,7 @@ function followUp(q) {
     if (ci == null) return null;
     return {
       say: "That one's " + cards[ci].title + "." + (cards[ci].sub ? " " + cards[ci].sub + "." : ""),
-      receipt: "\u201cThe " + ord[1] + " one\u201d reads against the last answer, which this tab keeps for exactly that. Counting follows the order the cards were dealt. " + machinery(),
+      receipt: "\u201cThe " + ord[1] + " one\u201d reads against the last answer, kept in this tab. Counting follows the dealt order. " + machinery(),
       workIdx: [ci], pullIdx: [], mailto: false
     };
   }
@@ -773,7 +773,7 @@ function followUp(q) {
         const names = [...new Set(seen.map((p) => title(p.href)).filter(Boolean))];
         return {
           say: "That's " + nameList(names) + ". You passed " + (names.length === 1 ? "it" : "them") + " earlier.",
-          receipt: "Read as a retrace, so the lookup ran over the dwell log this tab keeps for itself, meaning the cards you have actually been shown, narrowed by " +
+          receipt: "Read as a retrace: the lookup ran over this tab\u2019s dwell log, the cards you have actually been shown, narrowed by " +
             live.join(", ") + ". Nothing leaves your machine; closing the tab deletes the log. " + machinery(),
           workIdx: seen.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
           pullIdx: [], mailto: false
@@ -897,12 +897,7 @@ function think(q) {
   }
 
   const f = factLookup(q);
-  if (f.hits.length || f.pulls.length) {
-    const plan = planFacts(q, f);
-    if (TRAIL_NUDGED) plan.receipt +=
-      " Two ran even on the counts, so the one this tab has lingered on leads. The trail stays here and dies with the tab.";
-    return plan;
-  }
+  if (f.hits.length || f.pulls.length) return planFacts(q, f);
 
   /* Nothing matched, but the question might be using the world's word
      for a thing the studies name differently: "app development",
@@ -1087,7 +1082,7 @@ function renderToned(el, segs, n) {
    is part of the site's own case study. */
 /* 4: the muse and style facets, the ask log, and the 259-question
  * audit that drove both */
-const VOICE_VERSION = 5;
+const VOICE_VERSION = 6;
 
 /* The machinery clause, one place instead of eleven. It used to read
    "No model runs when you ask", written when the index WAS the whole
@@ -1103,15 +1098,17 @@ const VOICE_VERSION = 5;
    the vision pass has written its file. */
 function machinery() {
   const seen = FACTS && FACTS.images && FACTS.images.length;
-  /* "landed at typing speed" is the receipt's proof, not a boast: a
-     visitor just watched it happen. The opening avoids the word
-     "answer" because several call sites end on "answered from" and
-     the voice rules bar an echo that close. */
-  return "This landed at typing speed because it's a lookup. " +
+  /* Register note, learned the hard way: the first cut of this line
+     read "This landed at typing speed because it's a lookup", which
+     explains its own trick \u2014 if the speed is the proof, captioning
+     the speed kills it. State the mechanism and stop. The opening also
+     avoids the word "answer": several call sites end on "answered
+     from", and the voice rules bar an echo that close. */
+  return "Direct questions are lookups. " +
     (seen
-      ? "A model has read all " + FACTS.images.length +
-        " photographs into the index, and open questions go to Claude, grounded in those same facts. "
-      : "Open questions go to Claude, grounded in the same facts. ") +
+      ? "Claude writes the open ones from the same facts, including what a model read in all " +
+        FACTS.images.length + " photographs. "
+      : "Claude writes the open ones from the same facts. ") +
     "Index v" + (FACTS ? FACTS.vocabularyVersion : "?") + ", voice v" + VOICE_VERSION + ".";
 }
 function voice(s) {
@@ -1150,12 +1147,16 @@ const FACET_PLAIN = {
   style: "a way the work reads",
   category: "one of the three shelves the site keeps",
 };
-function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
+function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }) {
   const bits = [];
   /* quoted back as TYPED \u2014 fold() turned "AI" into "ai" here */
   const qd = "\u201c" + (String(q).trim() || fold(q)) + "\u201d";
   if (and) bits.push(qd + " is a few facts at once, so every word had to land on the same project.");
-  else if (forked) bits.push(qd + " means more than one thing here. I'd rather say so than pick one quietly.");
+  /* "I'd rather say so than pick one quietly" was the machine
+     narrating its own virtue \u2014 the register anxious systems use.
+     Confident copy states the fact and stops: which readings matched,
+     and that all of them answer. */
+  else if (forked) bits.push(qd + " matched more than one discipline, and every reading answers.");
   else bits.push("I filed " + qd + " as " + (FACET_PLAIN[lead] || "a fact") +
     (fold(term) !== resolveAlias(fold(q)) && !forked ? ", under " + term : "") + ".");
   bits.push("That's " +
@@ -1166,6 +1167,7 @@ function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged }) {
   if (bridged) bits.push("I wrote a bridge by hand so the software sense lands on " + bridged.target + ".");
   if (dead.length) bits.push("Nothing matched \u201c" + dead.join("\u201d, \u201c") +
     "\u201d, so " + (dead.length === 1 ? "it sat out" : "they sat out") + ".");
+  if (nudged) bits.push("Two ran even on the counts, so the one this tab has lingered on leads. The trail stays here and dies with the tab.");
   bits.push(machinery());
   return bits.join(" ");
 }
@@ -1302,8 +1304,13 @@ function planFacts(q, f) {
     /* The question is quoted back the way it was TYPED, not through
        fold-then-capitalise \u2014 that pipeline turned "AI" into "Ai",
        which reads as a machine mishandling a word no person would. */
-    say = "\u201c" + (String(q).trim() || cap(qKey)) + "\u201d means a few things here: " +
-      nameList(leadTerms) + ". All of it's below.";
+    /* Work first, taxonomy as the list itself. The old line opened
+       with a sentence ABOUT the word ("means a few things here") and
+       closed with stage direction ("All of it's below") \u2014 meta
+       twice, matter never. Naming the disciplines IS the honesty about
+       the fork; it does not need an introduction. */
+    say = w + (w === 1 ? " project files" : " projects file") + " under \u201c" +
+      (String(q).trim() || cap(qKey)) + "\u201d here: " + nameList(leadTerms) + ".";
   } else if (!w) {
     /* a person is not a material: nobody works Miles Davis into a
        project. Presence on the board is the whole claim. */
@@ -1418,7 +1425,7 @@ function planFacts(q, f) {
     /* the RAW query, so the receipt quotes what was typed — qKey is
        folded, and folded "AI" prints as "ai" */
     q, lead, term, w, p, vl, forked, and: f.and,
-    dead: f.dead || [], bridged
+    dead: f.dead || [], bridged, nudged: TRAIL_NUDGED
   });
   return { say, quiet, receipt, workIdx, pullIdx, mailto: false };
 }
