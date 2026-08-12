@@ -19,6 +19,19 @@
  * fallback string — the homepage has its own templates to fall back
  * on, and a wired sentence pretending to be the model would be worse
  * than the template).
+ *
+ * TWO THINGS THIS ROUTE DOES NOT DO, both deliberate.
+ *
+ * It does not choose which pictures to show. Every frame's contents are
+ * already in the index (scripts/build-vision.mjs writes them, the client
+ * holds its own copy), so the client matches frames itself, instantly,
+ * with no round trip. A model that returns image paths can return one
+ * that does not exist; a model that is never asked for a path cannot.
+ * The frames are on screen before this route has finished thinking.
+ *
+ * It does not stream. The answer is one to three sentences and the
+ * results are already rendered underneath it, so a single JSON response
+ * is simpler than an SSE protocol and no slower in the way that counts.
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -30,10 +43,14 @@ export const runtime = "nodejs";
 const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
 const MAX_Q = 300;
 const MAX_HREFS = 8;
+const MAX_FRAMES = 6;
 
 interface AskBody {
   q: string;
   hrefs: string[];
+  /* frames the client already chose to show, so the answer can talk
+     about the pictures the visitor is looking at */
+  frames?: string[];
 }
 
 interface Project {
@@ -47,10 +64,32 @@ interface Project {
   disciplines?: string[];
   tools?: string[];
   stats?: { value: string; label: string }[];
+  facets?: Record<string, { term: string; n: number; observed?: boolean }[]>;
 }
 
-const PROJECTS: Project[] = (facts as { projects: Project[] }).projects;
+/* A photographed frame and what was seen in it. The client picks these;
+   the route only re-reads them from its own copy so the prose can
+   describe what is actually on screen beside it. */
+interface Frame {
+  src: string;
+  slug: string;
+  kind?: string;
+  subjects?: string[];
+  text?: string[];
+  mood?: string[];
+  composition?: string;
+  f?: Record<string, string[]>;
+}
+
+/* Through `unknown`: the generated index is a literal type with a
+   different optional-key shape per project, and TypeScript will not
+   narrow it to the interface directly. The runtime shape is guaranteed
+   by build-facts.mjs, which is the actual contract. */
+const INDEX = facts as unknown as { projects: Project[]; images?: Frame[] };
+const PROJECTS: Project[] = INDEX.projects;
 const BY_HREF = new Map(PROJECTS.map((p) => [p.href, p]));
+const FRAMES: Frame[] = INDEX.images ?? [];
+const BY_SRC = new Map(FRAMES.map((f) => [f.src, f]));
 
 /* The house copy rules, as the system prompt. This is the same voice
    contract the case studies are edited under (CLAUDE.md), restated for
@@ -68,7 +107,59 @@ Rules, all of them hard:
 - Banned words and patterns: seamless, robust, innovative, cutting-edge, best-in-class, leveraging, elevating, journey, passion, crafting meaningful experiences, "the result was". Do not stack three adjectives.
 - Contractions are welcome. Write like a person answering a colleague who respects their time, not like a brochure.
 - Speak as the house about Jeremy's work ("Built A.R.C. around..."), first person only where the facts show a first-person claim.
-- Stay on the portfolio. If the question is off-topic, say the house only answers for the work, in one sentence, without moralizing.`;
+- Stay on the portfolio. If the question is off-topic, say the house only answers for the work, in one sentence, without moralizing.
+
+Some facts are marked SEEN IN. Those were observed in a photograph, not written by Jeremy. You may say such a thing is visible in the work. You may not turn it into a claim about why it was done or what it achieved.`;
+
+/* ── the shelf ─────────────────────────────────────────────────────
+   Every project, on every request, as part of the cached prefix.
+
+   It used to appear only when nothing matched. Two reasons it now
+   always ships. First, it is what lets the model answer "do you do
+   restaurants?" with a real nearest neighbour instead of whatever the
+   matcher happened to return. Second, it is stable bytes: the rules and
+   the shelf are identical on every request, so they cache, and only the
+   question and its facts are billed at full rate.
+
+   ORDER IS THE WHOLE TRICK. Caching is a prefix match, so anything that
+   changes per request has to come after everything that does not. The
+   shelf is built once at module load; nothing per-visitor is
+   interpolated into it. */
+const SHELF = PROJECTS.map((p) => {
+  const facets = Object.entries(p.facets ?? {})
+    .map(([k, v]) => `${k}: ${v.slice(0, 6).map((f) => f.term).join(", ")}`)
+    .join("; ");
+  return [
+    `${p.title} (${p.category ?? "work"}${p.year ? ", " + p.year : ""}) ${p.href}`,
+    p.subtitle && `  ${p.subtitle}`,
+    p.disciplines?.length && `  disciplines: ${p.disciplines.join(", ")}`,
+    facets && `  holds: ${facets}`,
+  ].filter(Boolean).join("\n");
+}).join("\n\n");
+
+/* The cached prefix, in render order: rules, then the shelf. The
+   breakpoint goes on the LAST stable block, so both are cached
+   together.
+
+   A NOTE ON THE MINIMUM, because it fails silently. A prefix shorter
+   than the model's minimum is not cached and no error says so — the
+   only symptom is cache_read_input_tokens staying at zero.
+
+   Measured: this prefix is ~4.1k tokens. Sonnet 5 needs 1024, so it
+   caches with room to spare. Haiku 4.5 needs 4096, which this clears by
+   about one percent — close enough that trimming a few subtitles from
+   the shelf would silently switch caching off on Haiku without changing
+   anything visible. If ASK_MODEL is ever pointed at Haiku, read
+   cache_read_input_tokens out of the log below and confirm it is not
+   zero rather than assuming. */
+const PREFIX: Anthropic.TextBlockParam[] = [
+  { type: "text", text: SYSTEM },
+  {
+    type: "text",
+    text: `THE COMPLETE SHELF — every project the house holds:\n\n${SHELF}`,
+    cache_control: { type: "ephemeral" },
+  },
+];
 
 /* One bucket per IP, refilled by the clock. Kept in module scope: on a
    serverless host that is per-instance, which is loose but real, and
@@ -89,39 +180,64 @@ function limited(ip: string): boolean {
   return false;
 }
 
-function contextFor(hrefs: string[]): { text: string; used: string[] } {
+function contextFor(hrefs: string[], frames: string[]): { text: string; used: string[] } {
   const picked = hrefs
     .slice(0, MAX_HREFS)
     .map((h) => BY_HREF.get(h))
     .filter((p): p is Project => Boolean(p));
 
-  if (picked.length) {
-    const text = picked
-      .map((p) => {
-        const lines = [
-          `PROJECT: ${p.title}`,
-          p.subtitle && `What it is: ${p.subtitle}`,
-          p.category && `Category: ${p.category}`,
-          p.year && `Year: ${p.year}`,
-          ...(p.summary ?? []).map((s) => `${s.label}: ${s.value}`),
-          p.disciplines?.length && `Disciplines: ${p.disciplines.join(", ")}`,
-          p.tools?.length && `Tools: ${p.tools.join(", ")}`,
-          ...(p.stats ?? []).map((s) => `Stat: ${s.label} = ${s.value}`),
-        ];
-        return lines.filter(Boolean).join("\n");
-      })
-      .join("\n\n");
-    return { text, used: picked.map((p) => p.title) };
+  const blocks = picked.map((p) => {
+    /* Observed facts are labelled where they appear, not stripped. The
+       model is told in the rules what SEEN IN licenses it to say, and
+       an observation is genuinely useful — it is often the only reason
+       the house can answer "which one has the fireplace". */
+    const observed = Object.entries(p.facets ?? {})
+      .flatMap(([facet, list]) =>
+        list.filter((f) => f.observed).map((f) => `${facet}: ${f.term}`))
+      .slice(0, 12);
+    return [
+      `PROJECT: ${p.title}`,
+      p.subtitle && `What it is: ${p.subtitle}`,
+      p.category && `Category: ${p.category}`,
+      p.year && `Year: ${p.year}`,
+      ...(p.summary ?? []).map((s) => `${s.label}: ${s.value}`),
+      p.disciplines?.length && `Disciplines: ${p.disciplines.join(", ")}`,
+      p.tools?.length && `Tools: ${p.tools.join(", ")}`,
+      ...(p.stats ?? []).map((s) => `Stat: ${s.label} = ${s.value}`),
+      observed.length && `SEEN IN the photographs: ${observed.join(", ")}`,
+    ].filter(Boolean).join("\n");
+  });
+
+  /* The frames on screen. Same rule as the projects: the client sends
+     paths, the server re-reads them from its own index, and anything it
+     does not recognise is dropped. */
+  const shown = frames
+    .slice(0, MAX_FRAMES)
+    .map((src) => BY_SRC.get(src))
+    .filter((f): f is Frame => Boolean(f));
+
+  if (shown.length) {
+    blocks.push(
+      "ON SCREEN beside your answer, these photographs (describe them only as visible):\n" +
+      shown.map((f) => {
+        const held = Object.values(f.f ?? {}).flat().concat(f.subjects ?? []);
+        return [
+          `  ${f.kind ?? "image"} from ${f.slug}`,
+          held.length && `    holds: ${held.slice(0, 14).join(", ")}`,
+          f.text?.length && `    legible text: ${f.text.join(" / ")}`,
+          f.composition && `    framing: ${f.composition}`,
+        ].filter(Boolean).join("\n");
+      }).join("\n")
+    );
   }
 
-  /* No hits: the model still gets the shelf list, so "do you do X?"
-     can be answered with an honest no and a real nearest-neighbour
-     instead of a shrug. Titles and categories only — the full index
-     would let a thin question pull the whole site into context. */
-  const text =
-    "No project matched the question. The complete list of what the house holds:\n" +
-    PROJECTS.map((p) => `${p.title} (${p.category ?? "work"}${p.year ? ", " + p.year : ""})`).join("\n");
-  return { text, used: [] };
+  /* No shelf fallback here any more: the whole shelf is in the cached
+     prefix on every request, so an unmatched question already has the
+     full list to reach for. */
+  return {
+    text: blocks.length ? blocks.join("\n\n") : "Nothing in the index matched this question.",
+    used: picked.map((p) => p.title),
+  };
 }
 
 export async function POST(req: NextRequest) {
@@ -145,18 +261,21 @@ export async function POST(req: NextRequest) {
   const hrefs = Array.isArray(body.hrefs)
     ? body.hrefs.filter((h): h is string => typeof h === "string")
     : [];
+  const frames = Array.isArray(body.frames)
+    ? body.frames.filter((f): f is string => typeof f === "string")
+    : [];
   if (!q) {
     return NextResponse.json({ error: "empty question" }, { status: 400 });
   }
 
-  const { text, used } = contextFor(hrefs);
+  const { text, used } = contextFor(hrefs, frames);
 
   try {
     const client = new Anthropic();
     const res = await client.messages.create({
       model: MODEL,
       max_tokens: 300,
-      system: SYSTEM,
+      system: PREFIX,
       messages: [
         {
           role: "user",
@@ -172,6 +291,16 @@ export async function POST(req: NextRequest) {
     if (!answer) {
       return NextResponse.json({ error: "empty answer" }, { status: 502 });
     }
+    /* Cache health, logged rather than assumed. A prefix below the
+       model's minimum is not cached and nothing errors, so the only way
+       to know is to read the number back: reads at zero across repeated
+       questions means the prefix stopped qualifying, or something
+       per-request drifted above the breakpoint. */
+    const u = res.usage;
+    console.log(
+      `[ask] ${MODEL} in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} ` +
+      `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens}`
+    );
     return NextResponse.json({ answer, used, model: MODEL });
   } catch {
     return NextResponse.json({ error: "model error" }, { status: 502 });

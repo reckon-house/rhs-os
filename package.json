@@ -12,7 +12,10 @@
     "port:home": "node scripts/port-home.mjs",
     "port:home:check": "node scripts/port-home.mjs --check",
     "dims": "python3 scripts/build-image-dimensions.py",
-    "viz-audit": "node scripts/viz-audit.mjs"
+    "viz-audit": "node scripts/viz-audit.mjs",
+    "vision": "node --no-warnings scripts/build-vision.mjs",
+    "vision:dry": "node --no-warnings scripts/build-vision.mjs --dry",
+    "vision:fetch": "node --no-warnings scripts/build-vision.mjs --fetch"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",

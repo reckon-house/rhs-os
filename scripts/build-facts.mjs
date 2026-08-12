@@ -15,7 +15,7 @@
  * written. That is what keeps a composer built on top of this honest:
  * it can only assert what it can point at.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
@@ -426,7 +426,87 @@ if (deadAliases.length) {
 if (REPORT) process.exit(0);
 
 mkdirSync(OUT_DIR, { recursive: true });
-const payload = { vocabularyVersion: VOCAB_VERSION, voice, projects, pulls };
+/* ── what the photographs hold ─────────────────────────────────────
+ * Facts observed by the vision pass (scripts/build-vision.mjs), folded
+ * in beside the facts mined from copy.
+ *
+ * They are kept DISTINGUISHABLE, not merged, and that is the whole
+ * design. A mined fact cites a sentence Jeremy wrote, so the brain may
+ * quote it as something the work says. An observed fact cites a
+ * photograph, so the brain may only say it is visible. Collapsing the
+ * two would let "brass appears in the sitting room" harden into a claim
+ * about intent that nobody ever made — exactly the fabrication the
+ * citation rule exists to prevent.
+ *
+ * The pass is OPTIONAL. No vision file means this is a no-op and the
+ * index is what it always was, so a clone without an API key still
+ * builds.
+ */
+const VISION_FILE = OUT_DIR + "/image-vision.json";
+const vision = existsSync(VISION_FILE)
+  ? JSON.parse(readFileSync(VISION_FILE, "utf8"))
+  : { images: {} };
+
+/* Which study an image belongs to is read off its path rather than
+   re-walked: every study keeps its frames under its own slug. */
+const bySlug = new Map(projects.map((p) => [p.slug, p]));
+const images = [];
+let observedFacts = 0;
+
+for (const [src, rec] of Object.entries(vision.images || {})) {
+  const slug = /^\/case-studies\/([^/]+)\//.exec(src)?.[1];
+  const project = slug && bySlug.get(slug);
+  if (!project) continue;
+
+  /* The four facets the vision schema shares with the vocabulary. The
+     free fields (subjects, text, palette, mood) are not facets and do
+     not pretend to be — they ride on the image record instead, where a
+     query can still reach them. */
+  const observed = {
+    material: rec.materials || [],
+    furniture: rec.furniture || [],
+    style: rec.style || [],
+    room: rec.room ? [rec.room] : [],
+  };
+
+  for (const [facet, terms] of Object.entries(observed)) {
+    for (const term of terms) {
+      const list = (project.facets[facet] ??= []);
+      let fact = list.find((f) => f.term === term);
+      if (!fact) {
+        fact = { facet, term, n: 0, cites: [], observed: true };
+        list.push(fact);
+      }
+      /* An existing mined fact stays authored — seeing marble in a photo
+         does not downgrade the sentence that describes it. It just gains
+         a count, because a term backed by copy AND photographs should
+         outrank one backed by copy alone. */
+      fact.n += 1;
+      observedFacts += 1;
+      if (fact.cites.length < 3) {
+        fact.cites.push({ section: "image", field: src, quote: rec.composition || "" });
+      }
+    }
+  }
+
+  images.push({
+    src, slug,
+    kind: rec.kind,
+    f: observed,
+    subjects: rec.subjects || [],
+    text: rec.text || [],
+    palette: rec.palette || [],
+    colours: rec.colours || [],
+    mood: rec.mood || [],
+    composition: rec.composition || "",
+  });
+}
+
+/* Re-sort: a term the photographs corroborate should lead. */
+for (const p of projects)
+  for (const list of Object.values(p.facets)) list.sort((a, b) => b.n - a.n);
+
+const payload = { vocabularyVersion: VOCAB_VERSION, voice, projects, pulls, images };
 writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1));
 
 /* A second, compact file for the client. The full index carries
@@ -464,12 +544,19 @@ const compact = {
   })),
   /* the board: src to show, alt to read out, facets to match on */
   pulls: pulls.map((p) => ({ src: p.src, alt: p.alt, f: p.facets })),
+  /* every photographed frame and what is in it, so an answer can show
+     the picture rather than a link to the page the picture is on */
+  images,
 };
 writeFileSync(OUT_DIR + "/project-facts.min.json", JSON.stringify(compact));
 /* The lab is a static page under public/, so it cannot import from
  * src/. It gets its own copy, fetched at boot — same bytes, third
  * audience. */
 writeFileSync("public/lab/project-facts.min.json", JSON.stringify(compact));
+
+console.log(images.length
+  ? `observed facts    ${observedFacts} from ${images.length} photographed frames`
+  : `observed facts    none — run npm run vision to look at the images`);
 
 const kb = (f) => (Buffer.byteLength(JSON.stringify(f)) / 1024).toFixed(1) + "kb";
 console.log(`\nwrote ${OUT_DIR}/project-facts.json      ${kb(payload)}`);

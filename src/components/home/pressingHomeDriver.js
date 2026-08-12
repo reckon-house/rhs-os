@@ -432,6 +432,63 @@ const weight = (h) => h.m.reduce((a, m) => a + m.n, 0);
 const FILLER = new Set(("projects project work works pieces piece " +
   "things thing stuff surfaces surface").split(" "));
 
+/* ── the frames ────────────────────────────────────────────────────
+   Which photographs answer this question.
+
+   Runs entirely on the client's own copy of the index, which is the
+   point: the frames a visitor sees are chosen by code they already
+   downloaded, so they appear the instant the matcher does, with no
+   round trip and nothing to wait for. The model is never asked which
+   picture to show — it is TOLD which ones are on screen, so it can
+   describe them. A model that returns image paths can return one that
+   does not exist. This one is never given the chance.
+
+   Everything scored here was seen in the photograph rather than
+   written about it: the subjects the vocabulary has no word for, the
+   text legible inside the frame, the mood. That last category is why
+   "something moody" can return anything at all — no sentence in the
+   portfolio uses the word. */
+function frameMatch(q0) {
+  if (!FACTS || !FACTS.images || !FACTS.images.length) return [];
+  const words = [...new Set(rawWords(q0)
+    .filter((w) => w.length > 2 && !FILLER.has(w) && !STOP.has(w))
+    .map((w) => resolveAlias(w)))];
+  if (!words.length) return [];
+
+  const scored = [];
+  for (const im of FACTS.images) {
+    let score = 0;
+    for (const w of words) {
+      /* a facet term is the strongest signal: it is the same controlled
+         word the studies are indexed under */
+      for (const facet in im.f || {})
+        if ((im.f[facet] || []).some((t) => namesTerm(t, w))) score += 3;
+      if ((im.subjects || []).some((t) => namesTerm(t, w))) score += 2;
+      if ((im.mood || []).some((t) => namesTerm(t, w))) score += 2;
+      if ((im.colours || []).some((t) => namesTerm(t, w))) score += 2;
+      /* legible text is the most specific thing a frame can hold, and
+         nothing else in the pipeline can read it */
+      if ((im.text || []).some((t) => fold(t).includes(w))) score += 4;
+    }
+    if (score) scored.push({ im, score });
+  }
+
+  /* Spread across studies rather than returning six frames of one room:
+     a question answered by one project is a link, a question answered
+     by four is a portfolio. */
+  scored.sort((a, b) => b.score - a.score);
+  const perStudy = new Map();
+  const out = [];
+  for (const { im } of scored) {
+    const n = perStudy.get(im.slug) || 0;
+    if (n >= 2) continue;
+    perStudy.set(im.slug, n + 1);
+    out.push(im);
+    if (out.length >= 6) break;
+  }
+  return out;
+}
+
 function factLookup(q0) {
   const q = resolveAlias(fold(q0));
   if (!q || !FACTS) return { hits: [], pulls: [], dead: [], and: false };
@@ -743,7 +800,8 @@ window.askLog = () => JSON.parse(localStorage.getItem("rh.asks") || "[]");
    by accident of being one <script>; in the app the driver is a module
    and nothing leaks. The audit harness needs a way in, and one named
    hook beats the accident it replaces. */
-window.__brain = { think: (q) => think(q), analyse: (q) => analyse(q) };
+window.__brain = { think: (q) => think(q), analyse: (q) => analyse(q),
+                   frames: (q) => frameMatch(q) };
 
 /* ── two tones ─────────────────────────────────────────────────────
    The house says one thing and then qualifies it, and the type should
@@ -1764,6 +1822,8 @@ function buildAnswer() {
   if (!plan && askSource === "typed" && questionShaped(query)) {
     const hrefs = [...new Set(
       leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
+    /* chosen here, on the visitor's machine, before the request leaves */
+    const askFrames = frameMatch(query);
     if (askAbort) askAbort.abort();
     const ac = new AbortController();
     askAbort = ac;
@@ -1771,7 +1831,7 @@ function buildAnswer() {
     fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: query, hrefs }),
+      body: JSON.stringify({ q: query, hrefs, frames: askFrames.map((f) => f.src) }),
       signal: ac.signal
     })
       .then((r) => (r.ok ? r.json() : null))
