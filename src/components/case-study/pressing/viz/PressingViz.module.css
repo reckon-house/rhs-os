@@ -390,6 +390,39 @@
   text-transform: uppercase;
   fill: var(--pp-ink);
 }
+
+/* ── the ring ledger's two roles ──────────────────────────────────
+   The sheet's ledger row is "numeral leads, name follows, one
+   baseline", and these are its .tn and .tl verbatim. The numeral is
+   FULL INK AT 15px against a 10px grey label, because the sheet makes
+   size its only hierarchy channel and the datum has to be the larger
+   of the two. Worth stating because the chart these replace got it
+   exactly backwards: its numerals were .mono at 9px weight 400, sitting
+   under their own 10px weight 500 labels. */
+.ringNum {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  fill: var(--pv-ink);
+}
+.ringLbl {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  fill: var(--pv-grey);
+  transition: fill 0.32s ease;
+}
+/* the reading head moves LABELS, never marks: lifting an arc to say
+   "look here" would misstate the share it is drawing */
+.ringOn {
+  fill: var(--pv-ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ringLbl {
+    transition: none;
+  }
+}
 /* The hub names the system in the FAMILY FACE. The serif lockup that
    sat here argued it was a brand quotation; the user's call is that the
    charts speak one voice, so the name is set like every other label —
@@ -610,17 +643,38 @@
 }
 /* the run wipes in from the left on the shared curve */
 .swRun {
+  --sw-gap: clamp(6px, 0.9vw, 12px);
   display: flex;
-  gap: clamp(6px, 0.9vw, 12px);
+  gap: var(--sw-gap);
   transition: clip-path 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
   transition-delay: var(--lag, 0s);
 }
+
+/* A CHIP IS THE SAME SIZE IN EVERY ROW.
+   It used to be `flex: 1 1 0`, which divides a fixed track by whatever
+   the ROW happens to hold, so chip width tracked colour count instead of
+   anything real. Measured at 1440: a five-value row drew 190px chips and
+   a seven-value row drew 132px, and since the short rows were the ones
+   carrying the smallest authored numbers, the biggest marks on the page
+   sat on the least of everything. The sheet makes size its only
+   hierarchy channel, so that was size saying something false.
+
+   --sw-max is the LONGEST run in the set, written once by the component,
+   which is what keeps rows comparable. The min() only bites when a long
+   run would otherwise overrun the track; short runs stop short and leave
+   paper, which is the honest shape for a family with fewer values. */
 .swCell {
   display: flex;
   flex-direction: column;
   gap: 7px;
   min-width: 0;
-  flex: 1 1 0;
+  flex: 0 0
+    min(
+      168px,
+      calc(
+        (100% - (var(--sw-max, 1) - 1) * var(--sw-gap)) / var(--sw-max, 1)
+      )
+    );
 }
 /* No border and no radius: a swatch is a flat field of its own colour,
    and an ink outline around it would be the system arguing with the one

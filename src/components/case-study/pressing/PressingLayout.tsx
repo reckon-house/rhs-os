@@ -14,7 +14,13 @@ import { PressingClosing } from "./PressingClosing";
 import { PressingVizFrame } from "./PressingVizFrame";
 import { PressingSystemIndex } from "./PressingSystemIndex";
 import { PressingSwatchLedger } from "./viz/PressingSwatchLedger";
-import { KITCHEN_FAMILIES, JC_PALETTE } from "./viz/palettes";
+import { PressingPaletteRings } from "./viz/PressingPaletteRings";
+import { PressingInteriorsIndex } from "./PressingInteriorsIndex";
+/* KITCHEN_FAMILIES is no longer mounted here: the kitchen palette draws
+   as rings now, and PressingPaletteRings reads its own data. The export
+   stays in palettes.ts as the four sampled values, since the rings and
+   the interiors ledger both describe the same four finishes. */
+import { JC_PALETTE } from "./viz/palettes";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
@@ -417,11 +423,14 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     if (s.type === "kitchen-palette") {
       out.push(
         <PressingVizFrame key={s.id} mark={p?.mark}>
-          <PressingSwatchLedger
-            label="The palette, as specified"
-            families={KITCHEN_FAMILIES}
-            weightLabel="PRESENCE"
-          />
+          {/* Rings rather than the swatch ledger. The ledger has no
+              quantity to draw, which is why it never sat with the rest of
+              the kit; the rings carry each finish's measured share of the
+              palette values read across the study's photographs, and the
+              arcs carry the hues on ink bones. The ledger still serves
+              J. Christianson, where a palette is a named set with no
+              share to show. */}
+          <PressingPaletteRings label="The four finishes" />
         </PressingVizFrame>
       );
       i += 1;
@@ -435,6 +444,26 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             families={JC_PALETTE}
           />
         </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    /* The interiors ledger. Rows are DERIVED, so the section carries
+       only its own copy and the slug does the rest. A study whose
+       generator entry is missing renders nothing rather than an empty
+       ledger — run `npm run interiors` after adding one. */
+    if (s.type === "interiors-index") {
+      out.push(
+        <PressingInteriorsIndex
+          key={s.id}
+          slug={study.slug}
+          title={s.title}
+          intro={[s.introText, s.philosophyText].filter(
+            (t): t is string => typeof t === "string" && t.length > 0
+          )}
+          mark={p?.mark}
+        />
       );
       i += 1;
       continue;

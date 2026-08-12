@@ -6,55 +6,100 @@
  * routing kitchen-palette and color-permutations to the pressing skin
  * makes the classic pair unreachable from any pressing study, and data
  * stranded inside an unreachable component is data waiting to drift
- * from the thing that renders it. Every hex, name and weight below is
- * the original's, unchanged — this is a move, not a re-authoring.
+ * from the thing that renders it.
+ *
+ * J. Christianson is a verbatim move. The KITCHEN palette is NOT: its
+ * values were re-sourced from the study's own photographs, for the
+ * reasons set out above that list.
  */
 
 import type { SwatchFamily } from "./PressingSwatchLedger";
 
-/** Hill Country kitchen: eight finish families, each an ordered run. */
+/**
+ * Hill Country kitchen: the four finishes, sampled.
+ *
+ * WHAT THIS REPLACED, because the failure is instructive. The previous
+ * version carried eight families and forty-nine hexes under a header
+ * reading "the palette, as specified", in a study whose entire thesis is
+ * four finishes ("Lock the palette to four, let the constraint become
+ * the aesthetic"). The material wheel on the same page prints "4
+ * finishes · 15 surfaces"; the ledger printed "8 families · 49 values".
+ * Two charts, one page, contradicting each other, and the one claiming
+ * a specification was the one disagreeing with the copy.
+ *
+ * The hexes were not specified either. They were arithmetic ramps:
+ * Rug Charcoal stepped by exactly (16,16,16) four times with every value
+ * neutral to the byte, and Leather Tan did the same from a different
+ * anchor. They existed in the circos drawing this inherited from only to
+ * tint randomly scattered particles, where nobody could read one.
+ *
+ * These four are MEASURED. k-means over the 77 palette values that
+ * scripts/build-vision.mjs observed across the study's 16 photographs
+ * returns five clusters; four of them land on the four named finishes
+ * and the fifth is the dark-stained dining table, which is furniture
+ * rather than a finish. Frame counts are the cluster sizes, so a value
+ * here is "what this material actually reads as across the room", not a
+ * swatch anybody picked.
+ *
+ * NO WEIGHT FIELD. The old numerals rode a column labelled PRESENCE,
+ * which was the circos drawing's arc-sizing parameter wearing a label:
+ * its only consumer was `span = (f.weight / totalWeight) * availableAngle`.
+ * Nothing in the repo ever defined it, the study authors no per-material
+ * quantity, and project-facts.json carries stats: [] for this project.
+ */
 export const KITCHEN_FAMILIES: SwatchFamily[] = [
-  {
-    name: "Sage Cabinet",
-    colors: ["#3D4A3A", "#4D5D44", "#5B6B52", "#6B7B62", "#7A8B72", "#8A9B82", "#9AAB92"],
-    weight: 2,
-  },
-  {
-    name: "Marble White",
-    colors: ["#F5F0EB", "#EDE5DC", "#E5DDD4", "#DDD5CC", "#D5CEC7", "#CCC5BE"],
-    weight: 1.5,
-  },
-  {
-    name: "Marble Vein",
-    colors: ["#A8A098", "#9A928A", "#8C847C", "#7E766E", "#B8AFA6", "#C8BFB6"],
-    weight: 1.2,
-  },
-  {
-    name: "White Oak",
-    colors: ["#D4BA85", "#C4A265", "#B89E6A", "#AC9060", "#C0A870", "#D8C898", "#E8D8A8"],
-    weight: 2,
-  },
-  {
-    name: "Brass",
-    colors: ["#A8893A", "#B8983A", "#9A7E3A", "#C9AA5B", "#8A7030", "#D4B86A", "#7A6228"],
-    weight: 1.5,
-  },
-  {
-    name: "Dark Walnut",
-    colors: ["#4A3828", "#5A4838", "#6B5540", "#7A6545", "#3A2818", "#8A7555"],
-    weight: 1,
-  },
-  {
-    name: "Leather Tan",
-    colors: ["#9A7E50", "#AA8E60", "#BA9E70", "#8A6E40", "#CAAE80"],
-    weight: 0.8,
-  },
-  {
-    name: "Rug Charcoal",
-    colors: ["#3A3A3A", "#4A4A4A", "#5A5A5A", "#2A2A2A", "#6A6A6A"],
-    weight: 0.8,
-  },
+  { name: "Sage Green", colors: ["#514F3D"] },
+  { name: "Raw White Oak", colors: ["#C0A67F"] },
+  { name: "Calacatta Marble", colors: ["#E1D9C9"] },
+  { name: "Unlacquered Brass", colors: ["#9B7D4C"] },
 ];
+
+/** One finish, with the share it holds and the range it reads across. */
+export interface FinishRing {
+  name: string;
+  /** cluster size: how many observed palette values fell to this finish */
+  n: number;
+  /** the trimmed extremes of that cluster, darkest and lightest */
+  dark: string;
+  light: string;
+}
+
+/**
+ * The same four finishes with the quantity the ledger form could not
+ * carry: how much of the room each one accounts for.
+ *
+ * WHY THIS EXISTS. Every other chart in the kit draws a quantity, and
+ * the palette chart had none, which is the structural reason it read as
+ * a foreign object next to the rest. Its old right-hand column was the
+ * circos drawing's arc-sizing parameter relabelled PRESENCE, so deleting
+ * that correctly left four rows of colour measuring nothing.
+ *
+ * `n` is a real share: cluster size from k-means over the 77 palette
+ * values scripts/build-vision.mjs recorded across this study's 16
+ * photographs. `dark` and `light` are that cluster's extremes, so an
+ * arc's gradient shows the range the material actually reads across
+ * rather than a ramp anybody typed. The brass range is the study's own
+ * copy made visible: unlacquered brass "darkens at the touchpoints and
+ * stays bright where hands don't reach".
+ *
+ * TRIMMED AT 1.6x the cluster's median distance from its centroid.
+ * Untrimmed, k-means in RGB pulled a warm brown (#5B3722) into the sage
+ * cluster and its gradient ran brown to olive, which is a lie about the
+ * finish. Nine values dropped across the four.
+ *
+ * REGENERATE with `npm run palette-rings`, which recomputes from the
+ * vision index and prints these numbers. If a photograph is added or
+ * re-read, run it and paste the result rather than adjusting by eye.
+ */
+export const KITCHEN_RINGS: FinishRing[] = [
+  { name: "Sage Green",        n: 22, dark: "#41442A", light: "#5A6252" },
+  { name: "Raw White Oak",     n: 21, dark: "#A6937D", light: "#D5B47F" },
+  { name: "Unlacquered Brass", n: 12, dark: "#815E3D", light: "#B0913F" },
+  { name: "Calacatta Marble",  n: 12, dark: "#DAD1CA", light: "#EFE9DF" },
+];
+
+/** Frames the shares were read from, printed under the chart as its source. */
+export const KITCHEN_RINGS_FRAMES = 16;
 
 /** J. Christianson: six named brand colours, one value each. No weight
  *  was ever authored for these, so none is printed. */

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palette as rings — the lab</title>
+<style>
+/* ── THE PALETTE, IN THE RINGS FORM ───────────────────────────────
+   The swatch ledger reads as a foreign object next to the rest of the
+   kit, and the reason is structural rather than cosmetic: the kit's
+   charts all draw a QUANTITY, and the palette chart had none. Its old
+   right-hand column ("2 PRESENCE") was the circos drawing's arc-sizing
+   parameter wearing a label, so removing it left four rows of colour
+   with nothing being measured.
+
+   This gives it a real one. scripts/build-vision.mjs recorded the 3-5
+   hex values every photograph is built from; k-means over the 77 values
+   in this study's 16 frames returns five clusters, four of which land on
+   the four named finishes. Cluster size is then a genuine share: how
+   much of the room each finish accounts for, as read across every
+   photograph of it. That is the quantity the rings draw.
+
+   WHY HUE IS ALLOWED HERE, and only here. The constitution says
+   "accent colour: none. Pure ink. (Colour appears only where hue IS the
+   datum — palette charts — on ink bones.)" So: the TRACKS stay 2px full
+   ink, the ledger stays ink and grey, and the only coloured marks on the
+   sheet are the heavy arcs themselves.
+
+   THE GRADIENT IS DATA, NOT DECORATION. Each arc runs from the darkest
+   to the lightest value that clustered into that finish, so the arc's
+   own length shows the spread the material actually reads across. The
+   brass one is the study's copy made visible: "it darkens at the
+   touchpoints and stays bright where hands don't reach."
+
+   Outliers are trimmed at 1.6x the cluster's median distance from its
+   centroid. Untrimmed, k-means in RGB pulled a warm brown (#5B3722)
+   into the sage cluster and the gradient ran brown to olive, which is a
+   lie about the finish. Three values dropped from sage, two from oak,
+   two from brass, four from marble.
+
+   Every stroke width, radius, ledger offset and type size below is
+   viz-system.html's ring specimen, copied rather than re-derived. */
+:root {
+  --paper: #FFFFFF;
+  --ink: #000000;
+  --grey: rgba(0, 0, 0, 0.45);
+  --cap: 11px;
+  --lbl: 10px;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html { background: #EDEBE8; }
+body { font-family: var(--sans); color: var(--ink);
+  -webkit-font-smoothing: antialiased; padding: 48px 16px 120px; }
+.sheet { background: var(--paper); max-width: 1240px; margin: 0 auto;
+  padding: clamp(40px, 6vw, 96px); }
+h1 { font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.02em;
+  line-height: 1.05; margin-bottom: 10px; }
+.sub { font-size: 13px; color: var(--grey); max-width: 70ch; line-height: 1.5; }
+section { margin-top: clamp(44px, 6vw, 72px); }
+.shead { display: flex; justify-content: space-between; align-items: baseline;
+  gap: 24px; flex-wrap: wrap; border-top: 2px solid var(--ink);
+  padding-top: 14px; margin-bottom: 6px; }
+.shead h2 { font-size: 20px; letter-spacing: -0.01em; }
+.shead .n { font-size: var(--lbl); letter-spacing: 0.04em; font-weight: 500;
+  color: var(--grey); text-transform: uppercase; }
+.rules { font-size: 13px; color: var(--grey); line-height: 1.5;
+  max-width: 74ch; margin-bottom: 28px; }
+.rules b { color: var(--ink); font-weight: 600; }
+svg { display: block; width: 100%; height: auto; }
+.src { font-size: var(--cap); color: var(--grey); margin-top: 14px; }
+text { font-family: var(--sans); }
+/* the ref sheet's three type roles, unchanged */
+.tl { font-size: 10px; letter-spacing: 0.06em; font-weight: 500; fill: var(--grey);
+  transition: fill 0.32s ease; }
+.tl.read { fill: var(--ink); }
+.tn { font-size: 15px; font-weight: 600; fill: var(--ink);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+.mo { transition: stroke-dashoffset 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+  transition-delay: var(--lag, 0s); }
+@media (prefers-reduced-motion: reduce) { .mo { transition: none; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <h1>The palette, as rings</h1>
+  <p class="sub">The swatch ledger with a quantity behind it. Arc length is each
+  finish's share of the palette values read across the study's photographs; the
+  arc's gradient is the range that finish actually reads across, darkest to
+  lightest. Tracks, ledger and rules stay pure ink.</p>
+
+  <section>
+    <div class="shead">
+      <h2>Hill Country Kitchen</h2>
+      <span class="n">Rings · real hues on ink bones</span>
+    </div>
+    <p class="rules">Concentric <b>fine tracks</b> at 2px full ink, each running
+      the full circle. The value is the <b>same circle drawn heavy</b> over an
+      arc, start fixed at 12 o'clock, clockwise, read outside-in largest first.
+      The only departure from the ring specimen is that the heavy arc carries
+      its finish's own hue instead of ink, which is the one exception the
+      constitution names: <b>colour appears only where hue is the datum</b>.</p>
+
+    <svg id="rings" viewBox="0 0 1100 560" role="img"
+      aria-label="Four concentric rings. Arc length is each finish's share of 67 palette values read across 16 photographs: sage green 33 percent, raw white oak 31, unlacquered brass 18, Calacatta marble 18.">
+      <defs id="grads"></defs>
+      <g transform="translate(300 280)" id="plot"></g>
+      <g id="ledger" data-read></g>
+      <g>
+        <line x1="640" y1="420" x2="1040" y2="420" stroke="#000" stroke-width="2"/>
+        <text class="tl" x="640" y="450">SHARE OF 67 PALETTE VALUES · 16 PHOTOGRAPHS</text>
+      </g>
+    </svg>
+    <p class="src">Source: image-vision.json, the 3-5 hex values recorded per
+      frame. k-means over 77 values returns five clusters; the fifth is the
+      dark-stained dining table, which is furniture rather than a finish, and is
+      excluded. Outliers trimmed at 1.6x median distance from centroid.</p>
+  </section>
+
+</div>
+
+<script>
+/* The four finishes, measured. n is the cluster size; dark and light are
+   the trimmed extremes of the values that clustered into it. */
+const FINISHES = [
+  { name: "SAGE GREEN",        n: 22, dark: "#41442A", light: "#5A6252" },
+  { name: "RAW WHITE OAK",     n: 21, dark: "#A6937D", light: "#D5B47F" },
+  { name: "UNLACQUERED BRASS", n: 12, dark: "#815E3D", light: "#B0913F" },
+  { name: "CALACATTA MARBLE",  n: 12, dark: "#DAD1CA", light: "#EFE9DF" },
+];
+
+/* The ring specimen's radii and spacing, unchanged. */
+const RADII = [240, 212, 184, 156];
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a) => { const n = document.createElementNS(NS, t);
+  for (const k in a) n.setAttribute(k, a[k]); return n; };
+
+const total = FINISHES.reduce((s, f) => s + f.n, 0);
+const plot = document.getElementById("plot");
+const defs = document.getElementById("grads");
+const ledger = document.getElementById("ledger");
+
+FINISHES.forEach((f, i) => {
+  const r = RADII[i];
+  const circ = 2 * Math.PI * r;
+  const share = f.n / total;
+  const arc = circ * share;
+
+  /* the fine track: full ink, full circle, structure */
+  plot.appendChild(el("circle", { cx: 0, cy: 0, r,
+    fill: "none", stroke: "#000", "stroke-width": 2 }));
+
+  /* THE GRADIENT RUNS ALONG THE ARC. SVG has no gradient-along-path, so
+     the vector is set from the arc's own start point to its own end
+     point in user space. Every arc here is under 180 degrees, where a
+     straight vector and the arc's sweep agree closely enough to read as
+     following it. Past 180 this would need splitting into segments. */
+  const a0 = -Math.PI / 2;                       // 12 o'clock
+  const a1 = a0 + share * Math.PI * 2;           // clockwise
+  const id = `g${i}`;
+  const grad = el("linearGradient", { id, gradientUnits: "userSpaceOnUse",
+    x1: (300 + Math.cos(a0) * r).toFixed(1), y1: (280 + Math.sin(a0) * r).toFixed(1),
+    x2: (300 + Math.cos(a1) * r).toFixed(1), y2: (280 + Math.sin(a1) * r).toFixed(1) });
+  grad.appendChild(el("stop", { offset: "0",   "stop-color": f.dark }));
+  grad.appendChild(el("stop", { offset: "1",   "stop-color": f.light }));
+  defs.appendChild(grad);
+
+  /* the heavy mark: the same circle, drawn over an arc, from 12 o'clock */
+  const g = el("g", { transform: "rotate(-90)" });
+  const hit = el("circle", { cx: 0, cy: 0, r, fill: "none",
+    stroke: `url(#${id})`, "stroke-width": 9, "stroke-linecap": "round",
+    "stroke-dasharray": `${arc.toFixed(1)} ${circ.toFixed(1)}` });
+  g.appendChild(hit);
+  plot.appendChild(g);
+
+  /* the ledger: numeral leads, name follows, one baseline.
+     Centred against the ring rather than starting at the specimen's y=66,
+     because four rows on the specimen's 56px rhythm would hang off the
+     top of a 480px drawing. */
+  const y = 200 + i * 56;
+  const num = el("text", { class: "tn", x: 640, y }); num.textContent = f.n;
+  const lab = el("text", { class: "tl", x: 700, y });
+  lab.textContent = `${f.name} · ${Math.round(share * 100)}%`;
+  ledger.appendChild(num); ledger.appendChild(lab);
+
+  /* arrival: the dash trick, same as every mark on the ref sheet */
+  hit.style.strokeDashoffset = arc;
+  hit.classList.add("mo");
+  hit.style.setProperty("--lag", (i * 0.06).toFixed(2) + "s");
+});
+
+/* TIER 1 · ARRIVAL, once, on entry */
+(() => {
+  const svg = document.getElementById("rings");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const draw = () => svg.querySelectorAll(".mo")
+    .forEach((m) => { m.style.strokeDashoffset = 0; });
+  if (reduce) { draw(); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { draw(); io.disconnect(); }
+  }), { threshold: 0.25 });
+  io.observe(svg);
+})();
+
+/* TIER 2 · THE READING HEAD. Moves labels, never marks. */
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const HOLD = 1500;
+  const labels = [...document.querySelectorAll("#ledger .tl")];
+  if (labels.length < 2) return;
+  const svg = document.getElementById("rings");
+  let live = false, elapsed = 0, prev = null, shown = -1;
+  new IntersectionObserver((es) => es.forEach((e) => {
+    live = e.isIntersecting;
+    if (!live) { prev = null; labels.forEach((l) => l.classList.remove("read")); shown = -1; }
+  }), { threshold: 0.25 }).observe(svg);
+  const tick = (now) => {
+    requestAnimationFrame(tick);
+    if (!live || document.hidden) { prev = null; return; }
+    if (prev != null) elapsed += Math.min(now - prev, 100);
+    prev = now;
+    const i = Math.floor(elapsed / HOLD) % labels.length;
+    if (i === shown) return;
+    if (shown >= 0) labels[shown].classList.remove("read");
+    labels[i].classList.add("read");
+    shown = i;
+  };
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

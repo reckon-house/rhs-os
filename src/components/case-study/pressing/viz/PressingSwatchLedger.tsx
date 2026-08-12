@@ -61,18 +61,28 @@ export function PressingSwatchLedger({
   const drawn = useVizArrival(ref);
   const head = useReadingHead(ref, families.length);
 
-  const totalSwatches = families.reduce((n, f) => n + f.colors.length, 0);
+  /* The longest run in the set, so a chip means the same thing in every
+     row. See .swCell in the stylesheet for what this fixes. */
+  const longest = families.reduce((n, f) => Math.max(n, f.colors.length), 1);
 
   return (
     <div className={styles.viz} ref={ref}>
       <div className={styles.head}>
         <span className={styles.lbl}>{label}</span>
+        {/* Families only. The value COUNT used to print beside it and was
+            the chart's loudest false claim: "49 values" for a room whose
+            copy says four finishes seven times. A count is only worth
+            printing when the thing counted is the subject, and here the
+            subject is the finishes. */}
         <span className={`${styles.lbl} ${styles.grey}`}>
-          {`${families.length} families · ${totalSwatches} values`}
+          {`${families.length} ${families.length === 1 ? "family" : "families"}`}
         </span>
       </div>
 
-      <div className={styles.swLedger}>
+      <div
+        className={styles.swLedger}
+        style={{ "--sw-max": longest } as CSSProperties}
+      >
         {families.map((f, i) => (
           <div className={styles.swRow} key={f.name}>
             <span
