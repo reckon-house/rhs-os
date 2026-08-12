@@ -276,6 +276,90 @@ NOTES.forEach((n) => cards.push({
 }));
 cards.forEach((c) => { c.norm = c.fields.map((f) => [f[0], norm(f[1])]); });
 
+/* ── the trail ─────────────────────────────────────────────────────
+   What this tab has actually been shown, and for how long. A card
+   accrues time while at least 60% visible; a hover is sharper than a
+   scroll-past and an open is sharper than a hover. That is the whole
+   model. No mouse coordinates, no scroll depth, no fingerprint.
+
+   THE RULE: the trail never leaves the machine. sessionStorage, this
+   tab only, deleted when the tab closes. It exists so the brain can
+   answer questions a stranger's analytics never could: "where was
+   that brass thing I saw", "which of those has marble", "what have I
+   looked at". The house notices; it does not report. The receipts say
+   all of this out loud, because a quiet log is how watching turns
+   creepy.
+
+   It also breaks ranking ties. When two projects carry the same
+   counted facts, the one this tab has lingered on leads, and the
+   receipt says so the one time it actually changes an order. It never
+   outranks the facts themselves: a mined count beats a long look. */
+const TRAIL_KEY = "rh.trail";
+const TRAIL = (() => {
+  try { return JSON.parse(sessionStorage.getItem(TRAIL_KEY) || "{}"); }
+  catch (e) { return {}; }
+})();
+let trailDirty = false;
+let LAST_ANSWER = null;   /* { q, work: [ci], board: [ci] } — set by the answer flow */
+let TRAIL_NUDGED = false; /* did the trail change the last ranking */
+function trailBump(key, w) {
+  if (!key || key.startsWith("note:")) return;   /* the practice notes are chrome, not taste */
+  TRAIL[key] = Math.min((TRAIL[key] || 0) + w, 40);
+  trailDirty = true;
+}
+setInterval(() => {
+  if (!trailDirty) return;
+  trailDirty = false;
+  try { sessionStorage.setItem(TRAIL_KEY, JSON.stringify(TRAIL)); } catch (e) { /* private mode */ }
+}, 4000);
+
+/* Cards re-render on every deal, so observation is by data-key rather
+   than by node: the element dies, the key survives, the time adds up.
+   A slow rescan picks up whatever the last render created. */
+const dwellAt = new Map();
+const seenIO = typeof IntersectionObserver !== "undefined" ? new IntersectionObserver((es) => {
+  for (const e of es) {
+    const key = e.target.dataset.key;
+    if (!key) continue;
+    if (e.isIntersecting) dwellAt.set(key, performance.now());
+    else if (dwellAt.has(key)) {
+      trailBump(key, Math.min((performance.now() - dwellAt.get(key)) / 1000, 8) * 0.4);
+      dwellAt.delete(key);
+    }
+  }
+}, { threshold: 0.6 }) : null;
+const watched = new WeakSet();
+setInterval(() => {
+  if (!seenIO) return;
+  document.querySelectorAll("[data-key]").forEach((el) => {
+    if (watched.has(el)) return;
+    watched.add(el);
+    seenIO.observe(el);
+    el.addEventListener("pointerenter", () => trailBump(el.dataset.key, 0.5), { passive: true });
+    el.addEventListener("click", () => trailBump(el.dataset.key, 6), { passive: true });
+  });
+}, 1500);
+
+const trailOf = (href) => TRAIL[href] || 0;
+
+/* The trail spoken as facet terms, for the model's ear: "this tab has
+   been lingering on brass and limestone". Clients and categories stay
+   out — hovering three Nordstrom cards is browsing, not brand
+   loyalty. */
+function trailTerms(n) {
+  if (!FACTS) return [];
+  const acc = new Map();
+  for (const [k, w] of Object.entries(TRAIL)) {
+    const pr = FACTS.projects.find((x) => x.href === k);
+    if (!pr) continue;
+    for (const [fa, ts] of Object.entries(pr.f || {})) {
+      if (fa === "client" || fa === "category") continue;
+      for (const t of ts) acc.set(t[0], (acc.get(t[0]) || 0) + w);
+    }
+  }
+  return [...acc.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([t]) => t);
+}
+
 /* ── the matcher ──────────────────────────────────────────────────
    Written for the way people actually ask. Common words are set
    aside, whatever survives scores a card once for every word that
@@ -584,9 +668,147 @@ const nameList = (xs) =>
 /* One plan for the whole answer: what to say, what to show, and what
    the receipt can prove. Returns null when neither intents nor facts
    have anything, and the matcher underneath takes the question. */
+/* ── follow-ups ────────────────────────────────────────────────────
+   The previous answer is live context, and questions lean on it the
+   way people actually talk: "which of those has marble", "the second
+   one", "more like that". Explicit deixis only — "which projects use
+   brass" is a fresh question and never lands here. Everything below
+   resolves against state this tab already holds, so it costs nothing
+   and can name exactly what it read: the receipt is the feature. */
+const ORDINAL = { first: 0, second: 1, third: 2, fourth: 3, fifth: 4 };
+function followUp(q) {
+  if (!FACTS) return null;
+  const qf = fold(q);
+  const last = LAST_ANSWER;
+  const title = (href) => cards[factCard.work.get(href)]?.title;
+  const liveWords = (drop) => [...new Set(rawWords(qf)
+    .filter((w) => w.length > 2 && !STOP.has(w) && !FILLER.has(w) && !drop.test(w))
+    .map((w) => resolveAlias(w)))]
+    .filter((w) => FACTS.projects.some((p) => factMatches(p, w).length));
+
+  /* "the second one" — a pick, counted in the order the cards were dealt */
+  const ord = /\bthe (first|second|third|fourth|fifth|last) one\b/.exec(qf);
+  if (ord && last && last.work.length) {
+    const i = ord[1] === "last" ? last.work.length - 1 : ORDINAL[ord[1]];
+    const ci = last.work[i];
+    if (ci == null) return null;
+    return {
+      say: "That one's " + cards[ci].title + "." + (cards[ci].sub ? " " + cards[ci].sub + "." : ""),
+      receipt: "\u201cThe " + ord[1] + " one\u201d reads against the last answer, which this tab keeps for exactly that. Counting follows the order the cards were dealt. " + machinery(),
+      workIdx: [ci], pullIdx: [], mailto: false
+    };
+  }
+
+  /* "which of those has marble" — the last answer, filtered */
+  if (/\b(of|among) (those|these|them)\b|\bthat one\b/.test(qf) && last && last.work.length) {
+    const live = liveWords(/^(those|these|them|one|ones|among|which|has|have)$/);
+    if (!live.length) return null;
+    const lastHrefs = new Set(last.work.map((ci) => cards[ci].href).filter(Boolean));
+    const inLast = FACTS.projects.filter((p) => lastHrefs.has(p.href));
+    const hit = inLast.filter((p) => live.every((w) => factMatches(p, w).length));
+    if (hit.length) {
+      const names = [...new Set(hit.map((p) => title(p.href)).filter(Boolean))];
+      return {
+        say: "Of those, " + nameList(names) + (names.length === 1 ? " carries " : " carry ") + live.join(" and ") + ".",
+        receipt: "Read as a follow-up: \u201cthose\u201d is the last answer's " + inLast.length +
+          " projects, kept in this tab. Filtering on " + live.join(", ") + " left " + hit.length + ". " + machinery(),
+        workIdx: hit.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
+        pullIdx: [], mailto: false
+      };
+    }
+    /* the honest no, then where it actually lives */
+    const wider = FACTS.projects.filter((p) => live.every((w) => factMatches(p, w).length));
+    const names = [...new Set(wider.map((p) => title(p.href)).filter(Boolean))];
+    return {
+      say: "None of those carry " + live.join(" and ") + "." +
+        (names.length ? " That lives in " + nameList(names) + " instead." : ""),
+      receipt: "Read as a follow-up against the last answer. The filter came back empty, so the whole index was asked where " +
+        live.join(", ") + " actually lands. " + machinery(),
+      workIdx: wider.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
+      pullIdx: [], mailto: false
+    };
+  }
+
+  /* "more like that" — a recommendation with its reasons attached.
+     Ranking is shared facts and nothing else; no similarity is
+     computed and none is claimed. That is what keeps the offer on the
+     right side of a store's you-might-also-like. */
+  if (/\bmore like (this|that|these|those)\b/.test(qf) && last && last.work.length) {
+    const seedCi = last.work[0];
+    const seed = FACTS.projects.find((p) => p.href === cards[seedCi].href);
+    if (!seed) return null;
+    const termsOf = (p) => Object.entries(p.f || {})
+      .filter(([fa]) => fa !== "client" && fa !== "category")
+      .flatMap(([, ts]) => ts.map((t) => t[0]));
+    const seedTerms = new Set(termsOf(seed));
+    const lastHrefs = new Set(last.work.map((ci) => cards[ci].href));
+    const near = FACTS.projects
+      .filter((p) => !lastHrefs.has(p.href))
+      .map((p) => ({ p, shared: termsOf(p).filter((t) => seedTerms.has(t)) }))
+      .filter((x) => x.shared.length >= 2)
+      .sort((a, b) => b.shared.length - a.shared.length)
+      .slice(0, 6);
+    if (!near.length) return null;
+    const names = [...new Set(near.map((x) => title(x.p.href)).filter(Boolean))];
+    return {
+      say: "Closest to " + cards[seedCi].title + " by shared facts: " + nameList(names) + ".",
+      receipt: "\u201cMore like that\u201d reads against " + cards[seedCi].title +
+        ", the last answer's lead. Ranking is counted overlap and nothing else. The nearest shares " +
+        near[0].shared.slice(0, 4).join(", ") + ". " + machinery(),
+      workIdx: near.map((x) => factCard.work.get(x.p.href)).filter((i) => i != null),
+      pullIdx: [], mailto: false
+    };
+  }
+
+  /* "where was that brass thing" — retrace. The dwell log knows what
+     this tab has actually been shown, so the search runs over YOUR
+     visit, not the site. Past tense on purpose: "where is the marble"
+     stays a marble question. */
+  if (/\bwhere (was|were)\b|\bi saw\b|\b(that|it|them) again\b/.test(qf)) {
+    const live = liveWords(/^(that|those|thing|things|saw|seen|was|were|where|earlier|again)$/);
+    if (live.length) {
+      const seen = FACTS.projects.filter((p) => trailOf(p.href) > 0 &&
+        live.every((w) => factMatches(p, w).length));
+      if (seen.length) {
+        const names = [...new Set(seen.map((p) => title(p.href)).filter(Boolean))];
+        return {
+          say: "That's " + nameList(names) + ". You passed " + (names.length === 1 ? "it" : "them") + " earlier.",
+          receipt: "Read as a retrace, so the lookup ran over the dwell log this tab keeps for itself, meaning the cards you have actually been shown, narrowed by " +
+            live.join(", ") + ". Nothing leaves your machine; closing the tab deletes the log. " + machinery(),
+          workIdx: seen.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
+          pullIdx: [], mailto: false
+        };
+      }
+    }
+    return null;   /* nothing seen matches: the ordinary lookup takes it */
+  }
+
+  /* "what have I looked at" — the visit, itemized from the same log */
+  if (/\bwhat (have|did) i (seen|looked at|look at)\b|\bmy (visit|trail)\b/.test(qf)) {
+    const rows = Object.entries(TRAIL)
+      .map(([k, w]) => ({ ci: cards.findIndex((c) => (c.href || c.img) === k), w }))
+      .filter((r) => r.ci >= 0 && cards[r.ci].kind === "work")
+      .sort((a, b) => b.w - a.w).slice(0, 8);
+    if (!rows.length) return null;
+    const names = [...new Set(rows.map((r) => cards[r.ci].title))];
+    return {
+      say: "Mostly " + nameList(names.slice(0, 3)) + ", by time spent. The trail is below, heaviest first.",
+      receipt: "Answered from the dwell log this tab keeps for itself: seconds visible, hovers, opens. It never leaves your machine, and closing the tab deletes it. " + machinery(),
+      workIdx: rows.map((r) => r.ci), pullIdx: [], mailto: false
+    };
+  }
+
+  return null;
+}
+
 function think(q) {
   const words = rawWords(q);
   if (!words.length) return null;
+
+  /* the previous answer first: deictic questions are cheap to detect
+     and wrong to answer any other way */
+  const fu = followUp(q);
+  if (fu) return fu;
 
   /* "Email design" is not a request to be emailed. A reach word sitting
      next to a craft word is a question about the work, and the facts
@@ -675,7 +897,12 @@ function think(q) {
   }
 
   const f = factLookup(q);
-  if (f.hits.length || f.pulls.length) return planFacts(q, f);
+  if (f.hits.length || f.pulls.length) {
+    const plan = planFacts(q, f);
+    if (TRAIL_NUDGED) plan.receipt +=
+      " Two ran even on the counts, so the one this tab has lingered on leads. The trail stays here and dies with the tab.";
+    return plan;
+  }
 
   /* Nothing matched, but the question might be using the world's word
      for a thing the studies name differently: "app development",
@@ -801,7 +1028,9 @@ window.askLog = () => JSON.parse(localStorage.getItem("rh.asks") || "[]");
    and nothing leaks. The audit harness needs a way in, and one named
    hook beats the accident it replaces. */
 window.__brain = { think: (q) => think(q), analyse: (q) => analyse(q),
-                   frames: (q) => frameMatch(q) };
+                   frames: (q) => frameMatch(q),
+                   trail: () => ({ ...TRAIL }), bump: (k, w) => trailBump(k, w),
+                   last: () => LAST_ANSWER };
 
 /* ── two tones ─────────────────────────────────────────────────────
    The house says one thing and then qualifies it, and the type should
@@ -953,9 +1182,19 @@ function planFacts(q, f) {
      living room with seventeen sofa mentions leads, the mockup whose
      couch appears in one photograph follows, and A.R.C. merely
      cataloguing the word "kitchen" never outranks the kitchen. */
+  const gridAt = (h) => factCard.work.get(h.p.href) ?? 99;
+  /* the trail breaks ties, never facts: a mined count beats a long
+     look, but between two projects the counts cannot separate, the
+     one this tab has lingered on leads. Sorted twice so the receipt
+     can say when the trail actually changed something, instead of
+     claiming influence it did not have. */
+  const plain = [...f.hits].sort((a, b) =>
+    (weight(b) - weight(a)) || (gridAt(a) - gridAt(b)));
   const hits = [...f.hits].sort((a, b) =>
     (weight(b) - weight(a)) ||
-    ((factCard.work.get(a.p.href) ?? 99) - (factCard.work.get(b.p.href) ?? 99)));
+    (trailOf(b.p.href) - trailOf(a.p.href)) ||
+    (gridAt(a) - gridAt(b)));
+  TRAIL_NUDGED = hits.some((h, i) => plain[i] !== h);
   const workIdx = hits.map((h) => factCard.work.get(h.p.href)).filter((i) => i != null);
   const pullIdx = f.pulls.map((p) => factCard.pull.get(p.src)).filter((i) => i != null);
   /* w counts PROJECTS, and it must, because the grid does: two
@@ -1736,6 +1975,16 @@ function buildAnswer() {
      kept, side by side and never mixed. Whatever remains pairs with
      its own kind, and an odd tail rides alone with air beside it,
      which is the uneven pair's move. */
+  /* what "those" means next time: this answer, in dealt order. Set
+     after think() ran, so the question that was ABOUT the previous
+     answer read the right one. */
+  if (leftIdx.length || rightIdx.length) {
+    LAST_ANSWER = {
+      q: query,
+      work: leftIdx.filter((ci) => cards[ci].kind === "work"),
+      board: rightIdx.slice()
+    };
+  }
   const L = leftIdx.slice(), R = rightIdx.slice();
   const pairs = [];
   while (L.length && R.length) pairs.push([L.shift(), R.shift()]);
@@ -1856,7 +2105,8 @@ function buildAnswer() {
     fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: query, hrefs, frames: askFrames.map((f) => f.src) }),
+      body: JSON.stringify({ q: query, hrefs, frames: askFrames.map((f) => f.src),
+        trail: trailTerms(5) }),
       signal: ac.signal
     })
       .then((r) => (r.ok ? r.json() : null))

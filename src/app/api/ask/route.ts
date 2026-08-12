@@ -51,6 +51,10 @@ interface AskBody {
   /* frames the client already chose to show, so the answer can talk
      about the pictures the visitor is looking at */
   frames?: string[];
+  /* facet terms this tab has lingered on — dwell, hover, opens —
+     computed client-side from its own session log. Terms only, ever:
+     no timings, no coordinates, no identifiers. */
+  trail?: string[];
 }
 
 interface Project {
@@ -91,6 +95,12 @@ const BY_HREF = new Map(PROJECTS.map((p) => [p.href, p]));
 const FRAMES: Frame[] = INDEX.images ?? [];
 const BY_SRC = new Map(FRAMES.map((f) => [f.src, f]));
 
+/* every term the index has ever minted, for validating the trail */
+const KNOWN_TERMS = new Set(
+  PROJECTS.flatMap((p) =>
+    Object.values(p.facets ?? {}).flatMap((l) => l.map((f) => f.term.toLowerCase())))
+);
+
 /* The house copy rules, as the system prompt. This is the same voice
    contract the case studies are edited under (CLAUDE.md), restated for
    a model that writes one paragraph at a time. The grounding rule is
@@ -108,6 +118,7 @@ Rules, all of them hard:
 - Contractions are welcome. Write like a person answering a colleague who respects their time, not like a brochure.
 - Speak as the house about Jeremy's work ("Built A.R.C. around..."), first person only where the facts show a first-person claim.
 - Stay on the portfolio. If the question is off-topic, say the house only answers for the work, in one sentence, without moralizing.
+- A TRAIL line may accompany the question: terms the visitor has lingered on this visit. Use it only to pick emphasis or a nearest neighbour when several answers would do. Never announce it, never say they seem interested in something, never treat it as something they asked.
 
 Some facts are marked SEEN IN. Those were observed in a photograph, not written by Jeremy. You may say such a thing is visible in the work. You may not turn it into a claim about why it was done or what it achieved.`;
 
@@ -264,6 +275,15 @@ export async function POST(req: NextRequest) {
   const frames = Array.isArray(body.frames)
     ? body.frames.filter((f): f is string => typeof f === "string")
     : [];
+  /* the trail is validated against the server's own index, same as
+     hrefs: a term the index never minted is dropped, so this field can
+     carry taste and cannot carry prompt. */
+  const trail = Array.isArray(body.trail)
+    ? body.trail
+        .filter((t): t is string => typeof t === "string")
+        .slice(0, 5)
+        .filter((t) => KNOWN_TERMS.has(t.toLowerCase()))
+    : [];
   if (!q) {
     return NextResponse.json({ error: "empty question" }, { status: 400 });
   }
@@ -279,7 +299,10 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `FACTS:\n${text}\n\nVISITOR'S QUESTION: ${q}`,
+          content:
+            `FACTS:\n${text}` +
+            (trail.length ? `\n\nTRAIL (lingered on this visit): ${trail.join(", ")}` : "") +
+            `\n\nVISITOR'S QUESTION: ${q}`,
         },
       ],
     });
