@@ -358,7 +358,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 9,
+      "n": 10,
       "cites": [
        {
         "section": "meta",
@@ -369,6 +369,11 @@
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
        }
       ]
      },
@@ -503,7 +508,7 @@
      {
       "facet": "furniture",
       "term": "artwork",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "pipeline",
@@ -514,6 +519,11 @@
         "section": "stats",
         "field": "items.2.label",
         "quote": "Artwork"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
        }
       ]
      },
@@ -528,6 +538,123 @@
         "quote": "running on a phone, resting on a kitchen counter"
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "mantel",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "rug",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "pillow",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "pendant",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
      }
     ],
     "style": [
@@ -547,6 +674,99 @@
         "quote": "Traditional manual inventory of a 73-item home: estimated 8-12 hours."
        }
       ]
+     },
+     {
+      "facet": "style",
+      "term": "western",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "mid century",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -992,7 +1212,7 @@
      {
       "facet": "style",
       "term": "western",
-      "n": 18,
+      "n": 19,
       "cites": [
        {
         "section": "meta",
@@ -1003,6 +1223,11 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-branding-desert-landscape-mountains-clouds-golden-grassland-outdoor-lifestyl…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg",
+        "quote": "Cream buffalo mark centered over a desert basin, mesas along the horizon, ocotillo in the near ground."
        }
       ]
      },
@@ -2612,7 +2837,7 @@
      {
       "facet": "furniture",
       "term": "chandelier",
-      "n": 19,
+      "n": 20,
       "cites": [
        {
         "section": "meta",
@@ -2623,6 +2848,11 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
@@ -2646,7 +2876,7 @@
      {
       "facet": "furniture",
       "term": "tub",
-      "n": 11,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -2657,6 +2887,11 @@
         "section": "meta",
         "field": "subtitle",
         "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
@@ -2781,6 +3016,40 @@
      },
      {
       "facet": "furniture",
+      "term": "shower",
+      "n": 2,
+      "cites": [
+       {
+        "section": "ensuite-footnote",
+        "field": "content",
+        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 2,
+      "cites": [
+       {
+        "section": "ensuite-detail-pair",
+        "field": "right.alt",
+        "quote": "Hammered copper clawfoot tub with brass faucet, charcoal hex tile backdrop"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "window",
       "n": 1,
       "cites": [
@@ -2788,30 +3057,6 @@
         "section": "room-footnote",
         "field": "content",
         "quote": "Below it, the furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading…"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "shower",
-      "n": 1,
-      "cites": [
-       {
-        "section": "ensuite-footnote",
-        "field": "content",
-        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "faucet",
-      "n": 1,
-      "cites": [
-       {
-        "section": "ensuite-detail-pair",
-        "field": "right.alt",
-        "quote": "Hammered copper clawfoot tub with brass faucet, charcoal hex tile backdrop"
        }
       ]
      },
@@ -2826,6 +3071,71 @@
         "quote": "A suite that picks a mood and follows it through every surface, every fixture, every throw pillow."
        }
       ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "vase",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "hardware",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ],
+      "observed": true
      }
     ],
     "room": [
@@ -2849,7 +3159,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -2860,6 +3170,11 @@
         "section": "meta",
         "field": "abstract",
         "quote": "The bath holds the same temperature the bedroom set."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      }
@@ -2887,7 +3202,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -2898,13 +3213,18 @@
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
      {
       "facet": "material",
       "term": "copper",
-      "n": 11,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -2915,13 +3235,18 @@
         "section": "meta",
         "field": "subtitle",
         "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
      {
       "facet": "material",
       "term": "tile",
-      "n": 10,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -2932,6 +3257,11 @@
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
@@ -3006,7 +3336,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "meta",
@@ -3017,6 +3347,28 @@
         "section": "room-footnote",
         "field": "content",
         "quote": "Exposed wood beams run the ridge line."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 2,
+      "cites": [
+       {
+        "section": "ensuite-footnote",
+        "field": "content",
+        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
       ]
      },
@@ -3043,18 +3395,21 @@
         "quote": "Primary suite, chandelier, cast stone fireplace, faux fur throw, leather slippers"
        }
       ]
-     },
+     }
+    ],
+    "style": [
      {
-      "facet": "material",
-      "term": "glass",
+      "facet": "style",
+      "term": "traditional",
       "n": 1,
       "cites": [
        {
-        "section": "ensuite-footnote",
-        "field": "content",
-        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+        "quote": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
        }
-      ]
+      ],
+      "observed": true
      }
     ]
    }
@@ -4135,7 +4490,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 51,
+      "n": 52,
       "cites": [
        {
         "section": "meta",
@@ -4146,6 +4501,11 @@
         "section": "meta",
         "field": "reel.images.0",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4219,7 +4579,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 36,
+      "n": 37,
       "cites": [
        {
         "section": "meta",
@@ -4230,13 +4590,18 @@
         "section": "meta",
         "field": "reel.images.1",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "material",
       "term": "brass",
-      "n": 23,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -4247,13 +4612,18 @@
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "material",
       "term": "oak",
-      "n": 20,
+      "n": 21,
       "cites": [
        {
         "section": "meta",
@@ -4264,13 +4634,18 @@
         "section": "meta",
         "field": "abstract",
         "quote": "…sign system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling th…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "material",
       "term": "glass",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -4281,6 +4656,11 @@
         "section": "material-columns",
         "field": "columns.0.content",
         "quote": "…ed floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel,…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4304,7 +4684,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -4315,6 +4695,11 @@
         "section": "island-columns",
         "field": "columns.0.content",
         "quote": "…with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4346,13 +4731,26 @@
         "quote": "A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invit…"
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "nickel",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ],
+      "observed": true
      }
     ],
     "furniture": [
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 26,
+      "n": 27,
       "cites": [
        {
         "section": "meta",
@@ -4363,13 +4761,18 @@
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Cabinetry, island, dining zone, full material spec."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "island",
-      "n": 24,
+      "n": 25,
       "cites": [
        {
         "section": "meta",
@@ -4380,13 +4783,18 @@
         "section": "meta",
         "field": "reel.images.2",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-full-view-beams-runner-island.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "backsplash",
-      "n": 9,
+      "n": 10,
       "cites": [
        {
         "section": "meta",
@@ -4397,6 +4805,11 @@
         "section": "meta",
         "field": "abstract",
         "quote": "…the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4454,7 +4867,7 @@
      {
       "facet": "furniture",
       "term": "shelf",
-      "n": 7,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -4465,13 +4878,18 @@
         "section": "meta",
         "field": "abstract",
         "quote": "The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full lengt…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "sink",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -4482,13 +4900,18 @@
         "section": "meta",
         "field": "reel.images.5",
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "pendant",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -4499,13 +4922,18 @@
         "section": "material-columns",
         "field": "columns.2.content",
         "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "faucet",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -4516,13 +4944,18 @@
         "section": "material-columns",
         "field": "columns.2.content",
         "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "counter",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -4533,6 +4966,11 @@
         "section": "cabinet-pair",
         "field": "left.alt",
         "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4590,24 +5028,68 @@
      {
       "facet": "furniture",
       "term": "sconce",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "material-columns",
         "field": "columns.2.content",
         "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "stool",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "material-columns",
         "field": "columns.2.content",
         "quote": "Even the bar stool frames pick up the brass tone."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hardware-closeup",
+        "field": "alt",
+        "quote": "Unlacquered brass cremone bolt detail on sage green cabinet door"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 2,
+      "cites": [
+       {
+        "section": "pantry-hero",
+        "field": "image",
+        "quote": "hill country kitchen pantry fridge pendant window"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4625,27 +5107,42 @@
      },
      {
       "facet": "furniture",
-      "term": "door",
+      "term": "artwork",
       "n": 1,
       "cites": [
        {
-        "section": "hardware-closeup",
-        "field": "alt",
-        "quote": "Unlacquered brass cremone bolt detail on sage green cabinet door"
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
-      ]
+      ],
+      "observed": true
      },
      {
       "facet": "furniture",
-      "term": "window",
+      "term": "bowl",
       "n": 1,
       "cites": [
        {
-        "section": "pantry-hero",
-        "field": "image",
-        "quote": "hill country kitchen pantry fridge pendant window"
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
-      ]
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ],
+      "observed": true
      }
     ],
     "colour": [
@@ -4671,12 +5168,34 @@
      {
       "facet": "style",
       "term": "traditional",
-      "n": 1,
+      "n": 2,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
         "quote": "Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cre…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ]
+     },
+     {
+      "facet": "style",
+      "term": "farmhouse",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hero-marble",
+        "field": "alt",
+        "quote": "Marble backsplash detail with brass sconces, farmhouse sink, sage green cabinetry"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -4701,18 +5220,6 @@
         "section": "cabinet-pair",
         "field": "left.alt",
         "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
-       }
-      ]
-     },
-     {
-      "facet": "style",
-      "term": "farmhouse",
-      "n": 1,
-      "cites": [
-       {
-        "section": "hero-marble",
-        "field": "alt",
-        "quote": "Marble backsplash detail with brass sconces, farmhouse sink, sage green cabinetry"
        }
       ]
      }
@@ -6723,6 +7230,19 @@
         "quote": "…n marcus robert rodriguez woman yellow blazer white pants pink curly hair colorful gradient overlay portrait concrete wall gallery"
        }
       ]
+     },
+     {
+      "facet": "material",
+      "term": "silk",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
+        "quote": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress."
+       }
+      ],
+      "observed": true
      }
     ]
    }
@@ -7948,5 +8468,279 @@
    }
   }
  ],
- "images": []
+ "images": [
+  {
+   "src": "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg",
+   "slug": "fairview-suite",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "copper",
+     "brass",
+     "tile",
+     "glass",
+     "wood"
+    ],
+    "furniture": [
+     "tub",
+     "chandelier",
+     "mirror",
+     "door",
+     "shower",
+     "faucet",
+     "vase",
+     "plant",
+     "hardware"
+    ],
+    "style": [
+     "traditional"
+    ],
+    "room": [
+     "bath"
+    ]
+   },
+   "subjects": [
+    "copper slipper tub",
+    "clawfoot tub",
+    "crystal chandelier",
+    "picket tile",
+    "pampas grass",
+    "floor mirror",
+    "double doors",
+    "fur throw",
+    "firewood"
+   ],
+   "text": [],
+   "palette": [
+    "#2E2C3D",
+    "#E9E6DE",
+    "#4A5462",
+    "#B87548"
+   ],
+   "colours": [
+    "indigo",
+    "navy",
+    "copper",
+    "white",
+    "charcoal"
+   ],
+   "mood": [
+    "moody",
+    "luxe",
+    "quiet"
+   ],
+   "composition": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+  },
+  {
+   "src": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg",
+   "slug": "capitan-boot-co",
+   "kind": "artwork",
+   "f": {
+    "material": [],
+    "furniture": [],
+    "style": [
+     "western"
+    ],
+    "room": []
+   },
+   "subjects": [
+    "buffalo silhouette",
+    "desert",
+    "mesa",
+    "ocotillo",
+    "sagebrush",
+    "arrow lockup"
+   ],
+   "text": [
+    "WESTERN",
+    "ORIGINAL"
+   ],
+   "palette": [
+    "#DDD3BC",
+    "#8B7B5F",
+    "#6E7B6B",
+    "#9FA8AA"
+   ],
+   "colours": [
+    "cream",
+    "sand",
+    "olive"
+   ],
+   "mood": [
+    "dry",
+    "vast",
+    "still"
+   ],
+   "composition": "Cream buffalo mark centered over a desert basin, mesas along the horizon, ocotillo in the near ground."
+  },
+  {
+   "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+   "slug": "hill-country-kitchen",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "marble",
+     "oak",
+     "wood",
+     "brass",
+     "nickel",
+     "glass"
+    ],
+    "furniture": [
+     "island",
+     "cabinet",
+     "pendant",
+     "sconce",
+     "sink",
+     "faucet",
+     "counter",
+     "backsplash",
+     "stool",
+     "shelf",
+     "window",
+     "door",
+     "artwork",
+     "bowl",
+     "plant"
+    ],
+    "style": [
+     "farmhouse",
+     "traditional"
+    ],
+    "room": [
+     "kitchen"
+    ]
+   },
+   "subjects": [
+    "butcher block",
+    "schoolhouse pendants",
+    "tractor stools",
+    "farmhouse sink",
+    "bridge faucet",
+    "firewood",
+    "peaches",
+    "wall clock",
+    "barn painting",
+    "shiplap ceiling"
+   ],
+   "text": [],
+   "palette": [
+    "#6B7562",
+    "#EFEAE0",
+    "#C9A876",
+    "#3E2F23"
+   ],
+   "colours": [
+    "sage",
+    "cream"
+   ],
+   "mood": [
+    "warm",
+    "calm",
+    "collected"
+   ],
+   "composition": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+  },
+  {
+   "src": "/case-studies/arc/arc-room-scanning-interface.jpg",
+   "slug": "arc",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "stone",
+     "wood",
+     "marble",
+     "brass",
+     "glass"
+    ],
+    "furniture": [
+     "fireplace",
+     "mantel",
+     "shelf",
+     "sofa",
+     "rug",
+     "artwork",
+     "pillow",
+     "vase",
+     "plant",
+     "pendant"
+    ],
+    "style": [
+     "western",
+     "mid century"
+    ],
+    "room": [
+     "living room"
+    ]
+   },
+   "subjects": [
+    "turntable",
+    "vinyl crates",
+    "cactus",
+    "gilt frames",
+    "candlesticks",
+    "woven basket",
+    "limestone wall",
+    "pampas grass"
+   ],
+   "text": [
+    "Dood of Juanita",
+    "Tres Hombres"
+   ],
+   "palette": [
+    "#E8DFD0",
+    "#8C8378",
+    "#2E2A26",
+    "#B5764A"
+   ],
+   "colours": [
+    "cream",
+    "charcoal"
+   ],
+   "mood": [
+    "warm",
+    "collected",
+    "quiet"
+   ],
+   "composition": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+  },
+  {
+   "src": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
+   "slug": "robert-rodriguez",
+   "kind": "photograph",
+   "f": {
+    "material": [
+     "silk"
+    ],
+    "furniture": [],
+    "style": [],
+    "room": []
+   },
+   "subjects": [
+    "editorial portrait",
+    "pink satin blazer",
+    "polka dot dress",
+    "windblown updo",
+    "studio seamless"
+   ],
+   "text": [],
+   "palette": [
+    "#E4501E",
+    "#F09CB4",
+    "#C6A07C"
+   ],
+   "colours": [
+    "orange",
+    "pink",
+    "camel",
+    "cream"
+   ],
+   "mood": [
+    "kinetic",
+    "editorial",
+    "saturated"
+   ],
+   "composition": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress."
+  }
+ ]
 }

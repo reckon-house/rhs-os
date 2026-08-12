@@ -150,8 +150,18 @@ const voice = {
 const projects = [];
 const coverage = { facet: {}, term: {}, negated: 0, guarded: 0, studies: 0 };
 
+/* which study renders each image — collected from the studies
+   themselves, because the folder is not the study: fairview-suite
+   renders frames that live in fairview-bedroom/. Path-as-slug is kept
+   only as the fallback for frames nothing claims. */
+const srcSlug = new Map();
+
 for (const file of studyFiles()) {
   const cs = await loadStudy(file);
+
+  for (const { value } of strings(cs.sections)) {
+    if (/\.(jpe?g|png|webp)$/i.test(value) && !srcSlug.has(value)) srcSlug.set(value, cs.slug);
+  }
 
   /* Evidence. Filenames are included deliberately: these are hand
      written SEO names and they carry keywords the prose never says
@@ -454,7 +464,7 @@ const images = [];
 let observedFacts = 0;
 
 for (const [src, rec] of Object.entries(vision.images || {})) {
-  const slug = /^\/case-studies\/([^/]+)\//.exec(src)?.[1];
+  const slug = srcSlug.get(src) || /^\/case-studies\/([^/]+)\//.exec(src)?.[1];
   const project = slug && bySlug.get(slug);
   if (!project) continue;
 

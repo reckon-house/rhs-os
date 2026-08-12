@@ -1,0 +1,262 @@
+{
+ "model": "claude-fable-5 (in-session)",
+ "images": {
+  "/case-studies/fairview-bedroom/fairview-suite-ensuite-doorway-copper-tub-chandelier.jpg": {
+   "hash": "10db47e4b1716688",
+   "kind": "photograph",
+   "room": "bath",
+   "materials": [
+    "copper",
+    "brass",
+    "tile",
+    "glass",
+    "wood"
+   ],
+   "furniture": [
+    "tub",
+    "chandelier",
+    "mirror",
+    "door",
+    "shower",
+    "faucet",
+    "vase",
+    "plant",
+    "hardware"
+   ],
+   "style": [
+    "traditional"
+   ],
+   "colours": [
+    "indigo",
+    "navy",
+    "copper",
+    "white",
+    "charcoal"
+   ],
+   "palette": [
+    "#2E2C3D",
+    "#E9E6DE",
+    "#4A5462",
+    "#B87548"
+   ],
+   "subjects": [
+    "copper slipper tub",
+    "clawfoot tub",
+    "crystal chandelier",
+    "picket tile",
+    "pampas grass",
+    "floor mirror",
+    "double doors",
+    "fur throw",
+    "firewood"
+   ],
+   "text": [],
+   "mood": [
+    "moody",
+    "luxe",
+    "quiet"
+   ],
+   "composition": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond.",
+   "confidence": "high"
+  },
+  "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg": {
+   "hash": "89348d3dca772d42",
+   "kind": "artwork",
+   "room": null,
+   "materials": [],
+   "furniture": [],
+   "style": [
+    "western"
+   ],
+   "colours": [
+    "cream",
+    "sand",
+    "olive"
+   ],
+   "palette": [
+    "#DDD3BC",
+    "#8B7B5F",
+    "#6E7B6B",
+    "#9FA8AA"
+   ],
+   "subjects": [
+    "buffalo silhouette",
+    "desert",
+    "mesa",
+    "ocotillo",
+    "sagebrush",
+    "arrow lockup"
+   ],
+   "text": [
+    "WESTERN",
+    "ORIGINAL"
+   ],
+   "mood": [
+    "dry",
+    "vast",
+    "still"
+   ],
+   "composition": "Cream buffalo mark centered over a desert basin, mesas along the horizon, ocotillo in the near ground.",
+   "confidence": "high"
+  },
+  "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg": {
+   "hash": "a16806193ed43b0a",
+   "kind": "photograph",
+   "room": "kitchen",
+   "materials": [
+    "marble",
+    "oak",
+    "wood",
+    "brass",
+    "nickel",
+    "glass"
+   ],
+   "furniture": [
+    "island",
+    "cabinet",
+    "pendant",
+    "sconce",
+    "sink",
+    "faucet",
+    "counter",
+    "backsplash",
+    "stool",
+    "shelf",
+    "window",
+    "door",
+    "artwork",
+    "bowl",
+    "plant"
+   ],
+   "style": [
+    "farmhouse",
+    "traditional"
+   ],
+   "colours": [
+    "sage",
+    "cream"
+   ],
+   "palette": [
+    "#6B7562",
+    "#EFEAE0",
+    "#C9A876",
+    "#3E2F23"
+   ],
+   "subjects": [
+    "butcher block",
+    "schoolhouse pendants",
+    "tractor stools",
+    "farmhouse sink",
+    "bridge faucet",
+    "firewood",
+    "peaches",
+    "wall clock",
+    "barn painting",
+    "shiplap ceiling"
+   ],
+   "text": [],
+   "mood": [
+    "warm",
+    "calm",
+    "collected"
+   ],
+   "composition": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center.",
+   "confidence": "high"
+  },
+  "/case-studies/arc/arc-room-scanning-interface.jpg": {
+   "hash": "ead836cd48bba95a",
+   "kind": "photograph",
+   "room": "living room",
+   "materials": [
+    "stone",
+    "wood",
+    "marble",
+    "brass",
+    "glass"
+   ],
+   "furniture": [
+    "fireplace",
+    "mantel",
+    "shelf",
+    "sofa",
+    "rug",
+    "artwork",
+    "pillow",
+    "vase",
+    "plant",
+    "pendant"
+   ],
+   "style": [
+    "western",
+    "mid century"
+   ],
+   "colours": [
+    "cream",
+    "charcoal"
+   ],
+   "palette": [
+    "#E8DFD0",
+    "#8C8378",
+    "#2E2A26",
+    "#B5764A"
+   ],
+   "subjects": [
+    "turntable",
+    "vinyl crates",
+    "cactus",
+    "gilt frames",
+    "candlesticks",
+    "woven basket",
+    "limestone wall",
+    "pampas grass"
+   ],
+   "text": [
+    "Dood of Juanita",
+    "Tres Hombres"
+   ],
+   "mood": [
+    "warm",
+    "collected",
+    "quiet"
+   ],
+   "composition": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground.",
+   "confidence": "high"
+  },
+  "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg": {
+   "hash": "3363294203e9c7a4",
+   "kind": "photograph",
+   "room": null,
+   "materials": [
+    "silk"
+   ],
+   "furniture": [],
+   "style": [],
+   "colours": [
+    "orange",
+    "pink",
+    "camel",
+    "cream"
+   ],
+   "palette": [
+    "#E4501E",
+    "#F09CB4",
+    "#C6A07C"
+   ],
+   "subjects": [
+    "editorial portrait",
+    "pink satin blazer",
+    "polka dot dress",
+    "windblown updo",
+    "studio seamless"
+   ],
+   "text": [],
+   "mood": [
+    "kinetic",
+    "editorial",
+    "saturated"
+   ],
+   "composition": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress.",
+   "confidence": "high"
+  }
+ }
+}
