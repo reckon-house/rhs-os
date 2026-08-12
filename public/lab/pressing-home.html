@@ -1718,7 +1718,7 @@ function followUp(q) {
     if (ci == null) return null;
     return {
       say: "That one's " + cards[ci].title + "." + (cards[ci].sub ? " " + cards[ci].sub + "." : ""),
-      receipt: "\u201cThe " + ord[1] + " one\u201d reads against the last answer, kept in this tab. Counting follows the dealt order. " + machinery(),
+      receipt: "That's the " + ord[1] + " result from your last search. " + machinery(),
       workIdx: [ci], pullIdx: [], mailto: false
     };
   }
@@ -1734,8 +1734,8 @@ function followUp(q) {
       const names = [...new Set(hit.map((p) => title(p.href)).filter(Boolean))];
       return {
         say: "Of those, " + nameList(names) + (names.length === 1 ? " carries " : " carry ") + live.join(" and ") + ".",
-        receipt: "Read as a follow-up: \u201cthose\u201d is the last answer's " + inLast.length +
-          " projects, kept in this tab. Filtering on " + live.join(", ") + " left " + hit.length + ". " + machinery(),
+        receipt: "This is a follow-up on your last " + inLast.length +
+          " results, filtered by " + live.join(", ") + ". " + hit.length + " matched. " + machinery(),
         workIdx: hit.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
         pullIdx: [], mailto: false
       };
@@ -1746,8 +1746,8 @@ function followUp(q) {
     return {
       say: "None of those carry " + live.join(" and ") + "." +
         (names.length ? " That lives in " + nameList(names) + " instead." : ""),
-      receipt: "Read as a follow-up against the last answer. The filter came back empty, so the whole index was asked where " +
-        live.join(", ") + " actually lands. " + machinery(),
+      receipt: "None of your last results matched " +
+        live.join(", ") + ", so the full index was searched instead. " + machinery(),
       workIdx: wider.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
       pullIdx: [], mailto: false
     };
@@ -1775,9 +1775,9 @@ function followUp(q) {
     if (!near.length) return null;
     const names = [...new Set(near.map((x) => title(x.p.href)).filter(Boolean))];
     return {
-      say: "Closest to " + cards[seedCi].title + " by shared facts: " + nameList(names) + ".",
-      receipt: "\u201cMore like that\u201d reads against " + cards[seedCi].title +
-        ", the last answer's lead. Ranking is counted overlap and nothing else. The nearest shares " +
+      say: "The closest to " + cards[seedCi].title + " by shared materials and techniques: " + nameList(names) + ".",
+      receipt: "Similar to " + cards[seedCi].title +
+        ", ranked by shared materials and techniques. The closest shares " +
         near[0].shared.slice(0, 4).join(", ") + ". " + machinery(),
       workIdx: near.map((x) => factCard.work.get(x.p.href)).filter((i) => i != null),
       pullIdx: [], mailto: false
@@ -1797,8 +1797,12 @@ function followUp(q) {
         const names = [...new Set(seen.map((p) => title(p.href)).filter(Boolean))];
         return {
           say: "That's " + nameList(names) + ". You passed " + (names.length === 1 ? "it" : "them") + " earlier.",
-          receipt: "Read as a retrace: the lookup ran over this tab\u2019s dwell log, the cards you have actually been shown, narrowed by " +
-            live.join(", ") + ". Nothing leaves your machine; closing the tab deletes the log. " + machinery(),
+          receipt: "Searched your visit history for " +
+            live.join(", ") + ". The history stays in this tab and is deleted when you close it. " + machinery(),
+          /* the trail is session-local and never leaves the tab; the
+             model is sent facet TERMS only and is told never to mention
+             them, so it cannot answer this one at all */
+          hold: true,
           workIdx: seen.map((p) => factCard.work.get(p.href)).filter((i) => i != null),
           pullIdx: [], mailto: false
         };
@@ -1817,7 +1821,10 @@ function followUp(q) {
     const names = [...new Set(rows.map((r) => cards[r.ci].title))];
     return {
       say: "Mostly " + nameList(names.slice(0, 3)) + ", by time spent. The trail is below, heaviest first.",
-      receipt: "Answered from the dwell log this tab keeps for itself: seconds visible, hovers, opens. It never leaves your machine, and closing the tab deletes it. " + machinery(),
+      receipt: "Your visit, ranked by time spent. This log stays in your browser and is deleted when you close the tab. " + machinery(),
+      /* same reason as the history plan above: the visit log never
+         leaves the tab, so only a template can report it */
+      hold: true,
       workIdx: rows.map((r) => r.ci), pullIdx: [], mailto: false
     };
   }
@@ -1848,7 +1855,11 @@ function think(q) {
     return {
       say: setLines.contact ||
         "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
-      receipt: "Read as reaching out, answered from the practice notes. " + machinery(),
+      receipt: "This comes from the practice notes. " + machinery(),
+      /* the model never sees the email address — FACTS carries projects,
+         not contact details — so it would hedge or omit it. The one
+         answer that has to be exact keeps its template. */
+      hold: true,
       workIdx: ncards, pullIdx: [], mailto: true
     };
   }
@@ -1866,8 +1877,7 @@ function think(q) {
     if (names.length) {
       return {
         say: setLines0.board || "These are things I love and inspired by.",
-        receipt: "Read as an inspiration question, answered from the board's own people and saves. " +
-          machinery(),
+        receipt: "These are from the inspiration board. " + machinery(),
         workIdx: [],
         pullIdx: FACTS.pulls.map((pl, i) => [pl, i])
           .filter(([pl]) => Object.keys(pl.f || {}).length)
@@ -1882,8 +1892,7 @@ function think(q) {
     if (names.length) {
       return {
         say: "Names I've worked with: " + nameList(names.slice(0, 6)) + ".",
-        receipt: "Read as a client question, answered from the client facts on the case studies. " +
-          machinery(),
+        receipt: "The client list comes from the case studies. " + machinery(),
         workIdx: withClients.map((pr) => factCard.work.get(pr.href)).filter((i) => i != null),
         pullIdx: [], mailto: false
       };
@@ -1892,10 +1901,8 @@ function think(q) {
   if (FACTS && asks(/\b(what (do you do|services|can you help)|services|disciplines)\b/)) {
     const all = [...new Set(FACTS.projects.flatMap((pr) => pr.d))];
     return {
-      say: "Art direction, brand systems, digital design, interiors. Same desk for all of it.",
-      receipt: "Read as a services question. The " + all.length +
-        " disciplines behind that sentence are curated in the case studies themselves. " +
-        machinery(),
+      say: "I do art direction, brand systems, digital design, and interiors, all from the same desk.",
+      receipt: "There are " + all.length + " disciplines across the case studies. " + machinery(),
       workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work"),
       pullIdx: [], mailto: false
     };
@@ -1903,9 +1910,8 @@ function think(q) {
   if (FACTS && asks(/\b(tools?|stack|software do you)\b/) && asks(/\b(what|which|your)\b/)) {
     const tools = [...new Set(FACTS.projects.flatMap((pr) => pr.t))];
     return {
-      say: "Mostly " + nameList(tools.slice(0, 4)) + ". The rest shows up per project.",
-      receipt: "Read as a tools question, answered from the stack each case study declares. " +
-        machinery(),
+      say: "Mostly " + nameList(tools.slice(0, 4)) + ", and the rest varies per project.",
+      receipt: "Tools and software are pulled from each case study's declared stack. " + machinery(),
       workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work").slice(0, 8),
       pullIdx: [], mailto: false
     };
@@ -1913,8 +1919,8 @@ function think(q) {
   if (asks(/^(portfolio|best work|recent work|latest|case studies|all work|more work|can i see more)/) ||
       asks(/\b(see more work|show me (the )?work)\b/)) {
     return {
-      say: "All of it, in the order I'd walk you through.",
-      receipt: "Read as a show-me-everything question. " + machinery(),
+      say: "This is all of it, in the order I'd walk you through.",
+      receipt: "The full portfolio. " + machinery(),
       workIdx: cards.map((c, i) => i).filter((i) => cards[i].kind === "work"),
       pullIdx: [], mailto: false
     };
@@ -1938,9 +1944,8 @@ function think(q) {
       /^(do|does|can|could|did|are|is|have|has|will|would|any)\b/.test(qf);
     plan.say = (yes ? "Yes. " : "") + "\u201c" + cap(senseKey) + "\u201d files under " +
       br.target + " here. That work is below.";
-    plan.receipt = "\u201c" + senseKey + "\u201d isn't a word the studies use, so a hand-written bridge reads it as the " +
-      br.label + " kind and routes it to " + br.target + ". The index holds " + plan.workIdx.length +
-      " projects for that. " + machinery();
+    plan.receipt = "\u201c" + senseKey + "\u201d matched via " + br.target + ". " +
+      plan.workIdx.length + " projects. " + machinery();
     return plan;
   }
 
@@ -1953,9 +1958,8 @@ function think(q) {
     const names = [...new Set(placed.flatMap((p) => p.f.place.map(([t]) => t)))]
       .filter((t) => t !== "texas" && t !== "dallas").map(capWords);
     return {
-      say: "Dallas, independent. The placed work runs through " + nameList(names) + ".",
-      receipt: "Read as a where question, answered from the place facts on " + idx.length +
-        " projects. " + machinery(),
+      say: "I'm independent, based in Dallas. The placed work runs through " + nameList(names) + ".",
+      receipt: "Location info from " + idx.length + " projects. " + machinery(),
       workIdx: [noteIdx(NOTES.findIndex((n) => n[0] === "How I work"))]
         .concat(idx).filter((i) => i != null && i >= 0),
       pullIdx: [], mailto: false
@@ -1964,8 +1968,8 @@ function think(q) {
 
   if (words.some((w) => WHOAMI.has(w)) || /^who (are|is) (you|jeremy|this)/.test(fold(q))) {
     return {
-      say: "I'm Jeremy Prasatik. The notes below have the rest.",
-      receipt: "Read as an about question, answered from the practice notes. " + machinery(),
+      say: "I'm Jeremy Prasatik. Everything you'd want to know is in the notes below.",
+      receipt: "This comes from the practice notes. " + machinery(),
       workIdx: NOTES.map((n, i) => noteIdx(i)), pullIdx: [], mailto: false
     };
   }
@@ -2106,34 +2110,14 @@ function renderToned(el, segs, n) {
    is part of the site's own case study. */
 /* 4: the muse and style facets, the ask log, and the 259-question
  * audit that drove both */
-const VOICE_VERSION = 6;
+const VOICE_VERSION = 7;
 
-/* The machinery clause, one place instead of eleven. It used to read
-   "No model runs when you ask", written when the index WAS the whole
-   brain and a model's absence was the honesty worth stating. Wrong
-   flex now, twice over: a model reads every photograph the index
-   files (build-vision.mjs), and Claude writes the answers a lookup
-   can't word (/api/ask). What stays true is the division of labor,
-   so that is what the receipt says: models where judgment lives,
-   arithmetic where the facts do.
-
-   Composed from what the index actually holds, so it cannot claim a
-   model that has not run: the photographs sentence only appears once
-   the vision pass has written its file. */
+/* One-line source attribution, appended to every receipt. */
 function machinery() {
   const seen = FACTS && FACTS.images && FACTS.images.length;
-  /* Register note, learned the hard way: the first cut of this line
-     read "This landed at typing speed because it's a lookup", which
-     explains its own trick \u2014 if the speed is the proof, captioning
-     the speed kills it. State the mechanism and stop. The opening also
-     avoids the word "answer": several call sites end on "answered
-     from", and the voice rules bar an echo that close. */
-  return "Direct questions are lookups. " +
-    (seen
-      ? "Claude writes the open ones from the same facts, including what a model read in all " +
-        FACTS.images.length + " photographs. "
-      : "Claude writes the open ones from the same facts. ") +
-    "Index v" + (FACTS ? FACTS.vocabularyVersion : "?") + ", voice v" + VOICE_VERSION + ".";
+  return "Everything here comes from the case studies" +
+    (seen ? " and " + FACTS.images.length + " catalogued photographs" : "") +
+    ".";
 }
 function voice(s) {
   return s
@@ -2164,34 +2148,25 @@ const vary = (q, n) => {
    out loud. Looked up, not generated, is WHY the house can speak as
    me without making things up. */
 const FACET_PLAIN = {
-  material: "a material", colour: "a colour", room: "a room",
-  furniture: "a thing in the photographs", place: "a place",
+  material: "a material", colour: "a colour", room: "a room type",
+  furniture: "something in the photographs", place: "a location",
   client: "a client", tool: "a tool", discipline: "a discipline",
-  muse: "a person I keep on the board",
-  style: "a way the work reads",
-  category: "one of the three shelves the site keeps",
+  muse: "someone on the inspiration board",
+  style: "a design style",
+  category: "a project category",
 };
 function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }) {
   const bits = [];
-  /* quoted back as TYPED \u2014 fold() turned "AI" into "ai" here */
   const qd = "\u201c" + (String(q).trim() || fold(q)) + "\u201d";
-  if (and) bits.push(qd + " is a few facts at once, so every word had to land on the same project.");
-  /* "I'd rather say so than pick one quietly" was the machine
-     narrating its own virtue \u2014 the register anxious systems use.
-     Confident copy states the fact and stops: which readings matched,
-     and that all of them answer. */
-  else if (forked) bits.push(qd + " matched more than one discipline, and every reading answers.");
-  else bits.push("I filed " + qd + " as " + (FACET_PLAIN[lead] || "a fact") +
-    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", under " + term : "") + ".");
-  bits.push("That's " +
-    (w ? w + " project" + (w === 1 ? "" : "s") : "nothing built") +
-    (p ? " and " + p + " saved image" + (p === 1 ? "" : "s") : "") +
-    ", counted off the case studies when the site built.");
-  if (vl) bits.push("The personal lines are mine, written down in a voice file. The counts aren't.");
-  if (bridged) bits.push("I wrote a bridge by hand so the software sense lands on " + bridged.target + ".");
-  if (dead.length) bits.push("Nothing matched \u201c" + dead.join("\u201d, \u201c") +
-    "\u201d, so " + (dead.length === 1 ? "it sat out" : "they sat out") + ".");
-  if (nudged) bits.push("Two ran even on the counts, so the one this tab has lingered on leads. The trail stays here and dies with the tab.");
+  if (and) bits.push(qd + " matched across several categories. Showing projects that carry all of them.");
+  else if (forked) bits.push(qd + " sits in more than one category. Showing all readings.");
+  else bits.push(qd + " matched as " + (FACET_PLAIN[lead] || "a search term") +
+    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed under " + term : "") + ".");
+  bits.push("That gives " + (w ? w + " project" + (w === 1 ? "" : "s") : "no projects") +
+    (p ? " and " + p + " photograph" + (p === 1 ? "" : "s") : "") + ".");
+  if (dead.length) bits.push("\u201c" + dead.join("\u201d, \u201c") +
+    "\u201d didn't match anything.");
+  if (nudged) bits.push("Two results tied, so the one you've spent more time on is shown first.");
   bits.push(machinery());
   return bits.join(" ");
 }
@@ -2880,7 +2855,7 @@ function composeAnswer(a) {
      it explains why this answer reads flatter than the indexed ones. */
   const sentences = [];
   if (a.where.length) {
-    sentences.push("Not in the facts vocabulary, so a plain word match ran across every title, description and filename.");
+    sentences.push("Plain text search across titles, descriptions and filenames.");
     sentences.push(a.where.map(([t, f]) =>
       "\u201c" + t + "\u201d landed in " + f.slice(0, 3).join(", ")).join("; ") + ".");
   }
@@ -2891,9 +2866,9 @@ function composeAnswer(a) {
 
   let say;
   if (!total) {
-    say = "Nothing in the house answers to that yet. Try a material, a room, or a discipline.";
+    say = "Nothing here answers to that yet. You could try a material, a room, or a discipline.";
   } else if (w >= allWorks) {
-    say = "All of it, in the order I'd walk you through.";
+    say = "This is all of it, in the order I'd walk you through.";
   } else if (hit.some((t) => t.startsWith("inspir"))) {
     say = (typeof FACTS !== "undefined" && FACTS && FACTS.voice && FACTS.voice.set.board) ||
       "These are things I love and inspired by.";
@@ -2913,16 +2888,16 @@ function composeAnswer(a) {
     say = lead + " A couple below are saved as inspiration.";
   } else if (w) {
     say = titles.length === 1
-      ? (w === 1 ? "That's " + titles[0] + ". It's below."
-                 : titles[0] + " answers that more than once. It's below.")
+      ? (w === 1 ? "That's " + titles[0] + ", shown below."
+                 : titles[0] + " answers that more than once, and it's below.")
       : titles.length === 2
-        ? "That's " + titles[0] + " and " + titles[1] + ". Both below."
-        : "The projects below answer to that, " + titles[0] + " in front.";
+        ? "That's " + titles[0] + " and " + titles[1] + ", both shown below."
+        : "The projects below answer to that, with " + titles[0] + " in front.";
   } else if (p) {
     say = "Nothing built answers to " + key + " yet. " +
       (p === 1 ? "One save on the board below." : "The board below has a few saves.");
   } else {
-    say = "That's a practice question. The notes below have it.";
+    say = "That's covered in the practice notes below.";
   }
   /* not on the everything answer, where the notes riding along is
      the expected furniture rather than news */
@@ -3002,9 +2977,8 @@ function buildAnswer() {
       const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
       say = setLines.miss ||
         "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.";
-      receipt = "Nothing on file for “" + fold(query) + "”, in the work or the saved inspiration. " +
-        "A hand of " + hand.length + " is dealt instead, seeded by the question, so the same ask always deals the same hand. " +
-        machinery();
+      receipt = "No match for " + fold(query) + ". Showing " +
+        hand.length + " comparable projects instead. " + machinery();
     }
   }
 
@@ -3144,7 +3118,25 @@ function buildAnswer() {
     };
     on();
   };
-  if (!plan && askSource === "typed" && questionShaped(query)) {
+  /* A TEMPLATE MATCH NO LONGER SUPPRESSES THE MODEL, and that inversion
+     was the whole problem. The gate used to read `!plan`, so every
+     question a template could answer — who are you, what do you do,
+     what tools — was answered by a hardcoded line and never reached
+     Claude, while the long tail nobody worried about did reach it. The
+     templates the visitor is least served by were exactly the ones the
+     model never got to improve.
+
+     questionShaped() was always doing the real gating: a keyword like
+     "marble" or "interiors" is not question-shaped, so it stays a pure
+     client-side index lookup, instant and free. Only something asked as
+     a question spends a token.
+
+     A plan may still opt OUT with `hold: true`, for the cases where the
+     template is genuinely the better answer: contact (the model is
+     never given the email address, so it would hedge or omit it) and
+     the two trail plans (session-local, and the system prompt forbids
+     announcing the trail at all). */
+  if ((!plan || !plan.hold) && askSource === "typed" && questionShaped(query)) {
     const hrefs = [...new Set(
       leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
     /* chosen here, on the visitor's machine, before the request leaves */

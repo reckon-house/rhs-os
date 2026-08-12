@@ -107,6 +107,8 @@ const KNOWN_TERMS = new Set(
    the fabrication rule wearing its runtime clothes. */
 const SYSTEM = `You are the site voice of Reckon House Staples, the portfolio of Jeremy Prasatik, an independent designer and builder in Dallas. Visitors type questions into the homepage and you answer them.
 
+Jeremy is a designer who also builds. The interiors and branding work is traditional design practice. The digital products (A.R.C., Sally Marketing OS, Faux Reel, this site) are real software he shipped, built with AI as a core part of the process. When technical work comes up, make it clear that AI is part of how he builds, not a novelty bolted on. This portfolio site itself runs on Claude for its search and vision index.
+
 You will be given FACTS: project records pulled from the site's own build-time index. Answer ONLY from those facts.
 
 Rules, all of them hard:
@@ -156,13 +158,26 @@ const SHELF = PROJECTS.map((p) => {
    than the model's minimum is not cached and no error says so — the
    only symptom is cache_read_input_tokens staying at zero.
 
-   Measured: this prefix is ~4.1k tokens. Sonnet 5 needs 1024, so it
-   caches with room to spare. Haiku 4.5 needs 4096, which this clears by
-   about one percent — close enough that trimming a few subtitles from
-   the shelf would silently switch caching off on Haiku without changing
-   anything visible. If ASK_MODEL is ever pointed at Haiku, read
-   cache_read_input_tokens out of the log below and confirm it is not
-   zero rather than assuming. */
+   MEASURED, Aug 2026: SYSTEM ~625 tokens, SHELF ~3,782 across 30
+   projects, so the prefix is ~4,407.
+
+   THAT NUMBER IS WHY THIS RUNS ON SONNET 5, and the reason is the cache
+   floor rather than the price. Sonnet 5's minimum is 1,024, which this
+   clears more than four times over. Haiku 4.5's is 4,096 — cleared by
+   311 tokens, about seven percent. Drop a project, trim a few subtitles
+   or shrink the facet lists and the prefix falls under Haiku's floor,
+   caching switches off, and nothing on the page changes to say so.
+
+   The price difference is real but not the argument: at this shape
+   (~46 input tokens per output token, so the bill is essentially an
+   input bill) the gap between the two models is tens of dollars a month
+   at portfolio traffic. Not worth a silent-failure mode.
+
+   TTL is the default 5 minutes, which is the wrong fit if most visitors
+   ask exactly one question — a write costs 1.25x and only pays back
+   from the second request against the same prefix, so a single-question
+   visit costs MORE cached than uncached. Revisit with real traffic:
+   `ttl: "1h"` writes at 2x but stays warm between visitors. */
 const PREFIX: Anthropic.TextBlockParam[] = [
   { type: "text", text: SYSTEM },
   {
