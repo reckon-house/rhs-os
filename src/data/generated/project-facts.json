@@ -8529,7 +8529,14 @@
     "luxe",
     "quiet"
    ],
-   "composition": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond."
+   "composition": "Shot from the bedroom through open double doors, the copper tub centered under the crystal chandelier, dark indigo walls framing the brighter bath beyond.",
+   "density": "",
+   "texture": [],
+   "contrast": [],
+   "paletteLogic": "",
+   "light": "",
+   "focal": "",
+   "balance": ""
   },
   {
    "src": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg",
@@ -8571,7 +8578,14 @@
     "vast",
     "still"
    ],
-   "composition": "Cream buffalo mark centered over a desert basin, mesas along the horizon, ocotillo in the near ground."
+   "composition": "Cream buffalo mark centered over a desert basin, mesas along the horizon, ocotillo in the near ground.",
+   "density": "",
+   "texture": [],
+   "contrast": [],
+   "paletteLogic": "",
+   "light": "",
+   "focal": "",
+   "balance": ""
   },
   {
    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
@@ -8639,7 +8653,14 @@
     "calm",
     "collected"
    ],
-   "composition": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+   "composition": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center.",
+   "density": "",
+   "texture": [],
+   "contrast": [],
+   "paletteLogic": "",
+   "light": "",
+   "focal": "",
+   "balance": ""
   },
   {
    "src": "/case-studies/arc/arc-room-scanning-interface.jpg",
@@ -8702,7 +8723,14 @@
     "collected",
     "quiet"
    ],
-   "composition": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+   "composition": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground.",
+   "density": "",
+   "texture": [],
+   "contrast": [],
+   "paletteLogic": "",
+   "light": "",
+   "focal": "",
+   "balance": ""
   },
   {
    "src": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-pink-blazer-beige-polka-dot-dress-orange-background-editorial-portrait.jpg",
@@ -8740,7 +8768,14 @@
     "editorial",
     "saturated"
    ],
-   "composition": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress."
+   "composition": "Three-quarter studio portrait against saturated orange seamless, the model mid-motion in a pink blazer over a camel polka dot dress.",
+   "density": "",
+   "texture": [],
+   "contrast": [],
+   "paletteLogic": "",
+   "light": "",
+   "focal": "",
+   "balance": ""
   }
  ]
 }

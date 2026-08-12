@@ -542,6 +542,16 @@ function frameMatch(q0) {
   const scored = [];
   for (const im of FACTS.images) {
     let score = 0;
+    /* the read layer as one searchable string: how the textures mix,
+       what plays against what, where the eye lands, how the busy parts
+       are paid for. Substring rather than term matching because these
+       are phrases ("ornament against plane"), and a visitor asking for
+       "busy" should reach "busy against calm". */
+    const read = fold([
+      (im.texture || []).join(" "), (im.contrast || []).join(" "),
+      im.density || "", im.paletteLogic || "", im.light || "",
+      im.focal || "", im.balance || "",
+    ].join(" "));
     for (const w of words) {
       /* a facet term is the strongest signal: it is the same controlled
          word the studies are indexed under */
@@ -553,6 +563,10 @@ function frameMatch(q0) {
       /* legible text is the most specific thing a frame can hold, and
          nothing else in the pipeline can read it */
       if ((im.text || []).some((t) => fold(t).includes(w))) score += 4;
+      /* the read layer scores below the inventory on purpose: a frame
+         that HOLDS brass should outrank one whose balance sentence
+         happens to say the word. */
+      if (read.includes(w)) score += 1;
     }
     if (score) scored.push({ im, score });
   }

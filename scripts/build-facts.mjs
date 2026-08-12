@@ -499,6 +499,11 @@ for (const [src, rec] of Object.entries(vision.images || {})) {
     }
   }
 
+  /* The inventory rides in `f` where the matcher already looks. The
+     READ layer rides beside it: how the textures mix, what plays
+     against what, how busy the frame is, where the eye lands. None of
+     it is written down anywhere else in this repo, which is the only
+     reason a question like "busy but balanced" can be asked at all. */
   images.push({
     src, slug,
     kind: rec.kind,
@@ -509,6 +514,13 @@ for (const [src, rec] of Object.entries(vision.images || {})) {
     colours: rec.colours || [],
     mood: rec.mood || [],
     composition: rec.composition || "",
+    density: rec.density || "",
+    texture: rec.texture_mix || [],
+    contrast: rec.contrast || [],
+    paletteLogic: rec.palette_logic || "",
+    light: rec.light || "",
+    focal: rec.focal || "",
+    balance: rec.balance || "",
   });
 }
 
