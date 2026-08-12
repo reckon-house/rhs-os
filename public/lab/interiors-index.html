@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interiors system index — the lab</title>
+<style>
+/* ── THE INTERIORS SYSTEM INDEX ────────────────────────────────────
+   The brand ledger (Mark / Typeface / Palette / Pattern library) does
+   not survive contact with a room. Three studies were forced into it by
+   stuffing MATERIALS INTO THE `fonts` FIELD, so "Limestone" ships as a
+   type specimen set in Caslon — a face nobody put in that house. The
+   other five interiors studies carry no section at all, because there
+   was nothing honest to put in a brand ledger.
+
+   Same layout, interiors vocabulary, three rows:
+
+     MATERIALS  what the room is made of, shown in use, at context scale
+     TEXTURE    how those materials read, shown at surface scale
+     PALETTE    what colour it is
+
+   TEXTURE IS THE TYPEFACE SLOT, and it earns it. A typeface is the
+   formal treatment every word wears; texture is the formal treatment
+   every material wears. Matte against gloss on the same sage is weight
+   400 against 700 on the same face. The kitchen study already argues it:
+   "The finish is matte. Satin would have pushed the cabinets toward
+   contemporary and gloss would have fought the raw oak."
+
+   THE ONE RISK, named so it can be checked: Materials and Texture are
+   both photographic. They only read as two questions if the SCALE gap
+   is enforced — Materials shows objects in a room, Texture fills the
+   frame with one surface. Any crop that could sit in either row is
+   miscropped. Nothing in the component enforces this; the frame
+   selection does.
+
+   Every string below is observed or authored. Textures come from
+   image-vision.json's texture_mix, verbatim. Palette hexes are the
+   study's own authored colors. Nothing here is generated to look full.
+   Tune here, port values into PressingSystemIndex. */
+:root {
+  --paper: #FFFFFF;
+  --ink: #000000;
+  --hair: rgba(0, 0, 0, 0.14);
+  --cap: 11px;
+  --lbl: 10px;
+  --note: 16px;
+  --r: 16px;
+  /* the reserved specimen box — nothing a specimen does may move a row.
+     240 rather than 208: the texture row is a 190px square above a
+     two-line caption, and at 208 the flex column squashed the crop to
+     190x158 rather than overflowing. A silent reshape, because the crop
+     still filled its box and only the aspect was wrong. */
+  --sampleH: 240px;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html { background: #EDEBE8; }
+body { font-family: var(--sans); color: var(--ink); padding: 40px 16px 120px;
+  -webkit-font-smoothing: antialiased; }
+.sheet { background: var(--paper); max-width: 1400px; margin: 0 auto;
+  padding: clamp(32px, 5vw, 80px); }
+
+.note { font-size: 13px; color: rgba(0,0,0,.5); line-height: 1.5;
+  max-width: 70ch; margin-bottom: 40px; padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink); }
+.note b { color: var(--ink); font-weight: 600; }
+
+.headline { font-size: clamp(38px, 6.4vw, 96px); line-height: .98;
+  font-weight: 700; letter-spacing: -.04em; max-width: 14ch;
+  margin: 0 0 clamp(26px, 4vw, 48px); }
+.intro { margin-left: auto; max-width: 46ch; font-size: var(--note);
+  line-height: 1.55; }
+.intro p + p { margin-top: 12px; }
+
+.rows { margin-top: clamp(36px, 6vw, 80px); border-top: 1px solid var(--hair); }
+
+/* RRSystemIndex's row, verbatim: display size on the ROW, label
+   inherits it, items ADJACENT with one gap, per-row indent. Alternation
+   is order plus indent, never alignment. */
+.row { display: flex; flex-wrap: wrap; align-items: center;
+  gap: clamp(16px, 2.6vw, 46px); margin-left: var(--indent, 0px);
+  padding: clamp(10px, 2.2dvh, 30px) 0;
+  font-size: clamp(38px, 6.4vw, 96px); line-height: 1; font-weight: 700;
+  letter-spacing: -.04em; border-bottom: 1px solid var(--hair);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path .9s cubic-bezier(.22,1,.36,1);
+  transition-delay: var(--lag, 0s); }
+.drawn .row { clip-path: inset(0 0 0 0); }
+/* THE CLIP HAS TO BE RELEASED, not just opened.
+   `inset(0 0 0 0)` is not "no clip" — it still clips to the border box,
+   for the whole life of the page. The texture caption is centred on a
+   150px crop and runs 300px wide, so it reaches 75px left of a row
+   that is already indented 17vw, and the row ate the first two words:
+   "Polished brass rubbed dull..." shipped as "ed brass rubbed dull".
+   Nothing about the animation needs the clip once it has finished, so
+   it is dropped on transitionend. Port this back — the shipped rows
+   carry the same permanent clip and will bite the same way the moment
+   a specimen is wider than its own box. */
+.row.free { clip-path: none; }
+.label { flex: 0 0 auto; }
+.flip .label { order: 2; }
+.flip .sample { order: 1; }
+
+.sample { flex: 0 1 auto; height: var(--sampleH); display: flex;
+  align-items: center; justify-content: center; min-width: 0; }
+.stack { display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-end; height: 100%; padding-bottom: 22px;
+  position: relative; }
+.cap { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  font-size: var(--cap); font-weight: 400; letter-spacing: 0;
+  color: rgba(0,0,0,.45); white-space: nowrap; }
+
+/* ── the two photographic rows ───────────────────────────────────
+   Same box, same cut machinery, DIFFERENT CROP SCALE. That gap is the
+   whole reason they are two rows and not one. */
+/* flex: 0 0 auto so a short column can never resize the crop. Without it
+   the box shrinks to whatever height is left and a square quietly
+   becomes a rectangle. */
+.box { position: relative; flex: 0 0 auto; overflow: hidden;
+  border-radius: var(--r); background: #EDEBE8; }
+.box img { position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block; }
+
+/* Materials: context scale. Wider box, the object sitting in its room. */
+.matBox { width: clamp(220px, 30vw, 380px); height: 168px; }
+
+/* Texture: surface scale. Squarer, shorter, and MAGNIFIED.
+   The first cut of this row failed on screen and the failure is worth
+   recording: a 168px square with object-fit:cover over a full vignette
+   is a centre crop of the whole scene, so the row read as a second,
+   smaller Materials. Same subject, same distance, no second question
+   asked. The scale gap has to be REAL, not implied by box shape.
+   The zoom below is a stand-in that proves the row works; the shipped
+   version wants genuinely tight crops on disk, since a blind 2.4x into
+   the centre lands on the right surface only by luck. */
+.texBox { width: 190px; height: 190px; }
+
+/* CROP BY SAMPLING, NEVER BY TRANSFORM.
+   The first cut did `transform: scale(3.4)` on the <img>. That rasterizes
+   the picture at its LAYOUT size (190px CSS = 380 device px on a 2x
+   screen) and then magnifies that finished bitmap 3.4x to 1292px. The
+   source has 1099px available and none of them get used. It looked
+   exactly as bad as that describes.
+
+   Painting the crop as a background instead re-samples from the source
+   at the size actually being shown, so the pixels come out of the
+   original file rather than out of a thumbnail.
+
+   THE BUDGET, since it is easy to blow: the detail frames are ~1099px
+   wide, the box is 190px, and a 2x screen wants 380 device px. That caps
+   the honest zoom at 1099/380 = 2.8x. The values below stay under it.
+   Push the box wider or the zoom higher and this row goes soft again. */
+.texBox .fr { position: absolute; inset: 0;
+  background-repeat: no-repeat;
+  background-size: calc(100% * var(--zoom, 2.4)) auto;
+  background-position: var(--at, 50% 50%); }
+
+/* the cut: a frame arrives over the standing one, clipped in */
+.box .in { animation: wipe .62s cubic-bezier(.22,1,.36,1) both; }
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); }
+                  to   { clip-path: inset(0 0 0 0); } }
+.box .inV { animation: wipeV .62s cubic-bezier(.22,1,.36,1) both; }
+@keyframes wipeV { from { clip-path: inset(100% 0 0 0); }
+                   to   { clip-path: inset(0 0 0 0); } }
+
+/* The texture row's caption is a PHRASE, not a name — that difference
+   is load-bearing. "Cognac leather" is a material; "polished brass
+   rubbed dull at the handles" is a reading of a surface, and only the
+   second one needs the macro crop to be believed. */
+/* WIDTH, not max-width. The caption is absolutely positioned inside a
+   150px stack, so a max-width never gets the chance to apply and the
+   phrase wraps to three lines inside the box measure. An explicit width
+   lets it overflow the stack symmetrically, which is what centring it
+   on the crop was for. */
+.texCap { width: 300px; white-space: normal; text-align: center;
+  line-height: 1.4; }
+/* A phrase needs two lines where a name needs one, so this row reserves
+   the room rather than letting the caption run out the bottom of the
+   box. 150 + 50 = 200, inside the 208 the row holds for every specimen. */
+.texStack { padding-bottom: 50px; }
+
+/* ── the drawn row ───────────────────────────────────────────────── */
+.swatch { width: 132px; height: 132px; display: block; }
+
+@media (max-width: 760px) {
+  .row { font-size: 38px; margin-left: 0; }
+  .sample { height: auto; }
+  .matBox { width: 260px; height: 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .row { clip-path: inset(0 0 0 0); transition: none; }
+  .box .in, .box .inV { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <p class="note"><b>Interiors system index.</b> The brand ledger's three
+  rows, re-vocabularised for a room. Materials and Texture are both
+  photographs and only read as separate questions because the crop scale
+  differs: context against surface. Palette stays the morphing swatch it
+  already was. Every texture string below is verbatim from
+  <b>image-vision.json</b>; every hex is the study's own authored colour.
+  Specimen study: Hill Country Residence, Livingroom.</p>
+
+  <h1 class="headline">Five Materials Holding One Room.</h1>
+  <div class="intro">
+    <p>The room runs on five materials, each chosen for how it ages.
+    Limestone, pine, leather, tweed, brass. Nothing chasing trend,
+    nothing afraid of wear.</p>
+    <p>Color goes in through what the materials already are, not through
+    accents or paint. Limestone takes light without bouncing it. Pine
+    warms underfoot. Cognac leather darkens with use.</p>
+  </div>
+
+  <div class="rows" id="rows">
+
+    <div class="row" style="--indent:3vw;--lag:0s">
+      <span class="label">Materials</span>
+      <span class="sample">
+        <span class="stack">
+          <span class="box matBox" id="matBox"></span>
+          <span class="cap" id="matCap"></span>
+        </span>
+      </span>
+    </div>
+
+    <div class="row flip" style="--indent:17vw;--lag:.12s">
+      <span class="label">Texture</span>
+      <span class="sample">
+        <span class="stack texStack">
+          <span class="box texBox" id="texBox"></span>
+          <span class="cap texCap" id="texCap"></span>
+        </span>
+      </span>
+    </div>
+
+    <div class="row" style="--indent:8vw;--lag:.24s">
+      <span class="label">Palette</span>
+      <span class="sample">
+        <span class="stack">
+          <svg class="swatch" viewBox="0 0 100 100" aria-hidden="true">
+            <path id="swPath" d="" fill="#E5DDC9"></path>
+          </svg>
+          <span class="cap" id="swCap"></span>
+        </span>
+      </span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const IMG = "/case-studies/hill-country-living";
+
+/* MATERIALS — context scale. The material in use, in its room.
+   Name and location are the study's authored `colors[].name/description`,
+   which is where this content already lives (mis-stored under `fonts`). */
+const MATERIALS = [
+  { src: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
+    cap: "Limestone · fireplace wall" },
+  { src: `${IMG}/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg`,
+    cap: "Cognac leather · sofa, bench seat" },
+  { src: `${IMG}/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg`,
+    cap: "Charcoal tweed · armchairs, throws" },
+  { src: `${IMG}/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg`,
+    cap: "Antiqued brass · pendant, fixtures" },
+  { src: `${IMG}/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg`,
+    cap: "Reclaimed pine · floors, beams, mantel" },
+];
+
+/* TEXTURE — surface scale. Captions are texture_mix strings VERBATIM
+   from the vision index. Each is paired with the frame it was observed
+   in, so the crop is evidence for the phrase rather than decoration
+   beside it. That pairing is the entire argument for this row.
+
+   `zoom` and `at` are the stand-in for real crops: how far into the
+   frame to push, and where. Authored by eye here to prove the row.
+   Shipping this would mean cropped files on disk instead, because a
+   focal point guessed from a caption is exactly the kind of almost-true
+   the kit refuses. */
+const TEXTURES = [
+  { src: `${IMG}/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg`,
+    cap: "Polished brass rubbed dull at the handles", zoom: 2.6, at: "62% 74%" },
+  /* 2220px wide, so this one can afford more reach than the 1099s */
+  { src: `${IMG}/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg`,
+    cap: "Chalky sawn limestone, pitted and open-pored", zoom: 2.8, at: "22% 30%" },
+  { src: `${IMG}/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg`,
+    cap: "Faceted crystal splitting the light into hard points", zoom: 2.5, at: "70% 58%" },
+  { src: `${IMG}/hill-country-living-cognac-sofa-pampas-wood-bowl-kitchen-background-detail.jpg`,
+    cap: "Broken-in pull-up leather with creasing across the seat", zoom: 2.4, at: "38% 66%" },
+  { src: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-tweed-armchair-ladder-shelf-vintage-rug-vertical.jpg`,
+    cap: "Small-check wool with a coarse bouclé pillow", zoom: 2.6, at: "44% 70%" },
+  /* the 3080px symmetry frame: the widest source in the study, so it
+     takes the deepest crop of the set without going soft */
+  { src: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
+    cap: "Rough-cut limestone block against smooth cognac leather", zoom: 3.4, at: "30% 46%" },
+];
+
+/* PALETTE — the study's authored colours, unchanged. Named and located,
+   which is why these beat the vision index's raw hexes here. Studies
+   with no authored palette fall back to image-vision's observed
+   `palette` array, which every interiors frame carries. */
+const COLORS = [
+  { name: "Limestone Cream", hex: "#E5DDC9" },
+  { name: "Reclaimed Pine",  hex: "#9B6F47" },
+  { name: "Cognac Leather",  hex: "#8B4F32" },
+  { name: "Charcoal Tweed",  hex: "#4A4540" },
+  { name: "Antiqued Brass",  hex: "#A87A45" },
+];
+
+/* ── the two photo rows ──────────────────────────────────────────
+   One driver, two boxes, different hold. Materials reads slower than
+   Texture on purpose: a room takes longer to take in than a surface. */
+function reel(boxId, capId, items, hold, vertical) {
+  const box = document.getElementById(boxId);
+  const cap = document.getElementById(capId);
+  let i = 0;
+
+  const put = (n, animate) => {
+    const it = items[n];
+    /* A cropped frame paints as a BACKGROUND so the crop is sampled from
+       the source file; an uncropped one stays an <img> so it keeps
+       lazy-loading and decode hints. Same box, same cut, two paint
+       paths, chosen by whether a zoom was asked for. */
+    const el = document.createElement(it.zoom ? "span" : "img");
+    if (it.zoom) {
+      el.className = "fr";
+      el.style.backgroundImage = `url("${it.src}")`;
+      el.style.setProperty("--zoom", it.zoom);
+      if (it.at) el.style.setProperty("--at", it.at);
+    } else {
+      el.src = it.src;
+      el.alt = "";
+      el.loading = "lazy";
+      el.decoding = "async";
+    }
+    if (animate) el.classList.add(vertical ? "inV" : "in");
+    box.appendChild(el);
+    cap.textContent = items[n].cap;
+    /* keep exactly two layers: the standing frame and the arriving one */
+    while (box.children.length > 2) box.removeChild(box.firstChild);
+  };
+
+  put(0, false);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  setInterval(() => { i = (i + 1) % items.length; put(i, true); }, hold);
+}
+
+/* ── the palette: colour and form together ───────────────────────
+   The shape ladder and the polar-profile lerp, matching
+   @/lib/swatch-morph. A generic section cannot know a brand's forms, so
+   it varies them; R is per-shape because equal circumradius is not
+   equal optical weight. */
+const LADDER = [
+  { sides: 0, R: 41, rot: 0 },
+  { sides: 4, R: 47, rot: Math.PI / 4 },
+  { sides: 6, R: 44, rot: Math.PI / 6 },
+  { sides: 3, R: 50, rot: -Math.PI / 2 },
+];
+const N = 72;
+
+/* Sample every shape at the SAME angles, so index i on one profile
+   always corresponds to index i on another. Interpolating between two
+   differently-sampled outlines is what produces a smear. */
+function profile(sides, R, rot) {
+  const pts = [];
+  for (let i = 0; i < N; i++) {
+    const a = (i / N) * Math.PI * 2;
+    if (!sides) { pts.push(R); continue; }
+    /* radius of a regular polygon at angle a: the apothem divided by
+       the cosine of the angle into the nearest facet */
+    const step = (Math.PI * 2) / sides;
+    const half = step / 2;
+    let t = ((a - rot) % step + step) % step;
+    pts.push((R * Math.cos(half)) / Math.cos(t - half));
+  }
+  return pts;
+}
+function toPath(r) {
+  return r.map((v, i) => {
+    const a = (i / N) * Math.PI * 2;
+    return `${i ? "L" : "M"}${(50 + Math.cos(a) * v).toFixed(2)} ${(50 + Math.sin(a) * v).toFixed(2)}`;
+  }).join(" ") + " Z";
+}
+const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+
+(function palette() {
+  const path = document.getElementById("swPath");
+  const cap = document.getElementById("swCap");
+  const profs = COLORS.map((_, i) => {
+    const s = LADDER[i % LADDER.length];
+    return profile(s.sides, s.R, s.rot);
+  });
+  const cols = COLORS.map((c) => rgb(c.hex));
+  const n = COLORS.length;
+  const HOLD = 1600, MORPH = 850, SPAN = HOLD + MORPH;
+
+  const frame = (a, b, e) => {
+    path.setAttribute("d", toPath(profs[a].map((v, i) => v + (profs[b][i] - v) * e)));
+    const c0 = cols[a], c1 = cols[b];
+    path.setAttribute("fill",
+      `rgb(${c0.map((v, i) => Math.round(v + (c1[i] - v) * e)).join(",")})`);
+  };
+
+  cap.textContent = `${COLORS[0].name} · ${COLORS[0].hex}`;
+  frame(0, n > 1 ? 1 : 0, 0);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || n < 2) return;
+
+  /* Delta-accumulated so a backgrounded tab resumes rather than
+     fast-forwarding through everything it missed. */
+  let elapsed = 0, prev = null, shownLast = -1;
+  const tick = (now) => {
+    requestAnimationFrame(tick);
+    if (document.hidden) { prev = null; return; }
+    if (prev != null) elapsed += Math.min(now - prev, 100);
+    prev = now;
+    const t = elapsed % (SPAN * n);
+    const idx = Math.floor(t / SPAN);
+    const within = t - idx * SPAN;
+    const nxt = (idx + 1) % n;
+    const e = within <= HOLD ? 0 : Math.min(1, (within - HOLD) / MORPH);
+    frame(idx, nxt, e);
+    const shown = e > 0.5 ? nxt : idx;
+    if (shown !== shownLast) {
+      shownLast = shown;
+      cap.textContent = `${COLORS[shown].name} · ${COLORS[shown].hex}`;
+    }
+  };
+  requestAnimationFrame(tick);
+})();
+
+reel("matBox", "matCap", MATERIALS, 2600, false);
+reel("texBox", "texCap", TEXTURES, 1900, true);
+
+/* the rules draw themselves in, staggered — the gesture every ledger
+   and brief column in the family makes. The clip is RELEASED when each
+   row finishes, because inset(0 0 0 0) still clips. */
+const rowsEl = document.getElementById("rows");
+requestAnimationFrame(() => rowsEl.classList.add("drawn"));
+rowsEl.querySelectorAll(".row").forEach((row) => {
+  row.addEventListener("transitionend", (e) => {
+    if (e.propertyName === "clip-path") row.classList.add("free");
+  }, { once: true });
+});
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  rowsEl.querySelectorAll(".row").forEach((r) => r.classList.add("free"));
+}
+
+/* ── the resolution check ────────────────────────────────────────
+   The zoom is a stand-in and stand-ins rot. This prints the actual
+   sampling budget per frame so a box resize or a bumped zoom cannot go
+   soft without saying so. Reads NATURAL width against PAINTED width —
+   getBoundingClientRect would happily report a magnified bitmap as
+   crisp, which is the mistake this row already made once. */
+(function audit() {
+  const box = document.getElementById("texBox");
+  if (!box) return;
+  const dpr = devicePixelRatio || 1;
+  const w = box.getBoundingClientRect().width;
+  Promise.all(TEXTURES.map((t) => new Promise((res) => {
+    const im = new Image();
+    im.onload = () => res({ cap: t.cap, native: im.naturalWidth, zoom: t.zoom });
+    im.onerror = () => res(null);
+    im.src = t.src;
+  }))).then((rows) => {
+    const report = rows.filter(Boolean).map((r) => {
+      const need = w * r.zoom * dpr;       // device px the crop asks for
+      const ceiling = r.native / (w * dpr); // the honest max zoom
+      return { texture: r.cap.slice(0, 34), native: r.native, zoom: r.zoom,
+               needs: Math.round(need), maxZoom: +ceiling.toFixed(2),
+               ok: need <= r.native };
+    });
+    console.table(report);
+    const soft = report.filter((r) => !r.ok);
+    console.log(soft.length ? `SOFT: ${soft.length} frame(s) over budget` : "all frames within sampling budget");
+  });
+})();
+</script>
+</body>
+</html>

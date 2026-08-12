@@ -1,0 +1,700 @@
+{
+ "chalet": {
+  "title": "Mountain View Chalet",
+  "dir": "chalet",
+  "materials": [
+   {
+    "name": "Painted stone",
+    "src": "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg"
+   },
+   {
+    "name": "Warm gray siding",
+    "src": "/case-studies/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape.jpg"
+   },
+   {
+    "name": "16-foot glass doors",
+    "src": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
+   },
+   {
+    "name": "Walnut",
+    "src": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg"
+   },
+   {
+    "name": "Malm fireplace",
+    "src": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Troweled chalky plaster with soft-edged joints",
+    "src": "/case-studies/chalet/chalet-living-detail-tufted-sofa-walnut-ladder-shelf-antlers-painted-stone.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Taut buttoned upholstery",
+    "src": "/case-studies/chalet/chalet-living-detail-stag-pillow-tufted-sofa-walnut-ladder-shelf-painted-stone.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Tongue-and-groove ceiling boards, satin and warm under the bulbs",
+    "src": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Vertical board-and-batten in a chalky flat finish",
+    "src": "/case-studies/chalet/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg",
+    "zoom": 2.8,
+    "native": 3060,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Matte charcoal siding with a shallow batten rhythm",
+    "src": "/case-studies/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape.jpg",
+    "zoom": 2.8,
+    "native": 2254,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Granular shingle grit",
+    "src": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg",
+    "zoom": 2.8,
+    "native": 1102,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "",
+    "hex": "#CCC4C1"
+   },
+   {
+    "name": "",
+    "hex": "#AEA4A2"
+   },
+   {
+    "name": "",
+    "hex": "#BDACA0"
+   },
+   {
+    "name": "",
+    "hex": "#764226"
+   },
+   {
+    "name": "",
+    "hex": "#667C72"
+   }
+  ]
+ },
+ "fairview-entry": {
+  "title": "The Fairview: Entry.",
+  "dir": "fairview-entry",
+  "materials": [
+   {
+    "name": "Limestone-cream walls",
+    "src": "/case-studies/fairview-entry/hero5.webp"
+   },
+   {
+    "name": "Black iron",
+    "src": "/case-studies/fairview-entry/3.webp"
+   },
+   {
+    "name": "Antiqued brass",
+    "src": "/case-studies/fairview-entry/6.webp"
+   },
+   {
+    "name": "White oak",
+    "src": "/case-studies/fairview-entry/7.webp"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Burled veneer under a wet-looking lacquer",
+    "src": "/case-studies/fairview-entry/3.webp",
+    "zoom": 2.8,
+    "native": 2220,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Buttoned hide with a soft satin sheen and creases at every tuft",
+    "src": "/case-studies/fairview-entry/6.webp",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Glossy strap leaves, lit through to the veins where sun passes behind them",
+    "src": "/case-studies/fairview-entry/7.webp",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Pleated brass with a satin face, unpolished",
+    "src": "/case-studies/fairview-entry/hero5.webp",
+    "zoom": 2.8,
+    "native": 3082,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "Limestone Cream",
+    "hex": "#E7DFD2"
+   },
+   {
+    "name": "Black Iron",
+    "hex": "#1F1E1B"
+   },
+   {
+    "name": "Antiqued Brass",
+    "hex": "#A87A45"
+   },
+   {
+    "name": "White Oak",
+    "hex": "#C0A47C"
+   },
+   {
+    "name": "Vintage Indigo",
+    "hex": "#4B4A52"
+   }
+  ]
+ },
+ "fairview-sitting": {
+  "title": "The Fairview: Sitting Room.",
+  "dir": "fairview-sitting",
+  "materials": [
+   {
+    "name": "Stacked stone",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+   },
+   {
+    "name": "Charcoal velvet",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg"
+   },
+   {
+    "name": "Antiqued brass",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
+   },
+   {
+    "name": "Warm oak",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-fireplace-bar-cabinet-velvet-swivels-conversation-front.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Dry-stacked ledger stone with sawn faces",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "A single squared timber left rough-planed, showing tool chatter along its face",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Feathered plume, translucent at the tips where light passes through the filaments",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Brushed brass with vertical tooling marks running the full height of the drum",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg",
+    "zoom": 2.8,
+    "native": 1098,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Crushed charcoal velvet",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Flat black paint on the beams, so even it reads as cut shadow",
+    "src": "/case-studies/fairview-sitting/fairview-sitting-black-box-beams-stone-fireplace-pampas-grass-architectural-wide.jpg",
+    "zoom": 2.8,
+    "native": 2234,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "Stone Grey",
+    "hex": "#B4ACA0"
+   },
+   {
+    "name": "Charcoal Velvet",
+    "hex": "#3F3E37"
+   },
+   {
+    "name": "Antiqued Brass",
+    "hex": "#A87A45"
+   },
+   {
+    "name": "Warm Oak",
+    "hex": "#A67E55"
+   },
+   {
+    "name": "Cream",
+    "hex": "#ECE6D5"
+   }
+  ]
+ },
+ "fairview-suite": {
+  "title": "The Fairview: Primary Suite",
+  "dir": "fairview-bedroom",
+  "materials": [
+   {
+    "name": "Charcoal violet walls",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-reading-nook-chair-ottoman-marble-table.jpg"
+   },
+   {
+    "name": "Velvet",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-throw-chair-windows.jpg"
+   },
+   {
+    "name": "Brass",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-marble-side-table-brass.jpg"
+   },
+   {
+    "name": "Hammered copper tub",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-copper-clawfoot-tub-brass.jpg"
+   },
+   {
+    "name": "Charcoal hex tile",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-bath-chandelier-hex-tile.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Short napped velvet reading as a continuous sheen with soft shadow bands laid across it",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-throw-chair-windows.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Grey-veined marble with a soft polished gloss",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-marble-side-table-brass.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Satin-glazed ceramic with a slight wavering ripple across each face",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-bath-chandelier-hex-tile.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Dimpled hammered copper, every dent taking its own highlight",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-detail-copper-clawfoot-tub-brass.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Flat chalky aubergine paint over a broad unbroken plane",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Looped bouclé with a knobbled crust",
+    "src": "/case-studies/fairview-bedroom/fairview-suite-reading-nook-chair-ottoman-marble-table.jpg",
+    "zoom": 2.8,
+    "native": 1104,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "",
+    "hex": "#282923"
+   },
+   {
+    "name": "",
+    "hex": "#58635A"
+   },
+   {
+    "name": "",
+    "hex": "#3D4039"
+   },
+   {
+    "name": "",
+    "hex": "#565C48"
+   },
+   {
+    "name": "",
+    "hex": "#657765"
+   }
+  ]
+ },
+ "floor-and-decor": {
+  "title": "Floor & Decor Feature",
+  "dir": "floor-and-decor",
+  "materials": [
+   {
+    "name": "Marble",
+    "src": "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg"
+   },
+   {
+    "name": "White oak",
+    "src": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg"
+   },
+   {
+    "name": "Classic tile",
+    "src": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Tumbled brick with mortar squeezed proud of the joints",
+    "src": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Chalky painted plank cut by fine V-grooves",
+    "src": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-nickel-sconces-brass-mirror.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Honed marble with a dry matte face",
+    "src": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Tarnished nickel with dark pooling in every crevice",
+    "src": "/case-studies/floor-and-decor/urban-southwest-marble-shower-running-bond-handheld-nickel-fixture.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Thin gilt wire spokes catching light only on their tips",
+    "src": "/case-studies/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier.jpg",
+    "zoom": 2.8,
+    "native": 2254,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Opal milk glass, lit from within rather than reflecting",
+    "src": "/case-studies/floor-and-decor/modern-farmhouse-vanity-shiplap-marble-counter-nickel-sconces-vessel-sink.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "",
+    "hex": "#C0C1C3"
+   },
+   {
+    "name": "",
+    "hex": "#A3A4A6"
+   },
+   {
+    "name": "",
+    "hex": "#5F6363"
+   },
+   {
+    "name": "",
+    "hex": "#D4DBE5"
+   },
+   {
+    "name": "",
+    "hex": "#817D78"
+   }
+  ]
+ },
+ "hill-country-bath": {
+  "title": "Hill Country Primary Bath",
+  "dir": "hill-country-bath",
+  "materials": [
+   {
+    "name": "Three marbles",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+   },
+   {
+    "name": "Polished nickel",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg"
+   },
+   {
+    "name": "Lighter sage cabinetry",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg"
+   },
+   {
+    "name": "Wood plank ceiling",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-vase-botanicals-marble-sconce.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Dry turned wood with visible tool ridges",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-vase-botanicals-marble-sconce.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Honed marble with soft grey drifts",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Matte cabinet paint that swallows the light",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-sink-bridge-faucet-veined-marble.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Opal glass, milky and seamless",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Polished nickel throwing a hard specular",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Dark-stained plank ceiling with raised grain and knots",
+    "src": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg",
+    "zoom": 2.8,
+    "native": 1100,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "",
+    "hex": "#959085"
+   },
+   {
+    "name": "",
+    "hex": "#B0ACAD"
+   },
+   {
+    "name": "",
+    "hex": "#8F8577"
+   },
+   {
+    "name": "",
+    "hex": "#605C5B"
+   },
+   {
+    "name": "",
+    "hex": "#A39D90"
+   }
+  ]
+ },
+ "hill-country-kitchen": {
+  "title": "Hill Country Kitchen",
+  "dir": "hill-country-kitchen",
+  "materials": [
+   {
+    "name": "Sage green",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+   },
+   {
+    "name": "Raw white oak",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble.jpg"
+   },
+   {
+    "name": "Calacatta marble",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg"
+   },
+   {
+    "name": "Unlacquered brass",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-range-stove-brass-knobs-marble.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Troweled plaster, matte and faintly uneven across the hood face",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-backsplash-sink-detail.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Mirror-polished nickel throwing the counter back at itself in four short reflections",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Chalky matte paint across every green face",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-marble-vase-cabinet-vignette.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Turned brass with faint lathe rings and a burnished crown on the knobs",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-brass-cremone-bolt-closeup.jpg",
+    "zoom": 2.8,
+    "native": 2221,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Planed maple, satin, faintly figured",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-brass-cremone-bolt-cabinet-detail.jpg",
+    "zoom": 2.8,
+    "native": 2220,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Open-grain oak stained close to black, the grain still standing up under it",
+    "src": "/case-studies/hill-country-kitchen/hill-country-kitchen-dining-table-leg-rug-detail.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "",
+    "hex": "#35412B"
+   },
+   {
+    "name": "",
+    "hex": "#585D3E"
+   },
+   {
+    "name": "",
+    "hex": "#C1B7A9"
+   },
+   {
+    "name": "",
+    "hex": "#A99D8E"
+   },
+   {
+    "name": "",
+    "hex": "#372810"
+   }
+  ]
+ },
+ "hill-country-living": {
+  "title": "Hill Country Residence: Livingroom.",
+  "dir": "hill-country-living",
+  "materials": [
+   {
+    "name": "Limestone · Fireplace wall",
+    "src": "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg"
+   },
+   {
+    "name": "Reclaimed Pine · Floors, beams, mantel",
+    "src": "/case-studies/hill-country-living/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg"
+   },
+   {
+    "name": "Cognac Leather · Sofa, bench seat",
+    "src": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+   },
+   {
+    "name": "Charcoal Tweed · Armchairs, throws",
+    "src": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
+   },
+   {
+    "name": "Antiqued Brass · Pendant, fixtures, andirons",
+    "src": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg"
+   }
+  ],
+  "textures": [
+   {
+    "cap": "Pitted, chiselled limestone that holds a raking shadow in every seam",
+    "src": "/case-studies/hill-country-living/hill-country-living-limestone-ladder-shelf-vintage-globe-brass-fireplace-tools-tweed-detail.jpg",
+    "zoom": 2.8,
+    "native": 1094,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Bridle leather with stitched, burnished edges",
+    "src": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Chalky honed marble, grey veining",
+    "src": "/case-studies/hill-country-living/hill-country-living-cognac-sofa-pampas-wood-bowl-kitchen-background-detail.jpg",
+    "zoom": 2.8,
+    "native": 1099,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Planed timber beam with a waxy sheen",
+    "src": "/case-studies/hill-country-living/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg",
+    "zoom": 2.8,
+    "native": 2220,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Loose-weave wool throw",
+    "src": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   },
+   {
+    "cap": "Curly sheepskin",
+    "src": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+    "zoom": 2.8,
+    "native": 3080,
+    "at": "50% 50%"
+   }
+  ],
+  "palette": [
+   {
+    "name": "Limestone Cream",
+    "hex": "#E5DDC9"
+   },
+   {
+    "name": "Reclaimed Pine",
+    "hex": "#9B6F47"
+   },
+   {
+    "name": "Cognac Leather",
+    "hex": "#8B4F32"
+   },
+   {
+    "name": "Charcoal Tweed",
+    "hex": "#4A4540"
+   },
+   {
+    "name": "Antiqued Brass",
+    "hex": "#A87A45"
+   }
+  ]
+ }
+}

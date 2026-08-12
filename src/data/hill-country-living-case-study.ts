@@ -264,18 +264,21 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // SECTION 04 — MARKS & MATERIALS
-    // (Interior take on the standard pattern: shapes-as-fonts becomes
-    // materials-as-fonts. Five materials carry the room.)
+    // SECTION 04 — MATERIALS & FINISHES
+    // Was marks-materials, the BRAND ledger, with the five materials
+    // stuffed into its `fonts` field so each one rendered as a type
+    // specimen: "Limestone" set in Caslon, a face nobody put in this
+    // house, proving nothing about the room. Three rows now, and every
+    // one of them answers a question a room actually raises.
+    // Materials and textures derive from npm run interiors.
     // ════════════════════════════════════════
     {
-      id: "marks-materials",
-      type: "marks-materials",
-      label: "SECTION 04: MARKS & MATERIALS",
+      id: "interiors-index",
+      type: "interiors-index",
+      label: "SECTION 04: MATERIALS & FINISHES",
       title: "Five Materials\nHolding One Room.",
       introText:
         "The room runs on five materials, each chosen for how it ages. Limestone, pine, leather, tweed, brass. Nothing chasing trend, nothing afraid of wear.",
-      philosophyTitle: "Material philosophy",
       philosophyText:
         "Color goes in through what the materials already are, not through accents or paint. Limestone takes light without bouncing it. Pine warms underfoot. Cognac leather darkens with use. Tweed reads soft from a distance, structured up close. Brass develops a patina nobody plans for.\n\nEvery piece in the room is allowed to age. Nothing is precious, nothing is protected. The fireplace is used. The records get played. The sheepskin moves around.",
       colors: [
@@ -285,51 +288,17 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { name: "Charcoal Tweed", hex: "#4A4540", description: "Armchairs, throws" },
         { name: "Antiqued Brass", hex: "#A87A45", description: "Pendant, fixtures, andirons" },
       ],
-      fonts: [
-        {
-          name: "Limestone",
-          role: "Fireplace wall",
-          description:
-            "Floor-to-ceiling cut limestone. The structural anchor of the room and the only material that goes that big. Takes light without bouncing it back so the art reads at every hour.",
-          family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
-          weight: 400,
-        },
-        {
-          name: "Reclaimed Pine",
-          role: "Floors, beams, mantel",
-          description:
-            "1950s pine repurposed. The same grain runs underfoot, overhead in the exposed beams, and across the mantel beam pulled over the stone. One material doing three jobs ties the room to itself.",
-          family: "'Avenir Next', system-ui, sans-serif",
-          weight: 400,
-        },
-        {
-          name: "Cognac Leather",
-          role: "Sofa, bench seat",
-          description:
-            "Aniline-finish leather that darkens unevenly with use. The room reads warmer every year because the seating earns it.",
-          family: "'Didot', 'Bodoni 72', 'Caslon', serif",
-          weight: 400,
-        },
-        {
-          name: "Charcoal Tweed",
-          role: "Armchairs, throws",
-          description:
-            "Tweed in mid-century chair frames. Soft from a distance, structured up close. The textile leans Western without being literal about it.",
-          family: "'Avenir Next', system-ui, sans-serif",
-          weight: 600,
-        },
-        {
-          name: "Antiqued Brass",
-          role: "Pendant, fixtures, andirons",
-          description:
-            "Brass through the room from the pendant chandelier to the fireplace tools to the candlesticks. Develops the patina the room earns rather than the polish it imposes.",
-          family: "'Didot', 'Bodoni 72', 'Caslon', serif",
-          weight: 400,
-        },
+      /* Names and locations only. The old `fonts` entries carried a
+         paragraph of prose each, which the ledger never had room to
+         show and which the study's own Materials section already says
+         at length. What survives is the half a caption needs. */
+      materials: [
+        { name: "Limestone", role: "Fireplace wall" },
+        { name: "Reclaimed Pine", role: "Floors, beams, mantel" },
+        { name: "Cognac Leather", role: "Sofa, bench seat" },
+        { name: "Charcoal Tweed", role: "Armchairs, throws" },
+        { name: "Antiqued Brass", role: "Pendant, fixtures, andirons" },
       ],
-      markImage: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
-      markAlt: "Symmetrical centered view of the limestone fireplace wall: Eisenhower painting flanked by landscape pieces, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw, every material in one frame",
-      markFullBleed: true,
     },
 
     // ════════════════════════════════════════

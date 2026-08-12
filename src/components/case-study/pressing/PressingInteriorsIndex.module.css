@@ -1,0 +1,248 @@
+/*
+ * PressingInteriorsIndex — the room's system ledger.
+ *
+ * Row proportions are RRSystemIndex's, copied rather than re-derived:
+ * that section is the house pattern for "here is the system, one line
+ * per part", and a second ledger inventing its own measurements would
+ * make two languages where the site has one. What is NOT copied is its
+ * content, because a room has no logotype and no typeface.
+ *
+ * Values tuned in public/lab/interiors-index.html. Change them there
+ * first, then port, so the prototype stays the argument.
+ */
+
+.wrap {
+  --si-hair: rgba(0, 0, 0, 0.14);
+  /* Every specimen sits in a box of this height so nothing a cycling
+     frame does can move a row.
+     240 rather than RRSystemIndex's 208: the texture row is a 190px
+     square ABOVE a two-line caption, and at 208 the flex column simply
+     squashed the crop to 190x158 instead of overflowing. A silent
+     reshape, since the crop still filled its box and only the aspect
+     was wrong. */
+  --sampleH: 240px;
+  padding: clamp(40px, 7dvh, 90px) 0;
+}
+
+.head {
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+
+.headline {
+  font-size: clamp(38px, 6.4vw, 96px);
+  line-height: 0.98;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  max-width: 14ch;
+  margin: 0 0 clamp(26px, 4vw, 48px);
+}
+
+.intro {
+  margin-left: auto;
+  max-width: 46ch;
+  font-size: var(--pp-note);
+  line-height: 1.55;
+}
+.intro p + p {
+  margin-top: 12px;
+}
+
+.rows {
+  margin-top: clamp(36px, 6vw, 80px);
+  border-top: 1px solid var(--si-hair);
+}
+
+/* Display size on the ROW, label inherits it, items ADJACENT with one
+   gap, per-row indent. The alternation is order plus indent, NEVER
+   alignment: `justify-content: flex-end` flings the specimen to the far
+   edge and the row stops reading as a label and the thing it names. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 2.6vw, 46px);
+  margin-left: var(--indent, 0px);
+  padding: clamp(10px, 2.2dvh, 30px) 0;
+  font-size: clamp(38px, 6.4vw, 96px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  border-bottom: 1px solid var(--si-hair);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--lag, 0s);
+}
+.drawn .row {
+  clip-path: inset(0 0 0 0);
+}
+/* THE CLIP RELEASED, not merely opened. inset(0 0 0 0) still clips to
+   the border box forever, and the texture caption is a phrase centred on
+   a 190px crop inside a row indented 17vw — the row ate its first two
+   words. The draw needs the clip; the finished row does not. */
+.row.free {
+  clip-path: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    clip-path: none;
+    transition: none;
+  }
+}
+
+.label {
+  flex: 0 0 auto;
+}
+/* `order`, not `row-reverse`: reversing would also flip the specimens
+   inside a multi-item row and puts the label after the thing it names in
+   focus order. */
+.flip .label {
+  order: 2;
+}
+.flip .sample {
+  order: 1;
+}
+
+/* Fixed height, content centred. It must NOT grow either: a flex item
+   that stretches puts the label at the far edge. */
+.sample {
+  flex: 0 1 auto;
+  height: var(--sampleH);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: 22px;
+  position: relative;
+}
+
+.cap {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+/* ── the two photographic rows ────────────────────────────────────
+   Same box, same cut, DIFFERENT CROP SCALE. That gap is the only reason
+   they are two rows and not one, so it is the thing to check first when
+   the section stops reading. */
+/* flex: 0 0 auto so a short column can never resize the crop. Without
+   it the box is a flex item that shrinks to whatever height is left,
+   and a square silently becomes a rectangle. */
+.box {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: var(--pp-r);
+  background: #edebe8;
+}
+.box img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Materials: context scale. The object sitting in its room. */
+.matBox {
+  width: clamp(220px, 30vw, 380px);
+  height: 168px;
+}
+
+/* Texture: surface scale.
+   CROP BY SAMPLING, NEVER BY TRANSFORM. `transform: scale()` rasterizes
+   the picture at its layout size and magnifies that finished bitmap: a
+   190px box on a 2x screen is a 380px raster blown past 1000px while the
+   source file's pixels go untouched. It looked exactly as bad as that
+   describes. Painting the crop as a background re-samples from the
+   source at the size shown.
+   The budget: ~1100px sources, a 190px box, 2x screens. That caps the
+   honest zoom near 2.8x, and the generator enforces it per frame against
+   each file's real native width. Widen this box and every crop's ceiling
+   drops with it. */
+.texBox {
+  width: 190px;
+  height: 190px;
+}
+.fr {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: calc(100% * var(--zoom, 2.4)) auto;
+  background-position: var(--at, 50% 50%);
+}
+
+/* A phrase needs two lines where a name needs one, so this row reserves
+   the room rather than letting the caption run out of the box.
+   190 + 50 = 240, and the row holds 208 for every specimen, so the crop
+   sits higher here and the caption gets the difference. */
+.texStack {
+  padding-bottom: 50px;
+}
+/* WIDTH, not max-width. The caption is absolutely positioned inside a
+   190px stack, so a max-width never gets the chance to apply and the
+   phrase wraps to three lines inside the box measure. */
+.texCap {
+  width: 300px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* the cut: a frame arrives over the standing one, clipped in */
+.in {
+  animation: wipe 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+.inV {
+  animation: wipeV 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes wipeV {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .in, .inV { animation: none; }
+}
+
+/* ── the drawn row ────────────────────────────────────────────────── */
+.swatch {
+  width: 132px;
+  height: 132px;
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .row {
+    font-size: 38px;
+    margin-left: 0;
+  }
+  .sample {
+    height: auto;
+  }
+  .matBox {
+    width: 260px;
+    height: 150px;
+  }
+  .texCap {
+    width: 260px;
+  }
+}

@@ -77,6 +77,7 @@ export type Section =
   | MarksAndMaterialsSection
   | MasonrySection
   | MCPArchitectureSection
+  | InteriorsIndexSection
   | RRSystemIndexSection;
 
 /**
@@ -735,6 +736,56 @@ export interface LogoCarouselSection extends BaseSection {
   interval?: number;
   /** Padding inside each slide (default "clamp(120px, 18vw, 280px)") */
   padding?: string;
+}
+
+/**
+ * InteriorsIndexSection — the system ledger for a room.
+ *
+ * The interiors answer to marks-materials. That section is a BRAND
+ * ledger (mark, typeface, palette) and three interiors studies were
+ * forced into it by putting their materials in the `fonts` field, so
+ * "Limestone" shipped as a type specimen set in Caslon. The other five
+ * carried no section at all.
+ *
+ * Deliberately almost empty. Materials, textures and palette are DERIVED
+ * by scripts/build-interiors-index.mjs from the study's own authored
+ * Materials line plus image-vision.json's observed readings, so a study
+ * declares the section and the generator fills it. Authoring the rows
+ * here as well would put the same fact in two places and let them drift,
+ * which is how the palette chart this replaces ended up claiming 49
+ * values for a room specified with four finishes.
+ *
+ * Run `npm run interiors` after adding one, or the section renders
+ * nothing.
+ */
+export interface InteriorsIndexSection extends BaseSection {
+  type: "interiors-index";
+  /** Section pill, e.g. "SECTION 04: MATERIALS & FINISHES" */
+  label: string;
+  /** Display title above the intro, supports \n for line breaks */
+  title: string;
+  /** Subhead paragraph under the title */
+  introText: string;
+  /** Optional second paragraph */
+  philosophyText?: string;
+  /**
+   * Named palette, the one row that cannot be derived. A hex can be
+   * read off a photograph; "Limestone Cream" cannot, and inventing a
+   * name for an observed colour would be a fabrication. Studies that
+   * author names get them under the swatch; the rest fall back to the
+   * cover reel's declared hexes and print the hex alone, which is
+   * thinner and true.
+   */
+  colors?: { name: string; hex: string; description?: string }[];
+  /**
+   * Materials, where a study named where each one is used. Optional: the
+   * generator derives this list from the study's authored `summary`
+   * Materials line, and only the LOCATION half ("Floors, beams, mantel")
+   * has to be written down. Three studies already had it, buried in the
+   * `fonts` field of the brand section this replaces, so it is carried
+   * over rather than thrown away.
+   */
+  materials?: { name: string; role?: string }[];
 }
 
 /**
