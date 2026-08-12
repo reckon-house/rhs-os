@@ -87,9 +87,37 @@
   }
 }
 
+/* A frame may never be drawn wider than its own pixels allow. --pair-native
+   is native / 2, written per figure from the image-dimensions manifest,
+   because a retina screen asks two device pixels for every CSS one. The
+   grid column stays full width and the figure centres inside it, so a
+   small source sits in paper rather than being stretched to fill. A large
+   source never reaches the cap and nothing about it changes. */
 .pairFigure {
   position: relative;
   margin: 0;
+  /* width + justify-self, NOT auto margins. An auto inline margin on a
+     grid item cancels justify-self: stretch, so the figure sized to its
+     content instead — and .frame has no intrinsic width, so the whole
+     row collapsed to 128px. The explicit width gives max-width something
+     definite to cap. */
+  width: 100%;
+  max-width: var(--pair-native, 100%);
+  justify-self: center;
+}
+
+/* Exactly two frames: hug the centre line rather than each centring in
+   its own half. Once the cap binds, centring in a 1fr track pushes the
+   two apart by the whole of their leftover column and the row reads as
+   two unrelated pictures at opposite edges of the page instead of a
+   pair. Now they sit one gap apart, and the pair centres as a unit.
+   :first-child:nth-last-child(2) is "first of exactly two", so a
+   three-up masonry row keeps the plain centring. */
+.pairFigure:first-child:nth-last-child(2) {
+  justify-self: end;
+}
+.pairFigure:first-child:nth-last-child(2) ~ .pairFigure {
+  justify-self: start;
 }
 
 /* Each frame's aspect-ratio is written at runtime from the source file's

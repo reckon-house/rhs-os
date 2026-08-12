@@ -186,7 +186,22 @@ export function PressingPlatesPair({
         style={{ "--cols": cols ?? images.length } as CSSProperties}
       >
         {images.map((im, i) => (
-          <figure key={`${im.src}-${i}`} className={styles.pairFigure}>
+          <figure
+            key={`${im.src}-${i}`}
+            className={styles.pairFigure}
+            /* The honest ceiling, PressingBrief's pattern: native / 2,
+               because a retina screen asks two device pixels per CSS
+               pixel. The 1094px detail frames in Hill Country Livingroom
+               were drawing at 661 CSS in a 1440 viewport, 1.21x past
+               their own pixels, and 901 at 1920, which is 1.65x. Larger
+               sources never reach the cap, so this only binds where a
+               frame was already being magnified. */
+            style={
+              im.width
+                ? ({ "--pair-native": `${Math.floor(im.width / 2)}px` } as CSSProperties)
+                : undefined
+            }
+          >
             <span
               className={styles.frame}
               ref={(el) => {
