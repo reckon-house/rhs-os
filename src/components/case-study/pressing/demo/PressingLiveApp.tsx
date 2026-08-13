@@ -38,8 +38,17 @@ export interface PressingLiveAppProps {
   src: string;
   /** What the reader is about to load, named plainly. */
   title: string;
-  /** The host, shown in the frame's chrome so the origin is never hidden. */
-  origin: string;
+  /**
+   * The host, shown in the frame's chrome. OPTIONAL, and the reason it
+   * is worth having off is worth stating: this line existed so a reader
+   * could always see whose software was running inside the page, which
+   * matters when the frame holds somebody else's site. It holds the
+   * author's own product, deployed to the author's own project, and the
+   * generated subdomain it landed on reads as a mistake at body size
+   * rather than as a disclosure. The address is still one click away in
+   * the link under the frame, so nothing is concealed by dropping it.
+   */
+  origin?: string;
   /** A still from the study, held until the reader activates the frame. */
   poster: string;
   posterAlt: string;
@@ -98,7 +107,12 @@ export function PressingLiveApp({
             type="button"
             className={styles.poster}
             onClick={() => setLive(true)}
-            aria-label={`Open the A.R.C. app, served from ${origin}`}
+            /* The host stays in the accessible name whether or not it is
+               drawn: a screen-reader user is the one person who cannot
+               check the link below to see where this goes. */
+            aria-label={
+              origin ? `Open the app, served from ${origin}` : "Open the app"
+            }
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={poster} alt={posterAlt} loading="lazy" decoding="async" />
@@ -119,7 +133,9 @@ export function PressingLiveApp({
     <div className={styles.wrap}>
       <div className={styles.head}>
         <span className={styles.lbl}>{title}</span>
-        <span className={`${styles.lbl} ${styles.origin}`}>{origin}</span>
+        {origin ? (
+          <span className={`${styles.lbl} ${styles.origin}`}>{origin}</span>
+        ) : null}
       </div>
 
       <div

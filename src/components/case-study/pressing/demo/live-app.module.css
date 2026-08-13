@@ -35,8 +35,11 @@
   font-weight: var(--pp-lbl-weight, 500);
   text-transform: uppercase;
 }
-/* The origin is never hidden: a reader should always be able to see
-   whose software is running inside the page. */
+/* The host, when a study draws it. It is optional now: the line exists
+   so a reader can see whose software runs inside the page, which earns
+   its place when the frame holds someone else's site and reads as an
+   accident when it holds your own generated subdomain. The address is
+   still in the link under the frame either way. */
 .origin {
   color: var(--la-grey);
   font-family: ui-monospace, "SF Mono", Menlo, monospace;

@@ -1,3 +1,7 @@
+"use client";
+
+import { useRef, type CSSProperties } from "react";
+import { useVizArrival } from "@/lib/viz-motion";
 import styles from "./PressingViz.module.css";
 
 /**
@@ -68,9 +72,18 @@ const STACK =
 
 export function PressingArchitecture() {
   const step = (X1 - X0) / (STAGES.length - 1);
+  /* ARRIVES AS THE PATH IT IS. The rule draws itself left to right on
+     the kit's shared curve, and each mark lands as the line reaches it,
+     so the order the stages run in is the order they appear. Nothing new
+     to tune: .draw and .fade are the same two classes every other chart
+     in the family arrives on, and useVizArrival returns true on mount
+     under reduced motion, so the chart is simply there. */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(rootRef);
+  const RUN = X1 - X0;
 
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={rootRef}>
       <div className={styles.scroller} data-lenis-prevent-touch>
         <svg
           className={styles.wide}
@@ -81,17 +94,27 @@ export function PressingArchitecture() {
         >
           {/* the path, drawn once and ending where the work ends */}
           <line
-            className={styles.schemPath}
+            className={`${styles.schemPath} ${styles.draw}`}
             x1={X0}
             y1={Y}
             x2={X1}
             y2={Y}
+            strokeDasharray={RUN}
+            strokeDashoffset={drawn ? 0 : RUN}
           />
 
           {STAGES.map((name, i) => {
             const x = px(X0 + step * i);
+            /* The mark lands where the line has got to. The rule runs
+               for 1.15s, so a stage a fifth of the way along waits a
+               fifth of that plus a beat for the line to arrive first. */
+            const lag = (0.12 + (i / (STAGES.length - 1)) * 0.95).toFixed(2);
             return (
-              <g key={name}>
+              <g
+                key={name}
+                className={`${styles.fade} ${drawn ? styles.fadeIn : ""}`}
+                style={{ "--lag": `${lag}s` } as CSSProperties}
+              >
                 <circle className={styles.schemDot} cx={x} cy={Y} r={4.5} />
                 <text className={styles.schemNum} x={x} y={Y - 26} textAnchor="middle">
                   {"0" + (i + 1)}

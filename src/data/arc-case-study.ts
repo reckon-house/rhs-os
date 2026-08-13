@@ -462,6 +462,10 @@ export const arcCaseStudy: CaseStudy = {
       maxWidth: 700,
       pressing: {
         caption: "Classification system interface",
+        /* Half what it was. A 1612px file is honest up to 806 and it was
+           drawing at 766, so nothing here is a resolution fix — the
+           plate was simply louder than the argument it illustrates. */
+        plateWidth: 383,
         choreo: { rise: true },
       },
     },
@@ -603,7 +607,6 @@ export const arcCaseStudy: CaseStudy = {
          recorded run of the real endpoint and says so on its face. */
       src: "https://arc-demo-two.vercel.app",
       title: "A.R.C., live",
-      origin: "arc-demo-two.vercel.app",
       /* PORTRAIT, because the frame is. The kitchen-counter lifestyle
          shot that used to sit here is 3840x2363 landscape, and
          object-fit: cover crushed it into a 345x772 slot — a nine

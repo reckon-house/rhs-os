@@ -172,6 +172,16 @@
   height: var(--pv-heavy);
   border-radius: 999px;
   background: currentColor;
+  /* The kit's one arrival curve, same duration and easing as .draw and
+     .phaseBar. A bar that appears at full length is a fact stated; a
+     bar that runs out to it is the measurement being taken. */
+  transition: width 1.15s cubic-bezier(0.2, 0.55, 0.2, 1);
+  transition-delay: var(--lag, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: none;
+  }
 }
 /* the spec row: a ruled line of the sheet, label left, number right.
    No bar — when a figure has no stated scale, the number IS the

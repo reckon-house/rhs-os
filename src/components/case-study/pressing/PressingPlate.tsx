@@ -47,6 +47,8 @@ export interface PressingPlateProps {
   height?: number;
   /** Load eagerly — only for a plate that can be near the fold. */
   eager?: boolean;
+  /** Editorial ceiling, under the native one. See pressing.plateWidth. */
+  plateWidth?: number;
 }
 
 export function PressingPlate({
@@ -58,10 +60,20 @@ export function PressingPlate({
   width,
   height,
   eager = false,
+  plateWidth,
 }: PressingPlateProps) {
   if (rise) {
     if (!caption) {
-      return <RisingPlate src={src} alt={alt} width={width} height={height} eager={eager} />;
+      return (
+        <RisingPlate
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          eager={eager}
+          plateWidth={plateWidth}
+        />
+      );
     }
     return (
       // Plain figure, margin 0 and no styling beyond it: the RisingPlate
@@ -69,7 +81,14 @@ export function PressingPlate({
       // the climb geometry is identical to mounting the plate bare, and
       // nothing clips or transforms between the choreography and <main>.
       <figure className={styles.riseFigure}>
-        <RisingPlate src={src} alt={alt} width={width} height={height} eager={eager} />
+        <RisingPlate
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          eager={eager}
+          plateWidth={plateWidth}
+        />
         <figcaption className={`${styles.caption} ${styles.riseCap}`}>
           {caption}
         </figcaption>
@@ -105,7 +124,13 @@ export function PressingPlate({
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         className={styles.flowImg}
-        style={capped ? { maxWidth: `${width}px`, margin: "0 auto" } : undefined}
+        style={
+          plateWidth
+            ? { maxWidth: `${Math.min(plateWidth, width ?? plateWidth)}px`, margin: "0 auto" }
+            : capped
+              ? { maxWidth: `${width}px`, margin: "0 auto" }
+              : undefined
+        }
       />
       {caption ? (
         // On a bleed plate the caption pads back to the page's side mat

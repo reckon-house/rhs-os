@@ -171,6 +171,19 @@ interface BaseSection {
     captions?: string[];
     /** Big plate numeral on zoom plates ("01") */
     plate?: string;
+    /**
+     * Hard ceiling in CSS pixels for this plate, under the honest one.
+     * A plate is already capped at its native width so it can never be
+     * magnified; this is for the other case, where a file is big enough
+     * to fill the screen and simply should not. Editorial, not
+     * technical: it can only ever make a plate SMALLER.
+     *
+     * Deliberately NOT the existing `maxWidth` on ImageSection. That one
+     * is read by the classic renderer and three studies already carry
+     * it, so teaching pressing to honour it would silently resize plates
+     * in studies nobody asked about.
+     */
+    plateWidth?: number;
     /** Mono instruction line on zoom plates ("Scroll — fills the mat...") */
     instruction?: string;
     /** The headline's separately-held final line (the prototype's .out span) */
@@ -533,8 +546,11 @@ export interface LiveAppSection extends BaseSection {
   src: string;
   /** What the reader is about to load. */
   title: string;
-  /** Host shown in the frame's chrome, so the origin is never hidden. */
-  origin: string;
+  /** Host shown in the frame's chrome. Optional: a demo served from the
+   *  author's own project has a URL that reads as an accident rather
+   *  than as provenance, and the "open in its own tab" link below the
+   *  frame carries the real address either way. */
+  origin?: string;
   /** A still from the study, held until activation. */
   poster: string;
   posterAlt: string;

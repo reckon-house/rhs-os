@@ -1,4 +1,7 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { useRef, type CSSProperties } from "react";
+import { useVizArrival } from "@/lib/viz-motion";
 import type { StatsBarSection } from "@/lib/types";
 import styles from "./PressingViz.module.css";
 
@@ -57,9 +60,16 @@ function amount(v: string): number | null {
 export function PressingStatsBar({ section }: { section: StatsBarSection }) {
   const amounts = section.items.map((it) => amount(it.value));
   const top = Math.max(...amounts.filter((n): n is number => n != null), 0);
+  /* Arrives like the rest of the family: PressingDevTimeline's move,
+     copied rather than re-derived — the bar carries width 0 until the
+     chart is a quarter on screen, then runs to its value on the kit's
+     shared curve. Under reduced motion the hook returns true on mount,
+     so the chart is simply drawn. */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const drawn = useVizArrival(rootRef);
 
   return (
-    <div className={styles.viz}>
+    <div className={styles.viz} ref={rootRef}>
       {section.totals?.length ? (
         <div className={styles.totals}>
           {section.totals.map((t) => (
@@ -86,7 +96,16 @@ export function PressingStatsBar({ section }: { section: StatsBarSection }) {
                 <span className={styles.track}>
                   <span
                     className={styles.bar}
-                    style={{ width: `${pct.toFixed(2)}%` } as CSSProperties}
+                    style={
+                      {
+                        width: drawn ? `${pct.toFixed(2)}%` : "0%",
+                        /* Read down the ledger, not all at once. The
+                           two columns share an index, so the pair on a
+                           row starts together and the eye travels down
+                           rather than across. */
+                        "--lag": `${(Math.floor(i / 2) * 0.09).toFixed(2)}s`,
+                      } as CSSProperties
+                    }
                   />
                 </span>
               ) : null}

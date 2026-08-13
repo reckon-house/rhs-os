@@ -61,6 +61,8 @@ type RisingPlateProps = {
    * the viewport eats the scroll delta and reads as a stall.
    */
   width?: number;
+  /** Editorial ceiling under the native one. Only ever shrinks. */
+  plateWidth?: number;
   height?: number;
   /** Load eagerly — only for a plate that can be near the fold. */
   eager?: boolean;
@@ -71,6 +73,7 @@ export function RisingPlate({
   src,
   alt,
   width,
+  plateWidth,
   height,
   eager = false,
   className = "",
@@ -98,7 +101,17 @@ export function RisingPlate({
      max-width at the native pixels simply never binds until the
      viewport actually exceeds them, which is the rule stated directly
      rather than approximated. */
-  const ceiling = typeof width === "number" && width > 0 ? width : undefined;
+  /* Two ceilings, and the lower wins. The native one is a promise the
+     picture cannot be magnified; plateWidth is an editorial call that a
+     picture big enough to fill the screen should not. Taking the min
+     means the editorial number can never raise the honest one. */
+  const native = typeof width === "number" && width > 0 ? width : undefined;
+  const editorial =
+    typeof plateWidth === "number" && plateWidth > 0 ? plateWidth : undefined;
+  const ceiling =
+    native != null && editorial != null
+      ? Math.min(native, editorial)
+      : (editorial ?? native);
 
   useEffect(() => {
     const sec = secRef.current;

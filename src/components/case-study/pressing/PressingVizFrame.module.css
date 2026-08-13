@@ -77,12 +77,19 @@
    edge; a chart ends in whatever its last mark happens to be, so it
    needs the extra air to stop reading as another axis label. */
 .caption {
-  font-size: var(--pp-cap);
+  /* BODY SIZE, not caption size. It started on --pp-cap to match the
+     plate's figcaption, which is right for a line under a photograph:
+     the picture carries itself and the caption just names it. A chart
+     does not carry itself. This line is the only thing telling a reader
+     what the marks measure, so it is read rather than glanced at, and
+     11px under a wall of bars was asking them to squint at the one part
+     that explains the rest. */
+  font-size: var(--pp-note);
   font-weight: 400;
   letter-spacing: normal;
   text-transform: none;
   line-height: 1.5;
   opacity: 0.55;
   margin: 22px 0 0;
-  max-width: 62ch;
+  max-width: 56ch;
 }

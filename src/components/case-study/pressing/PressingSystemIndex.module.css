@@ -167,8 +167,33 @@
      Leading with height breaks the loop. The aspect ratio then supplies
      a definite width and the parent sizes to that. Identical outcome for
      the big sheets, which were being held at this same clamp anyway. */
-  height: clamp(110px, 20dvh, 210px);
-  max-width: min(100%, var(--native, 520px));
+  /* Capped by the stack it sits in, not just by the clamp. The clamp
+     resolves off the viewport (20dvh), the stack's height comes from
+     --sampleH, and nothing was making the two agree: at this viewport
+     the clamp gave 165 inside a 136px stack, so the image overflowed
+     and the caption — absolutely positioned at the stack's bottom —
+     landed inside the logo's own tagline. `100%` here is a HEIGHT
+     against a parent whose height is definite, so it carries none of
+     the circularity the width guard had. */
+  height: min(clamp(110px, 20dvh, 210px), 100%);
+  /* The fallback is for images with no registered dimensions, which in
+     practice means a VECTOR — nothing else reaches this row unmeasured.
+     A raster's --native is its own honest half-width, so this number
+     never touches one. It was briefly 520, which let the lockup run the
+     full height clamp and made a wordmark the loudest thing on a ledger
+     row. A logotype is a specimen, not a plate. */
+  /* THE GUARD IS VIEWPORT-RELATIVE, NOT PARENT-RELATIVE, and that is
+     the whole fix. This read `min(100%, ...)`, but the parent is
+     `flex: 0 0 auto` and sizes to its own content — so 100% resolves
+     against a box whose width IS this image. That cycle can only
+     collapse, never constrain: with the cap at 520 the browser happened
+     to break it at the intrinsic width and it looked fine, and dropping
+     the cap to 320 collapsed the image to 0 wide. It was never doing
+     the job it was written for.
+     88vw does that job without asking the parent anything: a raster
+     whose honest half-width is a thousand pixels still cannot overrun a
+     phone, and a 320px vector is untouched at any width. */
+  max-width: min(var(--native, 320px), 88vw);
   object-fit: contain;
 }
 

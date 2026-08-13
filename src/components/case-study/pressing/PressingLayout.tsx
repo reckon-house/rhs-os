@@ -349,6 +349,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             rise={p?.choreo?.rise}
             bleed={s.type === "image" ? s.bleed : undefined}
             eager={i <= 1}
+            plateWidth={p?.plateWidth}
             {...dim(src)}
           />
         );
