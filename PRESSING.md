@@ -102,11 +102,29 @@ attribute internally (the quote does); the field was dead.
   when the next section rises — the layout derives it; never author it.
 - RISE (96dvh) must stay under the shortest pinned stretch on the page.
   Nothing verifies this — check any new composition against it.
-- Below 760px (`CHOREO_BREAKPOINT`) and under `prefers-reduced-motion`,
-  ALL choreography is off via CSS-owned static states. Every new
-  behavior needs both static states designed, not just skipped — the
-  review's worst finding was reduced-motion desktop covering a screen of
-  content because one half of a contract switched off without the other.
+- Under `prefers-reduced-motion`, ALL choreography is off via a
+  CSS-owned static state. Every new behavior needs that state designed,
+  not just skipped — the review's worst finding was reduced-motion
+  desktop covering a screen of content because one half of a contract
+  switched off without the other.
+- **Width is not a gate.** Every pin and scrub runs on a phone. 760px
+  (`CHOREO_BREAKPOINT`) is where the grid collapses to ONE TRACK and
+  nothing more: gutters, type sizes, and a column moving to its own row.
+  A phone block that sets `height: auto`, `position: static`,
+  `display: none` or `transform: none` is killing the mechanism, and
+  belongs in the reduced-motion branch instead.
+- Two sections legitimately stand a pin down on one track, and the
+  reason is collision, not taste: PressingBrief and PressingClosing pin
+  the HEADLINE rather than the screen, so stacked, the column travels up
+  through it. PressingCrossing keeps its pin because its sticky element
+  IS the screen. If a new section pins something smaller than the whole
+  box, ask which of those two it is.
+- A pinned screen is a fixed `100dvh` box, and on one track its contents
+  stack instead of sitting side by side. A column one paragraph longer
+  than the tuned case clips silently. Nothing in the type system catches
+  it — measure it, in LAYOUT coordinates (`offsetTop`/`offsetHeight`
+  against `clientHeight`), never `getBoundingClientRect`, which is the
+  painted box and carries every transform the drivers wrote.
 
 ## 6. Scroll architecture invariants
 
@@ -522,8 +540,11 @@ Inside an SVG path template every interpolation is a coordinate.
 4. Load the page in dev; clear every PressingLayout warning.
 5. Walk it: cover handover, every pin engages and releases with drift,
    plates climb held screens, marks sweep, quote flips.
-6. Narrow the window through 767 → 760; flip OS reduced motion; both
-   static states must read as designed layouts, not broken ones.
+6. Walk it AGAIN at 375 wide — the choreography runs there too, so
+   this is a second full pass, not a glance at a static state. Watch for
+   a pinned screen whose content is taller than it. Then flip OS reduced
+   motion; that static state must read as a designed layout, not a
+   broken one.
 7. Copy pass against CLAUDE.md; skim the mark spine.
 8. Screenshot next to the lab file if the study has a lab prototype;
    pixel-match is the bar.
