@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { appendMessage, cleanIntake, readThread, storeReady } from "@/lib/messages";
+import { appendVisitorMessage, cleanIntake, readThread, storeReady } from "@/lib/messages";
 
 /* ── /api/thread/[token] ────────────────────────────────────────────
  * GET reads a thread, POST adds a visitor message to it.
@@ -73,7 +73,7 @@ export async function POST(
   const parsed = cleanIntake({ body: raw.body });
   if (!parsed.ok) return NextResponse.json({ ok: false, why: parsed.why }, { status: 400 });
 
-  const done = await appendMessage(token, "visitor", parsed.value.body);
+  const done = await appendVisitorMessage(token, parsed.value.body);
   if (!done) return NextResponse.json(GONE, { status: 404 });
   return NextResponse.json({ ok: true });
 }

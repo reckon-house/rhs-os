@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { cleanIntake, openThread, overRate, storeReady } from "@/lib/messages";
+import { cleanIntake, openThread, storeReady } from "@/lib/messages";
 
 /* ── POST /api/message ──────────────────────────────────────────────
  * Opens a thread. The browser sends what the visitor typed plus the
@@ -52,22 +52,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, why: parsed.why }, { status: 400 });
   }
 
-  if (await overRate()) {
-    return NextResponse.json(
-      { ok: false, why: "Too many messages just came through. Try again shortly, or use hello@reckon.house." },
-      { status: 429 }
-    );
+  /* The hourly ceiling is enforced INSIDE open_thread, so it holds for
+     anything calling the database, not only for callers who came
+     through this route. Here it is only translated into words. */
+  const res = await openThread(parsed.value);
+  if (!res.ok) {
+    return res.why === "rate"
+      ? NextResponse.json(
+          { ok: false, why: "Too many messages just came through. Try again shortly, or use hello@reckon.house." },
+          { status: 429 }
+        )
+      : NextResponse.json(
+          /* Never the database's own error: a Postgres message in a 500
+             body describes the schema to a stranger. */
+          { ok: false, why: "That did not save. hello@reckon.house reaches me directly." },
+          { status: 500 }
+        );
   }
-
-  try {
-    const token = await openThread(parsed.value);
-    return NextResponse.json({ ok: true, token });
-  } catch {
-    /* The real error goes to the server log, never to the response: a
-       database message in a 500 body tells a stranger the schema. */
-    return NextResponse.json(
-      { ok: false, why: "That did not save. hello@reckon.house reaches me directly." },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ ok: true, token: res.token });
 }
