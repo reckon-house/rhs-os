@@ -30,11 +30,32 @@ const BANNED = [
   "crafting meaningful experiences", "the result was",
 ];
 
+/* What a visitor would actually read. The homepage runs every model
+   answer through voice() before showing it, so a bench displaying raw
+   output is judging something that never ships. This mirrors that pass;
+   the canonical copy is voice() in public/lab/pressing-home.html.
+   The marks below still grade the RAW answer, so you can see when the
+   model needed correcting even though the correction is automatic. */
+function shipped(answer: string | null) {
+  if (!answer) return answer;
+  return answer
+    .replace(/\s*[—–]\s*(?=[a-z0-9][^.!?]*,)/g, ": ")
+    .replace(/\s*[—–]\s*/g, ", ")
+    .replace(/\b(It|That|There|Here) is\b/g, "$1's")
+    .replace(/\b(does|do|is|was) not\b/g, (_m, v: string) =>
+      ({ does: "doesn't", do: "don't", is: "isn't", was: "wasn't" }[v] ?? _m))
+    .replace(/  +/g, " ")
+    .trim();
+}
+
 function grade(answer: string | null) {
   if (!answer) return [];
   const out: string[] = [];
 
-  if (/[—–]/.test(answer)) out.push("em dash");
+  /* Marked, not fatal: voice() rewrites this before it reaches anyone,
+     so the flag says "the model reached for a dash", not "a dash
+     shipped". Worth seeing which model needs the safety net more. */
+  if (/[—–]/.test(answer)) out.push("dash (auto-fixed)");
 
   /* Sentence count, roughly: terminal punctuation followed by a space or
      end of string. Decimals and abbreviations will occasionally fool it,
@@ -153,7 +174,7 @@ export default function ComparePage() {
         <div style={S.answer}>
           {s.error
             ? <span style={{ color: "#b00" }}>{s.error}</span>
-            : s.answer || <span style={{ opacity: 0.4 }}>(empty)</span>}
+            : shipped(s.answer) || <span style={{ opacity: 0.4 }}>(empty)</span>}
         </div>
         <div style={S.marks}>
           {s.error ? null : marks.length

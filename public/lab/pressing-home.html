@@ -2121,7 +2121,15 @@ function machinery() {
 }
 function voice(s) {
   return s
-    .replace(/\u2014/g, ", ")
+    /* DASHES ARE FIXED HERE, NOT ASKED FOR IN THE PROMPT. Four rounds of
+       prompt rules got the model from always to sometimes and never to
+       never, because a dash is doing a real job and a ban only moves it
+       around. This is deterministic, so it is the last word.
+       A dash followed by a list or an appositive wants a colon; a dash
+       joining two clauses wants a comma. Both forms appeared in the same
+       test run. The en dash is caught too, which the original missed. */
+    .replace(/\s*[\u2014\u2013]\s*(?=[a-z0-9][^.!?]*,)/g, ": ")
+    .replace(/\s*[\u2014\u2013]\s*/g, ", ")
     .replace(/\b(It|That|There|Here) is\b/g, "$1's")
     .replace(/\b(does|do|is|was) not\b/g, (m, v) =>
       ({ does: "doesn't", do: "don't", is: "isn't", was: "wasn't" }[v]))
