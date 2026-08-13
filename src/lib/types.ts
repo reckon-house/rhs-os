@@ -575,6 +575,11 @@ export interface BrandSystemSection extends BaseSection {
     description: string;
   }[];
   logoConstructionImage: string;
+  /** What the Logotype row's image actually is. The row hardcoded
+   *  "Construction" because every study fed it a construction grid;
+   *  A.R.C. feeds it the shipped lockup, and captioning a finished
+   *  logotype "Construction" is just wrong. */
+  logoCaption?: string;
   appScreenshotImage: string;
   /**
    * The pattern library: individual UI frames cut apart and cycled, the

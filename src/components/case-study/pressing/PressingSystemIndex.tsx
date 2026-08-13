@@ -322,6 +322,7 @@ type LedgerFields = {
   specimenWords?: string[];
   elements?: { label: string; caption: string; sides: number };
   logoConstructionImage?: string;
+  logoCaption?: string;
   markImage?: string;
   markAlt?: string;
   markImageRight?: string;
@@ -356,7 +357,11 @@ export function toLedger(
     specimenWords: anyS.specimenWords,
     elements: anyS.elements,
     mark: anyS.logoConstructionImage
-      ? { src: anyS.logoConstructionImage, label: "Logotype", caption: "Construction" }
+      ? {
+          src: anyS.logoConstructionImage,
+          label: "Logotype",
+          caption: anyS.logoCaption ?? "Construction",
+        }
       : anyS.markImage
         ? { src: anyS.markImage, label: "Mark", caption: anyS.markAlt ? "The mark" : "" }
         : undefined,
@@ -731,7 +736,10 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
               { "--native": dim ? `${Math.floor(dim[0] / 2)}px` : undefined } as CSSProperties
             }
             src={data.mark.src}
-            alt={data.mark.label + " construction"}
+            /* The caption says what this is; the alt should agree with
+               it rather than claim every logotype row is a construction
+               drawing. */
+            alt={`${data.mark.label}: ${data.mark.caption || data.mark.label}`}
             width={dim?.[0]}
             height={dim?.[1]}
             loading="lazy"

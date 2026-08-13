@@ -448,7 +448,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 17,
+      "n": 15,
       "cites": [
        {
         "section": "meta",
@@ -648,28 +648,6 @@
      },
      {
       "facet": "furniture",
-      "term": "counter",
-      "n": 12,
-      "cites": [
-       {
-        "section": "live-app",
-        "field": "posterAlt",
-        "quote": "running on a phone, resting on a kitchen counter"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
-        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg",
-        "quote": "Overhead and tilted, one strong diagonal running corner to corner, the phone set against it in the upper left and the printed kitchen image filling the lower right."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "shelf",
       "n": 11,
       "cites": [
@@ -687,6 +665,29 @@
         "section": "image",
         "field": "/case-studies/arc/arc-app-living-room-furniture-selection.jpg",
         "quote": "Straight overhead vantage, the phone centred and near-symmetrical in the square frame, the screen taking most of the height."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "counter",
+      "n": 11,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg",
+        "quote": "Overhead and tilted, one strong diagonal running corner to corner, the phone set against it in the upper left and the printed kitchen image filling the lower right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-three-screen-lifestyle-mockup.png",
+        "quote": "Three vertical screens abreast, the centre one whole and centred, the outer two cropped hard by the left and right edges."
        }
       ],
       "observed": true

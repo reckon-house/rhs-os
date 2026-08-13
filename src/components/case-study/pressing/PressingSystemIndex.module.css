@@ -156,8 +156,19 @@
      to its own devices made a row 1162px tall and the ledger stopped
      being a ledger. Height leads, width follows, and the native cap
      stays as the backstop so nothing is ever stretched. */
-  max-height: clamp(110px, 20dvh, 210px);
-  max-width: min(100%, var(--native, 420px));
+  /* A DEFINITE HEIGHT, not a cap. With max-height the box only had a
+     definite size if the IMAGE brought one, and the sizing then ran
+     through `max-width: min(100%, ...)` — where 100% is the flex parent,
+     which has no width until its content does. Every other study feeds
+     this row a multi-thousand-pixel sheet whose intrinsic width forces
+     the parent open, so the loop resolved and nobody noticed. A.R.C.
+     feeds it a 244pt vector, and the parent measured 0, so 100% was 0,
+     so the image rendered 0x0: a logo row with no logo in it.
+     Leading with height breaks the loop. The aspect ratio then supplies
+     a definite width and the parent sizes to that. Identical outcome for
+     the big sheets, which were being held at this same clamp anyway. */
+  height: clamp(110px, 20dvh, 210px);
+  max-width: min(100%, var(--native, 520px));
   object-fit: contain;
 }
 

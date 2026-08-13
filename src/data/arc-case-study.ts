@@ -711,7 +711,15 @@ export const arcCaseStudy: CaseStudy = {
             "Structural emphasis. Section labels, key data points, navigational hierarchy. Weight that signals importance without shouting.",
         },
       ],
-      logoConstructionImage: `${IMG}/arc-logo-grid.png`,
+      /* THE SHIPPED LOCKUP, not a drawing of one. This was
+         arc-logo-grid.png, a 2050px construction sheet with alpha:
+         faint by nature, and at ledger scale it read as a grey smudge
+         with a logo somewhere inside it. This is the app's own SVG,
+         outlined paths with no <text> and no embedded bitmaps, so it
+         needs no font and cannot go soft at any size. The field name is
+         historical; the row is captioned for what it actually shows. */
+      logoConstructionImage: `${IMG}/demo/patterns/logo-lockup.svg`,
+      logoCaption: "The lockup",
       appScreenshotImage: `${IMG}/arc-app-dashboard-categories-configuration.png`,
       /* Cut out of the contact sheet above and flattened onto white.
          The sheet showed all nine at a tenth the size and could not
