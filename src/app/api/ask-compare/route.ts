@@ -83,10 +83,18 @@ const BENCH: Spec[] = [
     price: { in: 1.0, out: 5.0, cacheRead: 0.1, cacheWrite: 1.25 },
     cacheMin: 4096,
   },
-  {
-    key: "grok", provider: "xai", model: process.env.GROK_MODEL || "grok-4.6",
-    price: { in: 2.0, out: 6.0, cacheRead: null, cacheWrite: null },
-  },
+  /* Grok 4.6 was benched and dropped. Not on capability: it kept the
+     voice rules as well as either Anthropic model. On fit. With no
+     cached-prefix channel it re-paid for the ~4,000-token shelf on every
+     question, which put it at ~$0.0088 an answer against Haiku's
+     ~$0.0008, and it ran 13 to 32 seconds against Haiku's 1 to 3. For a
+     search box where a template has already painted and the visitor is
+     waiting for the swap, thirty seconds is not a slow answer, it is an
+     abandoned one. It also read a missing exact match as a missing
+     answer, twice describing a project in the same breath as saying it
+     had nothing on it.
+     The xAI branch below stays: adding a provider back is a table entry,
+     and the shape of that comparison is the useful part. */
 ];
 
 const usd = (n: number) => Number(n.toFixed(6));

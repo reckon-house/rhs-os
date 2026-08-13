@@ -60,6 +60,17 @@ function grade(answer: string | null) {
   }
   if (/\bhouse\b/i.test(answer) && !/reckon\.house/i.test(answer)) out.push("says house");
 
+  /* Dating the work. Flagged loosely on purpose: a year that belongs to
+     the subject rather than the project (a 1968 chalet, reclaimed 1950s
+     pine) is allowed by the rule and will still light up here. A mark
+     you have to glance at beats a check that quietly permits "shipped in
+     2025" because it could not tell the two apart. */
+  const year = answer.match(/\b(?:19|20)\d{2}s?\b/);
+  if (year) out.push(`date: ${year[0]}`);
+  if (/\b(shipped|built|launched|completed|finished)\s+in\b|\blast year\b|\brecently\b/i.test(answer)) {
+    out.push("dates the work");
+  }
+
   return out;
 }
 
@@ -173,8 +184,9 @@ export default function ComparePage() {
         Each one gets byte-identical rules, facts and question from
         <code style={S.code}>@/lib/ask-context</code>. Marks below each answer are the
         voice rules the system prompt actually states, checked automatically.
-        The Anthropic models keep their prompt cache; Grok has no equivalent
-        channel, which is a real difference rather than a rigged one.
+        Grok 4.6 was benched and dropped: it held the rules fine, but with no
+        cached-prefix channel it re-paid for the whole shelf every question,
+        landing at ten times Haiku&rsquo;s cost and up to thirty seconds a reply.
       </p>
 
       <div style={S.row}>
