@@ -169,7 +169,16 @@
    bottom-weighted so the block still reads as a cover. --pp-rise is already
    0 here, but the tail is hidden anyway so nothing depends on the token. */
 @media (max-width: 760px) {
-  .coverwrap {
+  /* BOTH SELECTORS, and the second one is the whole bug. `.coverwrap`
+     alone is specificity (0,1,0) and the base file carries
+     `.coverwrap.noTail { height: 210dvh }` at (0,2,0), which wins
+     wherever it sits in the file — a media query adds no specificity.
+     So every no-tail cover kept its full desktop height on a phone:
+     measured 1705px against an 812px screen, which is 210dvh to the
+     decimal, and reads as most of a blank screen between the cover and
+     whatever follows it. */
+  .coverwrap,
+  .coverwrap.noTail {
     height: auto;
   }
   .risetail {
@@ -203,8 +212,20 @@
   .statement .csW {
     transform: none !important;
   }
+  /* STAYS TOP RIGHT. It was `position: static`, which dropped it into
+     the flex column — and since it is last in the DOM and the column is
+     bottom-weighted, the reel landed under the headline and statement.
+     The reel is the cover's opening move: it is meant to be moving
+     before a word is read, which it cannot do from below the fold.
+     Absolute against .coverSticky, which is position: relative here.
+     Top matches the container's own padding so it lines up with where
+     the cover's content begins, right matches its gutter. The stack
+     below stays bottom-weighted, so on a phone the two occupy opposite
+     ends of the screen rather than competing. */
   .plateThumb {
-    position: static;
+    position: absolute;
+    top: 76px;
+    right: 20px;
     width: clamp(84px, 26vw, 130px);
   }
   .edgeV {
@@ -224,7 +245,10 @@
    is hidden to match RisingPlate's motion-reduce:mt-0 (the two halves of
    the climb contract must switch off together). */
 @media (prefers-reduced-motion: reduce) {
-  .coverwrap {
+  /* Same pair, same reason — this block had the identical hole, so a
+     reduced-motion reader on a desktop got the 210dvh gap too. */
+  .coverwrap,
+  .coverwrap.noTail {
     height: auto;
   }
   .risetail {
@@ -256,8 +280,13 @@
   .h1 > span > span {
     transform: none !important;
   }
+  /* Same fix, and it matters more here: this block runs at DESKTOP
+     widths too, so `static` was dropping the reel below the fold for
+     every reduced-motion reader on a full-size screen. */
   .plateThumb {
-    position: static;
+    position: absolute;
+    top: 64px;
+    right: 40px;
     width: clamp(84px, 12vw, 150px);
   }
   .reelBox {
