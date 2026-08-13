@@ -1,0 +1,114 @@
+/*
+ * A.R.C.'s coverage card. The one place in this study that is not one
+ * ink on white paper, and deliberately so: it is a picture of the
+ * product, so it wears the product's own surfaces.
+ *
+ * Every colour here is A.R.C.'s, read off the shipped build's resolved
+ * custom properties (patterns/tokens.json in the demo package) rather
+ * than sampled by eye from a screenshot. The face is the app's too. If
+ * the product's palette moves, these move with it and this comment is
+ * where to look.
+ */
+.card {
+  --arc-bg: #f9f8f6;
+  --arc-fg: #2c2521;
+  --arc-card: #ffffff;
+  --arc-muted-fg: #7e7167;
+  --arc-border: #e5e1dc;
+  /* The alert red is NOT in tokens.json — the app draws the shortfall in
+     a red that lives in its component layer, not its palette. Taken from
+     the screenshot and kept here alone rather than added to the token
+     list above, so nothing pretends this one came from the same place. */
+  --arc-alert: #e0342c;
+
+  font-family: "Avenir Next", Avenir, -apple-system, "system-ui", Inter,
+    system-ui, sans-serif;
+  color: var(--arc-fg);
+  background: var(--arc-bg);
+  /* No rule on the container. The app draws one because its card sits on
+     a background of nearly the same value and needs the edge to exist at
+     all; on this page the card sits on white, so its own surface already
+     is the edge and the border only added a line to a study that spends
+     its lines carefully. --arc-border stays declared: the inner tiles do
+     not use it, but the token belongs with the others it came from. */
+  border-radius: 18px;
+  padding: clamp(16px, 2vw, 22px);
+  margin: clamp(20px, 2.6vw, 30px) 0 0;
+  /* The column's measure, never wider. The card is a specimen of the
+     interface, not a plate. */
+  max-width: 100%;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.title {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.edit {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--arc-fg);
+  background: var(--arc-card);
+  border: 1px solid var(--arc-border);
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+
+.body {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--arc-muted-fg);
+}
+.body strong {
+  font-weight: 600;
+  color: var(--arc-fg);
+}
+.over {
+  color: var(--arc-alert);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.tile {
+  background: var(--arc-card);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.wide {
+  margin-top: 10px;
+}
+.figure {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.tileLbl {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--arc-muted-fg);
+}
+
+/* One up in a narrow column: two tiles at ~170px cut the figures. */
+@media (max-width: 560px) {
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+}

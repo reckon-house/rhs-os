@@ -42,6 +42,7 @@ import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
 import { PressingGapColumn } from "./viz/PressingGapColumn";
+import { PressingCoverageCard } from "./viz/PressingCoverageCard";
 import { PressingScreenGrid } from "./PressingScreenGrid";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
@@ -202,14 +203,24 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           continue;
         }
         if (n.type === "coverage-chart") {
+          /* Chart then card, in the same column: the chart proves the
+             gap, the card shows what the product does about it. Both
+             read the SAME two figures off this one section, so they
+             cannot state different policies — which the app's own demo
+             data has done three times over. */
           viz = (
-            <PressingGapColumn
-              key={n.id}
-              assetValue={n.assetValue}
-              assetAmount={n.assetAmount}
-              policyLimit={n.policyLimit}
-              policyAmount={n.policyAmount}
-            />
+            <div key={n.id}>
+              <PressingGapColumn
+                assetValue={n.assetValue}
+                assetAmount={n.assetAmount}
+                policyLimit={n.policyLimit}
+                policyAmount={n.policyAmount}
+              />
+              <PressingCoverageCard
+                assetAmount={n.assetAmount}
+                policyAmount={n.policyAmount}
+              />
+            </div>
           );
           j += 1;
           continue;
