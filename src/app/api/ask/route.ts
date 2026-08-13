@@ -37,7 +37,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import {
-  SYSTEM, SHELF, contextFor, limited, KNOWN_TERMS,
+  SYSTEM, SHELF, contextFor, throttled, throttleState, KNOWN_TERMS,
   MAX_Q, type AskBody,
 } from "@/lib/ask-context";
 
@@ -117,8 +117,19 @@ export async function POST(req: NextRequest) {
 
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (limited(ip)) {
-    return NextResponse.json({ error: "rate limited" }, { status: 429 });
+  /* 429 with the reason and a Retry-After, so the client can tell a
+     visitor who typed too fast from a route that has spent its day. The
+     homepage swallows the failure either way and leaves the template
+     standing, which is the correct visible behaviour: a throttled
+     visitor still gets an answer, just not the model's one. */
+  const stop = throttled(ip);
+  if (stop) {
+    const retry = stop === "burst" ? 60 : 3600;
+    console.warn(`[ask] throttled ${stop} ip=${ip} ${JSON.stringify(throttleState())}`);
+    return NextResponse.json(
+      { error: "rate limited", reason: stop },
+      { status: 429, headers: { "Retry-After": String(retry) } }
+    );
   }
 
   let body: AskBody;
@@ -153,7 +164,10 @@ export async function POST(req: NextRequest) {
     const client = new Anthropic();
     const res = await client.messages.create({
       model: MODEL,
-      max_tokens: 300,
+      /* 500 not 300: the bench caught a model spending the whole
+         allowance before emitting text. Haiku does not do this, but the
+         ceiling costs nothing when unused and the failure is silent. */
+      max_tokens: 500,
       system: PREFIX,
       messages: [
         {

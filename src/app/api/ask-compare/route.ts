@@ -36,7 +36,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import {
-  SYSTEM, SHELF, contextFor, limited, KNOWN_TERMS,
+  SYSTEM, SHELF, contextFor, throttled, throttleState, KNOWN_TERMS,
   MAX_Q, type AskBody,
 } from "@/lib/ask-context";
 
@@ -237,7 +237,11 @@ async function runXai(s: Spec, facts: string, q: string, trail: string[]): Promi
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
-  if (limited(ip)) return NextResponse.json({ error: "rate limited" }, { status: 429 });
+  const stop = throttled(ip);
+  if (stop) {
+    console.warn(`[compare] throttled ${stop} ${JSON.stringify(throttleState())}`);
+    return NextResponse.json({ error: "rate limited", reason: stop }, { status: 429 });
+  }
 
   let body: AskBody;
   try {

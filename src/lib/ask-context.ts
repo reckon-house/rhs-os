@@ -134,27 +134,91 @@ export const SHELF = PROJECTS.map((p) => {
 }).join("\n\n");
 
 
-/* One bucket per IP, refilled by the clock. Kept in module scope: on a
-   serverless host that is per-instance, which is loose but real, and
-   this is a portfolio's search box rather than a public API.
+/* ── the throttle ─────────────────────────────────────────────────
+   THREE CEILINGS, AND AN HONEST ACCOUNT OF WHAT THEY ARE WORTH.
 
-   SHARED ACROSS BOTH ROUTES on purpose. /api/ask-compare calls two
-   providers per request and is the more expensive surface, so it draws
-   from the same bucket rather than getting its own allowance. */
-const BUCKET = new Map<string, number[]>();
-const LIMIT = 8;
+   The original was one bucket, 8 per IP per minute, which sounds strict
+   and is not: 8/min is 11,520 answers a day from a single address, about
+   $9.68 at Haiku's rate, and ten addresses make that $97. There was no
+   daily ceiling of any kind and no global one, so the only bound on the
+   bill was how long somebody could be bothered to hold down a key.
+
+   So: a burst limit, a per-address daily limit, and a global daily
+   limit. The global one is the one that actually protects the card,
+   because it does not care how many addresses are asking.
+
+   WHAT THIS CANNOT DO, stated plainly because the shape of the lie
+   matters. Module scope on a serverless host is PER INSTANCE. Vercel
+   runs many, so a determined attacker spread across instances gets some
+   multiple of these numbers, and a cold start resets every counter. This
+   is a speed bump that stops accidents and casual abuse. It is not a
+   spend cap.
+
+   THE ONLY HARD CAP IS ON ANTHROPIC'S SIDE: a monthly spend limit set on
+   the workspace in the Console. Nothing in this file can be trusted the
+   way that can, because nothing in this file is the thing holding the
+   card. Set it there, and treat everything here as the layer that keeps
+   you from ever reaching it. */
+const BURST = new Map<string, number[]>();
+const DAILY = new Map<string, number>();
+let dayStamp = "";
+let globalToday = 0;
+
+const PER_IP_BURST = 6;        // per minute, a human typing fast
+const PER_IP_DAY = 60;         // a very curious visitor, still cheap
+const GLOBAL_DAY = 2_000;      // ~$1.70/day on Haiku, per instance
 const WINDOW_MS = 60_000;
 
-export function limited(ip: string): boolean {
+/** Reasons are returned rather than a bare boolean so the route can say
+    which ceiling was hit, and so a log line can tell an accident from
+    an attack without guessing. */
+export type Throttle = null | "burst" | "ip-daily" | "global-daily";
+
+export function throttled(ip: string): Throttle {
   const now = Date.now();
-  const hits = (BUCKET.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  if (hits.length >= LIMIT) {
-    BUCKET.set(ip, hits);
-    return true;
+
+  /* The day rolls in UTC. A local-midnight rollover would need a
+     timezone this process has no business assuming. */
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (today !== dayStamp) {
+    dayStamp = today;
+    DAILY.clear();
+    globalToday = 0;
   }
+
+  if (globalToday >= GLOBAL_DAY) return "global-daily";
+
+  const seen = DAILY.get(ip) ?? 0;
+  if (seen >= PER_IP_DAY) return "ip-daily";
+
+  const hits = (BURST.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  if (hits.length >= PER_IP_BURST) {
+    BURST.set(ip, hits);
+    return "burst";
+  }
+
   hits.push(now);
-  BUCKET.set(ip, hits);
-  return false;
+  BURST.set(ip, hits);
+  DAILY.set(ip, seen + 1);
+  globalToday += 1;
+
+  /* Unbounded Maps are their own denial of service: a spray across many
+     addresses would grow these forever. Both are cheap to rebuild, so
+     they are simply dropped when they get large. */
+  if (BURST.size > 5_000) BURST.clear();
+  if (DAILY.size > 20_000) DAILY.clear();
+
+  return null;
+}
+
+/** Kept so existing call sites compile; prefer `throttled` for the reason. */
+export function limited(ip: string): boolean {
+  return throttled(ip) !== null;
+}
+
+/** For the log line, so a quiet day and a capped day look different. */
+export function throttleState() {
+  return { day: dayStamp, globalToday, cap: GLOBAL_DAY };
 }
 
 export function contextFor(hrefs: string[], frames: string[]): { text: string; used: string[] } {
