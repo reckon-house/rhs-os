@@ -934,8 +934,11 @@ function think(q) {
       /^(do|does|can|could|did|are|is|have|has|will|would|any)\b/.test(qf);
     plan.say = (yes ? "Yes. " : "") + "\u201c" + cap(senseKey) + "\u201d files under " +
       br.target + " here. That work is below.";
-    plan.receipt = "\u201c" + senseKey + "\u201d matched via " + br.target + ". " +
-      plan.workIdx.length + " projects. " + machinery();
+    /* "matched via engineering. 4 projects." was a parser thinking out
+       loud, and it also said "1 projects" whenever it found one. */
+    plan.receipt = "\u201c" + senseKey + "\u201d files under " + br.target +
+      " here, which is " + plan.workIdx.length + " project" +
+      (plan.workIdx.length === 1 ? "" : "s") + ". " + machinery();
     return plan;
   }
 
@@ -1141,10 +1144,18 @@ const vary = (q, n) => {
    The receipt used to be a parser's list. This is the same trace told
    as prose, in first person because the whole page is, and every
    clause of it is TRUE of this build: the index is cut from the case
-   studies at build time, the personal lines live in a voice file, and
-   no model runs at ask time. That last fact is the one worth saying
-   out loud. Looked up, not generated, is WHY the house can speak as
-   me without making things up. */
+   studies at build time, and the personal lines live in a voice file.
+
+   THIS USED TO END "and no model runs at ask time", which was true
+   when it was written and stopped being true the day /api/ask shipped.
+   A model runs now, on every typed search. What did not change is the
+   part that mattered: it is handed the same build-time index and
+   nothing else, so the facts are still looked up rather than generated.
+   Only the sentence around them is written fresh.
+
+   This text is now the FIRST paint rather than the last word. It shows
+   instantly, then the model's line replaces it, and it stands alone
+   for a chip click, a filter, or a request that failed. */
 const FACET_PLAIN = {
   material: "a material", colour: "a colour", room: "a room type",
   furniture: "something in the photographs", place: "a location",
@@ -1158,9 +1169,14 @@ function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }
   const qd = "\u201c" + (String(q).trim() || fold(q)) + "\u201d";
   if (and) bits.push(qd + " matched across several categories. Showing projects that carry all of them.");
   else if (forked) bits.push(qd + " sits in more than one category. Showing all readings.");
-  else bits.push(qd + " matched as " + (FACET_PLAIN[lead] || "a search term") +
-    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed under " + term : "") + ".");
-  bits.push("That gives " + (w ? w + " project" + (w === 1 ? "" : "s") : "no projects") +
+  /* "matched as a discipline, filed under X" said the same thing twice
+     and said it in the passive. It IS the discipline; the second clause
+     only earns its place when the typed word and the filed name differ. */
+  else bits.push(qd + " is " + (FACET_PLAIN[lead] || "a search term") + " here" +
+    (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed as " + term : "") + ".");
+  /* "That gives" implies arithmetic. "That's" is what a person says,
+     and it sidesteps making a verb agree with two counts. */
+  bits.push("That's " + (w ? w + " project" + (w === 1 ? "" : "s") : "no projects") +
     (p ? " and " + p + " photograph" + (p === 1 ? "" : "s") : "") + ".");
   if (dead.length) bits.push("\u201c" + dead.join("\u201d, \u201c") +
     "\u201d didn't match anything.");
@@ -1797,25 +1813,40 @@ function cancelAsk() {
 
 /* ── the model half ────────────────────────────────────────────────
    The matcher deals instantly and its receipts stay the ground truth.
-   What it cannot do is answer a QUESTION — "did you shoot the Ivy Park
-   photography?" has no template. Those go to /api/ask, where the
-   server re-reads the matched projects from its own copy of the facts
-   index and Claude writes the one line, under the house copy rules.
-   The client sends hrefs, never facts: the server drops anything not
-   in its own index, so the model only ever sees what the build
-   generated. Chips and filter clicks never come here — they are
-   navigation, and the template line is the honest, instant answer for
-   a noun. On any failure the template stands; a fallback sentence
-   pretending to be the model would be worse than the template. */
+   Those hits go to /api/ask, where the server re-reads the matched
+   projects from its own copy of the facts index and Claude writes the
+   line, under the house copy rules. The client sends hrefs, never
+   facts: the server drops anything not in its own index, so the model
+   only ever sees what the build generated. Chips and filter clicks
+   never come here. They are navigation, and the template line is the
+   honest, instant answer for a click nobody typed. On any failure the
+   template stands; a fallback sentence pretending to be the model
+   would be worse than the template. */
 let askAbort = null;
 let askSource = "typed";
-function questionShaped(q) {
-  const s = q.trim();
-  if (!s) return false;
-  if (/\?$/.test(s)) return true;
-  if (/^(do|does|can|could|did|are|is|was|were|how|what|which|who|whose|when|where|why|have|has|will|would|should|tell|what's|who's|how's)\b/i.test(s)) return true;
-  /* four words of free typing is a sentence, not a keyword */
-  return s.split(/\s+/).length >= 4;
+/* A KEYWORD REACHES THE MODEL NOW, and the old rule was drawing the
+   line in the wrong place. The gate used to require a question shape:
+   a "?", an interrogative opener, or four words of free typing.
+   Everything shorter stayed a pure client-side lookup, instant and
+   free, on the theory that a template is the honest answer for a noun.
+
+   The theory was wrong about which nouns. A one-word search IS the
+   common case, so the reading most visitors got was the one no model
+   ever improved, and it read like a parser: "ecommerce" matched as a
+   discipline, filed under Ecommerce Design. That gives 1 project.
+   Asked the same term, Haiku says Jeffrey New York was built as a
+   flagship rather than a storefront. Same facts, same index, and only
+   one of them sounds like a person.
+
+   COST IS BOUNDED BY THE DEBOUNCE, not by this test. onQuery restarts
+   a 420ms timer on every keystroke and only apply() reaches here, so
+   typing "ecommerce" spends one request, not nine. Enter and Escape
+   pass `now` and fire it immediately, which is still one.
+
+   Three characters, because two is a typo in progress rather than a
+   search, and the template is already on screen either way. */
+function worthAsking(q) {
+  return q.trim().length >= 3;
 }
 
 /* ── the answer, composed ─────────────────────────────────────────
@@ -2118,23 +2149,23 @@ function buildAnswer() {
   };
   /* A TEMPLATE MATCH NO LONGER SUPPRESSES THE MODEL, and that inversion
      was the whole problem. The gate used to read `!plan`, so every
-     question a template could answer — who are you, what do you do,
-     what tools — was answered by a hardcoded line and never reached
+     question a template could answer, who are you, what do you do,
+     what tools, was answered by a hardcoded line and never reached
      Claude, while the long tail nobody worried about did reach it. The
      templates the visitor is least served by were exactly the ones the
      model never got to improve.
 
-     questionShaped() was always doing the real gating: a keyword like
-     "marble" or "interiors" is not question-shaped, so it stays a pure
-     client-side index lookup, instant and free. Only something asked as
-     a question spends a token.
+     The same mistake was in the shape test, one layer down, and it
+     survived that fix. See worthAsking(): anything typed reaches the
+     model now, keyword included, because a keyword is what people
+     actually type.
 
      A plan may still opt OUT with `hold: true`, for the cases where the
      template is genuinely the better answer: contact (the model is
      never given the email address, so it would hedge or omit it) and
      the two trail plans (session-local, and the system prompt forbids
      announcing the trail at all). */
-  if ((!plan || !plan.hold) && askSource === "typed" && questionShaped(query)) {
+  if ((!plan || !plan.hold) && askSource === "typed" && worthAsking(query)) {
     const hrefs = [...new Set(
       leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
     /* chosen here, on the visitor's machine, before the request leaves */
