@@ -47,6 +47,22 @@ export interface PressingLiveAppProps {
   tall?: number;
   /** One line under the frame: what to actually try. */
   instruction?: string;
+  /**
+   * "phone" masks the stage to a handset: the device's own 1320x2868,
+   * centred, with a bezel. A.R.C. is a phone app, so a full-bleed
+   * landscape stage was making the reader do the translation — it read
+   * as a website in a box, and the app's mobile layout was being shown
+   * at a width it never sees in use.
+   *
+   * NO NOTCH, deliberately, and this is where it differs from the demo
+   * package's own frame. Those components draw one because their clips
+   * were captured with no device chrome baked in, so the notch is the
+   * only thing making them read as a handset. Here the frame holds a
+   * LIVE app, and a notch is an opaque shape laid over the top of its
+   * real header. A bezel and a corner radius say handset without
+   * covering anything the reader came to use.
+   */
+  frame?: "wide" | "phone";
 }
 
 export function PressingLiveApp({
@@ -57,18 +73,14 @@ export function PressingLiveApp({
   posterAlt,
   tall = 78,
   instruction,
+  frame = "wide",
 }: PressingLiveAppProps) {
   const [live, setLive] = useState(false);
+  const phone = frame === "phone";
 
-  return (
-    <div className={styles.wrap}>
-      <div className={styles.head}>
-        <span className={styles.lbl}>{title}</span>
-        <span className={`${styles.lbl} ${styles.origin}`}>{origin}</span>
-      </div>
-
-      <div className={styles.stage} style={{ "--tall": `${tall}dvh` } as CSSProperties}>
-        {live ? (
+  const inner = (
+    <>
+      {live ? (
           <iframe
             className={styles.frame}
             src={src}
@@ -96,6 +108,27 @@ export function PressingLiveApp({
               Load the live product
             </span>
           </button>
+        )}
+    </>
+  );
+
+  return (
+    <div className={styles.wrap}>
+      <div className={styles.head}>
+        <span className={styles.lbl}>{title}</span>
+        <span className={`${styles.lbl} ${styles.origin}`}>{origin}</span>
+      </div>
+
+      <div
+        className={`${styles.stage} ${phone ? styles.phoneStage : ""}`}
+        style={{ "--tall": `${tall}dvh` } as CSSProperties}
+      >
+        {phone ? (
+          <div className={styles.phoneBody}>
+            <div className={styles.phoneScreen}>{inner}</div>
+          </div>
+        ) : (
+          inner
         )}
       </div>
 

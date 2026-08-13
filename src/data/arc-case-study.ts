@@ -577,9 +577,25 @@ export const arcCaseStudy: CaseStudy = {
       src: "https://arcready.app",
       title: "A.R.C., live",
       origin: "arcready.app",
-      poster: `${IMG}/arc-app-kitchen-project-selection-lifestyle.jpg`,
-      posterAlt: "A.R.C. running on a phone, resting on a kitchen counter",
+      /* PORTRAIT, because the frame is. The kitchen-counter lifestyle
+         shot that used to sit here is 3840x2363 landscape, and
+         object-fit: cover crushed it into a 345x772 slot — a nine
+         percent vertical strip of a room, under the veil, reading as a
+         grey rectangle. This is the app's own whole-home dashboard at
+         800x1738, captured from the shipped build, showing the same
+         $49,630 and 73 items the sections above count. */
+      poster: `${IMG}/demo/stills/arc-dashboard-800.jpg`,
+      posterAlt:
+        "A.R.C.'s whole-home dashboard: $49,630 documented across 8 rooms and 73 items",
       instruction: "Upload a photo of a room and the model will itemise it.",
+      /* A.R.C. is a phone app, so it is shown as one. The stage is
+         height-driven and the device derives its width from that, so
+         `tall` is really a width control: 78dvh gave a 323px handset,
+         narrower than any phone the app is used on and tight enough to
+         cramp its own mobile layout. 88 puts it at ~364px, inside the
+         range real devices actually occupy. */
+      tall: 88,
+      frame: "phone",
       pressing: { mark: { n: "08", name: "Financial intelligence" } },
     },
 
@@ -930,7 +946,11 @@ export const arcCaseStudy: CaseStudy = {
         "Go-to-Market Strategy",
       ],
       stack: ["Python", "Streamlit", "OpenAI Vision API", "Perceptron Mk1", "Supabase", "Vercel", "Claude Code"],
+      /* Country-neutral App Store form. The link as handed over was
+         .../pl/app/..., which pins every reader to the Polish
+         storefront; /app/id<ID> lets Apple route to the reader's own. */
       links: [
+        { label: "App Store", url: "https://apps.apple.com/app/id6762497959" },
         { label: "arcready.app", url: "https://arcready.app" },
         { label: "heythere@arcready.app", url: "mailto:heythere@arcready.app" },
       ],

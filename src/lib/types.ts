@@ -542,6 +542,8 @@ export interface LiveAppSection extends BaseSection {
   tall?: number;
   /** One line: what to actually try once it is live. */
   instruction?: string;
+  /** "phone" masks the stage to a handset. See PressingLiveApp. */
+  frame?: "wide" | "phone";
 }
 
 export interface SystemArchitectureSection extends BaseSection {

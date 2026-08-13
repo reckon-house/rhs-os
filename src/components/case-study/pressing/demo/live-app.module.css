@@ -136,3 +136,100 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ── the phone mask ────────────────────────────────────────────────
+   A.R.C. is a phone app. Shown full-bleed and landscape, the stage read
+   as a website in a box and rendered the app's mobile layout at a width
+   it never sees in use, which left the reader doing the translation.
+
+   The stage stops being the frame here and becomes the room the frame
+   stands in: it keeps the height, drops its own background, radius and
+   clip, and centres the device. Ratio is the capture's own 1320x2868,
+   so the app is shown at the proportions it was built for.
+
+   Height-driven on purpose. Width follows from the ratio, so the device
+   is always whole in the viewport rather than being cropped by a plate
+   that was sized for a landscape still. */
+.phoneStage {
+  display: flex;
+  justify-content: center;
+  background: none;
+  border-radius: 0;
+  overflow: visible;
+}
+/* Height drives, aspect-ratio derives the width, flex-shrink is off so
+   nothing squeezes it. Measured: 323x702 against the 0.4603 the capture
+   declares.
+
+   A note for the next person who measures this and sees a landscape
+   box: that was me, and it was a stale stylesheet rather than a layout
+   bug. The CSS-module hot reload had dropped this whole block, so the
+   element carried the class with none of the rules. I diagnosed a flex
+   sizing cycle, wrote the width out by hand to break it, and only then
+   checked — aspect-ratio alone holds the shape perfectly. Reload before
+   theorising. */
+.phoneBody {
+  flex: 0 0 auto;
+  height: 100%;
+  aspect-ratio: 1320 / 2868;
+  padding: clamp(6px, 0.8vw, 10px);
+  border-radius: clamp(30px, 3.6vw, 46px);
+  background: var(--pp-ink, #111);
+  /* The device sits ON the paper rather than being punched into it, so
+     it gets the one shadow on this plate. Kept soft and close: a long
+     drop would read as a product render, and this is a specimen. */
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+.phoneScreen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(24px, 2.9vw, 37px);
+  overflow: hidden;
+  background: #fff;
+}
+/* the poster fills the handset the same way the app does */
+.phoneScreen .poster,
+.phoneScreen .poster img,
+.phoneScreen .frame {
+  height: 100%;
+  width: 100%;
+}
+@media (max-width: 560px) {
+  /* On a phone, a phone inside a phone is absurd: the bezel eats real
+     width and the app ends up narrower than the device already holding
+     it. The mask drops away and the app takes the measure. */
+  .phoneStage {
+    display: block;
+  }
+  .phoneBody {
+    height: 100%;
+    aspect-ratio: auto;
+    width: 100%;
+    padding: 0;
+    border-radius: var(--pp-r, 16px);
+    box-shadow: none;
+  }
+  .phoneScreen {
+    border-radius: var(--pp-r, 16px);
+  }
+}
+
+/* THE VEIL WAS TUNED FOR A PHOTOGRAPH. At 42% it sat over a dark,
+   textured landscape still and read as a dimmed picture. The phone
+   frame's poster is the app's own dashboard, a light UI: measured mean
+   brightness 165/255, which 42% black drags to 96 — flat mid grey, and
+   the $49,630 the section is about disappears into it.
+
+   16% is enough to seat the pill and leaves the screenshot legible.
+   The pill picks up a shadow to hold its edge against the light areas
+   the thinner veil no longer darkens. */
+.phoneScreen .veil {
+  background: rgba(0, 0, 0, 0.16);
+}
+.phoneScreen .poster:hover .veil {
+  background: rgba(0, 0, 0, 0.26);
+}
+.phoneScreen .cta {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}

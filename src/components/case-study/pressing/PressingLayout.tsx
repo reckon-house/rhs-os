@@ -498,6 +498,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             poster={s.poster}
             posterAlt={s.posterAlt}
             tall={s.tall}
+            frame={s.frame}
             instruction={s.instruction}
           />
         </PressingVizFrame>
