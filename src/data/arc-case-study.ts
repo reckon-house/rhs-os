@@ -462,10 +462,12 @@ export const arcCaseStudy: CaseStudy = {
       maxWidth: 700,
       pressing: {
         caption: "Classification system interface",
-        /* Half what it was. A 1612px file is honest up to 806 and it was
-           drawing at 766, so nothing here is a resolution fix — the
-           plate was simply louder than the argument it illustrates. */
-        plateWidth: 383,
+        /* 766 was louder than the argument it illustrates; 383, an exact
+           half, undershot and turned the plate into a thumbnail. This
+           sits between them and is still well inside the file's honest
+           ceiling of 806, so the only question here is composition, not
+           resolution. One number, easy to move again. */
+        plateWidth: 560,
         choreo: { rise: true },
       },
     },

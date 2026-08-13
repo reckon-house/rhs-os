@@ -40,11 +40,17 @@
   max-width: 14ch;
   margin: 0 0 clamp(26px, 4vw, 48px);
 }
-/* The setup: one column of copy at reading measure, off to the right
-   the way every other brief in the family sets its column. */
+/* The setup: one column of copy off to the right, THE FAMILY'S OWN
+   MEASURE. This claimed to set its column the way every other brief
+   does and did not: the briefs use min(380px, 40vw), which is
+   viewport-relative and narrows as the window does, while 46ch is
+   relative to the TYPE and holds its width whatever happens around it.
+   They agree to within 30px on a desktop, which is why it read as fine
+   and shipped. At 766px the briefs were at 306 and this was still at
+   409 — the one column on the page not answering the window. */
 .intro {
   margin-left: auto;
-  max-width: 46ch;
+  max-width: min(380px, 40vw);
   font-size: var(--pp-note);
   line-height: 1.55;
 }
