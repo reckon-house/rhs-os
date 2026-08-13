@@ -1,34 +1,58 @@
 import styles from "./PressingViz.module.css";
 
 /**
- * @shape voice — conforms to lab/viz-system.html
+ * @shape dots — conforms to lab/viz-system.html
  *
- * The schematic — the pressing skin for `system-architecture`.
+ * The pipeline — the pressing skin for `system-architecture`.
  *
- * What it replaces: the 6,713-node particle cloud with two legends and
- * a timeline ring. What the system actually IS: six stages on a loop
- * around the archive. So that is the whole drawing — one hairline
- * orbit, six ink dots, faint spokes to the centre, the brand's own
- * lockup in the middle, and the stack as a ruled caption line under
- * the plate. No legend: one ink needs no decoding. No accent: this
- * chart has no single datum to point at.
+ * DOTS rather than sticks, and the distinction is the whole argument
+ * below: a stick's LENGTH is a quantity, and there is no quantity here.
+ * A dot's POSITION is the datum, which is the one thing this data has.
+ * Same grammar as PressingSpectrum and PressingEditorialRange — a heavy
+ * mark parked on a fine track — read left to right instead of down.
  *
- * Geometry is deterministic and rounded to 1/1000px — trig differs in
- * the last bits between Node's V8 and Chrome's, and an unrounded
- * coordinate is a hydration mismatch waiting to be paid for (the
- * lesson the classic component taught).
+ * IT WAS A RING AND THE RING WAS SAYING TWO UNTRUE THINGS.
+ *
+ * First, it claimed a cycle. Six stages sat at 60 degree intervals with
+ * the wordmark in the middle, which reads as stages orbiting an archive
+ * and returning to the top. The study's own copy is a line: a photo is
+ * taken, vision names what it finds, objects are identified, values are
+ * estimated, the item enters the archive, the total is compared against
+ * a policy limit. Financial analysis does not feed back into image
+ * capture. Nothing returns to the start, so nothing should close.
+ *
+ * Second, the geometry carried no data. Equal arcs and six identical
+ * spokes to the centre are the fault PressingMCPPath names in its own
+ * docblock: layout pretending to be geometry. There is no per-stage
+ * quantity anywhere in the study — the stage names are hardcoded right
+ * here and the section data is a type and a mark — so drawing bars
+ * would have meant inventing a number, which is the worse failure.
+ *
+ * What is genuinely known is ORDER, so order is all this draws: one
+ * fine rule, six heavy marks along it, left to right, and it stops. The
+ * spacing is ordinal, not measured — the gaps say "next", never "as far
+ * again". Marks are the system's heavy weight, up from the r=3.5 the
+ * ring used, because §02 sizes a mark at 9px and the ring's dots were
+ * quietly running under spec.
+ *
+ * The wordmark went with the ring. It was doing real work at the centre
+ * of an orbit and has no place on a line, and the plate does not need
+ * to announce the brand twice — the frame's mark already did.
+ *
+ * Geometry is deterministic and rounded to 1/1000px: trig differs in the
+ * last bits between Node's V8 and Chrome's, and an unrounded coordinate
+ * is a hydration mismatch waiting to be paid for (the lesson the classic
+ * component taught).
  */
 
-const CX = 500;
-const CY = 300;
-const R = 208;
-const LABEL_R = R + 30;
+const W = 1000;
+const Y = 96;
+/* Insets leave the end labels room to centre under their own marks
+   rather than hanging off the plate. */
+const X0 = 92;
+const X1 = 908;
 
 const px = (n: number) => Math.round(n * 1000) / 1000;
-const polar = (r: number, deg: number) => {
-  const rad = ((deg - 90) * Math.PI) / 180;
-  return { x: px(CX + r * Math.cos(rad)), y: px(CY + r * Math.sin(rad)) };
-};
 
 const STAGES = [
   "Image Capture",
@@ -43,60 +67,41 @@ const STACK =
   "Python · Streamlit · OpenAI Vision API · Supabase Auth/Storage/PostgreSQL · Vercel · Claude Code";
 
 export function PressingArchitecture() {
+  const step = (X1 - X0) / (STAGES.length - 1);
+
   return (
     <div className={styles.viz}>
       <div className={styles.scroller} data-lenis-prevent-touch>
         <svg
           className={styles.wide}
-          viewBox="0 0 1000 600"
+          viewBox={`0 0 ${W} 168`}
           width="100%"
           role="img"
-          aria-label="A.R.C. system diagram: six pipeline stages on a loop around the archive"
+          aria-label="A.R.C. pipeline: six stages in order, image capture through financial analysis"
         >
-          <circle className={styles.schemOrbit} cx={CX} cy={CY} r={R} />
+          {/* the path, drawn once and ending where the work ends */}
+          <line
+            className={styles.schemPath}
+            x1={X0}
+            y1={Y}
+            x2={X1}
+            y2={Y}
+          />
 
           {STAGES.map((name, i) => {
-            const deg = i * 60;
-            const dot = polar(R, deg);
-            const at = polar(LABEL_R, deg);
-            const cos = Math.cos(((deg - 90) * Math.PI) / 180);
-            const sin = Math.sin(((deg - 90) * Math.PI) / 180);
-            const anchor =
-              cos > 0.35 ? "start" : cos < -0.35 ? "end" : "middle";
-            /* a top label stacks up from the orbit, a bottom one down;
-               the sides hang from their numeral line */
-            const base = sin < -0.35 ? at.y - 18 : sin > 0.35 ? at.y + 14 : at.y - 2;
+            const x = px(X0 + step * i);
             return (
               <g key={name}>
-                <line
-                  className={styles.schemSpoke}
-                  x1={CX}
-                  y1={CY}
-                  x2={dot.x}
-                  y2={dot.y}
-                />
-                <circle className={styles.schemDot} cx={dot.x} cy={dot.y} r={3.5} />
-                <text className={styles.schemNum} x={at.x} y={base} textAnchor={anchor}>
+                <circle className={styles.schemDot} cx={x} cy={Y} r={4.5} />
+                <text className={styles.schemNum} x={x} y={Y - 26} textAnchor="middle">
                   {"0" + (i + 1)}
                 </text>
-                <text className={styles.schemLbl} x={at.x} y={base + 15} textAnchor={anchor}>
+                <text className={styles.schemLbl} x={x} y={Y + 30} textAnchor="middle">
                   {name}
                 </text>
               </g>
             );
           })}
-
-          <text
-            className={styles.schemWordmark}
-            x={CX}
-            y={CY + 6}
-            textAnchor="middle"
-          >
-            A.R.C.
-          </text>
-          <text className={styles.schemSub} x={CX} y={CY + 32} textAnchor="middle">
-            ARCHIVE READY CLOUD
-          </text>
         </svg>
       </div>
 
@@ -107,3 +112,5 @@ export function PressingArchitecture() {
     </div>
   );
 }
+
+export default PressingArchitecture;

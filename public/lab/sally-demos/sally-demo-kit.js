@@ -255,8 +255,13 @@
           var seg = segs[s];
           target = seg.b ? self.el("strong") : null;
           if (target) para.insertBefore(target, caret);
-          // keep trailing spaces attached so spacing survives word joins
-          words = seg.t.match(/\S+\s*/g) || [];
+          // keep leading AND trailing whitespace attached to words —
+          // a plain segment after **bold** starts with the joining space
+          words = seg.t.match(/\s*\S+\s*/g);
+          if (!words) {
+            // whitespace-only segment: emit it whole so joins survive
+            words = seg.t ? [seg.t] : [];
+          }
           w = 0;
           nextWord(seg);
         }

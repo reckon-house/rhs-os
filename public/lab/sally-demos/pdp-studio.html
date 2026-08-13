@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally demo — PDP Copy Studio</title>
+<link rel="stylesheet" href="sally-demo.css">
+<style>
+  body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
+</style>
+</head>
+<body>
+
+<div class="sd-demo" id="pdpDemo">
+  <div class="sd-window">
+    <div class="sd-titlebar">
+      <span class="sd-dot"></span><span class="sd-dot"></span><span class="sd-dot"></span>
+      <span class="sd-title"><strong>Sally Marketing Portal</strong> · PDP Copy Studio</span>
+    </div>
+    <div class="sd-body">
+      <div class="sd-rail" aria-hidden="true">
+        <span><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L20 10l-6.1 1.4L12 17l-1.9-5.6L4 10l6.1-1.4z"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><path d="M4 17l5-6 4 3 7-8"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15l5-4 4 3 3-2 4 3"/></svg></span>
+        <span class="on"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></span>
+      </div>
+
+      <div class="ps-main" data-stage>
+        <div class="ps-bar">
+          <div class="ps-url">
+            <svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 007.5.5l2-2a5 5 0 00-7-7l-1 1M14 10a5 5 0 00-7.5-.5l-2 2a5 5 0 007 7l1-1"/></svg>
+            <span class="ps-url-text"></span>
+          </div>
+          <span class="ps-run"><span class="jc-spin"></span><span class="ps-run-label">Run audit</span></span>
+        </div>
+        <div class="ps-scroll"></div>
+      </div>
+    </div>
+  </div>
+  <p class="sd-caption">Scripted replay of a real PDP Copy Studio audit — all data staged for demo.</p>
+</div>
+
+<script src="sally-demo-kit.js"></script>
+<script>
+new SallyDemo(document.getElementById("pdpDemo"), async function (t) {
+  var URL_TEXT = "sallybeauty.com/p/permanent-creme-hair-color-medium-brown";
+
+  var scroll = t.$(".ps-scroll");
+  var run = t.$(".ps-run");
+  var runLabel = t.$(".ps-run-label");
+  t.scrollEl = scroll;
+
+  function panel(title, chipText) {
+    var p = t.el("div", "ps-panel");
+    var head = t.el("div", "ps-panel-head", title);
+    if (chipText) head.appendChild(t.el("span", "ps-chip", chipText));
+    p.appendChild(head);
+    scroll.appendChild(p);
+    t.reveal(p);
+    return p;
+  }
+
+  // 1 — URL pastes in, audit runs
+  await t.wait(800);
+  await t.type(t.$(".ps-url-text"), URL_TEXT, 44);
+  await t.wait(300);
+  await t.press(run);
+  run.classList.add("busy");
+  runLabel.textContent = "Auditing…";
+  await t.wait(1500);
+  run.classList.remove("busy");
+  runLabel.textContent = "Run audit";
+
+  // 2 — findings land, one severity at a time
+  var f = panel("AUDIT FINDINGS", "Opportunity 72");
+  var findings = [
+    ["hi",  "Reviews render client-side — invisible to AI answer engines"],
+    ["hi",  "Title is 38 chars — under the ~70 ceiling, top keyword absent"],
+    ["med", "No FAQ — 6 real customer questions unanswered on-page"],
+    ["lo",  "Meta description is generic — no differentiator named"]
+  ];
+  for (var i = 0; i < findings.length; i++) {
+    var row = t.el("div", "ps-finding");
+    row.appendChild(t.el("span", "ps-sev " + findings[i][0]));
+    row.appendChild(t.el("span", null, findings[i][1]));
+    f.appendChild(row);
+    t.reveal(row);
+    await t.wait(340);
+  }
+  await t.wait(500);
+
+  // 3 — demand signal
+  var d = panel("DEMAND SIGNAL", "Google KWP");
+  var kws = [
+    ["permanent hair color", "246K/mo", "+12%", 92],
+    ["bond repair hair dye", "33K/mo", "+41%", 46],
+    ["gray coverage box dye", "18K/mo", "+8%", 30]
+  ];
+  var fills = [];
+  for (var k = 0; k < kws.length; k++) {
+    var kw = t.el("div", "ps-kw");
+    kw.appendChild(t.el("span", "ps-kw-term", kws[k][0]));
+    var bar = t.el("div", "ps-kw-bar");
+    var fill = t.el("div", "ps-kw-fill");
+    bar.appendChild(fill);
+    kw.appendChild(bar);
+    var meta = t.el("span", "ps-kw-meta");
+    meta.innerHTML = "<strong>" + kws[k][1] + "</strong> <span class='ps-up'>▲ " + kws[k][2].slice(1) + "</span>";
+    kw.appendChild(meta);
+    d.appendChild(kw);
+    t.reveal(kw);
+    fills.push([fill, kws[k][3]]);
+    await t.wait(280);
+  }
+  // bars sweep after the rows are seated
+  for (var b = 0; b < fills.length; b++) fills[b][0].style.width = fills[b][1] + "%";
+  await t.wait(700);
+
+  // 4 — competitive context
+  var c = panel("COMPETITIVE CONTEXT", "5 retailers");
+  var tags = t.el("div", "ps-tags");
+  c.appendChild(tags);
+  var themes = ["gray coverage", "salon-quality at home", "ammonia-free", "bond repair", "value price"];
+  for (var g = 0; g < themes.length; g++) {
+    var tag = t.el("span", "ps-tag", themes[g]);
+    tags.appendChild(tag);
+    t.reveal(tag);
+    await t.wait(170);
+  }
+  await t.wait(320);
+  var white = t.el("div", "ps-white");
+  white.innerHTML = "<strong>Whitespace:</strong> nobody in the category claims application speed, texture-specific results, or scalp comfort.";
+  c.appendChild(white);
+  t.reveal(white);
+  var band = t.el("div", "ps-band", "Category price band $4.99 – $35.00 · sourced from live retailer search pages");
+  c.appendChild(band);
+  t.reveal(band);
+  await t.wait(800);
+
+  // 5 — the rewrite, grounded in the whitespace
+  var r = panel("PROPOSED REWRITE", "v1");
+  var rw = t.el("div", "ps-rw");
+  r.appendChild(rw);
+  rw.appendChild(t.el("div", "ps-rw-label cur", "CURRENT TITLE"));
+  var cur = t.el("div", "ps-rw-cur", "Permanent Crème Hair Color — Medium Brown");
+  rw.appendChild(cur);
+  t.reveal(cur);
+  await t.wait(600);
+  rw.appendChild(t.el("div", "ps-rw-label new", "PROPOSED"));
+  var neu = t.el("div", "ps-rw-new");
+  rw.appendChild(neu);
+  await t.stream(neu, [
+    "Bond-Repair Permanent Hair Color, Medium Brown — Full Gray Coverage in 25 Minutes"
+  ], 9);
+  var why = t.el("div", "ps-rw-why");
+  rw.appendChild(why);
+  await t.stream(why, [
+    "Leads with **bond repair** and **speed** — the two rising claims *nobody in the category owns*."
+  ], 14);
+  // swap the *...* emphasis in after streaming (stream() only knows **bold**)
+  why.innerHTML = why.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+  await t.wait(1400);
+});
+</script>
+
+</body>
+</html>

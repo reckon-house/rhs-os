@@ -300,10 +300,274 @@
 .jc-send svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 2; fill: none; }
 .jc-send.sd-press { transform: scale(0.82); }
 
+/* ============================================================
+   PDP Copy Studio demo
+   ============================================================ */
+
+.ps-main { display: flex; flex-direction: column; min-height: 0; }
+
+.ps-bar {
+  display: flex; gap: 8px;
+  padding: 14px 16px 10px;
+}
+.ps-url {
+  flex: 1;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 20px rgba(20, 0, 2, 0.05);
+  border-radius: 10px;
+  padding: 0 12px;
+  min-height: 36px;
+  font-size: 12px;
+  color: var(--sd-dark);
+  white-space: nowrap; overflow: hidden;
+}
+.ps-url svg { width: 13px; height: 13px; stroke: var(--sd-ter); stroke-width: 1.7; fill: none; flex: none; }
+.ps-url-text:empty::before { content: "Paste a PDP URL…"; color: var(--sd-ter); }
+.ps-run {
+  flex: none;
+  display: flex; align-items: center; gap: 7px;
+  background: var(--sd-red);
+  color: #fff;
+  font-size: 12px; font-weight: 600;
+  border-radius: 10px;
+  padding: 0 14px;
+  transition: transform 0.14s ease, opacity 0.2s ease;
+}
+.ps-run.sd-press { transform: scale(0.94); }
+.ps-run .jc-spin { display: none; border-color: rgba(255,255,255,0.35); border-top-color: #fff; }
+.ps-run.busy .jc-spin { display: block; }
+
+.ps-scroll {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  padding: 2px 16px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: none;
+}
+.ps-scroll::-webkit-scrollbar { display: none; }
+
+.ps-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 20px rgba(20, 0, 2, 0.04);
+  border-radius: 12px;
+  padding: 11px 14px 12px;
+}
+.ps-panel-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.09em;
+  color: var(--sd-ter);
+  margin-bottom: 8px;
+}
+.ps-chip {
+  margin-left: auto;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--sd-red);
+  background: var(--sd-blush);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+/* findings rows */
+.ps-finding {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 12px; line-height: 1.45;
+  color: var(--sd-sec);
+  padding: 4px 0;
+}
+.ps-sev { width: 7px; height: 7px; border-radius: 50%; flex: none; transform: translateY(-1px); }
+.ps-sev.hi { background: var(--sd-red); }
+.ps-sev.med { background: #e39b3d; }
+.ps-sev.lo { background: #c9b8ac; }
+
+/* demand rows */
+.ps-kw {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--sd-sec);
+  padding: 4px 0;
+}
+.ps-kw-term { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps-kw-bar { height: 5px; border-radius: 3px; background: rgba(20, 0, 2, 0.06); overflow: hidden; }
+.ps-kw-fill {
+  height: 100%; width: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #f1a5b0, var(--sd-red));
+  transition: width 0.9s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.ps-kw-meta { font-size: 11px; color: var(--sd-ter); white-space: nowrap; }
+.ps-kw-meta strong { color: var(--sd-dark); font-weight: 650; }
+.ps-up { color: #2e8c4a; font-weight: 700; }
+
+/* competitive context */
+.ps-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 9px; }
+.ps-tag {
+  font-size: 11px;
+  color: var(--sd-sec);
+  background: rgba(20, 0, 2, 0.045);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.ps-white {
+  border: 1px dashed rgba(220, 30, 53, 0.4);
+  background: rgba(255, 224, 227, 0.35);
+  border-radius: 10px;
+  padding: 8px 11px;
+  font-size: 12px; line-height: 1.5;
+  color: var(--sd-sec);
+}
+.ps-white strong { color: var(--sd-red); font-weight: 700; }
+.ps-band { font-size: 11px; color: var(--sd-ter); margin-top: 7px; }
+
+/* rewrite */
+.ps-rw { font-size: 12.5px; line-height: 1.5; }
+.ps-rw-label {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.09em;
+  margin: 2px 0 3px;
+}
+.ps-rw-label.cur { color: var(--sd-ter); }
+.ps-rw-label.new { color: var(--sd-red); }
+.ps-rw-cur { color: var(--sd-ter); text-decoration: line-through; text-decoration-color: rgba(154, 122, 128, 0.5); }
+.ps-rw-new { color: var(--sd-dark); font-weight: 600; }
+.ps-rw-why {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--sd-line);
+  font-size: 11.5px;
+  color: var(--sd-sec);
+}
+.ps-rw-why em { color: var(--sd-red); font-style: normal; font-weight: 650; }
+
+/* ============================================================
+   Jim → Figma build demo
+   Two stacked layers: the chat beat, then a stylized canvas
+   where the email artboards materialize. Deliberately NOT real
+   Figma chrome — a minimal dark canvas with dot grid.
+   ============================================================ */
+
+.fb-stage { position: relative; min-height: 0; }
+
+.fb-chat, .fb-canvas {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  transition: opacity 0.6s ease;
+}
+.fb-chat { opacity: 1; }
+.fb-chat.gone { opacity: 0; pointer-events: none; }
+.fb-canvas { opacity: 0; }
+.fb-canvas.here { opacity: 1; }
+
+/* build progress card in chat */
+.fb-build {
+  align-self: flex-start;
+  width: 82%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(20, 0, 2, 0.05);
+  padding: 10px 13px;
+}
+.fb-build-head {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--sd-ter);
+  margin-bottom: 6px;
+}
+.fb-build-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px;
+  color: var(--sd-sec);
+  padding: 3px 0;
+}
+.fb-build-row .jc-spin { width: 10px; height: 10px; }
+.fb-build-row .jc-check { display: none; }
+.fb-build-row.done .jc-spin { display: none; }
+.fb-build-row.done .jc-check { display: block; }
+
+/* the canvas */
+.fb-canvas-inner {
+  flex: 1;
+  background: #2b2726;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.fb-boards {
+  position: absolute; inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5%;
+  padding: 0 6%;
+  transform: scale(1.05);
+  transition: transform 1.4s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.fb-canvas.here .fb-boards { transform: scale(1); }
+
+.fb-slot { width: 26%; position: relative; }
+.fb-label {
+  position: absolute;
+  top: -20px; left: 1px;
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+.fb-board {
+  aspect-ratio: 3 / 4.3;
+  background: #FFF6EC;
+  border-radius: 3px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  padding: 7% 7% 8%;
+  display: flex; flex-direction: column; gap: 5.5%;
+  outline: 1.5px solid transparent;
+  outline-offset: 3px;
+}
+.fb-board.sel { outline-color: #6aa7ff; }
+
+/* skeleton blocks inside an artboard — abstract, not real creative */
+.fb-blk { border-radius: 2px; }
+.fb-blk.brand { height: 7%; width: 46%; background: var(--sd-dark); align-self: center; border-radius: 999px; }
+.fb-blk.img { height: 38%; background: linear-gradient(150deg, var(--sd-blush), #f6b7c0 55%, var(--sd-red) 160%); }
+.fb-blk.head { height: 9%; width: 88%; background: rgba(20, 0, 2, 0.82); }
+.fb-blk.line { height: 5%; width: 72%; background: rgba(20, 0, 2, 0.18); }
+.fb-blk.line.short { width: 54%; }
+.fb-blk.cta { height: 10%; width: 52%; background: var(--sd-red); border-radius: 999px; align-self: center; margin-top: auto; }
+
+/* closing toast — centered via auto margins, NOT translateX:
+   reveal()'s .sd-pop owns `transform`, and two drivers on one
+   property is how centering silently breaks (RHS lesson). */
+.fb-toast {
+  position: absolute;
+  left: 0; right: 0; bottom: 16px;
+  width: max-content;
+  max-width: 92%;
+  margin: 0 auto;
+  background: rgba(20, 0, 2, 0.85);
+  color: #fff;
+  font-size: 11.5px;
+  border-radius: 999px;
+  padding: 7px 16px;
+  white-space: nowrap;
+}
+.fb-toast strong { color: #ffb3bc; font-weight: 650; }
+
 /* ---- responsive ---- */
 @media (max-width: 560px) {
   .sd-window { height: 480px; }
   .sd-body { grid-template-columns: 0 1fr; }
   .sd-rail { display: none; }
   .jc-msg { max-width: 92%; }
+  .ps-kw { grid-template-columns: minmax(0, 1fr) auto; }
+  .ps-kw-bar { display: none; }
+  .fb-label { font-size: 8.5px; top: -16px; }
 }

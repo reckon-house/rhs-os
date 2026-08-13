@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally demo — Jim builds in Figma</title>
+<link rel="stylesheet" href="sally-demo.css">
+<style>
+  body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
+  /* this demo's stage fills the window body */
+  #figDemo .sd-body { grid-template-rows: 1fr; }
+  #figDemo .fb-stage { flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="sd-demo" id="figDemo">
+  <div class="sd-window">
+    <div class="sd-titlebar">
+      <span class="sd-dot"></span><span class="sd-dot"></span><span class="sd-dot"></span>
+      <span class="sd-title"><strong>Sally Marketing Portal</strong> · Jim → Figma</span>
+    </div>
+    <div class="sd-body">
+      <div class="sd-rail" aria-hidden="true">
+        <span class="on"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L20 10l-6.1 1.4L12 17l-1.9-5.6L4 10l6.1-1.4z"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><path d="M4 17l5-6 4 3 7-8"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15l5-4 4 3 3-2 4 3"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
+        <span><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></span>
+      </div>
+
+      <div class="fb-stage" data-stage>
+        <div class="fb-chat">
+          <div class="jc-head">
+            <span class="jc-avatar">J</span>
+            <div>
+              <div class="jc-head-name">Jim</div>
+              <div class="jc-head-sub">AI strategy partner</div>
+            </div>
+            <span class="jc-live"></span>
+          </div>
+          <div class="jc-chat"></div>
+          <div class="jc-dock">
+            <div class="jc-input">
+              <span class="jc-clip"><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8"/></svg></span>
+              <span class="jc-input-text"></span>
+              <span class="jc-send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fb-canvas">
+          <div class="fb-canvas-inner">
+            <div class="fb-boards"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sd-caption">Scripted replay — Jim drafts the batch, the Sally Figma plugin builds the artboards. All content staged.</p>
+</div>
+
+<script src="sally-demo-kit.js"></script>
+<script>
+new SallyDemo(document.getElementById("figDemo"), async function (t) {
+  var MSG = "Build the March email batch in Figma — all three are approved.";
+  var BOARDS = ["Single Category — 01", "Promo — 02", "Expert — 03"];
+
+  var chatLayer = t.$(".fb-chat");
+  var canvasLayer = t.$(".fb-canvas");
+  var chat = t.$(".jc-chat");
+  var input = t.$(".jc-input-text");
+  t.scrollEl = chat;
+
+  // 1 — the ask
+  await t.wait(900);
+  await t.type(input, MSG, 32);
+  await t.wait(240);
+  await t.press(t.$(".jc-send"));
+  input.textContent = "";
+  var user = t.el("div", "jc-msg jc-user", MSG);
+  chat.appendChild(user);
+  t.reveal(user);
+  await t.wait(600);
+
+  // 2 — Jim answers and the plugin card ticks through the batch
+  var jim = t.el("div", "jc-msg jc-jim");
+  chat.appendChild(jim);
+  t.reveal(jim);
+  await t.stream(jim, ["On it — pushing all three approved drafts to the plugin now."], 22);
+  await t.wait(350);
+
+  var build = t.el("div", "fb-build");
+  var head = t.el("div", "fb-build-head", "SALLY FIGMA PLUGIN · BUILD ALL");
+  build.appendChild(head);
+  chat.appendChild(build);
+  t.reveal(build);
+
+  var rows = [];
+  for (var i = 0; i < BOARDS.length; i++) {
+    var row = t.el("div", "fb-build-row");
+    row.appendChild(t.el("span", "jc-spin"));
+    var check = t.el("span", "jc-check");
+    check.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+    row.appendChild(check);
+    row.appendChild(t.el("span", null, BOARDS[i]));
+    build.appendChild(row);
+    t.reveal(row);
+    rows.push(row);
+    await t.wait(240);
+  }
+  for (var r = 0; r < rows.length; r++) {
+    await t.wait(620);
+    rows[r].classList.add("done");
+  }
+  await t.wait(700);
+
+  // 3 — cut to the canvas
+  chatLayer.classList.add("gone");
+  canvasLayer.classList.add("here");
+  await t.wait(750);
+
+  // 4 — artboards materialize, block by block
+  var boardsEl = t.$(".fb-boards");
+  for (var b = 0; b < BOARDS.length; b++) {
+    var slot = t.el("div", "fb-slot");
+    slot.appendChild(t.el("div", "fb-label", BOARDS[b]));
+    var board = t.el("div", "fb-board");
+    slot.appendChild(board);
+    boardsEl.appendChild(slot);
+    t.reveal(slot);
+    await t.wait(240);
+
+    var blocks = ["brand", "img", "head", "line", "line short", "cta"];
+    for (var k = 0; k < blocks.length; k++) {
+      var blk = t.el("div", "fb-blk " + blocks[k]);
+      board.appendChild(blk);
+      t.reveal(blk);
+      await t.wait(110);
+    }
+    board.classList.add("sel");
+    await t.wait(330);
+    board.classList.remove("sel");
+    await t.wait(180);
+  }
+
+  // 5 — the receipt
+  await t.wait(400);
+  var toast = t.el("div", "fb-toast");
+  toast.innerHTML = "<strong>3 artboards</strong> built from approved copy — zero manual paste";
+  t.$(".fb-canvas-inner").appendChild(toast);
+  t.reveal(toast);
+
+  await t.wait(1600);
+});
+</script>
+
+</body>
+</html>

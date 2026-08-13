@@ -365,13 +365,11 @@
    full ink. The spokes are the schematic's ruler: they only say which
    node connects to which, and a diagram with every link at full weight
    reads as a solid web, so they take the one sanctioned faint step. */
-.schemOrbit {
-  fill: none;
+/* The pipeline's rule. Was .schemOrbit (a closed circle) plus
+   .schemSpoke (six lines to a centre that carried nothing); both went
+   when the ring did. Fine, because a path is structure, not a datum. */
+.schemPath {
   stroke: var(--pv-ink);
-  stroke-width: var(--pv-fine);
-}
-.schemSpoke {
-  stroke: var(--pv-rule);
   stroke-width: var(--pv-fine);
 }
 .schemDot {
@@ -428,19 +426,6 @@
    charts speak one voice, so the name is set like every other label —
    the brand's own letterforms live on the logo plates, where quotation
    actually applies. */
-.schemWordmark {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  fill: var(--pp-ink);
-}
-.schemSub {
-  font-size: 8px;
-  letter-spacing: 0.32em;
-  font-variant-numeric: tabular-nums;
-  fill: var(--pv-grey);
-}
 .schemStack {
   display: flex;
   justify-content: space-between;
