@@ -23,9 +23,15 @@
   border-bottom: 1px solid var(--la-hair);
 }
 
+/* BODY SIZE, not label size. This frame's chrome is the only text on the
+   plate, and at 10px caps it read as a caption on something that is not
+   a caption — the reader has to lean in to learn what they are looking
+   at and where it is served from. --pp-note is the page's body measure.
+   Tracking comes off with the size increase: 0.04em is tuned to hold
+   10px caps apart and turns 16px into a gap-toothed line. */
 .lbl {
-  font-size: var(--pp-lbl, 10px);
-  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-size: var(--pp-note, 16px);
+  letter-spacing: 0;
   font-weight: var(--pp-lbl-weight, 500);
   text-transform: uppercase;
 }
@@ -122,9 +128,9 @@
 }
 
 .foot {
-  margin: 14px 0 0;
-  font-size: var(--pp-cap, 11px);
-  line-height: 1.55;
+  margin: 16px 0 0;
+  font-size: var(--pp-note, 16px);
+  line-height: 1.5;
   color: var(--la-grey);
 }
 .foot strong {
