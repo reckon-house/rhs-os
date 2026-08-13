@@ -70,6 +70,12 @@ interface Spec {
   /* the published minimum cacheable prefix, so the reading below can be
      read against the thing it is testing */
   cacheMin?: number;
+  /* Whether the model accepts output_config.effort. NOT a no-op where
+     unsupported: Haiku 4.5 rejects the parameter with a 400
+     ("This model does not support the effort parameter"), so sending it
+     to every Anthropic model took the whole Haiku column out. Opt in per
+     model rather than assuming a shared surface. */
+  effort?: "low" | "medium" | "high";
 }
 
 const BENCH: Spec[] = [
@@ -77,6 +83,7 @@ const BENCH: Spec[] = [
     key: "sonnet", provider: "anthropic", model: "claude-sonnet-5",
     price: { in: 2.0, out: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
     cacheMin: 1024,
+    effort: "low",
   },
   {
     key: "haiku", provider: "anthropic", model: "claude-haiku-4-5",
@@ -129,26 +136,21 @@ async function runAnthropic(s: Spec, facts: string, q: string, trail: string[]):
     const res = await new Anthropic().messages.create({
       model: s.model,
       max_tokens: MAX_TOKENS,
-      /* EFFORT LOW, and the reason is a truncation rather than a budget.
-         Sonnet 5 runs adaptive thinking whenever `thinking` is omitted,
-         and max_tokens caps thinking PLUS visible text together. On the
-         kitchen question it spent 430 of 500 tokens reasoning about a
-         three-sentence answer and stopped mid-word writing one; at 300
-         it returned an empty text block having thought the whole budget
-         away. Haiku never did this because it has no adaptive thinking,
-         and answered the same question in 62 tokens.
+      /* EFFORT, where the model takes it, and the reason is a truncation
+         rather than a budget. Sonnet 5 runs adaptive thinking whenever
+         `thinking` is omitted, and max_tokens caps thinking PLUS visible
+         text together. On the kitchen question it spent 430 of 500
+         tokens reasoning about a three-sentence answer and stopped
+         mid-word writing one; at 300 it returned an empty text block
+         having thought the whole budget away. Low cut that to 142 tokens
+         for the same answer, finished.
 
-         The task is three sentences assembled from a supplied blob.
-         There is no multi-step reasoning here for thinking to do, so
-         depth is pure latency and cost. Low is the lever the Sonnet 5
-         guidance names for exactly this; disabling thinking outright is
-         cheaper still but carries its own failure modes, so it is not
-         reached for without measuring first.
-
-         Applies to the Anthropic models generally: Haiku 4.5 predates
-         the effort parameter and ignores it, so this is Sonnet-only in
-         practice and harmless there. */
-      output_config: { effort: "low" },
+         Haiku never had the problem because it has no adaptive thinking
+         to spend, and it does NOT quietly ignore the parameter either:
+         it 400s on it. Sending effort to every Anthropic model was a
+         guess that took the whole Haiku column out, which is why the
+         spec now opts in per model instead. */
+      ...(s.effort ? { output_config: { effort: s.effort } } : {}),
       system: [
         { type: "text", text: SYSTEM },
         {
