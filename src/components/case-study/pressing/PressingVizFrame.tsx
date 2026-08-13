@@ -34,9 +34,17 @@ export interface PressingVizFrameProps {
   mark?: { n: string; name: string };
   /** The classic viz component, rendered full-column on the paper. */
   children: ReactNode;
+  /**
+   * One quiet line under the chart saying what it shows. Same field a
+   * plate uses (`pressing.caption`) and the same type treatment, because
+   * it is the same object: a figcaption. A chart carries no title, so
+   * without this a reader meets a set of bars and has to infer both the
+   * unit and the question from the axis labels alone.
+   */
+  caption?: string;
 }
 
-export function PressingVizFrame({ mark, children }: PressingVizFrameProps) {
+export function PressingVizFrame({ mark, children, caption }: PressingVizFrameProps) {
   return (
     <section className={styles.frame}>
       {mark ? (
@@ -45,6 +53,7 @@ export function PressingVizFrame({ mark, children }: PressingVizFrameProps) {
         </div>
       ) : null}
       <div className={styles.body}>{children}</div>
+      {caption ? <p className={styles.caption}>{caption}</p> : null}
     </section>
   );
 }

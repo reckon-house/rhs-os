@@ -422,7 +422,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
        one-ink chart that could not show its own palette. */
     if (s.type === "kitchen-palette") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           {/* Rings rather than the swatch ledger. The ledger has no
               quantity to draw, which is why it never sat with the rest of
               the kit; the rings carry each finish's measured share of the
@@ -438,7 +438,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     }
     if (s.type === "color-permutations") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingSwatchLedger
             label="The palette"
             families={JC_PALETTE}
@@ -490,7 +490,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     // state, and there is nothing to render on a server.
     if (s.type === "live-app") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingLiveApp
             src={s.src}
             title={s.title}
@@ -526,7 +526,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "material-overlap") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingMaterialSpan />
         </PressingVizFrame>
       );
@@ -536,7 +536,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "material-circos") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingMaterialWheel />
         </PressingVizFrame>
       );
@@ -546,7 +546,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "ai-heatmap") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingSignalMatrix section={s} />
         </PressingVizFrame>
       );
@@ -556,7 +556,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "cabin-midcentury-spectrum") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingSpectrum />
         </PressingVizFrame>
       );
@@ -566,7 +566,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "intelligence-flow") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingIntelligenceWheel section={s} />
         </PressingVizFrame>
       );
@@ -576,7 +576,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "campaign-blast-radius") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingBlastMass />
         </PressingVizFrame>
       );
@@ -586,7 +586,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "editorial-treatments") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingEditorialRange />
         </PressingVizFrame>
       );
@@ -596,7 +596,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "mcp-architecture") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingMCPPath />
         </PressingVizFrame>
       );
@@ -606,7 +606,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "jeffrey-flagship-radius") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingSurfaceLoad />
         </PressingVizFrame>
       );
@@ -616,7 +616,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "stats-summary") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingStatsSummary section={s} />
         </PressingVizFrame>
       );
@@ -626,7 +626,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     if (s.type === "system-architecture") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingArchitecture />
         </PressingVizFrame>
       );
@@ -635,7 +635,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     }
     if (s.type === "stats-bar") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingStatsBar section={s} />
         </PressingVizFrame>
       );
@@ -644,7 +644,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     }
     if (s.type === "coverage-chart") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingCoverageChart section={s} />
         </PressingVizFrame>
       );
@@ -653,7 +653,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     }
     if (s.type === "speed-comparison") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingSpeedComparison section={s} />
         </PressingVizFrame>
       );
@@ -662,7 +662,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     }
     if (s.type === "dev-timeline") {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingDevTimeline section={s} />
         </PressingVizFrame>
       );
@@ -673,7 +673,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
     // ── Classic viz sections, hosted in the pressing frame ──
     if (VIZ_TYPES.has(s.type)) {
       out.push(
-        <PressingVizFrame key={s.id} mark={p?.mark}>
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <SectionRenderer section={s} />
         </PressingVizFrame>
       );

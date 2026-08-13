@@ -66,3 +66,23 @@
     margin-bottom: 26px;
   }
 }
+
+/* THE PLATE'S FIGCAPTION, ON A CHART. Same spec as PressingPlates
+   .caption — --pp-cap, 400, sentence case, 0.55 opacity — because it is
+   doing the same job: one quiet line telling you what you are looking
+   at, under the thing it describes. No new type treatment, and it reads
+   as the same object a reader has already met under the photographs.
+
+   Wider gap than a plate's 8px. A plate's caption hangs off a hard image
+   edge; a chart ends in whatever its last mark happens to be, so it
+   needs the extra air to stop reading as another axis label. */
+.caption {
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  opacity: 0.55;
+  margin: 22px 0 0;
+  max-width: 62ch;
+}

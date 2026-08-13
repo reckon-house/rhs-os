@@ -469,7 +469,13 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "stats",
       type: "stats-bar",
-      pressing: { mark: { n: "07", name: "Classification system" } },
+      pressing: {
+        mark: { n: "07", name: "Classification system" },
+        caption:
+          "What one documented item is worth, averaged inside each category. " +
+          "Bars run against appliances, the dearest of them. Vehicles is a " +
+          "floor rather than an average, so it is left as a figure.",
+      },
       totals: [
         { value: "73", label: "ITEMS DOCUMENTED", sub: "Average per home" },
         { value: "$49,630", label: "TOTAL VALUE", sub: "Tracked assets" },
@@ -906,7 +912,18 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "speed-comparison",
       type: "speed-comparison",
-      pressing: { mark: { n: "13", name: "Usage data" } },
+      pressing: {
+        mark: { n: "13", name: "Usage data" },
+        /* Provenance, not invented. The brief above this chart states it:
+           "Traditional manual inventory of a 73-item home: estimated 8-12
+           hours." Estimated is the study's own word and it stays. An
+           earlier draft of this line had the manual figure coming from a
+           homeowner and the A.R.C. figure from a measured run over the
+           same house; the study says neither. */
+        caption:
+          "The same 73-item home documented each way. The manual figure " +
+          "is an estimate, the A.R.C. figure the time the app takes.",
+      },
       title: "DOCUMENTATION SPEED",
       items: [
         { label: "Manual Inventory", value: "8-12 hours", width: 95, color: "#9a9a92" },
@@ -918,7 +935,19 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "dev-timeline",
       type: "dev-timeline",
-      pressing: { mark: { n: "13", name: "Usage data" } },
+      pressing: {
+        mark: { n: "13", name: "Usage data" },
+        /* The first draft of this line said the bars overlap and that the
+           overlaps are where two stages ran at once. Neither is true. The
+           phases carry a name and "2 wks" and nothing else, and the
+           component lays them end to end from a running cursor, so they
+           read 0-2, 2-4, 4-6, 6-8, 8-10. Five twos are the ten the header
+           states, which is also the arithmetic that rules an overlap out.
+           I was describing the picture and inventing a reason for it. */
+        caption:
+          "Ten weeks from concept to a live App Store product, in five " +
+          "stages of two weeks, run one after another.",
+      },
       label: "DEVELOPMENT TIMELINE",
       duration: "10 weeks, concept to launch",
       phases: [
