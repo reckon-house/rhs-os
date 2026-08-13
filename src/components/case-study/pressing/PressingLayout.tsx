@@ -42,6 +42,7 @@ import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
 import { PressingGapColumn } from "./viz/PressingGapColumn";
+import { PressingScreenGrid } from "./PressingScreenGrid";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
@@ -185,6 +186,18 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
              full-width block, which split an argument from the copy
              that set it up. */
           paragraphs.push(...splitParagraphs(n.content));
+          j += 1;
+          continue;
+        }
+        if (n.type === "feature-cards") {
+          /* The second narrow variant. Same argument as the gap chart:
+             the screens belong beside the claim about the interface, not
+             as their own block below it. And these files are 380px, so
+             the full-measure row was magnifying them 1.8x — the column
+             is where they are actually sharp. Titles come across as
+             captions; the descriptions do not fit a column and the
+             footnote above already names the four views. */
+          viz = <PressingScreenGrid key={n.id} items={n.items} />;
           j += 1;
           continue;
         }

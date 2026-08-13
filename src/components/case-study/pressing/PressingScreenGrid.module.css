@@ -1,0 +1,56 @@
+/*
+ * PressingScreenGrid — feature-cards, two up, inside a brief's copy
+ * column. Spacing follows the brief's own rhythm rather than inventing
+ * one: the top margin is the gap a brief already puts between its
+ * paragraphs and whatever it absorbs (see PressingGapColumn, which
+ * opens on the same clamp).
+ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 1.8vw, 22px);
+  margin: clamp(28px, 4vw, 44px) 0 clamp(8px, 1.4vw, 16px);
+}
+
+.cell {
+  margin: 0;
+  min-width: 0;
+}
+
+/* THE RADIUS LIVES ON THE CONTAINER, per the house rule: rounded plus
+   overflow-hidden on the box, nothing on the <img>, no clip-path. These
+   sit well inside the plate scale, so the corner comes down with the
+   box — a plate's clamp on a 180px thumbnail would eat the picture. */
+.shot {
+  display: block;
+  width: 100%;
+  max-width: var(--native, 100%);
+  border-radius: clamp(10px, 1.4vw, 16px);
+  overflow: hidden;
+  background: var(--pp-paper, #fff);
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The plate's figcaption, unchanged: --pp-cap at 400, sentence case,
+   0.55 opacity. A caption is a caption wherever it lands. */
+.cap {
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  opacity: 0.55;
+  margin-top: 8px;
+}
+
+/* One up on a phone: two 180px thumbnails in a 320px column would put
+   the screens below the size their own UI is legible at. */
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

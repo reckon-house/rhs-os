@@ -823,7 +823,10 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The interface treats your stuff like it matters - because financially, it does.",
+        /* Was "matters - because financially". A hyphen standing in for
+           a dash is still a dash, and the rule covers all three. The
+           clause it was joining takes a comma. */
+        "The interface treats your stuff like it matters, because financially it does.",
     },
     {
       id: "product-footnote",
