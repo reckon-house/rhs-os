@@ -98,14 +98,17 @@ export function PressingLiveApp({
             type="button"
             className={styles.poster}
             onClick={() => setLive(true)}
-            aria-label={`Load the live product at ${origin}`}
+            aria-label={`Open the A.R.C. app, served from ${origin}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={poster} alt={posterAlt} loading="lazy" decoding="async" />
             <span className={styles.veil} />
+            {/* "Load the live product" was the same register as the
+                footnote it sits under: a description of what the code
+                does. This is a button on a picture of a phone. */}
             <span className={styles.cta}>
               <span className={styles.dot} aria-hidden="true" />
-              Load the live product
+              Open the app
             </span>
           </button>
         )}
@@ -132,10 +135,21 @@ export function PressingLiveApp({
         )}
       </div>
 
+      {/* SAY WHAT IT IS, IN THE READER'S TERMS. This line used to read
+          "the frame stays empty until you ask for it, so nothing loads
+          from another origin on the way past", which explains a build
+          decision to someone who did not ask for one. Whether a page
+          makes a third-party request before a click is my problem, not
+          theirs. What they need to know is that the thing in the phone
+          is the real app and they are allowed to touch it.
+
+          "Not a prototype of it" also went. That construction is spent:
+          A.R.C. already owns "not a prototype, not a demo" once, and the
+          copy rules keep it to once. */}
       <p className={styles.foot}>
         {live ? (
           <>
-            This is the shipped product, not a prototype of it.{" "}
+            This is the real app, running on a sample home.{" "}
             {instruction ? <strong>{instruction}</strong> : null}{" "}
             <a href={src} target="_blank" rel="noopener noreferrer">
               Open it in its own tab
@@ -144,8 +158,8 @@ export function PressingLiveApp({
           </>
         ) : (
           <>
-            The frame stays empty until you ask for it, so nothing loads
-            from another origin on the way past.
+            The real app, with a sample home already in it. Click to load
+            it and have a look around.
           </>
         )}
       </p>
