@@ -668,8 +668,17 @@ function factLookup(q0) {
    words and missed the point. A person asking these is trying to
    REACH somebody, and the reasonable reply is the address, said
    plainly, first. */
+/* "message" and "leave" were the hole: "can i leave a message here?" is
+   the plainest way anyone asks for this and it missed every word in the
+   set, fell through to the model, and got the off-topic refusal. The
+   worst possible answer to the most valuable question the field takes.
+   Kept to words that cannot mean anything else here — "write" and
+   "note" are deliberately OUT, because "do you write copy" and "show
+   me your notes" are questions about the work and the CRAFT guard
+   below does not cover either. */
 const REACH = new Set(("contact email mail reach hire hiring hired inquiry " +
-  "inquiries inquire commission collaborate touch talk call available availability").split(" "));
+  "inquiries inquire commission collaborate touch talk call available " +
+  "availability message messages leave").split(" "));
 /* "who" alone is not an about question: "who inspires you" and "who
    have you worked with" are questions about other people. The phrase
    intents above catch those first, and this stays for the real ones. */
@@ -1112,7 +1121,9 @@ function renderToned(el, segs, n) {
    is part of the site's own case study. */
 /* 4: the muse and style facets, the ask log, and the 259-question
  * audit that drove both */
-const VOICE_VERSION = 7;
+/* 8: REACH takes "message" and "leave", and the model's off-topic
+ * branch now ends on the address instead of a flat no */
+const VOICE_VERSION = 8;
 
 /* One-line source attribution, appended to every receipt. */
 function machinery() {
