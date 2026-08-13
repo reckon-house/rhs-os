@@ -43,7 +43,23 @@ import {
 
 export const runtime = "nodejs";
 
-const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
+/* HAIKU, chosen on measurement rather than tier. Benched against Sonnet 5
+   and Grok 4.6 on this exact workload, averaged over the same questions:
+   1,626ms against Sonnet's 2,789 and Grok's 13,000 to 32,000, at $0.00084
+   an answer against $0.00275 and $0.0088. It also answered better as often
+   as not, which was the surprise.
+
+   THE ONE THING TO WATCH is the cache floor. Haiku's minimum cacheable
+   prefix is 4,096 tokens and it counts this one at ~4,719, so the margin
+   is about 15%. It was 36 tokens at one point today and only cleared
+   because the system prompt grew. Caching below the minimum fails
+   silently: no error, and the sole symptom is cache_read_input_tokens
+   sitting at zero in the log line below. If projects are ever removed
+   from the shelf, read that number before assuming the bill is fine.
+
+   Effort is not set here on purpose. Haiku 4.5 rejects
+   output_config.effort with a 400 rather than ignoring it. */
+const MODEL = process.env.ASK_MODEL || "claude-haiku-4-5";
 /* The voice contract, the shelf and the facts builder live in
    @/lib/ask-context so /api/ask-compare hands another provider
    byte-identical input. A duplicated system prompt is one that drifts. */
@@ -60,12 +76,19 @@ const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
    MEASURED, Aug 2026: SYSTEM ~625 tokens, SHELF ~3,782 across 30
    projects, so the prefix is ~4,407.
 
-   THAT NUMBER IS WHY THIS RUNS ON SONNET 5, and the reason is the cache
-   floor rather than the price. Sonnet 5's minimum is 1,024, which this
-   clears more than four times over. Haiku 4.5's is 4,096 — cleared by
-   311 tokens, about seven percent. Drop a project, trim a few subtitles
-   or shrink the facet lists and the prefix falls under Haiku's floor,
-   caching switches off, and nothing on the page changes to say so.
+   THAT NUMBER IS THE THING TO WATCH, now that this runs on Haiku. Its
+   minimum cacheable prefix is 4,096 and it counts this one at ~4,719,
+   a margin of about 15%. Earlier today the margin was 36 tokens, and it
+   only opened up because the system prompt gained rules. Drop a project,
+   trim subtitles or shrink the facet lists and the prefix falls back
+   under the floor, caching switches off, and nothing on the page changes
+   to say so. The estimate that put this at "one percent" was made by
+   counting characters; the tokenizer is the only thing worth trusting
+   here, and the reading is in the log line at the foot of this file.
+
+   Sonnet 5 counts the same prefix at ~6,983 against a 1,024 minimum, so
+   if the shelf ever does shrink past Haiku's floor, pointing ASK_MODEL
+   back at Sonnet is the escape hatch.
 
    The price difference is real but not the argument: at this shape
    (~46 input tokens per output token, so the bill is essentially an
