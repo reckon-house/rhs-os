@@ -42,7 +42,7 @@ import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
 import { PressingGapColumn } from "./viz/PressingGapColumn";
-import { PressingCoverageCard } from "./viz/PressingCoverageCard";
+import { PressingCoverageCard } from "./PressingCoverageCard";
 import { PressingScreenGrid } from "./PressingScreenGrid";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
