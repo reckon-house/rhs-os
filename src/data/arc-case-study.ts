@@ -472,9 +472,9 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "07", name: "Classification system" },
         caption:
-          "What one documented item is worth, averaged inside each category. " +
-          "Bars run against appliances, the dearest of them. Vehicles is a " +
-          "floor rather than an average, so it is left as a figure.",
+          "The average price of one item in each category. Bars are sized " +
+          "against appliances, the highest. Vehicles has no bar because " +
+          "$5,000+ is a starting point, not an average.",
       },
       totals: [
         { value: "73", label: "ITEMS DOCUMENTED", sub: "Average per home" },
@@ -921,8 +921,8 @@ export const arcCaseStudy: CaseStudy = {
            homeowner and the A.R.C. figure from a measured run over the
            same house; the study says neither. */
         caption:
-          "The same 73-item home documented each way. The manual figure " +
-          "is an estimate, the A.R.C. figure the time the app takes.",
+          "The same 73-item home, documented both ways. The 8-12 hours is " +
+          "an estimate. The 30 minutes is how long the app takes.",
       },
       title: "DOCUMENTATION SPEED",
       items: [
@@ -945,8 +945,8 @@ export const arcCaseStudy: CaseStudy = {
            states, which is also the arithmetic that rules an overlap out.
            I was describing the picture and inventing a reason for it. */
         caption:
-          "Ten weeks from concept to a live App Store product, in five " +
-          "stages of two weeks, run one after another.",
+          "Ten weeks from idea to the App Store, in five two-week stages, " +
+          "one after the other.",
       },
       label: "DEVELOPMENT TIMELINE",
       duration: "10 weeks, concept to launch",
