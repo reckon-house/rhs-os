@@ -218,6 +218,10 @@ export function PressingZoomPlate({
     let parkY = 0;
     let zoomPx = 0;
     let panPx = 0;
+    /* How far the apparatus has to rise to sit ON the parked plate.
+       Zero whenever the plate covers the screen, which is every window
+       the plate was tuned against, so this changes nothing there. */
+    let apparLift = 0;
 
     let wrote = false;
     /* the inline will-change currently written; "" means the class rules */
@@ -299,6 +303,24 @@ export function PressingZoomPlate({
          width-fit plate starts at the viewport's left edge. */
       parkX = (window.innerWidth - box.w * endScale) / 2;
 
+      /* THE APPARATUS RIDES THE PLATE, and only when it has to.
+         The numeral and captions are grid-anchored to the sticky's
+         bottom padding edge, and the knockout only masks ink where the
+         plate actually reaches it. That holds while a parked plate
+         covers the screen, which it does on any window close to the
+         proportions this was tuned against. It stops holding on a TALL
+         window: a landscape plate fits the width and runs out of height,
+         so it parks with paper below it and the text lands on the paper
+         as plain ink. Measured at 1153x1400 — a 3840x2363 plate parks
+         710px tall in a 1400px screen and leaves 761px of paper, with
+         the numeral and both caption lines sitting in it.
+         So the apparatus rises by whatever the plate fails to cover.
+         Zero when it covers, which is why nothing moves on the windows
+         that already read correctly. */
+      const padB = parseFloat(getComputedStyle(sticky).paddingBottom) || 0;
+      const innerBottom = sticky.getBoundingClientRect().height - padB;
+      apparLift = Math.max(0, innerBottom - (parkY + box.h * endScale));
+
       zoomPx = vh() * 1.1; // scroll spent growing the plate
       /* The pan used to be 1:1 — one pixel of scroll for one of image —
          which is right for a tall frame with hundreds of pixels hanging
@@ -326,6 +348,7 @@ export function PressingZoomPlate({
       fig.style.borderRadius = "";
       fig.style.willChange = "";
       wrap.style.height = "";
+      sticky.style.removeProperty("--zp-lift");
       for (const el of inkEls) {
         el.style.maskImage = "";
         el.style.removeProperty("-webkit-mask-image");
@@ -400,6 +423,18 @@ export function PressingZoomPlate({
          border-radius along with everything else, so this is the pre-scale
          number that LOOKS like baseR * (1 - e) on screen. */
       fig.style.borderRadius = ((baseR * (1 - e)) / cur).toFixed(2) + "px";
+
+      /* Ramped on the SAME e the plate grows on, so at rest the lift is
+         zero and the resting composition is untouched, and by the time
+         the plate has parked the ink is sitting on it. Written on the
+         sticky as one variable: the ink and the burn layers under it
+         both read it, which keeps them in lockstep without re-running
+         the burn's sync (that only fires on resize and font swap, so a
+         transform on the ink alone would slide the two apart).
+         Set BEFORE the knockout is measured below — that reads live
+         rects, and a stale one would knock the ink out at the position
+         it no longer occupies. */
+      sticky.style.setProperty("--zp-lift", (-apparLift * e).toFixed(1) + "px");
       wrote = true;
 
       /* Knock the ink out exactly where the plate has reached it. Four

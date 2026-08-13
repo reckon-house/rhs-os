@@ -277,3 +277,23 @@
     right: 20px;
   }
 }
+
+/* THE APPARATUS RIDES THE PLATE. --zp-lift is written on the sticky by
+   the driver: 0 at rest and on any window where the parked plate covers
+   the screen, negative by exactly the uncovered height on a window too
+   tall for a landscape plate to fill. See measure() for the measurement
+   and why it is ramped rather than applied flat.
+
+   The burn takes the SAME variable. Its boxes are placed from the ink's
+   rect by a sync that only runs on resize and font swap, so lifting the
+   ink alone would slide the letterform masks off the words they belong
+   to. One variable on both keeps them locked together with no re-sync.
+
+   Composited transform, not a layout property: this runs every frame of
+   the grow, and moving `top` or a margin here would reflow the sticky
+   thirty times a second. */
+.num,
+.left,
+.burn {
+  transform: translateY(var(--zp-lift, 0px));
+}
