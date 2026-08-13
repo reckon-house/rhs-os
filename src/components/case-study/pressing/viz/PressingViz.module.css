@@ -468,85 +468,70 @@
    a limit that was set once and never moved. */
 .gapCol {
   margin: clamp(28px, 4vw, 44px) 0 clamp(8px, 1.4vw, 16px);
+  display: flex;
+  flex-direction: column;
+  /* THE FIXED RHYTHM IS THE FIX. Rows are spaced by this gap and by
+     nothing else, so no label sits at a height derived from a number
+     and no pair of them can be driven together by the data. */
+  gap: clamp(20px, 2.6vw, 30px);
 }
-
-.gapPlot {
+.gapRow {
+  display: block;
+}
+.gapHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.gapTrack {
   position: relative;
-  /* Tall enough that the overshoot is a legible distance rather than a
-     sliver. Below this the accent segment stops being a measurement
-     and becomes a highlight. */
-  height: clamp(230px, 34dvh, 330px);
-  /* nothing to reserve: the two label columns are absolutely
-     positioned and the plot is the full column measure */
-  padding-right: 0;
+  display: block;
+  width: 100%;
+  height: var(--pv-heavy);
 }
-
-/* The documented value as a STICK, not a slab: the heavy mark at its
-   own weight, round-capped, standing the full height of the plot so the
-   scale needs no axis. It was a 58px-wide block of ink, which is the
-   shape the system now reserves for a stripe MASS — a single value gets
-   a single mark. */
-.gapBar {
+.gapStickInk,
+.gapStickGrey {
   position: absolute;
   left: 0;
-  bottom: 0;
   top: 0;
-  width: var(--pv-heavy);
+  height: 100%;
   border-radius: 999px;
+}
+.gapStickInk {
+  width: var(--asset);
   background: var(--pv-ink);
 }
-
-/* The overshoot needs no fill of its own. It used to be the section's
-   one colour; with the accent gone, the distance between the limit line
-   and the top of the stick IS the gap, and the pill names it. A second
-   fill here would only restate what the geometry already says. */
-.gapOver {
-  display: none;
-}
-
-/* The policy limit: a FINE line at full ink, run wide of the stick on
-   both sides so it reads as a level the value stands out of rather than
-   a tick on the bar. Grey, because a superseded limit is a second data
-   state — the one thing grey is still for. */
-.gapLimit {
-  position: absolute;
-  left: calc(var(--pv-heavy) * -1.6);
-  right: 34%;
-  bottom: var(--limit);
-  height: var(--pv-fine);
+/* grey because a limit set once and never revisited is a second data
+   state, which is the one job §02 keeps grey for */
+.gapStickGrey {
+  width: var(--policy);
   background: var(--pv-grey);
 }
-
-/* Labels hang off the bar's right, each on the line it belongs to.
-   TWO columns, and that is the load-bearing part: the overshoot band is
-   only ~23% of the plot, so a gap callout centred in it lands on top of
-   the value label sitting at the plot's top. Stacking them vertically
-   cannot be made to fit — at any plot height the two bands stay in the
-   same proportion. Separate columns, and they can never collide. */
-.gapTopLbl,
-.gapLimitLbl {
+/* the shortfall: begins where the limit ends, runs to where the
+   documented value reached */
+.gapSpan {
   position: absolute;
-  /* follows the stick, not the retired slab width */
-  left: calc(var(--pv-heavy) + 18px);
-  width: 44%;
+  top: 50%;
+  left: var(--policy);
+  width: calc(var(--asset) - var(--policy));
+  height: var(--pv-fine);
+  background: var(--pv-ink);
+  transform: translateY(-50%);
 }
-.gapTopLbl {
-  top: 0;
+/* In flow beneath the track and flush right, which is where the
+   documented value ends. Two earlier placements failed on the same
+   arithmetic: centred on the span, a 125px pill on ARC's 89px shortfall
+   pushed past the 380px column; anchored on the span, it covered the
+   line it was naming. Under the track it can do neither, and it still
+   sits directly below the distance it measures. */
+.gapFoot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 13px;
 }
-.gapLimitLbl {
-  bottom: var(--limit);
-  transform: translateY(50%);
-}
-
-/* The second column: the gap, beside the band it measures. */
-/* THE PILL. The overshoot is what this section exists to say, and the
-   pill is the system's one emphasis device now that the accent is gone.
-   Reversed out of ink, sitting beside the band it measures. */
-.gapCallout {
-  position: absolute;
-  right: 0;
-  bottom: calc(var(--limit) + (100% - var(--limit)) / 2);
-  transform: translateY(50%);
+.gapPill {
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -554,20 +539,17 @@
   border-radius: 999px;
   background: var(--pv-ink);
   color: var(--pp-paper);
+  white-space: nowrap;
 }
-
-.gapTopLbl .lbl,
-.gapLimitLbl .lbl {
-  display: block;
-  margin-top: 5px;
-}
-/* inside the pill the two run on one line, both reversed */
-.gapCallout .lbl {
-  margin: 0;
+.gapPill .lbl {
   color: var(--pp-paper);
 }
-.gapCallout .valSm {
-  display: inline;
+.gapPillVal {
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--pp-paper);
 }
 
@@ -580,21 +562,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 760px) {
-  /* one column on a phone: the gap drops under its value rather than
-     competing for a measure that is not there */
-  .gapCallout {
-    right: auto;
-    left: calc(clamp(34px, 4.4vw, 58px) + 16px);
-    text-align: left;
-    bottom: auto;
-    top: calc(100% + 14px);
-    transform: none;
-  }
-  .gapPlot {
-    margin-bottom: 52px;
-  }
-}
+/* The phone override that used to live here moved the callout out from
+   under an upright plot. Both classes are gone: rows now stack on their
+   own rhythm at every width, and the pill is anchored inside the track,
+   so a phone needs no special case. */
 
 /* ── DRAW-IN — a chart arrives instead of just being there ────────────
    The method grid's rule already draws itself left to right on arrival
