@@ -32,14 +32,14 @@
  * mode), so all scrub math is getBoundingClientRect vs the viewport and the
  * per-frame work subscribes to the shared driver in src/lib/scrub. Sticky
  * dies under any transformed, filtered, or overflow-clipping ancestor —
- * mount this in plain flow. Below 760px and under reduced motion the pin
- * and the zoom are off entirely (see the module CSS): static figure,
- * numeral and captions as plain ink, in flow.
+ * mount this in plain flow. Under reduced motion the pin and the zoom
+ * are off entirely (see the module CSS): static figure, numeral and
+ * captions as plain ink, in flow. Both run at every width; a phone only
+ * changes where the resting slot sits and how wide it is.
  */
 
 import { Fragment, useEffect, useId, useRef } from "react";
 import { onTick, vh } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingZoomPlate.module.css";
@@ -84,7 +84,7 @@ export type PressingZoomPlateProps = {
 
 /**
  * The masthead's height, read from the one shared token (--nav-h on :root,
- * 54px desktop / 48px below the breakpoint). The plate's top edge parks at
+ * 54px desktop / 48px on a phone). The plate's top edge parks at
  * this line, and the pan window is the viewport minus it. Read at measure
  * time, not module time — the token is responsive.
  */
@@ -187,7 +187,6 @@ export function PressingZoomPlate({
       instrRef.current,
     ].filter((el): el is NonNullable<typeof el> => el !== null);
 
-    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     /* Read from the token rather than hard-coding — the prototype's rule.
@@ -360,7 +359,7 @@ export function PressingZoomPlate({
          transform left behind is a plate frozen mid-zoom. The CSS state
          under these media queries is the whole mobile/reduced design, so
          clearing the inline writes is the entire hand-back. */
-      if (narrow.matches || reduce.matches) {
+      if (reduce.matches) {
         if (wrote) {
           wrote = false;
           clearWrites();

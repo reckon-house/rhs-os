@@ -233,7 +233,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
           "Full landing page",
           "Lockup and icon per module",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
       aspect: "native",

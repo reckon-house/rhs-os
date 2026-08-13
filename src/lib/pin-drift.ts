@@ -34,7 +34,6 @@
 
 import { useEffect, type RefObject } from "react";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 
 /**
  * Fraction of scroll speed the pinned content keeps. Held content travels
@@ -70,7 +69,6 @@ export function usePinDrift(
     const inner = innerRef.current;
     if (!wrap || !inner) return;
 
-    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     let last = -1;
 
     const clear = () => {
@@ -81,10 +79,9 @@ export function usePinDrift(
     };
 
     const off = onTick(() => {
-      // Below the breakpoint nothing pins, and reduced motion holds every
-      // scrub still — both checked per tick so a mid-session flip hands the
-      // element straight back to its CSS state.
-      if (narrow.matches || reducedMotion()) return clear();
+      // Reduced motion holds every scrub still, checked per tick so a
+      // mid-session flip hands the element straight back to its CSS state.
+      if (reducedMotion()) return clear();
       if (document.documentElement.hasAttribute("data-paused")) return;
 
       const r = wrap.getBoundingClientRect();

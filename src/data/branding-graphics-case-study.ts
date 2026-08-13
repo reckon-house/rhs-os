@@ -338,7 +338,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
           "Storefront window",
           "Photograph at street size",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

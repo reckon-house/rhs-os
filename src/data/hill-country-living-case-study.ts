@@ -131,7 +131,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
           "Eisenhower painting, oak mantel",
           "Brass pendant overhead",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

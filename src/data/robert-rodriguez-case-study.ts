@@ -95,7 +95,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
           "Pink blazer over mesh field",
           "One of four source frames",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
       },
     },
 

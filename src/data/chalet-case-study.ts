@@ -113,7 +113,7 @@ export const chaletCaseStudy: CaseStudy = {
           "Repainted for contrast",
           "Pacific Northwest",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

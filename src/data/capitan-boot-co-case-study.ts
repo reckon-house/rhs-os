@@ -212,7 +212,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
           "Mesa and sage terrain",
           "Western Original arrows",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

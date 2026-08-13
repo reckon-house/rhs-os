@@ -102,38 +102,33 @@
   opacity: 0.55;
 }
 
-/* Below 760px the pin is off entirely: one track, separate rows. Sharing
-   row 2 is what lets the pair overlap for the pin — in a single column
-   that overlap becomes the column printed on top of the headline. */
+/* ── phones ───────────────────────────────────────────────────────────
+   LAYOUT ONLY. The pin and the crossing both run here exactly as they do
+   on a desktop: the gesture is horizontal travel of the headline's OWN
+   lines, and a line entering from the right edge needs no "beside" to
+   read. Only the reduced-motion branch below dissolves the pin.
+
+   One track, and the column takes its own row. Sharing row 2 is what
+   lets the pair overlap on a wide screen; in a single column that
+   overlap is the column printed on top of the headline.
+
+   The headline keeps the desktop's small top margin rather than the
+   flow version's 6dvh — inside a pinned screen the vertical room is
+   fixed and the column has to fit underneath it. */
 @media (max-width: 760px) {
-  .wrap {
-    height: auto;
-  }
   .sticky {
-    position: static;
-    height: auto;
-    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
     padding: 30px 20px;
     grid-template-columns: 1fr;
   }
   .head {
-    margin-top: 6dvh;
     font-size: clamp(34px, 10.4vw, 74px);
     max-width: none;
   }
-  /* !important outranks any stale inline margin the placement pass wrote
-     before a mid-session breakpoint crossing caught up with it. */
   .col {
     grid-column: 1;
     grid-row: 3;
-    margin-top: 26px !important;
+    margin-top: 26px;
     padding-bottom: 0;
-  }
-  /* Belt for the flip frames between a resize below the breakpoint and
-     the component's static remount: lines must never sit off screen. */
-  .ln {
-    transform: none !important;
-    will-change: auto;
   }
 }
 

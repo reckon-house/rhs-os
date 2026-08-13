@@ -32,17 +32,18 @@
  * frame at its native ratio at viewport width, so responsive sizing has
  * little to add here.
  *
- * Below 760px there is no room to stage a pass: no negative margin, no
- * scrub, the image flows normally at full width, square. Reduced motion
- * renders the same settled state at any width. Both are pure CSS
- * (max-[760px]: and motion-reduce: variants), so server markup is correct
- * everywhere; the driver only ever writes on top of the active state and
- * cleans its inline styles up behind itself.
+ * Reduced motion renders the settled state: no negative margin, no
+ * scrub, the image in flow at full width, square. Pure CSS
+ * (motion-reduce: variants), so server markup is correct everywhere; the
+ * driver only ever writes on top of the active state and cleans its
+ * inline styles up behind itself. The pass runs at every width — the
+ * climb is vertical and a phone has the same screen of travel to stage
+ * it in that a laptop does.
  */
 
 import { useEffect, useRef } from "react";
 import { onTick } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT, RISE } from "@/lib/choreo";
+import { RISE } from "@/lib/choreo";
 
 // Resting scale and corner, verbatim from the prototype. The plate already
 // sits close to full width, so the growth is ~5% — the live HeroBlock's
@@ -118,7 +119,6 @@ export function RisingPlate({
     const img = imgRef.current;
     if (!sec || !img) return;
 
-    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let lastP = -1;
 
@@ -126,7 +126,7 @@ export function RisingPlate({
       // Checked per tick so a viewport crossing the breakpoint mid-session
       // hands the element back to its CSS state instead of freezing the
       // last frame the driver wrote.
-      if (narrow.matches || reduce.matches) {
+      if (reduce.matches) {
         if (lastP !== -1) {
           lastP = -1;
           img.style.transform = "";
@@ -175,7 +175,7 @@ export function RisingPlate({
       // plate that kept its -RISE pull-up would statically cover the last
       // ~screen of the held section's content. The margin and the spacer
       // are two halves of one contract and must switch off together.
-      className={`hero-breakout relative isolate z-[3] bg-transparent max-[760px]:!mt-0 motion-reduce:!mt-0 ${className}`}
+      className={`hero-breakout relative isolate z-[3] bg-transparent motion-reduce:!mt-0 ${className}`}
       style={{ "--choreo-rise": RISE, marginTop: `calc(-1 * ${RISE})` } as React.CSSProperties}
     >
       {/* No fixed height and no cover-crop: the section hugs the image and
@@ -193,7 +193,7 @@ export function RisingPlate({
         // at rest touches the viewport edges. A CAPPED plate never does,
         // so its inline borderRadius below overrides them — inline beats
         // the class, in every state, which is exactly what is wanted.
-        className="block w-full h-auto origin-center will-change-[transform,border-radius] [transform:scale(0.95)] rounded-[44px] max-[760px]:[transform:none] max-[760px]:rounded-none motion-reduce:[transform:none] motion-reduce:rounded-none"
+        className="block w-full h-auto origin-center will-change-[transform,border-radius] [transform:scale(0.95)] rounded-[44px] motion-reduce:[transform:none] motion-reduce:rounded-none"
         style={ceiling ? { maxWidth: `${ceiling}px`, margin: "0 auto" } : undefined}
       />
     </section>

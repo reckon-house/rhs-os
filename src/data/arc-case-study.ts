@@ -190,7 +190,7 @@ export const arcCaseStudy: CaseStudy = {
           "Wooden surface, kitchen interior",
           "Project selection screen",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
       },
     },
 

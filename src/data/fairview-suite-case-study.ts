@@ -219,7 +219,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
           "Copper clawfoot tub",
           "Charcoal hex tile",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

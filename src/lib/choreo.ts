@@ -52,12 +52,21 @@ export const RISE = "96dvh";
 export const PLATE_HOLD = "13dvh";
 
 /**
- * Below this width the choreography switches off entirely — there is no
- * room to stage a pass on a phone, so plates and stages just follow in
- * flow. Inclusive on the mobile side, matching the prototype's
- * `innerWidth <= 760`. The Tailwind `max-[760px]:` variants in PinStage
- * and RisingPlate hardcode the same number because arbitrary variants
- * cannot interpolate a constant; keep them in step with this.
+ * The width at which the pressing sections collapse to ONE TRACK.
+ *
+ * It no longer gates the choreography, and that is the whole point of
+ * the name being wrong now. Every pin, scrub and parallax runs at every
+ * width — a phone gets the cover's handover, the crossing, the zoom and
+ * the climb exactly as a desktop does, and the only thing that stands
+ * them down is a reader asking for less motion. What a narrow screen
+ * genuinely cannot carry is a headline sitting BESIDE its column, so the
+ * stylesheets cut to a single track here and nothing else.
+ *
+ * Inclusive on the mobile side, matching the prototype's
+ * `innerWidth <= 760`. The module stylesheets hardcode the same number
+ * because CSS cannot read a TS constant; keep them in step with this.
+ * Nothing in TS imports it today — it is kept as the one written record
+ * of which number those stylesheets mean.
  */
 export const CHOREO_BREAKPOINT = 760;
 

@@ -28,9 +28,10 @@
  * enforce: keep every wrapper between this section and <main> free of
  * transform, filter, and overflow clipping, or the pin silently dies.
  *
- * Below 760px and under prefers-reduced-motion the section renders
- * static: no pin, no panel, the quote as ink on paper (pure CSS, so the
- * server markup is correct at any width). The section mark keeps
+ * Under prefers-reduced-motion the section renders static: no pin, no
+ * panel, the quote as ink on paper (pure CSS, so the server markup is
+ * correct at any width). Width is not a factor — the fill climbs
+ * vertically, which a phone carries as well as a desktop. The section mark keeps
  * SectionMark's own prop-driven ground (`dark`) instead of the
  * prototype's currentColor-through-the-blend trick — the component's API
  * is explicit that it cannot know its ground at runtime, and a static
@@ -39,7 +40,6 @@
 
 import { Fragment, useEffect, useMemo, useRef } from "react";
 import { onTick, vh } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./quote.module.css";
 
@@ -77,7 +77,6 @@ export function PressingQuote({ text, indent, mark }: PressingQuoteProps) {
     const textEl = textRef.current;
     if (!wrap || !fill || !textEl) return;
 
-    const narrow = matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
     let lastE = -1;
 
@@ -85,7 +84,7 @@ export function PressingQuote({ text, indent, mark }: PressingQuoteProps) {
       // Checked per tick rather than once: both can flip mid-session, and
       // a stale write left behind is a panel frozen mid-climb under a
       // stylesheet that thinks it is gone.
-      if (narrow.matches || reduce.matches) {
+      if (reduce.matches) {
         if (lastE !== -1) {
           lastE = -1;
           fill.style.height = "";

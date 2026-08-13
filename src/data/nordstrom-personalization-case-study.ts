@@ -130,7 +130,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
           "Editorial, lifestyle, product",
           "One grid, three shapes",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

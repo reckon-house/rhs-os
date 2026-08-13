@@ -11,11 +11,11 @@
  * the contract, kept OUT of the brief so its tuned headline/column grid
  * (whose sticky range is the column's own height) is not disturbed.
  *
- * It must switch off wherever the negative margin does — below 760px and
- * under reduced motion — or it becomes a screenful of dead air with
- * nothing climbing through it. RisingPlate zeroes its margin with
- * `max-[760px]:!mt-0 motion-reduce:!mt-0`; these are the matching
- * halves, and the two must always be changed together.
+ * It must switch off wherever the negative margin does — under reduced
+ * motion — or it becomes a screenful of dead air with nothing climbing
+ * through it. RisingPlate zeroes its margin with `motion-reduce:!mt-0`;
+ * these are the matching halves, and the two must always be changed
+ * together.
  *
  * The height is an inline style rather than an arbitrary Tailwind class
  * for the reason the margin is: Tailwind's JIT scanner silently drops
@@ -29,7 +29,7 @@ export function ClimbRoom() {
   return (
     <div
       aria-hidden="true"
-      className="max-[760px]:!h-0 motion-reduce:!h-0"
+      className="motion-reduce:!h-0"
       style={{ height: RISE }}
     />
   );

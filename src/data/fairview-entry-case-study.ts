@@ -132,7 +132,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           "Slatted wood and dark abstract",
           "Leather bench beneath",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

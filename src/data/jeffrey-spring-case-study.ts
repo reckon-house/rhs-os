@@ -86,7 +86,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           "Three designers, one grid",
           "Monstera on studio white",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

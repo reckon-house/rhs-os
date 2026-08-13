@@ -9,14 +9,14 @@
 /* The wrap's real height is written by the driver: one viewport + a grow
    phase (1.1 viewports of scroll) + a 1:1 pan through the image's spill +
    the risetail. This fallback exists only for the first frame before that
-   measurement, so it is scoped to the states where the driver runs at all —
-   on a phone or under reduced motion the section is plain flow and must
-   keep its natural height. dvh, never vh: the shell is h-dvh and vh
-   overshoots by the mobile browser-chrome delta. */
+   measurement, so it is scoped to the state where the driver runs at all —
+   under reduced motion the section is plain flow and must keep its natural
+   height. dvh, never vh: the shell is h-dvh and vh overshoots by the
+   mobile browser-chrome delta. */
 .wrap {
   position: relative;
 }
-@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   .wrap {
     height: 320dvh;
   }
@@ -99,10 +99,10 @@
    rule declares no width) while `position: absolute` was silently
    discarded, leaving a 100vw figure inside the grid and collapsing the
    caption column to 89px.
-   Below 760px and under reduced motion none of this applies: the plate
-   stays a plain static figure in the grid and the slot does not exist,
-   so there is no new static state to design. */
-@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+   Under reduced motion none of this applies: the plate stays a plain
+   static figure in the grid and the slot does not exist, so there is no
+   new static state to design. */
+@media (prefers-reduced-motion: no-preference) {
   .slot {
     display: block;
     grid-column: 2;
@@ -236,30 +236,47 @@
   pointer-events: none;
 }
 
-/* Below the choreography breakpoint and under reduced motion the pin and
-   the zoom are off entirely: static figure, numeral and captions as plain
-   ink, everything in flow. Pure CSS, so server markup is correct at any
-   width with no hydration flash; the driver only ever writes on top of
-   the active state and cleans up behind itself. */
-@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+/* Under reduced motion the pin and the zoom are off entirely: static
+   figure, numeral and captions as plain ink, everything in flow. Pure
+   CSS, so server markup is correct at any width with no hydration flash;
+   the driver only ever writes on top of the active state and cleans up
+   behind itself. */
+@media (prefers-reduced-motion: reduce) {
   .burn,
   .risetail {
     display: none;
   }
 }
 
+/* ── phones ───────────────────────────────────────────────────────────
+   LAYOUT ONLY. The pin, the grow and the pan all run here; one track is
+   the only thing that changes. */
 @media (max-width: 760px) {
   .sticky {
-    height: auto;
-    min-height: 0;
     padding: 30px 20px;
     grid-template-columns: 1fr;
     gap: 20px;
-    align-content: center;
   }
-  /* The plate stacks above its caption; the numeral keeps its desktop
-     placement rules and so lands ON the image, bottom-left — the plate
-     number stamped on the frame, as the prototype has it. */
+  /* The resting slot takes the top row and the caption sits under it.
+     The plate itself is out of flow while the zoom runs, so only the
+     slot's box decides where it rests — but it is placed here too, for
+     the reduced-motion branch where it is a plain grid item again.
+
+     MATERIAL DIFFERENCE, and it is a real one rather than a retune: the
+     zoom's whole travel is the ratio between the resting box and the
+     full-bleed one, and on a wide screen the grid supplies that ratio
+     for free — a half-track inside 40px gutters rests at about 0.46 of
+     the viewport, so the plate grows 2.2x. A phone's gutter is a much
+     smaller fraction of its width, so the same construction rests at
+     0.89 and the grow reads as nothing happening. The slot is capped to
+     the family's own ratio instead, which is copying the desktop value —
+     the value here is a proportion the grid produces, not a length. */
+  .slot {
+    grid-column: 1;
+    grid-row: 1;
+    width: 46vw;
+    justify-self: center;
+  }
   .fig {
     grid-column: 1;
     grid-row: 1;

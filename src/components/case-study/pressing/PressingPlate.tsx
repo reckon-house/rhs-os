@@ -20,9 +20,9 @@
  *   corner squares off in motion) goes full-bleed.
  *
  * The figcaption is the quiet 11px --pp-cap treatment — a footnote under
- * the picture, not a label on it. Reduced motion and sub-760px behavior
- * for the climb live in RisingPlate; the flow mode is static markup with
- * nothing to switch off.
+ * the picture, not a label on it. Reduced-motion behaviour for the climb
+ * lives in RisingPlate; the flow mode is static markup with nothing to
+ * switch off.
  */
 
 import { RisingPlate } from "@/components/fx/RisingPlate";

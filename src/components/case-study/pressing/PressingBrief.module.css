@@ -208,12 +208,14 @@
 }
 
 /* ── phones ──────────────────────────────────────────────────────────
-   One track: the headline and the column stack rather than sitting beside
-   each other. They must go back to SEPARATE rows — sharing row 2 is what
-   lets them overlap for the pin, and in a single column that overlap
-   becomes the column printed on top of the headline. No pin either: there
-   is no beside to travel up. 760px inclusive, matching the prototype and
-   CHOREO_BREAKPOINT in src/lib/choreo.ts. */
+   LAYOUT ONLY, with one exception named below. The crossing lines, the
+   column's arrival, the rules drawing themselves and the image's
+   parallax all run here exactly as they do on a desktop.
+
+   One track: the headline and the column stack rather than sitting
+   beside each other. They must go back to SEPARATE rows — sharing row 2
+   is what lets them overlap for the pin, and in a single column that
+   overlap becomes the column printed on top of the headline. */
 @media (max-width: 760px) {
   .brief {
     grid-template-columns: 1fr;
@@ -226,6 +228,15 @@
     font-size: clamp(34px, 10.4vw, 74px);
     max-width: none;
   }
+  /* THE EXCEPTION, and it is a collision rather than a preference. This
+     section pins the HEADLINE, not the screen — the headline holds while
+     the column travels up beside it, and "beside" is what makes it
+     readable. Stacked, the column would travel up THROUGH the held
+     headline: two runs of ink on transparent grounds, printed over each
+     other. Giving the headline a paper band to hide behind would fix the
+     collision by inventing a gesture the family does not have.
+     PressingCrossing keeps its pin on a phone because there the sticky
+     element is the whole screen, so nothing can pass through anything. */
   .held {
     position: static;
   }
@@ -302,7 +313,7 @@
   display: block;
   will-change: transform;
 }
-@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .ln {
     transform: none !important;
     will-change: auto;

@@ -184,7 +184,7 @@ interface BaseSection {
      * in studies nobody asked about.
      */
     plateWidth?: number;
-    /** Mono instruction line on zoom plates ("Scroll — fills the mat...") */
+    /** Mono instruction line on zoom plates ("Scroll. It fills the mat...") */
     instruction?: string;
     /** The headline's separately-held final line (the prototype's .out span) */
     heldLine?: string;

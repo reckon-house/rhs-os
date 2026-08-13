@@ -262,7 +262,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
           "Slab capitals and script",
           "Photographed on the bench",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

@@ -186,7 +186,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
           "Colour carrying the set",
           "InSite, on the laptop",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },
@@ -421,7 +421,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       pressing: {
         plate: "05",
         captions: ["Flora Maxi feature", "Outline type arching over the dress"],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

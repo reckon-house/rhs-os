@@ -32,15 +32,15 @@
  * plain flow inside <main>, not inside anything that animates transform or
  * filter, or the "sticky" mode silently degrades to nothing.
  *
- * Below 760px the choreography is off entirely (the spacer hides, the pin
- * goes static, content flows normally), and prefers-reduced-motion gets
- * the same plain flow via the motion-reduce variants — both are pure CSS,
- * so the server markup is correct at any width with no hydration flash.
+ * Under prefers-reduced-motion the choreography is off entirely (the
+ * spacer hides, the pin goes static, content flows normally) via the
+ * motion-reduce variants — pure CSS, so the server markup is correct at
+ * any width with no hydration flash. It holds at every width.
  */
 
 import { useEffect, useRef, useState } from "react";
 import { onTick } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT, PLATE_HOLD, RISE } from "@/lib/choreo";
+import { PLATE_HOLD, RISE } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 
 type PinStageProps = {
@@ -108,14 +108,13 @@ export function PinStage({
     const spacer = spacerRef.current;
     if (!pin || !spacer) return;
 
-    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let held = 0;
 
     const off = onTick(() => {
       // Checked per tick rather than once: both can flip mid-session, and
       // a stale hold left behind is a section frozen mid-air.
-      if (narrow.matches || reduce.matches) {
+      if (reduce.matches) {
         if (held) {
           held = 0;
           pin.style.transform = "";
@@ -173,19 +172,19 @@ export function PinStage({
               // crosses a held SCREEN, not a strip with page behind it —
               // guarded to the active state, since plain flow should keep
               // its natural height. dvh for the same reason as RISE.
-              "sticky top-0 min-h-[100dvh] max-[760px]:static max-[760px]:min-h-0 motion-reduce:static motion-reduce:min-h-0"
+              "sticky top-0 min-h-[100dvh] motion-reduce:static motion-reduce:min-h-0"
             : "relative will-change-transform"
         }
       >
         <div ref={driftRef}>{children}</div>
       </div>
-      {/* The climb room, in flow. Hidden below the breakpoint and under
-          reduced motion; offsetHeight then reads 0, which also zeroes the
-          transform hold's travel without a separate code path. */}
+      {/* The climb room, in flow. Hidden under reduced motion;
+          offsetHeight then reads 0, which also zeroes the transform
+          hold's travel without a separate code path. */}
       <div
         ref={spacerRef}
         aria-hidden="true"
-        className="max-[760px]:hidden motion-reduce:hidden"
+        className="motion-reduce:hidden"
         style={{ height: hold ? `calc(${PLATE_HOLD} + ${RISE})` : RISE }}
       />
     </div>

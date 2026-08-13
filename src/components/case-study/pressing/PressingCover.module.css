@@ -168,63 +168,31 @@
 /* Below 760px there is no pin: headline, statement and reel stack in flow,
    bottom-weighted so the block still reads as a cover. --pp-rise is already
    0 here, but the tail is hidden anyway so nothing depends on the token. */
+/* PHONE LAYOUT ONLY. This block used to switch the cover's choreography
+   off as well — height auto on the wrap, static on the sticky and the
+   headline, `transform: none !important` on the statement — so a phone
+   got a still photograph of a cover that moves everywhere else.
+
+   The motion now runs at every width; the only thing that stops it is a
+   reader asking for less. What survives here is the part that is
+   genuinely about a small screen: type that has to come down, gutters,
+   and the reel's corner. The pin, the handover and the statement's rise
+   are the desktop's, unchanged. */
 @media (max-width: 760px) {
-  /* BOTH SELECTORS, and the second one is the whole bug. `.coverwrap`
-     alone is specificity (0,1,0) and the base file carries
-     `.coverwrap.noTail { height: 210dvh }` at (0,2,0), which wins
-     wherever it sits in the file — a media query adds no specificity.
-     So every no-tail cover kept its full desktop height on a phone:
-     measured 1705px against an 812px screen, which is 210dvh to the
-     decimal, and reads as most of a blank screen between the cover and
-     whatever follows it. */
-  .coverwrap,
-  .coverwrap.noTail {
-    height: auto;
-  }
-  .risetail {
-    display: none;
-  }
   .coverSticky {
-    position: relative;
-    top: auto;
-    height: auto;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 26px;
     padding: 76px 20px 84px;
-    overflow: visible;
   }
   .h1 {
-    position: static;
     font-size: clamp(38px, 13.6vw, 96px);
   }
-  /* !important on purpose: it outranks any inline transform the driver wrote
-     before a mid-session viewport change, so the CSS state wins even if a
-     frame slips through before the driver's own cleanup runs. */
   .statement {
-    position: static;
-    transform: none !important;
     max-width: none;
     font-size: clamp(19px, 5.4vw, 30px);
   }
-  .statement .csW {
-    transform: none !important;
-  }
-  /* STAYS TOP RIGHT. It was `position: static`, which dropped it into
-     the flex column — and since it is last in the DOM and the column is
-     bottom-weighted, the reel landed under the headline and statement.
-     The reel is the cover's opening move: it is meant to be moving
-     before a word is read, which it cannot do from below the fold.
-     Absolute against .coverSticky, which is position: relative here.
-     Top matches the container's own padding so it lines up with where
-     the cover's content begins, right matches its gutter. The stack
-     below stays bottom-weighted, so on a phone the two occupy opposite
-     ends of the screen rather than competing. */
+  /* The reel keeps the corner it has on every screen; only its size and
+     inset come down. */
   .plateThumb {
-    position: absolute;
-    top: 76px;
+    top: 30px;
     right: 20px;
     width: clamp(84px, 26vw, 130px);
   }

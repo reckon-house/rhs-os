@@ -143,7 +143,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
           "Colour gradient selector",
           "Lipstick preview",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

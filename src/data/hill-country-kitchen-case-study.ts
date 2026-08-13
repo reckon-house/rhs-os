@@ -263,7 +263,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
           "Floor-to-ceiling sage cabinetry",
           "Brass, oak, marble, sage",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

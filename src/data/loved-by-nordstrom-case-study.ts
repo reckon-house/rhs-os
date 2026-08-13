@@ -127,7 +127,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
           "The tile in the wild",
           "Shot on the trench",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

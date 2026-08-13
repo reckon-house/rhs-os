@@ -28,8 +28,9 @@
  * All scrub math is getBoundingClientRect vs window.innerHeight, read on the
  * shared onTick loop — container-agnostic, so Lenis owning <main> never
  * enters the picture, and html[data-paused] parks it with everything else.
- * Below 760px and under prefers-reduced-motion the driver stands down per
- * tick and clears anything it wrote; the module CSS holds the static state.
+ * Under prefers-reduced-motion the driver stands down per tick and clears
+ * anything it wrote; the module CSS holds the static state. It runs at
+ * every width — the handover is vertical, so a phone gets it too.
  */
 
 import {
@@ -45,7 +46,6 @@ import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { onTick, vh } from "@/lib/scrub";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 // The reveal system's class names, for querying the line wrappers it renders
 // and defending the revealed state. Importing the module yields the same
 // generated names RevealHeadline uses — the supported way to reach a sibling
@@ -119,8 +119,8 @@ export function PressingCover({
   usePinDrift(wrapRef, stickyRef);
 
   /* The lone-x line's light weight, stamped OUTSIDE the scrub driver: the
-     driver never runs below the breakpoint or under reduced motion, and the
-     prototype stamped unconditionally — phones got the light x too. Both of
+     driver stands down under reduced motion, where the prototype still
+     stamped — the weight is type, not motion. Both of
      RevealHeadline's branches render one element per authored line, so the
      stamp targets whichever line is exactly the multiplication character;
      the observer re-stamps after RevealHeadline re-renders (a reduce flip
@@ -161,7 +161,6 @@ export function PressingCover({
     if (!h1) return;
     const tail = tailRef.current;
 
-    const narrow = window.matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const wordEls = Array.from(
@@ -237,7 +236,7 @@ export function PressingCover({
     const off = onTick(() => {
       // Checked per tick rather than once: both can flip mid-session, and a
       // stale transform left behind is a statement frozen mid-flight.
-      if (narrow.matches || reduce.matches) {
+      if (reduce.matches) {
         if (wrote) clear();
         return;
       }

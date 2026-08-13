@@ -266,7 +266,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           "Plates on the dragon repeat",
           "Burgundy and rose",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

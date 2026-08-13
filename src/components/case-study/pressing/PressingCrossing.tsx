@@ -44,10 +44,13 @@
  * section and <main> free of transform, filter, and overflow clipping,
  * or the pin silently dies.
  *
- * Below 760px and under prefers-reduced-motion the pin is off and the
- * section renders static in normal flow. (The prototype left the
- * crossing running under reduced motion; the site's constraints forbid
- * that, so the static branch here is deliberate divergence.)
+ * Under prefers-reduced-motion the pin is off and the section renders
+ * static in normal flow. (The prototype left the crossing running under
+ * reduced motion; the site's constraints forbid that, so the static
+ * branch here is deliberate divergence.) Width does not enter into it:
+ * the gesture is the headline's own lines travelling sideways, and a
+ * line entering from the right edge reads on a phone exactly as it does
+ * on a desktop. A narrow screen only moves the column to its own row.
  */
 
 import {
@@ -59,7 +62,6 @@ import {
 } from "react";
 import { onTick, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_STAGGER } from "@/lib/cut-lines";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import reveal from "@/components/fx/reveal.module.css";
@@ -153,15 +155,11 @@ export function PressingCrossing({
   const bodyKey = bodyItems.map((it) => it.text).join("");
 
   useEffect(() => {
-    const narrow = matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () =>
-      setMode(narrow.matches || reduce.matches ? "static" : "scrub");
+    const sync = () => setMode(reduce.matches ? "static" : "scrub");
     sync();
-    narrow.addEventListener("change", sync);
     reduce.addEventListener("change", sync);
     return () => {
-      narrow.removeEventListener("change", sync);
       reduce.removeEventListener("change", sync);
     };
   }, []);
@@ -171,11 +169,11 @@ export function PressingCrossing({
      un-rewrite the DOM it took over. */
   useIsoLayoutEffect(() => {
     if (mode !== "scrub") return;
-    const narrow = matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-    // The live queries, not the state: state lags one paint behind, and a
-    // phone must never see even one split-and-translated frame.
-    if (narrow.matches || reduce.matches) return;
+    // The live query, not the state: state lags one paint behind, and a
+    // reduced-motion reader must never see even one split-and-translated
+    // frame.
+    if (reduce.matches) return;
 
     const wrap = wrapRef.current;
     const head = headRef.current;
@@ -226,7 +224,7 @@ export function PressingCrossing({
     const offTick = onTick(() => {
       // Checked per tick so a mid-session flip stops the writes before
       // React's state catches up and remounts the static markup.
-      if (narrow.matches || reduce.matches) return;
+      if (reduce.matches) return;
       // The VisibilityPause convention. The shared loop already parks on
       // data-paused; this keeps the component correct if it is ever
       // rewired to a driver that does not.
@@ -235,7 +233,7 @@ export function PressingCrossing({
     });
 
     const onResize = () => {
-      if (narrow.matches) return;
+      if (reduce.matches) return;
       // The headline re-cuts unguarded (the prototype's choice — its wrap
       // moves at almost any width change); paragraphs only when their
       // width really changed, since a same-width re-cut rebuilds
@@ -284,14 +282,25 @@ export function PressingCrossing({
     const col = colRef.current;
     const sticky = stickyRef.current;
     if (!head || !col || !sticky) return;
-    const narrow = matchMedia(`(max-width: ${CHOREO_BREAKPOINT}px)`);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 
     const place = () => {
-      if (narrow.matches) {
+      if (reduce.matches) {
         col.style.marginTop = "";
         return;
       }
       col.style.marginTop = "0px";
+      // STACKED RATHER THAN BESIDE. On one track the column already sits
+      // in its own row under the headline, so the measured drop below
+      // would count the headline's height a second time and push the copy
+      // off the pinned screen. Measured, not breakpointed: the test is
+      // simply whether the column starts past the headline's bottom, which
+      // is true whenever the grid has collapsed and cannot disagree with a
+      // stylesheet the way a duplicated width would.
+      if (col.offsetTop >= head.offsetTop + head.offsetHeight) {
+        col.style.marginTop = "";
+        return;
+      }
       const hs = getComputedStyle(head);
       let drop = parseFloat(hs.marginTop) + head.offsetHeight + GAP;
       // Only a PINNED screen is a fixed box the column must fit inside.
@@ -311,7 +320,7 @@ export function PressingCrossing({
     // Registered after the cut effect's own resize listener, so a resize
     // re-cuts the headline first and this measures the fresh height.
     window.addEventListener("resize", place);
-    narrow.addEventListener("change", place);
+    reduce.addEventListener("change", place);
     let alive = true;
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
@@ -321,7 +330,7 @@ export function PressingCrossing({
     return () => {
       alive = false;
       window.removeEventListener("resize", place);
-      narrow.removeEventListener("change", place);
+      reduce.removeEventListener("change", place);
       col.style.marginTop = "";
     };
   }, [mode, headSrc, bodyKey]);

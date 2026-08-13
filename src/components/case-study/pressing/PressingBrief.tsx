@@ -32,15 +32,16 @@
  * Reduced motion: the rules render pre-drawn (the stylesheet forces the
  * final clip and kills the transition under the media query), and the text
  * systems handle their own final-state rendering. The placement pass still
- * runs — it is layout, not motion. Below 760px the pin is off and
- * everything flows in one column.
+ * runs — it is layout, not motion. On one track the crossing, the
+ * drawn rules and the image drift all still run; only the HELD headline
+ * goes static, because stacked it would be printed through by its own
+ * column (the reason is in the stylesheet, at .held).
  */
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
-import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
@@ -165,13 +166,17 @@ export function PressingBrief({
     const sec = sectionRef.current;
     if (!head || !sec) return;
     if (reducedMotion()) return;
-    const narrow = window.matchMedia("(max-width: " + (CHOREO_BREAKPOINT - 1) + "px)");
-    if (narrow.matches) return;
+    /* The pin used to switch off below CHOREO_BREAKPOINT. It runs at
+       every width now — a phone gets the same held headline the desktop
+       does — so the only thing that turns it off is a reader asking for
+       less motion. */
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduce.matches) return;
 
     let lines = cutHeadline(head, headText, styles.ln);
     let last = -1;
     const off = onTick(() => {
-      if (narrow.matches) {
+      if (reduce.matches) {
         lines.forEach((el) => (el.style.transform = ""));
         return;
       }

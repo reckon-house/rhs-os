@@ -117,7 +117,7 @@ export const youBySallyCaseStudy: CaseStudy = {
           "Real people, signature shades",
           "Saturated grounds",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

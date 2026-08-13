@@ -99,28 +99,16 @@
   mix-blend-mode: difference;
 }
 
-/* Static below the breakpoint: no pin, no knockout — ink on paper. The
-   poster keeps a screen-sized beat (minus the var(--nav-h) masthead) so it still
-   reads as a full-screen pause in the flow. */
+/* ── phones ───────────────────────────────────────────────────────────
+   LAYOUT ONLY. The fill climbs and the type knocks out against it here
+   exactly as on a desktop: the gesture is vertical, so a narrow screen
+   carries it unchanged and only the measure has to answer to the width.
+   The reduced-motion branch below is the one that renders it static. */
 @media (max-width: 760px) {
-  .wrap {
-    height: auto;
-  }
   .sticky {
-    position: static;
-    height: auto;
-    min-height: calc(100dvh - var(--nav-h)); /* the sticky masthead's height */
     padding: 30px 20px;
   }
-  .fill {
-    display: none;
-  }
   .text {
-    mix-blend-mode: normal;
-    color: var(--pp-ink);
-    /* Outranks any inline parallax drift the driver wrote before a
-       mid-session breakpoint crossing caught up with it. */
-    transform: none !important;
     font-size: clamp(30px, 9.4vw, 60px);
   }
   .indent {

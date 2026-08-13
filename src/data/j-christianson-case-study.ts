@@ -167,7 +167,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
           "Four-dot mark centered",
           "Organic color shapes",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },

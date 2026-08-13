@@ -20,10 +20,10 @@ import styles from "./PressingVizFrame.module.css";
  *   frame is plain flow; the only moving thing is the SectionMark's sweep,
  *   which is that kit component's own onTick behaviour, unchanged from
  *   every other use of it.
- * - Both static states come free: below CHOREO_BREAKPOINT and under
- *   reduced motion the frame reads exactly as it does everywhere else,
- *   because nothing here ever moves — and the mark's stylesheet/driver
- *   already own its reduced-motion final state.
+ * - The static state comes free: under reduced motion the frame reads
+ *   exactly as it does everywhere else, because nothing here ever moves —
+ *   and the mark's stylesheet/driver already own its reduced-motion
+ *   final state.
  *
  * No "use client": no hooks here. SectionMark carries its own directive,
  * and in practice the frame mounts inside PressingLayout's client tree.

@@ -126,7 +126,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
           "Shiplap, marble, reclaimed wood",
           "Nickel sconces, brass mirror",
         ],
-        instruction: "Scroll — fills the mat, then travels the frame",
+        instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
       },
     },
