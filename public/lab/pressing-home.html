@@ -258,6 +258,48 @@
     letter-spacing: var(--lbl-track); text-decoration: none; }
   .stratum .slink:hover { text-decoration: underline; }
 
+  /* ── the daybook strip ──
+     A ledger, not a feed: date left, entry in the middle, project right,
+     one hairline per row. The middle column carries the page's --note
+     size, which is the only size on this block — the date and project
+     are labels, so they take --lbl like every other marker on the page.
+
+     The measure is capped at 62ch rather than filling the row. A dated
+     line that runs the full width of a 1400px page reads as a headline
+     and this is not one; held to a book measure it reads as an entry
+     someone wrote. */
+  .dbrows { padding: 0 var(--gut); }
+  /* THE TAG FOLLOWS THE ENTRY, it does not sit at the far page edge.
+     A 1fr middle column pushed the project 900px clear of the line it
+     labels on a wide screen, with nothing crossing the gap: the two
+     stopped reading as one row. Capping the middle at the measure and
+     packing the tracks left keeps date, entry and project together as a
+     single object, and the hairline still runs the full width because
+     the row element does. The void moves to the right of the block,
+     where it is air rather than a broken relationship. */
+  .dbrow { display: grid;
+    grid-template-columns: 80px minmax(0, 62ch) max-content;
+    justify-content: start;
+    column-gap: clamp(20px, 2.6vw, 40px);
+    align-items: start;
+    padding: 15px 0;
+    /* the footer's hairline value, which is the page's only rule weight */
+    border-top: 1px solid rgba(0, 0, 0, 0.14); }
+  .dbd, .dbp { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-transform: uppercase;
+    /* seats the caps on the note's first baseline */
+    padding-top: 7px; }
+  .dbp { opacity: 0.55; }
+  .dbt { margin: 0; font-size: var(--note); line-height: 1.55; max-width: 62ch; }
+  .dbt a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 760px) {
+    /* One track: the project tag drops under the entry rather than
+       taking a third column out of a 375px screen. */
+    .dbrow { grid-template-columns: 64px minmax(0, 1fr); column-gap: 14px; }
+    .dbp { grid-column: 2; text-align: left; padding-top: 6px; }
+  }
+
   /* ── feeds (shared card grammar) ── */
   /* The feed sits in the same container as the masthead, the question
      and the section labels: one gutter down the whole page, so an
@@ -981,6 +1023,40 @@
          rhythm entirely: they are a column of their own, not cells -->
     <div class="ixnotes" id="ixNotes"></div>
     <div class="ixrows" id="ixRows"></div>
+  </div>
+</section>
+
+
+<!-- ── THE DAYBOOK STRIP ──────────────────────────────────────────────
+     The one stratum that is not work: what got built lately, dated.
+     It closes the page rather than opening it, because the ring is the
+     argument and this is the evidence the ring is still being added to.
+
+     Uses the .shead furniture that was already written for exactly this
+     and had no caller: label left, way further in at the right, both on
+     the page gutter so the row sits in the same container as everything
+     above it. Two entries only. The strip's job is to prove the site is
+     alive; the reading happens on /daybook.
+
+     No image here on purpose. Below the index a picture reads as one
+     more thumbnail, and the point of this block is that it is TEXT
+     under a page made of pictures. -->
+<section class="stratum" id="stDaybook">
+  <div class="shead">
+    <span class="slbl">Daybook</span>
+    <a class="slink" href="/lab/daybook.html">The full log &#8594;</a>
+  </div>
+  <div class="dbrows">
+    <article class="dbrow">
+      <span class="dbd">Aug 13</span>
+      <p class="dbt">Four Sally portal demos embedded in <a href="/case-studies/sally">the case study</a>: Jim chat, PDP audit, email build, Figma build.</p>
+      <span class="dbp">Sally</span>
+    </article>
+    <article class="dbrow">
+      <span class="dbd">Aug 13</span>
+      <p class="dbt">Scroll choreography enabled on phones. 29 studies checked at 375px, none clip.</p>
+      <span class="dbp">RHS</span>
+    </article>
   </div>
 </section>
 

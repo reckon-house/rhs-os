@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daybook · lab</title>
+<style>
+  /*
+    daybook — lab mock, two artifacts on one sheet:
+    A · the homepage strip (sits below the thumbnails)
+    B · the /daybook running page
+
+    Every entry below is real, drafted from the drive's actual git logs
+    (RHS since Jul 5, sally-portal since Jul 5, A.R.C. late June). The
+    register is the ledger's: noun + verb + a number where one exists.
+    No why, no commentary. Commit subjects are raw material, never the
+    entry copy.
+
+    Type is the pressing scale: 10px caps labels, 16px notes, hairlines.
+    One ink on paper. No JS anywhere on this page.
+  */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: #000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 56px 40px 140px; }
+
+  .lbl {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .grey { color: rgba(0, 0, 0, 0.45); }
+
+  /* lab-only marker between the two artifacts */
+  .labnote { margin: 0 0 18px; }
+  .divider { height: 1px; background: rgba(0, 0, 0, 0.14); margin: 96px 0; }
+
+  /* ── the ledger ─────────────────────────────────────────────────── */
+  .row {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) max-content;
+    column-gap: 28px;
+    padding: 13px 0;
+  }
+  .row.first { border-top: 1px solid rgba(0, 0, 0, 0.14); }
+  /* Seat the 10px caps on the 16px text's first baseline: the note's line
+     box is 24.8px with its baseline ~19px down, the label's sits ~10px
+     down, so 8px of padding brings the two into register. */
+  .d { padding-top: 8px; }
+  .t {
+    margin: 0; /* the p default was the whole misalignment, not the labels */
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 62ch;
+  }
+  .t a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── the blog register, same grid ──────────────────────────────────
+     A post is still a ledger row: date left, tag right, everything in
+     the middle column. Only the middle gets denser. The title takes the
+     brief-column rule (body size, separated by weight alone, never a
+     second scale), so the page stays one type system at two densities. */
+  .t p { margin: 0 0 10px; }
+  .t p:last-child { margin-bottom: 0; }
+  .postTitle { font-weight: 500; margin: 0 0 6px; }
+
+  /* An image is a small plate attached to the entry: column measure,
+     never wider, the base 16px corner. Some entries carry one; most
+     never will, and the grid does not care either way. */
+  .pic { margin: 14px 0 0; }
+  .pic img {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    border-radius: 16px;
+  }
+  .cap {
+    margin: 8px 0 0;
+    font-size: 11px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.55);
+  }
+  .tag { padding-top: 8px; text-align: right; }
+
+  /* ── the homepage strip (A) ─────────────────────────────────────── */
+  .strip .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  }
+  .strip .row:first-of-type { border-top: 0; }
+  .more {
+    margin-top: 18px;
+    font-size: 16px;
+  }
+  .more a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── the page (B) ───────────────────────────────────────────────── */
+  .pagehead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  }
+  .month {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 64px 0 4px;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 40px 20px 100px; }
+    .row {
+      grid-template-columns: 56px minmax(0, 1fr);
+      column-gap: 16px;
+    }
+    .tag {
+      grid-column: 2;
+      text-align: left;
+      padding-top: 4px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="lbl grey labnote">A · homepage strip, below the thumbnails</p>
+
+  <section class="strip">
+    <div class="head">
+      <span class="lbl">Daybook</span>
+      <span class="lbl grey">Aug 2026</span>
+    </div>
+
+    <div class="row first">
+      <span class="lbl d">Aug 13</span>
+      <p class="t">Four Sally portal demos embedded in <a href="/case-studies/sally">the case study</a>: Jim chat, PDP audit, email build, Figma build.</p>
+      <span class="lbl grey tag">Sally</span>
+    </div>
+    <div class="row first">
+      <span class="lbl d">Aug 13</span>
+      <p class="t">Scroll choreography enabled on phones. 29 studies checked at 375px, none clip.</p>
+      <span class="lbl grey tag">RHS</span>
+    </div>
+
+    <p class="more"><a href="#">Full log</a></p>
+  </section>
+
+  <div class="divider"></div>
+
+  <p class="lbl grey labnote">B · the /daybook page</p>
+
+  <header class="pagehead">
+    <span class="lbl">Daybook</span>
+    <span class="lbl grey">RHS · Sally · A.R.C.</span>
+  </header>
+
+  <div class="month">
+    <span class="lbl">Aug 2026</span>
+    <span class="lbl grey">198 commits</span>
+  </div>
+
+  <!-- a POST: same row, denser middle. Title at body size and weight
+       500, short paragraphs, a plate, a receipt link. -->
+  <div class="row first">
+    <span class="lbl d">Aug 13</span>
+    <div class="t">
+      <p class="postTitle">Framed, not ported</p>
+      <p>Four Sally portal demos went into <a href="/case-studies/sally">the case study</a> today: Jim chat, PDP audit, email build, Figma build. The handoff note proposed one React component per demo. The port went the other way, and the demos run as documents, framed.</p>
+      <p>Three reasons. The chrome is extracted verbatim from the portal, and re-deriving 3,200 lines forks it from the thing it copies. The selectors are names like .header and .message, which collide the moment they are inlined. And the portal is a fixed 1120px internal tool, so a component port faces the same scaling problem and gives up the isolation for nothing.</p>
+      <figure class="pic">
+        <img src="/case-studies/sally-os/sally-os-brand-brain-chat-dual-view.png" alt="Jim chat inside the Sally case study" width="1300" height="1300">
+        <figcaption class="cap">The Jim replay, one of the four.</figcaption>
+      </figure>
+    </div>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">Scroll choreography enabled on phones. 29 studies checked at 375px, none clip.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 12</span>
+    <p class="t">Site search moved to Haiku. A model bench grades the answers against the house copy rules.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">A.R.C. study pass: the live demo in a phone mask, coverage cards rebuilt from the app's own screens, three charts redrawn.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 11</span>
+    <p class="t">Vision pass: 565 study images read and indexed. The search answers from what is in the pictures.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 10</span>
+    <p class="t">Chart system rebuilt on four shapes: sticks, rings, dots, swatches. A viz-audit gate ships with it, green.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 09</span>
+    <p class="t">27 studies ported to the redesign in one pass. 29 of 30 now on Pressing.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">Found 44 sections of authored copy rendering as nothing. Fixed.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 08</span>
+    <p class="t">New <a href="/">homepage</a>: every project dealt into one field, recomposed by the search.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <!-- an entry with a picture and no title: the middle ground -->
+  <div class="row">
+    <span class="lbl d"></span>
+    <div class="t">
+      <p>The shipped A.R.C. app runs framed inside its own case study.</p>
+      <figure class="pic">
+        <img src="/case-studies/arc/arc-multi-device-lifestyle-hero.jpg" alt="A.R.C. across phone, tablet, and laptop" width="2594" height="2606">
+      </figure>
+    </div>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 06</span>
+    <p class="t">41-agent review of the Pressing system: 34 findings confirmed, all fixed. PRESSING.md written, the porting guide.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 05</span>
+    <p class="t">Pressing C shipped sitewide: new masthead, motion kit, Robert Rodriguez rebuilt as the reference. The old site archived at site-v1.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Aug 03</span>
+    <p class="t">Pressing C prototype added to the lab. The redesign started as one HTML file.</p>
+    <span class="lbl grey tag">Lab</span>
+  </div>
+
+  <div class="month">
+    <span class="lbl">Jul 2026</span>
+    <span class="lbl grey">148 commits</span>
+  </div>
+
+  <div class="row first">
+    <span class="lbl d">Jul 31</span>
+    <p class="t">Competitive context shipped in PDP Copy Studio: retailer scans, per-retailer counts, a whitespace read.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">2026 CRM email templates live. The Figma plugin resynced; it had been serving a July 9 build.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 30</span>
+    <p class="t">P0: the market scan had written zero records for seven days. Found and fixed. The trends feed rebuilt as real masonry.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 24</span>
+    <p class="t">Strategy lane moved to Opus 5. Google Ads Keyword Planner live: real demand growth, ranked per source, refreshed weekly.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">Jim can draw: a create_graphic tool ships vector output with a preview card.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 23</span>
+    <p class="t">Brand Theme Registry: the marketing calendar in Sally's own language. Jim moved to Sonnet 5 and writes Word docs.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 22</span>
+    <p class="t">Plays: signal-triggered campaign proposals, delivered with rendered assets.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 21</span>
+    <p class="t">PDP Copy Studio: Workspace and Page tabs, accordions. Jim proposes copy edits and saves them on confirm.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 20</span>
+    <p class="t">Awwwards: Nominee became Honors.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 19</span>
+    <p class="t">Intake workbook: WEB and PAID tabs added. A validator reads a filled workbook and prints a triage report.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 16</span>
+    <p class="t">Intake workbook generator v1: one Excel workbook drives the request pipeline.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 15</span>
+    <p class="t">The montage engine renamed twice: SizzleReel to Reel Tool to Faux Reel.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 12</span>
+    <p class="t">Type scale rebuilt across the site; the flowing headline pattern with it.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 10</span>
+    <p class="t">SizzleReel: a code-only montage engine. Playground, GIF exporter, and a case study with the tool running inside its own write-up.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+  <div class="row">
+    <span class="lbl d"></span>
+    <p class="t">SizzleReel ported into the portal the same day: saved reels, beat reordering, MP4 and GIF export straight to the DAM.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 06</span>
+    <p class="t">PDP Copy Studio: SEO and AEO chips, compliance guardrails, an attribute-schema fix. Editorial redesign live the next day.</p>
+    <span class="lbl grey tag">Sally</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jul 05</span>
+    <p class="t">Category pages: featured heroes, plainer voice.</p>
+    <span class="lbl grey tag">RHS</span>
+  </div>
+
+  <div class="month">
+    <span class="lbl">Jun 2026</span>
+    <span class="lbl grey"></span>
+  </div>
+
+  <div class="row first">
+    <span class="lbl d">Jun 30</span>
+    <p class="t">v1.0.1 build 5 to the App Store: in-app rating prompt at scan-save, store metadata pass.</p>
+    <span class="lbl grey tag">A.R.C.</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jun 28</span>
+    <p class="t">Fixed the paywall's "couldn't load subscriptions" bug.</p>
+    <span class="lbl grey tag">A.R.C.</span>
+  </div>
+  <div class="row first">
+    <span class="lbl d">Jun 25</span>
+    <p class="t">Build 1.0.0 (3) resubmitted to App Review. The demo re-architected as a no-save trial.</p>
+    <span class="lbl grey tag">A.R.C.</span>
+  </div>
+
+</div>
+</body>
+</html>

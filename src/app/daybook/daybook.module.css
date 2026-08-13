@@ -1,0 +1,158 @@
+/*
+ * The daybook page.
+ *
+ * One grid at three densities: a line, a line with a picture, a post.
+ * The date and project columns hold still across all three, which is
+ * what makes a post read as a heavier day rather than a different kind
+ * of page. Type is the pressing scale, one ink, hairlines only.
+ */
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(40px, 7dvh, 90px) var(--pp-gut, 40px) 180px;
+}
+
+.lbl {
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  margin: 0;
+}
+.grey {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+/* The one line of prose on the page, and it says what the page is
+   rather than why it exists. */
+.lede {
+  margin: 20px 0 0;
+  font-size: var(--pp-note, 16px);
+  line-height: 1.55;
+  max-width: 46ch;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.month {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: clamp(48px, 7dvh, 84px) 0 4px;
+}
+
+/* ── the row ────────────────────────────────────────────────────────
+   THE TAG FOLLOWS THE ENTRY. A 1fr middle column pushes the project to
+   the far page edge on a wide screen, 700px clear of the line it
+   labels with nothing crossing the gap, and the two stop reading as
+   one row. Capping the middle at the measure and packing the tracks
+   left keeps date, entry and project together as a single object. The
+   hairline still runs the full width, because the row element does. */
+.row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 64ch) max-content;
+  justify-content: start;
+  column-gap: clamp(20px, 2.6vw, 40px);
+  align-items: start;
+  padding: 15px 0;
+  /* scroll-margin so a permalink does not land under the masthead */
+  scroll-margin-top: calc(var(--nav-h, 54px) + 24px);
+}
+.first {
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+/* 7px seats the 10px caps on the 16px note's first baseline. */
+.d,
+.p {
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  padding-top: 7px;
+  white-space: nowrap;
+}
+.p {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.t {
+  font-size: var(--pp-note, 16px);
+  line-height: 1.55;
+}
+.t p {
+  margin: 0 0 10px;
+}
+.t p:last-child {
+  margin-bottom: 0;
+}
+
+/* A post's title separates by WEIGHT alone, never a second size. Same
+   rule the case-study columns follow, which is what keeps the blog
+   register inside the ledger's type system. */
+.title {
+  font-weight: 500;
+}
+
+/* An image is a small plate at column measure with the family's
+   corner. Pick photographs and full-bleed frames: a UI screenshot
+   carrying its own inner margins reads as a washed-out thumbnail here,
+   and anything that has to be large to be read belongs in a study. */
+.pic {
+  margin: 14px 0 0;
+}
+.pic img {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: var(--pp-r, 16px);
+}
+.cap {
+  margin: 8px 0 0;
+  font-size: var(--pp-cap, 11px);
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* The receipt: the thing the entry produced, reachable. Underlined
+   rather than coloured, because the page has one ink. */
+.receipt {
+  margin-top: 10px !important;
+}
+.receipt a,
+.back a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.back {
+  margin: clamp(56px, 8dvh, 100px) 0 0;
+  font-size: var(--pp-note, 16px);
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 40px 20px 120px;
+  }
+  /* One track: the project drops under the entry rather than taking a
+     third column out of a 375px screen. */
+  .row {
+    grid-template-columns: 64px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+  .p {
+    grid-column: 2;
+    padding-top: 6px;
+  }
+}

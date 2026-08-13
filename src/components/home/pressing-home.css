@@ -212,6 +212,48 @@
     letter-spacing: var(--lbl-track); text-decoration: none; }
   .stratum .slink:hover { text-decoration: underline; }
 
+  /* ── the daybook strip ──
+     A ledger, not a feed: date left, entry in the middle, project right,
+     one hairline per row. The middle column carries the page's --note
+     size, which is the only size on this block — the date and project
+     are labels, so they take --lbl like every other marker on the page.
+
+     The measure is capped at 62ch rather than filling the row. A dated
+     line that runs the full width of a 1400px page reads as a headline
+     and this is not one; held to a book measure it reads as an entry
+     someone wrote. */
+  .dbrows { padding: 0 var(--gut); }
+  /* THE TAG FOLLOWS THE ENTRY, it does not sit at the far page edge.
+     A 1fr middle column pushed the project 900px clear of the line it
+     labels on a wide screen, with nothing crossing the gap: the two
+     stopped reading as one row. Capping the middle at the measure and
+     packing the tracks left keeps date, entry and project together as a
+     single object, and the hairline still runs the full width because
+     the row element does. The void moves to the right of the block,
+     where it is air rather than a broken relationship. */
+  .dbrow { display: grid;
+    grid-template-columns: 80px minmax(0, 62ch) max-content;
+    justify-content: start;
+    column-gap: clamp(20px, 2.6vw, 40px);
+    align-items: start;
+    padding: 15px 0;
+    /* the footer's hairline value, which is the page's only rule weight */
+    border-top: 1px solid rgba(0, 0, 0, 0.14); }
+  .dbd, .dbp { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-transform: uppercase;
+    /* seats the caps on the note's first baseline */
+    padding-top: 7px; }
+  .dbp { opacity: 0.55; }
+  .dbt { margin: 0; font-size: var(--note); line-height: 1.55; max-width: 62ch; }
+  .dbt a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 760px) {
+    /* One track: the project tag drops under the entry rather than
+       taking a third column out of a 375px screen. */
+    .dbrow { grid-template-columns: 64px minmax(0, 1fr); column-gap: 14px; }
+    .dbp { grid-column: 2; text-align: left; padding-top: 6px; }
+  }
+
   /* ── feeds (shared card grammar) ── */
   /* The feed sits in the same container as the masthead, the question
      and the section labels: one gutter down the whole page, so an
