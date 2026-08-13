@@ -50,6 +50,16 @@ function grade(answer: string | null) {
   /* The rules say no quotes around project names. Straight or curly. */
   if (/["“”]/.test(answer)) out.push("quotes");
 
+  /* Narrating the index. Every model did this on "what's your largest
+     project?" because the rule used to tell them to announce a gap. The
+     visitor cannot see the context and did not ask about it, so any
+     sentence describing what was or was not supplied is the answer
+     talking about its own plumbing. */
+  if (/\b(the )?(facts|records|index)\b|on file|nothing matched|I don't have|don't hold/i.test(answer)) {
+    out.push("narrates index");
+  }
+  if (/\bhouse\b/i.test(answer) && !/reckon\.house/i.test(answer)) out.push("says house");
+
   return out;
 }
 
@@ -155,13 +165,16 @@ export default function ComparePage() {
 
   return (
     <main style={S.wrap}>
-      <h1 style={S.h1}>Same question, two models</h1>
+      {/* No number in the heading: the bench takes a list of models, and a
+          hardcoded count goes stale the moment one is added. It said "two"
+          for a while after Haiku joined. */}
+      <h1 style={S.h1}>Same question, every model</h1>
       <p style={S.sub}>
-        Both sides get byte-identical rules, facts and question from
+        Each one gets byte-identical rules, facts and question from
         <code style={S.code}>@/lib/ask-context</code>. Marks below each answer are the
-        house rules the system prompt actually states, checked automatically.
-        Claude keeps its prompt cache; Grok has no equivalent channel, which is a
-        real difference rather than a rigged one.
+        voice rules the system prompt actually states, checked automatically.
+        The Anthropic models keep their prompt cache; Grok has no equivalent
+        channel, which is a real difference rather than a rigged one.
       </p>
 
       <div style={S.row}>
