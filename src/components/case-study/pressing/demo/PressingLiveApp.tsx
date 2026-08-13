@@ -119,22 +119,9 @@ export function PressingLiveApp({
         <span className={`${styles.lbl} ${styles.origin}`}>{origin}</span>
       </div>
 
-      {/* THE PAGE HAS TO LET GO OF THE WHEEL, or the framed app cannot be
-          scrolled at all. Lenis runs in wrapper mode over <main> with
-          smoothWheel on, so it takes the wheel event and animates the
-          study instead — measured, with a pointer sitting on the phone:
-          611px of page travel and not one pixel inside the frame. The
-          reader sees a device that looks interactive and does nothing.
-
-          `data-lenis-prevent` is Lenis's own opt-out and the same
-          mechanism the viz scrollers already use. It goes on ONLY once
-          the frame is live: over the poster there is nothing to scroll
-          inside, and stealing the wheel from a page-sized still would
-          strand the reader on it. */}
       <div
         className={`${styles.stage} ${phone ? styles.phoneStage : ""}`}
         style={{ "--tall": `${tall}dvh` } as CSSProperties}
-        {...(live ? { "data-lenis-prevent": "" } : {})}
       >
         {phone ? (
           <div className={styles.phoneBody}>
