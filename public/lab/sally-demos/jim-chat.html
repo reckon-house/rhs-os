@@ -3,125 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sally demo — Jim, agentic turn</title>
+<title>Sally demo — Jim, Brand Brain replay</title>
 <link rel="stylesheet" href="sally-demo.css">
+<link rel="stylesheet" href="sally-portal-chrome.css">
 <style>
-  /* lab-only page chrome — the RHS page provides its own ground */
   body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
 </style>
 </head>
 <body>
 
-<div class="sd-demo" id="jimDemo">
-  <div class="sd-window">
-    <div class="sd-titlebar">
-      <span class="sd-dot"></span><span class="sd-dot"></span><span class="sd-dot"></span>
-      <span class="sd-title"><strong>Sally Marketing Portal</strong> · Jim</span>
-    </div>
-    <div class="sd-body">
-      <div class="sd-rail" aria-hidden="true">
-        <span class="on"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L20 10l-6.1 1.4L12 17l-1.9-5.6L4 10l6.1-1.4z"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M4 17l5-6 4 3 7-8"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15l5-4 4 3 3-2 4 3"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></span>
+<div id="jimDemo">
+  <div class="sp-frame">
+    <!-- rail is static chrome; everything right of it replays -->
+    <nav class="icon-rail" aria-hidden="true">
+      <div class="icon-rail-logo"><div class="icon-rail-logo-inner"><img src="assets/Sally-Logo.svg" alt="SALLY."></div></div>
+      <div class="icon-rail-nav">
+        <button class="rail-icon-btn active">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a2.1 2.1 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg></span>
+          <span class="rail-icon-label">Briefing</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg></span>
+          <span class="rail-icon-label">Requests</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-badge">11</span>
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></span>
+          <span class="rail-icon-label">Trends</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="rail-icon-label">Campaigns</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>
+          <span class="rail-icon-label">Assets</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="rail-icon-label">Utilities</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+          <span class="rail-icon-label">Dashboard</span>
+        </button>
       </div>
+      <div class="rail-account"><div class="rail-account-btn">JP</div></div>
+      <div class="rail-app-label"><div class="rail-app-label-inner"><span class="rail-app-label-text">Brand brain/Jim</span></div></div>
+    </nav>
+    <div class="rail-separator"></div>
 
-      <div class="jc-main" data-stage>
-        <div class="jc-head">
-          <span class="jc-avatar">J</span>
-          <div>
-            <div class="jc-head-name">Jim</div>
-            <div class="jc-head-sub">AI strategy partner</div>
+    <div class="sp-stage" data-stage>
+      <aside class="campaign-panel">
+        <div class="campaign-panel-header"><span class="campaign-panel-title">Select campaign</span></div>
+        <div class="campaign-panel-content">
+          <div class="chat-history-block">
+            <div class="chat-history-header">
+              <span class="chat-history-header-label">Recent chats</span>
+              <span class="chat-history-new-btn">+ New</span>
+            </div>
+            <div class="chat-history-list" id="spChatList">
+              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">2d</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">can we look at on…</span><span class="chat-session-meta">Jul 28</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">we're working wit…</span><span class="chat-session-meta">Jul 28</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">what is our main t…</span><span class="chat-session-meta">Jul 22</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">do you have conte…</span><span class="chat-session-meta">Jul 21</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">Jul 20</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">do we have any s…</span><span class="chat-session-meta">Jul 10</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">where does our …</span><span class="chat-session-meta">Jun 11</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">When do Blissful …</span><span class="chat-session-meta">May 26</span></div>
+            </div>
           </div>
-          <span class="jc-live"></span>
+          <div class="dam-filters-label">Start a brief</div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>— Choose campaign type —</option></select></div>
+          <div class="dam-filters-label" style="padding-top:8px">Styled demos</div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>— Choose a demo —</option></select></div>
+          <div class="dam-filters-label" style="padding-top:8px">Saved briefs</div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>— Choose a brief —</option></select></div>
         </div>
+      </aside>
 
-        <div class="jc-chat"></div>
-
-        <div class="jc-dock">
-          <div class="jc-input">
-            <span class="jc-clip"><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8"/></svg></span>
-            <span class="jc-input-text"></span>
-            <span class="jc-send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+      <main class="sp-content">
+        <div class="conversation-messages"></div>
+        <div class="persistent-input-area">
+          <div class="input-row">
+            <div class="input-field"></div>
+            <div class="input-actions">
+              <div class="input-actions-left">
+                <span class="upload-btn"><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8"/></svg></span>
+                <span class="pro-mode-toggle">
+                  <span class="pro-toggle-track"><span class="pro-toggle-thumb"></span></span>
+                  <span class="pro-toggle-label"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg> Sally Only</span>
+                </span>
+              </div>
+              <div class="input-actions-right">
+                <span class="clear-btn">Clear</span>
+                <span class="generate-brief-btn">Generate Brief</span>
+                <span class="send-btn">Send</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
-  <p class="sd-caption">Scripted replay of a real Jim workflow — all data staged for demo.</p>
+  <p class="sp-caption">Live replay of a real Jim exchange in the Sally Marketing Portal — rebuilt from the product's own interface code.</p>
 </div>
 
 <script src="sally-demo-kit.js"></script>
 <script>
 new SallyDemo(document.getElementById("jimDemo"), async function (t) {
-  var MSG = "What are customers saying about bond repair — and do we have assets to act on it?";
+  var MSG = "what is our main tagline again- your beauty journey no salon required?";
 
-  var chat = t.$(".jc-chat");
-  var input = t.$(".jc-input-text");
+  var chat = t.$(".conversation-messages");
+  var input = t.$(".input-field");
   t.scrollEl = chat;
 
-  // 1 — the question types itself
-  await t.wait(900);
-  await t.type(input, MSG, 32);
-  await t.wait(260);
-  await t.press(t.$(".jc-send"));
+  function msg(role, label) {
+    var m = t.el("div", "message " + role);
+    m.appendChild(t.el("div", "message-avatar", label));
+    var c = t.el("div", "message-content");
+    m.appendChild(c);
+    chat.appendChild(m);
+    t.reveal(m);
+    return c;
+  }
 
-  // 2 — it lands in the thread
+  // 1 — the question types into the real dock
+  await t.wait(1000);
+  await t.type(input, MSG, 34);
+  await t.wait(300);
+  await t.press(t.$(".send-btn"));
+
+  // 2 — it lands in the thread; a new session row appears up top
   input.textContent = "";
-  var user = t.el("div", "jc-msg jc-user", MSG);
-  chat.appendChild(user);
-  t.reveal(user);
-  await t.wait(550);
+  var uc = msg("user", "You");
+  uc.textContent = MSG;
+  var list = t.$("#spChatList");
+  var row = t.el("div", "chat-session-row active");
+  row.appendChild(t.el("span", "chat-session-title", "what is our main tagl…"));
+  row.appendChild(t.el("span", "chat-session-meta", "now"));
+  list.insertBefore(row, list.firstChild);
+  t.reveal(row);
+  await t.wait(650);
 
-  // 3 — Jim thinks
-  var think = t.el("div", "jc-think");
+  // 3 — Jim thinks, then answers (the real answer, verbatim)
+  var jc = msg("assistant", "Jim");
+  var think = t.el("div", "sp-think");
   think.appendChild(t.el("i")); think.appendChild(t.el("i")); think.appendChild(t.el("i"));
-  chat.appendChild(think);
-  t.reveal(think);
-  await t.wait(1050);
+  jc.appendChild(think);
+  await t.wait(1250);
   think.remove();
 
-  // 4 — tool calls fire, one by one
-  var chips = t.el("div", "jc-chips");
-  chat.appendChild(chips);
+  await t.stream(jc, [
+    "Yes, that's exactly it. Per our positioning reference:",
+    "**“Your beauty journey, no salon required.”**",
+    "It's the line that anchors everything — salon-quality results, accessible at home, on your terms. It works across both the Discovery and Stand Out personas, and the consumer research confirmed “salon-level” and “no salon required” framing consistently earns the strongest positive response (darkest green highlighting across all segments).",
+    "The one nuance worth knowing: the **Relax & Restore** mindset (Blissful Minimalists, Timeless Restorers) responds strongly to the *quality* promise embedded in it (“salon-level formulas”) but can push back slightly on the *anti-salon* framing. So when writing for that audience, lean into the quality and confidence payoff more than the “skip the salon” angle.",
+    "Anything you're working on where you need to apply it?"
+  ], 26);
+  // stream() knows **bold**; promote *italics* after the fact
+  jc.innerHTML = jc.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
-  var c1 = t.chip(chips, "search_customer_insights", "“bond repair”");
-  await t.wait(1000);
-  c1.resolve("142 mentions · 78% positive");
-  await t.wait(430);
-
-  var c2 = t.chip(chips, "get_signal_history", "“bond repair”");
-  await t.wait(950);
-  c2.resolve("recurring 11 weeks · never actioned");
-  await t.wait(430);
-
-  var c3 = t.chip(chips, "search_dam", "“bond repair”");
-  await t.wait(900);
-  c3.resolve("3 assets · campaign-ready");
-  await t.wait(550);
-
-  // 5 — the answer streams in
-  var jim = t.el("div", "jc-msg jc-jim");
-  chat.appendChild(jim);
-  t.reveal(jim);
-  await t.stream(jim, [
-    "Bond repair is the strongest unanswered signal on the board. **142 mentions** in the last 90 days, **78% positive** — the recurring story is damage from repeat bleaching, and shoppers name bond-building as the fix they want.",
-    "It has trended **11 straight weeks** without a play citing it. The DAM already holds **3 tagged assets** — enough for an email + social test with zero new production.",
-    "Want me to draft the play?"
-  ], 24);
-  await t.wait(420);
-
-  // 6 — and proposes the action
-  var card = t.el("div", "jc-card");
-  card.appendChild(t.el("div", "jc-card-eyebrow", "PROPOSED PLAY"));
-  card.appendChild(t.el("div", "jc-card-title", "Bond Repair — email + social test"));
-  card.appendChild(t.el("div", "jc-card-meta", "3 DAM assets · 2 channels · ready to brief"));
-  card.appendChild(t.el("span", "jc-card-btn", "Draft it →"));
-  chat.appendChild(card);
-  t.reveal(card);
-
-  await t.wait(1200);
+  await t.wait(1800);
 });
 </script>
 

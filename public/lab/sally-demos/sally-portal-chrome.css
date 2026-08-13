@@ -1,0 +1,332 @@
+/* ============================================================
+   sally-portal-chrome.css — the REAL portal chrome, extracted
+   from sally-portal/index.html (2026-08-12). Class names kept
+   verbatim so diffs against the product stay trivial. This is
+   not a look-alike: rail, campaign panel, chat surface, and
+   input dock are the product's own values.
+   Assets: ./assets/Sally-Logo.svg + ./assets/Satoshi-Variable.woff2
+   (both copied from the portal).
+   ============================================================ */
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('assets/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---- demo frame (the one non-portal element: the case-study
+       page hosts the app inside a framed window) ---- */
+.sp-frame {
+  max-width: 1120px;
+  height: 760px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(20, 0, 2, 0.13), 0 4px 18px rgba(20, 0, 2, 0.05);
+  display: flex;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+  text-align: left;
+}
+.sp-stage { display: flex; flex: 1; min-width: 0; }
+
+.sp-caption {
+  max-width: 1120px;
+  margin: 12px auto 0;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11.5px;
+  color: #9a7a80;
+}
+
+/* ---- icon rail (verbatim) ---- */
+.icon-rail {
+  width: 80px;
+  min-width: 80px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  overflow: visible; /* the rotated wordmark draws outside its 30px box */
+}
+.icon-rail-logo {
+  width: 30px; height: 122px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  overflow: visible;
+}
+.icon-rail-logo-inner { transform: rotate(90deg); white-space: nowrap; }
+.icon-rail-logo-inner img { width: 122px; height: 30px; display: block; }
+
+.icon-rail-nav {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; flex: 1;
+}
+.rail-icon-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px; padding: 8px 4px;
+  border: none; background: none;
+  border-radius: 8px; width: 64px;
+  position: relative;
+}
+.rail-icon-btn .rail-icon { width: 24px; height: 24px; color: #1a1a1a; }
+.rail-icon-btn .rail-icon svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.rail-icon-btn:not(.active) .rail-icon,
+.rail-icon-btn:not(.active) .rail-icon-label { opacity: 0.4; }
+.rail-icon-label {
+  font-size: 11px; font-weight: 400; color: #1a1a1a; white-space: nowrap;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.rail-badge {
+  position: absolute;
+  top: 2px; right: 10px;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #DC1E35;
+  color: #fff;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.rail-account { margin-top: 12px; margin-bottom: 8px; }
+.rail-account-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(20,0,2,0.08);
+  background: #fff; color: #DC1E35;
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(20,0,2,0.04);
+  font-family: 'Satoshi', sans-serif;
+}
+.rail-app-label {
+  display: flex; align-items: center; justify-content: center;
+  width: 18px; height: 122px; margin-top: auto;
+}
+.rail-app-label-inner { transform: rotate(90deg); white-space: nowrap; }
+.rail-app-label-text { font-size: 15px; font-weight: 400; color: #1a1a1a; white-space: nowrap; }
+
+.rail-separator { width: 1px; background: rgba(0,0,0,0.1); }
+
+/* ---- campaign panel (verbatim) ---- */
+.campaign-panel {
+  width: 190px;
+  background: #ffffff;
+  display: flex; flex-direction: column;
+  flex-shrink: 0; overflow: hidden; height: 100%;
+}
+.campaign-panel-header {
+  padding: 20px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+}
+.campaign-panel-title { font-size: 14px; font-weight: 700; color: #000; white-space: nowrap; }
+.campaign-panel-content { overflow-y: auto; padding: 0 8px; scrollbar-width: none; }
+.campaign-panel-content::-webkit-scrollbar { display: none; }
+
+.chat-history-block { margin-bottom: 14px; }
+.chat-history-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 2px 6px; gap: 6px;
+}
+.chat-history-header-label {
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #9a7a80;
+}
+.chat-history-new-btn {
+  border: 1px solid rgba(220,30,53,0.2);
+  background: rgba(220,30,53,0.05);
+  color: #DC1E35;
+  font-size: 10.5px; font-weight: 500;
+  padding: 3px 8px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.chat-history-list { display: flex; flex-direction: column; gap: 2px; }
+.chat-session-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 8px; border-radius: 6px;
+  font-size: 12px; color: #4a2028; min-width: 0;
+}
+.chat-session-row.active {
+  background: rgba(220,30,53,0.08);
+  color: #140002; font-weight: 500;
+}
+.chat-session-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-session-meta { font-size: 10px; color: #9a7a80; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+
+.dam-filters-label {
+  font-size: 9px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: rgba(0,0,0,0.35);
+  padding: 0 4px 4px;
+}
+.dam-filter-group { margin-bottom: 6px; }
+.dam-filter-select {
+  width: 100%;
+  padding: 11px 26px 11px 12px;
+  border: none; border-radius: 10px;
+  background: #f3f3f3;
+  font-size: 11.5px; color: #1a1a1a;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(0,0,0,0.3)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+}
+
+/* ---- conversation surface (verbatim) ---- */
+.sp-content {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column;
+  position: relative;
+  background: #ffffff;
+}
+.conversation-messages {
+  flex: 1;
+  overflow-y: auto; overflow-x: hidden;
+  padding: 24px;
+  padding-right: 110px;
+  padding-bottom: 130px;
+  scrollbar-width: none;
+}
+.conversation-messages::-webkit-scrollbar { display: none; }
+
+.message { display: flex; gap: 14px; margin-bottom: 20px; }
+.message-avatar {
+  flex-shrink: 0;
+  font-size: 13px; font-weight: 700;
+  padding-top: 2px; line-height: 27px;
+}
+.message.assistant .message-avatar { color: #dc1e35; }
+.message.user .message-avatar { color: #595757; }
+.message-content {
+  flex: 1; min-width: 0;
+  overflow-wrap: break-word;
+  font-size: 13px; line-height: 27px; color: #595757;
+}
+.message.user .message-content {
+  background: #fffefe;
+  border-radius: 30px;
+  padding: 22px 28px;
+  box-shadow: 0 0 0 1px rgba(20,0,2,0.05), 0 2px 14px rgba(20,0,2,0.03);
+  flex: 1;
+}
+.message.assistant .message-content { background: transparent; padding: 2px 0; }
+.message-content p { margin: 0 0 12px; }
+.message-content p:last-child { margin-bottom: 0; }
+.message-content strong { color: #1a1a1a; }
+.message-content em { font-style: italic; }
+
+/* thinking dots (the demo's stand-in for the streaming spinner) */
+.sp-think { display: inline-flex; gap: 4px; padding: 8px 0; }
+.sp-think i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #9a7a80;
+  animation: spThink 1.1s ease-in-out infinite;
+}
+.sp-think i:nth-child(2) { animation-delay: 0.15s; }
+.sp-think i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes spThink { 40% { transform: translateY(-3px); opacity: 1; } 0%, 80%, 100% { opacity: 0.45; } }
+
+/* ---- input dock (verbatim) ---- */
+.persistent-input-area {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0 24px 24px;
+  z-index: 10;
+}
+.input-row {
+  display: flex; flex-direction: column; gap: 0;
+  background: #fffefe;
+  border-radius: 20px;
+  padding: 10px 16px;
+  box-shadow: 0 -4px 24px rgba(20, 0, 2, 0.06), 0 0 0 1px rgba(20, 0, 2, 0.03);
+}
+.input-field {
+  width: 100%;
+  color: #595757;
+  font-size: 13px; line-height: 27px;
+  min-height: 27px;
+  white-space: nowrap; overflow: hidden;
+}
+.input-field:empty::before { content: "Reply"; color: #9e9d9d; font-style: italic; }
+.input-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-top: 6px;
+}
+.input-actions-left { display: flex; align-items: center; gap: 2px; }
+.input-actions-right { display: flex; align-items: center; gap: 6px; }
+.upload-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border: none; border-radius: 50%;
+  background: transparent; color: #9a7a80;
+}
+.upload-btn svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; }
+.pro-mode-toggle {
+  display: flex; align-items: center; gap: 5px;
+  padding: 2px 6px; border-radius: 12px; flex-shrink: 0;
+}
+.pro-toggle-track {
+  width: 28px; height: 16px; border-radius: 8px;
+  background: #d4c4c6; position: relative;
+}
+.pro-toggle-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #fff;
+  position: absolute; top: 2px; left: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.pro-toggle-label {
+  font-size: 11px; font-weight: 600; color: #9a7a80; letter-spacing: 0.03em;
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.pro-toggle-label svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; }
+.clear-btn {
+  background: transparent;
+  border: 1px solid rgba(220,30,53,0.15);
+  border-radius: 999px;
+  padding: 8px 16px; height: 36px;
+  color: #9a7a80;
+  font-size: 13px; font-weight: 500;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: nowrap;
+  display: inline-flex; align-items: center;
+}
+.generate-brief-btn {
+  background: #140002;
+  border: none; border-radius: 999px;
+  padding: 8px 20px; height: 36px;
+  color: #fff;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: nowrap;
+  display: inline-flex; align-items: center;
+}
+.send-btn {
+  background: #dc1e35;
+  border: none; border-radius: 999px;
+  padding: 8px 28px; height: 36px;
+  color: #fff;
+  font-size: 14px; font-weight: 700;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  white-space: nowrap;
+  display: inline-flex; align-items: center;
+  transition: transform 0.14s ease;
+}
+.send-btn.sd-press { transform: scale(0.92); }
+
+/* ---- responsive ---- */
+@media (max-width: 980px) {
+  .campaign-panel, .rail-separator { display: none; }
+  .conversation-messages { padding-right: 24px; }
+}
+@media (max-width: 620px) {
+  .icon-rail { display: none; }
+  .sp-frame { height: 560px; }
+}

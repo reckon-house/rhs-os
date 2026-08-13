@@ -4,16 +4,35 @@
     {
       "name": "dev",
       "runtimeExecutable": "/opt/homebrew/bin/node",
-      "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack"],
+      "runtimeArgs": [
+        "node_modules/.bin/next",
+        "dev",
+        "--webpack"
+      ],
       "port": 3000,
       "autoPort": true
     },
     {
       "name": "prod",
       "runtimeExecutable": "/opt/homebrew/bin/node",
-      "runtimeArgs": ["node_modules/.bin/next", "start"],
+      "runtimeArgs": [
+        "node_modules/.bin/next",
+        "start"
+      ],
       "port": 3001,
       "autoPort": true
+    },
+    {
+      "name": "arc-demo",
+      "runtimeExecutable": "/usr/bin/python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8080",
+        "--directory",
+        "/Volumes/ReckonHouse/A.R.C./arc-portfolio-demo/static-demo"
+      ],
+      "port": 8080
     }
   ]
 }

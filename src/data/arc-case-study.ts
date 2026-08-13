@@ -574,9 +574,30 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "live-app",
       type: "live-app",
-      src: "https://arcready.app",
+      /* THE MARKETING SITE IS WHAT arcready.app/ SERVES, and no URL gets
+         past it. /dashboard is a real route in the client, but reaching
+         it needs a session that only POST /api/auth/demo-login creates,
+         which a src attribute cannot do. A reader dropped into the
+         frame met a landing page and had to find "Try the demo" inside
+         it.
+
+         This is the same shipped client, bundled with a snapshot of the
+         Sample Home and a patched fetch, so it opens straight into the
+         furnished project: 8 rooms, 73 items, $49,630, every photo
+         local. It also fixes a browser problem the live app could not.
+         arcready.app's session cookie is Secure; SameSite=None, so in a
+         cross-origin frame Safari blocks it outright and Firefox
+         partitions it, and "Try the demo" could fail to stay signed in
+         for a good share of readers. This build sets no cookies at all,
+         so there is nothing for either to restrict.
+
+         Nothing here reaches the production server: no AI credit spent
+         per visit, no uptime risk, and writes resolve to { ok: true }
+         so there is nothing to corrupt. The AI scan panel replays a
+         recorded run of the real endpoint and says so on its face. */
+      src: "https://arc-demo-two.vercel.app",
       title: "A.R.C., live",
-      origin: "arcready.app",
+      origin: "arc-demo-two.vercel.app",
       /* PORTRAIT, because the frame is. The kitchen-counter lifestyle
          shot that used to sit here is 3840x2363 landscape, and
          object-fit: cover crushed it into a 345x772 slot — a nine
@@ -587,7 +608,7 @@ export const arcCaseStudy: CaseStudy = {
       poster: `${IMG}/demo/stills/arc-dashboard-800.jpg`,
       posterAlt:
         "A.R.C.'s whole-home dashboard: $49,630 documented across 8 rooms and 73 items",
-      instruction: "Upload a photo of a room and the model will itemise it.",
+      instruction: "Open a room, tap an item, then try the AI scan.",
       /* A.R.C. is a phone app, so it is shown as one. The stage is
          height-driven and the device derives its width from that, so
          `tall` is really a width control: 78dvh gave a 323px handset,

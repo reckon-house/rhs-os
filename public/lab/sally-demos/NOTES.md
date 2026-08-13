@@ -1,30 +1,50 @@
 # sally-demos — live product demos for /case-studies/sally
 
-**What these are:** scripted, looping recreations of three Sally Marketing Portal
+**What these are:** scripted, looping replays of Sally Marketing Portal
 workflows, built lab-first (this repo's own pattern) for embedding as live code
 sections in the Sally case study. Built + visually verified from the Sally-side
 Claude session (2026-08-12), which has the product context; this note is the
 handoff for the RHS session that ports them.
 
-**Confidentiality:** every number, product, quote and result in these demos is
-FABRICATED (plausible-shaped, authored constants). Nothing is pulled from Sally
-systems. The visible caption on each demo says so — keep it in the port; it is
-the same grounded-with-receipts posture as the homepage brain. Patterns travel,
-Sally data does not.
+**⚠️ DIRECTION CHANGE (same day):** Jeremy rejected the first pass — stylized
+miniature windows with staged data read as a "dumbed down version." The demos
+must be the REAL interface with REAL content. `jim-chat.html` is rebuilt to
+that bar and is the reference: it runs on `sally-portal-chrome.css` — the
+portal's chrome EXTRACTED VERBATIM from `sally-portal/index.html` (class names
+kept: `.icon-rail`, `.campaign-panel`, `.message`, `.input-row`…) — and replays
+a real Jim exchange word-for-word (the brand-tagline conversation, from a real
+session Jeremy supplied). The caption changed accordingly: it says "live replay
+of a real exchange," not "data staged." `pdp-studio.html` and
+`figma-build.html` still use the OLD miniature shell (`sally-demo.css` `.sd-*`)
+and are queued for the same rebuild — treat them as superseded visuals with
+correct choreography.
+
+**Content line (recalibrated with Jeremy):** real UI, real brand-flavored
+conversations, real product packshots are IN — they match what the case study
+page already publishes as static screenshots. Keep genuinely-internal material
+OUT: sales/financial numbers, unreleased campaign plans, customer PII.
 
 ## Files
 
-| file | demo | loop length |
+| file | state | demo |
 |---|---|---|
-| `jim-chat.html` | Jim agentic turn: typed question → 3 tool-call chips fire + resolve → streamed cited answer → proposal card | ~18s + 3.2s hold |
-| `pdp-studio.html` | PDP Copy Studio: URL → audit findings (severity dots) → demand keywords (volume bars) → competitive context (themes + whitespace) → before/after title rewrite with rationale | ~15s + hold |
-| `figma-build.html` | Jim → Figma: chat ask → plugin build card ticks 3 rows → layer-swap to dark dot-grid canvas → 3 email artboards materialize block-by-block → toast | ~14s + hold |
-| `sally-demo-kit.js` | shared engine (see contract below) | — |
-| `sally-demo.css` | shared Sally shell (window/titlebar/rail/caption) + per-demo sections (`jc-` / `ps-` / `fb-` prefixes) | — |
+| `jim-chat.html` | **v2 — the fidelity bar** | Full portal chrome (rail + campaign panel + Briefing chat). Question types into the real dock → new session row pops into Recent chats → Jim streams the real tagline answer (bold/italic intact) | 
+| `sally-portal-chrome.css` | v2 | Verbatim-extracted portal chrome. Diffable against `index.html`; assets in `./assets/` (real `Sally-Logo.svg` + `Satoshi-Variable.woff2` from the portal) |
+| `pdp-studio.html` | v1 — rebuild pending | audit → findings → demand → competitive whitespace → rewrite (choreography final, shell to be swapped to real Utilities chrome) |
+| `figma-build.html` | v1 — rebuild pending | chat → plugin build card → canvas artboards (to be rebuilt so artboards render the REAL 2026 email template structure: 600px on #FFF0E0, 60/54 hero type) |
+| `sally-demo-kit.js` | current | shared engine (contract below) |
+| `sally-demo.css` | v1 shell + engine classes | keep for `.sd-pop/.sd-caret/.sd-instant`; the miniature `.sd-window` shell dies when the v1 demos are rebuilt |
 
-View any of them right now at `/lab/sally-demos/<name>.html` once committed —
-`public/` is served as-is, so they're watchable on the deployed site before any
-React port happens.
+View any of them at `/lab/sally-demos/<name>.html` once committed — `public/`
+is served as-is, so they're watchable on the deployed site before any React
+port happens.
+
+**Open decision for Jeremy (flagged, not taken):** the rebuilt Figma demo's
+email artboards want Founders Grotesk (the licensed brand display face) for the
+hero type. Shipping those font files on reckon.house is a licensing call —
+alternatives are outlined SVG headlines or rasterized text for just those
+artboards. UI text everywhere else is Satoshi (the portal's real UI face,
+already self-hosted here).
 
 ## Engine contract (`sally-demo-kit.js`)
 

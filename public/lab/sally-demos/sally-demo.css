@@ -108,10 +108,11 @@
 .sd-pop.sd-in { opacity: 1; transform: none; }
 
 /* ---- test mode: SallyDemo.step() disables motion so stepped
-       screenshots show true end-states ---- */
-.sd-instant .sd-demo *,
-.sd-instant .sd-demo *::before,
-.sd-instant .sd-demo *::after {
+       screenshots show true end-states. Covers both demo shells:
+       the framed .sd-demo miniatures and the .sp-frame portal chrome. ---- */
+.sd-instant :is(.sd-demo, .sp-frame) *,
+.sd-instant :is(.sd-demo, .sp-frame) *::before,
+.sd-instant :is(.sd-demo, .sp-frame) *::after {
   transition: none !important;
   animation: none !important;
 }
