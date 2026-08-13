@@ -8,7 +8,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "Mass scale, individual feel. A content engine built on three shapes that adapt to user, season, and story.",
-  field: "Design Systems\nArt Direction\nProduct Photography Direction",
+  field: "Design Systems\nArt Direction\nProduct Photography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2015",
   status: "Complete",
@@ -16,11 +16,13 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     "Design Systems",
     "Art Direction",
     "Product Photography Direction",
+    "Ecommerce Design",
   ],
   services: [
     "Design Systems",
     "Art Direction",
     "Product Photography Direction",
+    "Ecommerce Design",
   ],
   stack: ["Nordstrom CMS", "Editorial Templates", "Asset Library"],
   links: [],

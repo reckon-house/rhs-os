@@ -62,6 +62,7 @@
     "Photoshop",
     "InDesign"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -389,6 +390,7 @@
     "Vercel",
     "Claude Code"
    ],
+   "keywords": [],
    "stats": [
     {
      "value": "$680",
@@ -1623,6 +1625,7 @@
    "tools": [
     "Camera"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "place": [
@@ -1951,6 +1954,7 @@
     "Adobe Illustrator",
     "Adobe Photoshop"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "material": [
@@ -2210,6 +2214,7 @@
     "Camera",
     "Hand-rendering"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "furniture": [
@@ -2639,6 +2644,7 @@
     "InDesign",
     "Camera"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -2879,6 +2885,7 @@
     "SketchUp",
     "Adobe Creative Suite"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "material": [
@@ -3879,13 +3886,15 @@
    "disciplines": [
     "Creative Direction",
     "Digital Design",
-    "Photography Direction"
+    "Photography Direction",
+    "Ecommerce Design"
    ],
    "tools": [
     "Figma",
     "Sketch",
     "Photoshop"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -4058,6 +4067,7 @@
     "OAuth 2.0",
     "Claude + ChatGPT"
    ],
+   "keywords": [],
    "stats": [
     {
      "value": "100+",
@@ -4353,6 +4363,7 @@
     "SketchUp",
     "Material specification"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "room": [
@@ -4879,6 +4890,7 @@
     "SketchUp",
     "Material specification"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "material": [
@@ -5671,6 +5683,7 @@
     "SketchUp",
     "Adobe Creative Suite"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "furniture": [
@@ -6599,6 +6612,7 @@
     "SketchUp",
     "Adobe Creative Suite"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "material": [
@@ -7423,6 +7437,7 @@
     "SketchUp",
     "Adobe Creative Suite"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "room": [
@@ -8405,6 +8420,7 @@
     "SketchUp",
     "Adobe Creative Suite"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "room": [
@@ -9477,13 +9493,33 @@
     "SketchUp",
     "Material specification"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 29,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
+       }
+      ]
+     }
+    ],
     "material": [
      {
       "facet": "material",
       "term": "stone",
-      "n": 41,
+      "n": 37,
       "cites": [
        {
         "section": "meta",
@@ -9505,7 +9541,7 @@
      {
       "facet": "material",
       "term": "leather",
-      "n": 32,
+      "n": 30,
       "cites": [
        {
         "section": "meta",
@@ -9527,7 +9563,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 30,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -9549,7 +9585,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 23,
+      "n": 21,
       "cites": [
        {
         "section": "meta",
@@ -9766,30 +9802,11 @@
       "observed": true
      }
     ],
-    "place": [
-     {
-      "facet": "place",
-      "term": "hill country",
-      "n": 31,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-w…"
-       }
-      ]
-     }
-    ],
     "furniture": [
      {
       "facet": "furniture",
       "term": "fireplace",
-      "n": 28,
+      "n": 25,
       "cites": [
        {
         "section": "meta",
@@ -9811,7 +9828,7 @@
      {
       "facet": "furniture",
       "term": "sofa",
-      "n": 26,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -9877,7 +9894,7 @@
      {
       "facet": "furniture",
       "term": "pendant",
-      "n": 14,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -9898,30 +9915,8 @@
      },
      {
       "facet": "furniture",
-      "term": "chandelier",
-      "n": 13,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.3",
-        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "chair",
-      "n": 13,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -9932,6 +9927,28 @@
         "section": "material-pair",
         "field": "left.alt",
         "quote": "…the limestone wall with the ladder shelf holding a vintage globe, brass fireplace tools below, and the corner of a tweed armchair"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "chandelier",
+      "n": 11,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…tudies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-living/hill-country-living-limestone-eisenhower-record-player-gray-sofa-pendant-chandelier-vertical.jpg"
        },
        {
         "section": "image",
@@ -9959,28 +9976,6 @@
         "section": "image",
         "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
         "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "mantel",
-      "n": 10,
-      "cites": [
-       {
-        "section": "material-fireplace",
-        "field": "alt",
-        "quote": "…ing flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa…"
-       },
-       {
-        "section": "marks-materials",
-        "field": "colors.1.description",
-        "quote": "Floors, beams, mantel"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ]
      },
@@ -10021,6 +10016,28 @@
         "section": "collected-armchairs",
         "field": "right.src",
         "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mantel",
+      "n": 9,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…ing flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa…"
+       },
+       {
+        "section": "interiors-index",
+        "field": "colors.1.description",
+        "quote": "Floors, beams, mantel"
        },
        {
         "section": "image",
@@ -10164,7 +10181,7 @@
      {
       "facet": "furniture",
       "term": "beam",
-      "n": 6,
+      "n": 5,
       "cites": [
        {
         "section": "material-fireplace",
@@ -10172,14 +10189,14 @@
         "quote": "…anked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with N…"
        },
        {
-        "section": "marks-materials",
-        "field": "fonts.1.description",
-        "quote": "The same grain runs underfoot, overhead in the exposed beams, and across the mantel beam pulled over the stone."
-       },
-       {
         "section": "image",
         "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
         "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg",
+        "quote": "Centred one-point view straight down the room, near-symmetrical about the range hood."
        }
       ]
      },
@@ -10415,28 +10432,6 @@
     "style": [
      {
       "facet": "style",
-      "term": "mid century",
-      "n": 13,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "style",
       "term": "vintage",
       "n": 12,
       "cites": [
@@ -10459,8 +10454,30 @@
      },
      {
       "facet": "style",
+      "term": "mid century",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "style",
       "term": "western",
-      "n": 8,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -10632,7 +10649,7 @@
         "quote": "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass."
        },
        {
-        "section": "marks-materials",
+        "section": "interiors-index",
         "field": "colors.3.name",
         "quote": "Charcoal Tweed"
        }
@@ -10644,7 +10661,7 @@
       "n": 1,
       "cites": [
        {
-        "section": "marks-materials",
+        "section": "interiors-index",
         "field": "colors.0.name",
         "quote": "Limestone Cream"
        }
@@ -10687,6 +10704,7 @@
     "Photoshop",
     "InDesign"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "place": [
@@ -10965,13 +10983,15 @@
     "Creative Direction",
     "Campaign Design",
     "Experience Design",
-    "Copywriting"
+    "Copywriting",
+    "Ecommerce Design"
    ],
    "tools": [
     "Nordstrom CMS",
     "Custom Components",
     "HTML/CSS/JS"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -11218,6 +11238,7 @@
     "Adobe Illustrator",
     "Adobe Photoshop"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -11571,6 +11592,7 @@
     "Sketch",
     "InVision"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -11804,6 +11826,7 @@
     "InDesign",
     "Studio photography"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -12019,6 +12042,9 @@
     "Art Direction",
     "Photography Licensing",
     "Editorial Systems"
+   ],
+   "keywords": [
+    "Ecommerce"
    ],
    "stats": [],
    "facets": {
@@ -12315,6 +12341,7 @@
     "Adobe Photoshop",
     "Adobe Illustrator"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -12657,13 +12684,15 @@
     "Product Design",
     "UX Design",
     "Visual Design",
-    "Editorial Templates"
+    "Editorial Templates",
+    "Ecommerce Design"
    ],
    "tools": [
     "Nordstrom CMS",
     "Custom Components",
     "HTML/CSS/JS"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -12848,9 +12877,11 @@
     "Content Strategy",
     "Brand Design",
     "Naming",
-    "Design Systems"
+    "Design Systems",
+    "Ecommerce Design"
    ],
    "tools": [],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -13043,13 +13074,15 @@
    "disciplines": [
     "Design Systems",
     "Art Direction",
-    "Product Photography Direction"
+    "Product Photography Direction",
+    "Ecommerce Design"
    ],
    "tools": [
     "Nordstrom CMS",
     "Editorial Templates",
     "Asset Library"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -13333,6 +13366,7 @@
     "Adobe Illustrator",
     "Capture One"
    ],
+   "keywords": [],
    "stats": [],
    "facets": {
     "client": [
@@ -13640,6 +13674,9 @@
     "Python",
     "Streamlit",
     "Claude Code"
+   ],
+   "keywords": [
+    "Ecommerce"
    ],
    "stats": [],
    "facets": {
@@ -13966,6 +14003,7 @@
     "CSS",
     "Playwright"
    ],
+   "keywords": [],
    "stats": [
     {
      "value": "14",
@@ -14030,6 +14068,9 @@
     "Illustrator",
     "InDesign",
     "Studio photography"
+   ],
+   "keywords": [
+    "Ecommerce"
    ],
    "stats": [],
    "facets": {

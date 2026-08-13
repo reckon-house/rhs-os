@@ -187,6 +187,14 @@ for (const file of studyFiles()) {
     ...String(cs.field || "").split("\n"),
   ]);
   const tools = uniq(cs.stack || []);
+  /* Searchable, never displayed, and deliberately NOT folded into
+     disciplines. Every list above prints on the study's cover, so
+     until now findable and claimed were the same act: the only way to
+     reach Sally Marketing OS by searching "ecommerce" was to put
+     ecommerce design on its cover, which the work does not support.
+     These stay separate all the way through so the matcher can rank
+     them below a real discipline. */
+  const keywords = uniq(cs.keywords || []);
 
   /* Statistics, wherever a section keeps them as value/label pairs. */
   const stats = [];
@@ -226,6 +234,7 @@ for (const file of studyFiles()) {
     summary: cs.sections.find((s) => s.type === "meta")?.summary || undefined,
     disciplines,
     tools,
+    keywords,
     stats,
     facets,
   });
@@ -556,6 +565,9 @@ const compact = {
     slug: p.slug, title: p.title, href: p.href, category: p.category,
     year: p.year,
     d: p.disciplines, t: p.tools,
+    /* omitted entirely when empty: this rides in the payload every
+       visitor downloads, and most studies will never carry one */
+    ...(p.keywords.length ? { k: p.keywords } : {}),
     /* term AND its evidence count: the count is the ranking signal.
        Without it the client cannot tell the living room with seventeen
        sofa mentions from the mockup that has a couch in one photo,

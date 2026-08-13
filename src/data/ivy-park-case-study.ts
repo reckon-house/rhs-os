@@ -8,7 +8,7 @@ export const ivyParkCaseStudy: CaseStudy = {
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
     "Exclusive US digital launch for Beyoncé's first activewear brand. Full campaign from concept to live in six weeks.",
-  field: "Creative Direction\nCampaign Design\nExperience Design",
+  field: "Creative Direction\nCampaign Design\nExperience Design\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2016",
   status: "Complete",
@@ -17,12 +17,14 @@ export const ivyParkCaseStudy: CaseStudy = {
     "Campaign Design",
     "Experience Design",
     "Copywriting",
+    "Ecommerce Design",
   ],
   services: [
     "Creative Direction",
     "Campaign Design",
     "Experience Design",
     "Copywriting",
+    "Ecommerce Design",
   ],
   stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
   links: [],

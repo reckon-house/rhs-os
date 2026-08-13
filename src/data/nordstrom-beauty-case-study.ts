@@ -8,7 +8,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
     "Editorial hub meets product tool. Virtual try-on, shoppable stories, and templates built to stay fresh without manual updates.",
-  field: "Product Design\nUX Design\nVisual Design",
+  field: "Product Design\nUX Design\nVisual Design\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2018",
   status: "Complete",
@@ -17,12 +17,14 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
     "UX Design",
     "Visual Design",
     "Editorial Templates",
+    "Ecommerce Design",
   ],
   services: [
     "Product Design",
     "UX Design",
     "Visual Design",
     "Editorial Templates",
+    "Ecommerce Design",
   ],
   stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
   links: [],

@@ -18,6 +18,10 @@ export const youBySallyCaseStudy: CaseStudy = {
   links: [],
   heroImage: "",
   style: "pressing",
+  /* Built FOR an ecommerce retailer without being ecommerce
+     design, so this reaches search without printing a claim the
+     work does not support. See CaseStudy.keywords. */
+  keywords: ["Ecommerce"],
   sections: [
     // ── META + ABSTRACT ──
     {

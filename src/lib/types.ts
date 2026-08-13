@@ -19,6 +19,25 @@ export interface CaseStudy {
    * absent means the classic renderer, untouched.
    */
   style?: "pressing";
+  /**
+   * FINDABLE WITHOUT BEING CLAIMED. Terms that should reach this study
+   * from the search field but must NOT print on the page, because the
+   * study is about the subject rather than being an example of it.
+   *
+   * The two were welded together by accident. `classification`,
+   * `services` and `field` are the only lists the facts index reads,
+   * and all three are DISPLAYED, so the only way to make a study
+   * findable was to assert a discipline on its cover. Sally Marketing
+   * OS is five internal platforms built for an ecommerce retailer.
+   * Someone searching "ecommerce" should find it. Its cover should not
+   * claim ecommerce design as a discipline it practised.
+   *
+   * Not a keyword-stuffing field, and the matcher ranks these below a
+   * real discipline so labelled work always leads. If the work
+   * genuinely IS the thing, put it in `classification`, where a reader
+   * can see the claim and judge it.
+   */
+  keywords?: string[];
   sections: Section[];
 }
 
