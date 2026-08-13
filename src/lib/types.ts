@@ -380,9 +380,13 @@ export interface StatsBarSection extends BaseSection {
     label: string;
     value: string;
     description: string;
-    width: number; // percentage width for the bar
     note?: string;
   }[];
+  /* `width: number` used to sit here, commented "percentage width for
+     the bar". It was never a measurement of anything: 88 on the
+     smallest value in A.R.C.'s set and 81 on the largest. Deleted
+     rather than deprecated, so the next chart cannot reach for it.
+     Bars are scaled from `value`. */
 }
 
 export interface FeatureCardsSection extends BaseSection {
