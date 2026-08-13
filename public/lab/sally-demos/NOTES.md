@@ -261,21 +261,58 @@ Already matches house rules — port these behaviors, don't re-derive them:
   `.sd-instant` (kills transitions) so screenshots show true end-states.
   `?force=1` is the cruder realtime variant. Both are lab-only; drop or keep.
 
-## Port shape (mechanical)
+## Port shape — DONE 2026-08-13, and not the way this section proposed
 
-One client component per demo in `src/components/case-study/sections/`
-(`SallyDemoJimChat.tsx`, `SallyDemoPdpStudio.tsx`, `SallyDemoFigmaBuild.tsx`) —
-same bespoke-hardcoded convention as `IntelligenceFlow` / `AIHeatmap`, which
-already run on this exact page. Register three cases in `SectionRenderer.tsx`,
-add section entries in `src/data/sally-case-study.ts`:
+**These files are now the shipped artifact, not a source to port from.** The
+study frames them. Edit a demo here and the case study changes; there is no
+second copy.
 
-- Jim chat → inside the "AI Strategy Partner" narrative
-- PDP Studio → with the intelligence/tools sections
-- Figma build → in the tools/workflow section
+This section used to propose one hand-written React component per demo. That
+was rejected on the way in, for three reasons worth keeping:
 
-Pressing redesign: host via the same bridge that carried A.R.C.'s nine bespoke
-viz (`PressingVizFrame`) — these are self-contained (own scoped styles, no
-dependence on surrounding layout), so they ride the port unchanged.
+1. **Verbatim-ness is the product.** Re-deriving ~3,200 lines of extracted
+   chrome as components forks it from the portal it was copied out of, so
+   every future portal change needs doing twice — and the first pass of this
+   whole effort was rejected precisely for not being the real interface.
+2. **The selectors would collide.** `.header`, `.message`, `.section-label`,
+   `.scroll-area`, `.status-chip`, `.url-bar` are all top-level classes here.
+   Inlined into the site they meet its own. A document boundary is real
+   isolation; a naming convention is a promise.
+3. **These are fixed 1120px desktop interfaces with no mobile layout.** A
+   component port faces that anyway and loses the isolation for nothing. The
+   frame scales the whole document instead.
+
+What shipped (`type: "product-demo"` in `src/lib/types.ts`):
+
+| piece | where |
+|---|---|
+| `PressingProductDemo.tsx` + `product-demo.module.css` | `src/components/case-study/pressing/demo/` — next to `PressingLiveApp`, which framed A.R.C.'s deployed app for the same reason one step further along |
+| routing | one `if (s.type === "product-demo")` in `PressingLayout.tsx`, hosted in `PressingVizFrame` like every other bespoke section |
+| sections | `brain-jim-demo` (§04), `utilities-pdp-demo`, `utilities-requests-demo`, `utilities-figma-demo` (§06) in `sally-case-study.ts` |
+
+The frame adds the three things a document boundary does not give free:
+
+- **Pause when off screen.** The engine's own IntersectionObserver watches its
+  own document, where the demo is always visible — four replays would run
+  forever, one screen apart. The parent drives it through this kit's
+  documented contract (`data-paused` on the host), reached by structure
+  (`[data-stage]` → `closest("body > *")`) so it works for any demo without
+  being told which. The site's page-hidden attribute propagates the same way.
+- **Scale, not reflow**, capped at 1:1.
+- **`pointer-events: none`** on the iframe. An iframe eats the wheel, and a
+  replay taller than its frame will spend the page's scroll on itself. Nothing
+  in a replay is operable, so the question never arises.
+
+**`?framed=1`** (see `sally-demo-kit.js`) tells a demo it has a host: it drops
+the standalone caption and the page gutter, both of which the frame supplies.
+Presentation stays this folder's business. Load a demo without the flag and it
+is still the standalone lab page it always was.
+
+⚠️ One trap paid for, and it looks like a correct measurement: a root
+element's `scrollHeight` never reports less than its own viewport, and inside
+an iframe that viewport is the frame whose height you are trying to measure.
+Reading `documentElement.scrollHeight` there hands the CSS fallback straight
+back, forever. Measure `body.scrollHeight`.
 
 ## Gotchas already hit (don't re-hit)
 
@@ -298,12 +335,23 @@ dependence on surrounding layout), so they ride the port unchanged.
   engine's `scrollEl` — keep `min-height: 0` on the flex chain or the pin
   silently stops working.
 
-## Open items for the RHS session
+## Open items
 
-- Section copy around each demo (eyebrow/heading/prose) — write in Pressing
-  voice, not here.
-- Whether the demos also want MP4/GIF exports for LinkedIn — the sizzle
+- ~~Section copy around each demo~~ — DONE. Each section carries a `note` in
+  the study data saying what happens; the caption inside each demo says where
+  it came from. One fact, one home: do not let those two start restating each
+  other.
+- ~~Commit the folder~~ — DONE (`e751c07`).
+- Whether the demos also want MP4/GIF exports for LinkedIn. The sizzle
   exporter (`scripts/export-sizzle-gif.mjs`, CDP virtual time) can drive these
-  pages as-is; `SallyDemo.step` even removes the need for virtual time.
-- These files are uncommitted — commit from the RHS session with its own
-  conventions.
+  pages as-is.
+  ⚠️ Use `?force=1` and the wall clock, NOT `SallyDemo.step`. The stepper
+  advances only the waiters that exist at each 20ms slice and drains two
+  microtask hops between slices, so whenever a resolved wait needs more hops
+  to register its successor that slice's time is dropped rather than banked.
+  Over a 30s script it loses most of the clock: stepping 32,000ms leaves
+  `jim-chat` still typing its first question. It is fine for jumping a beat or
+  two, wrong for driving a whole replay.
+- The Asset Hub demo as a fifth panel is still open (assets already
+  downloaded). The frame is generic now, so it is one file plus one section
+  entry.
