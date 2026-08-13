@@ -129,6 +129,26 @@ async function runAnthropic(s: Spec, facts: string, q: string, trail: string[]):
     const res = await new Anthropic().messages.create({
       model: s.model,
       max_tokens: MAX_TOKENS,
+      /* EFFORT LOW, and the reason is a truncation rather than a budget.
+         Sonnet 5 runs adaptive thinking whenever `thinking` is omitted,
+         and max_tokens caps thinking PLUS visible text together. On the
+         kitchen question it spent 430 of 500 tokens reasoning about a
+         three-sentence answer and stopped mid-word writing one; at 300
+         it returned an empty text block having thought the whole budget
+         away. Haiku never did this because it has no adaptive thinking,
+         and answered the same question in 62 tokens.
+
+         The task is three sentences assembled from a supplied blob.
+         There is no multi-step reasoning here for thinking to do, so
+         depth is pure latency and cost. Low is the lever the Sonnet 5
+         guidance names for exactly this; disabling thinking outright is
+         cheaper still but carries its own failure modes, so it is not
+         reached for without measuring first.
+
+         Applies to the Anthropic models generally: Haiku 4.5 predates
+         the effort parameter and ignores it, so this is Sonnet-only in
+         practice and harmless there. */
+      output_config: { effort: "low" },
       system: [
         { type: "text", text: SYSTEM },
         {
