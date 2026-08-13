@@ -61,8 +61,9 @@ export const runtime = "nodejs";
    output_config.effort with a 400 rather than ignoring it. */
 const MODEL = process.env.ASK_MODEL || "claude-haiku-4-5";
 /* The voice contract, the shelf and the facts builder live in
-   @/lib/ask-context so /api/ask-compare hands another provider
-   byte-identical input. A duplicated system prompt is one that drifts. */
+   @/lib/ask-context. They were extracted so a comparison bench could
+   hand several models byte-identical input; that bench is gone, but a
+   system prompt with one home is worth keeping either way. */
 
 
 /* The cached prefix, in render order: rules, then the shelf. The

@@ -8,11 +8,11 @@
  * that its homepage driver had fallen 70 lines behind its own source
  * without anything saying so.
  *
- * The comparison route in /api/ask-compare exists to answer one question:
- * given the SAME rules, the SAME facts and the SAME question, how does
- * another provider's prose read. That comparison is only worth anything
- * if both sides are handed byte-identical input, which is what importing
- * from here guarantees.
+ * The bench that motivated the split (/api/ask-compare, deleted before
+ * going live) sent byte-identical rules and facts to several models so
+ * the only variable was the model. That comparison chose Haiku. The
+ * extraction outlives it: /api/ask is the sole caller today, and this
+ * file is still the one place the voice contract lives.
  */
 import facts from "@/data/generated/project-facts.json";
 
