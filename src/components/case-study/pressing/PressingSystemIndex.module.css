@@ -22,7 +22,18 @@
      tallest frame, measured, since a generic component cannot know the
      frames in advance. */
   --sampleH: 208px;
-  padding: clamp(40px, 7dvh, 90px) 0;
+  /* THE PAGE'S GUTTER, on the same terms as everything else. <main>
+     runs md:px-[50px], so at md+ a section adds none of its own — but
+     below md main runs px-0 and the section has to supply it. The brief
+     does exactly this (48px 20px, then 48px 0 at md). This one carried
+     0 at every width, so on a phone its headline sat hard against the
+     glass while every other headline on the page stood 20px in. */
+  padding: clamp(40px, 7dvh, 90px) 20px;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding: clamp(40px, 7dvh, 90px) 0;
+  }
 }
 
 .head {
