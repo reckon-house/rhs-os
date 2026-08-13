@@ -5,163 +5,344 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sally demo — PDP Copy Studio</title>
 <link rel="stylesheet" href="sally-demo.css">
+<link rel="stylesheet" href="sally-portal-chrome.css">
+<link rel="stylesheet" href="sally-pdp-studio.css">
 <style>
   body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
 </style>
 </head>
 <body>
 
-<div class="sd-demo" id="pdpDemo">
-  <div class="sd-window">
-    <div class="sd-titlebar">
-      <span class="sd-dot"></span><span class="sd-dot"></span><span class="sd-dot"></span>
-      <span class="sd-title"><strong>Sally Marketing Portal</strong> · PDP Copy Studio</span>
-    </div>
-    <div class="sd-body">
-      <div class="sd-rail" aria-hidden="true">
-        <span><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L20 10l-6.1 1.4L12 17l-1.9-5.6L4 10l6.1-1.4z"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M4 17l5-6 4 3 7-8"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15l5-4 4 3 3-2 4 3"/></svg></span>
-        <span class="on"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></span>
+<div id="pdpDemo">
+  <div class="sp-frame">
+    <nav class="icon-rail" aria-hidden="true">
+      <div class="icon-rail-logo"><div class="icon-rail-logo-inner"><img src="assets/Sally-Logo.svg" alt="SALLY."></div></div>
+      <div class="icon-rail-nav">
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a2.1 2.1 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg></span>
+          <span class="rail-icon-label">Briefing</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg></span>
+          <span class="rail-icon-label">Requests</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-badge">11</span>
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></span>
+          <span class="rail-icon-label">Trends</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="rail-icon-label">Campaigns</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>
+          <span class="rail-icon-label">Assets</span>
+        </button>
+        <button class="rail-icon-btn active">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="rail-icon-label">Utilities</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+          <span class="rail-icon-label">Dashboard</span>
+        </button>
       </div>
+      <div class="rail-account"><div class="rail-account-btn">JP</div></div>
+      <div class="rail-app-label"><div class="rail-app-label-inner"><span class="rail-app-label-text">PDP Copy Studio</span></div></div>
+    </nav>
+    <div class="rail-separator"></div>
 
-      <div class="ps-main" data-stage>
-        <div class="ps-bar">
-          <div class="ps-url">
-            <svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 007.5.5l2-2a5 5 0 00-7-7l-1 1M14 10a5 5 0 00-7.5-.5l-2 2a5 5 0 007 7l1-1"/></svg>
-            <span class="ps-url-text"></span>
+    <div class="sp-stage" data-stage>
+      <aside class="campaign-panel">
+        <div class="campaign-panel-header"><span class="campaign-panel-title">Utilities</span></div>
+        <div class="campaign-panel-content">
+          <div class="dam-filters-label">Tools</div>
+          <div id="pdpToolList">
+            <div class="chat-session-row active"><span class="chat-session-title">PDP Copy Studio</span></div>
+            <div class="chat-session-row"><span class="chat-session-title">Copy Compare</span></div>
+            <div class="chat-session-row"><span class="chat-session-title">Shelf Talker</span></div>
+            <div class="chat-session-row"><span class="chat-session-title">Voiceover Studio</span></div>
+            <div class="chat-session-row"><span class="chat-session-title">Meeting Recorder</span></div>
+            <div class="chat-session-row"><span class="chat-session-title">Sizzle Reel</span></div>
           </div>
-          <span class="ps-run"><span class="jc-spin"></span><span class="ps-run-label">Run audit</span></span>
+          <div class="dam-filters-label" style="padding-top:12px">Workspace</div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>All pages (28)</option></select></div>
         </div>
-        <div class="ps-scroll"></div>
-      </div>
+      </aside>
+
+      <main class="sp-content">
+        <div class="pdp-page">
+          <div class="pdp-util-head">
+            <span class="pdp-util-title">PDP Copy Studio</span>
+            <span class="pdp-util-sub">Audit a live PDP, then rewrite it against demand + brand voice.</span>
+          </div>
+
+          <div class="pdp-url-row">
+            <div class="pdp-copy-url-input"><span id="pdpUrl"></span></div>
+            <span class="pdp-run-btn" id="pdpRunBtn"><span class="jc-spin"></span><span id="pdpRunLabel">Run audit</span></span>
+          </div>
+
+          <div class="pdp-tabbar">
+            <span class="pdp-tab dim">Workspace · 28 pages</span>
+            <span class="pdp-tab active" id="pdpPageTab">Page</span>
+          </div>
+
+          <div id="pdpAccs"></div>
+        </div>
+      </main>
     </div>
   </div>
-  <p class="sd-caption">Scripted replay of a real PDP Copy Studio audit — all data staged for demo.</p>
+  <p class="sp-caption">Live replay of PDP Copy Studio — portal chrome and panel structure taken from the product's own interface code. Audit findings, demand figures and competitive read are the tool's real output shape.</p>
 </div>
 
 <script src="sally-demo-kit.js"></script>
 <script>
 new SallyDemo(document.getElementById("pdpDemo"), async function (t) {
-  var URL_TEXT = "sallybeauty.com/p/permanent-creme-hair-color-medium-brown";
+  var URL_TEXT = "sallybeauty.com/hair-color/permanent/ion-permanent-creme-hair-color/SBS-123456.html";
 
-  var scroll = t.$(".ps-scroll");
-  var run = t.$(".ps-run");
-  var runLabel = t.$(".ps-run-label");
-  t.scrollEl = scroll;
+  var accs = t.$("#pdpAccs");
+  var run  = t.$("#pdpRunBtn");
+  var page = t.$(".pdp-page");
+  t.scrollEl = page;
 
-  function panel(title, chipText) {
-    var p = t.el("div", "ps-panel");
-    var head = t.el("div", "ps-panel-head", title);
-    if (chipText) head.appendChild(t.el("span", "ps-chip", chipText));
-    p.appendChild(head);
-    scroll.appendChild(p);
-    t.reveal(p);
-    return p;
+  var CHEV = '<span class="pdp-acc-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>';
+
+  // Build a collapsed accordion; returns its body for filling.
+  function acc(title, chipText, chipClass) {
+    var a = t.el("div", "pdp-acc");
+    a.innerHTML =
+      '<div class="pdp-acc-head">' +
+        '<span class="pdp-acc-title">' + title + '</span>' +
+        '<span class="pdp-acc-chip ' + (chipClass || '') + '">' + chipText + '</span>' +
+        CHEV +
+      '</div>' +
+      '<div class="pdp-acc-body"></div>';
+    accs.appendChild(a);
+    t.reveal(a);
+    return a;
   }
+  function open(a) { a.classList.add("open"); t._pin(); }
 
-  // 1 — URL pastes in, audit runs
-  await t.wait(800);
-  await t.type(t.$(".ps-url-text"), URL_TEXT, 44);
-  await t.wait(300);
+  // 1 — URL types in, audit runs
+  await t.wait(900);
+  await t.type(t.$("#pdpUrl"), URL_TEXT, 46);
+  await t.wait(260);
   await t.press(run);
   run.classList.add("busy");
-  runLabel.textContent = "Auditing…";
-  await t.wait(1500);
+  t.$("#pdpRunLabel").textContent = "Auditing…";
+  await t.wait(1700);
   run.classList.remove("busy");
-  runLabel.textContent = "Run audit";
+  t.$("#pdpRunLabel").textContent = "Run audit";
 
-  // 2 — findings land, one severity at a time
-  var f = panel("AUDIT FINDINGS", "Opportunity 72");
-  var findings = [
-    ["hi",  "Reviews render client-side — invisible to AI answer engines"],
-    ["hi",  "Title is 38 chars — under the ~70 ceiling, top keyword absent"],
-    ["med", "No FAQ — 6 real customer questions unanswered on-page"],
-    ["lo",  "Meta description is generic — no differentiator named"]
+  // 2 — FINDINGS. Severity + SEO/AEO channel chips are the real audit's shape;
+  //     the Bazaarvoice one is the tool's documented #1 structural AEO gap.
+  var aF = acc("Audit findings", "Opportunity 72", "hot");
+  open(aF);
+  var fBody = aF.querySelector(".pdp-acc-body");
+  var FINDINGS = [
+    ["high", "AEO", "ed-chip-aeo",
+     "Ratings and reviews load client-side via Bazaarvoice — absent from server HTML, so ChatGPT, Perplexity and Claude can't see them."],
+    ["high", "SEO", "ed-chip-seo",
+     "Title is 38 characters and omits the highest-volume term shoppers actually search."],
+    ["medium", "SEO · AEO", "ed-chip-both",
+     "No FAQ block — six real customer questions from the PDP's own Q&A go unanswered on-page."],
+    ["low", "SEO", "ed-chip-seo",
+     "Meta description is generic; it names no differentiator a shopper could act on."]
   ];
-  for (var i = 0; i < findings.length; i++) {
-    var row = t.el("div", "ps-finding");
-    row.appendChild(t.el("span", "ps-sev " + findings[i][0]));
-    row.appendChild(t.el("span", null, findings[i][1]));
-    f.appendChild(row);
+  for (var i = 0; i < FINDINGS.length; i++) {
+    var f = t.el("div", "ed-finding");
+    f.innerHTML =
+      '<div class="ed-fmeta">' +
+        '<span class="ed-sev ed-sev-' + FINDINGS[i][0] + '">' + FINDINGS[i][0] + '</span>' +
+        '<span class="ed-chip ' + FINDINGS[i][2] + '">' + FINDINGS[i][1] + '</span>' +
+      '</div>' +
+      '<div class="ed-ftext">' + FINDINGS[i][3] + '</div>';
+    fBody.appendChild(f);
+    t.reveal(f);
+    await t.wait(330);
+  }
+  await t.wait(520);
+
+  // 3 — DEMAND. Google KWP volumes; growth is 3-month momentum, never YoY.
+  var aD = acc("Demand signal", "Google KWP · 3-mo momentum");
+  open(aD);
+  var dBody = aD.querySelector(".pdp-acc-body");
+  var KWS = [
+    ["permanent hair color", "246K/mo", ["▲ 12%"], ["hot"]],
+    ["bond repair hair dye", "33K/mo", ["▲ 41%", "PAA"], ["hot", "paa"]],
+    ["gray coverage box dye", "18K/mo", ["▲ 8%"], []],
+    ["ammonia free hair color", "12K/mo", ["PAA"], ["paa"]]
+  ];
+  for (var k = 0; k < KWS.length; k++) {
+    var row = t.el("div", "pdp-demand-row");
+    var tags = "";
+    for (var g = 0; g < KWS[k][2].length; g++) {
+      var cls = KWS[k][3][g] ? " pdp-demand-tag-" + KWS[k][3][g] : "";
+      tags += '<span class="pdp-demand-tag' + cls + '">' + KWS[k][2][g] + '</span>';
+    }
+    row.innerHTML =
+      '<span class="pdp-demand-kw">' + KWS[k][0] + '</span>' +
+      '<span class="pdp-demand-tags">' + tags + '</span>' +
+      '<span class="pdp-demand-vol">' + KWS[k][1] + '</span>';
+    dBody.appendChild(row);
     t.reveal(row);
-    await t.wait(340);
+    await t.wait(240);
   }
-  await t.wait(500);
+  await t.wait(560);
 
-  // 3 — demand signal
-  var d = panel("DEMAND SIGNAL", "Google KWP");
-  var kws = [
-    ["permanent hair color", "246K/mo", "+12%", 92],
-    ["bond repair hair dye", "33K/mo", "+41%", 46],
-    ["gray coverage box dye", "18K/mo", "+8%", 30]
-  ];
-  var fills = [];
-  for (var k = 0; k < kws.length; k++) {
-    var kw = t.el("div", "ps-kw");
-    kw.appendChild(t.el("span", "ps-kw-term", kws[k][0]));
-    var bar = t.el("div", "ps-kw-bar");
-    var fill = t.el("div", "ps-kw-fill");
-    bar.appendChild(fill);
-    kw.appendChild(bar);
-    var meta = t.el("span", "ps-kw-meta");
-    meta.innerHTML = "<strong>" + kws[k][1] + "</strong> <span class='ps-up'>▲ " + kws[k][2].slice(1) + "</span>";
-    kw.appendChild(meta);
-    d.appendChild(kw);
-    t.reveal(kw);
-    fills.push([fill, kws[k][3]]);
-    await t.wait(280);
+  // 4 — COMPETITIVE CONTEXT (the feature built this week). Fed contrastively:
+  //     what everyone claims is table stakes; the whitespace is the opening.
+  var aC = acc("Competitive context", "5 retailers");
+  open(aC);
+  var cBody = aC.querySelector(".pdp-acc-body");
+  var tagWrap = t.el("div", "pdp-comp-tags");
+  cBody.appendChild(tagWrap);
+  var THEMES = ["100% gray coverage", "salon-quality at home", "ammonia-free",
+                "bond repair", "keratin infused", "value price"];
+  for (var th = 0; th < THEMES.length; th++) {
+    var tg = t.el("span", "pdp-comp-tag", THEMES[th]);
+    tagWrap.appendChild(tg);
+    t.reveal(tg);
+    await t.wait(150);
   }
-  // bars sweep after the rows are seated
-  for (var b = 0; b < fills.length; b++) fills[b][0].style.width = fills[b][1] + "%";
+  await t.wait(260);
+  var white = t.el("div", "pdp-white");
+  white.innerHTML = "<strong>Whitespace:</strong> nobody in the category claims application speed, " +
+                    "results by hair texture, or scalp comfort.";
+  cBody.appendChild(white);
+  t.reveal(white);
+  var band = t.el("div", "pdp-band",
+    "Category price band $4.99 – $35.00 · Amazon, Ulta, Walmart, Target, Sephora");
+  cBody.appendChild(band);
+  t.reveal(band);
+  await t.wait(760);
+
+  // 5 — REWRITE. Grounded in the whitespace above.
+  var aR = acc("Proposed rewrite", "v1 · draft", "ok");
+  open(aR);
+  var rBody = aR.querySelector(".pdp-acc-body");
+
+  var el1 = t.el("div", "ed-el");
+  el1.innerHTML = '<div class="ed-ellabel"><span class="ed-cap">Title</span></div>' +
+                  '<div class="ed-cur">ion Permanent Creme Hair Color</div>';
+  rBody.appendChild(el1);
+  t.reveal(el1);
+  await t.wait(520);
+  var newT = t.el("div", "ed-newt");
+  el1.appendChild(newT);
+  await t.stream(newT, ["Bond-Repair Permanent Hair Color — Full Gray Coverage in 25 Minutes"], 8);
+  await t.wait(360);
+
+  var el2 = t.el("div", "ed-el");
+  el2.innerHTML = '<div class="ed-ellabel"><span class="ed-cap">Meta description</span></div>' +
+                  '<div class="ed-cur">Shop ion Permanent Creme Hair Color at Sally Beauty.</div>';
+  rBody.appendChild(el2);
+  t.reveal(el2);
+  await t.wait(400);
+  var newM = t.el("div", "ed-newm");
+  el2.appendChild(newM);
+  await t.stream(newM, ["Salon-level color in 25 minutes, with bond repair built in. Full gray coverage, ammonia-free, for every hair texture."], 13);
+  await t.wait(300);
+
+  // selling bullets
+  var el3 = t.el("div", "ed-el");
+  el3.innerHTML = '<div class="ed-ellabel"><span class="ed-cap">Selling bullets</span></div>';
+  rBody.appendChild(el3);
+  t.reveal(el3);
+  var bl = t.el("ul", "ed-bl");
+  el3.appendChild(bl);
+  var BULLETS = [
+    "Full gray coverage in 25 minutes — no second application",
+    "Bond-repair complex works during processing, not after",
+    "Ammonia-free cream formula, gentle enough for fine and textured hair",
+    "Salon-level tone that stays true through 28+ washes"
+  ];
+  for (var bi = 0; bi < BULLETS.length; bi++) {
+    var li = t.el("li");
+    bl.appendChild(li);
+    await t.stream(li, [BULLETS[bi]], 17);
+    await t.wait(120);
+  }
+  await t.wait(300);
+
+  // FAQ — seeded from the PDP's own unanswered customer questions
+  var el4 = t.el("div", "ed-el");
+  el4.innerHTML = '<div class="ed-ellabel"><span class="ed-cap">FAQ · seeded from customer Q&amp;A</span></div>';
+  rBody.appendChild(el4);
+  t.reveal(el4);
+  var qa = t.el("div", "ed-qa");
+  el4.appendChild(qa);
+  var q = t.el("div", "ed-q");
+  qa.appendChild(q);
+  await t.stream(q, ["Do I need to do a patch test first?"], 15);
+  var ans = t.el("div", "ed-ans");
+  qa.appendChild(ans);
+  await t.stream(ans, ["Yes — perform a skin allergy test 48 hours before each use, even if you've coloured before. Follow the instructions in the package insert."], 20);
+  var src = t.el("span", "ed-src", "SOURCE · PACKAGE INSERT + RA-APPROVED USAGE");
+  qa.appendChild(src);
+  t.reveal(src);
+  await t.wait(400);
+
+  var why = t.el("div", "ed-why");
+  rBody.appendChild(why);
+  await t.stream(why, ["Leads on **speed** and **bond repair** — the two rising claims *no competitor in the category owns*. Gray coverage stays, but second: it's table stakes, not a differentiator."], 15);
+  why.innerHTML = why.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
   await t.wait(700);
 
-  // 4 — competitive context
-  var c = panel("COMPETITIVE CONTEXT", "5 retailers");
-  var tags = t.el("div", "ps-tags");
-  c.appendChild(tags);
-  var themes = ["gray coverage", "salon-quality at home", "ammonia-free", "bond repair", "value price"];
-  for (var g = 0; g < themes.length; g++) {
-    var tag = t.el("span", "ps-tag", themes[g]);
-    tags.appendChild(tag);
-    t.reveal(tag);
-    await t.wait(170);
+  // 6 — SECOND OPINIONS. Gemini + Perplexity run in PARALLEL and neither sees
+  //     Claude's rationale — they grade the copy cold. Schema is the real one:
+  //     grade / score / verdict / strengths / concerns / accuracy_flags /
+  //     recommendation. Models: gemini-3-flash-preview and sonar-pro.
+  var aO = acc("Second opinions", "running…");
+  open(aO);
+  var oBody = aO.querySelector(".pdp-acc-body");
+  oBody.innerHTML =
+    '<div class="ed-shead"><div class="ed-h2">Second opinions</div>' +
+    '<span class="ed-mono">Two models · not the writer</span></div>';
+
+  // both spinners at once — the real call is a 2-worker thread pool
+  var pending = t.el("div", "pdp-critics");
+  pending.innerHTML =
+    '<div class="pdp-critic"><span class="jc-spin"></span>Gemini · reviewing</div>' +
+    '<div class="pdp-critic"><span class="jc-spin"></span>Perplexity · reviewing</div>';
+  oBody.appendChild(pending);
+  t.reveal(pending);
+  await t.wait(2100);
+
+  var grades = t.el("div", "ed-grades");
+  var OPINIONS = [
+    { mark: "A", gs: "92/100 · Gemini · ship as-is",
+      gv: "Strong differentiation on speed and bond repair; every claim traces to a page fact or a review theme.",
+      str: ["Speed claim is specific and verifiable", "Patch-test step correctly retained in FAQ"],
+      con: ["Meta runs slightly long for mobile SERP display"],
+      flags: [] },
+    { mark: "B", gs: "84/100 · Perplexity · minor edits",
+      gv: "Accurate and well-differentiated, though “28+ washes” needs a visible source on-page.",
+      str: ["Ammonia-free and texture claims match the ingredient list", "Avoids the category's generic salon language"],
+      con: ["Bullet 4 leans on a durability figure not stated in page facts"],
+      flags: ["“stays true through 28+ washes” — not supported by the supplied facts"] }
+  ];
+  for (var oi = 0; oi < OPINIONS.length; oi++) {
+    var o = OPINIONS[oi];
+    var g = t.el("div", "ed-grade");
+    var lists = "";
+    if (o.flags.length) lists += '<div class="ed-glist-lab">Accuracy flags</div><ul class="ed-glist flags"><li>' + o.flags.join('</li><li>') + '</li></ul>';
+    lists += '<div class="ed-glist-lab">Strengths</div><ul class="ed-glist"><li>' + o.str.join('</li><li>') + '</li></ul>';
+    lists += '<div class="ed-glist-lab">Concerns</div><ul class="ed-glist"><li>' + o.con.join('</li><li>') + '</li></ul>';
+    g.innerHTML = '<div class="ed-mark">' + o.mark + '</div>' +
+                  '<div class="ed-gs">' + o.gs + '</div>' +
+                  '<p class="ed-gv">' + o.gv + '</p>' + lists;
+    grades.appendChild(g);
   }
-  await t.wait(320);
-  var white = t.el("div", "ps-white");
-  white.innerHTML = "<strong>Whitespace:</strong> nobody in the category claims application speed, texture-specific results, or scalp comfort.";
-  c.appendChild(white);
-  t.reveal(white);
-  var band = t.el("div", "ps-band", "Category price band $4.99 – $35.00 · sourced from live retailer search pages");
-  c.appendChild(band);
-  t.reveal(band);
-  await t.wait(800);
+  oBody.replaceChild(grades, pending);
+  t.reveal(grades);
+  // chip mirrors the real renderer: "Gemini A · Perplexity B"
+  var oChip = aO.querySelector(".pdp-acc-chip");
+  oChip.textContent = "Gemini A · Perplexity B";
+  oChip.classList.add("ok");
 
-  // 5 — the rewrite, grounded in the whitespace
-  var r = panel("PROPOSED REWRITE", "v1");
-  var rw = t.el("div", "ps-rw");
-  r.appendChild(rw);
-  rw.appendChild(t.el("div", "ps-rw-label cur", "CURRENT TITLE"));
-  var cur = t.el("div", "ps-rw-cur", "Permanent Crème Hair Color — Medium Brown");
-  rw.appendChild(cur);
-  t.reveal(cur);
-  await t.wait(600);
-  rw.appendChild(t.el("div", "ps-rw-label new", "PROPOSED"));
-  var neu = t.el("div", "ps-rw-new");
-  rw.appendChild(neu);
-  await t.stream(neu, [
-    "Bond-Repair Permanent Hair Color, Medium Brown — Full Gray Coverage in 25 Minutes"
-  ], 9);
-  var why = t.el("div", "ps-rw-why");
-  rw.appendChild(why);
-  await t.stream(why, [
-    "Leads with **bond repair** and **speed** — the two rising claims *nobody in the category owns*."
-  ], 14);
-  // swap the *...* emphasis in after streaming (stream() only knows **bold**)
-  why.innerHTML = why.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
-
-  await t.wait(1400);
+  await t.wait(3000);
 });
 </script>
 

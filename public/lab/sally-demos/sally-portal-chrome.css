@@ -16,6 +16,63 @@
   font-display: swap;
 }
 
+/* ---- Founders Grotesk — Sally's brand display family ----
+   Shipped so the generated email and the homepage card render in the
+   real brand type instead of an Arial fallback. Only the faces the
+   renderer actually calls for; converted .otf → .woff2 (915KB → 210KB).
+   The email's own font stacks name both the spaced and unspaced forms
+   ("Founders Grotesk", "FoundersGrotesk"), so both are declared. */
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('assets/fonts/FoundersGrotesk-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Founders Grotesk';
+  src: url('assets/fonts/FoundersGrotesk-Semibold.woff2') format('woff2');
+  font-weight: 600 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'FoundersGrotesk';
+  src: url('assets/fonts/FoundersGrotesk-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'FoundersGrotesk';
+  src: url('assets/fonts/FoundersGrotesk-Semibold.woff2') format('woff2');
+  font-weight: 600 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Founders Grotesk Condensed';
+  src: url('assets/fonts/FoundersGroteskCondensed-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Founders Grotesk Condensed';
+  src: url('assets/fonts/FoundersGroteskCondensed-Medium.woff2') format('woff2');
+  font-weight: 500 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'FoundersGroteskCondensed';
+  src: url('assets/fonts/FoundersGroteskCondensed-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'FoundersGroteskCondensed';
+  src: url('assets/fonts/FoundersGroteskCondensed-Medium.woff2') format('woff2');
+  font-weight: 500 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Founders Grotesk Mono';
+  src: url('assets/fonts/FoundersGroteskMono-Medium.woff2') format('woff2');
+  font-weight: 400 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'FoundersGroteskMono';
+  src: url('assets/fonts/FoundersGroteskMono-Medium.woff2') format('woff2');
+  font-weight: 400 600; font-style: normal; font-display: swap;
+}
+
 /* ---- demo frame (the one non-portal element: the case-study
        page hosts the app inside a framed window) ---- */
 .sp-frame {
@@ -321,10 +378,295 @@
 }
 .send-btn.sd-press { transform: scale(0.92); }
 
+/* ---- generated-asset proposal card (mirrors the sally-billboard
+        chat card: Jim drafts, the human applies) ---- */
+.sp-gen-card {
+  margin-top: 14px;
+  background: #fffefe;
+  border-radius: 18px;
+  box-shadow: 0 0 0 1px rgba(20,0,2,0.05), 0 8px 30px rgba(20,0,2,0.06);
+  padding: 14px;
+  max-width: 560px;
+}
+.sp-gen-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #dc1e35;
+  margin: 2px 2px 10px;
+}
+.sp-gen-meta { color: #9a7a80; font-weight: 500; letter-spacing: 0.02em; text-transform: none; }
+
+.sp-billboard {
+  aspect-ratio: 1600 / 1084;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  background: #FFE0E3;
+}
+.sp-billboard-copy {
+  padding: 9% 7%;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+.sp-billboard-headline {
+  /* Brand display face — same family the email hero uses */
+  font-family: 'Founders Grotesk Condensed', 'Founders Grotesk', Arial, sans-serif;
+  font-size: clamp(21px, 2.9vw, 33px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: #140002;
+}
+.sp-billboard-sub {
+  font-size: clamp(11px, 1.2vw, 13px);
+  line-height: 1.45;
+  color: #4a2028;
+}
+.sp-billboard-cta {
+  align-self: flex-start;
+  background: #140002;
+  color: #fff;
+  font-size: 12px; font-weight: 700;
+  border-radius: 999px;
+  padding: 9px 22px;
+  margin-top: 4px;
+}
+.sp-billboard-img {
+  background: #FFF0E0;
+  min-width: 0;
+  overflow: hidden;
+}
+.sp-billboard-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* generation shimmer shown while the card "draws" */
+.sp-gen-shimmer {
+  aspect-ratio: 1600 / 1084;
+  border-radius: 12px;
+  background: #f6f2f0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 9% 8%;
+}
+.sp-gen-shimmer i {
+  display: block; height: 16px; border-radius: 6px;
+  background: linear-gradient(90deg, #ece5e2 25%, #f6f0ed 45%, #ece5e2 65%);
+  background-size: 220% 100%;
+  animation: spShimmer 1.2s linear infinite;
+}
+.sp-gen-shimmer i:nth-child(1) { width: 62%; height: 22px; }
+.sp-gen-shimmer i:nth-child(2) { width: 84%; }
+.sp-gen-shimmer i:nth-child(3) { width: 38%; height: 26px; border-radius: 999px; }
+@keyframes spShimmer { to { background-position: -120% 0; } }
+
+.sp-gen-actions {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px;
+}
+.sp-gen-btn {
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: 12px; font-weight: 600;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: inline-flex; align-items: center;
+}
+.sp-gen-btn.apply {
+  background: rgba(220,30,53,0.08);
+  border: 1px solid rgba(220,30,53,0.35);
+  color: #dc1e35;
+}
+.sp-gen-btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(20,0,2,0.1);
+  color: #9a7a80;
+}
+
+/* ============================================================
+   Requests demo — campaign board, request detail, email build
+   ============================================================ */
+
+.rq-scroll {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  padding: 26px 30px 30px;
+  scrollbar-width: none;
+}
+.rq-scroll::-webkit-scrollbar { display: none; }
+
+.rq-h1 { font-size: 22px; font-weight: 700; color: #140002; }
+.rq-sub { font-size: 12.5px; color: #9a7a80; margin-top: 4px; }
+
+.rq-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+.rq-card {
+  background: #fffefe;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(20,0,2,0.05), 0 4px 18px rgba(20,0,2,0.04);
+  padding: 16px 18px;
+  min-width: 0;
+}
+.rq-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.rq-card-title { font-size: 16px; font-weight: 700; color: #140002; }
+.rq-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  color: #DC1E35; background: var(--sd-blush, #FFE0E3);
+  border-radius: 999px; padding: 3px 9px; white-space: nowrap;
+}
+.rq-dates { font-size: 11.5px; color: #9a7a80; margin-top: 3px; }
+.rq-bullets { margin: 10px 0 12px; }
+.rq-bullet {
+  display: flex; gap: 7px; align-items: baseline;
+  font-size: 12px; line-height: 1.55; color: #4a2028;
+  padding: 1.5px 0;
+}
+.rq-bullet::before { content: "•"; color: #DC1E35; font-weight: 700; }
+.rq-camp-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  color: #9a7a80; text-transform: uppercase;
+  border-top: 1px solid rgba(20,0,2,0.06);
+  padding-top: 10px; margin-top: 4px;
+}
+.rq-camp-row strong { color: #DC1E35; font-size: 13px; letter-spacing: 0; }
+.rq-camp-row .n { color: #4a2028; font-size: 11px; letter-spacing: 0; text-transform: none; font-weight: 600; }
+.rq-ch {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 0; border-radius: 8px;
+  font-size: 11px; color: #9a7a80;
+}
+.rq-ch.hot { color: #4a2028; }
+.rq-ch-name { width: 44px; flex-shrink: 0; }
+.rq-dots { display: flex; align-items: center; gap: 3px; flex: 1; }
+.rq-dots i { width: 7px; height: 7px; border-radius: 50%; background: #DC1E35; }
+.rq-dots .more { font-size: 10px; color: #DC1E35; font-weight: 700; margin-left: 2px; }
+.rq-dots .dash { color: rgba(20,0,2,0.18); font-weight: 700; }
+.rq-ch-count { font-variant-numeric: tabular-nums; }
+.rq-ch.clickable { transition: background 0.15s; padding: 4px 6px; margin: 0 -6px; }
+.rq-ch.hit { background: rgba(220,30,53,0.08); }
+
+/* request rail rows (left panel) */
+.rq-side-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; border-radius: 10px;
+  padding: 10px 0; margin-bottom: 8px;
+  font-size: 12.5px; font-weight: 700;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.rq-side-btn.primary { background: #dc1e35; color: #fff; }
+.rq-side-btn.ghost { background: rgba(220,30,53,0.06); color: #DC1E35; border: 1px solid rgba(220,30,53,0.18); font-weight: 600; }
+.rq-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 8px; border-radius: 6px;
+  font-size: 11.5px; color: #4a2028; min-width: 0;
+}
+.rq-row svg { width: 12px; height: 12px; stroke: #9a7a80; stroke-width: 1.8; fill: none; flex-shrink: 0; }
+.rq-row.active { background: rgba(220,30,53,0.08); color: #140002; font-weight: 500; }
+.rq-row.active svg { stroke: #DC1E35; }
+.rq-row-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rq-row-tag {
+  font-size: 8.5px; font-weight: 700; letter-spacing: 0.04em;
+  color: #9a7a80; background: rgba(20,0,2,0.05);
+  border-radius: 4px; padding: 2px 5px; flex-shrink: 0;
+}
+
+/* ---- request detail ---- */
+.rq-back { font-size: 11.5px; color: #9a7a80; margin-bottom: 10px; }
+.rq-detail-title { font-size: 20px; font-weight: 700; color: #140002; line-height: 1.25; }
+.rq-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+.rq-chip {
+  font-size: 10.5px; font-weight: 600;
+  color: #4a2028; background: rgba(20,0,2,0.05);
+  border-radius: 999px; padding: 4px 11px;
+}
+.rq-chip.status { color: #9a7a80; }
+.rq-chip.status.done { color: #2e8c4a; background: rgba(46,140,74,0.1); }
+.rq-direction {
+  font-size: 12.5px; line-height: 1.55; color: #595757;
+  background: #fffefe;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(20,0,2,0.05);
+  padding: 12px 15px;
+  margin: 12px 0 16px;
+  max-width: 560px;
+}
+.rq-direction strong { color: #140002; }
+.rq-generate {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #dc1e35; color: #fff;
+  border-radius: 999px;
+  padding: 10px 24px;
+  font-size: 13px; font-weight: 700;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: transform 0.14s ease;
+}
+.rq-generate.sd-press { transform: scale(0.94); }
+.rq-generate .jc-spin { display: none; border-color: rgba(255,255,255,0.35); border-top-color: #fff; }
+.rq-generate.busy .jc-spin { display: block; }
+
+/* ---- the email itself ----
+   The section markup is the PRODUCT'S OWN renderer output (email_components.py):
+   600px tables with inline styles. Nothing below restyles it — these rules only
+   frame it and scale the 600px column to fit the demo's content area. */
+.em-wrap { width: 600px; margin-top: 20px; transform-origin: top left; }
+.em-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: #9a7a80;
+  margin-bottom: 8px;
+}
+.em-col {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(20,0,2,0.06), 0 14px 40px rgba(20,0,2,0.08);
+  overflow: hidden;
+}
+.em-sec { display: block; }
+.em-sec img { max-width: 100%; }
+
+/* generation toast (reuses fb-toast look, light context) */
+.rq-toast {
+  position: sticky; bottom: 10px;
+  width: max-content; max-width: 92%;
+  margin: 14px auto 0;
+  background: rgba(20, 0, 2, 0.87);
+  color: #fff;
+  font-size: 11.5px;
+  border-radius: 999px;
+  padding: 8px 18px;
+  white-space: nowrap;
+}
+.rq-toast strong { color: #ffb3bc; font-weight: 650; }
+
+/* ---- demo cursor ---- */
+.rq-cursor {
+  position: absolute;
+  left: 0; top: 0;
+  width: 20px; height: 20px;
+  z-index: 50;
+  pointer-events: none;
+  transition: transform 0.75s cubic-bezier(0.3, 0.9, 0.3, 1), opacity 0.4s ease;
+  filter: drop-shadow(0 2px 4px rgba(20,0,2,0.35));
+}
+.rq-cursor svg { width: 20px; height: 20px; }
+.rq-cursor.gone { opacity: 0; }
+.rq-cursor.down { transition-duration: 0.12s; }
+
 /* ---- responsive ---- */
 @media (max-width: 980px) {
   .campaign-panel, .rail-separator { display: none; }
   .conversation-messages { padding-right: 24px; }
+  .rq-board { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .icon-rail { display: none; }

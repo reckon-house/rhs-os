@@ -3,155 +3,245 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sally demo — Jim builds in Figma</title>
+<title>Sally demo — Jim → Figma, batch build</title>
 <link rel="stylesheet" href="sally-demo.css">
+<link rel="stylesheet" href="sally-portal-chrome.css">
+<link rel="stylesheet" href="sally-figma-plugin.css">
 <style>
   body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
-  /* this demo's stage fills the window body */
-  #figDemo .sd-body { grid-template-rows: 1fr; }
-  #figDemo .fb-stage { flex: 1; }
 </style>
 </head>
 <body>
 
-<div class="sd-demo" id="figDemo">
-  <div class="sd-window">
-    <div class="sd-titlebar">
-      <span class="sd-dot"></span><span class="sd-dot"></span><span class="sd-dot"></span>
-      <span class="sd-title"><strong>Sally Marketing Portal</strong> · Jim → Figma</span>
+<div id="figDemo">
+  <!-- data-stage wraps BOTH the canvas and the panel: the kit scopes t.$()
+       to the stage and restores its innerHTML on each loop, so anything the
+       script writes to must live inside it. -->
+  <div class="fg-frame" data-stage>
+
+    <!-- canvas: neutral work surface, NOT a clone of Figma's UI -->
+    <div class="fg-canvas">
+      <div class="fg-canvas-label">Sally · CRM 2026 — August</div>
+      <div class="fg-boards"></div>
     </div>
-    <div class="sd-body">
-      <div class="sd-rail" aria-hidden="true">
-        <span class="on"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L20 10l-6.1 1.4L12 17l-1.9-5.6L4 10l6.1-1.4z"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M4 17l5-6 4 3 7-8"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15l5-4 4 3 3-2 4 3"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></span>
-        <span><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></span>
+
+    <!-- the Sally OS plugin panel — the product's own design -->
+    <aside class="fg-plugin">
+      <div class="header">
+        <div class="header-logo">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.1 6.2L20 10.5l-5.9 1.3L12 18l-2.1-6.2L4 10.5l5.9-1.3z" fill="#fff"/></svg>
+        </div>
+        <div class="header-title">Sally OS</div>
+        <div class="header-sub">v2.4</div>
       </div>
 
-      <div class="fb-stage" data-stage>
-        <div class="fb-chat">
-          <div class="jc-head">
-            <span class="jc-avatar">J</span>
-            <div>
-              <div class="jc-head-name">Jim</div>
-              <div class="jc-head-sub">AI strategy partner</div>
-            </div>
-            <span class="jc-live"></span>
+      <div class="url-bar">
+        <input value="August 2026 · CRM / Email" readonly>
+        <span class="btn-load">Load</span>
+      </div>
+
+      <div class="scroll-area">
+        <div class="build-all-bar">
+          <button class="btn-build-all" id="fgBuildBtn">✦ Build all visible (CRM)</button>
+          <div class="build-all-sub" id="fgBuildSub">
+            <strong>4</strong> ready to build · 1 skipped (no copy yet)
           </div>
-          <div class="jc-chat"></div>
-          <div class="jc-dock">
-            <div class="jc-input">
-              <span class="jc-clip"><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8"/></svg></span>
-              <span class="jc-input-text"></span>
-              <span class="jc-send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
-            </div>
-          </div>
+          <div class="build-all-progress" id="fgProgress"></div>
         </div>
 
-        <div class="fb-canvas">
-          <div class="fb-canvas-inner">
-            <div class="fb-boards"></div>
-          </div>
-        </div>
+        <div class="section-label">Requests · 5</div>
+        <div id="fgCards"></div>
       </div>
-    </div>
+    </aside>
+
   </div>
-  <p class="sd-caption">Scripted replay — Jim drafts the batch, the Sally Figma plugin builds the artboards. All content staged.</p>
+  <p class="sp-caption">Live replay of the Sally OS Figma plugin — panel reproduced from the plugin's own interface code, progress lines verbatim from its build log. The artboards render the real generated email.</p>
 </div>
 
 <script src="sally-demo-kit.js"></script>
 <script>
 new SallyDemo(document.getElementById("figDemo"), async function (t) {
-  var MSG = "Build the March email batch in Figma — all three are approved.";
-  var BOARDS = ["Single Category — 01", "Promo — 02", "Expert — 03"];
+  var boards = t.$(".fg-boards");
+  var prog   = t.$("#fgProgress");
+  var cards  = t.$("#fgCards");
 
-  var chatLayer = t.$(".fb-chat");
-  var canvasLayer = t.$(".fb-canvas");
-  var chat = t.$(".jc-chat");
-  var input = t.$(".jc-input-text");
-  t.scrollEl = chat;
+  // The four requests the plugin would batch-build. Names + eyebrows are the
+  // campaign's real August story lines; heroes are real DAM shots — so the four
+  // artboards read as four different emails rather than one repeated.
+  var REQS = [
+    { name: "Your best hair color. No salon required.", type: "Multicategory", status: "submitted",
+      eyebrow: "COLORFEST", headline: "Your boldest color starts right here",
+      hero: "assets/em-hero.jpg" },
+    { name: "Keep your color looking vibrant & healthy.", type: "Single Category", status: "submitted",
+      eyebrow: "COLOR CARE", headline: "Keep every shade vivid for longer",
+      hero: "assets/lifestyle-teal.jpg" },
+    { name: "COLORfest — A celebration of hair & nails", type: "Promo", status: "submitted",
+      eyebrow: "COLORFEST", headline: "A celebration of hair & nails",
+      hero: "assets/lifestyle-bixie.jpg" },
+    // Expert keeps the red-lip shot: her manicured hand is up by her face,
+    // which is the right frame for the nails story.
+    { name: "Easy salon-quality nails. No salon required.", type: "Expert", status: "submitted",
+      eyebrow: "SALLY EXPERT", headline: "Salon-quality nails, minus the salon",
+      hero: "assets/lifestyle-hero.jpg" }
+  ];
 
-  // 1 — the ask
-  await t.wait(900);
-  await t.type(input, MSG, 32);
-  await t.wait(240);
-  await t.press(t.$(".jc-send"));
-  input.textContent = "";
-  var user = t.el("div", "jc-msg jc-user", MSG);
-  chat.appendChild(user);
-  t.reveal(user);
+  // The real generated email — same fragment the Requests demo renders,
+  // produced by sally-portal/email_components.py.
+  var emailHTML = await fetch("assets/email-multicategory.html")
+    .then(function (r) { return r.text(); });
+
+  function logLine(html) {
+    var d = t.el("div");
+    d.innerHTML = html;
+    prog.appendChild(d);
+    prog.scrollTop = prog.scrollHeight;
+    return d;
+  }
+
+  // ---- panel fills with the request cards ----
+  for (var i = 0; i < REQS.length; i++) {
+    var c = t.el("div", "request-card");
+    c.innerHTML =
+      '<div class="request-header">' +
+        '<div class="request-name">' + REQS[i].name + '</div>' +
+        '<span class="status-chip ' + REQS[i].status + '">' + REQS[i].status + '</span>' +
+      '</div>' +
+      '<div class="request-meta">' +
+        '<span class="meta-pill">CRM / Email</span>' +
+        '<span class="meta-pill">' + REQS[i].type + '</span>' +
+      '</div>';
+    cards.appendChild(c);
+    t.reveal(c);
+    await t.wait(150);
+  }
+
+  // The canvas starts EMPTY. The plugin calls m.clone() per email, so each
+  // artboard is created when its turn comes — none pre-exist.
+  boards.classList.add("settled");
+  await t.wait(500);
+
+  // ---- Build All ----
+  await t.press(t.$("#fgBuildBtn"));
+  prog.classList.add("visible");
+  await t.wait(400);
+
+  // progress lines are the plugin's real log strings
+  logLine("⧉ Skipped 1 duplicate (identical copy)");
+  await t.wait(500);
+  logLine("✉ Email phase — 4 to build…");
   await t.wait(600);
-
-  // 2 — Jim answers and the plugin card ticks through the batch
-  var jim = t.el("div", "jc-msg jc-jim");
-  chat.appendChild(jim);
-  t.reveal(jim);
-  await t.stream(jim, ["On it — pushing all three approved drafts to the plugin now."], 22);
-  await t.wait(350);
-
-  var build = t.el("div", "fb-build");
-  var head = t.el("div", "fb-build-head", "SALLY FIGMA PLUGIN · BUILD ALL");
-  build.appendChild(head);
-  chat.appendChild(build);
-  t.reveal(build);
-
-  var rows = [];
-  for (var i = 0; i < BOARDS.length; i++) {
-    var row = t.el("div", "fb-build-row");
-    row.appendChild(t.el("span", "jc-spin"));
-    var check = t.el("span", "jc-check");
-    check.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>';
-    row.appendChild(check);
-    row.appendChild(t.el("span", null, BOARDS[i]));
-    build.appendChild(row);
-    t.reveal(row);
-    rows.push(row);
-    await t.wait(240);
-  }
-  for (var r = 0; r < rows.length; r++) {
-    await t.wait(620);
-    rows[r].classList.add("done");
-  }
+  logLine("🔎 Auto-detected master: 2026 Digital Templates");
   await t.wait(700);
 
-  // 3 — cut to the canvas
-  chatLayer.classList.add("gone");
-  canvasLayer.classList.add("here");
-  await t.wait(750);
+  // ---- each artboard builds the way the plugin actually builds it ----
+  //   1. m.clone()          → master lands whole: structure, template copy,
+  //                           grey image rects (the plugin's greyPlaceholder)
+  //   2. populateTemplate() → copy is written in
+  //   3.                    → images place one at a time (imagesPlaced++)
+  // Copy placeholders below are the real `placeholder` strings from
+  // CR_EMAIL_TEMPLATES['Multicategory'] in index.html.
+  var TMPL_COPY = [
+    ['td[style*="font-size:16px"]', "NEW IN"],              // hero eyebrow (mono)
+    ['td[style*="font-size:60px"]', "Headline copy\nmore copy"],
+    ['td[style*="font-size:26px"]', "Supporting subcopy"],
+    ['td[style*="font-size:42px"]', "Section header copy"], // section headers
+    ['td[style*="font-size:32px"]', "Product name"],        // product names
+    ['td[style*="font-size:20px"]', "Product description"]
+  ];
 
-  // 4 — artboards materialize, block by block
-  var boardsEl = t.$(".fb-boards");
-  for (var b = 0; b < BOARDS.length; b++) {
-    var slot = t.el("div", "fb-slot");
-    slot.appendChild(t.el("div", "fb-label", BOARDS[b]));
-    var board = t.el("div", "fb-board");
+  for (var b = 0; b < REQS.length; b++) {
+    // m.clone() — the artboard is created now, named `${label} — US`
+    var slot = t.el("div", "fg-slot");
+    slot.appendChild(t.el("div", "fg-slot-label", REQS[b].type + " — 0" + (b + 1)));
+    var board = t.el("div", "fg-board");
     slot.appendChild(board);
-    boardsEl.appendChild(slot);
+    boards.appendChild(slot);
     t.reveal(slot);
-    await t.wait(240);
 
-    var blocks = ["brand", "img", "head", "line", "line short", "cta"];
-    for (var k = 0; k < blocks.length; k++) {
-      var blk = t.el("div", "fb-blk " + blocks[k]);
-      board.appendChild(blk);
-      t.reveal(blk);
-      await t.wait(110);
+    var inner = t.el("div", "fg-board-inner");
+    inner.innerHTML = emailHTML;
+
+    // hero swap so each artboard is its own email
+    var heroImg = inner.querySelector('img');
+    if (heroImg) heroImg.setAttribute("src", REQS[b].hero);
+
+    // --- state 1: m.clone() — placeholder copy + grey image rects ---
+    var realText = new Map();
+    for (var c = 0; c < TMPL_COPY.length; c++) {
+      var nodes = inner.querySelectorAll(TMPL_COPY[c][0]);
+      for (var n = 0; n < nodes.length; n++) {
+        realText.set(nodes[n], nodes[n].textContent);
+        nodes[n].textContent = TMPL_COPY[c][1];
+        nodes[n].classList.add("fg-tmpl");
+      }
     }
+    var imgs = inner.querySelectorAll('img');
+    for (var im = 0; im < imgs.length; im++) {
+      imgs[im].dataset.ph = "1";
+      var cell = imgs[im].closest('td') || imgs[im].parentNode;
+      if (cell) cell.classList.add("fg-ph");
+    }
+    board.appendChild(inner);
     board.classList.add("sel");
-    await t.wait(330);
+    await t.wait(420);
+
+    // helper: write one text node (the plugin sets characters in one shot —
+    // the sequence across nodes is what's real, not per-character typing)
+    async function writeNode(node, text, hold) {
+      if (!node) return;
+      node.classList.add("fg-writing");
+      node.textContent = text;
+      node.classList.remove("fg-tmpl");
+      await t.wait(hold || 110);
+      node.classList.remove("fg-writing");
+    }
+
+    // --- state 2: IMAGES FIRST. populateTemplate() places each slot's image,
+    //     then immediately writes that slot's product copy via
+    //     setProductCopyNearNode() — so image and its copy interleave. ---
+    for (var p = 0; p < imgs.length; p++) {
+      var host = imgs[p].closest('td') || imgs[p].parentNode;
+      if (host) host.classList.add("fg-writing");
+      imgs[p].removeAttribute("data-ph");
+      if (host) host.classList.remove("fg-ph");
+      await t.wait(190);
+      if (host) host.classList.remove("fg-writing");
+
+      // product cells are width="300" in the renderer; hero/inspiration
+      // images carry no productData, so nothing follows them.
+      var pcell = imgs[p].closest('td[width="300"]');
+      if (pcell) {
+        var copyNodes = pcell.querySelectorAll(
+          'td[style*="font-size:16px"],td[style*="font-size:32px"],td[style*="font-size:20px"]');
+        for (var q = 0; q < copyNodes.length; q++) {
+          await writeNode(copyNodes[q], realText.get(copyNodes[q]), 90);
+        }
+      }
+    }
+
+    // --- state 3: section-level text last — populateSectionTextByAnchor()
+    //     walks hero + section headers after every image is in. ---
+    var heroTbl = inner.querySelector('.em-sec[data-sec="email_hero"]') || inner;
+    await writeNode(heroTbl.querySelector('td[style*="font-size:16px"]'), REQS[b].eyebrow, 120);
+    await writeNode(heroTbl.querySelector('td[style*="font-size:60px"]'), REQS[b].headline, 200);
+    var subNode = heroTbl.querySelector('td[style*="font-size:26px"]');
+    await writeNode(subNode, realText.get(subNode), 150);
+    var hdrs = inner.querySelectorAll('td[style*="font-size:42px"]');
+    for (var h = 0; h < hdrs.length; h++) {
+      await writeNode(hdrs[h], realText.get(hdrs[h]), 140);
+    }
+
+    logLine("✉ " + (b + 1) + "/4 — " + REQS[b].name.slice(0, 26) + "… (" +
+            imgs.length + "/" + imgs.length + " images)");
     board.classList.remove("sel");
-    await t.wait(180);
+    await t.wait(160);
   }
 
-  // 5 — the receipt
-  await t.wait(400);
-  var toast = t.el("div", "fb-toast");
-  toast.innerHTML = "<strong>3 artboards</strong> built from approved copy — zero manual paste";
-  t.$(".fb-canvas-inner").appendChild(toast);
-  t.reveal(toast);
+  await t.wait(300);
+  logLine("<strong>Emails done — 4 built.</strong>");
+  t.$("#fgBuildSub").innerHTML = "<strong>4</strong> artboards built from approved copy";
 
-  await t.wait(1600);
+  await t.wait(2600);
 });
 </script>
 

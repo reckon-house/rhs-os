@@ -63,15 +63,15 @@
               <span class="chat-history-new-btn">+ New</span>
             </div>
             <div class="chat-history-list" id="spChatList">
-              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">2d</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">can we look at on…</span><span class="chat-session-meta">Jul 28</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">we're working wit…</span><span class="chat-session-meta">Jul 28</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">what is our main t…</span><span class="chat-session-meta">Jul 22</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">do you have conte…</span><span class="chat-session-meta">Jul 21</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">Jul 20</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">do we have any s…</span><span class="chat-session-meta">Jul 10</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">where does our …</span><span class="chat-session-meta">Jun 11</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">When do Blissful …</span><span class="chat-session-meta">May 26</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">braid season — what's…</span><span class="chat-session-meta">2d</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">compare our bond rep…</span><span class="chat-session-meta">3d</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">email subjects for the…</span><span class="chat-session-meta">Jul 28</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">which personas over-i…</span><span class="chat-session-meta">Jul 24</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">pull hero images for t…</span><span class="chat-session-meta">Jul 21</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">what are Ulta + Amazo…</span><span class="chat-session-meta">Jul 15</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">SMS copy for back to s…</span><span class="chat-session-meta">Jul 10</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">customer sentiment on…</span><span class="chat-session-meta">Jun 26</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">When do Blissful Mini…</span><span class="chat-session-meta">May 26</span></div>
             </div>
           </div>
           <div class="dam-filters-label">Start a brief</div>
@@ -113,7 +113,7 @@
 <script src="sally-demo-kit.js"></script>
 <script>
 new SallyDemo(document.getElementById("jimDemo"), async function (t) {
-  var MSG = "what is our main tagline again- your beauty journey no salon required?";
+  var MSG = "salon visits are trending back up — does “no salon required” still hold, or should we soften it for fall?";
 
   var chat = t.$(".conversation-messages");
   var input = t.$(".input-field");
@@ -141,7 +141,7 @@ new SallyDemo(document.getElementById("jimDemo"), async function (t) {
   uc.textContent = MSG;
   var list = t.$("#spChatList");
   var row = t.el("div", "chat-session-row active");
-  row.appendChild(t.el("span", "chat-session-title", "what is our main tagl…"));
+  row.appendChild(t.el("span", "chat-session-title", "salon visits are trendi…"));
   row.appendChild(t.el("span", "chat-session-meta", "now"));
   list.insertBefore(row, list.firstChild);
   t.reveal(row);
@@ -156,16 +156,74 @@ new SallyDemo(document.getElementById("jimDemo"), async function (t) {
   think.remove();
 
   await t.stream(jc, [
-    "Yes, that's exactly it. Per our positioning reference:",
-    "**“Your beauty journey, no salon required.”**",
-    "It's the line that anchors everything — salon-quality results, accessible at home, on your terms. It works across both the Discovery and Stand Out personas, and the consumer research confirmed “salon-level” and “no salon required” framing consistently earns the strongest positive response (darkest green highlighting across all segments).",
-    "The one nuance worth knowing: the **Relax & Restore** mindset (Blissful Minimalists, Timeless Restorers) responds strongly to the *quality* promise embedded in it (“salon-level formulas”) but can push back slightly on the *anti-salon* framing. So when writing for that audience, lean into the quality and confidence payoff more than the “skip the salon” angle.",
-    "Anything you're working on where you need to apply it?"
+    "Short answer: hold the line — and sharpen what it's doing.",
+    "“No salon required” was never *anti-salon* — it's *pro-control*. The consumer research still backs it: “salon-level” and “no salon required” framing earned the strongest positive response of anything we tested, across every segment. Salons filling back up doesn't change why people reach for us — the mid-month root touch-up, the between-visits fix, the “I can do this myself” confidence.",
+    "The nuance is by audience, not by year. The **Relax & Restore** mindset (Blissful Minimalists, Timeless Restorers) responds to the *quality* promise (“salon-level formulas”) but bristles at the anti-salon edge — for them, lead with quality and confidence. **Discovery** and **Stand Out** take the full line straight.",
+    "So for fall: **“Your beauty journey, no salon required.”** stays the anchor. We flex the emphasis, not the line.",
+    "Want to see it applied?"
   ], 26);
   // stream() knows **bold**; promote *italics* after the fact
   jc.innerHTML = jc.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
-  await t.wait(1800);
+  // 4 — the follow-up: put the line to work
+  await t.wait(1700);
+  var MSG2 = "now create an asset card that can be used across our digital channels";
+  await t.type(input, MSG2, 34);
+  await t.wait(280);
+  await t.press(t.$(".send-btn"));
+  input.textContent = "";
+  var uc2 = msg("user", "You");
+  uc2.textContent = MSG2;
+  await t.wait(600);
+
+  // 5 — Jim drafts, the card generates in the thread
+  var jc2 = msg("assistant", "Jim");
+  var think2 = t.el("div", "sp-think");
+  think2.appendChild(t.el("i")); think2.appendChild(t.el("i")); think2.appendChild(t.el("i"));
+  jc2.appendChild(think2);
+  await t.wait(1150);
+  think2.remove();
+
+  await t.stream(jc2, [
+    "Built straight on the line — homepage card, with a transformation shot pulled from the evergreen library. The copy holds at email-hero and paid-social crops:"
+  ], 24);
+
+  var card = t.el("div", "sp-gen-card");
+  var label = t.el("div", "sp-gen-label");
+  label.appendChild(t.el("span", null, "Homepage card"));
+  label.appendChild(t.el("span", "sp-gen-meta", "1600×1084 · draft v1"));
+  card.appendChild(label);
+  var shimmer = t.el("div", "sp-gen-shimmer");
+  shimmer.appendChild(t.el("i")); shimmer.appendChild(t.el("i")); shimmer.appendChild(t.el("i"));
+  card.appendChild(shimmer);
+  jc2.appendChild(card);
+  t.reveal(card);
+  await t.wait(1500);
+
+  var bb = t.el("div", "sp-billboard");
+  var copy = t.el("div", "sp-billboard-copy");
+  var img = t.el("div", "sp-billboard-img");
+  img.innerHTML = '<img src="assets/lifestyle-hero.jpg" alt="Sally lifestyle photography — evergreen campaign">';
+  bb.appendChild(copy); bb.appendChild(img);
+  card.replaceChild(bb, shimmer);
+
+  var h = t.el("div", "sp-billboard-headline", "Your beauty journey, no salon required.");
+  var s = t.el("div", "sp-billboard-sub", "Salon-level color, care, and tools — on your terms.");
+  var cta = t.el("div", "sp-billboard-cta", "Shop now");
+  copy.appendChild(h); t.reveal(h);
+  await t.wait(320);
+  copy.appendChild(s); t.reveal(s);
+  await t.wait(280);
+  copy.appendChild(cta); t.reveal(cta);
+  await t.wait(400);
+
+  var actions = t.el("div", "sp-gen-actions");
+  actions.appendChild(t.el("span", "sp-gen-btn apply", "Apply to request →"));
+  actions.appendChild(t.el("span", "sp-gen-btn ghost", "Regenerate"));
+  card.appendChild(actions);
+  t.reveal(actions);
+
+  await t.wait(2400);
 });
 </script>
 
