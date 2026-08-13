@@ -1,0 +1,124 @@
+/*
+ * The frame around a scripted product replay.
+ *
+ * Chrome is pressing — body-size caps, ink, a hairline. Everything inside
+ * the stage is the portal's own extracted interface in its own document, so
+ * there is no shared stylesheet and no token collision possible. Same seam
+ * live-app.module.css describes, and the same reason for it.
+ */
+
+/* THE WHOLE PLATE TAKES THE DEMO'S WIDTH, not just the stage. The cap has
+   to live here or the rule above the title runs wider than the interface
+   it introduces and the note runs wider again, which reads as three
+   objects of three widths rather than one plate. */
+.wrap {
+  --pd-hair: rgba(0, 0, 0, 0.14);
+  --pd-grey: rgba(0, 0, 0, 0.45);
+  /* The demos' own ground. Declared here so the stage shows the right
+     colour in the beat before the frame paints, rather than flashing
+     white paper and then filling with cream. */
+  --pd-ground: #f4f0ea;
+  width: min(100%, var(--pd-w, 1120px));
+  margin-inline: auto;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--pd-hair);
+}
+
+/* Body size, not label size — live-app.module.css settled this: the frame's
+   chrome is the only text on the plate, and 10px caps read as a caption on
+   something that is not a caption. Tracking comes off with the size. */
+.lbl {
+  font-size: var(--pp-note, 16px);
+  letter-spacing: 0;
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+}
+
+/* SAYS WHAT IT IS, WHERE A READER LOOKS FIRST. "Scripted replay" rather
+   than "live" because that is the true word: the interface and its content
+   are the product's, the sequence is written. The distinction matters
+   enough to sit in the chrome instead of only in the note below. */
+.tag {
+  color: var(--pd-grey);
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+/* THE STAGE IS A WINDOW ONTO A SCALED DOCUMENT.
+   Height is the measured document height times the scale, so the box is
+   exactly as tall as what it contains at whatever size it ended up — no
+   letterboxing, no crop. The fallback 760px is the demos' declared frame
+   height plus its gutters; it only ever shows for the frames before the
+   load handler reports the real number. */
+/* Fills the plate, which is already capped at the demo's own width above,
+   so the scale reaches 1 exactly as the stage stops growing and the two
+   edges always agree. */
+.stage {
+  position: relative;
+  margin-top: 18px;
+  height: calc(var(--pd-h, 808px) * var(--pd-scale, 1));
+  border-radius: var(--pp-r, 16px);
+  overflow: hidden;
+  background: var(--pd-ground);
+}
+
+/* One element, one transform driver: the scale is the only thing on this
+   iframe. transform-origin 0 0 so the scaled document's top-left stays
+   pinned to the stage's, which is what makes the height calc above exact.
+
+   pointer-events: none is load-bearing rather than tidy. An iframe
+   captures the wheel, and a document taller than its frame will spend the
+   page's scroll on itself while the reader is trying to get past — the
+   trap the A.R.C. demo already paid for. Nothing in a replay is operable,
+   so the events have nowhere they need to go. */
+.frame {
+  display: block;
+  width: var(--pd-w, 1160px);
+  height: var(--pd-h, 808px);
+  border: 0;
+  transform: scale(var(--pd-scale, 1));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.foot {
+  margin: 16px 0 0;
+  font-size: var(--pp-note, 16px);
+  line-height: 1.5;
+  color: var(--pd-grey);
+}
+.foot strong {
+  font-weight: 500;
+  color: #000;
+}
+
+/* ── phones ────────────────────────────────────────────────────────────
+   LAYOUT ONLY; the replay runs here exactly as it does on a desktop.
+
+   It runs SMALL, and that is the honest treatment rather than a
+   compromise. The portal is a fixed 1120px internal tool with no mobile
+   layout, so there is no reflow to fall back on, and no amount of
+   horizontal panning fixes it either: to read its 13px UI on a 375px
+   screen the stage would have to sit near 1:1 and the reader would pan
+   two and a half screens sideways through a moving target. Scaled to fit,
+   the interface reads as what it is — a tool working, at a glance — and
+   the note underneath, at full body size, carries what it is doing.
+
+   The two chrome lines stack rather than sharing a row: side by side each
+   wraps to two lines and the pair reads as four. */
+@media (max-width: 640px) {
+  .head {
+    display: block;
+  }
+  .tag {
+    display: block;
+    margin-top: 4px;
+  }
+}

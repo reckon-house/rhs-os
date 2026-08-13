@@ -38,6 +38,10 @@ const PressingLiveApp = dynamic(
   () => import("./demo/PressingLiveApp").then((m) => m.PressingLiveApp),
   { ssr: false }
 );
+const PressingProductDemo = dynamic(
+  () => import("./demo/PressingProductDemo").then((m) => m.PressingProductDemo),
+  { ssr: false }
+);
 import { PressingArchitecture } from "./viz/PressingArchitecture";
 import { PressingStatsBar } from "./viz/PressingStatsBar";
 import { PressingCoverageChart } from "./viz/PressingCoverageChart";
@@ -525,6 +529,26 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             tall={s.tall}
             frame={s.frame}
             instruction={s.instruction}
+          />
+        </PressingVizFrame>
+      );
+      i += 1;
+      continue;
+    }
+
+    /* Same frame, one step down the ladder of what can honestly be shown:
+       live-app hands the reader a deployed product, this hands them a
+       scripted replay of one they cannot be given an account for. Dynamic
+       for the same reason — it holds a measured scale and a pause driver,
+       both of which are state with nothing to render on a server. */
+    if (s.type === "product-demo") {
+      out.push(
+        <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
+          <PressingProductDemo
+            demo={s.demo}
+            title={s.title}
+            stageWidth={s.stageWidth}
+            note={s.note}
           />
         </PressingVizFrame>
       );

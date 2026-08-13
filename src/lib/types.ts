@@ -74,6 +74,7 @@ export type Section =
   | BrandSystemVolumeSection
   | SystemArchitectureSection
   | LiveAppSection
+  | ProductDemoSection
   | SpacerSection
   | EditorialHeadlineSection
   | AIHeatmapSection
@@ -560,6 +561,43 @@ export interface LiveAppSection extends BaseSection {
   instruction?: string;
   /** "phone" masks the stage to a handset. See PressingLiveApp. */
   frame?: "wide" | "phone";
+}
+
+/**
+ * A scripted replay of a product workflow, running in the page.
+ *
+ * Sibling of `live-app` and the same argument, one step down: that one
+ * frames a DEPLOYED product so the reader can use it; this one frames a
+ * REPLAY of software the reader cannot be given an account for. The Sally
+ * Marketing OS is internal, so a live frame is not on offer — but a
+ * scripted replay built on the product's own extracted interface code is
+ * the next most honest thing, and it beats the static screenshots the
+ * study published before it.
+ *
+ * The demo is a self-contained page under `public/lab/sally-demos/`, and
+ * framing it rather than porting it is deliberate. Those pages carry the
+ * portal's chrome EXTRACTED VERBATIM, down to class names like `.header`
+ * and `.message`; re-deriving 3,000 lines of that as components would
+ * fork the thing whose whole value is that it was not re-derived, and
+ * inlining those selectors would collide with the site's own. A document
+ * boundary is real isolation rather than conventional isolation.
+ */
+export interface ProductDemoSection extends BaseSection {
+  type: "product-demo";
+  /** File under /lab/sally-demos/, without the extension. */
+  demo: string;
+  /** What the reader is watching, in the frame's chrome. */
+  title: string;
+  /**
+   * The demo's own stage width in px. These are fixed-size desktop
+   * interfaces (1120px frame inside a 20px gutter) with essentially no
+   * media queries, so the frame SCALES them rather than reflowing them.
+   * Height is measured from the loaded document, never declared — see
+   * PressingProductDemo.
+   */
+  stageWidth?: number;
+  /** One line under the frame: what is being shown, in plain words. */
+  note?: string;
 }
 
 export interface SystemArchitectureSection extends BaseSection {

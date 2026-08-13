@@ -395,6 +395,18 @@ export const sallyCaseStudy: CaseStudy = {
       group: { name: "brand-brain" },
     },
 
+    // The section has argued for four screens that Jim knows the brand. This
+    // is the first place a reader can watch that be true instead of being
+    // told it: the same workflow the plates above show as stills, moving,
+    // on the portal's own extracted interface code.
+    {
+      id: "brain-jim-demo",
+      type: "product-demo",
+      demo: "jim-chat",
+      title: "Brand Brain · Jim",
+      note: "A strategist pushes back on the tagline. Jim answers out of the brand corpus, separates which persona the objection belongs to, then generates the homepage card off the line it lands on.",
+    },
+
     // ── INTELLIGENCE PIPELINE SANKEY ──
     {
       id: "intelligence-flow",
@@ -610,6 +622,16 @@ export const sallyCaseStudy: CaseStudy = {
         },
       ],
     },
+    // Breaks up what the portfolio audit flagged as three consecutive
+    // three-column blocks, and earns the break rather than just taking it:
+    // the columns list what each tool does, this shows one of them doing it.
+    {
+      id: "utilities-pdp-demo",
+      type: "product-demo",
+      demo: "pdp-studio",
+      title: "Utilities · PDP Copy Studio",
+      note: "Paste a product URL. The tool audits the live page, pulls search demand, reads the category for whitespace no competitor owns, and rewrites the copy against what it found. Gemini and Perplexity then grade that rewrite in parallel, neither one shown Claude's reasoning for it.",
+    },
     {
       id: "utilities-columns-2",
       type: "three-column-text",
@@ -651,6 +673,25 @@ export const sallyCaseStudy: CaseStudy = {
             "Track and archive competitor advertising across digital channels. Auto-captures display ads, social promoted posts, and email campaigns. Builds a searchable library of competitive creative so the team can see what Ulta, Sephora, and Target ran last quarter without manual screenshots.",
         },
       ],
+    },
+
+    // These two run in sequence and have to stay adjacent: the first ends on
+    // "ready for the Figma build" and the second starts there. Split across
+    // other sections they read as two tools; together they read as the
+    // handoff, which is the thing that used to be a person.
+    {
+      id: "utilities-requests-demo",
+      type: "product-demo",
+      demo: "requests-email",
+      title: "Requests · Campaign to email",
+      note: "Open the August board, take COLORfest's CRM channel, press Create Email. The email assembles out of the product's own component library, so what lands on screen is what an email developer receives.",
+    },
+    {
+      id: "utilities-figma-demo",
+      type: "product-demo",
+      demo: "figma-build",
+      title: "Sally OS · Figma batch build",
+      note: "The plugin clones an artboard per request, places every image, writes that slot's copy behind it, and fills the headers last. Images lead because the plugin finds each section band by anchoring on image rects, then walks the text nodes from there. Four emails, one press.",
     },
 
 

@@ -35,6 +35,18 @@
      The React port can drop this. */
   var FORCE = /[?&]force=1/.test(window.location.search);
 
+  /* ?framed=1 — the demo is running inside a host page that carries its
+     own chrome (the case study frames these in PressingProductDemo). The
+     standalone caption is written for someone who arrived at this URL
+     directly and has nothing else to tell them what they are looking at;
+     inside a frame that already names the demo and explains it, the same
+     line lands as a second caption stacked under the first. So the demo
+     drops it rather than the host reaching in to hide it: presentation
+     stays this file's business, and the host only states its context. */
+  if (/[?&]framed=1/.test(window.location.search)) {
+    document.documentElement.setAttribute("data-framed", "");
+  }
+
   function SallyDemo(host, script) {
     if (!host) return;
     this.host = host;

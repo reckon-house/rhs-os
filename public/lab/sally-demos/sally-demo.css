@@ -15,6 +15,18 @@
   font-display: swap;
 }
 
+/* Framed inside a host page (?framed=1 — see sally-demo-kit.js). The host
+   names the demo above it and explains it below, so the standalone caption
+   would be a second caption under the first. The demo's own gutters go
+   with it: the frame supplies the margin now, and keeping these would
+   inset the interface twice. */
+html[data-framed] body {
+  padding: 0;
+}
+html[data-framed] .sp-caption {
+  display: none;
+}
+
 .sd-demo {
   --sd-red: #DC1E35;
   --sd-dark: #140002;
