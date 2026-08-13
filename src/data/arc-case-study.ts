@@ -615,10 +615,38 @@ export const arcCaseStudy: CaseStudy = {
       philosophyText:
         "The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats data as something worth designing, not just storing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.",
       chromaticCircleImage: `${IMG}/chromatic-brand-circle.png`,
+      /* THE FIRST THREE ARE DECLARED, THE LAST THREE ARE MEASURED, and
+         the distinction is worth keeping straight because they disagree.
+
+         The declared three are the brand's own statement of itself. The
+         three under them were read back off the work: k-means over the
+         vision index's observed palettes for this study, 28 catalogued
+         frames and 131 sampled values, via
+
+             node scripts/derive-palette-rings.mjs --slug arc
+
+         Names are not derivable from pixels, so each is carried over
+         from the colour word the index observed most often in the
+         frames that cluster there: cream and off-white (14 frames),
+         olive and olive green (10), oak tan and honey oak (8).
+
+         What the measurement says, which the declared list does not, is
+         that the sage barely appears in the photography at all. The
+         near-white ground is 48% of every value sampled. That is not an
+         argument for changing the brand; it is why the swatch morphing
+         through both reads as the real range of the work rather than a
+         single chip.
+
+         A fourth cluster came back at #0E0C0B and is deliberately left
+         out: it is Ground under another name, and a morph between two
+         blacks is a pause, not a state. */
       colors: [
         { name: "Primary", hex: "#B1BC94", description: "RGB 177/188/148", cmyk: "34 16 50 0" },
-        { name: "Warm Register", hex: "#C4A265", description: "Photography tones", cmyk: "0 17 48 23" },
         { name: "Ground", hex: "#000000", description: "Structure, text", cmyk: "0 0 0 100" },
+        { name: "Cream", hex: "#F1F0EE", description: "Observed, 48% of sampled values", cmyk: "4 3 4 0" },
+        { name: "Warm Register", hex: "#C4A265", description: "Photography tones", cmyk: "0 17 48 23" },
+        { name: "Olive", hex: "#4A463A", description: "Observed, 19%", cmyk: "58 50 68 30" },
+        { name: "Oak Tan", hex: "#BAA383", description: "Observed, 16%", cmyk: "26 33 49 2" },
       ],
       fonts: [
         {

@@ -1331,6 +1331,20 @@
       "observed": true
      }
     ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "brand-system",
+        "field": "colors.2.name",
+        "quote": "Cream"
+       }
+      ]
+     }
+    ],
     "material": [
      {
       "facet": "material",
@@ -1403,6 +1417,28 @@
      },
      {
       "facet": "material",
+      "term": "oak",
+      "n": 9,
+      "cites": [
+       {
+        "section": "brand-system",
+        "field": "colors.5.name",
+        "quote": "Oak Tan"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-smartphone-wooden-table-mockup.jpg",
+        "quote": "Square crop shot from directly overhead, the phone upright and near-centred, grain running corner to corner beneath it."
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "brass",
       "n": 9,
       "cites": [
@@ -1420,29 +1456,6 @@
         "section": "image",
         "field": "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
         "quote": "Four square panels in a two-by-two grid, overhead device shots on one diagonal and eye-level interiors on the other."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "material",
-      "term": "oak",
-      "n": 8,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
-        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-smartphone-wooden-table-mockup.jpg",
-        "quote": "Square crop shot from directly overhead, the phone upright and near-centred, grain running corner to corner beneath it."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-pipeline-ai-categorization-step.jpg",
-        "quote": "Eye-level and square to a corner, the cupboard stack dominating the vertical centre while the island crosses the bottom edge."
        }
       ],
       "observed": true
