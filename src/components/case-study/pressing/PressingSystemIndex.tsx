@@ -505,17 +505,35 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   }, [libKey, reserve, shape]);
 
   /* ── the palette: colour AND form, together ────────────────────── */
+  /* A STABLE KEY, the same trick libKey plays for the reel below. The
+     resolver builds `colors` with .map(), so it is a new array on every
+     render, and an effect that depends on the array itself restarts
+     whenever anything else in this component re-renders. It did: the
+     swatch held Primary, began its morph at 1600ms, and snapped back to
+     Primary at 1800 — the cycle restarting from state 0 forever, so the
+     caption never left the first colour and the palette looked static
+     while the tick was in fact running the whole time. Keying on the
+     CONTENT means the effect only restarts when the palette actually
+     changes. */
+  const colorKey = colors.map((c) => `${c.name}\u0000${c.hex}`).join("|");
+
   useEffect(() => {
     const pathEl = swatchRef.current;
     const cap = swatchCapRef.current;
-    if (!pathEl || !cap || colors.length === 0) return;
+    const pal = colorKey
+      ? colorKey.split("|").map((s) => {
+          const [name, hex] = s.split("\u0000");
+          return { name, hex };
+        })
+      : [];
+    if (!pathEl || !cap || pal.length === 0) return;
 
-    const profiles = colors.map((_, i) => {
+    const profiles = pal.map((_, i) => {
       const sh = LADDER[i % LADDER.length];
       return profile(outline(sh.sides, sh.R, 0, sh.rot));
     });
-    const cols = colors.map((c) => rgb(c.hex));
-    const n = colors.length;
+    const cols = pal.map((c) => rgb(c.hex));
+    const n = pal.length;
 
     const setFrame = (a: number, b: number, e: number) => {
       const pa = profiles[a];
@@ -529,7 +547,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
       );
     };
 
-    const label = (i: number) => `${colors[i].name} · ${colors[i].hex}`;
+    const label = (i: number) => `${pal[i].name} · ${pal[i].hex}`;
     cap.textContent = label(0);
     setFrame(0, n > 1 ? 1 : 0, 0);
 
@@ -562,7 +580,7 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
         cap.textContent = label(shown);
       }
     });
-  }, [colors]);
+  }, [colorKey]);
 
   /* ── the type specimen: word AND weight, together ──────────────────
      The face's own cuts, stepped one per word, the words the campaign's
