@@ -63,15 +63,15 @@
               <span class="chat-history-new-btn">+ New</span>
             </div>
             <div class="chat-history-list" id="spChatList">
-              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">2d</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">can we look at on…</span><span class="chat-session-meta">Jul 28</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">we're working wit…</span><span class="chat-session-meta">Jul 28</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">what is our main t…</span><span class="chat-session-meta">Jul 22</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">do you have conte…</span><span class="chat-session-meta">Jul 21</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">testing</span><span class="chat-session-meta">Jul 20</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">do we have any s…</span><span class="chat-session-meta">Jul 10</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">where does our …</span><span class="chat-session-meta">Jun 11</span></div>
-              <div class="chat-session-row"><span class="chat-session-title">When do Blissful …</span><span class="chat-session-meta">May 26</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">braid season — what's…</span><span class="chat-session-meta">2d</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">compare our bond rep…</span><span class="chat-session-meta">3d</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">email subjects for the…</span><span class="chat-session-meta">Jul 28</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">which personas over-i…</span><span class="chat-session-meta">Jul 24</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">pull hero images for t…</span><span class="chat-session-meta">Jul 21</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">what are Ulta + Amazo…</span><span class="chat-session-meta">Jul 15</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">SMS copy for back to s…</span><span class="chat-session-meta">Jul 10</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">customer sentiment on…</span><span class="chat-session-meta">Jun 26</span></div>
+              <div class="chat-session-row"><span class="chat-session-title">When do Blissful Mini…</span><span class="chat-session-meta">May 26</span></div>
             </div>
           </div>
           <div class="dam-filters-label">Start a brief</div>
@@ -165,7 +165,65 @@ new SallyDemo(document.getElementById("jimDemo"), async function (t) {
   // stream() knows **bold**; promote *italics* after the fact
   jc.innerHTML = jc.innerHTML.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
-  await t.wait(1800);
+  // 4 — the follow-up: put the line to work
+  await t.wait(1700);
+  var MSG2 = "now create an asset card that can be used across our digital channels";
+  await t.type(input, MSG2, 34);
+  await t.wait(280);
+  await t.press(t.$(".send-btn"));
+  input.textContent = "";
+  var uc2 = msg("user", "You");
+  uc2.textContent = MSG2;
+  await t.wait(600);
+
+  // 5 — Jim drafts, the card generates in the thread
+  var jc2 = msg("assistant", "Jim");
+  var think2 = t.el("div", "sp-think");
+  think2.appendChild(t.el("i")); think2.appendChild(t.el("i")); think2.appendChild(t.el("i"));
+  jc2.appendChild(think2);
+  await t.wait(1150);
+  think2.remove();
+
+  await t.stream(jc2, [
+    "Built straight on the line — one card, sized for the homepage, and the copy holds at email-hero and paid-social crops:"
+  ], 24);
+
+  var card = t.el("div", "sp-gen-card");
+  var label = t.el("div", "sp-gen-label");
+  label.appendChild(t.el("span", null, "Homepage card"));
+  label.appendChild(t.el("span", "sp-gen-meta", "1600×1084 · draft v1"));
+  card.appendChild(label);
+  var shimmer = t.el("div", "sp-gen-shimmer");
+  shimmer.appendChild(t.el("i")); shimmer.appendChild(t.el("i")); shimmer.appendChild(t.el("i"));
+  card.appendChild(shimmer);
+  jc2.appendChild(card);
+  t.reveal(card);
+  await t.wait(1500);
+
+  var bb = t.el("div", "sp-billboard");
+  var copy = t.el("div", "sp-billboard-copy");
+  var img = t.el("div", "sp-billboard-img");
+  img.innerHTML = '<img src="assets/magic-press.png" alt="Sally press-on nails packshot">';
+  bb.appendChild(copy); bb.appendChild(img);
+  card.replaceChild(bb, shimmer);
+
+  var h = t.el("div", "sp-billboard-headline", "Your beauty journey, no salon required.");
+  var s = t.el("div", "sp-billboard-sub", "Salon-level color, care, and tools — on your terms.");
+  var cta = t.el("div", "sp-billboard-cta", "Shop now");
+  copy.appendChild(h); t.reveal(h);
+  await t.wait(320);
+  copy.appendChild(s); t.reveal(s);
+  await t.wait(280);
+  copy.appendChild(cta); t.reveal(cta);
+  await t.wait(400);
+
+  var actions = t.el("div", "sp-gen-actions");
+  actions.appendChild(t.el("span", "sp-gen-btn apply", "Apply to request →"));
+  actions.appendChild(t.el("span", "sp-gen-btn ghost", "Regenerate"));
+  card.appendChild(actions);
+  t.reveal(actions);
+
+  await t.wait(2400);
 });
 </script>
 
