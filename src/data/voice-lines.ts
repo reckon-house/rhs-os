@@ -74,13 +74,13 @@ export const voiceSet = {
    * symmetry. They still want Jeremy's own edit; the rule at the top
    * of this block is "his words, quoted" and these are drafts. */
   pricing:
-    "There's no rate card. Every project gets priced on its scope. Tell me what you're trying to build at hello@reckon.house and I'll come back with a real number.",
+    "It depends on what you're building, so there's no set price. Tell me what you have in mind and I'll come back with a real number.",
   transfer:
-    "Yes. The site you're using right now is the demo. Point the same setup at a restaurant or a contractor and it answers what customers call about all day. Hours, quotes, availability. hello@reckon.house if you want to talk about yours.",
+    "Yes. This site is the demo. The same thing works for a restaurant or a contractor, answering the questions customers ask all day. Tell me about your business and I'll show you what yours could look like.",
   process:
-    "It starts with a conversation about scope. Then I design and build it myself. The studies below show how that has gone, including a tool that shipped in a day. Email hello@reckon.house and I'll walk through it against your project.",
+    "We start by talking through what you need. Then I design and build it myself. Some things take a day and most take longer, and I'll tell you which yours is before we start.",
   builder:
-    "Jeremy Prasatik. Reckon House Staples is an independent studio in Texas. Everything here was designed and built in-house, including this search.",
+    "Jeremy Prasatik. I'm an independent designer and developer in Texas, and I built everything here myself, including this search.",
   searchMeta:
-    "A small model reading an index built from the case studies on this site. The facts that have to be exact, like the email address, are written by hand. Every answer cites the project it came from, so ask about the work and check the receipts.",
+    "It's a small AI reading through the projects on this site, not ChatGPT. Anything that has to be exact, like my email address, I wrote by hand. Ask about any project and it'll show you where the answer came from.",
 };

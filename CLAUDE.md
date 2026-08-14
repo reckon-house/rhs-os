@@ -1,5 +1,21 @@
 # RHS OS — Portfolio & Case Study Platform
 
+## Answering me
+
+Plain and short. I have to follow you on the first read.
+
+- Lead with what you did, or what I need to do. One or two sentences.
+- Then details, only the ones that change a decision.
+- Short sentences. No stacked clauses, no long asides mid-sentence.
+- Don't narrate your reasoning unless I ask why.
+- Two bold phrases per answer, maximum. Bolding everything emphasises nothing.
+- If you need a decision from me, say so plainly at the end, in one line.
+- Numbers, file paths and measurements: yes. Adjectives about your own work: no.
+- When I ask a question, answer the question first. Background after.
+
+If an answer needs to be long, say why in the first line, then use plain
+headings. Length is fine when it earns it. Density is not.
+
 ## Stack
 - Next.js 16 + React 19 + TypeScript
 - Tailwind CSS v4 (inline @theme in globals.css)
