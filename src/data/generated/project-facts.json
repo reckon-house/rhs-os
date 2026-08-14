@@ -11613,6 +11613,42 @@
      {
       "facet": "client",
       "term": "Jeffrey",
+      "n": 40,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Valentino",
+      "n": 2,
+      "cites": [
+       {
+        "section": "homepage-templates",
+        "field": "images.1.src",
+        "quote": "jeffrey new york homepage valentino pink lace dress monstera"
+       },
+       {
+        "section": "homepage-templates",
+        "field": "images.1.alt",
+        "quote": "Jeffrey New York homepage, Valentino pink lace dress paired with monstera leaves"
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "new york",
       "n": 30,
       "cites": [
        {
@@ -11622,68 +11658,35 @@
        },
        {
         "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
-       }
-      ]
-     }
-    ],
-    "place": [
-     {
-      "facet": "place",
-      "term": "new york",
-      "n": 20,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg"
-       },
-       {
-        "section": "meta",
         "field": "reel.images.1",
-        "quote": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp"
-       }
-      ]
-     }
-    ],
-    "colour": [
-     {
-      "facet": "colour",
-      "term": "charcoal",
-      "n": 2,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "philosophyText",
-        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
-       },
-       {
-        "section": "marks-materials",
-        "field": "colors.0.name",
-        "quote": "Charcoal"
-       }
-      ]
-     },
-     {
-      "facet": "colour",
-      "term": "cream",
-      "n": 2,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "philosophyText",
-        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
-       },
-       {
-        "section": "marks-materials",
-        "field": "colors.1.name",
-        "quote": "Cream"
+        "quote": "/case-studies/jeffrey-ecommerce/hp/jeffrey-new-york-homepage-dries-van-noten-yellow-fringe-ready-to-wear.jpg"
        }
       ]
      }
     ],
     "material": [
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 3,
+      "cites": [
+       {
+        "section": "homepage-templates",
+        "field": "images.5.src",
+        "quote": "jeffrey new york homepage loewe blue leather bag"
+       },
+       {
+        "section": "homepage-templates",
+        "field": "images.5.alt",
+        "quote": "Jeffrey New York homepage, Loewe blue leather bag"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp",
+        "quote": "Flat-on contact sheet, two rows of four, tight above and spaced below."
+       }
+      ]
+     },
      {
       "facet": "material",
       "term": "glass",
@@ -11735,19 +11738,42 @@
         "quote": "Jeffrey New York product detail page — large imagery, minimal chrome, curated cross-sells"
        }
       ]
-     },
+     }
+    ],
+    "colour": [
      {
-      "facet": "material",
-      "term": "leather",
-      "n": 1,
+      "facet": "colour",
+      "term": "charcoal",
+      "n": 2,
       "cites": [
        {
-        "section": "image",
-        "field": "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp",
-        "quote": "Flat-on contact sheet, two rows of four, tight above and spaced below."
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.0.name",
+        "quote": "Charcoal"
        }
-      ],
-      "observed": true
+      ]
+     },
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.1.name",
+        "quote": "Cream"
+       }
+      ]
      }
     ],
     "furniture": [

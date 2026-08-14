@@ -313,8 +313,11 @@ const checkSection = (slug, s) => {
   if (typeof s.image === "string") srcs.push([s.image, need, how]);
   /* Column images are held to their own, much lower bar: the whole
      point of the column is that a small file is honest there. It is
-     still a bar — under ~760 a file is soft even at column measure. */
-  for (const c of s.columns || [])
+     still a bar — under ~760 a file is soft even at column measure.
+     Array-guarded: `columns` means a list of text columns on one
+     section type and a COLUMN COUNT on masonry, and iterating the
+     number threw the whole audit. */
+  for (const c of Array.isArray(s.columns) ? s.columns : [])
     if (c.image && c.image.src) srcs.push([c.image.src, COLUMN_MIN, "column image"]);
   for (const [src, min, label] of srcs) {
     const w = nativeWidth(src);

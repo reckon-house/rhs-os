@@ -439,6 +439,10 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
           })}
           cols={s.type === "masonry" ? s.columns : undefined}
+          /* `native` on the section means the same thing here as in the
+             classic renderer: show the frame whole. It zeroes the row's
+             bleed, which is a crop before it is a parallax. */
+          native={"native" in s ? s.native === true : false}
           pinForNext={p?.choreo?.pin}
           hold={p?.choreo?.hold !== false}
           mark={p?.mark}

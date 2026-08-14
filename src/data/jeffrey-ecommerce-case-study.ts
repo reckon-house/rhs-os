@@ -28,7 +28,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         colors: ["#1A1A1A", "#F5F2ED", "#FFFF40", "#8C8578"],
         images: [
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg",
-          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp",
+          "/case-studies/jeffrey-ecommerce/hp/jeffrey-new-york-homepage-dries-van-noten-yellow-fringe-ready-to-wear.jpg",
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg",
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-editorial-spread.jpg",
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup.jpg",
@@ -95,32 +95,45 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         "Sat with the buying team to learn how the floor worked. How pieces were grouped, how seasons shifted, what made the edit feel like Jeffrey. The site needed to behave like the store, which meant designing the publishing system before the product templates.",
     },
 
-    // ── Inline scaling hero — second hero frame as visual breath.
-    // cropWide: image is intentionally super wide. Container clips the left/right
-    // so the homepage tile reads as a fragment of something larger continuing
-    // off-frame in both directions.
+    // ── The homepage, six ways ──────────────────────────────────────
+    // This was ONE flattened 6493px strip of the templates side by side,
+    // zoomed and panned. The strip is the wrong object for the claim:
+    // the point is that one chrome carries any campaign, and a single
+    // image of six thumbnails asks the reader to squint at six things at
+    // once. As cells they are six full pages, each big enough to read its
+    // own hero, sitting in the same masthead and the same footer.
+    //
+    // Six, not the eight exported: two of the eight are wider crops of
+    // templates already here (Candy Crush and Vetements), and at cell
+    // size a crop variant reads as the grid repeating itself. The files
+    // are in hp/ if they should come back.
+    //
+    // Sized honestly. 1357px native is crisp to ~678 CSS; three across
+    // the page puts each cell near 450, well inside it. The originals
+    // were transparent PNGs totalling 9.2MB — flattened onto paper (the
+    // alpha was only the mockup's own rounded corner, which the frame
+    // draws anyway) they are 1.2MB for the set.
     {
-      id: "strategy-inline",
-      type: "hero",
-      image: `${IMG}/jeffrey-new-york-homepage-template-grid-mockups.webp`,
-      alt: "Jeffrey New York site in context — homepage with editorial hero and curated grid",
-      inline: true,
-      cropWide: true,
-      // The zoom, and at 6493px native the best-resourced one in the
-      // portfolio by a wide margin. No zoomFit: the frame is a 3.2-ratio
-      // strip of templates, so filling the viewport width leaves nothing
-      // hanging below the fold to pan, and contain would shrink a wide
-      // schematic to a ribbon.
-      pressing: {
-        plate: "02",
-        captions: [
-          "Homepage templates",
-          "Editorial hero and curated grid",
-          "The system in context",
-        ],
-        instruction: "Scroll. It fills the mat, then travels the frame",
-        choreo: { zoom: true },
-      },
+      id: "homepage-templates",
+      type: "masonry",
+      columns: 3,
+      // Whole frames, no crop. The row's 10% bleed is a parallax track on
+      // photography and a pair of scissors on a screenshot: it was taking
+      // "Search" off one end of the masthead and "Login" off the other.
+      native: true,
+      images: [
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-dries-van-noten-yellow-fringe-ready-to-wear.jpg`, alt: "Jeffrey New York homepage, Dries Van Noten ready-to-wear against a yellow fringe backdrop" },
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-valentino-pink-lace-dress-monstera.jpg`, alt: "Jeffrey New York homepage, Valentino pink lace dress paired with monstera leaves" },
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-vetements-logo-wall-white-skirt.jpg`, alt: "Jeffrey New York homepage, Vetements logo step-and-repeat wall" },
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-candy-crush-fall-shoes-polka-dots.jpg`, alt: "Jeffrey New York homepage, Candy Crush fall shoes on a polka-dot set" },
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-step-into-summer-must-have-shoes.jpg`, alt: "Jeffrey New York homepage, Step Into Summer must-have shoes" },
+        { src: `${IMG}/hp/jeffrey-new-york-homepage-loewe-blue-leather-bag.jpg`, alt: "Jeffrey New York homepage, Loewe blue leather bag" },
+      ],
+      /* NO MARK. The strip carried plate: "02", which is the ZOOM
+         numeral and inherits its governing mark by convention — a grid
+         is not a zoom, and minting a mark here would put a second "02"
+         in a spine that already opens on one. The grid sits under
+         Storytelling Over, where it belongs. */
     },
 
     // ── Editorial headline — replaces the original closing's

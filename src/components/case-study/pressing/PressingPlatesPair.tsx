@@ -70,6 +70,22 @@ export interface PressingPlatesPairProps {
   hold?: boolean;
   /** Section mark above the row; reads the pin wrapper's travel when pinned. */
   mark?: { n: string; name: string; dark?: boolean };
+  /**
+   * Show every frame WHOLE, with no crop and therefore no parallax.
+   *
+   * --bleed makes each image 10% taller than its frame, and object-fit:
+   * cover then matches that height and takes the difference off the
+   * SIDES. On photography that is the point: the crop is the track the
+   * travel runs on and nobody misses the trimmed edge. On a screenshot
+   * it eats the interface — the Jeffrey homepages lost "Search" from one
+   * end of the masthead and "Login" from the other, which is the part
+   * that proves it is the same chrome every time.
+   *
+   * Same word the classic renderer uses on these sections for the same
+   * idea (whole image, own ratio, no forced crop), so a study that
+   * already says `native: true` gets the right thing on both renderers.
+   */
+  native?: boolean;
 }
 
 export function PressingPlatesPair({
@@ -78,6 +94,7 @@ export function PressingPlatesPair({
   pinForNext = false,
   hold = true,
   mark,
+  native = false,
 }: PressingPlatesPairProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const frameRefs = useRef<(HTMLElement | null)[]>([]);
@@ -168,7 +185,10 @@ export function PressingPlatesPair({
   }, [srcKey]);
 
   const row = (
-    <div className={styles.plates}>
+    <div
+      className={styles.plates}
+      style={native ? ({ "--bleed": "0%" } as CSSProperties) : undefined}
+    >
       {mark ? (
         <div className={styles.markRow}>
           <SectionMark

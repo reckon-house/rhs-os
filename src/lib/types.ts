@@ -117,6 +117,14 @@ export interface MasonrySection extends BaseSection {
   images: { src: string; alt: string }[];
   /** Desktop column count (default 2). Mobile is always 1. */
   columns?: number;
+  /**
+   * Show each frame WHOLE — its own ratio, no crop. Same meaning the
+   * flag already carries on dual-image and triple-image; masonry was
+   * simply missing it. In pressing it also zeroes the row's 10% bleed,
+   * which is a crop before it is a parallax and takes its slice off the
+   * sides — fine on photography, destructive on a screenshot.
+   */
+  native?: boolean;
 }
 
 interface BaseSection {
