@@ -200,13 +200,28 @@
    380px column and simply fill it. */
 .form {
   display: grid;
-  gap: 16px;
+  gap: 0;
   max-width: 30em;
 }
 
+/* THE RULE SITS ABOVE, and the label hangs just under it. It used to
+   ride on the input's own bottom edge with the label floating free
+   above it, which made a row read as a box with a lid. Line, label
+   close under it, field, then the air below: the same arrangement the
+   homepage's compose ledger uses, so the two contact surfaces on this
+   site are one object in two grounds.
+
+   11 above and 24 below on purpose. Even padding reads as a box; this
+   reads as an entry hanging off its own line. */
 .field {
   display: grid;
-  gap: 6px;
+  gap: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 11px 0 24px;
+}
+/* Focus marks the ROW now, since the row owns the rule. */
+.field:focus-within {
+  border-top-color: var(--mt-paper);
 }
 
 .fieldLabel {
@@ -224,8 +239,8 @@
 .input,
 .textarea {
   background: none;
+  /* no border at all: the .field row above carries the one rule */
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
   color: var(--mt-paper);
   font-family: inherit;
   font-size: 14px;
@@ -241,8 +256,9 @@
    ground. */
 .input:focus,
 .textarea:focus {
+  /* the row's :focus-within draws the indicator; a second outline
+     inside a box that already has one is noise */
   outline: none;
-  border-bottom-color: var(--mt-paper);
 }
 
 .send {
