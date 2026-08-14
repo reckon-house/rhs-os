@@ -54,6 +54,20 @@ export interface DaybookEntry {
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
   {
+    id: "sizzle-pressing",
+    date: "2026-08-14",
+    project: "RHS",
+    body: "Faux Reel ported to the pressing language. The cover's own reel takes over from the old hero: the study about cutting stills into motion now opens with that mechanism running its seven-frame default cut.",
+    link: { href: "/case-studies/sizzle", label: "The study" },
+  },
+  {
+    id: "trends-demo-wired",
+    date: "2026-08-14",
+    project: "Sally",
+    body: "The fifth demo went into the Sally study, placed after the intelligence sankey because it runs what the diagram draws: feed to Sally's Take to a seeded Jim chat to a drafted campaign play, ending on Approve opening four channel requests.",
+    link: { href: "/case-studies/sally", label: "The case study" },
+  },
+  {
     id: "sally-demos-framed",
     date: "2026-08-13",
     project: "Sally",
