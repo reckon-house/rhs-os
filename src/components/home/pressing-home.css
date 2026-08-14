@@ -881,17 +881,24 @@
      label carries the name. */
   .cmp { margin-top: clamp(30px, 5dvh, 56px); }
 
+  /* Weighted to the top: the label rides just under the rule and the
+     air falls BELOW the field rather than being split either side of
+     it. A row padded evenly reads as a box; padded like this it reads
+     as an entry hanging off its own line. */
   .cmprow { display: grid;
     grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px);
     align-items: start;
     border-top: 1px solid rgba(0, 0, 0, 0.14);
-    padding: 14px 0; }
+    padding: 11px 0 30px; }
 
-  /* 7px seats the 10px caps on the field's own first baseline */
+  /* THE LEFT RAIL'S LABEL, exactly: same size, weight, tracking and
+     opacity as .ixnotes .blk .tag, and sentence case like it. The caps
+     were mine and they were the odd one out — nothing else in this
+     column shouts. Sits near the rule rather than on the field's
+     baseline, which is what opens the space underneath. */
   .cmplbl { font-size: var(--lbl); font-weight: var(--lbl-weight);
-    letter-spacing: var(--lbl-track); text-transform: uppercase;
-    opacity: 0.55; padding-top: 7px; }
+    letter-spacing: var(--lbl-track); opacity: 0.5; padding-top: 1px; }
 
   .cmpf { width: 100%; max-width: 620px; display: block;
     background: none; border: 0; border-radius: 0;
@@ -914,7 +921,7 @@
     grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px);
     border-top: 1px solid rgba(0, 0, 0, 0.14);
-    padding-top: 18px; align-items: center; }
+    padding-top: 22px; align-items: center; }
   .cmpact { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   .cmpsend { background: var(--ink); color: var(--paper); border: 0;
     border-radius: 999px; padding: 11px 26px; cursor: pointer;
