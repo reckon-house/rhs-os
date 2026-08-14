@@ -89,7 +89,7 @@ const NOTES = [
      is right by construction. */
   ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Same desk for all of it.",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
-  ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
+  ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
   ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
   ["Get in touch", "hello@reckon.house"]
@@ -1717,15 +1717,25 @@ function buildMagazine() {
      the left column */
   const allNotes = cards.map((c, i) => i).filter((i) => cards[i].kind === "note");
   const bio = allNotes.find((i) => /practice/i.test(cards[i].word || ""));
-  /* the order is authored, not the corpus's: Recently first, What I do
-     last. One array to reshuffle if the mockup meant it the other way
-     up — its own reading was ambiguous at this size. */
-  const NOTE_ORDER = ["recently", "get in touch", "how i work", "what i do"];
+  /* THE RAIL'S ORDER, AUTHORED, TOP TO BOTTOM. The filter is a MEMBER
+     of this list rather than something appended after the notes, which
+     is the only way it can sit second. Work first, the door to it, then
+     the address, then the news, then the practice: the reader meets
+     what I do before they meet where I am.
+
+     Unnamed blocks go to the END, never the front. The list this
+     replaces still said "how i work" months after that block was
+     renamed "The setup", and indexOf's -1 quietly sorted the renamed
+     block to the top of the rail — a stale key that LOOKED like an
+     authored decision. */
+  const RAIL = ["what i do", "filter", "get in touch", "recently", "the setup"];
+  const seat = (w) => {
+    const at = RAIL.indexOf((w || "").toLowerCase());
+    return at < 0 ? RAIL.length : at;
+  };
   const noteIdx = allNotes
     .filter((i) => i !== bio)
-    .sort((x, y) =>
-      NOTE_ORDER.indexOf((cards[x].word || "").toLowerCase()) -
-      NOTE_ORDER.indexOf((cards[y].word || "").toLowerCase()));
+    .sort((x, y) => seat(cards[x].word) - seat(cards[y].word));
   const lead = document.getElementById("infoLead");
   /* The ring's own columns. `alive` above is the real gate; this is
      the belt to its braces, because the crash it prevents is not a
@@ -1754,7 +1764,9 @@ function buildMagazine() {
 
   const notesEl = document.getElementById("ixNotes");
   notesEl.innerHTML = "";
-  noteIdx.forEach((ci) => {
+  /* Every block carries its seat and the column is ordered once, at the
+     end, so notes and the filter interleave by the same rule. */
+  const rail = noteIdx.map((ci) => {
     const blk = document.createElement("div");
     blk.className = "blk";
     const tag = document.createElement("span");
@@ -1765,11 +1777,12 @@ function buildMagazine() {
     /* same key noteCard writes, so a note the brain surfaces can
        travel out of this column */
     blk.dataset.key = "note:" + (cards[ci].word || "");
-    notesEl.appendChild(blk);
+    return { at: seat(cards[ci].word), el: blk };
   });
 
   /* the filter rides the same pinned column, so it stays in reach for
-     the whole scroll instead of living at one altitude */
+     the whole scroll instead of living at one altitude. Its seat comes
+     from RAIL like everything else here. */
   const filt = document.createElement("div");
   filt.className = "blk filt";
   const ftag = document.createElement("span");
@@ -1788,7 +1801,9 @@ function buildMagazine() {
     });
     filt.appendChild(b);
   });
-  notesEl.appendChild(filt);
+  rail.push({ at: seat("Filter"), el: filt });
+  rail.sort((a, b) => a.at - b.at);
+  rail.forEach((r) => notesEl.appendChild(r.el));
 
   /* ROWS, two frames each, hung from one line and ruled off below.
      The pairing is consecutive rather than split down the middle:

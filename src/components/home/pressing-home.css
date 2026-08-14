@@ -516,13 +516,32 @@
   /* the filter reads as the column's own list: same body size, one per
      line, underlined on approach rather than boxed. A button that
      looked like a button would be the only chrome on the page. */
-  .ixnotes .filt button, .ixnotes .filt a { display: block; width: 100%; text-align: left;
+  .ixnotes .filt button, .ixnotes .filt a { position: relative;
+    display: block; width: fit-content; text-align: left;
     text-decoration: none;
     background: none; border: 0; padding: 0 0 7px; cursor: pointer;
     font: inherit; font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
-  .ixnotes .filt button:hover, .ixnotes .filt a:hover { text-decoration: underline;
-    text-underline-offset: 4px; }
+  /* THE RULE IS DRAWN, NOT SWITCHED ON. text-decoration cannot animate,
+     so the underline appeared in a single frame while every other line
+     on this site grows from the left. Same scaleX from origin 0 the
+     compose form's rules and the daybook's rows use, on the house
+     curve, which eases out at the end.
+     The button is fit-content so the line belongs to the WORDS: at
+     width 100% it would run the whole rail, well past the label it
+     underlines. Sits at 10px to land where text-underline-offset: 4px
+     did, measured against the line box rather than guessed. */
+  .ixnotes .filt button::after, .ixnotes .filt a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 10px;
+    height: 1px; background: currentColor;
+    transform: scaleX(0); transform-origin: 0 50%;
+    transition: transform 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .filt button:hover::after, .ixnotes .filt a:hover::after,
+  .ixnotes .filt button:focus-visible::after, .ixnotes .filt a:focus-visible::after {
+    transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .ixnotes .filt button::after, .ixnotes .filt a::after { transition: none; }
+  }
   .ixnotes .filt button:focus-visible, .ixnotes .filt a:focus-visible { outline: 1px solid var(--ink);
     outline-offset: 3px; }
 

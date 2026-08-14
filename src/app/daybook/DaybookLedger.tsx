@@ -201,10 +201,8 @@ export function DaybookLedger() {
   );
   const oldest = DAYBOOK[DAYBOOK.length - 1];
 
-  /* Active filter marked inline rather than with a module class: the
-     rail's button styles are the homepage's globals, and a module class
-     on the same element loses that specificity fight quietly. */
-  const active = { textDecoration: "underline", textUnderlineOffset: "3px", color: "#000" };
+  /* The selected filter wears the rail's own drawn rule, held on (see
+     .on in the module, which outranks the homepage's hover rule). */
 
   return (
     <div className="pressing isolate relative w-full">
@@ -234,7 +232,7 @@ export function DaybookLedger() {
               <div className="filt">
                 <button
                   type="button"
-                  style={proj === null ? active : undefined}
+                  className={proj === null ? styles.on : undefined}
                   onClick={() => pick(null)}
                 >
                   Everything &middot; {DAYBOOK.length}
@@ -243,7 +241,7 @@ export function DaybookLedger() {
                   <button
                     key={p}
                     type="button"
-                    style={proj === p ? active : undefined}
+                    className={proj === p ? styles.on : undefined}
                     onClick={() => pick(p)}
                   >
                     {p} &middot; {counts.get(p) ?? 0}

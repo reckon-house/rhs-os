@@ -34,6 +34,20 @@
 .alley {
   column-gap: clamp(32px, 10vw, 220px);
 }
+
+/* THE ACTIVE FILTER IS THE SAME LINE, HELD ON. The homepage draws the
+   rail's rule on hover; a selected row is that rule that never
+   retracted, which is one idea instead of two. It must not be a second
+   text-decoration underline: that sits at a different offset and reads
+   as a double rule the moment the active row is hovered.
+   Three global ancestors because the rule it overrides carries two,
+   and a tie would be settled by stylesheet order across two files. */
+:global(.ixnotes) :global(.filt) button.on {
+  color: #000;
+}
+:global(.ixnotes) :global(.filt) button.on::after {
+  transform: scaleX(1);
+}
 @media (max-width: 860px) {
   .rail {
     margin-top: 0;
