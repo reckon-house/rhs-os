@@ -108,19 +108,29 @@ export function PressingHome() {
               tabIndex -1 keep it away from assistive tech. */}
           <form className="cmp" id="ansCompose" hidden>
             <div className="cmprow">
+              <label className="cmplbl" htmlFor="cmpName">Name</label>
               <input className="cmpf" id="cmpName" type="text" name="name"
-                placeholder="Name" maxLength={120} autoComplete="name" />
+                placeholder="Ada Lovelace" maxLength={120} autoComplete="name" />
+            </div>
+            <div className="cmprow">
+              <label className="cmplbl" htmlFor="cmpMail">Email</label>
               <input className="cmpf" id="cmpMail" type="email" name="email"
-                placeholder="Email, if you want a reply" maxLength={254}
+                placeholder="Only if you want a reply" maxLength={254}
                 autoComplete="email" />
             </div>
-            <textarea className="cmpf cmpbody" id="cmpBody" name="body" rows={3}
-              placeholder="What are you working on?" maxLength={4000} required />
+            <div className="cmprow">
+              <label className="cmplbl" htmlFor="cmpBody">Message</label>
+              <textarea className="cmpf cmpbody" id="cmpBody" name="body" rows={4}
+                placeholder="What are you working on?" maxLength={4000} required />
+            </div>
             <input className="cmphp" id="cmpCo" type="text" name="company"
               tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <div className="cmpfoot">
-              <button className="cmpsend" id="cmpSend" type="submit">Send</button>
-              <span className="cmpnote" id="cmpNote" />
+              <span />
+              <div className="cmpact">
+                <button className="cmpsend" id="cmpSend" type="submit">Send</button>
+                <span className="cmpnote" id="cmpNote" />
+              </div>
             </div>
           </form>
 

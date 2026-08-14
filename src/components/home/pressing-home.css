@@ -865,36 +865,72 @@
     opacity: 0.55; }
 
   /* ── the compose box ──
-     Ledger furniture, not a form: hairline under each field, no boxes,
-     no rounded wells, no grey fill. The page has one ink and a rule
-     weight, and a contact form is the easiest place on a site to
-     accidentally import somebody else's design system. */
-  .cmp { margin-top: 26px; max-width: 620px; display: block; }
-  .cmprow { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
-  @media (max-width: 560px) { .cmprow { grid-template-columns: 1fr; } }
+     A LEDGER, not a form. Label left, field right, one hairline per
+     row: the same object as a daybook entry, a thread message and the
+     spec rows in the studies, so a contact form stops being the one
+     place on the site that imported somebody else's design system.
 
-  .cmpf { width: 100%; display: block; background: none; border: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-    padding: 10px 0; font: inherit; font-size: var(--note);
-    color: var(--ink); border-radius: 0; }
-  .cmpf::placeholder { color: rgba(0, 0, 0, 0.4); }
-  .cmpf:focus { outline: none; border-bottom-color: var(--ink); }
-  .cmpbody { margin-top: 6px; resize: vertical; min-height: 84px;
-    line-height: 1.55; font-family: inherit; }
+     The label column is var(--ix-note-w), which is what the index below
+     uses, so the form lines up with the page rather than floating in
+     the prose measure with two thirds of the width empty beside it.
 
-  /* Off-screen rather than display:none. A bot reading the DOM fills
-     what it can reach, and a hidden field is the oldest tell there is. */
+     REAL LABELS, not placeholders. A placeholder is not a label: it
+     disappears the moment there is a value, so anyone who tabs back to
+     check a field finds an unnamed box, and a screen reader gets
+     nothing dependable. The placeholder now carries an example; the
+     label carries the name. */
+  .cmp { margin-top: clamp(30px, 5dvh, 56px); }
+
+  .cmprow { display: grid;
+    grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
+    column-gap: clamp(24px, 3.4vw, 56px);
+    align-items: start;
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    padding: 14px 0; }
+
+  /* 7px seats the 10px caps on the field's own first baseline */
+  .cmplbl { font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-transform: uppercase;
+    opacity: 0.55; padding-top: 7px; }
+
+  .cmpf { width: 100%; max-width: 620px; display: block;
+    background: none; border: 0; border-radius: 0;
+    padding: 2px 0; font: inherit; font-size: var(--note);
+    color: var(--ink); }
+  .cmpf::placeholder { color: rgba(0, 0, 0, 0.3); }
+  /* The row is the box, so focus marks the ROW rather than drawing a
+     second outline inside one that is already there. */
+  .cmpf:focus { outline: none; }
+  .cmprow:focus-within { border-top-color: var(--ink); }
+  .cmpbody { resize: vertical; min-height: 96px; line-height: 1.55;
+    font-family: inherit; }
+
+  /* Off-screen rather than display:none. A bot reads the DOM and fills
+     what it can reach; a hidden field is the oldest tell there is. */
   .cmphp { position: absolute; left: -9999px; width: 1px; height: 1px;
     opacity: 0; pointer-events: none; }
 
-  .cmpfoot { display: flex; align-items: center; gap: 18px; padding-top: 16px; }
+  .cmpfoot { display: grid;
+    grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
+    column-gap: clamp(24px, 3.4vw, 56px);
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    padding-top: 18px; align-items: center; }
+  .cmpact { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   .cmpsend { background: var(--ink); color: var(--paper); border: 0;
-    border-radius: 999px; padding: 10px 24px; cursor: pointer;
+    border-radius: 999px; padding: 11px 26px; cursor: pointer;
     font: inherit; font-size: var(--lbl); font-weight: var(--lbl-weight);
     letter-spacing: var(--lbl-track); text-transform: uppercase; }
   .cmpsend[disabled] { opacity: 0.45; cursor: default; }
   .cmpnote { font-size: var(--note); color: rgba(0, 0, 0, 0.55); }
   .cmpnote a { color: inherit; text-underline-offset: 3px; }
+
+  @media (max-width: 760px) {
+    /* One track: the label sits above its own field rather than taking
+       200px out of a 375px screen. */
+    .cmprow, .cmpfoot { grid-template-columns: 1fr; }
+    .cmplbl { padding-top: 0; padding-bottom: 6px; }
+    .cmpfoot { padding-top: 16px; }
+  }
 
   .ansback { padding-top: 16px; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
