@@ -278,7 +278,7 @@ new SallyDemo(document.getElementById("pdpDemo"), async function (t) {
   await t.stream(q, ["Do I need to do a patch test first?"], 15);
   var ans = t.el("div", "ed-ans");
   qa.appendChild(ans);
-  await t.stream(ans, ["Yes — perform a skin allergy test 48 hours before each use, even if you've coloured before. Follow the instructions in the package insert."], 20);
+  await t.stream(ans, ["Yes — perform a skin allergy test 48 hours before each use, even if you've colored before. Follow the instructions in the package insert."], 20);
   var src = t.el("span", "ed-src", "SOURCE · PACKAGE INSERT + RA-APPROVED USAGE");
   qa.appendChild(src);
   t.reveal(src);

@@ -215,7 +215,7 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
   await t.wait(2100);
 
   // 3 — Sally's Take lands (label, text, "Based on:" source, Brainstorm This)
-  var SALLY_TAKE = "Speed is the opening, and it's ours to take. Our ion 10-minute root cover already beats them on time and we've never led with it — the claim sits in product copy, not in a campaign. Their $12 price point undercuts us, so don't answer on price; answer on the fact that a faster result from a brand with 3,000 stores and staff who can colour-match you is a different offer entirely.";
+  var SALLY_TAKE = "Speed is the opening, and it's ours to take. Our ion 10-minute root cover already beats them on time and we've never led with it — the claim sits in product copy, not in a campaign. Their $12 price point undercuts us, so don't answer on price; answer on the fact that a faster result from a brand with 3,000 stores and staff who can color-match you is a different offer entirely.";
   var signal = t.el("div", "sally-signal");
   signal.innerHTML =
     '<div class="sally-signal-label">Sally\'s Take</div>' +
@@ -295,7 +295,7 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
     "They're leading on speed because nobody in mass owns it — our own competitive read says the same thing: not one retailer in the category claims application time. But we already ship a **10-minute root cover**. We've been sitting on the faster product and describing it in spec copy instead of saying it out loud.",
     "Three moves, in the order I'd do them:",
     "**1 · Reclaim the clock.** ion 10-Minute Root Cover leads every color surface for six weeks — PDP title, email hero, paid social. It beats their 25 minutes by more than half, and it's true today with zero new production.",
-    "**2 · Make the store the moat.** Their offer is a box on a doorstep. Ours is a faster result *plus* someone who can colour-match you in person. Pair the speed claim with in-store shade matching — that's the part Amazon structurally cannot copy.",
+    "**2 · Make the store the moat.** Their offer is a box on a doorstep. Ours is a faster result *plus* someone who can color-match you in person. Pair the speed claim with in-store shade matching — that's the part Amazon structurally cannot copy.",
     "**3 · Hold price.** Undercutting a $12 launch drags us into a margin fight on their terms. Speed plus expertise is the higher-ground argument.",
     "Want me to draft the play and open the requests?"
   ], 26);
@@ -355,7 +355,7 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
         '<span class="play-chip">Paid Social</span>' +
         '<span class="play-chip">In-Store</span>' +
       '</div>' +
-      '<div class="play-direction"><strong>Audience:</strong> root-touch-up shoppers and between-appointment colourists; Glow-Getters and Timeless Restorers.</div>' +
+      '<div class="play-direction"><strong>Audience:</strong> root-touch-up shoppers and between-appointment colorists; Glow-Getters and Timeless Restorers.</div>' +
       '<div class="play-direction"><strong>Direction:</strong> Say the number. We have never led with the ten minutes and it is the only claim in the category nobody else can make. Pair it with the thing a box on a doorstep cannot do — someone who matches your shade in person.</div>' +
     '</div>';
   j2c.appendChild(play);
@@ -365,7 +365,7 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
   // Billboard concepts — the real `assets` jsonb[] payload the play carries:
   // panel / eyebrow / headline / subcopy / cta_text / image_url.
   // Markup below is the product's own crChatRenderBillboardCard() output:
-  // image on top at 1600:1084, then the fixed 183px colour panel. The CTA is an
+  // image on top at 1600:1084, then the fixed 183px color panel. The CTA is an
   // underlined link because that is what the component is — and it is always
   // "Shop now", which the renderer hard-sets on every generated asset.
   //
@@ -389,9 +389,9 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
       img: "assets/bb-root-touchup.jpg",
       head: "Ten minutes. Not twenty-five.",
       sub: "ion 10-Minute Root Cover. Grey gone before the kettle boils.", cta: "Shop now" },
-    { cap: "Paid Social · billboard", panel: "blush", eyebrow: "COLOUR, FASTER",
+    { cap: "Paid Social · billboard", panel: "blush", eyebrow: "COLOR, FASTER",
       img: "assets/bb-shade-match.jpg",
-      head: "The fastest colour also has a colourist.",
+      head: "The fastest color also has a colorist.",
       sub: "Shade-matched in store, done at home. 3,000 locations.", cta: "Shop now" }
   ];
   for (var bi = 0; bi < BBS.length; bi++) {
@@ -431,7 +431,7 @@ new SallyDemo(document.getElementById("trDemo"), async function (t) {
   await t.stream(c1, ["**Strongest thing:** the speed claim is already true and already shipping — this is a positioning change, not a product promise, so it can go live without a single new SKU or lab claim."], 24);
   var c2 = t.el("div", "play-critic-text");
   critic.appendChild(c2);
-  await t.stream(c2, ["**Concern:** ten minutes covers roots, twenty-five covers all-over colour — they are not the same job. If creative implies full-head colour in ten minutes that is a substantiation problem. Keep every execution explicitly root-touch-up."], 24);
+  await t.stream(c2, ["**Concern:** ten minutes covers roots, twenty-five covers all-over color — they are not the same job. If creative implies full-head color in ten minutes that is a substantiation problem. Keep every execution explicitly root-touch-up."], 24);
   await t.wait(500);
 
   var pactions = t.el("div", "play-actions");

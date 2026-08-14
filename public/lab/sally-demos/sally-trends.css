@@ -191,7 +191,7 @@
 }
 
 /* ---- billboard concept — the REAL .cr-bb-card, extracted verbatim from
-   index.html. Structure is image-on-top + fixed 183px colour panel beneath;
+   index.html. Structure is image-on-top + fixed 183px color panel beneath;
    the CTA is an underlined link, NOT a pill button. An earlier pass invented a
    text-only panel with the 1600:1084 ratio on the panel itself — that ratio
    belongs to the IMAGE. `**bold**` in a headline becomes <em>, which the real

@@ -290,6 +290,23 @@ export const sallyCaseStudy: CaseStudy = {
       ],
     },
 
+    // ── THE ARC, LIVE — AND IT STARTS HERE ──
+    // It opens on this section's own screen: the feed, scanned, nine
+    // cards deep. Everything above argues that the intelligence layer
+    // reads the market; this is the reader watching it read, pick one
+    // card, and carry it out of the section — Sally's Take against the
+    // brand corpus, Brainstorm This into Jim, and on to a drafted
+    // campaign play. It is the bridge out of 03, so it plays at the
+    // end of 03 rather than three sections later where it was.
+    // About 60 seconds, roughly twice the other demos.
+    {
+      id: "trends-to-jim-demo",
+      type: "product-demo",
+      demo: "trends-to-jim",
+      title: "The full arc · Feed to briefed work",
+      note: "The whole chain in one take. A scanned feed flags a competitor's move, Sally's Take reads it against the brand corpus, and Brainstorm This hands it to Jim. Three strategic moves later, one prompt drafts the campaign play: two finished billboards on real photography, a second model arguing with the claim, and Approve opens four channel requests.",
+    },
+
     // ── BRAND BRAIN / JIM - grouped in ECE6E1 container ──
     // The section opens on its brief instead of its plate: the heatmap
     // above holds nothing, so a plate leading here would have had to sit
@@ -373,6 +390,21 @@ export const sallyCaseStudy: CaseStudy = {
         alt: "Sally Beauty, teal braids, expressive color",
       },
     },
+    // THE LIVE ONE, BESIDE THE STILLS IT ANIMATES. It used to trail the
+    // whole section, four plates after the chat it belongs to. It sits
+    // directly under the chat screens now: the reader meets the workflow
+    // as a picture and then immediately watches it run, on the portal's
+    // own extracted interface code, before the argument moves on to
+    // briefs. Splitting the brand-brain group is free here — group is a
+    // classic-renderer field and PressingLayout never reads it.
+    {
+      id: "brain-jim-demo",
+      type: "product-demo",
+      demo: "jim-chat",
+      title: "Brand Brain · Jim",
+      note: "A strategist pushes back on the tagline. Jim answers out of the brand corpus, separates which persona the objection belongs to, then generates the homepage card off the line it lands on.",
+    },
+
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
@@ -393,18 +425,6 @@ export const sallyCaseStudy: CaseStudy = {
         alt: "Sally Beauty, purple curls, bold color expression",
       },
       group: { name: "brand-brain" },
-    },
-
-    // The section has argued for four screens that Jim knows the brand. This
-    // is the first place a reader can watch that be true instead of being
-    // told it: the same workflow the plates above show as stills, moving,
-    // on the portal's own extracted interface code.
-    {
-      id: "brain-jim-demo",
-      type: "product-demo",
-      demo: "jim-chat",
-      title: "Brand Brain · Jim",
-      note: "A strategist pushes back on the tagline. Jim answers out of the brand corpus, separates which persona the objection belongs to, then generates the homepage card off the line it lands on.",
     },
 
     // ── INTELLIGENCE PIPELINE SANKEY ──
@@ -443,20 +463,6 @@ export const sallyCaseStudy: CaseStudy = {
           value: 15,
         },
       ],
-    },
-
-    // ── THE ARC, LIVE ──
-    // The sankey above is the diagram; this is the diagram running.
-    // The only demo that crosses three tools (feed, Jim, composer),
-    // which is why it sits between sections rather than inside one:
-    // it is section 03 handing section 04 to section 06. About 60
-    // seconds, roughly twice the other demos.
-    {
-      id: "trends-to-jim-demo",
-      type: "product-demo",
-      demo: "trends-to-jim",
-      title: "The full arc · Feed to briefed work",
-      note: "The whole chain in one take. A scanned feed flags a competitor's move, Sally's Take reads it against the brand corpus, and Brainstorm This hands it to Jim. Three strategic moves later, one prompt drafts the campaign play: two finished billboards on real photography, a second model arguing with the claim, and Approve opens four channel requests.",
     },
 
     // ── ASSET HUB ──
