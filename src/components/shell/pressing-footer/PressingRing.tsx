@@ -115,20 +115,15 @@ export function PressingRing() {
                 </div>
               );
             })}
-            {/* The rule starts at the left frame's own left edge, which
-                moves with the deal. Written as a calc rather than
-                measured: the rule spans both cells plus the gap, so
-                (100% - gap) / 2 IS one cell, and one cell times the
-                share the frame did not take is exactly where its edge
-                falls. No reflow, no resize listener. */}
-            <div
-              className="ixrule"
-              style={{
-                marginLeft: `calc((100% - var(--ixgap)) / 2 * ${(
-                  1 - (SHARES[r * 2] ?? 1)
-                ).toFixed(3)})`,
-              }}
-            />
+            {/* NO INLINE WIDTH. This used to inset the rule to where the
+                left frame's edge fell, which is what the homepage did
+                until "Row rules run one length" changed it there and
+                not here: the fix lived in the lab's stylesheet, and an
+                inline style is the one thing a shared stylesheet
+                cannot reach. So the rule is left entirely to .ixrule,
+                which both surfaces already import, and the next change
+                to it lands on both without anyone remembering. */}
+            <div className="ixrule" />
           </div>
         ))}
       </div>

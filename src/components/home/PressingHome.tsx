@@ -35,7 +35,6 @@ import { useEffect } from "react";
 import Link from "next/link";
 import Script from "next/script";
 import { initPressingHome } from "./pressingHomeDriver";
-import { DAYBOOK_STRIP, dayLabel } from "@/data/daybook";
 import "./pressing-home.css";
 
 export function PressingHome() {
@@ -158,39 +157,10 @@ export function PressingHome() {
         </div>
       </section>
 
-      {/* THE DAYBOOK. The one stratum that is not work: what got built
-          lately, dated, with the project that got it. It closes the page
-          rather than opening it, because the ring above is the argument
-          and this is the evidence the ring is still being added to.
-
-          Two entries, and no picture. Under an index made of pictures a
-          third thumbnail would join that grid instead of breaking from
-          it, and the block's whole job is to be the text on a page of
-          images. The reading happens at /daybook.
-
-          The strip is a SLICE of the same list the page renders, so the
-          two can never disagree about what shipped. A post's title and
-          paragraphs are dropped here on purpose: the strip carries the
-          first line and the page carries the argument. */}
-      <section className="hero-breakout stratum" id="stDaybook">
-        <div className="shead">
-          <span className="slbl">Daybook</span>
-          <Link className="slink" href="/daybook">
-            The full log &rarr;
-          </Link>
-        </div>
-        <div className="dbrows">
-          {DAYBOOK_STRIP.map((e) => (
-            <article className="dbrow" key={e.id}>
-              <span className="dbd">{dayLabel(e.date)}</span>
-              <p className="dbt">
-                {Array.isArray(e.body) ? e.body[0] : e.body}
-              </p>
-              <span className="dbp">{e.project}</span>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* The daybook moved to the footer (PressingDaybook), which is
+          what puts it AFTER the two dark beats here and after the ring
+          on a case study. It is one beat in one place rather than a
+          homepage block and a study block that could drift. */}
 
     </>
   );
