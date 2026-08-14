@@ -230,11 +230,6 @@ export function DaybookLedger() {
         <div className="ixbody">
           <div className="ixnotes">
             <div className={`blk ${styles.enter}`}>
-              <span className="tag">What this is</span>
-              A register of the work as it ships, drafted from each
-              project&rsquo;s own commit log and edited by hand.
-            </div>
-            <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>
               <div className="filt">
                 <button
@@ -256,10 +251,14 @@ export function DaybookLedger() {
                 ))}
               </div>
             </div>
+            {/* One home per fact: the lede owns what this is, this block
+                owns how it is kept. The old "What this is" block restated
+                the lede at rail size and is gone. */}
             <div className={`blk ${styles.enter}`}>
               <span className="tag">The ledger</span>
-              {DAYBOOK.length} entries since {monthLabel(oldest.date)}. A
-              number, once minted, never changes.
+              {DAYBOOK.length} entries since {monthLabel(oldest.date)},
+              drafted from the commit logs and edited by hand. A number,
+              once minted, never changes.
             </div>
           </div>
 
