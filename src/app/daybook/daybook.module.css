@@ -76,7 +76,11 @@
   justify-content: start;
   column-gap: clamp(20px, 2.6vw, 40px);
   align-items: start;
-  padding: 15px 0;
+  /* Weighted the way the compose ledger is, further: the entry hangs
+     just under its rule and the air falls BELOW it, so each day reads
+     as its own object with room to end before the next line begins.
+     dvh in the clamp keeps the rhythm proportional on short screens. */
+  padding: 15px 0 clamp(40px, 5.5dvh, 64px);
   /* scroll-margin so a permalink does not land under the masthead */
   scroll-margin-top: calc(var(--nav-h, 54px) + 24px);
 }
