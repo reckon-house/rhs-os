@@ -67,14 +67,20 @@ export const voiceSet = {
    * the model is held, and each receipt says so. Drafted for Jeremy to
    * edit; the fabrication rule shapes all five: no invented prices, no
    * invented timelines, no claims the site cannot demonstrate. */
+  /* De-telled on 2026-08-14: the first drafts carried the exact
+   * patterns the copy rules flag as machine writing, a "not X" balance
+   * in pricing, a rhetorical triplet in transfer, a mirrored pair in
+   * process. These are plainer on purpose. Short sentences. No
+   * symmetry. They still want Jeremy's own edit; the rule at the top
+   * of this block is "his words, quoted" and these are drafts. */
   pricing:
-    "Priced by scope, not a rate card. Write to hello@reckon.house with what you are trying to build and you will get a straight answer on cost and timeline.",
+    "There's no rate card. Every project gets priced on its scope. Tell me what you're trying to build at hello@reckon.house and I'll come back with a real number.",
   transfer:
-    "Yes. What this site runs on travels: an index built from real material, answers that cite their sources, and exact facts kept by hand. Pointed at a restaurant or a construction company it would carry hours, menus, services, and quotes. hello@reckon.house starts that conversation.",
+    "Yes. The site you're using right now is the demo. Point the same setup at a restaurant or a contractor and it answers what customers call about all day. Hours, quotes, availability. hello@reckon.house if you want to talk about yours.",
   process:
-    "Design and build, one desk. Scope gets set in a conversation, then the work ships and you can watch it move in the studies below. Small tools have taken a day; platforms run longer. hello@reckon.house for specifics.",
+    "It starts with a conversation about scope. Then I design and build it myself. The studies below show how that has gone, including a tool that shipped in a day. Email hello@reckon.house and I'll walk through it against your project.",
   builder:
-    "Jeremy Prasatik. Reckon House Staples is an independent studio in Texas, and everything here is designed and built in-house, including the search answering you now.",
+    "Jeremy Prasatik. Reckon House Staples is an independent studio in Texas. Everything here was designed and built in-house, including this search.",
   searchMeta:
-    "A small model reading an index built from the case studies and photographs on this site. Exact facts, like the email address, stay hand-written, and answers cite the projects they came from. Ask about any project and check the receipts.",
+    "A small model reading an index built from the case studies on this site. The facts that have to be exact, like the email address, are written by hand. Every answer cites the project it came from, so ask about the work and check the receipts.",
 };
