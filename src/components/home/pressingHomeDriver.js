@@ -1037,12 +1037,23 @@ function senseBridge(qf) {
 const ASK_LOG_URL = "";        /* set in production; empty keeps it local */
 const PII = /[\w.+-]+@[\w-]+\.[a-z]{2,}|\d[\d\s().-]{6,}/i;
 const askSeen = new Set();
+/* THIS VISIT'S QUESTIONS, IN ORDER, and the reason it hangs off logAsk
+   rather than off the input: everything that reaches this list has
+   already passed the PII refusal and the per-visit dedupe above. A
+   message thread carries it so it does not arrive cold, and a transcript
+   assembled from raw keystrokes would carry the pasted phone number that
+   the log itself was careful to drop.
+
+   Memory only. It dies with the tab, and nothing is attached to anything
+   until the visitor writes a message and sends it. */
+const askedThisVisit = [];
 function logAsk(q, outcome) {
   const query = String(q || "").trim().slice(0, 120);
   if (!query || PII.test(query)) return;
   const key = query.toLowerCase();
   if (askSeen.has(key)) return;    /* one line per question per visit */
   askSeen.add(key);
+  askedThisVisit.push(query);
   const row = { q: query, ...outcome, v: VOICE_VERSION };
   try {
     const local = JSON.parse(localStorage.getItem("rh.asks") || "[]");
@@ -2236,6 +2247,78 @@ function buildAnswer() {
       .catch(() => {});
   }
 
+  /* ── the compose box ──
+     `mailto` already marks the one plan that is about reaching Jeremy
+     rather than about the work, so it is the trigger: no second flag to
+     keep in step with the first. Revealed with the address, after the
+     line has finished typing, because a form that appears mid-sentence
+     reads as an interruption of something still being said. */
+  const compose = document.getElementById("ansCompose");
+  const showCompose = () => {
+    if (!compose) return;
+    if (!mailto) { compose.hidden = true; return; }
+    compose.hidden = false;
+    const note = document.getElementById("cmpNote");
+    if (note) note.textContent = "";
+    compose.reset();
+  };
+
+  if (compose && !compose.dataset.wired) {
+    compose.dataset.wired = "1";
+    compose.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const btn = document.getElementById("cmpSend");
+      const note = document.getElementById("cmpNote");
+      const body = (document.getElementById("cmpBody").value || "").trim();
+      if (!body) { document.getElementById("cmpBody").focus(); return; }
+
+      btn.disabled = true;
+      if (note) note.textContent = "Sending";
+      try {
+        const r = await fetch("/api/message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("cmpName").value,
+            email: document.getElementById("cmpMail").value,
+            body,
+            company: document.getElementById("cmpCo").value,
+            /* WHAT THEY ASKED, not what they lingered on. The first
+               version sent trailTerms(), which is the facet vocabulary
+               of projects they dwelt on — it delivered "modern, glass,
+               tile, wood, steel" for someone who had typed about
+               packaging, which tells the reader of the message nothing
+               and reads as surveillance rather than context. These are
+               the actual questions, in order, already scrubbed. */
+            transcript: askedThisVisit.slice(-12)
+          })
+        });
+        const j = await r.json().catch(() => null);
+
+        if (j && j.ok && j.token) {
+          /* The thread is the receipt. Replacing the form with its link
+             means the reader has somewhere to go back to, and a reply
+             lands there rather than nowhere. */
+          compose.innerHTML =
+            '<p class="cmpnote">That is with me. ' +
+            '<a href="/thread/' + encodeURIComponent(j.token) + '">Your thread is here</a>' +
+            ', and a reply will show up on it.</p>';
+        } else if (j && j.ok) {
+          /* honeypot path: the server said yes and stored nothing */
+          compose.innerHTML = '<p class="cmpnote">That is with me.</p>';
+        } else {
+          if (note) note.textContent =
+            (j && j.why) || "That did not send. hello@reckon.house reaches me directly.";
+          btn.disabled = false;
+        }
+      } catch {
+        if (note) note.textContent =
+          "That did not send. hello@reckon.house reaches me directly.";
+        btn.disabled = false;
+      }
+    });
+  }
+
   /* the address becomes a live link once the line is done being
      typed: textContent while the clock runs, one anchor after */
   const linkMail = () => {
@@ -2250,6 +2333,7 @@ function buildAnswer() {
     sayEl.classList.remove("typing");
     renderToned(sayEl, segs);
     linkMail();
+    showCompose();
     notesEl.classList.add("on");
     els.forEach((el) => el.classList.add("fd-on"));
     return;
@@ -2287,6 +2371,7 @@ function buildAnswer() {
       lineDone = true;
       sayEl.classList.remove("typing");
       linkMail();
+      showCompose();
       notesEl.classList.add("on");
       holdAsk(() => document.body.classList.remove("working"), 200);
     }

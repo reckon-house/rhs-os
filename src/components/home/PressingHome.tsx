@@ -91,6 +91,39 @@ export function PressingHome() {
       <section className="hero-breakout answer">
         <div className="anshead">
           <p className="ansprose" id="ansSay" />
+
+          {/* THE COMPOSE BOX, shown only when the contact intent fires.
+              The field they typed the question into is the field that
+              takes the message: no /contact page, no context switch, and
+              the questions they already asked travel with it so the
+              message does not arrive cold.
+
+              Driven imperatively like everything else in the answer
+              area — the driver reveals it, fills nothing, and swaps it
+              for the thread link on success. React renders the shell and
+              then stays out of it.
+
+              `company` is the honeypot: off-screen, meaningless to a
+              person, irresistible to a script. aria-hidden and
+              tabIndex -1 keep it away from assistive tech. */}
+          <form className="cmp" id="ansCompose" hidden>
+            <div className="cmprow">
+              <input className="cmpf" id="cmpName" type="text" name="name"
+                placeholder="Name" maxLength={120} autoComplete="name" />
+              <input className="cmpf" id="cmpMail" type="email" name="email"
+                placeholder="Email, if you want a reply" maxLength={254}
+                autoComplete="email" />
+            </div>
+            <textarea className="cmpf cmpbody" id="cmpBody" name="body" rows={3}
+              placeholder="What are you working on?" maxLength={4000} required />
+            <input className="cmphp" id="cmpCo" type="text" name="company"
+              tabIndex={-1} autoComplete="off" aria-hidden="true" />
+            <div className="cmpfoot">
+              <button className="cmpsend" id="cmpSend" type="submit">Send</button>
+              <span className="cmpnote" id="cmpNote" />
+            </div>
+          </form>
+
           <div className="ansback">
             <button type="button" id="resetQ">
               Back to the house

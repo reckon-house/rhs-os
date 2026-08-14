@@ -864,6 +864,38 @@
   .ixrow .fd-it.k-pull .lbl { font-weight: 400; font-size: var(--cap);
     opacity: 0.55; }
 
+  /* ── the compose box ──
+     Ledger furniture, not a form: hairline under each field, no boxes,
+     no rounded wells, no grey fill. The page has one ink and a rule
+     weight, and a contact form is the easiest place on a site to
+     accidentally import somebody else's design system. */
+  .cmp { margin-top: 26px; max-width: 620px; display: block; }
+  .cmprow { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+  @media (max-width: 560px) { .cmprow { grid-template-columns: 1fr; } }
+
+  .cmpf { width: 100%; display: block; background: none; border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+    padding: 10px 0; font: inherit; font-size: var(--note);
+    color: var(--ink); border-radius: 0; }
+  .cmpf::placeholder { color: rgba(0, 0, 0, 0.4); }
+  .cmpf:focus { outline: none; border-bottom-color: var(--ink); }
+  .cmpbody { margin-top: 6px; resize: vertical; min-height: 84px;
+    line-height: 1.55; font-family: inherit; }
+
+  /* Off-screen rather than display:none. A bot reading the DOM fills
+     what it can reach, and a hidden field is the oldest tell there is. */
+  .cmphp { position: absolute; left: -9999px; width: 1px; height: 1px;
+    opacity: 0; pointer-events: none; }
+
+  .cmpfoot { display: flex; align-items: center; gap: 18px; padding-top: 16px; }
+  .cmpsend { background: var(--ink); color: var(--paper); border: 0;
+    border-radius: 999px; padding: 10px 24px; cursor: pointer;
+    font: inherit; font-size: var(--lbl); font-weight: var(--lbl-weight);
+    letter-spacing: var(--lbl-track); text-transform: uppercase; }
+  .cmpsend[disabled] { opacity: 0.45; cursor: default; }
+  .cmpnote { font-size: var(--note); color: rgba(0, 0, 0, 0.55); }
+  .cmpnote a { color: inherit; text-underline-offset: 3px; }
+
   .ansback { padding-top: 16px; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track); }
   .ansback button { background: none; border: 0; padding: 0; cursor: pointer;
