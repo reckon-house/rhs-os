@@ -74,7 +74,7 @@ export const voiceSet = {
    * symmetry. They still want Jeremy's own edit; the rule at the top
    * of this block is "his words, quoted" and these are drafts. */
   pricing:
-    "It depends on what you're building, so there's no set price. Tell me what you have in mind and I'll come back with a real number.",
+    "It depends on what you're building, so there's no set price. Let's talk about what you have in mind and tailor a quote to your exact needs.",
   transfer:
     "Yes. This site is the demo. The same thing works for a restaurant or a contractor, answering the questions customers ask all day. Tell me about your business and I'll show you what yours could look like.",
   process:
@@ -82,5 +82,5 @@ export const voiceSet = {
   builder:
     "Jeremy Prasatik. I'm an independent designer and developer in Texas, and I built everything here myself, including this search.",
   searchMeta:
-    "It's a small AI reading through the projects on this site, not ChatGPT. Anything that has to be exact, like my email address, I wrote by hand. Ask about any project and it'll show you where the answer came from.",
+    "It's a brand brain, not ChatGPT with a logo on it. Custom built for this site, from my own projects, and tuned to sound like me. The same thing can be made for any company out of their own work and words.",
 };
