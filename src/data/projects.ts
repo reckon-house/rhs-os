@@ -46,7 +46,7 @@ export const projects: Project[] = [
   { id: "lovedByNordstrom", title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-campaign-design-nordstrom-loved-by-campaign.jpg?v=3`, href: "/case-studies/loved-by-nordstrom", tags: ["creative"] },
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg?v=3`, href: "/case-studies/chalet", tags: ["interiors"] },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
-  { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-art-apparel.jpg?v=3`, href: "/case-studies/branding-graphics", tags: ["creative"] },
+  { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"] },
   { id: "sizzle", title: "Faux Reel", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", ogImage: "/og-faux-reel.jpg", href: "/case-studies/sizzle", tags: ["digital"] },
 ];
