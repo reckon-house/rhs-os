@@ -2490,6 +2490,26 @@ listen(document.getElementById("resetQ"), "click", () => {
   input.value = ""; onQuery("", true);
 });
 
+/* THE WORDMARK IS THE WAY BACK TOO. It is a Link to "/", so on the
+   homepage it navigates to the route already showing, which the router
+   treats as a no-op: the asked state survives and the click appears to
+   do nothing at all. When a question is live this takes the click
+   instead, clears the field and returns to the ring, which is what a
+   wordmark means everywhere else on the web.
+
+   Only when asked. Untouched otherwise, so on every other route it is
+   still an ordinary link home, and `listen` takes it off again when the
+   homepage unmounts — the masthead outlives this page. */
+listen(document.querySelector("[data-mark]"), "click", (e) => {
+  if (!document.body.classList.contains("asked")) return;
+  e.preventDefault();
+  input.value = "";
+  onQuery("", true);
+  const main = document.querySelector("main");
+  if (main && main.scrollTop) main.scrollTo({ top: 0, behavior: "smooth" });
+  else scrollTo({ top: 0, behavior: "smooth" });
+});
+
 
 
 

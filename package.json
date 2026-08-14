@@ -18,7 +18,8 @@
     "vision:fetch": "node --no-warnings scripts/build-vision.mjs --fetch",
     "interiors": "node --no-warnings scripts/build-interiors-index.mjs",
     "interiors:check": "node --no-warnings scripts/build-interiors-index.mjs --check",
-    "palette-rings": "node --no-warnings scripts/derive-palette-rings.mjs"
+    "palette-rings": "node --no-warnings scripts/derive-palette-rings.mjs",
+    "inbox": "node --env-file=.env.local --experimental-strip-types scripts/inbox.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
