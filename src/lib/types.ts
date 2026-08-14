@@ -165,6 +165,12 @@ interface BaseSection {
       crossing?: boolean;
       /** Pinned quote poster: ink fill rises and knocks the type out */
       quotePoster?: boolean;
+      /** Deal a multi-image section as a STACK rather than a row: each
+       *  plate holds under the masthead and the next lands on top of it.
+       *  Compares by substitution instead of juxtaposition, and buys the
+       *  files their real size — a third of a row is half the resolution
+       *  a 2400px export carries. Sticky-only, no driver. */
+      stack?: boolean;
     };
     /** Figcaption footnote under a plate ("Yellow blazer, studio") */
     caption?: string;

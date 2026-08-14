@@ -23,6 +23,7 @@ import { PressingInteriorsIndex } from "./PressingInteriorsIndex";
 import { JC_PALETTE } from "./viz/palettes";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
+import { PressingPlateStack } from "./PressingPlateStack";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
 import { PressingMaterialSpan } from "./viz/PressingMaterialSpan";
 import { PressingIntelligenceWheel } from "./viz/PressingIntelligenceWheel";
@@ -379,6 +380,44 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
        and PressingPlatesPair already maps over N with a grid that
        follows. masonry carries its own column count; the rest take
        one column per image. */
+    /* The stack is the same content as the row, dealt instead of laid
+       out, so it rides the SAME section types and picks its skin off a
+       choreo flag exactly as zoom/rise/crossing/quotePoster do. No new
+       section type: the classic renderer keeps rendering these as a row
+       if a study is ever un-flipped, and port-audit gains no unskinned
+       type to warn about. */
+    if (
+      p?.choreo?.stack &&
+      (s.type === "dual-image" || s.type === "triple-image" ||
+       s.type === "quad-image" || s.type === "quad-grid" || s.type === "masonry")
+    ) {
+      const imgs =
+        s.type === "dual-image"
+          ? [{ ...s.left }, { ...s.right }]
+          : s.images.map((im) => ({ ...im }));
+      out.push(
+        <PressingPlateStack
+          key={s.id}
+          mark={p.mark}
+          images={imgs.map((img, k) => {
+            /* Both halves of the caption, unlike a plate row which only
+               ever showed the label here — the \n split is the bag's
+               existing contract and the stack needs the second line. */
+            const cap = splitCaption(p?.captions?.[k]);
+            return {
+              src: img.src,
+              alt: img.alt,
+              caption: cap?.label,
+              sub: cap?.sub,
+              ...dim(img.src),
+            };
+          })}
+        />
+      );
+      i += 1;
+      continue;
+    }
+
     if (
       s.type === "dual-image" ||
       s.type === "triple-image" ||

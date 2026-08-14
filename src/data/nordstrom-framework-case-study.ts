@@ -147,37 +147,69 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       text: "Magazine language,\nnot menu language",
     },
 
-    // ── The 3 lockups, as a specimen row
-    // They were three stacked full-width plates, which the choreography
-    // rules cannot hold: a plate either climbs the section above it or
-    // grows out of the column, and three in a row leaves the second and
-    // third with nothing above them that holds still. Nothing in the
-    // study can sit between them either, so the set becomes one row.
+    // ── The 3 lockups, DEALT ─────────────────────────────────────────
+    // These were three full-width plates once, and the note here used to
+    // record why that failed: pin/rise holds ONE screen for ONE riser,
+    // so the second and third plate had nothing holding above them. The
+    // fix then was a row. The fix now is a stack that needs neither —
+    // every slab is position: sticky against one box, so the browser
+    // holds all three with no driver and no climb to arrange.
     //
-    // The row is also the honest size for these files. 2418px native is
-    // crisp to about 1200 CSS and a full-width plate draws past that; at
-    // a third of the row they are well inside their own pixels. And the
-    // claim the set exists to make, that no two lockups share a face,
-    // only reads when the three marks are side by side.
+    // That buys back the size the row was spending. At a third of the
+    // page these ran about 600 CSS px against 2418 native, less than
+    // half the resolution the files carry; a slab runs 1100, inside the
+    // 1209 the honest-width rule allows (native ÷ 2) and nearly double
+    // what they had.
     //
-    // No pin: nothing climbs it. This is the one row in the study that
-    // holds nothing.
+    // And it sharpens the claim rather than softening it. A row compares
+    // by juxtaposition; a stack compares by SUBSTITUTION — each mark
+    // lands in the rectangle the last one held, so "no two lockups share
+    // a face" is tested in one place instead of across two gaps.
     {
       id: "lockups",
       type: "triple-image",
       native: true,
+      pressing: {
+        choreo: { stack: true },
+        // Named in the stack the way they are not in a row: you meet one
+        // at a time, so the bucket it belongs to has to travel with it.
+        //
+        // ⚠️ THE CAPTIONS DO NOT MATCH THE FILENAMES, AND THAT IS
+        // CORRECT. Two of these files are named for the wrong mark:
+        // ...lockup-where-to-wear.jpg carries "on our list", and
+        // ...lockup-on-our-list.jpg carries "wear to where". Opened both
+        // to check, because the first pass of these captions was read
+        // off the filenames and shipped a label that contradicted the
+        // picture under it. The alt text below had the same error and is
+        // fixed with them. Renaming the files is the real repair; it is
+        // a separate change because three studies and the reel reference
+        // these paths.
+        //
+        // Note the mark itself reads "wear to where", not "where to
+        // wear" — the inversion is the campaign's, not a typo.
+        // What each bucket actually sorts for, from Jeremy. In a deck you
+        // meet one mark at a time, so the name alone would leave a reader
+        // with three phrases and no idea what separates them.
+        captions: [
+          "What's Now\nOf the moment. Trending, hot.",
+          "On Our List\nThe foundational staples everyone needs.",
+          "Wear to Where\nOccasion-based items and looks.",
+        ],
+      },
       images: [
         {
           src: `${IMG}/nordstrom-content-framework-lockup-whats-now.jpg`,
           alt: "What's Now lockup, custom typographic mark and category icon for the trending brands and new arrivals bucket",
         },
         {
+          // Filename says where-to-wear; the mark on it reads "on our list".
           src: `${IMG}/nordstrom-content-framework-lockup-where-to-wear.jpg`,
-          alt: "Where to Wear lockup, custom typographic mark and category icon for the occasion dressing bucket",
+          alt: "On Our List lockup, custom typographic mark with a check over desert editorial photography",
         },
         {
+          // Filename says on-our-list; the mark on it reads "wear to where".
           src: `${IMG}/nordstrom-content-framework-lockup-on-our-list.jpg`,
-          alt: "On Our List lockup, custom typographic mark and category icon for the seasonal picks bucket",
+          alt: "Wear to Where lockup, custom typographic mark with a cursor over activewear photography",
         },
       ],
     },

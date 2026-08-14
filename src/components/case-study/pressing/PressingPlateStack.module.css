@@ -1,0 +1,137 @@
+/*
+  PressingPlateStack — a set of plates that deal onto one another as the
+  reader scrolls, each landing in the same place the last one held.
+
+  THE HOLD IS A DRIVER, and it is a driver because sticky was tried
+  first and does not engage in this shell at this size. Measured, not
+  assumed: a 40px sticky div in the same slot at the same offset held at
+  the line; the 758px slab tracked its slot 1:1 and never clamped. Same
+  wall PinStage hit and documented, and the reason PinStage carries a
+  transform mode. See the component for the arithmetic.
+
+  MATERIAL DIFFERENCE, NAMED (the rule from CLAUDE.md): the pair's plates
+  carry --bleed: 10% and parallax inside their frames, because a row of
+  photographs crossing the viewport is the thing being looked at. These
+  are LOCKUPS — a typographic mark over a photograph, made to be compared
+  against each other. Cropping 10% off a mark to give it something to
+  slide is exactly the wrong trade, so a slab shows its whole frame at
+  its native ratio, and the movement is the slabs against each other
+  rather than the picture inside its box.
+*/
+
+.stack {
+  /* Vertical rhythm is the plate row's own 48px. */
+  padding: 48px 0;
+}
+
+/* The travel. Each slab gets a screen of scroll to arrive in, which is
+   what gives the deal its pace: less and they snap past each other, more
+   and the reader is scrolling through a held frame wondering if the page
+   is stuck. The LAST slab takes no travel — the section should end on it
+   rather than hold it over a screen of nothing. */
+.slot {
+  padding-bottom: 92dvh;
+}
+/* The last slot keeps travel too, and less of it. Without any, the final
+   plate arrived still descending and the deck never actually completed —
+   measured: slabs 1 and 2 held while 3 was mid-flight when the section
+   ended. Half a screen is enough for it to land and for the finished
+   deck to sit whole for a beat before the lot releases. */
+.slot:last-child {
+  padding-bottom: 52dvh;
+}
+
+/* THE HOLD is written by the driver as a translate; the resting state
+   here is zero, so the server markup, a dead script and reduced motion
+   are all the same plain stacked layout. The slot below is what gives
+   the driver its room. */
+.slab {
+  display: block;
+  width: min(1100px, 92vw);
+  margin-inline: auto;
+  will-change: transform;
+  /* THE PAPER IS ON THE SLAB, NOT THE FRAME, AND THAT IS THE WHOLE
+     REASON A DECK READS AS A DECK. It started on the frame, so the
+     photographs covered each other correctly and the captions did not —
+     three of them piled up in the same place, overprinting into an
+     unreadable smear under the top plate. A slab has to be opaque
+     EDGE TO EDGE, caption included, or it is not covering the one
+     beneath it. */
+  background: var(--pp-paper, #fff);
+  padding-bottom: 14px;
+}
+
+/* 2418px native is crisp to ~1209 CSS (native ÷ 2, the honest-width rule
+   in CLAUDE.md), and 1100 sits inside that with room. The frame just
+   wears the family corner; the opaque ground lives on the slab above. */
+.frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--pp-r);
+}
+
+.frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The figcaption, same object and same spec as a plate's: --pp-cap,
+   sentence case, sitting 8px under a hard image edge. Two lines here
+   rather than the plate's one: in a deck you meet each mark alone, so
+   the name alone leaves a reader with three phrases and no idea what
+   sorts them. The name carries the ink, the definition recedes — the
+   rail's own hierarchy, weight and tone rather than a second size. */
+.cap {
+  font-size: var(--pp-cap);
+  line-height: 1.5;
+  padding-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+.capName {
+  opacity: 0.85;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.capSub {
+  opacity: 0.5;
+}
+
+@media (max-width: 520px) {
+  .cap {
+    display: block;
+  }
+}
+
+/* Phones: the page gutter comes back because <main> drops to px-0, and
+   the travel shortens with the screen — 92dvh of hold on a phone is a
+   long time to spend on one frame. */
+@media (max-width: 767px) {
+  .stack {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .slab {
+    width: 100%;
+  }
+  .slot {
+    padding-bottom: 62dvh;
+  }
+}
+
+/* THE STATIC STATE, CSS-OWNED (PRESSING.md §5). Reduced motion collapses
+   the travel so the plates read as a plain column at the row's own
+   rhythm — a designed layout, not a broken one. The driver bails on the
+   same query, so the two halves of the contract switch off together;
+   that pairing is the failure the pressing review called worst. */
+@media (prefers-reduced-motion: reduce) {
+  .slab {
+    will-change: auto;
+  }
+  .slot,
+  .slot:last-child {
+    padding-bottom: clamp(28px, 4dvh, 48px);
+  }
+}
