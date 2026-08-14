@@ -1,0 +1,47 @@
+/*
+ * The floating specimen a daybook row shows on hover. It sits in the
+ * ledger's empty right half, takes the family corner, and is allowed to
+ * overhang neighbouring rows: it is a card laid on the ledger, not a
+ * cell of it, and pointer-events: none means it can never get in the
+ * way of the thing it overlaps.
+ */
+
+.plate {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  width: clamp(170px, 15vw, 230px);
+  border-radius: var(--pp-r, 16px);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.28s ease,
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+  z-index: 3;
+}
+.on {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+.plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No hover, no plate: on touch nothing can earn it, and below the
+   one-track width there is no empty right half to float it in. */
+@media (hover: none), (max-width: 760px) {
+  .plate {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plate {
+    transition: none;
+  }
+}

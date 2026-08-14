@@ -47,7 +47,19 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin: clamp(48px, 7dvh, 84px) 0 4px;
+  gap: 24px;
+  margin: clamp(56px, 8dvh, 100px) 0 10px;
+}
+
+/* THE MONTH IS A BEAT. At 10px caps it was a filing label and the page
+   was one long undifferentiated list; at display scale it does what a
+   section head does in a study — gives the scroll a rhythm of arrivals.
+   Same bold, tight Helvetica the headlines use, no new treatment. */
+.monthName {
+  font-size: clamp(30px, 4.2vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 /* ── the row ────────────────────────────────────────────────────────
@@ -58,6 +70,7 @@
    left keeps date, entry and project together as a single object. The
    hairline still runs the full width, because the row element does. */
 .row {
+  position: relative; /* anchors the hover plate */
   display: grid;
   grid-template-columns: 84px minmax(0, 64ch) max-content;
   justify-content: start;
@@ -67,11 +80,55 @@
   /* scroll-margin so a permalink does not land under the masthead */
   scroll-margin-top: calc(var(--nav-h, 54px) + 24px);
 }
-.first {
-  border-top: 1px solid rgba(0, 0, 0, 0.14);
+/* The rule is a ::before rather than a border so it can be DRAWN: it
+   scales from the left as the row arrives, exactly the compose form's
+   entrance. */
+.first::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.14);
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+  transition: transform 0.66s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+}
+
+/* ── the arrival ──
+   Base state is the finished page; .pre is applied by JS (ledger-
+   arrival) to rows still below the fold and removed as they cross in,
+   so a failed script means a plain, complete ledger rather than an
+   invisible one. */
+.d,
+.t,
+.p,
+.month > * {
+  transition: opacity 0.5s ease calc(var(--dbd, 0ms) + 90ms),
+    transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--dbd, 0ms) + 90ms);
+}
+.pre .d,
+.pre .t,
+.pre .p,
+.pre.month > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
+}
+.pre.first::before {
+  transform: scaleX(0);
+  transition: none;
 }
 
 /* 7px seats the 10px caps on the 16px note's first baseline. */
+.no {
+  display: block;
+  margin-top: 5px;
+  color: rgba(0, 0, 0, 0.35);
+  font-weight: 400;
+}
+
 .d,
 .p {
   font-size: var(--pp-lbl, 10px);
