@@ -228,7 +228,7 @@ export function DaybookLedger() {
         </h1>
 
         <div className="ixbody">
-          <div className="ixnotes">
+          <div className={`ixnotes ${styles.rail}`}>
             <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>
               <div className="filt">

@@ -13,6 +13,22 @@
   padding-bottom: clamp(120px, 16dvh, 200px);
 }
 
+/* The rail starts where the first month does: its offset is the month
+   header's own margin-top, so Filter's tag and "August 2026" share a
+   line and the two columns read as one composition instead of the rail
+   hanging off the statement. Margin rather than padding on purpose —
+   margin moves only the resting position, so the pinned position under
+   the masthead stays exactly what the homepage tuned. Below 860 the
+   grid stacks and the offset would just be a hole. */
+.rail {
+  margin-top: clamp(56px, 8dvh, 100px);
+}
+@media (max-width: 860px) {
+  .rail {
+    margin-top: 0;
+  }
+}
+
 .lbl {
   font-size: var(--pp-lbl, 10px);
   letter-spacing: var(--pp-lbl-track, 0.04em);
