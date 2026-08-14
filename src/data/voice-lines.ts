@@ -60,4 +60,21 @@ export const voiceSet = {
     "Here's a few ways to get in touch with me. If you have a potential project or just want to chat, I would love to introduce myself and talk. hello@reckon.house.",
   board: "These are things I love and inspired by.",
   miss: "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.",
+
+  /* The owner questions. A visitor sizing this up for their own
+   * business asks about price, fit, process, and who is behind it, and
+   * the index holds none of that: it carries projects. Templates answer,
+   * the model is held, and each receipt says so. Drafted for Jeremy to
+   * edit; the fabrication rule shapes all five: no invented prices, no
+   * invented timelines, no claims the site cannot demonstrate. */
+  pricing:
+    "Priced by scope, not a rate card. Write to hello@reckon.house with what you are trying to build and you will get a straight answer on cost and timeline.",
+  transfer:
+    "Yes. What this site runs on travels: an index built from real material, answers that cite their sources, and exact facts kept by hand. Pointed at a restaurant or a construction company it would carry hours, menus, services, and quotes. hello@reckon.house starts that conversation.",
+  process:
+    "Design and build, one desk. Scope gets set in a conversation, then the work ships and you can watch it move in the studies below. Small tools have taken a day; platforms run longer. hello@reckon.house for specifics.",
+  builder:
+    "Jeremy Prasatik. Reckon House Staples is an independent studio in Texas, and everything here is designed and built in-house, including the search answering you now.",
+  searchMeta:
+    "A small model reading an index built from the case studies and photographs on this site. Exact facts, like the email address, stay hand-written, and answers cite the projects they came from. Ask about any project and check the receipts.",
 };

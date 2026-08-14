@@ -2146,6 +2146,60 @@ function think(q) {
     };
   }
 
+  /* THE OWNER QUESTIONS. A visitor sizing this machinery up for their
+     own business asks about price, fit, process, and who is behind it.
+     The index cannot answer any of those — it carries projects — so
+     before this block every one of them fell through to the miss line,
+     and "Nothing answered to cost" is the first thing a skeptical
+     owner would have seen. Five templates answer instead, the model
+     held for the same reason the contact answer holds it: these have
+     to be exact, and a model reading a project index would hedge or
+     invent. Same card shape as reach — the contact notes plus the
+     mailto — because every one of these is a doorway to the inbox. */
+  {
+    const f = fold(q);
+    /* A query that names a project belongs to the facts layer even when
+       it carries an owner word: "your process on Sally" should answer
+       with Sally, not the generic engagement line. Same shape as reach's
+       CRAFT guard, derived from the live WORK titles so it cannot go
+       stale. Only the process branch yields — a cost question is
+       answered honestly by the pricing line whether or not a project is
+       named, because the index holds no prices either way. */
+    const namesProject = WORK.some((w) =>
+      fold(w[0]).split(/[^a-z0-9]+/).some((tok) => tok.length > 3 && f.includes(tok)));
+    const owner =
+      (/\b(cost|costs|price|prices|pricing|charge|charges|rate|rates|budget|expensive)\b/.test(f) ||
+        /how much/.test(f)) ? "pricing"
+      : /\b(restaurant|cafe|bar|shop|store|salon|clinic|gym|contractor|construction|plumber|roofer|company|small business(es)?|local business(es)?|my business|our business|your business|for my|for our)\b/.test(f) ? "transfer"
+      : !namesProject && (/\b(process|workflow|engagement)\b/.test(f) ||
+          /how (do|does|would) (you|this|it) work\b/.test(f) ||
+          /how long (does|do|would|will)/.test(f) || /\btimeline\b/.test(f)) ? "process"
+      : /who (built|made|makes|designed|runs|owns|is behind)\b/.test(f) ? "builder"
+      : (/(how does|what is|whats) (this|the) (search|site|ai|assistant|brain)/.test(f) ||
+          /\bis this (ai|a bot|chatgpt|claude|an? llm)\b/.test(f)) ? "searchMeta"
+      : null;
+    if (owner) {
+      const ncards = [];
+      NOTES.forEach((n, i) => {
+        if (n[0] === "Get in touch" || n[0] === "The setup") ncards.push(noteIdx(i));
+      });
+      const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
+      const RECEIPTS = {
+        pricing: "Written by hand, not generated. The index behind this site holds project data, not prices, so a model would have no number to quote and no business inventing one.",
+        transfer: "Written by hand. The honest demo is the site itself: the search you are using is the machinery the answer describes.",
+        process: "Written by hand, with the model held. The one number in it, a tool built in a day, comes from the Faux Reel study below rather than a model's guess.",
+        builder: "Written by hand, not generated. It is a statement about authorship, so it is authored.",
+        searchMeta: "Written by hand. A model describing itself would flatter itself; this line was written by the person who wired it.",
+      };
+      return {
+        say: setLines[owner] || "hello@reckon.house is the fastest way to an exact answer.",
+        receipt: RECEIPTS[owner],
+        hold: true,
+        workIdx: ncards, pullIdx: [], mailto: true
+      };
+    }
+  }
+
   /* Phrase intents, ahead of the lookup because they are questions
      about a KIND of thing rather than a term. "Who inspires you" was
      being answered with the practice notes, because the about intent

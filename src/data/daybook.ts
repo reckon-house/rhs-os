@@ -54,6 +54,13 @@ export interface DaybookEntry {
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
   {
+    id: "owner-questions",
+    date: "2026-08-14",
+    project: "RHS",
+    body: "The search learns the owner questions: price, fit, process, who built this, is this AI. All eight fell through to the miss line yesterday. Five hand-written answers now hold the model, each with a receipt saying so, and the cost answer opens the message form under itself.",
+    link: { href: "/", label: "Ask the house" },
+  },
+  {
     id: "sizzle-pressing",
     date: "2026-08-14",
     project: "RHS",
