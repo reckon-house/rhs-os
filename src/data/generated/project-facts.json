@@ -14000,7 +14000,7 @@
     },
     {
      "label": "Try it",
-     "value": "Section 01 takes your own images. Nothing uploads, nothing saves"
+     "value": "Section 02 takes your own images. Nothing uploads, nothing saves"
     }
    ],
    "disciplines": [
@@ -14044,7 +14044,225 @@
      "section": "file-stats"
     }
    ],
-   "facets": {}
+   "facets": {
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "…ase-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg"
+       }
+      ]
+     }
+    ],
+    "client": [
+     {
+      "facet": "client",
+      "term": "Nordstrom",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-ge…"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-ge…"
+       }
+      ]
+     },
+     {
+      "facet": "client",
+      "term": "Capitan Boot Co.",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terra…"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terra…"
+       }
+      ]
+     }
+    ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "marble",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
+       }
+      ]
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "sage",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "…ot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign.jpg"
+       }
+      ]
+     }
+    ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "bath",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "sofa",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "…om-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "vanity",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "island",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg"
+       }
+      ]
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "western",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terra…"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "slug": "you-by-sally",
