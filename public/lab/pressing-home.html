@@ -931,12 +931,42 @@
      air falls BELOW the field rather than being split either side of
      it. A row padded evenly reads as a box; padded like this it reads
      as an entry hanging off its own line. */
-  .cmprow { display: grid;
+  .cmprow { position: relative; display: grid;
     grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px);
     align-items: start;
-    border-top: 1px solid rgba(0, 0, 0, 0.14);
     padding: 11px 0 30px; }
+
+  /* ── the arrival ──
+     The rule is a ::before rather than a border because a border cannot
+     be drawn: this one scales from the left the way the brief's section
+     rules do, and the label and field rise into it a beat later.
+
+     THE BASE STATE IS THE FINISHED ONE. A form that starts at opacity 0
+     in CSS is an invisible, still-focusable form the moment a script
+     fails, which is the trap this kit already paid for on the crossing
+     headline. The driver ARMS the start state for a single frame and
+     lets go; if it never runs, the form is simply there. */
+  .cmprow::before { content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: rgba(0, 0, 0, 0.14);
+    transform: scaleX(1); transform-origin: 0 50%;
+    transition: transform 0.66s cubic-bezier(0.2, 0.7, 0.2, 1) var(--cd, 0ms),
+                background 0.2s ease; }
+  .cmplbl, .cmpf {
+    transition: opacity 0.5s ease calc(var(--cd, 0ms) + 90ms),
+                transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--cd, 0ms) + 90ms); }
+
+  .cmparm .cmprow::before { transform: scaleX(0); transition: none; }
+  .cmparm .cmplbl, .cmparm .cmpf,
+  .cmparm .cmpfoot { opacity: 0; transform: translateY(9px); transition: none; }
+  .cmpfoot { transition: opacity 0.5s ease calc(var(--cd, 0ms) + 90ms),
+                transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--cd, 0ms) + 90ms); }
+
+  /* One ladder down the form: line, then its words, then the next line. */
+  .cmprow:nth-of-type(1) { --cd: 0ms; }
+  .cmprow:nth-of-type(2) { --cd: 95ms; }
+  .cmprow:nth-of-type(3) { --cd: 190ms; }
+  .cmpfoot { --cd: 285ms; }
 
   /* THE LEFT RAIL'S LABEL, exactly: same size, weight, tracking and
      opacity as .ixnotes .blk .tag, and sentence case like it. The caps
@@ -954,7 +984,7 @@
   /* The row is the box, so focus marks the ROW rather than drawing a
      second outline inside one that is already there. */
   .cmpf:focus { outline: none; }
-  .cmprow:focus-within { border-top-color: var(--ink); }
+  .cmprow:focus-within::before { background: var(--ink); }
   .cmpbody { resize: vertical; min-height: 96px; line-height: 1.55;
     font-family: inherit; }
 
@@ -963,11 +993,15 @@
   .cmphp { position: absolute; left: -9999px; width: 1px; height: 1px;
     opacity: 0; pointer-events: none; }
 
-  .cmpfoot { display: grid;
+  .cmpfoot { position: relative; display: grid;
     grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px);
-    border-top: 1px solid rgba(0, 0, 0, 0.14);
     padding-top: 22px; align-items: center; }
+  .cmpfoot::before { content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: rgba(0, 0, 0, 0.14);
+    transform: scaleX(1); transform-origin: 0 50%;
+    transition: transform 0.66s cubic-bezier(0.2, 0.7, 0.2, 1) var(--cd, 0ms); }
+  .cmparm .cmpfoot::before { transform: scaleX(0); transition: none; }
   .cmpact { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   .cmpsend { background: var(--ink); color: var(--paper); border: 0;
     border-radius: 999px; padding: 11px 26px; cursor: pointer;
@@ -2064,7 +2098,15 @@ function think(q) {
     return {
       say: setLines.contact ||
         "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
-      receipt: "This comes from the practice notes. " + machinery(),
+      /* THE RECEIPT HAS TO DESCRIBE WHAT ACTUALLY RAN. This one used to
+         append machinery(), which credits the case studies and the
+         photographs, and no part of that touches a contact answer: the
+         model is held, the index is never read, and the line is a
+         template. Saying so is both true and the more interesting fact. */
+      receipt: "Nothing was generated here. The index this site searches " +
+        "holds projects, not contact details, so a model asked for my " +
+        "address would hedge or leave it out. This one answer is written " +
+        "by hand so it is always exact.",
       /* the model never sees the email address — FACTS carries projects,
          not contact details — so it would hedge or omit it. The one
          answer that has to be exact keeps its template. */
@@ -2181,7 +2223,10 @@ function think(q) {
   if (words.some((w) => WHOAMI.has(w)) || /^who (are|is) (you|jeremy|this)/.test(fold(q))) {
     return {
       say: "I'm Jeremy Prasatik. Everything you'd want to know is in the notes below.",
-      receipt: "This comes from the practice notes. " + machinery(),
+      /* Also not generated, and also not from the studies: the notes are
+         a short hand-written set that ships with the site. */
+      receipt: "This comes from the practice notes, a short set written by " +
+        "hand that ships with the site. No model ran.",
       workIdx: NOTES.map((n, i) => noteIdx(i)), pullIdx: [], mailto: false
     };
   }
@@ -2335,7 +2380,8 @@ function renderToned(el, segs, n) {
  * audit that drove both */
 /* 8: REACH takes "message" and "leave", and the model's off-topic
  * branch now ends on the address instead of a flat no */
-const VOICE_VERSION = 8;
+/* 9: the held answers stopped crediting a pipeline that never ran */
+const VOICE_VERSION = 9;
 
 /* One-line source attribution, appended to every receipt. */
 function machinery() {
@@ -3462,6 +3508,25 @@ function buildAnswer() {
     const note = document.getElementById("cmpNote");
     if (note) note.textContent = "";
     compose.reset();
+
+    /* ARM, THEN LET GO. The stylesheet's resting state is the finished
+       form, so this holds the start state for exactly one frame and
+       releases it. Two rAFs because one is not enough: the class has to
+       be applied AND painted before the removal counts as a transition
+       rather than as never having been there.
+
+       Under reduced motion nothing is armed at all, so the form is
+       simply present, which is also what happens if this never runs. */
+    if (typeof REDUCE === "function" && REDUCE()) return;
+    compose.classList.add("cmparm");
+    const release = () => compose.classList.remove("cmparm");
+    requestAnimationFrame(() => requestAnimationFrame(release));
+    /* A BELT, because rAF does not run in a background tab. Someone who
+       asks and immediately switches away would leave the form armed:
+       invisible, and still focusable, which is the worst of both. The
+       queued frames do fire on return, so this only ever wins a race,
+       but an invisible form is not a race worth losing. */
+    setTimeout(release, 400);
   };
 
   if (compose && !compose.dataset.wired) {

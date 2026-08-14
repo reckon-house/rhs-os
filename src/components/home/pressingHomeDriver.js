@@ -863,7 +863,15 @@ function think(q) {
     return {
       say: setLines.contact ||
         "Looking to reach me? hello@reckon.house. That inbox is the whole contact page.",
-      receipt: "This comes from the practice notes. " + machinery(),
+      /* THE RECEIPT HAS TO DESCRIBE WHAT ACTUALLY RAN. This one used to
+         append machinery(), which credits the case studies and the
+         photographs, and no part of that touches a contact answer: the
+         model is held, the index is never read, and the line is a
+         template. Saying so is both true and the more interesting fact. */
+      receipt: "Nothing was generated here. The index this site searches " +
+        "holds projects, not contact details, so a model asked for my " +
+        "address would hedge or leave it out. This one answer is written " +
+        "by hand so it is always exact.",
       /* the model never sees the email address — FACTS carries projects,
          not contact details — so it would hedge or omit it. The one
          answer that has to be exact keeps its template. */
@@ -980,7 +988,10 @@ function think(q) {
   if (words.some((w) => WHOAMI.has(w)) || /^who (are|is) (you|jeremy|this)/.test(fold(q))) {
     return {
       say: "I'm Jeremy Prasatik. Everything you'd want to know is in the notes below.",
-      receipt: "This comes from the practice notes. " + machinery(),
+      /* Also not generated, and also not from the studies: the notes are
+         a short hand-written set that ships with the site. */
+      receipt: "This comes from the practice notes, a short set written by " +
+        "hand that ships with the site. No model ran.",
       workIdx: NOTES.map((n, i) => noteIdx(i)), pullIdx: [], mailto: false
     };
   }
@@ -1134,7 +1145,8 @@ function renderToned(el, segs, n) {
  * audit that drove both */
 /* 8: REACH takes "message" and "leave", and the model's off-topic
  * branch now ends on the address instead of a flat no */
-const VOICE_VERSION = 8;
+/* 9: the held answers stopped crediting a pipeline that never ran */
+const VOICE_VERSION = 9;
 
 /* One-line source attribution, appended to every receipt. */
 function machinery() {
@@ -2261,6 +2273,25 @@ function buildAnswer() {
     const note = document.getElementById("cmpNote");
     if (note) note.textContent = "";
     compose.reset();
+
+    /* ARM, THEN LET GO. The stylesheet's resting state is the finished
+       form, so this holds the start state for exactly one frame and
+       releases it. Two rAFs because one is not enough: the class has to
+       be applied AND painted before the removal counts as a transition
+       rather than as never having been there.
+
+       Under reduced motion nothing is armed at all, so the form is
+       simply present, which is also what happens if this never runs. */
+    if (typeof REDUCE === "function" && REDUCE()) return;
+    compose.classList.add("cmparm");
+    const release = () => compose.classList.remove("cmparm");
+    requestAnimationFrame(() => requestAnimationFrame(release));
+    /* A BELT, because rAF does not run in a background tab. Someone who
+       asks and immediately switches away would leave the form armed:
+       invisible, and still focusable, which is the worst of both. The
+       queued frames do fire on return, so this only ever wins a race,
+       but an invisible form is not a race worth losing. */
+    setTimeout(release, 400);
   };
 
   if (compose && !compose.dataset.wired) {
