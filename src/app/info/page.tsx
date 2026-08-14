@@ -27,8 +27,8 @@ const LEDGER: Array<{ label: string; body: React.ReactNode }> = [
     body: "Art direction. Brand systems. Digital design. Interiors.",
   },
   {
-    label: "How I work",
-    body: "Independent, Dallas. Design and build. Available for work.",
+    label: "The setup",
+    body: "Independent, Texas. Design and build. Available for work.",
   },
   {
     label: "Recently",

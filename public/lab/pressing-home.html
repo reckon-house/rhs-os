@@ -1318,7 +1318,7 @@ const NOTES = [
   ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Same desk for all of it.",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Art direction. Brand systems. Digital design. Interiors."],
-  ["How I work", "Independent, Dallas. Design and build. Available for work."],
+  ["The setup", "Independent, Texas. Design and build. Available for work."],
   ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
   ["Get in touch", "hello@reckon.house"]
 ];
@@ -2092,7 +2092,7 @@ function think(q) {
   if (reachy) {
     const ncards = [];
     NOTES.forEach((n, i) => {
-      if (n[0] === "Get in touch" || n[0] === "How I work") ncards.push(noteIdx(i));
+      if (n[0] === "Get in touch" || n[0] === "The setup") ncards.push(noteIdx(i));
     });
     const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
     return {
@@ -2211,9 +2211,9 @@ function think(q) {
     const names = [...new Set(placed.flatMap((p) => p.f.place.map(([t]) => t)))]
       .filter((t) => t !== "texas" && t !== "dallas").map(capWords);
     return {
-      say: "I'm independent, based in Dallas. The placed work runs through " + nameList(names) + ".",
+      say: "I'm independent, based in Texas. The placed work runs through " + nameList(names) + ".",
       receipt: "Location info from " + idx.length + " projects. " + machinery(),
-      workIdx: [noteIdx(NOTES.findIndex((n) => n[0] === "How I work"))]
+      workIdx: [noteIdx(NOTES.findIndex((n) => n[0] === "The setup"))]
         .concat(idx).filter((i) => i != null && i >= 0),
       pullIdx: [], mailto: false
     };
