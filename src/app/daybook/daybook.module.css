@@ -23,6 +23,17 @@
 .rail {
   margin-top: clamp(56px, 8dvh, 100px);
 }
+
+/* THE ALLEY. On a wide screen the homepage gap (caps at 56px) left the
+   rail and the entries shoulder to shoulder with every spare pixel
+   piling up on the right. The gap grows with the viewport here, so the
+   content shifts right and the two columns get air between them while
+   the whole composition stays anchored left, which is the house's way:
+   the void belongs between and after, never before. Same 860 collapse
+   as the grid itself. */
+.alley {
+  column-gap: clamp(32px, 10vw, 220px);
+}
 @media (max-width: 860px) {
   .rail {
     margin-top: 0;

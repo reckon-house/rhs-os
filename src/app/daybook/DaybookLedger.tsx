@@ -227,7 +227,7 @@ export function DaybookLedger() {
           Newest first, numbered from the first entry.
         </h1>
 
-        <div className="ixbody">
+        <div className={`ixbody ${styles.alley}`}>
           <div className={`ixnotes ${styles.rail}`}>
             <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>
