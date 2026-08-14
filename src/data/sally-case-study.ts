@@ -445,6 +445,20 @@ export const sallyCaseStudy: CaseStudy = {
       ],
     },
 
+    // ── THE ARC, LIVE ──
+    // The sankey above is the diagram; this is the diagram running.
+    // The only demo that crosses three tools (feed, Jim, composer),
+    // which is why it sits between sections rather than inside one:
+    // it is section 03 handing section 04 to section 06. About 60
+    // seconds, roughly twice the other demos.
+    {
+      id: "trends-to-jim-demo",
+      type: "product-demo",
+      demo: "trends-to-jim",
+      title: "The full arc · Feed to briefed work",
+      note: "The whole chain in one take. A scanned feed flags a competitor's move, Sally's Take reads it against the brand corpus, and Brainstorm This hands it to Jim. Three strategic moves later, one prompt drafts the campaign play: two finished billboards on real photography, a second model arguing with the claim, and Approve opens four channel requests.",
+    },
+
     // ── ASSET HUB ──
     // Same problem as Brand Brain above, answered a different way so the
     // two sections do not read as one recipe: the sankey holds nothing,
