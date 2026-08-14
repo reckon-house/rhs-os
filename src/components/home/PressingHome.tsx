@@ -110,12 +110,12 @@ export function PressingHome() {
             <div className="cmprow">
               <label className="cmplbl" htmlFor="cmpName">Name</label>
               <input className="cmpf" id="cmpName" type="text" name="name"
-                placeholder="Ada Lovelace" maxLength={120} autoComplete="name" />
+                placeholder="Your name" maxLength={120} autoComplete="name" />
             </div>
             <div className="cmprow">
               <label className="cmplbl" htmlFor="cmpMail">Email</label>
               <input className="cmpf" id="cmpMail" type="email" name="email"
-                placeholder="Only if you want a reply" maxLength={254}
+                placeholder="So I can write back" maxLength={254}
                 autoComplete="email" />
             </div>
             <div className="cmprow">
