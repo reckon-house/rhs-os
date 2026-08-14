@@ -1,22 +1,32 @@
 "use client";
 
-/* ── The ledger itself ──────────────────────────────────────────────
- * Client so the rows can make the site's entrance (ledger-arrival) and
- * show their evidence on approach (HoverPlate). Still server-rendered
- * HTML on first paint — a client component SSRs — so a crawler and a
- * no-JS reader get the whole log in its finished state.
+/* ── The ledger, in the homepage's own grammar ──────────────────────
+ * This page used to have a private layout: a capped column with a caps
+ * header. It is the homepage's template now — the statement at display
+ * size, the pinned notes rail on the left, and the entries standing
+ * where the work stands. One page grammar for the whole site, and every
+ * class here (.statement, .dim, .ixbody, .ixnotes, .blk, .filt) is the
+ * homepage's own, already loaded on every route by the footer.
  *
- * Three design systems at work, all borrowed rather than invented:
- * months are display type the way section heads are, every entry
- * carries an accession number the way sections carry marks, and a row
- * that points at a study floats that study's own thumbnail. Identity,
- * arrival, evidence — the three things the rest of the site does that
- * a bare list does not.
+ * The rail is not furniture: the filter is live, per project, with real
+ * counts. The homepage's rail filters the work; this one filters the
+ * days.
+ *
+ * Still a client component that SSRs, so the whole log is in the HTML
+ * for a crawler and a no-JS reader — arrival and evidence are layered
+ * on top of a page that is complete without them.
  */
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { DAYBOOK, byMonth, dayLabel, type DaybookEntry } from "@/data/daybook";
+import {
+  DAYBOOK,
+  byMonth,
+  dayLabel,
+  monthLabel,
+  type DaybookEntry,
+  type DaybookProject,
+} from "@/data/daybook";
 import { HoverPlate } from "@/components/daybook/HoverPlate";
 import { useLedgerArrival } from "@/lib/ledger-arrival";
 import styles from "./daybook.module.css";
@@ -26,6 +36,8 @@ import styles from "./daybook.module.css";
    the sequence runs from the far end. */
 const SEQ = new Map(DAYBOOK.map((e, i) => [e.id, DAYBOOK.length - i]));
 const no = (id: string) => `No. ${String(SEQ.get(id) ?? 0).padStart(3, "0")}`;
+
+const PROJECTS: DaybookProject[] = ["RHS", "Sally", "A.R.C.", "Lab"];
 
 const finePointer = () =>
   window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -80,9 +92,25 @@ function Entry({ e, first }: { e: DaybookEntry; first: boolean }) {
 }
 
 export function DaybookLedger() {
-  const months = byMonth(DAYBOOK);
-  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [proj, setProj] = useState<DaybookProject | null>(null);
+  const rootRef = useRef<HTMLElement | null>(null);
   useLedgerArrival(rootRef, `.${styles.row}, .${styles.month}`, styles.pre);
+
+  const counts = useMemo(() => {
+    const m = new Map<DaybookProject, number>();
+    DAYBOOK.forEach((e) => m.set(e.project, (m.get(e.project) ?? 0) + 1));
+    return m;
+  }, []);
+  const months = useMemo(
+    () => byMonth(proj ? DAYBOOK.filter((e) => e.project === proj) : DAYBOOK),
+    [proj]
+  );
+  const oldest = DAYBOOK[DAYBOOK.length - 1];
+
+  /* Active filter marked inline rather than with a module class: the
+     rail's button styles are the homepage's globals, and a module class
+     on the same element loses that specificity fight quietly. */
+  const active = { textDecoration: "underline", textUnderlineOffset: "3px", color: "#000" };
 
   return (
     <div className="pressing isolate relative w-full">
@@ -91,43 +119,84 @@ export function DaybookLedger() {
         className="hero-breakout absolute top-0 bottom-0 -z-10"
         style={{ background: "var(--pp-paper)" }}
       />
-      <div className={styles.page} ref={rootRef}>
-        <header className={styles.head}>
-          <h1 className={styles.lbl}>Daybook</h1>
-          <span className={`${styles.lbl} ${styles.grey}`}>
-            RHS &middot; Sally &middot; A.R.C.
-          </span>
-        </header>
+      <section className={`hero-breakout stratum ${styles.wrap}`} ref={rootRef}>
+        {/* The lede, in the practice statement's own type: the claim in
+            ink, the enumeration receding, the closer in ink. No .term
+            underlines — on the homepage those mean "ask the house", and
+            an underline that does nothing here would be a small lie. */}
+        <h1 className="statement">
+          The day&rsquo;s work, entered as it happens.{" "}
+          <span className="dim">
+            Ships, fixes, and notes across RHS, Sally, and A.R.C., with a
+            picture when one earns it.
+          </span>{" "}
+          Newest first, numbered from the first entry.
+        </h1>
 
-        <p className={styles.lede}>
-          What got built, dated. Three projects, mostly from one drive.
-        </p>
-
-        {months.map((m) => (
-          <section key={m.key}>
-            {/* The month is a beat, not a filing label: display type on
-                the same scale the studies open sections with, the count
-                receding beside it. */}
-            <div className={styles.month}>
-              <span className={styles.monthName}>{m.label}</span>
-              <span className={`${styles.lbl} ${styles.grey}`}>
-                {m.entries.length} {m.entries.length === 1 ? "entry" : "entries"}
-              </span>
+        <div className="ixbody">
+          <div className="ixnotes">
+            <div className="blk">
+              <span className="tag">What this is</span>
+              A register of the work as it ships, drafted from each
+              project&rsquo;s own commit log and edited by hand.
             </div>
-            {m.entries.map((e, i) => (
-              <Entry
-                key={e.id}
-                e={e}
-                first={i === 0 || m.entries[i - 1].date !== e.date}
-              />
-            ))}
-          </section>
-        ))}
+            <div className="blk">
+              <span className="tag">Filter</span>
+              <div className="filt">
+                <button
+                  type="button"
+                  style={proj === null ? active : undefined}
+                  onClick={() => setProj(null)}
+                >
+                  Everything &middot; {DAYBOOK.length}
+                </button>
+                {PROJECTS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    style={proj === p ? active : undefined}
+                    onClick={() => setProj(proj === p ? null : p)}
+                  >
+                    {p} &middot; {counts.get(p) ?? 0}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="blk">
+              <span className="tag">The ledger</span>
+              {DAYBOOK.length} entries since {monthLabel(oldest.date)}. A
+              number, once minted, never changes.
+            </div>
+          </div>
 
-        <p className={styles.back}>
-          <Link href="/">Back to the house</Link>
-        </p>
-      </div>
+          <div>
+            {months.map((m) => (
+              <section key={m.key}>
+                {/* The month is a beat, not a filing label: display type
+                    on the scale the studies open sections with, the
+                    count receding beside it. */}
+                <div className={styles.month}>
+                  <span className={styles.monthName}>{m.label}</span>
+                  <span className={`${styles.lbl} ${styles.grey}`}>
+                    {m.entries.length} {m.entries.length === 1 ? "entry" : "entries"}
+                  </span>
+                </div>
+                {m.entries.map((e, i) => (
+                  <Entry
+                    key={e.id}
+                    e={e}
+                    first={i === 0 || m.entries[i - 1].date !== e.date}
+                  />
+                ))}
+              </section>
+            ))}
+
+            <p className={styles.back}>
+              <Link href="/">Back to the house</Link>
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

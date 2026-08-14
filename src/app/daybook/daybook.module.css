@@ -7,10 +7,10 @@
  * of page. Type is the pressing scale, one ink, hairlines only.
  */
 
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(40px, 7dvh, 90px) var(--pp-gut, 40px) 180px;
+/* The page wears the homepage's grammar now (.stratum supplies the top
+   air, .ixbody the rail grid and gutters); this only closes the bottom. */
+.wrap {
+  padding-bottom: clamp(120px, 16dvh, 200px);
 }
 
 .lbl {
