@@ -121,6 +121,39 @@
   transition: none;
 }
 
+/* ── the draw-out ──
+   Filtering plays the arrival backwards before the list swaps: rules
+   retract to the left, words sink. Faster than the way in and with no
+   delay, because leaving should feel like clearing a desk, not a
+   ceremony. Applied at the container so one class empties the stage. */
+.outgo .d,
+.outgo .t,
+.outgo .p,
+.outgo .month > * {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.24s ease, transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.outgo .first::before {
+  transform: scaleX(0);
+  transition: transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ── the mount arrival ──
+   The statement and the rail enter the way study copy does: rise and
+   settle, one after the next. Same contract as everything else — the
+   resting state is the finished page, .enterPre is JS-applied and
+   removed a frame later, so no script means no missing page. */
+.enter {
+  transition: opacity 0.55s ease var(--dbd, 0ms),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+}
+.enterPre {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: none;
+}
+
 /* 7px seats the 10px caps on the 16px note's first baseline. */
 .no {
   display: block;

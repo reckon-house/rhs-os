@@ -17,7 +17,7 @@
  * on top of a page that is complete without them.
  */
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   DAYBOOK,
@@ -93,8 +93,102 @@ function Entry({ e, first }: { e: DaybookEntry; first: boolean }) {
 
 export function DaybookLedger() {
   const [proj, setProj] = useState<DaybookProject | null>(null);
+  const [outgo, setOutgo] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const swapping = useRef(false);
+
+  /* Filtering is a two-beat swap: the current rows draw OUT (rules
+     retract, words sink), the list changes, and the new rows draw IN on
+     the arrival's own stagger. Reduced motion swaps instantly. The
+     swapping latch means a second click mid-flight is ignored rather
+     than queued into a mess. */
+  const queued = useRef<DaybookProject | null | undefined>(undefined);
+  const pick = (p: DaybookProject | null) => {
+    const next = p !== null && proj === p ? null : p;
+    /* A click mid-swap is not dropped, it is the new destination: the
+       latest choice waits out the flight and then plays. */
+    if (swapping.current) {
+      queued.current = next;
+      return;
+    }
+    if (next === proj) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setProj(next);
+      return;
+    }
+    swapping.current = true;
+    setOutgo(true);
+    window.setTimeout(() => {
+      setProj(next);
+      setOutgo(false);
+      requestAnimationFrame(() => {
+        const list = listRef.current;
+        if (!list) {
+          swapping.current = false;
+          return;
+        }
+        const items = list.querySelectorAll<HTMLElement>(
+          `.${styles.row}, .${styles.month}`
+        );
+        items.forEach((el, i) => {
+          el.classList.add(styles.pre);
+          el.style.setProperty("--dbd", `${Math.min(i, 10) * 55}ms`);
+        });
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            items.forEach((el) => el.classList.remove(styles.pre));
+            window.setTimeout(() => {
+              swapping.current = false;
+              if (queued.current !== undefined) {
+                const q = queued.current;
+                queued.current = undefined;
+                pick(q as DaybookProject | null);
+              }
+            }, 420);
+          })
+        );
+      });
+    }, 300);
+  };
+
+  /* The homepage's white-paper flag, borrowed whole. The masthead is a
+     translucent bar over whatever <html> paints, and without this it
+     shows the shell's textured ground — the old site — in a band across
+     the top of a white page. rh-home paints paper behind the bar and
+     hides the film overlay, which is exactly the treatment every
+     all-white pressing page needs. Removed on unmount so the classic
+     routes (category, info) keep their texture. */
+  useEffect(() => {
+    document.documentElement.classList.add("rh-home");
+    return () => document.documentElement.classList.remove("rh-home");
+  }, []);
   useLedgerArrival(rootRef, `.${styles.row}, .${styles.month}`, styles.pre);
+
+  /* THE PAGE ENTERS. The statement, the rail blocks, and the rows
+     already inside the first viewport rise in sequence on mount — the
+     scroll hook above only ever arms what is below the fold, so without
+     this the top of the page was the one part that never moved. Same
+     arm-and-release contract: one frame of start state, then let go. */
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = rootRef.current;
+    if (!root) return;
+    const head = Array.from(root.querySelectorAll<HTMLElement>(`.${styles.enter}`));
+    const early = Array.from(
+      root.querySelectorAll<HTMLElement>(`.${styles.row}, .${styles.month}`)
+    ).filter((el) => el.getBoundingClientRect().top <= window.innerHeight * 0.92);
+    const cast = [...head, ...early];
+    cast.forEach((el, i) => {
+      el.classList.add(i < head.length ? styles.enterPre : styles.pre);
+      el.style.setProperty("--dbd", `${i * 85}ms`);
+    });
+    const release = () =>
+      cast.forEach((el) => el.classList.remove(styles.enterPre, styles.pre));
+    requestAnimationFrame(() => requestAnimationFrame(release));
+    const belt = window.setTimeout(release, 500);
+    return () => window.clearTimeout(belt);
+  }, []);
 
   const counts = useMemo(() => {
     const m = new Map<DaybookProject, number>();
@@ -124,7 +218,7 @@ export function DaybookLedger() {
             ink, the enumeration receding, the closer in ink. No .term
             underlines — on the homepage those mean "ask the house", and
             an underline that does nothing here would be a small lie. */}
-        <h1 className="statement">
+        <h1 className={`statement ${styles.enter}`}>
           The day&rsquo;s work, entered as it happens.{" "}
           <span className="dim">
             Ships, fixes, and notes across RHS, Sally, and A.R.C., with a
@@ -135,18 +229,18 @@ export function DaybookLedger() {
 
         <div className="ixbody">
           <div className="ixnotes">
-            <div className="blk">
+            <div className={`blk ${styles.enter}`}>
               <span className="tag">What this is</span>
               A register of the work as it ships, drafted from each
               project&rsquo;s own commit log and edited by hand.
             </div>
-            <div className="blk">
+            <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>
               <div className="filt">
                 <button
                   type="button"
                   style={proj === null ? active : undefined}
-                  onClick={() => setProj(null)}
+                  onClick={() => pick(null)}
                 >
                   Everything &middot; {DAYBOOK.length}
                 </button>
@@ -155,21 +249,21 @@ export function DaybookLedger() {
                     key={p}
                     type="button"
                     style={proj === p ? active : undefined}
-                    onClick={() => setProj(proj === p ? null : p)}
+                    onClick={() => pick(p)}
                   >
                     {p} &middot; {counts.get(p) ?? 0}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="blk">
+            <div className={`blk ${styles.enter}`}>
               <span className="tag">The ledger</span>
               {DAYBOOK.length} entries since {monthLabel(oldest.date)}. A
               number, once minted, never changes.
             </div>
           </div>
 
-          <div>
+          <div ref={listRef} className={outgo ? styles.outgo : undefined}>
             {months.map((m) => (
               <section key={m.key}>
                 {/* The month is a beat, not a filing label: display type
