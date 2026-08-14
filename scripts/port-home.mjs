@@ -229,6 +229,36 @@ const JS_FOOT = `
     alive = false;
     try { cancelAsk(); } catch (e) { /* never armed */ }
     listeners.forEach(([t, ty, fn, o]) => t.removeEventListener(ty, fn, o));
+
+    /* AND HAND THE FIELD BACK. The note above got listeners right and
+       stopped one step short: this page does not only BIND to the
+       shell's question field, it DRESSES it. While the homepage is
+       mounted the driver walks the field down into the cover by
+       writing --ask-left/drop/w/fs/ls/fw straight onto the element and
+       flipping .big past the halfway point — and that element belongs
+       to the Masthead, which outlives this route. Leaving on a scrolled
+       homepage therefore landed on a case study with the reader's
+       question still in the input and still set in cover display type,
+       ruled underneath, sitting over the study's own headline.
+
+       So the teardown returns what it borrowed: the inline custom
+       properties, the classes, the value, and the body flags the answer
+       view sets. Belt and braces on the value — clearing .value alone
+       leaves Masthead's own hasText state true, so the × would stay lit
+       over an empty field; dispatching input lets the bar's own handler
+       see the change and re-render itself. */
+    const ask = document.querySelector(".ask");
+    if (ask) {
+      ["--ask-left", "--ask-drop", "--ask-w", "--ask-fs", "--ask-ls", "--ask-fw"]
+        .forEach((v) => ask.style.removeProperty(v));
+      ask.classList.remove("big", "settling");
+    }
+    const q = document.getElementById("query");
+    if (q) {
+      q.value = "";
+      q.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    document.body.classList.remove("asked", "attop", "working");
   };
 }
 `;
