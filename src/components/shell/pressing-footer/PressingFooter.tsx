@@ -3,7 +3,6 @@
 import { PressingContact } from "./PressingContact";
 import { PressingCredits } from "./PressingCredits";
 import { PressingReturn } from "./PressingReturn";
-import { PressingDaybook } from "./PressingDaybook";
 
 /* ── PressingFooter ─────────────────────────────────────────────────
    The site's tail, ported from the prototype's .fx-mast + .fx-index:
@@ -32,7 +31,6 @@ export function PressingFooter() {
       <PressingContact />
       <PressingCredits />
       <PressingReturn />
-      <PressingDaybook />
     </>
   );
 }

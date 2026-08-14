@@ -36,6 +36,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { PressingRing } from "./PressingRing";
+import { PressingDaybook } from "./PressingDaybook";
 import styles from "./PressingReturn.module.css";
 
 export function PressingReturn() {
@@ -87,6 +88,12 @@ export function PressingReturn() {
           same page twice. A case study ends at the front page; the
           front page ends. */}
       {isHome ? null : <PressingRing />}
+
+      {/* Between the work and the credit line, which puts it last on
+          both kinds of page without being below the line that closes
+          them. The homepage has no ring above it, a study does, and
+          neither has to know which. */}
+      <PressingDaybook />
 
       <div className={styles.foot}>
         <span>&copy; 2026 Reckon House</span>
