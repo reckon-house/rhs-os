@@ -51,7 +51,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       },
       title: "Neiman Marcus\nInSite",
       subtitle:
-        "A luxury retailer's digital editorial hub from 2012. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
+        "A luxury retailer's digital editorial hub. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
       field: "Editorial Design  Art Direction  Typography",
       author: "Jeremy Prasatik",
       published: "2012",
