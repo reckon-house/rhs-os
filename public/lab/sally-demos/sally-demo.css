@@ -8,9 +8,12 @@
    never write demo vars to :root (RHS perf rule).
    ============================================================ */
 
+/* Relative, NOT the site-absolute /fonts/ — that path exists on reckon.house
+   but 404s under the README's own serve command (which roots at this folder),
+   so every standalone load ate a failed request. Same file either way. */
 @font-face {
   font-family: "Satoshi";
-  src: url("/fonts/Satoshi-Variable.woff2") format("woff2");
+  src: url("assets/Satoshi-Variable.woff2") format("woff2");
   font-weight: 300 900;
   font-display: swap;
 }

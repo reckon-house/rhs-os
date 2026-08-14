@@ -36,6 +36,8 @@ OUT: sales/financial numbers, unreleased campaign plans, customer PII.
 | `sally-figma-plugin.css` | v2 | Plugin panel extracted verbatim from `Sally Figma Plugin/ui.html` |
 | `pdp-studio.html` | **v2 — real chrome + real panel structure** | Utilities → PDP Copy Studio. URL types in → audit runs → four accordions open in sequence: findings (severity + SEO/AEO chips), demand (Google KWP), competitive context (themes + whitespace), proposed rewrite streaming in with a rationale that cites the whitespace |
 | `sally-pdp-studio.css` | v2 | `.pdp-acc` / `.pdp-tab` / `.pdp-demand-*` / `.ed-finding` / `.ed-newt` etc. extracted verbatim from `index.html` |
+| `trends-to-jim.html` | **v1 — the full arc** | Market Intelligence feed (real JS-measured masonry) → **Get Sally Insight** → Sally's Take → **Brainstorm This** → the app switches to Briefing with a seeded chat → three strategic moves → *"draft it"* → a complete campaign play: billboard concepts, adversarial critic, **Approve → open 4 requests** |
+| `sally-trends.css` | v1 | `.iv2-card*` / `.sally-signal*` / `.brainstorm-this-btn` / `.play-*` / `.cr-bb-card*` extracted verbatim from `index.html` |
 | `sally-demo-kit.js` | current | shared engine (contract below) |
 | `sally-demo.css` | v1 shell + engine classes | keep for `.sd-pop/.sd-caret/.sd-instant`; the miniature `.sd-window` shell dies when the v1 demos are rebuilt |
 
@@ -142,7 +144,9 @@ the Figma build."* Watch them in that order.
    `t.$()` to the stage and restores `stage.innerHTML` each loop. It was first
    put on `.fg-boards`, which made the plugin panel's nodes unreachable — the
    script threw on the first `appendChild` and the demo rendered nothing. It now
-   sits on `.fg-frame`, wrapping canvas + panel.
+   sits on `.fg-frame`, wrapping canvas + panel. **This has now bitten three
+   demos** — `trends-to-jim` hit it too, with the rail outside the stage. When a
+   demo renders nothing, check the stage boundary first.
 2. **Never pass `.fg-board-inner` to `reveal()`.** It carries the `scale(0.30)`
    that fits the 600px email into the slot, and `.sd-in` sets `transform: none`
    — which silently threw the scale away and rendered the email at full size.
@@ -204,6 +208,110 @@ The four beats are the tool's actual pipeline, in order:
 pull like the Requests email. Structure, schema, models and choreography are
 real; the specific sentences are representative. Real versions live in
 `pdp_copy_versions.copy.second_opinions`.
+
+## The Trends → Jim demo (v1) — the longest one, and the only end-to-end arc
+
+Every other demo shows one tool. This one shows the **handoff between three**:
+market intelligence notices something, Jim reasons about it against the brand,
+and the campaign composer turns it into briefable work. It's the argument the
+case study is actually making, so it's the one to lead or close with.
+
+The chain is the product's real one, function for function: `getSallySignal()`
+writes the `.sally-signal` block ("Sally's Take" + "Based on:" +
+**Brainstorm This**), `brainstormInsight()` builds a seed message from the
+insight, and `seedJimChat()` opens a new session and switches the rail to
+Briefing. The seed text in the demo is that template's output, not a paraphrase.
+
+**The feed is a real masonry, not a column list.** ⚠️ It is deliberately NOT
+`columns:` — multi-column flows *column-major*, so a recency-sorted feed would
+read top-to-bottom down column one before column two, which is wrong. The
+product uses `grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))`
+with `grid-auto-rows: 4px`, and a two-pass `layoutMasonry()` that measures
+**all** cards before writing **any** `grid-row-end: span N`. Interleaving the
+reads and writes thrashes layout. Copied as-is; keep both passes.
+
+Nine cards, because Jeremy's note was *"the feed side needs to be the cards and
+feel dense"* — a sparse feed undersells the scan. Once the user commits to one
+card the rest take `.dim` (opacity 0.32) so the eye follows the action.
+
+**The last beat goes one prompt deeper than a chat answer.** After Jim's three
+moves, `"yes — draft it"` produces a full play in the shape
+`campaign_plays` actually stores:
+
+- `campaign` jsonb — title, theme, story, urgency, audience, `channels[]`,
+  `personas[]`, `messaging_direction`
+- `assets` jsonb[] — billboard payloads (`panel` / `eyebrow` / `headline` with
+  `**bold**` punchline / `subcopy` / `cta_text` / `image_url`)
+- `critic` — the separate adversarial pass
+
+⚠️ **The critic is a SECOND model call with fresh context, and it annotates —
+it never deletes.** That's the whole design: a critic that could silently drop
+plays would make the feature untrustworthy, so its verdict rides *along with*
+the play and the human decides. The demo's verdict is `acceptable`, not
+`strong`, for the same reason the PDP demo keeps split grades — a critic that
+only ever approves proves nothing. Its concern is the real substantiation trap
+in this claim (ten minutes covers **roots**; twenty-five covers all-over
+colour — they're not the same job). Don't soften it into a style note.
+
+**The billboards are the real `.cr-bb-card`, and they carry real photography.**
+An earlier pass invented a text-only colour panel with the 1600:1084 ratio
+applied to the *panel* — wrong twice. The actual component is an **image on top
+at 1600:1084, then a fixed 183px colour panel**, and its CTA is an **underlined
+link, not a pill**.
+
+⚠️ **One deliberate deviation: the headlines are clean, with no accent.** The
+real payload marks a punchline with `**bold**` and `renderHeadline()` turns it
+into `<em>` — the wider non-condensed cut, in italic. Jeremy's call on
+2026-08-13 was to drop it: at 30px the mixed-cut italic reads busy and fights
+the condensed line. The `.cr-bb-card__headline em` rule stays in the CSS, still
+verbatim, so restoring the accent is just putting the asterisks back. Don't
+"correct" these strings by re-adding `<em>` — it is a choice, not an omission.
+
+Both photographs are real DAM assets picked to match their claim — at-home root
+application under the ten-minute line, a Sally shop bag mixed at a home counter
+under "shade-matched in store, done at home." Different models on purpose; the
+same face twice reads as stock. ⚠️ The DAM has a curated `crop_role='billboard'`
+set already cut to exactly 1600×1084 — **look there first** for any billboard
+imagery rather than cropping a portrait-orientation lifestyle shot.
+
+⚠️ **Three sizing facts that are load-bearing together.** Change one and the
+panel breaks:
+
+1. **`.play-card` has NO max-width.** The real one fills its app panel. A 620px
+   "chat bubble" cap looked right and squeezed the billboards to ~302px.
+2. **`.play-asset` keeps `flex: 1 1 320px; max-width: 420px`.** Two cards at a
+   320px basis need 656px — more than this column gives — so the row wraps and
+   each card stands alone at its full 420px. That is correct behavior, not a
+   fallback: the billboard is *built* for 420px. It also removes the
+   append-order jolt for free, since each card lands final-width and never
+   resizes when the next arrives.
+3. **`box-sizing: border-box` is scoped onto `.cr-bb-chat-card`.** The portal
+   sets it globally (`index.html:104`); these demo documents set it **nowhere**.
+   It only bites where a fixed dimension meets padding — precisely this panel,
+   which renders 231px instead of 183px under content-box.
+
+At 302px the headline wraps to two lines *and* the subcopy wraps to two, and the
+subcopy then collides with the CTA pinned 24px off the panel's fixed floor. At
+420px the subcopy drops to one line and it clears. Measured: 41px and 4px of
+clearance, nothing clipped.
+
+⚠️ **The missing global `box-sizing` is a systemic gap, not a local one.** Every
+verbatim-extracted component in all five demos is laid out under a different box
+model than the product. It has been invisible so far because almost nothing else
+pairs a fixed dimension with padding. The right fix is `* { box-sizing:
+border-box }` on every demo document — deliberately **not** done here, because
+the other four were visually tuned in the current model and would all need
+re-verifying. Worth doing as its own pass.
+
+⚠️ **`stream()` writes text nodes.** Raw HTML passed to it renders literally
+(`<b>` showed up on screen as `<b>`). It understands `**bold**` and nothing
+else — that's the markup to use, and `.play-critic-text strong` is what styles
+the result.
+
+Closing actions are the real ones: **Approve → open 4 requests** (approving a
+play writes actual `channel_requests` rows, one per channel — which is what
+makes it the end of the arc rather than another document), Edit direction,
+Dismiss.
 
 ## Open decisions for Jeremy (flagged, not taken)
 
@@ -352,6 +460,12 @@ back, forever. Measure `body.scrollHeight`.
   Over a 30s script it loses most of the clock: stepping 32,000ms leaves
   `jim-chat` still typing its first question. It is fine for jumping a beat or
   two, wrong for driving a whole replay.
-- The Asset Hub demo as a fifth panel is still open (assets already
+- **`trends-to-jim.html` is not wired into the study yet.** It postdates the
+  port. It needs the same two lines every other demo got: a `product-demo`
+  section entry in `sally-case-study.ts` and a `note`. It is the only demo
+  that spans three tools, so it likely wants placement as the arc that ties
+  §04 and §06 together rather than a sixth item in a list. Runtime is ~60s —
+  roughly double the others; worth knowing before choosing where it sits.
+- The Asset Hub demo as a further panel is still open (assets already
   downloaded). The frame is generic now, so it is one file plus one section
   entry.

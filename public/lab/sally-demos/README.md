@@ -1,6 +1,6 @@
 # sally-demos — live product demos for the Sally case study
 
-**Four self-contained, looping HTML demos of the Sally Marketing Portal**, built
+**Five self-contained, looping HTML demos of the Sally Marketing Portal**, built
 to be embedded as live code sections in `/case-studies/sally`. Built and visually
 verified in a Sally-side session (2026-08-12/13) that had the product context;
 this folder is the handoff.
@@ -14,7 +14,7 @@ python3 -m http.server 4614 --directory public/lab/sally-demos
 Or, once committed, they're live at `reckon.house/lab/sally-demos/<name>.html`
 because `public/` is served as-is — watchable before any React port exists.
 
-## The four demos
+## The five demos
 
 | file | ~length | what it shows |
 |---|---|---|
@@ -22,6 +22,7 @@ because `public/` is served as-is — watchable before any React port exists.
 | `pdp-studio.html` | ~40s | URL → audit findings (severity + SEO/AEO chips) → demand (Google KWP) → competitive whitespace → full rewrite streaming in → **Gemini + Perplexity grade it in parallel** |
 | `requests-email.html` | ~16s | August campaign board → click COLORfest's CRM channel → request detail → Create Email → **a real email assembles from the product's own renderer** |
 | `figma-build.html` | ~25s | Sally OS plugin batch-builds four CRM emails onto a canvas — clone, then images first, then copy, exactly as the plugin does |
+| `trends-to-jim.html` | ~60s | **The full arc.** A dense scanned feed → **Get Sally Insight** → Sally's Take against Brand Brain → **Brainstorm This** → the app switches to Briefing with a seeded Jim chat → three strategic moves → *"draft it"* → a complete campaign play with two finished billboard concepts (real DAM photography, the product's own card component), an adversarial critic verdict, and **Approve → open 4 requests** |
 
 `requests-email` and `figma-build` **chain** — the first ends on *"ready for the
 Figma build."* Present them in that order.
@@ -34,6 +35,7 @@ Figma build."* Present them in that order.
 | `sally-portal-chrome.css` | portal rail / campaign panel / chat / dock — **extracted verbatim** from `sally-portal/index.html` |
 | `sally-pdp-studio.css` | PDP Studio accordions, findings, grades — verbatim |
 | `sally-figma-plugin.css` | the Sally OS plugin panel — verbatim from `Sally Figma Plugin/ui.html` |
+| `sally-trends.css` | insight cards + Sally Signal + Brainstorm This — verbatim |
 | `sally-demo.css` | engine classes (`.sd-pop`, `.sd-caret`, `.sd-instant`) |
 | `render_demo_email.py` | regenerates `assets/email-multicategory.html` via the portal's real `email_components.py` |
 | `assets/` | Sally logo, Satoshi + Founders Grotesk woff2, real DAM photography and packshots |

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sally demo — Trend → Sally Insight → Jim</title>
+<link rel="stylesheet" href="sally-demo.css">
+<link rel="stylesheet" href="sally-portal-chrome.css">
+<link rel="stylesheet" href="sally-trends.css">
+<style>
+  body { margin: 0; padding: 48px 20px; background: #f4f0ea; }
+</style>
+</head>
+<body>
+
+<div id="trDemo">
+  <!-- data-stage wraps the RAIL too: this demo switches apps (Trends →
+       Briefing), so the rail's active state and label are animated surface,
+       not static chrome. t.$() is scoped to the stage. -->
+  <div class="sp-frame" data-stage>
+    <nav class="icon-rail" aria-hidden="true">
+      <div class="icon-rail-logo"><div class="icon-rail-logo-inner"><img src="assets/Sally-Logo.svg" alt="SALLY."></div></div>
+      <div class="icon-rail-nav">
+        <button class="rail-icon-btn" id="trRailBriefing">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a2.1 2.1 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg></span>
+          <span class="rail-icon-label">Briefing</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg></span>
+          <span class="rail-icon-label">Requests</span>
+        </button>
+        <button class="rail-icon-btn active" id="trRailTrends">
+          <span class="rail-badge">11</span>
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></span>
+          <span class="rail-icon-label">Trends</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="rail-icon-label">Campaigns</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>
+          <span class="rail-icon-label">Assets</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="rail-icon-label">Utilities</span>
+        </button>
+        <button class="rail-icon-btn">
+          <span class="rail-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+          <span class="rail-icon-label">Dashboard</span>
+        </button>
+      </div>
+      <div class="rail-account"><div class="rail-account-btn">JP</div></div>
+      <div class="rail-app-label"><div class="rail-app-label-inner"><span class="rail-app-label-text" id="trRailLabel">Market Intelligence</span></div></div>
+    </nav>
+    <div class="rail-separator"></div>
+
+    <div class="sp-stage">
+      <aside class="campaign-panel">
+        <div class="campaign-panel-header"><span class="campaign-panel-title" id="trPanelTitle">Trends</span></div>
+        <div class="campaign-panel-content" id="trPanel">
+          <div class="dam-filters-label">Sources</div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>All competitors</option></select></div>
+          <div class="dam-filter-group"><select class="dam-filter-select"><option>All categories</option></select></div>
+          <div class="dam-filters-label" style="padding-top:10px">Last scan</div>
+          <div style="font-size:11.5px;color:#4a2028;padding:2px 4px 10px">Today, 7:02 AM · 18 new</div>
+        </div>
+      </aside>
+
+      <main class="sp-content">
+
+        <!-- VIEW 1 — Trends -->
+        <div class="tr-view tr-page" id="trTrends">
+          <div class="tr-head">
+            <span class="tr-title">Market Intelligence</span>
+            <span class="tr-sub">Scanned daily · Gemini + Perplexity → Claude synthesis</span>
+          </div>
+          <div class="tr-tabs">
+            <span class="tr-tab active">Market</span>
+            <span class="tr-tab">Customer</span>
+            <span class="tr-tab">Demand</span>
+            <span class="tr-tab">Intel Brief</span>
+          </div>
+          <div class="iv2-card-grid" id="trCards"></div>
+        </div>
+
+        <!-- VIEW 2 — Briefing / Jim -->
+        <div class="tr-view gone" id="trBriefing" style="display:flex;flex-direction:column;min-height:0;flex:1">
+          <div class="conversation-messages"></div>
+          <div class="persistent-input-area">
+            <div class="input-row">
+              <div class="input-field"></div>
+              <div class="input-actions">
+                <div class="input-actions-left">
+                  <span class="upload-btn"><svg viewBox="0 0 24 24"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8"/></svg></span>
+                  <span class="pro-mode-toggle">
+                    <span class="pro-toggle-track"><span class="pro-toggle-thumb"></span></span>
+                    <span class="pro-toggle-label"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg> Sally Only</span>
+                  </span>
+                </div>
+                <div class="input-actions-right">
+                  <span class="clear-btn">Clear</span>
+                  <span class="generate-brief-btn">Generate Brief</span>
+                  <span class="send-btn">Send</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+  <p class="sp-caption">Live replay of the Market Intelligence → Jim handoff. The “Get Sally Insight” and “Brainstorm This” chain is the product's real flow — the message that seeds the chat is the app's own template.</p>
+</div>
+
+<script src="sally-demo-kit.js"></script>
+<script>
+new SallyDemo(document.getElementById("trDemo"), async function (t) {
+  var cards = t.$("#trCards");
+  var trendsView = t.$("#trTrends");
+  var briefView  = t.$("#trBriefing");
+  t.scrollEl = trendsView;
+
+  // A morning's scan — deliberately a dense feed, not a tidy three. The
+  // Amazon card (index 3) is the one the user acts on.
+  var INSIGHTS = [
+    { cat: "PRODUCT LAUNCH", title: "Ulta expands bond-building with three exclusive launches",
+      sum: "Olaplex, K18 and a new house brand land exclusives, with endcap placement through Q3.",
+      src: "Glossy", rel: 4 },
+    { cat: "PRICING", title: "Target drops mass color 15% for back-to-school",
+      sum: "Four-week promo across box color and developer.", src: "Retail Dive", rel: 3 },
+    { cat: "SOCIAL", title: "“Bleach damage” hits an 18-month high on TikTok",
+      sum: "Repair-adjacent content is outpacing color-application content for the first time.",
+      src: "Sprinklr", rel: 4 },
+    { cat: "COMPETITIVE MOVE", alert: true, feat: true,
+      title: "Amazon launches a 25-minute at-home color line, priced under $12",
+      sum: "The line leads entirely on speed — “salon color on a lunch break” — and undercuts the mass price band by roughly 20%. Launch creative avoids gray-coverage language, which every mass competitor currently leads with.",
+      src: "Retail Dive", rel: 5 },
+    { cat: "CATEGORY TREND", title: "Braid-prep searches climb for a fourth consecutive month",
+      sum: "Protective-style prep is pulling volume across edge control, scalp oil and pre-poo.",
+      src: "Google Trends", rel: 4 },
+    { cat: "ASSORTMENT", title: "Sally Hansen expands press-on shades ahead of holiday",
+      sum: "Twelve new SKUs, weighted to short-length almond.", src: "WWD", rel: 3 },
+    { cat: "SOCIAL", title: "Gloss-at-home tutorials up 40% quarter over quarter",
+      sum: "Creators are pairing demi-permanent gloss with a same-day shampoo routine.",
+      src: "YouTube", rel: 4 },
+    { cat: "RETAIL MEDIA", title: "Walmart opens beauty endcaps to brand-funded displays",
+      sum: "New tier priced below Target's equivalent programme.", src: "Modern Retail", rel: 3 },
+    { cat: "PRICING", title: "Wella trade pricing rises 4% in September",
+      sum: "Distributor letter cites resin and packaging costs.", src: "Beauty Independent", rel: 2 }
+  ];
+
+  // Two-pass masonry, same as the product's layoutMasonry(): measure every
+  // card, THEN write every span. Interleaving would thrash layout per card.
+  function layoutMasonry() {
+    var cs = getComputedStyle(cards);
+    var row = parseFloat(cs.getPropertyValue("--iv2-row")) || 4;
+    var gut = parseFloat(cs.getPropertyValue("--iv2-gutter")) || 18;
+    var kids = Array.prototype.slice.call(cards.children);
+    kids.forEach(function (el) { el.style.gridRowEnd = ""; });
+    var spans = kids.map(function (el) {
+      var h = el.getBoundingClientRect().height;
+      return h ? Math.max(1, Math.ceil((h + gut) / row)) : 1;
+    });
+    kids.forEach(function (el, i) { el.style.gridRowEnd = "span " + spans[i]; });
+  }
+
+  var targetCard = null;
+  for (var i = 0; i < INSIGHTS.length; i++) {
+    var d = INSIGHTS[i];
+    var c = t.el("div", "iv2-card" + (d.feat ? " featured" : ""));
+    var dots = "";
+    for (var r = 0; r < 5; r++) dots += '<span class="iv2-dot' + (r < d.rel ? ' on' : '') + '"></span>';
+    c.innerHTML =
+      '<span class="iv2-card-cat' + (d.alert ? ' alert' : '') + '">' + d.cat + '</span>' +
+      '<div class="iv2-card-title">' + d.title + '</div>' +
+      '<div class="iv2-card-preview">' + d.sum + '</div>' +
+      '<div class="iv2-card-source">' + d.src + ' · today' +
+        '<span class="iv2-card-relevance">' + dots + '</span></div>';
+    cards.appendChild(c);
+    layoutMasonry();
+    t.reveal(c);
+    if (d.feat) targetCard = c;
+    await t.wait(110);
+  }
+  await t.wait(800);
+
+  // the user commits to one — the rest of the feed recedes
+  Array.prototype.forEach.call(cards.children, function (el) {
+    if (el !== targetCard) el.classList.add("dim");
+  });
+  targetCard.scrollIntoView({ block: "center" });
+  await t.wait(500);
+
+  // 1 — the user opens the card that matters
+  targetCard.classList.add("expanded");
+  var actions = t.el("div", "iv2-card-actions");
+  actions.innerHTML =
+    '<span class="iv2-btn primary" id="trSignalBtn">Get Sally Insight</span>' +
+    '<span class="iv2-btn">Read source</span>';
+  targetCard.appendChild(actions);
+  layoutMasonry();
+  t.reveal(actions);
+  await t.wait(900);
+
+  // 2 — Get Sally Insight → the app's real loading line
+  await t.press(t.$("#trSignalBtn"));
+  t.$("#trSignalBtn").textContent = "Thinking...";
+  var loading = t.el("div", "sally-signal-loading");
+  loading.innerHTML = '<span class="shimmer">✦</span> Analyzing against Brand Brain...';
+  targetCard.appendChild(loading);
+  layoutMasonry();
+  await t.wait(2100);
+
+  // 3 — Sally's Take lands (label, text, "Based on:" source, Brainstorm This)
+  var SALLY_TAKE = "Speed is the opening, and it's ours to take. Our ion 10-minute root cover already beats them on time and we've never led with it — the claim sits in product copy, not in a campaign. Their $12 price point undercuts us, so don't answer on price; answer on the fact that a faster result from a brand with 3,000 stores and staff who can colour-match you is a different offer entirely.";
+  var signal = t.el("div", "sally-signal");
+  signal.innerHTML =
+    '<div class="sally-signal-label">Sally\'s Take</div>' +
+    '<div class="sally-signal-text"></div>' +
+    '<div class="sally-signal-source">Based on: Brand Foundation · ion product education · 90-day demand signal</div>' +
+    '<button class="brainstorm-this-btn" id="trBrainstorm">' +
+      '<svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"/></svg>' +
+      ' Brainstorm This</button>';
+  targetCard.replaceChild(signal, loading);
+  t.$("#trSignalBtn").textContent = "Get Sally Insight";
+  layoutMasonry();
+  // the card grows as the take streams — re-measure so the feed reflows
+  // underneath it the way the real one does
+  var _grow = setInterval(layoutMasonry, 160);
+  await t.stream(signal.querySelector(".sally-signal-text"), [SALLY_TAKE], 26);
+  clearInterval(_grow);
+  layoutMasonry();
+  targetCard.scrollIntoView({ block: "center" });
+  await t.wait(1100);
+
+  // 4 — Brainstorm This → seedJimChat() starts a new session and switches
+  //     to Briefing with the seed message already sending.
+  await t.press(t.$("#trBrainstorm"));
+  await t.wait(420);
+  trendsView.classList.add("gone");
+  briefView.classList.remove("gone");
+  t.$("#trRailTrends").classList.remove("active");
+  t.$("#trRailBriefing").classList.add("active");
+  t.$("#trRailLabel").textContent = "Brand brain/Jim";
+  t.$("#trPanelTitle").textContent = "Select campaign";
+  t.$("#trPanel").innerHTML =
+    '<div class="chat-history-block"><div class="chat-history-header">' +
+      '<span class="chat-history-header-label">Recent chats</span>' +
+      '<span class="chat-history-new-btn">+ New</span></div>' +
+    '<div class="chat-history-list">' +
+      '<div class="chat-session-row active"><span class="chat-session-title">Amazon 25-minute colo…</span><span class="chat-session-meta">now</span></div>' +
+      '<div class="chat-session-row"><span class="chat-session-title">braid season — what\'s…</span><span class="chat-session-meta">2d</span></div>' +
+      '<div class="chat-session-row"><span class="chat-session-title">compare our bond rep…</span><span class="chat-session-meta">3d</span></div>' +
+      '<div class="chat-session-row"><span class="chat-session-title">email subjects for the…</span><span class="chat-session-meta">Jul 28</span></div>' +
+    '</div></div>';
+
+  var chat = briefView.querySelector(".conversation-messages");
+  t.scrollEl = chat;
+  await t.wait(560);
+
+  // the seeded message — the app's own template from brainstormInsight()
+  var m = t.el("div", "message user");
+  m.appendChild(t.el("div", "message-avatar", "You"));
+  var mc = t.el("div", "message-content");
+  mc.innerHTML =
+    "I just read a competitive insight and want to brainstorm how Sally Beauty should respond." +
+    "<br><br><strong>Insight:</strong> Amazon launches a 25-minute at-home color line, priced under $12<br>" +
+    "The line leads entirely on speed and undercuts the mass price band by roughly 20%." +
+    "<br><br><strong>Sally's Take:</strong> Speed is the opening, and it's ours to take…" +
+    "<br><br>Help me explore strategic responses, campaign angles, and actionable next steps for Sally Beauty.";
+  m.appendChild(mc);
+  chat.appendChild(m);
+  t.reveal(m);
+  await t.wait(700);
+
+  // 5 — Jim answers, carrying the insight straight into a plan
+  var jm = t.el("div", "message assistant");
+  jm.appendChild(t.el("div", "message-avatar", "Jim"));
+  var jc = t.el("div", "message-content");
+  jm.appendChild(jc);
+  chat.appendChild(jm);
+  t.reveal(jm);
+
+  var think = t.el("div", "sp-think");
+  think.appendChild(t.el("i")); think.appendChild(t.el("i")); think.appendChild(t.el("i"));
+  jc.appendChild(think);
+  await t.wait(1250);
+  think.remove();
+
+  await t.stream(jc, [
+    "Don't answer the price. Answer the **claim they left on the table**.",
+    "They're leading on speed because nobody in mass owns it — our own competitive read says the same thing: not one retailer in the category claims application time. But we already ship a **10-minute root cover**. We've been sitting on the faster product and describing it in spec copy instead of saying it out loud.",
+    "Three moves, in the order I'd do them:",
+    "**1 · Reclaim the clock.** ion 10-Minute Root Cover leads every color surface for six weeks — PDP title, email hero, paid social. It beats their 25 minutes by more than half, and it's true today with zero new production.",
+    "**2 · Make the store the moat.** Their offer is a box on a doorstep. Ours is a faster result *plus* someone who can colour-match you in person. Pair the speed claim with in-store shade matching — that's the part Amazon structurally cannot copy.",
+    "**3 · Hold price.** Undercutting a $12 launch drags us into a margin fight on their terms. Speed plus expertise is the higher-ground argument.",
+    "Want me to draft the play and open the requests?"
+  ], 26);
+  await t.wait(1400);
+
+  // 6 — one prompt deeper: the user says draft it, and Jim writes the play.
+  //     Structure is the real campaign_plays shape — campaign {title, urgency,
+  //     audience, channels, personas, messaging_direction} + assets[] of
+  //     billboard payloads {panel, eyebrow, headline (**bold**), subcopy,
+  //     cta_text} — followed by the critic pass, which is a SEPARATE
+  //     adversarial call that annotates but never deletes.
+  var input = briefView.querySelector(".input-field");
+  var MSG2 = "yes — draft it";
+  await t.type(input, MSG2, 26);
+  await t.wait(240);
+  await t.press(briefView.querySelector(".send-btn"));
+  input.textContent = "";
+  var u2 = t.el("div", "message user");
+  u2.appendChild(t.el("div", "message-avatar", "You"));
+  var u2c = t.el("div", "message-content", MSG2);
+  u2.appendChild(u2c);
+  chat.appendChild(u2);
+  t.reveal(u2);
+  await t.wait(620);
+
+  var j2 = t.el("div", "message assistant");
+  j2.appendChild(t.el("div", "message-avatar", "Jim"));
+  var j2c = t.el("div", "message-content");
+  j2.appendChild(j2c);
+  chat.appendChild(j2);
+  t.reveal(j2);
+
+  var th2 = t.el("div", "sp-think");
+  th2.appendChild(t.el("i")); th2.appendChild(t.el("i")); th2.appendChild(t.el("i"));
+  j2c.appendChild(th2);
+  await t.wait(1300);
+  th2.remove();
+
+  await t.stream(j2c, [
+    "Drafted. Reactive play, live in two weeks — it runs on product we already stock and assets we already own."
+  ], 24);
+
+  var play = t.el("div", "play-card");
+  play.innerHTML =
+    '<div class="play-trigger">' +
+      '<span class="play-source-badge">Market intel</span>' +
+      '<span class="play-kind play-kind--react">React</span>' +
+      '<span class="play-citation">Amazon 25-minute color launch · Retail Dive, today</span>' +
+    '</div>' +
+    '<div class="play-campaign">' +
+      '<div class="play-title">Ten Minutes. Not Twenty-Five.</div>' +
+      '<div class="play-chips">' +
+        '<span class="play-chip play-chip--urgency">next_2_weeks</span>' +
+        '<span class="play-chip play-chip--theme">Speed</span>' +
+        '<span class="play-chip">Web / Ecomm</span>' +
+        '<span class="play-chip">CRM / Email</span>' +
+        '<span class="play-chip">Paid Social</span>' +
+        '<span class="play-chip">In-Store</span>' +
+      '</div>' +
+      '<div class="play-direction"><strong>Audience:</strong> root-touch-up shoppers and between-appointment colourists; Glow-Getters and Timeless Restorers.</div>' +
+      '<div class="play-direction"><strong>Direction:</strong> Say the number. We have never led with the ten minutes and it is the only claim in the category nobody else can make. Pair it with the thing a box on a doorstep cannot do — someone who matches your shade in person.</div>' +
+    '</div>';
+  j2c.appendChild(play);
+  t.reveal(play);
+  await t.wait(700);
+
+  // Billboard concepts — the real `assets` jsonb[] payload the play carries:
+  // panel / eyebrow / headline / subcopy / cta_text / image_url.
+  // Markup below is the product's own crChatRenderBillboardCard() output:
+  // image on top at 1600:1084, then the fixed 183px colour panel. The CTA is an
+  // underlined link because that is what the component is — and it is always
+  // "Shop now", which the renderer hard-sets on every generated asset.
+  //
+  // ⚠️ ONE DELIBERATE DEVIATION: headlines are set clean, with no accent.
+  // The real payload marks a punchline with **bold** and renderHeadline()
+  // turns it into <em> — the wider non-condensed cut, italic. Jeremy's call
+  // (2026-08-13) is to drop it here: at 30px the mixed-cut italic reads busy
+  // and fights the condensed line. The .cr-bb-card__headline em rule is kept
+  // in the CSS, still verbatim, so restoring the accent is just putting the
+  // asterisks back. Don't "fix" these strings by re-adding <em>.
+  //
+  // Both photographs are real DAM assets from the ion MochaBrown evergreen
+  // shoot + the curated crop_role='billboard' set, chosen to MATCH THE CLAIM:
+  // at-home root application for the ten-minute line, and a Sally shop bag
+  // mixed at a home counter for the shade-matched-in-store line. Different
+  // models on purpose — the same face twice reads as stock.
+  var assets = t.el("div", "play-assets");
+  play.appendChild(assets);
+  var BBS = [
+    { cap: "Web / Ecomm · billboard", panel: "off-white", eyebrow: "ROOT TOUCH-UP",
+      img: "assets/bb-root-touchup.jpg",
+      head: "Ten minutes. Not twenty-five.",
+      sub: "ion 10-Minute Root Cover. Grey gone before the kettle boils.", cta: "Shop now" },
+    { cap: "Paid Social · billboard", panel: "blush", eyebrow: "COLOUR, FASTER",
+      img: "assets/bb-shade-match.jpg",
+      head: "The fastest colour also has a colourist.",
+      sub: "Shade-matched in store, done at home. 3,000 locations.", cta: "Shop now" }
+  ];
+  for (var bi = 0; bi < BBS.length; bi++) {
+    var b = BBS[bi];
+    var a = t.el("div", "play-asset");
+    a.innerHTML =
+      '<span class="play-asset-caption">' + b.cap + '</span>' +
+      '<div class="cr-bb-chat-card">' +
+        '<div class="cr-bb-chat-eyebrow">' + b.eyebrow + '</div>' +
+        '<div class="cr-bb-card" data-panel="' + b.panel + '">' +
+          '<img class="cr-bb-card__img" src="' + b.img + '" alt="" />' +
+          '<div class="cr-bb-card__panel">' +
+            '<p class="cr-bb-card__headline">' + b.head + '</p>' +
+            '<p class="cr-bb-card__subcopy">' + b.sub + '</p>' +
+            '<span class="cr-bb-card__cta">' + b.cta + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    assets.appendChild(a);
+    t.reveal(a);
+    await t.wait(620);
+  }
+  await t.wait(600);
+
+  // critic pass — fresh context, judges the play cold
+  var critic = t.el("div", "play-critic");
+  critic.innerHTML =
+    '<div class="play-critic-head">Critic pass' +
+      '<span class="play-verdict play-verdict--acceptable">acceptable</span>' +
+      '<span style="font-weight:600;letter-spacing:0">confidence: high</span></div>';
+  play.appendChild(critic);
+  t.reveal(critic);
+  var c1 = t.el("div", "play-critic-text");
+  critic.appendChild(c1);
+  // ⚠️ stream() writes TEXT NODES — raw HTML comes through literally.
+  // It understands **bold** only; that's the markup to use here.
+  await t.stream(c1, ["**Strongest thing:** the speed claim is already true and already shipping — this is a positioning change, not a product promise, so it can go live without a single new SKU or lab claim."], 24);
+  var c2 = t.el("div", "play-critic-text");
+  critic.appendChild(c2);
+  await t.stream(c2, ["**Concern:** ten minutes covers roots, twenty-five covers all-over colour — they are not the same job. If creative implies full-head colour in ten minutes that is a substantiation problem. Keep every execution explicitly root-touch-up."], 24);
+  await t.wait(500);
+
+  var pactions = t.el("div", "play-actions");
+  pactions.innerHTML =
+    '<span class="iv2-btn primary">Approve → open 4 requests</span>' +
+    '<span class="iv2-btn">Edit direction</span>' +
+    '<span class="iv2-btn">Dismiss</span>';
+  play.appendChild(pactions);
+  t.reveal(pactions);
+
+  await t.wait(3200);
+});
+</script>
+
+</body>
+</html>

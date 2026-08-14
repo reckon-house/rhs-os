@@ -1,0 +1,278 @@
+/* ============================================================
+   sally-trends.css — Market Intelligence card + Sally Signal,
+   extracted from sally-portal/index.html (2026-08-13).
+   Class names verbatim (.iv2-card, .sally-signal,
+   .brainstorm-this-btn) so diffs stay trivial.
+   Loads AFTER sally-portal-chrome.css.
+   ============================================================ */
+
+.tr-page {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  padding: 22px 26px 30px;
+  background: #f3f3f3;
+  scrollbar-width: none;
+}
+.tr-page::-webkit-scrollbar { display: none; }
+
+.tr-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.tr-title { font-size: 18px; font-weight: 700; color: #140002; }
+.tr-sub { font-size: 12px; color: #9a7a80; }
+
+/* sub-tabs — Market / Customer / Demand / Intel Brief */
+.tr-tabs { display: flex; gap: 8px; margin: 14px 0 16px; }
+.tr-tab {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: #4a2028; background: #fff;
+  border: 1px solid rgba(20,0,2,0.1);
+  border-radius: 999px; padding: 8px 18px; white-space: nowrap;
+}
+.tr-tab.active { background: #140002; color: #fff; border-color: #140002; }
+
+/* ---- insight feed — the real JS-measured masonry (verbatim) ----
+   NOT `columns:` — multi-column flows column-major, which would read
+   top-to-bottom down column 1 before column 2 and break a recency-sorted
+   feed. This grid keeps left-to-right order. `layoutMasonry()` in the demo
+   script measures every card and writes `grid-row-end: span N`, same two-pass
+   read-all-then-write-all as the product. */
+.iv2-card-grid {
+  --iv2-row: 4px;
+  --iv2-gutter: 18px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  column-gap: var(--iv2-gutter);
+  row-gap: 0;
+  grid-auto-rows: var(--iv2-row);
+  align-items: start;
+}
+.iv2-card-grid > *:not([style*="grid-row-end"]) { grid-row-end: span 40; }
+.iv2-card-grid > * { margin-bottom: var(--iv2-gutter); }
+.iv2-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 22px 24px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.iv2-card.expanded {
+  box-shadow: 0 4px 20px rgba(20, 0, 2, 0.08);
+  border-color: rgba(255, 224, 227, 0.7);
+}
+.iv2-card.featured { padding: 26px 28px; }
+
+.iv2-card-cat {
+  display: inline-block;
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: #dc1e35; background: rgba(220,30,53,0.08);
+  border-radius: 999px; padding: 3px 9px;
+  margin-bottom: 10px;
+}
+.iv2-card-cat.alert { color: #fff; background: #dc1e35; }
+.iv2-card-title {
+  font-size: 15px; font-weight: 400; color: #140002;
+  line-height: 1.35; letter-spacing: -0.3px; margin-bottom: 6px;
+}
+.iv2-card.featured .iv2-card-title { font-size: 17px; }
+.iv2-card-preview { font-size: 13px; color: #4a2028; line-height: 1.6; }
+.iv2-card-source {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px; font-size: 11px; color: #9a7a80;
+}
+.iv2-card-source a { color: #dc1e35; text-decoration: none; font-weight: 500; }
+.iv2-card-relevance { display: flex; gap: 3px; margin-left: auto; }
+.iv2-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(20,0,2,0.12); }
+.iv2-dot.on { background: #dc1e35; }
+
+.iv2-card-actions { display: flex; gap: 8px; margin-top: 16px; }
+.iv2-btn {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: #4a2028; background: #fff;
+  border: 1px solid rgba(20,0,2,0.12);
+  border-radius: 999px; padding: 7px 15px;
+  transition: transform 0.14s ease, background 0.15s;
+}
+.iv2-btn.primary { color: #dc1e35; border-color: rgba(220,30,53,0.25); background: rgba(220,30,53,0.05); }
+.iv2-btn.sd-press { transform: scale(0.94); }
+
+/* ---- Sally Signal (verbatim) ---- */
+.sally-signal-loading {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 14px 16px;
+  background: #FFF5F6; border-radius: 8px;
+  font-size: 12px; color: rgba(44,36,32,0.45);
+}
+.sally-signal-loading .shimmer { display: inline-block; animation: shimmer-pulse 1.2s ease-in-out infinite; }
+@keyframes shimmer-pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+.sally-signal { margin-top: 16px; padding: 16px; background: #FFF5F6; border-radius: 8px; }
+.sally-signal-label {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  color: #dc1e35; margin-bottom: 8px;
+}
+.sally-signal-text { font-size: 14px; color: #2c2420; line-height: 1.6; }
+.sally-signal-source { font-size: 11px; color: rgba(44,36,32,0.35); margin-top: 8px; font-style: italic; }
+.brainstorm-this-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; padding: 8px 16px;
+  background: rgba(220,30,53,0.08);
+  border: 1px solid rgba(220,30,53,0.15);
+  border-radius: 999px;
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  color: #dc1e35;
+  transition: transform 0.14s ease, background 0.15s;
+}
+.brainstorm-this-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.brainstorm-this-btn.sd-press { transform: scale(0.94); }
+
+/* ---- view swap: trends → briefing ---- */
+.tr-view { transition: opacity 0.4s ease; }
+.tr-view.gone { opacity: 0; pointer-events: none; position: absolute; visibility: hidden; }
+
+/* ---- drafted play card (verbatim .play-* family) ---- */
+.play-card {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 20px rgba(20,0,2,0.04);
+  font-family: 'Satoshi', sans-serif;
+  margin-top: 14px;
+}
+/* ⚠️ No max-width — the real .play-card has none, it fills the app panel.
+   An earlier pass capped this at 620px to read as a chat bubble, which
+   squeezed the two billboards to ~302px each. The billboard component is
+   built for 420px: at 302 the headline wraps to two lines AND the subcopy
+   wraps to two, and the subcopy then collides with the CTA, which is
+   absolutely positioned 24px off the panel's fixed 183px floor. Given the
+   full column the cards land near 390px, the subcopy drops to one line, and
+   the collision goes away. Don't reintroduce the cap. */
+.play-source-badge {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: #4a2028; background: rgba(220,30,53,0.08);
+  padding: 3px 8px; border-radius: 5px;
+}
+.play-kind { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 5px; }
+.play-kind--react { color: #7a5200; background: rgba(240,180,41,0.22); }
+.play-trigger { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.play-citation { font-size: 11.5px; color: #9a7a80; }
+.play-campaign { margin-top: 16px; }
+.play-title { font-size: 16px; font-weight: 700; color: #140002; letter-spacing: -0.2px; }
+.play-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.play-chip {
+  font-size: 10.5px; font-weight: 600; color: #4a2028;
+  background: rgba(20,0,2,0.04); border: 1px solid rgba(20,0,2,0.06);
+  padding: 3px 9px; border-radius: 999px;
+}
+.play-chip--urgency { color: #dc1e35; background: rgba(220,30,53,0.08); border-color: rgba(220,30,53,0.12); }
+.play-chip--theme { color: #dc1e35; background: #FFE0E3; border-color: rgba(220,30,53,0.18); }
+.play-direction { margin-top: 10px; font-size: 12.5px; color: #4a2028; line-height: 1.5; }
+.play-assets { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; align-items: flex-start; }
+/* Verbatim from .play-asset--billboard. These numbers do real work: two cards
+   at a 320px basis need 656px, more than this column gives them, so the row
+   wraps and each card stands alone at its full 420px. That is the component
+   behaving correctly, not a fallback — the billboard is BUILT for 420px, and
+   squeezing two side by side wraps the subcopy into the CTA, which is pinned
+   24px off the panel's fixed 183px floor. Stacking also removes the
+   append-order jolt for free: each card lands at its final width and never
+   resizes when the next one arrives. */
+.play-asset {
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1 1 320px; max-width: 420px; min-width: 260px;
+}
+.play-asset-caption {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80;
+}
+
+/* ---- billboard concept — the REAL .cr-bb-card, extracted verbatim from
+   index.html. Structure is image-on-top + fixed 183px colour panel beneath;
+   the CTA is an underlined link, NOT a pill button. An earlier pass invented a
+   text-only panel with the 1600:1084 ratio on the panel itself — that ratio
+   belongs to the IMAGE. `**bold**` in a headline becomes <em>, which the real
+   renderHeadline() does, and <em> is the wider non-condensed cut in italic. */
+.cr-bb-chat-card { max-width: 420px; }
+.cr-bb-chat-eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #dc1e35; margin-bottom: 6px;
+}
+/* ⚠️ The portal sets `* { box-sizing: border-box }` globally (index.html:104);
+   these demo documents set it nowhere. It only bites where a rule pairs a FIXED
+   dimension with padding — which is exactly .cr-bb-card__panel (height 183 +
+   24px padding), rendering 231px tall under content-box instead of 183px.
+   Scoped here rather than added globally: the other four demos were visually
+   tuned in this document's box model and a blanket reset would need all of them
+   re-verified. See NOTES — worth doing properly at some point. */
+.cr-bb-chat-card, .cr-bb-chat-card * { box-sizing: border-box; }
+.cr-bb-card {
+  position: relative; display: block; overflow: hidden;
+  border-radius: 8px; background: #fff;
+  box-shadow: 0 2px 12px rgba(20,0,2,0.05);
+}
+.cr-bb-card__img {
+  width: 100%; aspect-ratio: 1600 / 1084;
+  object-fit: cover; display: block;
+  background: #eee; border-radius: 8px 8px 0 0;
+}
+.cr-bb-card__panel {
+  position: relative; padding: 24px; height: 183px;
+  overflow: hidden; border-radius: 0 0 8px 8px;
+  background: #FFE0E3;
+}
+.cr-bb-card__headline {
+  font-family: 'Founders Grotesk Condensed', 'Founders Grotesk', sans-serif;
+  font-size: 30px; font-weight: 500; line-height: 36px;
+  letter-spacing: normal; margin: 0 0 8px 0; color: #140002;
+}
+.cr-bb-card__headline em {
+  font-family: 'Founders Grotesk', sans-serif;
+  font-style: italic; font-weight: 700;
+}
+.cr-bb-card__subcopy {
+  font-family: 'Founders Grotesk', sans-serif;
+  font-size: 13px; font-weight: 400; line-height: 1.45;
+  color: #140002; margin: 0;
+}
+.cr-bb-card__cta {
+  position: absolute; bottom: 24px; left: 24px;
+  font-family: 'Founders Grotesk', sans-serif;
+  font-size: 13px; font-weight: 600; color: #000;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.cr-bb-card[data-panel="blush"]     .cr-bb-card__panel { background: #FFE0E3; }
+.cr-bb-card[data-panel="cream"]     .cr-bb-card__panel { background: #FFF0E0; }
+.cr-bb-card[data-panel="off-white"] .cr-bb-card__panel { background: #FAF6F2; }
+
+/* critic pass — a SEPARATE adversarial call; annotates, never deletes */
+.play-critic {
+  margin-top: 16px; padding: 12px 14px;
+  background: rgba(20,0,2,0.025); border-radius: 12px;
+}
+.play-critic-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px; color: #9a7a80;
+  margin-bottom: 7px;
+}
+.play-verdict { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.play-verdict--acceptable { color: #7a5200; background: rgba(240,180,41,0.22); }
+.play-critic-text { font-size: 12px; line-height: 1.55; color: #4a2028; }
+.play-critic-text + .play-critic-text { margin-top: 7px; }
+.play-critic-text strong { color: #140002; font-weight: 650; }
+
+.play-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+/* dim the non-target cards once the user commits to one, so the eye follows
+   the action instead of scanning a full feed */
+.iv2-card { transition: box-shadow 0.2s, border-color 0.2s, opacity 0.45s ease; }
+.iv2-card.dim { opacity: 0.32; }
+
+@media (max-width: 760px) {
+  .iv2-card-grid { grid-template-columns: 1fr; }
+}
