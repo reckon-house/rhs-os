@@ -14,7 +14,22 @@ import { siteGraph } from "@/lib/structured-data";
 
 const SITE_DESCRIPTION =
   "Multi-disciplinary design and engineering by Jeremy Prasatik. Reckon House Staples works across brand, product, and place: apps, interiors, and AI tools.";
-const DEFAULT_OG_IMAGE = "/og-home.jpg";
+/* THE SHARE CARD. A NEW FILENAME IS THE WHOLE POINT — overwriting
+   og-home.jpg would have changed nothing a reader sees, because social
+   scrapers cache by URL for weeks and no amount of redeploying makes
+   them re-fetch a path they already hold. A different URL is a
+   different asset, so every platform fetches it fresh. The old file
+   stays on disk for links already out in the world.
+
+   Dimensions are declared rather than left to the scraper: several
+   fall back to a small square card when they cannot cheaply learn the
+   ratio, and this is a 1.91:1 image that should always unfurl large. */
+const DEFAULT_OG_IMAGE = {
+  url: "/og-home-clean.jpg",
+  width: 2400,
+  height: 1260,
+  alt: "Reckon House. Work by Jeremy Prasatik: the Robert Rodriguez campaign, the Ivy Park launch, and the A.R.C. app.",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
