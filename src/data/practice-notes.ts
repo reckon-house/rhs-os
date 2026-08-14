@@ -26,7 +26,7 @@ export interface PracticeNote {
 export const practiceNotes: PracticeNote[] = [
   { title: "Recently", body: "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online." },
   { title: "Get in touch", body: "hello@reckon.house" },
-  { title: "The setup", body: "Independent, Texas. Design and build. Available for work." },
+  { title: "The setup", body: "Independent, Texas. Design and build. I love the work." },
   { title: "What I do", body: "Art direction. Brand systems. Digital design. Interiors." },
 ];
 

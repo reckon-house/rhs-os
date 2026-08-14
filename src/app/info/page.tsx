@@ -28,7 +28,7 @@ const LEDGER: Array<{ label: string; body: React.ReactNode }> = [
   },
   {
     label: "The setup",
-    body: "Independent, Texas. Design and build. Available for work.",
+    body: "Independent, Texas. Design and build. I love the work.",
   },
   {
     label: "Recently",

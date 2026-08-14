@@ -109,7 +109,7 @@ const CONTACT = [
   },
 ];
 const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors"];
-const PRACTICE = ["Independent, Texas", "Design and build", "Available for work"];
+const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
 const NEWS = ["Awwwards Honors, 2026", "Faux Reel, open repo", "28 case studies online"];
 
 /** A ledger column of LINKS. The reveal rides inside the anchor for the
