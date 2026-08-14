@@ -175,3 +175,17 @@
     padding-left: 20px;
   }
 }
+
+/* THE LIVE NOTICE. Empty almost always, and it must take no room when
+   it is: an aria-live region that reserves a blank line puts a hole in
+   the page for the 99% of the time nothing has arrived. :empty handles
+   that without JS having to know about layout. */
+.live {
+  font-size: var(--pp-cap);
+  line-height: 1.5;
+  opacity: 0.55;
+  padding-top: 14px;
+}
+.live:empty {
+  display: none;
+}

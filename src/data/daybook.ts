@@ -54,6 +54,13 @@ export interface DaybookEntry {
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
   {
+    id: "threads-go-live",
+    date: "2026-08-14",
+    project: "RHS",
+    body: "Threads update themselves while they are being read. Reply from the operator CLI and it renders on the visitor's page in about two seconds, no reload. Nothing polls in a hidden tab and the cadence opens out to 45 seconds once a conversation goes quiet.",
+    link: { href: "/", label: "Ask the house" },
+  },
+  {
     id: "owner-questions",
     date: "2026-08-14",
     project: "RHS",

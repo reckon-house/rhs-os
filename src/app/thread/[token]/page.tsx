@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { readThread } from "@/lib/messages";
 import { ThreadReply } from "./ThreadReply";
+import { ThreadLive } from "./ThreadLive";
 import styles from "./thread.module.css";
 
 /* ── /thread/[token] ────────────────────────────────────────────────
@@ -90,6 +91,16 @@ export default async function ThreadPage({
             </article>
           ))}
         </section>
+
+        {/* The signature is computed HERE, from the same array that
+            rendered the messages above, so what the poller compares
+            against is exactly what is on screen. */}
+        <ThreadLive
+          token={token}
+          signature={`${thread.messages.length}:${
+            thread.messages[thread.messages.length - 1]?.created_at ?? ""
+          }`}
+        />
 
         <ThreadReply token={token} />
 
