@@ -49,13 +49,21 @@ export const metadata: Metadata = {
     // (the "·" wordmark stays the title-template suffix for child pages).
     siteName: "Reckon House Staples",
     url: SITE_URL,
-    title: "Design & Engineering by Jeremy Prasatik",
+    /* THE UNFURL CAPTION, AND ONLY THAT. Three lines already carry the
+       name in a shared link — the card prints "Reckon House", the site
+       name and the domain both sit under it — so the caption spending
+       itself on "Design & Engineering by Jeremy Prasatik" said the same
+       thing a fourth time. Two words instead, naming the work.
+       The document <title> above is a different job: it is what a search
+       result and a browser tab show, where the brand has to be in the
+       string to be found, so it keeps its wordmark. */
+    title: "Design & Build",
     description: SITE_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Design & Engineering by Jeremy Prasatik",
+    title: "Design & Build",
     description: SITE_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
