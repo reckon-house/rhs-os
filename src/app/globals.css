@@ -545,6 +545,24 @@ body {
   }
 }
 
+/* Faux Reel lab, the rail's arrival. The resting state below IS the
+   finished row — .sz-lab-pre is applied by ledger-arrival to rows still
+   under the fold and removed as each crosses in, so a failed script
+   leaves a complete rail rather than an invisible one, and reduced
+   motion never arms anything at all. Same curve and stagger variable
+   (--dbd) the daybook rows and the compose form use, because it is the
+   same entrance. */
+.sz-lab-row {
+  transition:
+    opacity 0.5s ease var(--dbd, 0ms),
+    transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+}
+.sz-lab-pre {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
+}
+
 /* Palette swatches (Faux Reel lab): let the color fill the whole rounded square
    by dropping the native color-input's inner padding + swatch border. */
 input[type="color"].sz-swatch::-webkit-color-swatch-wrapper { padding: 0; }

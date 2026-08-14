@@ -7,11 +7,14 @@ import type { CaseStudy } from "@/lib/types";
 // PRESSING NOTES. The cover does double duty on this study and it is the
 // whole reason the port is clean: the pressing cover's top-right reel IS a
 // faux reel — stills cut fast enough to read as motion — so the study about
-// that mechanism opens with the mechanism, running. The old classic-renderer
-// hero (a sizzle-playground "hero" variant, a wall of small reels) is gone
-// rather than ported; two copies of the product playing before the first
-// word would compete, and the cover's copy is the one every pressing study
-// already carries.
+// that mechanism opens with the mechanism, running.
+//
+// The reel wall then takes the slot a hero photograph would hold. The port
+// first dropped it, on the theory that two copies of the product playing
+// would compete; on the page the opposite was true — the cover's reel is a
+// thumbnail in a corner, and without the wall the whole screen under it was
+// empty. They are different arguments at different scales: one frame
+// running, then eighteen running out of phase, then one you can drive.
 //
 // The reel frames are the playground's own RANGE_IMAGES — the exact seven
 // frames the default cut plays, in the cut's authored order — and the
@@ -73,6 +76,20 @@ export const sizzleCaseStudy: CaseStudy = {
       ],
       abstract:
         "A sizzle reel is usually footage: shot, edited, rendered, hosted. Faux Reel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types, wipes, blinks, a burn, a lens pinch, and a title card that assembles itself, all on a timer tuned so the eye reads motion. One container, CSS animation, zero video files.\n\nI wanted that look, just not the editing behind it. So I had the code do it instead. The build took a day with Claude Code, most of it spent finessing the timing and the transitions, getting each cut to land so the stills feel like motion and not a slideshow. The finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nNone of this is a screenshot or a mockup. The reel up top is running live, and the lab below it is where you load your own photos: it pulls a five-color palette out of them and rebuilds the reel to match. If you want a file instead of a live embed, the same code exports the whole thing as a looping GIF or an MP4.",
+    },
+
+    // ── THE WALL, WHERE A HERO WOULD BE ──
+    // This study has no photograph to open on, and the gap after the
+    // cover read as a missing one. The grid fills it with the only
+    // establishing shot the product can give: eighteen cells running the
+    // same seven frames out of phase, so the mechanism is legible as a
+    // pattern before the lab explains it beat by beat. It sits AFTER the
+    // cover and BEFORE the lab deliberately — a wall of small reels is
+    // an argument, and the single big one you can drive is the proof.
+    {
+      id: "reel-wall",
+      type: "sizzle-playground",
+      variant: "hero",
     },
 
     // ════════════════════════════════════════

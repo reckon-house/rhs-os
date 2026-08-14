@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SizzleReel, buildSequence, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { extractPalette } from "@/lib/sizzle-palette";
+import { useLedgerArrival } from "@/lib/ledger-arrival";
 import type { SizzlePlaygroundSection } from "@/lib/types";
 
 // The live SizzleReel inside its own case study. Two variants:
@@ -69,24 +70,58 @@ const GRID_CELL = "w-full max-w-[130px] md:max-w-[160px]";
 const GRID_RADIUS = `${(50 / 225) * 100}%`; // same ratio Thumb's BLOT_RADIUS uses
 // Desktop edge-peek: the grid runs 112% of the box width and shifts left 6% to
 // re-center, so the outer columns bleed past the box and its overflow:hidden
-// clips them (see the md:w-[112%] md:ml-[-6%] on the grid). Mobile is full
-// width so all three columns are fully visible.
+// clips them. The shift is a relative offset rather than a negative margin,
+// because margin utilities are inert on this page (see the rail below).
+// Mobile is full width so all three columns are fully visible.
 
-const mono = "text-[11px] tracking-[0.14em] uppercase text-foreground/50";
+/* ── TYPE: WEIGHT AND COLOUR, NOT CAPS ──────────────────────────────
+   The whole panel used to differentiate by capitalising: labels, helper
+   lines, every chip. Two problems. A caps sentence is read letter by
+   letter, and these helper lines are sentences — the longest runs 62
+   characters. And the site itself stopped doing this: the homepage rail
+   and the compose form both label in sentence case, small and muted.
+
+   It was also broken. Four of these lines carried `uppercase` AND
+   `normal-case` together, which are the same CSS property, so the author
+   asked for sentence case and got caps because the utilities' order in
+   the sheet decided it, not the order in the class attribute. Verified
+   in the browser: computed text-transform was `uppercase` on all four.
+   Deleting the caps fixes the intent and the collision at once. */
+const note = "text-[12px] leading-relaxed text-foreground/45";
 const chipBase =
-  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] tracking-[0.05em] uppercase transition-colors cursor-pointer";
+  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] transition-colors cursor-pointer";
 
 const toolBtn =
-  "inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-3 py-1.5 text-[11px] tracking-[0.08em] uppercase text-foreground/70 backdrop-blur shadow-sm transition-colors hover:bg-surface hover:text-foreground cursor-pointer";
+  "inline-flex items-center gap-1.5 rounded-full bg-surface/90 px-3 py-1.5 text-[12px] text-foreground/70 backdrop-blur shadow-sm transition-colors hover:bg-surface hover:text-foreground cursor-pointer";
 
-// A numbered control block in the left rail: "01 — IMAGES" over its inputs.
+/* Beat names arrive as engine identifiers. Most read fine with a capital
+   ("Shutter", "Burn"); three do not, because they are contractions the
+   code uses and nobody else would: ccurtain, wordBuild, wordOut. Their
+   display names are read off the type union's own comments in
+   SizzleReel.tsx — "solid color wipes in left-to-right and HOLDS", "the
+   line assembles word by word", "the standing line exits word by word" —
+   so the chip says what the beat does rather than what the constant is
+   called. Not renamed at the source: `fx` is the engine's API and the
+   embed snippet ships those ids. */
+const BEAT_NAMES: Record<string, string> = {
+  ccurtain: "Color wipe",
+  wordBuild: "Word build",
+  wordOut: "Word out",
+};
+const beatName = (fx: string) =>
+  BEAT_NAMES[fx] ?? fx.charAt(0).toUpperCase() + fx.slice(1);
+
+/* A numbered control block in the left rail: "01  Images" over its inputs.
+   The title is the thing being read, so it carries the weight and nearly
+   full ink; the number is an index and recedes. That is the whole
+   hierarchy — no caps, no letterspacing, no rule between the two.
+   sz-lab-row is the arrival's hook (see the stylesheet), not a style. */
 function LabSection({ num, title, children }: { num: string; title: string; children: React.ReactNode }) {
   return (
-    <div className="mt-5 border-t border-foreground/10 pt-5">
-      <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-foreground/45">
-        <span className="text-foreground/70">{num}</span>
-        <span className="mx-1.5 text-foreground/25">&mdash;</span>
-        {title}
+    <div className="sz-lab-row flex flex-col gap-4 border-t border-foreground/10 pt-7">
+      <p className="flex items-baseline gap-2.5 text-[13px] leading-none">
+        <span className="text-foreground/35 tabular-nums">{num}</span>
+        <span className="font-medium text-foreground/85">{title}</span>
       </p>
       {children}
     </div>
@@ -94,6 +129,15 @@ function LabSection({ num, title, children }: { num: string; title: string; chil
 }
 
 export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
+  /* The rail's numbered rows rise in sequence as they arrive, the same
+     arm-and-release contract the daybook and the compose form use: the
+     resting state in CSS is the FINISHED row, and the hook applies the
+     start state only to rows still below the fold. A dead script leaves
+     a complete rail, never an invisible one. Not BodyReveal — that one
+     rewrites its subtree's innerHTML to cut lines, which would destroy
+     the file input, the colour swatches and the slider living here. */
+  const railRef = useRef<HTMLDivElement | null>(null);
+  useLedgerArrival(railRef, ".sz-lab-row", "sz-lab-pre");
   const [images, setImages] = useState<string[]>(RANGE_IMAGES);
   const [colors, setColors] = useState<string[]>(RANGE_COLORS);
   const [headline, setHeadline] = useState(RANGE_HEADLINE);
@@ -189,7 +233,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
   if (variant === "hero") {
     const gridSeq = buildGridSequence(RANGE_IMAGES.length, RANGE_COLORS);
     return (
-      <section className="hero-breakout mt-2 mb-6">
+      <section className="hero-breakout pb-6">
         {/* Desktop: bounded to 16:9 like a normal hero image, the three rows 1fr
             each so the capped cards get even vertical breathing room, and
             overflow-hidden clips the outer columns' peek. Mobile: no fixed
@@ -199,7 +243,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
           {/* Desktop only (md:): wider than the box + shifted left to re-center,
               so the overflow on each side is what the box's overflow:hidden
               clips. Mobile is full width — all three columns fully visible. */}
-          <div className="grid grid-cols-3 md:grid-cols-6 md:grid-rows-3 md:h-full w-full md:w-[112%] md:ml-[-6%] gap-4 place-items-center">
+          <div className="grid grid-cols-3 md:grid-cols-6 md:grid-rows-3 md:h-full w-full md:w-[112%] md:relative md:left-[-6%] gap-4 place-items-center">
             {Array.from({ length: gridCount }).map((_, k) => (
               <SizzleReel
                 key={k}
@@ -231,10 +275,17 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
     <section className="w-full py-6 px-4 md:px-[calc(100%/24)]">
       <div className="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start">
         {/* ── STAGE (right on desktop, top on mobile) ── */}
-        <div className="relative order-1 overflow-hidden rounded-[24px] bg-surface-alt lg:order-none lg:col-start-2 lg:row-start-1">
+        {/* NO MAT. The pressing article already paints --pp-paper across the
+            viewport behind every section, and PressingVizFrame's own rule is
+            that a hosted viz sits on that paper directly — no tinted
+            container. This panel was the one child still bringing its own
+            surface, so the study read as a widget parked on the page rather
+            than part of it. The reel keeps its own radius; nothing else
+            needs a box. */}
+        <div className="relative order-1 lg:order-none lg:col-start-2 lg:row-start-1">
           {/* floating toolbar */}
           <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
-            <div className="flex overflow-hidden rounded-full bg-surface/90 text-[11px] uppercase tracking-[0.08em] backdrop-blur shadow-sm">
+            <div className="flex overflow-hidden rounded-full bg-surface/90 text-[12px] backdrop-blur shadow-sm">
               <button
                 onClick={() => setStep(false)}
                 className={`px-3 py-1.5 transition-colors ${!step ? "bg-foreground text-background" : "text-foreground/55 hover:text-foreground"}`}
@@ -249,11 +300,11 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
               </button>
             </div>
             <button onClick={copyEmbed} className={toolBtn} title="Copy the embed code for this recipe">
-              {copied ? "Copied" : "</> Embed"}
+              {copied ? "Copied" : "Embed"}
             </button>
           </div>
 
-          <div className="p-5 md:p-8">
+          <div className="pt-14">
             <SizzleReel
               key={reelKey}
               images={images}
@@ -268,7 +319,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
             />
 
             {/* timeline — the beat inspector reads as the loop's filmstrip */}
-            <div className="mt-4">
+            <div className="flex flex-col gap-2.5 pt-4">
               <div className="flex flex-wrap items-center gap-1.5">
                 {beats.map((b, k) => {
                   const on = (step ? stepIndex : liveBeat) === k;
@@ -285,12 +336,12 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
                       {b.color ? (
                         <i aria-hidden className="inline-block h-2 w-2 rounded-full border border-foreground/20" style={{ background: b.color }} />
                       ) : null}
-                      {k + 1} {b.fx}
+                      {k + 1} {beatName(b.fx)}
                     </button>
                   );
                 })}
               </div>
-              <p className={`${mono} mt-2.5 normal-case tracking-[0.02em]`}>
+              <p className={note}>
                 {step
                   ? `Frozen on beat ${stepIndex + 1}. Click Live to resume, or pick another chip.`
                   : "The highlighted chip is the current beat. Click one to freeze it."}
@@ -300,29 +351,42 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
         </div>
 
         {/* ── RAIL (left on desktop, below on mobile) ── */}
-        <div className="order-2 rounded-[24px] bg-surface p-6 md:p-7 lg:order-none lg:col-start-1 lg:row-start-1">
-          <div className="flex items-baseline justify-between">
-            <h3 className="text-[20px] font-bold leading-none tracking-[-0.02em]">Faux Reel</h3>
-            <span className={mono}>Lab</span>
+        {/* GAP, NOT MARGIN, ALL THE WAY DOWN. Every route that renders the
+            pressing footer also loads pressing-home.css, which carries the
+            lab prototype's universal margin reset UNLAYERED — and an
+            unlayered rule beats Tailwind's layered utilities whatever their
+            specificity, so every margin utility in this file was inert.
+            Asked the engine directly: the utility matches the element and
+            loses to the star rule. Flex gap and padding are untouched by
+            that reset, so the rail's rhythm is built from those and cannot
+            silently die. */}
+        <div ref={railRef} className="order-2 flex flex-col gap-9 lg:order-none lg:col-start-1 lg:row-start-1">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-baseline justify-between">
+              <h3 className="text-[20px] font-bold leading-none tracking-[-0.02em]">Faux Reel</h3>
+              <span className={note}>Lab</span>
+            </div>
+            <p className="max-w-[34ch] text-[12px] leading-relaxed text-foreground/55">
+              Load stills, pull a palette from their pixels, set a title. The reel cuts itself. Nothing uploads, nothing saves.
+            </p>
           </div>
-          <p className="mt-3 max-w-[34ch] text-[12px] leading-relaxed text-foreground/55">
-            Load stills, pull a palette from their pixels, set a title. The reel cuts itself. Nothing uploads, nothing saves.
-          </p>
 
           <LabSection num="01" title="Images">
             <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFiles} className="hidden" />
             <button
               onClick={() => fileRef.current?.click()}
-              className="rounded-full bg-foreground px-5 py-2.5 text-[13px] text-background transition-colors hover:bg-foreground/85"
+              className="w-fit rounded-full bg-foreground px-5 py-2.5 text-[13px] text-background transition-colors hover:bg-foreground/85"
             >
               Load images
             </button>
-            <p className={`${mono} mt-3 normal-case tracking-[0.02em]`}>
-              {images === RANGE_IMAGES ? "Running the studio set" : `${images.length} of yours loaded`}
-            </p>
-            <p className="mt-2 text-[12px] leading-relaxed text-foreground/45">
-              Up to 8. They stay in your browser — a refresh clears them.
-            </p>
+            <div className="flex flex-col gap-1.5">
+              <p className={note}>
+                {images === RANGE_IMAGES ? "Running the studio set" : `${images.length} of yours loaded`}
+              </p>
+              <p className={note}>
+                Up to 8. They stay in your browser &mdash; a refresh clears them.
+              </p>
+            </div>
           </LabSection>
 
           <LabSection num="02" title="Palette">
@@ -338,7 +402,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
                 />
               ))}
             </div>
-            <button onClick={() => runExtract(images)} className={`${chipBase} mt-3 bg-foreground/[0.06] text-foreground/70 hover:bg-foreground/[0.11]`}>
+            <button onClick={() => runExtract(images)} className={`${chipBase} w-fit bg-foreground/[0.06] text-foreground/70 hover:bg-foreground/[0.11]`}>
               {extracting ? "Reading pixels…" : "Re-extract"}
             </button>
           </LabSection>
@@ -350,7 +414,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
               placeholder="Leave empty for no title card"
               className="w-full rounded-xl bg-foreground/[0.05] px-3.5 py-2.5 text-[14px] text-foreground placeholder:text-foreground/35 focus:bg-foreground/[0.08] focus:outline-none"
             />
-            <p className={`${mono} mt-2 normal-case tracking-[0.02em]`}>
+            <p className={note}>
               1&ndash;2 words slide in. 3+ scatter through the cut, then build.
             </p>
           </LabSection>
@@ -384,7 +448,7 @@ export function SizzlePlayground({ variant }: SizzlePlaygroundSection) {
                 </button>
               ))}
             </div>
-            <p className={`${mono} mt-2 normal-case tracking-[0.02em]`}>
+            <p className={note}>
               Square and portrait for social, 9:16 for stories.
             </p>
           </LabSection>
