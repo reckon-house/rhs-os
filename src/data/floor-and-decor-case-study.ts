@@ -7,7 +7,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   title: "Floor & Decor Feature",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Designer of the Quarter, Summer 2023. Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile. Featured in the catalog, on the website, and in a video interview.",
+    "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike.",
   field: "Interior Design\nMaterial Selection\nFinish Coordination",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -41,7 +41,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       },
       title: "Floor & Decor\nFeature",
       subtitle:
-        "Designer of the Quarter, Summer 2023. Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile. Featured in the catalog, on the website, and in a video interview.",
+        "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike.",
       field: "Interior Design  Material Selection  Finish Coordination",
       author: "Jeremy Prasatik",
       published: "2023",

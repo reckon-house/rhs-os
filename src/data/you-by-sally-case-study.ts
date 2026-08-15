@@ -39,7 +39,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       },
       title: "You By\nSally",
       subtitle:
-        "A hair color brand campaign for Sally Beauty. Real cast, oversized swatches, and a system built to scale from influencer bio pages to retail signage without losing recognition.",
+        "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and a look that holds from an influencer's bio page to a retail sign.",
       field: "Campaign Direction  Brand System  Digital Design  Retail Signage",
       author: "Jeremy Prasatik",
       published: "2021",

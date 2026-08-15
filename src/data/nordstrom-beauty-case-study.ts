@@ -46,7 +46,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nBeauty",
       subtitle:
-        "A beauty editorial hub where every story sells. Built to stay current without a content team rebuilding pages each week.",
+        "Nordstrom's beauty editorial hub, where every story is shoppable. | Built to stay current without a team rebuilding the pages every week.",
       field: "Product Design  UX Design  Visual Design",
       author: "Jeremy Prasatik",
       published: "2018",

@@ -35,7 +35,7 @@
   {
    "slug": "amber-shockey-co",
    "title": "Amber Shockey & Co.",
-   "subtitle": "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
+   "subtitle": "Tableware patterns for Amber Shockey Co., three collections in. Each one is built to layer, from a single accent dish to the whole table.",
    "category": "Creative",
    "href": "/case-studies/amber-shockey-co",
    "year": "2017",
@@ -74,7 +74,7 @@
      {
       "facet": "client",
       "term": "Amber Shockey & Co.",
-      "n": 34,
+      "n": 35,
       "cites": [
        {
         "section": "meta",
@@ -267,7 +267,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Built as systems that layer, mix, and scale from single accent to full table."
+        "quote": "| Each one is built to layer, from a single accent dish to the whole table."
        },
        {
         "section": "blue-footnote",
@@ -355,7 +355,7 @@
   {
    "slug": "arc",
    "title": "A.R.C. Archive. Ready. Cloud.",
-   "subtitle": "An app that looks at what you own and tells you whether your insurance actually covers it.",
+   "subtitle": "A.R.C., an iPhone app I designed and built for home inventory. It looks at what you own and tells you whether your insurance actually covers it.",
    "category": "Digital",
    "href": "/case-studies/arc",
    "year": "2024",
@@ -1687,7 +1687,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Personal work that later fed the Capitan Boot Co. campaign."
+        "quote": "| Personal work that later became the backdrop for the Capitan Boot Co. campaign."
        },
        {
         "section": "meta",
@@ -2197,7 +2197,7 @@
   {
    "slug": "branding-graphics",
    "title": "Branding, Print & Apparel",
-   "subtitle": "Graphic work. Album covers, gig posters, prints, logos, for a lot of different people, in whatever style each one needed.",
+   "subtitle": "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. Each one in whatever style it needed, none of them in mine.",
    "category": "Creative",
    "href": "/case-studies/branding-graphics",
    "year": "2008 — 2018",
@@ -2629,7 +2629,7 @@
   {
    "slug": "capitan-boot-co",
    "title": "Capitan Boot Co.",
-   "subtitle": "Western branding built to stamp, stitch, and emboss. Logo marks, typography, badges, and apparel graphics for a boot company rooted in heritage craft.",
+   "subtitle": "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and apparel graphics. Built to be stamped into leather, stitched, and embossed, and still read.",
    "category": "Creative",
    "href": "/case-studies/capitan-boot-co",
    "year": "2018",
@@ -2670,7 +2670,7 @@
      {
       "facet": "client",
       "term": "Capitan Boot Co.",
-      "n": 28,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -2813,17 +2813,17 @@
      {
       "facet": "material",
       "term": "leather",
-      "n": 2,
+      "n": 3,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Built to be stamped into leather, stitched, and embossed, and still read."
+       },
        {
         "section": "marks-subhead",
         "field": "content",
         "quote": "Leather takes pressure."
-       },
-       {
-        "section": "marks-materials",
-        "field": "colors.1.description",
-        "quote": "Photography, leather"
        }
       ]
      },
@@ -2870,7 +2870,7 @@
   {
    "slug": "chalet",
    "title": "Mountain View Chalet",
-   "subtitle": "1968 Pacific Northwest chalet taken to the studs and rebuilt - exterior, interior, furnishings. Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line.",
+   "subtitle": "A 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out. Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line.",
    "category": "Interiors",
    "href": "/case-studies/chalet",
    "year": "2023",
@@ -3791,7 +3791,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line."
+        "quote": "| Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line."
        },
        {
         "section": "meta",
@@ -3880,7 +3880,7 @@
   {
    "slug": "cosmo-prof",
    "title": "Cosmo Prof.",
-   "subtitle": "Digital experience for a B2B salon retailer. Elevated photography, simplified navigation, and shoppable components built for working stylists.",
+   "subtitle": "A digital refresh for Cosmo Prof, the salon supply retailer. New photography, simpler navigation, and shoppable pieces built for working stylists.",
    "category": "Digital",
    "href": "/case-studies/cosmo-prof",
    "year": "2021",
@@ -3920,7 +3920,7 @@
      {
       "facet": "client",
       "term": "Cosmo Prof",
-      "n": 37,
+      "n": 38,
       "cites": [
        {
         "section": "meta",
@@ -4048,7 +4048,7 @@
   {
    "slug": "dsc",
    "title": "Dallas Sport Collective",
-   "subtitle": "A six-trainer gym in North Texas with a schedule you can talk to. Marketing site, booking platform, and an MCP server that connects athletes' own AI.",
+   "subtitle": "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. A gym with a schedule you can talk to.",
    "category": "Digital",
    "href": "/case-studies/dsc",
    "year": "2025",
@@ -4118,7 +4118,7 @@
      {
       "facet": "client",
       "term": "Dallas Sport Collective",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -4127,8 +4127,8 @@
        },
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule holding it together was a pile of…"
+        "field": "subtitle",
+        "quote": "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas."
        }
       ]
      }
@@ -4253,7 +4253,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "A six-trainer gym in North Texas with a schedule you can talk to."
+        "quote": "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas."
        },
        {
         "section": "meta",
@@ -4345,7 +4345,7 @@
   {
    "slug": "fairview-entry",
    "title": "The Fairview: Entry.",
-   "subtitle": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak. The first room of the house, sized for light, dressed to set the tone.",
+   "subtitle": "The Fairview entry, two stories tall. Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light.",
    "category": "Interiors",
    "href": "/case-studies/fairview-entry",
    "year": "2023",
@@ -4384,7 +4384,7 @@
      {
       "facet": "room",
       "term": "entry",
-      "n": 23,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -4413,7 +4413,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
        },
        {
         "section": "meta",
@@ -4435,7 +4435,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
        },
        {
         "section": "meta",
@@ -4624,7 +4624,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
        },
        {
         "section": "meta",
@@ -4671,7 +4671,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
        },
        {
         "section": "meta",
@@ -4693,7 +4693,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak."
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
        },
        {
         "section": "meta",
@@ -4872,7 +4872,7 @@
   {
    "slug": "fairview-sitting",
    "title": "The Fairview: Sitting Room.",
-   "subtitle": "Stacked stone, velvet swivels, antiqued brass. A room built for conversation, a drink, and a fire.",
+   "subtitle": "The Fairview sitting room. Stacked stone, velvet swivels, antiqued brass, and a room built for conversation, a drink, and a fire.",
    "category": "Interiors",
    "href": "/case-studies/fairview-sitting",
    "year": "2023",
@@ -5578,7 +5578,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -5587,8 +5587,8 @@
        },
        {
         "section": "meta",
-        "field": "summary.0.value",
-        "quote": "Sitting room built around a floor-to-ceiling stacked stone fireplace"
+        "field": "subtitle",
+        "quote": "The Fairview sitting room."
        },
        {
         "section": "image",
@@ -5758,7 +5758,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
        },
        {
         "section": "image",
@@ -6184,7 +6184,7 @@
      {
       "facet": "room",
       "term": "bedroom",
-      "n": 24,
+      "n": 25,
       "cites": [
        {
         "section": "meta",
@@ -6206,7 +6206,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 8,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -6215,8 +6215,8 @@
        },
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "The bath holds the same temperature the bedroom set."
+        "field": "subtitle",
+        "quote": "The Fairview suite, bedroom and bath, 600 square feet."
        },
        {
         "section": "image",
@@ -6235,7 +6235,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
        },
        {
         "section": "meta",
@@ -6281,7 +6281,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
        },
        {
         "section": "image",
@@ -6594,7 +6594,7 @@
   {
    "slug": "floor-and-decor",
    "title": "Floor & Decor Feature",
-   "subtitle": "Designer of the Quarter, Summer 2023. Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile. Featured in the catalog, on the website, and in a video interview.",
+   "subtitle": "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike.",
    "category": "Interiors",
    "href": "/case-studies/floor-and-decor",
    "year": "2023",
@@ -6709,7 +6709,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
        },
        {
         "section": "image",
@@ -6770,7 +6770,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Hard surface selections across three residential projects - marble, dolomite, white oak, classic tile."
+        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
        },
        {
         "section": "meta",
@@ -7397,7 +7397,7 @@
      {
       "facet": "client",
       "term": "Floor & Decor",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -7406,8 +7406,8 @@
        },
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residenti…"
+        "field": "subtitle",
+        "quote": "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit."
        }
       ]
      }
@@ -7458,7 +7458,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 47,
+      "n": 48,
       "cites": [
        {
         "section": "meta",
@@ -7480,17 +7480,17 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 7,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register."
+        "field": "subtitle",
+        "quote": "The primary bath in the same Hill Country house as the kitchen, 400 square feet."
        },
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+        "quote": "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register."
        }
       ]
      }
@@ -7499,7 +7499,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 29,
+      "n": 30,
       "cites": [
        {
         "section": "meta",
@@ -7550,7 +7550,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
+        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
        },
        {
         "section": "image",
@@ -7998,7 +7998,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
+        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
        },
        {
         "section": "image",
@@ -9479,7 +9479,7 @@
   {
    "slug": "hill-country-living",
    "title": "Hill Country Residence: Livingroom.",
-   "subtitle": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
+   "subtitle": "The living room at the center of the Hill Country house. A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-living",
    "year": "2023",
@@ -9519,7 +9519,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 29,
+      "n": 30,
       "cites": [
        {
         "section": "meta",
@@ -9592,7 +9592,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
        },
        {
         "section": "image",
@@ -10479,7 +10479,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
        },
        {
         "section": "meta",
@@ -10501,7 +10501,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
        },
        {
         "section": "meta",
@@ -10597,17 +10597,17 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 13,
+      "n": 14,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "The living room at the center of the Hill Country house."
+       },
        {
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall."
        },
        {
         "section": "image",
@@ -10692,7 +10692,7 @@
   {
    "slug": "hill-country-oak",
    "title": "Hill Country Oakworks.",
-   "subtitle": "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
+   "subtitle": "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker, from billboards down to phone wallpapers. Sun-washed color, the silhouette of an oak, and the land the barrels come from.",
    "category": "Creative",
    "href": "/case-studies/hill-country-oak",
    "year": "2019",
@@ -10730,7 +10730,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 33,
+      "n": 34,
       "cites": [
        {
         "section": "meta",
@@ -10757,7 +10757,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from."
+        "quote": "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker, from billboards down to phone wallpapers."
        }
       ]
      }
@@ -11264,7 +11264,7 @@
      {
       "facet": "client",
       "term": "J. Christianson",
-      "n": 11,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -11272,9 +11272,9 @@
         "quote": "J. Christianson"
        },
        {
-        "section": "hero",
-        "field": "alt",
-        "quote": "J. Christianson tree stripe graphic in storefront window, natural light"
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward."
        }
       ]
      }
@@ -11379,7 +11379,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Mid-century warmth that stops short of nostalgia."
+        "quote": "| Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike."
        },
        {
         "section": "closing",
@@ -11577,7 +11577,7 @@
   {
    "slug": "jeffrey-ecommerce",
    "title": "Jeffrey New York",
-   "subtitle": "First digital flagship for the NYC retailer. Full ecommerce launch - the brand, the site, and the way it published stories, all built from zero.",
+   "subtitle": "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. A gallery of a shop, translated to a screen without flattening it into a catalog.",
    "category": "Digital",
    "href": "/case-studies/jeffrey-ecommerce",
    "year": "2015",
@@ -11618,7 +11618,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 40,
+      "n": 41,
       "cites": [
        {
         "section": "meta",
@@ -12097,7 +12097,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 46,
+      "n": 47,
       "cites": [
        {
         "section": "meta",
@@ -12744,7 +12744,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 23,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -12896,7 +12896,7 @@
   {
    "slug": "nordstrom-framework",
    "title": "Nordstrom Content Framework",
-   "subtitle": "Content taxonomy built from scratch. Custom typeface, icon set, naming language, and a system that organized everything from homepage to email to dedicated landing pages.",
+   "subtitle": "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. It gave the homepage, email, and landing pages one way of sorting a lot of everything.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-framework",
    "year": "2016",
@@ -12933,7 +12933,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 16,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -13094,7 +13094,7 @@
   {
    "slug": "nordstrom-personalization",
    "title": "Nordstrom Personalization System",
-   "subtitle": "Three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
+   "subtitle": "Personalized homepage content for Nordstrom, built on three tile shapes. Pages for millions of people that still feel like they were made for one.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-personalization",
    "year": "2015",
@@ -13134,7 +13134,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 40,
+      "n": 41,
       "cites": [
        {
         "section": "meta",
@@ -13175,17 +13175,17 @@
      {
       "facet": "material",
       "term": "tile",
-      "n": 5,
+      "n": 6,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Personalized homepage content for Nordstrom, built on three tile shapes."
+       },
        {
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Three tile shapes."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Built a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobi…"
        }
       ]
      },
@@ -13677,7 +13677,7 @@
   {
    "slug": "sally",
    "title": "Sally Beauty Marketing OS",
-   "subtitle": "Five connected platforms that turn competitive intelligence into store-level execution.",
+   "subtitle": "Sally Marketing OS, five connected platforms I design and build for Sally Beauty's marketing team. Competitive intelligence goes in one end and store-ready campaigns come out the other.",
    "category": "Digital",
    "href": "/case-studies/sally",
    "year": "2025",
@@ -13729,7 +13729,7 @@
      {
       "facet": "client",
       "term": "Sally Beauty",
-      "n": 7,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -13737,9 +13737,9 @@
         "quote": "Sally Beauty Marketing OS"
        },
        {
-        "section": "hero-1",
-        "field": "alt",
-        "quote": "Sally Beauty Marketing OS, platform overview"
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Sally Marketing OS, five connected platforms I design and build for Sally Beauty's marketing team."
        }
       ]
      },
@@ -14346,7 +14346,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "A hair color brand campaign for Sally Beauty."
+        "quote": "A brand campaign for You by Sally, Sally Beauty's hair color line."
        },
        {
         "section": "bio-pair",

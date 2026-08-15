@@ -7,7 +7,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
   title: "Cosmo Prof.",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Digital experience for a B2B salon retailer. Elevated photography, simplified navigation, and shoppable components built for working stylists.",
+    "A digital refresh for Cosmo Prof, the salon supply retailer. | New photography, simpler navigation, and shoppable pieces built for working stylists.",
   field: "Creative Direction\nDigital Design\nPhotography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2021",
@@ -37,7 +37,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       },
       title: "Cosmo Prof.",
       subtitle:
-        "Digital experience for a B2B salon retailer. Elevated photography, simplified navigation, and shoppable components built for working stylists.",
+        "A digital refresh for Cosmo Prof, the salon supply retailer. | New photography, simpler navigation, and shoppable pieces built for working stylists.",
       field: "Creative Direction  Digital Design  Photography Direction",
       author: "Jeremy Prasatik",
       published: "2021",

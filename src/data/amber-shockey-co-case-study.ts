@@ -7,7 +7,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
   title: "Amber Shockey & Co.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
+    "Tableware patterns for Amber Shockey Co., three collections in. | Each one is built to layer, from a single accent dish to the whole table.",
   field: "Pattern Design\nProduct Design\nColorway Development",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -39,7 +39,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       },
       title: "Amber Shockey\n& Co.",
       subtitle:
-        "Tableware pattern design. Built as systems that layer, mix, and scale from single accent to full table.",
+        "Tableware patterns for Amber Shockey Co., three collections in. | Each one is built to layer, from a single accent dish to the whole table.",
       field: "Pattern Design  Product Design  Colorway Development",
       author: "Jeremy Prasatik",
       published: "2017",

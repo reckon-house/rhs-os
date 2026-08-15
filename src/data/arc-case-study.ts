@@ -90,7 +90,7 @@ export const arcCaseStudy: CaseStudy = {
   title: "A.R.C. Archive. Ready. Cloud.",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "An app that looks at what you own and tells you whether your insurance actually covers it.",
+    "A.R.C., an iPhone app I designed and built for home inventory. | It looks at what you own and tells you whether your insurance actually covers it.",
   // "AI Home Inventory", matching the homepage grid's own name for it.
   // The facts miner reads this line, and without the word the index
   // could not put the portfolio's one shipped AI product under "AI" —
@@ -126,7 +126,7 @@ export const arcCaseStudy: CaseStudy = {
       // Each word its own reveal line — the reveal masks per line.
       title: "A.R.C.\nArchive.\nReady.\nCloud.",
       subtitle:
-        "An app that looks at what you own and tells you whether your insurance actually covers it.",
+        "A.R.C., an iPhone app I designed and built for home inventory. | It looks at what you own and tells you whether your insurance actually covers it.",
       field: "AI Home Inventory Computer Vision Insurance Technology",
       author: "Jeremy Prasatik",
       published: "2024",

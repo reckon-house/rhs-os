@@ -49,7 +49,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nPrimary Bath",
       subtitle:
-        "Three marbles, two vanities, one freestanding tub under a wood plank ceiling. 400 square feet that feel found.",
+        "The primary bath in the same Hill Country house as the kitchen, 400 square feet. | Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found.",
       field: "Interior Design  Bathroom Design  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",

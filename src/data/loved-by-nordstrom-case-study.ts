@@ -51,7 +51,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       },
       title: "Loved by\nNordstrom",
       subtitle:
-        "One icon borrowed from Instagram, twelve months of brand merchandising built on top of it.",
+        "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and twelve months built on top of it.",
       field: "Creative Direction  Campaign Design  Design Systems",
       author: "Jeremy Prasatik",
       published: "2017",

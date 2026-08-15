@@ -7,7 +7,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
   title: "Hill Country Oakworks.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
+    "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker, from billboards down to phone wallpapers. | Sun-washed color, the silhouette of an oak, and the land the barrels come from.",
   field: "Art Direction\nCampaign Design",
   author: "Jeremy Prasatik",
   published: "2019",
@@ -39,7 +39,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nOakworks.",
       subtitle:
-        "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
+        "A campaign for Hill Country Oakworks, a Texas whiskey barrel maker, from billboards down to phone wallpapers. | Sun-washed color, the silhouette of an oak, and the land the barrels come from.",
       field: "Art Direction  Campaign Design",
       author: "Jeremy Prasatik",
       published: "2019",

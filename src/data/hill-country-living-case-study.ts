@@ -7,7 +7,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
   title: "Hill Country Residence: Livingroom.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
+    "The living room at the center of the Hill Country house. | A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose.",
   field: "Interior Design\nFurniture Curation\nArt Selection\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -49,7 +49,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       },
       title: "Hill Country Residence\nLivingroom.",
       subtitle:
-        "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
+        "The living room at the center of the Hill Country house. | A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose.",
       field: "Interior Design  Furniture Curation  Art Selection  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",

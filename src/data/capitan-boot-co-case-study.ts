@@ -7,7 +7,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
   title: "Capitan Boot Co.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Western branding built to stamp, stitch, and emboss. Logo marks, typography, badges, and apparel graphics for a boot company rooted in heritage craft.",
+    "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and apparel graphics. | Built to be stamped into leather, stitched, and embossed, and still read.",
   field: "Brand Identity\nLogo System\nApparel Graphics\nPhotography",
   author: "Jeremy Prasatik",
   published: "2018",
@@ -37,7 +37,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       },
       title: "Capitan\nBoot Co.",
       subtitle:
-        "Western branding built to stamp, stitch, and emboss. Logo marks, typography, badges, and apparel graphics for a boot company rooted in heritage craft.",
+        "Brand identity for Capitan Boot Co., a Western boot maker: logo, type, badges, and apparel graphics. | Built to be stamped into leather, stitched, and embossed, and still read.",
       field: "Brand Identity  Logo System  Apparel Graphics  Photography",
       author: "Jeremy Prasatik",
       published: "2018",

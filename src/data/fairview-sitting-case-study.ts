@@ -7,7 +7,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
   title: "The Fairview: Sitting Room.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Stacked stone, velvet swivels, antiqued brass. A room built for conversation, a drink, and a fire.",
+    "The Fairview sitting room. | Stacked stone, velvet swivels, antiqued brass, and a room built for conversation, a drink, and a fire.",
   field: "Interior Design\nFurniture Curation\nFinish Selection",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -39,7 +39,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nSitting Room.",
       subtitle:
-        "Stacked stone, velvet swivels, antiqued brass. A room built for conversation, a drink, and a fire.",
+        "The Fairview sitting room. | Stacked stone, velvet swivels, antiqued brass, and a room built for conversation, a drink, and a fire.",
       field: "Interior Design  Furniture Curation  Finish Selection",
       author: "Jeremy Prasatik",
       published: "2023",

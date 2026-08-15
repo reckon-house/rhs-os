@@ -48,7 +48,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       },
       title: "Typography\n& Patterns",
       subtitle:
-        "Six patterns. Three art prints. Black and white only. A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
+        "Personal work: six patterns and three art prints, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
       field: "Typography Design  Pattern Design  Art Direction",
       author: "Jeremy Prasatik",
       published: "2023",

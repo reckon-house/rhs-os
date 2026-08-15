@@ -7,7 +7,7 @@ export const chaletCaseStudy: CaseStudy = {
   title: "Mountain View Chalet",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "1968 Pacific Northwest chalet taken to the studs and rebuilt - exterior, interior, furnishings. Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line.",
+    "A 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out. | Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line.",
   field: "Interior Design\nExterior Direction\nFinish Selection\nFurniture Curation\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -39,7 +39,7 @@ export const chaletCaseStudy: CaseStudy = {
       },
       title: "Mountain View\nChalet",
       subtitle:
-        "1968 Pacific Northwest chalet taken to the studs and rebuilt - exterior, interior, furnishings. Cabin bones with mid-century sensibility and 16-foot glass doors framing the tree line.",
+        "A 1968 Pacific Northwest chalet, taken to the studs and rebuilt inside and out. | Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line.",
       field: "Interior Design  Exterior Direction  Finish Selection  Furniture Curation  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",

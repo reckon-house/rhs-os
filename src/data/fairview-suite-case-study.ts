@@ -49,7 +49,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nPrimary Suite",
       subtitle:
-        "Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub. 600 square feet designed for mood.",
+        "The Fairview suite, bedroom and bath, 600 square feet. | Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood.",
       field: "Interior Design  Finish Selection  Furniture Curation",
       author: "Jeremy Prasatik",
       published: "2022",

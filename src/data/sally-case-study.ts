@@ -5,7 +5,7 @@ export const sallyCaseStudy: CaseStudy = {
   title: "Sally Beauty Marketing OS",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Five connected platforms that turn competitive intelligence into store-level execution.",
+    "Sally Marketing OS, five connected platforms I design and build for Sally Beauty's marketing team. | Competitive intelligence goes in one end and store-ready campaigns come out the other.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -75,7 +75,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
-        "Five connected platforms that turn competitive intelligence into store-level execution.",
+        "Sally Marketing OS, five connected platforms I design and build for Sally Beauty's marketing team. | Competitive intelligence goes in one end and store-ready campaigns come out the other.",
       abstract:
         "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.",
     },

@@ -52,7 +52,7 @@ export const bigBendCaseStudy: CaseStudy = {
       },
       title: "West Texas",
       subtitle:
-        "Photographs from Big Bend and the desert around Marfa. Personal work that later fed the Capitan Boot Co. campaign.",
+        "Photographs from a family trip through Big Bend and the desert around Marfa. | Personal work that later became the backdrop for the Capitan Boot Co. campaign.",
       field: "Photography  Landscape",
       author: "Jeremy Prasatik",
       published: "2022",
