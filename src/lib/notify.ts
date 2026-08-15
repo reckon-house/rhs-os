@@ -132,15 +132,21 @@ export async function notifyNewMessage(args: {
   const asked = args.transcript.length
     ? `\nThey had asked: ${args.transcript.join(" · ")}\n`
     : "";
+  /* THE COMMAND COMES FIRST, AND THE LINK IS LABELLED. The link goes to
+     the VISITOR's view of the thread, whose reply box posts as them —
+     the author is hardcoded there, so writing in it makes an answer look
+     like it came from the person who wrote in. That happened on the
+     first real message. So the mail leads with the one thing that
+     answers as the house, and names the link for what it is. */
   const text = `${who} wrote in${args.email ? ` (${args.email})` : ""}.
 
 ${args.body}
 ${asked}
-The thread:
-${SITE}/thread/${args.token}
-
-To answer:
+To answer, from the repo:
 npm run inbox -- reply ${args.token} "your answer"
+
+Their view of the thread (the box on this page posts as THEM, not you):
+${SITE}/thread/${args.token}
 `;
 
   try {

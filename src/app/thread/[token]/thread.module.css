@@ -54,7 +54,7 @@
    import the one convention this page is avoiding. */
 .msg {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr) max-content;
+  grid-template-columns: 104px minmax(0, 1fr) max-content;
   column-gap: clamp(16px, 2.4vw, 32px);
   align-items: start;
   padding: 16px 0;
@@ -71,7 +71,18 @@
   font-weight: var(--pp-lbl-weight, 500);
   text-transform: uppercase;
   padding-top: 7px;
+}
+/* A date is two words and never wraps. A NAME IS WHATEVER SOMEONE
+   TYPED — "Maria at Vista Roofing" is 22 characters in an 84px column,
+   and with nowrap it printed straight across the message beside it.
+   It wraps now, and breaks inside a word rather than overflow if one
+   arrives with no spaces in it at all. */
+.stamp {
   white-space: nowrap;
+}
+.who {
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 .house .who {
   color: #000;
