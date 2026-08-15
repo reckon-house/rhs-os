@@ -465,20 +465,66 @@ export const sallyCaseStudy: CaseStudy = {
       ],
     },
 
+    // ════════════════════════════════════════
+    // SECTION 05 — IT THINKS ON ITS OWN
+    // The part the study could not say until now. Every section above
+    // describes a tool a person drives. This one describes what the
+    // system does without being asked. Facts here come from the live
+    // build (Plays, shipped 2026-07-22) and stay at the altitude the
+    // rest of the study already uses: what the tool IS, never Sally's
+    // data, competitors, or voice.
+    // ════════════════════════════════════════
+    {
+      id: "thinks-header",
+      type: "section-header",
+      label: "SECTION 05: CAMPAIGNS",
+      title: "It Proposes",
+      pressing: {
+        mark: { n: "05", name: "It Proposes" },
+        heldLine: "the Work Now",
+      },
+    },
+    {
+      id: "thinks-text",
+      type: "text",
+      size: "xl",
+      content:
+        "The newest app in the rail is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues the reasoning, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and real SKUs.",
+    },
+    {
+      id: "thinks-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "The Approve button is the whole point. It does not save a suggestion somewhere; it writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
+    },
+    {
+      id: "thinks-editorial",
+      type: "editorial-headline",
+      text: "Four months ago\nthis was a spreadsheet\nand a group chat.",
+    },
+
     // ── ASSET HUB ──
     // Same problem as Brand Brain above, answered a different way so the
-    // two sections do not read as one recipe: the sankey holds nothing,
-    // so the establishing plate moves below the two library views and
-    // climbs the PAIR instead of the brief. Across the study that puts
+    // two sections do not read as one recipe: the quote poster before
+    // this holds nothing, so the establishing plate moves below the two
+    // library views and climbs the PAIR instead of the brief.
+    // Reordered 2026-08-15: Assets and Utilities now sit AFTER Campaigns,
+    // so the study runs the way the loop runs (signal, strategy,
+    // proposal, then the production and asset layer underneath), and the
+    // most autonomous thing it does is not the last thing before the
+    // closing. Assets and Utilities stay adjacent because the utilities
+    // hero rises across the held Asset Hub zoom. Across the study that puts
     // each of the four things that can hold to work once: the cover, a
     // brief, a pinned pair, a zoom.
     {
       id: "asset-header",
       type: "section-header",
-      label: "SECTION 05: ASSET HUB",
+      label: "SECTION 06: ASSET HUB",
       title: "Digital Asset Management",
       pressing: {
-        mark: { n: "05", name: "Digital Asset Management" },
+        mark: { n: "06", name: "Digital Asset Management" },
         heldLine: "Rebuilt with AI",
         choreo: { pin: true },
       },
@@ -598,10 +644,10 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "utilities-header",
       type: "section-header",
-      label: "SECTION 06: UTILITIES MARKETPLACE",
+      label: "SECTION 07: UTILITIES MARKETPLACE",
       title: "A Growing Library of",
       pressing: {
-        mark: { n: "06", name: "A Growing Library of" },
+        mark: { n: "07", name: "A Growing Library of" },
         heldLine: "Internal Tools",
         choreo: { pin: true },
       },
@@ -715,46 +761,6 @@ export const sallyCaseStudy: CaseStudy = {
     },
 
 
-
-    // ════════════════════════════════════════
-    // SECTION 07 — IT THINKS ON ITS OWN
-    // The part the study could not say until now. Every section above
-    // describes a tool a person drives. This one describes what the
-    // system does without being asked. Facts here come from the live
-    // build (Plays, shipped 2026-07-22) and stay at the altitude the
-    // rest of the study already uses: what the tool IS, never Sally's
-    // data, competitors, or voice.
-    // ════════════════════════════════════════
-    {
-      id: "thinks-header",
-      type: "section-header",
-      label: "SECTION 07: CAMPAIGNS",
-      title: "It Proposes",
-      pressing: {
-        mark: { n: "07", name: "It Proposes" },
-        heldLine: "the Work Now",
-      },
-    },
-    {
-      id: "thinks-text",
-      type: "text",
-      size: "xl",
-      content:
-        "The newest app in the rail is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues the reasoning, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and real SKUs.",
-    },
-    {
-      id: "thinks-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The Approve button is the whole point. It does not save a suggestion somewhere; it writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
-    },
-    {
-      id: "thinks-editorial",
-      type: "editorial-headline",
-      text: "Four months ago\nthis was a spreadsheet\nand a group chat.",
-    },
 
     // ── CLOSING: BUILD + RESULT ──
     {
