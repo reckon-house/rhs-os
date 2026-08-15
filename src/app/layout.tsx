@@ -13,7 +13,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { siteGraph } from "@/lib/structured-data";
 
 const SITE_DESCRIPTION =
-  "Multi-disciplinary design and engineering by Jeremy Prasatik. Reckon House Staples works across brand, product, and place: apps, interiors, and AI tools.";
+  "The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.";
 /* THE SHARE CARD. A NEW FILENAME IS THE WHOLE POINT — overwriting
    og-home.jpg would have changed nothing a reader sees, because social
    scrapers cache by URL for weeks and no amount of redeploying makes

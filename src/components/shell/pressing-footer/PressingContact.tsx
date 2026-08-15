@@ -59,6 +59,7 @@
  */
 
 import { useEffect, useId, useLayoutEffect, useRef } from "react";
+import { DAYBOOK } from "@/data/daybook";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -110,7 +111,17 @@ const CONTACT = [
 ];
 const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors"];
 const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
-const NEWS = ["Awwwards Honors, 2026", "Faux Reel, open repo", "28 case studies online"];
+/* News is the daybook, not a second list. The footer already renders the
+   daybook strip below this, and the rail's "Recently" carries the same
+   three lines as this column did — so a reader met the identical items
+   twice within a screen. The column now names the newest three entries,
+   which means it changes when the daybook does and never goes stale on
+   its own. Titled entries use their title; the rest their first clause. */
+const NEWS = DAYBOOK.slice(0, 3).map((e) => {
+  if (e.title) return e.title;
+  const first = Array.isArray(e.body) ? e.body[0] : e.body;
+  return first.split(/[.:]/)[0].trim();
+});
 
 /** A ledger column of LINKS. The reveal rides inside the anchor for the
  *  same reason it does in the contact column: the splitter flattens
@@ -277,7 +288,7 @@ export function PressingContact({ className }: PressingContactProps) {
           overflow-hidden mask, which is exactly what the prototype's two
           .rln spans were. */}
       <RevealHeadline as="h2" className={styles.headline}>
-        {"Start something\nworth making."}
+        {"Have a project\nin mind?"}
       </RevealHeadline>
 
       <div ref={colRef} className={styles.col}>

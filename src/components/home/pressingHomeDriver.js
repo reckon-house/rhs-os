@@ -87,7 +87,7 @@ const NOTES = [
      opening claim here runs two sentences, the closer is one, and the
      enumeration between them is what greys. Say it in the data and it
      is right by construction. */
-  ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. This is the work I love making, and some of the things that truly inspire me.",
+  ["The practice", "I'm Jeremy Prasatik. I work across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. This is what I make.",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
@@ -868,9 +868,9 @@ function think(q) {
          photographs, and no part of that touches a contact answer: the
          model is held, the index is never read, and the line is a
          template. Saying so is both true and the more interesting fact. */
-      receipt: "This answer is written by hand, not generated. The index " +
-        "behind this site holds project data, not contact details, so a " +
-        "model would have no address to give you.",
+      receipt: "This answer is written by hand. The index behind this site " +
+        "holds project data and no contact details, so a model would " +
+        "have no address to give you.",
       /* the model never sees the email address — FACTS carries projects,
          not contact details — so it would hedge or omit it. The one
          answer that has to be exact keeps its template. */
@@ -918,10 +918,10 @@ function think(q) {
       });
       const setLines = (FACTS && FACTS.voice && FACTS.voice.set) || {};
       const RECEIPTS = {
-        pricing: "Written by hand, not generated. The index behind this site holds project data, not prices, so a model would have no number to quote and no business inventing one.",
+        pricing: "Written by hand. The index behind this site holds project data and no prices, so a model would have no number to quote.",
         transfer: "Written by hand. The honest demo is the site itself: the search you are using is the machinery the answer describes.",
-        process: "Written by hand, with the model held. The one number in it, a tool built in a day, comes from the Faux Reel study below rather than a model's guess.",
-        builder: "Written by hand, not generated. It is a statement about authorship, so it is authored.",
+        process: "Written by hand, with the model held. The one number in it, a tool built in a day, comes from the Faux Reel study below.",
+        builder: "Written by hand. It is a statement about who made this, so a person wrote it.",
         searchMeta: "Written by hand. A model describing itself would flatter itself; this line was written by the person who wired it.",
       };
       return {
