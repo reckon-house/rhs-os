@@ -130,6 +130,13 @@ export async function openThread(v: Intake): Promise<OpenResult> {
  *  thread that does not exist. Never carries the email. */
 export async function readThread(token: string): Promise<Thread | null> {
   if (!TOKEN.test(token)) return null;
+  /* A thread cannot exist if there is nowhere to keep one. Returning
+     null rather than letting db() throw is what makes a missing env var
+     a 404 instead of a server-side exception page — which is exactly
+     what production showed when SUPABASE_URL was absent there. The
+     other two verbs are only reached from routes that check storeReady
+     first; this one is read by a PAGE, and a page has no such gate. */
+  if (!storeReady) return null;
   const { data, error } = await db().rpc("read_thread", { p_token: token });
   if (error || !data) return null;
   const t = data as {
