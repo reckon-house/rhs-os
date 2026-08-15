@@ -408,7 +408,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
-      text: "Every asset, email, and shelf talker\nstarts as a brief.\nThe brief had better be right.",
+      text: "Everything the team makes\nstarts as a brief,\nand Jim writes the first draft.",
       group: { name: "brand-brain" },
     },
     {
