@@ -44,7 +44,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       // the break must be explicit or × and Neiman's rise together.
       title: "Robert\nRodriguez\nx\nNeiman’s",
       subtitle:
-        "’80s mall glam meets high fashion — the double-exposure glamour shot reimagined with mesh color fields instead of airbrushed backdrops and couture instead of puff sleeves.",
+        "’80s mall glam meets high fashion. The double-exposure glamour shot, redone with mesh color fields in place of the airbrushed backdrop and couture in place of puff sleeves.",
       field: "Campaign Design Art Direction Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2024",
@@ -138,17 +138,17 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The Reference.",
           content:
-            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera — the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously — the confidence and the color, the full unironic glamour — and rebuild it with contemporary craft. A translation.",
+            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera. It was the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously, the confidence and the color and the full unironic glamour, and rebuild it with contemporary craft. A translation.",
         },
         {
           title: "The Technique.",
           content:
-            "Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.\n\nMesh color fields replaced the airbrushed backdrops — mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.",
+            "Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.\n\nMesh color fields replaced the airbrushed backdrops: mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.",
         },
         {
           title: "The System.",
           content:
-            "Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads — each combination tells a slightly different story from the same visual DNA.\n\nThe typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.",
+            "Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads. Each combination tells a slightly different story from the same visual DNA.\n\nThe typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.",
         },
       ],
     },

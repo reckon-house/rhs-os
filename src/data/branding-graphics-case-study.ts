@@ -7,7 +7,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
   title: "Branding, Print & Apparel",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Graphic work. Album covers, gig posters, prints, logos. No single client. No single style. The point is fluency.",
+    "Graphic work. Album covers, gig posters, prints, logos, for a lot of different people, in whatever style each one needed.",
   field: "Graphic Design\nAlbum Art\nPoster Design\nLogo Design\nPhoto Compositing",
   author: "Jeremy Prasatik",
   published: "2008 — 2018",
@@ -51,7 +51,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       },
       title: "Branding,\nPrint &\nApparel",
       subtitle:
-        "Graphic work. Album covers, gig posters, prints, logos. No single client. No single style. The point is fluency.",
+        "Graphic work. Album covers, gig posters, prints, logos, for a lot of different people, in whatever style each one needed.",
       field: "Graphic Design  Album Art  Poster Design  Logo Design  Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2008 — 2018",
@@ -464,7 +464,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
       links: [],
       content:
-        "The commercial work that came later traces directly back to this output - compositional habits, color confidence, the willingness to start with a blank page and not know which direction the piece will turn.\n\nThis section will keep growing. Every new piece becomes another reference point.",
+        "This is where the compositional habits got built: color confidence, and the willingness to start with a blank page and not know which direction the piece will turn.\n\nThis section will keep growing. Every new piece becomes another reference point.",
     },
   ],
 };

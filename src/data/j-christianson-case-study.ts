@@ -50,7 +50,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       },
       title: "J. Christianson",
       subtitle:
-        "Mid-century warmth without the nostalgia trap. A brand identity built from the name outward, designed to live on a storefront sign and a clothing tag with equal presence.",
+        "Mid-century warmth that stops short of nostalgia. A brand identity built from the name outward, designed to live on a storefront sign and a clothing tag with equal presence.",
       field: "Brand Development  Naming  Logo Design  Graphic Design",
       author: "Jeremy Prasatik",
       published: "2019",

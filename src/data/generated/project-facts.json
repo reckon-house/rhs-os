@@ -2197,7 +2197,7 @@
   {
    "slug": "branding-graphics",
    "title": "Branding, Print & Apparel",
-   "subtitle": "Graphic work. Album covers, gig posters, prints, logos. No single client. No single style. The point is fluency.",
+   "subtitle": "Graphic work. Album covers, gig posters, prints, logos, for a lot of different people, in whatever style each one needed.",
    "category": "Creative",
    "href": "/case-studies/branding-graphics",
    "year": "2008 — 2018",
@@ -4267,17 +4267,12 @@
      {
       "facet": "room",
       "term": "office",
-      "n": 2,
+      "n": 1,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
         "quote": "The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up."
-       },
-       {
-        "section": "closing",
-        "field": "content",
-        "quote": "The back office became the front door, and all of it connects."
        }
       ]
      }
@@ -10697,7 +10692,7 @@
   {
    "slug": "hill-country-oak",
    "title": "Hill Country Oakworks.",
-   "subtitle": "Campaign for a Texas barrel maker. Sun-washed color, heritage silhouette, land and craft.",
+   "subtitle": "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
    "category": "Creative",
    "href": "/case-studies/hill-country-oak",
    "year": "2019",
@@ -10762,7 +10757,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Campaign for a Texas barrel maker."
+        "quote": "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from."
        }
       ]
      }
@@ -10771,7 +10766,7 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 17,
+      "n": 18,
       "cites": [
        {
         "section": "meta",
@@ -11384,7 +11379,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Mid-century warmth without the nostalgia trap."
+        "quote": "Mid-century warmth that stops short of nostalgia."
        },
        {
         "section": "closing",
@@ -13099,7 +13094,7 @@
   {
    "slug": "nordstrom-personalization",
    "title": "Nordstrom Personalization System",
-   "subtitle": "Mass scale, individual feel. A content engine built on three shapes that adapt to user, season, and story.",
+   "subtitle": "A content engine built on three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-personalization",
    "year": "2015",

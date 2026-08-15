@@ -323,7 +323,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "A foyer two stories tall, sized for light, dressed in five materials. The kind of room that quietly does the work of introducing the house before anyone gets past the rug.",
+        "A foyer two stories tall, sized for light, dressed in five materials. The room that introduces the house before anyone gets past the rug.",
     },
   ],
 };

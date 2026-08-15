@@ -309,7 +309,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
       content:
-        "The beauty hub solved a publishing problem by turning it into a design problem - separate the editorial voice from the product data, and let the templates hold the layout while the catalog feeds the content. A hub that looked hand-curated every week without a designer opening a file.\n\nThe try-on tool turned browsing into trying, and the shoppable drawer kept the story visible during the purchase. Both patterns kept the customer inside the experience instead of scattering them across product pages.",
+        "The beauty hub solved a publishing problem with a design decision: keep the editorial voice separate from the product data, so templates hold the layout while the catalog feeds the content. A hub that looked hand-curated every week without a designer opening a file.\n\nThe try-on tool turned browsing into trying, and the shoppable drawer kept the story visible during the purchase. Both patterns kept the customer inside the experience instead of scattering them across product pages.",
     },
   ],
 };

@@ -294,7 +294,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. Shiplap walls, wood ceiling, sage cabinetry - all of it carries through from the kitchen, but the temperature shifts. Where the kitchen is built for company, the bath is built for the morning.\n\nA freestanding tub sits where the light falls, globe sconces throw warm circles on the vertical plank walls, and the shower is lined in three stones that look like they belong together without matching. The objects in the room belong to the people who use it.",
+        "The kitchen two rooms away uses four materials and covers them in brass. This bath uses three marbles and covers them in polished nickel. Shiplap walls, wood ceiling, sage cabinetry - all of it carries through from the kitchen, but the temperature shifts. The kitchen is built for company. The bath is built for the morning.\n\nA freestanding tub sits where the light falls, globe sconces throw warm circles on the vertical plank walls, and the shower is lined in three stones that look like they belong together without matching. The objects in the room belong to the people who use it.",
     },
   ],
 };

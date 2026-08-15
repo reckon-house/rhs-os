@@ -42,6 +42,12 @@ const FILES = [
 
 const TELLS = [
   {
+    key: "em dash",
+    why: "the #1 rule in CLAUDE.md; a period, a comma, or a rewrite instead",
+    re: /\u2014/,
+    error: true,
+  },
+  {
     key: "antithesis",
     why: "the X-not-Y balance; he does not talk in antithesis",
     re: /\b(?:not\b[^.;!?]{2,50}?\bbut\b|rather than\b|,\s*not\s+(?:a|an|the|just|only)?\s*\w+[.;!?]|\bnever\s+\w+\s*[.;])/i,
@@ -108,6 +114,9 @@ for (const rel of FILES) {
          walks straight past the gate — which is exactly what happened. */
       const s = m[2].replace(/\\n/g, " ");
       if (!isProse(s)) continue;
+      /* alt text, published ranges and file paths never render as copy;
+         a dash there is punctuation in a machine field, not a tell. */
+      if (/^\s*(?:alt|markAlt|published|src|href|url|image)\s*:/.test(line)) continue;
       /* Split into sentences so a closer test sees the sentence end. */
       const sentences = s.split(/(?<=[.!?])\s+/);
       for (const sent of sentences) {
@@ -151,7 +160,8 @@ for (const tell of TELLS) {
 
 const errors = findings.filter((f) => f.error);
 if (errors.length) {
-  console.log(`✗ ${errors.length} intensifier${errors.length === 1 ? "" : "s"} — these do not ship.`);
+  const kinds = [...new Set(errors.map((e) => e.key))].join(", ");
+  console.log(`✗ ${errors.length} hard error${errors.length === 1 ? "" : "s"} (${kinds}). These do not ship.`);
   process.exit(1);
 }
 console.log(findings.length ? "Read each one out loud. Keep the ones a person would say." : "✓ nothing flagged");

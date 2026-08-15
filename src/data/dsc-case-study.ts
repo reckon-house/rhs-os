@@ -450,7 +450,7 @@ export const dscCaseStudy: CaseStudy = {
         { label: "App walkthrough", url: "https://dsc-gym.vercel.app/showcase" },
       ],
       content:
-        "The platform is live. Athletes sign in and book, the owner approves from a queue or just says the week out loud, and a connected Claude reads the schedule as it actually is.\n\nThe scheduling used to be the part nobody saw: texts, notes, a spreadsheet, the after-hours work that kept the training on time. Now it is the most modern thing the gym owns. The back office became the front door, and all of it connects.",
+        "The platform is live. Athletes sign in and book, the owner approves from a queue or just says the week out loud, and a connected Claude reads the schedule as it actually is.\n\nThe scheduling used to be the part nobody saw: texts, notes, a spreadsheet, the after-hours work that kept the training on time. Now it is the most modern thing the gym owns, and all of it connects.",
     },
   ],
 };

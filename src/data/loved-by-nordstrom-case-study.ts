@@ -330,7 +330,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       stack: ["Art Direction", "Photography Licensing", "Editorial Systems"],
       links: [],
       content:
-        "Most campaigns burn out when the concept gets stale. This one never had a concept to stale. The heart was borrowed, the frame was fixed, and the only thing that changed was the brand photography inside it. Merchandising swapped brands on a weekly cadence without filing a creative brief.\n\nThe tier between Liked and Loved gave designers a reason not to touch the layout every month. Twelve months of output from a five-minute idea that never needed a refresh.",
+        "Most campaigns burn out when the concept gets stale. This one didn't have a concept to wear out. The heart was borrowed, the frame was fixed, and the only thing that changed was the brand photography inside it. Merchandising swapped brands on a weekly cadence without filing a creative brief.\n\nThe tier between Liked and Loved gave designers a reason not to touch the layout every month. Twelve months of output from a five-minute idea that never needed a refresh.",
     },
   ],
 };

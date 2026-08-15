@@ -328,7 +328,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "An Eisenhower painting on a limestone wall, vinyl records on the shelf, a sheepskin that moves around. The room looks the same after ten years of family because nothing in it was afraid of wear.",
+        "An Eisenhower painting on a limestone wall, vinyl records on the shelf, a sheepskin that moves around. The room looks the same after ten years of family use because everything in it was picked to take wear.",
     },
   ],
 };

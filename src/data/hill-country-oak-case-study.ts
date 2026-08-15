@@ -7,7 +7,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
   title: "Hill Country Oakworks.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Campaign for a Texas barrel maker. Sun-washed color, heritage silhouette, land and craft.",
+    "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
   field: "Art Direction\nCampaign Design",
   author: "Jeremy Prasatik",
   published: "2019",
@@ -39,7 +39,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nOakworks.",
       subtitle:
-        "Campaign for a Texas barrel maker. Sun-washed color, heritage silhouette, land and craft.",
+        "Campaign for a Texas barrel maker, built from sun-washed color, the silhouette of an oak, and the land the barrels come from.",
       field: "Art Direction  Campaign Design",
       author: "Jeremy Prasatik",
       published: "2019",
@@ -288,7 +288,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held the system together. Heritage without the cosplay.",
+        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held the system together, and none of it dresses up as old.",
     },
   ],
 };
