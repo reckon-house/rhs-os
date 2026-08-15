@@ -126,6 +126,14 @@ The goal: drop in new images + a project summary → generate a complete new cas
 
 ### Copy Rules — Permanent
 
+**VOICE.md leads.** It is specimens of how Jeremy actually talks, mined
+from four months of transcripts, and it outranks every style rule below
+when they disagree on tone. The hard rules stay binding regardless:
+no fabrication, no em dashes, no invented numbers. But "lead with
+verbs / remove I" produced clipped fragment-chic that reads as AI, so
+when a line follows every rule and still sounds like nobody, VOICE.md
+is the reference for what it should sound like instead.
+
 These apply to every case study, every time. Non-negotiable.
 
 **Voice:**
