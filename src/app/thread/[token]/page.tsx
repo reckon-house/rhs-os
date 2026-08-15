@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { readThread } from "@/lib/messages";
 import { ThreadReply } from "./ThreadReply";
 import { ThreadLive } from "./ThreadLive";
+import { PaperGround } from "@/components/shell/PaperGround";
 import styles from "./thread.module.css";
 
 /* ── /thread/[token] ────────────────────────────────────────────────
@@ -46,6 +47,8 @@ export default async function ThreadPage({
 
   return (
     <div className="pressing isolate relative w-full">
+      {/* White page, so the masthead needs white behind it too. */}
+      <PaperGround />
       <div
         aria-hidden
         className="hero-breakout absolute top-0 bottom-0 -z-10"

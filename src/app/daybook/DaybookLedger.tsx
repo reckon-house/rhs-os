@@ -29,6 +29,7 @@ import {
 } from "@/data/daybook";
 import { HoverPlate } from "@/components/daybook/HoverPlate";
 import { useLedgerArrival } from "@/lib/ledger-arrival";
+import { PaperGround } from "@/components/shell/PaperGround";
 import styles from "./daybook.module.css";
 
 /* The accession number: oldest entry is No. 001 and the count only ever
@@ -152,17 +153,6 @@ export function DaybookLedger() {
     }, 300);
   };
 
-  /* The homepage's white-paper flag, borrowed whole. The masthead is a
-     translucent bar over whatever <html> paints, and without this it
-     shows the shell's textured ground — the old site — in a band across
-     the top of a white page. rh-home paints paper behind the bar and
-     hides the film overlay, which is exactly the treatment every
-     all-white pressing page needs. Removed on unmount so the classic
-     routes (category, info) keep their texture. */
-  useEffect(() => {
-    document.documentElement.classList.add("rh-home");
-    return () => document.documentElement.classList.remove("rh-home");
-  }, []);
   useLedgerArrival(rootRef, `.${styles.row}, .${styles.month}`, styles.pre);
 
   /* THE PAGE ENTERS. The statement, the rail blocks, and the rows
@@ -206,6 +196,8 @@ export function DaybookLedger() {
 
   return (
     <div className="pressing isolate relative w-full">
+      {/* White page, so the masthead needs white behind it too. */}
+      <PaperGround />
       <div
         aria-hidden
         className="hero-breakout absolute top-0 bottom-0 -z-10"

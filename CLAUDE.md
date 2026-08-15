@@ -42,6 +42,14 @@ headings. Length is fine when it earns it. Density is not.
 - Always map Figma hex values to existing design tokens before using raw values
 - Match desktop pixel-perfect, then make responsive for mobile/tablet
 
+## White pages need PaperGround
+The masthead is a translucent bar and its burn filters whatever `<html>`
+paints, which is the shell's textured ground. Any page on white paper
+must render `<PaperGround />` (src/components/shell/PaperGround.tsx) or
+it gets a band of the old site across the top. Three pages needed it and
+the third was missed twice, because each one carried its own copy of the
+effect. One component now; render it and forget it.
+
 ## Conventions
 - Use Tailwind utility classes, not custom CSS (except globals.css tokens)
 - Responsive: mobile-first with `md:` (768px) and `lg:` (1024px) breakpoints
