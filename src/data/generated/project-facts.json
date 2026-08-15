@@ -8403,7 +8403,7 @@
   {
    "slug": "hill-country-kitchen",
    "title": "Hill Country Kitchen",
-   "subtitle": "A ground-up kitchen built on material tension. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. Four finishes that shouldn't work together until they do.",
+   "subtitle": "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-kitchen",
    "year": "2023",
@@ -8563,7 +8563,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 45,
+      "n": 46,
       "cites": [
        {
         "section": "meta",
@@ -8585,7 +8585,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 37,
+      "n": 38,
       "cites": [
        {
         "section": "meta",
@@ -8594,8 +8594,8 @@
        },
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
+        "field": "subtitle",
+        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "image",
@@ -8607,17 +8607,17 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 30,
+      "n": 31,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+       },
        {
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "…sign system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling th…"
        },
        {
         "section": "image",
@@ -8823,7 +8823,7 @@
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 39,
+      "n": 40,
       "cites": [
        {
         "section": "meta",
@@ -8832,8 +8832,8 @@
        },
        {
         "section": "meta",
-        "field": "summary.0.value",
-        "quote": "Cabinetry, island, dining zone, full material spec."
+        "field": "subtitle",
+        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "image",
@@ -9348,17 +9348,17 @@
      {
       "facet": "colour",
       "term": "sage",
-      "n": 15,
+      "n": 16,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+       },
        {
         "section": "meta",
         "field": "summary.2.value",
         "quote": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The material palette is the design system - sage green setting the dominant surface, raw white oak providing the warm counterpoint…"
        }
       ]
      }
@@ -9432,6 +9432,23 @@
      },
      {
       "facet": "style",
+      "term": "vintage",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "New and vintage together, warm, inviting, and lived in."
+       },
+       {
+        "section": "cabinet-pair",
+        "field": "left.alt",
+        "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
+       }
+      ]
+     },
+     {
+      "facet": "style",
       "term": "modern",
       "n": 2,
       "cites": [
@@ -9447,18 +9464,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "vintage",
-      "n": 1,
-      "cites": [
-       {
-        "section": "cabinet-pair",
-        "field": "left.alt",
-        "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
-       }
-      ]
      },
      {
       "facet": "style",

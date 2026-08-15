@@ -7,7 +7,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   title: "Hill Country Kitchen",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A ground-up kitchen built on material tension. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. Four finishes that shouldn't work together until they do.",
+    "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
   field: "Interior Design\nKitchen Design\nMaterial Specification",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -50,7 +50,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nKitchen",
       subtitle:
-        "Four materials applied across every surface, fixture, and finish. The constraint held the room together.",
+        "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
       field: "Interior Design  Kitchen Design  Material Specification",
       author: "Jeremy Prasatik",
       published: "2023",
