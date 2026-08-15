@@ -5,7 +5,7 @@ export const sallyCaseStudy: CaseStudy = {
   title: "Sally Beauty Marketing OS",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
+    "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It knows the brand, reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -75,7 +75,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
-        "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
+        "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It knows the brand, reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
       abstract:
         "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.\n\nFour months in, it is six deployed applications with a shared brain, and the loop has started closing itself: the system now reads the market and the customers on its own and proposes the campaigns.",
     },
