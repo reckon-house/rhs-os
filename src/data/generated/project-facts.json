@@ -13677,26 +13677,26 @@
   {
    "slug": "sally",
    "title": "Sally Beauty Marketing OS",
-   "subtitle": "Sally Marketing OS, the connected set of tools I actively design, build, and maintain for Sally Beauty's marketing team. Competitive intelligence goes in one end and store-ready campaigns come out the other.",
+   "subtitle": "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. It reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
    "category": "Digital",
    "href": "/case-studies/sally",
    "year": "2025",
    "summary": [
     {
      "label": "Built",
-     "value": "A connected set of tools, still growing. Trends feed, Brand Brain, Asset Hub, a marketplace of utilities, and more."
+     "value": "A portal with eight apps, an AI strategist with 21 tools, an asset hub, a store-associate site, a Figma plugin, and a scoreboard. Six deployed applications, still growing"
     },
     {
      "label": "Scope",
-     "value": "Designed, engineered, and deployed all five. AI-assisted throughout."
+     "value": "Design and full-stack, brand to backend, in about four months, from inside the marketing team"
     },
     {
      "label": "Stack",
-     "value": "Next.js, Supabase, Vercel, Python, Streamlit. Claude, Gemini, Perplexity routed by task."
+     "value": "Python and vanilla JS on Railway, Next.js apps on Vercel, Supabase with pgvector, five AI providers routed per task"
     },
     {
      "label": "Angle",
-     "value": "One loop, signal to shelf and back. The person building the tools is the person who runs the workflows, so no spec drift."
+     "value": "It thinks on its own now. Live signals in, proposed campaigns out, and Approve creates real work."
     }
    ],
    "disciplines": [
@@ -13713,11 +13713,11 @@
     "Claude Opus",
     "Gemini",
     "Perplexity Sonar Pro",
-    "Next.js",
-    "Supabase",
-    "Vercel",
     "Python",
-    "Streamlit",
+    "Next.js",
+    "Supabase + pgvector",
+    "Railway",
+    "Vercel",
     "Claude Code"
    ],
    "keywords": [
@@ -13739,7 +13739,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Sally Marketing OS, the connected set of tools I actively design, build, and maintain for Sally Beauty's marketing team."
+        "quote": "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team."
        }
       ]
      },

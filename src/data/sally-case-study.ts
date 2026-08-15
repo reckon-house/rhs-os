@@ -5,7 +5,7 @@ export const sallyCaseStudy: CaseStudy = {
   title: "Sally Beauty Marketing OS",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Sally Marketing OS, the connected set of tools I actively design, build, and maintain for Sally Beauty's marketing team. | Competitive intelligence goes in one end and store-ready campaigns come out the other.",
+    "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
   field: "Marketing Technology\nAI Strategy\nEnterprise Tools",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -27,11 +27,11 @@ export const sallyCaseStudy: CaseStudy = {
     "Claude Opus",
     "Gemini",
     "Perplexity Sonar Pro",
-    "Next.js",
-    "Supabase",
-    "Vercel",
     "Python",
-    "Streamlit",
+    "Next.js",
+    "Supabase + pgvector",
+    "Railway",
+    "Vercel",
     "Claude Code",
   ],
   links: [],
@@ -68,16 +68,16 @@ export const sallyCaseStudy: CaseStudy = {
         "AI Strategy",
       ],
       summary: [
-        { label: "Built", value: "A connected set of tools, still growing. Trends feed, Brand Brain, Asset Hub, a marketplace of utilities, and more." },
-        { label: "Scope", value: "Designed, engineered, and deployed all five. AI-assisted throughout." },
-        { label: "Stack", value: "Next.js, Supabase, Vercel, Python, Streamlit. Claude, Gemini, Perplexity routed by task." },
-        { label: "Angle", value: "One loop, signal to shelf and back. The person building the tools is the person who runs the workflows, so no spec drift." },
+        { label: "Built", value: "A portal with eight apps, an AI strategist with 21 tools, an asset hub, a store-associate site, a Figma plugin, and a scoreboard. Six deployed applications, still growing" },
+        { label: "Scope", value: "Design and full-stack, brand to backend, in about four months, from inside the marketing team" },
+        { label: "Stack", value: "Python and vanilla JS on Railway, Next.js apps on Vercel, Supabase with pgvector, five AI providers routed per task" },
+        { label: "Angle", value: "It thinks on its own now. Live signals in, proposed campaigns out, and Approve creates real work." },
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
-        "Sally Marketing OS, the connected set of tools I actively design, build, and maintain for Sally Beauty's marketing team. | Competitive intelligence goes in one end and store-ready campaigns come out the other.",
+        "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
       abstract:
-        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.",
+        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.\n\nFour months in, it is six deployed applications with a shared brain, and the loop has started closing itself: the system now reads the market and the customers on its own and proposes the campaigns.",
     },
 
         // ── HERO ──
@@ -108,7 +108,7 @@ export const sallyCaseStudy: CaseStudy = {
         captions: [
           "Marketing OS",
           "Dashboard grid overview",
-          "Five platforms, one screen",
+          "Every app, one screen",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
@@ -716,20 +716,60 @@ export const sallyCaseStudy: CaseStudy = {
 
 
 
+    // ════════════════════════════════════════
+    // SECTION 07 — IT THINKS ON ITS OWN
+    // The part the study could not say until now. Every section above
+    // describes a tool a person drives. This one describes what the
+    // system does without being asked. Facts here come from the live
+    // build (Plays, shipped 2026-07-22) and stay at the altitude the
+    // rest of the study already uses: what the tool IS, never Sally's
+    // data, competitors, or voice.
+    // ════════════════════════════════════════
+    {
+      id: "thinks-header",
+      type: "section-header",
+      label: "SECTION 07: CAMPAIGNS",
+      title: "It Proposes",
+      pressing: {
+        mark: { n: "07", name: "It Proposes" },
+        heldLine: "the Work Now",
+      },
+    },
+    {
+      id: "thinks-text",
+      type: "text",
+      size: "xl",
+      content:
+        "The newest app in the rail is called Campaigns, and nobody types into it. On a schedule, Jim reads four live feeds at once: the market scan, the daily signals, what customers are saying, and what people are searching for. He grounds all of it against the product catalog and the asset library, then proposes three to five plays. Each one names the signal that triggered it, argues the reasoning, and arrives with the campaign already drafted: billboard, email, and SMS, rendered with real photography and real SKUs.",
+    },
+    {
+      id: "thinks-footnote",
+      type: "text",
+      size: "base",
+      fullWidth: true,
+      content:
+        "The Approve button is the whole point. It does not save a suggestion somewhere; it writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
+    },
+    {
+      id: "thinks-editorial",
+      type: "editorial-headline",
+      text: "Four months ago\nthis was a spreadsheet\nand a group chat.",
+    },
+
     // ── CLOSING: BUILD + RESULT ──
     {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 08: CLOSING",
       title: "What Shipped",
-      pressing: { mark: { n: "07", name: "What Shipped" } },
+      pressing: { mark: { n: "08", name: "What Shipped" } },
     },
     {
       id: "closing-text",
       type: "text",
       size: "subhead",
       content:
-        "I built this because the team that needed it couldn't wait for a vendor evaluation, and the tools exist now for one person to ship what used to take a department. Five platforms, all in daily use.",
+        "I built this because the team that needed it couldn't wait for a vendor evaluation, and the tools exist now for one person to ship what used to take a department. Six applications, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
     },
     {
       id: "closing-footnote",
@@ -737,7 +777,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "I designed, engineered, and deployed every one of these platforms, working alongside AI tools throughout, and I still maintain them. The same understanding that shaped the strategy shaped the code.",
+        "I designed, engineered, and deployed every one of them, working alongside AI tools throughout, and I still maintain them from inside the team that uses them. The same understanding that shaped the strategy shaped the code.",
     },
     {
       id: "closing-columns",
@@ -756,7 +796,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "The Stack",
           content:
-            "Next.js provides the application framework with server-side rendering, API routes, and the component architecture that makes a five-platform system feel like one coherent product.\n\nSupabase handles data persistence, authentication, and real-time subscriptions. When a competitive insight appears in the Trends Feed, it's immediately available in Brand Brain without polling.\n\nVercel deploys everything - preview deployments for stakeholder review, production deployments with zero-downtime updates.\n\nPython and Streamlit power the data processing pipeline. The AI orchestration layer routes tasks to Claude, Gemini, or Perplexity based on task type, running as a Python service.",
+            "The portal is a single-page app in plain HTML and JavaScript, no framework and no build step, on a Python server, hosted on Railway. It is deliberately boring underneath so it can change fast on top.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nFive AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's image model for studio photography; a vision model for video. There is no gateway. Each call site names its model, and the strategy lane and the copy lane run different Claude models on purpose.",
         },
       ],
     },
@@ -771,19 +811,20 @@ export const sallyCaseStudy: CaseStudy = {
         "Design System",
       ],
       stack: [
-        "Claude Opus",
+        "Claude",
         "Gemini",
-        "Perplexity Sonar Pro",
-        "Next.js",
-        "Supabase",
-        "Vercel",
+        "Perplexity",
+        "OpenAI",
         "Python",
-        "Streamlit",
+        "Next.js",
+        "Supabase + pgvector",
+        "Railway",
+        "Vercel",
         "Claude Code",
       ],
       links: [],
       content:
-        "The platforms share data, share context, and share a design language. A competitive insight captured in the Trends Feed flows through Brand Brain's strategic analysis, into a campaign brief, through asset production, and out to 3,000+ stores - no re-entry, no context loss, no version confusion.\n\nThe marketing team ships thousands of assets per month through this system. It runs every day. It replaced tools that cost more and did less, and nobody had to file a procurement request or sit through a vendor demo to get it.",
+        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 3,000+ stores.\n\nThe marketing team ships thousands of assets a month through it. It runs every day, and it has started running some of itself. Nobody filed a procurement request or sat through a vendor demo to get it, and the people at Sally have a name for it now: the marketing and ecommerce brain.",
     },
   ],
 };
