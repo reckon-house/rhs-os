@@ -7,7 +7,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   title: "Hill Country Kitchen",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
+    "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
   field: "Interior Design\nKitchen Design\nMaterial Specification",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -50,7 +50,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nKitchen",
       subtitle:
-        "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
+        "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
       field: "Interior Design  Kitchen Design  Material Specification",
       author: "Jeremy Prasatik",
       published: "2023",

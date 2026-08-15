@@ -1,4 +1,4 @@
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, plainStatement } from "@/lib/site";
 import { categoryInfo, getProjectsByTag, type Tag } from "@/data/projects";
 import type { CaseStudy } from "@/lib/types";
 
@@ -86,7 +86,7 @@ export function caseStudyJsonLd(study: CaseStudy, imageUrl?: string) {
   const creativeWork: Record<string, unknown> = {
     "@type": "CreativeWork",
     name: study.title.replace(/\n/g, " ").trim(),
-    description: study.subtitle,
+    description: plainStatement(study.subtitle),
     url,
     mainEntityOfPage: url,
     inLanguage: "en",

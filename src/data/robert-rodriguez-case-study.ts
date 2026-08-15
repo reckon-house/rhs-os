@@ -44,7 +44,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       // the break must be explicit or × and Neiman's rise together.
       title: "Robert\nRodriguez\nx\nNeiman’s",
       subtitle:
-        "’80s mall glam meets high fashion. The double-exposure glamour shot, redone with mesh color fields in place of the airbrushed backdrop and couture in place of puff sleeves.",
+        "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | ’80s mall glam meets high fashion.",
       field: "Campaign Design Art Direction Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2024",

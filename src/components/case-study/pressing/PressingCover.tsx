@@ -147,10 +147,21 @@ export function PressingCover({
      DOM. The word split is deterministic from the string, so it happens in
      render (the server sends it, nothing re-flows on hydration); the driver
      recovers the real lines by grouping the spans by offsetTop at runtime. */
-  const words = useMemo(
-    () => statement.trim().split(/\s+/).filter(Boolean),
-    [statement]
-  );
+  /* THE FACT AND THE FLAVOR. A cover statement now does two jobs in one
+     line: say plainly what this is, then say what makes it interesting.
+     "A spring campaign for Neiman Marcus, shot in one day. | '80s mall
+     glam meets high fashion." An authored "|" marks the seam, and every
+     word after it recedes to the homepage lede's dim tone, so the eye
+     reads the plain fact in ink and the hook in grey. Authored rather
+     than guessed from sentence count, for the homepage's own reason:
+     tone is a writing decision, not something a parser should infer.
+     No "|" means the whole line is ink, exactly as before. */
+  const { words, dimFrom } = useMemo(() => {
+    const [fact, ...rest] = statement.split("|");
+    const factWords = fact.trim().split(/\s+/).filter(Boolean);
+    const restWords = rest.join("|").trim().split(/\s+/).filter(Boolean);
+    return { words: [...factWords, ...restWords], dimFrom: restWords.length ? factWords.length : Infinity };
+  }, [statement]);
 
   /* ── the handover driver ─────────────────────────────────────────── */
   useEffect(() => {
@@ -411,7 +422,7 @@ export function PressingCover({
               {/* A real space between word spans: it is what the line wraps
                   at, and what copy-paste and a screen reader read. */}
               {i > 0 ? " " : null}
-              <span className={styles.csW}>{w}</span>
+              <span className={i >= dimFrom ? `${styles.csW} ${styles.csDim}` : styles.csW}>{w}</span>
             </Fragment>
           ))}
         </p>

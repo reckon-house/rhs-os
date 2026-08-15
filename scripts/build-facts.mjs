@@ -226,7 +226,8 @@ for (const file of studyFiles()) {
   projects.push({
     slug: cs.slug,
     title: cs.title,
-    subtitle: cs.subtitle || undefined,
+    /* the cover's authored fact|flavor seam is presentation, not text */
+    subtitle: cs.subtitle ? cs.subtitle.replace(/\s*\|\s*/g, " ").trim() : undefined,
     category: cs.category?.label,
     href: "/case-studies/" + cs.slug,
     year: cs.published ? String(cs.published) : undefined,

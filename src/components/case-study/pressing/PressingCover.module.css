@@ -109,6 +109,13 @@
   display: inline-block;
   will-change: transform;
 }
+/* The flavor half of a statement, after the authored "|". The homepage
+   lede's own recessive tone (.statement .dim, rgba(0,0,0,0.42)), so a
+   study cover and the homepage read as one system: ink is the fact,
+   grey is the color commentary. */
+.csDim {
+  color: rgba(0, 0, 0, 0.42);
+}
 
 /* The reel thumb. No fixed height on the figure — the caption sits in normal
    flow under the box, so it rides up and down as the box changes shape, and

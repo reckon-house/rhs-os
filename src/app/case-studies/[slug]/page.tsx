@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/case-study/CaseStudyLayout";
 import { projects } from "@/data/projects";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { SITE_URL, SITE_NAME, plainStatement } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
 import { caseStudyJsonLd } from "@/lib/structured-data";
 import { arcCaseStudy } from "@/data/arc-case-study";
@@ -70,7 +70,7 @@ export async function generateMetadata({
   if (!study) return {};
 
   const url = `${SITE_URL}/case-studies/${study.slug}`;
-  const description = study.subtitle;
+  const description = plainStatement(study.subtitle);
   const image = ogImageFor(study.slug);
 
   return {

@@ -31,7 +31,7 @@ export const sizzleCaseStudy: CaseStudy = {
   title: "Faux Reel",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
+    "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to read as motion.",
   field: "Product\nMotion",
   author: "Jeremy Prasatik",
   published: "2026",
@@ -49,7 +49,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "meta",
       title: "Faux\nReel",
       subtitle:
-        "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
+        "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to read as motion.",
       reel: {
         caption: "Live · 7 frames · 2026",
         colors: ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"],

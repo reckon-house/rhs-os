@@ -51,7 +51,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       },
       title: "Ivy Park\nby Beyoncé",
       subtitle:
-        "Nordstrom held the exclusive US launch. Six weeks from moodboard to live, and most of the product gone within days.",
+        "The Ivy Park launch for Nordstrom, the exclusive US partner. | Six weeks from moodboard to live, and most of the product gone within days.",
       field: "Creative Direction  Campaign Design  Experience Design",
       author: "Jeremy Prasatik",
       published: "2016",

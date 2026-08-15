@@ -15,6 +15,7 @@
  * file is still the one place the voice contract lives.
  */
 import facts from "@/data/generated/project-facts.json";
+import { plainStatement } from "@/lib/site";
 
 export const MAX_Q = 300;
 export const MAX_HREFS = 8;
@@ -127,7 +128,7 @@ export const SHELF = PROJECTS.map((p) => {
     .join("; ");
   return [
     `${p.title} (${p.category ?? "work"}${p.year ? ", " + p.year : ""}) ${p.href}`,
-    p.subtitle && `  ${p.subtitle}`,
+    p.subtitle && `  ${plainStatement(p.subtitle)}`,
     p.disciplines?.length && `  disciplines: ${p.disciplines.join(", ")}`,
     facets && `  holds: ${facets}`,
   ].filter(Boolean).join("\n");
@@ -238,7 +239,7 @@ export function contextFor(hrefs: string[], frames: string[]): { text: string; u
       .slice(0, 12);
     return [
       `PROJECT: ${p.title}`,
-      p.subtitle && `What it is: ${p.subtitle}`,
+      p.subtitle && `What it is: ${plainStatement(p.subtitle)}`,
       p.category && `Category: ${p.category}`,
       p.year && `Year: ${p.year}`,
       ...(p.summary ?? []).map((s) => `${s.label}: ${s.value}`),

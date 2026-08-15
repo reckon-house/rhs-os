@@ -481,6 +481,17 @@ every UI screenshot it replaces is one fewer file to keep big enough.
 
 ## 8. Copy
 
+**The cover statement does two jobs in one line: the fact, then the
+flavor.** Say plainly what this is first, in a sentence a stranger could
+repeat ("A spring campaign for Neiman Marcus, shot in one day"), then
+what makes it interesting ("'80s mall glam meets high fashion"). Mark
+the seam with `|` in the subtitle string; PressingCover renders the
+words after it in the homepage lede's recessive tone, so a reader gets
+the plain fact in ink and the hook in grey. Never render the `|`
+anywhere else: `plainStatement()` in lib/site strips it for the meta
+description, JSON-LD, and the ask index. A statement with no `|` is all
+ink, as before.
+
 The CLAUDE.md copy rules apply in full, plus the pressing reality: this
 language has FEWER text slots (one reading size, no subhead/footnote
 voices in the brief). The port IS the allocation pass — subtitle →

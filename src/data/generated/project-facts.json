@@ -8398,7 +8398,7 @@
   {
    "slug": "hill-country-kitchen",
    "title": "Hill Country Kitchen",
-   "subtitle": "A mix of styles that is hard to describe in words. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
+   "subtitle": "A kitchen in the Texas Hill Country, built from four materials. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-kitchen",
    "year": "2023",
@@ -8441,7 +8441,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 61,
+      "n": 62,
       "cites": [
        {
         "section": "meta",
@@ -8522,7 +8522,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 37,
+      "n": 38,
       "cites": [
        {
         "section": "meta",
@@ -8539,17 +8539,17 @@
      {
       "facet": "place",
       "term": "texas",
-      "n": 3,
+      "n": 4,
       "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A kitchen in the Texas Hill Country, built from four materials."
+       },
        {
         "section": "meta",
         "field": "abstract",
         "quote": "The space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal mea…"
-       },
-       {
-        "section": "hardware-footnote",
-        "field": "content",
-        "quote": "A French mechanism on American shaker cabinets in a Texas kitchen."
        }
       ]
      }
@@ -8590,7 +8590,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+        "quote": "| Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "image",
@@ -8607,7 +8607,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+        "quote": "| Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "meta",
@@ -8828,7 +8828,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+        "quote": "| Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "image",
@@ -9348,7 +9348,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
+        "quote": "| Sage green cabinetry, raw white oak, veined marble, unlacquered brass."
        },
        {
         "section": "meta",
@@ -11017,7 +11017,7 @@
      {
       "facet": "client",
       "term": "Ivy Park",
-      "n": 48,
+      "n": 49,
       "cites": [
        {
         "section": "meta",
@@ -11839,7 +11839,7 @@
   {
    "slug": "jeffrey-spring",
    "title": "Jeffrey Spring Campaign.",
-   "subtitle": "High fashion on a studio budget, with no location shoots and no heavy production. Foliage used as architecture.",
+   "subtitle": "A spring campaign for Jeffrey, shot entirely in the studio. High fashion on a studio budget, with foliage doing the work of a location.",
    "category": "Creative",
    "href": "/case-studies/jeffrey-spring",
    "year": "2017",
@@ -11878,7 +11878,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 36,
+      "n": 37,
       "cites": [
        {
         "section": "meta",
@@ -12393,7 +12393,7 @@
      {
       "facet": "client",
       "term": "Neiman Marcus",
-      "n": 66,
+      "n": 67,
       "cites": [
        {
         "section": "meta",
@@ -13418,7 +13418,7 @@
      {
       "facet": "client",
       "term": "Neiman Marcus",
-      "n": 19,
+      "n": 20,
       "cites": [
        {
         "section": "meta",
@@ -13427,8 +13427,8 @@
        },
        {
         "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-store…"
+        "field": "subtitle",
+        "quote": "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial."
        }
       ]
      }
@@ -14016,7 +14016,7 @@
   {
    "slug": "sizzle",
    "title": "Faux Reel",
-   "subtitle": "A sizzle reel with no video in it. Stills, cut fast enough to read as motion.",
+   "subtitle": "A tool that turns still photographs into a sizzle reel. No video in it, just stills cut fast enough to read as motion.",
    "category": "Digital",
    "href": "/case-studies/sizzle",
    "year": "2026",

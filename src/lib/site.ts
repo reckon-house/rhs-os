@@ -11,3 +11,13 @@ export const SITE_URL = (
 
 /** Brand name, used as the title-template suffix and openGraph siteName. */
 export const SITE_NAME = "Reckon*House";
+
+/**
+ * A cover statement may carry an authored "|" marking where the plain
+ * fact ends and the flavor begins; PressingCover renders the second half
+ * in the recessive tone. Everywhere else — meta description, JSON-LD, the
+ * ask index — wants the sentence, not the seam.
+ */
+export function plainStatement(s: string): string {
+  return s.replace(/\s*\|\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+}
