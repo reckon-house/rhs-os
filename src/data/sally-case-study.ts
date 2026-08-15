@@ -408,7 +408,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
-      text: "Everything the team makes\nstarts as a brief,\nand Jim writes the first draft.",
+      text: "The AI works out the strategy\nand writes the brief.\nPeople approve it and move it on.",
       group: { name: "brand-brain" },
     },
     {
@@ -425,6 +425,29 @@ export const sallyCaseStudy: CaseStudy = {
         alt: "Sally Beauty, purple curls, bold color expression",
       },
       group: { name: "brand-brain" },
+    },
+
+    // ── THE BRIEF BECOMES WORK, LIVE ──
+    // Two chained demos, moved up from Utilities on 2026-08-15. The
+    // plates above end on the brief builder; these pick up exactly there:
+    // a request on the campaign board becomes a real email out of the
+    // product's own components, and the email becomes four artboards in
+    // Figma. They MUST stay in this order and adjacent - the first ends
+    // on a toast reading "ready for the Figma build" (NOTES.md). Here
+    // the Figma build lands near 40% of the page instead of 74%.
+    {
+      id: "brain-requests-demo",
+      type: "product-demo",
+      demo: "requests-email",
+      title: "From brief to email",
+      note: "Open the August board, take COLORfest's CRM channel, press Create Email. The email assembles out of the product's own component library, so what lands on screen is what an email developer receives.",
+    },
+    {
+      id: "brain-figma-demo",
+      type: "product-demo",
+      demo: "figma-build",
+      title: "From email to Figma",
+      note: "The plugin clones an artboard per request, places every image, writes that slot's copy behind it, and fills the headers last. Images lead because the plugin finds each section band by anchoring on image rects, then walks the text nodes from there. Four emails, one press.",
     },
 
     // ── INTELLIGENCE PIPELINE SANKEY ──
@@ -745,20 +768,6 @@ export const sallyCaseStudy: CaseStudy = {
     // "ready for the Figma build" and the second starts there. Split across
     // other sections they read as two tools; together they read as the
     // handoff, which is the thing that used to be a person.
-    {
-      id: "utilities-requests-demo",
-      type: "product-demo",
-      demo: "requests-email",
-      title: "Requests · Campaign to email",
-      note: "Open the August board, take COLORfest's CRM channel, press Create Email. The email assembles out of the product's own component library, so what lands on screen is what an email developer receives.",
-    },
-    {
-      id: "utilities-figma-demo",
-      type: "product-demo",
-      demo: "figma-build",
-      title: "Sally OS · Figma batch build",
-      note: "The plugin clones an artboard per request, places every image, writes that slot's copy behind it, and fills the headers last. Images lead because the plugin finds each section band by anchoring on image rects, then walks the text nodes from there. Four emails, one press.",
-    },
 
 
 

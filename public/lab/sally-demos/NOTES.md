@@ -396,7 +396,7 @@ What shipped (`type: "product-demo"` in `src/lib/types.ts`):
 |---|---|
 | `PressingProductDemo.tsx` + `product-demo.module.css` | `src/components/case-study/pressing/demo/` — next to `PressingLiveApp`, which framed A.R.C.'s deployed app for the same reason one step further along |
 | routing | one `if (s.type === "product-demo")` in `PressingLayout.tsx`, hosted in `PressingVizFrame` like every other bespoke section |
-| sections | `brain-jim-demo` (§04), `utilities-pdp-demo`, `utilities-requests-demo`, `utilities-figma-demo` (§06) in `sally-case-study.ts` |
+| sections | `brain-jim-demo`, `brain-requests-demo`, `brain-figma-demo` (§04, the last two moved up from Utilities on 2026-08-15 as a chained pair), `utilities-pdp-demo` (§07) in `sally-case-study.ts` |
 
 The frame adds the three things a document boundary does not give free:
 
