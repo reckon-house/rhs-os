@@ -86,10 +86,10 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "brief-header",
       type: "section-header",
       label: "SECTION 02: THE BRIEF",
-      title: "An NDA Before",
+      title: "Beyoncé's first activewear brand.",
       pressing: {
-        mark: { n: "02", name: "An NDA Before" },
-        heldLine: "the Brief Landed.",
+        mark: { n: "02", name: "The Brief" },
+        heldLine: "Six weeks to launch it.",
         // Pinned. The signature is the fixed point of this beat, so the
         // headline holds while the timeline, the freedom and the scope
         // travel up past it.
