@@ -103,6 +103,8 @@ than the thing needs.
 
 ### Lines he wrote or chose for the site itself
 
+- "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things." (the homepage lede, his rewrite of three earlier versions; "make things" is his verb, and the last line points at the page instead of adding a claim)
+
 - "Let's talk about what you have in mind and tailor a quote to your exact needs."
 - "I love the work." (his replacement for "Available for work.")
 - "Independent, Texas. Design and build." (approved as-is)
@@ -140,12 +142,24 @@ The site is not lowercase chat. The translation that keeps the voice:
   survives; the mumble goes.
 - Enthusiasm survives at one beat per stretch, exactly like his chat.
 
-Worked example, the homepage lede:
+Worked example, the homepage lede, all four states in one day:
 
-- AI: "Apps and ecommerce, campaigns and brand systems, photography and
-  art direction, custom interiors, AI tools. Same desk for all of it."
-- Him: the same list, then either nothing at all, or something he has
-  actually said: "I build almost every day."
+1. AI: "...custom interiors, AI tools. Same desk for all of it." — a
+   button on the end of a list. He caught it.
+2. His raw answer, placed verbatim: "This is the work I love making,
+   and some of the things that truly inspire me." — his content, but
+   unshaped, and it read wrong to him on the page.
+3. His edit by ear: "love" already used one block down, "love making"
+   awkward out loud, "inspire" pointing at nothing. Cut to "This is
+   what I make."
+4. His rewrite of the whole thing: "I make things across brand,
+   product, and place. ... Here are some of those things." — "make
+   things" is his verb, and the closer points at the page instead of
+   adding a claim.
+
+The lesson is step 2 → 3. Getting his words is the start, not the end.
+He hears the page better than he writes it, so the loop is: draft from
+his material, put it on the page, let him read it aloud, edit.
 
 ## Writing new copy
 
