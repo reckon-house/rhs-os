@@ -496,7 +496,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "Diagonal Stripes",
           content:
-            "Cut across the crossbar of the F in \"the Fancy.\" A small detail, barely noticed in the full composition. In \"stepper\" those stripes fill a slab-serif R from top to bottom. The angle creates visual speed against the vertical stack of letters around it.\n\nSame stripe. Same 45-degree angle. Same line weight. Two completely different reads based on how much surface it covers.",
+            "Cut across the crossbar of the F in \"the Fancy.\" A small detail, barely noticed in the full composition. In \"stepper\" those stripes fill a slab-serif R from top to bottom. The angle creates visual speed against the vertical stack of letters around it.\n\nThe same stripe at the same 45-degree angle and the same line weight. Two completely different reads based on how much surface it covers.",
         },
         {
           title: "White Space",

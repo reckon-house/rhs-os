@@ -316,7 +316,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       label: "SECTION 04: BRAND SYSTEM",
       title: "Built Without a Brand Guide",
       introText:
-        "No palette. No type system. No rules at all. The photography and the name arrived, the rest got invented.",
+        "No palette, no type system, no rules at all. The photography and the name arrived, the rest got invented.",
       footText:
         "Six weeks to build the visual language while the page itself came together. The polygon, the type set at volume, the scroll that ran from grayscale into color. One system carrying a launch that lived on a single URL.",
       philosophyHeading: "The System",

@@ -313,7 +313,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       stack: [],
       links: [],
       content:
-        "The framework held for years and became foundational vocabulary across the digital organization. Icons evolved. Typography refreshed. Buckets renamed. The structure underneath stayed the same.",
+        "The framework held for years and became foundational vocabulary across the digital organization. Icons evolved, typography got refreshed, buckets got renamed, and the structure underneath stayed the same.",
     },
   ],
 };

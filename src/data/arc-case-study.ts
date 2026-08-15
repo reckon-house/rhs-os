@@ -381,7 +381,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 388,
           },
           content:
-            "User photographs a room or individual item using their device camera. No special hardware. No calibration. Standard smartphone optics.\n\nArchive Entry. The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
+            "User photographs a room or individual item using their device camera. No special hardware or calibration, just the camera on a phone.\n\nArchive Entry. The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
         },
         {
           title: "Vision Processing",

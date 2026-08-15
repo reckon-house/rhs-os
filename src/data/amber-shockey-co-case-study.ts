@@ -306,7 +306,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       label: "SECTION 05: MARKS & MATERIALS",
       title: "A Family of Shapes.\nA Single System.",
       introText:
-        "Five colors. Four shapes. One rule. The whole line scales out of a small set of decisions made once and held across every direction.",
+        "Five colors, four shapes, and one rule. The whole line scales out of a small set of decisions made once and held across every direction.",
       philosophyText:
         "Patterns work as a family. A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later. Nothing in the second buy fights anything in the first.\n\nEach collection has a hero shape and a colorway. Peony lives in cobalt. Circle lives in blush. Chinese dragon lives in burgundy. Halftone dot lives in charcoal. Cream runs underneath as the shared ground that lets any two collections sit together without fighting.",
       colors: [

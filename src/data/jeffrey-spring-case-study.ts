@@ -7,7 +7,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   title: "Jeffrey Spring Campaign.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "High fashion on a studio budget. No location shoots. No heavy production. Foliage used as architecture.",
+    "High fashion on a studio budget, with no location shoots and no heavy production. Foliage used as architecture.",
   field: "Art Direction\nCampaign Design\nEmail & Web Templates",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -37,7 +37,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
       title: "Jeffrey Spring\nCampaign.",
       subtitle:
-        "High fashion on a studio budget. No location shoots. No heavy production. Foliage used as architecture.",
+        "High fashion on a studio budget, with no location shoots and no heavy production. Foliage used as architecture.",
       field: "Art Direction  Campaign Design  Email & Web Templates",
       author: "Jeremy Prasatik",
       published: "2017",

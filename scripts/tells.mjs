@@ -77,6 +77,12 @@ const TELLS = [
     re: /\b(?:^|\.\s+)?The \w+ (?:is|was) the (?:\w+)(?:\s+\w+)?[.,]/,
   },
   {
+    key: "fragment stack",
+    why: "three sentences of four words or fewer in a row; a list is fine, a drumbeat is the tell",
+    re: /(?:^|[.!?]\s+)(?:\S+(?:\s\S+){0,3}[.!?]\s+){2}\S+(?:\s\S+){0,3}[.!?]/,
+    whole: true,
+  },
+  {
     key: "two-beat closer",
     why: "last clause mirrors the first; reads as insight, decodes to a fact",
     re: /,\s*(?:and|so)\s+(?:only|never|always)\s+[^.]{4,60}\.$/,
@@ -119,8 +125,13 @@ for (const rel of FILES) {
       if (/^\s*(?:alt|markAlt|published|src|href|url|image)\s*:/.test(line)) continue;
       /* Split into sentences so a closer test sees the sentence end. */
       const sentences = s.split(/(?<=[.!?])\s+/);
+      for (const tell of TELLS.filter((x) => x.whole)) {
+        const hit = s.match(tell.re);
+        if (hit) findings.push({ file: rel, line: i + 1, key: tell.key, why: tell.why,
+          error: false, excerpt: hit[0].length > 140 ? hit[0].slice(0, 137) + "…" : hit[0], hit: hit[0].slice(0, 40) });
+      }
       for (const sent of sentences) {
-        for (const tell of TELLS) {
+        for (const tell of TELLS.filter((x) => !x.whole)) {
           const hit = sent.match(tell.re);
           if (!hit) continue;
           findings.push({
