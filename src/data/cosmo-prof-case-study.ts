@@ -340,7 +340,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       stack: ["Figma", "Sketch", "Photoshop"],
       links: [],
       content:
-        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh, and templates held the system across promotions, brand campaigns, and education without breaking.",
+        "A B2B retailer needed a digital experience that matched the professionals using it. Photography led the refresh, and a set of templates kept promotions, brand campaigns, and education looking like one site.",
     },
   ],
 };

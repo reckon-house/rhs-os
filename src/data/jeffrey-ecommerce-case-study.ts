@@ -7,7 +7,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
   title: "Jeffrey New York",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "First digital flagship for the NYC retailer. Full ecommerce launch - brand system, site architecture, and content engine built from zero.",
+    "First digital flagship for the NYC retailer. Full ecommerce launch - the brand, the site, and the way it published stories, all built from zero.",
   field: "Digital Strategy\nBrand System\nEcommerce Design\nUX Architecture",
   author: "Jeremy Prasatik",
   published: "2015",
@@ -36,17 +36,17 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       },
       title: "Jeffrey\nNew York",
       subtitle:
-        "First digital flagship for the NYC retailer. Full ecommerce launch - brand system, site architecture, and content engine built from zero.",
+        "First digital flagship for the NYC retailer. Full ecommerce launch - the brand, the site, and the way it published stories, all built from zero.",
       field: "Digital Strategy  Brand System  Ecommerce Design  UX Architecture",
       author: "Jeremy Prasatik",
       published: "2015",
       status: "Live",
       classification: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
       summary: [
-        { label: "Built", value: "First digital flagship for the NYC retailer. Brand system, site architecture, content engine, from zero" },
+        { label: "Built", value: "First digital flagship for the NYC retailer. Brand, site, and stories, from zero" },
         { label: "Scope", value: "Digital strategy, brand system, ecommerce design, UX architecture" },
         { label: "Stack", value: "Photoshop, Illustrator, Sketch, InVision" },
-        { label: "Angle", value: "Built like a flagship. The publishing system shipped before the product templates." },
+        { label: "Angle", value: "Built like a flagship. The way it told stories was designed before the product pages." },
       ],
       abstract:
         "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nStarted with the buying team. Learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy that won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there. Modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Integration work handled alongside external partners while keeping ownership of the experience, every interaction from wireframe to checkout prototyped to feel considered.",
@@ -92,7 +92,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Sat with the buying team to learn how the floor worked. How pieces were grouped, how seasons shifted, what made the edit feel like Jeffrey. The site needed to behave like the store, which meant designing the publishing system before the product templates.",
+        "Sat with the buying team to learn how the floor worked. How pieces were grouped, how seasons shifted, what made the edit feel like Jeffrey. The site needed to behave like the store, which meant designing how it told stories before designing the product pages.",
     },
 
     // ── The homepage, six ways ──────────────────────────────────────
@@ -245,7 +245,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       introText:
         "One typeface across weights, a restrained palette, and a logo lockup that sat as a graphic mark before it sat as a name. The kit ran the same way at every scale.",
       philosophyText:
-        "The palette stays narrow on purpose. Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single yellow accent - pulled straight from the wordmark - ties the editorial moments together. No second accent, no decorative color - the merchandise brings whatever it needs.\n\nType is one family across weights. Avenir Next Heavy carried the wordmark and feature headlines, Demi Bold carried subheads and CTAs, Medium carried the rest. The single family kept the system tight, and the weight contrast did the work that a multi-font stack would otherwise have to.",
+        "The palette stays narrow on purpose. Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single yellow accent - pulled straight from the wordmark - ties the editorial moments together. No second accent, no decorative color - the merchandise brings whatever it needs.\n\nType is one family across weights. Avenir Next Heavy carried the wordmark and feature headlines, Demi Bold carried subheads and CTAs, Medium carried the rest. The single family kept everything tight, and the weight contrast did the work that a multi-font stack would otherwise have to.",
       colors: [
         { name: "Charcoal", hex: "#1A1A1A", description: "Type, structure" },
         { name: "Cream", hex: "#F5F2ED", description: "Paper, ground" },
@@ -267,7 +267,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Feature headlines",
           description:
-            "Heaviest non-italic weight, used for designer launches and editorial moments. Pairs with the wordmark as the loudest the system gets.",
+            "Heaviest non-italic weight, used for designer launches and editorial moments. Pairs with the wordmark as the loudest it ever gets.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },

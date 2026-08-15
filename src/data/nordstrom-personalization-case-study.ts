@@ -7,7 +7,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
   title: "Nordstrom Personalization System",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A content engine built on three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
+    "Three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
   field: "Design Systems\nArt Direction\nProduct Photography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2015",
@@ -49,7 +49,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nPersonalization\nSystem",
       subtitle:
-        "A content engine built on three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
+        "Three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
       field: "Design Systems  Art Direction  Product Photography Direction",
       author: "Jeremy Prasatik",
       published: "2015",
@@ -60,13 +60,13 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         "Product Photography Direction",
       ],
       summary: [
-        { label: "Built", value: "Content engine on three tile shapes. Square, hero, vertical, resizing across every breakpoint." },
+        { label: "Built", value: "Three tile shapes. Square, hero, vertical, resizing across every breakpoint." },
         { label: "Scope", value: "Design systems, art direction, product photography direction." },
-        { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One asset, multiple applications." },
+        { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One picture, used many ways." },
         { label: "Angle", value: "Personalization that stayed quiet underneath. Strict rules, loose output, mass scale that still looked hand-built." },
       ],
       abstract:
-        "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. Strict enough to scale, loose enough to surprise.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One asset, multiple applications.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
+        "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. Strict enough to scale, loose enough to surprise.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One picture, used many ways.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
     },
 
         // ── HERO ──
@@ -276,7 +276,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Deliberate contrast, precise angles, no styling props. Each shot held its own as a hero or stacked into a grid as ecomm. The art direction was the system.",
+        "Deliberate contrast, precise angles, no styling props. Each shot held its own as a hero or stacked into a grid as ecomm. The art direction did the work.",
     },
     {
       id: "products-footnote",
@@ -331,7 +331,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three shapes and one asset library. The system stayed quiet so the content could feel hand-built, even when it wasn't.",
+        "Three shapes and one library of pictures. The rules stayed out of sight so the pages could feel hand-built, even when it wasn't.",
     },
     {
       id: "closing",

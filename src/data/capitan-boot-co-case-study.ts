@@ -50,7 +50,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
         { label: "Angle", value: "Marks built to survive the material. Stamp, stitch, emboss, and still read at every scale." },
       ],
       abstract:
-        "Capitan needed an identity that could work as hard as the product. Boots get scuffed, stamps blur, embossing flattens - the marks had to survive all of that and still read at every scale.\n\nBuilt the system as interlocking elements - primary logo, secondary badges, typographic lockups, illustrative assets. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props, no stand-ins, no styling beyond what the place already had. The photography had to come from inside the landscape the boots are made for, not from a moodboard built around it.",
+        "Capitan needed an identity that could work as hard as the product. Boots get scuffed, stamps blur, embossing flattens - the marks had to survive all of that and still read at every scale.\n\nBuilt the identity as interlocking pieces - primary logo, secondary badges, typographic lockups, illustrations. Northwest Regular and Oldman Regular as the type pairing. The bull skull lockup constructs on a geometric grid. Each piece holds at stamp, stitch, embroidery, or print.\n\nShot the campaign in West Texas. Big Bend, mesa country, river bottom. No props, no stand-ins, no styling beyond what the place already had. The photography had to come from inside the landscape the boots are made for, not from a moodboard built around it.",
     },
 
         // ── HERO ──
@@ -91,7 +91,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The system includes primary logo, secondary badges, typographic lockups, illustrative assets. Range comes before decoration. Each piece holds at small scale and at full bleed alike.",
+        "It includes a primary logo, secondary badges, typographic lockups, and illustrations. Range comes before decoration. Each piece holds at small scale and at full bleed alike.",
     },
 
     // ── Diamond badge over Big Bend. Climbs the marks brief, which
@@ -246,9 +246,9 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "Identity Built\nfor the Material.",
       introText:
-        "Marks made for stamp, stitch, embroidery, print. Every color, every face, every lockup tested against the process before it earned a place in the system.",
+        "Marks made for stamp, stitch, embroidery, print. Every color, every face, every lockup tested against the process before it made the cut.",
       philosophyText:
-        "The system holds primary logo, secondary badges, typographic lockups, and illustrative assets, each one keeping shape under load. Range comes before decoration.\n\nNorthwest handles scale, Oldman brings character, and the bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first and an illustration second. Every choice traces back to where the boot ends up.",
+        "There is a primary logo, secondary badges, typographic lockups, and a set of illustrations, and each one keeps its shape however roughly it gets reproduced. Range comes before decoration.\n\nNorthwest handles scale, Oldman brings character, and the bull skull lockup constructs on a geometric grid. The buffalo lives as a stamp first and an illustration second. Every choice traces back to where the boot ends up.",
       colors: [
         { name: "Cream", hex: "#EFEAD9", description: "Paper, hangtags" },
         { name: "Tan", hex: "#C4B594", description: "Photography, leather" },
@@ -285,7 +285,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
           name: "Times New Roman",
           role: "Body & legal",
           description:
-            "Default serif for fine print, certifications, and copy that runs long. The least precious font in the system.",
+            "Default serif for fine print, certifications, and copy that runs long. The least precious font of the bunch.",
           family: "'Times New Roman', Times, serif",
           weight: 400,
         },
@@ -322,7 +322,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign", "Camera"],
       links: [],
       content:
-        "Capitan asked for branding that could survive where the boots end up. The system holds at every surface, and the photography came from the same place the boots are made for.",
+        "Capitan asked for branding that could survive where the boots end up. The marks hold up on every material, and the photography came from the same place the boots are made for.",
     },
   ],
 };

@@ -50,7 +50,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         { label: "Angle", value: "High fashion on a studio budget. Foliage used as architecture. Scale without a plane ticket." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops holding the layouts together instead of dressing them props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
+        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with big crops of foliage holding the layouts together. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
     },
 
         // ── HERO ──
@@ -142,7 +142,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Drop the dress, set the foliage, ship the template. Every story carries the brand without a single redesign.",
+        "Swap the dress, set the leaves, and the page is done. Every story looks like Jeffrey without redesigning anything.",
     },
     {
       id: "stories-footnote",
@@ -150,7 +150,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Repeatable week to week with minimal rework. The condensed-stretched-layered type system holds at desktop and at mobile, the foliage frame holds at both, and the dress is the only variable.",
+        "It could be redone every week with almost no new work. The type holds on desktop and on a phone, the foliage frame holds on both, and the only thing that changes is the dress.",
     },
 
     // ── Breathing room below the footnote before the 4-grid begins.
@@ -246,7 +246,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           sampleText: "JEFFREY",
           role: "Wordmark",
           description:
-            "Italic heavy sans for the brand wordmark. Set wide with the Atlanta/New York city tagline at smaller scale alongside. The only italic in the system. Everything else stays upright.",
+            "Italic heavy sans for the brand wordmark. Set wide with the Atlanta/New York city tagline at smaller scale alongside. The only italic anywhere in it. Everything else stays upright.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
           italic: true,
@@ -272,7 +272,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Headline weight",
           description:
-            "Heaviest non-italic weight, used sparingly for headline moments inside the campaign templates. Pairs with the wordmark as the loudest the system gets.",
+            "Heaviest non-italic weight, used sparingly for headline moments inside the campaign templates. Pairs with the wordmark as the loudest it ever gets.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -304,7 +304,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Foliage, type, layout. Same kit across three designer stories, three formats, every week of the season.",
+        "Foliage, type, layout. The same three pieces across three designer stories and three formats, every week of the season.",
     },
     {
       id: "closing",
@@ -313,7 +313,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       stack: ["Photoshop", "InDesign", "Studio photography"],
       links: [],
       content:
-        "A retailer needed spring without the budget for spring. The system answers in foliage and typography - both shot once, both reused across every story the season needed.",
+        "A retailer needed spring without the budget for spring. Two leaves and a typeface, shot and set once, carried every story the season needed.",
     },
   ],
 };

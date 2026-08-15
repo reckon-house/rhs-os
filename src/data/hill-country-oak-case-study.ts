@@ -185,7 +185,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Campaign assets sized from outdoor banners down to phone screens, all sharing the same color blocking, silhouettes, and type. The surface changes, the brand doesn't.",
+        "Every piece sized from outdoor banners down to phone screens, all sharing the same color blocking, silhouettes, and type. The size changes, the brand doesn't.",
     },
 
     {
@@ -212,7 +212,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "A Sun-Washed Palette\nPaired with Workshop Type.",
       introText:
-        "Five colors pulled from a Texas hour-before-sunset, one type family used at every weight the system needed - the same kit applied across every surface.",
+        "Five colors pulled from a Texas hour-before-sunset, one type family used at every weight it needed - the same kit on everything from a billboard to a phone.",
       philosophyText:
         "The palette had to feel like Texas without leaning into red, white, and blue. Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Pulled from old highway signs and the actual color of the landscape during last-light.\n\nGreatdome carries the editorial headlines. Avenir Next runs everything else, heavy weight for the wordmark, lighter for body. The display face does the heritage work so the workhorse sans doesn't have to.",
       colors: [
@@ -288,7 +288,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held the system together, and none of it dresses up as old.",
+        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held it all together, and none of it dresses up as old.",
     },
   ],
 };

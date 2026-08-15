@@ -97,7 +97,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hub anchored around three rotating editorial stories - \"Lips That Pop,\" \"Top 5 Serums,\" \"Get That Glow\" - each card opening into a full shoppable experience. The three-card layout gave merchandising enough surface area to feature seasonal pushes without overwhelming the page.",
+        "The hub anchored around three rotating editorial stories - \"Lips That Pop,\" \"Top 5 Serums,\" \"Get That Glow\" - each card opening into a full shoppable experience. The three-card layout gave merchandising enough room to feature seasonal pushes without overwhelming the page.",
       group: { name: "hub" },
     },
     {

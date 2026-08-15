@@ -11577,14 +11577,14 @@
   {
    "slug": "jeffrey-ecommerce",
    "title": "Jeffrey New York",
-   "subtitle": "First digital flagship for the NYC retailer. Full ecommerce launch - brand system, site architecture, and content engine built from zero.",
+   "subtitle": "First digital flagship for the NYC retailer. Full ecommerce launch - the brand, the site, and the way it published stories, all built from zero.",
    "category": "Digital",
    "href": "/case-studies/jeffrey-ecommerce",
    "year": "2015",
    "summary": [
     {
      "label": "Built",
-     "value": "First digital flagship for the NYC retailer. Brand system, site architecture, content engine, from zero"
+     "value": "First digital flagship for the NYC retailer. Brand, site, and stories, from zero"
     },
     {
      "label": "Scope",
@@ -11596,7 +11596,7 @@
     },
     {
      "label": "Angle",
-     "value": "Built like a flagship. The publishing system shipped before the product templates."
+     "value": "Built like a flagship. The way it told stories was designed before the product pages."
     }
    ],
    "disciplines": [
@@ -11878,7 +11878,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 35,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -12056,7 +12056,7 @@
   {
    "slug": "loved-by-nordstrom",
    "title": "Loved by Nordstrom",
-   "subtitle": "Year-long campaign built on one idea: the Instagram heart as editorial device. A system flexible enough to run across social, email, signage, and web using any asset type.",
+   "subtitle": "Year-long campaign built on one idea: the Instagram heart as editorial device. A system flexible enough to run across social, email, signage, and web using any kind of picture.",
    "category": "Creative",
    "href": "/case-studies/loved-by-nordstrom",
    "year": "2017",
@@ -12075,7 +12075,7 @@
     },
     {
      "label": "Angle",
-     "value": "A heart does what a logo cannot. One borrowed icon, two tiers, any licensed asset."
+     "value": "A heart does what a logo cannot. One borrowed icon, two tiers, any brand's photography."
     }
    ],
    "disciplines": [
@@ -13094,14 +13094,14 @@
   {
    "slug": "nordstrom-personalization",
    "title": "Nordstrom Personalization System",
-   "subtitle": "A content engine built on three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
+   "subtitle": "Three shapes that adapt to the user, the season, and the story, so a page for millions of people can still feel like it was made for one.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-personalization",
    "year": "2015",
    "summary": [
     {
      "label": "Built",
-     "value": "Content engine on three tile shapes. Square, hero, vertical, resizing across every breakpoint."
+     "value": "Three tile shapes. Square, hero, vertical, resizing across every breakpoint."
     },
     {
      "label": "Scope",
@@ -13109,7 +13109,7 @@
     },
     {
      "label": "Tools",
-     "value": "Nordstrom CMS, editorial templates, asset library. One asset, multiple applications."
+     "value": "Nordstrom CMS, editorial templates, asset library. One picture, used many ways."
     },
     {
      "label": "Angle",
@@ -13180,7 +13180,7 @@
        {
         "section": "meta",
         "field": "summary.0.value",
-        "quote": "Content engine on three tile shapes."
+        "quote": "Three tile shapes."
        },
        {
         "section": "meta",

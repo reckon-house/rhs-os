@@ -14,6 +14,12 @@
  *   · intensifiers        "truly", "genuinely", "remarkably"
  *   · the copula flourish "the X is the Y"
  *   · two-beat closers    a sentence whose last clause mirrors its first
+ *   · shop talk           software vocabulary in a study about photographs,
+ *                         rooms, or brands ("source frames", "deliverable",
+ *                         "compositing system"). Jeremy on 2026-08-15:
+ *                         "we're talking about editorial images but somehow
+ *                         it sounds 'tech'". Skipped for the studies that
+ *                         ARE software, where the words are literal.
  *
  * WHAT IT IS NOT. Not a linter that fails the build: every one of these
  * is a real sentence sometimes, and a study can earn one. It prints
@@ -83,6 +89,14 @@ const TELLS = [
     whole: true,
   },
   {
+    key: "shop talk",
+    why: "software words for a photograph, a room, or a brand; say the plain thing",
+    re: /\b(?:source (?:frames?|files?)|compositing system|layered files?|deliverables?|content engine|publishing system|the system (?:answers|holds|scales|stays|includes|knows)|iterat(?:e|ed|ion)s?|leverag\w*|optimi[sz]\w*|utiliz\w*|scal(?:able|ability)|interaction surface|under load|primitives?|payload)\b/i,
+    /* Only where the words are figurative. These slugs are software and
+       have real deliverables, real systems, real payloads. */
+    skipSlugs: ["sally", "arc", "dsc", "sizzle"],
+  },
+  {
     key: "two-beat closer",
     why: "last clause mirrors the first; reads as insight, decodes to a fact",
     re: /,\s*(?:and|so)\s+(?:only|never|always)\s+[^.]{4,60}\.$/,
@@ -130,8 +144,10 @@ for (const rel of FILES) {
         if (hit) findings.push({ file: rel, line: i + 1, key: tell.key, why: tell.why,
           error: false, excerpt: hit[0].length > 140 ? hit[0].slice(0, 137) + "…" : hit[0], hit: hit[0].slice(0, 40) });
       }
+      const slug = rel.replace(/^src\/data\//, "").replace(/-case-study\.ts$/, "");
       for (const sent of sentences) {
         for (const tell of TELLS.filter((x) => !x.whole)) {
+          if (tell.skipSlugs && tell.skipSlugs.includes(slug)) continue;
           const hit = sent.match(tell.re);
           if (!hit) continue;
           findings.push({

@@ -52,7 +52,7 @@ export const youBySallyCaseStudy: CaseStudy = {
         { label: "Angle", value: "Hair color usually sits under fluorescent lights next to the toothpaste. Treat it like a creative decision, not something you grab." },
       ],
       abstract:
-        "Hair color usually lives under fluorescent lights next to the toothpaste. The brief was to make it feel like something you choose, not something you grab.\n\nStarted with casting - real people across age, gender, and style, each paired with a signature shade. The portraits drove the campaign - saturated backgrounds, confident styling, personality first, product second.\n\nThe swatch system turned shade exploration into a visual decision rather than a technical one. Oversized color blocks replaced tiny chips, and clean grids made browsing intuitive across mobile, desktop, and in-store signage. Avenir Next across weights anchored the type, pink and cyan held the primary chromatic register, and the system scaled from influencer bio pages to email to retail without losing recognition.",
+        "Hair color usually lives under fluorescent lights next to the toothpaste. The brief was to make it feel like something you choose, not something you grab.\n\nStarted with casting - real people across age, gender, and style, each paired with a signature shade. The portraits drove the campaign - saturated backgrounds, confident styling, personality first, product second.\n\nThe swatch system turned shade exploration into a visual decision rather than a technical one. Oversized color blocks replaced tiny chips, and clean grids made browsing intuitive across mobile, desktop, and in-store signage. Avenir Next across weights anchored the type, pink and cyan held the primary chromatic register, and it held up from influencer bio pages to email to retail without losing recognition.",
     },
 
         // ── HERO ──
@@ -220,7 +220,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       introText:
         "Pink and cyan as the chromatic register, black for grounding, Avenir Next across weights. The same kit ran from influencer bio pages to retail signage without changing voice.",
       philosophyText:
-        "Pink set the personality, cyan set the contrast, and black anchored every layout so the saturated palette never tipped into noise. The chromatic register stayed consistent across every surface, which is what made the system recognizable from a phone screen and from a 6-foot retail sign at the same time.\n\nType is one family. Avenir Next Heavy carried the wordmark, Demi Bold carried the shade names and CTAs, Medium carried the rest. The single family kept the system tight, and the weight contrast did the work that a multi-font stack usually has to.",
+        "Pink set the personality, cyan set the contrast, and black anchored every layout so the saturated palette never tipped into noise. The chromatic register stayed consistent across every surface, which is what made it recognizable from a phone screen and from a 6-foot retail sign at the same time.\n\nType is one family. Avenir Next Heavy carried the wordmark, Demi Bold carried the shade names and CTAs, Medium carried the rest. The single family kept everything tight, and the weight contrast did the work that a multi-font stack usually has to.",
       colors: [
         { name: "Hot Pink", hex: "#E91E63", description: "Primary, personality" },
         { name: "Cyan", hex: "#00B8D4", description: "Contrast, accent" },

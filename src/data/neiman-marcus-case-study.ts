@@ -468,7 +468,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
       links: [],
       content:
-        "A luxury retailer's digital hub that behaved like a magazine without forgetting it was a store. The studio-only mandate forced the creative to do the heavy lifting. Color blocks stood in for location photography, and typography did the work a feature profile would have. Each limit became a template.\n\nThe stories held up because the framework underneath held up. Fixed templates for ways-to-wear, open typography for designer spotlights, color-as-environment for trend pieces - a framework loose enough to support a dozen editorial moods and tight enough that every story felt like it came from the same room.",
+        "A luxury retailer's digital hub that behaved like a magazine without forgetting it was a store. The studio-only mandate forced the creative to do the heavy lifting. Color blocks stood in for location photography, and typography did the work a feature profile would have. Each limit became a template.\n\nThe stories held up because the templates under them held up. Fixed templates for ways-to-wear, open typography for designer spotlights, color-as-environment for trend pieces - a framework loose enough to support a dozen editorial moods and tight enough that every story felt like it came from the same room.",
     },
   ],
 };

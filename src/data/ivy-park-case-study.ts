@@ -131,7 +131,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Scope",
           content:
-            "One scrolling brand experience. Launch emails timed to the drop. Digital marketing across Nordstrom's owned channels, social cut for each platform, in-store signage for the locations carrying the line.\n\nSix deliverable categories built from the same handful of elements.",
+            "One scrolling brand experience. Launch emails timed to the drop. Digital marketing across Nordstrom's owned channels, social cut for each platform, in-store signage for the locations carrying the line.\n\nSix kinds of thing built from the same handful of elements.",
         },
       ],
       group: { name: "brief" },

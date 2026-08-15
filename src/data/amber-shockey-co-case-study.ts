@@ -370,7 +370,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Pattern, product, color. Same hands across the system, so each new direction inherits the logic.",
+        "Pattern, product, color. Same hands on every pattern, so each new direction picks up the same logic.",
     },
     {
       id: "closing",
@@ -379,7 +379,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A startup needed patterns that could hold a full tableware line without locking into a single look. The system answers in three marks per collection and shared ground colors across the family. New directions slot in without breaking what came before.",
+        "A startup needed patterns that could hold a full tableware line without locking into a single look. The answer was three marks per collection and shared ground colors across the whole family. New directions slot in without breaking what came before.",
     },
   ],
 };

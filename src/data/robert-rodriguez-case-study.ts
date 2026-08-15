@@ -93,7 +93,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         captions: [
           "Double-exposure composite",
           "Pink blazer over mesh field",
-          "One of four source frames",
+          "One of the four photographs",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
       },
@@ -117,7 +117,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Neiman Marcus needed a spring campaign for Robert Rodriguez that felt current without abandoning the brand's romantic sensibility. The budget was a single shoot day. The deliverable was a full multi-channel system: social, email, in-store, editorial.",
+        "Neiman Marcus needed a spring campaign for Robert Rodriguez that felt current without abandoning the brand's romantic sensibility. The budget was one day in the studio. What they needed back was a whole campaign: social, email, the stores, editorial.",
       group: { name: "brief" },
     },
     {
@@ -126,7 +126,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The constraint became the concept. One model, four setups, and a compositing technique that turned four photographs into an entire visual language. Every piece of the campaign traces back to those four original frames, layered and recombined into something that feels like fifty shots instead of four.",
+        "So the limit became the idea. One model, four setups, and a way of layering the photographs over each other that stretched four pictures into a whole look. Everything in the campaign comes from those four photographs, layered and recombined until it feels like fifty shots instead of four.",
       group: { name: "brief" },
     },
     {
@@ -148,7 +148,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The System.",
           content:
-            "Four source photographs became a campaign library. Social cards, email headers, retail signage, editorial spreads. Each combination tells a slightly different story from the same visual DNA.\n\nThe typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.",
+            "Four photographs, and every piece came out of them: social cards, email headers, store signage, editorial spreads. Each combination tells a slightly different story from the same few pictures.\n\nThe typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.",
         },
       ],
     },
@@ -178,7 +178,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "deploy-header",
       type: "section-header",
       label: "SECTION 04: CAMPAIGN / DEPLOYMENT",
-      title: "Four source frames feeding every channel.",
+      title: "Four photographs, everywhere.",
       pressing: {
         mark: { n: "05", name: "Campaign & Deployment" },
         // The crossing's 220dvh wrap already IS the hold, so `pin` changes
@@ -193,7 +193,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The compositing system meant every deliverable felt like its own photograph. Social crops pulled from the layered files differently than email headers, retail signage used the color fields at full saturation, and editorial spreads let the double-exposure breathe across wide formats.",
+        "Because everything was layered from the same four pictures, every piece felt like its own photograph instead of a crop of one. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
     },
     {
       id: "deploy-footnote",
@@ -201,7 +201,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The campaign ran across Neiman Marcus social channels, email marketing, and in-store retail displays. The storefront window installation used the composites at large format. The mesh color fields held up at scale because they were mathematically generated, not resolution-dependent. A three-foot print has the same color smoothness as a phone screen.",
+        "The campaign ran across Neiman Marcus social channels, email marketing, and in-store retail displays. The storefront window installation used the composites at large format. The color fields held up at any size because they were drawn as smooth gradients instead of pixels. A three-foot print is as smooth as a phone screen.",
     },
 
     // ── COMPOSITE PAIR — pinned so the gradient plate can climb it ──
@@ -327,10 +327,10 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "A reference taken",
+      title: "Glamour Shots,",
       pressing: {
         mark: { n: "09", name: "Closing" },
-        heldLine: "seriously, not ironically.",
+        heldLine: "taken seriously.",
       },
     },
     {
@@ -340,7 +340,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       stack: ["Adobe Photoshop", "Adobe Illustrator", "Capture One"],
       links: [{ label: "Neiman Marcus", url: "https://www.neimanmarcus.com" }],
       content:
-        "Four studio photographs became a complete campaign system through double-exposure compositing and mesh color-field backgrounds. The technique turned a single shoot day into a visual language that scaled across social, email, retail, and editorial, with each format pulling differently from the same layered source files.\n\nSocial, email, retail. One model, one concept, one day of shooting, every deliverable tracing back to four original frames.",
+        "The whole campaign is four photographs from one day, layered over each other and set on gradients. It ran on social, in email, in the stores, and in the editorial pages, and it never looked thin.\n\nOne model, one idea, one day of shooting.",
     },
   ],
 };

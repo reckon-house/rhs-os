@@ -110,7 +110,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each pattern swatch is a self-contained tile. Repeatable in any direction, at any scale. The system works because the elements are primitive enough to combine without clashing. Complexity comes from layering, not from the ingredients.",
+        "Each pattern swatch is a self-contained tile. Repeatable in any direction, at any scale. It works because the shapes are simple enough to combine without clashing. The complexity comes from layering them, not from the ingredients.",
       group: { name: "rules" },
     },
     {

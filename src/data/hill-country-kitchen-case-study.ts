@@ -68,7 +68,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         { label: "Angle", value: "Designed the way a product gets designed. Lock the palette to four, let the constraint become the aesthetic." },
       ],
       abstract:
-        "A kitchen designed the way a product gets designed. The material palette is the design system - sage green setting the dominant surface, raw white oak providing the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint. Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room.\n\nThe style mixing is deliberate. Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs. None of these elements belong to the same era - they belong to the same room because the material palette holds them together.\n\nThe space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal measure. The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full length. Every decision was made for how a family actually uses a kitchen, not how one photographs.",
+        "A kitchen designed the way a product gets designed. The four materials are the whole plan - sage green on most of what you see, raw white oak providing the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint. Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room.\n\nThe style mixing is deliberate. Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs. None of these elements belong to the same era - they belong to the same room because the material palette holds them together.\n\nThe space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal measure. The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full length. Every decision was made for how a family actually uses a kitchen, not how one photographs.",
     },
 
         // ── HERO ──
@@ -107,7 +107,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Constraint at the material level works the same way it works in any design system - fewer variables means stronger cohesion. A room with twelve finishes feels decorated. A room with four feels designed. The limitation forced every surface to carry more visual weight, and the relationships between materials became the entire aesthetic.",
+        "Fewer materials means a room that hangs together, the same way fewer rules makes a cleaner design system. A room with twelve finishes feels decorated. A room with four feels designed. The limitation forced every surface to carry more visual weight, and the relationships between materials became the entire aesthetic.",
       group: { name: "materials" },
     },
     {
@@ -298,7 +298,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The island is the primary interaction surface for prep, cooking, eating, gathering, and homework. It needed to handle all of it without looking like it was trying to. Raw white oak solved the problem.",
+        "The island is where everything happens: prep, cooking, eating, gathering, homework. It needed to handle all of it without looking like it was trying to. Raw white oak solved the problem.",
     },
     {
       id: "island-footnote",
@@ -448,7 +448,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A kitchen where every specification traces back to the same four-material palette. The room holds together because the system holds together.",
+        "A kitchen where every specification traces back to the same four-material palette. The room holds together because the same four materials keep showing up.",
     },
     {
       id: "closing",
@@ -463,7 +463,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The same discipline that makes a digital design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints do the work.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
+        "The same discipline that makes a design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints do the work.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
     },
   ],
 };

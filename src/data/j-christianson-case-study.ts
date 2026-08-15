@@ -317,7 +317,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "Four circles in a grid, a tree silhouette over color stripes, a palette pulled from mid-century earth tones warm enough to feel organic without leaning into the nostalgia. The identity holds from a billboard down to a clothing tag because the elements were built to scale.\n\nThe color-shifting logo meant fewer production variants, and the seasonal tree graphic let one illustration cover a full product calendar. Decisions made at the system level so the surface could stay simple.",
+        "Four circles in a grid, a tree silhouette over color stripes, a palette pulled from mid-century earth tones warm enough to feel organic without leaning into the nostalgia. The identity holds from a billboard down to a clothing tag because the elements were built to scale.\n\nThe color-shifting logo meant fewer production variants, and the seasonal tree graphic let one illustration cover a full product calendar. The hard decisions made once, up front, so every piece after could stay simple.",
     },
   ],
 };
