@@ -102,7 +102,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Sign first, find out after. What the signature bought: Beyoncé's name on the project, and a schedule with no slack in it.",
+        "Sign first, find out after. The NDA came before the name did, and the schedule had no slack in it.",
       group: { name: "brief" },
     },
     {
@@ -111,7 +111,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Nobody in activewear had tried the position Ivy Park was staking out, luxury fashion on one side, athletic performance on the other. No precedent to reference, no competitor to copy. The design had to land in that gap without leaning toward either side.",
+        "Ivy Park was staking out a spot between luxury fashion and athletic performance, and there was no obvious reference for it. The design had to sit in that gap and feel like it belonged there.",
       group: { name: "brief" },
     },
     {
@@ -131,7 +131,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Scope",
           content:
-            "One scrolling brand experience. Launch emails timed to the drop. Digital marketing across Nordstrom's owned channels, social cut for each platform, in-store signage for the locations carrying the line.\n\nSix kinds of thing built from the same handful of elements.",
+            "One scrolling brand experience. Launch emails timed to the drop. Digital marketing across Nordstrom's owned channels, social cut for each platform, in-store signage for the locations carrying the line.\n\nAll of it built from the same handful of elements.",
         },
       ],
       group: { name: "brief" },
