@@ -7,7 +7,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
   title: "Jeffrey Spring Campaign.",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "High fashion on a studio budget. No location shoots. No heavy production. Foliage as architecture, not decoration.",
+    "High fashion on a studio budget. No location shoots. No heavy production. Foliage used as architecture.",
   field: "Art Direction\nCampaign Design\nEmail & Web Templates",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -37,7 +37,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       },
       title: "Jeffrey Spring\nCampaign.",
       subtitle:
-        "High fashion on a studio budget. No location shoots. No heavy production. Foliage as architecture, not decoration.",
+        "High fashion on a studio budget. No location shoots. No heavy production. Foliage used as architecture.",
       field: "Art Direction  Campaign Design  Email & Web Templates",
       author: "Jeremy Prasatik",
       published: "2017",
@@ -47,10 +47,10 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         { label: "Built", value: "Spring campaign across email, homepage, social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
         { label: "Scope", value: "Art direction, campaign design, email and web templates" },
         { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
-        { label: "Angle", value: "High fashion on a studio budget. Foliage as architecture, not decoration. Scale without a plane ticket." },
+        { label: "Angle", value: "High fashion on a studio budget. Foliage used as architecture. Scale without a plane ticket." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops working as structural anchors rather than styling props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
+        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with bold foliage crops holding the layouts together instead of dressing them props. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
     },
 
         // ── HERO ──
@@ -232,7 +232,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       introText:
         "Five colors, four type weights, two foliage crops - the same kit held across three designer stories without a single set change.",
       philosophyText:
-        "The palette runs studio white as the ground, monstera green as the architecture, and soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType is one family. Avenir Next in italic heavy for the Jeffrey wordmark, then Medium, Demi Bold, and Heavy for everything else. The foliage works as a material rather than a prop - two leaves shot once on white, then composed into every dress story in post.",
+        "The palette runs studio white as the ground, monstera green as the architecture, and soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType is one family. Avenir Next in italic heavy for the Jeffrey wordmark, then Medium, Demi Bold, and Heavy for everything else. The foliage is treated as a material - two leaves shot once on white, then composed into every dress story in post.",
       colors: [
         { name: "Studio White", hex: "#F5F2EC", description: "Ground, paper" },
         { name: "Striped Blue", hex: "#A8B8C8", description: "JW Anderson accent" },
@@ -281,7 +281,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       // material, so this slot shows them as a complementary detail study
       // (monstera + palm frond) rather than another mockup screenshot.
       markImage: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
-      markAlt: "Single monstera leaf shot tight on white, treated as a graphic material rather than a styling prop",
+      markAlt: "Single monstera leaf shot tight on white, treated as a graphic material",
       markImageRight: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
       markAltRight: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
     },

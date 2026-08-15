@@ -64,7 +64,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
         { label: "Angle", value: "Built a template that aged better than the content inside it. Editorial that merchandises itself." },
       ],
       abstract:
-        "Beauty content ages fast. New products launch weekly, trends shift seasonally, and static editorial goes stale before it publishes. The answer wasn't faster publishing - it was a template that aged better than the content inside it.\n\nThree modular story formats, each designed with editorial voice but built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the underlying product grid stayed current. Content that looked curated but actually ran on rails.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it applied, buy without leaving the modal. Stories opened into a shoppable drawer rather than navigating away, so the flow kept customers inside the narrative instead of bouncing them through product pages.",
+        "Beauty content ages fast. New products launch weekly, trends shift seasonally, and static editorial goes stale before it publishes. The answer wasn't faster publishing - it was a template that aged better than the content inside it.\n\nThree modular story formats, each designed with editorial voice but built so merchandising could swap products without touching the layout. \"Get That Glow\" and \"Top 5 Serums\" told seasonal stories while the underlying product grid stayed current. Content that looked curated but actually ran on rails.\n\nA virtual try-on tool let customers upload a photo or pull their Style Profile selfie, then drag across a color gradient to preview shades on their own face. Pick a color, see it applied, buy without leaving the modal. Stories opened into a shoppable drawer on the same page, so customers stayed inside the story instead of bouncing them through product pages.",
     },
 
         // ── HERO ──
@@ -224,7 +224,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every story opened into a shoppable drawer rather than a product page. The editorial narrative stayed visible while the product detail slid in from the side - reviews, pricing, size options, add to bag - and the purchase happened without breaking the read.",
+        "Every story opened into a shoppable drawer on the same page. The editorial narrative stayed visible while the product detail slid in from the side - reviews, pricing, size options, add to bag - and the purchase happened without breaking the read.",
     },
     {
       id: "stories-footnote",
@@ -232,7 +232,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The drawer pattern kept engagement metrics inside the editorial experience. Time on page, scroll depth, and conversion all measured within the story context rather than fragmenting across product detail pages. Merchandising could track which editorial angles drove the most adds-to-bag without attribution guesswork.",
+        "The drawer pattern kept engagement metrics inside the editorial experience. Time on page, scroll depth, and conversion all measured inside the story, on one page. Merchandising could track which editorial angles drove the most adds-to-bag without attribution guesswork.",
     },
 
     // ── GLOW STORY HERO — climbs the crossing that argues for it ──

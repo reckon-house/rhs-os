@@ -46,7 +46,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
         { label: "Built", value: "First digital flagship for the NYC retailer. Brand system, site architecture, content engine, from zero" },
         { label: "Scope", value: "Digital strategy, brand system, ecommerce design, UX architecture" },
         { label: "Stack", value: "Photoshop, Illustrator, Sketch, InVision" },
-        { label: "Angle", value: "A flagship, not a storefront. The publishing system shipped before the product templates." },
+        { label: "Angle", value: "Built like a flagship. The publishing system shipped before the product templates." },
       ],
       abstract:
         "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nStarted with the buying team. Learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy that won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there. Modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Integration work handled alongside external partners while keeping ownership of the experience, every interaction from wireframe to checkout prototyped to feel considered.",
@@ -141,7 +141,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "headline-flagship",
       type: "editorial-headline",
-      text: "A flagship,\nnot a storefront",
+      text: "Built like\na flagship",
     },
 
     // ════════════════════════════════════════
@@ -180,7 +180,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The grid let merchandising compose seasonal layouts without touching the underlying templates - swap photography, swap copy, ship. Type stayed structural rather than decorative, which is what kept the site from drifting toward catalog feel as the store grew.",
+        "The grid let merchandising compose seasonal layouts without touching the underlying templates - swap photography, swap copy, ship. Type stayed structural, which is what kept the site from drifting toward catalog feel as the store grew.",
     },
 
     // ── PDP screen — climbs the crossing above it.

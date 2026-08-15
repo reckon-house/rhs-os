@@ -7,7 +7,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
   title: "Hill Country Residence: Livingroom.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new. Considered, not curated.",
+    "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
   field: "Interior Design\nFurniture Curation\nArt Selection\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -49,7 +49,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       },
       title: "Hill Country Residence\nLivingroom.",
       subtitle:
-        "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new. Considered, not curated.",
+        "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
       field: "Interior Design  Furniture Curation  Art Selection  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -64,10 +64,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { label: "Built", value: "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen." },
         { label: "Scope", value: "Interior design, furniture curation, art selection, fixture sourcing." },
         { label: "Materials", value: "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass." },
-        { label: "Angle", value: "Each piece chosen for how it ages, not how it photographs. The room collects rather than coordinates." },
+        { label: "Angle", value: "Each piece chosen for how it ages, not how it photographs. The room is collected, piece by piece." },
       ],
       abstract:
-        "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall. The material palette carries through from the rest of the home: reclaimed 1950s pine floors, exposed wood beams, brass fixtures.\n\nFurniture blends mid-century silhouettes with textiles that lean Western. Cognac leather sofa with wood frame. Tweed armchairs. A Navajo-style throw. The mix is intentional but not matched. Each piece chosen individually rather than ordered as a set.\n\nArt on the stone wall includes an original painting by Dwight D. Eisenhower alongside landscape pieces in gilded frames. Family heirlooms sit next to new finds. The fireplace is used. The sheepskin under the bench is soft. The room has texture across the full range.",
+        "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall. The material palette carries through from the rest of the home: reclaimed 1950s pine floors, exposed wood beams, brass fixtures.\n\nFurniture blends mid-century silhouettes with textiles that lean Western. Cognac leather sofa with wood frame. Tweed armchairs. A Navajo-style throw. The mix is intentional but not matched. Each piece chosen on its own, none of it ordered as a set.\n\nArt on the stone wall includes an original painting by Dwight D. Eisenhower alongside landscape pieces in gilded frames. Family heirlooms sit next to new finds. The fireplace is used. The sheepskin under the bench is soft. The room has texture across the full range.",
     },
 
         // ── HERO ──
@@ -202,7 +202,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "An original Eisenhower painting alongside landscape pieces in gilded frames. Family heirlooms next to new finds. A Navajo-style throw over the sofa, vinyl records on the shelf, a sheepskin under the bench. The room collects rather than coordinates.",
+        "An original Eisenhower painting alongside landscape pieces in gilded frames. Family heirlooms next to new finds. A Navajo-style throw over the sofa, vinyl records on the shelf, a sheepskin under the bench. The room is collected, piece by piece.",
     },
 
     // 2-up: tweed armchairs in two settings (the 2x23 pair)
@@ -260,7 +260,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "headline-livedin",
       type: "editorial-headline",
-      text: "Lived in,\nnot staged",
+      text: "A room that\nlooks lived in",
     },
 
     // ════════════════════════════════════════

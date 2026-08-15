@@ -108,7 +108,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Editorial stories, brand modules, and merchandised picks all rendered through the same three shapes. Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two. Any combination produced a layout that looked designed, not assembled.",
+        "Editorial stories, brand modules, and merchandised picks all rendered through the same three shapes. Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two. Any combination produced a layout that looked designed.",
     },
 
     // ── Tile collage — the system as raw composition
@@ -159,7 +159,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three audiences, three homepages, one engine. The young customer landed on Savvy Mag, the designer-brand shopper got Summer to Fall styling, and the men's shopper opened on city essentials. Same shapes, different stories - each composition felt edited rather than generated.",
+        "Three audiences, three homepages, one engine. The young customer landed on Savvy Mag, the designer-brand shopper got Summer to Fall styling, and the men's shopper opened on city essentials. Same shapes, different stories - each composition felt edited.",
     },
 
     // ── Showcase: Savvy Mag (young customer) — single, padded, large

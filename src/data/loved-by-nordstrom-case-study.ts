@@ -284,7 +284,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The landing page pulled the campaign into a navigation layer. Editorial stories organized by brand, the heart acting as a bookmark through the grid. The same photography that lived in a 1080-square social post scaled to a 1440-wide hero without new art direction. Crop spec, not redesign.",
+        "The landing page pulled the campaign into a navigation layer. Editorial stories organized by brand, the heart acting as a bookmark through the grid. The same photography that lived in a 1080-square social post scaled to a 1440-wide hero without new art direction. A crop spec.",
     },
 
     // ── LANDING PAGE HERO ──

@@ -138,7 +138,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The Reference.",
           content:
-            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera — the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously — the confidence and the color, the full unironic glamour — and rebuild it with contemporary craft. A translation, not a parody.",
+            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera — the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously — the confidence and the color, the full unironic glamour — and rebuild it with contemporary craft. A translation.",
         },
         {
           title: "The Technique.",
@@ -278,7 +278,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The color palette lives in the space between coral, orange, and pink. Three colors that shouldn't work together but do when the transitions are smooth enough. The mesh technique creates shifts that feel organic rather than designed, the same way a sunset moves through those exact colors without any of them clashing.",
+        "The color palette lives in the space between coral, orange, and pink. Three colors that shouldn't work together but do when the transitions are smooth enough. The mesh technique creates shifts that feel organic, the same way a sunset moves through those exact colors without any of them clashing.",
       group: { name: "brand" },
     },
 

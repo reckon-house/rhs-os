@@ -480,7 +480,7 @@ export const arcCaseStudy: CaseStudy = {
         caption:
           "The average price of one item in each category. Bars are sized " +
           "against appliances, the highest. Vehicles has no bar because " +
-          "$5,000+ is a starting point, not an average.",
+          "$5,000+ is a floor, and there is no average to draw.",
       },
       totals: [
         { value: "73", label: "ITEMS DOCUMENTED", sub: "Average per home" },
@@ -661,7 +661,7 @@ export const arcCaseStudy: CaseStudy = {
       subcopy:
         "The interface should feel like something worth looking at, not a chore with a progress bar.",
       philosophyText:
-        "The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats data as something worth designing, not just storing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.",
+        "The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats the data as something worth designing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.",
       chromaticCircleImage: `${IMG}/chromatic-brand-circle.png`,
       /* THE FIRST THREE ARE DECLARED, THE LAST THREE ARE MEASURED, and
          the distinction is worth keeping straight because they disagree.
@@ -779,7 +779,7 @@ export const arcCaseStudy: CaseStudy = {
         {
           title: "Building Solo",
           content:
-            "Building solo means I made every decision and shipped every line. There was no engineering team, no PM assigning tickets, no design review, no QA department. I identified the problem, designed the solution, wrote the code, tested the output, fixed what broke, and shipped the result.\n\nThis isn't a limitation - it's a speed advantage. The feedback loop between noticing a problem and deploying a fix runs in hours, not sprints. UX friction caught during testing gets resolved in the same session. A feature idea that surfaces during development gets prototyped right away. The distance between intention and execution stays as short as I could make it.\n\nThe tradeoff is real. Solo means every decision is a prioritization decision - what ships now versus what ships later, what gets polished versus what gets to functional. V1 reflects those choices honestly. Comprehensive in scope, considered in design, pragmatic where it had to be.",
+            "Building solo means I made every decision and shipped every line. There was no engineering team, no PM assigning tickets, no design review, no QA department. I identified the problem, designed the solution, wrote the code, tested the output, fixed what broke, and shipped the result.\n\nThis isn't a limitation - it's a speed advantage. The feedback loop between noticing a problem and deploying a fix runs in hours. UX friction caught during testing gets resolved in the same session. A feature idea that surfaces during development gets prototyped right away. The distance between intention and execution stays as short as I could make it.\n\nThe tradeoff is real. Solo means every decision is a prioritization decision - what ships now versus what ships later, what gets polished versus what gets to functional. V1 reflects those choices honestly. Comprehensive in scope, considered in design, pragmatic where it had to be.",
         },
         {
           title: "AI-Assisted Development",

@@ -167,7 +167,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The combinations felt risky on paper but landed perfectly in person. A matte black tub reads softer when it sits between hard brick and warm oak than it ever does in a render. Patterned floor tile reads quieter under shiplap and a vaulted ceiling than under flat drywall. The trick was selecting materials together rather than sequentially - if a stone and a wood and a metal can hold each other in the moodboard, they hold each other in the room.",
+        "The combinations felt risky on paper but landed perfectly in person. A matte black tub reads softer when it sits between hard brick and warm oak than it ever does in a render. Patterned floor tile reads quieter under shiplap and a vaulted ceiling than under flat drywall. The trick was selecting materials all at once instead of one at a time - if a stone and a wood and a metal can hold each other in the moodboard, they hold each other in the room.",
     },
 
     // ── Urban Southwest shower details — first 2-up. Holds, so the quiet

@@ -228,7 +228,7 @@ export const bigBendCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa. The artists Elmgreen and Dragset built it in 2005. It holds real Prada shoes and bags from that season, and the door has never opened.",
+        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa. The artists Elmgreen and Dragset built it in 2005. It holds real Prada shoes and bags from that season, and the door has stayed shut ever since.",
     },
     // The arrival, climbing the sentence that introduces it. The brief
     // reserves that room itself; never author it.

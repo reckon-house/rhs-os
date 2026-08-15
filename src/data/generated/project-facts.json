@@ -1728,7 +1728,7 @@
        {
         "section": "prada-text",
         "field": "content",
-        "quote": "It holds real Prada shoes and bags from that season, and the door has never opened."
+        "quote": "It holds real Prada shoes and bags from that season, and the door has stayed shut ever since."
        },
        {
         "section": "image",
@@ -2216,7 +2216,7 @@
     },
     {
      "label": "Angle",
-     "value": "No single client, no single style. Each mark sounds like the client, not the designer. The point is fluency."
+     "value": "No single client, no single style. Each mark sounds like the client. The point is fluency."
     }
    ],
    "disciplines": [
@@ -3980,7 +3980,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…ing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery without slowing…"
+        "quote": "…ing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery, without slowin…"
        },
        {
         "section": "image",
@@ -6824,7 +6824,7 @@
        {
         "section": "confidence-footnote",
         "field": "content",
-        "quote": "…selecting materials together rather than sequentially - if a stone and a wood and a metal can hold each other in the moodboard, th…"
+        "quote": "…ecting materials all at once instead of one at a time - if a stone and a wood and a metal can hold each other in the moodboard, th…"
        },
        {
         "section": "image",
@@ -7422,7 +7422,7 @@
   {
    "slug": "hill-country-bath",
    "title": "Hill Country Primary Bath",
-   "subtitle": "Marble surfaces, warm metal fixtures, and wood ceilings. A 400 square foot bathroom designed to feel collected rather than spec'd.",
+   "subtitle": "Marble surfaces, warm metal fixtures, and wood ceilings. A 400 square foot bathroom that feels collected over time.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-bath",
    "year": "2023",
@@ -7441,7 +7441,7 @@
     },
     {
      "label": "Angle",
-     "value": "Designed to feel found, not fitted. A room that looks lived in on day one."
+     "value": "Made to feel found. A room that looks lived in on day one."
     }
    ],
    "disciplines": [
@@ -8344,7 +8344,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Dried florals, an olive tree, layered vintage rugs - every object placed to feel personal rather than styled."
+        "quote": "Dried florals, an olive tree, layered vintage rugs - every object placed so the room feels personal."
        },
        {
         "section": "vanity-footnote",
@@ -8845,7 +8845,7 @@
      {
       "facet": "furniture",
       "term": "island",
-      "n": 32,
+      "n": 33,
       "cites": [
        {
         "section": "meta",
@@ -9484,7 +9484,7 @@
   {
    "slug": "hill-country-living",
    "title": "Hill Country Residence: Livingroom.",
-   "subtitle": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new. Considered, not curated.",
+   "subtitle": "Floor-to-ceiling limestone fireplace wall, reclaimed pine, and mid-century furniture mixed with Western details. Collected pieces alongside new, put together slowly and on purpose.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-living",
    "year": "2023",
@@ -9503,7 +9503,7 @@
     },
     {
      "label": "Angle",
-     "value": "Each piece chosen for how it ages, not how it photographs. The room collects rather than coordinates."
+     "value": "Each piece chosen for how it ages, not how it photographs. The room is collected, piece by piece."
     }
    ],
    "disciplines": [
@@ -11601,7 +11601,7 @@
     },
     {
      "label": "Angle",
-     "value": "A flagship, not a storefront. The publishing system shipped before the product templates."
+     "value": "Built like a flagship. The publishing system shipped before the product templates."
     }
    ],
    "disciplines": [
@@ -11844,7 +11844,7 @@
   {
    "slug": "jeffrey-spring",
    "title": "Jeffrey Spring Campaign.",
-   "subtitle": "High fashion on a studio budget. No location shoots. No heavy production. Foliage as architecture, not decoration.",
+   "subtitle": "High fashion on a studio budget. No location shoots. No heavy production. Foliage used as architecture.",
    "category": "Creative",
    "href": "/case-studies/jeffrey-spring",
    "year": "2017",
@@ -11863,7 +11863,7 @@
     },
     {
      "label": "Angle",
-     "value": "High fashion on a studio budget. Foliage as architecture, not decoration. Scale without a plane ticket."
+     "value": "High fashion on a studio budget. Foliage used as architecture. Scale without a plane ticket."
     }
    ],
    "disciplines": [

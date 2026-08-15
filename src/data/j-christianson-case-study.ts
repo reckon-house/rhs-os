@@ -110,7 +110,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Four colorways - teal and dark green, yellow and gold, orange and rust, brown and earth tones. Same tree and stripe pattern, different palette in each. Branches reach past the color block into white space, breaking the rectangle so the graphic feels drawn rather than placed. Used on apparel, candle labels, hangtags, and promotional print, one drawing earned a full product range.",
+        "Four colorways - teal and dark green, yellow and gold, orange and rust, brown and earth tones. Same tree and stripe pattern, different palette in each. Branches reach past the color block into white space, breaking the rectangle so the graphic feels drawn by hand. Used on apparel, candle labels, hangtags, and promotional print, one drawing earned a full product range.",
       group: { name: "tree" },
     },
     {
@@ -202,7 +202,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid, not the fill. Fewer locked variations meant more places the mark could land without redrawing.",
+        "Brown circles with yellow, orange, red, and teal accents in one version. Olive circles with the same accents in another. The accent colors hold position (bottom-right cluster) while the dominant color shifts. Recognition comes from the grid. Fewer locked variations meant more places the mark could land without redrawing.",
     },
 
     // ── BRAND PATTERN — climbs the mark section it belongs to ──
@@ -262,7 +262,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
     {
       id: "headline-found",
       type: "editorial-headline",
-      text: "Type that feels found\nrather than designed",
+      text: "Type that looks\nlike it was found",
     },
 
     // ── OUTDOOR SIGN HERO — the last picture, grown to full size ──

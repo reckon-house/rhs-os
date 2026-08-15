@@ -347,7 +347,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude: Deep Analysis",
           content:
-            "Handles the heavy reasoning - long-form strategy documents, competitive analysis synthesis, campaign brief generation. Claude processes the full context window, including brand guidelines, performance history, and competitive data, then produces output that reads like it came from someone who's worked on the brand for years.\n\nThe writing quality matters because strategy documents circulate to leadership. The AI output needs to match the rigor and tone of senior strategic thinking rather than generate filler that requires heavy editing.",
+            "Handles the heavy reasoning - long-form strategy documents, competitive analysis synthesis, campaign brief generation. Claude processes the full context window, including brand guidelines, performance history, and competitive data, then produces output that reads like it came from someone who's worked on the brand for years.\n\nThe writing quality matters because strategy documents circulate to leadership. The AI output has to match the rigor and tone of senior strategic thinking. Filler that needs heavy editing is worse than nothing.",
         },
         {
           title: "Gemini: Pattern Recognition",
@@ -496,7 +496,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Every image gets analyzed by AI on upload - description, tags, product category, dominant colors, confidence scoring, all without manual cataloging. Search runs against weighted relevance across tags, titles, brands, and AI descriptions so the right asset appears in seconds rather than minutes of scrolling.",
+        "Every image gets analyzed by AI on upload - description, tags, product category, dominant colors, confidence scoring, all without manual cataloging. Search runs against weighted relevance across tags, titles, brands, and AI descriptions so the right asset appears in seconds instead of minutes of scrolling.",
     },
     {
       id: "asset-columns-1",
@@ -505,7 +505,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Auto-Tagging",
           content:
-            "Claude Vision analyzes every uploaded image automatically and returns description, tags, product category, dominant colors, campaign suggestions, and confidence score. Lifestyle vs. product shot detection, one-click re-tag on any asset, batch re-tag across selections.\n\nAI-generated and manual tags get tracked separately. The system knows what it tagged and what a human corrected, and the corrections improve future tagging accuracy.",
+            "Claude Vision analyzes every uploaded image automatically and returns description, tags, product category, dominant colors, campaign suggestions, and confidence score. Lifestyle vs. product shot detection, one-click re-tag on any asset, batch re-tag across selections.\n\nAI-generated and manual tags get tracked separately. It keeps track of what it tagged and what a human corrected, and the corrections improve future tagging accuracy.",
         },
         {
           title: "AI Studio Photography",

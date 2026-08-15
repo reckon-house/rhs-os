@@ -501,7 +501,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "White Space",
           content:
-            "\"the Fancy\" is mostly air. The letterforms cluster in the lower left and the rest of the frame breathes. \"stepper\" fills edge to edge. No breathing room. \"white\" splits the difference: open background, dense cluster at the bottom.\n\nThree different ratios of ink to paper. The patterns don't change between them. The ratio of filled to empty is what separates the quiet print from the loud one.",
+            "\"the Fancy\" is mostly air. The letterforms cluster in the lower left and the rest of the frame is left open. \"stepper\" fills edge to edge. No breathing room. \"white\" splits the difference: open background, dense cluster at the bottom.\n\nThree different ratios of ink to paper. The patterns don't change between them. The ratio of filled to empty is what separates the quiet print from the loud one.",
         },
       ],
       group: { name: "system" },
@@ -533,7 +533,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "The pattern set is almost childlike. Dots, lines, stripes, diamonds. The type is the opposite - Didone serifs, calligraphic flourishes, slab capitals with presence. The tension between the two is what makes the prints hold up at large scale.\n\nBlack and white was the only rule that never bent. No gray, no texture photography, no gradients blending one value into another. Ink or paper. The binary forced every composition to find its tone through spacing alone.",
+        "The pattern set is almost childlike. Dots, lines, stripes, diamonds. The type is the opposite - Didone serifs, calligraphic flourishes, slab capitals with presence. The tension between the two is what makes the prints hold up at large scale.\n\nBlack and white was the one rule that held every time. No gray, no texture photography, no gradients blending one value into another. Ink or paper. The binary forced every composition to find its tone through spacing alone.",
     },
   ],
 };

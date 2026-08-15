@@ -238,7 +238,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "Five Materials\nCarrying One Room.",
       introText:
-        "The entry runs on five materials, no more. Each one earns its place by doing one job and staying out of the others' way.",
+        "The entry runs on five materials, no more. Each one is there to do one job and staying out of the others' way.",
       philosophyTitle: "Material philosophy",
       philosophyText:
         "Oak runs unbroken to the doorway. Iron frames the doors and transom. Brass hangs alone overhead. Vintage wool anchors the path. Limestone holds the walls quiet.\n\nFive materials, nothing on top. Color comes from what the materials already are. A foyer this size gets one chance to introduce the house, and spending it on noise would be a waste.",

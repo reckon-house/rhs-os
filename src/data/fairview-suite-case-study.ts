@@ -159,7 +159,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together feel collected, not cataloged.",
+        "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor. The individual pieces span three decades of design and together feel collected over years.",
     },
 
     // ── Detail pair — held so the full room can climb across it. Moved

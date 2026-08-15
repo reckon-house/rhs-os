@@ -52,7 +52,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         { label: "Angle", value: "The fire gets the seat the TV would normally take. A formal room that doesn't feel formal." },
       ],
       abstract:
-        "Texture runs the room. A ledgestone fireplace wall climbs floor to ceiling, charcoal velvet swivel chairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine. Black box beams overhead pull the contrast together.\n\nThe palette stays tight - stone, velvet, brass, warm oak, no competing colors. The materials do the talking.\n\nFurniture arranges for conversation rather than a television. Four swivels face the fire, close enough for quiet voices, with a round bar cabinet in the corner stocking what the moment calls for. Calm and slightly glam, formal without being stiff.",
+        "Texture runs the room. A ledgestone fireplace wall climbs floor to ceiling, charcoal velvet swivel chairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine. Black box beams overhead pull the contrast together.\n\nThe palette stays tight - stone, velvet, brass, warm oak, no competing colors. The materials do the talking.\n\nThe furniture is arranged for conversation. There is no television. Four swivels face the fire, close enough for quiet voices, with a round bar cabinet in the corner stocking what the moment calls for. Calm and slightly glam, formal without being stiff.",
     },
 
         // ── HERO ──
@@ -182,7 +182,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The fire gets the seat the TV would normally take. The brass coffee table sits at the center because that's where everyone reaches, and the furniture is arranged as architecture for conversation rather than for staring at a screen.",
+        "The fire gets the seat the TV would normally take. The brass coffee table sits at the center because that's where everyone reaches, and the furniture is arranged for talking to each other, since there is no screen to face.",
     },
 
     // Single: rear view of the grouping showing the room composition.

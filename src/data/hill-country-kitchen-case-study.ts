@@ -117,7 +117,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "Sage Green",
           content:
-            "The cabinet color sets the room's identity. A muted sage with enough gray to read sophisticated, enough green to read alive, applied floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color doesn't compete with the marble or the brass - it recedes just enough to let the textures work.\n\nThe finish is matte. Satin would have pushed the cabinets toward contemporary and gloss would have fought the raw oak, but matte lets the shaker profiles cast soft shadows and keeps the room feeling grounded rather than polished.",
+            "The cabinet color sets the room's identity. A muted sage with enough gray to read sophisticated, enough green to read alive, applied floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color doesn't compete with the marble or the brass - it recedes just enough to let the textures work.\n\nThe finish is matte. Satin would have pushed the cabinets toward contemporary and gloss would have fought the raw oak, but matte lets the shaker profiles cast soft shadows and keeps the room feeling grounded.",
         },
         {
           title: "White Oak + Marble",
@@ -306,7 +306,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Open shelving on the working end holds plates and bowls within arm's reach of the dishwasher. A firewood cubby at the base adds texture and signals that this kitchen connects to the rest of the property. The marble top runs the full length, transitioning from food prep surface to bar seating without a material break. Four bar stools with brass-tone frames tuck under the overhang. The island feels like furniture, not cabinetry. That distinction matters. Furniture invites interaction. Cabinetry stores things.",
+        "Open shelving on the working end holds plates and bowls within arm's reach of the dishwasher. A firewood cubby at the base adds texture and signals that this kitchen connects to the rest of the property. The marble top runs the full length, transitioning from food prep surface to bar seating without a material break. Four bar stools with brass-tone frames tuck under the overhang. The island feels like a piece of furniture. That distinction matters. Furniture invites interaction. Cabinetry stores things.",
     },
     {
       id: "island-columns",
@@ -315,7 +315,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "The Oak Choice",
           content:
-            "White oak with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time. The grain stays open and the color will shift from pale honey to deeper amber across years of use.\n\nThis was the riskiest material call in the kitchen. Raw wood in a wet environment invites concern, but the response was that this is Texas Hill Country, not a showroom. The island should look used - water rings, knife marks, flour dust in the grain. The patina is the design intent.",
+            "White oak with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time. The grain stays open and the color will shift from pale honey to deeper amber across years of use.\n\nThis was the riskiest material call in the kitchen. Raw wood in a wet environment invites concern, but this is Texas Hill Country. It is meant to age. The island should look used - water rings, knife marks, flour dust in the grain. The patina is the point.",
         },
         {
           title: "Spatial Anchor",
@@ -325,7 +325,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "Furniture vs. Cabinetry",
           content:
-            "The island has legs - visible legs with open shelving between them - and that's the detail that makes it read as a freestanding piece rather than a built-in. The perimeter cabinets are architecture, and the island is furniture.\n\nThat distinction changes how people approach it. Guests lean on furniture, they sit around it, they set things on it without asking. A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invitation.",
+            "The island has legs - visible legs with open shelving between them - and that's the detail that makes it read as a freestanding piece instead of a built-in. The perimeter cabinets are architecture, and the island is furniture.\n\nThat distinction changes how people approach it. Guests lean on furniture, they sit around it, they set things on it without asking. A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invitation.",
         },
       ],
     },
@@ -463,7 +463,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The same discipline that makes a digital design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints generate the aesthetic rather than fight against them.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
+        "The same discipline that makes a digital design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints do the work.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
     },
   ],
 };

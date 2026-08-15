@@ -415,7 +415,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Once the page locked, the rest was format adaptation. Polygon, type, photography already established - email templates, banner ads, social formats, and signage became execution rather than invention. The visuals scaled because the elements were simple: a polygon crops the same at 300px and 3000px, bold type reads at any size, black-and-white photography converts to any aspect ratio.",
+        "Once the page locked, the rest was format adaptation. Polygon, type, photography already established - email templates, banner ads, social formats, and signage became execution. The visuals scaled because the elements were simple: a polygon crops the same at 300px and 3000px, bold type reads at any size, black-and-white photography converts to any aspect ratio.",
     },
 
     // ── SIGNAGE — the "Confidence is Strength" typography-at-volume

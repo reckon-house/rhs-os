@@ -218,7 +218,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The athlete app opens on the next session and the activity around it. Past that, the full trainer roster and the program menu. The same trainer data feeds the MCP server, so a connected AI describes a coach from the record, not guesswork.",
+        "The athlete app opens on the next session and the activity around it. Past that, the full trainer roster and the program menu. The same trainer data feeds the MCP server, so a connected AI describes a coach from the actual record.",
     },
     {
       id: "athlete-footnote",

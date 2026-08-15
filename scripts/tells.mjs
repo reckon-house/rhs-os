@@ -54,7 +54,10 @@ const TELLS = [
   {
     key: "ornamental verb",
     why: "a dressed-up word for a plain action",
-    re: /\b(?:opens? out|dealt|deals? (?:onto|into)|minted|wears|breathes|arrives at|lands (?:on|in) (?:the|its)|carries the|earns its)\b/i,
+    /* "carries the" is NOT here on purpose: "the type carries the
+       headlines" is how designers actually talk, and it flagged ten
+       ordinary sentences on the first run. */
+    re: /\b(?:opens? out|dealt|deals? (?:onto|into)|minted|wears|breathes|arrives at|lands (?:on|in) (?:the|its)|earns its)\b/i,
   },
   {
     key: "intensifier",
@@ -99,7 +102,11 @@ for (const rel of FILES) {
     const t = line.trim();
     if (t.startsWith("//") || t.startsWith("*") || t.startsWith("/*")) return;
     for (const m of line.matchAll(LITERAL)) {
-      const s = m[2];
+      /* Editorial headlines carry authored line breaks as literal \n.
+         Joined before testing, or "A flagship,\nnot a storefront" reads
+         as two clean fragments and the loudest antithesis on the page
+         walks straight past the gate — which is exactly what happened. */
+      const s = m[2].replace(/\\n/g, " ");
       if (!isProse(s)) continue;
       /* Split into sentences so a closer test sees the sentence end. */
       const sentences = s.split(/(?<=[.!?])\s+/);

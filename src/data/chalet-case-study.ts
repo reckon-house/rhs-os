@@ -176,7 +176,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Furniture kept simple on purpose. Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The surroundings carry the energy - the interior stays quiet enough to let them. Cabin form, mid-century pieces. The blend was the brief.",
+        "Furniture kept simple on purpose. Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The surroundings carry the energy - the interior stays quiet enough to let them. Cabin form, mid-century pieces. Mixing the two was the whole brief.",
     },
 
     // ── A-frame ceiling shot, standalone (the showpiece looking up at the
