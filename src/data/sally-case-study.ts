@@ -408,7 +408,7 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "brain-brief-editorial",
       type: "editorial-headline",
-      text: "The AI works out the strategy\nand writes the brief.\nPeople approve it and move it on.",
+      text: "The AI works out the strategy\nand writes the brief.\nThe team approves it.",
       group: { name: "brand-brain" },
     },
     {
