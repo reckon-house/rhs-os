@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { cleanIntake, openThread, storeReady } from "@/lib/messages";
+import { notifyNewMessage } from "@/lib/notify";
 
 /* ── POST /api/message ──────────────────────────────────────────────
  * Opens a thread. The browser sends what the visitor typed plus the
@@ -69,5 +70,20 @@ export async function POST(req: Request) {
           { status: 500 }
         );
   }
+  /* THE ALERT GOES OUT AFTER THE RESPONSE, NOT BEFORE IT. `after` runs
+     once the visitor already has their token, so a slow mail API cannot
+     make the form feel slow, and a Resend outage cannot turn a saved
+     message into a failed one on their screen. The message is in the
+     database either way; the email is a courtesy to the person who owns
+     the inbox.
+     Nothing is awaited on the caller's path and nothing throws out of
+     here: notifyNewMessage never rejects, it returns a reason. The
+     reason is logged for the server, never returned — who gets told
+     about a message is not a visitor's business. */
+  after(async () => {
+    const sent = await notifyNewMessage({ ...parsed.value, token: res.token });
+    if (!sent.ok) console.warn("[message] new-message alert not sent:", sent.why);
+  });
+
   return NextResponse.json({ ok: true, token: res.token });
 }

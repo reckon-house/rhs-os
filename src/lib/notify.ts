@@ -50,6 +50,11 @@ Reckon House Staples
 `;
 }
 
+/* Where a new message is announced. Defaults to the address the site
+   already tells everyone; MAIL_TO overrides it when the mailbox that
+   gets read is somewhere else. */
+const TO_OWNER = process.env.MAIL_TO || "hello@reckon.house";
+
 export type MailResult =
   | { ok: true; id: string }
   | { ok: false; why: string };
@@ -93,6 +98,69 @@ export async function notifyReply(args: {
          says so exactly. It never reaches a visitor. */
       return { ok: false, why: json?.message || `Resend returned ${res.status}` };
     }
+    return json?.id ? { ok: true, id: json.id } : { ok: false, why: "No id returned" };
+  } catch (e) {
+    return { ok: false, why: e instanceof Error ? e.message : "Send failed" };
+  }
+}
+
+/* ── Telling Jeremy someone wrote in ────────────────────────────────
+ *
+ * The other direction, and the one that makes the loop worth having: a
+ * visitor writes at eleven at night and he finds out now rather than
+ * the next time he runs the inbox routine.
+ *
+ * IT CARRIES THE REPLY COMMAND. The whole message is in the mail, so
+ * the decision "does this need me" is made on the phone, and the only
+ * thing needing a laptop is the answer itself — which is pasteable
+ * from the last line rather than looked up.
+ *
+ * The visitor's own address goes in Reply-To. Hitting reply in a mail
+ * client then writes to them directly, which is the escape hatch for
+ * anything the thread page is the wrong shape for.
+ */
+export async function notifyNewMessage(args: {
+  name: string | null;
+  email: string | null;
+  body: string;
+  transcript: string[];
+  token: string;
+}): Promise<MailResult> {
+  if (!KEY) return { ok: false, why: "No Resend key in the environment" };
+
+  const who = args.name || "Someone";
+  const asked = args.transcript.length
+    ? `\nThey had asked: ${args.transcript.join(" · ")}\n`
+    : "";
+  const text = `${who} wrote in${args.email ? ` (${args.email})` : ""}.
+
+${args.body}
+${asked}
+The thread:
+${SITE}/thread/${args.token}
+
+To answer:
+npm run inbox -- reply ${args.token} "your answer"
+`;
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: FROM,
+        to: [TO_OWNER],
+        /* The name in the subject is what makes a phone notification
+           readable without opening it. */
+        subject: `${who} wrote in`,
+        text,
+        ...(args.email ? { reply_to: args.email } : {}),
+      }),
+    });
+    const json = (await res.json().catch(() => null)) as
+      | { id?: string; message?: string }
+      | null;
+    if (!res.ok) return { ok: false, why: json?.message || `Resend returned ${res.status}` };
     return json?.id ? { ok: true, id: json.id } : { ok: false, why: "No id returned" };
   } catch (e) {
     return { ok: false, why: e instanceof Error ? e.message : "Send failed" };

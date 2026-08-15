@@ -54,6 +54,13 @@ export interface DaybookEntry {
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
   {
+    id: "the-loop-closes",
+    date: "2026-08-14",
+    project: "RHS",
+    body: "Messages now tell me the moment they arrive, and my answer tells the sender back. Both directions confirmed delivered. The alert carries the whole message and the command to reply to it, so the decision happens on a phone and only the answer needs a laptop.",
+    link: { href: "/", label: "Ask the house" },
+  },
+  {
     id: "threads-go-live",
     date: "2026-08-14",
     project: "RHS",
