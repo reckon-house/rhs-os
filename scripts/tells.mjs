@@ -37,7 +37,9 @@ import { resolve } from "node:path";
 const ROOT = resolve(import.meta.dirname, "..");
 const FILES = [
   ...readdirSync(resolve(ROOT, "src/data"))
-    .filter((f) => f.endsWith("-case-study.ts"))
+    /* No AppleDouble shadows: the volume is exFAT and macOS drops a
+       binary ._name beside every file, which readdir happily returns. */
+    .filter((f) => f.endsWith("-case-study.ts") && !f.startsWith("._"))
     .map((f) => `src/data/${f}`),
   "src/data/daybook.ts",
   /* voice-lines.ts is deliberately NOT here: its rule is "his words,
@@ -110,7 +112,11 @@ const isProse = (s) =>
   s.length >= 40 &&
   /[a-z]\s[a-z]/i.test(s) &&
   !/^[\/#.]|\.(?:jpg|png|webp|svg|css|ts|tsx|json)\b|^[\w-]+(?:\s[\w-]+){0,3}$/.test(s) &&
-  !/\b(?:px|rem|vw|dvh|clamp\()/.test(s) &&
+  /* Whole units only. Without the closing \b, "rem" matched inside
+     "remove", "remember" and "review", and every sentence carrying one
+     of those words was skipped as if it were CSS. That is how a
+     "genuinely" in A.R.C. walked past a hard-error gate for a day. */
+  !/\b(?:px|rem|vw|dvh)\b|clamp\(/.test(s) &&
   !/^[A-Z_]{4,}$/.test(s);
 
 const findings = [];

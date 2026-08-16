@@ -64,10 +64,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { label: "Built", value: "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen." },
         { label: "Scope", value: "Interior design, furniture curation, art selection, fixture sourcing." },
         { label: "Materials", value: "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass." },
-        { label: "Angle", value: "Each piece chosen for how it ages, not how it photographs. The room is collected, piece by piece." },
+        { label: "Angle", value: "Everything picked for how it will wear, then left alone to do it." },
       ],
       abstract:
-        "The living room sits at the center of the house, open to the kitchen and framed by the limestone fireplace wall. The material palette carries through from the rest of the home: reclaimed 1950s pine floors, exposed wood beams, brass fixtures.\n\nFurniture blends mid-century silhouettes with textiles that lean Western. Cognac leather sofa with wood frame. Tweed armchairs. A Navajo-style throw. The mix is intentional but not matched. Each piece chosen on its own, none of it ordered as a set.\n\nArt on the stone wall includes an original painting by Dwight D. Eisenhower alongside landscape pieces in gilded frames. Family heirlooms sit next to new finds. The fireplace is used. The sheepskin under the bench is soft. The room has texture across the full range.",
+        "Open to the kitchen, with a floor-to-ceiling limestone fireplace wall as the main event. Reclaimed 1950s pine on the floor, exposed beams overhead, brass fixtures.\n\nThe furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Navajo-style throw. Every piece was chosen for how it will age, and none of it came as a set.\n\nOn the stone wall, an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames. Family heirlooms sit next to new finds, and there is a sheepskin under the bench that gets moved around.",
     },
 
         // ── HERO ──
@@ -101,7 +101,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The material palette runs through from the rest of the home. Four core textures, none competing for attention.",
+        "The same four that run through the rest of the house.",
     },
     {
       id: "material-footnote",
@@ -109,7 +109,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Floor-to-ceiling limestone on the fireplace wall. Reclaimed 1950s pine underfoot and overhead as exposed beams. Brass fixtures throughout. Cognac leather on the sofa and bench seats. The walls and ceiling stay quiet so the texture has room to register.",
+        "Limestone floor to ceiling on the fireplace wall. Reclaimed 1950s pine underfoot and overhead in the exposed beams. Brass on the fixtures, cognac leather on the sofa and the bench. The walls and ceiling are kept plain, so the texture comes from those four.",
     },
 
     // Symmetrical fireplace wall — promoted to a scroll-animated hero so
@@ -175,7 +175,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "collected-header",
       type: "section-header",
       label: "SECTION 03: COLLECTED",
-      title: "Considered,",
+      title: "Heirlooms, New Finds,",
       // The study's one crossing. Two words that draw the line the whole
       // room is arguing for.
       //
@@ -184,25 +184,21 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       // A.R.C. convention for saying so in the data, which is what the
       // audit reads.
       pressing: {
-        mark: { n: "03", name: "Considered" },
-        heldLine: "Not Curated.",
+        mark: { n: "03", name: "Heirlooms and Finds" },
+        heldLine: "an Eisenhower on the Wall.",
         choreo: { pin: true, crossing: true },
       },
     },
-    {
-      id: "collected-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Furniture blends mid-century silhouettes with Western details. Each piece chosen individually, not ordered as a set.",
-    },
+    // No subhead here on purpose. The headline names the heirlooms, the
+    // finds and the painting, and the abstract already said none of it
+    // came as a set; a line under it was saying both again.
     {
       id: "collected-footnote",
       type: "text",
       size: "base",
       fullWidth: true,
       content:
-        "An original Eisenhower painting alongside landscape pieces in gilded frames. Family heirlooms next to new finds. A Navajo-style throw over the sofa, vinyl records on the shelf, a sheepskin under the bench. The room is collected, piece by piece.",
+        "Under the Eisenhower, a mid-century record-player shelf with the vinyl below it, ZZ Top and Sturgill Simpson in the stack. A ladder shelf holds a vintage globe and ceramic vessels, brass fire tools underneath. Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside.",
     },
 
     // 2-up: tweed armchairs in two settings (the 2x23 pair)
@@ -260,7 +256,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
     {
       id: "headline-livedin",
       type: "editorial-headline",
-      text: "A room that\nlooks lived in",
+      text: "The fireplace gets used,\nthe records get played",
     },
 
     // ════════════════════════════════════════
@@ -276,11 +272,11 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "interiors-index",
       type: "interiors-index",
       label: "SECTION 04: MATERIALS & FINISHES",
-      title: "Five Materials\nHolding One Room.",
+      title: "The Materials,\nChosen for How They Age.",
       introText:
-        "The room runs on five materials, each chosen for how it ages. Limestone, pine, leather, tweed, brass. Nothing chasing trend, nothing afraid of wear.",
+        "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. None of it is trendy and all of it can take a scuff.",
       philosophyText:
-        "Color goes in through what the materials already are, not through accents or paint. Limestone takes light without bouncing it. Pine warms underfoot. Cognac leather darkens with use. Tweed reads soft from a distance, structured up close. Brass develops a patina nobody plans for.\n\nEvery piece in the room is allowed to age. Nothing is precious, nothing is protected. The fireplace gets used, the records get played, and the sheepskin moves around.",
+        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed reads soft from across the room and structured up close. Brass goes dark on its own schedule.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
         { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams, mantel" },
@@ -308,10 +304,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Room You",
+      title: "Meant to Take",
       pressing: {
-        mark: { n: "04", name: "A Room You" },
-        heldLine: "Live In.",
+        mark: { n: "04", name: "Ten Years" },
+        heldLine: "Ten Years of Family.",
       },
     },
     {
@@ -319,7 +315,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Used for the fire, the records, the conversation. Built to take ten years of family without looking different than it does today.",
+        "Nothing in the room is precious and nothing is protected.",
     },
     {
       id: "closing",
@@ -328,7 +324,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "An Eisenhower painting on a limestone wall, vinyl records on the shelf, a sheepskin that moves around. The room looks the same after ten years of family use because everything in it was picked to take wear.",
+        "Just past the room, the entry gets the same treatment: a leather-strapped oval mirror on the wall, a wood console with a crystal lamp on it, a plaid throw and a wicker basket underneath.",
     },
   ],
 };

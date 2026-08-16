@@ -46,13 +46,13 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Pattern Design", "Product Design", "Colorway Development"],
       summary: [
-        { label: "Built", value: "Three tableware collections: blue florals, black linework, red dragons. Hero, secondary, accent per set" },
+        { label: "Built", value: "Three tableware collections: blue florals, black linework, red dragons. A hero, a secondary, and an accent pattern in each" },
         { label: "Scope", value: "Pattern design, product design, colorway development" },
-        { label: "Tools", value: "Illustrator, Photoshop, InDesign. Multiple colorways per collection" },
-        { label: "Angle", value: "Patterns built as a system, not a single print. Cream as shared ground, so a pattern only works if the next one fits." },
+        { label: "Tools", value: "Illustrator, Photoshop, InDesign. Several colorways per collection" },
+        { label: "Angle", value: "Every collection shares cream as its ground, so a plate from one can sit on the table with a plate from another." },
       ],
       abstract:
-        "Tableware patterns built as systems. Each collection runs hero, secondary, accent. Designed to layer from a single dish to a full setting without losing logic.\n\nThree collections shown here: blue florals, black linework, red dragons. Each direction balances structured against organic. Each runs multiple colorways so the same set flexes from minimal to maximal depending on how it pairs.\n\nBuilt for a tableware startup that needed a system, not a single pattern. Pattern design, product design, and colorway development as one continuous process.",
+        "Amber Shockey & Co. is a tableware startup. Each of its collections has a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting, and every new collection has to sit next to the ones before it.\n\nThree collections are here: blue florals, black linework, red dragons. Each one sets something structured against something organic, and each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with.\n\nPattern design, product design, and colorway development were done together, as one piece of work.",
     },
 
     // ── HERO CAROUSEL ──
@@ -78,7 +78,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           alt: "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose",
         },
       ],
-      pressing: { captions: ["Three collections, one system"] },
+      pressing: { captions: ["Three collections, one table"] },
     },
 
     // ════════════════════════════════════════
@@ -103,7 +103,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The most pattern-on-pattern direction. Blue peonies layered against a geometric grid. Plates that read as a still life when set, as a single object when used alone.",
+        "The most pattern-on-pattern of the three. Blue peonies over a geometric grid, so a stack of plates reads as a still life and one plate on its own still works.",
     },
     {
       id: "blue-footnote",
@@ -111,7 +111,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Pairs with black linework when the set needs structure. Pairs with red dragons when the table needs heat. The cobalt anchors any combination because every other collection shares cream as the common ground.",
+        "It goes with black linework when the table needs some structure, and cobalt sits next to anything else as long as there's cream in the mix.",
     },
 
     // 2-up: geometric blue marks (the system inside the colorway). Held, so
@@ -172,7 +172,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The most reductive direction. Geometric grids and halftone density on charcoal. Reads as the most modern of the three. Holds against everything else.",
+        "Geometric grids and halftone dots on charcoal. It's the simplest of the three collections, and it reads as the most modern.",
     },
     {
       id: "black-footnote",
@@ -180,7 +180,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Mixes into any other collection without competing. The graphic flatness lets blue florals or red dragons sit on top of a black linework setting without losing color depth.",
+        "It sits under either of the other two. The flat graphic ground lets blue florals or red dragons go on top of a black linework setting and keep their color.",
     },
 
     // Inline hero: black linework plates mockup. Climbs the crossing
@@ -237,7 +237,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The most ornamental direction. Burgundy dragons curled against floral filigree. Reads as Eastern textile work. The hero piece of the line for buyers who want one statement plate.",
+        "Burgundy dragons curled through floral filigree. This is the ornamental one, the statement plate for a buyer who only wants a single piece.",
     },
     {
       id: "red-footnote",
@@ -245,7 +245,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Lands well with black linework underneath as a setting. Hard against blue florals; the cobalt and burgundy fight. Pair with the cream pieces in either collection to break the contrast.",
+        "It works with black linework underneath as the setting. Straight against blue florals it's hard, since the cobalt and the burgundy fight, so put the cream pieces from either collection between them.",
     },
 
     // Red dragons plates — the zoom. This study's most ornamental frame, and
@@ -294,7 +294,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "A pattern only works\nif the next one fits.",
+      text: "A pattern only works\nif the next one fits",
     },
 
     // ════════════════════════════════════════
@@ -304,11 +304,11 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "A Family of Shapes.\nA Single System.",
+      title: "Four Shapes, Five Colors,\nand Cream Under Every One.",
       introText:
-        "Five colors, four shapes, and one rule. The whole line scales out of a small set of decisions made once and held across every direction.",
+        "Each collection gets one hero shape and one color, and cream runs under all of them.",
       philosophyText:
-        "Patterns work as a family. A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later. Nothing in the second buy fights anything in the first.\n\nEach collection has a hero shape and a colorway. Peony lives in cobalt. Circle lives in blush. Chinese dragon lives in burgundy. Halftone dot lives in charcoal. Cream runs underneath as the shared ground that lets any two collections sit together without fighting.",
+        "A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later, and nothing in the second buy fights anything in the first.",
       colors: [
         { name: "Cobalt", hex: "#1F4D78", description: "Blue florals" },
         { name: "Blush", hex: "#D87A82", description: "Pink geometry" },
@@ -321,7 +321,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           name: "Peony",
           role: "Blue florals hero",
           description:
-            "The largest motif in the line. Layered florals that read as wallpaper at field scale and as a single bloom at plate scale.",
+            "The biggest of the four motifs. Layered florals that look like wallpaper at field size and like a single bloom on a plate.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 400,
         },
@@ -329,7 +329,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           name: "Circle",
           role: "Pink geometry hero",
           description:
-            "Linework circles built on a construction grid. The most reduced form of the geometric language. Carries the colorway when the collection needs an accent without a full pattern.",
+            "Linework circles drawn on a construction grid. It carries the color when a collection needs an accent and a full pattern would be too much.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 600,
         },
@@ -337,7 +337,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           name: "Chinese Dragon",
           role: "Red dragons hero",
           description:
-            "Dragons curled around floral filigree, set in a circular mandala. The most ornamental motif. Pulls Eastern textile work into a Western tableware context.",
+            "Dragons in a round mandala, borrowed from Eastern textile work. The most ornamental of the four.",
           family: "'Didot', 'Bodoni 72', 'Caslon', serif",
           weight: 400,
         },
@@ -345,14 +345,14 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
           name: "Halftone Dot",
           role: "Black linework hero",
           description:
-            "Density built from points instead of lines. The most reductive direction in the family. Sits under any other pattern without competing for the surface.",
+            "Density made from dots. The plainest of the four, and the one that goes under everything else.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 300,
         },
       ],
       markImage: `${IMG}/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg`,
       markAlt: "Geometric diamond accent mark with construction grid behind, showing the underlying geometry that holds the system together",
-      pressing: { mark: { n: "05", name: "A Family of Shapes" } },
+      pressing: { mark: { n: "05", name: "Four Shapes" } },
     },
 
     // ════════════════════════════════════════
@@ -362,15 +362,15 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "The Set Builds Itself.",
-      pressing: { mark: { n: "06", name: "The Set Builds Itself" } },
+      title: "Any Two Collections on the Same Table.",
+      pressing: { mark: { n: "06", name: "The Same Table" } },
     },
     {
       id: "closing-subhead",
       type: "text",
       size: "subhead",
       content:
-        "Pattern, product, color. Same hands on every pattern, so each new direction picks up the same logic.",
+        "Pattern, product, and colorway, designed together.",
     },
     {
       id: "closing",
@@ -379,7 +379,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A startup needed patterns that could hold a full tableware line without locking into a single look. The answer was three marks per collection and shared ground colors across the whole family. New directions slot in without breaking what came before.",
+        "Three collections so far, and each one was drawn to sit next to the last.",
     },
   ],
 };

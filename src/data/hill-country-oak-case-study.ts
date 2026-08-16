@@ -46,13 +46,13 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Art Direction", "Campaign Design"],
       summary: [
-        { label: "Built", value: "Brand campaign for a Texas barrel maker. One graphic idea sized billboard to phone screen." },
+        { label: "Built", value: "Brand campaign for a Texas barrel maker: an outdoor banner, posters, a phone wallpaper, a shirt." },
         { label: "Scope", value: "Art direction and campaign design." },
-        { label: "Tools", value: "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal. Heavy geometric sans, vintage display face." },
-        { label: "Angle", value: "Heritage without the cosplay. Mid-century poster language carrying Texas without the Western cliché." },
+        { label: "Tools", value: "Illustrator, Photoshop, InDesign. Greatdome for the display type, Avenir Next for everything else." },
+        { label: "Angle", value: "Mid-century travel-poster color, an oak silhouette, and one graphic idea sized from a billboard down to a phone." },
       ],
       abstract:
-        "Texas oak, whiskey barrels, and the landscape that grows both. The brand needed a visual language that could carry from billboard to phone screen without losing the heritage feeling.\n\nThe system pulls from mid-century poster design - warm color blocking, silhouetted trees, geometric shapes that echo the barrel geometry. Typography stays utilitarian, and a distressed texture gives the whole thing weight without feeling forced.\n\nBuilt to scale across billboard, print, and digital out of a single graphic idea.",
+        "Hill Country Oakworks makes whiskey barrels from Texas oak. The campaign had to work on a roadside billboard and on a phone screen, and read as heritage at both sizes.\n\nIt pulls from mid-century poster design: warm color blocking, an oak silhouette, geometric shapes that echo the barrel. The type is plain and utilitarian, with a distressed texture over the whole thing.\n\nThe same idea runs on billboards, print, and digital, sized for each.",
     },
 
         // ── HERO ──
@@ -73,13 +73,13 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "lang-header",
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
-      title: "Mid-Century Posters",
+      title: "Mid-century travel posters,",
       // Pinned: the headline names the reference set, and the two copy
       // blocks under it spend their length arguing for it. The claim has
       // to still be on screen when the landscape and wordmark arrive.
       pressing: {
-        mark: { n: "02", name: "Mid-Century Posters" },
-        heldLine: "Meet Workshop Type.",
+        mark: { n: "02", name: "Travel Posters" },
+        heldLine: "with a live oak in them.",
         choreo: { pin: true },
       },
     },
@@ -88,7 +88,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Color blocking, tree silhouettes, a heavy geometric sans used at scale. The kit does the work the imagery doesn't need to.",
+        "Flat color, a tree silhouette, and a heavy geometric sans set big. Every piece in the campaign is some arrangement of those three.",
     },
     {
       id: "lang-footnote",
@@ -96,7 +96,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The brief called for heritage without falling into Western cliché. Reference set: mid-century travel posters. Bold flat color, silhouetted nature, a wordmark that holds at billboard scale and at phone-screen scale. Texas, but printed.",
+        "The brief asked for heritage that stayed clear of the Western cliché, so the reference pile was travel posters and old highway signs.",
     },
 
     // ── 2-up: mid-century landscape paired with the wordmark color block
@@ -157,7 +157,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
     {
       id: "headline-craft",
       type: "editorial-headline",
-      text: "Land and craft\nin one frame",
+      text: "The Hill Country,\nan hour before sunset",
     },
 
     // ════════════════════════════════════════
@@ -167,7 +167,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "app-header",
       type: "section-header",
       label: "SECTION 03: APPLICATION",
-      title: "One System Sized for",
+      title: "Billboard, poster,",
       // The study's one crossing, held back to section 03 so it does not
       // land on the same beat as the poster zoom above.
       //
@@ -175,8 +175,8 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       // its own gesture, so the flag changes nothing on the page. It is the
       // convention for saying so in the data, which is what the audit reads.
       pressing: {
-        mark: { n: "03", name: "One System Sized for" },
-        heldLine: "Billboard to Phone Screen.",
+        mark: { n: "03", name: "Billboard to Phone" },
+        heldLine: "lock screen, t-shirt.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -185,7 +185,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every piece sized from outdoor banners down to phone screens, all sharing the same color blocking, silhouettes, and type. The size changes, the brand doesn't.",
+        "The same color blocks, silhouette, and type at every size, from an outdoor banner down to a lock screen.",
     },
 
     {
@@ -210,11 +210,11 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "A Sun-Washed Palette\nPaired with Workshop Type.",
+      title: "Highway-sign colors,\nAvenir Next, Greatdome.",
       introText:
-        "Five colors pulled from a Texas hour-before-sunset, one type family used at every weight it needed - the same kit on everything from a billboard to a phone.",
+        "The palette had to say Texas without red, white, and blue, so it comes from the landscape at last light.",
       philosophyText:
-        "The palette had to feel like Texas without leaning into red, white, and blue. Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Pulled from old highway signs and the actual color of the landscape during last-light.\n\nGreatdome carries the editorial headlines. Avenir Next runs everything else, heavy weight for the wordmark, lighter for body. The display face does the heritage work so the workhorse sans doesn't have to.",
+        "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Orange and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type.\n\nGreatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else.",
       colors: [
         { name: "Cream", hex: "#ECE2C5", description: "Paper, ground" },
         { name: "Mustard", hex: "#ECC265", description: "Wordmark, accents" },
@@ -227,7 +227,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
           name: "Greatdome",
           role: "Headline display",
           description:
-            "Vintage display face for editorial headlines and poster moments. Carries period character without leaning into kitsch.",
+            "Display face for the headlines and the posters.",
           family: "'Greatdome', 'Bebas Neue', 'Oswald', sans-serif",
           weight: 400,
         },
@@ -236,7 +236,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
           sampleText: "Oakworks",
           role: "Wordmark & posters",
           description:
-            "Heavy geometric sans for the wordmark and poster headlines. Holds shape at billboard scale and at phone-screen scale.",
+            "Heavy geometric sans for the wordmark and the poster headlines.",
           family: "'Avenir Next', 'Futura', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -244,7 +244,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Tagline & subhead",
           description:
-            "Mid-weight for taglines like OAK BARRELS, MASTER CRAFT, HERITAGE WHISKEY. Carries the spec sheet voice.",
+            "Mid-weight for the taglines, OAK BARRELS, MASTER CRAFT, HERITAGE WHISKEY. Spec-sheet plain.",
           family: "'Avenir Next', 'Futura', 'Helvetica Neue', sans-serif",
           weight: 600,
         },
@@ -252,7 +252,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
           name: "Avenir Next Regular",
           role: "Body & captions",
           description:
-            "Standard weight for product descriptions, fact sheets, and any longer-form copy on packaging or print. Workshop-utilitarian, no flourish.",
+            "Standard weight for product descriptions, fact sheets, and anything that runs long on packaging or print.",
           family: "'Avenir Next', 'Futura', 'Helvetica Neue', sans-serif",
           weight: 400,
         },
@@ -268,19 +268,14 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Heritage Without",
+      title: "Texas,",
       pressing: {
-        mark: { n: "04", name: "Heritage Without" },
-        heldLine: "the Cosplay.",
+        mark: { n: "04", name: "Texas, Printed" },
+        heldLine: "but printed.",
       },
     },
-    {
-      id: "closing-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "A campaign language built once and applied everywhere - the same color blocks, silhouettes, and type running across every surface the brand lands on.",
-    },
+    // No subhead here on purpose. The one it had re-told section 03
+    // (same color blocks, silhouettes, and type on every surface).
     {
       id: "closing",
       type: "closing",
@@ -288,7 +283,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "A Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting. Mid-century color blocking, silhouetted oaks, and utilitarian type held it all together, and none of it dresses up as old.",
+        "There's a distressed texture over everything, and that's the only nod to age. The rest is flat color, a tree, and plain type, and none of it pretends to be old.",
     },
   ],
 };

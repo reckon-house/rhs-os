@@ -62,13 +62,13 @@ export const dscCaseStudy: CaseStudy = {
         { label: "Built", value: "Marketing site, scheduling platform, MCP server (11 tools)" },
         { label: "Scope", value: "Design and full-stack, brand to backend" },
         { label: "Stack", value: "Next.js on Vercel, MCP, OAuth 2.0" },
-        { label: "Angle", value: "Enterprise plumbing at gym scale. The AI only ever asks; one deterministic engine makes every booking." },
+        { label: "Angle", value: "Enterprise plumbing at gym scale. The AI only ever asks, and one deterministic engine makes every booking." },
       ],
       title: "Dallas Sport\nCollective",
       subtitle:
         "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | A gym with a schedule you can talk to.",
       abstract:
-        "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule holding it together was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers, eleven programs from NFL Combine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site that sells the room: black and white, big condensed type, photography of actual members training. A scheduling platform with two faces: an athlete app for booking sessions and an owner console for saying a week of scheduling out loud and approving each request with one tap. And the part I find the most fun: an MCP server with eleven tools, so athletes can paste one URL into Claude or ChatGPT and ask their own AI what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. The AI only ever asks; it never decides. Next.js on Vercel, OAuth 2.0 consent with short-lived tokens, live at two locations.",
+        "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule underneath it all was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers, eleven programs from NFL Combine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site that sells the room: black and white, big condensed type, photography of actual members training. A scheduling platform with two faces: an athlete app for booking sessions and an owner console for saying a week of scheduling out loud and approving each request with one tap. And the part I find the most fun: an MCP server with eleven tools, so athletes can paste one URL into the AI they already use, Claude, ChatGPT or Gemini, and ask it what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. The AI only ever asks. Next.js on Vercel, OAuth 2.0 consent with short-lived tokens, live at two locations.",
     },
 
         // ── HERO ──
@@ -108,7 +108,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "None of the scheduling works until everyone is in the system. So the first build was the front door: athletes create their own accounts, sign the waiver on the way in, and the owner assigns each new member to a trainer before a single session books.",
+        "None of the scheduling works until everyone is in the system. So the first build was the front door: athletes create their own accounts, sign the waiver on the way in, and the owner assigns each new member to a trainer before anyone books a session.",
     },
     {
       id: "signup-footnote",
@@ -116,7 +116,7 @@ export const dscCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Athlete login and registration. A hundred-plus people moving off text threads and a spreadsheet into one roster the software can work with.",
+        "Athlete login and registration. A hundred-plus people moving off text threads and a spreadsheet and onto one roster the software can work with.",
     },
     {
       id: "signup-images",
@@ -149,7 +149,7 @@ export const dscCaseStudy: CaseStudy = {
       id: "mcp-header",
       type: "section-header",
       label: "SECTION 03: SCHEDULING BY CHAT",
-      title: "The Gym That",
+      title: "Book a session",
       // The study's one crossing. Of everything here, a gym a trainer can
       // book from inside a chat window is the claim nobody else is making,
       // so the gesture marks it.
@@ -158,8 +158,8 @@ export const dscCaseStudy: CaseStudy = {
       // less, well under the working floor for a plate that fills the mat.
       // The climbs below carry the choreography instead.
       pressing: {
-        mark: { n: "03", name: "The Gym That" },
-        heldLine: "Speaks MCP",
+        mark: { n: "03", name: "From your AI" },
+        heldLine: "from your own AI.",
         choreo: { crossing: true },
       },
     },
@@ -168,7 +168,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "An athlete never has to open our app. They ask the AI they already use, ChatGPT or Claude, and it reads their real schedule and can put in a session request.",
+        "An athlete never has to open the app. They ask whichever AI they already use, and it reads their real schedule and can put in a session request.",
     },
     {
       id: "mcp-footnote",
@@ -176,7 +176,7 @@ export const dscCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Eleven tools cover the gym overview, the program list, trainer profiles and availability, the athlete's own sessions and pending requests, slot suggestions, booking requests, and cancellations. Reads answer instantly, writes only ever create a pending request the owner has to approve. Connecting runs through an OAuth consent screen with short-lived, rotating tokens, and access revokes from the dashboard in one tap.",
+        "Eleven tools cover the gym overview, the program list, trainer profiles and availability, the athlete's own sessions and pending requests, slot suggestions, booking requests, and cancellations. Reads come back instantly, and a write only ever creates a pending request the owner has to approve. Connecting runs through an OAuth consent screen with short-lived, rotating tokens, and access revokes from the dashboard in one tap.",
     },
     {
       id: "mcp-masonry",
@@ -189,6 +189,25 @@ export const dscCaseStudy: CaseStudy = {
         { src: "/case-studies/dsc/dsc-claude-mcp-chat-booking-request.jpg", alt: "Claude confirming a booking request, pending the trainer's approval" },
       ],
     },
+    // ── THE SAME SESSION, MOVING ──
+    // The stills above are captures from one real Claude.ai session on
+    // 2026-06-13; this replays that session, word for word, and then
+    // follows the request through to the owner's console, which the
+    // stills cannot show. It sits after the captures and before the
+    // diagram: watch it happen, then see how it is wired. Framed, not
+    // ported, for the reasons product-demo's type comment gives; the
+    // files are public/lab/dsc-demos/ and NOTES.md there says what is
+    // verbatim and what is composed (the athlete's chat surface is
+    // neutral on purpose, because the real one was Claude's UI).
+    {
+      id: "mcp-demo",
+      type: "product-demo",
+      folder: "dsc-demos",
+      demo: "athlete-mcp-loop",
+      stageWidth: 400,
+      title: "Athlete · Booking by AI",
+      note: "A real exchange, replayed. The athlete asks their AI for Scott's openings, it reads the gym's live schedule through the MCP tools and puts in a request, and the request shows up on the owner's console as a card. One tap approves it. The chat surface is neutral on purpose; the console is the product's own interface code.",
+    },
     {
       id: "mcp-architecture",
       type: "mcp-architecture",
@@ -196,7 +215,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "mcp-editorial",
       type: "editorial-headline",
-      text: "The athlete asks Claude\nClaude asks the gym\nthe gym answers",
+      text: "The athlete asks their AI\nthe AI asks the gym\nthe gym answers",
     },
 
     // ════════════════════════════════════════
@@ -218,7 +237,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The athlete app opens on the next session and the activity around it. Past that, the full trainer roster and the program menu. The same trainer data feeds the MCP server, so a connected AI describes a coach from the actual record.",
+        "The athlete app opens on your next session and the activity around it, then the full trainer roster and the program menu. The same trainer data feeds the MCP server, so a connected AI describes a coach from the actual record.",
     },
     {
       id: "athlete-footnote",
@@ -275,7 +294,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The owner side is built for one person managing a packed week from their phone, between sessions, on the gym floor.",
+        "The owner side is for one person managing a packed week from a phone, between sessions, on the gym floor.",
     },
     {
       id: "owner-footnote",
@@ -283,7 +302,7 @@ export const dscCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The queue where every request lands, a week calendar with session density per day, and a member list flagging waiver and trainer-assignment status.",
+        "The queue where every request lands, a week calendar with the session count per day, and a member list flagging waiver and trainer-assignment status.",
     },
     // Moved up out of the image run so the whole owner argument arrives in
     // one column: the queue first, then the week said out loud. The chat
@@ -296,13 +315,39 @@ export const dscCaseStudy: CaseStudy = {
       content:
         "The owner can say a whole week out loud: schedule Marcus with Scott every Monday, Wednesday, and Friday at 3pm for a month. The scheduler proposes the batch, accepts the ten clean slots, flags the three it skipped for conflicts, and waits for a \"commit\" before a single session lands.",
     },
+    // ── THE TWO OWNER-SIDE REPLAYS ──
+    // The paragraph above describes a real exchange; the first frame
+    // replays it on the console's own chat. The second is the third way
+    // a session gets onto the calendar, a standing slot, which the copy
+    // never had room for and a replay shows in eighteen seconds. They
+    // sit here, ahead of the editorial and the row of stills, because
+    // the row below is held for the brand divider that climbs it and
+    // nothing can come between them.
+    {
+      id: "owner-batch-demo",
+      type: "product-demo",
+      folder: "dsc-demos",
+      demo: "owner-batch-chat",
+      stageWidth: 400,
+      title: "Owner · A week by chat",
+      note: "The exchange from the paragraph above, replayed on the console's own chat. One sentence in, the scheduler looks up Marcus, proposes the batch, accepts ten, names the three it skipped, and waits for the word commit.",
+    },
+    {
+      id: "owner-standing-demo",
+      type: "product-demo",
+      folder: "dsc-demos",
+      demo: "standing-slots",
+      stageWidth: 400,
+      title: "Owner · Standing slots",
+      note: "One recurring slot, Marcus with Scott, Tuesdays at 4, made in the product's own sheet. The engine fills in the next eight weeks and the new session shows up on the day view.",
+    },
     // The turn between the argument and the evidence. It sits ahead of the
     // screens rather than after them because the row below has to stay
     // next to the brand divider that climbs it.
     {
       id: "owner-editorial",
       type: "editorial-headline",
-      text: "Back of house.\nFront and center.",
+      text: "However a booking comes in,\nit goes through the same checks",
     },
     {
       id: "owner-images",
@@ -341,9 +386,9 @@ export const dscCaseStudy: CaseStudy = {
       label: "SECTION 06: MARKS & MATERIALS",
       title: "Black, White,\nand Loud",
       introText:
-        "A palette with no color in it, one type family doing all the work, and photography shot on the actual gym floor. The kit holds the same at every scale.",
+        "A palette with no color in it, one type family doing all the work, photography shot on the actual gym floor, and the same kit at every size.",
       philosophyText:
-        "Pure black for type and structure, pure white for the ground, and a short ramp of greys for everything between. No accent color, because the photography and the weight of the type bring all the contrast the brand needs.\n\nType is mostly one family. Avenir Next runs the brand voice: Heavy for the wordmark and section heads, Demi Bold for subheads and CTAs, Medium for the body. A monospace sits underneath for the technical labels, the MCP URLs and session times. Weight and contrast do the job a second color usually would.",
+        "Pure black for type and structure, pure white for the ground, and a short ramp of greys for everything between. No accent color, because the photography and the weight of the type bring all the contrast the brand needs.\n\nType is mostly one family. Avenir Next runs the brand voice: Heavy for the wordmark and section heads, Demi Bold for subheads and CTAs, Medium for the body. A monospace sits underneath for the technical labels, the MCP URLs and session times.",
       colors: [
         { name: "Ground", hex: "#000000", description: "Type, structure" },
         { name: "Ink", hex: "#141414", description: "Dark surfaces" },
@@ -356,7 +401,7 @@ export const dscCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Wordmark & headlines",
           description:
-            "The heaviest weight, set at poster scale for the DALLAS SPORT COLLECTIVE wordmark and the section heads. The loudest the system gets.",
+            "The heaviest weight, at poster scale for the DALLAS SPORT COLLECTIVE wordmark and the section heads. As loud as the brand gets.",
           family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
           weight: 800,
           sampleText: "DALLAS SPORT",
@@ -366,7 +411,7 @@ export const dscCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Subheads & CTAs",
           description:
-            "One step down for subheads, callouts, and buttons. Structural weight that anchors a layout without shouting over the wordmark.",
+            "One step down, for subheads, callouts, and buttons. Enough weight to anchor a layout and stay under the wordmark.",
           family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
           weight: 600,
           sampleText: "Schedule by Chat",
@@ -375,7 +420,7 @@ export const dscCaseStudy: CaseStudy = {
           name: "Avenir Next Medium",
           role: "Body & UI",
           description:
-            "The workhorse. Session details, trainer bios, running copy, interface text. Quiet enough to let the photography lead.",
+            "The workhorse: session details, trainer bios, running copy, interface text. It stays out of the photography's way.",
           family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
           weight: 500,
           sampleText: "Train. Strength. Community.",
@@ -384,7 +429,7 @@ export const dscCaseStudy: CaseStudy = {
           name: "Mono",
           role: "Labels & data",
           description:
-            "A monospace under the Avenir for the technical labels and data fields: MCP SERVER URL, session times, the back-end voice surfacing in the UI.",
+            "A monospace under the Avenir for the technical labels and data fields: MCP SERVER URL, session times, the places where the back end shows through in the UI.",
           family: "'SF Mono', 'Roboto Mono', ui-monospace, monospace",
           weight: 500,
           sampleText: "MCP SERVER URL",
@@ -425,7 +470,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Most AI integration work this year is happening inside companies with platform teams. This one runs for a gym with six trainers.",
+        "The schedule used to be the part of the gym nobody saw, texts and notes and a spreadsheet. Now it is the most modern thing the gym owns.",
     },
     {
       id: "closing-footnote",
@@ -433,7 +478,7 @@ export const dscCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The protocol does not care how big the business is. That might be the most useful thing about it.",
+        "The same protocol works at any size of business, which might be the most useful thing about it.",
     },
     {
       id: "closing",
@@ -450,7 +495,7 @@ export const dscCaseStudy: CaseStudy = {
         { label: "App walkthrough", url: "https://dsc-gym.vercel.app/showcase" },
       ],
       content:
-        "The platform is live. Athletes sign in and book, the owner approves from a queue or just says the week out loud, and a connected Claude reads the schedule as it actually is.\n\nThe scheduling used to be the part nobody saw: texts, notes, a spreadsheet, the after-hours work that kept the training on time. Now it is the most modern thing the gym owns, and all of it connects.",
+        "The platform is live at both locations. Athletes sign in and book, the owner approves from a queue or schedules a month in one batch, and a connected AI reads the schedule as it actually is.",
     },
   ],
 };

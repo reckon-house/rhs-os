@@ -20,7 +20,7 @@ export const bigBendCaseStudy: CaseStudy = {
   title: "West Texas",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Photographs from Big Bend National Park and the desert around Marfa, later used in the Capitan Boot Co. campaign.",
+    "Photographs from a family trip through Big Bend and the desert around Marfa. | Personal work that later became the backdrop for the Capitan Boot Co. campaign.",
   field: "Photography\nLandscape",
   author: "Jeremy Prasatik",
   published: "2022",
@@ -64,7 +64,7 @@ export const bigBendCaseStudy: CaseStudy = {
         { label: "Later", value: "Used as backdrops in the Capitan Boot Co. campaign" },
       ],
       abstract:
-        "Photographs from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa.\n\nBig Bend is the largest national park in Texas and one of the least visited in the country. The same stretch of desert is where There Will Be Blood and No Country for Old Men were shot.\n\nThe trip was personal. A few of these photographs later became the backdrops for the Capitan Boot Co. campaign, shot in the same country.",
+        "Photographs from a family trip through far West Texas: Big Bend National Park, the road north, and the desert around Marfa. Big Bend is the largest national park in Texas and one of the least visited in the country.\n\nThe trip was personal. A few of these later became the backdrops for the Capitan Boot Co. campaign, shot in the same country.",
     },
 
     // ── HERO — a Chisos peak, climbing the cover (non-inline) ──
@@ -228,7 +228,7 @@ export const bigBendCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa. The artists Elmgreen and Dragset built it in 2005. It holds real Prada shoes and bags from that season, and the door has stayed shut ever since.",
+        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa. The artists Elmgreen and Dragset built it in 2005 and put real Prada shoes and bags from that season inside. The door has stayed shut ever since.",
     },
     // The arrival, climbing the sentence that introduces it. The brief
     // reserves that room itself; never author it.
@@ -279,7 +279,7 @@ export const bigBendCaseStudy: CaseStudy = {
       stack: ["Camera"],
       links: [{ label: "See the Capitan Boot Co. campaign", url: "/case-studies/capitan-boot-co" }],
       content:
-        "The photographs came home from a family trip and sat in a folder. When Capitan Boot Co. needed a place for the brand to live, the West Texas desert was already shot.",
+        "The photographs came home from a family trip and sat in a folder. Later, Capitan Boot Co. needed the West Texas desert behind its boots, and it was already in there.",
     },
   ],
 };

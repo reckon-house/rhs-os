@@ -49,10 +49,10 @@ export const chaletCaseStudy: CaseStudy = {
         { label: "Built", value: "1968 PNW chalet rebuilt to the studs. Exterior, interior, furnishings" },
         { label: "Scope", value: "Interior design, exterior direction, finish selection, furniture and fixture sourcing" },
         { label: "Materials", value: "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier" },
-        { label: "Angle", value: "Cabin bones, mid-century sensibility. The renovation didn't compete with the setting, it framed it. The tree line becomes the loudest design choice." },
+        { label: "Angle", value: "Rebuilt so the trees are the point, and furnished so they stay that way." },
       ],
       abstract:
-        "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.\n\nTook it down to the studs. Exterior repainted in warm gray with white railings for contrast against the PNW green. New lighting mounted to catch the patio and stairs at night. Reclaimed PNW pine in mixed plank widths across the main level. A Malm fireplace and sputnik chandelier overhead. 16-foot sliding glass doors installed on the main wall - the tree canopy becomes the focal point from every seat in the room.\n\nFurniture kept simple on purpose. Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The surroundings carry the energy. The interior stays quiet enough to let them. Original footprint gained over 400 square feet.",
+        "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.\n\nTook it down to the studs. Exterior repainted warm gray with white railings. New lighting on the patio and stairs at night. Reclaimed PNW pine in mixed plank widths across the main level, a Malm fireplace, a sputnik chandelier overhead, and 16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nFurniture kept simple on purpose so it doesn't compete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The original footprint gained over 400 square feet.",
     },
 
         // ── HERO — the iconic interior shot: A-frame ceiling, sputnik chandelier,
@@ -74,10 +74,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "studs-header",
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
-      title: "An Exterior That",
+      title: "Warm Gray Siding,",
       pressing: {
-        mark: { n: "02", name: "An Exterior That" },
-        heldLine: "Stops Disappearing.",
+        mark: { n: "02", name: "Warm Gray" },
+        heldLine: "White Railings.",
         choreo: { pin: true },
       },
     },
@@ -86,7 +86,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Built in 1968. Hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.",
+        "Warm gray on the siding and white on the railings, so the house has an outline against the evergreens even when it's overcast.",
     },
     {
       id: "studs-footnote",
@@ -94,7 +94,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Exterior repainted in warm gray with white railings for contrast against the PNW green. New lighting mounted to catch the patio and stairs at night. The original footprint gained over 400 square feet, mostly through reworking the deck line and pulling more of the main level out toward the trees.",
+        "New lighting on the patio and the stairs at night, and string lights over the stone patio off the side. The stairs run down from the deck to that patio, and the front approach climbs a rocky grade to the door.",
     },
 
     // ── Front exterior — the zoom. The section argues that the exterior
@@ -156,10 +156,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "interior-header",
       type: "section-header",
       label: "SECTION 03: THE INTERIOR",
-      title: "Tree Canopy as the",
+      title: "Every Seat",
       pressing: {
-        mark: { n: "03", name: "Tree Canopy as the" },
-        heldLine: "Focal Point.",
+        mark: { n: "03", name: "Every Seat" },
+        heldLine: "Faces the Trees.",
         choreo: { pin: true },
       },
     },
@@ -168,7 +168,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Reclaimed PNW pine in mixed plank widths across the main level. A Malm fireplace anchors the living area. Sputnik chandelier overhead. 16-foot sliding glass doors on the main wall - the tree canopy becomes the focal point from every seat in the room.",
+        "The A-frame ceiling is wood plank all the way up, with a triangular window under the peak that frames the tops of the trees. There's a skylight too.",
     },
     {
       id: "interior-footnote",
@@ -176,7 +176,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Furniture kept simple on purpose. Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The surroundings carry the energy - the interior stays quiet enough to let them. Cabin form, mid-century pieces. Mixing the two was the whole brief.",
+        "The tufted gray sofa sits against the painted stone wall, with an antler mount above it and the walnut ladder shelf leaning next to it, books and a speaker on the rungs. A leather sling chair and a walnut coffee table under the skylight. The kitchen is white shaker cabinets and subway tile around an exposed wood beam column, and the same pine runs through it.",
     },
 
     // ── A-frame ceiling shot, standalone (the showpiece looking up at the
@@ -229,7 +229,7 @@ export const chaletCaseStudy: CaseStudy = {
     {
       id: "headline-quiet",
       type: "editorial-headline",
-      text: "Quiet enough to let\nthe surroundings lead",
+      text: "The loudest thing in the room\nis outside it",
     },
 
     // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight
@@ -276,7 +276,7 @@ export const chaletCaseStudy: CaseStudy = {
       id: "blend-header",
       type: "section-header",
       label: "SECTION 04: THE BLEND",
-      title: "Cabin Bones,",
+      title: "Antlers on One End,",
       // The study's one crossing. The blend IS the argument — cabin form,
       // mid-century pieces — and it is the only section that names both
       // halves at once, so the gesture belongs on the synthesis beat.
@@ -285,8 +285,8 @@ export const chaletCaseStudy: CaseStudy = {
       // the A.R.C. convention for saying so in the data, which is what
       // the audit reads.
       pressing: {
-        mark: { n: "04", name: "Cabin Bones" },
-        heldLine: "Mid-Century Sensibility.",
+        mark: { n: "04", name: "Antlers to Sputnik" },
+        heldLine: "a Sputnik on the Other.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -295,7 +295,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Plotting each design choice along the cabin ↔ mid-century axis shows how the renovation actually works. Cabin elements hold the form. Mid-century pieces thread through it. The middle of the spectrum is where the structural moves live - the A-frame, the glass doors, the warm gray exterior.",
+        "Mixing cabin and mid-century was the whole idea, so here is every choice plotted between them. The structural moves land in the middle.",
     },
     {
       id: "blend-footnote",
@@ -303,7 +303,7 @@ export const chaletCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Reclaimed PNW pine, exposed beams, painted stone, and the antlers anchor the cabin end. Sputnik chandelier, Malm fireplace, walnut dining set, and the leather sling chair pull toward mid-century. The 16-foot sliding doors and the A-frame geometry sit in the middle - cabin form scaled up by mid-century proportions, with the tree line doing the rest of the work.",
+        "Reclaimed pine, exposed beams, painted stone, and the antlers are the cabin end. The sputnik, the Malm, the walnut dining set, and the leather sling chair are the mid-century end. The 16-foot doors, the A-frame, and the warm gray exterior sit between them: cabin form at mid-century proportions.",
     },
     {
       id: "blend-chart",
@@ -317,10 +317,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Chalet That",
+      title: "Over 400 Square Feet",
       pressing: {
-        mark: { n: "05", name: "A Chalet That" },
-        heldLine: "Looks Out.",
+        mark: { n: "05", name: "400 Square Feet" },
+        heldLine: "Bigger Than It Was.",
       },
     },
     {
@@ -328,7 +328,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Cabin form, mid-century pieces, 16 feet of glass between the room and the tree canopy. The renovation didn't compete with the setting - it framed it.",
+        "Most of it came from reworking the deck line and pulling more of the main level out toward the trees.",
     },
     {
       id: "closing",
@@ -337,7 +337,7 @@ export const chaletCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "A 1968 chalet rebuilt around the trees outside it. Down to the studs and back up - exterior, interior, furnishings. The structural moves stayed cabin. The pieces inside stayed mid-century. The 16-foot glass doors on the main wall did the rest, turning the Pacific Northwest tree line into the room's loudest design choice.",
+        "A 1968 chalet, down to the studs and back up. Cabin on the outside, mid-century on the inside, and 16 feet of glass in between.",
     },
   ],
 };

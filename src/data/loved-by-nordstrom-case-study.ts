@@ -7,7 +7,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
   title: "Loved by Nordstrom",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Year-long campaign built on one idea: the Instagram heart as editorial device. A system flexible enough to run across social, email, signage, and web using any kind of picture.",
+    "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and twelve months built on top of it.",
   field: "Creative Direction\nCampaign Design\nDesign Systems",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -62,13 +62,13 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         "Design Systems",
       ],
       summary: [
-        { label: "Built", value: "Year-long brand campaign. One tile system across social, email, in-store signage, web" },
+        { label: "Built", value: "A year-long campaign on one tile template, across social, email, in-store signage, and web" },
         { label: "Scope", value: "Creative direction, campaign design, design systems" },
         { label: "Tools", value: "Art direction, photography licensing, editorial systems" },
-        { label: "Angle", value: "A heart does what a logo cannot. One borrowed icon, two tiers, any brand's photography." },
+        { label: "Angle", value: "One borrowed icon, two tiers, any brand's photography." },
       ],
       abstract:
-        "The brief was emerging brand awareness - a Nordstrom mandate to lift smaller designer labels across the department store floor and the digital storefront at the same time. The solve was simpler than it sounds: borrow the heart icon from Instagram and let it carry the campaign signature.\n\nOne mark, two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising, and \"Loved by Nordstrom\" carried the hero slots that earned the extra real estate. Same icon, same typography, different emotional weight - merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template absorbed whatever the brand had already licensed - Helmut Lang shot minimal and cold, The Great shot warm and narrative, See by Chloé led with product. The frame held all of them without flattening any of them, and the campaign ran long because there was nothing to get tired of.",
+        "The brief was emerging brand awareness, a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time. The solve: borrow the heart icon from Instagram and let it carry the campaign.\n\nOne mark, two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising and \"Loved by Nordstrom\" on the hero slots. Same icon, same typography, and merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template used whatever photography a brand had already licensed, and the campaign ran long because there was nothing in it to get tired of.",
     },
 
         // ── HERO ──
@@ -85,12 +85,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "idea-header",
       type: "section-header",
       label: "SECTION 02: THE IDEA",
-      title: "The Heart Was",
+      title: "The Instagram heart,",
       // Held: the headline is the whole claim, and the column under it is
       // the proof. The claim stays on screen while the proof travels past.
       pressing: {
-        mark: { n: "02", name: "The Heart Was" },
-        heldLine: "Already a Verb.",
+        mark: { n: "02", name: "The Heart" },
+        heldLine: "on a Nordstrom tile.",
         choreo: { pin: true },
       },
     },
@@ -99,7 +99,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "People tapped it thousands of times a day without thinking. Stamping it on a retail campaign meant the mechanic came pre-installed. No one needed to learn what Liked By meant.",
+        "People already tapped it all day without thinking, so nobody had to learn what Liked By meant.",
     },
     {
       id: "idea-footnote",
@@ -107,7 +107,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Two typographic levels did the work of a full brand hierarchy. \"Liked\" sat on the smaller tiles and \"Loved\" carried the hero slots - same icon, same typography, different emotional weight. Merchandising picked which tier a brand earned and the design held the frame.",
+        "The tiles ran on Instagram too, so the heart ended up back in the feed it came from.",
     },
 
     // ── IPHONE INSTAGRAM HERO ──
@@ -137,7 +137,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "A Tile That Worked",
+      title: "Name on top,",
       // The study's one crossing, on the idea the whole system rests on.
       //
       // No mid-page climb: the tile grids here are quad-images, which hold
@@ -149,8 +149,8 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       // A.R.C. convention for saying so in the data, which is what the
       // audit reads.
       pressing: {
-        mark: { n: "03", name: "A Tile That Worked" },
-        heldLine: "As a Container.",
+        mark: { n: "03", name: "The Tile" },
+        heldLine: "any photo in the middle.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
@@ -160,7 +160,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Brand name on top, photography in the middle, heart and endorsement at the base. Anything could land in the middle slot - product shot, lifestyle frame, studio portrait, campaign still. The frame absorbed whatever the brand had already licensed.",
+        "Heart and endorsement at the base, and the middle slot took whatever the brand had already licensed: a product shot, a lifestyle photo, a studio portrait, a campaign still. Helmut Lang shot cold and minimal, The Great warm and narrative, See by Chloé led with product, and the tile carried all three.",
       group: { name: "system" },
     },
     {
@@ -169,7 +169,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The flexibility came from discipline at the structural level. Fixed grid, fixed type, fixed icon, everything else open. Merchandising got more freedom than the brands could have negotiated individually.",
+        "The grid, the type, and the icon were fixed. Everything else was open.",
       group: { name: "system" },
     },
 
@@ -215,12 +215,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "loved-header",
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
-      title: "Two Tiers Giving",
+      title: "Liked on small tiles,",
       // Held because the tier is a lever, and a lever reads as one thing
       // only if the name of it stays put while the mechanics scroll by.
       pressing: {
-        mark: { n: "04", name: "Two Tiers Giving" },
-        heldLine: "Merchandising a Lever.",
+        mark: { n: "04", name: "Liked and Loved" },
+        heldLine: "Loved on big ones.",
         choreo: { pin: true },
       },
     },
@@ -229,7 +229,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Loved By earned the bigger canvas - larger crops, tighter compositions, single-brand focus. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale, with the same type and heart but a different voltage.",
+        "Same heart and type at both sizes, with larger crops, tighter compositions, and one brand at a time on Loved. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale.",
     },
     {
       id: "loved-footnote",
@@ -237,7 +237,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Merchandising used the tier as a programming tool. Weekly pushes on Liked. Seasonal flagships on Loved. The design gave them a way to signal priority without writing a brief that said \"make this one bigger.\" The tier showed up in the copy.",
+        "Merchandising picked the tier. Weekly pushes went out as Liked and the seasonal flagships as Loved, and that was how priority got signaled, with no brief that said \"make this one bigger.\"",
     },
 
     // ── LARGE LOVED BY TILES ──
@@ -261,13 +261,13 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "channels-header",
       type: "section-header",
       label: "SECTION 05: ACROSS CHANNELS",
-      title: "A Customer Saw It Twice",
+      title: "Feed, email, window decal,",
       // Held, and it is also the hold the landing page climbs. The point of
       // the section is recognition across surfaces, so the phone arriving
       // over a headline that has not moved is the argument acting itself out.
       pressing: {
-        mark: { n: "05", name: "A Customer Saw It Twice" },
-        heldLine: "in Two Days.",
+        mark: { n: "05", name: "Across Channels" },
+        heldLine: "landing page.",
         choreo: { pin: true },
       },
     },
@@ -276,7 +276,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The tile rendered the same whether it showed up in a feed, an email hero, a window decal, or a landing page header. Scale changed, framing stayed, and recognition compounded across channels without anyone teaching the customer to look for it.",
+        "Only the size changed from one to the next, so the tile you saw in a feed was the one you saw in the store window.",
     },
     {
       id: "channels-footnote",
@@ -284,7 +284,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The landing page pulled the campaign into a navigation layer. Editorial stories organized by brand, the heart acting as a bookmark through the grid. The same photography that lived in a 1080-square social post scaled to a 1440-wide hero without new art direction. A crop spec.",
+        "On the landing page the stories were organized by brand, with the heart as the bookmark through the grid. The photography from a 1080-square social post scaled up to a 1440-wide hero with no new art direction, just a crop spec.",
     },
 
     // ── LANDING PAGE HERO ──
@@ -306,10 +306,10 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "A Year on",
+      title: "Twelve months,",
       pressing: {
-        mark: { n: "06", name: "A Year on" },
-        heldLine: "One Icon.",
+        mark: { n: "06", name: "Twelve Months" },
+        heldLine: "dozens of brands.",
       },
     },
     {
@@ -317,7 +317,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Campaigns usually start with a concept and dress it in a system. This one started with a system and let the concept stay small. Twelve months, dozens of brands, one heart.",
+        "Merchandising swapped brands in weekly with no creative brief, and the layout went the whole year untouched.",
     },
     {
       id: "closing",
@@ -330,7 +330,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       stack: ["Art Direction", "Photography Licensing", "Editorial Systems"],
       links: [],
       content:
-        "Most campaigns burn out when the concept gets stale. This one didn't have a concept to wear out. The heart was borrowed, the frame was fixed, and the only thing that changed was the brand photography inside it. Merchandising swapped brands on a weekly cadence without filing a creative brief.\n\nThe tier between Liked and Loved gave designers a reason not to touch the layout every month. Twelve months of output from a five-minute idea that never needed a refresh.",
+        "The whole campaign came out of a five-minute idea.",
     },
   ],
 };

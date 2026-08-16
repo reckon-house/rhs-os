@@ -7,7 +7,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   title: "Typography & Patterns",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Six patterns, three art prints, zero color. Type as art form, pattern as texture.",
+    "Personal work: six patterns and three art prints, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
   field: "Typography Design\nPattern Design\nArt Direction",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -60,13 +60,13 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "Print",
       ],
       summary: [
-        { label: "Built", value: "Three lithographs, a twelve-tile pattern library" },
+        { label: "Built", value: "Three art prints, twelve pattern tiles" },
         { label: "Scope", value: "Typography, pattern design, art direction" },
-        { label: "Tools", value: "Black ink and white paper. Adobe Illustrator, Photoshop" },
-        { label: "Angle", value: "Six elements simple enough for a child to draw. Without color, density does the tonal work and composition is the only variable." },
+        { label: "Tools", value: "Adobe Illustrator, Photoshop" },
+        { label: "Angle", value: "Six shapes, no color, and the only decisions left were placement and scale." },
       ],
       abstract:
-        "Personal work built on a single question: how much visual range can a handful of patterns produce? Strip everything back - no color, no photography, no gradients. Just black ink, white paper, and six repeating elements simple enough for a child to draw.\n\nDots, lines, stripes, diamonds. Arranged in grids, varied in scale, alternated between positive and negative. The patterns fill letterforms, break outside them, stack into backgrounds, build rhythm across compositions. Three lithographs, each pulling from the identical library but arriving somewhere different.\n\nWithout color, density does the tonal work. A tight dot grid reads dark. A sparse one reads light. Scale determines what the eye processes first. Spacing sets the mood. Every decision in the composition carries more weight because there are fewer decisions to make.",
+        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three art prints came out of that set, and they land in three different places.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
     },
 
         // ── HERO ──
@@ -83,7 +83,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "rules-header",
       type: "section-header",
       label: "SECTION 02: THE RULES",
-      title: "Six Patterns.",
+      title: "Six patterns,",
       // The study's one crossing, in the BRIEF form (pin + crossing) rather
       // than standalone: this header carries the method columns, and
       // PRESSING.md §7 reserves the standalone crossing for headers whose
@@ -91,7 +91,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       // travels past it.
       pressing: {
         mark: { n: "02", name: "Six Patterns" },
-        heldLine: "One Restriction.",
+        heldLine: "twelve tiles.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "rules", bg: "#141414", radius: 75, padding: "60px" },
@@ -101,7 +101,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Dots, lines, stripes, diamonds in three orientations - horizontal, vertical, diagonal. The entire vocabulary fits in a grid smaller than a business card. Varied only in density and scale. Black on white or white on black, nothing else enters the frame.",
+        "Every pattern is drawn twice, black on white and white on black, which is how six become twelve. From there the only things that change are scale and spacing.",
       group: { name: "rules" },
     },
     {
@@ -110,7 +110,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each pattern swatch is a self-contained tile. Repeatable in any direction, at any scale. It works because the shapes are simple enough to combine without clashing. The complexity comes from layering them, not from the ingredients.",
+        "Each swatch is a tile that repeats in any direction and at any size. The shapes are plain enough that any two of them can sit side by side, and most of the detail in the prints comes from layering them.",
       group: { name: "rules" },
     },
     {
@@ -120,17 +120,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "Twelve Tiles",
           content:
-            "Dots at two scales: dense halftone and open grid. Lines in three orientations: vertical hairlines, horizontal bands, diagonal stripes. Diamonds in a single repeating grid. Six elements.\n\nEach exists as both positive and negative. Black dots on white, white dots on black. The inversion doubles the library without adding a new shape. Twelve tiles total. That covers every texture in the project.",
+            "Dots at two scales, a dense halftone and an open grid. Lines three ways: vertical hairlines, horizontal bands, diagonal stripes. And one diamond grid. Every texture in the three prints is one of these, or its inverse.",
         },
         {
           title: "No Color",
           content:
-            "Removing color removed the easiest tool in the drawer. Color separates, organizes, creates hierarchy almost automatically. Without it, density does the work. A tight dot grid reads darker than an open one. Thick stripes push forward. Thin hairlines recede.\n\nContrast had to be structural instead. Heavy geometric letterforms against flowing calligraphic strokes. Dense fills against empty white space. Tension built from shape and rhythm alone.",
+            "Color separates things and builds hierarchy almost on its own, and there was none of it here. Thick stripes come forward, thin hairlines drop back, and that is about the whole tonal range.\n\nSo contrast had to come from shape. Heavy geometric letters next to loose calligraphic strokes, and dense fills next to open paper.",
         },
         {
           title: "Three Words",
           content:
-            "\"the Fancy.\" \"stepper.\" \"white.\" Each word rendered in a different typographic style. Script, geometric, mixed.\n\nOne layers flowing cursive across the full frame. Another stacks bold capitals into a tight vertical. The third mixes calligraphic flourishes with architectural serifs. The pattern library stays constant. The compositions diverge. Different results because the type carries the personality. The patterns carry the texture.",
+            "Each print is one word: \"the Fancy,\" \"stepper,\" \"white.\" One is set in script, one in geometric capitals, and one in a mix of the two. The tiles are the same in all three, so the type is where the personality comes from.",
         },
       ],
       group: { name: "rules" },
@@ -148,10 +148,10 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "fancy-header",
       type: "section-header",
       label: "SECTION 03: ART PRINT 01 / THE FANCY",
-      title: "Script Meets",
+      title: "The Fancy,",
       pressing: {
-        mark: { n: "03", name: "Script Meets" },
-        heldLine: "Geometric Fill",
+        mark: { n: "03", name: "The Fancy" },
+        heldLine: "script filled with dots and stripes.",
         // Holds while the fill list travels past it, then the print itself
         // climbs the column that just described it.
         choreo: { pin: true },
@@ -162,7 +162,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Flowing calligraphic letterforms anchored in the lower-left corner. The script runs loose, swashes extending past the composition edge. Pattern fills give each stroke a different weight and texture. The dot grid background provides spatial depth against the density of the type.",
+        "The script sits low in the left corner and runs loose, with swashes trailing off the edge of the sheet. A fine dot grid covers the background, and every stroke gets a different fill, so the weight changes letter by letter.",
     },
     {
       id: "fancy-footnote",
@@ -170,7 +170,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The print reads \"the Fancy\" in a Didone-influenced script. Every letterform gets a different pattern fill: polka dots in the bowl of the 'a,' diagonal stripes in the crossbar of the 'F,' vertical hairlines in the descender of the 'y.' Six elements, rearranged. The word comes alive.",
+        "It reads \"the Fancy\" in a Didone-influenced script. Polka dots in the bowl of the 'a,' diagonal stripes in the crossbar of the 'F,' vertical hairlines in the descender of the 'y.'",
     },
 
     // ── FLAT ART — the print arrives before the swatches that built it.
@@ -203,7 +203,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         plate: "03",
         captions: [
           "Dense dots, white on black",
-          "A tight grid reads dark",
+          "The dense end of the range",
           "One of twelve tiles",
         ],
         choreo: { zoom: true },
@@ -241,7 +241,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-constraint",
       type: "editorial-headline",
-      text: "Dots, lines, stripes, diamonds.\nThe whole vocabulary.",
+      text: "Dots, lines, stripes, diamonds.\nThat's the whole set.",
     },
 
     // ── POSTER 2: "stepper" — the zoom. A print photographed in a room is
@@ -282,10 +282,10 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "stepper-header",
       type: "section-header",
       label: "SECTION 04: ART PRINT 02 / STEPPER",
-      title: "Vertical Stack.",
+      title: "Stepper,",
       pressing: {
-        mark: { n: "04", name: "Vertical Stack" },
-        heldLine: "Bold Geometry.",
+        mark: { n: "04", name: "Stepper" },
+        heldLine: "slab capitals stacked edge to edge.",
         choreo: { pin: true },
       },
     },
@@ -294,7 +294,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A tighter composition. The letterforms stack vertically, filling the frame from edge to edge. Geometric serifs and slab capitals mix with script elements that weave between them. The pattern fills shift from the first print: what was background becomes foreground.",
+        "Script threads between the capitals, and the fills run at a much bigger scale than in the first print, so the same tiles come across a lot bolder.",
     },
     {
       id: "stepper-footnote",
@@ -302,7 +302,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The density increases. Where \"the Fancy\" floated in white space, \"stepper\" packs the frame. Large-scale polka dots fill a capital 'E.' Diagonal stripes cut across a slab-serif 'R.' The same vocabulary at higher visual volume. The patterns that feel delicate in the first print turn bold here because the letterforms demand it.",
+        "Large polka dots fill a capital 'E' and diagonal stripes run through a slab-serif 'R' from top to bottom. Geometric serifs sit in among the slabs.",
     },
 
     // ── PATTERN SWATCHES ──
@@ -347,7 +347,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-density",
       type: "editorial-headline",
-      text: "Same six elements.\nThree different rooms to stand in.",
+      text: "The tighter the grid,\nthe darker it reads.",
     },
 
     // ── POSTER 3: "white" — brief first, and the photograph climbs it.
@@ -357,10 +357,10 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-header",
       type: "section-header",
       label: "SECTION 05: ART PRINT 03 / WHITE",
-      title: "Calligraphic Sweep.",
+      title: "Calligraphy up top,",
       pressing: {
-        mark: { n: "05", name: "Calligraphic Sweep" },
-        heldLine: "Architectural Anchor.",
+        mark: { n: "05", name: "White" },
+        heldLine: "a heavy A and K below.",
         choreo: { pin: true },
       },
     },
@@ -369,7 +369,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The third composition splits the difference. Sweeping calligraphic strokes fill the upper portion of the frame, thin enough to feel like drawing. A geometric 'A' and a slab 'K' anchor the lower right. The collision between handmade gesture and mechanical precision is the point.",
+        "The strokes across the top are thin enough to read as drawing. Down in the lower right, the geometric 'A' and the slab 'K' are as mechanical as the strokes are handmade.",
     },
     {
       id: "white-footnote",
@@ -377,7 +377,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The dot grid background is the most open of the three prints. Sparse pinpoints on a wide field. The white space does the most work here, giving the calligraphic strokes room to breathe while the geometric letters sit heavy at the bottom. Pattern fills are selective. Not every stroke gets filled. The restraint makes the filled elements land harder.",
+        "The dot grid behind it is the most open of the three prints, pinpoints on a wide field. Not every stroke gets a fill here, so the ones that do read louder.",
     },
 
     // The print in the world, climbing the brief that describes it. It is a
@@ -435,8 +435,8 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         plate: "05",
         captions: [
           "Sparse dots, white on black",
-          "Pinpoints on a wide field",
-          "Dots at the open scale",
+          "The open end of the range",
+          "Dots at the other scale",
         ],
         choreo: { zoom: true },
       },
@@ -458,11 +458,11 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 06: HOW THE SYSTEM WORKS",
-      title: "Same Ingredients.\nDifferent Meals.",
+      title: "Where the tiles land,\nand how big.",
       // The headline holds while three columns of evidence travel past it.
       // Nothing climbs this one, so no climb room is derived.
       pressing: {
-        mark: { n: "06", name: "Same Ingredients" },
+        mark: { n: "06", name: "Placement and Scale" },
         choreo: { pin: true },
       },
       group: { name: "system", bg: "#141414", radius: 75, padding: "60px" },
@@ -472,7 +472,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The interesting part isn't any single print - it's what happens when the same six elements get rearranged. The vocabulary never changes, the results do.",
+        "All three prints use every one of the six patterns.",
       group: { name: "system" },
     },
     {
@@ -481,7 +481,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each print uses all six patterns. The difference comes from where they land, how large they scale, and how much white space surrounds them. Composition is the only variable. That's enough to make three pieces that don't look like they came from the same library.",
+        "What changes is where each pattern lands, how large it runs, and how much paper is left around it. That turned out to be enough for three prints that don't look like they came from the same set.",
       group: { name: "system" },
     },
     {
@@ -491,17 +491,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "The Dot Grid",
           content:
-            "Appears in all three prints. In \"the Fancy\" it covers the background at a fine scale. Reads as a light gray texture, almost like paper grain. Recedes behind the script.\n\nIn \"stepper\" the same dots blow up to fill a capital E. At that scale, each dot is an event. The pattern that disappeared into the background of the first print becomes the loudest element in the second.",
+            "Background in \"the Fancy,\" at a scale fine enough to read as light gray, close to paper grain. In \"stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right. In \"white\" it drops to sparse pinpoints.",
         },
         {
           title: "Diagonal Stripes",
           content:
-            "Cut across the crossbar of the F in \"the Fancy.\" A small detail, barely noticed in the full composition. In \"stepper\" those stripes fill a slab-serif R from top to bottom. The angle creates visual speed against the vertical stack of letters around it.\n\nThe same stripe at the same 45-degree angle and the same line weight. Two completely different reads based on how much surface it covers.",
+            "The same 45-degree stripe at the same line weight in both prints. In \"the Fancy\" it is one crossbar wide and easy to miss. In \"stepper\" it fills a slab letter top to bottom, and blown up like that the angle gives the whole stack some speed.\n\nThe only difference is how much of the letter it covers.",
         },
         {
           title: "White Space",
           content:
-            "\"the Fancy\" is mostly air. The letterforms cluster in the lower left and the rest of the frame is left open. \"stepper\" fills edge to edge. No breathing room. \"white\" splits the difference: open background, dense cluster at the bottom.\n\nThree different ratios of ink to paper. The patterns don't change between them. The ratio of filled to empty is what separates the quiet print from the loud one.",
+            "Three ratios of ink to paper. \"the Fancy\" is mostly paper, with the letters clustered in the lower left. \"stepper\" runs edge to edge. \"white\" sits between them, open background, dense cluster at the bottom.\n\nThat ratio is most of what separates the sparse print from the packed one.",
         },
       ],
       group: { name: "system" },
@@ -512,16 +512,13 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 07: CLOSING",
-      title: "Three Prints.\nSix Patterns.",
-      pressing: { mark: { n: "07", name: "Three Prints" } },
+      title: "Simple patterns,\nelaborate type.",
+      pressing: { mark: { n: "07", name: "Closing" } },
     },
-    {
-      id: "closing-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Personal work. No client, no brief, no deadline. Just a question about how far a small set of rules could stretch.",
-    },
+    // No subhead here on purpose. It said "no client, no brief, no
+    // deadline" and then asked the abstract's question again; the closing
+    // paragraph below carries the first half and the abstract keeps the
+    // question.
     {
       id: "closing",
       type: "closing",
@@ -533,7 +530,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "The pattern set is almost childlike. Dots, lines, stripes, diamonds. The type is the opposite - Didone serifs, calligraphic flourishes, slab capitals with presence. The tension between the two is what makes the prints hold up at large scale.\n\nBlack and white was the one rule that held every time. No gray, no texture photography, no gradients blending one value into another. Ink or paper. The binary forced every composition to find its tone through spacing alone.",
+        "The patterns are close to childlike. The type goes the other way: Didone serifs, calligraphic swashes, slab capitals with real weight. Setting one against the other is most of what makes the prints work at wall size.\n\nThis one had no client, no brief, and no deadline.",
     },
   ],
 };

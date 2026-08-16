@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSC demo — one slot, eight weeks of sessions</title>
+<link rel="stylesheet" href="dsc-demo.css">
+<link rel="stylesheet" href="dsc-app.css">
+<!--
+  Chrome sources (class strings copied verbatim from the product):
+  - athlete detail page:   src/app/admin/athletes/[id]/page.tsx:151-315
+  - add-slot sheet:        src/app/admin/athletes/[id]/page.tsx:393-505
+  - calendar day view:     src/app/admin/calendar/[date]/page.tsx:177-300
+  Flow: the standing-slot creation run in the live app on 2026-06-12
+  (Marcus Chen · Tuesdays · 4:00 PM · 60min · Scott). See NOTES.md for
+  the two deviations (native alert skipped; clean-calendar outcome).
+-->
+</head>
+<body class="sd-demo">
+
+<div id="demo">
+  <div class="sd-phone">
+    <div class="sd-screen" data-stage>
+
+      <!-- SCENE 1 · athlete detail — athletes/[id]/page.tsx:151 -->
+      <div class="sd-scene on" id="sceneDetail" style="position:relative">
+        <div class="min-h-screen bg-white" style="min-height:0;flex:1;overflow-y:auto">
+          <header class="sticky top-0 z-10 bg-white/95 backdrop-blur px-4 py-3 flex items-center gap-3 border-b border-black/10">
+            <span class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 text-black/70" aria-label="Back to athletes">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </span>
+            <div class="dsc-headline text-lg md:text-xl text-black truncate">Marcus Chen</div>
+          </header>
+
+          <div class="px-4 py-6 max-w-3xl mx-auto space-y-6">
+            <!-- identity card — :170-224 -->
+            <div class="rounded-3xl bg-black/[0.04] p-5">
+              <div class="dsc-label text-black/40 mb-1">Athlete</div>
+              <h1 class="dsc-headline text-3xl md:text-4xl text-black mb-3 leading-[0.95]">Marcus<br>Chen</h1>
+              <div class="text-sm text-black/70"><a class="hover:text-black">marcus.chen@email.com</a></div>
+              <div class="mt-4 flex flex-wrap gap-2 text-xs">
+                <span class="dsc-label px-2 py-1 rounded-full bg-black/10 text-black">with Scott</span>
+                <span class="dsc-label px-2 py-1 rounded-full bg-black/[0.06] text-black/60">15 sessions</span>
+                <span class="dsc-label px-2 py-1 rounded-full bg-black/[0.06] text-black/60">0 check-ins</span>
+              </div>
+            </div>
+
+            <!-- standing weekly — :227-315 -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <div class="dsc-label text-black/40">Standing weekly</div>
+                  <h2 class="dsc-headline text-2xl text-black leading-tight">Recurring slots</h2>
+                </div>
+                <button id="addBtn" class="h-9 px-4 bg-black text-white rounded-full dsc-headline text-sm">+ Add</button>
+              </div>
+              <div id="slotArea">
+                <div id="emptySlots" class="rounded-2xl border border-dashed border-black/15 p-6 text-center">
+                  <div class="dsc-label text-black/40 mb-1">No standing slots</div>
+                  <p class="text-sm text-black/60">Lock in a recurring slot and the next 8 weeks of sessions are auto-created.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- add-slot sheet mounts here — :393 -->
+        <div id="sheetMount"></div>
+      </div>
+
+      <!-- SCENE 2 · calendar day view, next Tuesday — calendar/[date]/page.tsx:177 -->
+      <div class="sd-scene" id="sceneDay">
+        <div class="sd-cut">The engine materializes the next 8 Tuesdays · first one up</div>
+        <div class="min-h-screen bg-white" style="min-height:0;flex:1;overflow-y:auto">
+          <header class="sticky top-0 z-10 bg-white/95 backdrop-blur px-4 py-3 flex items-center gap-3 border-b border-black/10">
+            <span class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 text-black/70" aria-label="Back to calendar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </span>
+            <span class="block"><img src="assets/logo-mark.png" alt="DSC" width="28" height="28"></span>
+            <div class="ml-2 dsc-headline text-lg text-black truncate">Tuesday, Jun 16</div>
+          </header>
+
+          <div class="max-w-3xl mx-auto w-full px-4 py-6">
+            <div class="flex items-end justify-between mb-6">
+              <div>
+                <div class="dsc-label text-black/40 mb-1">Tuesday</div>
+                <div class="dsc-headline text-5xl md:text-6xl text-black leading-none">Jun 16</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-10 h-10 flex items-center justify-center rounded-full bg-black/5 text-black/70">←</span>
+                <span class="w-10 h-10 flex items-center justify-center rounded-full bg-black/5 text-black/70">→</span>
+              </div>
+            </div>
+
+            <button class="w-full mb-4 h-12 bg-black text-white rounded-full dsc-headline text-base">+ Add session</button>
+
+            <div class="space-y-2" id="dayList">
+              <!-- Jim Bender's real Tue 5/6/7am block with Scott (seed data) -->
+              <button class="w-full rounded-3xl p-5 flex items-center justify-between gap-4 bg-black text-white hover:bg-black/90 active:opacity-80">
+                <span class="flex items-baseline gap-4 min-w-0 text-left">
+                  <span class="font-mono text-sm opacity-75 shrink-0 w-16">5:00am</span>
+                  <span class="min-w-0"><span class="font-semibold truncate" style="display:block">Jim Bender</span><span class="dsc-label opacity-60 mt-0.5" style="display:block">Scott · 60 min</span></span>
+                </span>
+                <span class="dsc-label opacity-50 shrink-0">Edit</span>
+              </button>
+              <button class="w-full rounded-3xl p-5 flex items-center justify-between gap-4 bg-black text-white hover:bg-black/90 active:opacity-80">
+                <span class="flex items-baseline gap-4 min-w-0 text-left">
+                  <span class="font-mono text-sm opacity-75 shrink-0 w-16">6:00am</span>
+                  <span class="min-w-0"><span class="font-semibold truncate" style="display:block">Jim Bender</span><span class="dsc-label opacity-60 mt-0.5" style="display:block">Scott · 60 min</span></span>
+                </span>
+                <span class="dsc-label opacity-50 shrink-0">Edit</span>
+              </button>
+              <button class="w-full rounded-3xl p-5 flex items-center justify-between gap-4 bg-black text-white hover:bg-black/90 active:opacity-80">
+                <span class="flex items-baseline gap-4 min-w-0 text-left">
+                  <span class="font-mono text-sm opacity-75 shrink-0 w-16">7:00am</span>
+                  <span class="min-w-0"><span class="font-semibold truncate" style="display:block">Jim Bender</span><span class="dsc-label opacity-60 mt-0.5" style="display:block">Scott · 60 min</span></span>
+                </span>
+                <span class="dsc-label opacity-50 shrink-0">Edit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <p class="sp-caption">The standing-slot flow from the live app — one recurring slot, materialized onto the calendar by the scheduling engine.</p>
+</div>
+
+<script src="dsc-demo-kit.js"></script>
+<script>
+new DSCDemo(document.getElementById("demo"), async function (t) {
+
+  // 1 — the owner opens + Add
+  await t.wait(1200);
+  await t.press(t.$("#addBtn"));
+  await t.wait(200);
+
+  // 2 — the sheet slides up — athletes/[id]/page.tsx:393-505, verbatim.
+  //     (Backdrop is absolute to the phone stage, not the page — the
+  //     product's fixed inset-0 covers its viewport; ours is the frame.)
+  var mount = t.$("#sheetMount");
+  var backdrop = t.el("div", "fixed inset-0 z-40 flex items-end md:items-center md:justify-center bg-black/40 dsc-sheet-backdrop");
+  backdrop.style.position = "absolute";
+  var panel = t.el("div", "bg-white rounded-t-3xl md:rounded-3xl w-full md:max-w-md max-h-[85vh] overflow-y-auto dsc-sheet-panel");
+  backdrop.appendChild(panel);
+
+  var head = t.el("div", "px-5 pt-5 pb-3 flex items-center justify-between");
+  var headL = t.el("div");
+  headL.appendChild(t.el("div", "dsc-label text-black/40", "Standing weekly"));
+  headL.appendChild(t.el("div", "dsc-headline text-2xl text-black", "New slot"));
+  head.appendChild(headL);
+  head.appendChild(t.el("button", "w-9 h-9 rounded-full bg-black/5 flex items-center justify-center text-black/60", "✕"));
+  panel.appendChild(head);
+
+  var bodyEl = t.el("div", "px-5 pb-5 space-y-4");
+
+  function field(label, control) {
+    var lab = t.el("label", "block");
+    lab.appendChild(t.el("div", "dsc-label text-black/40 mb-1.5", label));
+    lab.appendChild(control);
+    return lab;
+  }
+
+  // Trainer select — defaults to the athlete's own trainer (Scott)
+  var sel = t.el("div", "w-full h-11 px-3 bg-black/[0.04] rounded-xl text-sm text-black");
+  sel.style.display = "flex"; sel.style.alignItems = "center"; sel.style.justifyContent = "space-between";
+  sel.appendChild(t.el("span", null, "Scott"));
+  sel.appendChild(t.el("span", "text-black/40", "▾"));
+  bodyEl.appendChild(field("Trainer", sel));
+
+  // Day of week — 7 buttons, TUE gets tapped
+  var days = t.el("div", "grid grid-cols-7 gap-1");
+  var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var dayBtns = dayNames.map(function (d, i) {
+    var b = t.el("button", "h-10 rounded-xl text-xs dsc-label " + (i === 1
+      ? "bg-black text-white"
+      : "bg-black/[0.04] text-black/70 hover:bg-black/[0.07]"), d);
+    days.appendChild(b);
+    return b;
+  });
+  bodyEl.appendChild(field("Day of week", days));
+
+  // Time + Length
+  var grid = t.el("div", "grid grid-cols-2 gap-3");
+  var time = t.el("div", "w-full h-11 px-3 bg-black/[0.04] rounded-xl text-sm text-black");
+  time.style.display = "flex"; time.style.alignItems = "center";
+  time.textContent = "09:00 AM";
+  grid.appendChild(field("Time", time));
+  var len = t.el("div", "w-full h-11 px-3 bg-black/[0.04] rounded-xl text-sm text-black");
+  len.style.display = "flex"; len.style.alignItems = "center"; len.style.justifyContent = "space-between";
+  len.appendChild(t.el("span", null, "60 min"));
+  len.appendChild(t.el("span", "text-black/40", "▾"));
+  grid.appendChild(field("Length", len));
+  bodyEl.appendChild(grid);
+
+  // The explainer the product shows — :480-483
+  bodyEl.appendChild((function () {
+    var n = t.el("div", "rounded-xl bg-black/[0.04] px-3 py-2 text-xs text-black/60",
+      "Creates the slot and materializes the next 8 weeks of sessions. Conflicts get skipped (the gym can review them).");
+    return n;
+  })());
+
+  var actions = t.el("div", "space-y-2 pt-2");
+  var createBtn = t.el("button", "w-full h-12 bg-black text-white rounded-full dsc-headline text-base", "Create + materialize");
+  actions.appendChild(createBtn);
+  actions.appendChild(t.el("button", "w-full h-12 text-black/60 rounded-full text-sm hover:text-black", "Cancel"));
+  bodyEl.appendChild(actions);
+  panel.appendChild(bodyEl);
+  mount.appendChild(backdrop);
+  await t.wait(1100);
+
+  // 3 — day flips to Tuesday, time set to 4:00 PM (the real run's values)
+  await t.press(dayBtns[2]);
+  dayBtns[1].className = "h-10 rounded-xl text-xs dsc-label bg-black/[0.04] text-black/70 hover:bg-black/[0.07]";
+  dayBtns[2].className = "h-10 rounded-xl text-xs dsc-label bg-black text-white";
+  await t.wait(700);
+  time.textContent = "";
+  await t.type(time, "04:00 PM", 14);
+  await t.wait(800);
+
+  // 4 — create + materialize
+  await t.press(createBtn);
+  createBtn.textContent = "Creating…";
+  createBtn.className += " opacity-40";
+  await t.wait(1100);
+  backdrop.remove();
+
+  // 5 — the slot card lands — :253-311, verbatim classes
+  t.$("#emptySlots").remove();
+  var wrap = t.el("div", "space-y-2");
+  var card = t.el("div", "rounded-2xl p-4 bg-black/[0.04]");
+  var top = t.el("div", "flex items-start justify-between gap-3");
+  var info = t.el("div", "min-w-0 flex-1");
+  var line = t.el("div", "text-sm text-black");
+  line.appendChild(t.el("span", "font-medium", "Tuesdays"));
+  line.appendChild(t.el("span", "text-black/60", " · 4:00 PM (60min)"));
+  info.appendChild(line);
+  info.appendChild(t.el("div", "text-xs text-black/60 mt-0.5", "with Scott"));
+  top.appendChild(info);
+  card.appendChild(top);
+  var btns = t.el("div", "flex flex-wrap gap-2 mt-3 text-xs");
+  btns.appendChild(t.el("button", "h-8 px-3 bg-black text-white rounded-full dsc-headline", "Extend 4 wks"));
+  btns.appendChild(t.el("button", "h-8 px-3 bg-white border border-black/20 text-black rounded-full", "Pause"));
+  btns.appendChild(t.el("button", "h-8 px-3 text-black/60 hover:text-black", "Delete"));
+  card.appendChild(btns);
+  wrap.appendChild(card);
+  t.$("#slotArea").appendChild(wrap);
+  t.reveal(card);
+  await t.wait(2200);
+
+  // 6 — cut to next Tuesday's day view: the engine has written the session
+  t.$("#sceneDetail").classList.remove("on");
+  t.$("#sceneDay").classList.add("on");
+  await t.wait(1200);
+
+  var row = t.el("button", "w-full rounded-3xl p-5 flex items-center justify-between gap-4 bg-black text-white hover:bg-black/90 active:opacity-80");
+  var left = t.el("span", "flex items-baseline gap-4 min-w-0 text-left");
+  left.appendChild(t.el("span", "font-mono text-sm opacity-75 shrink-0 w-16", "4:00pm"));
+  var nm = t.el("span", "min-w-0");
+  var n1 = t.el("span", "font-semibold truncate", "Marcus Chen"); n1.style.display = "block";
+  var n2 = t.el("span", "dsc-label opacity-60 mt-0.5", "Scott · 60 min"); n2.style.display = "block";
+  nm.appendChild(n1); nm.appendChild(n2);
+  left.appendChild(nm);
+  row.appendChild(left);
+  row.appendChild(t.el("span", "dsc-label opacity-50 shrink-0", "Edit"));
+  t.$("#dayList").appendChild(row);
+  t.reveal(row);
+
+  await t.wait(3000);
+});
+</script>
+
+</body>
+</html>

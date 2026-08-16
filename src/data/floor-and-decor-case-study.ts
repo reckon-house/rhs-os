@@ -23,6 +23,8 @@ export const floorAndDecorCaseStudy: CaseStudy = {
     // Abstract carries the F&D feature context (Designer of the Quarter,
     // catalog, website, video interview) so we don't need a dedicated
     // SECTION 04 to repeat it later.
+    // Aug 2026 copy pass: catalog / website / video moved down to the
+    // closing so the abstract and the closing stop saying the same thing.
     {
       id: "meta",
       type: "meta",
@@ -51,10 +53,10 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         { label: "Built", value: "Designer of the Quarter, Summer 2023. Hard surface selections across three residential bathrooms. Catalog, website, video interview" },
         { label: "Scope", value: "Interior design, material selection, finish coordination" },
         { label: "Materials", value: "Marble, dolomite, white oak, classic tile" },
-        { label: "Angle", value: "Material confidence, not material matching. One kit, three rooms that read completely different." },
+        { label: "Angle", value: "Some of the pairings looked risky on paper, and none of them do in the room." },
       ],
       abstract:
-        "Floor & Decor named the studio Designer of the Quarter for Summer 2023, anchored on hard surface selections across three residential bathrooms. Marble, dolomite, white oak, classic tile - the kit each project pulled from, applied three different ways. The feature ran in the summer catalog, on the Floor & Decor website, and inside a full video interview.\n\nThree projects, three directions. Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling. Each room stands on its own, but the underlying material logic is the same.\n\nThe focus was hard surfaces, and the projects show how tile and stone anchor everything else. Get the floors and walls right, the rest follows.",
+        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter, for the hard surface selections in three residential bathrooms. Marble, dolomite, white oak and classic tile were the kit every project pulled from, and each one used it differently.\n\nOne is urban southwest, with exposed brick and a matte black soaking tub. One is modern farmhouse, with shiplap, brass fixtures and patterned floor tile. The third is quiet glam, veined marble running floor to ceiling. Each room stands on its own, and the materials under all three are the same.\n\nThe focus was hard surfaces, and the three rooms show how tile and stone anchor everything else. Get the floors and the walls right and the rest of the room follows.",
     },
 
         // ── HERO ──
@@ -76,13 +78,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "Three Projects,",
+      title: "Three Bathrooms,",
       // Pins so "Three Directions." holds while the subhead and footnote
       // travel up beside it. Nothing climbs this brief — the hold is for
       // the copy, which is where the three projects get named.
       pressing: {
-        mark: { n: "02", name: "Three Projects" },
-        heldLine: "Three Directions.",
+        mark: { n: "02", name: "Three Bathrooms" },
+        heldLine: "Marble in All of Them.",
         choreo: { pin: true },
       },
     },
@@ -91,16 +93,11 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Urban southwest with exposed brick and a matte black soaking tub. Modern farmhouse with shiplap, brass fixtures, and patterned floor tile. Quiet glam with veined marble running floor to ceiling.",
+        "The proportions, the fixtures and the finishes change hard from one room to the next. The list of materials underneath hardly changes at all.",
     },
-    {
-      id: "directions-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "Same material vocabulary across all three - marble, dolomite, white oak, classic tile - but the proportions, fixtures, and finishes shift hard between projects. The point of the feature wasn't a single style. It was showing that the same kit can carry very different rooms when the selections stay disciplined.",
-    },
+    // Footnote cut here (Aug 2026 copy pass): it said the subtitle again,
+    // one kit, three rooms, and the subhead above already carries the part
+    // that was new.
 
     // ── Modern Farmhouse — inline scaling hero (urban southwest is at top
     // of the page; quiet glam lives in section 03 below)
@@ -140,7 +137,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "confidence-header",
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
-      title: "Material Confidence,",
+      title: "Vertical Tile Against Brick,",
       // The study's one crossing, on the sentence the whole feature exists
       // to argue.
       //
@@ -149,8 +146,8 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // A.R.C. convention for saying so in the data, which is what the
       // audit reads.
       pressing: {
-        mark: { n: "03", name: "Material Confidence" },
-        heldLine: "Not Material Matching.",
+        mark: { n: "03", name: "Mixed Materials" },
+        heldLine: "Nickel Next to Brass.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -159,7 +156,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The common thread is material confidence. Mixing textures that shouldn't obviously work together, but do. Vertical stacked tile against horizontal brick. Polished nickel next to unlacquered brass. Cool marble warming up against reclaimed wood ceilings.",
+        "Everything got picked at the same time, on one moodboard. If a stone and a wood and a metal work next to each other there, they work in the room.",
     },
     {
       id: "confidence-footnote",
@@ -167,7 +164,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The combinations felt risky on paper but landed perfectly in person. A matte black tub reads softer when it sits between hard brick and warm oak than it ever does in a render. Patterned floor tile reads quieter under shiplap and a vaulted ceiling than under flat drywall. The trick was selecting materials all at once instead of one at a time - if a stone and a wood and a metal can hold each other in the moodboard, they hold each other in the room.",
+        "Some of it looked risky on paper. In the room, a matte black tub between brick and warm oak reads softer than it does in a render, and patterned floor tile under shiplap and a vaulted ceiling reads calmer than it would under flat drywall.",
     },
 
     // ── Urban Southwest shower details — first 2-up. Holds, so the quiet
@@ -221,7 +218,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Large-format veined marble runs the full height of the walls, a brass urchin pendant breaks the verticality, and a graphic star tile grounds the floor. The room sits opposite the urban southwest project's brick-and-black register - the same marble vocabulary, dialed down to one slab and one accent metal. Restraint is the move when the material is doing the talking.",
+        "Large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor. Of the three rooms this one is the furthest from the brick and matte black. Same marble, brought down to one slab and one accent metal.",
     },
 
     // ── Modern Farmhouse details — second 2-up
@@ -249,7 +246,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Mapping the material kit across the three projects shows where the overlaps actually live. Marble carries every room. Polished nickel and hexagon mosaic bridge two of the three. Brass anchors the warmer pair. The distinct character of each room comes from the small handful of materials that only show up once in the entire feature - exposed brick, shiplap, the urchin pendant.",
+        "Mapping the materials across the three projects shows where the overlaps are. Polished nickel and the hex mosaic each turn up in two of the three, and brass ties the two warmer rooms together. What makes each room its own is the handful of things that only show up once in the whole feature: exposed brick, shiplap, the urchin pendant.",
     },
     {
       id: "material-overlap",
@@ -263,19 +260,15 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "One Material Kit,",
+      title: "Designer of the Quarter,",
       pressing: {
-        mark: { n: "04", name: "One Material Kit" },
-        heldLine: "Three Different Rooms.",
+        mark: { n: "04", name: "Summer 2023" },
+        heldLine: "Summer 2023.",
       },
     },
-    {
-      id: "closing-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Marble, dolomite, white oak, classic tile - the same palette across three projects, applied with enough confidence to look like three distinct rooms.",
-    },
+    // Closing subhead cut here (Aug 2026 copy pass): it re-told the
+    // subtitle. The headline states the result and the closing says where
+    // it ran; there was nothing left for a line between them to add.
     {
       id: "closing",
       type: "closing",
@@ -283,7 +276,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Floor & Decor named the studio Designer of the Quarter on the strength of three bathrooms that share a material kit but look like three different rooms. The hard surface selections did the structural work - tile and stone setting the proportions, the rest of the build sitting on top of them.",
+        "The feature ran in the summer catalog and on the Floor & Decor website, with a video interview to go with it.",
     },
   ],
 };

@@ -72,10 +72,10 @@ export const sizzleCaseStudy: CaseStudy = {
       summary: [
         { label: "Built", value: "In a day, with Claude Code" },
         { label: "Ships", value: "React component, a 4.8KB web component, and a GIF/MP4 exporter" },
-        { label: "Try it", value: "Section 02 takes your own images. Nothing uploads, nothing saves" },
+        { label: "Try it", value: "Section 02 takes your own images, and nothing uploads or saves" },
       ],
       abstract:
-        "A sizzle reel is usually footage: shot, edited, rendered, hosted. Faux Reel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types, wipes, blinks, a burn, a lens pinch, and a title card that assembles itself, all on a timer tuned so the eye reads motion. One container, CSS animation, zero video files.\n\nIt dawned on me one night that I could do this in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well. Once I got the hang of it, it actually felt faster, and it left me with something I can edit and keep fresh. The build took a day with Claude Code, most of it spent finessing the timing so the stills feel like motion and not a slideshow. The finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nNone of this is a screenshot or a mockup. The reel up top is running live, and the lab below it is where you load your own photos: it pulls a five-color palette out of them and rebuilds the reel to match. If you want a file instead of a live embed, the same code exports the whole thing as a looping GIF or an MP4.",
+        "A sizzle reel is usually footage: shot, edited, rendered, hosted. Faux Reel skips the footage and keeps the edit. It runs a stack of still photographs through fourteen transition types: wipes, blinks, a burn, a lens pinch, and a title card that assembles itself. All of it runs on a timer tuned so the eye reads motion, in one container, with CSS animation and no video file anywhere.\n\nIt dawned on me one night that I could do this in code instead of opening an editor, so I figured I would give it a try, and it turned out pretty well. Once I got the hang of it, it actually felt faster, and it left me with something I can edit and keep fresh. The build took a day with Claude Code, most of it spent finessing the timing so the stills feel like motion and not a slideshow. The finished web component weighs 4.8KB gzipped, smaller than any one of the photographs it plays.\n\nNone of this is a screenshot or a mockup. The reel up top is running live, and the lab below it is where you load your own photos: it pulls a five-color palette out of them and rebuilds the reel to match. If you want a file instead of a live embed, the same code exports the whole thing as a looping GIF or an MP4.",
     },
 
     // ── THE WALL, WHERE A HERO WOULD BE ──
@@ -110,7 +110,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The default cut is seven frames, one from each of my projects. Drop in up to eight of your own and it rebuilds around them. Each beat gets a chip below. Click one to freeze the reel on it.",
+        "The default cut is seven frames, one each from seven of my projects. Drop in up to eight of your own and it rebuilds around them. Each beat gets a chip below, and clicking one freezes the reel on it.",
     },
     {
       id: "lab",
@@ -136,14 +136,14 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The trick is hiding the cut. When the reel blinks a color frame or the lens pinches shut, the photo swaps behind the cover, so you never see the switch. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard instead of fading, and each frame holds for a beat before the next one.",
+        "The trick is hiding the cut. When the reel blinks a color frame or the lens pinches shut, the photo swaps behind the cover, so you never see the switch. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
     },
     {
       id: "file-stats",
       type: "stats-summary",
       items: [
         { value: "14", label: "Transition types", sublabel: "Wipes, blinks, burn, pinch, and four kinds of type" },
-        { value: "4.8KB", label: "Web component", sublabel: "Gzipped, zero dependencies, any webpage" },
+        { value: "4.8KB", label: "Web component", sublabel: "Gzipped, no dependencies, works on any page" },
         { value: "20fps", label: "Deterministic export", sublabel: "131 frames stepped on a frozen clock" },
         { value: "0", label: "Video files", sublabel: "1.3MB as GIF, 0.2MB as MP4, nothing hosted" },
       ],
@@ -154,10 +154,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "Running,",
+      title: "On this page,",
       pressing: {
-        mark: { n: "04", name: "Running" },
-        heldLine: "not rendered",
+        mark: { n: "04", name: "On the page" },
+        heldLine: "and on GitHub",
       },
     },
     {
@@ -170,7 +170,7 @@ export const sizzleCaseStudy: CaseStudy = {
         { label: "See the projects the reel is cut from", url: "/" },
       ],
       content:
-        "The reel on this page is the deliverable, running where it was made, cut from seven of the projects around it. It is also on GitHub, MIT-licensed. A developer or product manager who needs a deck or a portfolio to move can grab it and skip the shoot.",
+        "The reel up top is the component itself, running where it was made and cut from seven of the projects around it. The code is MIT-licensed. If you need a deck or a portfolio to move, grab it and skip the shoot.",
     },
   ],
 };

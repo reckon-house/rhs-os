@@ -67,10 +67,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
         { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
-        { label: "Angle", value: "No single client, no single style. Each mark sounds like the client. The point is fluency." },
+        { label: "Angle", value: "Each mark sounds like the client it was drawn for. The range is the point." },
       ],
       abstract:
-        "Every project here started the same way. Match the energy of something that doesn't exist yet.\n\nFour album covers, four completely different visual languages. Woodgrain collage and halftone geometry for a folk record. Grunge compositing with hand-rendered type for a pop artist. Linework landscapes stacked into depth for an ambient release. A portrait where saturated color carries the entire identity. Each one had to read at vinyl scale and survive as a thumbnail. No shared visual logic between them. That was the requirement.\n\nThe poster work follows the same approach. Atmospheric photography against dot-matrix grids. Radial color studies built from pattern. Double-exposure landscapes where texture replaces detail. These aren't decorative pieces. They're compositional puzzles solved on a deadline.\n\nLogos ranged from ornamental to blunt. Flowing botanical illustration for a fashion collective. Halftone dots and geometric sans for a DJ. A bird on a monogram for a lifestyle brand. The only consistency is that each mark sounds like the client.\n\nThis is where the eye gets trained. Everything that came later started here.",
+        "Album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nFour album covers, each for a different act. Posters and prints, from a typography exercise to double-exposed landscapes. Five logos for five clients. And one 4x6 film photograph blown up to fill a storefront window.\n\nPhotoshop, Illustrator, and InDesign for most of it, a film camera for the photography, and hand-drawn type where a piece called for it.",
     },
 
     // ── HERO CAROUSEL ──
@@ -103,11 +103,11 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "posters-header",
       type: "section-header",
       label: "SECTION 02: POSTERS & PRINTS",
-      title: "Each One Started",
+      title: "Landscapes, letterforms, patterns,",
       pressing: {
-        mark: { n: "02", name: "Each One Started" },
-        heldLine: "With a Blank Page.",
-        // Held so the blank-page line stays put while its copy travels,
+        mark: { n: "02", name: "Posters and Prints" },
+        heldLine: "and a hot-air balloon.",
+        // Held so the second line stays put while its copy travels,
         // and so the ABC poster underneath has a screen to climb.
         choreo: { pin: true },
       },
@@ -117,7 +117,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Atmospheric photography against dot-matrix grids. Radial color studies built from pattern. Double-exposure landscapes where texture replaces detail.",
+        "Photographs over dot-matrix grids, radial color studies built from pattern, and double-exposure landscapes where texture stands in for detail.",
     },
     {
       id: "posters-footnote",
@@ -125,7 +125,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Not decorative. The pieces here range from collaged landscapes to typographic exercises to atmospheric prints. Different formal puzzles, same toolkit. Each one started with a blank page and a deadline, and the question was always which direction the piece would turn before the time ran out.",
+        "Each of these started with a blank page and a deadline, and no plan for where it would end up.",
     },
 
     // ── ABC 123 typography poster — single, padded.
@@ -249,13 +249,13 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "covers-header",
       type: "section-header",
       label: "SECTION 03: COVERS",
-      title: "Four Records.",
+      title: "Four records:",
       // The study's one crossing. Four sleeves with no shared logic IS the
       // fluency argument the whole study makes, so the gesture lands here
       // rather than on the marks section that only restates it.
       pressing: {
         mark: { n: "03", name: "Four Records" },
-        heldLine: "Nothing in Common.",
+        heldLine: "folk, pop, ambient, and a DJ.",
         // pin declares what the crossing already does — it holds the
         // headline while the column scrubs past — so the flag matches
         // the behaviour instead of the skin being the only record of it.
@@ -267,7 +267,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Each one had to read at vinyl scale and survive as a thumbnail. No shared logic between them. That was the requirement.",
+        "Every one of them had to read at vinyl size and survive as a thumbnail, and nothing carries over from one sleeve to the next. That was the requirement.",
     },
     {
       id: "covers-footnote",
@@ -275,7 +275,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Woodgrain collage and halftone geometry for the folk record. Grunge compositing with hand-rendered type for the pop artist. Linework landscapes stacked into depth for the ambient release. A saturated portrait where the color does all the work. The brief on every project: match the energy of music that didn't exist yet.",
+        "Woodgrain collage and halftone geometry for the folk record. Grunge compositing and hand-drawn type for the pop artist. Linework landscapes stacked into depth for the ambient release. A saturated portrait for the DJ, where the color carries the whole thing.",
     },
 
     // ── Album covers — 2×2 grid that meets at the center, only outer corners rounded
@@ -294,7 +294,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "No single client.\nNo single style.",
+      text: "Cover art for music\nthat didn't exist yet.",
     },
 
     // ════════════════════════════════════════
@@ -319,7 +319,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The Bokeh's Fall window translated the same atmospheric language to building scale. The source image is below, hand-shot on film. The window is what happened when it got blown out to street size and waited for foot traffic to find it.",
+        "Bokeh's Fall. The photograph was shot on film, and the window is what happened when it got blown up to street size. The original is below.",
     },
 
     // ── Bokeh's Fall storefront — the zoom. The section's copy is about a
@@ -362,10 +362,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 05: MARKS",
-      title: "Logos that sound like the client.",
+      title: "Five logos,",
       pressing: {
-        mark: { n: "05", name: "Logos that sound like the" },
-        heldLine: "Not the designer.",
+        mark: { n: "05", name: "Five Logos" },
+        heldLine: "from ornamental to blunt.",
         choreo: { pin: true },
       },
     },
@@ -374,7 +374,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand. Range from ornamental to blunt.",
+        "Flowing botanical illustration for a fashion collective, halftone dots and geometric sans for a DJ, a bird on a monogram for a lifestyle brand.",
     },
     {
       id: "marks-footnote",
@@ -382,7 +382,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Whatever the brief asks for, the mark delivers without trying to add a signature. Five logos shown here, and nothing in the portfolio connects them except the hands that drew them. The signature lives in the range.",
+        "The other two are a planet-and-orbit wordmark in heavy black sans and a four-circle mark over an engraved serif.",
     },
 
     // ── Marks — two rows, not five plates.
@@ -438,19 +438,14 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Where the Instincts",
+      title: "Still adding",
       pressing: {
-        mark: { n: "06", name: "Where the Instincts" },
-        heldLine: "Get Built.",
+        mark: { n: "06", name: "Closing" },
+        heldLine: "to this one.",
       },
     },
-    {
-      id: "closing-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Personal projects, deadline projects, album sleeves nobody asked for, logos for friends starting things. The fluency lives in the volume.",
-    },
+    // No subhead here on purpose. Its one good line moved into the
+    // closing paragraph below; the rest was the abstract's argument again.
     {
       id: "closing",
       type: "closing",
@@ -464,7 +459,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Camera", "Hand-rendering"],
       links: [],
       content:
-        "This is where the compositional habits got built: color confidence, and the willingness to start with a blank page and not know which direction the piece will turn.\n\nThis section will keep growing. Every new piece becomes another reference point.",
+        "Personal projects, deadline projects, album sleeves nobody asked for, logos for friends starting things. About ten years of it so far.",
     },
   ],
 };

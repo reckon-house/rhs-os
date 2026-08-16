@@ -589,6 +589,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
         <PressingVizFrame key={s.id} mark={p?.mark} caption={p?.caption}>
           <PressingProductDemo
             demo={s.demo}
+            folder={s.folder}
             title={s.title}
             stageWidth={s.stageWidth}
             note={s.note}

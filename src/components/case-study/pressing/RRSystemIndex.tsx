@@ -575,7 +575,11 @@ export function RRSystemIndex({ reelImages, reelColors }: RRSystemIndexProps) {
                 />
               ) : null}
             </span>
-            <span className={styles.cap}>Four source frames</span>
+            {/* "photographs", not "source frames": Jeremy on 2026-08-15,
+                "we're talking about editorial images but somehow it
+                sounds tech". The row label stays "Compositing" because
+                photo compositing is the literal service on the study. */}
+            <span className={styles.cap}>The four photographs</span>
           </span>
         </div>
       </div>

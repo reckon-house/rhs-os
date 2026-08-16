@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSC demo — an athlete books through their own AI</title>
+<link rel="stylesheet" href="dsc-demo.css">
+<link rel="stylesheet" href="dsc-app.css">
+<!--
+  Two surfaces:
+  1. The athlete's AI chat — a NEUTRAL surface, deliberately not any
+     AI vendor's chrome (we reproduce our own interfaces, not a third
+     party's). The conversation is a real exchange run against the
+     live MCP server (2026-06-13 session, the same one in the case
+     study's chat captures), word for word. Tool names are the MCP
+     server's real tool names (src/app/api/mcp/athlete/route.ts).
+  2. The owner console — class strings verbatim from
+     src/app/admin/page.tsx:196-216 (header), 320-378 (BookingRequestsBox).
+-->
+<style>
+  /* Neutral AI-chat surface — ours, unbranded on purpose. */
+  .ai-chat { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .ai-head { padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,.08);
+    font-size: 13px; font-weight: 600; color: rgba(0,0,0,.75); display: flex; align-items: center; gap: 8px; }
+  .ai-head .ai-dot { width: 8px; height: 8px; border-radius: 99px; background: #16a34a; }
+  .ai-head .ai-conn { margin-left: auto; font-family: 'SF Mono', Menlo, monospace; font-size: 10px;
+    letter-spacing: .06em; color: rgba(0,0,0,.4); text-transform: uppercase; }
+  .ai-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; }
+  .ai-scroll::-webkit-scrollbar { display: none; }
+  .ai-user { max-width: 85%; margin: 0 0 14px auto; background: rgba(0,0,0,.06);
+    border-radius: 16px 16px 4px 16px; padding: 10px 14px; font-size: 14px; line-height: 1.45; color: #111; width: fit-content; }
+  .ai-reply { font-size: 14px; line-height: 1.55; color: #1a1a1a; margin: 0 0 14px; white-space: pre-wrap; }
+  .ai-reply strong { font-weight: 650; }
+  .ai-tool { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 6px 10px;
+    border: 1px solid rgba(0,0,0,.09); border-radius: 10px; width: fit-content; max-width: 100%;
+    font-size: 12px; color: rgba(0,0,0,.55); background: rgba(0,0,0,.02); }
+  .ai-tool code { font-family: 'SF Mono', Menlo, monospace; font-size: 11px; color: rgba(0,0,0,.65);
+    background: rgba(0,0,0,.05); border-radius: 5px; padding: 1px 5px; white-space: nowrap; }
+  .ai-tool .ai-spin { width: 10px; height: 10px; border: 1.5px solid rgba(0,0,0,.2);
+    border-top-color: rgba(0,0,0,.6); border-radius: 99px; animation: ai-rot 700ms linear infinite; flex: none; }
+  .ai-tool.done .ai-spin { display: none; }
+  .ai-tool .ai-check { display: none; color: #16a34a; flex: none; }
+  .ai-tool.done .ai-check { display: inline; }
+  @keyframes ai-rot { to { transform: rotate(360deg); } }
+  .ai-dockrow { padding: 10px 12px 14px; border-top: 1px solid rgba(0,0,0,.08); }
+  .ai-dock { display: flex; align-items: center; gap: 8px; border: 1px solid rgba(0,0,0,.12);
+    border-radius: 14px; padding: 10px 14px; font-size: 14px; color: #111; min-height: 20px; }
+  .ai-dock .ai-ph { color: rgba(0,0,0,.35); }
+  .sd-instant .ai-spin { animation: none; }
+</style>
+</head>
+<body class="sd-demo">
+
+<div id="demo">
+  <div class="sd-phone">
+    <div class="sd-screen" data-stage>
+
+      <!-- SCENE 1 · the athlete's AI, connected to the gym over MCP -->
+      <div class="sd-scene on" id="sceneAI">
+        <div class="ai-chat">
+          <div class="ai-head"><span class="ai-dot"></span> AI assistant <span class="ai-conn">DSC connected · MCP</span></div>
+          <div class="ai-scroll" id="aiScroll"></div>
+          <div class="ai-dockrow"><div class="ai-dock" id="aiDock"><span class="ai-ph">Message…</span></div></div>
+        </div>
+      </div>
+
+      <!-- SCENE 2 · the owner console, where the request lands -->
+      <div class="sd-scene" id="sceneOwner">
+        <div class="sd-cut" id="ownerCut">Meanwhile · the owner's console</div>
+        <div class="min-h-screen bg-white flex flex-col" style="min-height:0;flex:1">
+          <!-- header — admin/page.tsx:198-216 -->
+          <header class="px-4 pt-6 pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img src="assets/logo-mark.png" alt="DSC" width="44" height="44">
+            </div>
+            <div class="flex items-center gap-3">
+              <button class="dsc-label text-black/60 hover:text-black">Log out</button>
+            </div>
+          </header>
+
+          <div class="px-4 space-y-2 pb-2" id="alerts"></div>
+
+          <!-- launcher cards — admin/page.tsx:264-281 -->
+          <section class="px-4 pt-2 pb-4">
+            <div class="grid grid-cols-2 gap-3 md:gap-4 max-w-3xl mx-auto">
+              <span class="group block bg-black/[0.04] rounded-3xl p-4 aspect-square flex flex-col justify-between overflow-hidden">
+                <span class="dsc-label text-black/40 break-words">Talk to the scheduler</span>
+                <span class="dsc-headline text-2xl text-black whitespace-pre-line leading-[0.9] break-words">Chat /
+Schedule</span>
+              </span>
+              <span class="group block bg-black/[0.04] rounded-3xl p-4 aspect-square flex flex-col justify-between overflow-hidden">
+                <span class="dsc-label text-black/40 break-words">See the week</span>
+                <span class="dsc-headline text-2xl text-black whitespace-pre-line leading-[0.9] break-words">Calendar</span>
+              </span>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <p class="sp-caption">A real MCP exchange — the athlete's own AI reads the schedule and requests the session; the owner approves. Neutral chat surface; the console is the product's own interface code.</p>
+</div>
+
+<script src="dsc-demo-kit.js"></script>
+<script>
+new DSCDemo(document.getElementById("demo"), async function (t) {
+  var scroll = t.$("#aiScroll");
+  var dock = t.$("#aiDock");
+  t.scrollEl = scroll;
+
+  function userMsg(text) {
+    var b = t.el("div", "ai-user", text);
+    scroll.appendChild(b);
+    t.reveal(b);
+  }
+  function reply() {
+    var b = t.el("div", "ai-reply");
+    scroll.appendChild(b);
+    t.reveal(b);
+    return b;
+  }
+  function tool(label, toolName) {
+    var c = t.el("div", "ai-tool");
+    var spin = t.el("span", "ai-spin");
+    var check = t.el("span", "ai-check", "✓");
+    c.appendChild(spin); c.appendChild(check);
+    if (toolName) { var code = t.el("code", null, toolName); c.appendChild(code); }
+    c.appendChild(t.el("span", null, label));
+    scroll.appendChild(c);
+    t.reveal(c);
+    return c;
+  }
+  // stream() writes raw text; this surface DOES render **bold**, so
+  // promote it after the stream lands (same move as the reference demo).
+  function promoteBold(el) {
+    el.innerHTML = el.innerHTML.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  }
+
+  // 1 — the athlete asks their own AI (real message, 2026-06-13 session)
+  await t.wait(900);
+  dock.textContent = "";
+  await t.type(dock, "When does Scott have openings next week? I'd like a 60-minute session.", 34);
+  await t.wait(300);
+  dock.innerHTML = '<span class="ai-ph">Message…</span>';
+  userMsg("When does Scott have openings next week? I'd like a 60-minute session.");
+  await t.wait(500);
+
+  // 2 — the AI works the gym's real MCP tools
+  var c1 = tool("Cataloging availability slots and noting data limitations", "my_trainer_availability");
+  await t.wait(1000);
+  c1.classList.add("done");
+  var r1 = reply();
+  await t.stream(r1, ["Scott is your assigned trainer, so I can pull his open slots directly. Let me check next week (June 15–21)."], 22);
+
+  var c2 = tool("Cataloging Scott's availability across weekday slots", "my_trainer_availability");
+  await t.wait(1000);
+  c2.classList.add("done");
+  var r2 = reply();
+  await t.stream(r2, ["That hit the 20-slot cap and cut off at Tuesday morning, so let me pull the full week."], 22);
+  await t.wait(500);
+
+  // 3 — the real availability answer, verbatim
+  var r3 = reply();
+  await t.stream(r3, [
+    "Scott has openings Monday through Thursday next week — nothing Friday or the weekend. All times are Central (gym local), and these are start times for a 60-minute session:",
+    "**Monday, June 15** — 7:00 AM to 2:00 PM (every 30 min), plus a 4:00 PM slot\n**Tuesday, June 16** — 8:00 AM to 12:00 PM (every 30 min)\n**Wednesday, June 17** — 7:00 AM to 2:00 PM (every 30 min), plus a 4:00 PM slot\n**Thursday, June 18** — 8:00 AM to 12:00 PM (every 30 min)",
+    "Want me to book one of these? Just tell me the day and time and I'll set it up."
+  ], 30);
+  promoteBold(r3);
+  await t.wait(1400);
+
+  // 4 — the ask (real message)
+  dock.textContent = "";
+  await t.type(dock, "Let's request to book 8am on Monday!", 32);
+  await t.wait(280);
+  dock.innerHTML = '<span class="ai-ph">Message…</span>';
+  userMsg("Let's request to book 8am on Monday!");
+  await t.wait(400);
+
+  var c3 = tool("Converting Monday 8 AM to ISO 8601 timezone format", "request_session");
+  await t.wait(1100);
+  c3.classList.add("done");
+
+  // 5 — the confirmation, verbatim. Writes only ever create a pending
+  //     request — the owner still approves.
+  var r4 = reply();
+  await t.stream(r4, [
+    "Done — your request is in. Here are the details:",
+    "• **Trainer:** Scott\n• **When:** Monday, June 15, 8:00 AM Central\n• **Duration:** 60 minutes\n• **Status:** Pending Scott's approval",
+    "No scheduling conflicts came up. You'll hear back once Scott approves it."
+  ], 26);
+  promoteBold(r4);
+  await t.wait(2000);
+
+  // 6 — cut to the owner console: the request is sitting in the queue
+  t.$("#sceneAI").classList.remove("on");
+  t.$("#sceneOwner").classList.add("on");
+  await t.wait(700);
+
+  // BookingRequestsBox — admin/page.tsx:320-378, verbatim classes
+  var box = t.el("div", "px-4 py-3 rounded-2xl bg-black/[0.05] border border-black/10 max-w-3xl mx-auto");
+  var head = t.el("div", "flex items-center gap-2 mb-2");
+  head.appendChild(t.el("span", "w-2 h-2 rounded-full bg-black"));
+  head.appendChild(t.el("span", "dsc-label text-black", "Booking requests · 1"));
+  box.appendChild(head);
+  var list = t.el("div", "space-y-2");
+  var card = t.el("div", "bg-white rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-2");
+  var info = t.el("div", "flex-1 min-w-0");
+  var line1 = t.el("div", "text-black text-sm");
+  line1.appendChild(t.el("span", "font-medium", "Marcus Chen"));
+  line1.appendChild(t.el("span", "text-black/50", " wants "));
+  line1.appendChild(t.el("span", "font-medium", "Scott"));
+  info.appendChild(line1);
+  var line2 = t.el("div", "text-xs text-black/60 mt-0.5");
+  line2.appendChild(document.createTextNode("Mon, Jun 15 · 8:00 AM · 60min"));
+  line2.appendChild(t.el("span", "ml-2 dsc-label text-black/40", "via AI"));
+  info.appendChild(line2);
+  card.appendChild(info);
+  var actions = t.el("div", "flex gap-2 shrink-0");
+  var approve = t.el("button", "h-8 px-3 bg-black text-white text-xs rounded-full dsc-headline", "Approve");
+  var decline = t.el("button", "h-8 px-3 text-black/60 text-xs hover:text-black", "Decline");
+  actions.appendChild(approve); actions.appendChild(decline);
+  card.appendChild(actions);
+  list.appendChild(card);
+  box.appendChild(list);
+  t.$("#alerts").appendChild(box);
+  t.reveal(box);
+  await t.wait(3000);
+
+  // 7 — one tap. The engine re-validates and writes the session;
+  //     the queue clears. (Approve → session + email to the athlete.)
+  await t.press(approve);
+  await t.wait(500);
+  box.classList.add("sd-fade", "sd-in");
+  box.classList.remove("sd-in");
+  await t.wait(400);
+  box.remove();
+  // one cut label; its text turns over — stacking a second bar reads as clutter
+  t.$("#ownerCut").textContent = "Approved — session on the calendar · athlete notified by email";
+
+  await t.wait(2800);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+/* ============================================================
+   dsc-demo.css — engine classes + standalone page framing for
+   the DSC demos. Everything product-looking lives in
+   dsc-app.css (the deployed app's own compiled stylesheet);
+   this file only carries what the replay engine needs plus the
+   phone frame the demos sit in.
+
+   All custom properties stay scoped to .sd-demo — never move
+   them to :root (documented sitewide perf lesson in the
+   reference repo).
+   ============================================================ */
+
+.sd-demo {
+  --sd-page: #f4f0ea;
+  --sd-frame: #000;
+}
+
+/* ---------- standalone page ---------- */
+
+body {
+  margin: 0;
+  padding: 48px 20px;
+  background: #f4f0ea;
+}
+
+/* The DSC app is a mobile-first product and the case study shows it
+   on phones; each demo runs in a phone-width column. This frame is
+   OURS (a neutral mat), not a cloned device bezel. */
+.sd-phone {
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 24px 64px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+/* Fixed stage height so the loop doesn't reflow the page as content
+   grows; interior scroll areas pin to bottom via the engine. */
+.sd-screen {
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sp-caption {
+  max-width: 400px;
+  margin: 14px auto 0;
+  font-family: 'SF Mono', 'JetBrains Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  line-height: 1.6;
+}
+
+html[data-framed] .sp-caption { display: none; }
+html[data-framed] body { padding: 0; background: transparent; }
+
+/* ---------- engine classes ---------- */
+
+/* reveal(): pop-in. Owns transform — one element, one driver. */
+.sd-pop {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sd-pop.sd-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* fade(): opacity only, for elements that carry their own transform. */
+.sd-fade {
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.sd-fade.sd-in {
+  opacity: 1;
+}
+
+/* press(): momentary tap state on a real control. */
+.sd-press {
+  transform: scale(0.96);
+  filter: brightness(0.92);
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+/* type()/stream() caret. */
+.sd-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  animation: sd-caret-blink 900ms steps(1) infinite;
+}
+@keyframes sd-caret-blink {
+  50% { opacity: 0; }
+}
+
+/* step() screenshot mode: kill transitions so end states are true. */
+.sd-instant *,
+.sd-instant *::before,
+.sd-instant *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Scene switching (the demos that cross surfaces). Scenes are
+   stacked; the active one shows. Kept as display so offscreen
+   scenes cost nothing and geometry can't half-blend. */
+.sd-scene { display: none; min-height: 0; flex: 1; flex-direction: column; }
+.sd-scene.on { display: flex; }
+
+/* Cut label between surfaces — ours, not product chrome. */
+.sd-cut {
+  padding: 8px 16px;
+  background: #000;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'SF Mono', 'JetBrains Mono', Menlo, Monaco, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-caret { animation: none; }
+}
+
+/* Framed by the case study's PressingProductDemo (`?framed=1`): the host's
+   stage is exactly phone-wide and clips to its own radius, so the mat's
+   radius and shadow would only show as a second, mismatched corner inside
+   the first. The host owns the frame; the phone fills it edge to edge. */
+html[data-framed] .sd-phone {
+  border-radius: 0;
+  box-shadow: none;
+}

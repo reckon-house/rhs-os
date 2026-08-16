@@ -44,13 +44,13 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Art Direction", "Campaign Design", "Email & Web Templates"],
       summary: [
-        { label: "Built", value: "Spring campaign across email, homepage, social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
+        { label: "Built", value: "Spring campaign for email, homepage and social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
         { label: "Scope", value: "Art direction, campaign design, email and web templates" },
         { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
-        { label: "Angle", value: "High fashion on a studio budget. Foliage used as architecture. Scale without a plane ticket." },
+        { label: "Angle", value: "Monstera and palm fronds cropped big enough to read as architecture, so a white studio could pass for somewhere far away." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that felt global but cost local. The restriction shaped everything.\n\nShot entirely in studio, with big crops of foliage holding the layouts together. Monstera leaves and palm fronds got treated like graphic elements instead of greenery, and color floods and extreme crops gave the compositions scale without a plane ticket.\n\nTypography followed the same logic. Condensed, stretched, and layered to create rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. Built as a single system that moved cleanly across email, homepage, and social without redesign.",
+        "Jeffrey needed a spring campaign that felt like it had gone somewhere, on a budget that stayed home. Everything about it came out of that.\n\nIt was shot in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery, and color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type followed the same idea, condensed, stretched and layered for rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. The whole thing was one kit that ran on email, the homepage and social.",
     },
 
         // ── HERO ──
@@ -83,7 +83,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         plate: "02",
         captions: [
           "Campaign hero collage",
-          "Three designers, one grid",
+          "Three designers at once",
           "Monstera on studio white",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -111,7 +111,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "headline-global",
       type: "editorial-headline",
-      text: "Scale without\na plane ticket",
+      text: "Two leaves\nand a typeface",
     },
 
     // ════════════════════════════════════════
@@ -123,7 +123,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 02: THREE STORIES",
-      title: "One System Holding",
+      title: "JW Anderson, Valentino,",
       // The study's one crossing. It is also the only section header here,
       // so the choice is which staging, not which beat: standalone,
       // because it carries no method columns.
@@ -132,8 +132,8 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       // crossing already holds its own headline for the gesture. It names
       // the hold in the data, which is what the audit reads.
       pressing: {
-        mark: { n: "02", name: "One System Holding" },
-        heldLine: "Three Designer Stories.",
+        mark: { n: "02", name: "Three Designers" },
+        heldLine: "Simone Rocha.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -142,7 +142,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Swap the dress, set the leaves, and the page is done. Every story looks like Jeffrey without redesigning anything.",
+        "Swap the dress, set the leaves, and the page is done. That was the whole template, for all three.",
     },
     {
       id: "stories-footnote",
@@ -150,7 +150,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It could be redone every week with almost no new work. The type holds on desktop and on a phone, the foliage frame holds on both, and the only thing that changes is the dress.",
+        "The pairs below are the dress shot next to the phone template it went into. The type reads at phone size, the leaves still frame the dress, and the desktop version underneath is the same layout with more room.",
     },
 
     // ── Breathing room below the footnote before the 4-grid begins.
@@ -228,11 +228,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 03: MARKS & MATERIALS",
-      title: "A Studio Palette\nBuilt Around Foliage.",
+      title: "Five colors, four weights,\nmonstera and palm.",
       introText:
-        "Five colors, four type weights, two foliage crops - the same kit held across three designer stories without a single set change.",
+        "That is the whole kit, and it ran across all three designer stories with no set change between them.",
       philosophyText:
-        "The palette runs studio white as the ground, monstera green as the architecture, and soft black for the type and the dresses that dropped into the set. The dresses themselves bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nType is one family. Avenir Next in italic heavy for the Jeffrey wordmark, then Medium, Demi Bold, and Heavy for everything else. The foliage is treated as a material - two leaves shot once on white, then composed into every dress story in post.",
+        "Studio white for the ground, monstera green for the architecture, soft black for the type and for the dresses that dropped into the set. The dresses bring the seasonal accent: striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that week.\n\nThe type is one family, Avenir Next, italic Heavy for the Jeffrey wordmark and Medium, Demi Bold and Heavy for everything else. The foliage got treated like a material. Two leaves shot once on white, then composed into every dress story in post.",
       colors: [
         { name: "Studio White", hex: "#F5F2EC", description: "Ground, paper" },
         { name: "Striped Blue", hex: "#A8B8C8", description: "JW Anderson accent" },
@@ -246,7 +246,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           sampleText: "JEFFREY",
           role: "Wordmark",
           description:
-            "Italic heavy sans for the brand wordmark. Set wide with the Atlanta/New York city tagline at smaller scale alongside. The only italic anywhere in it. Everything else stays upright.",
+            "Italic Heavy for the wordmark, set wide, with the Atlanta/New York tagline small alongside it. It is the only italic in the campaign.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
           italic: true,
@@ -256,7 +256,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           sampleText: "AVENIR NEXT MEDIUM",
           role: "Letter-spaced display",
           description:
-            "Mid-weight Avenir Next set in uppercase with wide letter-spacing. Carries designer names and the IN SEASON BOLD campaign headline. Quiet enough to let the dress and foliage lead.",
+            "Set in uppercase with wide letter-spacing for the designer names and the IN SEASON BOLD headline. Light enough that the dress and the leaves come first.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 500,
         },
@@ -264,7 +264,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Subhead & emphasis",
           description:
-            "One step heavier for subheads, callouts, and CTAs like SHOP NOW. The structural weight that anchors a layout without competing with the wordmark.",
+            "One step heavier, for subheads, callouts and the SHOP NOW button.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 600,
         },
@@ -272,7 +272,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Headline weight",
           description:
-            "Heaviest non-italic weight, used sparingly for headline moments inside the campaign templates. Pairs with the wordmark as the loudest it ever gets.",
+            "The heaviest upright weight, used sparingly for headline moments inside the templates.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -293,10 +293,10 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "A Campaign Built",
+      title: "A new dress every week,",
       pressing: {
-        mark: { n: "03", name: "A Campaign Built" },
-        heldLine: "for the Studio.",
+        mark: { n: "03", name: "Every Week" },
+        heldLine: "the rest stayed put.",
       },
     },
     {
@@ -304,7 +304,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Foliage, type, layout. The same three pieces across three designer stories and three formats, every week of the season.",
+        "Three designer stories in three formats: email, the homepage and social.",
     },
     {
       id: "closing",
@@ -313,7 +313,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       stack: ["Photoshop", "InDesign", "Studio photography"],
       links: [],
       content:
-        "A retailer needed spring without the budget for spring. Two leaves and a typeface, shot and set once, carried every story the season needed.",
+        "That was the whole season, and nobody had to leave the studio to make it.",
     },
   ],
 };

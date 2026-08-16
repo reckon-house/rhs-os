@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSC demo — a month of scheduling, one sentence</title>
+<link rel="stylesheet" href="dsc-demo.css">
+<link rel="stylesheet" href="dsc-app.css">
+<!--
+  Chrome sources (class strings copied verbatim from the product):
+  - header:          src/app/admin/_components/AdminHeader.tsx:11-31
+  - pending banner:  src/app/admin/chat/page.tsx:237-243
+  - thread + dock:   src/app/admin/_components/ChatThread.tsx:146-256
+  Content: the real exchange run in the live app on 2026-06-12
+  (persisted in the admin chat thread; also the frame in hero2.jpg).
+  The chat renders RAW text — the **…** and _calling `tool`…_ marks
+  below appear literally in the product, so they appear literally here.
+-->
+</head>
+<body class="sd-demo">
+
+<div id="demo">
+  <div class="sd-phone">
+    <div class="sd-screen" data-stage>
+
+      <!-- AdminHeader title="Chat" — AdminHeader.tsx:11 -->
+      <header class="sticky top-0 z-10 bg-white/95 backdrop-blur px-4 py-3 flex items-center gap-3 border-b border-black/10">
+        <span class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 text-black/70" aria-label="Back to home">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </span>
+        <div class="dsc-headline text-lg md:text-xl text-black">Chat</div>
+      </header>
+
+      <!-- pending banner slot — chat/page.tsx:236-243 (empty until proposals exist) -->
+      <div id="bannerSlot"></div>
+
+      <!-- ChatThread — ChatThread.tsx:146 -->
+      <div class="flex flex-col h-full bg-white" style="flex:1;min-height:0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-black/10">
+          <span class="dsc-label text-black/60">Conversation</span>
+          <button class="dsc-label text-black/40 hover:text-black">Start fresh</button>
+        </div>
+
+        <div id="thread" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 min-h-[260px]">
+          <div id="emptyState" class="text-center py-12 max-w-xs mx-auto space-y-3">
+            <div class="dsc-label text-black/40">Start here</div>
+            <div class="text-base text-black/70 leading-snug">Tap the mic and tell me about the week. Or snap a photo of your notepad.</div>
+          </div>
+        </div>
+
+        <div class="px-3 pt-2 pb-3 border-t border-black/10 flex items-center gap-2">
+          <button class="shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg transition-colors bg-black text-white hover:bg-black/85" aria-label="Voice" title="Tap to speak">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21"/></svg>
+          </button>
+          <button class="shrink-0 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-black/85" aria-label="Photo" title="Take a photo of your notepad">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+          <div id="dockInput" class="flex-1 px-4 h-12 bg-black/5 rounded-full text-[15px] text-black focus:outline-none" style="display:flex;align-items:center;overflow:hidden;white-space:nowrap"></div>
+          <button id="sendBtn" class="shrink-0 h-12 px-4 bg-black text-white rounded-full text-sm font-semibold">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <p class="sp-caption">A real scheduling exchange, replayed on the owner console's own interface code.</p>
+</div>
+
+<script src="dsc-demo-kit.js"></script>
+<script>
+new DSCDemo(document.getElementById("demo"), async function (t) {
+  var MSG = "Schedule Marcus Chen with Scott on Monday, Wednesday, and Friday at 3pm for the next 4 weeks";
+
+  var thread = t.$("#thread");
+  var input = t.$("#dockInput");
+  t.scrollEl = thread;
+
+  // bubble builders — exact class strings from ChatThread.tsx:171-185
+  function userMsg(text) {
+    var row = t.el("div", "flex justify-end");
+    var b = t.el("div", "max-w-[88%] px-3.5 py-2.5 text-[15px] leading-snug whitespace-pre-wrap bg-black text-white rounded-2xl rounded-tr-md", text);
+    row.appendChild(b);
+    thread.appendChild(row);
+    t.reveal(row);
+    return b;
+  }
+  function assistantBubble() {
+    var row = t.el("div", "flex justify-start");
+    var b = t.el("div", "max-w-[88%] px-3.5 py-2.5 text-[15px] leading-snug whitespace-pre-wrap bg-black/5 text-black rounded-2xl rounded-tl-md");
+    row.appendChild(b);
+    thread.appendChild(row);
+    t.reveal(row);
+    return b;
+  }
+  function thinking() {
+    var row = t.el("div", "flex justify-start");
+    var b = t.el("div", "bg-black/5 text-black/40 rounded-2xl rounded-tl-md px-3.5 py-2.5 text-[15px] italic", "thinking…");
+    row.appendChild(b);
+    thread.appendChild(row);
+    t.reveal(row);
+    return row;
+  }
+
+  // 1 — the owner types the whole month in one sentence
+  await t.wait(900);
+  await t.type(input, MSG, 36);
+  await t.wait(280);
+  await t.press(t.$("#sendBtn"));
+  input.textContent = "";
+  t.$("#emptyState") && t.$("#emptyState").remove();
+  userMsg(MSG);
+  var th = thinking();
+  await t.wait(1100);
+  th.remove();
+
+  // 2 — round one: the model looks up the athlete.
+  //     tool marks render literally (ChatThread has no markdown) —
+  //     chat/page.tsx:141 appends: _calling `name`…_
+  var a1 = assistantBubble();
+  await t.stream(a1, ["Let me first look up Marcus Chen's athlete ID, then I'll get this batch scheduled!"], 20);
+  await t.wait(250);
+  await t.stream(a1, ["", "_calling `list_athletes`…_"], 26); // leading "" = the \n\n the SSE handler prepends
+  await t.wait(700);
+
+  // 3 — round two: the batch proposal fires
+  var a2 = assistantBubble();
+  await t.stream(a2, ["Got him. Now let me run the batch proposal — M/W/F at 3pm with Scott for 4 weeks starting next Monday (6/15)."], 20);
+  await t.wait(250);
+  await t.stream(a2, ["", "_calling `propose_batch`…_"], 26);
+  await t.wait(1200);
+
+  // 4 — the rundown, word for word from the real session.
+  //     Asterisks are literal — that's what the product shows.
+  var a3 = assistantBubble();
+  await t.stream(a3, [
+    "Here's the rundown:",
+    "**✅ 10 sessions accepted** — Mon/Wed/Fri at 3pm with Scott:\n- Jun 22, 24, 26\n- Jun 29, Jul 1, 3\n- Jul 6, 8, 10\n- Jul 13",
+    "**⚠️ 3 conflicts (skipped)** — Jun 15, 17, and 19: Marcus already has Scott at 3pm those days, so no duplicates were added.",
+    "That's 10 new sessions queued up in the draft. Want me to go ahead and commit them?"
+  ], 24);
+
+  // 5 — the pending banner lands (13 = 10 new + 3 already drafted that day)
+  //     chat/page.tsx:237-243, verbatim classes
+  var banner = t.el("div", "px-4 py-2 border-b border-blue-200 bg-blue-50 flex items-center gap-2 shrink-0");
+  banner.appendChild(t.el("span", "w-2 h-2 rounded-full bg-blue-500"));
+  banner.appendChild(t.el("span", "dsc-label text-blue-900", "13 pending · say “commit” to confirm"));
+  t.$("#bannerSlot").appendChild(banner);
+  t.reveal(banner);
+  await t.wait(1800);
+
+  // 6 — the owner says the word
+  await t.type(input, "commit", 24);
+  await t.wait(240);
+  await t.press(t.$("#sendBtn"));
+  input.textContent = "";
+  userMsg("commit");
+  var th2 = thinking();
+  await t.wait(1000);
+  th2.remove();
+
+  // 7 — nothing lands until this: one deterministic engine writes the
+  //     sessions. (Representative close — the captured session stopped
+  //     at the question; see NOTES.md.)
+  var a4 = assistantBubble();
+  await t.stream(a4, ["_calling `commit_all_pending`…_"], 26);
+  await t.wait(900);
+  // wrap_up_start opens a FRESH bubble (chat/page.tsx:155-157)
+  var a5 = assistantBubble();
+  await t.stream(a5, ["Done — 13 sessions are on the calendar. Marcus is locked in with Scott, M/W/F at 3pm through July 13."], 20);
+  banner.remove();
+
+  await t.wait(2600);
+});
+</script>
+
+</body>
+</html>

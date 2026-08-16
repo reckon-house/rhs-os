@@ -598,8 +598,15 @@ export interface LiveAppSection extends BaseSection {
  */
 export interface ProductDemoSection extends BaseSection {
   type: "product-demo";
-  /** File under /lab/sally-demos/, without the extension. */
+  /** File under /lab/<folder>/, without the extension. */
   demo: string;
+  /**
+   * Which lab folder the file lives in. Defaults to the Sally set, which
+   * was here first. The DSC set (public/lab/dsc-demos/) is the same
+   * engine contract at phone width; the frame is told the width via
+   * `stageWidth`, not the folder.
+   */
+  folder?: "sally-demos" | "dsc-demos";
   /** What the reader is watching, in the frame's chrome. */
   title: string;
   /**

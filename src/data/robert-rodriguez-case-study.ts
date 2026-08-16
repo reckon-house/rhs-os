@@ -24,7 +24,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
   slug: "robert-rodriguez",
   title: "Robert Rodriguez x Neiman’s",
   category: { label: "Creative", href: "/category/creative" },
-  subtitle: "Spring Campaign",
+  subtitle: "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. | ’80s mall glam meets high fashion.",
   field: "Campaign Design Art Direction Photo Compositing",
   author: "Jeremy Prasatik",
   published: "2024",
@@ -117,7 +117,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Neiman Marcus needed a spring campaign for Robert Rodriguez that felt current without abandoning the brand's romantic sensibility. The budget was one day in the studio. What they needed back was a whole campaign: social, email, the stores, editorial.",
+        "Neiman Marcus wanted a spring campaign for Robert Rodriguez that felt current and still kept the brand's romantic side, and the budget covered one day in the studio.",
       group: { name: "brief" },
     },
     {
@@ -126,7 +126,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "So the limit became the idea. One model, four setups, and a way of layering the photographs over each other that stretched four pictures into a whole look. Everything in the campaign comes from those four photographs, layered and recombined until it feels like fifty shots instead of four.",
+        "One model, four setups, and the photographs layered over each other so the same few pictures could carry a whole look.",
       group: { name: "brief" },
     },
     {
@@ -138,17 +138,17 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The Reference.",
           content:
-            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan blowing from somewhere off-camera. It was the aesthetic that defined aspirational beauty for an entire decade before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously, the confidence and the color and the full unironic glamour, and rebuild it with contemporary craft. A translation.",
+            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan going somewhere off camera. The look of a whole decade of mall glam, before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously, the confidence, the color, the full unironic glamour, and rebuild it with contemporary craft.",
         },
         {
           title: "The Technique.",
           content:
-            "Double-exposure compositing. Two frames from the same shoot layered together, one tight, one wide, with the overlap creating a third image that neither frame contains alone. A close-up bleeds into a full-length, a gesture becomes a texture.\n\nMesh color fields replaced the airbrushed backdrops: mathematically smooth washes shifting from coral to orange to pink. The warmth of the original reference without the noise.",
+            "Double exposures. Two frames from the same shoot layered together, one tight, one wide, and the overlap makes a third picture that neither frame has on its own. A close-up bleeds into a full-length, a gesture turns into a texture.\n\nMesh color fields replaced the airbrushed backdrops, smooth washes shifting from coral to orange to pink, with the warmth of the reference and none of the noise.",
         },
         {
           title: "The System.",
           content:
-            "Four photographs, and every piece came out of them: social cards, email headers, store signage, editorial spreads. Each combination tells a slightly different story from the same few pictures.\n\nThe typography, Archer Hairline paired with Archer Book, was selected specifically for this project. Thin enough to float over dense imagery without competing, with curves warm enough to match the softness of the photography.",
+            "Four photographs, a typeface family, and a color field. Every piece in the campaign is some mix of those three, and each combination reads a little differently from the last.",
         },
       ],
     },
@@ -193,7 +193,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Because everything was layered from the same four pictures, every piece felt like its own photograph instead of a crop of one. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
+        "Every piece was layered from the same four pictures, and none of them reads as a detail pulled out of another. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
     },
     {
       id: "deploy-footnote",
@@ -201,7 +201,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The campaign ran across Neiman Marcus social channels, email marketing, and in-store retail displays. The storefront window installation used the composites at large format. The color fields held up at any size because they were drawn as smooth gradients instead of pixels. A three-foot print is as smooth as a phone screen.",
+        "The storefront window ran the composites at large format. The color fields were drawn as gradients, so they scale to any size. A three-foot print is as smooth as a phone screen.",
     },
 
     // ── COMPOSITE PAIR — pinned so the gradient plate can climb it ──
@@ -267,7 +267,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The typography was chosen for this campaign specifically. Archer Hairline for headlines, thin enough to sit over dense, colorful imagery without fighting for attention. Archer Book for body copy, warm rounded serifs that echo the softness of the photography.",
+        "The type was chosen for this campaign specifically. Archer Hairline for headlines, thin enough to sit over dense, colorful pictures and not fight them. Archer Book for body copy, warm rounded serifs that match the softness of the photography.",
       group: { name: "brand" },
     },
     // The old footnote's second paragraph (the logo treatment) now lives
@@ -278,7 +278,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The color palette lives in the space between coral, orange, and pink. Three colors that shouldn't work together but do when the transitions are smooth enough. The mesh technique creates shifts that feel organic, the same way a sunset moves through those exact colors without any of them clashing.",
+        "The palette is coral, orange, and pink. As flat blocks they clash, and with smooth transitions between them they work, the way a sunset moves through those same colors.",
       group: { name: "brand" },
     },
 
@@ -340,7 +340,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       stack: ["Adobe Photoshop", "Adobe Illustrator", "Capture One"],
       links: [{ label: "Neiman Marcus", url: "https://www.neimanmarcus.com" }],
       content:
-        "The whole campaign is four photographs from one day, layered over each other and set on gradients. It ran on social, in email, in the stores, and in the editorial pages, and it never looked thin.\n\nOne model, one idea, one day of shooting.",
+        "The whole campaign is four photographs from one day, layered over each other and set on gradients, and it never looked thin.",
     },
   ],
 };

@@ -7,7 +7,7 @@ export const youBySallyCaseStudy: CaseStudy = {
   title: "You By Sally",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Brand campaign turning hair dye from drugstore aisle to creative decision. Real cast, bold swatches, and a system that holds across every surface.",
+    "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and a look that holds from an influencer's bio page to a retail sign.",
   field: "Campaign Direction\nBrand System\nDigital Design\nRetail Signage",
   author: "Jeremy Prasatik",
   published: "2021",
@@ -46,13 +46,13 @@ export const youBySallyCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Campaign Direction", "Brand System", "Digital Design", "Retail Signage"],
       summary: [
-        { label: "Built", value: "Hair color brand campaign. Cast portraits, oversized swatch system, brand kit across every surface." },
+        { label: "Built", value: "Hair color brand campaign. Cast portraits, oversized swatches, a brand kit for bio pages, email and retail signage." },
         { label: "Scope", value: "Campaign direction, brand system, digital design, retail signage." },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, studio photography. Avenir Next, pink and cyan." },
-        { label: "Angle", value: "Hair color usually sits under fluorescent lights next to the toothpaste. Treat it like a creative decision, not something you grab." },
+        { label: "Angle", value: "Casting first, and the portraits led everything after it. Then swatches big enough to pick a shade from." },
       ],
       abstract:
-        "Hair color usually lives under fluorescent lights next to the toothpaste. The brief was to make it feel like something you choose, not something you grab.\n\nStarted with casting - real people across age, gender, and style, each paired with a signature shade. The portraits drove the campaign - saturated backgrounds, confident styling, personality first, product second.\n\nThe swatch system turned shade exploration into a visual decision rather than a technical one. Oversized color blocks replaced tiny chips, and clean grids made browsing intuitive across mobile, desktop, and in-store signage. Avenir Next across weights anchored the type, pink and cyan held the primary chromatic register, and it held up from influencer bio pages to email to retail without losing recognition.",
+        "Hair color usually sits under fluorescent lights next to the toothpaste, and the brief was to make it feel like something you'd choose on purpose.\n\nIt started with the cast, real people instead of models, and the rest of the campaign came off those portraits.\n\nThe swatches came next. The tiny chips became oversized color blocks on clean grids that ran on mobile, desktop and in-store signage. Avenir Next in three weights, and pink and cyan for the color.",
     },
 
         // ── HERO ──
@@ -87,7 +87,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Casting drove the campaign. Real people across age, gender, and style, each paired with the shade that suited them.",
+        "The cast runs across age, gender and style, and each person is paired with the shade that suits them.",
     },
     {
       id: "cast-footnote",
@@ -95,7 +95,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Saturated backgrounds and confident styling let the portraits lead the brand. Product photography sat second to personality, which inverted the usual hair-color shoot order.",
+        "The backgrounds are saturated, the styling is confident, and the product comes second to the person in the frame.",
     },
 
     // ── Casting hero — full bleed portrait moment
@@ -114,7 +114,7 @@ export const youBySallyCaseStudy: CaseStudy = {
         plate: "02",
         captions: [
           "The cast",
-          "Real people, signature shades",
+          "Each paired with a shade",
           "Saturated grounds",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -147,14 +147,14 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "swatch-header",
       type: "section-header",
       label: "SECTION 03: THE SWATCH SYSTEM",
-      title: "Shade Exploration",
+      title: "Oversized Swatches",
       // The study's one crossing, held to section 03 so it does not land
       // on the same beat as the zoom above it. pin declared alongside it:
       // the crossing already holds its headline for 220dvh, and saying so
       // out loud gives the swatch screen below a named holder to climb.
       pressing: {
-        mark: { n: "03", name: "Shade Exploration" },
-        heldLine: "at Eye Level.",
+        mark: { n: "03", name: "Oversized Swatches" },
+        heldLine: "on a Clean Grid.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -163,7 +163,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Oversized color blocks replaced the tiny chips that usually live on the back of a box. Clean grids made browsing intuitive across mobile, desktop, and in-store signage.",
+        "The chips on the back of a box are tiny. These are big enough that picking a shade is something you do by eye.",
     },
     {
       id: "swatch-footnote",
@@ -171,7 +171,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The grid logic held the same way at every scale - from a 320px influencer bio page to a 6-foot retail sign. Same blocks, same hierarchy, just sized to the surface.",
+        "The grid runs from a 320px influencer bio page up to a 6-foot retail sign. The blocks and their order stay put. Only the size changes.",
     },
 
     // ── Swatch UI screen — climbs the crossing that describes it
@@ -216,11 +216,11 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "A Palette Tuned\nto Hold a Color Aisle.",
+      title: "Hot Pink, Cyan, Black.\nAvenir Next in Three Weights.",
       introText:
-        "Pink and cyan as the chromatic register, black for grounding, Avenir Next across weights. The same kit ran from influencer bio pages to retail signage without changing voice.",
+        "Pink for the personality, cyan for the contrast, and black under both so the two loud colors never turn into noise.",
       philosophyText:
-        "Pink set the personality, cyan set the contrast, and black anchored every layout so the saturated palette never tipped into noise. The chromatic register stayed consistent across every surface, which is what made it recognizable from a phone screen and from a 6-foot retail sign at the same time.\n\nType is one family. Avenir Next Heavy carried the wordmark, Demi Bold carried the shade names and CTAs, Medium carried the rest. The single family kept everything tight, and the weight contrast did the work that a multi-font stack usually has to.",
+        "The pink and the cyan stay the same on every surface, and that is what makes a phone screen and a store sign read as the same brand.\n\nOne type family. Avenir Next Heavy for the wordmark, Demi Bold for the shade names and the SHOP NOW callouts, Medium for everything else. Three weights of one family gave the layouts all the contrast they needed.",
       colors: [
         { name: "Hot Pink", hex: "#E91E63", description: "Primary, personality" },
         { name: "Cyan", hex: "#00B8D4", description: "Contrast, accent" },
@@ -233,7 +233,7 @@ export const youBySallyCaseStudy: CaseStudy = {
           sampleText: "YOU BY SALLY",
           role: "Wordmark",
           description:
-            "Avenir Next Heavy at scale. Set wide, locked tight, no italics. The wordmark sits as a block of type that hits as a graphic mark before it hits as a word.",
+            "Avenir Next Heavy, set wide and locked tight, no italics. Big enough that the wordmark works as a graphic block.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -241,7 +241,7 @@ export const youBySallyCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Shade names & CTAs",
           description:
-            "Mid-heavy weight for the shade names, swatch labels, and SHOP NOW callouts. The structural voice that ties the catalog together.",
+            "Mid-heavy weight for the shade names, swatch labels, and SHOP NOW callouts. It ties the catalog together.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 600,
         },
@@ -249,7 +249,7 @@ export const youBySallyCaseStudy: CaseStudy = {
           name: "Avenir Next Medium",
           role: "Body & captions",
           description:
-            "Standard weight for product copy, descriptions, and longer-form text. Quiet enough to let the photography and color blocks lead.",
+            "Standard weight for product copy, descriptions, and longer text. It stays out of the way of the photography and the color blocks.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 500,
         },
@@ -266,10 +266,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Brand That Treats",
+      title: "Bio Pages, Email,",
       pressing: {
-        mark: { n: "04", name: "A Brand That Treats" },
-        heldLine: "Color as a Choice.",
+        mark: { n: "04", name: "Where It Ran" },
+        heldLine: "Retail Signage.",
       },
     },
     {
@@ -277,7 +277,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Casting, swatches, type, color - one kit running from a phone bio page to a retail sign without changing voice.",
+        "If you were picking a shade at Sally Beauty, this is what you were looking at.",
     },
     {
       id: "closing",
@@ -286,7 +286,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "InDesign", "Studio photography"],
       links: [],
       content:
-        "A hair color brand campaign that took the casting seriously and let the personality lead. The swatch system turned shade exploration from a technical task into a visual one, and the type system held the same shape from a phone bio page to retail signage.",
+        "The cast portraits, the swatch grid and the type went out together, on influencer bio pages, in email and on the signs in the stores.",
     },
   ],
 };

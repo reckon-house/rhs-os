@@ -60,13 +60,13 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         "Product Photography Direction",
       ],
       summary: [
-        { label: "Built", value: "Three tile shapes. Square, hero, vertical, resizing across every breakpoint." },
+        { label: "Built", value: "Three tile shapes, square, hero, and vertical, that resize for every breakpoint." },
         { label: "Scope", value: "Design systems, art direction, product photography direction." },
         { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One picture, used many ways." },
-        { label: "Angle", value: "Personalization that stayed quiet underneath. Strict rules, loose output, mass scale that still looked hand-built." },
+        { label: "Angle", value: "Strict rules, loose output." },
       ],
       abstract:
-        "Nordstrom needed dynamic content for millions of customers without feeling algorithmic. The question: how does personalization keep personality?\n\nBuilt a flexible system around three tile shapes - square, hero, vertical - each designed to resize, remix, and reflow across mobile and desktop while holding visual consistency. Strict enough to scale, loose enough to surprise.\n\nProduct photography followed the same logic. Deliberate contrast, precise angles, no styling props, with each image holding its own as editorial or stacking into a grid as ecomm depending on context. One picture, used many ways.\n\nThe system powered homepage layouts, campaign modules, and product tiles - relevant content at scale that still felt considered.",
+        "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on three tile shapes, square, hero, and vertical, each one able to resize and restack across phone and desktop while the pages kept one look. The rules were strict enough to run at that scale, and the pages still came out different from each other.\n\nThe product photography followed the same rules. Deliberate contrast, precise angles, no styling props, so each image worked on its own as a story hero or stacked into a grid as ecomm.",
     },
 
         // ── HERO ──
@@ -85,10 +85,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 02: THE SYSTEM",
-      title: "Three Shapes Driving",
+      title: "Three tile shapes,",
       pressing: {
-        mark: { n: "02", name: "Three Shapes Driving" },
-        heldLine: "Every Composition.",
+        mark: { n: "02", name: "Three Shapes" },
+        heldLine: "square, hero, and vertical.",
         // The headline holds while both copy blocks travel up beside it.
         // "Three shapes" has to stay on screen through the paragraph that
         // names them, or the claim and its list never share a frame.
@@ -100,7 +100,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Square, hero, vertical. Three tile shapes that resize, remix, and reflow across every breakpoint. The constraints created the freedom.",
+        "Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two.",
     },
     {
       id: "system-footnote",
@@ -108,7 +108,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Editorial stories, brand modules, and merchandised picks all rendered through the same three shapes. Square tiles carried product, hero tiles carried photography, and vertical tiles bridged the two. Any combination produced a layout that looked designed.",
+        "Editorial stories, brand modules, and merchandised picks all came through the same three tiles, and any combination of them came out looking designed.",
     },
 
     // ── Tile collage — the system as raw composition
@@ -128,7 +128,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         captions: [
           "Composed tile layout",
           "Editorial, lifestyle, product",
-          "One grid, three shapes",
+          "Three shapes on one grid",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
         choreo: { zoom: true },
@@ -142,15 +142,15 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "assembled-header",
       type: "section-header",
       label: "SECTION 03: ASSEMBLED",
-      title: "One Engine Driving",
+      title: "A different homepage",
       // The study's one crossing, on the claim the system exists to make.
       //
       // pin declares in the data what the crossing already does, hold the
       // headline while the column scrubs past. The skin is unchanged; the
       // flag is there so the hold is readable without opening the layout.
       pressing: {
-        mark: { n: "03", name: "One Engine Driving" },
-        heldLine: "Three Different Audiences.",
+        mark: { n: "03", name: "Three Homepages" },
+        heldLine: "for each shopper.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -159,7 +159,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three audiences, three homepages, one engine. The young customer landed on Savvy Mag, the designer-brand shopper got Summer to Fall styling, and the men's shopper opened on city essentials. Same shapes, different stories - each composition felt edited.",
+        "The young customer landed on Savvy Mag, the designer-brand shopper got Summer to Fall styling, and the men's shopper opened on city essentials. All of them were built from the one set of tiles.",
     },
 
     // ── Showcase: Savvy Mag (young customer) — single, padded, large
@@ -197,7 +197,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "Personalization that\nstayed quiet underneath",
+      text: "The rules stayed\nout of sight",
     },
 
     // ════════════════════════════════════════
@@ -207,10 +207,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "devices-header",
       type: "section-header",
       label: "SECTION 04: ACROSS DEVICES",
-      title: "The Same Composition",
+      title: "Desktop tiles,",
       pressing: {
-        mark: { n: "04", name: "The Same Composition" },
-        heldLine: "Logic on a Phone.",
+        mark: { n: "04", name: "On the Phone" },
+        heldLine: "restacked for the phone.",
         // Holds the headline through its copy, and the cluster reserves
         // the room the editorial source plate below climbs into.
         choreo: { pin: true },
@@ -221,7 +221,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The three shapes restacked on phones without losing the editorial voice - same hero photography, same product cards, smaller canvas, same composition logic.",
+        "The hero photography and product cards came over as they were. The arrangement changed to fit the smaller screen.",
     },
 
     // ── Savvy Mag editorial source — inline hero (the raw asset that templates into the system)
@@ -261,10 +261,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "products-header",
       type: "section-header",
       label: "SECTION 05: PRODUCT PHOTOGRAPHY",
-      title: "Photography Built to",
+      title: "White seamless, no props,",
       pressing: {
-        mark: { n: "05", name: "Photography Built to" },
-        heldLine: "Double as Editorial.",
+        mark: { n: "05", name: "Product Shots" },
+        heldLine: "one shadow throughout.",
         // Held headline, two blocks travelling. Nothing climbs out of
         // this one: the product rows below are specimens laid on the
         // page, and a plate crossing them would read as a fourth shape.
@@ -276,7 +276,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Deliberate contrast, precise angles, no styling props. Each shot held its own as a hero or stacked into a grid as ecomm. The art direction did the work.",
+        "Each shot had to work on its own as a hero tile and in a grid as a plain product listing. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
     },
     {
       id: "products-footnote",
@@ -284,7 +284,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "White seamless, consistent eye level, the same shadow falloff on every product. Restraint that let the merchandise read first - when the same shoe appeared in a Saturday editorial story and a Sunday inventory clear-out, both placements looked planned.",
+        "Consistent eye level, deliberate contrast, precise angles. With no styling to look at, the merchandise read first.",
     },
 
     // ── Product row 1 (3 — warm/playful)
@@ -320,10 +320,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Mass Scale That Still",
+      title: "Any merchandiser could",
       pressing: {
-        mark: { n: "06", name: "Mass Scale That Still" },
-        heldLine: "Looked Hand-Built.",
+        mark: { n: "06", name: "In an Afternoon" },
+        heldLine: "lay out a page in an afternoon.",
       },
     },
     {
@@ -331,7 +331,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three shapes and one library of pictures. The rules stayed out of sight so the pages could feel hand-built, even when it wasn't.",
+        "Three shapes and one library of pictures, with every picture used more than once.",
     },
     {
       id: "closing",
@@ -344,7 +344,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Editorial Templates", "Asset Library"],
       links: [],
       content:
-        "Personalization usually shows its work - algorithmic carousels, generic recommendation rails, blocks that feel templated even when they're tailored. This system did the opposite, with the constraints living underneath and the output looking like editorial.\n\nThe rules were simple enough that any merchandiser could compose a layout in an afternoon, and strict enough that no layout looked like the others. The same engine ran the homepage, campaign sends, and the long tail of category pages.",
+        "The tiles ran the homepage, campaign sends, and the long tail of category pages.",
     },
   ],
 };

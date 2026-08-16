@@ -49,10 +49,10 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         { label: "Built", value: "Sitting room built around a floor-to-ceiling stacked stone fireplace" },
         { label: "Scope", value: "Interior design, furniture curation, finish selection" },
         { label: "Materials", value: "Stacked stone, charcoal velvet, antiqued brass, warm oak" },
-        { label: "Angle", value: "The fire gets the seat the TV would normally take. A formal room that doesn't feel formal." },
+        { label: "Angle", value: "Four velvet swivels facing a stone fireplace, and no television anywhere in the room." },
       ],
       abstract:
-        "Texture runs the room. A ledgestone fireplace wall climbs floor to ceiling, charcoal velvet swivel chairs sit close enough to it to catch the firelight, and the antiqued brass coffee table and bar cabinet add warmth without shine. Black box beams overhead pull the contrast together.\n\nThe palette stays tight - stone, velvet, brass, warm oak, no competing colors. The materials do the talking.\n\nThe furniture is arranged for conversation. There is no television. Four swivels face the fire, close enough for quiet voices, with a round bar cabinet in the corner stocking what the moment calls for. Calm and slightly glam, formal without being stiff.",
+        "A ledgestone fireplace wall runs floor to ceiling, and four charcoal velvet swivel chairs sit close enough to catch the firelight. The coffee table and the bar cabinet are antiqued brass, and there are black box beams overhead.\n\nThe palette is four materials: stone, velvet, brass, and warm oak, and no accent colors.\n\nThere is no television. The chairs face the fire and each other, and the round bar cabinet in the corner has whatever the evening needs. It reads as a formal room, a little glam, and it is comfortable to sit in.",
     },
 
         // ── HERO ──
@@ -85,7 +85,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Texture runs the room. Four materials anchor the whole composition, with no competing colors and no decorative noise.",
+        "The stone is the only one of the four that goes floor to ceiling. Velvet is on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel.",
     },
     {
       id: "texture-footnote",
@@ -93,7 +93,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Stone wall floor to ceiling, charcoal velvet on the swivels with enough sheen to catch light, antiqued brass adding warmth without shine, warm oak underfoot. Each material does one job and stays out of the others' way.",
+        "The velvet has enough sheen to catch the firelight, and the brass is antiqued so it doesn't shine back. The box beams overhead are painted the same charcoal as the chairs, which ties the ceiling to the seating.",
     },
 
     // Material detail image — stone wall + mantel close-up.
@@ -150,7 +150,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "conversation-header",
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
-      title: "A Grouping Built",
+      title: "Four Swivels,",
       // This study's one crossing, on its SECOND header. Its sibling
       // (fairview-entry) crosses its first and zooms its architectural
       // frame; two rooms in one house get different staging on purpose.
@@ -164,8 +164,8 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       // the house convention for naming the holder in the data, which is
       // what the rear view below climbs.
       pressing: {
-        mark: { n: "03", name: "A Grouping Built" },
-        heldLine: "Around the Fire.",
+        mark: { n: "03", name: "Four Swivels" },
+        heldLine: "Facing the Fire.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -174,7 +174,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Four swivels facing the fire, close enough for quiet voices. A round bar cabinet in the corner stocks what the moment calls for.",
+        "Close enough to feel the fire, and they turn, so the four chairs can face each other just as easily.",
     },
     {
       id: "conversation-footnote",
@@ -182,7 +182,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The fire gets the seat the TV would normally take. The brass coffee table sits at the center because that's where everyone reaches, and the furniture is arranged for talking to each other, since there is no screen to face.",
+        "The brass coffee table sits in the middle because that's where everyone reaches. The bar cabinet is round and black, in the corner behind the chairs, and a big black abstract hangs on the wall behind the grouping.",
     },
 
     // Single: rear view of the grouping showing the room composition.
@@ -226,7 +226,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
     {
       id: "headline-glam",
       type: "editorial-headline",
-      text: "A formal room\nthat doesn't feel formal",
+      text: "The fire gets the seat\nthe TV would normally take",
     },
 
     // ════════════════════════════════════════
@@ -239,12 +239,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "Four Materials\nCarrying One Room.",
+      title: "Four Materials,\nEverything Else Follows.",
       introText:
-        "The room runs on four materials and one shared light, pulled tight enough to hold as a single composition.",
+        "Every other choice in the room comes from one of these four. The beams take their color from the velvet, the mantel from the oak, the bar cabinet from the brass.",
       philosophyTitle: "Material philosophy",
       philosophyText:
-        "Stone for the structure, velvet for the seating, brass for the centerpiece, oak for the floor. Every other choice in the room derives from one of those four - the box beams pull from the velvet, the mantel from the oak, the bar cabinet from the brass.\n\nThe palette stays tight on purpose. Color goes in via the materials, not via accents. No throw pillow doing the work the room should already be doing.",
+        "The palette stays this tight on purpose. Color comes in through the materials, and there are no accent pieces doing that job.",
       colors: [
         { name: "Stone Grey", hex: "#B4ACA0", description: "Stacked stone, walls" },
         { name: "Charcoal Velvet", hex: "#3F3E37", description: "Swivels, beams" },
@@ -257,7 +257,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
           name: "Stacked Stone",
           role: "Fireplace wall",
           description:
-            "Floor-to-ceiling ledgestone. The structural anchor of the room and the only material that goes that big. Sets the tone before any furniture lands.",
+            "Ledgestone, floor to ceiling on the fireplace wall, with a wood beam mantel and a round mirror set against it.",
           family: "'Caslon', 'Adobe Caslon Pro', 'Garamond', serif",
           weight: 400,
         },
@@ -265,7 +265,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
           name: "Charcoal Velvet",
           role: "Swivels & beams",
           description:
-            "Deep, slightly sheen-y velvet on the four swivel chairs. Echoed overhead in the painted black box beams. Soft surface, hard color.",
+            "Charcoal velvet on the four swivel chairs, with a little sheen to it.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 600,
         },
@@ -273,7 +273,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
           name: "Antiqued Brass",
           role: "Coffee table & bar",
           description:
-            "Hand-rubbed finish on the centerpiece coffee table and round bar cabinet. Adds warmth without the shine of polished brass. The closest thing to jewelry in the room.",
+            "Hand-rubbed brass on the round coffee table, which has a wood top, and on the round bar cabinet in the corner.",
           family: "'Didot', 'Bodoni 72', 'Caslon', serif",
           weight: 400,
         },
@@ -281,7 +281,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
           name: "Warm Oak",
           role: "Floors & mantel beam",
           description:
-            "White oak floors throughout. Repeated as the single horizontal mantel beam pulled across the stone. The grain ties the structure to the comfort.",
+            "White oak on the floor, and one oak beam across the stone as the mantel.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 400,
         },
@@ -298,10 +298,10 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "A Room Built",
+      title: "The Hour",
       pressing: {
-        mark: { n: "04", name: "A Room Built" },
-        heldLine: "for the Hour.",
+        mark: { n: "04", name: "After Dinner" },
+        heldLine: "After Dinner.",
       },
     },
     {
@@ -309,7 +309,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Built around a fire, finished in stone, brass, and velvet. Used for the drink, the conversation, the quiet hour after dinner.",
+        "Four materials, four chairs, and one fire.",
     },
     {
       id: "closing",
@@ -318,7 +318,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "A formal room that doesn't feel formal. Four materials, four chairs, one fire, used for the drink, the conversation, and the quiet hour after dinner.",
+        "The stone wall and the sheen on the velvet are the two showy things in it. Everything else sits back.",
     },
   ],
 };

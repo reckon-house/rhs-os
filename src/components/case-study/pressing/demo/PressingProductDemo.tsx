@@ -52,8 +52,12 @@ import styles from "./product-demo.module.css";
 const STAGE_W = 1120;
 
 export interface PressingProductDemoProps {
-  /** File under /lab/sally-demos/, without the extension. */
+  /** File under /lab/<folder>/, without the extension. */
   demo: string;
+  /** Which lab folder. The Sally set was here first and is the default;
+   *  the DSC set (public/lab/dsc-demos/) runs the same engine contract
+   *  at phone width, so it needs a `stageWidth` too. */
+  folder?: "sally-demos" | "dsc-demos";
   /** What the reader is watching, named in the frame's chrome. */
   title: string;
   /** Override only if a demo lays out at a different width. */
@@ -64,6 +68,7 @@ export interface PressingProductDemoProps {
 
 export function PressingProductDemo({
   demo,
+  folder = "sally-demos",
   title,
   stageWidth = STAGE_W,
   note,
@@ -172,29 +177,34 @@ export function PressingProductDemo({
   };
 
   return (
-    <div className={styles.wrap}>
+    <div
+      className={styles.wrap}
+      /* On the WRAP, not the stage. The wrap caps its own width at --pd-w
+         so the rule, the stage and the note all share the demo's width;
+         set one level down, the wrap never saw it and fell back to the
+         1120px default, which was invisible for the desktop demos (the
+         column is narrower) and put the DSC phones at the left of a
+         980px cream stage. */
+      style={
+        {
+          "--pd-w": `${stageWidth}px`,
+          "--pd-h": docH ? `${docH}px` : undefined,
+          "--pd-scale": scale || undefined,
+        } as CSSProperties
+      }
+    >
       <div className={styles.head}>
         <span className={styles.lbl}>{title}</span>
         <span className={`${styles.lbl} ${styles.tag}`}>Scripted replay</span>
       </div>
 
-      <div
-        ref={stageRef}
-        className={styles.stage}
-        style={
-          {
-            "--pd-w": `${stageWidth}px`,
-            "--pd-h": docH ? `${docH}px` : undefined,
-            "--pd-scale": scale || undefined,
-          } as CSSProperties
-        }
-      >
+      <div ref={stageRef} className={styles.stage}>
         <iframe
           ref={frameRef}
           className={styles.frame}
           /* framed=1 tells the demo it has a host: it drops its standalone
              caption and page gutter, both of which the frame now supplies. */
-          src={`/lab/sally-demos/${demo}.html?framed=1`}
+          src={`/lab/${folder}/${demo}.html?framed=1`}
           title={title}
           loading="lazy"
           onLoad={onLoad}

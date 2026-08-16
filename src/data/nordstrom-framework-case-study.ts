@@ -41,13 +41,13 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       status: "Complete",
       classification: ["Content Strategy", "Brand Design", "Naming", "Design Systems"],
       summary: [
-        { label: "Built", value: "Content taxonomy from scratch. Four named buckets, each with its own typographic mark and icon." },
+        { label: "Built", value: "A content framework from scratch: four named buckets, each with its own typographic mark and icon." },
         { label: "Scope", value: "Content strategy, brand design, naming, design systems." },
-        { label: "Tools", value: "Custom-sourced typefaces, icon set, naming language. No two lockups share a face." },
-        { label: "Angle", value: "Magazine language, not menu language. The framework organized the teams before it ever reached a customer." },
+        { label: "Tools", value: "Custom-sourced typefaces, an icon set, and the four names." },
+        { label: "Angle", value: "Sort a store's worth of stories the way a magazine sorts its sections." },
       ],
       abstract:
-        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals. All hitting email and site simultaneously with no organizing logic. Customers saw a lot of everything and no way through it.\n\nConcepted a content framework that sorted everything into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. Custom icons, dedicated typographic marks sourced specifically for the system. Magazine language, not menu language.\n\nPitched it across merchandising, marketing, and editorial. The framework became an internal organizing tool before it ever reached customers. Once it shipped, it powered homepage modules, email sections, and dedicated landing pages. Engagement lifted 22%. The vocabulary held for years.",
+        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals, all hitting email and the site at the same time with nothing sorting them. Customers got the whole pile and no way through it.\n\nConcepted a content framework that sorted it into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. A custom icon and a typographic mark sourced for each one, and names that sound like a magazine's sections.\n\nPitched it to merchandising, marketing, and editorial, and it was organizing the teams before it reached a customer. Once it shipped it ran homepage modules, email sections, and dedicated landing pages. Engagement lifted 22%, and the framework stayed in use for years.",
     },
 
         // ── HERO ──
@@ -66,10 +66,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: THE PROBLEM",
-      title: "Volume Without",
+      title: "Brands, seasons, occasions,",
       pressing: {
-        mark: { n: "02", name: "Volume Without" },
-        heldLine: "Vocabulary.",
+        mark: { n: "02", name: "All at Once" },
+        heldLine: "hitting the homepage at once.",
         // Holds while the column travels, and reserves the room the
         // homepage plate below needs to climb. Fitting for a brief whose
         // subject is a page carrying too much at once.
@@ -81,7 +81,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Nordstrom's digital calendar was producing more stories than the site could absorb. Every new brand, seasonal push, and occasion guide landed on the homepage with the same weight as the next.",
+        "Merchandising, marketing, and editorial each pushed their own stories, and nothing on the page said which was which.",
     },
     {
       id: "problem-footnote",
@@ -89,7 +89,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Customers were getting volume without context. Merchandising, marketing, and editorial each pushed in parallel with no shared language for what any of it was. Email ran its own cadence. Landing pages followed a separate lifecycle. The only thread connecting any of it was the date on the calendar.",
+        "Email ran on its own cadence and landing pages on another. The only thing tying any of it together was the date on the calendar.",
     },
 
     // Visual beat showing the volume of modules. Climbs the problem brief:
@@ -111,7 +111,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "framework-header",
       type: "section-header",
       label: "SECTION 03: THE FRAMEWORK",
-      title: "Four Buckets,",
+      title: "Four buckets,",
       // The study's one crossing, on the move that solved the problem.
       //
       // Pinned as well as crossing, which is PRESSING.md's brief form of
@@ -120,7 +120,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       // rather than sharing one screen with it.
       pressing: {
         mark: { n: "03", name: "Four Buckets" },
-        heldLine: "Four Identities.",
+        heldLine: "each with its own mark.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -129,7 +129,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Sorted everything into four named categories. Each got its own typographic mark, custom icon, and a tone of voice that read editorial instead of navigational.",
+        "What's Now for arrivals and trending brands, On Our List for seasonal picks and staples. Where to Wear and Wear to Where both cover occasion dressing, one starting from the event and the other from the outfit.",
     },
     {
       id: "framework-footnote",
@@ -137,7 +137,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "\"What's Now\" was for arrivals and trending brands. \"On Our List\" framed seasonal picks and essentials. \"Where to Wear\" approached occasion dressing from the event side. \"Wear to Where\" came at it from the outfit side. Same question, opposite angles. The naming had to feel like a magazine masthead instead of a navigation menu. Sourced custom typefaces for each lockup so no two marks shared a face.",
+        "Each name got a custom icon and a typographic mark of its own. Sourced a different typeface for every lockup, so no two of them share a face.",
     },
 
     // Editorial palate cleanser
@@ -221,10 +221,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "application-header",
       type: "section-header",
       label: "SECTION 04: APPLICATION",
-      title: "Homepage,",
+      title: "Homepage, email,",
       pressing: {
-        mark: { n: "04", name: "Homepage" },
-        heldLine: "Email, Landing.",
+        mark: { n: "04", name: "Homepage, Email" },
+        heldLine: "and landing pages.",
         // Pins for the headline alone. Three surfaces get named in the
         // column and the landing page below answers all three, so the
         // title should still be on screen when the reader reaches it.
@@ -237,7 +237,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The framework powered homepage modules, dedicated email sections, and full landing pages built around a single bucket. Each piece held the matching icon and lockup, so customers could read the signal anywhere they encountered it.",
+        "Homepage modules, dedicated email sections, and whole landing pages built around a single bucket, each carrying the matching lockup and icon, so a customer could tell what they were looking at anywhere it showed up.",
     },
     {
       id: "application-footnote",
@@ -245,7 +245,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "More important: the framework worked as an internal tool before it reached anyone outside. Planning meetings used the same vocabulary. Content calendars mapped stories to buckets at the brief stage. Teams stopped treating each campaign as a one-off and started thinking in categories. The customer-facing system was the artifact of an organizational shift that had already happened.",
+        "Before any of it reached a customer, the framework was already working inside the building. Planning meetings used the bucket names. Content calendars mapped stories to buckets at the brief stage, and campaigns that used to be one-offs got planned as part of a category.",
     },
 
     // Tall application hero
@@ -293,10 +293,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Names Before",
+      title: "Engagement lifted 22%,",
       pressing: {
-        mark: { n: "05", name: "Names Before" },
-        heldLine: "Templates.",
+        mark: { n: "05", name: "Up 22%" },
+        heldLine: "and it lasted for years.",
       },
     },
     {
@@ -304,7 +304,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Engagement lifted 22% once the framework rolled out. The bigger outcome was internal: every team that touched digital content was now speaking the same language about it.",
+        "Icons evolved, typography got refreshed, buckets got renamed. The four-bucket structure underneath stayed the same.",
     },
     {
       id: "closing",
@@ -313,7 +313,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       stack: [],
       links: [],
       content:
-        "The framework held for years and became foundational vocabulary across the digital organization. Icons evolved, typography got refreshed, buckets got renamed, and the structure underneath stayed the same.",
+        "It started as a pitch across three teams and ended up as the way everyone who touched digital content talked about the work.",
     },
   ],
 };

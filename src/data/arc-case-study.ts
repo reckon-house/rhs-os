@@ -169,10 +169,10 @@ export const arcCaseStudy: CaseStudy = {
         { label: "Built", value: "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis." },
         { label: "Scope", value: "Solo, end to end. Concept, code, brand, go-to-market." },
         { label: "Stack", value: "Python, Streamlit, OpenAI Vision, Perceptron Mk1, Supabase, Vercel, Claude Code." },
-        { label: "Angle", value: "Nobody skips home inventory because they don't care. They skip it because the work is miserable. Remove the input problem and the rest is straightforward." },
+        { label: "Angle", value: "People skip home inventory because the work is miserable. Take the typing out and the rest is straightforward." },
       ],
       abstract:
-        "Home inventory is a solved problem that nobody has solved well. The average American household contains around 300,000 items with a combined insurable value most homeowners have never calculated, and the existing tools haven't moved the needle - they're spreadsheets with better packaging, asking people to do the same manual work they'd been avoiding all along. The result is predictable. About 60% of homeowners are underinsured because they've never cataloged what they own.\n\nA.R.C. works differently. You point a camera at a room - photo or video - and the system identifies what's there, estimates replacement value, and categorizes everything in the same pass. Video scanning, powered by Perceptron's Mk1 model, makes this even faster - sweep a room and the model reasons across the footage in real time. Then A.R.C. compares what you've documented against your policy limit and shows you the gap as an actual dollar amount.\n\nI built A.R.C. end to end - concept, code, brand, go-to-market. Python backend, Streamlit frontend, OpenAI Vision API and Perceptron Mk1 for recognition, deployed on Vercel with Supabase handling data persistence. Concept to live product in ten weeks.",
+        "Home inventory is an old problem, and none of the tools for it have solved it well. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up, and the existing apps have not changed that. They are spreadsheets with better packaging, asking people to do the same manual work they were already avoiding. About 60% of homeowners are underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. You point it at a room, photo or video, and it identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and the model reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. Python backend, Streamlit frontend, OpenAI Vision API and Perceptron Mk1 for recognition, deployed on Vercel with Supabase for the data. Concept to live product in ten weeks.",
       pressing: { mark: { n: "02", name: "Statement" } },
     },
 
@@ -221,11 +221,11 @@ export const arcCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Nobody",
+      title: "Most homeowners have never",
       group: { name: "problem" },
       pressing: {
-        mark: { n: "03", name: "Problem statement" },
-        heldLine: "does this.",
+        mark: { n: "03", name: "Nothing written down" },
+        heldLine: "written down what they own.",
         choreo: { pin: true },
       },
     },
@@ -234,7 +234,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "About 60% of American homeowners are underinsured, and the reason is simpler than it sounds - they've never written down what they own. The apps that exist haven't fixed this because they all ask you to do the same tedious work by hand.",
+        "That is why about 60% of American homeowners are underinsured. The apps that exist have not fixed it, because every one of them still asks you to type in each item by hand.",
       group: { name: "problem" },
     },
     {
@@ -243,7 +243,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Based on industry estimates of homeowner documentation rates and average coverage gaps.",
+        "The 60% comes from industry estimates of how many homeowners have documented what they own, and how far short their coverage runs.",
       group: { name: "problem" },
     },
     {
@@ -261,7 +261,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 772,
           },
           content:
-            "The insurance industry operates on a fundamental asymmetry. Carriers know exactly what they'll pay on a policy. Homeowners rarely know what they'd need to claim. This gap widens with every purchase, every gift, every inherited piece that enters a home without documentation.\n\nStandard homeowner's policies cover personal property at 50-70% of the dwelling coverage amount. A home insured at $400,000 carries roughly $200,000-$280,000 in personal property coverage. Whether that number is adequate depends entirely on whether the homeowner knows what they own and what it costs to replace. Most don't.\n\nThe documentation process is the barrier. Open a spreadsheet. Walk room to room. Describe each item. Research replacement values. Photograph everything. Attach receipts. The estimated time to properly inventory an average home: 40+ hours. The percentage of homeowners who complete this process: single digits.",
+            "Carriers know exactly what they will pay out on a policy. Homeowners rarely know what they would need to claim, and the gap only gets wider, because things keep coming into the house with no paperwork behind them.\n\nA standard homeowner's policy covers personal property at 50-70% of the dwelling amount, so a home insured at $400,000 carries somewhere around $200,000-$280,000 for the things inside it. Whether that is enough depends on whether the homeowner knows what they own and what it would cost to replace. Most don't.\n\nThe paperwork is what stops people. You open a spreadsheet, walk room to room, describe each item, look up what it would cost to replace, photograph it, and attach the receipt. Done properly for an average home, that takes 40+ hours. Hardly anyone finishes.",
         },
         {
           title: "Existing Solutions",
@@ -272,7 +272,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 772,
           },
           content:
-            "I downloaded every home inventory app I could find before building this. They all land in the same place. Some are just spreadsheets wearing a better outfit - you still type in every item, attach every photo, look up every replacement value yourself. The app adds a database and maybe cloud sync, but the actual work is identical to the spreadsheet it replaced.\n\nThe others are insurance carrier tools, built for their own ecosystem, designed to make claims processing easier for adjusters rather than documentation easier for homeowners. The interfaces feel like it - functional, dense, built for someone who already knows what they're looking at.\n\nThe shared problem is that every one of them still asks you to identify and value each item yourself, one at a time. That's the part nobody wants to do, and no amount of better UI changes it.",
+            "I downloaded every home inventory app I could find before I built this one. They all end up in the same place. Some are spreadsheets with a nicer front on them: you still type in every item, attach every photo, and look up every replacement value yourself. The app adds a database and maybe cloud sync, and the work is the same as the spreadsheet it replaced.\n\nThe rest are insurance carrier tools. They exist to make claims easier for adjusters, and the interfaces feel like it, dense and functional, made for someone who already knows what they are looking at.\n\nSo the job is the same in all of them. You identify each item and put a value on it, one at a time, and a better interface does not change that.",
         },
         {
           title: "The Vision Layer",
@@ -283,7 +283,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 772,
           },
           content:
-            "The fix is changing what the person has to do. Instead of describing everything you own, you show it. The camera sees a room, the system identifies what's there, estimates values, and categorizes - and your job becomes reviewing what it found rather than entering it from scratch.\n\nVideo takes this further. Perceptron's Mk1 model was built specifically for understanding the physical world through footage - it reasons across frames, tracks objects through space, and handles the kind of spatial context that a single photo misses. Sweep a room with your phone camera and Mk1 processes the whole thing. It's genuinely fast, and the recognition quality is excellent.\n\nThat shift is what makes the difference. A full home inventory that would take 40+ hours by hand becomes a room-by-room scan that takes minutes. I built A.R.C. on the idea that if you remove the input problem, the rest of home inventory is actually straightforward.",
+            "The fix is to change what the person has to do. You show the camera the room. It picks out what is there, estimates values, and sorts everything into categories, and your job turns into reviewing what it found.\n\nVideo takes this further. Perceptron's Mk1 model reads the physical world from footage. It reasons across frames, tracks objects through space, and picks up the spatial context a single photo misses. Sweep a room with your phone and Mk1 reads the whole thing. It is fast, and the recognition is good.\n\nSo a whole house becomes a room-by-room scan that takes minutes.",
         },
       ],
     },
@@ -316,7 +316,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-editorial",
       type: "editorial-headline",
-      text: "Nobody skips this because they don't care\nThey skip it because\nthe work is miserable",
+      text: "The work is miserable\nTake the typing out\nand the rest is straightforward",
       pressing: {
         choreo: { quotePoster: true },
         indent: 1,
@@ -349,7 +349,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "One photo or video starts the whole process - from raw input to cataloged, valued, and categorized items.",
+        "It starts with one photo or one video of a room, and what comes back is a list of every item in it, each one named, valued, and sorted into a category.",
     },
     {
       id: "methodology-footnote",
@@ -357,7 +357,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The image passes through vision processing, object identification, value estimation, and archival. Each stage feeds the next. Each decision point governed by confidence thresholds. Processing time measured under typical indoor lighting conditions.",
+        "The image passes through vision processing, object identification, value estimation, and archival, and each stage feeds the next. Every decision point runs against a confidence threshold. Processing times were measured under typical indoor lighting.",
     },
     /* The six stages, in the copy column rather than in cream cards.
        Each column carries its own image at column measure and takes two
@@ -381,7 +381,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 388,
           },
           content:
-            "User photographs a room or individual item using their device camera. No special hardware or calibration, just the camera on a phone.\n\nArchive Entry. The documented item enters the user's structured inventory. Linked to a room, tagged with metadata, associated with its source photograph, and immediately included in aggregate calculations.",
+            "You photograph a room or a single item with the phone camera. No special hardware, no calibration.\n\nArchive Entry. The item goes into your inventory: linked to a room, tagged with metadata, tied to the photograph it came from, and counted in the totals right away.",
         },
         {
           title: "Vision Processing",
@@ -392,7 +392,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 388,
           },
           content:
-            "OpenAI Vision API receives the image and returns structured analysis. Object identification, material detection, style classification, condition assessment, estimated era or manufacture period.\n\nFinancial Analysis. Total documented value updates in real time. The system compares cumulative asset value against the user's stated policy limits. When documented assets approach or exceed coverage thresholds, the shortfall shows up as a specific dollar amount. The homeowner sees it before a disaster reveals it.",
+            "The OpenAI Vision API takes the image and returns a structured read: what the object is, what it is made of, its style, its condition, and a rough era or manufacture period.\n\nFinancial Analysis. The documented total updates as you go, and it gets compared against the policy limit you entered. When what you own gets close to that limit, or passes it, the shortfall shows up as a dollar amount.",
         },
         {
           title: "Value Estimation",
@@ -403,7 +403,7 @@ export const arcCaseStudy: CaseStudy = {
             height: 388,
           },
           content:
-            "Identified objects are matched against market replacement data. The system estimates current replacement cost, not depreciated value or original purchase price. Replacement cost is the insurance-relevant metric.\n\nCategory Assignment. Each item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents. Sub-categories provide additional granularity.",
+            "Each identified object is matched against market replacement data. What it estimates is what the item would cost to replace today, which is the number insurance runs on. Depreciated value and the original purchase price do not come into it.\n\nCategory Assignment. Every item goes into one of thirteen categories: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools, sporting goods, musical instruments, jewelry, documents.",
         },
       ],
     },
@@ -433,7 +433,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Taxonomy designed for insurance relevance, not retail categorization. Each category maps to standard personal property claim classifications.",
+        "The categories are set up the way insurance claims are, so each one maps to a standard personal property claim classification.",
     },
     {
       id: "classification-footnote",
@@ -441,7 +441,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Sub-categories provide the granularity needed for accurate valuation without requiring specialized knowledge from the user. Aligned with classifications used by major U.S. carriers.",
+        "The sub-categories are there so the valuation has enough detail to be accurate, and none of it asks you to know any insurance terminology. The scheme lines up with the classifications the major U.S. carriers use.",
     },
     /* Flow plate — tall dashboard screenshot (1612x3620); see risks.
        Moved ABOVE the ridgeline chart it used to sit under. A chart
@@ -478,7 +478,7 @@ export const arcCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "07", name: "Classification system" },
         caption:
-          "The average price of one item in each category. Bars are sized " +
+          "The average value of one item in each category. Bars are sized " +
           "against appliances, the highest. Vehicles has no bar because " +
           "$5,000+ is a floor, and there is no average to draw.",
       },
@@ -558,7 +558,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Documented asset value compared against user-reported policy limits.",
+        "The value of what you have documented, compared against the policy limit you entered.",
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched.
     {
@@ -566,7 +566,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text-right",
       pressing: { mark: { n: "08", name: "Financial intelligence" } },
       content:
-        "Every item you document adds to a running total, and that total gets compared against your policy limit for personal property. The arithmetic is obvious. What's less obvious is how far off most people are.\n\nMost homeowners set their coverage amount when they buy the policy and never touch it again. But the stuff inside the house keeps changing - new furniture, upgraded appliances, gifts, pieces inherited from parents. A home that was adequately covered five years ago might be $50,000 short today, and the homeowner has no way of knowing until something goes wrong.\n\nA.R.C. puts a number on the gap. A specific dollar amount, tied to specific items, in specific rooms - before a disaster reveals it.",
+        "Every item you document adds to a running total, and that total gets checked against your policy limit for personal property. The arithmetic is simple, and most people turn out to be further off than they would guess.\n\nYou set the coverage amount when you buy the policy and it tends to sit there. Meanwhile the stuff inside the house keeps changing: new furniture, an upgraded appliance, gifts, a few pieces inherited from your parents. A home that was covered five years ago might be $50,000 short today, and there is no way of knowing until something goes wrong.\n\nA.R.C. puts a number on the gap: a dollar amount, tied to specific items in specific rooms, before a disaster reveals it.",
     },
     {
       id: "financial-coverage-chart",
@@ -657,11 +657,11 @@ export const arcCaseStudy: CaseStudy = {
       title: "Visual Identity &\nDesign Language",
       pressing: { mark: { n: "09", name: "Brand system" } },
       introText:
-        "The brand had to solve a tension. Home inventory sounds like a chore. Insurance analysis sounds like a meeting with your agent. Neither association invites engagement. The visual identity needed to make documentation feel like something worth doing, not something you should get around to eventually.",
+        "Home inventory sounds like a chore, and insurance analysis sounds like a meeting with your agent. The brand had to make documenting your house feel like something you might want to do.",
       subcopy:
-        "The interface should feel like something worth looking at, not a chore with a progress bar.",
+        "The interface should be something you want to look at.",
       philosophyText:
-        "The solution was editorial warmth applied to utility software. Magazine sensibility meets insurance rigor. The interface treats the data as something worth designing. Asset cards that feel like collection entries. Room views that read like curated galleries. Financial summaries that carry the weight of their content without the sterility of a spreadsheet.",
+        "So the answer was to give utility software a warm, magazine feel. Asset cards look like entries in a collection, room views read like a gallery of your own things, and the financial summaries carry real weight and still don't look like a spreadsheet.",
       chromaticCircleImage: `${IMG}/chromatic-brand-circle.png`,
       /* THE FIRST THREE ARE DECLARED, THE LAST THREE ARE MEASURED, and
          the distinction is worth keeping straight because they disagree.
@@ -701,19 +701,19 @@ export const arcCaseStudy: CaseStudy = {
           name: "Ogg",
           role: "Primary Typeface",
           description:
-            "Warm, editorial, slightly elevated. Carries the brand's emotional register. Headlines, feature names, moments of consideration.",
+            "Warm and slightly elevated, with a magazine feel. Headlines and feature names.",
         },
         {
           name: "Avenir Next",
           role: "Secondary Typeface, Medium",
           description:
-            "Clean, neutral, highly legible. Carries the product's utility layer. Data labels, navigation, body text, interface clarity.",
+            "Clean and neutral. Data labels, navigation, body text.",
         },
         {
           name: "Avenir Next",
           role: "Secondary Typeface, Demi Bold",
           description:
-            "Structural emphasis. Section labels, key data points, navigational hierarchy. Weight that signals importance without shouting.",
+            "Section labels, key data points, and the navigation hierarchy. Enough weight to signal importance.",
         },
       ],
       /* THE SHIPPED LOCKUP, not a drawing of one. This was
@@ -762,7 +762,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Ten weeks from concept to a live App Store product. Solo build. AI-assisted throughout.",
+        "Ten weeks from the first idea to a live App Store product, with AI helping the whole way through.",
     },
     {
       id: "build-footnote",
@@ -779,17 +779,17 @@ export const arcCaseStudy: CaseStudy = {
         {
           title: "Building Solo",
           content:
-            "Building solo means I made every decision and shipped every line. There was no engineering team, no PM assigning tickets, no design review, no QA department. I identified the problem, designed the solution, wrote the code, tested the output, fixed what broke, and shipped the result.\n\nThis isn't a limitation - it's a speed advantage. The feedback loop between noticing a problem and deploying a fix runs in hours. UX friction caught during testing gets resolved in the same session. A feature idea that surfaces during development gets prototyped right away. The distance between intention and execution stays as short as I could make it.\n\nThe tradeoff is real. Solo means every decision is a prioritization decision - what ships now versus what ships later, what gets polished versus what gets to functional. V1 reflects those choices honestly. Comprehensive in scope, considered in design, pragmatic where it had to be.",
+            "Solo means I made every decision and shipped every line. No engineering team, no PM handing out tickets, no design review, no QA. I found the problem, designed the fix, wrote the code, tested it, fixed what broke, and shipped it.\n\nThat turned out to be the fast way to work. When I noticed a problem, a fix could be live within hours. Friction I hit while testing got sorted in the same session, and a feature idea that came up mid-build got prototyped right then.\n\nThe tradeoff is that every decision is a prioritization call: what ships now, what waits, what gets polished and what only has to work. V1 is honest about those choices.",
         },
         {
           title: "AI-Assisted Development",
           content:
-            "Claude Code was my primary environment throughout. The workflow looked something like this: I'd describe what I wanted in natural language, review the code that came back, test the output, refine through conversation, ship. Repeat until the feature worked.\n\nThis setup inverts the old bottleneck. The constraint isn't syntax fluency or framework expertise anymore. It's clarity of intention. Knowing exactly what the product should do matters more than knowing exactly how to make it do it - and that's the part design experience actually prepares you for.\n\nA.R.C. uses AI to do its core job. A.R.C. was also built with AI to make it. Same toolset, two sides of the same equation, which is part of what makes the whole thing possible at this scale and speed.",
+            "Claude Code was my main environment the whole way through. I would describe what I wanted in plain language, read the code that came back, test it, talk through the changes, and ship. Then again for the next feature.\n\nWhat that changes is where the bottleneck sits. It is less about syntax or knowing a framework and more about being clear on what the product should do, and that is the part design experience prepares you for.\n\nA.R.C. uses AI to do its job, and I used AI to build it. That is a big part of why one person could make the whole thing at this speed.",
         },
         {
           title: "Development Timeline",
           content:
-            "Weeks 1-2 went to concept validation. Could computer vision reliably identify household items from standard smartphone photos? I tested across lighting conditions, angles, and room types. The answer was yes, with caveats that ended up shaping the UX.\n\nWeeks 3-4 were product architecture - database schema, user flow, room and item data models, authentication, storage. The foundational decisions everything else builds on.\n\nWeeks 5-6 were interface design and implementation, happening at the same time. That's the part you can't really do at a traditional studio - no handoff gap between design intent and what shows up in code.\n\nWeeks 7-8 were the financial layer. Insurance gap calculations, policy limit comparisons. This is the feature that turns A.R.C. from a documentation tool into a risk management one.\n\nWeeks 9-10 were brand identity, visual system, marketing site, and the go-to-market work. Then launch. Ten weeks, start to finish.",
+            "Weeks 1-2 went to checking the idea. Could computer vision reliably pick out household items from ordinary phone photos? I tested across lighting, angles, and room types. It could, with a few caveats that ended up shaping the UX.\n\nWeeks 3-4 were the architecture: database schema, user flow, the room and item data models, authentication, storage. Everything else builds on those.\n\nWeeks 5-6 were interface design and the build of it, at the same time. There was no handoff between what I meant and what showed up in code, which is hard to pull off at a studio with separate teams.\n\nWeeks 7-8 were the financial layer, the insurance gap calculation and the policy limit comparison. This is the feature that turns A.R.C. from a documentation tool into a risk management one.\n\nWeeks 9-10 were the brand identity and visual system, the marketing site, and the go-to-market work, and then launch.",
         },
       ],
     },
@@ -839,7 +839,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Dashboard, room, item detail, and report views. All screens reflect V1 production application with representative usage data.",
+        "Dashboard, room, item detail, and report views, all from the V1 production app with representative data.",
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched.
     {
@@ -851,25 +851,25 @@ export const arcCaseStudy: CaseStudy = {
           image: `${IMG}/arc-main-thumb.jpg`,
           title: "Dashboard View",
           description:
-            "The home screen presents aggregate intelligence. Total items documented. Total estimated value. Category breakdown. Coverage status. Recent activity. The information hierarchy prioritizes financial awareness: what you own, what it's worth, whether you're covered.",
+            "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status, and recent activity. The hierarchy puts the money first: what you own, what it is worth, and whether you are covered.",
         },
         {
           image: `${IMG}/arc-room-thumb.jpg`,
           title: "Room View",
           description:
-            "Each documented room functions as a contained archive. Items displayed as cards with thumbnail, name, category, and value. Sortable by value, category, or date added. The room becomes a gallery of your own possessions, organized for both browsing and analysis.",
+            "Each room is its own archive. Items show as cards with a thumbnail, name, category, and value, and you can sort them by value, category, or the date they were added.",
         },
         {
           image: `${IMG}/arc-report-thumb.jpg`,
           title: "Document AI",
           description:
-            "Upload a receipt, appraisal, warranty, or insurance document. AI extracts relevant details: purchase date, amount, vendor, coverage terms. The extracted data associates with the corresponding item automatically when possible, or prompts the user for assignment.",
+            "Upload a receipt, an appraisal, a warranty, or an insurance document, and the AI pulls out the purchase date, amount, vendor, and coverage terms. It attaches those to the matching item when it can, and asks you which item when it can't.",
         },
         {
           image: `${IMG}/arc-reports-thumb.jpg`,
           title: "Reports",
           description:
-            "Generate PDF summaries for insurance review, estate planning, or personal reference. Configurable by room, category, or full home. Includes item photographs, descriptions, values, and aggregate statistics. Formatted for professional presentation to agents or advisors.",
+            "PDF summaries for an insurance review, estate planning, or your own reference, by room, by category, or the whole home. Each one includes item photographs, descriptions, values, and the totals, laid out cleanly enough to hand to an agent or advisor.",
         },
       ],
     },
@@ -893,7 +893,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Traditional manual inventory of a 73-item home: estimated 8-12 hours. A.R.C. documentation of the same scope: under 30 minutes. Reduction factor: 16-24x.",
+        "Doing a 73-item home by hand takes an estimated 8-12 hours. A.R.C. documents the same home in under 30 minutes, which works out to 16-24x faster.",
     },
     {
       id: "usage-footnote",
@@ -901,7 +901,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Metrics reflect V1 usage since launch. Early-stage numbers. Presented without inflation.",
+        "These are V1 numbers from launch onward, still early, and shown as they are.",
     },
     /* ── FLOW PLATE — the last photograph, climbing the usage brief ──
        Moved up over the two charts it used to follow. A chart holds
@@ -1000,7 +1000,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "V2 work is underway - native iOS, enhanced scanning, deeper financial analysis. The V1 foundation supports it all without a rebuild.",
+        "V2 is underway: native iOS, better scanning, deeper financial analysis, all on top of the V1 code as it stands.",
     },
     {
       id: "closing",
@@ -1021,7 +1021,7 @@ export const arcCaseStudy: CaseStudy = {
         { label: "heythere@arcready.app", url: "mailto:heythere@arcready.app" },
       ],
       content:
-        "Real users, a product that exists because I couldn't find it.\n\nI keep thinking about the fact that this is a complete product - brand, code, financial logic, go-to-market. That wasn't possible two years ago. I don't fully know what to do with that yet. But I know it changes what's possible for the next one.",
+        "It has real users, and it exists because I couldn't find it anywhere.\n\nI keep coming back to the fact that this is a complete product: brand, code, financial logic, go-to-market. That was not possible two years ago. I don't fully know what to do with that yet, but I know it changes what the next one can be.",
     },
   ],
 };

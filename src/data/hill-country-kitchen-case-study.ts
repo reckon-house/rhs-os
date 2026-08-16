@@ -62,13 +62,13 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         "Custom Millwork",
       ],
       summary: [
-        { label: "Built", value: "Ground-up Hill Country kitchen. Cabinetry, island, dining zone, full material spec." },
+        { label: "Built", value: "Hill Country kitchen, ground up. Cabinetry, island, dining area, the full material spec." },
         { label: "Scope", value: "Interior design, space planning, fixture selection, construction documentation." },
-        { label: "Materials", value: "Sage green, raw white oak, Calacatta marble, unlacquered brass. Four finishes, every surface." },
-        { label: "Angle", value: "Designed the way a product gets designed. Lock the palette to four, let the constraint become the aesthetic." },
+        { label: "Materials", value: "Sage green, raw white oak, Calacatta marble, unlacquered brass." },
+        { label: "Angle", value: "Pick four materials up front and use nothing else, so pieces from different eras can share a room." },
       ],
       abstract:
-        "A kitchen designed the way a product gets designed. The four materials are the whole plan - sage green on most of what you see, raw white oak providing the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint. Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room.\n\nThe style mixing is deliberate. Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs. None of these elements belong to the same era - they belong to the same room because the material palette holds them together.\n\nThe space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal measure. The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full length. Every decision was made for how a family actually uses a kitchen, not how one photographs.",
+        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. None of it comes from the same era. It reads as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
     },
 
         // ── HERO ──
@@ -85,10 +85,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
-      title: "A Four-Finish Palette",
+      title: "Four Materials,",
       pressing: {
-        mark: { n: "02", name: "A Four-Finish Palette" },
-        heldLine: "Locked Before Drawing.",
+        mark: { n: "02", name: "Four Materials" },
+        heldLine: "Chosen Before Anything Was Drawn.",
         choreo: { pin: true },
       },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -98,7 +98,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The palette was locked before a single cabinet got drawn. Sage green, white oak, Calacatta marble, unlacquered brass - every specification traces back to one of these four, with no accent materials, no tile backsplash, no stainless pulls, no painted island.",
+        "No accent tile, no stainless pulls, no painted island. If it isn't sage, oak, marble, or brass, it isn't in the room.",
       group: { name: "materials" },
     },
     {
@@ -107,7 +107,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Fewer materials means a room that hangs together, the same way fewer rules makes a cleaner design system. A room with twelve finishes feels decorated. A room with four feels designed. The limitation forced every surface to carry more visual weight, and the relationships between materials became the entire aesthetic.",
+        "Fewer materials and the room hangs together on its own, the same way fewer rules make a cleaner design system. With only four, each one has to do more of the work, and what you end up noticing is where they meet: oak against green, marble between the two, brass on all of it.",
       group: { name: "materials" },
     },
     {
@@ -117,17 +117,17 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "Sage Green",
           content:
-            "The cabinet color sets the room's identity. A muted sage with enough gray to read sophisticated, enough green to read alive, applied floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall. The color doesn't compete with the marble or the brass - it recedes just enough to let the textures work.\n\nThe finish is matte. Satin would have pushed the cabinets toward contemporary and gloss would have fought the raw oak, but matte lets the shaker profiles cast soft shadows and keeps the room feeling grounded.",
+            "A muted sage with enough gray to keep it calm and enough green to keep it alive, on everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall. It sits back a little so the marble and the brass get noticed first.\n\nThe finish is matte. Satin would have pushed the cabinets contemporary and gloss would have fought the raw oak. Matte lets the shaker profiles throw soft shadows.",
         },
         {
           title: "White Oak + Marble",
           content:
-            "The island is raw white oak, unsealed, with the grain visible and the end-grain on the open shelving showing the growth rings. This is the warmest element in the room and the most honest one - it ages, darkens, and marks, which is the point.\n\nCalacatta marble runs the perimeter countertops and the full backsplash behind the range. Gray and gold veining against a warm white base. The marble does the visual work of separating the green cabinetry from the white walls - the transition material. Where oak meets green, marble mediates.",
+            "The island is raw white oak, unsealed, with the growth rings showing on the end grain of the open shelves. It is the warmest thing in the room.\n\nCalacatta marble runs the perimeter counters and the full backsplash behind the range, gray and gold veining on a warm white ground. It separates the green cabinets from the white walls, and where the oak meets the green, marble sits between them.",
         },
         {
           title: "Unlacquered Brass",
           content:
-            "Every metal touchpoint is the same finish - cabinet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim. Even the bar stool frames pick up the brass tone.\n\nUnlacquered means the brass patinas. It darkens at the touchpoints and stays bright where hands don't reach, so after a year the hardware tells you exactly how the kitchen gets used. The pulls on the most-opened drawers develop the deepest color while the decorative bolts stay pale. Functional archaeology built into the material choice.",
+            "Cabinet pulls, the cremone bolts on the tall pantry doors, the bridge faucet, the pendants, the sconce arms, the range knobs and trim, all in the same brass. Even the bar stool frames pick up the tone.\n\nUnlacquered means it patinas. It darkens where hands go and stays bright where they don't, so the decorative bolts stay pale.",
         },
       ],
       group: { name: "materials" },
@@ -188,7 +188,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       // PRESSING.md §7 puts short-copy headers in the standalone staging.
       pressing: {
         mark: { n: "03", name: "Shaker Cabinets" },
-        heldLine: "Brass at Every Touchpoint.",
+        heldLine: "Brass on Everything You Touch.",
         choreo: { crossing: true },
       },
     },
@@ -197,7 +197,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The cabinet program runs floor to ceiling on three walls. Base cabinets, upper glass-fronts, a built-in hutch flanking the range, full-height pantry storage with cremone bolt closures. The same sage green, the same shaker profile, the same brass hardware throughout.",
+        "Floor to ceiling on three walls: base cabinets, glass-front uppers, a built-in hutch either side of the range, and full-height pantry doors that close with cremone bolts.",
     },
     {
       id: "hardware-footnote",
@@ -205,7 +205,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Cremone bolts on the tall pantry doors are the signature hardware choice. A French mechanism on American shaker cabinets in a Texas kitchen. The style collision is the point. The bolts add vertical visual interest to the tallest cabinet faces and give the pantry wall architectural presence that standard pulls would miss. They also function well. A single lever locks top and bottom simultaneously.",
+        "The cremone bolts are a French mechanism on American shaker doors in a Texas kitchen. They put a long vertical line on the tallest cabinet faces and give the pantry wall a presence a standard pull wouldn't, and one lever locks the door top and bottom at once.",
     },
 
     // ── GROUP 2: Range + details ──
@@ -272,7 +272,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "The constraint became\nthe entire aesthetic",
+      text: "Sage, oak, marble, brass,\nand that's it",
     },
 
     // ── MATERIAL INTERACTION CHART ──
@@ -286,10 +286,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "island-header",
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
-      title: "Raw Oak Anchoring",
+      title: "A Raw White Oak Island",
       pressing: {
-        mark: { n: "04", name: "Raw Oak Anchoring" },
-        heldLine: "the Whole Room.",
+        mark: { n: "04", name: "Raw Oak Island" },
+        heldLine: "for Prep, Meals, and Homework.",
         choreo: { pin: true },
       },
     },
@@ -298,7 +298,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The island is where everything happens: prep, cooking, eating, gathering, homework. It needed to handle all of it without looking like it was trying to. Raw white oak solved the problem.",
+        "The marble top runs the full length, prep counter at one end and bar at the other with no break in between. Four stools with brass-tone frames tuck under the overhang.",
     },
     {
       id: "island-footnote",
@@ -306,7 +306,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Open shelving on the working end holds plates and bowls within arm's reach of the dishwasher. A firewood cubby at the base adds texture and signals that this kitchen connects to the rest of the property. The marble top runs the full length, transitioning from food prep surface to bar seating without a material break. Four bar stools with brass-tone frames tuck under the overhang. The island feels like a piece of furniture. That distinction matters, because you gather around furniture and you just open cabinetry.",
+        "Open shelves on the working end keep plates and bowls within reach of the dishwasher. A firewood cubby at the base ties the kitchen to the rest of the property.",
     },
     {
       id: "island-columns",
@@ -315,17 +315,17 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "The Oak Choice",
           content:
-            "White oak with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time. The grain stays open and the color will shift from pale honey to deeper amber across years of use.\n\nThis was the riskiest material call in the kitchen. Raw wood in a wet environment invites concern, but this is Texas Hill Country. It is meant to age. The island should look used - water rings, knife marks, flour dust in the grain. The patina is the point.",
+            "White oak, no stain and no polyurethane, just a penetrating oil finish. The grain stays open and the color goes from pale honey to a deeper amber over years of use.\n\nRaw wood in a kitchen was the riskiest call of the whole spec. It is meant to age. The island should look used: water rings, knife marks, flour in the grain.",
         },
         {
-          title: "Spatial Anchor",
+          title: "Where It Sits",
           content:
-            "The island sits centered in the room with circulation on all four sides. It's the first thing visible from the entry. The scale is generous. Eight feet of usable counter, open shelving visible from the dining side, seating for four on the bar side.\n\nEvery sight line in the kitchen crosses the island. From the range, you look over it to the windows. From the dining table, you look through it to the backsplash. The oak breaks up the green-and-marble perimeter and gives the eye a warm landing point at the center of every view.",
+            "Centered, with space to walk on all four sides, and the first thing you see from the entry. Eight feet of usable counter, with the open shelving facing the dining side.\n\nEvery sight line in the kitchen crosses it. From the range you look over it to the windows; from the dining table you look through it to the backsplash. The oak breaks up all that green and marble around the perimeter and gives your eye somewhere warm to land.",
         },
         {
-          title: "Furniture vs. Cabinetry",
+          title: "On Legs",
           content:
-            "The island has legs - visible legs with open shelving between them - and that's the detail that makes it read as a freestanding piece instead of a built-in. The perimeter cabinets are architecture, and the island is furniture.\n\nThat distinction changes how people approach it. Guests lean on furniture, they sit around it, they set things on it without asking. A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invitation.",
+            "The island has legs, visible ones, with open shelving between them, and that is what makes it read as furniture instead of a built-in. The cabinets around the walls are architecture and the island is a table.\n\nPeople treat furniture differently. Guests lean on it, sit around it, set things down on it without asking. A solid-panel island with a granite overhang would keep them at arm's length.",
         },
       ],
     },
@@ -369,10 +369,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "A Dining Zone on",
+      title: "A Turned-Leg Table,",
       pressing: {
-        mark: { n: "05", name: "A Dining Zone on" },
-        heldLine: "the Same Palette.",
+        mark: { n: "05", name: "The Dining Table" },
+        heldLine: "Leather Safari Chairs.",
         choreo: { pin: true },
       },
     },
@@ -381,7 +381,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The dining area occupies the same open room but holds its own mood. A dark-stained turned-leg table set against the light oak and green of the kitchen. The shift is abrupt on purpose - a different activity, a different material temperature.",
+        "The dining end shares the open room but goes deeper in tone: a dark-stained table against the light oak and green of the kitchen. The switch is abrupt on purpose.",
     },
     {
       id: "dining-footnote",
@@ -389,7 +389,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Leather-and-oak safari chairs surround the table. The leather picks up the brass warmth. The oak frames reference the island wood. A dark patterned rug grounds the furniture group and separates it visually from the kitchen's hardwood floor. The dining zone uses the kitchen's palette but runs it quieter - darker, more contained.",
+        "The safari chairs are leather on oak frames. The leather picks up the warmth of the brass and the oak goes with the island. A dark patterned rug sits under the whole group and marks it off from the kitchen floor.",
     },
 
     // ── DINING DETAILS ──
@@ -429,7 +429,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-room",
       type: "editorial-headline",
-      text: "Designed the way\na product gets designed.",
+      text: "A year in, the brass shows\nwhich drawers get used",
     },
 
     // ── CLOSING ──
@@ -437,10 +437,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Systems Thinking",
+      title: "Where Everyone",
       pressing: {
-        mark: { n: "06", name: "Systems Thinking" },
-        heldLine: "Applied to a Room",
+        mark: { n: "06", name: "The Hub" },
+        heldLine: "Ends Up.",
       },
     },
     {
@@ -448,7 +448,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A kitchen where every specification traces back to the same four-material palette. The room holds together because the same four materials keep showing up.",
+        "Cooking turns into gathering turns into working, and nothing in the room is set aside for one job.",
     },
     {
       id: "closing",
@@ -463,7 +463,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "The same discipline that makes a design system work makes a room work. Limit the variables, define the relationships between elements, apply them consistently, and let the constraints do the work.\n\nFour materials, repeated across every surface - sage green on the vertical planes, marble on the horizontal, oak at the center, brass at every point of contact. The style mixing of shaker cabinets next to steel windows next to French hardware holds together because the material system holds together.\n\nThe kitchen functions as a hub. Cooking flows into gathering flows into working flows into eating, and the spatial plan supports all of it without dedicated zones that go unused half the day. The island handles prep, serving, and seating simultaneously, and the dining table sits close enough to stay connected and far enough to feel separate.",
+        "Sage green on the vertical planes, marble on the horizontal ones, oak in the middle, brass on the hardware. The island handles prep, serving, and seating at the same time, and the dining table sits close enough to stay in the conversation and far enough off to feel like its own place.",
     },
   ],
 };

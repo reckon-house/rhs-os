@@ -100,7 +100,7 @@ export const categoryInfo: Record<Tag, { headline: string; body: string; meta: C
       columns: [
         {
           title: "App Design & Development",
-          content: "App work covers the full build: interface design, information architecture, and the code that ships it.\n\nDallas Sport Collective is the most recent: a marketing site, a scheduling platform with an owner console, and an MCP server that athletes connect to from their own Claude or ChatGPT accounts.",
+          content: "App work covers the full build: interface design, information architecture, and the code that ships it.\n\nDallas Sport Collective is the most recent: a marketing site, a scheduling platform with an owner console, and an MCP server that athletes connect to from whichever AI they already use.",
         },
         {
           title: "Ecommerce & Web",

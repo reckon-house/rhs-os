@@ -7,7 +7,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
   title: "Neiman Marcus InSite",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Editorial design for luxury ecommerce. Designer spotlights, seasonal stories, typography as graphic element. Magazine sensibility on a store's budget.",
+    "Neiman Marcus's digital editorial hub, InSite. | Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
   field: "Editorial Design\nArt Direction\nTypography",
   author: "Jeremy Prasatik",
   published: "2012",
@@ -67,10 +67,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         { label: "Built", value: "Designer spotlights, color stories, typographic spreads, ways-to-wear grids" },
         { label: "Scope", value: "Story development, editorial design, photo and art direction, typography" },
         { label: "Tools", value: "Studio photography, Adobe InDesign, Photoshop, Illustrator" },
-        { label: "Angle", value: "Make the website feel like a magazine, sell product like a store, don't let either side win. Saturated color replaced a location budget." },
+        { label: "Angle", value: "Feel like a magazine, sell like a store. With no location budget, the color and the type had to set the scene." },
       ],
       abstract:
-        "InSite was Neiman Marcus's digital editorial hub. The mandate read like a contradiction - make the website feel like a magazine, sell product like a store, don't let either side win.\n\nEvery piece started with the story. Designer spotlights introducing names like Derek Lam and Helmut Lang to a broader luxury audience, seasonal trend narratives organized around color or silhouette, ways-to-wear features that styled a single garment multiple directions. The concept came first, then the shoot, the styling, and the layout followed.\n\nAll studio photography, no location budgets. Graphic color blocks stood in for environments a different production might have flown to, and pixelated saturated fields built mood when a sunset wasn't in the cards. Typography did the rest - designer names built as compositions instead of headlines, letters interlocking with photography, overlapping garments, sometimes breaking the grid and trusting that the shopper would still find the price.",
+        "InSite was Neiman Marcus's digital editorial hub. The mandate was to make the website feel like a magazine and sell product like a store, and not let either side win.\n\nEvery piece started with the story. Designer spotlights that introduced names like Derek Lam and Helmut Lang to a broader luxury shopper. Seasonal trend stories organized around a color or a silhouette. Ways-to-wear features that styled one garment a few different directions. The concept came first, then the shoot, then the styling and the layout.\n\nAll of it was studio photography. There was no location budget, so graphic color blocks stood in for the places a bigger production would have flown to, and fields of pixelated color set the mood when a sunset wasn't an option. Typography did the rest. Designer names ran as big as the photographs, letters locked into the figures and over the garments, and sometimes the type broke the grid, trusting that the shopper would still find the price.",
     },
 
         // ── HERO ──
@@ -87,10 +87,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "designers-header",
       type: "section-header",
       label: "SECTION 02: DESIGNER SPOTLIGHTS",
-      title: "Spotlights That Read",
+      title: "Designer spotlights,",
       pressing: {
-        mark: { n: "02", name: "Spotlights That Read" },
-        heldLine: "Like Print Profiles.",
+        mark: { n: "02", name: "Designer Spotlights" },
+        heldLine: "the name set in oversized serifs.",
         choreo: { pin: true },
       },
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -100,7 +100,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The Contemporary Art series framed emerging designer collections as introductions. Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang, Kelly Wearstler. Names that carried weight in fashion circles but needed context for a broader luxury shopper.",
+        "The Contemporary Art series introduced emerging designers to a broader luxury shopper. Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang, Kelly Wearstler.",
       group: { name: "designers" },
     },
     {
@@ -109,7 +109,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each spread built the designer's name as a typographic composition. Oversized serifs with torn-edge framing. Letters interlocking with the figures. The typography did the work a feature profile would have done in print. Shoppers arrived at a product page having read a story, not scrolled a catalog.",
+        "Each spread set the designer's name as the composition, torn-edge framing and letters locked into the figure. In print a feature profile would have made the introduction. Here the type made it, and shoppers reached the product page having read something first.",
       group: { name: "designers" },
     },
 
@@ -183,7 +183,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
         plate: "03",
         captions: [
           "Rainbow story",
-          "Colour carrying the set",
+          "Color standing in for a set",
           "InSite, on the laptop",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -196,12 +196,12 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "color-header",
       type: "section-header",
       label: "SECTION 03: COLOR STORIES",
-      title: "Saturated Color Did the Work",
+      title: "Five color stories,",
       // The study's one crossing. Colour standing in for a location budget
       // is the sharpest thing this case has to say.
       pressing: {
-        mark: { n: "03", name: "Saturated Color Did the Work" },
-        heldLine: "of a Location Scout.",
+        mark: { n: "03", name: "Color Stories" },
+        heldLine: "a word and a grid of chips.",
         choreo: { crossing: true },
       },
     },
@@ -210,7 +210,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "No location budgets, just studio sweeps and seamless paper. The creative had to stand in for the world outside the shoot, so pixelated color blocks replaced environments. A grid of saturated tones built the mood a bigger production would have flown somewhere to find.",
+        "Every shoot happened on seamless paper in the studio, so the color had to be the place. Hot Pink, Yellow, Rainbow, Orange, Coral. The chip grids stepped through the tones of one hue, and that stood in for wherever a bigger production would have flown.",
     },
     {
       id: "color-footnote",
@@ -218,7 +218,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Hot Pink, Yellow, Rainbow, Orange, Coral - each color story led with a word and a grid of color chips stepping through tonal values. The pixelation felt digital on purpose, and the treatment stopped pretending it was in print. Color replaced the location budget entirely.",
+        "The pixelation was on purpose. InSite lived on a screen, and this was the one treatment that stopped pretending it was print.",
     },
 
     // Color story triples
@@ -252,7 +252,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
     {
       id: "headline-tone",
       type: "editorial-headline",
-      text: "Each story sets\nits own temperature.",
+      text: "A story first,\nthen the price",
     },
 
     // ── TYPOGRAPHY AS SIGNATURE ──
@@ -260,10 +260,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "type-header",
       type: "section-header",
       label: "SECTION 04: TYPOGRAPHY",
-      title: "Type That Set the",
+      title: "The type was picked",
       pressing: {
-        mark: { n: "04", name: "Type That Set the" },
-        heldLine: "Volume of the Page.",
+        mark: { n: "04", name: "Type First" },
+        heldLine: "before the shoot.",
         choreo: { pin: true },
       },
     },
@@ -272,7 +272,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Some stories wanted letters nearly dissolving into texture - Minimalism, Structure, thin outline serifs ghosting behind the garment. Others wanted theater - The Rocker, The Socialite, Classic Beauty, with oversized display serifs wrapped into the subject's silhouette and negative space doing the layout work.",
+        "For Minimalism and Structure the letters nearly dissolve, thin outline serifs ghosting behind the garment. The Rocker, The Socialite and Classic Beauty went the other way, oversized display serifs wrapped into the model's silhouette with the negative space doing the layout.",
     },
     {
       id: "type-footnote",
@@ -280,7 +280,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The typographic decision came before the shoot. The designer ran scale, weight, and position through the story's concept, then briefed the photographer with those parameters. A quiet story got a quiet silhouette on a flat gray paper sweep, while a loud story got a saturated backdrop and a pose with room for a letter to land across the shoulder.",
+        "Scale, weight and position came out of the story's concept, and the photographer got briefed with those. A restrained story got a still pose on flat gray paper. A loud one got a saturated backdrop and a pose with room for a letter to sit across the shoulder.",
     },
 
     // Minimalism pair
@@ -349,10 +349,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "ways-header",
       type: "section-header",
       label: "SECTION 05: WAYS TO WEAR",
-      title: "One Garment, Styled",
+      title: "Two garments,",
       pressing: {
-        mark: { n: "05", name: "One Garment, Styled" },
-        heldLine: "Four Different Directions.",
+        mark: { n: "05", name: "Ways to Wear" },
+        heldLine: "four ways to wear them.",
         choreo: { pin: true },
       },
     },
@@ -361,7 +361,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The ways-to-wear template styled a single garment multiple directions. A black dress with a denim jacket. A silk blouse with an ikat sweater. Equations written in typography: noun + noun + noun, with the plus signs oversized and the outfit in motion lines behind the figure.",
+        "A black dress with a denim jacket, then with an ikat sweater. A silk blouse the same two ways. Each spread wrote the outfit as an equation, noun + noun + noun, with the plus signs set oversized.",
     },
     {
       id: "ways-footnote",
@@ -369,7 +369,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The speed lines rendered behind the models gave the spreads a sense of motion that a flat studio shot can't generate on its own. The grid stayed consistent: figure left or right, typography opposite, equation stacked vertically. The format held identical across dozens of variations. Merchandising could plug product photography into the template and ship without waiting for a custom design.",
+        "Speed lines drawn behind the models gave the spreads some motion a flat studio shot doesn't have. The grid never moved: figure on one side, type on the other, the equation stacked vertically. Merchandising could drop new product photography into the template and ship it without waiting on a custom layout, and the format stayed the same across dozens of variations.",
     },
 
     // Ways to wear trio
@@ -442,10 +442,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Editorial Commerce",
+      title: "Dozens of stories,",
       pressing: {
-        mark: { n: "06", name: "Editorial Commerce" },
-        heldLine: "Before It Was a Category.",
+        mark: { n: "06", name: "Dozens of Stories" },
+        heldLine: "a handful of templates.",
       },
     },
     {
@@ -453,7 +453,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Designer spotlights, color stories, typographic theater, ways-to-wear grids - one hub holding dozens of stories. Every layout was a decision about how far to push the editorial without losing the shopper.",
+        "Every layout was a call on how far the magazine side could go before the store side got lost.",
     },
     {
       id: "closing",
@@ -468,7 +468,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
       links: [],
       content:
-        "A luxury retailer's digital hub that behaved like a magazine without forgetting it was a store. The studio-only mandate forced the creative to do the heavy lifting. Color blocks stood in for location photography, and typography did the work a feature profile would have. Each limit became a template.\n\nThe stories held up because the templates under them held up. Fixed templates for ways-to-wear, open typography for designer spotlights, color-as-environment for trend pieces - a framework loose enough to support a dozen editorial moods and tight enough that every story felt like it came from the same room.",
+        "The templates carried it. Ways-to-wear ran on a fixed grid, designer spotlights on open typography, trend pieces on color as the environment. That was loose enough for a dozen moods and tight enough that every story looked like it came from the same room.",
     },
   ],
 };

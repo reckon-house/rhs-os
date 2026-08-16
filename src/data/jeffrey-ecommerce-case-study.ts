@@ -43,13 +43,13 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       status: "Live",
       classification: ["Digital Strategy", "Brand System", "Ecommerce Design", "UX Architecture"],
       summary: [
-        { label: "Built", value: "First digital flagship for the NYC retailer. Brand, site, and stories, from zero" },
+        { label: "Built", value: "The online store, the brand around it, and the templates for telling stories" },
         { label: "Scope", value: "Digital strategy, brand system, ecommerce design, UX architecture" },
         { label: "Stack", value: "Photoshop, Illustrator, Sketch, InVision" },
-        { label: "Angle", value: "Built like a flagship. The way it told stories was designed before the product pages." },
+        { label: "Angle", value: "The site had to work the way the store worked: an edit that changed with the season, and a story ahead of every sale." },
       ],
       abstract:
-        "Jeffrey had never sold online. The physical store was a gallery with a curator's eye, and the challenge was translating that into a digital channel without flattening it into a catalog.\n\nStarted with the buying team. Learned how the floor worked, how pieces were grouped, what made the edit feel like Jeffrey. The strategy that won was simple: storytelling over transaction. Designer launches, weekly content drops, editorial pacing baked into the structure.\n\nBuilt the full system from there. Modular grids for seasonal flexibility, typography hierarchy that stayed sharp across contexts, product pages that led with imagery, navigation centered on curation rather than categories. Integration work handled alongside external partners while keeping ownership of the experience, every interaction from wireframe to checkout prototyped to feel considered.",
+        "Jeffrey had never sold online. The store itself was closer to a gallery than a shop, edited by people with a very specific eye, and the job was to get that feeling onto a screen.\n\nThe work started with the buying team: how the floor was laid out, how pieces got grouped, what made an edit feel like Jeffrey. The strategy that came out of it put the stories ahead of the selling. Designer launches as the big moments, new content every week, and an editorial pace built into the structure of the site.\n\nFrom there the whole thing got designed. Modular grids so the layouts could change with the season, a type hierarchy that stayed sharp everywhere it showed up, product pages that opened on the photography, navigation organized around the edit instead of by category. Integration ran with outside partners while the experience stayed in-house, and every interaction from wireframe to checkout was prototyped.",
     },
 
         // ── HERO ──
@@ -68,14 +68,14 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "strategy-header",
       type: "section-header",
       label: "SECTION 02: THE STRATEGY",
-      title: "Storytelling Over",
+      title: "Six homepages,",
       // pin so the thesis headline holds while its two paragraphs travel
       // up beside it. Nothing climbs this brief — the zoom two beats down
       // reserves its own room — so the flag is staging for the headline
       // rather than a hold handed to a riser.
       pressing: {
-        mark: { n: "02", name: "Storytelling Over" },
-        heldLine: "Transaction.",
+        mark: { n: "02", name: "Six Homepages" },
+        heldLine: "a different story on each.",
         choreo: { pin: true },
       },
     },
@@ -84,7 +84,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The pitch that won: a digital channel that worked the way the store worked. Designer launches as moments, weekly content drops as a rhythm, editorial pacing as the structure itself.",
+        "Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes, Loewe. Each one took over the homepage for its moment, and the masthead and footer stayed put.",
     },
     {
       id: "strategy-footnote",
@@ -92,7 +92,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Sat with the buying team to learn how the floor worked. How pieces were grouped, how seasons shifted, what made the edit feel like Jeffrey. The site needed to behave like the store, which meant designing how it told stories before designing the product pages.",
+        "The floor got regrouped every time the season shifted, and the homepage had to turn over the same way. So the templates for a launch or a new story came first, and the product pages came after.",
     },
 
     // ── The homepage, six ways ──────────────────────────────────────
@@ -141,7 +141,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "headline-flagship",
       type: "editorial-headline",
-      text: "Built like\na flagship",
+      text: "A launch on Tuesday,\na sale on Wednesday",
     },
 
     // ════════════════════════════════════════
@@ -151,7 +151,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "Modular Grids,",
+      title: "Modular grids,",
       // The study's one crossing, on section 03 rather than the thesis
       // header, which already sits directly above the zoom plate.
       //
@@ -163,7 +163,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       // on the page. It is the A.R.C. convention for saying so in the data.
       pressing: {
         mark: { n: "03", name: "Modular Grids" },
-        heldLine: "Curated Navigation.",
+        heldLine: "product pages led by the photography.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -172,7 +172,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Modular grids for seasonal flexibility, typography hierarchy that held sharp across contexts, product pages that led with imagery, navigation organized around curation instead of categories.",
+        "The product page ran one large photograph, almost nothing else around it, and a short row of curated cross-sells. Navigation followed the edit instead of a list of categories, the same way the floor did.",
     },
     {
       id: "system-footnote",
@@ -180,7 +180,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The grid let merchandising compose seasonal layouts without touching the underlying templates - swap photography, swap copy, ship. Type stayed structural, which is what kept the site from drifting toward catalog feel as the store grew.",
+        "Merchandising could lay out a new season without touching the templates underneath: swap the photography, swap the copy, publish. The type hierarchy did not move, which is what kept the site from sliding toward a catalog as the store grew.",
     },
 
     // ── PDP screen — climbs the crossing above it.
@@ -241,11 +241,11 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "A Quiet Type System\nDoing the Structural Work.",
+      title: "Avenir Next and\nthe wordmark's yellow.",
       introText:
-        "One typeface across weights, a restrained palette, and a logo lockup that sat as a graphic mark before it sat as a name. The kit ran the same way at every scale.",
+        "The wordmark, Avenir Next Heavy Italic set wide, worked as a graphic mark before it read as a name. Everything else stayed out of the photography's way.",
       philosophyText:
-        "The palette stays narrow on purpose. Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single yellow accent - pulled straight from the wordmark - ties the editorial moments together. No second accent, no decorative color - the merchandise brings whatever it needs.\n\nType is one family across weights. Avenir Next Heavy carried the wordmark and feature headlines, Demi Bold carried subheads and CTAs, Medium carried the rest. The single family kept everything tight, and the weight contrast did the work that a multi-font stack would otherwise have to.",
+        "The palette is narrow on purpose. Charcoal for the type, cream as the ground so the photography reads, a soft gray for captions and meta, and one yellow accent pulled straight from the wordmark for the editorial moments. There is no second accent. The merchandise brings whatever color it needs.\n\nThe type is one family. Avenir Next Heavy for the wordmark and feature headlines, Demi Bold for subheads and calls to action, Medium for everything else. The weights do the hierarchy on their own, so there is no second typeface.",
       colors: [
         { name: "Charcoal", hex: "#1A1A1A", description: "Type, structure" },
         { name: "Cream", hex: "#F5F2ED", description: "Paper, ground" },
@@ -258,7 +258,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           sampleText: "JEFFREY",
           role: "Wordmark",
           description:
-            "Avenir Next Heavy Italic at scale. The same wordmark that anchored the storefront, set wide and locked tight as a graphic mark.",
+            "Avenir Next Heavy Italic at scale. The same wordmark as the storefront, set wide and locked tight as a graphic mark.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
           italic: true,
@@ -267,7 +267,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Feature headlines",
           description:
-            "Heaviest non-italic weight, used for designer launches and editorial moments. Pairs with the wordmark as the loudest it ever gets.",
+            "The heaviest upright weight, for designer launches and feature headlines. Next to the wordmark, this is as loud as the site gets.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -275,7 +275,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           name: "Avenir Next Demi Bold",
           role: "Subhead & CTAs",
           description:
-            "Mid-heavy weight for subheads, callouts, and CTAs. The structural voice that ties the catalog together.",
+            "For subheads, callouts, and CTAs. One step down from Heavy.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 600,
         },
@@ -283,7 +283,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           name: "Avenir Next Medium",
           role: "Body & captions",
           description:
-            "Standard weight for product copy, descriptions, and longer-form text. Quiet enough to let the photography lead.",
+            "For product copy, descriptions, and longer text.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 500,
         },
@@ -302,13 +302,13 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "build-header",
       type: "section-header",
       label: "SECTION 05: THE BUILD RADIUS",
-      title: "One System,",
+      title: "Wordmark, type, grid, photography.",
       // pin: the radius diagram below is not a riser, so this holds the
       // header while its one paragraph travels, the same staging every
       // other brief in the study gets.
       pressing: {
-        mark: { n: "04", name: "One System" },
-        heldLine: "Every Surface.",
+        mark: { n: "04", name: "Four Pieces" },
+        heldLine: "Every page ran on them.",
         choreo: { pin: true },
       },
     },
@@ -317,7 +317,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Wordmark, type, grid, photography - one kit propagating from the brand experience out through every surface the customer touched.",
+        "The chart traces those four pieces from the brand experience at the center out through every surface a customer touched. Denser rays mean more assets on that surface.",
     },
     {
       id: "flagship-radius",
@@ -331,10 +331,10 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "A Digital Flagship",
+      title: "The site outlasted",
       pressing: {
-        mark: { n: "05", name: "A Digital Flagship" },
-        heldLine: "Built Like the Store.",
+        mark: { n: "05", name: "Outlasted the Team" },
+        heldLine: "the team that built it.",
       },
     },
     {
@@ -342,7 +342,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Strategy, brand, architecture, content - one system that ran on the same curatorial logic as the physical store.",
+        "Jeffrey eventually sold the business. The online store kept running after the people who made it had moved on.",
     },
     {
       id: "closing",
@@ -351,7 +351,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "Sketch", "InVision"],
       links: [],
       content:
-        "The grid let merchandising publish a designer launch on Tuesday and a sale on Wednesday without either looking out of place. The type system held the editorial voice while the content underneath changed weekly. Jeffrey eventually sold the business, and the digital channel outlasted the original team that built it.",
+        "Strategy, brand, architecture and content, all working from the same edit as the floor. The type kept the voice steady while everything under it changed every week.",
     },
   ],
 };

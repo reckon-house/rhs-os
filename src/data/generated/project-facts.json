@@ -42,7 +42,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Three tableware collections: blue florals, black linework, red dragons. Hero, secondary, accent per set"
+     "value": "Three tableware collections: blue florals, black linework, red dragons. A hero, a secondary, and an accent pattern in each"
     },
     {
      "label": "Scope",
@@ -50,11 +50,11 @@
     },
     {
      "label": "Tools",
-     "value": "Illustrator, Photoshop, InDesign. Multiple colorways per collection"
+     "value": "Illustrator, Photoshop, InDesign. Several colorways per collection"
     },
     {
      "label": "Angle",
-     "value": "Patterns built as a system, not a single print. Cream as shared ground, so a pattern only works if the next one fits."
+     "value": "Every collection shares cream as its ground, so a plate from one can sit on the table with a plate from another."
     }
    ],
    "disciplines": [
@@ -74,7 +74,7 @@
      {
       "facet": "client",
       "term": "Amber Shockey & Co.",
-      "n": 35,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -92,25 +92,8 @@
     "colour": [
      {
       "facet": "colour",
-      "term": "burgundy",
-      "n": 10,
-      "cites": [
-       {
-        "section": "hero",
-        "field": "slides.2.alt",
-        "quote": "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose"
-       },
-       {
-        "section": "red-subhead",
-        "field": "content",
-        "quote": "Burgundy dragons curled against floral filigree."
-       }
-      ]
-     },
-     {
-      "facet": "colour",
       "term": "cream",
-      "n": 9,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -126,8 +109,25 @@
      },
      {
       "facet": "colour",
+      "term": "burgundy",
+      "n": 9,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "slides.2.alt",
+        "quote": "Amber Shockey & Co. red dragons collection, plates set against dragon pattern backdrop in burgundy and rose"
+       },
+       {
+        "section": "red-subhead",
+        "field": "content",
+        "quote": "Burgundy dragons curled through floral filigree."
+       }
+      ]
+     },
+     {
+      "facet": "colour",
       "term": "charcoal",
-      "n": 6,
+      "n": 5,
       "cites": [
        {
         "section": "hero",
@@ -137,37 +137,32 @@
        {
         "section": "black-subhead",
         "field": "content",
-        "quote": "Geometric grids and halftone density on charcoal."
+        "quote": "Geometric grids and halftone dots on charcoal."
        }
       ]
      },
      {
       "facet": "colour",
       "term": "cobalt",
-      "n": 5,
+      "n": 4,
       "cites": [
        {
         "section": "blue-footnote",
         "field": "content",
-        "quote": "The cobalt anchors any combination because every other collection shares cream as the common ground."
+        "quote": "…with black linework when the table needs some structure, and cobalt sits next to anything else as long as there's cream in the mi…"
        },
        {
         "section": "red-footnote",
         "field": "content",
-        "quote": "Hard against blue florals; the cobalt and burgundy fight."
+        "quote": "Straight against blue florals it's hard, since the cobalt and the burgundy fight, so put the cream pieces from either collection b…"
        }
       ]
      },
      {
       "facet": "colour",
       "term": "blush",
-      "n": 2,
+      "n": 1,
       "cites": [
-       {
-        "section": "marks-materials",
-        "field": "philosophyText",
-        "quote": "Circle lives in blush."
-       },
        {
         "section": "marks-materials",
         "field": "colors.1.name",
@@ -262,7 +257,7 @@
      {
       "facet": "furniture",
       "term": "table",
-      "n": 2,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -270,9 +265,9 @@
         "quote": "| Each one is built to layer, from a single accent dish to the whole table."
        },
        {
-        "section": "blue-footnote",
-        "field": "content",
-        "quote": "Pairs with red dragons when the table needs heat."
+        "section": "meta",
+        "field": "summary.3.value",
+        "quote": "Every collection shares cream as its ground, so a plate from one can sit on the table with a plate from another."
        }
       ]
      },
@@ -336,18 +331,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "western",
-      "n": 1,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "fonts.2.description",
-        "quote": "Pulls Eastern textile work into a Western tableware context."
-       }
-      ]
      }
     ]
    }
@@ -374,7 +357,7 @@
     },
     {
      "label": "Angle",
-     "value": "Nobody skips home inventory because they don't care. They skip it because the work is miserable. Remove the input problem and the rest is straightforward."
+     "value": "People skip home inventory because the work is miserable. Take the typing out and the rest is straightforward."
     }
    ],
    "disciplines": [
@@ -705,7 +688,7 @@
        {
         "section": "pipeline",
         "field": "columns.2.content",
-        "quote": "…item is classified into a taxonomy: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools…"
+        "quote": "…es into one of thirteen categories: furniture, electronics, artwork, appliances, fixtures, textiles, collectibles, vehicles, tools…"
        },
        {
         "section": "stats",
@@ -1226,117 +1209,6 @@
       "observed": true
      }
     ],
-    "style": [
-     {
-      "facet": "style",
-      "term": "farmhouse",
-      "n": 10,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
-        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-pipeline-photo-capture-step.jpg",
-        "quote": "Eye-level and slightly left of centre, the island running in from the left edge across the foreground while the wall of cabinetry fills the back plane, overlay type set low left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-pipeline-ai-categorization-step.jpg",
-        "quote": "Eye-level and square to a corner, the cupboard stack dominating the vertical centre while the island crosses the bottom edge."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "traditional",
-      "n": 9,
-      "cites": [
-       {
-        "section": "build-text",
-        "field": "columns.2.content",
-        "quote": "That's the part you can't really do at a traditional studio - no handoff gap between design intent and what shows up in code."
-       },
-       {
-        "section": "usage-text",
-        "field": "content",
-        "quote": "Traditional manual inventory of a 73-item home: estimated 8-12 hours."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg",
-        "quote": "Overhead and tilted, one strong diagonal running corner to corner, the phone set against it in the upper left and the printed kitchen image filling the lower right."
-       }
-      ]
-     },
-     {
-      "facet": "style",
-      "term": "modern",
-      "n": 4,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
-        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-ui-select-your-project.jpg",
-        "quote": "Flat-on, two equal frames side by side on a shared top edge, the title stacked in the upper left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-five-screen-app-showcase.png",
-        "quote": "Flat-on row of five equal-width screens on black, each cropped by the bottom edge, no device frames."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "mid century",
-      "n": 3,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
-        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-app-vinyl-turntable-shelves-lifestyle.jpg",
-        "quote": "Shot from overhead, the phone set at a slight tilt off vertical, its screen filling the centre third of the frame."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
-        "quote": "Four square panels in a two-by-two grid, overhead device shots on one diagonal and eye-level interiors on the other."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "western",
-      "n": 2,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
-        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
-        "quote": "Four square panels in a two-by-two grid, overhead device shots on one diagonal and eye-level interiors on the other."
-       }
-      ],
-      "observed": true
-     }
-    ],
     "colour": [
      {
       "facet": "colour",
@@ -1612,13 +1484,125 @@
       ],
       "observed": true
      }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "farmhouse",
+      "n": 10,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-pipeline-photo-capture-step.jpg",
+        "quote": "Eye-level and slightly left of centre, the island running in from the left edge across the foreground while the wall of cabinetry fills the back plane, overlay type set low left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-pipeline-ai-categorization-step.jpg",
+        "quote": "Eye-level and square to a corner, the cupboard stack dominating the vertical centre while the island crosses the bottom edge."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 7,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-tablet-kitchen-living-room-lifestyle.jpg",
+        "quote": "Overhead and tilted, one strong diagonal running corner to corner, the phone set against it in the upper left and the printed kitchen image filling the lower right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-three-screen-lifestyle-mockup.png",
+        "quote": "Three vertical screens abreast, the centre one whole and centred, the outer two cropped hard by the left and right edges."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-pipeline-photo-capture-step.jpg",
+        "quote": "Eye-level and slightly left of centre, the island running in from the left edge across the foreground while the wall of cabinetry fills the back plane, overlay type set low left."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 4,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+        "quote": "Top-down vantage, the device centred and vertical against a horizontal wood grain, with a soft shadow falling up and to the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-ui-select-your-project.jpg",
+        "quote": "Flat-on, two equal frames side by side on a shared top edge, the title stacked in the upper left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-five-screen-app-showcase.png",
+        "quote": "Flat-on row of five equal-width screens on black, each cropped by the bottom edge, no device frames."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "mid century",
+      "n": 3,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-app-vinyl-turntable-shelves-lifestyle.jpg",
+        "quote": "Shot from overhead, the phone set at a slight tilt off vertical, its screen filling the centre third of the frame."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
+        "quote": "Four square panels in a two-by-two grid, overhead device shots on one diagonal and eye-level interiors on the other."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "western",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-room-scanning-interface.jpg",
+        "quote": "Eye-level view of a limestone fireplace wall, symmetrical art hang above a wood mantel, record shelf at left, sofa entering the foreground."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/arc/arc-multi-device-lifestyle-hero.jpg",
+        "quote": "Four square panels in a two-by-two grid, overhead device shots on one diagonal and eye-level interiors on the other."
+       }
+      ],
+      "observed": true
+     }
     ]
    }
   },
   {
    "slug": "big-bend",
    "title": "West Texas",
-   "subtitle": "Photographs from Big Bend National Park and the desert around Marfa, later used in the Capitan Boot Co. campaign.",
+   "subtitle": "Photographs from a family trip through Big Bend and the desert around Marfa. Personal work that later became the backdrop for the Capitan Boot Co. campaign.",
    "category": "Creative",
    "href": "/case-studies/big-bend",
    "year": "2022",
@@ -1728,7 +1712,7 @@
        {
         "section": "prada-text",
         "field": "content",
-        "quote": "It holds real Prada shoes and bags from that season, and the door has stayed shut ever since."
+        "quote": "The door has stayed shut ever since."
        },
        {
         "section": "image",
@@ -1941,14 +1925,14 @@
   {
    "slug": "black-white-type",
    "title": "Typography & Patterns",
-   "subtitle": "Six patterns, three art prints, zero color. Type as art form, pattern as texture.",
+   "subtitle": "Personal work: six patterns and three art prints, in black and white only. A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
    "category": "Creative",
    "href": "/case-studies/black-white-type",
    "year": "2023",
    "summary": [
     {
      "label": "Built",
-     "value": "Three lithographs, a twelve-tile pattern library"
+     "value": "Three art prints, twelve pattern tiles"
     },
     {
      "label": "Scope",
@@ -1956,11 +1940,11 @@
     },
     {
      "label": "Tools",
-     "value": "Black ink and white paper. Adobe Illustrator, Photoshop"
+     "value": "Adobe Illustrator, Photoshop"
     },
     {
      "label": "Angle",
-     "value": "Six elements simple enough for a child to draw. Without color, density does the tonal work and composition is the only variable."
+     "value": "Six shapes, no color, and the only decisions left were placement and scale."
     }
    ],
    "disciplines": [
@@ -1980,17 +1964,17 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 10,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Black ink and white paper."
+        "field": "abstract",
+        "quote": "What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw."
        },
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Just black ink, white paper, and six repeating elements simple enough for a child to draw."
+        "quote": "…biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print."
        },
        {
         "section": "image",
@@ -2018,6 +2002,18 @@
         "section": "image",
         "field": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
         "quote": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 1,
+      "cites": [
+       {
+        "section": "system-columns",
+        "field": "columns.0.content",
+        "quote": "In \"stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right."
        }
       ]
      },
@@ -2109,15 +2105,19 @@
      {
       "facet": "furniture",
       "term": "table",
-      "n": 1,
+      "n": 2,
       "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The question was how much range a small set of patterns could produce once color, photography and gradients were off the table."
+       },
        {
         "section": "image",
         "field": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
         "quote": "Overhead vantage tilted off axis, the poster set on a diagonal and filling most of the frame, the table edge and its shadow cutting across the lower right corner."
        }
-      ],
-      "observed": true
+      ]
      },
      {
       "facet": "furniture",
@@ -2216,7 +2216,7 @@
     },
     {
      "label": "Angle",
-     "value": "No single client, no single style. Each mark sounds like the client. The point is fluency."
+     "value": "Each mark sounds like the client it was drawn for. The range is the point."
     }
    ],
    "disciplines": [
@@ -2263,7 +2263,7 @@
      {
       "facet": "furniture",
       "term": "window",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -2271,9 +2271,9 @@
         "quote": "Four album covers, posters, prints, logos, a storefront window"
        },
        {
-        "section": "storefront-text",
-        "field": "content",
-        "quote": "The Bokeh's Fall window translated the same atmospheric language to building scale."
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handf…"
        },
        {
         "section": "image",
@@ -2636,19 +2636,19 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign"
+     "value": "Logo, badges, typographic lockups, apparel graphics, and a campaign shot in West Texas"
     },
     {
      "label": "Scope",
-     "value": "Brand identity, logo system, apparel graphics, photography"
+     "value": "Brand identity, logo and badges, apparel graphics, photography"
     },
     {
      "label": "Tools",
-     "value": "Illustrator, Photoshop, InDesign, camera. Northwest and Oldman type pairing"
+     "value": "Illustrator, Photoshop, InDesign, a camera. Northwest and Oldman for the type"
     },
     {
      "label": "Angle",
-     "value": "Marks built to survive the material. Stamp, stitch, emboss, and still read at every scale."
+     "value": "Marks and photographs by the same person, shot in the landscape the boots are made for."
     }
    ],
    "disciplines": [
@@ -2670,7 +2670,7 @@
      {
       "facet": "client",
       "term": "Capitan Boot Co.",
-      "n": 29,
+      "n": 28,
       "cites": [
        {
         "section": "meta",
@@ -2689,7 +2689,7 @@
      {
       "facet": "style",
       "term": "western",
-      "n": 26,
+      "n": 27,
       "cites": [
        {
         "section": "meta",
@@ -2711,17 +2711,17 @@
      {
       "facet": "style",
       "term": "vintage",
-      "n": 7,
+      "n": 8,
       "cites": [
+       {
+        "section": "marks-footnote",
+        "field": "content",
+        "quote": "The carousel under it runs the buffalo logo and the vintage badge small, closer to the size they'd be on a hangtag."
+       },
        {
         "section": "logo-carousel",
         "field": "slides.1.src",
         "quote": "capitan boot co branding western logo desert cactus rock formation vintage outdoors landscape design"
-       },
-       {
-        "section": "logo-carousel",
-        "field": "slides.1.alt",
-        "quote": "Capitan Boot Co. vintage badge logo with mesa, prickly pear cacti, and ESTD 2020 stars"
        },
        {
         "section": "image",
@@ -2740,12 +2740,12 @@
        {
         "section": "meta",
         "field": "summary.0.value",
-        "quote": "Logo system, badges, typographic lockups, apparel graphics, West Texas campaign"
+        "quote": "Logo, badges, typographic lockups, apparel graphics, and a campaign shot in West Texas"
        },
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Shot the campaign in West Texas."
+        "quote": "The campaign was shot in West Texas, in Big Bend, mesa country, and river bottom, with no props, no stand-ins, and no styling beyo…"
        }
       ]
      }
@@ -2771,7 +2771,7 @@
      {
       "facet": "colour",
       "term": "cream",
-      "n": 2,
+      "n": 3,
       "cites": [
        {
         "section": "westtexas-buffalo",
@@ -2780,13 +2780,30 @@
        },
        {
         "section": "marks-materials",
-        "field": "colors.0.name",
-        "quote": "Cream"
+        "field": "title",
+        "quote": "Cream, tan, olive, dark olive."
        }
       ]
      }
     ],
     "material": [
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Built to be stamped into leather, stitched, and embossed, and still read."
+       },
+       {
+        "section": "marks-subhead",
+        "field": "content",
+        "quote": "The buffalo was drawn as a stamp first and an illustration second, since leather takes pressure and denim takes thread."
+       }
+      ]
+     },
      {
       "facet": "material",
       "term": "stone",
@@ -2812,18 +2829,18 @@
      },
      {
       "facet": "material",
-      "term": "leather",
-      "n": 3,
+      "term": "paper",
+      "n": 2,
       "cites": [
        {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Built to be stamped into leather, stitched, and embossed, and still read."
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Paper, hangtags"
        },
        {
-        "section": "marks-subhead",
-        "field": "content",
-        "quote": "Leather takes pressure."
+        "section": "closing-header",
+        "field": "title",
+        "quote": "On leather, paper,"
        }
       ]
      },
@@ -2835,19 +2852,7 @@
        {
         "section": "marks-subhead",
         "field": "content",
-        "quote": "Denim takes thread."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "paper",
-      "n": 1,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "colors.0.description",
-        "quote": "Paper, hangtags"
+        "quote": "The buffalo was drawn as a stamp first and an illustration second, since leather takes pressure and denim takes thread."
        }
       ]
      },
@@ -2889,7 +2894,7 @@
     },
     {
      "label": "Angle",
-     "value": "Cabin bones, mid-century sensibility. The renovation didn't compete with the setting, it framed it. The tree line becomes the loudest design choice."
+     "value": "Rebuilt so the trees are the point, and furnished so they stay that way."
     }
    ],
    "disciplines": [
@@ -2911,7 +2916,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 36,
+      "n": 39,
       "cites": [
        {
         "section": "meta",
@@ -2933,7 +2938,7 @@
      {
       "facet": "material",
       "term": "stone",
-      "n": 27,
+      "n": 28,
       "cites": [
        {
         "section": "meta",
@@ -2955,7 +2960,7 @@
      {
       "facet": "material",
       "term": "glass",
-      "n": 24,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -2977,17 +2982,39 @@
      {
       "facet": "material",
       "term": "leather",
-      "n": 6,
+      "n": 7,
       "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "A leather sling chair and a walnut coffee table under the skylight."
+       },
        {
         "section": "living-group-two",
         "field": "right.src",
         "quote": "chalet living room a frame skylight tufted sofa walnut coffee table leather sling"
        },
        {
-        "section": "living-group-two",
-        "field": "right.alt",
-        "quote": "…chalet living room view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall…"
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-living-room-tufted-gray-sofa-painted-stone-antlers-ladder-shelf.jpg",
+        "quote": "Head-on vantage centred on the sofa, sofa and coffee table reading as stacked horizontal bands, the kitchen opening at the right edge."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 6,
+      "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "The kitchen is white shaker cabinets and subway tile around an exposed wood beam column, and the same pine runs through it."
+       },
+       {
+        "section": "kitchen",
+        "field": "src",
+        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
        },
        {
         "section": "image",
@@ -3018,28 +3045,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "material",
-      "term": "tile",
-      "n": 5,
-      "cites": [
-       {
-        "section": "kitchen",
-        "field": "src",
-        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
-       },
-       {
-        "section": "kitchen",
-        "field": "alt",
-        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-living-room-tufted-gray-sofa-painted-stone-antlers-ladder-shelf.jpg",
-        "quote": "Head-on vantage centred on the sofa, sofa and coffee table reading as stacked horizontal bands, the kitchen opening at the right edge."
-       }
-      ]
      },
      {
       "facet": "material",
@@ -3104,6 +3109,74 @@
       "observed": true
      }
     ],
+    "room": [
+     {
+      "facet": "room",
+      "term": "living room",
+      "n": 17,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
+        "quote": "Wide interior view from a corner, the A-frame's raking ceiling driving diagonals from upper left to the glazed gable end that dominates the right."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "patio",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg",
+        "quote": "Eye-level three-quarter view from the terrace, the roof rake driving a long diagonal down to the left while the house fills the right two-thirds."
+       }
+      ]
+     },
+     {
+      "facet": "room",
+      "term": "kitchen",
+      "n": 5,
+      "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "The kitchen is white shaker cabinets and subway tile around an exposed wood beam column, and the same pine runs through it."
+       },
+       {
+        "section": "living-secondary-hero",
+        "field": "alt",
+        "quote": "…living area with tufted gray sofa, painted stone wall, antlers, walnut leaning ladder shelf, and the kitchen visible to the right"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg",
+        "quote": "Eye-level vantage from an adjoining room, the hallway receding on a one-point axis at left, the post splitting the right half vertically."
+       }
+      ]
+     }
+    ],
     "furniture": [
      {
       "facet": "furniture",
@@ -3118,29 +3191,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
-        "quote": "Wide interior view from a corner, the A-frame's raking ceiling driving diagonals from upper left to the glazed gable end that dominates the right."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "chandelier",
-      "n": 14,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.5",
-        "quote": "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg"
+        "quote": "…t doesn't compete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against…"
        },
        {
         "section": "image",
@@ -3162,7 +3213,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
+        "quote": "…ete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
        },
        {
         "section": "image",
@@ -3173,7 +3224,7 @@
      },
      {
       "facet": "furniture",
-      "term": "fireplace",
+      "term": "chandelier",
       "n": 12,
       "cites": [
        {
@@ -3183,8 +3234,8 @@
        },
        {
         "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
+        "field": "reel.images.5",
+        "quote": "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg"
        },
        {
         "section": "image",
@@ -3196,7 +3247,7 @@
      {
       "facet": "furniture",
       "term": "window",
-      "n": 10,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -3204,9 +3255,9 @@
         "quote": "/case-studies/chalet/chalet-a-frame-ceiling-sputnik-chandelier-triangular-window-tree-canopy.jpg"
        },
        {
-        "section": "a-frame-ceiling",
-        "field": "src",
-        "quote": "chalet a frame ceiling sputnik chandelier triangular window tree canopy"
+        "section": "interior-subhead",
+        "field": "content",
+        "quote": "The A-frame ceiling is wood plank all the way up, with a triangular window under the peak that frames the tops of the trees."
        },
        {
         "section": "image",
@@ -3218,17 +3269,39 @@
      {
       "facet": "furniture",
       "term": "chair",
-      "n": 10,
+      "n": 11,
       "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "A leather sling chair and a walnut coffee table under the skylight."
+       },
        {
         "section": "living-group-two",
         "field": "right.alt",
         "quote": "…g room view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall in the backgr…"
        },
        {
-        "section": "blend-footnote",
-        "field": "content",
-        "quote": "Sputnik chandelier, Malm fireplace, walnut dining set, and the leather sling chair pull toward mid-century."
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
+        "quote": "Wide interior view from a corner, the A-frame's raking ceiling driving diagonals from upper left to the glazed gable end that dominates the right."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "fireplace",
+      "n": 10,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
        },
        {
         "section": "image",
@@ -3262,17 +3335,17 @@
      {
       "facet": "furniture",
       "term": "beam",
-      "n": 7,
+      "n": 8,
       "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "The kitchen is white shaker cabinets and subway tile around an exposed wood beam column, and the same pine runs through it."
+       },
        {
         "section": "kitchen",
         "field": "src",
         "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
-       },
-       {
-        "section": "kitchen",
-        "field": "alt",
-        "quote": "Chalet kitchen with white shaker cabinets, subway tile backsplash, an exposed wood beam column, and PNW pine floors"
        },
        {
         "section": "image",
@@ -3284,17 +3357,17 @@
      {
       "facet": "furniture",
       "term": "coffee table",
-      "n": 6,
+      "n": 7,
       "cites": [
+       {
+        "section": "interior-footnote",
+        "field": "content",
+        "quote": "A leather sling chair and a walnut coffee table under the skylight."
+       },
        {
         "section": "living-group-two",
         "field": "right.src",
         "quote": "chalet living room a frame skylight tufted sofa walnut coffee table leather sling"
-       },
-       {
-        "section": "living-group-two",
-        "field": "right.alt",
-        "quote": "…om view with the A-frame ceiling, skylight, leather sling chair, walnut coffee table, and the painted stone wall in the background"
        },
        {
         "section": "image",
@@ -3306,8 +3379,13 @@
      {
       "facet": "furniture",
       "term": "door",
-      "n": 6,
+      "n": 7,
       "cites": [
+       {
+        "section": "studs-footnote",
+        "field": "content",
+        "quote": "The stairs run down from the deck to that patio, and the front approach climbs a rocky grade to the door."
+       },
        {
         "section": "exterior-three-quarter",
         "field": "alt",
@@ -3317,11 +3395,6 @@
         "section": "image",
         "field": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
         "quote": "Wide interior view from a corner, the A-frame's raking ceiling driving diagonals from upper left to the glazed gable end that dominates the right."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg",
-        "quote": "Straight-on frontal view from below the grade, symmetrical about the gable peak, the house pinched between two walls of trees."
        }
       ]
      },
@@ -3392,28 +3465,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "furniture",
-      "term": "bench",
-      "n": 3,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       },
-       {
-        "section": "interior-footnote",
-        "field": "content",
-        "quote": "Tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg",
-        "quote": "Standing vantage from behind the sofa, the vault's converging beams driving to the right where the glass wall opens to the deck."
-       }
-      ]
      },
      {
       "facet": "furniture",
@@ -3578,6 +3629,23 @@
      },
      {
       "facet": "furniture",
+      "term": "bench",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…pete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg",
+        "quote": "Standing vantage from behind the sofa, the vault's converging beams driving to the right where the glass wall opens to the deck."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "dining table",
       "n": 2,
       "cites": [
@@ -3714,79 +3782,11 @@
       "observed": true
      }
     ],
-    "room": [
-     {
-      "facet": "room",
-      "term": "living room",
-      "n": 17,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/chalet/chalet-living-room-wide-walnut-dining-set-malm-fireplace-glass-doors-deck.jpg"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-living-room-a-frame-glass-doors-malm-fireplace-sputnik-chandelier.jpg",
-        "quote": "Wide interior view from a corner, the A-frame's raking ceiling driving diagonals from upper left to the glazed gable end that dominates the right."
-       }
-      ]
-     },
-     {
-      "facet": "room",
-      "term": "patio",
-      "n": 10,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.3",
-        "quote": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.4",
-        "quote": "/case-studies/chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg",
-        "quote": "Eye-level three-quarter view from the terrace, the roof rake driving a long diagonal down to the left while the house fills the right two-thirds."
-       }
-      ]
-     },
-     {
-      "facet": "room",
-      "term": "kitchen",
-      "n": 4,
-      "cites": [
-       {
-        "section": "living-secondary-hero",
-        "field": "alt",
-        "quote": "…living area with tufted gray sofa, painted stone wall, antlers, walnut leaning ladder shelf, and the kitchen visible to the right"
-       },
-       {
-        "section": "kitchen",
-        "field": "src",
-        "quote": "chalet kitchen white shaker cabinets subway tile exposed wood beam column"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/chalet/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg",
-        "quote": "Eye-level vantage from an adjoining room, the hallway receding on a one-point axis at left, the post splitting the right half vertically."
-       }
-      ]
-     }
-    ],
     "style": [
      {
       "facet": "style",
       "term": "mid century",
-      "n": 18,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -3794,9 +3794,9 @@
         "quote": "| Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line."
        },
        {
-        "section": "meta",
-        "field": "summary.3.value",
-        "quote": "Cabin bones, mid-century sensibility."
+        "section": "blend-subhead",
+        "field": "content",
+        "quote": "Mixing cabin and mid-century was the whole idea, so here is every choice plotted between them."
        },
        {
         "section": "image",
@@ -3899,7 +3899,7 @@
     },
     {
      "label": "Angle",
-     "value": "Photography led the refresh. Imagery built for the people who use the tools, not photographed for inventory."
+     "value": "Photography first, and the rest of the site built to sit around it."
     }
    ],
    "disciplines": [
@@ -3920,7 +3920,7 @@
      {
       "facet": "client",
       "term": "Cosmo Prof",
-      "n": 38,
+      "n": 37,
       "cites": [
        {
         "section": "meta",
@@ -3967,30 +3967,6 @@
         "section": "marks-materials",
         "field": "colors.1.name",
         "quote": "Blush"
-       }
-      ]
-     }
-    ],
-    "style": [
-     {
-      "facet": "style",
-      "term": "modern",
-      "n": 5,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "…ing site was functional but dated, and the work was to bring modern visual direction and clearer product discovery, without slowin…"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/cosmo-prof/cosmo-prof-ui-website-homepage-2.png",
-        "quote": "Straight-on framing, a near-symmetric split with the two portraits mirrored across a centre line, each cropped at the shoulder and running the full height."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/cosmo-prof/cosmo-prof-ui-website-for-the-pros-shoppable-video-product-tabs.png",
-        "quote": "Two stacked bands, a pink text half set against a photographic half above, a centred tab row over an even four-up grid below."
        }
       ]
      }
@@ -4042,6 +4018,45 @@
        }
       ]
      }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 1,
+      "cites": [
+       {
+        "section": "home-footnote",
+        "field": "content",
+        "quote": "The personalization is a shelf, and the catalog is still right there under it."
+       }
+      ]
+     }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 4,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/cosmo-prof/cosmo-prof-ui-website-homepage-2.png",
+        "quote": "Straight-on framing, a near-symmetric split with the two portraits mirrored across a centre line, each cropped at the shoulder and running the full height."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/cosmo-prof/cosmo-prof-ui-website-for-the-pros-shoppable-video-product-tabs.png",
+        "quote": "Two stacked bands, a pink text half set against a photographic half above, a centred tab row over an even four-up grid below."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/cosmo-prof/cosmo-prof-ui-website-homepage-mobile.png",
+        "quote": "Flat top-down capture of a whole page, stacked full-width bands with several split into two- and three-up rows."
+       }
+      ],
+      "observed": true
+     }
     ]
    }
   },
@@ -4067,7 +4082,7 @@
     },
     {
      "label": "Angle",
-     "value": "Enterprise plumbing at gym scale. The AI only ever asks; one deterministic engine makes every booking."
+     "value": "Enterprise plumbing at gym scale. The AI only ever asks, and one deterministic engine makes every booking."
     }
    ],
    "disciplines": [
@@ -4364,7 +4379,7 @@
     },
     {
      "label": "Angle",
-     "value": "Light is the design move first. The first room of the house doesn't get a second chance."
+     "value": "The light through the front doors comes first, and every piece was picked to leave it alone."
     }
    ],
    "disciplines": [
@@ -4384,7 +4399,7 @@
      {
       "facet": "room",
       "term": "entry",
-      "n": 24,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -4408,7 +4423,7 @@
      {
       "facet": "furniture",
       "term": "rug",
-      "n": 23,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -4418,12 +4433,34 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A vintage rug runner anchors the floor without crowding it."
+        "quote": "A vintage rug runner on white oak boards that run unbroken to the doorway."
        },
        {
         "section": "image",
         "field": "/case-studies/fairview-entry/3.webp",
         "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 13,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…metric and a dark abstract in a thick frame, with a leather bench between them for the boots that come off and the bag set down on…"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/6.webp",
+        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
        }
       ]
      },
@@ -4440,54 +4477,31 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A brass and alabaster chandelier hangs alone overhead."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "bench",
-      "n": 9,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the ho…"
-       },
-       {
-        "section": "architectural-hero",
-        "field": "alt",
-        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/6.webp",
-        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
+        "quote": "A brass and alabaster chandelier hung by itself overhead."
        }
       ]
      },
      {
       "facet": "furniture",
       "term": "door",
-      "n": 4,
+      "n": 6,
       "cites": [
+       {
+        "section": "marks-materials",
+        "field": "fonts.0.description",
+        "quote": "Wide-plank white oak, running from the front door on into the rest of the house."
+       },
+       {
+        "section": "closing-subhead",
+        "field": "content",
+        "quote": "The leather bench inside the door is where that happens."
+       },
        {
         "section": "image",
         "field": "/case-studies/fairview-entry/3.webp",
         "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/6.webp",
-        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/7.webp",
-        "quote": "Square, low eye-level, asymmetric, with the glazed wall running out of frame left and the coat tree standing on the frame's vertical centre."
        }
-      ],
-      "observed": true
+      ]
      },
      {
       "facet": "furniture",
@@ -4497,12 +4511,12 @@
        {
         "section": "pieces-footnote",
         "field": "content",
-        "quote": "The chandelier is a single alabaster pendant set in brass, oversized for the space, hung alone."
+        "quote": "The chandelier is one alabaster pendant set in brass, oversized on purpose."
        },
        {
         "section": "marks-materials",
         "field": "fonts.2.description",
-        "quote": "An alabaster pendant set in hand-rubbed brass, hung dead-center."
+        "quote": "One alabaster pendant set in hand-rubbed brass, hung dead center."
        },
        {
         "section": "image",
@@ -4615,11 +4629,198 @@
       "observed": true
      }
     ],
+    "material": [
+     {
+      "facet": "material",
+      "term": "brass",
+      "n": 17,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 16,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wood",
+      "n": 13,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Two pieces of art on the side wall, a slatted wood geometric and a dark abstract in a thick frame, with a leather bench between th…"
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…onwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "stone",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A potted palm against limestone-cream walls."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wool",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
+       },
+       {
+        "section": "marks-materials",
+        "field": "introText",
+        "quote": "Oak, iron, brass, wool, and limestone."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "leather",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…ood geometric and a dark abstract in a thick frame, with a leather bench between them for the boots that come off and the bag set…"
+       },
+       {
+        "section": "architectural-hero",
+        "field": "alt",
+        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/6.webp",
+        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "steel",
+      "n": 4,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "fonts.1.description",
+        "quote": "Steel French doors with matching transom windows across the front of the room."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/7.webp",
+        "quote": "Square, low eye-level, asymmetric, with the glazed wall running out of frame left and the coat tree standing on the frame's vertical centre."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "glass",
+      "n": 4,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/6.webp",
+        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/7.webp",
+        "quote": "Square, low eye-level, asymmetric, with the glazed wall running out of frame left and the coat tree standing on the frame's vertical centre."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "ceramic",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/3.webp",
+        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       }
+      ],
+      "observed": true
+     }
+    ],
     "style": [
      {
       "facet": "style",
       "term": "vintage",
-      "n": 16,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -4662,192 +4863,6 @@
       "observed": true
      }
     ],
-    "material": [
-     {
-      "facet": "material",
-      "term": "brass",
-      "n": 16,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
-       },
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "oak",
-      "n": 14,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light."
-       },
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "wood",
-      "n": 13,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "…art on the side wall tell stories without explaining themselves: a slatted wood geometric piece, a dark abstract in a thick frame."
-       },
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…onwork doors, vintage gray rug on white oak floors, potted palm and slatted wood console at left, geometric wood wall art at right"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "stone",
-      "n": 8,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "A potted palm adds living texture against limestone-cream walls."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "leather",
-      "n": 7,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The leather bench between them is for the boots that come off, the bag set down, the moment between the car and the rest of the ho…"
-       },
-       {
-        "section": "architectural-hero",
-        "field": "alt",
-        "quote": "…slatted wood geometric piece and dark abstract in a thick wood frame, leather bench beneath, coat tree and palm in the foreground"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/6.webp",
-        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "wool",
-      "n": 7,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Limestone-cream walls, black iron, antiqued brass, white oak, vintage indigo wool"
-       },
-       {
-        "section": "marks-materials",
-        "field": "philosophyText",
-        "quote": "Vintage wool anchors the path."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "glass",
-      "n": 5,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The entry sits two stories tall, French ironwork glass running floor to ceiling at the center."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/6.webp",
-        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "steel",
-      "n": 4,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "fonts.1.description",
-        "quote": "Steel French doors and matching transom windows define the front of the room."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/7.webp",
-        "quote": "Square, low eye-level, asymmetric, with the glazed wall running out of frame left and the coat tree standing on the frame's vertical centre."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "ceramic",
-      "n": 1,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-entry/3.webp",
-        "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
-       }
-      ],
-      "observed": true
-     }
-    ],
     "colour": [
      {
       "facet": "colour",
@@ -4862,7 +4877,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A potted palm adds living texture against limestone-cream walls."
+        "quote": "A potted palm against limestone-cream walls."
        }
       ]
      }
@@ -4891,7 +4906,7 @@
     },
     {
      "label": "Angle",
-     "value": "The fire gets the seat the TV would normally take. A formal room that doesn't feel formal."
+     "value": "Four velvet swivels facing a stone fireplace, and no television anywhere in the room."
     }
    ],
    "disciplines": [
@@ -4911,7 +4926,7 @@
      {
       "facet": "material",
       "term": "velvet",
-      "n": 35,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -4922,28 +4937,6 @@
         "section": "meta",
         "field": "reel.images.3",
         "quote": "/case-studies/fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
-        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "brass",
-      "n": 34,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.1",
-        "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
        },
        {
         "section": "image",
@@ -4976,8 +4969,30 @@
      },
      {
       "facet": "material",
+      "term": "brass",
+      "n": 33,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.1",
+        "quote": "/case-studies/fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-sitting/fairview-sitting-stacked-stone-fireplace-charcoal-velvet-swivels-brass-coffee-table.jpg",
+        "quote": "Eye-level vantage from just off centre, the fireplace squared to the camera while three swivel chairs ring the foreground and crop at the bottom edge, the coffee table dominating the lower right."
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "wood",
-      "n": 17,
+      "n": 19,
       "cites": [
        {
         "section": "meta",
@@ -4999,7 +5014,7 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -5009,7 +5024,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "The palette stays tight - stone, velvet, brass, warm oak, no competing colors."
+        "quote": "The palette is four materials: stone, velvet, brass, and warm oak, and no accent colors."
        },
        {
         "section": "image",
@@ -5199,7 +5214,7 @@
      {
       "facet": "furniture",
       "term": "fireplace",
-      "n": 27,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -5243,7 +5258,7 @@
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 16,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -5265,7 +5280,7 @@
      {
       "facet": "furniture",
       "term": "mantel",
-      "n": 15,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -5287,7 +5302,7 @@
      {
       "facet": "furniture",
       "term": "mirror",
-      "n": 10,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -5309,7 +5324,7 @@
      {
       "facet": "furniture",
       "term": "beam",
-      "n": 8,
+      "n": 9,
       "cites": [
        {
         "section": "texture-stone",
@@ -5541,13 +5556,25 @@
        }
       ],
       "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "texture-subhead",
+        "field": "content",
+        "quote": "Velvet is on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel."
+       }
+      ]
      }
     ],
     "colour": [
      {
       "facet": "colour",
       "term": "charcoal",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -5664,7 +5691,7 @@
   {
    "slug": "fairview-suite",
    "title": "The Fairview: Primary Suite",
-   "subtitle": "Hotel glam in a 600 square foot bedroom. Vaulted ceilings, crystal chandeliers, and charcoal violet walls balanced by floor-to-ceiling views of the property.",
+   "subtitle": "The Fairview suite, bedroom and bath, 600 square feet. Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood.",
    "category": "Interiors",
    "href": "/case-studies/fairview-suite",
    "year": "2022",
@@ -5683,7 +5710,7 @@
     },
     {
      "label": "Angle",
-     "value": "Commits to one mood and follows it through every surface. Glam that earns the square footage."
+     "value": "Dark and warm in the bedroom, and the bath keeps it going."
     }
    ],
    "disciplines": [
@@ -5748,7 +5775,7 @@
      {
       "facet": "furniture",
       "term": "tub",
-      "n": 13,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -5802,7 +5829,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+        "quote": "A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone f…"
        },
        {
         "section": "image",
@@ -5819,7 +5846,7 @@
        {
         "section": "room-footnote",
         "field": "content",
-        "quote": "Below it, the furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading…"
+        "quote": "Below it: bed against the window wall, sofa at the foot of the bed, swivel chair and ottoman in the reading corner, cast stone fir…"
        },
        {
         "section": "image",
@@ -5846,7 +5873,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+        "quote": "A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone f…"
        },
        {
         "section": "image",
@@ -5868,29 +5895,7 @@
        {
         "section": "furniture-footnote",
         "field": "content",
-        "quote": "…turned legs, faux fur throws layered across the bed, a solid marble pedestal side table, and brass hammered vessels on the floor."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-bedroom/fairview-suite-reading-nook-chair-ottoman-marble-table.jpg",
-        "quote": "Vertical crop from low, near seat height, with the furniture stepping left to right and the window edge closing the frame."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "pillow",
-      "n": 7,
-      "cites": [
-       {
-        "section": "closing-text",
-        "field": "content",
-        "quote": "A suite that picks a mood and follows it through every surface, every fixture, every throw pillow."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
-        "quote": "Wide horizontal from the bed corner at seated height, the raked ceiling occupying the top third and the window wall running the full left half."
+        "quote": "…é ottoman on turned legs, faux fur throws across the bed, a solid marble pedestal side table, hammered brass vessels on the floor."
        },
        {
         "section": "image",
@@ -5902,22 +5907,44 @@
      {
       "facet": "furniture",
       "term": "bed",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "room-footnote",
         "field": "content",
-        "quote": "Below it, the furniture arranges in layers: bed against the window wall, sofa at the foot, swivel chair and ottoman in the reading…"
+        "quote": "Below it: bed against the window wall, sofa at the foot of the bed, swivel chair and ottoman in the reading corner, cast stone fir…"
        },
        {
-        "section": "furniture-footnote",
+        "section": "room-footnote",
         "field": "content",
-        "quote": "A charcoal velvet sofa at the foot of the bed, a swivel chair with a brass base and channel tufting, a bouclé ottoman on turned le…"
+        "quote": "…elow it: bed against the window wall, sofa at the foot of the bed, swivel chair and ottoman in the reading corner, cast stone fire…"
        },
        {
         "section": "image",
         "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
         "quote": "Wide horizontal from the bed corner at seated height, the raked ceiling occupying the top third and the window wall running the full left half."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "headboard",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.3",
+        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone f…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg",
+        "quote": "Vertical from standing height, ceiling vault filling the top third, the sofa laid horizontally across the middle and the window wall opening the right."
        }
       ]
      },
@@ -5946,25 +5973,26 @@
      },
      {
       "facet": "furniture",
-      "term": "headboard",
-      "n": 5,
+      "term": "pillow",
+      "n": 6,
       "cites": [
        {
-        "section": "meta",
-        "field": "reel.images.3",
-        "quote": "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+        "quote": "Wide horizontal from the bed corner at seated height, the raked ceiling occupying the top third and the window wall running the full left half."
        },
        {
         "section": "image",
-        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg",
-        "quote": "Vertical from standing height, ceiling vault filling the top third, the sofa laid horizontally across the middle and the window wall opening the right."
+        "field": "/case-studies/fairview-bedroom/fairview-suite-reading-nook-chair-ottoman-marble-table.jpg",
+        "quote": "Vertical crop from low, near seat height, with the furniture stepping left to right and the window edge closing the frame."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg",
+        "quote": "Vertical from standing height with the ceiling ridge cutting a diagonal, the bed cropped at the left edge and the fireplace squared to the right."
        }
-      ]
+      ],
+      "observed": true
      },
      {
       "facet": "furniture",
@@ -5974,7 +6002,7 @@
        {
         "section": "ensuite-footnote",
         "field": "content",
-        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+        "quote": "It faces the glass shower across a half-wall of hex tile."
        },
        {
         "section": "image",
@@ -6129,6 +6157,18 @@
      },
      {
       "facet": "furniture",
+      "term": "sink",
+      "n": 1,
+      "cites": [
+       {
+        "section": "headline-mood",
+        "field": "text",
+        "quote": "The kind of room you sink into"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "mirror",
       "n": 1,
       "cites": [
@@ -6184,7 +6224,7 @@
      {
       "facet": "room",
       "term": "bedroom",
-      "n": 25,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -6206,7 +6246,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 9,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -6230,7 +6270,7 @@
      {
       "facet": "colour",
       "term": "charcoal",
-      "n": 17,
+      "n": 16,
       "cites": [
        {
         "section": "meta",
@@ -6314,6 +6354,28 @@
      },
      {
       "facet": "material",
+      "term": "velvet",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone f…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
+        "quote": "Wide horizontal from the bed corner at seated height, the raked ceiling occupying the top third and the window wall running the full left half."
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "marble",
       "n": 11,
       "cites": [
@@ -6336,35 +6398,13 @@
      },
      {
       "facet": "material",
-      "term": "velvet",
-      "n": 11,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile"
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg",
-        "quote": "Wide horizontal from the bed corner at seated height, the raked ceiling occupying the top third and the window wall running the full left half."
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "glass",
       "n": 10,
       "cites": [
        {
         "section": "ensuite-footnote",
         "field": "content",
-        "quote": "It faces the glass-enclosed shower through a half-wall of hex tile."
+        "quote": "It faces the glass shower across a half-wall of hex tile."
        },
        {
         "section": "image",
@@ -6386,12 +6426,12 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…ery wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the property's tree canopy."
+        "quote": "…a vaulted ceiling with exposed wood beams, and floor-to-ceiling steel-framed windows looking out onto the property's tree canopy."
        },
        {
         "section": "room-text",
         "field": "content",
-        "quote": "…ery vertical surface - a color that shifts between cool and warm depending on the light coming through those steel-framed windows."
+        "quote": "The color shifts between cool and warm with the light through the steel-framed windows."
        },
        {
         "section": "image",
@@ -6408,12 +6448,12 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…- charcoal violet on every wall, vaulted ceilings with exposed wood beams, floor-to-ceiling steel-framed windows opening onto the…"
+        "quote": "Charcoal violet on every wall, a vaulted ceiling with exposed wood beams, and floor-to-ceiling steel-framed windows looking out on…"
        },
        {
         "section": "room-footnote",
         "field": "content",
-        "quote": "Exposed wood beams run the ridge line."
+        "quote": "The vaulted ceiling peaks at fourteen feet, with exposed wood beams along the ridge."
        },
        {
         "section": "image",
@@ -6430,7 +6470,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…lé ottoman, faux fur throws, brass accents at every furniture base and fixture, and a cast stone fireplace anchoring the far wall."
+        "quote": "…en sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone fireplace on the far wall."
        },
        {
         "section": "hero",
@@ -6452,7 +6492,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "A velvet headboard sits against linen sofa, bouclé ottoman, faux fur throws, brass accents at every furniture base and fixture, an…"
+        "quote": "A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone f…"
        },
        {
         "section": "image",
@@ -6613,7 +6653,7 @@
     },
     {
      "label": "Angle",
-     "value": "Material confidence, not material matching. One kit, three rooms that read completely different."
+     "value": "Some of the pairings looked risky on paper, and none of them do in the room."
     }
    ],
    "disciplines": [
@@ -6633,7 +6673,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 38,
+      "n": 33,
       "cites": [
        {
         "section": "meta",
@@ -6655,7 +6695,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 21,
+      "n": 19,
       "cites": [
        {
         "section": "meta",
@@ -6677,7 +6717,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 19,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -6698,30 +6738,8 @@
      },
      {
       "facet": "material",
-      "term": "tile",
-      "n": 17,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg",
-        "quote": "Portrait crop taken into the corner, the two walls splitting the frame near the middle with the bench wedging in low left."
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "nickel",
-      "n": 15,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -6742,8 +6760,30 @@
      },
      {
       "facet": "material",
+      "term": "tile",
+      "n": 14,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/floor-and-decor/urban-southwest-marble-shower-vertical-stacked-tile-niche-bench.jpg",
+        "quote": "Portrait crop taken into the corner, the two walls splitting the frame near the middle with the bench wedging in low left."
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "brick",
-      "n": 10,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -6753,29 +6793,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Urban southwest with exposed brick and a matte black soaking tub."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg",
-        "quote": "One-point vantage down the room's axis, the vanity running out of frame left, the shower wall closing the right, the tub centred on the line."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "oak",
-      "n": 8,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
-       },
-       {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Marble, dolomite, white oak, classic tile"
+        "quote": "One is urban southwest, with exposed brick and a matte black soaking tub."
        },
        {
         "section": "image",
@@ -6808,18 +6826,40 @@
      },
      {
       "facet": "material",
+      "term": "oak",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike."
+       },
+       {
+        "section": "meta",
+        "field": "summary.2.value",
+        "quote": "Marble, dolomite, white oak, classic tile"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg",
+        "quote": "One-point vantage down the room's axis, the vanity running out of frame left, the shower wall closing the right, the tub centred on the line."
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "stone",
-      "n": 5,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "The focus was hard surfaces, and the projects show how tile and stone anchor everything else."
+        "quote": "The focus was hard surfaces, and the three rooms show how tile and stone anchor everything else."
        },
        {
-        "section": "confidence-footnote",
+        "section": "confidence-subhead",
         "field": "content",
-        "quote": "…ecting materials all at once instead of one at a time - if a stone and a wood and a metal can hold each other in the moodboard, th…"
+        "quote": "If a stone and a wood and a metal work next to each other there, they work in the room."
        },
        {
         "section": "image",
@@ -6854,12 +6894,17 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 1,
+      "n": 2,
       "cites": [
+       {
+        "section": "meta",
+        "field": "summary.3.value",
+        "quote": "Some of the pairings looked risky on paper, and none of them do in the room."
+       },
        {
         "section": "confidence-footnote",
         "field": "content",
-        "quote": "The combinations felt risky on paper but landed perfectly in person."
+        "quote": "Some of it looked risky on paper."
        }
       ]
      },
@@ -6881,7 +6926,7 @@
      {
       "facet": "style",
       "term": "farmhouse",
-      "n": 17,
+      "n": 16,
       "cites": [
        {
         "section": "meta",
@@ -6903,7 +6948,7 @@
      {
       "facet": "style",
       "term": "modern",
-      "n": 16,
+      "n": 15,
       "cites": [
        {
         "section": "meta",
@@ -7040,7 +7085,7 @@
      {
       "facet": "furniture",
       "term": "tub",
-      "n": 9,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -7050,7 +7095,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Urban southwest with exposed brick and a matte black soaking tub."
+        "quote": "One is urban southwest, with exposed brick and a matte black soaking tub."
        },
        {
         "section": "image",
@@ -7313,12 +7358,12 @@
        {
         "section": "quiet-glam-text",
         "field": "content",
-        "quote": "…ned marble runs the full height of the walls, a brass urchin pendant breaks the verticality, and a graphic star tile grounds the f…"
+        "quote": "…ned marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor."
        },
        {
         "section": "material-chart-text",
         "field": "content",
-        "quote": "…mes from the small handful of materials that only show up once in the entire feature - exposed brick, shiplap, the urchin pendant."
+        "quote": "…ach room its own is the handful of things that only show up once in the whole feature: exposed brick, shiplap, the urchin pendant."
        }
       ]
      },
@@ -7397,7 +7442,7 @@
      {
       "facet": "client",
       "term": "Floor & Decor",
-      "n": 5,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -7417,14 +7462,14 @@
   {
    "slug": "hill-country-bath",
    "title": "Hill Country Primary Bath",
-   "subtitle": "Marble surfaces, warm metal fixtures, and wood ceilings. A 400 square foot bathroom that feels collected over time.",
+   "subtitle": "The primary bath in the same Hill Country house as the kitchen, 400 square feet. Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-bath",
    "year": "2023",
    "summary": [
     {
      "label": "Built",
-     "value": "400 sq ft primary bath. Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+     "value": "400 sq ft, two vanities, a freestanding tub, and a marble shower with a bench, all under a wood plank ceiling."
     },
     {
      "label": "Scope",
@@ -7436,7 +7481,7 @@
     },
     {
      "label": "Angle",
-     "value": "Made to feel found. A room that looks lived in on day one."
+     "value": "The valet stand came from an antique shop and the painting is older than the house, so the room looked lived in the day it was finished."
     }
    ],
    "disciplines": [
@@ -7458,7 +7503,7 @@
      {
       "facet": "room",
       "term": "bath",
-      "n": 48,
+      "n": 42,
       "cites": [
        {
         "section": "meta",
@@ -7480,7 +7525,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 8,
+      "n": 7,
       "cites": [
        {
         "section": "meta",
@@ -7490,7 +7535,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "The primary bath sits in the same Hill Country home as the kitchen - same property, same material family, different register."
+        "quote": "Two rooms from the kitchen, and softer than it."
        }
       ]
      }
@@ -7499,7 +7544,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 30,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -7518,7 +7563,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 37,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -7562,7 +7607,7 @@
      {
       "facet": "material",
       "term": "nickel",
-      "n": 15,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -7572,7 +7617,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one."
+        "quote": "…brass; the bath goes lighter on the sage, swaps the brass for polished nickel, and uses three marbles where the kitchen used one."
        },
        {
         "section": "image",
@@ -7589,12 +7634,12 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+        "quote": "The kitchen runs dark sage, raw oak, and unlacquered brass; the bath goes lighter on the sage, swaps the brass for polished nickel…"
        },
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Lighter sage on the cabinetry, polished nickel where the kitchen used brass, three different marbles instead of one."
+        "quote": "…acquered brass; the bath goes lighter on the sage, swaps the brass for polished nickel, and uses three marbles where the kitchen u…"
        },
        {
         "section": "image",
@@ -7616,7 +7661,7 @@
        {
         "section": "vanity-footnote",
         "field": "content",
-        "quote": "Glass-front uppers on one side for display, solid doors on the other for storage - the asymmetry is deliberate."
+        "quote": "Glass-front uppers on one side for display and solid doors on the other for storage; the two sides don't match on purpose."
        },
        {
         "section": "image",
@@ -7658,9 +7703,9 @@
         "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg"
        },
        {
-        "section": "shower-details",
-        "field": "right.src",
-        "quote": "hill country bath detail globe sconce dried botanicals clay"
+        "section": "headline-collected",
+        "field": "text",
+        "quote": "The clay pot weighs more than the sink"
        },
        {
         "section": "image",
@@ -7750,7 +7795,7 @@
        {
         "section": "objects-footnote",
         "field": "content",
-        "quote": "…grapher arrives is a room where someone actually lives - the denim jacket on the valet stand, the vintage rug fraying at the edge,…"
+        "quote": "The styling is personal because it is somebody's stuff: the denim jacket on the valet stand, the vintage rug fraying at one edge,…"
        },
        {
         "section": "image",
@@ -7803,7 +7848,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Where the kitchen runs bold with dark sage, raw oak, and unlacquered brass, the bath pulls back."
+        "quote": "The kitchen runs dark sage, raw oak, and unlacquered brass; the bath goes lighter on the sage, swaps the brass for polished nickel…"
        }
       ]
      }
@@ -7812,7 +7857,7 @@
      {
       "facet": "furniture",
       "term": "vanity",
-      "n": 21,
+      "n": 20,
       "cites": [
        {
         "section": "meta",
@@ -7834,7 +7879,7 @@
      {
       "facet": "furniture",
       "term": "shower",
-      "n": 15,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -7844,7 +7889,7 @@
        {
         "section": "meta",
         "field": "summary.0.value",
-        "quote": "Two vanities, freestanding tub, marble shower under a wood plank ceiling."
+        "quote": "400 sq ft, two vanities, a freestanding tub, and a marble shower with a bench, all under a wood plank ceiling."
        },
        {
         "section": "image",
@@ -7856,7 +7901,7 @@
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 15,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -7943,6 +7988,28 @@
      },
      {
       "facet": "furniture",
+      "term": "window",
+      "n": 9,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.2",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "…nces at both vanities, wall-mounted cross-handle faucets, and a freestanding tub under the window with a view out to the property."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
+        "quote": "Symmetrical straight-on elevation, mirror centred over the basin with a sconce to each side, wide horizontal crop."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "sink",
       "n": 9,
       "cites": [
@@ -7952,9 +8019,9 @@
         "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-sink-bridge-faucet-veined-marble.jpg"
        },
        {
-        "section": "shower-details",
-        "field": "left.src",
-        "quote": "hill country bath detail sink bridge faucet veined marble"
+        "section": "headline-collected",
+        "field": "text",
+        "quote": "The clay pot weighs more than the sink"
        },
        {
         "section": "image",
@@ -7987,40 +8054,18 @@
      },
      {
       "facet": "furniture",
-      "term": "tub",
-      "n": 8,
+      "term": "mirror",
+      "n": 9,
       "cites": [
        {
-        "section": "meta",
-        "field": "reel.images.4",
-        "quote": "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg"
+        "section": "his-hero",
+        "field": "image",
+        "quote": "hill country bath his vanity valet stand antique mirror"
        },
        {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg",
-        "quote": "Wide corner vantage at standing height, two walls meeting near centre, ceiling wedge across the top and rug running out of the bottom of the frame."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "window",
-      "n": 8,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.2",
-        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg"
-       },
-       {
-        "section": "her-details",
-        "field": "right.src",
-        "quote": "hill country bath detail faucet marble backsplash window"
+        "section": "his-hero",
+        "field": "alt",
+        "quote": "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces"
        },
        {
         "section": "image",
@@ -8053,23 +8098,45 @@
      },
      {
       "facet": "furniture",
-      "term": "mirror",
-      "n": 8,
+      "term": "tub",
+      "n": 7,
       "cites": [
        {
-        "section": "his-hero",
-        "field": "image",
-        "quote": "hill country bath his vanity valet stand antique mirror"
+        "section": "meta",
+        "field": "reel.images.4",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg"
        },
        {
-        "section": "his-hero",
-        "field": "alt",
-        "quote": "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces"
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
        },
        {
         "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
-        "quote": "Symmetrical straight-on elevation, mirror centred over the basin with a sconce to each side, wide horizontal crop."
+        "field": "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg",
+        "quote": "Wide corner vantage at standing height, two walls meeting near centre, ceiling wedge across the top and rug running out of the bottom of the frame."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "bench",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "400 sq ft, two vanities, a freestanding tub, and a marble shower with a bench, all under a wood plank ceiling."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg",
+        "quote": "Eye-level corner view with the two walls meeting near the left third, the wall field dominant and the bench cropped at the frame edge."
        }
       ]
      },
@@ -8098,28 +8165,6 @@
      },
      {
       "facet": "furniture",
-      "term": "bench",
-      "n": 5,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg"
-       },
-       {
-        "section": "shower-footnote",
-        "field": "content",
-        "quote": "The bench inside the shower uses the same slab as the walls, bookmatched at the corner."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg",
-        "quote": "Eye-level corner view with the two walls meeting near the left third, the wall field dominant and the bench cropped at the frame edge."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "rug",
       "n": 5,
       "cites": [
@@ -8131,7 +8176,7 @@
        {
         "section": "objects-footnote",
         "field": "content",
-        "quote": "…tually lives - the denim jacket on the valet stand, the vintage rug fraying at the edge, the olive tree leaning toward the window."
+        "quote": "…ebody's stuff: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning toward the window."
        },
        {
         "section": "image",
@@ -8333,45 +8378,45 @@
      },
      {
       "facet": "style",
-      "term": "vintage",
-      "n": 4,
+      "term": "antique",
+      "n": 6,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "Dried florals, an olive tree, layered vintage rugs - every object placed so the room feels personal."
+        "field": "summary.3.value",
+        "quote": "The valet stand came from an antique shop and the painting is older than the house, so the room looked lived in the day it was fin…"
        },
-       {
-        "section": "vanity-footnote",
-        "field": "content",
-        "quote": "…l sinks on marble countertops, wall-mounted bridge faucets with cross handles giving a vintage silhouette against modern plumbing."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-his-vanity-valet-stand-antique-mirror.jpg",
-        "quote": "Straight-on elevation, symmetric about the sink and mirror, the vanity run spanning full width with the valet stand breaking the symmetry at the left edge."
-       }
-      ]
-     },
-     {
-      "facet": "style",
-      "term": "antique",
-      "n": 4,
-      "cites": [
        {
         "section": "his-hero",
         "field": "image",
         "quote": "hill country bath his vanity valet stand antique mirror"
        },
        {
-        "section": "his-hero",
-        "field": "alt",
-        "quote": "His vanity, brass valet stand with denim jacket, antique mirror, sage cabinetry, globe sconces"
-       },
-       {
         "section": "image",
         "field": "/case-studies/hill-country-bath/hill-country-bath-freestanding-tub-wood-ceiling-painting.jpg",
         "quote": "Wide corner vantage at standing height, two walls meeting near centre, ceiling wedge across the top and rug running out of the bottom of the frame."
+       }
+      ]
+     },
+     {
+      "facet": "style",
+      "term": "vintage",
+      "n": 4,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Dried florals, an olive tree, layered vintage rugs, and every object in it placed so it feels like somebody's room."
+       },
+       {
+        "section": "vanity-footnote",
+        "field": "content",
+        "quote": "Vessel sinks on marble, wall-mounted bridge faucets with cross handles, a vintage shape on modern plumbing."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-bath/hill-country-bath-his-vanity-valet-stand-antique-mirror.jpg",
+        "quote": "Straight-on elevation, symmetric about the sink and mirror, the vanity run spanning full width with the valet stand breaking the symmetry at the left edge."
        }
       ]
      },
@@ -8383,7 +8428,7 @@
        {
         "section": "vanity-footnote",
         "field": "content",
-        "quote": "…l sinks on marble countertops, wall-mounted bridge faucets with cross handles giving a vintage silhouette against modern plumbing."
+        "quote": "Vessel sinks on marble, wall-mounted bridge faucets with cross handles, a vintage shape on modern plumbing."
        },
        {
         "section": "image",
@@ -8405,7 +8450,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Ground-up Hill Country kitchen. Cabinetry, island, dining zone, full material spec."
+     "value": "Hill Country kitchen, ground up. Cabinetry, island, dining area, the full material spec."
     },
     {
      "label": "Scope",
@@ -8413,11 +8458,11 @@
     },
     {
      "label": "Materials",
-     "value": "Sage green, raw white oak, Calacatta marble, unlacquered brass. Four finishes, every surface."
+     "value": "Sage green, raw white oak, Calacatta marble, unlacquered brass."
     },
     {
      "label": "Angle",
-     "value": "Designed the way a product gets designed. Lock the palette to four, let the constraint become the aesthetic."
+     "value": "Pick four materials up front and use nothing else, so pieces from different eras can share a room."
     }
    ],
    "disciplines": [
@@ -8441,7 +8486,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 62,
+      "n": 58,
       "cites": [
        {
         "section": "meta",
@@ -8463,7 +8508,7 @@
      {
       "facet": "room",
       "term": "pantry",
-      "n": 13,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -8473,7 +8518,7 @@
        {
         "section": "material-columns",
         "field": "columns.0.content",
-        "quote": "…ng on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
+        "quote": "…d the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
        },
        {
         "section": "image",
@@ -8513,43 +8558,7 @@
        {
         "section": "island-columns",
         "field": "columns.1.content",
-        "quote": "It's the first thing visible from the entry."
-       }
-      ]
-     }
-    ],
-    "place": [
-     {
-      "facet": "place",
-      "term": "hill country",
-      "n": 38,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
-       }
-      ]
-     },
-     {
-      "facet": "place",
-      "term": "texas",
-      "n": 4,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "A kitchen in the Texas Hill Country, built from four materials."
-       },
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The space functions as the central hub of a Texas Hill Country home, used for cooking, gathering, and working in roughly equal mea…"
+        "quote": "Centered, with space to walk on all four sides, and the first thing you see from the entry."
        }
       ]
      }
@@ -8580,7 +8589,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 38,
+      "n": 39,
       "cites": [
        {
         "section": "meta",
@@ -8624,7 +8633,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 19,
+      "n": 17,
       "cites": [
        {
         "section": "meta",
@@ -8634,7 +8643,7 @@
        {
         "section": "island-columns",
         "field": "columns.0.content",
-        "quote": "…with no stain and no polyurethane seal, just a penetrating oil finish that lets the wood breathe and develop character over time."
+        "quote": "Raw wood in a kitchen was the riskiest call of the whole spec."
        },
        {
         "section": "image",
@@ -8656,7 +8665,7 @@
        {
         "section": "material-columns",
         "field": "columns.0.content",
-        "quote": "…ed floor to ceiling on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel,…"
+        "quote": "…n everything around the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel…"
        },
        {
         "section": "image",
@@ -8673,12 +8682,12 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…y, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs."
+        "quote": "…y, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs."
        },
        {
         "section": "dining-footnote",
         "field": "content",
-        "quote": "Leather-and-oak safari chairs surround the table."
+        "quote": "The safari chairs are leather on oak frames."
        },
        {
         "section": "image",
@@ -8690,12 +8699,12 @@
      {
       "facet": "material",
       "term": "steel",
-      "n": 7,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…ofile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolt…"
+        "quote": "…cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone b…"
        },
        {
         "section": "hero-dining",
@@ -8786,7 +8795,7 @@
        {
         "section": "island-columns",
         "field": "columns.2.content",
-        "quote": "A cabinet island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invit…"
+        "quote": "A solid-panel island with a granite overhang would keep them at arm's length."
        },
        {
         "section": "image",
@@ -8812,13 +8821,61 @@
        }
       ],
       "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "tile",
+      "n": 1,
+      "cites": [
+       {
+        "section": "material-text",
+        "field": "content",
+        "quote": "No accent tile, no stainless pulls, no painted island."
+       }
+      ]
+     }
+    ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 36,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A kitchen in the Texas Hill Country, built from four materials."
+       },
+       {
+        "section": "hardware-footnote",
+        "field": "content",
+        "quote": "The cremone bolts are a French mechanism on American shaker doors in a Texas kitchen."
+       }
+      ]
      }
     ],
     "furniture": [
      {
       "facet": "furniture",
       "term": "cabinet",
-      "n": 40,
+      "n": 35,
       "cites": [
        {
         "section": "meta",
@@ -8840,7 +8897,7 @@
      {
       "facet": "furniture",
       "term": "island",
-      "n": 33,
+      "n": 30,
       "cites": [
        {
         "section": "meta",
@@ -8861,28 +8918,6 @@
      },
      {
       "facet": "furniture",
-      "term": "hardware",
-      "n": 21,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room."
-       },
-       {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…he touchpoints and stays bright where hands don't reach, so after a year the hardware tells you exactly how the kitchen gets used."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg",
-        "quote": "Eye-level, the tall cabinet centred and vertical, the island corner cutting into the lower right and the doorway opening a second depth at the left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "backsplash",
       "n": 18,
       "cites": [
@@ -8894,7 +8929,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…the warm counterpoint, Calacatta marble handling the work surfaces and backsplash, unlacquered brass connecting every touchpoint."
+        "quote": "…ak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet."
        },
        {
         "section": "image",
@@ -8906,12 +8941,12 @@
      {
       "facet": "furniture",
       "term": "counter",
-      "n": 17,
+      "n": 18,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Four finishes applied consistently across every cabinet face, countertop, and piece of hardware in the room."
+        "quote": "Between them they cover every cabinet face, countertop, and piece of hardware in the room."
        },
        {
         "section": "cabinet-pair",
@@ -8922,6 +8957,28 @@
         "section": "image",
         "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
         "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "hardware",
+      "n": 18,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Between them they cover every cabinet face, countertop, and piece of hardware in the room."
+       },
+       {
+        "section": "cabinet-pair",
+        "field": "left.alt",
+        "quote": "Glass-front cabinet with brass hardware, vintage clock, marble counter"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg",
+        "quote": "Eye-level, the tall cabinet centred and vertical, the island corner cutting into the lower right and the doorway opening a second depth at the left."
        }
       ]
      },
@@ -8949,18 +9006,40 @@
      },
      {
       "facet": "furniture",
-      "term": "shelf",
-      "n": 14,
+      "term": "dining table",
+      "n": 12,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…e traditional American kitchens, steel-frame windows and open shelving pull contemporary, cremone bolts and schoolhouse pendants r…"
+        "quote": "…y, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs."
+       },
+       {
+        "section": "island-columns",
+        "field": "columns.1.content",
+        "quote": "From the range you look over it to the windows; from the dining table you look through it to the backsplash."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg",
+        "quote": "Eye-level wide shot down the length of the room, island and dining table running away on a diagonal to the right."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "faucet",
+      "n": 12,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg"
        },
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "The island anchors the room, with open shelving at one end, seating at the other, and a marble work surface running the full lengt…"
+        "quote": "…ak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet."
        },
        {
         "section": "image",
@@ -8971,23 +9050,23 @@
      },
      {
       "facet": "furniture",
-      "term": "dining table",
+      "term": "shelf",
       "n": 12,
       "cites": [
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…y, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari chairs."
+        "quote": "…aditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendant…"
        },
        {
-        "section": "island-columns",
-        "field": "columns.1.content",
-        "quote": "From the dining table, you look through it to the backsplash."
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length."
        },
        {
         "section": "image",
-        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows.jpg",
-        "quote": "Eye-level wide shot down the length of the room, island and dining table running away on a diagonal to the right."
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
        }
       ]
      },
@@ -9016,7 +9095,7 @@
      {
       "facet": "furniture",
       "term": "pendant",
-      "n": 11,
+      "n": 10,
       "cites": [
        {
         "section": "meta",
@@ -9024,9 +9103,9 @@
         "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-pantry-wall-herringbone-pendant.jpg"
        },
        {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+        "section": "cabinet-wide-pair",
+        "field": "right.src",
+        "quote": "hill country kitchen pantry wall herringbone pendant"
        },
        {
         "section": "image",
@@ -9037,18 +9116,18 @@
      },
      {
       "facet": "furniture",
-      "term": "faucet",
-      "n": 11,
+      "term": "door",
+      "n": 8,
       "cites": [
        {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-faucet-range-marble-island-detail.jpg"
+        "section": "hardware-footnote",
+        "field": "content",
+        "quote": "…t cabinet faces and give the pantry wall a presence a standard pull wouldn't, and one lever locks the door top and bottom at once."
        },
        {
-        "section": "material-columns",
-        "field": "columns.2.content",
-        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
+        "section": "hardware-closeup",
+        "field": "alt",
+        "quote": "Unlacquered brass cremone bolt detail on sage green cabinet door"
        },
        {
         "section": "image",
@@ -9087,29 +9166,7 @@
        {
         "section": "material-columns",
         "field": "columns.2.content",
-        "quote": "…binet pulls, cremone bolts on the tall pantry doors, the bridge faucet, pendant light fixtures, sconce arms, range knobs and trim."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
-        "quote": "Straight-on wide of the range wall, green cabinet towers flanking a white hood over marble, the oak island and four stools front and center."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-glass-cabinet-clock-marble.jpg",
-        "quote": "Eye-level, the tall cabinet centred and vertical, the island corner cutting into the lower right and the doorway opening a second depth at the left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "door",
-      "n": 7,
-      "cites": [
-       {
-        "section": "hardware-closeup",
-        "field": "alt",
-        "quote": "Unlacquered brass cremone bolt detail on sage green cabinet door"
+        "quote": "…bolts on the tall pantry doors, the bridge faucet, the pendants, the sconce arms, the range knobs and trim, all in the same brass."
        },
        {
         "section": "image",
@@ -9198,12 +9255,12 @@
        {
         "section": "island-columns",
         "field": "columns.2.content",
-        "quote": "…net island with solid panels and a granite overhang creates a barrier, while an oak table with open shelves creates an invitation."
+        "quote": "The cabinets around the walls are architecture and the island is a table."
        },
        {
-        "section": "dining-text",
-        "field": "content",
-        "quote": "A dark-stained turned-leg table set against the light oak and green of the kitchen."
+        "section": "dining-header",
+        "field": "title",
+        "quote": "A Turned-Leg Table,"
        },
        {
         "section": "image",
@@ -9220,7 +9277,7 @@
        {
         "section": "material-columns",
         "field": "columns.2.content",
-        "quote": "Even the bar stool frames pick up the brass tone."
+        "quote": "Even the bar stool frames pick up the tone."
        },
        {
         "section": "image",
@@ -9265,7 +9322,7 @@
        {
         "section": "material-columns",
         "field": "columns.0.content",
-        "quote": "…ng on the perimeter: base cabinets, uppers, glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
+        "quote": "…d the perimeter: base cabinets, uppers, the glass-front display, the range hood surround, the refrigerator panel, the pantry wall."
        },
        {
         "section": "pantry-hero",
@@ -9367,7 +9424,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Shaker-profile cabinet doors reference traditional American kitchens, steel-frame windows and open shelving pull contemporary, cre…"
+        "quote": "Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cr…"
        },
        {
         "section": "image",
@@ -9411,7 +9468,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "…orary, cremone bolts and schoolhouse pendants read European antique, and a turned-leg dining table sits against leather safari cha…"
+        "quote": "…ry, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs…"
        },
        {
         "section": "image",
@@ -9498,7 +9555,7 @@
     },
     {
      "label": "Angle",
-     "value": "Each piece chosen for how it ages, not how it photographs. The room is collected, piece by piece."
+     "value": "Everything picked for how it will wear, then left alone to do it."
     }
    ],
    "disciplines": [
@@ -9519,7 +9576,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 30,
+      "n": 31,
       "cites": [
        {
         "section": "meta",
@@ -9538,7 +9595,7 @@
      {
       "facet": "material",
       "term": "stone",
-      "n": 37,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -9560,7 +9617,7 @@
      {
       "facet": "material",
       "term": "leather",
-      "n": 30,
+      "n": 32,
       "cites": [
        {
         "section": "meta",
@@ -9582,7 +9639,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 29,
+      "n": 30,
       "cites": [
        {
         "section": "meta",
@@ -9604,7 +9661,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 21,
+      "n": 22,
       "cites": [
        {
         "section": "meta",
@@ -9649,8 +9706,13 @@
      {
       "facet": "material",
       "term": "ceramic",
-      "n": 7,
+      "n": 8,
       "cites": [
+       {
+        "section": "collected-footnote",
+        "field": "content",
+        "quote": "A ladder shelf holds a vintage globe and ceramic vessels, brass fire tools underneath."
+       },
        {
         "section": "collected-armchairs",
         "field": "left.alt",
@@ -9660,11 +9722,6 @@
         "section": "image",
         "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
         "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
-        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
        }
       ]
      },
@@ -9825,7 +9882,7 @@
      {
       "facet": "furniture",
       "term": "fireplace",
-      "n": 25,
+      "n": 24,
       "cites": [
        {
         "section": "meta",
@@ -9847,7 +9904,7 @@
      {
       "facet": "furniture",
       "term": "sofa",
-      "n": 24,
+      "n": 23,
       "cites": [
        {
         "section": "meta",
@@ -10000,6 +10057,28 @@
      },
      {
       "facet": "furniture",
+      "term": "window",
+      "n": 10,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+       },
+       {
+        "section": "collected-footnote",
+        "field": "content",
+        "quote": "Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "artwork",
       "n": 10,
       "cites": [
@@ -10023,18 +10102,18 @@
      },
      {
       "facet": "furniture",
-      "term": "window",
+      "term": "lamp",
       "n": 9,
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.6",
-        "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
        },
        {
-        "section": "collected-armchairs",
-        "field": "right.src",
-        "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
        },
        {
         "section": "image",
@@ -10067,50 +10146,6 @@
      },
      {
       "facet": "furniture",
-      "term": "bench",
-      "n": 8,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "abstract",
-        "quote": "The sheepskin under the bench is soft."
-       },
-       {
-        "section": "hero",
-        "field": "alt",
-        "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "lamp",
-      "n": 8,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
-       },
-       {
-        "section": "collected-vignettes",
-        "field": "left.src",
-        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "vase",
       "n": 8,
       "cites": [
@@ -10133,6 +10168,72 @@
      },
      {
       "facet": "furniture",
+      "term": "bench",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Family heirlooms sit next to new finds, and there is a sheepskin under the bench that gets moved around."
+       },
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…eather sofa with Navajo-style throw, tweed armchairs, leather bench with sheepskin, brass pendant chandelier, reclaimed pine floor…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "stool",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
+       },
+       {
+        "section": "collected-footnote",
+        "field": "content",
+        "quote": "Two tweed armchairs face each other at the tall window with a leather stool between them and the Hill Country outside."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "mirror",
+      "n": 7,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.7",
+        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
+       },
+       {
+        "section": "collected-vignettes",
+        "field": "left.src",
+        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg",
+        "quote": "Centred one-point view straight down the room, near-symmetrical about the range hood."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "bowl",
       "n": 7,
       "cites": [
@@ -10150,50 +10251,6 @@
         "section": "image",
         "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
         "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "stool",
-      "n": 6,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.6",
-        "quote": "/case-studies/hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg"
-       },
-       {
-        "section": "collected-armchairs",
-        "field": "right.src",
-        "quote": "hill country living tweed armchairs window vintage rug leather stool conversation area"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
-      "term": "mirror",
-      "n": 6,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.7",
-        "quote": "/case-studies/hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg"
-       },
-       {
-        "section": "collected-vignettes",
-        "field": "left.src",
-        "quote": "hill country living leather oval mirror wood console crystal lamp entry vignette"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-open-kitchen-green-cabinets-marble-pampas-architectural.jpg",
-        "quote": "Centred one-point view straight down the room, near-symmetrical about the range hood."
        }
       ]
      },
@@ -10452,7 +10509,7 @@
      {
       "facet": "style",
       "term": "vintage",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -10484,7 +10541,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+        "quote": "The furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a N…"
        },
        {
         "section": "image",
@@ -10496,7 +10553,7 @@
      {
       "facet": "style",
       "term": "western",
-      "n": 7,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -10506,7 +10563,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Furniture blends mid-century silhouettes with textiles that lean Western."
+        "quote": "…furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Nava…"
        },
        {
         "section": "image",
@@ -10597,7 +10654,7 @@
      {
       "facet": "room",
       "term": "living room",
-      "n": 14,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -10636,7 +10693,7 @@
      {
       "facet": "room",
       "term": "entry",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -10660,7 +10717,7 @@
      {
       "facet": "colour",
       "term": "charcoal",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
@@ -10669,8 +10726,8 @@
        },
        {
         "section": "interiors-index",
-        "field": "colors.3.name",
-        "quote": "Charcoal Tweed"
+        "field": "introText",
+        "quote": "Limestone, pine, cognac leather, charcoal tweed, antiqued brass."
        }
       ]
      },
@@ -10699,7 +10756,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Brand campaign for a Texas barrel maker. One graphic idea sized billboard to phone screen."
+     "value": "Brand campaign for a Texas barrel maker: an outdoor banner, posters, a phone wallpaper, a shirt."
     },
     {
      "label": "Scope",
@@ -10707,11 +10764,11 @@
     },
     {
      "label": "Tools",
-     "value": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal. Heavy geometric sans, vintage display face."
+     "value": "Illustrator, Photoshop, InDesign. Greatdome for the display type, Avenir Next for everything else."
     },
     {
      "label": "Angle",
-     "value": "Heritage without the cosplay. Mid-century poster language carrying Texas without the Western cliché."
+     "value": "Mid-century travel-poster color, an oak silhouette, and one graphic idea sized from a billboard down to a phone."
     }
    ],
    "disciplines": [
@@ -10730,7 +10787,7 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 34,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -10747,7 +10804,7 @@
      {
       "facet": "place",
       "term": "texas",
-      "n": 12,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -10766,7 +10823,7 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 18,
+      "n": 20,
       "cites": [
        {
         "section": "meta",
@@ -10783,7 +10840,7 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 6,
+      "n": 7,
       "cites": [
        {
         "section": "marks-materials",
@@ -10792,13 +10849,25 @@
        },
        {
         "section": "marks-materials",
-        "field": "colors.0.description",
-        "quote": "Paper, ground"
+        "field": "philosophyText",
+        "quote": "…e and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type."
        },
        {
         "section": "image",
         "field": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg",
         "quote": "Straight-on street-level vantage, the billboard centred and horizontal with greenery closing in from both sides."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "wallpaper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "summary.0.value",
+        "quote": "Brand campaign for a Texas barrel maker: an outdoor banner, posters, a phone wallpaper, a shirt."
        }
       ]
      },
@@ -10811,18 +10880,6 @@
         "section": "marks-materials",
         "field": "colors.3.name",
         "quote": "Brick"
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "wallpaper",
-      "n": 1,
-      "cites": [
-       {
-        "section": "closing",
-        "field": "content",
-        "quote": "…Texas barrel maker needed a brand language that could carry from a roadside billboard down to a phone wallpaper without diluting."
        }
       ]
      },
@@ -10892,30 +10949,35 @@
      {
       "facet": "style",
       "term": "vintage",
-      "n": 6,
+      "n": 5,
       "cites": [
        {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Heavy geometric sans, vintage display face."
-       },
-       {
         "section": "marks-materials",
-        "field": "fonts.0.description",
-        "quote": "Vintage display face for editorial headlines and poster moments."
+        "field": "philosophyText",
+        "quote": "Greatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else."
        },
        {
         "section": "image",
         "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg",
         "quote": "No horizon and no vanishing point, stacked horizontal bands with the tree entering from the right edge and cropped."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg",
+        "quote": "Landscape format, the tree vertical and centred against three cropped circles pinned at the corners."
        }
       ]
      },
      {
       "facet": "style",
       "term": "western",
-      "n": 3,
+      "n": 4,
       "cites": [
+       {
+        "section": "lang-footnote",
+        "field": "content",
+        "quote": "The brief asked for heritage that stayed clear of the Western cliché, so the reference pile was travel posters and old highway sig…"
+       },
        {
         "section": "image",
         "field": "/case-studies/hill-country-oak/hill-country-oakworks-iphone-mockup-poster-tree-color-blocks-held-against-sky.jpg",
@@ -10925,14 +10987,8 @@
         "section": "image",
         "field": "/case-studies/hill-country-oak/hill-country-oakworks-cowboy-hat-man-branded-shirt-portrait.jpg",
         "quote": "Low vantage looking up, the figure cropped at the crown and at both shoulders, filling centre and right."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-oak/hill-country-oakworks-3d-layered-wordmark-typography-cream-yellow-orange.jpg",
-        "quote": "Flat-on with no perspective, three left-aligned lines stacked, the last one bleeding off the right edge."
        }
-      ],
-      "observed": true
+      ]
      }
     ],
     "colour": [
@@ -10947,9 +11003,9 @@
         "quote": "/case-studies/hill-country-oak/hill-country-oakworks-typography-oak-barrels-master-craft-heritage-whiskey-orange-cream-tagline.jpg"
        },
        {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal."
+        "section": "type-pair",
+        "field": "left.alt",
+        "quote": "Live oak silhouette set against an orange sun on cream textured ground"
        }
       ]
      },
@@ -10959,14 +11015,14 @@
       "n": 3,
       "cites": [
        {
-        "section": "meta",
-        "field": "summary.2.value",
-        "quote": "Sun-washed palette: burnt orange, mustard, teal, cream, charcoal."
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
        },
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
+        "quote": "…e and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type."
        }
       ]
      }
@@ -10976,7 +11032,7 @@
   {
    "slug": "ivy-park",
    "title": "Ivy Park by Beyoncé",
-   "subtitle": "Exclusive US digital launch for Beyoncé's first activewear brand. Full campaign from concept to live in six weeks.",
+   "subtitle": "The Ivy Park launch for Nordstrom, the exclusive US partner. Six weeks from moodboard to live, and most of the product gone within days.",
    "category": "Creative",
    "href": "/case-studies/ivy-park",
    "year": "2016",
@@ -10995,7 +11051,7 @@
     },
     {
      "label": "Angle",
-     "value": "Nordstrom held the only US partnership, so the website was the entire launch. One polygon, six weeks, no margin."
+     "value": "No other US retailer had the product, so this website was the launch. Six weeks, with the photography supplied and everything else open."
     }
    ],
    "disciplines": [
@@ -11017,7 +11073,7 @@
      {
       "facet": "client",
       "term": "Ivy Park",
-      "n": 49,
+      "n": 48,
       "cites": [
        {
         "section": "meta",
@@ -11034,7 +11090,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 16,
+      "n": 15,
       "cites": [
        {
         "section": "meta",
@@ -11061,7 +11117,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Beyoncé's first activewear line, with Nordstrom holding the exclusive US retail partnership."
+        "quote": "Beyoncé's first activewear line."
        }
       ]
      }
@@ -11174,7 +11230,7 @@
        {
         "section": "closing",
         "field": "content",
-        "quote": "…ive direction, typography, layout, motion, copy, and rollout happened in a Nordstrom office with a small team and a hard deadline."
+        "quote": "…direction, typography, layout, motion, copy and rollout all happened in a Nordstrom office, with a small team and a hard deadline."
        }
       ]
      }
@@ -11224,14 +11280,14 @@
   {
    "slug": "j-christianson",
    "title": "J. Christianson",
-   "subtitle": "Brand identity for a fashion and home goods label. Name, logo, color system, and signature graphics developed from scratch.",
+   "subtitle": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike.",
    "category": "Creative",
    "href": "/case-studies/j-christianson",
    "year": "2019",
    "summary": [
     {
      "label": "Built",
-     "value": "Name, four-circle mark, color system, tree graphic, product applications"
+     "value": "Name, four-circle mark, palette, tree graphic, product applications"
     },
     {
      "label": "Scope",
@@ -11243,7 +11299,7 @@
     },
     {
      "label": "Angle",
-     "value": "One mark shifts its palette by context without losing recognition. One tree drawing, four colorways, doing the work of a full product line."
+     "value": "The mark changes color depending on where it goes, and one tree drawing in four colorways covers the whole product line."
     }
    ],
    "disciplines": [
@@ -11264,7 +11320,7 @@
      {
       "facet": "client",
       "term": "J. Christianson",
-      "n": 12,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -11384,7 +11440,7 @@
        {
         "section": "closing",
         "field": "content",
-        "quote": "…tree silhouette over color stripes, a palette pulled from mid-century earth tones warm enough to feel organic without leaning int…"
+        "quote": "Mid-century earth tones, warm enough to feel organic."
        },
        {
         "section": "image",
@@ -11584,7 +11640,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "First digital flagship for the NYC retailer. Brand, site, and stories, from zero"
+     "value": "The online store, the brand around it, and the templates for telling stories"
     },
     {
      "label": "Scope",
@@ -11596,7 +11652,7 @@
     },
     {
      "label": "Angle",
-     "value": "Built like a flagship. The way it told stories was designed before the product pages."
+     "value": "The site had to work the way the store worked: an edit that changed with the season, and a story ahead of every sale."
     }
    ],
    "disciplines": [
@@ -11618,7 +11674,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 41,
+      "n": 40,
       "cites": [
        {
         "section": "meta",
@@ -11635,17 +11691,17 @@
      {
       "facet": "client",
       "term": "Valentino",
-      "n": 2,
+      "n": 3,
       "cites": [
+       {
+        "section": "strategy-subhead",
+        "field": "content",
+        "quote": "Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes, Loewe."
+       },
        {
         "section": "homepage-templates",
         "field": "images.1.src",
         "quote": "jeffrey new york homepage valentino pink lace dress monstera"
-       },
-       {
-        "section": "homepage-templates",
-        "field": "images.1.alt",
-        "quote": "Jeffrey New York homepage, Valentino pink lace dress paired with monstera leaves"
        }
       ]
      }
@@ -11654,7 +11710,7 @@
      {
       "facet": "place",
       "term": "new york",
-      "n": 30,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -11754,7 +11810,7 @@
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+        "quote": "Charcoal for the type, cream as the ground so the photography reads, a soft gray for captions and meta, and one yellow accent pull…"
        },
        {
         "section": "marks-materials",
@@ -11771,7 +11827,7 @@
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "Charcoal holds the type and the structural weight, cream sits as the ground that lets the photography do the talking, and a single…"
+        "quote": "Charcoal for the type, cream as the ground so the photography reads, a soft gray for captions and meta, and one yellow accent pull…"
        },
        {
         "section": "marks-materials",
@@ -11846,7 +11902,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Spring campaign across email, homepage, social. Three dress stories: JW Anderson, Valentino, Simone Rocha"
+     "value": "Spring campaign for email, homepage and social. Three dress stories: JW Anderson, Valentino, Simone Rocha"
     },
     {
      "label": "Scope",
@@ -11858,7 +11914,7 @@
     },
     {
      "label": "Angle",
-     "value": "High fashion on a studio budget. Foliage used as architecture. Scale without a plane ticket."
+     "value": "Monstera and palm fronds cropped big enough to read as architecture, so a white studio could pass for somewhere far away."
     }
    ],
    "disciplines": [
@@ -11878,7 +11934,7 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 37,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -11895,7 +11951,7 @@
      {
       "facet": "client",
       "term": "Valentino",
-      "n": 8,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -11919,7 +11975,7 @@
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "…es bring the seasonal accent - striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that w…"
+        "quote": "…ses bring the seasonal accent: striped blue for JW Anderson, blush florals for Simone Rocha, whatever Valentino was sending that w…"
        },
        {
         "section": "marks-materials",
@@ -11988,7 +12044,7 @@
        {
         "section": "marks-materials",
         "field": "fonts.0.description",
-        "quote": "Set wide with the Atlanta/New York city tagline at smaller scale alongside."
+        "quote": "Italic Heavy for the wordmark, set wide, with the Atlanta/New York tagline small alongside it."
        }
       ]
      }
@@ -12056,14 +12112,14 @@
   {
    "slug": "loved-by-nordstrom",
    "title": "Loved by Nordstrom",
-   "subtitle": "Year-long campaign built on one idea: the Instagram heart as editorial device. A system flexible enough to run across social, email, signage, and web using any kind of picture.",
+   "subtitle": "A year of emerging-brand merchandising for Nordstrom, in stores and online. One heart icon borrowed from Instagram, and twelve months built on top of it.",
    "category": "Creative",
    "href": "/case-studies/loved-by-nordstrom",
    "year": "2017",
    "summary": [
     {
      "label": "Built",
-     "value": "Year-long brand campaign. One tile system across social, email, in-store signage, web"
+     "value": "A year-long campaign on one tile template, across social, email, in-store signage, and web"
     },
     {
      "label": "Scope",
@@ -12075,7 +12131,7 @@
     },
     {
      "label": "Angle",
-     "value": "A heart does what a logo cannot. One borrowed icon, two tiers, any brand's photography."
+     "value": "One borrowed icon, two tiers, any brand's photography."
     }
    ],
    "disciplines": [
@@ -12320,6 +12376,18 @@
        }
       ],
       "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 1,
+      "cites": [
+       {
+        "section": "channels-text",
+        "field": "content",
+        "quote": "Only the size changed from one to the next, so the tile you saw in a feed was the one you saw in the store window."
+       }
+      ]
      }
     ],
     "style": [
@@ -12352,7 +12420,7 @@
   {
    "slug": "neiman-marcus",
    "title": "Neiman Marcus InSite",
-   "subtitle": "Editorial design for luxury ecommerce. Designer spotlights, seasonal stories, typography as graphic element. Magazine sensibility on a store's budget.",
+   "subtitle": "Neiman Marcus's digital editorial hub, InSite. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
    "category": "Creative",
    "href": "/case-studies/neiman-marcus",
    "year": "2012",
@@ -12371,7 +12439,7 @@
     },
     {
      "label": "Angle",
-     "value": "Make the website feel like a magazine, sell product like a store, don't let either side win. Saturated color replaced a location budget."
+     "value": "Feel like a magazine, sell like a store. With no location budget, the color and the type had to set the scene."
     }
    ],
    "disciplines": [
@@ -12417,7 +12485,7 @@
        {
         "section": "ways-text",
         "field": "content",
-        "quote": "A silk blouse with an ikat sweater."
+        "quote": "A silk blouse the same two ways."
        },
        {
         "section": "ways-pair-2",
@@ -12439,7 +12507,7 @@
        {
         "section": "ways-text",
         "field": "content",
-        "quote": "A black dress with a denim jacket."
+        "quote": "A black dress with a denim jacket, then with an ikat sweater."
        },
        {
         "section": "ways-pair-1",
@@ -12505,12 +12573,12 @@
        {
         "section": "color-text",
         "field": "content",
-        "quote": "No location budgets, just studio sweeps and seamless paper."
+        "quote": "Every shoot happened on seamless paper in the studio, so the color had to be the place."
        },
        {
         "section": "type-footnote",
         "field": "content",
-        "quote": "A quiet story got a quiet silhouette on a flat gray paper sweep, while a loud story got a saturated backdrop and a pose with room…"
+        "quote": "A restrained story got a still pose on flat gray paper."
        },
        {
         "section": "image",
@@ -12703,7 +12771,7 @@
   {
    "slug": "nordstrom-beauty",
    "title": "Nordstrom Beauty",
-   "subtitle": "Editorial hub meets product tool. Virtual try-on, shoppable stories, and templates built to stay fresh without manual updates.",
+   "subtitle": "Nordstrom's beauty editorial hub, where every story is shoppable. Built to stay current without a team rebuilding the pages every week.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-beauty",
    "year": "2018",
@@ -12722,7 +12790,7 @@
     },
     {
      "label": "Angle",
-     "value": "Built a template that aged better than the content inside it. Editorial that merchandises itself."
+     "value": "Magazine stories on top, the product catalog underneath."
     }
    ],
    "disciplines": [
@@ -12903,7 +12971,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Content taxonomy from scratch. Four named buckets, each with its own typographic mark and icon."
+     "value": "A content framework from scratch: four named buckets, each with its own typographic mark and icon."
     },
     {
      "label": "Scope",
@@ -12911,11 +12979,11 @@
     },
     {
      "label": "Tools",
-     "value": "Custom-sourced typefaces, icon set, naming language. No two lockups share a face."
+     "value": "Custom-sourced typefaces, an icon set, and the four names."
     },
     {
      "label": "Angle",
-     "value": "Magazine language, not menu language. The framework organized the teams before it ever reached a customer."
+     "value": "Sort a store's worth of stories the way a magazine sorts its sections."
     }
    ],
    "disciplines": [
@@ -12933,7 +13001,7 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 17,
+      "n": 16,
       "cites": [
        {
         "section": "meta",
@@ -13101,7 +13169,7 @@
    "summary": [
     {
      "label": "Built",
-     "value": "Three tile shapes. Square, hero, vertical, resizing across every breakpoint."
+     "value": "Three tile shapes, square, hero, and vertical, that resize for every breakpoint."
     },
     {
      "label": "Scope",
@@ -13113,7 +13181,7 @@
     },
     {
      "label": "Angle",
-     "value": "Personalization that stayed quiet underneath. Strict rules, loose output, mass scale that still looked hand-built."
+     "value": "Strict rules, loose output."
     }
    ],
    "disciplines": [
@@ -13185,7 +13253,7 @@
        {
         "section": "meta",
         "field": "summary.0.value",
-        "quote": "Three tile shapes."
+        "quote": "Three tile shapes, square, hero, and vertical, that resize for every breakpoint."
        }
       ]
      },
@@ -13394,7 +13462,7 @@
   {
    "slug": "robert-rodriguez",
    "title": "Robert Rodriguez x Neiman’s",
-   "subtitle": "Spring Campaign",
+   "subtitle": "A spring campaign for Neiman Marcus, shot in one day and run across social, email, the stores, and editorial. ’80s mall glam meets high fashion.",
    "category": "Creative",
    "href": "/case-studies/robert-rodriguez",
    "year": "2024",
@@ -13418,7 +13486,7 @@
      {
       "facet": "client",
       "term": "Neiman Marcus",
-      "n": 20,
+      "n": 19,
       "cites": [
        {
         "section": "meta",
@@ -13756,43 +13824,6 @@
       ]
      }
     ],
-    "style": [
-     {
-      "facet": "style",
-      "term": "modern",
-      "n": 5,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
-        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
-        "quote": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
-        "quote": "Straight-on eye-level vantage, monitor centred and cut off at the base by the shelf edge, the room symmetrical around it."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "traditional",
-      "n": 1,
-      "cites": [
-       {
-        "section": "closing-columns",
-        "field": "columns.0.content",
-        "quote": "Traditional enterprise tool development follows a predictable arc - requirements gathering, vendor evaluation, procurement, implem…"
-       }
-      ]
-     }
-    ],
     "material": [
      {
       "facet": "material",
@@ -14010,6 +14041,31 @@
       ],
       "observed": true
      }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 5,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
+        "quote": "Three-quarter vantage from the left and slightly below, the laptop set right of centre on a shallow diagonal, the lid dominating the upper two thirds."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
+        "quote": "Low three-quarter vantage from the left, the laptop laid across the frame on a strong diagonal, the open lid filling the upper half and the keyboard the lower."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
+        "quote": "Straight-on eye-level vantage, monitor centred and cut off at the base by the shelf edge, the room symmetrical around it."
+       }
+      ],
+      "observed": true
+     }
     ]
    }
   },
@@ -14031,7 +14087,7 @@
     },
     {
      "label": "Try it",
-     "value": "Section 02 takes your own images. Nothing uploads, nothing saves"
+     "value": "Section 02 takes your own images, and nothing uploads or saves"
     }
    ],
    "disciplines": [
@@ -14059,7 +14115,7 @@
     {
      "value": "4.8KB",
      "label": "Web component",
-     "note": "Gzipped, zero dependencies, any webpage",
+     "note": "Gzipped, no dependencies, works on any page",
      "section": "file-stats"
     },
     {
@@ -14298,14 +14354,14 @@
   {
    "slug": "you-by-sally",
    "title": "You By Sally",
-   "subtitle": "Brand campaign turning hair dye from drugstore aisle to creative decision. Real cast, bold swatches, and a system that holds across every surface.",
+   "subtitle": "A brand campaign for You by Sally, Sally Beauty's hair color line. Real people instead of models, oversized swatches, and a look that holds from an influencer's bio page to a retail sign.",
    "category": "Creative",
    "href": "/case-studies/you-by-sally",
    "year": "2021",
    "summary": [
     {
      "label": "Built",
-     "value": "Hair color brand campaign. Cast portraits, oversized swatch system, brand kit across every surface."
+     "value": "Hair color brand campaign. Cast portraits, oversized swatches, a brand kit for bio pages, email and retail signage."
     },
     {
      "label": "Scope",
@@ -14317,7 +14373,7 @@
     },
     {
      "label": "Angle",
-     "value": "Hair color usually sits under fluorescent lights next to the toothpaste. Treat it like a creative decision, not something you grab."
+     "value": "Casting first, and the portraits led everything after it. Then swatches big enough to pick a shade from."
     }
    ],
    "disciplines": [
@@ -14341,7 +14397,7 @@
      {
       "facet": "client",
       "term": "Sally Beauty",
-      "n": 3,
+      "n": 4,
       "cites": [
        {
         "section": "meta",
