@@ -45,8 +45,32 @@
  * 100vh overreaches by the mobile browser-chrome delta. A vh-sized rise
  * would make the climb room and the plate's pull-up disagree with the real
  * viewport exactly when the chrome collapses mid-scroll.
+ *
+ * CAPPED BY THE WIDTH, because the width is what sets the plate's height.
+ * A full-bleed plate is `column width / image ratio` tall — around 0.64
+ * of the width for the landscape files this language runs on — and it
+ * knows nothing about the viewport. The screen does. At 1440x900 those
+ * two happen to agree: the plate comes out 0.8 to 1.5 screens tall and a
+ * 96dvh climb is 0.6 to 1.2 times its own height, so it sweeps across the
+ * held section and covers it, which is the whole gesture. At 375x812 the
+ * same plate is 0.23 to 0.44 of the screen and the same climb is 2.2 to
+ * 4.2 times its height: it floats over the held content for three screens
+ * without ever covering it. Measured on Hill Country Kitchen, six climbs,
+ * both widths. That is the overlapping, and the untravelled part of it is
+ * the empty screen.
+ *
+ * 90vw only binds when the screen is taller than it is wide — the two
+ * expressions cross at an aspect of about 1.07 — so every landscape
+ * screen keeps 96dvh exactly and nothing about the desktop tuning moves.
+ * Below the crossover the climb tracks the width that made the plate, and
+ * lands at ~1.4x the plate's height on a phone and on a tablet alike.
+ *
+ * The shorter climb also shortens the stage: PinStage's spacer, ClimbRoom
+ * and the plate's pull-up all interpolate THIS string, so they cannot
+ * disagree, and the page loses the scroll it was spending on a picture
+ * that had already gone by.
  */
-export const RISE = "96dvh";
+export const RISE = "min(96dvh, 90vw)";
 
 /** The beat of held, fully-visible content before a plate starts to climb. */
 export const PLATE_HOLD = "13dvh";
