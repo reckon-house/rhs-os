@@ -46,7 +46,7 @@ const WORK = [
   ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg?v=3", 1920, 1280, "jeffrey new york digital flagship hero"],
   ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3", 1600, 1600, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
   ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
-  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg?v=3", 1920, 1280, "jeffrey spring campaign hero"],
+  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg", 1920, 1280, "the jeffrey homepage open on a laptop resting on a pink chair"],
   ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg?v=3", 1920, 1280, "hill country bath vanity marble globe sconces sage", 0.86],
   ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3", 1610, 1073, "nordstrom beauty hub laptop homepage mockup", 0.33],
   ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg?v=3", 1920, 1280, "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"],
@@ -57,7 +57,6 @@ const WORK = [
   ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg?v=3", 1920, 1280, "j christianson storefront tree stripe window mockup"],
   ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg?v=3", 1920, 1280, "amber shockey co blue florals peony wallpaper pattern field"],
   ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg?v=3", 1920, 1280, "hero"],
-  ["Jeffrey NYC", "Campaign direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg?v=3", 1920, 1280, "jeffrey spring campaign jw anderson striped dress monstera frame"],
   ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg?v=3", 1920, 1280, "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"],
   ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3", 1920, 1280, "urban southwest primary bath exposed brick matte black soaking tub"],
   ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3", 1920, 1280, "fairview suite bedroom chandelier fireplace windows wide"],
@@ -67,6 +66,7 @@ const WORK = [
   ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg?v=3", 1920, 1280, "chalet living room a frame glass doors malm fireplace sputnik chandelier"],
   ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg", 1600, 1600, "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock"],
   ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-graphics-prints-apparel.jpg", 728, 604, "branding graphics prints florals hot air balloon letterform fashion illustration apparel"],
+  ["Jeffrey Spring Campaign", "Email, campaign templates", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg?v=3", 1920, 1280, "jeffrey spring campaign jw anderson striped dress monstera frame"],
   ["West Texas", "Landscape photography", "/case-studies/big-bend", "/case-studies/big-bend/hero.jpg", 2560, 1707, "chisos peak cactus"],
 ];
 

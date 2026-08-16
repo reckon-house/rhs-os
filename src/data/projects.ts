@@ -25,7 +25,7 @@ export const projects: Project[] = [
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-design-system.jpg?v=3`, href: "/case-studies/nordstrom-personalization", tags: ["digital"] },
   { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-website-design.jpg?v=3`, href: "/case-studies/jeffrey-ecommerce", tags: ["digital"] },
   { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg?v=3`, href: "/case-studies/capitan-boot-co", tags: ["creative"] },
-  { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign.jpg?v=3`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
+  { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign-laptop.jpg`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "hillBath", title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg?v=3`, href: "/case-studies/hill-country-bath", tags: ["interiors"] },
   { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3`, href: "/case-studies/nordstrom-beauty", tags: ["digital"] },
   { id: "oakworks", title: "Hill Country Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-county-oakworks-campaign-branding.jpg?v=3`, href: "/case-studies/hill-country-oak", tags: ["creative"] },
@@ -37,7 +37,6 @@ export const projects: Project[] = [
   { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-pattern-dishware.jpg?v=3`, href: "/case-studies/amber-shockey-co", tags: ["creative"] },
   { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg?v=3`, href: "/case-studies/you-by-sally", tags: ["creative"] },
   { id: "sallyOS", title: "Sally Marketing OS", category: "Product design, engineering", image: `/case-studies/sally-os/heroes/sally-os-platform-hero.jpg`, href: "/case-studies/sally", tags: ["digital"] },
-  { id: "jeffreyCampaign2", title: "Jeffrey NYC", category: "Campaign direction, design", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg?v=3`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "fairviewSitting", title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg?v=3`, href: "/case-studies/fairview-sitting", tags: ["interiors"] },
   { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3`, href: "/case-studies/floor-and-decor", tags: ["interiors"] },
   { id: "fairviewBedroom", title: "The Fairview Suite", category: "Interior design, bedroom", image: `${HP}/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3`, href: "/case-studies/fairview-suite", tags: ["interiors"] },
@@ -47,6 +46,13 @@ export const projects: Project[] = [
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg?v=3`, href: "/case-studies/chalet", tags: ["interiors"] },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
+  /* The study's second card, dropped down here so the two entries to it
+     are not a screen apart. It was titled "Jeffrey NYC", which is the
+     jeffrey-ecommerce card's name a few rows up, while pointing at
+     jeffrey-spring — two different studies reading as one repeated one.
+     Its image file is still named for an interiors project it has
+     nothing to do with; the picture inside it is the Valentino email. */
+  { id: "jeffreyCampaign2", title: "Jeffrey Spring Campaign", category: "Email, campaign templates", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg?v=3`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"] },
   { id: "sizzle", title: "Faux Reel", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", ogImage: "/og-faux-reel.jpg", href: "/case-studies/sizzle", tags: ["digital"] },
 ];
