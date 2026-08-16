@@ -455,6 +455,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/jeffrey-ecommerce/hp/jeffrey-new-york-homepage-step-into-summer-must-have-shoes.jpg": [1357, 967],
   "/case-studies/jeffrey-ecommerce/hp/jeffrey-new-york-homepage-loewe-blue-leather-bag.jpg": [1357, 967],
   "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg": [3100, 1918],
+  "/case-studies/jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg": [3100, 1918],
   "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-editorial-spread.jpg": [3100, 1918],
   "/case-studies/jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp": [6493, 2013],
   "/case-studies/jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg": [2188, 4031],

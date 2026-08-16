@@ -24,9 +24,10 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 5 frames",
+        caption: "Preview · 6 frames",
         colors: ["#1A1A1A", "#F5F2ED", "#FFFF40", "#8C8578"],
         images: [
+          "/case-studies/jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg",
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-digital-flagship-hero.jpg",
           "/case-studies/jeffrey-ecommerce/hp/jeffrey-new-york-homepage-dries-van-noten-yellow-fringe-ready-to-wear.jpg",
           "/case-studies/jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg",
@@ -56,8 +57,8 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/jeffrey-new-york-digital-flagship-hero.jpg`,
-      alt: "Jeffrey New York digital flagship hero",
+      image: `${IMG}/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg`,
+      alt: "The Jeffrey homepage open on a laptop, the Jeffrey x Saint Laurent spring/summer shoes story running across it",
       pressing: { choreo: { rise: true } },
     },
 
@@ -134,6 +135,24 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
          is not a zoom, and minting a mark here would put a second "02"
          in a spine that already opens on one. The grid sits under
          Storytelling Over, where it belongs. */
+      /* Held so the plate below can climb it. The six templates stay on
+         screen while one of them arrives as a photograph, which is the
+         whole point of putting them next to each other. */
+      pressing: { choreo: { pin: true } },
+    },
+
+    // ── The old cover, kept. The grid above shows the six homepages
+    // as flat templates; this is one of them in the world, which is
+    // the beat that grid was missing. 3100px native, so a full-column
+    // plate is well inside its own pixels.
+    {
+      id: "flagship-in-the-world",
+      type: "image",
+      src: `${IMG}/jeffrey-new-york-digital-flagship-hero.jpg`,
+      alt: "The Valentino homepage open on a laptop sitting on a small table in a field of daisies",
+      aspect: "native",
+      padded: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ── Editorial headline — replaces the original closing's
