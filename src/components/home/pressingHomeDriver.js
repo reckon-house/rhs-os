@@ -2953,16 +2953,22 @@ function armRows(rowsEl) {
        frames open wide, large ones open a little, and the label always
        has somewhere to go. The biggest pictures moving least is the
        honest outcome — they are already the loudest thing in the row. */
-    /* The cap exists so a frame never grows past the line under it and
-       covers its own name. It has to key off the line being DRAWN, not
-       merely present: the row rule is still in the grid holding the
-       band rhythm, it just stopped painting when the standing verticals
-       took over. Measured against an invisible rule it was capping
-       against nothing anyone could see. */
+    /* The cap is GEOMETRY, not decoration, and gating it on the border
+       being painted was wrong — it let a frame open over the row below
+       and cover it. .ixrule still sits exactly where the band ends
+       whether or not it draws, which is the boundary this needs; it
+       only stopped painting because the standing verticals took the
+       job of saying so. So: display, not border.
+
+       Opening to the column is the ambition and this is the limit on
+       it. A frame in a row with room reaches the line; one in a tight
+       row opens as far as its own band allows and stops. Sliding the
+       rest of the index down instead would reflow the page under the
+       cursor on every hover, which is a worse trade than a frame that
+       opens a little less. */
     const rule = row.querySelector(".ixrule");
     const rcs = rule && getComputedStyle(rule);
-    const ruled =
-      !!rcs && rcs.display !== "none" && parseFloat(rcs.borderTopWidth) > 0;
+    const ruled = !!rcs && rcs.display !== "none";
     const room = ruled
       ? rule.getBoundingClientRect().top -
         card.querySelector(".lbl").getBoundingClientRect().bottom - 8
