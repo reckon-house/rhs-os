@@ -654,7 +654,7 @@ export const arcCaseStudy: CaseStudy = {
       id: "brand-system",
       type: "brand-system",
       label: "SECTION 06: BRAND SYSTEM",
-      title: "Visual Identity &\nDesign Language",
+      title: "Visual identity &\ndesign language",
       pressing: { mark: { n: "09", name: "Brand system" } },
       introText:
         "Home inventory sounds like a chore, and insurance analysis sounds like a meeting with your agent. The brand had to make documenting your house feel like something you might want to do.",

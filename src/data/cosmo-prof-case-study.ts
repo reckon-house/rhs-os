@@ -69,7 +69,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "photo-header",
       type: "section-header",
       label: "SECTION 02: PHOTOGRAPHY DIRECTION",
-      title: "Product Photography,",
+      title: "Product photography,",
       // The study's one crossing, on the argument the whole case rests on.
       //
       // No zoom plate anywhere in this study: every UI capture is ~1990px
@@ -148,10 +148,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "home-header",
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
-      title: "The Header, Cut Down",
+      title: "The header, cut down",
       pressing: {
         mark: { n: "03", name: "Smaller Header" },
-        heldLine: "to Category Names.",
+        heldLine: "to category names.",
         // Holds the headline while the two copy blocks travel up beside
         // it. The section's own argument is about a header getting out of
         // the way, so letting this one sit still while the copy moves is
@@ -220,10 +220,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "mobile-header",
       type: "section-header",
       label: "SECTION 04: MOBILE",
-      title: "On the Phone,",
+      title: "On the phone,",
       pressing: {
         mark: { n: "04", name: "The Phone" },
-        heldLine: "Tabs Become Swipes.",
+        heldLine: "tabs become swipes.",
         // One absorbed block, so the hold is short. Left unpinned it read
         // as the only header on the page that scrolls away from its copy.
         choreo: { pin: true },
@@ -262,7 +262,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "Warm Neutrals, Sharp Black.\nJost, Wordmark to Caption.",
+      title: "Warm neutrals, sharp black.\nJost, wordmark to caption.",
     introText:
         "The colors stay back so the photography leads. Jost runs from the header lockup down to the price line under a product.",
       philosophyText:
@@ -320,10 +320,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Promotions, Campaigns, Education,",
+      title: "Promotions, campaigns, education,",
       pressing: {
         mark: { n: "05", name: "The Templates" },
-        heldLine: "on the Same Templates.",
+        heldLine: "on the same templates.",
       },
     },
     {

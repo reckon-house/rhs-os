@@ -7,7 +7,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   title: "Typography & Patterns",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Personal work: six patterns and three art prints, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
+    "Personal work: six patterns and three lithographs, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
   field: "Typography Design\nPattern Design\nArt Direction",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -48,7 +48,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       },
       title: "Typography\n& Patterns",
       subtitle:
-        "Personal work: six patterns and three art prints, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
+        "Personal work: six patterns and three lithographs, in black and white only. | A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
       field: "Typography Design  Pattern Design  Art Direction",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -60,13 +60,13 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         "Print",
       ],
       summary: [
-        { label: "Built", value: "Three art prints, twelve pattern tiles" },
+        { label: "Built", value: "Three lithographs, twelve pattern tiles" },
         { label: "Scope", value: "Typography, pattern design, art direction" },
         { label: "Tools", value: "Adobe Illustrator, Photoshop" },
         { label: "Angle", value: "Six shapes, no color, and the only decisions left were placement and scale." },
       ],
       abstract:
-        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three art prints came out of that set, and they land in three different places.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
+        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set, and they land in three different places.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
     },
 
         // ── HERO ──
@@ -147,7 +147,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "fancy-header",
       type: "section-header",
-      label: "SECTION 03: ART PRINT 01 / THE FANCY",
+      label: "SECTION 03: LITHOGRAPH 01 / THE FANCY",
       title: "The Fancy,",
       pressing: {
         mark: { n: "03", name: "The Fancy" },
@@ -258,7 +258,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       pressing: {
         plate: "04",
         captions: [
-          "Stepper, art print 02",
+          "Stepper, lithograph 02",
           "Slab capitals and script",
           "Photographed on the bench",
         ],
@@ -281,7 +281,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "stepper-header",
       type: "section-header",
-      label: "SECTION 04: ART PRINT 02 / STEPPER",
+      label: "SECTION 04: LITHOGRAPH 02 / STEPPER",
       title: "Stepper,",
       pressing: {
         mark: { n: "04", name: "Stepper" },
@@ -356,7 +356,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "white-header",
       type: "section-header",
-      label: "SECTION 05: ART PRINT 03 / WHITE",
+      label: "SECTION 05: LITHOGRAPH 03 / WHITE",
       title: "Calligraphy up top,",
       pressing: {
         mark: { n: "05", name: "White" },

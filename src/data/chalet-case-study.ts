@@ -74,10 +74,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "studs-header",
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
-      title: "Warm Gray Siding,",
+      title: "Warm gray siding,",
       pressing: {
         mark: { n: "02", name: "Warm Gray" },
-        heldLine: "White Railings.",
+        heldLine: "white railings.",
         choreo: { pin: true },
       },
     },
@@ -156,10 +156,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "interior-header",
       type: "section-header",
       label: "SECTION 03: THE INTERIOR",
-      title: "Every Seat",
+      title: "Every seat",
       pressing: {
         mark: { n: "03", name: "Every Seat" },
-        heldLine: "Faces the Trees.",
+        heldLine: "faces the trees.",
         choreo: { pin: true },
       },
     },
@@ -276,7 +276,7 @@ export const chaletCaseStudy: CaseStudy = {
       id: "blend-header",
       type: "section-header",
       label: "SECTION 04: THE BLEND",
-      title: "Antlers on One End,",
+      title: "Antlers on one end,",
       // The study's one crossing. The blend IS the argument — cabin form,
       // mid-century pieces — and it is the only section that names both
       // halves at once, so the gesture belongs on the synthesis beat.
@@ -286,7 +286,7 @@ export const chaletCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "04", name: "Antlers to Sputnik" },
-        heldLine: "a Sputnik on the Other.",
+        heldLine: "a Sputnik on the other.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -317,10 +317,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Over 400 Square Feet",
+      title: "Over 400 square feet",
       pressing: {
         mark: { n: "05", name: "400 Square Feet" },
-        heldLine: "Bigger Than It Was.",
+        heldLine: "bigger than it was.",
       },
     },
     {

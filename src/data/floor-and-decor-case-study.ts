@@ -78,13 +78,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "Three Bathrooms,",
+      title: "Three bathrooms,",
       // Pins so "Three Directions." holds while the subhead and footnote
       // travel up beside it. Nothing climbs this brief — the hold is for
       // the copy, which is where the three projects get named.
       pressing: {
         mark: { n: "02", name: "Three Bathrooms" },
-        heldLine: "Marble in All of Them.",
+        heldLine: "marble in all of them.",
         choreo: { pin: true },
       },
     },
@@ -137,7 +137,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "confidence-header",
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
-      title: "Vertical Tile Against Brick,",
+      title: "Vertical tile against brick,",
       // The study's one crossing, on the sentence the whole feature exists
       // to argue.
       //
@@ -147,7 +147,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Mixed Materials" },
-        heldLine: "Nickel Next to Brass.",
+        heldLine: "nickel next to brass.",
         choreo: { pin: true, crossing: true },
       },
     },

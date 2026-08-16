@@ -71,12 +71,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "texture-header",
       type: "section-header",
       label: "SECTION 02: TEXTURE",
-      title: "Stone, Velvet,",
+      title: "Stone, velvet,",
       // Pinned so the headline holds while the four-material list travels
       // up beside it, and so the stone detail below has a holder to climb.
       pressing: {
         mark: { n: "02", name: "Stone, Velvet" },
-        heldLine: "Brass, Oak.",
+        heldLine: "brass, oak.",
         choreo: { pin: true },
       },
     },
@@ -150,7 +150,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "conversation-header",
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
-      title: "Four Swivels,",
+      title: "Four swivels,",
       // This study's one crossing, on its SECOND header. Its sibling
       // (fairview-entry) crosses its first and zooms its architectural
       // frame; two rooms in one house get different staging on purpose.
@@ -239,7 +239,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "Four Materials,\nEverything Else Follows.",
+      title: "Four materials,\neverything else follows.",
       introText:
         "Every other choice in the room comes from one of these four. The beams take their color from the velvet, the mantel from the oak, the bar cabinet from the brass.",
       philosophyTitle: "Material philosophy",
@@ -298,10 +298,10 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "The Hour",
+      title: "The hour",
       pressing: {
         mark: { n: "04", name: "After Dinner" },
-        heldLine: "After Dinner.",
+        heldLine: "after dinner.",
       },
     },
     {

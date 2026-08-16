@@ -1925,14 +1925,14 @@
   {
    "slug": "black-white-type",
    "title": "Typography & Patterns",
-   "subtitle": "Personal work: six patterns and three art prints, in black and white only. A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
+   "subtitle": "Personal work: six patterns and three lithographs, in black and white only. A vocabulary small enough to fit on a napkin, applied to letterforms large enough to fill a wall.",
    "category": "Creative",
    "href": "/case-studies/black-white-type",
    "year": "2023",
    "summary": [
     {
      "label": "Built",
-     "value": "Three art prints, twelve pattern tiles"
+     "value": "Three lithographs, twelve pattern tiles"
     },
     {
      "label": "Scope",
@@ -7694,28 +7694,6 @@
      },
      {
       "facet": "material",
-      "term": "clay",
-      "n": 7,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.6",
-        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg"
-       },
-       {
-        "section": "headline-collected",
-        "field": "text",
-        "quote": "The clay pot weighs more than the sink"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg",
-        "quote": "Tall vertical frame, three-quarter vantage looking down the length of the vanity, floor and ceiling both included, everything converging to the right."
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "ceramic",
       "n": 7,
       "cites": [
@@ -7733,6 +7711,28 @@
         "section": "image",
         "field": "/case-studies/hill-country-bath/hill-country-bath-detail-faucet-marble-backsplash-window.jpg",
         "quote": "Square crop, straight-on at counter height, the mirror's lower edge cutting a hard horizontal across the top third."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "clay",
+      "n": 6,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.6",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-globe-sconce-dried-botanicals-clay.jpg"
+       },
+       {
+        "section": "shower-details",
+        "field": "right.src",
+        "quote": "hill country bath detail globe sconce dried botanicals clay"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-bath/hill-country-bath-her-vanity-wall-glass-cabinet-sconces.jpg",
+        "quote": "Tall vertical frame, three-quarter vantage looking down the length of the vanity, floor and ceiling both included, everything converging to the right."
        }
       ]
      },
@@ -8010,28 +8010,6 @@
      },
      {
       "facet": "furniture",
-      "term": "sink",
-      "n": 9,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.5",
-        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-sink-bridge-faucet-veined-marble.jpg"
-       },
-       {
-        "section": "headline-collected",
-        "field": "text",
-        "quote": "The clay pot weighs more than the sink"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
-        "quote": "Symmetrical straight-on elevation, mirror centred over the basin with a sconce to each side, wide horizontal crop."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "vase",
       "n": 9,
       "cites": [
@@ -8088,6 +8066,28 @@
         "section": "her-details",
         "field": "right.src",
         "quote": "hill country bath detail faucet marble backsplash window"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg",
+        "quote": "Symmetrical straight-on elevation, mirror centred over the basin with a sconce to each side, wide horizontal crop."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "sink",
+      "n": 8,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.5",
+        "quote": "/case-studies/hill-country-bath/hill-country-bath-detail-sink-bridge-faucet-veined-marble.jpg"
+       },
+       {
+        "section": "shower-details",
+        "field": "left.src",
+        "quote": "hill country bath detail sink bridge faucet veined marble"
        },
        {
         "section": "image",
@@ -8401,7 +8401,7 @@
      {
       "facet": "style",
       "term": "vintage",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
@@ -9260,7 +9260,7 @@
        {
         "section": "dining-header",
         "field": "title",
-        "quote": "A Turned-Leg Table,"
+        "quote": "A turned-leg table,"
        },
        {
         "section": "image",
@@ -9795,23 +9795,6 @@
      },
      {
       "facet": "material",
-      "term": "oak",
-      "n": 2,
-      "cites": [
-       {
-        "section": "material-fireplace",
-        "field": "alt",
-        "quote": "…painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather…"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "paper",
       "n": 2,
       "cites": [
@@ -9860,6 +9843,19 @@
         "section": "image",
         "field": "/case-studies/hill-country-living/hill-country-living-vintage-record-player-vinyl-shelf-limestone-eisenhower-detail.jpg",
         "quote": "Straight-on frontal vantage, the shelf centred and near-symmetrical, stone filling the field behind it."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "material",
+      "term": "oak",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
        }
       ],
       "observed": true
@@ -10124,28 +10120,6 @@
      },
      {
       "facet": "furniture",
-      "term": "mantel",
-      "n": 9,
-      "cites": [
-       {
-        "section": "material-fireplace",
-        "field": "alt",
-        "quote": "…ing flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa…"
-       },
-       {
-        "section": "interiors-index",
-        "field": "colors.1.description",
-        "quote": "Floors, beams, mantel"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
-        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "vase",
       "n": 8,
       "cites": [
@@ -10256,13 +10230,35 @@
      },
      {
       "facet": "furniture",
+      "term": "mantel",
+      "n": 7,
+      "cites": [
+       {
+        "section": "material-fireplace",
+        "field": "alt",
+        "quote": "…g flanked by smaller landscape pieces in gilded frames, cedar mantel beam, brass pendant chandelier overhead, cognac leather sofa…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-cognac-leather-sofa-tweed-armchairs-limestone-fireplace-pendant-chandelier-wide.jpg",
+        "quote": "Three-quarter vantage from the room's corner, asymmetric, with the leather sofa back running as a horizontal bar across the lower third and the ceiling beam angling in from the top left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg",
+        "quote": "Dead-on frontal vantage, near mirror symmetry about the fireplace, with the mantel beam and the sofa back stacking as parallel horizontals that the chandelier and the firebox split vertically."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "beam",
       "n": 5,
       "cites": [
        {
         "section": "material-fireplace",
         "field": "alt",
-        "quote": "…anked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with N…"
+        "quote": "…ked by smaller landscape pieces in gilded frames, cedar mantel beam, brass pendant chandelier overhead, cognac leather sofa with N…"
        },
        {
         "section": "image",
@@ -10845,7 +10841,7 @@
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
+        "quote": "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette."
        },
        {
         "section": "marks-materials",
@@ -10861,6 +10857,23 @@
      },
      {
       "facet": "material",
+      "term": "brick",
+      "n": 2,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "philosophyText",
+        "quote": "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette."
+       },
+       {
+        "section": "marks-materials",
+        "field": "colors.3.name",
+        "quote": "Brick"
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "wallpaper",
       "n": 1,
       "cites": [
@@ -10868,18 +10881,6 @@
         "section": "meta",
         "field": "summary.0.value",
         "quote": "Brand campaign for a Texas barrel maker: an outdoor banner, posters, a phone wallpaper, a shirt."
-       }
-      ]
-     },
-     {
-      "facet": "material",
-      "term": "brick",
-      "n": 1,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "colors.3.name",
-        "quote": "Brick"
        }
       ]
      },
@@ -11017,7 +11018,7 @@
        {
         "section": "marks-materials",
         "field": "philosophyText",
-        "quote": "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette."
+        "quote": "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette."
        },
        {
         "section": "marks-materials",

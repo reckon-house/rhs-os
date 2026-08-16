@@ -307,7 +307,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       title: "From a 4x6",
       pressing: {
         mark: { n: "04", name: "From a 4x6" },
-        heldLine: "to a Building.",
+        heldLine: "to a building.",
         // Held, so "to a Building." is still on screen when the window
         // below it starts filling the mat. The two halves of the same
         // sentence should not be a scroll apart.

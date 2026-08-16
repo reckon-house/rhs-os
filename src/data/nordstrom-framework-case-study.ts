@@ -47,7 +47,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
         { label: "Angle", value: "Sort a store's worth of stories the way a magazine sorts its sections." },
       ],
       abstract:
-        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals, all hitting email and the site at the same time with nothing sorting them. Customers got the whole pile and no way through it.\n\nConcepted a content framework that sorted it into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. A custom icon and a typographic mark sourced for each one, and names that sound like a magazine's sections.\n\nPitched it to merchandising, marketing, and editorial, and it was organizing the teams before it reached a customer. Once it shipped it ran homepage modules, email sections, and dedicated landing pages. Engagement lifted 22%, and the framework stayed in use for years.",
+        "Nordstrom was producing more digital content than the site had structure for. Brand launches, seasonal pushes, occasion guides, new arrivals, all hitting email and the site at the same time with nothing sorting them. Customers got the whole pile and no way through it.\n\nConcepted a content framework that sorted it into named buckets, each with its own identity. \"What's Now\" for trending brands and arrivals. \"On Our List\" for seasonal picks. \"Where to Wear\" and \"Wear to Where\" for occasion dressing from opposite directions. A custom icon and a typographic mark sourced for each one, and names that sound like a magazine's sections.\n\nPitched it to merchandising, marketing, and editorial, and it was organizing the teams before it reached a customer. Once it shipped it ran homepage modules, email sections, and dedicated landing pages. Engagement lifted 22% over two years.",
     },
 
         // ── HERO ──
@@ -293,10 +293,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Engagement lifted 22%,",
+      title: "Engagement lifted 22%",
       pressing: {
         mark: { n: "05", name: "Up 22%" },
-        heldLine: "and it lasted for years.",
+        heldLine: "over two years.",
       },
     },
     {

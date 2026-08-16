@@ -91,7 +91,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       title: "Peonies and",
       pressing: {
         mark: { n: "02", name: "Peonies and" },
-        heldLine: "Geometry.",
+        heldLine: "geometry.",
         // Pinned: the headline holds while the pattern-on-pattern copy
         // travels past it. This is the collection that layers, so the
         // brief that introduces it should behave like the print does.
@@ -163,7 +163,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "03", name: "Linework" },
-        heldLine: "and Dots.",
+        heldLine: "and dots.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -225,7 +225,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       title: "Dragons",
       pressing: {
         mark: { n: "04", name: "Dragons" },
-        heldLine: "and Florals.",
+        heldLine: "and florals.",
         // Pinned. The pairing notes are the fussiest copy in the study
         // and they need the headline still on screen to hang off, right
         // before the zoom takes the frame.
@@ -304,7 +304,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 05: MARKS & MATERIALS",
-      title: "Four Shapes, Five Colors,\nand Cream Under Every One.",
+      title: "Four shapes, five colors,\nand cream under every one.",
       introText:
         "Each collection gets one hero shape and one color, and cream runs under all of them.",
       philosophyText:
@@ -362,7 +362,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Any Two Collections on the Same Table.",
+      title: "Any two collections on the same table.",
       pressing: { mark: { n: "06", name: "The Same Table" } },
     },
     {

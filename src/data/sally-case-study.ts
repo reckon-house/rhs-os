@@ -119,7 +119,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Five Problems",
+      title: "Five problems",
       // The study's one crossing, in the BRIEF form (pin + crossing): this
       // header carries method columns, and PRESSING.md §7 reserves the
       // standalone staging for headers whose copy is short. Every header
@@ -127,7 +127,7 @@ export const sallyCaseStudy: CaseStudy = {
       // the opening diagnosis is the one everything below answers.
       pressing: {
         mark: { n: "02", name: "Five Problems" },
-        heldLine: "With One Root",
+        heldLine: "with one root",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "problem" },
@@ -146,7 +146,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The scale is thousands of SKUs across hair color, hair care, styling, and professional tools, hundreds of stores with regional variation, and dozens of campaigns running at once across digital, email, social, and in-store.",
+        "The scale is thousands of SKUs across hair color, hair care, styling, and professional tools, 2,000+ stores with regional variation, and dozens of campaigns running at once across digital, email, social, and in-store.",
       group: { name: "problem" },
     },
     {
@@ -188,7 +188,7 @@ export const sallyCaseStudy: CaseStudy = {
       title: "Real-Time",
       pressing: {
         mark: { n: "03", name: "Real-Time" },
-        heldLine: "Competitive Intelligence",
+        heldLine: "competitive intelligence",
         choreo: { pin: true },
       },
     },
@@ -316,7 +316,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-header",
       type: "section-header",
       label: "SECTION 04: BRAND BRAIN / JIM",
-      title: "AI Strategy Partner",
+      title: "AI strategy partner",
       pressing: {
         mark: { n: "04", name: "AI Strategy Partner" },
         choreo: { pin: true },
@@ -482,7 +482,7 @@ export const sallyCaseStudy: CaseStudy = {
         },
         {
           name: "Stores",
-          items: ["3,000+ Locations"],
+          items: ["2,000+ Locations"],
           value: 15,
         },
       ],
@@ -501,10 +501,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "thinks-header",
       type: "section-header",
       label: "SECTION 05: CAMPAIGNS",
-      title: "It Proposes",
+      title: "It proposes",
       pressing: {
         mark: { n: "05", name: "It Proposes" },
-        heldLine: "the Work Now",
+        heldLine: "the work now",
       },
     },
     {
@@ -545,10 +545,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "asset-header",
       type: "section-header",
       label: "SECTION 06: ASSET HUB",
-      title: "Digital Asset Management",
+      title: "Digital asset management",
       pressing: {
         mark: { n: "06", name: "Digital Asset Management" },
-        heldLine: "Rebuilt with AI",
+        heldLine: "rebuilt with AI",
         choreo: { pin: true },
       },
     },
@@ -579,7 +579,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Studio Photography",
           content:
-            "Two passes through Gemini. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThat is a studio rental, a lighting setup, and a photographer replaced by one button. The team uses it for product pages and social.",
+            "Two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThat is a studio rental, a lighting setup, and a photographer replaced by one button. The team uses it for product pages and social.",
         },
         {
           title: "Search Architecture",
@@ -668,10 +668,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "utilities-header",
       type: "section-header",
       label: "SECTION 07: UTILITIES MARKETPLACE",
-      title: "A Growing Library of",
+      title: "A growing library of",
       pressing: {
         mark: { n: "07", name: "A Growing Library of" },
-        heldLine: "Internal Tools",
+        heldLine: "internal tools",
         choreo: { pin: true },
       },
     },
@@ -776,7 +776,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 08: CLOSING",
-      title: "What Shipped",
+      title: "What shipped",
       pressing: { mark: { n: "08", name: "What Shipped" } },
     },
     {
@@ -811,7 +811,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "The Stack",
           content:
-            "The portal is a single-page app in plain HTML and JavaScript, no framework and no build step, on a Python server, hosted on Railway. It is deliberately boring underneath so it can change fast on top.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nFive AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's image model for studio photography; a vision model for video. There is no gateway. Each call site names its model, and the strategy lane and the copy lane run different Claude models on purpose.",
+            "The portal is a single-page app in plain HTML and JavaScript, no framework and no build step, on a Python server, hosted on Railway. It is deliberately boring underneath so it can change fast on top.\n\nThe asset hub, the associate site, and the scoreboard are Next.js on Vercel. Supabase holds all of it, with pgvector for a single embedding index that covers documents, product photography, and video scenes at once, so one search runs across text and pictures.\n\nFive AI providers, each routed to what it is best at: Claude for reasoning, strategy, and copy; Gemini for embeddings and grounded research; Perplexity for live web search; OpenAI's GPT-Image-2 for studio photography; a vision model for video. There is no gateway. Each call site names its model, and the strategy lane and the copy lane run different Claude models on purpose.",
         },
       ],
     },
@@ -839,7 +839,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       links: [],
       content:
-        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 3,000+ stores.\n\nThe marketing team ships thousands of assets a month through it. It runs every day, and it has started running some of itself. Nobody filed a procurement request or sat through a vendor demo to get it, and the people at Sally have a name for it now: the marketing and ecommerce brain.",
+        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 2,000+ stores.\n\nThe marketing team ships thousands of assets a month through it. It runs every day, and it has started running some of itself. Nobody filed a procurement request or sat through a vendor demo to get it, and the people at Sally have a name for it now: the marketing and ecommerce brain.",
     },
   ],
 };

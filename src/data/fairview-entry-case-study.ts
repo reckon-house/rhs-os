@@ -67,7 +67,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "light-header",
       type: "section-header",
       label: "SECTION 02: LIGHT",
-      title: "Iron Doors,",
+      title: "Iron doors,",
       // This study's one crossing, on its opening argument. Its sibling
       // (fairview-sitting) crosses its SECOND header instead — two rooms
       // in one house should not choreograph identically.
@@ -76,7 +76,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       // loud in the data names the holder the rug plate below climbs.
       pressing: {
         mark: { n: "02", name: "Morning Sun" },
-        heldLine: "Morning Sun.",
+        heldLine: "morning sun.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -158,14 +158,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "pieces-header",
       type: "section-header",
       label: "SECTION 03: PIECES",
-      title: "A Bench, a Palm,",
+      title: "A bench, a palm,",
       // Pinned: the headline holds while the copy about the rug, the light
       // and the two pieces of art travels up beside it. The section is a
       // list of objects, so the name of the list should stay on screen for
       // the whole of it.
       pressing: {
         mark: { n: "03", name: "The Pieces" },
-        heldLine: "a Coat Tree.",
+        heldLine: "a coat tree.",
         choreo: { pin: true },
       },
     },
@@ -236,7 +236,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "The Whole Foyer\nin Five Materials.",
+      title: "The whole foyer\nin five materials.",
       introText:
         "Oak, iron, brass, wool, and limestone. Each one has one job in the room.",
       philosophyTitle: "Material philosophy",
@@ -303,10 +303,10 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Boots Off,",
+      title: "Boots off,",
       pressing: {
         mark: { n: "04", name: "Boots Off" },
-        heldLine: "Bag Down.",
+        heldLine: "bag down.",
       },
     },
     {

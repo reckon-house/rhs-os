@@ -214,12 +214,15 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       introText:
         "The palette had to say Texas without red, white, and blue, so it comes from the landscape at last light.",
       philosophyText:
-        "Burnt orange, mustard yellow, teal sky, cream paper, charcoal silhouette. Orange and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type.\n\nGreatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else.",
+        "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette. Orange and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type.\n\nGreatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else.",
       colors: [
         { name: "Cream", hex: "#ECE2C5", description: "Paper, ground" },
         { name: "Mustard", hex: "#ECC265", description: "Wordmark, accents" },
         { name: "Burnt Orange", hex: "#DA8849", description: "Color blocks" },
         { name: "Brick", hex: "#D45E3D", description: "Foreground hills" },
+        /* Sampled from the poster's sky. The prose named it and the ledger
+           did not; Jeremy: "use 'teal' in both places". */
+        { name: "Teal", hex: "#8FB7A0", description: "Sky" },
         { name: "Charcoal Brown", hex: "#3B2F1F", description: "Silhouettes, type" },
       ],
       fonts: [

@@ -86,13 +86,13 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: MATERIAL",
-      title: "Stone, Pine,",
+      title: "Stone, pine,",
       // Pinned so the four-material list travels up beside the headline
       // instead of under it. The names have to be readable against the
       // headline that groups them, and holding is what puts them there.
       pressing: {
         mark: { n: "02", name: "Stone, Pine" },
-        heldLine: "Brass, Leather.",
+        heldLine: "brass, leather.",
         choreo: { pin: true },
       },
     },
@@ -120,7 +120,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-fireplace",
       type: "hero",
       image: `${IMG}/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry.jpg`,
-      alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, oak mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
+      alt: "Symmetrical centered view of the limestone fireplace wall with the Eisenhower painting flanked by smaller landscape pieces in gilded frames, cedar mantel beam, brass pendant chandelier overhead, cognac leather sofa with Navajo-style throw in foreground",
       // The zoom. A symmetrical elevation is the one composition that
       // rewards filling the mat: the symmetry only reads when the whole
       // wall is the same size as the screen.
@@ -128,7 +128,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         plate: "02",
         captions: [
           "Limestone fireplace wall",
-          "Eisenhower painting, oak mantel",
+          "Eisenhower painting, cedar mantel",
           "Brass pendant overhead",
         ],
         instruction: "Scroll. It fills the mat, then travels the frame",
@@ -175,7 +175,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "collected-header",
       type: "section-header",
       label: "SECTION 03: COLLECTED",
-      title: "Heirlooms, New Finds,",
+      title: "Heirlooms, new finds,",
       // The study's one crossing, on the beat where the room's contents
       // arrive: what is in it, named, at display size.
       //
@@ -185,7 +185,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Heirlooms and Finds" },
-        heldLine: "an Eisenhower on the Wall.",
+        heldLine: "an Eisenhower on the wall.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -272,14 +272,14 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "interiors-index",
       type: "interiors-index",
       label: "SECTION 04: MATERIALS & FINISHES",
-      title: "The Materials,\nChosen for How They Age.",
+      title: "The materials,\nchosen for how they age.",
       introText:
         "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. None of it is trendy and all of it can take a scuff.",
       philosophyText:
         "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed reads soft from across the room and structured up close. Brass goes dark on its own schedule.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
-        { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams, mantel" },
+        { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams" },
         { name: "Cognac Leather", hex: "#8B4F32", description: "Sofa, bench seat" },
         { name: "Charcoal Tweed", hex: "#4A4540", description: "Armchairs, throws" },
         { name: "Antiqued Brass", hex: "#A87A45", description: "Pendant, fixtures, andirons" },
@@ -290,7 +290,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
          at length. What survives is the half a caption needs. */
       materials: [
         { name: "Limestone", role: "Fireplace wall" },
-        { name: "Reclaimed Pine", role: "Floors, beams, mantel" },
+        { name: "Reclaimed Pine", role: "Floors, beams" },
         { name: "Cognac Leather", role: "Sofa, bench seat" },
         { name: "Charcoal Tweed", role: "Armchairs, throws" },
         { name: "Antiqued Brass", role: "Pendant, fixtures, andirons" },
@@ -304,10 +304,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Meant to Take",
+      title: "Meant to take",
       pressing: {
         mark: { n: "04", name: "Ten Years" },
-        heldLine: "Ten Years of Family.",
+        heldLine: "ten years of family.",
       },
     },
     {

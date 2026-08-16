@@ -84,10 +84,10 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "vanity-header",
       type: "section-header",
       label: "SECTION 02: THE VANITY",
-      title: "Two Vanities,",
+      title: "Two vanities,",
       pressing: {
         mark: { n: "02", name: "Two Vanities" },
-        heldLine: "Hers Facing the East Windows.",
+        heldLine: "hers facing the east windows.",
         // Held so the claim about the light stays on screen while the two
         // paragraphs describing it travel up beside it. The four detail
         // frames below are the evidence, and the argument has to still be
@@ -160,7 +160,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "shower-header",
       type: "section-header",
       label: "SECTION 03: THE SHOWER",
-      title: "Picking the Marble",
+      title: "Picking the marble",
       // The study's one crossing. The most human line in it, and the only
       // one that admits what the work actually cost.
       //
@@ -244,10 +244,10 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "objects-header",
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
-      title: "The Valet Stand, the Painting,",
+      title: "The valet stand, the painting,",
       pressing: {
         mark: { n: "04", name: "The Objects" },
-        heldLine: "the Vintage Rugs.",
+        heldLine: "the vintage rugs.",
         // The last brief, and the only one with no photograph after it, so
         // the copy carries the beat alone. Held: the headline keeps its
         // claim while the valet stand, the painting, and the clay pot go by
@@ -276,7 +276,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Made for\nthe Morning.",
+      title: "Made for\nthe morning.",
       pressing: { mark: { n: "05", name: "The Morning" } },
     },
     {

@@ -84,10 +84,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "room-header",
       type: "section-header",
       label: "SECTION 02: THE ROOM",
-      title: "One Color",
+      title: "One color",
       pressing: {
         mark: { n: "02", name: "One Color" },
-        heldLine: "on Every Wall.",
+        heldLine: "on every wall.",
         // The headline is the whole claim of the section, so it holds while
         // the column travels up beside it. Paint first, then the fourteen
         // foot vault and the furniture layers arriving under it as evidence.
@@ -133,13 +133,13 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "furniture-header",
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
-      title: "Three Decades",
+      title: "Three decades",
       // This study's one crossing, on its MIDDLE header. The three Fairview
       // rooms cross at three different points — entry first, sitting
       // second, suite third — so the set never reads as one template.
       pressing: {
         mark: { n: "03", name: "Three Decades" },
-        heldLine: "on One Floor.",
+        heldLine: "on one floor.",
         // `pin` alongside `crossing`: the crossing already holds its headline
         // for 220dvh, so the flag changes nothing on the page. Saying it in
         // the data names the hold, which is what the audit reads.
@@ -229,10 +229,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "Through the Double Doors,",
+      title: "Through the double doors,",
       pressing: {
         mark: { n: "04", name: "The Ensuite" },
-        heldLine: "the Same Temperature.",
+        heldLine: "the same temperature.",
         // Held because the zoom just handed the second room over at full
         // size. Keeping the headline put while the tile and tub copy runs
         // past it reads as one suite continuing, not a new study starting.
@@ -275,7 +275,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Charcoal Violet,\nCharcoal Hex.",
+      title: "Charcoal violet,\ncharcoal hex.",
       pressing: { mark: { n: "05", name: "Two Rooms" } },
     },
     {

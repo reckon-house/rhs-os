@@ -225,10 +225,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "athlete-header",
       type: "section-header",
       label: "SECTION 04: THE ATHLETE APP",
-      title: "What Athletes",
+      title: "What athletes",
       pressing: {
         mark: { n: "04", name: "What Athletes" },
-        heldLine: "See",
+        heldLine: "see",
         choreo: { pin: true },
       },
     },
@@ -282,10 +282,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "owner-header",
       type: "section-header",
       label: "SECTION 05: THE OWNER CONSOLE",
-      title: "Run It From",
+      title: "Run it from",
       pressing: {
         mark: { n: "05", name: "Run It From" },
-        heldLine: "the Floor",
+        heldLine: "the floor",
         choreo: { pin: true },
       },
     },
@@ -384,7 +384,7 @@ export const dscCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 06: MARKS & MATERIALS",
-      title: "Black, White,\nand Loud",
+      title: "Black, white,\nand loud",
       introText:
         "A palette with no color in it, one type family doing all the work, photography shot on the actual gym floor, and the same kit at every size.",
       philosophyText:
@@ -462,7 +462,7 @@ export const dscCaseStudy: CaseStudy = {
       title: "Live at",
       pressing: {
         mark: { n: "06", name: "Live at" },
-        heldLine: "the Gym",
+        heldLine: "the gym",
       },
     },
     {

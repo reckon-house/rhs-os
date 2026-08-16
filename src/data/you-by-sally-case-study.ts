@@ -71,10 +71,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "cast-header",
       type: "section-header",
       label: "SECTION 02: THE CAST",
-      title: "Real People,",
+      title: "Real people,",
       pressing: {
         mark: { n: "02", name: "Real People" },
-        heldLine: "Signature Shades.",
+        heldLine: "signature shades.",
         // The casting claim holds while its two blocks travel past it.
         // The headline says who the cast is; the copy underneath says why
         // that inverted the usual shoot order. Split across two screens
@@ -147,14 +147,14 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "swatch-header",
       type: "section-header",
       label: "SECTION 03: THE SWATCH SYSTEM",
-      title: "Oversized Swatches",
+      title: "Oversized swatches",
       // The study's one crossing, held to section 03 so it does not land
       // on the same beat as the zoom above it. pin declared alongside it:
       // the crossing already holds its headline for 220dvh, and saying so
       // out loud gives the swatch screen below a named holder to climb.
       pressing: {
         mark: { n: "03", name: "Oversized Swatches" },
-        heldLine: "on a Clean Grid.",
+        heldLine: "on a clean grid.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -216,7 +216,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "marks-materials",
       type: "marks-materials",
       label: "SECTION 04: MARKS & MATERIALS",
-      title: "Hot Pink, Cyan, Black.\nAvenir Next in Three Weights.",
+      title: "Hot pink, cyan, black.\nAvenir Next in three weights.",
       introText:
         "Pink for the personality, cyan for the contrast, and black under both so the two loud colors never turn into noise.",
       philosophyText:
@@ -266,10 +266,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Bio Pages, Email,",
+      title: "Bio pages, email,",
       pressing: {
         mark: { n: "04", name: "Where It Ran" },
-        heldLine: "Retail Signage.",
+        heldLine: "retail signage.",
       },
     },
     {

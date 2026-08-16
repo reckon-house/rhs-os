@@ -85,10 +85,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
-      title: "Four Materials,",
+      title: "Four materials,",
       pressing: {
         mark: { n: "02", name: "Four Materials" },
-        heldLine: "Chosen Before Anything Was Drawn.",
+        heldLine: "chosen before anything was drawn.",
         choreo: { pin: true },
       },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -182,13 +182,13 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "hardware-header",
       type: "section-header",
       label: "SECTION 03: CABINETRY / HARDWARE",
-      title: "Shaker Cabinets,",
+      title: "Shaker cabinets,",
       // The study's one crossing. Standalone rather than the brief form:
       // this is the only header here that carries no method columns, and
       // PRESSING.md §7 puts short-copy headers in the standalone staging.
       pressing: {
         mark: { n: "03", name: "Shaker Cabinets" },
-        heldLine: "Brass on Everything You Touch.",
+        heldLine: "brass on everything you touch.",
         choreo: { crossing: true },
       },
     },
@@ -286,10 +286,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "island-header",
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
-      title: "A Raw White Oak Island",
+      title: "A raw white oak island",
       pressing: {
         mark: { n: "04", name: "Raw Oak Island" },
-        heldLine: "for Prep, Meals, and Homework.",
+        heldLine: "for prep, meals, and homework.",
         choreo: { pin: true },
       },
     },
@@ -369,10 +369,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "A Turned-Leg Table,",
+      title: "A turned-leg table,",
       pressing: {
         mark: { n: "05", name: "The Dining Table" },
-        heldLine: "Leather Safari Chairs.",
+        heldLine: "leather safari chairs.",
         choreo: { pin: true },
       },
     },
@@ -437,10 +437,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Where Everyone",
+      title: "Where everyone",
       pressing: {
         mark: { n: "06", name: "The Hub" },
-        heldLine: "Ends Up.",
+        heldLine: "ends up.",
       },
     },
     {

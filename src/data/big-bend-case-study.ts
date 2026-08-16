@@ -204,7 +204,7 @@ export const bigBendCaseStudy: CaseStudy = {
       id: "prada-header",
       type: "section-header",
       label: "SECTION 02: PRADA MARFA",
-      title: "The Store on",
+      title: "The store on",
       // The study's one crossing, and its only section header. Everything
       // before it is landscape held at one cadence; the sculpture is the
       // turn, so the gesture marks it.
