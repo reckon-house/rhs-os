@@ -184,7 +184,12 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, the Fancy poster, flat artwork with pattern-filled script letterforms",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
+      /* 1860px native, so 930 is the honest ceiling and the column was
+         drawing it at 1440 — a 1.29x magnification on the one asset in
+         the study made entirely of hairlines, which is where aliasing
+         shows first. No larger export exists. All three flat prints
+         take the same number so they sit at one size. */
+      pressing: { plateWidth: 930, choreo: { rise: true } },
     },
 
     // ── PATTERN SWATCHES ──
@@ -340,7 +345,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
+      pressing: { plateWidth: 930, choreo: { rise: true } },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -450,7 +455,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, white poster, flat artwork with calligraphic and geometric letterforms",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
+      pressing: { plateWidth: 930, choreo: { rise: true } },
     },
 
     // ── HOW THE SYSTEM WORKS — grouped in black container ──
