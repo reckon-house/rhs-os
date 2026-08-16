@@ -37,6 +37,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         caption: "Preview · 8 frames",
         colors: ["#DEDBDA", "#3E4412", "#C6C6CB", "#615D24", "#D7C572"],
         images: [
+          "/case-studies/nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero.jpg",
           "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg",
           "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-beauty-queen-woman-floral-dress-autumn-leaves-boots-watches-bowling-balls-90s-revibe-editorial-lifestyle.jpg",
           "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-womens-fashion-lifestyle-products-floral-print-pajamas-pink-sweater-red-dress-black-boots-accessories-shopping-interface.jpg",
@@ -73,8 +74,8 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg`,
-      alt: "Nordstrom homepage on a laptop in a field of daisies, showing personalized editorial tile layout with Beauty Queen and 90s Revibe stories",
+      image: `${IMG}/nordstrom-personalization-homepage-laptop-mockup-hero.jpg`,
+      alt: "The personalized Nordstrom homepage open on a laptop, the Beauty Queen editorial running across the tile layout",
       pressing: { choreo: { rise: true } },
     },
 

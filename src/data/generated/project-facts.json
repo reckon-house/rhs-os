@@ -13186,17 +13186,17 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 41,
+      "n": 43,
       "cites": [
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-…"
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero.jpg"
        },
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-…"
+        "quote": "/case-studies/nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero.jpg"
        }
       ]
      }
@@ -13209,12 +13209,12 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.3",
+        "field": "reel.images.4",
         "quote": "…ersonalization-system-design-mens-fashion-essentials-sunglasses-sneakers-blazer-chinos-leather-accessories-ecommerce-lifestyle.jpg"
        },
        {
         "section": "meta",
-        "field": "reel.images.4",
+        "field": "reel.images.5",
         "quote": "…on/nordstrom-personalization-system-design-woman-model-black-leather-jacket-handbag-sunglasses-heels-white-studio-lifestyle-lookbo…"
        },
        {
@@ -13352,7 +13352,7 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.5",
+        "field": "reel.images.6",
         "quote": "…om-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial.jpg"
        },
        {
