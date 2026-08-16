@@ -2933,8 +2933,15 @@ function armRows(rowsEl) {
     const row = card.closest(".ixrow");
     const shot = card.querySelector(".shot");
     if (!row || !shot) return;
-    let grow =
-      parseFloat(getComputedStyle(row).getPropertyValue("--ix-grow-max")) || 1.32;
+    /* OPEN TO THE COLUMN, not by a fixed factor. Every frame is
+       `--share` of its half, so 1/share is exactly the scale that puts
+       its right edge on the column's. A flat 1.32 made a 0.33 frame
+       stop well short of the line and pushed an 0.86 one past it, so
+       no two hovers agreed on how big "open" is. Now they all land on
+       the same width, which is the width the standing rules draw. */
+    const share =
+      parseFloat(getComputedStyle(card).getPropertyValue("--share")) || 0.7;
+    let grow = 1 / share;
     /* EACH FRAME OPENS AS FAR AS ITS OWN ROOM ALLOWS. Capping the
        label's drop instead was wrong: the frame kept growing past
        where the label had stopped, so the picture covered its own
@@ -2946,8 +2953,16 @@ function armRows(rowsEl) {
        frames open wide, large ones open a little, and the label always
        has somewhere to go. The biggest pictures moving least is the
        honest outcome — they are already the loudest thing in the row. */
+    /* The cap exists so a frame never grows past the line under it and
+       covers its own name. It has to key off the line being DRAWN, not
+       merely present: the row rule is still in the grid holding the
+       band rhythm, it just stopped painting when the standing verticals
+       took over. Measured against an invisible rule it was capping
+       against nothing anyone could see. */
     const rule = row.querySelector(".ixrule");
-    const ruled = rule && getComputedStyle(rule).display !== "none";
+    const rcs = rule && getComputedStyle(rule);
+    const ruled =
+      !!rcs && rcs.display !== "none" && parseFloat(rcs.borderTopWidth) > 0;
     const room = ruled
       ? rule.getBoundingClientRect().top -
         card.querySelector(".lbl").getBoundingClientRect().bottom - 8

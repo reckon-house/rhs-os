@@ -594,26 +594,44 @@
   .ixrule { grid-column: 1 / -1; height: 0; border-top: 0; }
   .ixrow:last-child .ixrule { display: none; }
 
-  /* TWO STANDING RULES, instead of one per row.
+  /* STANDING RULES, instead of one per row.
      The comment above already says it: the frames hang from the right
      edge of each half, so "the two right edges are the only vertical
      lines the eye needs". These draw the gutters those edges are
      measured from, once down the whole index, rather than every row
      restating the same interval horizontally.
 
-     One offset places both, because both gutters are the same clamp:
-     .ixbody's column-gap between the note rail and the rows, and
-     .ixrow's --ixgap between the two halves. The middle line lands on
-     50% exactly — the tracks are 1fr 1fr around that gap, so half the
-     container IS the centre of it. */
-  .ixrows { position: relative; --ixgap: clamp(24px, 3.4vw, 56px); }
+     Three of them, and the rule that places all three is one sentence:
+     every column's frames hang from a right edge, and the line stands
+     half a gutter after that edge. The rail's edge, then the first
+     column's, then the last. Both gutters are the same clamp, so one
+     offset serves all three, and the middle lands on 50% exactly
+     because the tracks are 1fr 1fr around that gap.
+
+     ALL THREE COME OFF .ixrows' OWN BOX, and that is the point rather
+     than a convenience. Built instead out of .ixbody's variables — page
+     gutter plus rail width plus half a gap — the first line landed 2.5px
+     wide of the gutter it was meant to halve, because .ixbody's contents
+     sit 3px left of where its own padding says they do. Its box knows
+     the answer; its variables only nearly know it.
+
+     Two are pseudo-elements, an element having only two. The middle one
+     is a 1px background instead, which is the same hairline by another
+     route and takes a percentage position without needing a third. */
+  .ixrows {
+    position: relative; --ixgap: clamp(24px, 3.4vw, 56px);
+    background-image: linear-gradient(
+      to right, rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%;
+    background-position: 50% 0;
+    background-repeat: no-repeat; }
   .ixrows::before, .ixrows::after {
     content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
     background: rgba(0, 0, 0, 0.13); pointer-events: none; }
-  /* half a gutter to the left of the rows is the middle of the gap
-     between them and the note rail */
+  /* half a gutter out from each edge: the middle of the gap to the note
+     rail on the left, and the matching interval past the last column */
   .ixrows::before { left: calc(var(--ixgap) / -2); }
-  .ixrows::after { left: 50%; }
+  .ixrows::after { left: calc(100% + var(--ixgap) / 2); }
 
   .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
     transform-origin: right center;
@@ -683,6 +701,7 @@
     /* One column and no note rail, so there are no gutters left for a
        vertical to stand in. The row rule comes back to do the work. */
     .ixrows::before, .ixrows::after { display: none; }
+    .ixrows { background-image: none; }
     .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
   }
 
