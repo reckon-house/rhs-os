@@ -67,7 +67,10 @@ const WORK = [
   ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3", 1920, 1280, "fairview suite bedroom chandelier fireplace windows wide"],
   ["The Fairview", "Interior Design, foyer", "/case-studies/fairview-entry", "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg?v=3", 1920, 1280],
   ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg?v=3", 1920, 1280, "hero1", 0.53],
-  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg", 1600, 1811, "loved by nordstrom gallery wall campaign tiles tibi center"],
+  /* Authored, not dealt. The seed gave this the 0.33 stamp and the
+     picture is a tablet held at arm's length — the wall inside it needs
+     the room. 0.40 is that stamp plus a fifth. */
+  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg", 1600, 1811, "loved by nordstrom gallery wall campaign tiles tibi center", 0.40],
   ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg?v=3", 1920, 1280, "chalet living room a frame glass doors malm fireplace sputnik chandelier"],
   ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg", 1600, 1600, "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock"],
   ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-graphics-prints-apparel.jpg", 728, 604, "branding graphics prints florals hot air balloon letterform fashion illustration apparel"],

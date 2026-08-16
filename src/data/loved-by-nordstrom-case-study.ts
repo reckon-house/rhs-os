@@ -242,6 +242,33 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     },
 
     // ── LARGE LOVED BY TILES ──
+    // ── The wall on a screen, then the two tiles at its centre full
+    // size: context, then detail.
+    //
+    // It climbs the BRIEF, not the pair. A climb reads as a plane
+    // crossing another when the climber covers what it crosses, and at
+    // plateWidth 800 this cannot cover a 1440 pair — it sat in the
+    // middle of the two tiles and read as a sticker on them. Copy it
+    // covers fine, which is what a riser off a held header gets.
+    //
+    // 800 rather than full bleed because the file is 1600px and a 1440
+    // plate would draw it at 1.11x. 800 is its honest half, so it
+    // centres in the column with air the way A.R.C.'s interface plates
+    // do. Note the plate backstop does not catch this on its own:
+    // `capped` only fires under 1400 native.
+    {
+      id: "loved-tiles-in-hand",
+      type: "image",
+      src: `${IMG}/loved-by-nordstrom-ipad-tibi-tiles-held.jpg`,
+      alt: "A person in a mohair sweater holding a tablet showing the Loved by Nordstrom wall, the two large TIBI tiles at its centre",
+      aspect: "native",
+      pressing: {
+        caption: "The wall, on a screen",
+        plateWidth: 800,
+        choreo: { rise: true },
+      },
+    },
+
     {
       id: "loved-tiles",
       type: "dual-image",
@@ -254,26 +281,6 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg`,
         alt: "Loved by Nordstrom large format tile featuring TIBI faux fur coat on white door",
-      },
-      // Held so the device carrying these same two tiles can cross them.
-      pressing: { choreo: { pin: true } },
-    },
-
-    // ── The two tiles above, on a screen, in somebody's hands.
-    // plateWidth 800 rather than a full-bleed plate: the file is 1600px
-    // and a 1440 plate would draw it at 1.11x. 800 is its honest half,
-    // so it climbs at the size it can carry and centres in the column
-    // with air, the way A.R.C.'s interface plates do.
-    {
-      id: "loved-tiles-in-hand",
-      type: "image",
-      src: `${IMG}/loved-by-nordstrom-ipad-tibi-tiles-held.jpg`,
-      alt: "A person in a mohair sweater holding a tablet showing the Loved by Nordstrom wall, the two large TIBI tiles at its centre",
-      aspect: "native",
-      pressing: {
-        caption: "The wall, on a screen",
-        plateWidth: 800,
-        choreo: { rise: true },
       },
     },
 
