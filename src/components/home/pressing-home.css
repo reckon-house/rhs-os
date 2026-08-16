@@ -310,9 +310,15 @@
      4% instead, which costs 3.8% of the width. The travel is smaller
      and still there; the driver measures its slack off the element, so
      nothing else needs telling. Keyed on the filename because that is
-     what the two tiles have in common, and any future -laptop tile
-     wants the same treatment. */
-  .fd-it .shot img[src*="-laptop.jpg"] { --drift: 4%; }
+     what these tiles have in common, and any future -laptop tile wants
+     the same treatment.
+
+     `-laptop` and not `-laptop.jpg`: the DSC tile is
+     rhs-dallas-sport-collective-laptop-stool.jpg, so the stricter match
+     skipped it and it kept cropping the full 13.8% while every other
+     device tile had been fixed. The word in the name is the contract,
+     not the word immediately before the extension. */
+  .fd-it .shot img[src*="-laptop"] { --drift: 4%; }
 
   /* ── the page transition ─────────────────────────────────────────
      Three beats, each an edge moving in one direction:

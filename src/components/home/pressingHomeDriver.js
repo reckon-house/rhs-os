@@ -37,7 +37,7 @@ export function initPressingHome() {
    exception is the reel's thumbnail, which that table does not
    declare — read off the file (800x800). */
 const WORK = [
-  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub.jpg", 1920, 1254, "sally os platform hero"],
+  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg", 1920, 1254, "sally os platform hero"],
   ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3", 1120, 747, "ivy park nordstrom laptop brand experience mockup"],
   ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3", 1920, 1280, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],

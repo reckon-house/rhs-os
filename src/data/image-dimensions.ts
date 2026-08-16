@@ -327,7 +327,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg": [1600, 1600],
   "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg": [1920, 1229],
   "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg": [1600, 1600],
-  "/case-studies/hp/rhs-sally-os-asset-hub.jpg": [1920, 1254],
+  "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg": [1920, 1254],
   "/case-studies/hp/rhs-various-design-branding-art-apparel.jpg": [1920, 1280],
   "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg": [500, 699],
   "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg": [736, 736],
