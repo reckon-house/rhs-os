@@ -144,10 +144,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "fancy-header",
       type: "section-header",
       label: "SECTION 03: LITHOGRAPH 01 / THE FANCY",
-      title: "The Fancy,",
+      title: "Every stroke gets\na different fill.",
       pressing: {
         mark: { n: "03", name: "The Fancy" },
-        heldLine: "script filled with dots and stripes.",
         // Holds while the fill list travels past it, then the print itself
         // climbs the column that just described it.
         choreo: { pin: true },
@@ -158,7 +157,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The script sits low in the left corner, with swashes running off the edge of the sheet. A fine dot grid covers the background, and every stroke gets a different fill.",
+        "It sits low in the left corner, with swashes running off the edge of the sheet, over a fine dot grid.",
     },
     {
       id: "fancy-footnote",
@@ -251,7 +250,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-constraint",
       type: "editorial-headline",
-      text: "Dots, lines, stripes, diamonds.\nThat's the whole set.",
+      text: "The whole library\nis six shapes.",
     },
 
     // ── POSTER 2: "highball stepper" — the zoom. A print photographed in a room is
@@ -290,10 +289,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "stepper-header",
       type: "section-header",
       label: "SECTION 04: LITHOGRAPH 02 / HIGHBALL STEPPER",
-      title: "Highball stepper,",
+      title: "The second print blows\nthe same tiles up.",
       pressing: {
         mark: { n: "04", name: "Highball Stepper" },
-        heldLine: "slab capitals stacked edge to edge.",
         choreo: { pin: true },
       },
     },
@@ -302,7 +300,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Script threads between the capitals, and the fills run at a much bigger scale than in the first print, so the same tiles come across a lot bolder.",
+        "Slab capitals stack edge to edge with script threaded between them, and at that size the tiles read a lot bolder.",
     },
     {
       id: "stepper-footnote",
@@ -354,7 +352,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "headline-density",
       type: "editorial-headline",
-      text: "The tighter the grid,\nthe darker it reads.",
+      text: "With no color, spacing\nis the only tone control.",
     },
 
     // ── POSTER 3: "jack white" — brief first, and the photograph climbs it.
@@ -364,10 +362,9 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-header",
       type: "section-header",
       label: "SECTION 05: LITHOGRAPH 03 / JACK WHITE",
-      title: "Calligraphy up top,",
+      title: "This one puts handmade strokes\nnext to machine-drawn ones.",
       pressing: {
         mark: { n: "05", name: "Jack White" },
-        heldLine: "a heavy A and K below.",
         choreo: { pin: true },
       },
     },
@@ -376,7 +373,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The strokes across the top are thin enough to read as drawing. Down in the lower right, the geometric 'A' and the slab 'K' are as mechanical as the strokes are handmade.",
+        "The calligraphy across the top is thin enough to read as drawing. The geometric 'A' and the slab 'K' in the lower right are the heaviest shapes on the sheet.",
     },
     {
       id: "white-footnote",
@@ -463,7 +460,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 06: HOW THE SYSTEM WORKS",
-      title: "Where the tiles land,\nand how big.",
+      title: "All three prints use\nevery one of the six patterns.",
       // The headline holds while three columns of evidence travel past it.
       // Nothing climbs this one, so no climb room is derived.
       pressing: {
@@ -477,7 +474,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "All three prints use every one of the six patterns.",
+        "What changes between them is how big each one runs, and how much of the sheet it covers.",
       group: { name: "system" },
     },
     {
@@ -517,7 +514,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 07: CLOSING",
-      title: "Simple patterns,\nelaborate type.",
+      title: "The patterns stayed simple\nso the type could get complicated.",
       pressing: { mark: { n: "07", name: "Closing" } },
     },
     // No subhead here on purpose. It said "no client, no brief, no
