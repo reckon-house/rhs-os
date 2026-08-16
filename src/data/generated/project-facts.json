@@ -2013,7 +2013,7 @@
        {
         "section": "system-columns",
         "field": "columns.0.content",
-        "quote": "In \"stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right."
+        "quote": "In \"highball stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right."
        }
       ]
      },
@@ -2057,6 +2057,25 @@
       "observed": true
      }
     ],
+    "muse": [
+     {
+      "facet": "muse",
+      "term": "Jack White",
+      "n": 6,
+      "cites": [
+       {
+        "section": "rules-columns",
+        "field": "columns.2.content",
+        "quote": "They read \"the fancy,\" \"highball stepper,\" and \"jack white.\" One is set in script, one in geometric capitals, and one in a mix of…"
+       },
+       {
+        "section": "white-header",
+        "field": "label",
+        "quote": "SECTION 05: LITHOGRAPH 03 / JACK WHITE"
+       }
+      ]
+     }
+    ],
     "furniture": [
      {
       "facet": "furniture",
@@ -2071,7 +2090,7 @@
        {
         "section": "stepper-flat",
         "field": "alt",
-        "quote": "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms"
+        "quote": "Typography & Patterns, highball stepper poster, flat artwork with bold geometric letterforms"
        },
        {
         "section": "image",

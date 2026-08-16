@@ -131,15 +131,15 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
             "I wanted the shapes and the letterforms to be the focus, so color was never in it.\n\nThick stripes come forward and thin hairlines drop back. That is the whole tonal range.",
         },
         {
-          title: "Three Words",
+          title: "The Three Prints",
           content:
-            "Each print is one word: \"the Fancy,\" \"stepper,\" \"white.\" One is set in script, one in geometric capitals, and one in a mix of the two.",
+            "They read \"the fancy,\" \"highball stepper,\" and \"jack white.\" One is set in script, one in geometric capitals, and one in a mix of the two.",
         },
       ],
       group: { name: "rules" },
     },
 
-    // ── POSTER 1: "the Fancy" ──
+    // ── POSTER 1: "the fancy" ──
     {
       id: "fancy-header",
       type: "section-header",
@@ -166,7 +166,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It reads \"the Fancy.\" Polka dots fill the bowl of the 'a,' diagonal stripes the crossbar of the 'F.' The descender of the 'y' gets vertical hairlines.",
+        "It reads \"the fancy.\" Polka dots fill the bowl of the 'a,' diagonal stripes the crossbar of the 'F.' The descender of the 'y' gets vertical hairlines.",
     },
 
     // ── FLAT ART — the print arrives before the swatches that built it.
@@ -254,7 +254,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       text: "Dots, lines, stripes, diamonds.\nThat's the whole set.",
     },
 
-    // ── POSTER 2: "stepper" — the zoom. A print photographed in a room is
+    // ── POSTER 2: "highball stepper" — the zoom. A print photographed in a room is
     // the one frame where filling the mat changes what you can read: the
     // object in its setting, then the letterforms at print scale. No
     // zoomFit — the frame is near-square, so filling the width leaves a
@@ -263,12 +263,12 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "stepper-lifestyle",
       type: "hero",
       image: `${IMG}/typography-patterns-stepper-poster-bench-lifestyle.jpg`,
-      alt: "Typography & Patterns, stepper art print displayed on wooden bench",
+      alt: "Typography & Patterns, highball stepper art print displayed on wooden bench",
       inline: true,
       pressing: {
         plate: "04",
         captions: [
-          "Stepper, lithograph 02",
+          "Highball stepper, lithograph 02",
           "Slab capitals and script",
           "Photographed on the bench",
         ],
@@ -289,10 +289,10 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
     {
       id: "stepper-header",
       type: "section-header",
-      label: "SECTION 04: LITHOGRAPH 02 / STEPPER",
-      title: "Stepper,",
+      label: "SECTION 04: LITHOGRAPH 02 / HIGHBALL STEPPER",
+      title: "Highball stepper,",
       pressing: {
-        mark: { n: "04", name: "Stepper" },
+        mark: { n: "04", name: "Highball Stepper" },
         heldLine: "slab capitals stacked edge to edge.",
         choreo: { pin: true },
       },
@@ -344,7 +344,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "stepper-flat",
       type: "image",
       src: `${IMG}/typography-patterns-stepper-poster-flat.png`,
-      alt: "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms",
+      alt: "Typography & Patterns, highball stepper poster, flat artwork with bold geometric letterforms",
       aspect: "native",
       padded: true,
       pressing: { plateWidth: 930 },
@@ -357,16 +357,16 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       text: "The tighter the grid,\nthe darker it reads.",
     },
 
-    // ── POSTER 3: "white" — brief first, and the photograph climbs it.
+    // ── POSTER 3: "jack white" — brief first, and the photograph climbs it.
     // Print 02 opened on its image; this one opens on the argument, so the
     // two adjacent sections do not stage the same way.
     {
       id: "white-header",
       type: "section-header",
-      label: "SECTION 05: LITHOGRAPH 03 / WHITE",
+      label: "SECTION 05: LITHOGRAPH 03 / JACK WHITE",
       title: "Calligraphy up top,",
       pressing: {
-        mark: { n: "05", name: "White" },
+        mark: { n: "05", name: "Jack White" },
         heldLine: "a heavy A and K below.",
         choreo: { pin: true },
       },
@@ -395,7 +395,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-lifestyle",
       type: "hero",
       image: `${IMG}/typography-patterns-white-poster-gate-lifestyle.jpg`,
-      alt: "Typography & Patterns, white art print leaning against metal gate outdoors",
+      alt: "Typography & Patterns, jack white art print leaning against metal gate outdoors",
       inline: true,
       pressing: { choreo: { rise: true } },
     },
@@ -452,7 +452,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "white-flat",
       type: "image",
       src: `${IMG}/typography-patterns-white-poster-flat.png`,
-      alt: "Typography & Patterns, white poster, flat artwork with calligraphic and geometric letterforms",
+      alt: "Typography & Patterns, jack white poster, flat artwork with calligraphic and geometric letterforms",
       aspect: "native",
       padded: true,
       pressing: { plateWidth: 930 },
@@ -496,17 +496,17 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "The Dot Grid",
           content:
-            "Background in \"the Fancy,\" at a scale fine enough to read as light gray, close to paper grain. In \"stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right. In \"white\" it drops to sparse pinpoints.",
+            "Background in \"the fancy,\" at a scale fine enough to read as light gray, close to paper grain. In \"highball stepper\" the same tile is blown up to fill a whole capital, and at that size each dot is a shape in its own right. In \"jack white\" it drops to sparse pinpoints.",
         },
         {
           title: "Diagonal Stripes",
           content:
-            "The same 45-degree stripe at the same line weight in both prints. In \"the Fancy\" it is one crossbar wide and easy to miss. In \"stepper\" it fills a slab letter top to bottom, and blown up like that the angle gives the whole stack some speed.\n\nThe only difference is how much of the letter it covers.",
+            "The same 45-degree stripe at the same line weight in both prints. In \"the fancy\" it is one crossbar wide and easy to miss. In \"highball stepper\" it fills a slab letter top to bottom, and blown up like that the angle gives the whole stack some speed.\n\nThe only difference is how much of the letter it covers.",
         },
         {
           title: "White Space",
           content:
-            "Three ratios of ink to paper. \"the Fancy\" is mostly paper, with the letters clustered in the lower left. \"stepper\" runs edge to edge. \"white\" sits between them, open background, dense cluster at the bottom.\n\nThat ratio is most of what separates the sparse print from the packed one.",
+            "Three ratios of ink to paper. \"the fancy\" is mostly paper, with the letters clustered in the lower left. \"highball stepper\" runs edge to edge. \"jack white\" sits between them, open background, dense cluster at the bottom.\n\nThat ratio is most of what separates the sparse print from the packed one.",
         },
       ],
       group: { name: "system" },
