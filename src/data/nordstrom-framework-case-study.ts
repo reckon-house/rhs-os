@@ -24,9 +24,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 3 frames",
+        caption: "Preview · 4 frames",
         colors: ["#E5DCD3", "#6E706E", "#918C88", "#61605E", "#403934"],
         images: [
+          "/case-studies/nordstrom-framework/nordstrom-framework-on-our-list-phone-turntable.jpg",
           "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-whats-now.jpg",
           "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-where-to-wear.jpg",
           "/case-studies/nordstrom-framework/nordstrom-content-framework-lockup-on-our-list.jpg",
@@ -249,6 +250,33 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
     },
 
     // Tall application hero
+    // ── One bucket, out in the world. §04 is the section about whole
+    // pages built around a single bucket "each carrying the matching
+    // lockup", and this is On Our List doing exactly that on a phone.
+    //
+    // It climbs the §04 brief, whose pin had nothing crossing it until
+    // now — application-hero below is a zoom, and a zoom holds its own
+    // screen rather than climbing anything. Copy is also the right
+    // thing for a plate this size to cross: at 760 it could not cover a
+    // full-width picture, which is what made the Loved by Nordstrom
+    // riser read as a sticker.
+    //
+    // 760 rather than full bleed: the file is 1920px, so 960 is its
+    // honest half and a 1440 plate would draw it at 0.75x. Portrait, so
+    // 760 keeps it inside a laptop screen at 856 tall.
+    {
+      id: "on-our-list-phone",
+      type: "image",
+      src: `${IMG}/nordstrom-framework-on-our-list-phone-turntable.jpg`,
+      alt: "A phone lying on a silver turntable showing the On Our List story, the bucket's script lockup over the editorial photograph",
+      aspect: "native",
+      pressing: {
+        caption: "On Our List, in the wild",
+        plateWidth: 760,
+        choreo: { rise: true },
+      },
+    },
+
     {
       id: "application-hero",
       type: "image",

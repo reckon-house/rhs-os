@@ -66,7 +66,7 @@ const WORK = [
   ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3", 1920, 1280, "urban southwest primary bath exposed brick matte black soaking tub"],
   ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3", 1920, 1280, "fairview suite bedroom chandelier fireplace windows wide"],
   ["The Fairview", "Interior Design, foyer", "/case-studies/fairview-entry", "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg?v=3", 1920, 1280],
-  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg?v=3", 1920, 1280, "hero1", 0.53],
+  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg", 1920, 2162, "hero1", 0.53],
   /* Authored, not dealt. The seed gave this the 0.33 stamp and the
      picture is a tablet held at arm's length — the wall inside it needs
      the room. 0.40 is that stamp plus a fifth. */
