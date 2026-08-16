@@ -585,9 +585,35 @@
      indents it any more, so a small left frame and a large one sit over
      rules of exactly the same length. It still lives inside .ixrow, in
      the content column, so it never crosses the notes column. */
-  .ixrule { grid-column: 1 / -1; height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.13); }
+  /* Kept in the grid, no longer drawn. The band rhythm above is built
+     out of the gap ABOVE this element and the margin BELOW it, so
+     removing it outright would retune every row; zeroing the border
+     leaves the spacing exactly where it was tuned and takes the line
+     away. It draws again on a phone, where there are no columns for a
+     vertical to stand between. */
+  .ixrule { grid-column: 1 / -1; height: 0; border-top: 0; }
   .ixrow:last-child .ixrule { display: none; }
+
+  /* TWO STANDING RULES, instead of one per row.
+     The comment above already says it: the frames hang from the right
+     edge of each half, so "the two right edges are the only vertical
+     lines the eye needs". These draw the gutters those edges are
+     measured from, once down the whole index, rather than every row
+     restating the same interval horizontally.
+
+     One offset places both, because both gutters are the same clamp:
+     .ixbody's column-gap between the note rail and the rows, and
+     .ixrow's --ixgap between the two halves. The middle line lands on
+     50% exactly — the tracks are 1fr 1fr around that gap, so half the
+     container IS the centre of it. */
+  .ixrows { position: relative; --ixgap: clamp(24px, 3.4vw, 56px); }
+  .ixrows::before, .ixrows::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
+    background: rgba(0, 0, 0, 0.13); pointer-events: none; }
+  /* half a gutter to the left of the rows is the middle of the gap
+     between them and the note rail */
+  .ixrows::before { left: calc(var(--ixgap) / -2); }
+  .ixrows::after { left: 50%; }
 
   .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
     transform-origin: right center;
@@ -654,6 +680,10 @@
     .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
+    /* One column and no note rail, so there are no gutters left for a
+       vertical to stand in. The row rule comes back to do the work. */
+    .ixrows::before, .ixrows::after { display: none; }
+    .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
   }
 
   /* ── the work: blocks, and the air between them ──────────────────
