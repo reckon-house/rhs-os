@@ -435,7 +435,14 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             : s.images.map((im, k) => ({ ...im, caption: p?.captions?.[k] }))
           ).map((img) => {
             const cap = splitCaption(img.caption);
-            return { src: img.src, alt: img.alt, caption: cap?.label, sub: cap?.sub, ...dim(img.src) };
+            return {
+              src: img.src,
+              alt: img.alt,
+              caption: cap?.label,
+              sub: cap?.sub,
+              frameWidth: (img as { frameWidth?: number }).frameWidth,
+              ...dim(img.src),
+            };
           })}
           cols={s.type === "masonry" ? s.columns : undefined}
           /* `native` on the section means the same thing here as in the

@@ -409,6 +409,20 @@
   box-sizing: border-box;
 }
 
+/* Two mark tiles in one ledger row (mark + markRight). Each keeps its own
+   caption underneath, so this only has to set them side by side and let
+   .markImg's height clamp do the sizing it already does for one. */
+.markPair {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  height: 100%;
+}
+.markPair > .markStack {
+  padding-bottom: 22px;
+}
+
 /* RRSystemIndex's mobile block, its numbers. */
 @media (max-width: 760px) {
   .row {

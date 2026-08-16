@@ -742,29 +742,43 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
   const rows: { label: string; body: React.ReactNode }[] = [];
 
   if (data.mark) {
-    const dim = imageDimensions[data.mark.src];
-    rows.push({
-      label: data.mark.label,
-      body: (
-        <span className={styles.markStack}>
+    /* markRight was mapped out of the data and declared on the props and
+       then never drawn, so any study authoring a second mark image had it
+       silently dropped: Jeffrey Spring lost its palm frond entirely and
+       nothing reported it. One tile or two, same ledger row. */
+    const tile = (m: { src: string; label: string; caption: string }) => {
+      const dim = imageDimensions[m.src];
+      return (
+        <span className={styles.markStack} key={m.src}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={styles.markImg}
             style={
               { "--native": dim ? `${Math.floor(dim[0] / 2)}px` : undefined } as CSSProperties
             }
-            src={data.mark.src}
+            src={m.src}
             /* The caption says what this is; the alt should agree with
                it rather than claim every logotype row is a construction
                drawing. */
-            alt={`${data.mark.label}: ${data.mark.caption || data.mark.label}`}
+            alt={`${m.label}: ${m.caption || m.label}`}
             width={dim?.[0]}
             height={dim?.[1]}
             loading="lazy"
             decoding="async"
           />
-          <span className={styles.cap}>{data.mark!.caption}</span>
+          <span className={styles.cap}>{m.caption}</span>
         </span>
+      );
+    };
+    rows.push({
+      label: data.mark.label,
+      body: data.markRight ? (
+        <span className={styles.markPair}>
+          {tile(data.mark)}
+          {tile(data.markRight)}
+        </span>
+      ) : (
+        tile(data.mark)
       ),
     });
   }

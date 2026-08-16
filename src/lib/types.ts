@@ -346,10 +346,28 @@ export interface ImageSection extends BaseSection {
   blend?: "multiply" | "screen" | "overlay";
 }
 
+/**
+ * An editorial ceiling for ONE frame of a pair, in CSS pixels.
+ *
+ * The pair already caps every frame at native / 2, which stops a small
+ * file being magnified. This is the other case: two frames that are both
+ * honest at their own sizes but wrong NEXT TO EACH OTHER. Jeffrey Spring
+ * pairs a 766px dress crop with two phone mockups exported at 500px and
+ * 261px, so the caps alone drew one phone at 250 CSS and the other at
+ * 130, and the two rows of the same grid disagreed about how big a phone
+ * is. It can only ever make a frame smaller; a value above the file's
+ * honest half-width is ignored.
+ */
+export interface PairFrame {
+  src: string;
+  alt: string;
+  frameWidth?: number;
+}
+
 export interface DualImageSection extends BaseSection {
   type: "dual-image";
-  left: { src: string; alt: string };
-  right: { src: string; alt: string };
+  left: PairFrame;
+  right: PairFrame;
   native?: boolean;
   transparent?: boolean;
   aspect?: string;
@@ -931,9 +949,14 @@ export interface MarksAndMaterialsSection extends BaseSection {
     /** Override the text shown in the color band sample (defaults to `name`). Useful when the full name wraps awkwardly. */
     sampleText?: string;
   }[];
-  /** Primary mark image, shown centered at the bottom of the panel */
-  markImage: string;
-  markAlt: string;
+  /**
+   * Primary mark image, shown centered at the bottom of the panel.
+   * Optional: a study whose materials are better shown as plates in the
+   * flow (Jeffrey Spring's two leaf crops) authors no mark at all, and
+   * both renderers already skip the row when it is absent.
+   */
+  markImage?: string;
+  markAlt?: string;
   /** When true, the mark image fills the panel width (good for system spreads / wide compositions). Default false. */
   markFullBleed?: boolean;
   /**

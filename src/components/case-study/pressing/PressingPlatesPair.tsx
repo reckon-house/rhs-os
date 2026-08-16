@@ -63,6 +63,12 @@ export interface PressingPlatesPairProps {
      */
     width?: number;
     height?: number;
+    /**
+     * Editorial ceiling for this frame alone, in CSS pixels. Narrows the
+     * frame below its native cap when two honest sizes look wrong beside
+     * each other. See PairFrame in types.ts.
+     */
+    frameWidth?: number;
   }[];
   /** Hold the row so the next sibling (a rise plate) can climb across it. */
   pinForNext?: boolean;
@@ -216,11 +222,18 @@ export function PressingPlatesPair({
                their own pixels, and 901 at 1920, which is 1.65x. Larger
                sources never reach the cap, so this only binds where a
                frame was already being magnified. */
-            style={
-              im.width
-                ? ({ "--pair-native": `${Math.floor(im.width / 2)}px` } as CSSProperties)
-                : undefined
-            }
+            /* frameWidth is an EDITORIAL floor on top of that ceiling, so
+               the smaller of the two always wins: it can narrow a frame
+               that its own pixels would allow to be wider, and it can
+               never widen one past them. */
+            style={(() => {
+              const honest = im.width ? Math.floor(im.width / 2) : undefined;
+              const cap =
+                honest !== undefined && im.frameWidth !== undefined
+                  ? Math.min(honest, im.frameWidth)
+                  : (honest ?? im.frameWidth);
+              return cap ? ({ "--pair-native": `${cap}px` } as CSSProperties) : undefined;
+            })()}
           >
             <span
               className={styles.frame}

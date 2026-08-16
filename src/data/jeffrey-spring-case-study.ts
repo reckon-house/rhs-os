@@ -167,6 +167,13 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       left: {
         src: `${IMG}/jeffrey-spring-campaign-mobile-simone-rocha-in-season-bold-shop-now.png`,
         alt: "Jeffrey mobile template featuring the Simone Rocha dress with IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
+        /* The two phone exports are 500px and 261px, so their own honest
+           caps drew one at 250 CSS and the other at 130, and the two rows
+           of the same grid disagreed about how big a phone is. Both take
+           130 now: the dress frames read as the plates and the phones as
+           the small format beside them, which is the whole point of the
+           pairing. Well inside 250, so this one stays sharp. */
+        frameWidth: 130,
       },
       right: {
         src: `${IMG}/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg`,
@@ -196,6 +203,10 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png`,
         alt: "Jeffrey mobile template featuring the same JW Anderson dress with IN SEASON BOLD headline and SHOP NOW CTA, foliage frame intact at phone scale",
+        /* 261px native, so 130 is already this file's own ceiling. Stated
+           anyway, so the two phones read as one decision rather than as
+           two files that happened to land near each other. */
+        frameWidth: 130,
       },
     },
 
@@ -217,6 +228,27 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       aspect: "native",
       padded: true,
       pressing: { choreo: { rise: true } },
+    },
+
+    // ── THE TWO LEAVES — shot once on white, then composed into every
+    // dress story in post. They were in the classic study as a pair and
+    // the port lost them, so here they are at plate size again. 766px
+    // native each, which is exactly the 383 a pair frame gives them.
+    {
+      id: "foliage-pair",
+      type: "dual-image",
+      native: true,
+      left: {
+        src: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
+        alt: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
+      },
+      right: {
+        src: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
+        alt: "Single monstera leaf shot tight on white, treated as a graphic material",
+      },
+      pressing: {
+        captions: ["Palm frond\nShot on white", "Monstera\nThe other material"],
+      },
     },
 
     // ════════════════════════════════════════
@@ -277,13 +309,11 @@ export const jeffreySpringCaseStudy: CaseStudy = {
           weight: 800,
         },
       ],
-      // Mark slot: side-by-side foliage pair. The leaves ARE the brand
-      // material, so this slot shows them as a complementary detail study
-      // (monstera + palm frond) rather than another mockup screenshot.
-      markImage: `${IMG}/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg`,
-      markAlt: "Single monstera leaf shot tight on white, treated as a graphic material",
-      markImageRight: `${IMG}/jeffrey-spring-campaign-palm-frond-texture-detail.jpg`,
-      markAltRight: "Palm frond texture detail with sharp blade structure shot on white studio backdrop, the second material in the foliage kit",
+      // No mark slot. The two leaf crops used to sit here, where the
+      // ledger row draws a mark at ~180px, and the palm frond was being
+      // dropped outright besides. They are the campaign's two materials,
+      // so they run as a plate pair above this section instead, at the
+      // 383 their 766px files honestly carry.
     },
 
     // ════════════════════════════════════════

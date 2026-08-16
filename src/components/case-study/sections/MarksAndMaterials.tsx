@@ -313,12 +313,16 @@ export function MarksAndMaterials({
           {/* When markImageRight is set, render as a side-by-side pair (good
               for material studies — e.g. two complementary detail shots).
               Otherwise render the single markImage spread. */}
+          {/* markImage is optional: a study can put its materials in the
+              flow as plates instead, in which case there is no panel to
+              draw and the whole block sits out. */}
+          {!markImage ? null : (
           <div className="px-[calc(100%/12)] md:px-12 lg:px-14 pb-12 pt-6">
             {markImageRight ? (
               <div className={`grid grid-cols-1 ${markStacked ? "" : "md:grid-cols-2"} gap-6 md:gap-8`}>
                 <Image
                   src={markImage}
-                  alt={markAlt}
+                  alt={markAlt ?? ""}
                   width={2000}
                   height={2000}
                   sizes={markStacked ? "(min-width: 1000px) 1000px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
@@ -339,7 +343,7 @@ export function MarksAndMaterials({
               <div className="flex justify-center">
                 <Image
                   src={markImage}
-                  alt={markAlt}
+                  alt={markAlt ?? ""}
                   width={2000}
                   height={1200}
                   sizes={markFullBleed ? "(min-width: 1100px) 1000px, 100vw" : "(min-width: 1000px) 1000px, 100vw"}
@@ -349,6 +353,7 @@ export function MarksAndMaterials({
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
     </section>
