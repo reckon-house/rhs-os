@@ -35,9 +35,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 8 frames",
+        caption: "Preview · 9 frames",
         colors: ["#000000", "#141414", "#8E8E8E", "#E6E6E6", "#FFFFFF"],
         images: [
+          "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
           "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
           "/case-studies/dsc/dsc-athlete-app-login-screen.jpg",
           "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
@@ -75,8 +76,8 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "hero-1",
       type: "hero",
-      image: "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
-      alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
+      image: "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
+      alt: "The Dallas Sport Collective marketing site open on a laptop resting on a wooden stool",
       pressing: { choreo: { rise: true } },
     },
 
@@ -117,6 +118,23 @@ export const dscCaseStudy: CaseStudy = {
       fullWidth: true,
       content:
         "Athlete login and registration. A hundred-plus people moving off text threads and a spreadsheet and onto one roster the software can work with.",
+    },
+
+    // ── The old cover, kept. This section calls the signup the front
+    // door, and the marketing site is the part of that door the public
+    // sees, so it belongs here rather than opening the study twice.
+    // Climbs the pinned brief above it: the brief absorbs its own texts,
+    // so this plate's real neighbour is the held header.
+    {
+      id: "marketing-site",
+      type: "image",
+      src: "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
+      alt: "The Dallas Sport Collective marketing site open on a laptop, on concrete",
+      aspect: "native",
+      pressing: {
+        caption: "The marketing site",
+        choreo: { rise: true },
+      },
     },
     {
       id: "signup-images",

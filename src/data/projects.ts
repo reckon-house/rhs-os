@@ -30,7 +30,7 @@ export const projects: Project[] = [
   { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3`, href: "/case-studies/nordstrom-beauty", tags: ["digital"] },
   { id: "oakworks", title: "Hill Country Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-country-oakworks-billboard.jpg`, href: "/case-studies/hill-country-oak", tags: ["creative"] },
   { id: "cosmoProf", title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg?v=3`, href: "/case-studies/cosmo-prof", tags: ["digital"] },
-  { id: "dsc", title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-website-app.jpg?v=3`, href: "/case-studies/dsc", tags: ["digital"] },
+  { id: "dsc", title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-laptop-stool.jpg`, href: "/case-studies/dsc", tags: ["digital"] },
   { id: "bwType", title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg?v=3`, href: "/case-studies/black-white-type", tags: ["creative"] },
   { id: "hillLiving", title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg?v=3`, href: "/case-studies/hill-country-living", tags: ["interiors"] },
   { id: "jChristianson", title: "J. Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg?v=3`, href: "/case-studies/j-christianson", tags: ["creative"] },

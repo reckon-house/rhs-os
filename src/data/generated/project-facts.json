@@ -4148,7 +4148,7 @@
      {
       "facet": "client",
       "term": "Dallas Sport Collective",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -4170,7 +4170,7 @@
       "n": 10,
       "cites": [
        {
-        "section": "hero-1",
+        "section": "marketing-site",
         "field": "alt",
         "quote": "The Dallas Sport Collective marketing site open on a laptop, on concrete"
        },
@@ -4257,6 +4257,61 @@
       "observed": true
      }
     ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "stool",
+      "n": 3,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg"
+       },
+       {
+        "section": "hero-1",
+        "field": "image",
+        "quote": "dsc marketing site laptop stool hero"
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "window",
+      "n": 3,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/dsc/dsc-athlete-app-login-screen.jpg",
+        "quote": "Portrait screen capture, an overhead gym photograph inset in a black frame with type and buttons stacked hard left along the bottom."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
+        "quote": "Portrait screen capture, a single centred column with the headline hard left above an evenly spaced field stack."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg",
+        "quote": "App panel shot flat-on, two photographs paired edge to edge across the full column, text stacked beneath in decreasing weight."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "table",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/dsc/dsc-marketing-site-recovery-section.jpg",
+        "quote": "Straight-on capture split down the middle, type block left and a single portrait-format image right, the subject bent over from above."
+       }
+      ],
+      "observed": true
+     }
+    ],
     "place": [
      {
       "facet": "place",
@@ -4327,44 +4382,6 @@
         "section": "image",
         "field": "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
         "quote": "Portrait screen capture, a single centred column with the headline hard left above an evenly spaced field stack."
-       }
-      ],
-      "observed": true
-     }
-    ],
-    "furniture": [
-     {
-      "facet": "furniture",
-      "term": "window",
-      "n": 3,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/dsc/dsc-athlete-app-login-screen.jpg",
-        "quote": "Portrait screen capture, an overhead gym photograph inset in a black frame with type and buttons stacked hard left along the bottom."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
-        "quote": "Portrait screen capture, a single centred column with the headline hard left above an evenly spaced field stack."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/dsc/dsc-athlete-app-trainer-bio-profile.jpg",
-        "quote": "App panel shot flat-on, two photographs paired edge to edge across the full column, text stacked beneath in decreasing weight."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "furniture",
-      "term": "table",
-      "n": 1,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/dsc/dsc-marketing-site-recovery-section.jpg",
-        "quote": "Straight-on capture split down the middle, type block left and a single portrait-format image right, the subject bent over from above."
        }
       ],
       "observed": true
