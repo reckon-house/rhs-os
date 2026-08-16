@@ -83,15 +83,18 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       id: "rules-header",
       type: "section-header",
       label: "SECTION 02: THE RULES",
-      title: "Six patterns,",
+      // Jeremy, 2026-08-15: "defining the box i was going to work within
+      // was the 'work'". His sentence, spelling fixed, nothing else.
+      // The count it replaced was already on the cover and on the mark.
+      title: "Defining the box",
       // The study's one crossing, in the BRIEF form (pin + crossing) rather
       // than standalone: this header carries the method columns, and
       // PRESSING.md §7 reserves the standalone crossing for headers whose
       // copy is short. Headline crosses, then pins while the vocabulary
       // travels past it.
       pressing: {
-        mark: { n: "02", name: "Six Patterns" },
-        heldLine: "twelve tiles.",
+        mark: { n: "02", name: "The Box" },
+        heldLine: "was the work.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "rules", bg: "#141414", radius: 75, padding: "60px" },
@@ -125,7 +128,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         {
           title: "No Color",
           content:
-            "Thick stripes come forward and thin hairlines drop back. That is the whole tonal range.\n\nSo the contrast had to come from shape instead.",
+            "I wanted the shapes and the letterforms to be the focus, so color was never in it.\n\nThick stripes come forward and thin hairlines drop back. That is the whole tonal range.",
         },
         {
           title: "Three Words",
@@ -214,7 +217,16 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, horizontal grouped lines",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
+      /* THE MATERIAL DIFFERENCE, and it applies to every swatch in this
+         study. A climb sells depth by carrying one plane over another,
+         and Robert's climbs work because the thing underneath is a
+         photograph: a room, a model, something with its own space. Every
+         image here is a flat repeating texture running the full width,
+         so two of them on screen at once sit on the same plane at the
+         same scale and read as a collision, not a climb. The audit
+         passes these (a rise may legally cross a zoom or a pinned pair),
+         which is exactly why the rule has to be written down here. The
+         swatches sit. Only the plates that climb COPY keep their rise. */
     },
     // Two swatches at rest to close the section. Nothing climbs them, so no
     // pin: the quote poster below names the vocabulary they just showed.
@@ -264,9 +276,8 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         choreo: { zoom: true },
       },
     },
-    // The stripes cross the print they fill. The swatch climbs the zoom's
-    // held screen, and the brief that explains the composition arrives after
-    // the eye has already met it.
+    // The stripes follow the print they fill, at rest. They used to climb
+    // the zoom above; texture over texture, see fancy-swatch-4.
     {
       id: "stepper-swatch-3",
       type: "image",
@@ -274,7 +285,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, diagonal stripes, white on black",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
     },
     {
       id: "stepper-header",
@@ -313,8 +323,8 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       padded: true,
       pressing: { choreo: { rise: true } },
     },
-    // Held so the finished print can climb them. Two tiles at rest, then the
-    // composition they end up inside crosses the screen.
+    // Two tiles at rest. The pin came off with the climb above it: a pin
+    // that nothing crosses is a hold on nothing.
     {
       id: "stepper-swatches-pair",
       type: "dual-image",
@@ -327,7 +337,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         src: `${IMG}/pattern-swatch-large-dots-grid-black-on-white.jpg`,
         alt: "Pattern swatch, large dots grid, black on white",
       },
-      pressing: { choreo: { pin: true } },
     },
 
     // ── FLAT ART ──
@@ -338,7 +347,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, stepper poster, flat artwork with bold geometric letterforms",
       aspect: "native",
       padded: true,
-      pressing: { plateWidth: 930, choreo: { rise: true } },
+      pressing: { plateWidth: 930 },
     },
 
     // ── EDITORIAL HEADLINE ──
@@ -406,7 +415,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       },
       pressing: {
         captions: ["Large circles\nWhite on black", "Vertical bar stripes"],
-        choreo: { pin: true },
       },
     },
     {
@@ -416,7 +424,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Pattern swatch, thick horizontal stripes",
       aspect: "native",
       padded: true,
-      pressing: { choreo: { rise: true } },
     },
     // The second zoom answers the first. Section 03 held the dense dot grid
     // at full size; this is the same element at the open end of the range,
@@ -448,7 +455,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       alt: "Typography & Patterns, white poster, flat artwork with calligraphic and geometric letterforms",
       aspect: "native",
       padded: true,
-      pressing: { plateWidth: 930, choreo: { rise: true } },
+      pressing: { plateWidth: 930 },
     },
 
     // ── HOW THE SYSTEM WORKS — grouped in black container ──
@@ -528,7 +535,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "The patterns are close to childlike. The type goes the other way: Didone serifs, calligraphic swashes, slab capitals with real weight. Setting one against the other is most of what makes the prints work at wall size.\n\nThis one had no client, no brief, and no deadline.",
+        "The patterns are close to childlike. The type goes the other way: Didone serifs, calligraphic swashes, slab capitals with real weight. Setting one against the other is most of what makes the prints work at wall size.\n\nThere was no client and no deadline on this one. Once the rules were set, the rest of it was a lot of fun to make.",
     },
   ],
 };
