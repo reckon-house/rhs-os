@@ -24,10 +24,11 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 8 frames",
+        caption: "Preview · 9 frames",
         colors: ["#1F4D78", "#D87A82", "#8E3F40", "#1F2434", "#ECE6D5"],
         images: [
           "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup.jpg",
+          "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-plate-in-wire-rack-hero.jpg",
           "/case-studies/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup.jpg",
           "/case-studies/amber-shockey-co/amber-shockey-co-red-dragons-plates-stacked-on-dragon-pattern-collection-mockup.jpg",
           "/case-studies/amber-shockey-co/amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg",
@@ -144,6 +145,29 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       alt: "Blue florals peony pattern at wallpaper scale, full repeat tile showing the rhythm of the print",
       inline: true,
       pressing: { choreo: { rise: true } },
+    },
+
+    // ── The print on the object, after the print at wallpaper scale.
+    // A zoom rather than a plate: a plate can rise but cannot pin, so
+    // the only way to add a second full-width picture here without
+    // retuning the climb above it is a gesture that holds its own
+    // screen. 3080px native, which carries a 1440 mat.
+    {
+      id: "blue-plate",
+      type: "hero",
+      image: `${IMG}/amber-shockey-co-blue-florals-plate-in-wire-rack-hero.jpg`,
+      alt: "A blue florals plate standing in a wire dish rack, peony border around a geometric medallion",
+      inline: true,
+      pressing: {
+        plate: "02",
+        captions: [
+          "Blue florals, on the plate",
+          "Peony border, geometric centre",
+          "The hero pattern and the accent, one object",
+        ],
+        instruction: "Scroll. It fills the mat, then travels the frame",
+        choreo: { zoom: true },
+      },
     },
 
     // ════════════════════════════════════════
