@@ -47,9 +47,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 5 frames",
+        caption: "Preview · 6 frames",
         colors: ["#D2C6C7", "#C8C8C9", "#C18E7C", "#C08861", "#2C312F"],
         images: [
+          "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg",
           "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
           "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
           "/case-studies/sally-os/heroes/sally-os-asset-hub-hero.jpg",
@@ -84,8 +85,8 @@ export const sallyCaseStudy: CaseStudy = {
     {
       id: "hero-1",
       type: "hero",
-      image: "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg",
-      alt: "Sally Beauty Marketing OS, platform overview",
+      image: "/case-studies/sally-os/heroes/sally-os-asset-hub-platform-hero.jpg",
+      alt: "The Sally Marketing OS Asset Hub open on a laptop, the tagged library filling the screen",
       pressing: { choreo: { rise: true } },
     },
 
