@@ -101,7 +101,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every pattern is drawn twice, black on white and white on black, which is how six become twelve. From there the only things that change are scale and spacing.",
+        "Every pattern is drawn twice, once black on white and once reversed. After that the only things that change are scale and spacing.",
       group: { name: "rules" },
     },
     {
@@ -110,7 +110,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each swatch is a tile that repeats in any direction and at any size. The shapes are plain enough that any two of them can sit side by side, and most of the detail in the prints comes from layering them.",
+        "Each swatch is a tile that repeats in any direction, at any size. Most of the detail in the prints comes from layering them.",
       group: { name: "rules" },
     },
     {
@@ -118,19 +118,19 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "three-column-text",
       columns: [
         {
-          title: "Twelve Tiles",
+          title: "The Shapes",
           content:
-            "Dots at two scales, a dense halftone and an open grid. Lines three ways: vertical hairlines, horizontal bands, diagonal stripes. And one diamond grid. Every texture in the three prints is one of these, or its inverse.",
+            "Dots at two scales, a dense halftone and an open grid. Lines three ways: vertical hairlines, horizontal bands, diagonal stripes. And one diamond grid.",
         },
         {
           title: "No Color",
           content:
-            "Color separates things and builds hierarchy almost on its own, and there was none of it here. Thick stripes come forward, thin hairlines drop back, and that is about the whole tonal range.\n\nSo contrast had to come from shape. Heavy geometric letters next to loose calligraphic strokes, and dense fills next to open paper.",
+            "Thick stripes come forward and thin hairlines drop back. That is the whole tonal range.\n\nSo the contrast had to come from shape instead.",
         },
         {
           title: "Three Words",
           content:
-            "Each print is one word: \"the Fancy,\" \"stepper,\" \"white.\" One is set in script, one in geometric capitals, and one in a mix of the two. The tiles are the same in all three, so the type is where the personality comes from.",
+            "Each print is one word: \"the Fancy,\" \"stepper,\" \"white.\" One is set in script, one in geometric capitals, and one in a mix of the two.",
         },
       ],
       group: { name: "rules" },
@@ -155,7 +155,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The script sits low in the left corner and runs loose, with swashes trailing off the edge of the sheet. A fine dot grid covers the background, and every stroke gets a different fill, so the weight changes letter by letter.",
+        "The script sits low in the left corner, with swashes running off the edge of the sheet. A fine dot grid covers the background, and every stroke gets a different fill.",
     },
     {
       id: "fancy-footnote",
@@ -163,7 +163,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "It reads \"the Fancy\" in a Didone-influenced script. Polka dots in the bowl of the 'a,' diagonal stripes in the crossbar of the 'F,' vertical hairlines in the descender of the 'y.'",
+        "It reads \"the Fancy.\" Polka dots fill the bowl of the 'a,' diagonal stripes the crossbar of the 'F.' The descender of the 'y' gets vertical hairlines.",
     },
 
     // ── FLAT ART — the print arrives before the swatches that built it.
