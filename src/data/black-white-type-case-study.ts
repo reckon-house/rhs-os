@@ -7,7 +7,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
   title: "Typography & Patterns",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Six patterns and three lithographs. Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
+    "Six patterns and three lithographs. | Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
   field: "Typography Design\nPattern Design\nArt Direction",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -48,7 +48,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       },
       title: "Typography\n& Patterns",
       subtitle:
-        "Six patterns and three lithographs. Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
+        "Six patterns and three lithographs. | Black ink on white paper, letterforms filled with a small library of shapes and repeats.",
       field: "Typography Design  Pattern Design  Art Direction",
       author: "Jeremy Prasatik",
       published: "2023",
