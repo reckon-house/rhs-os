@@ -102,7 +102,6 @@ const VIZ_TYPES = new Set<Section["type"]>([
   "double-exposure-anatomy",
   "hex-polygon",
   "polygon-lattice",
-  "pattern-matrix",
   "sizzle-playground",
   "tech-chart",
   "tech-stack",

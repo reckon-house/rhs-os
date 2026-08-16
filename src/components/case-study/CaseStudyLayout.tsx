@@ -36,7 +36,6 @@ function getColSpan(type: string): string {
     case "feature-cards":
     case "spacer":
     case "timeline":
-    case "pattern-matrix":
     case "material-circos":
     case "kitchen-palette":
     case "hex-polygon":

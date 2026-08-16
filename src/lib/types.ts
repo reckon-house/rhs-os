@@ -81,7 +81,6 @@ export type Section =
   | IntelligenceFlowSection
   | DoubleExposureAnatomySection
   | ColorFieldMapSection
-  | PatternMatrixSection
   | MaterialCircosSection
   | KitchenPaletteSection
   | HexPolygonSection
@@ -770,10 +769,6 @@ export interface DoubleExposureAnatomySection extends BaseSection {
 
 export interface ColorFieldMapSection extends BaseSection {
   type: "color-field-map";
-}
-
-export interface PatternMatrixSection extends BaseSection {
-  type: "pattern-matrix";
 }
 
 export interface MaterialCircosSection extends BaseSection {

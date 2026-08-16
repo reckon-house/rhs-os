@@ -136,13 +136,6 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       group: { name: "rules" },
     },
 
-    // ── PATTERN LIBRARY CHART ──
-    {
-      id: "pattern-matrix",
-      type: "pattern-matrix",
-      group: { name: "rules" },
-    },
-
     // ── POSTER 1: "the Fancy" ──
     {
       id: "fancy-header",
