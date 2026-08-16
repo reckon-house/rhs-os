@@ -48,7 +48,7 @@ const WORK = [
      0.64 and a dealt tier, so the ladder's step-and-a-half still
      holds. */
   ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop", 0.86],
-  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg?v=3", 1920, 1280, "jeffrey new york digital flagship hero"],
+  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-laptop.jpg", 1920, 1188, "the jeffrey homepage open on a laptop, saint laurent spring summer shoes"],
   ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3", 1600, 1600, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
   ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
   ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg", 1920, 1229, "the jeffrey homepage open on a laptop resting on a pink chair"],
