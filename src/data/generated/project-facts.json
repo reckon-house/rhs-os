@@ -12170,17 +12170,17 @@
      {
       "facet": "client",
       "term": "Nordstrom",
-      "n": 47,
+      "n": 51,
       "cites": [
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg"
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-ipad-tibi-tiles-held.jpg"
        },
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg"
+        "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-ipad-tibi-tiles-held.jpg"
        }
       ]
      }
@@ -12193,12 +12193,12 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.2",
+        "field": "reel.images.3",
         "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-helmut-lang-beige-jacket-tile.jpg"
        },
        {
         "section": "meta",
-        "field": "reel.images.3",
+        "field": "reel.images.4",
         "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg"
        }
       ]
@@ -12232,7 +12232,7 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.6",
+        "field": "reel.images.7",
         "quote": "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg"
        },
        {

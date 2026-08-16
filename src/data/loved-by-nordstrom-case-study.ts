@@ -36,9 +36,10 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 8 frames",
+        caption: "Preview · 9 frames",
         colors: ["#DAD7D2", "#605C66", "#BBAA8B", "#AF987F", "#CAC4BE"],
         images: [
+          "/case-studies/loved-by-nordstrom/loved-by-nordstrom-ipad-tibi-tiles-held.jpg",
           "/case-studies/loved-by-nordstrom/loved-by-nordstrom-gallery-wall-campaign-tiles-tibi-center.jpg",
           "/case-studies/loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench.jpg",
           "/case-studies/loved-by-nordstrom/loved-by-nordstrom-liked-by-helmut-lang-beige-jacket-tile.jpg",
@@ -253,6 +254,26 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       right: {
         src: `${IMG}/loved-by-nordstrom-large-tibi-fur-coat-campaign-tile.jpg`,
         alt: "Loved by Nordstrom large format tile featuring TIBI faux fur coat on white door",
+      },
+      // Held so the device carrying these same two tiles can cross them.
+      pressing: { choreo: { pin: true } },
+    },
+
+    // ── The two tiles above, on a screen, in somebody's hands.
+    // plateWidth 800 rather than a full-bleed plate: the file is 1600px
+    // and a 1440 plate would draw it at 1.11x. 800 is its honest half,
+    // so it climbs at the size it can carry and centres in the column
+    // with air, the way A.R.C.'s interface plates do.
+    {
+      id: "loved-tiles-in-hand",
+      type: "image",
+      src: `${IMG}/loved-by-nordstrom-ipad-tibi-tiles-held.jpg`,
+      alt: "A person in a mohair sweater holding a tablet showing the Loved by Nordstrom wall, the two large TIBI tiles at its centre",
+      aspect: "native",
+      pressing: {
+        caption: "The wall, on a screen",
+        plateWidth: 800,
+        choreo: { rise: true },
       },
     },
 
