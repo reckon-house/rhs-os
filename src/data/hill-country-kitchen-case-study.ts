@@ -85,10 +85,12 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: THE MATERIAL SYSTEM",
-      title: "Four materials,",
+      // Jeremy, 2026-08-15: the materials led the design; say that, with
+      // the materials as the subject rather than the drawings.
+      title: "The materials came first.",
       pressing: {
-        mark: { n: "02", name: "Four Materials" },
-        heldLine: "chosen before anything was drawn.",
+        mark: { n: "02", name: "Materials First" },
+        heldLine: "The room was drawn around them.",
         choreo: { pin: true },
       },
       group: { name: "materials", bg: "#ECE6E1", radius: 75, padding: "60px" },
