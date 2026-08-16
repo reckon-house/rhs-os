@@ -145,9 +145,9 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: WEST TEXAS",
       title: "Shot on location",
-      // The study's one crossing. Three words that ARE the brand brief, on
-      // the beat where the photography arrives — the shortest headline in
-      // the study, so the cut reads cleanly.
+      // The study's one crossing, on the beat where the photography
+      // arrives. The headline just says where it was shot; the cut is
+      // the gesture, so the words stay short and plain.
       //
       // `pin` alongside `crossing`: the crossing already holds as part of
       // its own gesture, so the flag changes nothing on the page. It is

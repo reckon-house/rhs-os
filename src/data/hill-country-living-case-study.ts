@@ -176,8 +176,8 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "section-header",
       label: "SECTION 03: COLLECTED",
       title: "Heirlooms, New Finds,",
-      // The study's one crossing. Two words that draw the line the whole
-      // room is arguing for.
+      // The study's one crossing, on the beat where the room's contents
+      // arrive: what is in it, named, at display size.
       //
       // `pin` alongside `crossing`: the crossing already holds as part of
       // its own gesture, so the flag changes nothing on the page. It is the

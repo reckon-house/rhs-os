@@ -148,7 +148,11 @@ export const hillCountryBathCaseStudy: CaseStudy = {
     {
       id: "headline-collected",
       type: "editorial-headline",
-      text: "The clay pot weighs\nmore than the sink",
+      // The pass first put "The clay pot weighs more than the sink" here,
+      // which nothing in the file supports; nobody weighed anything. The
+      // painting line is in the file twice and is the truest thing about
+      // the room, so it moves up here and the closing lets it go.
+      text: "The painting is older\nthan the house",
     },
 
     // ── THE SHOWER ──
@@ -256,7 +260,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "None of it came from one vendor or was ordered to spec. The brass valet stand is from an antique shop, and the landscape painting is older than the house.",
+        "None of it came from one vendor or was ordered to spec. The brass valet stand is from an antique shop, and the rugs are vintage.",
     },
     {
       id: "objects-footnote",
