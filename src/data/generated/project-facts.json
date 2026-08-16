@@ -11926,17 +11926,17 @@
      {
       "facet": "client",
       "term": "Jeffrey",
-      "n": 34,
+      "n": 37,
       "cites": [
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg"
+        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg"
        },
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg"
+        "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg"
        }
       ]
      },
@@ -11947,7 +11947,7 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.1",
+        "field": "reel.images.2",
         "quote": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg"
        },
        {
@@ -11975,6 +11975,43 @@
         "quote": "Blush"
        }
       ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "chair",
+      "n": 2,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…e Jeffrey homepage open on a laptop resting on a pink moulded chair, the IN SEASON BOLD, READY & NOW banner above the campaign gri…"
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg",
+        "quote": "Three-quarter vantage from above left, laptop set on a diagonal, screen filling most of the frame."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
+      "term": "plant",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg",
+        "quote": "Square crop, near-overhead flat-lay, the leaf fills the frame with its petiole exiting at the right edge."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-palm-frond-texture-detail.jpg",
+        "quote": "Square crop, near flat-lay overhead, the rachis running left to right on a shallow rising diagonal."
+       }
+      ],
+      "observed": true
      }
     ],
     "material": [
@@ -12039,39 +12076,6 @@
         "quote": "Italic Heavy for the wordmark, set wide, with the Atlanta/New York tagline small alongside it."
        }
       ]
-     }
-    ],
-    "furniture": [
-     {
-      "facet": "furniture",
-      "term": "plant",
-      "n": 2,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-monstera-leaf-graphic-detail.jpg",
-        "quote": "Square crop, near-overhead flat-lay, the leaf fills the frame with its petiole exiting at the right edge."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-palm-frond-texture-detail.jpg",
-        "quote": "Square crop, near flat-lay overhead, the rachis running left to right on a shallow rising diagonal."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "furniture",
-      "term": "chair",
-      "n": 1,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg",
-        "quote": "Three-quarter vantage from above left, laptop set on a diagonal, screen filling most of the frame."
-       }
-      ],
-      "observed": true
      }
     ],
     "style": [

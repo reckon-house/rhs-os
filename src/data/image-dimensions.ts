@@ -472,6 +472,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png": [2000, 1424],
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg": [3076, 1814],
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg": [3088, 1976],
+  "/case-studies/jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg": [3088, 1976],
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-jw-anderson-striped-dress-monstera-frame.jpg": [766, 766],
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png": [261, 589],
   "/case-studies/jeffrey-spring/jeffrey-spring-campaign-mobile-simone-rocha-in-season-bold-shop-now.png": [500, 1170],

@@ -24,9 +24,10 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 6 frames",
+        caption: "Preview · 7 frames",
         colors: ["#F5F2EC", "#A8B8C8", "#E8C4B8", "#3E5A39", "#1A1A18"],
         images: [
+          "/case-studies/jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg",
           "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero.jpg",
           "/case-studies/jeffrey-spring/jeffrey-spring-campaign-hero-grid-jw-anderson-valentino-simone-rocha-monstera-collage.jpg",
           "/case-studies/jeffrey-spring/jeffrey-spring-campaign-simone-rocha-floral-dress-monstera-frame.jpg",
@@ -57,8 +58,8 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/jeffrey-spring-campaign-hero.jpg`,
-      alt: "Jeffrey Spring Campaign hero",
+      image: `${IMG}/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg`,
+      alt: "The Jeffrey homepage open on a laptop resting on a pink moulded chair, the IN SEASON BOLD, READY & NOW banner above the campaign grid of dresses and monstera leaves",
       pressing: { choreo: { rise: true } },
     },
 
@@ -96,12 +97,16 @@ export const jeffreySpringCaseStudy: CaseStudy = {
     // arrives out of the collage it belongs to instead of sitting under it.
     // 2000px native, under the zoom floor, so it rises.
     {
-      id: "valentino-template",
+      id: "campaign-plate",
       type: "image",
-      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png`,
-      alt: "Jeffrey desktop homepage featuring the Valentino pink lace dress alongside cropped monstera leaves with the IN SEASON BOLD READY & NOW headline",
+      src: `${IMG}/jeffrey-spring-campaign-hero.jpg`,
+      alt: "The spring campaign grid, dresses and cropped monstera leaves alternating across the frame",
       aspect: "native",
       padded: true,
+      /* The study's old cover. It carries 3088px, so a full-column climb
+         out of the zoom above it is well inside its own pixels; the
+         Valentino page that used to sit here has 2000 and was being
+         drawn at 1440, which is the softness Jeffrey caught. */
       pressing: { choreo: { rise: true } },
     },
 
@@ -249,6 +254,20 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       pressing: {
         captions: ["Palm frond\nShot on white", "Monstera\nThe other material"],
       },
+    },
+
+    // ── The Valentino page, landing after the two leaves that build it.
+    // Moved off the opening run: at 2000px native it was drawing at 1440
+    // up there, a 1.39x magnification, and plateWidth holds it to the
+    // 1000 its own pixels carry. Smaller than a full plate, and sharp.
+    {
+      id: "valentino-template",
+      type: "image",
+      src: `${IMG}/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png`,
+      alt: "Jeffrey desktop homepage featuring the Valentino pink lace dress alongside cropped monstera leaves with the IN SEASON BOLD READY & NOW headline",
+      aspect: "native",
+      padded: true,
+      pressing: { plateWidth: 1000 },
     },
 
     // ════════════════════════════════════════
