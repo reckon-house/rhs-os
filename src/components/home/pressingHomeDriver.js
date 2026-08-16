@@ -42,7 +42,12 @@ const WORK = [
   ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3", 1920, 1280, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],
   ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg?v=3", 1600, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"],
-  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop"],
+  /* Authored at 0.86 rather than dealt: the seed handed this one the
+     0.33 stamp, and the picture is a full homepage on a laptop screen
+     — at 175px the editorial inside it is a smudge. Its neighbours are
+     0.64 and a dealt tier, so the ladder's step-and-a-half still
+     holds. */
+  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop", 0.86],
   ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg?v=3", 1920, 1280, "jeffrey new york digital flagship hero"],
   ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3", 1600, 1600, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
   ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
