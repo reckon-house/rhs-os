@@ -24,9 +24,10 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 8 frames",
+        caption: "Preview · 9 frames",
         colors: ["#ECE2C5", "#ECC265", "#DA8849", "#D45E3D", "#3B2F1F"],
         images: [
+          "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg",
           "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg",
           "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg",
           "/case-studies/hill-country-oak/hill-country-oakworks-wordmark-yellow-on-orange-color-block.jpg",
@@ -186,6 +187,24 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       size: "subhead",
       content:
         "Color blocks, silhouette and type, at every size.",
+    },
+
+    // ── The billboard end of the headline's sentence. §03 says the three
+    // parts hold "from a billboard to a lock screen" and only ever showed
+    // the lock screen; the phone pair below is the other end of it.
+    // Climbs the pinned brief above, which is the standard riser: the
+    // brief absorbs its own texts, so this plate's real neighbour is the
+    // held header rather than the subhead.
+    {
+      id: "billboard",
+      type: "image",
+      src: `${IMG}/hill-country-oakworks-billboard-winter-trees-hero.jpg`,
+      alt: "The Hill Country Oakworks billboard standing against bare winter trees, the tree silhouette and colour blocks running the full width",
+      aspect: "native",
+      pressing: {
+        caption: "The billboard, outdoors",
+        choreo: { rise: true },
+      },
     },
 
     {

@@ -10774,17 +10774,17 @@
      {
       "facet": "place",
       "term": "hill country",
-      "n": 36,
+      "n": 40,
       "cites": [
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg"
        },
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg"
        }
       ]
      },
@@ -10795,7 +10795,7 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.0",
+        "field": "reel.images.1",
         "quote": "…ase-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.jpg"
        },
        {
@@ -10810,17 +10810,17 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 20,
+      "n": 21,
       "cites": [
        {
         "section": "meta",
         "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg"
        },
        {
         "section": "meta",
         "field": "reel.images.1",
-        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg"
+        "quote": "/case-studies/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft.j…"
        }
       ]
      },
@@ -10923,12 +10923,12 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.1",
+        "field": "reel.images.2",
         "quote": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg"
        },
        {
         "section": "meta",
-        "field": "reel.images.3",
+        "field": "reel.images.4",
         "quote": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg"
        },
        {
@@ -10991,7 +10991,7 @@
       "cites": [
        {
         "section": "meta",
-        "field": "reel.images.5",
+        "field": "reel.images.6",
         "quote": "/case-studies/hill-country-oak/hill-country-oakworks-typography-oak-barrels-master-craft-heritage-whiskey-orange-cream-tagline.jpg"
        },
        {

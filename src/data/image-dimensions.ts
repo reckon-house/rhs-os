@@ -302,6 +302,8 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg": [1920, 1280],
   "/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg": [1920, 1280],
   "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg": [1920, 1280],
+  "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg": [1920, 1154],
+  "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg": [3080, 1852],
   "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg": [1920, 1280],
