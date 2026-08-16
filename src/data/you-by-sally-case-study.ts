@@ -71,10 +71,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "cast-header",
       type: "section-header",
       label: "SECTION 02: THE CAST",
-      title: "Real people,",
+      title: "Each person is paired with",
       pressing: {
         mark: { n: "02", name: "Real People" },
-        heldLine: "signature shades.",
+        heldLine: "the shade that suits them.",
         // The casting claim holds while its two blocks travel past it.
         // The headline says who the cast is; the copy underneath says why
         // that inverted the usual shoot order. Split across two screens
@@ -87,7 +87,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The cast runs across age, gender and style, and each person is paired with the shade that suits them.",
+        "The cast runs across age, gender and style.",
     },
     {
       id: "cast-footnote",
@@ -147,14 +147,14 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "swatch-header",
       type: "section-header",
       label: "SECTION 03: THE SWATCH SYSTEM",
-      title: "Oversized swatches",
+      title: "The chips on the back of a box",
       // The study's one crossing, held to section 03 so it does not land
       // on the same beat as the zoom above it. pin declared alongside it:
       // the crossing already holds its headline for 220dvh, and saying so
       // out loud gives the swatch screen below a named holder to climb.
       pressing: {
         mark: { n: "03", name: "Oversized Swatches" },
-        heldLine: "on a clean grid.",
+        heldLine: "are too small to pick from.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -163,7 +163,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The chips on the back of a box are tiny. These are big enough that picking a shade is something you do by eye.",
+        "These are big enough to choose by eye.",
     },
     {
       id: "swatch-footnote",
@@ -266,10 +266,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Bio pages, email,",
+      title: "If you picked a shade at Sally Beauty,",
       pressing: {
         mark: { n: "04", name: "Where It Ran" },
-        heldLine: "retail signage.",
+        heldLine: "this is what you looked at.",
       },
     },
     {
@@ -277,7 +277,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "If you were picking a shade at Sally Beauty, this is what you were looking at.",
+        "Bio pages, email and retail signage, all on the same grid.",
     },
     {
       id: "closing",

@@ -178,7 +178,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "deploy-header",
       type: "section-header",
       label: "SECTION 04: CAMPAIGN / DEPLOYMENT",
-      title: "Four photographs, everywhere.",
+      title: "Every piece was layered from\nthe same four pictures.",
       pressing: {
         mark: { n: "05", name: "Campaign & Deployment" },
         // The crossing's 220dvh wrap already IS the hold, so `pin` changes
@@ -193,7 +193,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every piece was layered from the same four pictures, and none of them reads as a detail pulled out of another. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
+        "None of them reads as a detail pulled out of another. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
     },
     {
       id: "deploy-footnote",
@@ -251,11 +251,11 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "brand-header",
       type: "section-header",
       label: "SECTION 05: TYPOGRAPHY / BRAND",
-      title: "Archer Hairline",
+      title: "Archer Hairline is thin enough to sit",
       group: { name: "brand" },
       pressing: {
         mark: { n: "07", name: "Typography & Brand" },
-        heldLine: "meets mesh color field.",
+        heldLine: "over the pictures without fighting them.",
         // The type pairing is the claim the two paragraphs below it argue,
         // so the headline holds while they travel past. No riser follows —
         // the system index does — so this pin is staging, not a climb.
@@ -267,7 +267,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The type was chosen for this campaign specifically. Archer Hairline for headlines, thin enough to sit over dense, colorful pictures and not fight them. Archer Book for body copy, warm rounded serifs that match the softness of the photography.",
+        "The type was chosen for this campaign specifically. Archer Book for body copy, warm rounded serifs that match the softness of the photography.",
       group: { name: "brand" },
     },
     // The old footnote's second paragraph (the logo treatment) now lives

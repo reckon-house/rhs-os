@@ -66,10 +66,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: THE PROBLEM",
-      title: "Brands, seasons, occasions,",
+      title: "Nothing on the page said",
       pressing: {
         mark: { n: "02", name: "All at Once" },
-        heldLine: "hitting the homepage at once.",
+        heldLine: "which story was which.",
         // Holds while the column travels, and reserves the room the
         // homepage plate below needs to climb. Fitting for a brief whose
         // subject is a page carrying too much at once.
@@ -81,7 +81,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Merchandising, marketing, and editorial each pushed their own stories, and nothing on the page said which was which.",
+        "Merchandising, marketing and editorial each pushed their own, all onto the same homepage.",
     },
     {
       id: "problem-footnote",
@@ -111,7 +111,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "framework-header",
       type: "section-header",
       label: "SECTION 03: THE FRAMEWORK",
-      title: "Four buckets,",
+      title: "Four buckets, and every story",
       // The study's one crossing, on the move that solved the problem.
       //
       // Pinned as well as crossing, which is PRESSING.md's brief form of
@@ -120,7 +120,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       // rather than sharing one screen with it.
       pressing: {
         mark: { n: "03", name: "Four Buckets" },
-        heldLine: "each with its own mark.",
+        heldLine: "had to land in one of them.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -221,10 +221,10 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       id: "application-header",
       type: "section-header",
       label: "SECTION 04: APPLICATION",
-      title: "Homepage, email,",
+      title: "Each one carried the matching",
       pressing: {
         mark: { n: "04", name: "Homepage, Email" },
-        heldLine: "and landing pages.",
+        heldLine: "lockup and icon.",
         // Pins for the headline alone. Three surfaces get named in the
         // column and the landing page below answers all three, so the
         // title should still be on screen when the reader reaches it.
@@ -237,7 +237,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Homepage modules, dedicated email sections, and whole landing pages built around a single bucket, each carrying the matching lockup and icon, so a customer could tell what they were looking at anywhere it showed up.",
+        "Homepage modules, dedicated email sections, and whole landing pages built around a single bucket, so a customer could tell what they were looking at anywhere it showed up.",
     },
     {
       id: "application-footnote",

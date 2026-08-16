@@ -87,10 +87,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "designers-header",
       type: "section-header",
       label: "SECTION 02: DESIGNER SPOTLIGHTS",
-      title: "Designer spotlights,",
+      title: "The series introduced emerging designers",
       pressing: {
         mark: { n: "02", name: "Designer Spotlights" },
-        heldLine: "the name set in oversized serifs.",
+        heldLine: "to a broader luxury shopper.",
         choreo: { pin: true },
       },
       group: { name: "designers", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -100,7 +100,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The Contemporary Art series introduced emerging designers to a broader luxury shopper. Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang, Kelly Wearstler.",
+        "The name ran in oversized serifs. Theyskens' Theory, Rag & Bone, 10 Crosby Derek Lam, Helmut Lang, Kelly Wearstler.",
       group: { name: "designers" },
     },
     {
@@ -196,12 +196,12 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "color-header",
       type: "section-header",
       label: "SECTION 03: COLOR STORIES",
-      title: "Five color stories,",
+      title: "Every shoot was on seamless paper,",
       // The study's one crossing. Colour standing in for a location budget
       // is the sharpest thing this case has to say.
       pressing: {
         mark: { n: "03", name: "Color Stories" },
-        heldLine: "a word and a grid of chips.",
+        heldLine: "so the color had to be the place.",
         choreo: { crossing: true },
       },
     },
@@ -210,7 +210,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every shoot happened on seamless paper in the studio, so the color had to be the place. Hot Pink, Yellow, Rainbow, Orange, Coral. The chip grids stepped through the tones of one hue, and that stood in for wherever a bigger production would have flown.",
+        "Hot Pink, Yellow, Rainbow, Orange, Coral. The chip grids stepped through the tones of one hue, and that stood in for wherever a bigger production would have flown.",
     },
     {
       id: "color-footnote",
@@ -349,10 +349,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "ways-header",
       type: "section-header",
       label: "SECTION 05: WAYS TO WEAR",
-      title: "Two garments,",
+      title: "Each spread wrote the outfit",
       pressing: {
         mark: { n: "05", name: "Ways to Wear" },
-        heldLine: "four ways to wear them.",
+        heldLine: "as an equation.",
         choreo: { pin: true },
       },
     },
@@ -361,7 +361,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A black dress with a denim jacket, then with an ikat sweater. A silk blouse the same two ways. Each spread wrote the outfit as an equation, noun + noun + noun, with the plus signs set oversized.",
+        "A black dress with a denim jacket, then with an ikat sweater. A silk blouse the same two ways. Noun plus noun plus noun, with the plus signs set oversized.",
     },
     {
       id: "ways-footnote",
@@ -442,10 +442,10 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Dozens of stories,",
+      title: "Every layout was a call on how far",
       pressing: {
         mark: { n: "06", name: "Dozens of Stories" },
-        heldLine: "a handful of templates.",
+        heldLine: "the magazine side could go.",
       },
     },
     {
@@ -453,7 +453,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every layout was a call on how far the magazine side could go before the store side got lost.",
+        "Dozens of stories on a handful of templates, and the store side still had to be findable.",
     },
     {
       id: "closing",

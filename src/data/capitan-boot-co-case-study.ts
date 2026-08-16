@@ -69,12 +69,12 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 02: THE MARKS",
-      title: "The buffalo, the badge,",
+      title: "The buffalo was drawn as a stamp",
       // Pinned: the headline holds while the two copy blocks travel up
       // beside it. That hold is also what the badge plate below climbs.
       pressing: {
         mark: { n: "02", name: "The Marks" },
-        heldLine: "and the bull skull.",
+        heldLine: "first and an illustration second.",
         choreo: { pin: true },
       },
     },
@@ -83,7 +83,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A primary logo, secondary badges, typographic lockups, and a set of illustrations. The buffalo was drawn as a stamp first and an illustration second, since leather takes pressure and denim takes thread.",
+        "A primary logo, secondary badges, typographic lockups, and a set of illustrations. Leather takes pressure and denim takes thread.",
     },
     {
       id: "marks-footnote",
@@ -231,7 +231,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
     {
       id: "headline-heritage",
       type: "editorial-headline",
-      text: "A mesa in the badge,\na mesa in the photograph",
+      text: "The badge and the photograph\nhave the same mesa in them",
     },
 
     // ════════════════════════════════════════
@@ -302,10 +302,10 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "On leather, paper,",
+      title: "The same marks had to work",
       pressing: {
         mark: { n: "04", name: "Leather, Paper, Denim" },
-        heldLine: "and denim.",
+        heldLine: "on leather, paper and denim.",
       },
     },
     {

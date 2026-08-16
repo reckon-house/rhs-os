@@ -73,13 +73,13 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "lang-header",
       type: "section-header",
       label: "SECTION 02: VISUAL LANGUAGE",
-      title: "Mid-century travel posters,",
+      title: "Every piece is some arrangement",
       // Pinned: the headline names the reference set, and the two copy
       // blocks under it spend their length arguing for it. The claim has
       // to still be on screen when the landscape and wordmark arrive.
       pressing: {
         mark: { n: "02", name: "Travel Posters" },
-        heldLine: "with a live oak in them.",
+        heldLine: "of the same three things.",
         choreo: { pin: true },
       },
     },
@@ -88,7 +88,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Flat color, a tree silhouette, and a heavy geometric sans set big. Every piece in the campaign is some arrangement of those three.",
+        "Flat color, a tree silhouette, and a heavy geometric sans set big.",
     },
     {
       id: "lang-footnote",
@@ -167,7 +167,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "app-header",
       type: "section-header",
       label: "SECTION 03: APPLICATION",
-      title: "Billboard, poster,",
+      title: "The same three parts hold",
       // The study's one crossing, held back to section 03 so it does not
       // land on the same beat as the poster zoom above.
       //
@@ -176,7 +176,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       // convention for saying so in the data, which is what the audit reads.
       pressing: {
         mark: { n: "03", name: "Billboard to Phone" },
-        heldLine: "lock screen, t-shirt.",
+        heldLine: "from a billboard to a lock screen.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -185,7 +185,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The same color blocks, silhouette, and type at every size, from an outdoor banner down to a lock screen.",
+        "Color blocks, silhouette and type, at every size.",
     },
 
     {
@@ -271,10 +271,10 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Texas,",
+      title: "None of it pretends",
       pressing: {
         mark: { n: "04", name: "Texas, Printed" },
-        heldLine: "but printed.",
+        heldLine: "to be old.",
       },
     },
     // No subhead here on purpose. The one it had re-told section 03
@@ -286,7 +286,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "There's a distressed texture over everything, and that's the only nod to age. The rest is flat color, a tree, and plain type, and none of it pretends to be old.",
+        "There's a distressed texture over everything, and that's the only nod to age. The rest is flat color, a tree, and plain type.",
     },
   ],
 };

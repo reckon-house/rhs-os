@@ -69,7 +69,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "photo-header",
       type: "section-header",
       label: "SECTION 02: PHOTOGRAPHY DIRECTION",
-      title: "Product photography,",
+      title: "Each frame defined what a good",
       // The study's one crossing, on the argument the whole case rests on.
       //
       // No zoom plate anywhere in this study: every UI capture is ~1990px
@@ -84,7 +84,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       // what the audit reads.
       pressing: {
         mark: { n: "02", name: "Shot on Purpose" },
-        heldLine: "Shot on Purpose.",
+        heldLine: "Cosmo Prof picture looks like.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -93,7 +93,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Compositions that read at thumbnail size and still work at full bleed. Each frame defined what a good Cosmo Prof picture looks like, and the templates that came after pulled from that library.",
+        "Compositions that read at thumbnail size and still work at full bleed. The templates that came after pulled from that library.",
     },
     {
       id: "photo-footnote",
@@ -148,10 +148,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "home-header",
       type: "section-header",
       label: "SECTION 03: HOMEPAGE",
-      title: "The header, cut down",
+      title: "The tabs sort to",
       pressing: {
         mark: { n: "03", name: "Smaller Header" },
-        heldLine: "to category names.",
+        heldLine: "whoever is logged in.",
         // Holds the headline while the two copy blocks travel up beside
         // it. The section's own argument is about a header getting out of
         // the way, so letting this one sit still while the copy moves is
@@ -164,7 +164,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hero goes to the seasonal launch. Below the fold, the tabs sort to whoever is logged in: what a stylist buys first, then the rest of the catalog.",
+        "The hero goes to the seasonal launch. Below the fold, what a stylist buys first, then the rest of the catalog.",
     },
     {
       id: "home-footnote",
@@ -320,10 +320,10 @@ export const cosmoProfCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Promotions, campaigns, education,",
+      title: "The templates set photography, type",
       pressing: {
         mark: { n: "05", name: "The Templates" },
-        heldLine: "on the same templates.",
+        heldLine: "and layout once.",
       },
     },
     {
@@ -331,7 +331,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The templates set the photography, the type and the layout once.",
+        "Promotions, campaigns and education all run on them.",
     },
     {
       id: "closing",

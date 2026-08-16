@@ -85,13 +85,13 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "tree-header",
       type: "section-header",
       label: "SECTION 02: THE TREE",
-      title: "A tree silhouette",
+      title: "The branches run past the edge",
       // Pinned because this is the study's long argument: the headline
       // holds while four colorways, four surfaces, and the breakout
       // detail travel past it as one column.
       pressing: {
         mark: { n: "02", name: "The Tree" },
-        heldLine: "in four colorways.",
+        heldLine: "of the color block.",
         choreo: { pin: true },
       },
       group: { name: "tree", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -101,7 +101,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A white silhouette over the brand's stripe pattern. The branches run past the edge of the color block onto the bare page, which makes the whole thing feel drawn by hand.",
+        "A white silhouette over the brand's stripe pattern, running onto the bare page, which makes the whole thing feel drawn by hand.",
       group: { name: "tree" },
     },
     {
@@ -177,7 +177,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       id: "mark-header",
       type: "section-header",
       label: "SECTION 03: THE MARK",
-      title: "Four circles in a square,",
+      title: "The same four circles run on",
       // The study's one crossing. A mark that changes with its setting is
       // the whole identity argument here.
       // pin rides with the crossing: PressingCrossing holds its own
@@ -185,7 +185,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       // cluster reserves.
       pressing: {
         mark: { n: "03", name: "Four Circles" },
-        heldLine: "brown here, olive there.",
+        heldLine: "a hangtag and a storefront sign.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -194,7 +194,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Tight spacing and no outline. It's the same four circles on a hangtag and on the storefront sign, in different colors.",
+        "Tight spacing, no outline, and a different color each season.",
     },
     {
       id: "mark-footnote",

@@ -98,7 +98,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "No accent tile, no stainless pulls, no painted island. If it isn't sage, oak, marble, or brass, it isn't in the room.",
+        "If it isn't sage, oak, marble or brass, it isn't in the room.",
       group: { name: "materials" },
     },
     {
@@ -182,13 +182,13 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "hardware-header",
       type: "section-header",
       label: "SECTION 03: CABINETRY / HARDWARE",
-      title: "Shaker cabinets,",
+      title: "Brass on everything",
       // The study's one crossing. Standalone rather than the brief form:
       // this is the only header here that carries no method columns, and
       // PRESSING.md §7 puts short-copy headers in the standalone staging.
       pressing: {
         mark: { n: "03", name: "Shaker Cabinets" },
-        heldLine: "brass on everything you touch.",
+        heldLine: "you actually touch.",
         choreo: { crossing: true },
       },
     },
@@ -272,7 +272,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "Sage, oak, marble, brass,\nand that's it",
+      text: "The whole room is\nfour materials",
     },
 
     // ── MATERIAL INTERACTION CHART ──
@@ -286,10 +286,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "island-header",
       type: "section-header",
       label: "SECTION 04: THE ISLAND",
-      title: "A raw white oak island",
+      title: "The marble top runs the full length",
       pressing: {
         mark: { n: "04", name: "Raw Oak Island" },
-        heldLine: "for prep, meals, and homework.",
+        heldLine: "with no break in it.",
         choreo: { pin: true },
       },
     },
@@ -298,7 +298,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The marble top runs the full length, prep counter at one end and bar at the other with no break in between. Four stools with brass-tone frames tuck under the overhang.",
+        "Prep counter at one end, bar at the other. Four stools with brass-tone frames tuck under the overhang.",
     },
     {
       id: "island-footnote",
@@ -369,10 +369,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "dining-header",
       type: "section-header",
       label: "SECTION 05: THE DINING ZONE",
-      title: "A turned-leg table,",
+      title: "The switch in tone",
       pressing: {
         mark: { n: "05", name: "The Dining Table" },
-        heldLine: "leather safari chairs.",
+        heldLine: "is abrupt on purpose.",
         choreo: { pin: true },
       },
     },
@@ -381,7 +381,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The dining end shares the open room but goes deeper in tone: a dark-stained table against the light oak and green of the kitchen. The switch is abrupt on purpose.",
+        "The dining end shares the open room but goes deeper: a dark-stained table against the light oak and green of the kitchen.",
     },
     {
       id: "dining-footnote",
@@ -437,10 +437,10 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Where everyone",
+      title: "Nothing in the room is",
       pressing: {
         mark: { n: "06", name: "The Hub" },
-        heldLine: "ends up.",
+        heldLine: "set aside for one job.",
       },
     },
     {
@@ -448,7 +448,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Cooking turns into gathering turns into working, and nothing in the room is set aside for one job.",
+        "Cooking turns into gathering turns into working.",
     },
     {
       id: "closing",

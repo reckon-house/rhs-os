@@ -67,7 +67,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "light-header",
       type: "section-header",
       label: "SECTION 02: LIGHT",
-      title: "Iron doors,",
+      title: "The room is tall",
       // This study's one crossing, on its opening argument. Its sibling
       // (fairview-sitting) crosses its SECOND header instead — two rooms
       // in one house should not choreograph identically.
@@ -76,7 +76,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       // loud in the data names the holder the rug plate below climbs.
       pressing: {
         mark: { n: "02", name: "Morning Sun" },
-        heldLine: "morning sun.",
+        heldLine: "because the doors are tall.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -85,7 +85,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The room is tall because the doors are tall. Nothing on the floor gets between them and the sun.",
+        "Nothing on the floor gets between them and the sun.",
     },
     {
       id: "light-footnote",
@@ -158,14 +158,14 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "pieces-header",
       type: "section-header",
       label: "SECTION 03: PIECES",
-      title: "A bench, a palm,",
+      title: "All of it had been",
       // Pinned: the headline holds while the copy about the rug, the light
       // and the two pieces of art travels up beside it. The section is a
       // list of objects, so the name of the list should stay on screen for
       // the whole of it.
       pressing: {
         mark: { n: "03", name: "The Pieces" },
-        heldLine: "a coat tree.",
+        heldLine: "somewhere else first.",
         choreo: { pin: true },
       },
     },
@@ -174,7 +174,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The rug, the bench, the two pieces of art: all of it had been somewhere else first. The palm is the one thing in the room that's alive.",
+        "The rug, the bench, the two pieces of art. The palm is the one thing in the room that's alive.",
     },
     {
       id: "pieces-footnote",
@@ -224,7 +224,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
     {
       id: "headline-threshold",
       type: "editorial-headline",
-      text: "The first room of the house\ndoesn't get a second chance",
+      text: "This is the first room\nanyone walks into",
     },
 
     // ════════════════════════════════════════
@@ -303,10 +303,10 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Boots off,",
+      title: "The leather bench is where",
       pressing: {
         mark: { n: "04", name: "Boots Off" },
-        heldLine: "bag down.",
+        heldLine: "boots come off and bags go down.",
       },
     },
     {
@@ -314,7 +314,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The leather bench inside the door is where that happens. After that it's the rug, the chandelier, and whatever the light is doing.",
+        "After that it's the rug, the chandelier, and whatever the light is doing.",
     },
     {
       id: "closing",

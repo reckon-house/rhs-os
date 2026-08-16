@@ -81,13 +81,13 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "hub-header",
       type: "section-header",
       label: "SECTION 02: THE HUB",
-      title: "Three stories at a time,",
+      title: "Each card opens into",
       // Pinned: the argument for the template runs two blocks long, so the
       // headline holds while the column travels, and the hub screenshot
       // below has a named holder to climb.
       pressing: {
         mark: { n: "02", name: "Three Stories" },
-        heldLine: "products swapped underneath.",
+        heldLine: "a full shoppable story.",
         choreo: { pin: true },
       },
       group: { name: "hub", bg: "#ECE6E1", radius: 75, padding: "60px" },
@@ -97,7 +97,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "\"Lips That Pop,\" \"Top 5 Serums,\" and \"Get That Glow,\" each card opening into a full shoppable story. Three cards gave merchandising room for the seasonal pushes and kept the page from getting crowded.",
+        "\"Lips That Pop,\" \"Top 5 Serums,\" and \"Get That Glow.\" Three cards gave merchandising room for the seasonal pushes and kept the page from getting crowded.",
       group: { name: "hub" },
     },
     {
@@ -205,7 +205,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 04: SHOPPABLE STORIES",
-      title: "The drawer slides in",
+      title: "Buying never interrupts",
       // The study's one crossing, on the move the whole hub rests on.
       //
       // pin declared alongside it: the crossing already holds its headline
@@ -215,7 +215,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       // story it describes rises over the top of it.
       pressing: {
         mark: { n: "04", name: "The Drawer" },
-        heldLine: "over the story.",
+        heldLine: "the read.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -224,7 +224,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Reviews, price, size options, and add to bag came in from the side while the story stayed on screen behind it, so buying didn't interrupt the read.",
+        "Reviews, price, size options and add to bag come in from the side while the story stays on screen behind it.",
     },
     {
       id: "stories-footnote",
@@ -284,10 +284,10 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Three templates, a try-on tool,",
+      title: "A customer could buy where they were,",
       pressing: {
         mark: { n: "05", name: "Three Templates" },
-        heldLine: "and a drawer.",
+        heldLine: "with no detour to a product page.",
       },
     },
     {
@@ -295,7 +295,7 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The try-on tool and the drawer both let a customer buy right where they were, with no detour out to a product page.",
+        "Three templates, a try-on tool and a drawer.",
     },
     {
       id: "closing",

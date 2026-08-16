@@ -74,10 +74,10 @@ export const chaletCaseStudy: CaseStudy = {
       id: "studs-header",
       type: "section-header",
       label: "SECTION 02: DOWN TO THE STUDS",
-      title: "Warm gray siding,",
+      title: "The house has an outline against",
       pressing: {
         mark: { n: "02", name: "Warm Gray" },
-        heldLine: "white railings.",
+        heldLine: "the evergreens even when it is overcast.",
         choreo: { pin: true },
       },
     },
@@ -86,7 +86,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Warm gray on the siding and white on the railings, so the house has an outline against the evergreens even when it's overcast.",
+        "Warm gray on the siding, white on the railings.",
     },
     {
       id: "studs-footnote",
@@ -229,7 +229,7 @@ export const chaletCaseStudy: CaseStudy = {
     {
       id: "headline-quiet",
       type: "editorial-headline",
-      text: "The loudest thing in the room\nis outside it",
+      text: "The trees are the reason\nthe room is shaped this way",
     },
 
     // ── 2-up: group 2 verticals (sofa detail closer + A-frame skylight
@@ -276,7 +276,7 @@ export const chaletCaseStudy: CaseStudy = {
       id: "blend-header",
       type: "section-header",
       label: "SECTION 04: THE BLEND",
-      title: "Antlers on one end,",
+      title: "Mixing cabin and mid-century",
       // The study's one crossing. The blend IS the argument — cabin form,
       // mid-century pieces — and it is the only section that names both
       // halves at once, so the gesture belongs on the synthesis beat.
@@ -286,7 +286,7 @@ export const chaletCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "04", name: "Antlers to Sputnik" },
-        heldLine: "a Sputnik on the other.",
+        heldLine: "was the whole idea.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -295,7 +295,7 @@ export const chaletCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Mixing cabin and mid-century was the whole idea, so here is every choice plotted between them. The structural moves land in the middle.",
+        "Every choice is plotted between the two. The structural moves land in the middle.",
     },
     {
       id: "blend-footnote",

@@ -93,10 +93,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "signup-header",
       type: "section-header",
       label: "SECTION 02: GETTING IN",
-      title: "Join the",
+      title: "None of the scheduling works",
       pressing: {
         mark: { n: "02", name: "Join the" },
-        heldLine: "Collective",
+        heldLine: "until everyone is in the system.",
         // Held while the column travels. Nothing in the study works until
         // everyone is in the system, so the headline saying so stays put
         // through the copy that explains it.
@@ -108,7 +108,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "None of the scheduling works until everyone is in the system. So the first build was the front door: athletes create their own accounts, sign the waiver on the way in, and the owner assigns each new member to a trainer before anyone books a session.",
+        "So the first build was the front door. Athletes create their own accounts, sign the waiver on the way in, and the owner assigns each new member to a trainer before anyone books a session.",
     },
     {
       id: "signup-footnote",
@@ -215,7 +215,7 @@ export const dscCaseStudy: CaseStudy = {
     {
       id: "mcp-editorial",
       type: "editorial-headline",
-      text: "The athlete asks their AI\nthe AI asks the gym\nthe gym answers",
+      text: "The athlete asks their own AI,\nand the AI asks the gym",
     },
 
     // ════════════════════════════════════════
@@ -225,10 +225,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "athlete-header",
       type: "section-header",
       label: "SECTION 04: THE ATHLETE APP",
-      title: "What athletes",
+      title: "The app opens on",
       pressing: {
         mark: { n: "04", name: "What Athletes" },
-        heldLine: "see",
+        heldLine: "your next session.",
         choreo: { pin: true },
       },
     },
@@ -282,10 +282,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "owner-header",
       type: "section-header",
       label: "SECTION 05: THE OWNER CONSOLE",
-      title: "Run it from",
+      title: "The owner side is built for",
       pressing: {
         mark: { n: "05", name: "Run It From" },
-        heldLine: "the floor",
+        heldLine: "one person on the gym floor.",
         choreo: { pin: true },
       },
     },
@@ -294,7 +294,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The owner side is for one person managing a packed week from a phone, between sessions, on the gym floor.",
+        "Managing a packed week from a phone, between sessions.",
     },
     {
       id: "owner-footnote",
@@ -459,10 +459,10 @@ export const dscCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 07: CLOSING",
-      title: "Live at",
+      title: "The schedule was the part",
       pressing: {
         mark: { n: "06", name: "Live at" },
-        heldLine: "the gym",
+        heldLine: "of the gym nobody saw.",
       },
     },
     {
@@ -470,7 +470,7 @@ export const dscCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The schedule used to be the part of the gym nobody saw, texts and notes and a spreadsheet. Now it is the most modern thing the gym owns.",
+        "Texts and notes and a spreadsheet. Now it is the most modern thing the gym owns.",
     },
     {
       id: "closing-footnote",

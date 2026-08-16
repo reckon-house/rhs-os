@@ -85,10 +85,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 02: THE SYSTEM",
-      title: "Three tile shapes,",
+      title: "Every page is built from",
       pressing: {
         mark: { n: "02", name: "Three Shapes" },
-        heldLine: "square, hero, and vertical.",
+        heldLine: "three tile shapes.",
         // The headline holds while both copy blocks travel up beside it.
         // "Three shapes" has to stay on screen through the paragraph that
         // names them, or the claim and its list never share a frame.
@@ -197,7 +197,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
     {
       id: "headline-1",
       type: "editorial-headline",
-      text: "The rules stayed\nout of sight",
+      text: "The customer never saw\nthe rules",
     },
 
     // ════════════════════════════════════════
@@ -207,10 +207,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "devices-header",
       type: "section-header",
       label: "SECTION 04: ACROSS DEVICES",
-      title: "Desktop tiles,",
+      title: "The pictures came over as they were,",
       pressing: {
         mark: { n: "04", name: "On the Phone" },
-        heldLine: "restacked for the phone.",
+        heldLine: "only the arrangement changed.",
         // Holds the headline through its copy, and the cluster reserves
         // the room the editorial source plate below climbs into.
         choreo: { pin: true },
@@ -221,7 +221,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The hero photography and product cards came over as they were. The arrangement changed to fit the smaller screen.",
+        "The hero photography and the product cards, restacked to fit the smaller screen.",
     },
 
     // ── Savvy Mag editorial source — inline hero (the raw asset that templates into the system)
@@ -261,10 +261,10 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       id: "products-header",
       type: "section-header",
       label: "SECTION 05: PRODUCT PHOTOGRAPHY",
-      title: "White seamless, no props,",
+      title: "Each shot had to work as a hero",
       pressing: {
         mark: { n: "05", name: "Product Shots" },
-        heldLine: "one shadow throughout.",
+        heldLine: "and as a plain product listing.",
         // Held headline, two blocks travelling. Nothing climbs out of
         // this one: the product rows below are specimens laid on the
         // page, and a plate crossing them would read as a fourth shape.
@@ -276,7 +276,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Each shot had to work on its own as a hero tile and in a grid as a plain product listing. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
+        "White seamless, no props, one shadow throughout. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
     },
     {
       id: "products-footnote",

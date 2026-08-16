@@ -120,7 +120,7 @@
        {
         "section": "red-subhead",
         "field": "content",
-        "quote": "Burgundy dragons curled through floral filigree."
+        "quote": "Burgundy dragons curled through floral filigree, the ornamental one of the three."
        }
       ]
      },
@@ -1706,14 +1706,9 @@
      },
      {
       "facet": "furniture",
-      "term": "door",
-      "n": 5,
+      "term": "window",
+      "n": 4,
       "cites": [
-       {
-        "section": "prada-text",
-        "field": "content",
-        "quote": "The door has stayed shut ever since."
-       },
        {
         "section": "image",
         "field": "/case-studies/big-bend/hero.jpg",
@@ -1723,12 +1718,18 @@
         "section": "image",
         "field": "/case-studies/big-bend/prada_crop.jpg",
         "quote": "Square frame near eye level, the building pushed hard to the right edge with the horizon low and unbroken across the left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/big-bend/prada.jpg",
+        "quote": "Symmetrical eye-level view from the far side of the road, building on the centre axis against a horizon spanning the full width."
        }
-      ]
+      ],
+      "observed": true
      },
      {
       "facet": "furniture",
-      "term": "window",
+      "term": "door",
       "n": 4,
       "cites": [
        {
@@ -2235,7 +2236,7 @@
     },
     {
      "label": "Angle",
-     "value": "Each mark sounds like the client it was drawn for. The range is the point."
+     "value": "Each mark sounds like the client it was drawn for, and no two of them look related."
     }
    ],
    "disciplines": [
@@ -2808,23 +2809,6 @@
     "material": [
      {
       "facet": "material",
-      "term": "leather",
-      "n": 4,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Built to be stamped into leather, stitched, and embossed, and still read."
-       },
-       {
-        "section": "marks-subhead",
-        "field": "content",
-        "quote": "The buffalo was drawn as a stamp first and an illustration second, since leather takes pressure and denim takes thread."
-       }
-      ]
-     },
-     {
-      "facet": "material",
       "term": "stone",
       "n": 4,
       "cites": [
@@ -2848,18 +2832,18 @@
      },
      {
       "facet": "material",
-      "term": "paper",
-      "n": 2,
+      "term": "leather",
+      "n": 3,
       "cites": [
        {
-        "section": "marks-materials",
-        "field": "colors.0.description",
-        "quote": "Paper, hangtags"
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "| Built to be stamped into leather, stitched, and embossed, and still read."
        },
        {
-        "section": "closing-header",
-        "field": "title",
-        "quote": "On leather, paper,"
+        "section": "marks-subhead",
+        "field": "content",
+        "quote": "Leather takes pressure and denim takes thread."
        }
       ]
      },
@@ -2871,7 +2855,19 @@
        {
         "section": "marks-subhead",
         "field": "content",
-        "quote": "The buffalo was drawn as a stamp first and an illustration second, since leather takes pressure and denim takes thread."
+        "quote": "Leather takes pressure and denim takes thread."
+       }
+      ]
+     },
+     {
+      "facet": "material",
+      "term": "paper",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.0.description",
+        "quote": "Paper, hangtags"
        }
       ]
      },
@@ -3813,9 +3809,9 @@
         "quote": "| Cabin bones, mid-century furniture, and 16-foot glass doors framing the tree line."
        },
        {
-        "section": "blend-subhead",
-        "field": "content",
-        "quote": "Mixing cabin and mid-century was the whole idea, so here is every choice plotted between them."
+        "section": "blend-header",
+        "field": "title",
+        "quote": "Mixing cabin and mid-century"
        },
        {
         "section": "image",
@@ -3939,7 +3935,7 @@
      {
       "facet": "client",
       "term": "Cosmo Prof",
-      "n": 37,
+      "n": 36,
       "cites": [
        {
         "section": "meta",
@@ -4464,7 +4460,7 @@
      {
       "facet": "furniture",
       "term": "bench",
-      "n": 13,
+      "n": 12,
       "cites": [
        {
         "section": "meta",
@@ -4503,7 +4499,7 @@
      {
       "facet": "furniture",
       "term": "door",
-      "n": 6,
+      "n": 5,
       "cites": [
        {
         "section": "marks-materials",
@@ -4511,14 +4507,14 @@
         "quote": "Wide-plank white oak, running from the front door on into the rest of the house."
        },
        {
-        "section": "closing-subhead",
-        "field": "content",
-        "quote": "The leather bench inside the door is where that happens."
-       },
-       {
         "section": "image",
         "field": "/case-studies/fairview-entry/3.webp",
         "quote": "Eye-level and near-symmetrical about the door centreline, with the black glazed wall filling the upper two-thirds and the runner leading in from the bottom edge."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/fairview-entry/6.webp",
+        "quote": "Square crop from standing height, angled into the corner, with the slat panel and bench aligned on a common vertical axis at right."
        }
       ]
      },
@@ -4945,7 +4941,7 @@
      {
       "facet": "material",
       "term": "velvet",
-      "n": 36,
+      "n": 35,
       "cites": [
        {
         "section": "meta",
@@ -4966,8 +4962,8 @@
      },
      {
       "facet": "material",
-      "term": "stone",
-      "n": 34,
+      "term": "brass",
+      "n": 33,
       "cites": [
        {
         "section": "meta",
@@ -4988,7 +4984,7 @@
      },
      {
       "facet": "material",
-      "term": "brass",
+      "term": "stone",
       "n": 33,
       "cites": [
        {
@@ -5584,7 +5580,7 @@
        {
         "section": "texture-subhead",
         "field": "content",
-        "quote": "Velvet is on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel."
+        "quote": "Velvet on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel."
        }
       ]
      }
@@ -6176,18 +6172,6 @@
      },
      {
       "facet": "furniture",
-      "term": "sink",
-      "n": 1,
-      "cites": [
-       {
-        "section": "headline-mood",
-        "field": "text",
-        "quote": "The kind of room you sink into"
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "mirror",
       "n": 1,
       "cites": [
@@ -6289,7 +6273,7 @@
      {
       "facet": "colour",
       "term": "charcoal",
-      "n": 16,
+      "n": 14,
       "cites": [
        {
         "section": "meta",
@@ -6450,7 +6434,7 @@
        {
         "section": "room-text",
         "field": "content",
-        "quote": "The color shifts between cool and warm with the light through the steel-framed windows."
+        "quote": "Cool to warm through the steel-framed windows."
        },
        {
         "section": "image",
@@ -6780,7 +6764,7 @@
      {
       "facet": "material",
       "term": "tile",
-      "n": 14,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -6802,7 +6786,7 @@
      {
       "facet": "material",
       "term": "brick",
-      "n": 9,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -7582,7 +7566,7 @@
      {
       "facet": "material",
       "term": "marble",
-      "n": 36,
+      "n": 35,
       "cites": [
        {
         "section": "meta",
@@ -8582,11 +8566,47 @@
       ]
      }
     ],
+    "place": [
+     {
+      "facet": "place",
+      "term": "hill country",
+      "n": 36,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       },
+       {
+        "section": "meta",
+        "field": "reel.images.0",
+        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
+       }
+      ]
+     },
+     {
+      "facet": "place",
+      "term": "texas",
+      "n": 2,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "subtitle",
+        "quote": "A kitchen in the Texas Hill Country, built from four materials."
+       },
+       {
+        "section": "hardware-footnote",
+        "field": "content",
+        "quote": "The cremone bolts are a French mechanism on American shaker doors in a Texas kitchen."
+       }
+      ]
+     }
+    ],
     "material": [
      {
       "facet": "material",
       "term": "marble",
-      "n": 46,
+      "n": 45,
       "cites": [
        {
         "section": "meta",
@@ -8630,7 +8650,7 @@
      {
       "facet": "material",
       "term": "oak",
-      "n": 31,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -8840,54 +8860,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "material",
-      "term": "tile",
-      "n": 1,
-      "cites": [
-       {
-        "section": "material-text",
-        "field": "content",
-        "quote": "No accent tile, no stainless pulls, no painted island."
-       }
-      ]
-     }
-    ],
-    "place": [
-     {
-      "facet": "place",
-      "term": "hill country",
-      "n": 36,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
-       },
-       {
-        "section": "meta",
-        "field": "reel.images.0",
-        "quote": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg"
-       }
-      ]
-     },
-     {
-      "facet": "place",
-      "term": "texas",
-      "n": 2,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "A kitchen in the Texas Hill Country, built from four materials."
-       },
-       {
-        "section": "hardware-footnote",
-        "field": "content",
-        "quote": "The cremone bolts are a French mechanism on American shaker doors in a Texas kitchen."
-       }
-      ]
      }
     ],
     "furniture": [
@@ -8916,7 +8888,7 @@
      {
       "facet": "furniture",
       "term": "island",
-      "n": 30,
+      "n": 29,
       "cites": [
        {
         "section": "meta",
@@ -9268,28 +9240,6 @@
      },
      {
       "facet": "furniture",
-      "term": "table",
-      "n": 5,
-      "cites": [
-       {
-        "section": "island-columns",
-        "field": "columns.2.content",
-        "quote": "The cabinets around the walls are architecture and the island is a table."
-       },
-       {
-        "section": "dining-header",
-        "field": "title",
-        "quote": "A turned-leg table,"
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-dining-chair-leather-detail.jpg",
-        "quote": "Square crop from just above seat height, the table edge cutting a diagonal across the top left."
-       }
-      ]
-     },
-     {
-      "facet": "furniture",
       "term": "stool",
       "n": 5,
       "cites": [
@@ -9357,6 +9307,28 @@
      },
      {
       "facet": "furniture",
+      "term": "table",
+      "n": 4,
+      "cites": [
+       {
+        "section": "island-columns",
+        "field": "columns.2.content",
+        "quote": "The cabinets around the walls are architecture and the island is a table."
+       },
+       {
+        "section": "dining-text",
+        "field": "content",
+        "quote": "The dining end shares the open room but goes deeper: a dark-stained table against the light oak and green of the kitchen."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-kitchen/hill-country-kitchen-dining-chair-leather-detail.jpg",
+        "quote": "Square crop from just above seat height, the table edge cutting a diagonal across the top left."
+       }
+      ]
+     },
+     {
+      "facet": "furniture",
       "term": "plant",
       "n": 3,
       "cites": [
@@ -9419,7 +9391,7 @@
      {
       "facet": "colour",
       "term": "sage",
-      "n": 16,
+      "n": 15,
       "cites": [
        {
         "section": "meta",
@@ -9636,7 +9608,7 @@
      {
       "facet": "material",
       "term": "leather",
-      "n": 32,
+      "n": 33,
       "cites": [
        {
         "section": "meta",
@@ -9680,7 +9652,7 @@
      {
       "facet": "material",
       "term": "brass",
-      "n": 22,
+      "n": 23,
       "cites": [
        {
         "section": "meta",
@@ -10819,7 +10791,7 @@
      {
       "facet": "place",
       "term": "texas",
-      "n": 9,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -10947,7 +10919,7 @@
      {
       "facet": "style",
       "term": "mid century",
-      "n": 17,
+      "n": 16,
       "cites": [
        {
         "section": "meta",
@@ -11971,7 +11943,7 @@
      {
       "facet": "client",
       "term": "Valentino",
-      "n": 9,
+      "n": 8,
       "cites": [
        {
         "section": "meta",
@@ -12396,18 +12368,6 @@
        }
       ],
       "observed": true
-     },
-     {
-      "facet": "furniture",
-      "term": "window",
-      "n": 1,
-      "cites": [
-       {
-        "section": "channels-text",
-        "field": "content",
-        "quote": "Only the size changed from one to the next, so the tile you saw in a feed was the one you saw in the store window."
-       }
-      ]
      }
     ],
     "style": [
@@ -12591,9 +12551,9 @@
       "n": 4,
       "cites": [
        {
-        "section": "color-text",
-        "field": "content",
-        "quote": "Every shoot happened on seamless paper in the studio, so the color had to be the place."
+        "section": "color-header",
+        "field": "title",
+        "quote": "Every shoot was on seamless paper,"
        },
        {
         "section": "type-footnote",
@@ -13263,7 +13223,7 @@
      {
       "facet": "material",
       "term": "tile",
-      "n": 6,
+      "n": 5,
       "cites": [
        {
         "section": "meta",

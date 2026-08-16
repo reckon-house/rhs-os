@@ -88,10 +88,10 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "blue-header",
       type: "section-header",
       label: "SECTION 02: BLUE FLORALS",
-      title: "Peonies and",
+      title: "A stack of these plates",
       pressing: {
         mark: { n: "02", name: "Peonies and" },
-        heldLine: "geometry.",
+        heldLine: "reads as a still life.",
         // Pinned: the headline holds while the pattern-on-pattern copy
         // travels past it. This is the collection that layers, so the
         // brief that introduces it should behave like the print does.
@@ -103,7 +103,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The most pattern-on-pattern of the three. Blue peonies over a geometric grid, so a stack of plates reads as a still life and one plate on its own still works.",
+        "The most pattern-on-pattern of the three, blue peonies over a geometric grid. One plate on its own still works.",
     },
     {
       id: "blue-footnote",
@@ -153,7 +153,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "black-header",
       type: "section-header",
       label: "SECTION 03: BLACK LINEWORK",
-      title: "Linework",
+      title: "The simplest of the three",
       // The study's one crossing. The reductive collection is the argument
       // the other two lean on — it sits under everything without competing —
       // so the gesture lands on the middle beat rather than an outer one.
@@ -163,7 +163,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "03", name: "Linework" },
-        heldLine: "and dots.",
+        heldLine: "reads as the most modern.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -172,7 +172,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Geometric grids and halftone dots on charcoal. It's the simplest of the three collections, and it reads as the most modern.",
+        "Geometric grids and halftone dots on charcoal.",
     },
     {
       id: "black-footnote",
@@ -222,10 +222,10 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "red-header",
       type: "section-header",
       label: "SECTION 04: RED DRAGONS",
-      title: "Dragons",
+      title: "The statement plate for a buyer",
       pressing: {
         mark: { n: "04", name: "Dragons" },
-        heldLine: "and florals.",
+        heldLine: "who only wants one piece.",
         // Pinned. The pairing notes are the fussiest copy in the study
         // and they need the headline still on screen to hang off, right
         // before the zoom takes the frame.
@@ -237,7 +237,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Burgundy dragons curled through floral filigree. This is the ornamental one, the statement plate for a buyer who only wants a single piece.",
+        "Burgundy dragons curled through floral filigree, the ornamental one of the three.",
     },
     {
       id: "red-footnote",
@@ -294,7 +294,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
     {
       id: "headline-system",
       type: "editorial-headline",
-      text: "A pattern only works\nif the next one fits",
+      text: "Every pattern had to work\nnext to every other one",
     },
 
     // ════════════════════════════════════════

@@ -175,7 +175,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       // Copy pass, Aug 2026: "One Shape Led. The Rest Backed It Up." was
       // an aphorism about the thing. The headline now names the thing on
       // the page (the hexagon, and what it does). Reasoning above kept.
-      title: "A hexagon around the portraits,",
+      title: "The hexagon started as a way",
       // Brief-form crossing, matching black-white-type and Sally: the
       // headline still cuts in from the right (crossing), then pins while
       // the copy AND the nested three-column grid travel past it — one
@@ -184,7 +184,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       // supporting columns.
       pressing: {
         mark: { n: "03", name: "The Polygon" },
-        heldLine: "turning as you scroll.",
+        heldLine: "to cut portraits out of a grid.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -193,7 +193,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every photo came in as a rectangle. The hexagon started as a way to cut the portraits out of that grid, and then it was on everything.",
+        "Every photo came in as a rectangle. Then the shape was on everything.",
     },
     {
       id: "experience-footnote",
@@ -395,7 +395,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "campaign-header",
       type: "section-header",
       label: "SECTION 05: THE CAMPAIGN",
-      title: "Emails, banners, social,\nin-store signage.",
+      title: "The page came first, and everything\nelse was adapted from it.",
       // Pinned. The headline stays on screen while every format it names
       // scrolls past underneath, which is the section's whole point.
       pressing: { mark: { n: "04", name: "The Campaign" }, choreo: { pin: true } },
@@ -405,7 +405,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The page came first, and every other format was adapted from it.",
+        "Emails, banners, social, in-store signage.",
     },
     {
       id: "campaign-footnote",
@@ -454,7 +454,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Sold out\nin days",
+      title: "95% of the product\nwas gone in days.",
       pressing: { mark: { n: "05", name: "Sold Out" } },
     },
     {
@@ -462,7 +462,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Live in six weeks. 95% of the product gone in less.",
+        "Live in six weeks.",
     },
     {
       id: "closing",

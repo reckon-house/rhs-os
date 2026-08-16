@@ -84,10 +84,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "room-header",
       type: "section-header",
       label: "SECTION 02: THE ROOM",
-      title: "One color",
+      title: "One color on every wall,",
       pressing: {
         mark: { n: "02", name: "One Color" },
-        heldLine: "on every wall.",
+        heldLine: "and it shifts with the light.",
         // The headline is the whole claim of the section, so it holds while
         // the column travels up beside it. Paint first, then the fourteen
         // foot vault and the furniture layers arriving under it as evidence.
@@ -100,7 +100,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The color shifts between cool and warm with the light through the steel-framed windows. Everything else in the room was chosen to go with it.",
+        "Cool to warm through the steel-framed windows. Everything else in the room was chosen to go with it.",
       group: { name: "room" },
     },
     {
@@ -133,13 +133,13 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "furniture-header",
       type: "section-header",
       label: "SECTION 03: FURNITURE / MATERIALS",
-      title: "Three decades",
+      title: "Every piece was picked for texture",
       // This study's one crossing, on its MIDDLE header. The three Fairview
       // rooms cross at three different points — entry first, sitting
       // second, suite third — so the set never reads as one template.
       pressing: {
         mark: { n: "03", name: "Three Decades" },
-        heldLine: "on one floor.",
+        heldLine: "first and shape second.",
         // `pin` alongside `crossing`: the crossing already holds its headline
         // for 220dvh, so the flag changes nothing on the page. Saying it in
         // the data names the hold, which is what the audit reads.
@@ -151,7 +151,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every piece was picked for texture first and shape second. It leans glamorous and it is still a room you can live in.",
+        "It leans glamorous and it is still a room you can live in.",
     },
     {
       id: "furniture-footnote",
@@ -199,7 +199,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
     {
       id: "headline-mood",
       type: "editorial-headline",
-      text: "The kind of room\nyou sink into",
+      text: "Three decades of furniture\non one floor",
     },
 
     // ── ENSUITE HERO ──
@@ -229,10 +229,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "ensuite-header",
       type: "section-header",
       label: "SECTION 04: THE ENSUITE",
-      title: "Through the double doors,",
+      title: "Charcoal hex tile takes over",
       pressing: {
         mark: { n: "04", name: "The Ensuite" },
-        heldLine: "the same temperature.",
+        heldLine: "from the violet paint.",
         // Held because the zoom just handed the second room over at full
         // size. Keeping the headline put while the tile and tub copy runs
         // past it reads as one suite continuing, not a new study starting.
@@ -244,7 +244,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Charcoal hexagon tile takes over from the violet paint. A hammered copper clawfoot tub sits under a second crystal chandelier, and every fixture is brass.",
+        "A hammered copper clawfoot tub sits under a second crystal chandelier, and every fixture is brass.",
     },
     {
       id: "ensuite-footnote",
@@ -275,7 +275,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Charcoal violet,\ncharcoal hex.",
+      title: "A copper tub and a bouclé ottoman\nshare a floor plan.",
       pressing: { mark: { n: "05", name: "Two Rooms" } },
     },
     {
@@ -283,7 +283,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Crystal chandeliers in both rooms, and a palette narrow enough that a copper tub and a bouclé ottoman share a floor plan and neither looks out of place.",
+        "Crystal chandeliers in both rooms, and a palette narrow enough that neither one looks out of place.",
     },
     {
       id: "closing",

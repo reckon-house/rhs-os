@@ -71,12 +71,12 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "texture-header",
       type: "section-header",
       label: "SECTION 02: TEXTURE",
-      title: "Stone, velvet,",
+      title: "The stone is the only one",
       // Pinned so the headline holds while the four-material list travels
       // up beside it, and so the stone detail below has a holder to climb.
       pressing: {
         mark: { n: "02", name: "Stone, Velvet" },
-        heldLine: "brass, oak.",
+        heldLine: "that goes floor to ceiling.",
         choreo: { pin: true },
       },
     },
@@ -85,7 +85,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The stone is the only one of the four that goes floor to ceiling. Velvet is on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel.",
+        "Velvet on the chairs, brass on the table and the bar cabinet, oak underfoot and across the mantel.",
     },
     {
       id: "texture-footnote",
@@ -150,7 +150,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "conversation-header",
       type: "section-header",
       label: "SECTION 03: CONVERSATION",
-      title: "Four swivels,",
+      title: "The chairs turn, so they face",
       // This study's one crossing, on its SECOND header. Its sibling
       // (fairview-entry) crosses its first and zooms its architectural
       // frame; two rooms in one house get different staging on purpose.
@@ -165,7 +165,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       // what the rear view below climbs.
       pressing: {
         mark: { n: "03", name: "Four Swivels" },
-        heldLine: "Facing the Fire.",
+        heldLine: "each other or the fire.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -174,7 +174,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Close enough to feel the fire, and they turn, so the four chairs can face each other just as easily.",
+        "Close enough to feel it either way.",
     },
     {
       id: "conversation-footnote",
@@ -298,7 +298,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "The hour",
+      title: "This room is for the hour",
       pressing: {
         mark: { n: "04", name: "After Dinner" },
         heldLine: "after dinner.",

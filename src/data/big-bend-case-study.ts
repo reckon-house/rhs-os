@@ -204,7 +204,7 @@ export const bigBendCaseStudy: CaseStudy = {
       id: "prada-header",
       type: "section-header",
       label: "SECTION 02: PRADA MARFA",
-      title: "The store on",
+      title: "They put real Prada shoes inside",
       // The study's one crossing, and its only section header. Everything
       // before it is landscape held at one cadence; the sculpture is the
       // turn, so the gesture marks it.
@@ -219,7 +219,7 @@ export const bigBendCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "02", name: "The Store on" },
-        heldLine: "Highway 90.",
+        heldLine: "and shut the door in 2005.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -228,7 +228,7 @@ export const bigBendCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa. The artists Elmgreen and Dragset built it in 2005 and put real Prada shoes and bags from that season inside. The door has stayed shut ever since.",
+        "Prada Marfa is a permanent sculpture on U.S. 90 near Valentine, northwest of Marfa, built by the artists Elmgreen and Dragset. The bags are that season's.",
     },
     // The arrival, climbing the sentence that introduces it. The brief
     // reserves that room itself; never author it.

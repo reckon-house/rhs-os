@@ -86,13 +86,13 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "material-header",
       type: "section-header",
       label: "SECTION 02: MATERIAL",
-      title: "Stone, pine,",
+      title: "The same four materials",
       // Pinned so the four-material list travels up beside the headline
       // instead of under it. The names have to be readable against the
       // headline that groups them, and holding is what puts them there.
       pressing: {
         mark: { n: "02", name: "Stone, Pine" },
-        heldLine: "brass, leather.",
+        heldLine: "run through the whole house.",
         choreo: { pin: true },
       },
     },
@@ -101,7 +101,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The same four that run through the rest of the house.",
+        "Stone, pine, brass, leather.",
     },
     {
       id: "material-footnote",
@@ -175,7 +175,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "collected-header",
       type: "section-header",
       label: "SECTION 03: COLLECTED",
-      title: "Heirlooms, new finds,",
+      title: "There is an Eisenhower",
       // The study's one crossing, on the beat where the room's contents
       // arrive: what is in it, named, at display size.
       //
@@ -185,7 +185,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Heirlooms and Finds" },
-        heldLine: "an Eisenhower on the wall.",
+        heldLine: "on the wall.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -304,10 +304,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Meant to take",
+      title: "Nothing in the room is precious",
       pressing: {
         mark: { n: "04", name: "Ten Years" },
-        heldLine: "ten years of family.",
+        heldLine: "and nothing is protected.",
       },
     },
     {
@@ -315,7 +315,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Nothing in the room is precious and nothing is protected.",
+        "It was meant to take ten years of family.",
     },
     {
       id: "closing",

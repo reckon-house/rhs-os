@@ -99,10 +99,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "lab-header",
       type: "section-header",
       label: "SECTION 02: THE LAB",
-      title: "Load your",
+      title: "Drop in your own photos",
       pressing: {
         mark: { n: "02", name: "Load your" },
-        heldLine: "own",
+        heldLine: "and it rebuilds around them.",
       },
     },
     {
@@ -110,7 +110,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The default cut is seven frames, one each from seven of my projects. Drop in up to eight of your own and it rebuilds around them. Each beat gets a chip below, and clicking one freezes the reel on it.",
+        "The default cut is seven frames, one from each of seven projects, and it takes up to eight of yours. Each beat gets a chip below, and clicking one freezes the reel on it.",
     },
     {
       id: "lab",
@@ -125,10 +125,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "end-header",
       type: "section-header",
       label: "SECTION 03: UNDER THE CUT",
-      title: "Why stills",
+      title: "The photo swaps while",
       pressing: {
         mark: { n: "03", name: "Why stills" },
-        heldLine: "read as motion",
+        heldLine: "the screen is covered.",
       },
     },
     {
@@ -136,7 +136,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The trick is hiding the cut. When the reel blinks a color frame or the lens pinches shut, the photo swaps behind the cover, so you never see the switch. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
+        "When the reel blinks a color frame or the lens pinches shut, that is the cover. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
     },
     {
       id: "file-stats",
@@ -154,10 +154,10 @@ export const sizzleCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 04: CLOSING",
-      title: "On this page,",
+      title: "The reel up top is",
       pressing: {
         mark: { n: "04", name: "On the page" },
-        heldLine: "and on GitHub",
+        heldLine: "the component itself.",
       },
     },
     {

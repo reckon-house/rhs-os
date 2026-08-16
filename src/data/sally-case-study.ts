@@ -119,7 +119,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "problem-header",
       type: "section-header",
       label: "SECTION 02: PROBLEM STATEMENT",
-      title: "Five problems",
+      title: "Every piece of it lived",
       // The study's one crossing, in the BRIEF form (pin + crossing): this
       // header carries method columns, and PRESSING.md §7 reserves the
       // standalone staging for headers whose copy is short. Every header
@@ -127,7 +127,7 @@ export const sallyCaseStudy: CaseStudy = {
       // the opening diagnosis is the one everything below answers.
       pressing: {
         mark: { n: "02", name: "Five Problems" },
-        heldLine: "with one root",
+        heldLine: "somewhere different.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "problem" },
@@ -185,10 +185,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "trends-header",
       type: "section-header",
       label: "SECTION 03: INTELLIGENCE / TRENDS FEED",
-      title: "Real-Time",
+      title: "Three AI models watch",
       pressing: {
         mark: { n: "03", name: "Real-Time" },
-        heldLine: "competitive intelligence",
+        heldLine: "14 industry publications.",
         choreo: { pin: true },
       },
     },
@@ -197,7 +197,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Three AI models watch 14 industry publications, competitor social channels, pricing shifts, and category trends. Every trend that comes in gets a \"Sally's Take\": an AI-written read that checks the signal against the brand positioning, the active briefs, and the internal knowledge base, and says whether it's worth acting on.",
+        "Competitor social channels, pricing shifts and category trends too. Every trend that comes in gets a \"Sally's Take\": an AI-written read that checks the signal against the brand positioning, the active briefs, and the internal knowledge base, and says whether it's worth acting on.",
     },
     {
       id: "trends-footnote",
@@ -316,7 +316,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "brain-header",
       type: "section-header",
       label: "SECTION 04: BRAND BRAIN / JIM",
-      title: "AI strategy partner",
+      title: "It answers with the context\na new hire takes months to pick up.",
       pressing: {
         mark: { n: "04", name: "AI Strategy Partner" },
         choreo: { pin: true },
@@ -545,10 +545,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "asset-header",
       type: "section-header",
       label: "SECTION 06: ASSET HUB",
-      title: "Digital asset management",
+      title: "The DAM they had was bloated",
       pressing: {
         mark: { n: "06", name: "Digital Asset Management" },
-        heldLine: "rebuilt with AI",
+        heldLine: "and nobody wanted to use it.",
         choreo: { pin: true },
       },
     },
@@ -557,7 +557,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Sally had a DAM, but it was bloated and slow, and the two things the team actually needed from it, tagging and search, didn't work well. Nobody wanted to use it, so I built this one from the ground up.",
+        "The two things the team actually needed from it, tagging and search, didn't work well, so I built this one from the ground up.",
     },
     {
       id: "asset-footnote",
@@ -668,10 +668,10 @@ export const sallyCaseStudy: CaseStudy = {
       id: "utilities-header",
       type: "section-header",
       label: "SECTION 07: UTILITIES MARKETPLACE",
-      title: "A growing library of",
+      title: "Ten apps, each one for a job",
       pressing: {
         mark: { n: "07", name: "A Growing Library of" },
-        heldLine: "internal tools",
+        heldLine: "that used to take hours.",
         choreo: { pin: true },
       },
     },
@@ -680,7 +680,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Ten apps built inside the marketing team, each one for a manual job that used to take hours. Click a card and the tool loads inline, with no onboarding, no separate login, no IT ticket. The marketplace grows every month as the team finds the next thing worth automating.",
+        "All of them built inside the marketing team. Click a card and the tool loads inline, with no onboarding, no separate login, no IT ticket. The marketplace grows every month as the team finds the next thing worth automating.",
     },
     {
       id: "utilities-footnote",
@@ -776,7 +776,7 @@ export const sallyCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 08: CLOSING",
-      title: "What shipped",
+      title: "The team that needed it could not\nwait for a vendor evaluation.",
       pressing: { mark: { n: "08", name: "What Shipped" } },
     },
     {
@@ -784,7 +784,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "I built this because the team that needed it couldn't wait for a vendor evaluation, and the tools exist now for one person to ship what used to take a department. Six applications, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
+        "The tools exist now for one person to ship what used to take a department. Six applications, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
     },
     {
       id: "closing-footnote",

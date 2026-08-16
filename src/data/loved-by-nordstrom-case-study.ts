@@ -85,12 +85,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "idea-header",
       type: "section-header",
       label: "SECTION 02: THE IDEA",
-      title: "The Instagram heart,",
+      title: "Nobody had to learn",
       // Held: the headline is the whole claim, and the column under it is
       // the proof. The claim stays on screen while the proof travels past.
       pressing: {
         mark: { n: "02", name: "The Heart" },
-        heldLine: "on a Nordstrom tile.",
+        heldLine: "what Liked By meant.",
         choreo: { pin: true },
       },
     },
@@ -99,7 +99,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "People already tapped it all day without thinking, so nobody had to learn what Liked By meant.",
+        "People already tapped that heart all day without thinking.",
     },
     {
       id: "idea-footnote",
@@ -137,7 +137,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "Name on top,",
+      title: "The middle slot took whatever",
       // The study's one crossing, on the idea the whole system rests on.
       //
       // No mid-page climb: the tile grids here are quad-images, which hold
@@ -150,7 +150,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "The Tile" },
-        heldLine: "any photo in the middle.",
+        heldLine: "the brand had already licensed.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "system", bg: "#EFEAE4", radius: 75, padding: "60px" },
@@ -160,7 +160,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Heart and endorsement at the base, and the middle slot took whatever the brand had already licensed: a product shot, a lifestyle photo, a studio portrait, a campaign still. Helmut Lang shot cold and minimal, The Great warm and narrative, See by Chloé led with product, and the tile carried all three.",
+        "Name on top, heart and endorsement at the base. Helmut Lang shot cold and minimal, The Great warm and narrative, See by Chloé led with product, and the tile carried all three.",
       group: { name: "system" },
     },
     {
@@ -207,7 +207,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
     {
       id: "headline-editorial",
       type: "editorial-headline",
-      text: "A heart does\nwhat a logo\ncannot",
+      text: "Everyone already knew\nwhat the heart meant",
     },
 
     // ── LOVED BY HIERARCHY ──
@@ -215,12 +215,12 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "loved-header",
       type: "section-header",
       label: "SECTION 04: HIERARCHY",
-      title: "Liked on small tiles,",
+      title: "Same heart and type at both sizes,",
       // Held because the tier is a lever, and a lever reads as one thing
       // only if the name of it stays put while the mechanics scroll by.
       pressing: {
         mark: { n: "04", name: "Liked and Loved" },
-        heldLine: "Loved on big ones.",
+        heldLine: "one brand at a time on Loved.",
         choreo: { pin: true },
       },
     },
@@ -229,7 +229,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Same heart and type at both sizes, with larger crops, tighter compositions, and one brand at a time on Loved. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale.",
+        "Larger crops and tighter compositions on Loved. When TIBI got the Loved treatment, the fur coat and the profile portrait ran at full-page scale.",
     },
     {
       id: "loved-footnote",
@@ -261,13 +261,13 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "channels-header",
       type: "section-header",
       label: "SECTION 05: ACROSS CHANNELS",
-      title: "Feed, email, window decal,",
+      title: "The tile you saw in a feed was",
       // Held, and it is also the hold the landing page climbs. The point of
       // the section is recognition across surfaces, so the phone arriving
       // over a headline that has not moved is the argument acting itself out.
       pressing: {
         mark: { n: "05", name: "Across Channels" },
-        heldLine: "landing page.",
+        heldLine: "the one you saw in the store window.",
         choreo: { pin: true },
       },
     },
@@ -276,7 +276,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Only the size changed from one to the next, so the tile you saw in a feed was the one you saw in the store window.",
+        "Only the size changed from one to the next.",
     },
     {
       id: "channels-footnote",
@@ -306,10 +306,10 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Twelve months,",
+      title: "Merchandising swapped brands in weekly",
       pressing: {
         mark: { n: "06", name: "Twelve Months" },
-        heldLine: "dozens of brands.",
+        heldLine: "with no creative brief.",
       },
     },
     {
@@ -317,7 +317,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Merchandising swapped brands in weekly with no creative brief, and the layout went the whole year untouched.",
+        "The layout went the whole year untouched.",
     },
     {
       id: "closing",

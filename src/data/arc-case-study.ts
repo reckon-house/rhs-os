@@ -316,7 +316,7 @@ export const arcCaseStudy: CaseStudy = {
     {
       id: "problem-editorial",
       type: "editorial-headline",
-      text: "The work is miserable\nTake the typing out\nand the rest is straightforward",
+      text: "Take the typing out and\nthe rest is straightforward",
       pressing: {
         choreo: { quotePoster: true },
         indent: 1,
@@ -329,10 +329,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "methodology-header",
       type: "section-header",
       label: "SECTION 03: METHODOLOGY / HOW IT WORKS",
-      title: "System architecture &",
+      title: "One photo of a room comes back",
       pressing: {
         mark: { n: "06", name: "How it works" },
-        heldLine: "recognition engine.",
+        heldLine: "as a list of what is in it.",
         /* Pinned, not crossing. The crossing renders the headline and
            its intro on a screen of their own, which split this section
            in two: the argument up in the crossing, the six stages in a
@@ -349,7 +349,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "It starts with one photo or one video of a room, and what comes back is a list of every item in it, each one named, valued, and sorted into a category.",
+        "Each item comes back named, valued, and sorted into a category. A video of the room works the same way.",
     },
     {
       id: "methodology-footnote",
@@ -418,10 +418,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "classification-header",
       type: "section-header",
       label: "SECTION 03: METHODOLOGY / HOW IT WORKS",
-      title: "Classification",
+      title: "The categories are set up",
       pressing: {
         mark: { n: "07", name: "Classification system" },
-        heldLine: "system.",
+        heldLine: "the way insurance claims are.",
         /* Pinned: the headline holds while the taxonomy argument travels
            up beside it. The pin is also what reserves ClimbRoom for the
            plate now directly below. */
@@ -433,7 +433,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "The categories are set up the way insurance claims are, so each one maps to a standard personal property claim classification.",
+        "Each one maps to a standard personal property claim classification.",
     },
     {
       id: "classification-footnote",
@@ -537,10 +537,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "financial-header",
       type: "section-header",
       label: "SECTION 05: FINANCIAL INTELLIGENCE",
-      title: "Insurance",
+      title: "It compares what you own",
       pressing: {
         mark: { n: "08", name: "Financial intelligence" },
-        heldLine: "gap analysis.",
+        heldLine: "against your policy limit.",
         /* Pinned: the headline holds while the argument and the chart
            that proves it travel past together. */
         choreo: { pin: true },
@@ -558,7 +558,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The value of what you have documented, compared against the policy limit you entered.",
+        "Documented value on one side, the limit you entered on the other.",
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched.
     {
@@ -750,10 +750,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "build-header",
       type: "section-header",
       label: "SECTION 07: BUILD METHODOLOGY",
-      title: "Solo engineering,",
+      title: "Ten weeks from the first idea",
       pressing: {
         mark: { n: "10", name: "Build methodology" },
-        heldLine: "concept to deployment.",
+        heldLine: "to a live App Store product.",
         choreo: { pin: true },
       },
     },
@@ -762,7 +762,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Ten weeks from the first idea to a live App Store product, with AI helping the whole way through.",
+        "I did the design, the engineering and the deployment, with AI helping the whole way through.",
     },
     {
       id: "build-footnote",
@@ -814,10 +814,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "product-header",
       type: "section-header",
       label: "SECTION 08: PRODUCT INTERFACE",
-      title: "Application views &",
+      title: "Every screen here is from",
       pressing: {
         mark: { n: "12", name: "Product interface" },
-        heldLine: "data architecture.",
+        heldLine: "the V1 production app.",
         /* Pinned: the headline holds while the interface argument
            travels. Nothing climbs this one, so no ClimbRoom follows. */
         choreo: { pin: true },
@@ -839,7 +839,7 @@ export const arcCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Dashboard, room, item detail, and report views, all from the V1 production app with representative data.",
+        "Dashboard, room, item detail and report views, shown with representative data.",
     },
     // Viz — awaits the PressingVizFrame bridge; content untouched.
     {
@@ -879,10 +879,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "usage-header",
       type: "section-header",
       label: "SECTION 09: USAGE DATA",
-      title: "Field",
+      title: "A 73-item home takes",
       pressing: {
         mark: { n: "13", name: "Usage data" },
-        heldLine: "observations.",
+        heldLine: "under 30 minutes.",
         /* Pinned: the headline holds while the reduction numbers travel,
            and the pin reserves ClimbRoom for the plate below. */
         choreo: { pin: true },
@@ -893,7 +893,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "Doing a 73-item home by hand takes an estimated 8-12 hours. A.R.C. documents the same home in under 30 minutes, which works out to 16-24x faster.",
+        "By hand the same job is an estimated 8 to 12 hours, so it runs 16 to 24 times faster.",
     },
     {
       id: "usage-footnote",
@@ -981,10 +981,10 @@ export const arcCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 10: CLOSING",
-      title: "Currently in market",
+      title: "I built A.R.C.",
       pressing: {
         mark: { n: "14", name: "Closing" },
-        heldLine: "V1 live.",
+        heldLine: "because I needed it.",
       },
     },
     {
@@ -992,7 +992,7 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        "I built A.R.C. because I needed it. A renovated house, years of collected objects, nothing documented anywhere that would survive an insurance claim.",
+        "A renovated house, years of collected objects, and nothing documented anywhere that would survive an insurance claim.",
     },
     {
       id: "closing-footnote",

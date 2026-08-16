@@ -123,7 +123,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       id: "stories-header",
       type: "section-header",
       label: "SECTION 02: THREE STORIES",
-      title: "JW Anderson, Valentino,",
+      title: "Swap the dress, set the leaves,",
       // The study's one crossing. It is also the only section header here,
       // so the choice is which staging, not which beat: standalone,
       // because it carries no method columns.
@@ -133,7 +133,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       // the hold in the data, which is what the audit reads.
       pressing: {
         mark: { n: "02", name: "Three Designers" },
-        heldLine: "Simone Rocha.",
+        heldLine: "and the page is done.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -142,7 +142,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Swap the dress, set the leaves, and the page is done. That was the whole template, for all three.",
+        "That was the whole template, for all three.",
     },
     {
       id: "stories-footnote",

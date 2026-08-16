@@ -68,14 +68,14 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "strategy-header",
       type: "section-header",
       label: "SECTION 02: THE STRATEGY",
-      title: "Six homepages,",
+      title: "Each one took over the homepage",
       // pin so the thesis headline holds while its two paragraphs travel
       // up beside it. Nothing climbs this brief — the zoom two beats down
       // reserves its own room — so the flag is staging for the headline
       // rather than a hold handed to a riser.
       pressing: {
         mark: { n: "02", name: "Six Homepages" },
-        heldLine: "a different story on each.",
+        heldLine: "for its moment.",
         choreo: { pin: true },
       },
     },
@@ -84,7 +84,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes, Loewe. Each one took over the homepage for its moment, and the masthead and footer stayed put.",
+        "Dries Van Noten, Valentino, Vetements, a Candy Crush shoe story, summer shoes, Loewe. The masthead and footer stayed put.",
     },
     {
       id: "strategy-footnote",
@@ -151,7 +151,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       id: "system-header",
       type: "section-header",
       label: "SECTION 03: THE SYSTEM",
-      title: "Modular grids,",
+      title: "The product page ran one large",
       // The study's one crossing, on section 03 rather than the thesis
       // header, which already sits directly above the zoom plate.
       //
@@ -163,7 +163,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       // on the page. It is the A.R.C. convention for saying so in the data.
       pressing: {
         mark: { n: "03", name: "Modular Grids" },
-        heldLine: "product pages led by the photography.",
+        heldLine: "photograph and little else.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -172,7 +172,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The product page ran one large photograph, almost nothing else around it, and a short row of curated cross-sells. Navigation followed the edit instead of a list of categories, the same way the floor did.",
+        "A short row of curated cross-sells sat underneath. Navigation followed the edit instead of a list of categories, the same way the floor did.",
     },
     {
       id: "system-footnote",
@@ -342,7 +342,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Jeffrey eventually sold the business. The online store kept running after the people who made it had moved on.",
+        "Jeffrey eventually sold the business.",
     },
     {
       id: "closing",

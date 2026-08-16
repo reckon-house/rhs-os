@@ -78,13 +78,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "Three bathrooms,",
+      title: "The materials hardly change",
       // Pins so "Three Directions." holds while the subhead and footnote
       // travel up beside it. Nothing climbs this brief — the hold is for
       // the copy, which is where the three projects get named.
       pressing: {
         mark: { n: "02", name: "Three Bathrooms" },
-        heldLine: "marble in all of them.",
+        heldLine: "from one room to the next.",
         choreo: { pin: true },
       },
     },
@@ -93,7 +93,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The proportions, the fixtures and the finishes change hard from one room to the next. The list of materials underneath hardly changes at all.",
+        "The proportions, the fixtures and the finishes change hard.",
     },
     // Footnote cut here (Aug 2026 copy pass): it said the subtitle again,
     // one kit, three rooms, and the subhead above already carries the part
@@ -137,7 +137,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "confidence-header",
       type: "section-header",
       label: "SECTION 03: MATERIAL CONFIDENCE",
-      title: "Vertical tile against brick,",
+      title: "Everything got picked at the same time,",
       // The study's one crossing, on the sentence the whole feature exists
       // to argue.
       //
@@ -147,7 +147,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       // audit reads.
       pressing: {
         mark: { n: "03", name: "Mixed Materials" },
-        heldLine: "nickel next to brass.",
+        heldLine: "on one moodboard.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -156,7 +156,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Everything got picked at the same time, on one moodboard. If a stone and a wood and a metal work next to each other there, they work in the room.",
+        "If a stone and a wood and a metal work next to each other there, they work in the room.",
     },
     {
       id: "confidence-footnote",

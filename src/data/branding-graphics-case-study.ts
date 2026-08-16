@@ -67,7 +67,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
         { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
-        { label: "Angle", value: "Each mark sounds like the client it was drawn for. The range is the point." },
+        { label: "Angle", value: "Each mark sounds like the client it was drawn for, and no two of them look related." },
       ],
       abstract:
         "Album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nFour album covers, each for a different act. Posters and prints, from a typography exercise to double-exposed landscapes. Five logos for five clients. And one 4x6 film photograph blown up to fill a storefront window.\n\nPhotoshop, Illustrator, and InDesign for most of it, a film camera for the photography, and hand-drawn type where a piece called for it.",
@@ -103,10 +103,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "posters-header",
       type: "section-header",
       label: "SECTION 02: POSTERS & PRINTS",
-      title: "Landscapes, letterforms, patterns,",
+      title: "Double exposures where texture",
       pressing: {
         mark: { n: "02", name: "Posters and Prints" },
-        heldLine: "and a hot-air balloon.",
+        heldLine: "stands in for detail.",
         // Held so the second line stays put while its copy travels,
         // and so the ABC poster underneath has a screen to climb.
         choreo: { pin: true },
@@ -117,7 +117,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Photographs over dot-matrix grids, radial color studies built from pattern, and double-exposure landscapes where texture stands in for detail.",
+        "Photographs over dot-matrix grids, and radial color studies built from pattern.",
     },
     {
       id: "posters-footnote",
@@ -249,13 +249,13 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "covers-header",
       type: "section-header",
       label: "SECTION 03: COVERS",
-      title: "Four records:",
+      title: "Every sleeve had to read at vinyl size",
       // The study's one crossing. Four sleeves with no shared logic IS the
       // fluency argument the whole study makes, so the gesture lands here
       // rather than on the marks section that only restates it.
       pressing: {
         mark: { n: "03", name: "Four Records" },
-        heldLine: "folk, pop, ambient, and a DJ.",
+        heldLine: "and survive as a thumbnail.",
         // pin declares what the crossing already does — it holds the
         // headline while the column scrubs past — so the flag matches
         // the behaviour instead of the skin being the only record of it.
@@ -267,7 +267,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Every one of them had to read at vinyl size and survive as a thumbnail, and nothing carries over from one sleeve to the next. That was the requirement.",
+        "Folk, pop, ambient and a DJ, and nothing carries over from one sleeve to the next. That was the requirement.",
     },
     {
       id: "covers-footnote",
@@ -304,10 +304,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "storefront-header",
       type: "section-header",
       label: "SECTION 04: STOREFRONT",
-      title: "From a 4x6",
+      title: "The photograph was shot on film",
       pressing: {
         mark: { n: "04", name: "From a 4x6" },
-        heldLine: "to a building.",
+        heldLine: "and blown up to street size.",
         // Held, so "to a Building." is still on screen when the window
         // below it starts filling the mat. The two halves of the same
         // sentence should not be a scroll apart.
@@ -362,10 +362,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 05: MARKS",
-      title: "Five logos,",
+      title: "Five logos, none of them",
       pressing: {
         mark: { n: "05", name: "Five Logos" },
-        heldLine: "from ornamental to blunt.",
+        heldLine: "drawn the same way.",
         choreo: { pin: true },
       },
     },

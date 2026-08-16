@@ -84,10 +84,10 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "vanity-header",
       type: "section-header",
       label: "SECTION 02: THE VANITY",
-      title: "Two vanities,",
+      title: "Hers faces the east windows",
       pressing: {
         mark: { n: "02", name: "Two Vanities" },
-        heldLine: "hers facing the east windows.",
+        heldLine: "and catches the morning sun.",
         // Held so the claim about the light stays on screen while the two
         // paragraphs describing it travel up beside it. The four detail
         // frames below are the evidence, and the argument has to still be
@@ -101,7 +101,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The marble catches the morning sun, and the globe sconces throw warm circles on the shiplap behind them.",
+        "The globe sconces throw warm circles on the shiplap behind them.",
       group: { name: "vanity" },
     },
     {
@@ -174,7 +174,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       // convention for saying so in the data, which is what the audit reads.
       pressing: {
         mark: { n: "03", name: "Picking the Marble" },
-        heldLine: "Took the Longest.",
+        heldLine: "took the longest.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -244,10 +244,10 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "objects-header",
       type: "section-header",
       label: "SECTION 04: THE OBJECTS",
-      title: "The valet stand, the painting,",
+      title: "None of it came from one vendor",
       pressing: {
         mark: { n: "04", name: "The Objects" },
-        heldLine: "the vintage rugs.",
+        heldLine: "or was ordered to spec.",
         // The last brief, and the only one with no photograph after it, so
         // the copy carries the beat alone. Held: the headline keeps its
         // claim while the valet stand, the painting, and the clay pot go by
@@ -260,7 +260,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "None of it came from one vendor or was ordered to spec. The brass valet stand is from an antique shop, and the rugs are vintage.",
+        "The brass valet stand is from an antique shop, and the rugs are vintage.",
     },
     {
       id: "objects-footnote",
@@ -276,7 +276,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Made for\nthe morning.",
+      title: "This is the room you are in\nbefore the day starts.",
       pressing: { mark: { n: "05", name: "The Morning" } },
     },
     {
@@ -284,7 +284,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The kitchen two rooms away is set up for a crowd. This is the room you're in before any of that starts.",
+        "The kitchen two rooms away is set up for a crowd.",
     },
     {
       id: "closing",
