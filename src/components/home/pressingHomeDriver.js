@@ -2942,39 +2942,22 @@ function armRows(rowsEl) {
     const share =
       parseFloat(getComputedStyle(card).getPropertyValue("--share")) || 0.7;
     let grow = 1 / share;
-    /* EACH FRAME OPENS AS FAR AS ITS OWN ROOM ALLOWS. Capping the
-       label's drop instead was wrong: the frame kept growing past
-       where the label had stopped, so the picture covered its own
-       name. The grow itself has to be the thing that yields.
+    /* NO CAP. There used to be one, measured against the end of the
+       card's own band, because the frame opens with a transform and a
+       transform costs no layout — so the index sat still and got
+       covered. Every frame whose band was shorter than its growth
+       stopped early, and no two hovers opened to the same width again.
+       Oakworks was the loudest case.
 
-       The taller frame in a row always has exactly the row-gap beneath
-       its label (79px), so at a fixed 1.32 a 457px frame needed 146px
-       and took it out of the label. Now the grow is per-frame: small
-       frames open wide, large ones open a little, and the label always
-       has somewhere to go. The biggest pictures moving least is the
-       honest outcome — they are already the loudest thing in the row. */
-    /* The cap is GEOMETRY, not decoration, and gating it on the border
-       being painted was wrong — it let a frame open over the row below
-       and cover it. .ixrule still sits exactly where the band ends
-       whether or not it draws, which is the boundary this needs; it
-       only stopped painting because the standing verticals took the
-       job of saying so. So: display, not border.
+       The page makes room instead: the card takes --drop as real
+       bottom margin, normal flow carries every row below it down, and
+       the frame is free to reach the column whatever row it is in.
 
-       Opening to the column is the ambition and this is the limit on
-       it. A frame in a row with room reaches the line; one in a tight
-       row opens as far as its own band allows and stops. Sliding the
-       rest of the index down instead would reflow the page under the
-       cursor on every hover, which is a worse trade than a frame that
-       opens a little less. */
-    const rule = row.querySelector(".ixrule");
-    const rcs = rule && getComputedStyle(rule);
-    const ruled = !!rcs && rcs.display !== "none";
-    const room = ruled
-      ? rule.getBoundingClientRect().top -
-        card.querySelector(".lbl").getBoundingClientRect().bottom - 8
-      : Infinity;
-    const fits = 1 + Math.max(0, room) / shot.offsetHeight;
-    grow = Math.max(1.04, Math.min(grow, fits));
+       It cannot flicker, which is the usual objection to moving the
+       page under a pointer. The frame's origin is `right top`, so it
+       only ever grows DOWN and LEFT and its top edge never leaves the
+       cursor. What moves is the content below, away from it. */
+    grow = Math.max(1.04, grow);
     card.style.setProperty("--ix-grow", grow.toFixed(3));
     card.style.setProperty("--drop",
       (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");

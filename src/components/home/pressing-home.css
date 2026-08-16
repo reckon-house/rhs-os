@@ -671,7 +671,21 @@
     .ixrow .fd-it .shot {
       transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
         border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
-    .ixrow .fd-it:hover { z-index: 2; }
+    /* THE PAGE MAKES ROOM. The frame opens with a transform, and a
+       transform costs no layout, so the index used to sit still and get
+       covered. --drop is exactly what the transform added in pixels —
+       the same number the label rides down — so giving the card that
+       much real bottom margin lets normal flow carry every row below it
+       out of the way. The frame can then reach the column from any row
+       instead of stopping wherever its own band ran out.
+
+       On the same clock as the scale, so the picture opening and the
+       page opening under it are one movement. */
+    .ixrow .fd-it {
+      transition: opacity 0.8s ease,
+        transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-bottom 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    .ixrow .fd-it:hover { z-index: 2; margin-bottom: var(--drop, 0px); }
     .ixrow .fd-it:hover .shot { transform: scale(var(--ix-grow, 1.32));
       /* squares off as it opens: a rounded frame reads as an object on
          the page, losing the corner turns it into the picture itself */
