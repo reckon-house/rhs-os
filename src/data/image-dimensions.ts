@@ -216,7 +216,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/dsc/new/scheduling-screens/image 388.jpg": [1392, 2156],
   "/case-studies/dsc/new/scheduling-screens/image 397.jpg": [798, 1234],
   "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg": [1100, 1654],
-  "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg": [3080, 2134],
+  "/case-studies/fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-windows-wide.jpg": [3840, 2661],
   "/case-studies/fairview-bedroom/fairview-suite-bedroom-sofa-chair-headboard-chandelier.jpg": [2220, 2952],
   "/case-studies/fairview-bedroom/fairview-suite-detail-bath-chandelier-hex-tile.jpg": [1099, 1105],
   "/case-studies/fairview-bedroom/fairview-suite-detail-copper-clawfoot-tub-brass.jpg": [1099, 1105],
