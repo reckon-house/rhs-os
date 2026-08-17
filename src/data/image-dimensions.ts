@@ -323,6 +323,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg": [1920, 1280],
   "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg": [1920, 1229],
   "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg": [1610, 1073],
+  "/case-studies/hp/rhs-nordstrom-beauty-hub-laptop.jpg": [1920, 1280],
   "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg": [1920, 1280],
   "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg": [1920, 2162],
   "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg": [1600, 1600],

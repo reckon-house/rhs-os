@@ -27,7 +27,7 @@ export const projects: Project[] = [
   { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg?v=3`, href: "/case-studies/capitan-boot-co", tags: ["creative"] },
   { id: "jeffreyCampaign", title: "Jeffrey Spring Campaign", category: "Creative direction, design", image: `${HP}/rhs-jeffrey-spring-campaign-laptop.jpg`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "hillBath", title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg?v=3`, href: "/case-studies/hill-country-bath", tags: ["interiors"] },
-  { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3`, href: "/case-studies/nordstrom-beauty", tags: ["digital"] },
+  { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-hub-laptop.jpg`, href: "/case-studies/nordstrom-beauty", tags: ["digital"] },
   { id: "oakworks", title: "Hill Country Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-country-oakworks-billboard.jpg`, href: "/case-studies/hill-country-oak", tags: ["creative"] },
   { id: "cosmoProf", title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg?v=3`, href: "/case-studies/cosmo-prof", tags: ["digital"] },
   { id: "dsc", title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-laptop-stool.jpg`, href: "/case-studies/dsc", tags: ["digital"] },
