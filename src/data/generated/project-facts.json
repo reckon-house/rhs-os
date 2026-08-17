@@ -1635,7 +1635,7 @@
      {
       "facet": "place",
       "term": "west texas",
-      "n": 35,
+      "n": 34,
       "cites": [
        {
         "section": "meta",
@@ -1707,8 +1707,13 @@
      {
       "facet": "furniture",
       "term": "window",
-      "n": 4,
+      "n": 5,
       "cites": [
+       {
+        "section": "img-chisos-clouds",
+        "field": "alt",
+        "quote": "A wide view toward the window in the Chisos Basin, laid over a repeating grid of the same fence line and desert ridgeline"
+       },
        {
         "section": "image",
         "field": "/case-studies/big-bend/hero.jpg",
@@ -1718,14 +1723,8 @@
         "section": "image",
         "field": "/case-studies/big-bend/prada_crop.jpg",
         "quote": "Square frame near eye level, the building pushed hard to the right edge with the horizon low and unbroken across the left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/big-bend/prada.jpg",
-        "quote": "Symmetrical eye-level view from the far side of the road, building on the centre axis against a horizon spanning the full width."
        }
-      ],
-      "observed": true
+      ]
      },
      {
       "facet": "furniture",

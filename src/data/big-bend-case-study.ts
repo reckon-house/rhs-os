@@ -146,37 +146,38 @@ export const bigBendCaseStudy: CaseStudy = {
       pressing: { choreo: { rise: true } },
     },
 
-    // Three frames rather than two, and the canyon wall leads. It is a
-    // 1546px file: sharp at a third of the column, mush at viewport width,
-    // so it can never be a plate here. A contact-sheet row is also the one
-    // place this study varies its held shape.
+    // The canyon wall leads. It is a 1546px file: sharp at half the row,
+    // mush at viewport width, so it can never be a plate here.
+    //
+    // This was three frames, and the third was woods_grid, which climbs as
+    // a plate below now. That costs the study its one held row of three,
+    // so the shape no longer varies anywhere; a third desert frame would
+    // buy it back.
     {
       id: "desert-contact-sheet",
-      type: "triple-image",
+      type: "dual-image",
       native: true,
-      images: [
-        {
-          src: `${IMG}/square_mountain.jpg`,
-          alt: "A steep canyon wall of layered rock rising straight from the desert floor in Big Bend",
-        },
-        {
-          src: `${IMG}/rise.jpg`,
-          alt: "Sun cresting the Chisos, light flaring across the desert grassland at dawn",
-        },
-        {
-          src: `${IMG}/woods_grid.jpg`,
-          alt: "A lone desert tree centered in a grid of Big Bend scrub and distant ridgeline",
-        },
-      ],
+      left: {
+        src: `${IMG}/square_mountain.jpg`,
+        alt: "A steep canyon wall of layered rock rising straight from the desert floor in Big Bend",
+      },
+      right: {
+        src: `${IMG}/rise.jpg`,
+        alt: "Sun cresting the Chisos, light flaring across the desert grassland at dawn",
+      },
       pressing: { choreo: { pin: true } },
     },
+    // The composite, at the size it was built for. It is a tiled grid of
+    // one fence-line frame with a wide Basin view laid over the middle of
+    // it, and the tiling is the whole point — invisible at a third of a
+    // row, legible across the page.
     {
       id: "img-chisos-clouds",
       type: "hero",
       nativeRatio: true,
       inline: true,
-      image: `${IMG}/chisos.jpg`,
-      alt: "The Chisos peak from the desert floor, afternoon clouds gathering above the range",
+      image: `${IMG}/woods_grid.jpg`,
+      alt: "A wide view toward the window in the Chisos Basin, laid over a repeating grid of the same fence line and desert ridgeline",
       pressing: { choreo: { rise: true } },
     },
 

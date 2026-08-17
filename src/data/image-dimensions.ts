@@ -72,7 +72,6 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/arc/demo/stills/arc-welcome-800.jpg": [800, 1738],
   "/case-studies/big-bend/chisos-peak-cactus.jpg": [2560, 1712],
   "/case-studies/big-bend/chisos-range-panorama.jpg": [2560, 1449],
-  "/case-studies/big-bend/chisos.jpg": [2560, 1712],
   "/case-studies/big-bend/desert-dusk-ridgeline.jpg": [2560, 1712],
   "/case-studies/big-bend/elena_grid.jpg": [2560, 2631],
   "/case-studies/big-bend/elena_wide.jpg": [2560, 2852],
