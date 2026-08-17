@@ -292,7 +292,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hill-country-oak/hill-country-oakworks-typography-oak-barrels-master-craft-heritage-whiskey-orange-cream-tagline.jpg": [1524, 1532],
   "/case-studies/hill-country-oak/hill-country-oakworks-wordmark-yellow-on-orange-color-block.jpg": [1530, 1530],
   "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg": [1920, 1280],
-  "/case-studies/hp/rhs-arc-app-project-select-phone.jpg": [1600, 1622],
+  "/case-studies/hp/rhs-arc-app-project-select-phone.jpg": [1600, 1960],
   "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg": [1920, 1280],
   "/case-studies/hp/rhs-campaign-design-amber-shockey-blue-plate.jpg": [1920, 1154],
   "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg": [1920, 1280],

@@ -39,7 +39,7 @@ export function initPressingHome() {
 const WORK = [
   ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg", 1920, 1254, "sally os platform hero", undefined, 4],
   ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3", 1120, 747, "ivy park nordstrom laptop brand experience mockup"],
-  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-app-project-select-phone.jpg", 1600, 1622, "arc app kitchen project selection lifestyle"],
+  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-app-project-select-phone.jpg", 1600, 1960, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],
   ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg", 1962, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign", undefined, 4],
   /* Authored at 0.86 rather than dealt: the seed handed this one the
