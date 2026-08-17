@@ -41,7 +41,7 @@ const WORK = [
   ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3", 1120, 747, "ivy park nordstrom laptop brand experience mockup"],
   ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3", 1920, 1280, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],
-  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg?v=3", 1600, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"],
+  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg", 1962, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign", undefined, 4],
   /* Authored at 0.86 rather than dealt: the seed handed this one the
      0.33 stamp, and the picture is a full homepage on a laptop screen
      — at 175px the editorial inside it is a smudge. Its neighbours are
