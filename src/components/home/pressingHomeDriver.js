@@ -265,8 +265,11 @@ const REELS = {
        which blinks to nothing against the photography. */
     offset: 3,
     colors: "#F4D9DC, #000000, #E5D6C9",
+    /* The quad composition that used to be this tile is deliberately
+       NOT here. It is a contact sheet of four of these five, so the
+       reel was cutting to a small picture of itself, and it is the one
+       frame shot on plain white rather than a swatch ground. */
     images: [
-      "/images/thumbnails/cosmo-reel/quad.jpg",
       "/images/thumbnails/cosmo-reel/masque.jpg",
       "/images/thumbnails/cosmo-reel/tubes.jpg",
       "/images/thumbnails/cosmo-reel/brushes.jpg",
@@ -277,7 +280,7 @@ const REELS = {
       { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
       { fx: "pinch", color: "#F4D9DC", img: 2, ms: 500 },
       { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#000000", ms: 340 },
-      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 5, ms: 540 }
+      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
     ]
   }
 };
