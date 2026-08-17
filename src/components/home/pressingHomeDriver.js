@@ -225,19 +225,62 @@ function linkLeadTerms(root, terms, onPick) {
   });
 }
 
-const REEL_HREF = "/case-studies/sizzle";
-const REEL_IMAGES = [
-  "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
-  "/images/thumbnails/nordstromPersonal.jpg", "/images/thumbnails/dsc.jpg",
-  "/images/thumbnails/nordstromBeauty.jpg"
-];
-const REEL_COLORS = "#0AA7CA, #181B17, #776549";
-const REEL_SEQ = [
-  { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
-  { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
-  { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#181B17", ms: 340 },
-  { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
-];
+/* ── tiles that play ──────────────────────────────────────────────
+   A href in here gets a live reel in place of its cover image, cut
+   from that project's own frames in that project's own palette. This
+   was built for one card and is a table now, because the second one
+   wanted nothing new — only different frames.
+
+   Frames must be SMALL. A tile is 150-380 CSS pixels wide, and every
+   frame loads before the first cut, so a reel of case-study plates
+   costs megabytes to show something the size of a postcard. Cosmo's
+   six run 900px and 568K together; the same six at study size are
+   4.6MB. Export thumbnails, not plates.
+
+   `offset` starts each reel at a different beat so two of them on one
+   screen cut against each other rather than in lockstep. */
+const REELS = {
+  "/case-studies/sizzle": {
+    /* Square is this card's own idea, not the system's — the study is
+       about the reel, so the tile is the reel and nothing else. */
+    ar: "1",
+    offset: 0,
+    colors: "#0AA7CA, #181B17, #776549",
+    images: [
+      "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
+      "/images/thumbnails/nordstromPersonal.jpg", "/images/thumbnails/dsc.jpg",
+      "/images/thumbnails/nordstromBeauty.jpg"
+    ],
+    seq: [
+      { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
+      { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
+      { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#181B17", ms: 340 },
+      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
+    ]
+  },
+  "/case-studies/cosmo-prof": {
+    /* No `ar`: the tile keeps the 3:2 it was dealt, so the row's
+       rhythm is exactly what it was when this card held a still.
+       Colors are the study's own reel palette, minus the near-white,
+       which blinks to nothing against the photography. */
+    offset: 3,
+    colors: "#F4D9DC, #000000, #E5D6C9",
+    images: [
+      "/images/thumbnails/cosmo-reel/quad.jpg",
+      "/images/thumbnails/cosmo-reel/masque.jpg",
+      "/images/thumbnails/cosmo-reel/tubes.jpg",
+      "/images/thumbnails/cosmo-reel/brushes.jpg",
+      "/images/thumbnails/cosmo-reel/lineup.jpg",
+      "/images/thumbnails/cosmo-reel/mask.jpg"
+    ],
+    seq: [
+      { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
+      { fx: "pinch", color: "#F4D9DC", img: 2, ms: 500 },
+      { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#000000", ms: 340 },
+      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 5, ms: 540 }
+    ]
+  }
+};
 
 /* ── cards ────────────────────────────────────────────────────────
    Every card carries NAMED fields rather than one blob, so the
@@ -1630,9 +1673,13 @@ function imgCard(card, rnd, allowShare) {
      height and its transform, and the image inherits it from here. */
   if (card.drift != null) shot.style.setProperty("--drift", card.drift + "%");
   el.appendChild(shot);
-  if (card.href === REEL_HREF && !REDUCE()) {
-    shot.style.setProperty("--ar", "1");
-    reelBoxes.push(shot);
+  /* `card.shot` means this card is answering with a specific frame from
+     inside the study. That frame IS the answer, so it outranks the reel;
+     a card that cuts through six other pictures is not evidence. */
+  const reel = card.href && !card.shot ? REELS[card.href] : null;
+  if (reel && !REDUCE()) {
+    if (reel.ar) shot.style.setProperty("--ar", reel.ar);
+    reelBoxes.push([shot, reel]);
   } else {
     /* The picture gets a PLATE to sit on. The plate is what the
        curtain clips and what settles from 1.25 to 1; the image itself
@@ -1701,21 +1748,27 @@ function noteCard(card, rnd) {
 
 function armReels() {
   if (!reelBoxes.length) return;
+  /* Which reel belongs to which box, so the observer can arm a card
+     without knowing anything about the card. */
+  const spec = new Map(reelBoxes);
   const rio = new IntersectionObserver((es, o) => {
     es.forEach((e) => {
       if (!e.isIntersecting) return;
       o.unobserve(e.target);
+      const r = spec.get(e.target);
+      if (!r) return;
       e.target.style.removeProperty("--drift");
       const rl = document.createElement("sizzle-reel");
       rl.setAttribute("radius", "0"); rl.setAttribute("speed", "1");
-      rl.sequence = REEL_SEQ;
-      rl.setAttribute("colors", REEL_COLORS);
-      rl.setAttribute("images", REEL_IMAGES.join(", "));
+      rl.setAttribute("offset", String(r.offset || 0));
+      rl.sequence = r.seq;
+      rl.setAttribute("colors", r.colors);
+      rl.setAttribute("images", r.images.join(", "));
       rl.style.cssText = "display:block;width:100%;height:100%;aspect-ratio:auto";
       e.target.appendChild(rl);
     });
   }, { rootMargin: "600px 0px" });
-  reelBoxes.forEach((b) => rio.observe(b));
+  reelBoxes.forEach(([b]) => rio.observe(b));
   reelBoxes = [];
 }
 
