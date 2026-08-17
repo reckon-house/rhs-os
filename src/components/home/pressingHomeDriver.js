@@ -276,8 +276,13 @@ const REELS = {
       "/images/thumbnails/cosmo-reel/lineup.jpg",
       "/images/thumbnails/cosmo-reel/mask.jpg"
     ],
+    /* The masque frame arrives on a burn rather than a fade: the site's
+       own cream blink, at blink length. It lands on the one frame that
+       is already pink and cream, so the wash reads as the picture
+       blooming instead of a white flash over it. Burn needs room to
+       settle, which is why this beat holds 640 where the fade held 400. */
     seq: [
-      { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
+      { fx: "shutter", img: 0, ms: 600 }, { fx: "burn", img: 1, ms: 640 },
       { fx: "pinch", color: "#F4D9DC", img: 2, ms: 500 },
       { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#000000", ms: 340 },
       { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
