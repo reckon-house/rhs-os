@@ -37,7 +37,7 @@ export function initPressingHome() {
    exception is the reel's thumbnail, which that table does not
    declare — read off the file (800x800). */
 const WORK = [
-  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg", 1920, 1254, "sally os platform hero"],
+  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg", 1920, 1254, "sally os platform hero", undefined, 4],
   ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3", 1120, 747, "ivy park nordstrom laptop brand experience mockup"],
   ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3", 1920, 1280, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],
@@ -47,21 +47,21 @@ const WORK = [
      — at 175px the editorial inside it is a smudge. Its neighbours are
      0.64 and a dealt tier, so the ladder's step-and-a-half still
      holds. */
-  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop", 0.86],
-  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-laptop.jpg", 1920, 1188, "the jeffrey homepage open on a laptop, saint laurent spring summer shoes"],
+  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop", 0.86, 4],
+  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-laptop.jpg", 1920, 1188, "the jeffrey homepage open on a laptop, saint laurent spring summer shoes", undefined, 4],
   ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3", 1600, 1600, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
   ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
-  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg", 1920, 1229, "the jeffrey homepage open on a laptop resting on a pink chair"],
+  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg", 1920, 1229, "the jeffrey homepage open on a laptop resting on a pink chair", undefined, 4],
   ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg?v=3", 1920, 1280, "hill country bath vanity marble globe sconces sage", 0.86],
   ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3", 1610, 1073, "nordstrom beauty hub laptop homepage mockup", 0.33],
   ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg", 1920, 1154, "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"],
   ["Cosmo Prof", "Digital design, creative direction", "/case-studies/cosmo-prof", "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg?v=3", 1920, 1280, "cosmo prof photography direction hair color brushes product detail quad composition"],
-  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-laptop-stool.jpg", 1920, 1280, "dsc marketing site laptop hero"],
+  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-laptop-stool.jpg", 1920, 1280, "dsc marketing site laptop hero", undefined, 4],
   ["Black & white type", "Custom typography, patterns", "/case-studies/black-white-type", "/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg?v=3", 1920, 1280, "typography patterns the fancy poster wood surface lifestyle"],
   ["Hill Country home", "Interior design, living room", "/case-studies/hill-country-living", "/case-studies/hp/rhs-interior-design-livingroom-interior.jpg?v=3", 1920, 1280, "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide", 0.74],
   ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg?v=3", 1920, 1280, "j christianson storefront tree stripe window mockup"],
   ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-blue-plate.jpg", 1920, 1154, "amber shockey co blue florals peony wallpaper pattern field"],
-  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-you-by-sally-street-display.jpg", 1920, 1138, "hero"],
+  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-you-by-sally-street-display.jpg", 1920, 1138, "hero", undefined, 4],
   ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg?v=3", 1920, 1280, "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"],
   ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3", 1920, 1280, "urban southwest primary bath exposed brick matte black soaking tub"],
   ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3", 1920, 1280, "fairview suite bedroom chandelier fireplace windows wide"],
@@ -257,6 +257,19 @@ WORK.forEach((r) => cards.push({
      purpose rather than by the seed. Left unset, the card keeps its
      dealt size. */
   size: typeof r[7] === "number" ? r[7] : undefined,
+  /* Optional authored drift (WORK[8]): the tile's --drift, how much
+     taller than its frame the picture is drawn. It is a CROP before it
+     is a movement — object-fit: cover pays for the extra height out of
+     the WIDTH, 13.8% of it at the default 16% — so a picture whose
+     subject runs to its own edges has to ask for less. A photograph
+     with air around it never misses the trim and leaves this unset.
+
+     This replaces a CSS rule that keyed on "-laptop" in the filename.
+     That worked while every such tile happened to hold a laptop, then
+     the You By Sally street case needed the same treatment and naming
+     it -laptop would have been a lie. What the tile needs is a property
+     of the picture, so it is data, the way the size already is. */
+  drift: typeof r[8] === "number" ? r[8] : undefined,
   fields: [["title", r[0]], ["category", r[1]],
     ["filename", r[3].split("/").pop()],
     /* the case study's own hero filename, recovered when the index
@@ -1613,6 +1626,9 @@ function imgCard(card, rnd, allowShare) {
   const shot = document.createElement("span");
   shot.className = "shot";
   if (card.ar) shot.style.setProperty("--ar", card.ar);
+  /* On the SHOT, not the image: --drift is read by both the image's
+     height and its transform, and the image inherits it from here. */
+  if (card.drift != null) shot.style.setProperty("--drift", card.drift + "%");
   el.appendChild(shot);
   if (card.href === REEL_HREF && !REDUCE()) {
     shot.style.setProperty("--ar", "1");

@@ -301,24 +301,19 @@
 
   /* The drift is a CROP before it is a movement: the image is drawn
      taller than its frame and object-fit: cover pays for that out of
-     the WIDTH, 13.8% of it at the default 16%. A photograph never
-     misses the trimmed edge. A device mockup does — the laptop tiles
-     lost the sides of the machine and read as cramped in the box, and
-     no amount of recropping the file fixes it, because the same
-     percentage goes whatever ratio the tile is declared at.
+     the WIDTH, 13.8% of it at the default 16%. A photograph with air
+     around it never misses the trimmed edge. A picture whose subject
+     runs to its own edges does, and no amount of recropping the file
+     fixes it, because the same percentage goes whatever ratio the tile
+     is declared at.
 
-     4% instead, which costs 3.8% of the width. The travel is smaller
-     and still there; the driver measures its slack off the element, so
-     nothing else needs telling. Keyed on the filename because that is
-     what these tiles have in common, and any future -laptop tile wants
-     the same treatment.
-
-     `-laptop` and not `-laptop.jpg`: the DSC tile is
-     rhs-dallas-sport-collective-laptop-stool.jpg, so the stricter match
-     skipped it and it kept cropping the full 13.8% while every other
-     device tile had been fixed. The word in the name is the contract,
-     not the word immediately before the extension. */
-  .fd-it .shot img[src*="-laptop"] { --drift: 4%; }
+     Those tiles ask for 4 instead, which costs 3.8%. AUTHORED PER
+     TILE, in the WORK row beside the size — see the note on `drift` in
+     pressingHomeDriver.js. A CSS rule used to key on "-laptop" in the
+     filename, which held while every such tile happened to hold a
+     laptop and stopped holding the moment a street display case needed
+     the same thing. The travel is smaller and still there either way;
+     the driver measures its slack off the element. */
 
   /* ── the page transition ─────────────────────────────────────────
      Three beats, each an edge moving in one direction:
