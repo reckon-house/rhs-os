@@ -28,9 +28,10 @@ export const youBySallyCaseStudy: CaseStudy = {
       id: "meta",
       type: "meta",
       reel: {
-        caption: "Preview · 4 frames",
+        caption: "Preview · 5 frames",
         colors: ["#E91E63", "#00B8D4", "#141414", "#F5F2ED"],
         images: [
+          "/case-studies/you-by-sally/you-by-sally-street-display-case-hero.jpg",
           "/case-studies/you-by-sally/hero.jpg",
           "/case-studies/you-by-sally/bios.jpg",
           "/case-studies/you-by-sally/hero2.jpg",
@@ -59,8 +60,8 @@ export const youBySallyCaseStudy: CaseStudy = {
     {
       id: "hero",
       type: "hero",
-      image: `${IMG}/hero.jpg`,
-      alt: "You By Sally hair color campaign hero",
+      image: `${IMG}/you-by-sally-street-display-case-hero.jpg`,
+      alt: "The You By Sally campaign in a five-panel street display case on a stone wall, portraits either side of the mosaic and the I AM MY HAIR panel",
       pressing: { choreo: { rise: true } },
     },
 
@@ -207,6 +208,25 @@ export const youBySallyCaseStudy: CaseStudy = {
         src: `${IMG}/sally-beauty-hair-color-campaign-influencer-bio2.png`,
         alt: "You By Sally influencer bio page variant on mobile — second cast member with their signature shade",
       },
+      // Held so the mosaic can cross it.
+      pressing: { choreo: { pin: true } },
+    },
+
+    // ── The old cover, kept. The new one is this artwork installed in a
+    // street case; this is the artwork itself, so it lands as the last
+    // picture before the brand system rather than opening the study a
+    // second time.
+    //
+    // Full bleed here, unlike the Loved by Nordstrom riser: at 3098px
+    // it draws the whole 1440 column and therefore COVERS the pair it
+    // crosses, which is what makes a climb read as a climb.
+    {
+      id: "campaign-wall",
+      type: "hero",
+      image: `${IMG}/hero.jpg`,
+      alt: "The You By Sally mosaic, hundreds of cast portraits behind the paint-swatch lockup",
+      inline: true,
+      pressing: { choreo: { rise: true } },
     },
 
     // ════════════════════════════════════════

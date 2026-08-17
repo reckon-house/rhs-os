@@ -14417,20 +14417,6 @@
       ]
      }
     ],
-    "colour": [
-     {
-      "facet": "colour",
-      "term": "cream",
-      "n": 1,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "colors.3.name",
-        "quote": "Cream"
-       }
-      ]
-     }
-    ],
     "material": [
      {
       "facet": "material",
@@ -14456,6 +14442,18 @@
      },
      {
       "facet": "material",
+      "term": "stone",
+      "n": 1,
+      "cites": [
+       {
+        "section": "hero",
+        "field": "alt",
+        "quote": "…ou By Sally campaign in a five-panel street display case on a stone wall, portraits either side of the mosaic and the I AM MY HAIR…"
+       }
+      ]
+     },
+     {
+      "facet": "material",
       "term": "leather",
       "n": 1,
       "cites": [
@@ -14466,6 +14464,20 @@
        }
       ],
       "observed": true
+     }
+    ],
+    "colour": [
+     {
+      "facet": "colour",
+      "term": "cream",
+      "n": 1,
+      "cites": [
+       {
+        "section": "marks-materials",
+        "field": "colors.3.name",
+        "quote": "Cream"
+       }
+      ]
      }
     ],
     "style": [
