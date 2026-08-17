@@ -19,7 +19,7 @@ const HP = "/case-studies/hp";
 
 export const projects: Project[] = [
   { id: "ivyPark", title: "Ivy Park by Beyoncé", category: "Digital design, brand launch", image: `${HP}/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3`, href: "/case-studies/ivy-park", tags: ["digital", "creative"], featured: true },
-  { id: "arc", title: "A.R.C. - AI Home Inventory", category: "App & brand development", image: `${HP}/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3`, href: "/case-studies/arc", tags: ["digital"], featured: true },
+  { id: "arc", title: "A.R.C. - AI Home Inventory", category: "App & brand development", image: `${HP}/rhs-arc-app-project-select-phone.jpg`, href: "/case-studies/arc", tags: ["digital"], featured: true },
   { id: "hillKitchen", title: "Hill Country home", category: "Interior design, kitchen", image: `${HP}/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3`, href: "/case-studies/hill-country-kitchen", tags: ["interiors"], featured: true },
   { id: "robertRod", title: "Robert Rodriguez x Neiman\u2019s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-storefront-window.jpg`, href: "/case-studies/robert-rodriguez", tags: ["creative"], featured: true },
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-laptop.jpg`, href: "/case-studies/nordstrom-personalization", tags: ["digital"] },
