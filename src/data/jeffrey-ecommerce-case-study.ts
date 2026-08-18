@@ -160,7 +160,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
     {
       id: "headline-flagship",
       type: "editorial-headline",
-      text: "A launch on Tuesday,\na sale on Wednesday",
+      text: "Built to change\nas often as the store did",
     },
 
     // ════════════════════════════════════════
