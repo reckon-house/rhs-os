@@ -87,13 +87,18 @@ const useIsoLayoutEffect =
    hardcoded here rather than threaded through props. */
 /* The site's own pages. They used to live in the masthead's centre
    links, which the question field took over: Work was always just the
-   homepage, which the wordmark reaches, but Info and Staples had no
-   other door and would have been orphaned. The footer is on every
-   route and has room to name them, which is a better home for them
-   than a bar with three words in it. */
+   homepage, which the wordmark reaches, but Staples had no other door
+   and would have been orphaned. The footer is on every route and has
+   room to name them, which is a better home for them than a bar with
+   three words in it.
+
+   Info is gone, not moved. Every line on it was already somewhere
+   else: the practice, what I do, the setup and Recently are the
+   homepage's left rail word for word, the Work row is these links,
+   and Get in touch is the beat this ledger sits inside. A page that
+   only reprints the front page is one more thing to keep current. */
 const PAGES = [
   { label: "Work", href: "/", external: false },
-  { label: "Info", href: "/info", external: false },
   { label: "Staples", href: "/inspiration", external: false },
 ];
 const CONTACT = [

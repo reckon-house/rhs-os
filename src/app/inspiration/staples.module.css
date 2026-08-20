@@ -1,0 +1,119 @@
+/*
+ * House*Staples — the reference board, in the homepage's grammar.
+ *
+ * The page used to carry a private layout: a section pill, a bold lede
+ * at 20px, and a five-row meta ledger borrowed from the case-study
+ * MetaBlock. None of that exists anywhere else on the site any more.
+ * It is the homepage's template now — the statement at display size,
+ * the standing notes rail, and the board where the work stands — so
+ * every class here is either the homepage's own (.statement, .dim,
+ * .ixbody, .ixnotes, .blk, .tag) or one of the four below.
+ *
+ * The board keeps its masonry. A reference wall of a hundred saved
+ * pictures is not an index of thirty authored cards, and dealing it
+ * the way the homepage deals work would flatten what it is.
+ */
+
+/* .stratum supplies the top air and .ixbody the rail grid and gutters;
+   this only closes the bottom, same as the daybook. */
+.wrap {
+  padding-bottom: clamp(120px, 16dvh, 200px);
+}
+
+/* The rail starts a beat below the first tiles rather than level with
+   them, so the statement above reads as belonging to the page and not
+   to the column. Margin, not padding: margin moves the resting
+   position only, leaving the pinned position under the masthead
+   exactly what the homepage tuned. Below 860 the grid stacks and the
+   offset would just be a hole. */
+.rail {
+  margin-top: clamp(24px, 4dvh, 48px);
+}
+
+/* ── the board ──────────────────────────────────────────────────────
+   CSS columns, so a tile keeps its own ratio and the browser does the
+   packing. Three tracks against the rail on a wide screen; the gutter
+   is the homepage's tile gap rather than the old 40px, which left the
+   wall reading as four separate strips. */
+.board {
+  columns: 3;
+  column-gap: clamp(16px, 2vw, 28px);
+}
+
+.tile,
+.qtile {
+  break-inside: avoid;
+  margin-bottom: clamp(16px, 2vw, 28px);
+}
+
+/* One radius for every framed asset on the site, read from the same
+   token the homepage tiles and the study plates read. It was
+   clamp(18px, 3.5vw, 36px) here, which made the smallest pictures on
+   the site the roundest thing on it. */
+.tile {
+  overflow: hidden;
+  border-radius: var(--pp-r, 16px);
+}
+.tile :global(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A quote is words on paper, so it takes no frame and no corner. The
+   air around it is what separates it from the pictures. */
+.qtile {
+  padding: clamp(10px, 1.4vw, 20px) 0;
+}
+
+/* ── the arrival ──
+   Base state is the finished board; .pre is applied by JS (ledger-
+   arrival) to tiles still below the fold and removed as they cross in,
+   so a failed script leaves a plain, complete page rather than an
+   invisible one. */
+.tile,
+.qtile {
+  transition: opacity 0.5s ease var(--dbd, 0ms),
+    transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+}
+.pre {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: none;
+}
+
+/* The statement and the rail enter the way study copy does: rise and
+   settle, one after the next. Same contract — the resting state is the
+   finished page, .enterPre is JS-applied and removed a frame later. */
+.enter {
+  transition: opacity 0.55s ease var(--dbd, 0ms),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+}
+.enterPre {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: none;
+}
+
+.mail {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .rail {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .board {
+    columns: 2;
+    column-gap: 14px;
+  }
+  .tile,
+  .qtile {
+    margin-bottom: 14px;
+  }
+}

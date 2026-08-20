@@ -77,8 +77,10 @@ export function NowPlaying() {
       href={track.appleMusicUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block w-full aspect-square overflow-hidden bg-[#141414]/[0.06]"
-      style={{ borderRadius: "clamp(18px, 3.5vw, 36px)" }}
+      /* The tile's own corner is gone: its wrapper on the board carries
+         --pp-r and clips it, and a second, rounder radius inside that
+         clip drew a visible notch at each corner. */
+      className="group relative block w-full aspect-square overflow-hidden bg-black/[0.06]"
     >
       {/* Album art — fills the square */}
       {track.artworkUrl && (
