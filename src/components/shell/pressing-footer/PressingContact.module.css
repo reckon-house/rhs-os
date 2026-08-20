@@ -288,6 +288,8 @@
 }
 
 .note {
+  display: block;
+  margin-top: 18px;
   font-size: var(--mt-note);
   letter-spacing: normal;
   font-weight: 400;

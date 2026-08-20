@@ -380,7 +380,7 @@ export function PressingContact({ className }: PressingContactProps) {
           </button>
 
           <BodyReveal as="span" className={styles.note}>
-            Or just email · hello@reckon.house
+            Or · hello@reckon.house
           </BodyReveal>
         </form>
       </div>
