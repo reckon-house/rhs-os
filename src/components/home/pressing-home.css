@@ -529,6 +529,11 @@
   .ixnotes .blk .tag { display: block; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
     opacity: 0.5; padding-bottom: 7px; }
+  /* the model receipt: key-value rows, grey key, plain value, one per
+     line. Machine chrome states facts; the paragraph version narrated
+     its own process and read as a robot easing you into it. */
+  .ixnotes .blk .rl { display: block; padding-top: 4px; }
+  .ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
   /* the filter reads as the column's own list: same body size, one per
      line, underlined on approach rather than boxed. A button that
      looked like a button would be the only chrome on the page. */

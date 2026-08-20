@@ -2396,14 +2396,40 @@ function buildAnswer() {
            pass as the house's own — the rules don't care who typed */
         modelSay = voice(String(j.answer));
         const wk = notesEl.querySelector(".blk.working");
-        if (wk && wk.lastChild) {
-          wk.lastChild.nodeValue = (j.used && j.used.length
-            ? "Claude wrote that from the " + j.used.length +
-              (j.used.length === 1 ? " study" : " studies") +
-              " the index pulled: " + nameList(j.used) +
-              ". The facts are the index's, counted when the site built; the words are the model's, written under the house copy rules."
-            : "Nothing matched, so Claude got the shelf list: every title the house holds and nothing else. The words are the model's, written under the house copy rules.") +
-            " Model " + (j.model || "claude") + ".";
+        if (wk) {
+          /* THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. The first version
+             was three sentences trying to sound relaxed about being
+             machinery ("the facts are the index's, the words are the
+             model's...") and read as exactly that. Machine chrome
+             states facts and never narrates its own process, so this is
+             key-value rows now: what was read, where the facts come
+             from, which model wrote the words, and the one honest line
+             about trusting it. The tag stays; everything after it is
+             replaced when the model reports in. */
+          while (wk.childNodes.length > 1) wk.removeChild(wk.lastChild);
+          const row = (k, v) => {
+            const s = document.createElement("span");
+            s.className = "rl";
+            const key = document.createElement("span");
+            key.className = "rk";
+            key.textContent = k + " · ";
+            s.appendChild(key);
+            s.appendChild(document.createTextNode(v));
+            return s;
+          };
+          /* deduped: three projects are all titled "Hill Country
+             home", and a ledger that says a name twice reads as a bug */
+          const used = [...new Set(j.used || [])];
+          wk.appendChild(row("Sources", used.length
+            ? used.slice(0, 3).join(", ") +
+              (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
+            : "no match; the full project list, titles only"));
+          wk.appendChild(row("Facts", "the case studies, indexed when the site builds"));
+          wk.appendChild(row("Words", j.model || "claude"));
+          const dq = document.createElement("span");
+          dq.className = "rl rk";
+          dq.textContent = "Claude can make mistakes.";
+          wk.appendChild(dq);
         }
         if (still) { renderToned(sayEl, [{ t: modelSay, q: false }]); modelSay = null; return; }
         if (lineDone) typeModel();
