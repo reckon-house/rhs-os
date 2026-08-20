@@ -279,8 +279,23 @@ export function contextFor(hrefs: string[], frames: string[]): { text: string; u
   /* No shelf fallback here any more: the whole shelf is in the cached
      prefix on every request, so an unmatched question already has the
      full list to reach for. */
+
+  /* The receipt's source names. Three projects are all titled "Hill
+     Country home", and a bare-title list either repeats the name or
+     dedupes eight studies down to six. When a title collides, the room
+     comes along: the qualifier is the tail of the category ("Interior
+     design, kitchen" → "kitchen"), in parens so it survives sitting in
+     a comma-separated list. */
+  const titleCount = new Map<string, number>();
+  picked.forEach((p) => titleCount.set(p.title, (titleCount.get(p.title) ?? 0) + 1));
+  const used = picked.map((p) => {
+    if ((titleCount.get(p.title) ?? 0) < 2) return p.title;
+    const room = p.category?.split(",").pop()?.trim();
+    return room ? `${p.title} (${room})` : p.title;
+  });
+
   return {
     text: blocks.length ? blocks.join("\n\n") : "Nothing in the index matched this question.",
-    used: picked.map((p) => p.title),
+    used,
   };
 }
