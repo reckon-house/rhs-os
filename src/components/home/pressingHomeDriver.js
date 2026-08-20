@@ -74,7 +74,6 @@ const WORK = [
   ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg?v=3", 1920, 1280, "chalet living room a frame glass doors malm fireplace sputnik chandelier"],
   ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg", 1600, 1600, "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock"],
   ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-graphics-prints-apparel.jpg", 728, 604, "branding graphics prints florals hot air balloon letterform fashion illustration apparel"],
-  ["Jeffrey Spring Campaign", "Email, campaign templates", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg?v=3", 1920, 1280, "jeffrey spring campaign jw anderson striped dress monstera frame"],
   ["West Texas", "Landscape photography", "/case-studies/big-bend", "/case-studies/big-bend/hero.jpg", 2560, 1707, "chisos peak cactus"],
 ];
 

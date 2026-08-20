@@ -309,7 +309,6 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg": [3080, 1852],
   "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg": [1920, 1280],
-  "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg": [1920, 1280],
   "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg": [1920, 1280],

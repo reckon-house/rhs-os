@@ -46,13 +46,6 @@ export const projects: Project[] = [
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg?v=3`, href: "/case-studies/chalet", tags: ["interiors"] },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"] },
   { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"] },
-  /* The study's second card, dropped down here so the two entries to it
-     are not a screen apart. It was titled "Jeffrey NYC", which is the
-     jeffrey-ecommerce card's name a few rows up, while pointing at
-     jeffrey-spring — two different studies reading as one repeated one.
-     Its image file is still named for an interiors project it has
-     nothing to do with; the picture inside it is the Valentino email. */
-  { id: "jeffreyCampaign2", title: "Jeffrey Spring Campaign", category: "Email, campaign templates", image: `${HP}/rhs-interior-design-formal-modern-transitional.jpg?v=3`, href: "/case-studies/jeffrey-spring", tags: ["creative"] },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"] },
   { id: "sizzle", title: "Faux Reel", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", ogImage: "/og-faux-reel.jpg", href: "/case-studies/sizzle", tags: ["digital"] },
 ];

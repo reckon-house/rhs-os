@@ -55,3 +55,4 @@ sally-marketing-case-study.pdf
 # Production images use descriptive filenames; these are working files only.
 /public/case-studies/**/Group [0-9]*.png
 .vercel-bypass
+public/lab/_review/
