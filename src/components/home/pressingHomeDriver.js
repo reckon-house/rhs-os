@@ -2423,7 +2423,7 @@ function buildAnswer() {
           /* The frame comes first: this feature is Jeremy trying AI
              in the open, and a visitor should read that before the
              mechanics. One row, stated as fact like the rest. */
-          wk.appendChild(row("Status", "a working concept, trying out AI in the open"));
+          wk.appendChild(row("Status", "a working concept, testing AI in the open"));
           wk.appendChild(row("Sources", used.length
             ? used.slice(0, 3).join(", ") +
               (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
