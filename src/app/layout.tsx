@@ -4,7 +4,6 @@ import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { HeroPreloader } from "@/components/shell/HeroPreloader";
 import { PressingTransition } from "@/components/shell/PressingTransition";
 import { FilmOverlay } from "@/components/fx/FilmOverlay";
-import { SpringSolve } from "@/components/fx/SpringSolve";
 import { VisibilityPause } from "@/components/fx/VisibilityPause";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
@@ -104,7 +103,13 @@ export default function RootLayout({
             content so its burn pill samples what scrolls beneath it. The
             pre-redesign bottom dock (NavRail) is archived at tag site-v1. */}
         <FilmOverlay />
-        <SpringSolve />
+        {/* SpringSolve, the pencil desk-surface, is unmounted rather than
+            deleted: every route it drew under is white Pressing C paper
+            now, so its only remaining appearance was as a bug — the
+            translucent masthead samples BEHIND the page, and the
+            sketches ghosted through the bar on production. The
+            component keeps its file; remounting it is one line, hiding
+            it properly means giving it data-film-ground first. */}
         <VisibilityPause />
         <HeroPreloader />
         <CustomCursor />
