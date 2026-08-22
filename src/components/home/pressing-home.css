@@ -819,7 +819,27 @@
        on any normal screen. Below that it shrinks rather than pushing
        the last block off the bottom, which is the one thing a pinned
        column must never do. */
-    gap: clamp(28px, 7vh, 60px); }
+    --rail-gap: clamp(28px, 7vh, 60px);
+    gap: var(--rail-gap); }
+  /* ── the rail's fold ──────────────────────────────────────────────
+     Above 860 there is nothing to disclose: the summary is gone and
+     the details is a plain wrapper. The driver holds it open at these
+     widths, so the blocks are simply in the column where they always
+     were. display: contents keeps the gap between blocks on .ixnotes
+     rather than making the wrapper a second flex item that swallows
+     it. */
+  /* A FLEX COLUMN, NOT display: contents. contents looked right — the
+     wrapper disappears and the blocks become the rail's own flex items
+     — and it is not what a <details> does: the UA renders its children
+     through a slot, so the box came out of layout and the blocks
+     stacked with no gap at all. row-gap: inherit takes .ixnotes's own
+     number rather than restating it, so the two cannot drift. */
+  /* The fold is a plain box; .railbody is the column. --rail-gap is
+     declared on .ixnotes below and inherits down, so the rail and the
+     fold's body are one number rather than two that agree today. */
+  .railfold { display: block; }
+  .railbody { display: flex; flex-direction: column; gap: var(--rail-gap); }
+  .railfold > summary { display: none; }
   .ixnotes .blk { font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
   .ixnotes .blk .tag { display: block; font-size: var(--lbl);
@@ -1058,6 +1078,36 @@
     .ixbody { display: block; }
     .ixnotes { position: static; width: auto; left: auto;
       padding-bottom: clamp(40px, 9vw, 64px); }
+    /* Tighter down here: the rail's 60px is the air a pinned column
+       beside the work can afford, and inside a fold on a phone it just
+       makes the open state long. One override, and the body reads it
+       through the same property. */
+    .ixnotes { --rail-gap: clamp(22px, 5.5vw, 34px); }
+    .railbody { padding-top: var(--rail-gap); }
+    .railfold > summary {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; cursor: pointer; list-style: none;
+      font-size: var(--note); line-height: 1.45;
+      padding-bottom: clamp(14px, 3.5vw, 20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.13); }
+    .railfold > summary::-webkit-details-marker { display: none; }
+    /* The marker is authored so it can rotate: the UA triangle cannot
+       be transitioned and sits on the wrong side of the line. */
+    .railfold > summary::after {
+      content: "";
+      width: 8px; height: 8px; flex: none;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+      opacity: 0.55; }
+    .railfold[open] > summary::after {
+      transform: translateY(2px) rotate(-135deg); }
+    .railfold > summary:focus-visible { outline: 1px solid var(--ink);
+      outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .railfold > summary::after { transition: none; }
+    }
     .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
     /* The columns dissolve and their frames become the container's own
        children, ordered by the deal index each carries — so one track
@@ -1110,9 +1160,31 @@
     .ixrules { display: none; }
     .ixrows { background-image: none; }
     .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
-    /* The cover stacks with everything else: wordmark, the statement
-       and its question, then the address. It keeps its right edge so
-       the column it came from is still legible in the stack. */
+    /* THE COVER'S FIRST LINE IS NAME AND ADDRESS, and it used to be
+       three stacked things: the wordmark, the statement, then the
+       address at the very bottom, 284px down and 260 below the name it
+       belongs beside. On a wide screen those are two ends of one row
+       and it read that way; stacked, the address just became the last
+       thing before the work.
+
+       They fit. The name measures 120 and the address 102 in a 329
+       column, so putting them on one line costs nothing and leaves 107
+       between them.
+
+       display: contents on .covercols so the statement and the address
+       become children of this grid and can be placed independently:
+       the address belongs on row one with the name, the statement on
+       row two under both. */
+    .cover .ixbody { display: grid;
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+      align-items: baseline;
+      column-gap: 12px; }
+    .cover .covercols { display: contents; }
+    .cover .covermark { grid-column: 1; grid-row: 1; }
+    .cover .covermeta { grid-column: 2; grid-row: 1;
+      justify-self: end; text-align: right; }
+    .cover .coverR { grid-column: 1 / -1; grid-row: 2; }
     /* Less air on a phone, where the fold is the scarce thing. */
     .cover { --cover-air: 24px; }
     /* .ixbody carries the gutter down here, so the head must not add
@@ -1128,10 +1200,11 @@
        accident now that the head sits in the grid and its desktop
        padding is 0. This one is made to win outright. */
     .answer .ansprose { max-width: none; }
-    .covermark { display: block;
-      padding-bottom: clamp(22px, 5vw, 40px); }
-    .covercols { grid-template-columns: 1fr;
-      row-gap: clamp(22px, 5vw, 38px); }
+    /* The air moves from under the NAME to above the STATEMENT: the
+       name now has the address beside it, and padding under one half
+       of a row would push only that half down. */
+    .covermark { display: block; padding-bottom: 0; }
+    .cover .coverR { padding-top: clamp(22px, 5vw, 40px); }
   }
 
   /* ── the work: blocks, and the air between them ──────────────────

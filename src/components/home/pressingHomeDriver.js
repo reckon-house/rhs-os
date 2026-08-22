@@ -1942,7 +1942,43 @@ function buildMagazine() {
   });
   rail.push({ at: seat("Filter"), el: filt });
   rail.sort((a, b) => a.at - b.at);
-  rail.forEach((r) => notesEl.appendChild(r.el));
+
+  /* ── THE RAIL FOLDS ON A PHONE ────────────────────────────────────
+     Five blocks stacked ahead of the first picture is 800px of reading
+     before any work, on the one screen where the fold is the scarce
+     thing. On a wide screen the same five sit in a pinned column
+     beside the work and cost nothing, so this is a phone shape and
+     not a decision about the content.
+
+     <details> rather than a hand-rolled toggle: it opens without
+     script, it is a disclosure widget to a screen reader without any
+     aria to keep in step, and the summary is focusable and operable
+     from the keyboard for free.
+
+     `open` is set from the width and kept in step on resize, because a
+     closed <details> cannot be forced open from CSS: the closed state
+     hides its own slot and display on the children does not reach it.
+     One flag, set where the width is known. */
+  const fold = document.createElement("details");
+  fold.className = "railfold";
+  const cap = document.createElement("summary");
+  cap.textContent = "Filters and notes";
+  fold.appendChild(cap);
+  /* A REAL BOX AROUND THE BLOCKS. Chrome renders a details' content
+     through one UA slot, so every non-summary child ends up inside a
+     single block and no gap between them is possible: laid out
+     directly on the details they stacked flush, whatever the details
+     itself was told to be. This div is the flex column instead, and it
+     owes the UA shadow tree nothing. */
+  const body = document.createElement("div");
+  body.className = "railbody";
+  rail.forEach((r) => body.appendChild(r.el));
+  fold.appendChild(body);
+  notesEl.appendChild(fold);
+
+  const foldByWidth = () => { fold.open = innerWidth > 860; };
+  foldByWidth();
+  listen(window, "resize", foldByWidth, { passive: true });
 
   /* ROWS, two frames each, hung from one line and ruled off below.
      The pairing is consecutive rather than split down the middle:
