@@ -13,30 +13,55 @@
   padding-bottom: clamp(120px, 16dvh, 200px);
 }
 
-/* The rail starts where the first month does: its offset is the month
-   header's own margin-top, so Filter's tag and "August 2026" share a
-   line and the two columns read as one composition instead of the rail
-   hanging off the statement. Margin rather than padding on purpose —
-   margin moves only the resting position, so the pinned position under
-   the masthead stays exactly what the homepage tuned. Below 860 the
-   grid stacks and the offset would just be a hole. */
+/* THE RAIL STARTS AT THE TOP, level with the lede. It used to be
+   pushed down by the month header's own margin so Filter and "August
+   2026" shared a line, which read well enough on its own and read
+   wrong beside the homepage: there the rail is LIFTED (--rail-lift,
+   measured at runtime) so its first block is level with the first
+   frame, at the very top of the composition. Two pages, opposite
+   directions, same intent — so this one goes to the top too.
+
+   Spanning both rows rather than sitting in one: the rail must not be
+   able to make row 1 taller than the lede, or a long filter list would
+   open a hole under the headline. align-items: start on .ixbody keeps
+   it hanging from the top of that span. */
 .rail {
-  margin-top: clamp(56px, 8dvh, 100px);
+  grid-column: 1;
+  grid-row: 1 / -1;
 }
 
-/* THE ALLEY. On a wide screen the homepage gap (caps at 56px) left the
-   rail and the entries shoulder to shoulder with every spare pixel
-   piling up on the right. The gap grows with the viewport here, so the
-   content shifts right and the two columns get air between them while
-   the whole composition stays anchored left, which is the house's way:
-   the void belongs between and after, never before. Same 860 collapse
-   as the grid itself. */
-.alley {
-  /* Declared as the token, not just as the gap, so the pinned rule
-     lands on this page's boundary rather than the default one. */
-  --ixgap: clamp(32px, 10vw, 220px);
-  column-gap: var(--ixgap);
+/* THE LEDE STANDS IN THE ENTRIES' COLUMN. Row 1 is the headline alone;
+   the rail and the entries share row 2, which is what keeps Filter
+   level with the first month header. Placement is explicit on all
+   three rather than left to auto-flow — a page in this codebase has
+   already been broken twice by a new child quietly taking someone
+   else's slot.
+
+   Three ancestor classes because .stratum .statement carries the page
+   gutter as padding, and inside the grid that gutter is .ixbody's job.
+   A two-class selector would only TIE with it, and a tie across two
+   files is settled by which stylesheet loaded last. */
+:global(.stratum) :global(.ixbody) .lede {
+  grid-column: 2;
+  grid-row: 1;
+  padding-left: 0;
+  padding-right: 0;
 }
+
+.list {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* THE ALLEY IS GONE. This page used to widen --ixgap to
+   clamp(32px, 10vw, 220px) — 144px at 1440 against the site's 49 —
+   because with only entries in the content column the rail and the
+   list stood shoulder to shoulder and the spare width piled up on the
+   right. That was a fix for a composition this page no longer has:
+   the lede moved into the content column, which fills it, and the wide
+   gap survived only as a 95px offset that made the note rail read as a
+   different width from the homepage's. Same token now, so the rule
+   lands on the same boundary on every page. */
 
 /* THE ACTIVE FILTER IS THE SAME LINE, HELD ON. The homepage draws the
    rail's rule on hover; a selected row is that rule that never
@@ -51,11 +76,6 @@
 :global(.ixnotes) :global(.filt) button.on::after {
   transform: scaleX(1);
 }
-@media (max-width: 860px) {
-  .rail {
-    margin-top: 0;
-  }
-}
 
 .lbl {
   font-size: var(--pp-lbl, 10px);
@@ -68,25 +88,6 @@
   color: rgba(0, 0, 0, 0.45);
 }
 
-.head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-}
-
-/* The one line of prose on the page, and it says what the page is
-   rather than why it exists. */
-.lede {
-  margin: 20px 0 0;
-  font-size: var(--pp-note, 16px);
-  line-height: 1.55;
-  max-width: 46ch;
-  color: rgba(0, 0, 0, 0.55);
-}
-
 .month {
   display: flex;
   justify-content: space-between;
@@ -96,11 +97,16 @@
 }
 
 /* THE MONTH IS A BEAT. At 10px caps it was a filing label and the page
-   was one long undifferentiated list; at display scale it does what a
-   section head does in a study — gives the scroll a rhythm of arrivals.
-   Same bold, tight Helvetica the headlines use, no new treatment. */
+   was one long undifferentiated list; a beat gives the scroll a rhythm
+   of arrivals instead.
+
+   It sits at the LEDE'S size, not above it. At 52px against a 32px
+   headline the filing divider was the loudest thing on the page, and
+   read as the title of what followed rather than a marker between
+   runs. Same size, heavier weight: the page keeps one type scale and
+   the month still separates. */
 .monthName {
-  font-size: clamp(30px, 4.2vw, 52px);
+  font-size: clamp(20px, 2.4vw, 32px);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.02;
@@ -280,9 +286,6 @@
 }
 
 @media (max-width: 760px) {
-  .page {
-    padding: 40px 20px 120px;
-  }
   /* One track: the project drops under the entry rather than taking a
      third column out of a 375px screen. */
   .row {

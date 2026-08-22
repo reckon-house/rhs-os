@@ -204,26 +204,33 @@ export function DaybookLedger() {
         style={{ background: "var(--pp-paper)" }}
       />
       <section className={`hero-breakout stratum ${styles.wrap}`} ref={rootRef}>
-        {/* The lede, in the practice statement's own type: the claim in
-            ink, the enumeration receding, the closer in ink. No .term
-            underlines — on the homepage those mean "ask the house", and
-            an underline that does nothing here would be a small lie. */}
-        <h1 className={`statement ${styles.enter}`}>
-          The day&rsquo;s work, entered as it happens.{" "}
-          <span className="dim">
-            Ships, fixes, and notes across RHS, Sally, and A.R.C., with a
-            picture when one earns it.
-          </span>{" "}
-          Newest first, numbered from the first entry.
-        </h1>
-
-        <div className={`ixbody ${styles.alley}`}>
+        <div className="ixbody">
           {/* The standing rule, pinned — the same one the homepage and
               the answer carry, with a single boundary here: the note
               rail against the column beside it. */}
           <div className="ixrules ixrule1" aria-hidden="true">
             <div className="ixrulesPin" />
           </div>
+
+          {/* The lede, in the practice statement's own type: the claim in
+              ink, the enumeration receding, the closer in ink. No .term
+              underlines — on the homepage those mean "ask the house", and
+              an underline that does nothing here would be a small lie.
+
+              It stands INSIDE the grid, in the entries' own column. Above
+              it, at full page width, it started a rail and a gutter left
+              of every line that proves it. Nested rather than padded to
+              match: a padded copy would restate the rail width and the
+              gap as a third place they have to agree, and this file has
+              already watched that go wrong once. */}
+          <h1 className={`statement ${styles.lede} ${styles.enter}`}>
+            The day&rsquo;s work, entered as it happens.{" "}
+            <span className="dim">
+              Ships, fixes, and notes across RHS, Sally, and A.R.C., with a
+              picture when one earns it.
+            </span>{" "}
+            Newest first, numbered from the first entry.
+          </h1>
           <div className={`ixnotes ${styles.rail}`}>
             <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>
@@ -258,7 +265,10 @@ export function DaybookLedger() {
             </div>
           </div>
 
-          <div ref={listRef} className={outgo ? styles.outgo : undefined}>
+          <div
+            ref={listRef}
+            className={`${styles.list} ${outgo ? styles.outgo : ""}`}
+          >
             {months.map((m) => (
               <section key={m.key}>
                 {/* The month is a beat, not a filing label: display type

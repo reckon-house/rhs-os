@@ -20,14 +20,33 @@
   padding-bottom: clamp(120px, 16dvh, 200px);
 }
 
-/* The rail starts a beat below the first tiles rather than level with
-   them, so the statement above reads as belonging to the page and not
-   to the column. Margin, not padding: margin moves the resting
-   position only, leaving the pinned position under the masthead
-   exactly what the homepage tuned. Below 860 the grid stacks and the
-   offset would just be a hole. */
+/* THE RAIL STARTS AT THE TOP, level with the lede — the same place the
+   homepage's rail is lifted to. It used to hang a beat below the first
+   tiles so the statement above it read as the page's rather than the
+   column's; the statement is IN the column now, so the offset only
+   left the notes floating with nothing above them.
+
+   Spanning both rows so a long note block can never make row 1 taller
+   than the lede. */
 .rail {
-  margin-top: clamp(24px, 4dvh, 48px);
+  grid-column: 1;
+  grid-row: 1 / -1;
+}
+
+/* THE LEDE STANDS IN THE BOARD'S COLUMN. Row 1 is the headline alone,
+   the rail and the board share row 2. Placement is explicit on all
+   three rather than left to auto-flow, so a new child can never take
+   someone else's slot.
+
+   Three ancestor classes because .stratum .statement carries the page
+   gutter as padding, and inside the grid that gutter belongs to
+   .ixbody. Two classes would only TIE with it, and a tie across two
+   files is settled by which stylesheet loaded last. */
+:global(.stratum) :global(.ixbody) .lede {
+  grid-column: 2;
+  grid-row: 1;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* ── the board ──────────────────────────────────────────────────────
@@ -36,6 +55,8 @@
    is the homepage's tile gap rather than the old 40px, which left the
    wall reading as four separate strips. */
 .board {
+  grid-column: 2;
+  grid-row: 2;
   columns: 3;
   column-gap: clamp(16px, 2vw, 28px);
 }

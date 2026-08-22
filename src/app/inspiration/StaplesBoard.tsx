@@ -120,15 +120,6 @@ export function StaplesBoard() {
         className={`hero-breakout stratum ${styles.wrap}`}
         ref={rootRef}
       >
-        <h1 className={`statement ${styles.enter}`}>
-          A shelf of staples I keep coming back to.{" "}
-          <span className="dim">
-            The people, the work and the rooms that show up in everything I
-            make, whether I notice or not.
-          </span>{" "}
-          Reckon*House is what gets made. House*Staples is what holds it up.
-        </h1>
-
         <div className="ixbody">
           {/* The standing rule, pinned — the same one the homepage and
               the answer carry, with a single boundary here: the note
@@ -136,6 +127,19 @@ export function StaplesBoard() {
           <div className="ixrules ixrule1" aria-hidden="true">
             <div className="ixrulesPin" />
           </div>
+
+          {/* The lede stands in the board's own column, the way the
+              homepage's statement stands in the work's. Run full width
+              above the grid it started a rail-and-a-gutter left of
+              everything it introduces. */}
+          <h1 className={`statement ${styles.lede} ${styles.enter}`}>
+            A shelf of staples I keep coming back to.{" "}
+            <span className="dim">
+              The people, the work and the rooms that show up in everything I
+              make, whether I notice or not.
+            </span>{" "}
+            Reckon*House is what gets made. House*Staples is what holds it up.
+          </h1>
           <div className={`ixnotes ${styles.rail}`}>
             {/* One home per fact: the statement owns what this is, this
                 block owns how it is kept. */}
