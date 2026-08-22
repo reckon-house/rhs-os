@@ -1947,41 +1947,62 @@ function buildMagazine() {
   rowsEl.innerHTML = "";
   rowsEl.classList.add("ixcols");
   const workEls = [];
-  /* TWO COLUMNS THAT PACK, not rows that lock. A row is as tall as its
-     taller frame, so a portrait beside a landscape left a hole under
-     the short one — a 2169px-tall phone next to a kitchen leaves
-     several hundred pixels of nothing, and no amount of padding
-     touches it because the space belongs to the neighbour. Each column
-     stacks on its own now and the hole cannot form.
+  /* ROWS, WITH THE RIGHT COLUMN ONE FRAME AHEAD.
+     Pairs top-align, which is what gives the page its horizontal read
+     and lets a tall frame leave real space beside a short one until
+     the next pair squares up again. What is new is the offset: the
+     first right-hand frame does not wait for a partner, it sits alone
+     beside the statement, so the pairs below it are the middle
+     column's first against the third column's SECOND.
 
-     Deal order is unchanged: even indexes left, odd right, the same
-     left-then-right reading the rows produced. `order` carries the
-     flat deal index so that on a phone, where the columns collapse to
-     display:contents, the frames still read 0,1,2,3 down one track
-     rather than all of the left column and then all of the right. */
-  const cols = [0, 1].map(() => {
-    const c = document.createElement("div");
-    c.className = "ixrow ixcol";
-    rowsEl.appendChild(c);
-    return c;
-  });
-  workIdx.forEach((ci, i) => {
-    if (ci === undefined) return;
+     Deal order is untouched — even indexes left, odd right — and each
+     frame carries its flat index as `order`, so a phone reads
+     0,1,2,3 down one track when the rows collapse to display:contents.
+
+     The lead frame is taken out of flow rather than given a row of its
+     own: a row would hold height the pairs then have to start under,
+     and the whole point is that it sits up in the cover's band. */
+  const mk = (ci, i, lead) => {
     const cell = document.createElement("div");
     cell.className = "cell" + (i === 0 ? " first" : "");
     cell.style.order = String(i);
-    const c = cards[ci];
-    const shot = c.href && window.__evidence && window.__evidence.get(c.href);
-    const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
-    /* an authored size wins over the dealt tier */
-    const sz = cards[ci].size != null ? cards[ci].size : shares[i];
-    el.style.setProperty("--share", String(sz));
-    /* the right-hand frame follows the left one in */
-    if (i % 2) el.style.setProperty("--lag", CURTAIN_LAG);
-    cell.appendChild(el);
-    workEls.push(el);
-    cols[i % 2].appendChild(cell);
-  });
+    if (ci !== undefined) {
+      const c = cards[ci];
+      const shot = c.href && window.__evidence && window.__evidence.get(c.href);
+      const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
+      /* an authored size wins over the dealt tier */
+      const sz = cards[ci].size != null ? cards[ci].size : shares[i];
+      el.style.setProperty("--share", String(sz));
+      /* the right-hand frame follows the left one in */
+      if (!lead && i % 2) el.style.setProperty("--lag", CURTAIN_LAG);
+      cell.appendChild(el);
+      workEls.push(el);
+    }
+    return cell;
+  };
+
+  const evens = [], odds = [];
+  workIdx.forEach((ci, i) => (i % 2 ? odds : evens).push({ ci, i }));
+  const leadFrame = odds.shift();
+
+  if (leadFrame) {
+    const row = document.createElement("div");
+    row.className = "ixrow ixlead";
+    row.appendChild(mk(leadFrame.ci, leadFrame.i, true));
+    rowsEl.appendChild(row);
+  }
+  for (let k = 0; k < Math.max(evens.length, odds.length); k++) {
+    const row = document.createElement("div");
+    row.className = "ixrow";
+    const l = evens[k], r = odds[k];
+    row.appendChild(l ? mk(l.ci, l.i) : mk(undefined, -1));
+    row.appendChild(r ? mk(r.ci, r.i) : mk(undefined, -1));
+    /* NO .ixrule. It is height 0 with no border on desktop, and each
+       cell carries its own separator on a phone — but it had no
+       `order`, so against cells that do it sorted BETWEEN them and
+       took the second frame down into a row of its own. */
+    rowsEl.appendChild(row);
+  }
   armRows(rowsEl);
 
   observeArrivals(workEls);
@@ -2835,7 +2856,7 @@ let tourFull = "";                     /* what placeAsk should size to */
     const mark = document.querySelector(".covermark");
     const meta = document.querySelector(".covermeta");
     const rail = document.querySelector("#stIndex .ixnotes");
-    const cell = document.querySelector("#ixRows .ixcol:nth-child(2) .cell");
+    const cell = document.querySelector("#ixRows .ixlead .cell");
     if (!mark || !meta || !rail || !cell) return;
     if (innerWidth <= 860) {
       root.style.setProperty("--rail-lift", "0px");

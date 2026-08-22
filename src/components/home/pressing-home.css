@@ -313,8 +313,7 @@
      untightened page rather than an overlapped one. */
   @media (min-width: 861px) {
     #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
-    #ixRows .ixcol:nth-child(2) {
-      margin-top: calc(-1 * var(--col3-lift, 0px)); }
+
   }
   html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
   html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
@@ -831,28 +830,33 @@
      the gap under the pictures and tightening the gap under the rule
      pulls every row up to the line above it, with the white space
      falling below — which is the ask. */
-  /* THE INDEX PACKS, THE ANSWER PAIRS. .ixcols turns the container
-     into the two columns each frame stacks inside; without it (the
-     answer) the children stay rows of two, which is what makes a work
-     frame and a board frame read as a pair. */
-  .ixrows.ixcols { display: grid; grid-template-columns: 1fr 1fr;
-    column-gap: var(--ixgap); align-items: start; }
-  /* .ixrow.ixcol, not .ixcol: this file defines .ixrow further down
-     with grid-template-columns: 1fr 1fr, and an equal-specificity rule
-     written earlier loses on source order — so the frames kept pairing
-     and stacked two to a row. Third time this stylesheet has caught me
-     with that; anything overriding .ixrow or .ixrows from up here has
-     to double the selector. */
-  .ixrow.ixcol { grid-template-columns: 1fr;
-    row-gap: clamp(56px, 6.6vw, 108px); margin-bottom: 0; }
+  /* THE LEAD FRAME IS OUT OF FLOW. It is the third column's first
+     picture and it has no partner: it sits up beside the statement,
+     and the pairs below start where they would have anyway. Given a
+     row of its own it would hold that row's height and push them
+     down, which is the opposite of the point. Width is the right
+     column exactly: half the track less half the gutter. */
+  /* One track: .ixlead is also .ixrow, whose two columns put its lone
+     cell in the LEFT half of its own box — a column short of where it
+     belongs. */
+  .ixrow.ixlead { grid-template-columns: 1fr; margin-bottom: 0; }
+  .ixlead { position: absolute; right: 0;
+    top: calc(-1 * var(--col3-lift, 0px));
+    width: calc((100% - var(--ixgap)) / 2); }
   /* THE LEFT COLUMN HANGS OFF ITS OWN RULE. Frames are a fraction of
      their column, so which edge they sit on is a real choice: the
      right column reads against the page edge, the left against the
      rule beside the note rail. Growth follows the anchor, or a hover
      would walk the frame off its line. */
-  .ixcol:first-child .cell { justify-content: flex-start; }
-  .ixcol:first-child .fd-it { transform-origin: left center; }
-  .ixcol:first-child .fd-it .shot { transform-origin: left top; }
+  .ixrow .cell:first-child { justify-content: flex-start; }
+  .ixrow .cell:first-child .fd-it { transform-origin: left center; }
+  .ixrow .cell:first-child .fd-it .shot { transform-origin: left top; }
+  /* .ixrow.ixlead .cell:first-child, not .ixlead .cell: the lead has
+     exactly one cell and it IS a first child, so the left-column rule
+     above out-specified it and threw the frame to the wrong edge. */
+  .ixrow.ixlead .cell:first-child { justify-content: flex-end; }
+  .ixrow.ixlead .cell:first-child .fd-it { transform-origin: right center; }
+  .ixrow.ixlead .cell:first-child .fd-it .shot { transform-origin: right top; }
   .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
@@ -995,7 +999,8 @@
        right. */
     .ixrows.ixcols { display: grid; grid-template-columns: 1fr;
       row-gap: clamp(30px, 7vw, 48px); }
-    .ixcol { display: contents; }
+    .ixrow, .ixlead { display: contents; }
+    .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
     /* the rule that separated rows, now separating frames */
