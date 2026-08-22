@@ -190,9 +190,16 @@
   grid-template-columns: 1fr auto 1fr;
   justify-content: initial;
 }
+/* NAME, QUESTION, ADDRESS — left to right, on every route. The
+   wordmark used to sit centre so the question could have the left
+   gutter to itself, which is where it parked when it travelled down
+   into the homepage's cover. The cover holds the question in its own
+   column now and the name anchors the left margin with the page's
+   own, so the bar reads the same three things in the same order
+   wherever you are. */
 .nav.home .mark {
-  grid-column: 2;
-  justify-self: center;
+  grid-column: 1;
+  justify-self: start;
   white-space: nowrap;
 }
 .nav.home .meta {

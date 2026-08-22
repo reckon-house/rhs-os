@@ -161,6 +161,12 @@ export function PressingHome() {
           </div>
         </div>
         <div className="ixbody">
+          {/* The answer gets the same standing rules the index has.
+              They cannot be shared: the index lives in a .stratum,
+              which the asked state hides, so its copy goes with it. */}
+          <div className="ixrules" aria-hidden="true">
+            <div className="ixrulesPin" />
+          </div>
           <div className="ixnotes" id="ansNotes" />
           <div className="ixrows" id="ansRows" />
         </div>

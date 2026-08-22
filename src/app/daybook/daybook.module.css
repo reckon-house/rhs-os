@@ -32,7 +32,10 @@
    the void belongs between and after, never before. Same 860 collapse
    as the grid itself. */
 .alley {
-  column-gap: clamp(32px, 10vw, 220px);
+  /* Declared as the token, not just as the gap, so the pinned rule
+     lands on this page's boundary rather than the default one. */
+  --ixgap: clamp(32px, 10vw, 220px);
+  column-gap: var(--ixgap);
 }
 
 /* THE ACTIVE FILTER IS THE SAME LINE, HELD ON. The homepage draws the

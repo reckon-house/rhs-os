@@ -23,7 +23,11 @@
    wordmark sits centre so this seat stays open. */
 #nav .ask {
   position: absolute;
-  left: var(--ask-left, var(--nav-gutter));
+  /* Centred by default, which is every route but the homepage: the
+     wordmark has the left gutter now, so a question parked there
+     would sit under the name. The homepage's driver overrides this
+     with the measured position of the column the field belongs to. */
+  left: var(--ask-left, calc(50% - var(--ask-w, 420px) / 2));
   z-index: 1;
   top: 50%;
   transform: translateY(-50%) translateY(var(--ask-drop, 0px));

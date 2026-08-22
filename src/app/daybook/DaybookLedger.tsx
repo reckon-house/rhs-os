@@ -218,6 +218,12 @@ export function DaybookLedger() {
         </h1>
 
         <div className={`ixbody ${styles.alley}`}>
+          {/* The standing rule, pinned — the same one the homepage and
+              the answer carry, with a single boundary here: the note
+              rail against the column beside it. */}
+          <div className="ixrules ixrule1" aria-hidden="true">
+            <div className="ixrulesPin" />
+          </div>
           <div className={`ixnotes ${styles.rail}`}>
             <div className={`blk ${styles.enter}`}>
               <span className="tag">Filter</span>

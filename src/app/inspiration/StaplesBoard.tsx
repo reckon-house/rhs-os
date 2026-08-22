@@ -130,6 +130,12 @@ export function StaplesBoard() {
         </h1>
 
         <div className="ixbody">
+          {/* The standing rule, pinned — the same one the homepage and
+              the answer carry, with a single boundary here: the note
+              rail against the column beside it. */}
+          <div className="ixrules ixrule1" aria-hidden="true">
+            <div className="ixrulesPin" />
+          </div>
           <div className={`ixnotes ${styles.rail}`}>
             {/* One home per fact: the statement owns what this is, this
                 block owns how it is kept. */}

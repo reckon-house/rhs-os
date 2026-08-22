@@ -557,6 +557,18 @@ body {
     margin-right: -50px;
   }
 }
+/* NESTED BREAKOUTS RESET. The old 100vw form was idempotent by
+   accident — inside a parent already 100vw wide, calc(-50vw + 50%)
+   came out at zero. Measuring from the column is not: a breakout
+   inside a breakout pulled a second 50px each side and overhung the
+   page by that much. The footer nests one (its daybook strip sits
+   inside the return beat), which is where this showed. A section that
+   is already full width simply fills its parent. */
+.hero-breakout .hero-breakout {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
 
 /* Faux Reel lab, the rail's arrival. The resting state below IS the
    finished row — .sz-lab-pre is applied by ledger-arrival to rows still

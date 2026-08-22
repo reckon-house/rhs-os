@@ -268,10 +268,6 @@
      bar, not as three elements swapping places on the way up. The
      phone block below keeps its own arrangement, where there is one
      column and the wordmark takes the right end. */
-  @media (min-width: 761px) {
-    html.rh-home #nav [data-mark] {
-      grid-column: 1; justify-self: start; }
-  }
 /* ── the handover ────────────────────────────────────────────────
      The cover's wordmark and address scroll away with the page, like
      any other line on it. The bar's copies do not cross-fade in behind
@@ -396,7 +392,9 @@
     .ask.big #query { transition: none; }
   }
 
-  .statement { font-size: clamp(20px, 2.6vw, 36px); line-height: 1.2;
+  /* 32, with the rest of the ramp. The cover sets its own --stmt-fs
+     to the same ceiling; this is what the daybook and staples read. */
+  .statement { font-size: clamp(20px, 2.4vw, 32px); line-height: 1.2;
     letter-spacing: -0.02em; font-weight: 500; max-width: 30em; }
   .statement .dim { color: rgba(0, 0, 0, 0.42); }
   .stratum .statement { padding: 0 var(--gut) clamp(26px, 4dvh, 48px); }
@@ -713,9 +711,14 @@
      two cannot drift into two slightly different intervals. */
   #stIndex, .answer { padding-bottom: 200px; }
 
-  .ixbody { position: relative;
+  /* --ixgap is THE gap token, declared once here so anything that
+     needs to reason about the columns can read the real value. The
+     daybook widens it for its own alley; the pinned rules inherit
+     whatever it is rather than assuming the default, which is how
+     they ended up 47px off that page. */
+  .ixbody { position: relative; --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
-    column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
+    column-gap: var(--ixgap); align-items: start;
     padding: 0 var(--gut); }
 
   /* ── the standing rules, pinned ──────────────────────────────────
@@ -739,12 +742,20 @@
      sticky clamps the child to `top` regardless, so nothing is ever
      drawn above the bar. */
   .ixrules { position: absolute; pointer-events: none;
-    --ixgap: clamp(24px, 3.4vw, 56px); --cover-air: 50px;
+    --cover-air: 50px;
     top: calc(-1 * 100dvh); bottom: 0;
     left: calc(var(--gut) + var(--ix-note-w, 200px) + var(--ixgap) / 2);
     right: calc(var(--gut) - var(--ixgap) / 2); }
   /* 50, the same as the margins, rather than the bar's height — the
      top of the frame should read as one value with the sides. */
+  /* ONE RULE, for the pages that have one boundary rather than two:
+     a note rail and a single column of content. Same pinned wrapper,
+     same x, just the left line. */
+  .ixrules.ixrule1 .ixrulesPin {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%;
+    background-position: 0 0; }
   .ixrulesPin { position: sticky; top: var(--cover-air, 50px);
     height: calc(100dvh - var(--cover-air, 50px));
     /* TWO, not three. The far-right rule drew a boundary the browser

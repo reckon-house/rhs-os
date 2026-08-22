@@ -2688,6 +2688,13 @@ function apply() {
   if (next) {
     if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
     buildAnswer();
+    /* THE COVER IS GONE, SO THE BAR HAS TO TAKE ITS ENDS. settleAsk
+       above schedules a placement for the next frame, but the answer
+       is built after it and the flags that decide who holds the
+       wordmark are read in that placement — so opening an answer left
+       the name nowhere: not on the page, which had just been
+       unmounted, and not in the bar, which was still waiting for it. */
+    if (window.placeAsk) placeAsk();
   }
   asked = next;
 }
