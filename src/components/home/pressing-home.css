@@ -302,6 +302,20 @@
     html.rh-home #nav [data-mark],
     html.rh-home #nav [data-meta] { transition: none; transform: none; }
   }
+  /* COLUMNS ONE AND THREE COME UP ON THEIR OWN. The cover is as tall
+     as the statement, and the statement lives in the middle column —
+     so without these the wordmark and the address each sit hundreds of
+     pixels above their own column's next thing, holding a gap that
+     belongs to a neighbour. The values are MEASURED by the driver
+     (fitColumns), because the statement rewraps at every width and an
+     authored number would be right at exactly one viewport. Zero until
+     the driver writes them, so a failed script leaves the honest
+     untightened page rather than an overlapped one. */
+  @media (min-width: 861px) {
+    #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
+    #ixRows .ixcol:nth-child(2) {
+      margin-top: calc(-1 * var(--col3-lift, 0px)); }
+  }
   html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
   html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
   @media (prefers-reduced-motion: reduce) {
