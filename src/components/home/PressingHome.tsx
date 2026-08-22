@@ -122,7 +122,16 @@ export function PressingHome() {
           below rather than laying out differently: asking re-deals the
           same magazine, it does not load another page. */}
       <section className="hero-breakout answer">
-        <div className="anshead">
+        {/* One grid, and the head is INSIDE it. The head used to sit
+            above this body with a left padding that restated the rail
+            width and the gutter to line them up by arithmetic, which
+            put the voice in the right column and the note rail in the
+            wrong row: the rail could only start under a paragraph whose
+            height is the answer's own, so "How it works" hung below
+            every other first-column block on the site. Row 1 is the
+            answer, row 2 is the rail and the frames. */}
+        <div className="ixbody">
+          <div className="anshead">
           <p className="ansprose" id="ansSay" />
 
           {/* THE COMPOSE BOX, shown only when the contact intent fires.
@@ -167,13 +176,12 @@ export function PressingHome() {
             </div>
           </form>
 
-          <div className="ansback">
-            <button type="button" id="resetQ">
-              Back to the house
-            </button>
+            <div className="ansback">
+              <button type="button" id="resetQ">
+                Back to the house
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="ixbody">
           {/* The answer gets the same standing rules the index has.
               They cannot be shared: the index lives in a .stratum,
               which the asked state hides, so its copy goes with it. */}

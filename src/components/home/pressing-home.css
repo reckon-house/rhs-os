@@ -1084,8 +1084,19 @@
        the column it came from is still legible in the stack. */
     /* Less air on a phone, where the fold is the scarce thing. */
     .cover { --cover-air: 24px; }
-    .anshead { padding-left: var(--gut); }
-    .ansprose { max-width: none; }
+    /* .ixbody carries the gutter down here, so the head must not add
+       a second one. It used to sit outside and needed its own. */
+    .anshead { padding-left: 0; }
+    /* TWO CLASSES, because one loses. A media query adds no
+       specificity, and the desktop .ansprose cap is written further
+       down this stylesheet, so a bare .ansprose here has never won:
+       the answer's line has been capped at half a phone's width since
+       the cap was added, which on a 375 screen is 152px of measure.
+       The .anshead rule above had the same fault and the same effect,
+       an answer indented by a rail that is not on screen; it agrees by
+       accident now that the head sits in the grid and its desktop
+       padding is 0. This one is made to win outright. */
+    .answer .ansprose { max-width: none; }
     .covermark { display: block;
       padding-bottom: clamp(22px, 5vw, 40px); }
     .covercols { grid-template-columns: 1fr;
@@ -1302,15 +1313,32 @@
   body.asked .answer { display: block; }
   body.asked .stratum { display: none; }
 
-  /* THE ANSWER SPEAKS FROM THE SAME COLUMN THE STATEMENT DOES. It ran
-     from the page gutter, across the note rail's column and on past
-     the middle one — so asking a question moved the voice, when the
-     whole idea is that the statement rewrites itself into the answer
-     without going anywhere. Left padding clears the rail and its
-     gutter; the line then caps at a single column. */
-  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut)
-    clamp(18px, 3dvh, 32px)
-    calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap)); }
+  /* THE ANSWER SPEAKS FROM THE SAME COLUMN THE STATEMENT DOES, and now
+     from INSIDE the grid rather than from beside it. It used to sit
+     above .ixbody with a left padding that restated the rail width and
+     the gutter to line the two up by arithmetic. That put the voice in
+     the right column and the note rail in the wrong ROW: the rail
+     could only begin under a paragraph whose height is the answer's
+     own, so "How it works" hung 80px below every other first-column
+     block on the site.
+
+     Row 1 is the answer; the rail and the frames share row 2. Same
+     shape the daybook and Staples use, and alignment is by
+     construction now rather than by two numbers agreeing.
+
+     100% still means what it meant: column two's width is exactly what
+     the old left padding left over, so the one-column cap below is
+     unchanged. */
+  /* THE AIR IS THE GRID'S, not the head's. Held on .anshead it began
+     column two 36px below column one, so the rail sat level with the
+     top of the box rather than with the sentence in it. On the body it
+     is the air above BOTH, which is what the stratum's own token does
+     for the other three pages. */
+  .answer .ixbody { padding-top: clamp(26px, 4dvh, 52px); }
+  .anshead { grid-column: 2; grid-row: 1;
+    padding: 0 0 clamp(18px, 3dvh, 32px); }
+  .answer .ixnotes { grid-column: 1; grid-row: 1 / -1; }
+  #ansRows { grid-column: 2; grid-row: 2; }
   /* ── the answer, spoken ──────────────────────────────────────────
      One line at the statement's own scale, typed out. The receipts
      did not go away, they went into the writing: every clause is
