@@ -5219,7 +5219,16 @@ let tourFull = "";                     /* what placeAsk should size to */
        that line is the gate: clean at rest, lit as soon as it moves. */
     const line = document.querySelector(".covermark");
     const lr = line ? line.getBoundingClientRect() : null;
-    document.body.classList.toggle("coverbar", Boolean(lr) && lr.bottom > barH);
+    /* OVERLAP, not "extends below". This read lr.bottom > barH, which
+       is the same thing only while the line is taller than the bar or
+       hangs past it — true at the 50px of cover air a wide screen
+       gets, false on a phone, where 24px of air puts the whole line
+       INSIDE the bar's band. The test then decided the cover had
+       cleared, lit the pill over a header sitting still, and melted
+       the name and the address at rest: exactly the case the gate was
+       written to prevent, in the one place it never got checked. */
+    document.body.classList.toggle("coverbar",
+      Boolean(lr) && lr.bottom > 0 && lr.top < barH);
     /* THE BAR TAKES THE NAME ONCE THE COVER'S COPY HAS LEFT THE TOP.
        Not a crossfade at the first pixel of scroll: the page's own
        wordmark and address scroll away like everything else, and only
