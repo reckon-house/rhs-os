@@ -1,5 +1,14 @@
 <!doctype html>
-<html lang="en">
+<!-- rh-home is what the app puts on the root element while the
+     homepage is mounted, and fourteen rules in the stylesheet below
+     are scoped to it: the masthead handoff, the burn's gating, the
+     bar's gutter. Without it here the lab would silently fail to
+     demonstrate any of them. The port reads only the style and script
+     blocks, so this costs the generated files nothing.
+     Keep tag syntax out of this comment: the port finds those blocks
+     by regex from the top of the file, so a literal one here is
+     matched first and the port reads the wrong span. -->
+<html lang="en" class="rh-home">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,14 +52,28 @@
     --lbl: clamp(9px, 0.75vw, 10px);
     --lbl-track: 0.04em;
     --lbl-weight: 500;
-    --note: clamp(12px, 1.2vw, 16px);
+    /* ONE SMALL SIZE, not a ramp. 12 was already this token's floor,
+       so a 16px ceiling only ever showed up on wide screens; holding
+       it at 12 makes the secondary type the same everywhere and lets
+       weight and colour do the hierarchy on their own. */
+    --note: 12px;
     --cap: clamp(10px, 0.82vw, 11px);
     /* --pp-r in globals.css, which is what PressingIndex reads through
        --ix-r. One radius for every framed asset on the site. */
     --r: 16px;
     --gap: 6px;
     --nav: 54px;
-    --gut: 40px;
+    --gut: 50px;
+    /* The column gap, at the root so anything can reason about the
+       grid — the answer's spoken line sits outside .ixbody and still
+       has to land on the same column the statement does. The daybook
+       overrides it on its own .ixbody for its wider alley. */
+    --ixgap: clamp(24px, 3.4vw, 56px);
+    /* THE RAIL PAYS FOR THE WIDER MARGINS. Going from a 40px gutter to
+       50 costs the content 20px, so the note column gives up the same
+       20 and the two image columns keep the width they had. It was
+       never declared before, only ever the 200px fallback. */
+    --ix-note-w: 180px;
     --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
@@ -200,13 +223,180 @@
   /* One column now. The question, then who is asking — the two
      paragraphs explaining the field are gone, because a field that
      needs explaining in two paragraphs has not been designed yet. */
-  .cover { padding: clamp(34px, 5dvh, 74px) var(--gut) clamp(30px, 4dvh, 56px); }
+  /* THE COVER STARTS IN THE BAR, NOT UNDER IT. The wordmark and the
+     address ARE the navigation now, so the bar cannot also be a 54px
+     empty band above them — that read as a nav with nothing in it,
+     then padding, then the page. Pulling the section up by the bar's
+     own height puts its first line in that band, and the bar's own
+     ends stay hidden underneath (body.attop) so nothing doubles.
+
+     No horizontal padding: the .ixbody inside supplies the page
+     gutter, and doubling it would push the cover's columns off the
+     index's. */
+  /* AIR AT THE TOP, and the rules take it too. The header row shares
+     the bar's band, so the offset is measured from the viewport
+     rather than from the bar: pull up by the bar's height, push down
+     by the air wanted above everything. The rules hang off .covercols,
+     whose top is this section's content top, so they start on the same
+     line the type does instead of running up into the white. */
+  .cover { --cover-air: 50px;
+    margin-top: calc(var(--cover-air) - var(--nav));
+    padding: 0 0 clamp(30px, 4dvh, 56px);
+    position: relative; }
+  /* One line, three columns, TOPS even. Baseline alignment put the
+     three on a shared baseline, which meant their tops stepped: a 16px
+     line box and a 36px one hang different amounts of air above the
+     letters, so the wordmark and the address sat visibly low.
+
+     Start alignment evens the BOXES, which is not the same as evening
+     the letters — the big line box still carries more air above its
+     caps. --cap-align is that difference, so the small type is nudged
+     down by exactly the amount the statement's own leading puts above
+     it and the three cap-heights land on one line.
+
+     The two constants are the font's OWN, measured rather than taken
+     from a metrics table: each is the distance from a line box's top
+     to its cap top, over the font size — a per-font, per-line-height
+     ratio that holds at any size. .2031 for the statement's 1.18
+     leading, .0417 for the small type's 1.04. A first attempt used
+     published ascent/descent/cap figures and was 1.5px out, then a
+     single-point correction fixed 36/16 and broke 32/12; ratios
+     measured off the rendered pixels hold at both. */
+  .cover .ixbody { align-items: start; }
+  /* --nav-size is declared on .nav, which the cover is not inside, so
+     without this the wordmark and the address fell back to the 16px
+     default while everything around them came down to 12. */
+  .cover { --nav-size: 12px;
+    --stmt-fs: clamp(21px, 2.4vw, 32px);
+    --cap-align: calc(0.2031 * var(--stmt-fs)
+      - 0.0417 * var(--nav-size, 12px)); }
+  .covermark, .covermeta { padding-top: var(--cap-align); }
+
+  /* ── the cover's three columns ───────────────────────────────────
+     The wordmark takes the note rail's column and the address the last
+     run of work, so the top of the page is the same grid as the body
+     of it. Both are set in the masthead's own type — this IS the
+     masthead, laid into the page instead of floating over it. */
+  /* 500, the weight the bar has carried sitewide. The cover's copy was
+     700, so the name changed weight as it handed over on scroll. */
+  .covermark { font-size: var(--nav-size, 12px); font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
+  .covercols { display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: var(--ixgap); align-items: start;
+    /* THE RULES REACH THE INDEX'S. Without this the three verticals
+       stop at the statement and start again under it, and the columns
+       read as two stacked headers rather than one structure. The
+       bridge is the only two values between the last rule pixel here
+       and the first one there: this section's bottom padding and the
+       index stratum's top padding. Measured at 117px on a 900px
+       window, which is exactly 36 + 81. */
+    --cover-bridge: calc(clamp(30px, 4dvh, 56px) + clamp(56px, 9dvh, 120px)); }
+  /* ALL THREE RULES ON ONE PSEUDO, because .ixrows draws its middle
+     rule as a BACKGROUND and a background cannot paint outside its own
+     box — sizing it past 100% just clips. So the two edge rules
+     bridged the gap and the middle one could not, which is exactly
+     what it looked like.
+     This is a single overflowing box spanning covercols plus half a
+     gutter each side, carrying three 1px gradients at 0, 50% and 100%.
+     Its 50% is the gap's centre, the same point the background used.
+     Doubled selectors on purpose: .covercols alone ties .ixrows on
+     specificity and loses on source order, since .ixrows is defined
+     further down this file. */
+  /* The cover draws no rules of its own. The pinned set behind it
+     covers the same band at the same x, and two identical lines where
+     one of them scrolls is what read as the rules drifting. */
+  .ixrows.covercols { background-image: none; }
+  .ixrows.covercols::before, .ixrows.covercols::after { display: none; }
+  .covermeta { justify-self: end; text-align: right;
+    font-size: var(--nav-size, 16px); font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.04;
+    color: rgba(0, 0, 0, 0.42); }
+  .covermeta a { text-decoration: none; transition: color 0.2s ease; }
+  .covermeta a:hover { color: var(--ink); }
+
+  /* THE BAR GIVES UP ITS ENDS WHILE THE COVER HOLDS THEM. attop is the
+     driver's own flag for "the field is still at full size in the
+     cover", which is exactly the moment the wordmark and the address
+     are on the page below. Opacity rather than display, so nothing
+     reflows when they come back on the first scroll. Scoped to
+     rh-home: attop is only ever set by the homepage driver, but a
+     stale class on another route must not be able to blank its bar. */
+  /* THE BAR IS THE COLUMNS, COMPRESSED. The wordmark takes the left
+     gutter, over the note rail; the field stays in the middle column
+     and only ever travels vertically; the address keeps the right
+     edge. So a scroll reads as the three column heads rising into the
+     bar, not as three elements swapping places on the way up. The
+     phone block below keeps its own arrangement, where there is one
+     column and the wordmark takes the right end. */
+/* ── the handover ────────────────────────────────────────────────
+     The cover's wordmark and address scroll away with the page, like
+     any other line on it. The bar's copies do not cross-fade in behind
+     them — they DROP, from just above the bar into their seat, once
+     the page's own pair has left the screen. So the name is never in
+     two places at once, and arriving reads as a thing falling into
+     position rather than a thing materialising.
+
+     visibility rides along so the hidden copies cannot be tabbed to;
+     it switches at the end of the way out and immediately on the way
+     in. The address follows the name by a beat. */
+  html.rh-home #nav [data-mark],
+  html.rh-home #nav [data-meta] {
+    opacity: 0; visibility: hidden;
+    transform: translateY(-14px);
+    transition: opacity 0.2s ease,
+      transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0.32s; }
+  html.rh-home body.headgone #nav [data-mark],
+  html.rh-home body.headgone #nav [data-meta] {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.22s ease,
+      transform 0.34s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0s; }
+  html.rh-home body.headgone #nav [data-meta] {
+    transition-delay: 0.05s, 0.05s, 0s; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-mark],
+    html.rh-home #nav [data-meta] { transition: none; transform: none; }
+  }
+  /* COLUMNS ONE AND THREE COME UP ON THEIR OWN. The cover is as tall
+     as the statement, and the statement lives in the middle column —
+     so without these the wordmark and the address each sit hundreds of
+     pixels above their own column's next thing, holding a gap that
+     belongs to a neighbour. The values are MEASURED by the driver
+     (fitColumns), because the statement rewraps at every width and an
+     authored number would be right at exactly one viewport. Zero until
+     the driver writes them, so a failed script leaves the honest
+     untightened page rather than an overlapped one. */
+  @media (min-width: 861px) {
+    #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
+
+  }
+  html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
+  html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-burn] { transition: none; }
+  }
+  /* The cover's pair fades no more: it scrolls off the top with the
+     rest of the page, and the bar's copies drop in only once it has
+     gone. Vanishing at the first pixel of scroll was what made the
+     handover read as a swap rather than a hand-off. */
+  /* THE BAR'S GUTTER IS THE PAGE'S GUTTER. The masthead carries its
+     own 40px, invisible while the wordmark only ever lived in the bar
+     — but the cover holds a second copy on the page's 50px gutter now,
+     and on scroll the name jumped 10px left as the two swapped.
+     Scoped to this route: other pages have no second copy to agree
+     with. */
+  html.rh-home #nav { --nav-gutter: var(--gut); }
+  html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
+    transition: opacity 0.3s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
+      transition: none; }
+  }
   body.asked .cover { display: none; }
-  /* the statement takes the field's measure, so the two hang off the
-     same right edge and the page keeps one vertical line down its
-     middle. Set below the field, not level with it: a display size
-     here would compete with the question rather than answer it. */
-  .coverR { padding-top: clamp(30px, 4dvh, 58px);
+  /* The statement leads now and the field follows as its continuation,
+     so the top padding that used to clear the field is gone. */
+  .coverR { padding-top: 0;
     width: min(52%, 700px); }
   /* The statement is set exactly as PressingCover sets it on a case
      study — clamp(24px, 3.2vw, 44px)/1.18/-0.02em at 500, over a 21em
@@ -216,19 +406,55 @@
      The measure is what makes 44px work here: 21em at 44px is 924px,
      wider than the field's 52% column, so the statement is allowed
      out past it rather than being crushed into eight short lines. */
-  .coverR { width: auto; }
-  .coverR .statement { font-size: clamp(24px, 3.2vw, 44px);
+  .coverR { width: auto; min-width: 0; }
+  /* Sized to the COLUMN it now lives in. 3.2vw was set when the
+     statement had a 700px block to itself; in a third of the grid the
+     same clamp gave about twelve characters a line. 2.5vw holds the
+     same proportion the cover always had between type and measure. */
+  .coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.4vw, 32px));
     line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
     max-width: 21em; }
   .ledelbl { display: block; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
     opacity: 0.5; padding-bottom: 14px; }
-  /* the field takes half the measure, so its rule stops mid-page and
-     the statement below it reads against open space */
-  #askSlot { width: min(52%, 700px);
-    height: calc(clamp(32px, 5.6vw, 88px) * 1.28); }
+  /* The slot is the sentence's last word: inline-block at the
+     statement's own type size, wide enough for the longest rotation
+     line, wrapping to its own line when the paragraph's last line has
+     no room — exactly what a long word would do. em units on purpose,
+     so it scales with the statement rather than with the viewport. */
+  #askSlot { display: inline-block; width: min(9.5em, 92%);
+    height: 1.12em; vertical-align: middle; }
+  /* The field wears the terms' own hairline while it rides the
+     sentence — same 1px, same grey, hugging the words rather than
+     running the slot's full width. --ask-uw is the driver's measure of
+     the visible text, so the rule ends where the words do, exactly as
+     an underline would. Focus fills it black left to right, the same
+     move the terms make on hover. Parked in the bar it all reverts to
+     the masthead's own border behaviour. */
+  /* border-bottom 0, not transparent: the masthead's #nav:hover
+     #query rule re-colours the border with two ids of specificity, so
+     a transparent border comes back as a second, lower line on hover.
+     A zero-width border has nothing to colour. */
+  .ask.big #query { border-bottom: 0; padding-bottom: 0;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, var(--ask-uw, 100%) 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) {
+    .ask.big #query:hover {
+      background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
+  }
+  .ask.big #query:focus {
+    background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
+  @media (prefers-reduced-motion: reduce) {
+    .ask.big #query { transition: none; }
+  }
 
-  .statement { font-size: clamp(20px, 2.6vw, 36px); line-height: 1.2;
+  /* 32, with the rest of the ramp. The cover sets its own --stmt-fs
+     to the same ceiling; this is what the daybook and staples read. */
+  .statement { font-size: clamp(20px, 2.4vw, 32px); line-height: 1.2;
     letter-spacing: -0.02em; font-weight: 500; max-width: 30em; }
   .statement .dim { color: rgba(0, 0, 0, 0.42); }
   .stratum .statement { padding: 0 var(--gut) clamp(26px, 4dvh, 48px); }
@@ -344,6 +570,22 @@
        under reduced motion — is still a centred crop rather than one
        that has quietly lost its bottom sixth. */
     transform: translate3d(0, calc(var(--drift, 16%) / -2), 0); }
+
+  /* The drift is a CROP before it is a movement: the image is drawn
+     taller than its frame and object-fit: cover pays for that out of
+     the WIDTH, 13.8% of it at the default 16%. A photograph with air
+     around it never misses the trimmed edge. A picture whose subject
+     runs to its own edges does, and no amount of recropping the file
+     fixes it, because the same percentage goes whatever ratio the tile
+     is declared at.
+
+     Those tiles ask for 4 instead, which costs 3.8%. AUTHORED PER
+     TILE, in the WORK row beside the size — see the note on `drift` in
+     pressingHomeDriver.js. A CSS rule used to key on "-laptop" in the
+     filename, which held while every such tile happened to hold a
+     laptop and stopped holding the moment a street display case needed
+     the same thing. The travel is smaller and still there either way;
+     the driver measures its slack off the element. */
 
   /* ── the page transition ─────────────────────────────────────────
      Three beats, each an edge moving in one direction:
@@ -529,9 +771,61 @@
      two cannot drift into two slightly different intervals. */
   #stIndex, .answer { padding-bottom: 200px; }
 
-  .ixbody { display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
-    column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
+  /* --ixgap is THE gap token, declared once here so anything that
+     needs to reason about the columns can read the real value. The
+     daybook widens it for its own alley; the pinned rules inherit
+     whatever it is rather than assuming the default, which is how
+     they ended up 47px off that page. */
+  .ixbody { position: relative;
+    display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
+    column-gap: var(--ixgap); align-items: start;
     padding: 0 var(--gut); }
+
+  /* ── the standing rules, pinned ──────────────────────────────────
+     They used to be drawn on .ixrows and scrolled away with the work,
+     which made them read as decoration on the frames rather than as
+     the page's own structure. The wrapper is absolute and spans the
+     whole index, so the lines can never outlive it; the child inside
+     is sticky and one viewport tall, so it holds its distance from the
+     top the whole way down and stops when the index does.
+
+     The wrapper spans rule ONE to rule THREE — from half a gutter past
+     the note rail to half a gutter past the last column — so the three
+     lines are simply 0, 50% and 100% of it. Offsets count from the
+     padding box, which is why --gut appears: absolute positioning does
+     not know about the gutter the grid is padded by. */
+  /* THE WRAPPER STARTS ABOVE THE FOLD so the pin is already stuck at
+     scroll zero. Anchored at the index's own top it had to travel
+     ~380px before reaching the pin line, and for those first 380px the
+     rules scrolled with the page — which is exactly the drift they
+     were meant to stop doing. A viewport of headroom costs nothing:
+     sticky clamps the child to `top` regardless, so nothing is ever
+     drawn above the bar. */
+  .ixrules { position: absolute; pointer-events: none;
+    --cover-air: 50px;
+    top: calc(-1 * 100dvh); bottom: 0;
+    left: calc(var(--gut) + var(--ix-note-w, 200px) + var(--ixgap) / 2);
+    right: calc(var(--gut) - var(--ixgap) / 2); }
+  /* 50, the same as the margins, rather than the bar's height — the
+     top of the frame should read as one value with the sides. */
+  /* ONE RULE, for the pages that have one boundary rather than two:
+     a note rail and a single column of content. Same pinned wrapper,
+     same x, just the left line. */
+  .ixrules.ixrule1 .ixrulesPin {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%;
+    background-position: 0 0; }
+  .ixrulesPin { position: sticky; top: var(--cover-air, 50px);
+    height: calc(100dvh - var(--cover-air, 50px));
+    /* TWO, not three. The far-right rule drew a boundary the browser
+       edge already draws. */
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%, 1px 100%;
+    background-position: 0 0, 50% 0;
+    background-repeat: no-repeat; }
 
   /* PINNED. The four statements hold at the top while the magazine
      runs past them, which is the point of a column that was never
@@ -607,12 +901,57 @@
      the gap under the pictures and tightening the gap under the rule
      pulls every row up to the line above it, with the white space
      falling below — which is the ask. */
+  /* THE LEAD FRAME IS OUT OF FLOW. It is the third column's first
+     picture and it has no partner: it sits up beside the statement,
+     and the pairs below start where they would have anyway. Given a
+     row of its own it would hold that row's height and push them
+     down, which is the opposite of the point. Width is the right
+     column exactly: half the track less half the gutter. */
+  /* One track: .ixlead is also .ixrow, whose two columns put its lone
+     cell in the LEFT half of its own box — a column short of where it
+     belongs. */
+  .ixrow.ixlead { grid-template-columns: 1fr; margin-bottom: 0; }
+  .ixlead { position: absolute; right: 0;
+    top: calc(-1 * var(--col3-lift, 0px));
+    width: calc((100% - var(--ixgap)) / 2); }
+  /* THE LEFT COLUMN HANGS OFF ITS OWN RULE. Frames are a fraction of
+     their column, so which edge they sit on is a real choice: the
+     right column reads against the page edge, the left against the
+     rule beside the note rail. Growth follows the anchor, or a hover
+     would walk the frame off its line. */
+  /* WHICH COLUMN A FRAME IS IN IS A CLASS, not its position among its
+     siblings. Position was fragile in both directions: a row missing
+     its right-hand partner put the survivor in the wrong column, and
+     the lead frame's only cell is a first child while belonging to
+     the right. The name sits on the edge its frame is hung from and
+     swings to the other on hover — see --slide in the driver.
+
+     The explicit track is desktop-only: on a phone the rows dissolve
+     to display:contents and a grid-column: 2 would invent a second
+     track in a one-track grid. */
+  @media (min-width: 861px) {
+    .ixrow .cell.colL { grid-column: 1; }
+    .ixrow .cell.colR { grid-column: 2; }
+    .ixrow.ixlead .cell { grid-column: 1; }
+  }
+  .ixrow .cell.colL { justify-content: flex-start; }
+  .ixrow .cell.colL .fd-it { transform-origin: left center; }
+  .ixrow .cell.colL .fd-it .shot { transform-origin: left top; }
+  .ixrow .cell.colR { justify-content: flex-end; }
+  .ixrow .cell.colR .fd-it { transform-origin: right center; }
+  .ixrow .cell.colR .fd-it .shot { transform-origin: right top; }
+  .ixrow .cell.colR .fd-it .lbl { text-align: right; }
   .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap);
     row-gap: clamp(56px, 6.6vw, 108px);
-    margin-bottom: clamp(18px, 2.1vw, 34px); }
+    /* THE INTERVAL BETWEEN PAIRS. Measured from the taller frame in a
+       row to the top of the next pair, so a row that leaves negative
+       space beside a short frame still hands over on the same beat.
+       Only ever desktop: below 860 the rows dissolve to
+       display:contents and the container's own row-gap takes over. */
+    margin-bottom: clamp(64px, 7vw, 100px); }
   .ixrow:last-child { margin-bottom: 0; }
   .ixrow .cell { display: flex; justify-content: flex-end; }
 
@@ -621,9 +960,50 @@
      indents it any more, so a small left frame and a large one sit over
      rules of exactly the same length. It still lives inside .ixrow, in
      the content column, so it never crosses the notes column. */
-  .ixrule { grid-column: 1 / -1; height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.13); }
+  /* Kept in the grid, no longer drawn. The band rhythm above is built
+     out of the gap ABOVE this element and the margin BELOW it, so
+     removing it outright would retune every row; zeroing the border
+     leaves the spacing exactly where it was tuned and takes the line
+     away. It draws again on a phone, where there are no columns for a
+     vertical to stand between. */
+  .ixrule { grid-column: 1 / -1; height: 0; border-top: 0; }
   .ixrow:last-child .ixrule { display: none; }
+
+  /* STANDING RULES, instead of one per row.
+     The comment above already says it: the frames hang from the right
+     edge of each half, so "the two right edges are the only vertical
+     lines the eye needs". These draw the gutters those edges are
+     measured from, once down the whole index, rather than every row
+     restating the same interval horizontally.
+
+     Three of them, and the rule that places all three is one sentence:
+     every column's frames hang from a right edge, and the line stands
+     half a gutter after that edge. The rail's edge, then the first
+     column's, then the last. Both gutters are the same clamp, so one
+     offset serves all three, and the middle lands on 50% exactly
+     because the tracks are 1fr 1fr around that gap.
+
+     ALL THREE COME OFF .ixrows' OWN BOX, and that is the point rather
+     than a convenience. Built instead out of .ixbody's variables — page
+     gutter plus rail width plus half a gap — the first line landed 2.5px
+     wide of the gutter it was meant to halve, because .ixbody's contents
+     sit 3px left of where its own padding says they do. Its box knows
+     the answer; its variables only nearly know it.
+
+     Two are pseudo-elements, an element having only two. The middle one
+     is a 1px background instead, which is the same hairline by another
+     route and takes a percentage position without needing a third. */
+  .ixrows { position: relative; --ixgap: clamp(24px, 3.4vw, 56px); }
+  /* .ixrules carries these now. The cover keeps its own copy, which is
+     correct: those scroll away with the cover, and the pinned set
+     stands behind them at the same three x positions. */
+  .ixrows::before, .ixrows::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
+    background: none; pointer-events: none; }
+  /* half a gutter out from each edge: the middle of the gap to the note
+     rail on the left, and the matching interval past the last column */
+  .ixrows::before { left: calc(var(--ixgap) / -2); }
+  .ixrows::after { left: calc(100% + var(--ixgap) / 2); }
 
   .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
     transform-origin: right center;
@@ -663,7 +1043,21 @@
     .ixrow .fd-it .shot {
       transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
         border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
-    .ixrow .fd-it:hover { z-index: 2; }
+    /* THE PAGE MAKES ROOM. The frame opens with a transform, and a
+       transform costs no layout, so the index used to sit still and get
+       covered. --drop is exactly what the transform added in pixels —
+       the same number the label rides down — so giving the card that
+       much real bottom margin lets normal flow carry every row below it
+       out of the way. The frame can then reach the column from any row
+       instead of stopping wherever its own band ran out.
+
+       On the same clock as the scale, so the picture opening and the
+       page opening under it are one movement. */
+    .ixrow .fd-it {
+      transition: opacity 0.8s ease,
+        transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-bottom 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    .ixrow .fd-it:hover { z-index: 2; margin-bottom: var(--drop, 0px); }
     .ixrow .fd-it:hover .shot { transform: scale(var(--ix-grow, 1.32));
       /* squares off as it opens: a rounded frame reads as an object on
          the page, losing the corner turns it into the picture itself */
@@ -679,6 +1073,11 @@
        makes one diagonal move rather than two unrelated ones. */
     .ixrow .fd-it:hover .lbl {
       transform: translate(var(--slide, 0px), var(--drop, 0px)); }
+    /* The lead frame's room, since it cannot make its own: the first
+       pair takes the drop as real margin and the whole index follows
+       it down, on the same clock as the picture opening. */
+    .ixlead + .ixrow { margin-top: var(--lead-drop, 0px);
+      transition: margin-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   }
 
   @media (max-width: 860px) {
@@ -688,8 +1087,37 @@
     .ixnotes { position: static; width: auto; left: auto;
       padding-bottom: clamp(40px, 9vw, 64px); }
     .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
+    /* The columns dissolve and their frames become the container's own
+       children, ordered by the deal index each carries — so one track
+       reads 0,1,2,3 rather than the whole left column then the whole
+       right. */
+    .ixrows.ixcols { display: grid; grid-template-columns: 1fr;
+      row-gap: clamp(30px, 7vw, 48px); }
+    .ixrow, .ixlead { display: contents; }
+    .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
+    /* the rule that separated rows, now separating frames */
+    .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
+      padding-top: clamp(20px, 5vw, 34px); }
+    .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
+    /* One column and no note rail, so there are no gutters left for a
+       vertical to stand in. The row rule comes back to do the work. */
+    .ixrows::before, .ixrows::after { display: none; }
+    .ixrules { display: none; }
+    .ixrows { background-image: none; }
+    .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
+    /* The cover stacks with everything else: wordmark, the statement
+       and its question, then the address. It keeps its right edge so
+       the column it came from is still legible in the stack. */
+    /* Less air on a phone, where the fold is the scarce thing. */
+    .cover { --cover-air: 24px; }
+    .anshead { padding-left: var(--gut); }
+    .ansprose { max-width: none; }
+    .covermark { display: block;
+      padding-bottom: clamp(22px, 5vw, 40px); }
+    .covercols { grid-template-columns: 1fr;
+      row-gap: clamp(22px, 5vw, 38px); }
   }
 
   /* ── the work: blocks, and the air between them ──────────────────
@@ -878,7 +1306,15 @@
   body.asked .answer { display: block; }
   body.asked .stratum { display: none; }
 
-  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut) clamp(18px, 3dvh, 32px); }
+  /* THE ANSWER SPEAKS FROM THE SAME COLUMN THE STATEMENT DOES. It ran
+     from the page gutter, across the note rail's column and on past
+     the middle one — so asking a question moved the voice, when the
+     whole idea is that the statement rewrites itself into the answer
+     without going anywhere. Left padding clears the rail and its
+     gutter; the line then caps at a single column. */
+  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut)
+    clamp(18px, 3dvh, 32px)
+    calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap)); }
   /* ── the answer, spoken ──────────────────────────────────────────
      One line at the statement's own scale, typed out. The receipts
      did not go away, they went into the writing: every clause is
@@ -897,20 +1333,43 @@
      the recessive run above and have to grey with it, or the sentence
      grows a second tone it never asked for. */
   .statement .term { display: inline; color: inherit; cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: rgba(0, 0, 0, 0.22);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.14em;
-    transition: text-decoration-color 0.22s ease; }
-  .statement .term:hover { text-decoration-color: currentColor; }
+    /* Two stacked underlines drawn as backgrounds, because
+       text-decoration cannot animate directionally: the grey hairline
+       always spans the word, and the black one grows over it from the
+       left on hover, braking at the end. The trade against
+       text-decoration is skip-ink — a background line does not part
+       around descenders, so it rides the inline box's bottom edge,
+       tangent to their tips, rather than the old 0.14em offset that
+       skip-ink made possible. Raised back to that offset ON PURPOSE:
+       the line cuts straight through the p and y tails, which is the
+       look — a drawn rule over the words, not type furniture politely
+       stepping around them. 0.07em is the gap between Helvetica's
+       descent (~0.21em) and the 0.14em the underlines always sat at. */
+    text-decoration: none;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) {
+    .statement .term:hover { background-size: 100% 1px, 100% 1px; }
+  }
   .statement .term:focus-visible { outline: 1px solid var(--ink);
-    outline-offset: 3px; }
+    outline-offset: 3px; background-size: 100% 1px, 100% 1px; }
   @media (prefers-reduced-motion: reduce) {
     .statement .term { transition: none; }
   }
 
-  .ansprose { font-size: clamp(24px, 3.2vw, 44px); font-weight: 500;
-    line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
+  /* THE SAME SIZE AS THE STATEMENT IT REPLACES. It was 44 against the
+     statement's 36 — same voice, same position on the page, arriving a
+     fifth larger. */
+  /* One column wide, like the statement. The box it sits in spans two
+     columns and the gutter between them, so half of that less half a
+     gutter is exactly one. */
+  .ansprose { max-width: calc((100% - var(--ixgap)) / 2);
+    font-size: clamp(21px, 2.4vw, 32px); font-weight: 500;
+    line-height: 1.18; letter-spacing: -0.02em;
     min-height: 2.4em; }
   #ansSay.typing::after { content: ""; display: inline-block;
     width: 0.45ch; height: 0.92em; margin-left: 4px;
@@ -1078,7 +1537,16 @@
   @media (max-width: 760px) {
     :root { --nav: 48px; --gut: 20px; }
     #nav { --nav-size: 11px; --nav-gutter: 16px; --nav-overhang: 10px;
-      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em; }
+      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em;
+      /* RESET, not merely "not set". The comment above says this bar
+         wants no overflow context, and the homepage duly never added
+         one — but Masthead.module.css sets overflow-x: auto on phones
+         as its own safety net, and a sheet that stays silent inherits
+         it. overflow-x on one axis computes overflow-y to auto too, so
+         the bar became a clip, and the field it lends to the cover is
+         translated ~318px below the bar: outside the clip, invisible
+         on every phone. The id outranks the module's class. */
+      overflow: visible; }
     /* 390pt cannot centre a wordmark AND seat a field beside it, so
        the wordmark takes the right end (the mailto's slot, which is
        hidden here anyway) and the field keeps the left gutter — the
@@ -1112,7 +1580,7 @@
       aria-label="Ask the house" />
     <button type="button" class="clear" id="clearQ" aria-label="Clear">&times;</button>
   </div>
-  <a href="#top" class="mark">Reckon House Staples</a>
+  <a data-mark href="#top" class="mark">Reckon House Staples</a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
 
@@ -1128,15 +1596,27 @@
   </filter>
 </svg>
 
+<!-- THE COVER IS THE PAGE'S OWN THREE COLUMNS, not a bar above them.
+     It borrows .ixbody and .ixrows from the index below, so the
+     wordmark sits over the note rail, the statement over the first run
+     of work and the address over the second, and the standing rules
+     run through all of it. The question rides INSIDE the statement:
+     the slot is a SIBLING of #infoLead, never a child, because the
+     lede's innerHTML is rewritten on every answer. -->
 <section class="cover">
-  <!-- the room the travelling field needs; the field itself lives in
-       the bar, which is the end of its journey and the only place its
-       position has to be exact -->
-  <div id="askSlot" aria-hidden="true"></div>
-
-  <div class="coverR">
-    <span class="ledelbl">The practice</span>
-    <p class="statement" id="infoLead"></p>
+  <div class="ixbody">
+    <span class="covermark">Reckon House Staples</span>
+    <div class="ixrows covercols">
+      <div class="coverR">
+        <p class="statement">
+          <span id="infoLead"></span>
+          <span id="askSlot" aria-hidden="true"></span>
+        </p>
+      </div>
+      <div class="covermeta">
+        <a href="mailto:hello@reckon.house">hello@reckon.house</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1191,6 +1671,11 @@
        left frames, the board into the right, and the notes column
        carries the words and the working. -->
   <div class="ixbody">
+    <!-- The standing rules, pinned. They live on .ixbody rather than
+         on #ixRows because the deal empties that container on every
+         answer, and a rule that is rebuilt is a rule that can be
+         forgotten. -->
+    <div class="ixrules" aria-hidden="true"><div class="ixrulesPin"></div></div>
     <div class="ixnotes" id="ansNotes"></div>
     <div class="ixrows" id="ansRows"></div>
   </div>
@@ -1207,6 +1692,11 @@
   <div class="ixbody">
     <!-- the working notes hold the left column and ignore the row
          rhythm entirely: they are a column of their own, not cells -->
+    <!-- The standing rules, pinned. They live on .ixbody rather than
+         on #ixRows because the deal empties that container on every
+         answer, and a rule that is rebuilt is a rule that can be
+         forgotten. -->
+    <div class="ixrules" aria-hidden="true"><div class="ixrulesPin"></div></div>
     <div class="ixnotes" id="ixNotes"></div>
     <div class="ixrows" id="ixRows"></div>
   </div>
@@ -1302,33 +1792,40 @@ const listen = (target, type, fn, opts) => target.addEventListener(type, fn, opt
    exception is the reel's thumbnail, which that table does not
    declare — read off the file (800x800). */
 const WORK = [
-  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/sally-os/heroes/sally-os-platform-hero.jpg", 3120, 2038, "sally os platform hero"],
+  ["Sally Marketing OS", "Product design, engineering", "/case-studies/sally", "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg", 1920, 1254, "sally os platform hero", undefined, 4],
   ["Ivy Park by Beyoncé", "Digital design, brand launch", "/case-studies/ivy-park", "/case-studies/hp/rhs-ivy-park-beyonce-digital-brand-launch.jpg?v=3", 1120, 747, "ivy park nordstrom laptop brand experience mockup"],
-  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-ai-home-inventory-app-thumbnail.jpg?v=3", 1920, 1280, "arc app kitchen project selection lifestyle"],
+  ["A.R.C. - AI Home Inventory", "App & brand development", "/case-studies/arc", "/case-studies/hp/rhs-arc-app-project-select-phone.jpg", 1600, 2169, "arc app kitchen project selection lifestyle"],
   ["Hill Country home", "Interior design, kitchen", "/case-studies/hill-country-kitchen", "/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3", 1920, 1280, "hill country kitchen island pendants marble wide", 0.64],
-  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-neiman-marcus-campaign-thumbnail.jpg?v=3", 1600, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign"],
-  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-design-system.jpg?v=3", 1600, 1600, "nordstrom personalization system design laptop website interface fashion ecommerce floral field outdoor lifestyle"],
-  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-website-design.jpg?v=3", 1920, 1280, "jeffrey new york digital flagship hero"],
+  ["Robert Rodriguez x Neiman’s", "Creative direction, design", "/case-studies/robert-rodriguez", "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg", 1962, 1600, "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign", undefined, 4],
+  /* Authored at 0.86 rather than dealt: the seed handed this one the
+     0.33 stamp, and the picture is a full homepage on a laptop screen
+     — at 175px the editorial inside it is a smudge. Its neighbours are
+     0.64 and a dealt tier, so the ladder's step-and-a-half still
+     holds. */
+  ["Nordstrom personalization", "Design system, direction", "/case-studies/nordstrom-personalization", "/case-studies/hp/rhs-nordstrom-personalization-laptop.jpg", 1920, 1229, "the personalized nordstrom homepage open on a laptop", 0.86, 4],
+  ["Jeffrey NYC", "Ecommerce, web design", "/case-studies/jeffrey-ecommerce", "/case-studies/hp/rhs-jeffrey-ecommerce-laptop.jpg", 1920, 1188, "the jeffrey homepage open on a laptop, saint laurent spring summer shoes", undefined, 4],
   ["Capitan Boot Co.", "Branding, design", "/case-studies/capitan-boot-co", "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3", 1600, 1600, "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign"],
   ["Faux Reel", "Product design, motion", "/case-studies/sizzle", "/images/thumbnails/sizzle.jpg", 800, 800, "sizzle"],
-  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign.jpg?v=3", 1920, 1280, "jeffrey spring campaign hero"],
+  ["Jeffrey Spring Campaign", "Creative direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-jeffrey-spring-campaign-laptop.jpg", 1920, 1229, "the jeffrey homepage open on a laptop resting on a pink chair", undefined, 4],
   ["Hill Country home", "Interior design, primary bath", "/case-studies/hill-country-bath", "/case-studies/hp/rhs-interior-design-hill-country-primary-bath.jpg?v=3", 1920, 1280, "hill country bath vanity marble globe sconces sage", 0.86],
-  ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-finder-digital-design.jpg?v=3", 1610, 1073, "nordstrom beauty hub laptop homepage mockup", 0.33],
-  ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-county-oakworks-campaign-branding.jpg?v=3", 1920, 1280, "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"],
+  ["Nordstrom beauty", "Digital design, personalized", "/case-studies/nordstrom-beauty", "/case-studies/hp/rhs-nordstrom-beauty-hub-laptop.jpg", 1920, 1280, "nordstrom beauty hub laptop homepage mockup", 0.43],
+  ["Hill Country Oakworks", "Campaign direction, branding", "/case-studies/hill-country-oak", "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg", 1920, 1154, "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft"],
   ["Cosmo Prof", "Digital design, creative direction", "/case-studies/cosmo-prof", "/case-studies/hp/rhs-cosmo-prof-website-design-digital-rebrand.jpg?v=3", 1920, 1280, "cosmo prof photography direction hair color brushes product detail quad composition"],
-  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-website-app.jpg?v=3", 1920, 1280, "dsc marketing site laptop hero"],
+  ["Dallas Sport Collective", "Website, custom app", "/case-studies/dsc", "/case-studies/hp/rhs-dallas-sport-collective-laptop-stool.jpg", 1920, 1280, "dsc marketing site laptop hero", undefined, 4],
   ["Black & white type", "Custom typography, patterns", "/case-studies/black-white-type", "/case-studies/hp/rhs-campaign-design-typography-black-white-custom-patterns.jpg?v=3", 1920, 1280, "typography patterns the fancy poster wood surface lifestyle"],
   ["Hill Country home", "Interior design, living room", "/case-studies/hill-country-living", "/case-studies/hp/rhs-interior-design-livingroom-interior.jpg?v=3", 1920, 1280, "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide", 0.74],
   ["J. Christianson", "Brand development, design", "/case-studies/j-christianson", "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg?v=3", 1920, 1280, "j christianson storefront tree stripe window mockup"],
-  ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-pattern-dishware.jpg?v=3", 1920, 1280, "amber shockey co blue florals peony wallpaper pattern field"],
-  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg?v=3", 1920, 1280, "hero"],
-  ["Jeffrey NYC", "Campaign direction, design", "/case-studies/jeffrey-spring", "/case-studies/hp/rhs-interior-design-formal-modern-transitional.jpg?v=3", 1920, 1280, "jeffrey spring campaign jw anderson striped dress monstera frame"],
+  ["Amber Shockey & Co.", "Tableware design, branding", "/case-studies/amber-shockey-co", "/case-studies/hp/rhs-campaign-design-amber-shockey-blue-plate.jpg", 1920, 1154, "amber shockey co blue florals peony wallpaper pattern field"],
+  ["You By Sally", "Brand campaign", "/case-studies/you-by-sally", "/case-studies/hp/rhs-you-by-sally-street-display.jpg", 1920, 1138, "hero", undefined, 4],
   ["The Fairview", "Interior design, sitting room", "/case-studies/fairview-sitting", "/case-studies/hp/rhs-interior-design-formal-modern-transitional-1.jpg?v=3", 1920, 1280, "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table"],
   ["Floor & Decor", "Interiors feature", "/case-studies/floor-and-decor", "/case-studies/hp/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3", 1920, 1280, "urban southwest primary bath exposed brick matte black soaking tub"],
   ["The Fairview Suite", "Interior design, bedroom", "/case-studies/fairview-suite", "/case-studies/hp/rhs-interior-design-master-bedroom-glam-luxe.jpg?v=3", 1920, 1280, "fairview suite bedroom chandelier fireplace windows wide"],
   ["The Fairview", "Interior Design, foyer", "/case-studies/fairview-entry", "/case-studies/hp/rhs-interior-design-grand-entry-luxe.jpg?v=3", 1920, 1280],
-  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-content-design.jpg?v=3", 1920, 1280, "hero1", 0.53],
-  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg?v=3", 1920, 1280, "loved by nordstrom gallery wall campaign tiles tibi center"],
+  ["Nordstrom framework", "Content direction, design", "/case-studies/nordstrom-framework", "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg", 1920, 2162, "hero1", 0.53],
+  /* Authored, not dealt. The seed gave this the 0.33 stamp and the
+     picture is a tablet held at arm's length — the wall inside it needs
+     the room. 0.40 is that stamp plus a fifth. */
+  ["Loved by Nordstrom", "Brand campaign, design", "/case-studies/loved-by-nordstrom", "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg", 1600, 1811, "loved by nordstrom gallery wall campaign tiles tibi center", 0.40],
   ["Mountain View", "Interior design, remodel", "/case-studies/chalet", "/case-studies/hp/rhs-interior-design-cabin-mid-century.jpg?v=3", 1920, 1280, "chalet living room a frame glass doors malm fireplace sputnik chandelier"],
   ["Neiman Marcus", "Editorial direction, design", "/case-studies/neiman-marcus", "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg", 1600, 1600, "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock"],
   ["Various design", "Branding, art, apparel", "/case-studies/branding-graphics", "/case-studies/hp/rhs-various-design-branding-graphics-prints-apparel.jpg", 728, 604, "branding graphics prints florals hot air balloon letterform fashion illustration apparel"],
@@ -1352,7 +1849,7 @@ const NOTES = [
      opening claim here runs two sentences, the closer is one, and the
      enumeration between them is what greys. Say it in the data and it
      is right by construction. */
-  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things.",
+  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things:",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
@@ -1482,19 +1979,70 @@ function linkLeadTerms(root, terms, onPick) {
   });
 }
 
-const REEL_HREF = "/case-studies/sizzle";
-const REEL_IMAGES = [
-  "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
-  "/images/thumbnails/nordstromPersonal.jpg", "/images/thumbnails/dsc.jpg",
-  "/images/thumbnails/nordstromBeauty.jpg"
-];
-const REEL_COLORS = "#0AA7CA, #181B17, #776549";
-const REEL_SEQ = [
-  { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
-  { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
-  { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#181B17", ms: 340 },
-  { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
-];
+/* ── tiles that play ──────────────────────────────────────────────
+   A href in here gets a live reel in place of its cover image, cut
+   from that project's own frames in that project's own palette. This
+   was built for one card and is a table now, because the second one
+   wanted nothing new — only different frames.
+
+   Frames must be SMALL. A tile is 150-380 CSS pixels wide, and every
+   frame loads before the first cut, so a reel of case-study plates
+   costs megabytes to show something the size of a postcard. Cosmo's
+   six run 900px and 568K together; the same six at study size are
+   4.6MB. Export thumbnails, not plates.
+
+   `offset` starts each reel at a different beat so two of them on one
+   screen cut against each other rather than in lockstep. */
+const REELS = {
+  "/case-studies/sizzle": {
+    /* Square is this card's own idea, not the system's — the study is
+       about the reel, so the tile is the reel and nothing else. */
+    ar: "1",
+    offset: 0,
+    colors: "#0AA7CA, #181B17, #776549",
+    images: [
+      "/images/thumbnails/ivyPark.jpg", "/images/thumbnails/arc.jpg",
+      "/images/thumbnails/nordstromPersonal.jpg", "/images/thumbnails/dsc.jpg",
+      "/images/thumbnails/nordstromBeauty.jpg"
+    ],
+    seq: [
+      { fx: "shutter", img: 0, ms: 600 }, { fx: "fade", img: 1, ms: 400 },
+      { fx: "pinch", color: "#0AA7CA", img: 2, ms: 500 },
+      { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#181B17", ms: 340 },
+      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
+    ]
+  },
+  "/case-studies/cosmo-prof": {
+    /* No `ar`: the tile keeps the 3:2 it was dealt, so the row's
+       rhythm is exactly what it was when this card held a still.
+       Colors are the study's own reel palette, minus the near-white,
+       which blinks to nothing against the photography. */
+    offset: 3,
+    colors: "#F4D9DC, #000000, #E5D6C9",
+    /* The quad composition that used to be this tile is deliberately
+       NOT here. It is a contact sheet of four of these five, so the
+       reel was cutting to a small picture of itself, and it is the one
+       frame shot on plain white rather than a swatch ground. */
+    images: [
+      "/images/thumbnails/cosmo-reel/masque.jpg",
+      "/images/thumbnails/cosmo-reel/tubes.jpg",
+      "/images/thumbnails/cosmo-reel/brushes.jpg",
+      "/images/thumbnails/cosmo-reel/lineup.jpg",
+      "/images/thumbnails/cosmo-reel/mask.jpg"
+    ],
+    /* The masque frame arrives on a burn rather than a fade: the site's
+       own cream blink, at blink length. It lands on the one frame that
+       is already pink and cream, so the wash reads as the picture
+       blooming instead of a white flash over it. Burn needs room to
+       settle, which is why this beat holds 640 where the fade held 400. */
+    seq: [
+      { fx: "shutter", img: 0, ms: 600 }, { fx: "burn", img: 1, ms: 640 },
+      { fx: "pinch", color: "#F4D9DC", img: 2, ms: 500 },
+      { fx: "slat", img: 3, ms: 620 }, { fx: "ccurtain", color: "#000000", ms: 340 },
+      { fx: "curtain", img: 4, ms: 620 }, { fx: "cut", img: 0, ms: 540 }
+    ]
+  }
+};
 
 /* ── cards ────────────────────────────────────────────────────────
    Every card carries NAMED fields rather than one blob, so the
@@ -1514,6 +2062,19 @@ WORK.forEach((r) => cards.push({
      purpose rather than by the seed. Left unset, the card keeps its
      dealt size. */
   size: typeof r[7] === "number" ? r[7] : undefined,
+  /* Optional authored drift (WORK[8]): the tile's --drift, how much
+     taller than its frame the picture is drawn. It is a CROP before it
+     is a movement — object-fit: cover pays for the extra height out of
+     the WIDTH, 13.8% of it at the default 16% — so a picture whose
+     subject runs to its own edges has to ask for less. A photograph
+     with air around it never misses the trim and leaves this unset.
+
+     This replaces a CSS rule that keyed on "-laptop" in the filename.
+     That worked while every such tile happened to hold a laptop, then
+     the You By Sally street case needed the same treatment and naming
+     it -laptop would have been a lie. What the tile needs is a property
+     of the picture, so it is data, the way the size already is. */
+  drift: typeof r[8] === "number" ? r[8] : undefined,
   fields: [["title", r[0]], ["category", r[1]],
     ["filename", r[3].split("/").pop()],
     /* the case study's own hero filename, recovered when the index
@@ -2877,10 +3438,17 @@ function imgCard(card, rnd, allowShare) {
   const shot = document.createElement("span");
   shot.className = "shot";
   if (card.ar) shot.style.setProperty("--ar", card.ar);
+  /* On the SHOT, not the image: --drift is read by both the image's
+     height and its transform, and the image inherits it from here. */
+  if (card.drift != null) shot.style.setProperty("--drift", card.drift + "%");
   el.appendChild(shot);
-  if (card.href === REEL_HREF && !REDUCE()) {
-    shot.style.setProperty("--ar", "1");
-    reelBoxes.push(shot);
+  /* `card.shot` means this card is answering with a specific frame from
+     inside the study. That frame IS the answer, so it outranks the reel;
+     a card that cuts through six other pictures is not evidence. */
+  const reel = card.href && !card.shot ? REELS[card.href] : null;
+  if (reel && !REDUCE()) {
+    if (reel.ar) shot.style.setProperty("--ar", reel.ar);
+    reelBoxes.push([shot, reel]);
   } else {
     /* The picture gets a PLATE to sit on. The plate is what the
        curtain clips and what settles from 1.25 to 1; the image itself
@@ -2949,21 +3517,27 @@ function noteCard(card, rnd) {
 
 function armReels() {
   if (!reelBoxes.length) return;
+  /* Which reel belongs to which box, so the observer can arm a card
+     without knowing anything about the card. */
+  const spec = new Map(reelBoxes);
   const rio = new IntersectionObserver((es, o) => {
     es.forEach((e) => {
       if (!e.isIntersecting) return;
       o.unobserve(e.target);
+      const r = spec.get(e.target);
+      if (!r) return;
       e.target.style.removeProperty("--drift");
       const rl = document.createElement("sizzle-reel");
       rl.setAttribute("radius", "0"); rl.setAttribute("speed", "1");
-      rl.sequence = REEL_SEQ;
-      rl.setAttribute("colors", REEL_COLORS);
-      rl.setAttribute("images", REEL_IMAGES.join(", "));
+      rl.setAttribute("offset", String(r.offset || 0));
+      rl.sequence = r.seq;
+      rl.setAttribute("colors", r.colors);
+      rl.setAttribute("images", r.images.join(", "));
       rl.style.cssText = "display:block;width:100%;height:100%;aspect-ratio:auto";
       e.target.appendChild(rl);
     });
   }, { rootMargin: "600px 0px" });
-  reelBoxes.forEach((b) => rio.observe(b));
+  reelBoxes.forEach(([b]) => rio.observe(b));
   reelBoxes = [];
 }
 
@@ -3095,10 +3669,10 @@ function buildMagazine() {
   const rail = noteIdx.map((ci) => {
     const blk = document.createElement("div");
     blk.className = "blk";
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.textContent = cards[ci].word;
-    blk.appendChild(tag);
+    /* NO LABEL. The rail's eyebrows named what each block obviously
+       was: "What I do" over a list of what he does, "Get in touch"
+       over an address. The word survives as the block's key and its
+       seat, which is what it was actually doing. */
     blk.appendChild(document.createTextNode(cards[ci].full));
     /* same key noteCard writes, so a note the brain surfaces can
        travel out of this column */
@@ -3111,10 +3685,6 @@ function buildMagazine() {
      from RAIL like everything else here. */
   const filt = document.createElement("div");
   filt.className = "blk filt";
-  const ftag = document.createElement("span");
-  ftag.className = "tag";
-  ftag.textContent = "Filter";
-  filt.appendChild(ftag);
   FILTERS.forEach(([label, fq]) => {
     const b = document.createElement("button");
     b.type = "button";
@@ -3137,36 +3707,70 @@ function buildMagazine() {
      deal order IS the reading order, left then right, top to bottom. */
   const rowsEl = document.getElementById("ixRows");
   rowsEl.innerHTML = "";
+  rowsEl.classList.add("ixcols");
   const workEls = [];
-  for (let i = 0; i < workIdx.length; i += 2) {
+  /* ROWS, WITH THE RIGHT COLUMN ONE FRAME AHEAD.
+     Pairs top-align, which is what gives the page its horizontal read
+     and lets a tall frame leave real space beside a short one until
+     the next pair squares up again. What is new is the offset: the
+     first right-hand frame does not wait for a partner, it sits alone
+     beside the statement, so the pairs below it are the middle
+     column's first against the third column's SECOND.
+
+     Deal order is untouched — even indexes left, odd right — and each
+     frame carries its flat index as `order`, so a phone reads
+     0,1,2,3 down one track when the rows collapse to display:contents.
+
+     The lead frame is taken out of flow rather than given a row of its
+     own: a row would hold height the pairs then have to start under,
+     and the whole point is that it sits up in the cover's band. */
+  /* side is "L" or "R" and is the ONLY thing that decides which column
+     a frame belongs to. It used to be read off DOM position, and a row
+     whose right-hand partner ran out got an empty placeholder cell to
+     hold the slot — but that placeholder carried order -1, so it
+     sorted ahead of the real frame, took column one, and left the last
+     picture in the right column wearing the left column's alignment. */
+  const mk = (ci, i, side) => {
+    const cell = document.createElement("div");
+    cell.className = "cell col" + side + (i === 0 ? " first" : "");
+    cell.style.order = String(i);
+    if (ci !== undefined) {
+      const c = cards[ci];
+      const shot = c.href && window.__evidence && window.__evidence.get(c.href);
+      const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
+      /* an authored size wins over the dealt tier */
+      const sz = cards[ci].size != null ? cards[ci].size : shares[i];
+      el.style.setProperty("--share", String(sz));
+      /* the right-hand frame follows the left one in */
+      if (side === "R") el.style.setProperty("--lag", CURTAIN_LAG);
+      cell.appendChild(el);
+      workEls.push(el);
+    }
+    return cell;
+  };
+
+  const evens = [], odds = [];
+  workIdx.forEach((ci, i) => (i % 2 ? odds : evens).push({ ci, i }));
+  const leadFrame = odds.shift();
+
+  if (leadFrame) {
+    const row = document.createElement("div");
+    row.className = "ixrow ixlead";
+    row.appendChild(mk(leadFrame.ci, leadFrame.i, "R"));
+    rowsEl.appendChild(row);
+  }
+  for (let k = 0; k < Math.max(evens.length, odds.length); k++) {
     const row = document.createElement("div");
     row.className = "ixrow";
-    [0, 1].forEach((k) => {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      const ci = workIdx[i + k];
-      if (ci !== undefined) {
-        const c = cards[ci];
-        const shot = c.href && window.__evidence && window.__evidence.get(c.href);
-        const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
-        /* an authored size wins over the dealt tier */
-        const sz = cards[ci].size != null ? cards[ci].size : shares[i + k];
-        el.style.setProperty("--share", String(sz));
-        /* the right-hand frame follows the left one in */
-        if (k) el.style.setProperty("--lag", CURTAIN_LAG);
-        cell.appendChild(el);
-        workEls.push(el);
-      }
-      row.appendChild(cell);
-    });
-    /* One length for every rule: the full width of the image area. It
-       used to start under the left frame, indented by that frame's
-       size, so each rule ran a different length; the ask was to make
-       them uniform, so the indent is gone and grid-column 1/-1 runs
-       every rule the whole width — the longest a rule could be. */
-    const rule = document.createElement("div");
-    rule.className = "ixrule";
-    row.appendChild(rule);
+    /* Only real frames get cells. A placeholder would draw its own
+       separator rule on a phone, where every cell carries one. */
+    const l = evens[k], r = odds[k];
+    if (l) row.appendChild(mk(l.ci, l.i, "L"));
+    if (r) row.appendChild(mk(r.ci, r.i, "R"));
+    /* NO .ixrule. It is height 0 with no border on desktop, and each
+       cell carries its own separator on a phone — but it had no
+       `order`, so against cells that do it sorted BETWEEN them and
+       took the second frame down into a row of its own. */
     rowsEl.appendChild(row);
   }
   armRows(rowsEl);
@@ -3174,6 +3778,8 @@ function buildMagazine() {
   observeArrivals(workEls);
   armReels();
   if (window.armDrift) armDrift(workEls);
+  /* the outer columns can only be measured once the frames exist */
+  if (window.fitColumns) fitColumns();
 }
 
 /* ── the answer, as an act ─────────────────────────────────────────
@@ -3443,6 +4049,11 @@ function buildAnswer() {
 
   const shares = dealShares(pairs.length * 2, rnd);
   rowsEl.innerHTML = "";
+  /* The answer keeps ROWS: it pairs a work frame with a board frame on
+     purpose, left and right, and that pairing is the reading. The
+     index below packs into columns instead, which is why the class
+     comes off here. */
+  rowsEl.classList.remove("ixcols");
   const els = [];
   pairs.forEach(([a, b], r) => {
     const row = document.createElement("div");
@@ -3585,15 +4196,22 @@ function buildAnswer() {
         modelSay = voice(String(j.answer));
         const wk = notesEl.querySelector(".blk.working");
         if (wk) {
-          /* THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. Machine chrome
-             states facts and never narrates its own process. */
+          /* THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. The first version
+             was three sentences trying to sound relaxed about being
+             machinery ("the facts are the index's, the words are the
+             model's...") and read as exactly that. Machine chrome
+             states facts and never narrates its own process, so this is
+             key-value rows now: what was read, where the facts come
+             from, which model wrote the words, and the one honest line
+             about trusting it. The tag stays; everything after it is
+             replaced when the model reports in. */
           while (wk.childNodes.length > 1) wk.removeChild(wk.lastChild);
           const row = (k, v) => {
             const s = document.createElement("span");
             s.className = "rl";
             const key = document.createElement("span");
             key.className = "rk";
-            key.textContent = k + " \u00b7 ";
+            key.textContent = k + " · ";
             s.appendChild(key);
             s.appendChild(document.createTextNode(v));
             return s;
@@ -3840,6 +4458,13 @@ function apply() {
   if (next) {
     if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
     buildAnswer();
+    /* THE COVER IS GONE, SO THE BAR HAS TO TAKE ITS ENDS. settleAsk
+       above schedules a placement for the next frame, but the answer
+       is built after it and the flags that decide who holds the
+       wordmark are read in that placement — so opening an answer left
+       the name nowhere: not on the page, which had just been
+       unmounted, and not in the bar, which was still waiting for it. */
+    if (window.placeAsk) placeAsk();
   }
   asked = next;
 }
@@ -3985,10 +4610,16 @@ const TOUR = ["All work", "Interior projects", "App development",
 const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
 let tourFull = "";                     /* what placeAsk should size to */
 (() => {
-  if (REDUCE()) { input.placeholder = TOUR[0]; return; }
+  /* The suggestions arrive QUOTED: the field rides inside the lede's
+     sentence now, and the curly quotes are what mark its words as a
+     visitor speaking back rather than the paragraph continuing. The
+     close quote rides the typing. A visitor's own words show unquoted,
+     in ink — the quotes belong to the suggestions, not the field. */
+  const Q = (t) => (t ? "\u201c" + t + "\u201d" : "");
+  if (REDUCE()) { input.placeholder = Q(TOUR[0]); return; }
   let k = 0, i = 0, mode = "in", timer = 0;
   const show = (n) => {
-    input.placeholder = TOUR[k].slice(0, n);
+    input.placeholder = Q(TOUR[k].slice(0, n));
     if (window.placeAsk) placeAsk();
   };
   const step = () => {
@@ -4002,7 +4633,7 @@ let tourFull = "";                     /* what placeAsk should size to */
       return;
     }
     const word = TOUR[k];
-    tourFull = word;
+    tourFull = "\u201c" + word + "\u201d";
     if (mode === "in") {
       i += 1;
       show(i);
@@ -4016,13 +4647,74 @@ let tourFull = "";                     /* what placeAsk should size to */
     if (i <= 0) {
       mode = "in";
       k = (k + 1) % TOUR.length;
-      tourFull = TOUR[k];
+      tourFull = "\u201c" + TOUR[k] + "\u201d";
       timer = setTimeout(step, TYPE_GAP);
     } else timer = setTimeout(step, TYPE_OUT);
   };
-  tourFull = TOUR[0];
+  tourFull = "\u201c" + TOUR[0] + "\u201d";
   timer = setTimeout(step, 600);
 })();
+/* ── the outer columns, lifted ────────────────────────────────────
+   The cover is exactly as tall as its statement, and the statement
+   lives in the middle column. So the wordmark and the address each
+   ended up hundreds of pixels above their own column's next thing,
+   holding a gap that belonged to a neighbour: 423px under each,
+   against 117px under the statement itself.
+
+   These pull the note rail and the first right-hand frame back up
+   under their own headers. MEASURED, not authored: the statement
+   rewraps at every width, so any fixed number would be right at one
+   viewport and wrong at the rest. Written as custom properties the
+   stylesheet reads, and left at zero until this runs — a failed
+   script leaves the untightened page rather than an overlapped one.
+
+   Only above 860, where the three columns exist at all; below that
+   the grid stacks and a lift would drag content over the block
+   above it. */
+(() => {
+  /* the air left under each header once it is lifted */
+  const GAP = 44;
+  const root = document.documentElement;
+  let raf = 0;
+
+  const fit = () => {
+    if (!alive) return;
+    /* Queried HERE, not in the closure: the rail and the frames are
+       dealt after this module runs, so anything captured up top is
+       null forever. That is exactly how the first version of this
+       silently did nothing. */
+    const mark = document.querySelector(".covermark");
+    const meta = document.querySelector(".covermeta");
+    const rail = document.querySelector("#stIndex .ixnotes");
+    const cell = document.querySelector("#ixRows .ixlead .cell");
+    if (!mark || !meta || !rail || !cell) return;
+    if (innerWidth <= 860) {
+      root.style.setProperty("--rail-lift", "0px");
+      root.style.setProperty("--col3-lift", "0px");
+      return;
+    }
+    /* Measure with the lifts OFF, so each pass reads the natural
+       position rather than the one the last pass produced — the
+       feedback loop this would otherwise be. */
+    root.style.setProperty("--rail-lift", "0px");
+    root.style.setProperty("--col3-lift", "0px");
+    const markBottom = mark.getBoundingClientRect().bottom;
+    const metaBottom = meta.getBoundingClientRect().bottom;
+    const railTop = rail.getBoundingClientRect().top;
+    const cellTop = cell.getBoundingClientRect().top;
+    root.style.setProperty("--rail-lift",
+      Math.max(0, railTop - markBottom - GAP).toFixed(1) + "px");
+    root.style.setProperty("--col3-lift",
+      Math.max(0, cellTop - metaBottom - GAP).toFixed(1) + "px");
+  };
+
+  const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); };
+  listen(window, "resize", on, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.fitColumns = fit;
+  fit();
+})();
+
 /* ── the travel ───────────────────────────────────────────────────
    Everything the field does between the cover and the bar is here.
    Drop is measured, never authored: the distance from the reserved
@@ -4038,9 +4730,12 @@ let tourFull = "";                     /* what placeAsk should size to */
   const bar = document.getElementById("nav");
   const ask = document.querySelector(".ask");
   const slot = document.getElementById("askSlot");
-  const mark = document.querySelector("#nav [data-mark], #nav .mark");
   const SMALL = 16;
   let raf = 0, settleT = 0;
+  /* The field's column, remembered: an open answer hides the cover and
+     with it the slot, and the bar still has to know which column the
+     field belongs to. */
+  let lastCol = null;
 
   const gutter = () => parseFloat(getComputedStyle(bar).paddingLeft) || 40;
 
@@ -4060,7 +4755,11 @@ let tourFull = "";                     /* what placeAsk should size to */
     "font-size:100px";
   document.body.appendChild(ghost);
   const fitSize = (text, room) => {
-    const cap = Math.max(32, Math.min(88, innerWidth * 0.056));
+    /* The statement's own clamp (24px, 3.2vw, 44px), not display scale:
+       the field rests under the lede as its continuation now, and a
+       question set bigger than the sentence that invites it would put
+       the hierarchy back the way it was. */
+    const cap = Math.max(21, Math.min(32, innerWidth * 0.024));
     ghost.textContent = text || "";
     const per = ghost.getBoundingClientRect().width / 100;
     if (!per || !room) return cap;
@@ -4070,7 +4769,7 @@ let tourFull = "";                     /* what placeAsk should size to */
   };
 
   const place = () => {
-    /* `bar`, `ask` and `mark` are all the masthead's, and only `slot`
+    /* `bar` and `ask` are both the masthead's, and only `slot`
        belongs to this page — so a stale place() does not throw, it
        does something worse and quiet: it goes on sizing the live
        field from a detached slot and can leave the bar wearing
@@ -4091,23 +4790,31 @@ let tourFull = "";                     /* what placeAsk should size to */
       ? Math.max(1, s.top + scrollY + s.height / 2 - barH / 2) : 1;
     const p = Math.min(1, drop / total);           /* 1 big, 0 parked */
     const g = gutter();
-    const narrow = Math.max(150, mark.getBoundingClientRect().left - g - 26);
-    /* the left column IS the slot, so the big field's width is measured
-       from the layout rather than computed from the viewport */
-    const wide = live ? s.width : narrow;
+    /* THE FIELD BELONGS TO THE MIDDLE COLUMN AT BOTH ENDS OF THE TRAVEL.
+       It used to walk left as it shrank, into the gutter seat the
+       wordmark left open for it. The wordmark holds that gutter now, so
+       a walk would park the question underneath the name. Keeping the
+       slot's left and width the whole way also makes the move read as
+       the column head rising into the bar rather than as an element
+       crossing the page, which is the point of the columns. */
+    if (live) lastCol = { left: s.left, w: s.width };
+    const col = lastCol || { left: g, w: Math.max(150, innerWidth * 0.34) };
+    const wide = col.w;
     /* the WHOLE word while the tour types, so the type does not
        resize on every character */
     const big = fitSize(input.value || tourFull || input.placeholder, wide);
-    /* The masthead keeps a tighter gutter than the page does (16 against
-       20 on a phone; they are both 40 on a desktop, where this is a
-       no-op). So the question rides the PAGE's gutter while it is in
-       the page and the BAR's once it lands, walking the few pixels
-       between them over the travel rather than sitting wrong at one
-       end. Read off the slot, so it cannot disagree with the cards. */
-    ask.style.setProperty("--ask-left",
-      (g + ((live ? s.left : g) - g) * p).toFixed(1) + "px");
+    /* The rule under the field hugs the words the way the terms'
+       hairlines hug theirs: measured on the same ghost, but against
+       the VISIBLE text — the value while someone types, the
+       placeholder's current slice while the tour speaks — so the line
+       ends where the words do and follows them as they change. */
+    ghost.textContent = input.value || input.placeholder || "";
+    const uw = (ghost.getBoundingClientRect().width / 100) *
+      (SMALL + (big - SMALL) * p);
+    ask.style.setProperty("--ask-uw", Math.min(wide, uw + 2).toFixed(1) + "px");
+    ask.style.setProperty("--ask-left", col.left.toFixed(1) + "px");
     ask.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
-    ask.style.setProperty("--ask-w", (narrow + (wide - narrow) * p).toFixed(1) + "px");
+    ask.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
     ask.style.setProperty("--ask-fs", (SMALL + (big - SMALL) * p).toFixed(2) + "px");
     /* display type wants negative tracking, the bar wants the module's
        positive 0.04em — walk between them rather than picking one */
@@ -4115,6 +4822,34 @@ let tourFull = "";                     /* what placeAsk should size to */
     ask.style.setProperty("--ask-fw", p > 0.35 ? "700" : "500");
     ask.classList.toggle("big", p > 0.35);
     document.body.classList.toggle("attop", p > 0.96);
+    /* THE MELT IS FOR THE WORK, NOT FOR THE MASTHEAD LINE. The cover's
+       wordmark, statement and address share the bar's band by design,
+       and the burn pill displaces whatever painted beneath it — so at
+       rest the page's own header was being rippled by the effect that
+       exists to keep the bar legible over photography. It cannot be
+       lifted over the pill: the homepage wrapper carries isolation:
+       isolate for its paper layer, which caps every z-index inside it
+       below the bar's. So the pill waits instead. Measured, not
+       timed: it stays off while any part of the cover still overlaps
+       the bar, and lights the moment the work starts passing under. */
+    /* THE WORDMARK'S OWN LINE, not the whole cover. Gated on the
+       section, the pill waited for the statement AND the section's
+       bottom padding to clear — around 380px of scroll, by which time
+       the first frames had already left the top of the screen and the
+       bar arrived after the thing it was meant to sit over. The
+       header line is what must not be rippled while it sits still, so
+       that line is the gate: clean at rest, lit as soon as it moves. */
+    const line = document.querySelector(".covermark");
+    const lr = line ? line.getBoundingClientRect() : null;
+    document.body.classList.toggle("coverbar", Boolean(lr) && lr.bottom > barH);
+    /* THE BAR TAKES THE NAME ONCE THE COVER'S COPY HAS LEFT THE TOP.
+       Not a crossfade at the first pixel of scroll: the page's own
+       wordmark and address scroll away like everything else, and only
+       when they are off the screen entirely do the bar's drop in from
+       above it. A zero-height rect means the cover is gone altogether
+       (an answer is open), which counts as left. */
+    document.body.classList.toggle("headgone",
+      !lr || lr.height === 0 || lr.bottom <= 0);
   };
 
   /* the one time the move is not scroll-driven: opening or closing an
@@ -4292,30 +5027,42 @@ function armRows(rowsEl) {
     const row = card.closest(".ixrow");
     const shot = card.querySelector(".shot");
     if (!row || !shot) return;
-    let grow =
-      parseFloat(getComputedStyle(row).getPropertyValue("--ix-grow-max")) || 1.32;
-    /* EACH FRAME OPENS AS FAR AS ITS OWN ROOM ALLOWS. Capping the
-       label's drop instead was wrong: the frame kept growing past
-       where the label had stopped, so the picture covered its own
-       name. The grow itself has to be the thing that yields.
+    /* OPEN TO THE COLUMN, not by a fixed factor. Every frame is
+       `--share` of its half, so 1/share is exactly the scale that puts
+       its right edge on the column's. A flat 1.32 made a 0.33 frame
+       stop well short of the line and pushed an 0.86 one past it, so
+       no two hovers agreed on how big "open" is. Now they all land on
+       the same width, which is the width the standing rules draw. */
+    const share =
+      parseFloat(getComputedStyle(card).getPropertyValue("--share")) || 0.7;
+    let grow = 1 / share;
+    /* NO CAP. There used to be one, measured against the end of the
+       card's own band, because the frame opens with a transform and a
+       transform costs no layout — so the index sat still and got
+       covered. Every frame whose band was shorter than its growth
+       stopped early, and no two hovers opened to the same width again.
+       Oakworks was the loudest case.
 
-       The taller frame in a row always has exactly the row-gap beneath
-       its label (79px), so at a fixed 1.32 a 457px frame needed 146px
-       and took it out of the label. Now the grow is per-frame: small
-       frames open wide, large ones open a little, and the label always
-       has somewhere to go. The biggest pictures moving least is the
-       honest outcome — they are already the loudest thing in the row. */
-    const rule = row.querySelector(".ixrule");
-    const ruled = rule && getComputedStyle(rule).display !== "none";
-    const room = ruled
-      ? rule.getBoundingClientRect().top -
-        card.querySelector(".lbl").getBoundingClientRect().bottom - 8
-      : Infinity;
-    const fits = 1 + Math.max(0, room) / shot.offsetHeight;
-    grow = Math.max(1.04, Math.min(grow, fits));
+       The page makes room instead: the card takes --drop as real
+       bottom margin, normal flow carries every row below it down, and
+       the frame is free to reach the column whatever row it is in.
+
+       It cannot flicker, which is the usual objection to moving the
+       page under a pointer. The frame's origin is `right top`, so it
+       only ever grows DOWN and LEFT and its top edge never leaves the
+       cursor. What moves is the content below, away from it. */
+    grow = Math.max(1.04, grow);
     card.style.setProperty("--ix-grow", grow.toFixed(3));
-    card.style.setProperty("--drop",
-      (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");
+    const drop = shot.offsetHeight * (grow - 1);
+    card.style.setProperty("--drop", drop.toFixed(1) + "px");
+    /* THE LEAD FRAME IS OUT OF FLOW, so the bottom margin every other
+       card uses to open the page under itself moves nothing at all —
+       it just grew over the pair below it. Its push is handed to the
+       first pair instead, which carries the rest of the index down on
+       the same clock. */
+    if (card.closest(".ixlead")) {
+      rowsEl.style.setProperty("--lead-drop", drop.toFixed(1) + "px");
+    }
 
     /* How far the name is from the right edge. Measured with a Range
        over the label's own contents, because the element is a full-
@@ -4325,8 +5072,26 @@ function armRows(rowsEl) {
     const range = document.createRange();
     range.selectNodeContents(lbl);
     const ink = range.getBoundingClientRect().width;
-    const slide = Math.max(0, lbl.getBoundingClientRect().width - ink);
-    card.style.setProperty("--slide", slide.toFixed(1) + "px");
+    /* MEASURED AGAINST THE OPENED FRAME, not against the label's own
+       box. That box is only --share of the column — the width the
+       picture has at REST — so a name travelling the slack inside it
+       stopped a fraction of the way across and never reached the edge
+       the picture had just opened to. The frame opens to
+       shot.offsetWidth * grow, which is the column, so that is the
+       distance the name has to cover. */
+    const opened = shot.offsetWidth * grow;
+    const slide = Math.max(0, opened - ink);
+    /* THE NAME ALWAYS ENDS UP ON THE EDGE THE FRAME OPENS TOWARD. The
+       left column's frames are hung on the rule beside the note rail
+       and grow right, so their names start left and swing right; the
+       right column's are hung on the page edge and grow left, so
+       theirs do the opposite. Same measured distance, opposite sign —
+       the label is right-aligned at rest there, so travelling
+       backwards by the slack lands it on the left edge. */
+    const cell = card.closest(".cell");
+    const rightCol = Boolean(cell && cell.classList.contains("colR"));
+    card.style.setProperty("--slide",
+      (rightCol ? -slide : slide).toFixed(1) + "px");
     /* and anything to its left moves only as far as it must */
     const hr = shot.getBoundingClientRect();
     const openTo = hr.right - hr.width * grow;
@@ -4351,6 +5116,7 @@ function armRows(rowsEl) {
     card.style.removeProperty("--drop");
     card.style.removeProperty("--slide");
     card.style.removeProperty("--ix-grow");
+    rowsEl.style.removeProperty("--lead-drop");
   });
 }
 
