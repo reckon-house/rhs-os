@@ -128,9 +128,17 @@ const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors
  * voice gets in, so nothing was composed — "back of house" doing the
  * work of a whole positioning statement is exactly why.
  *
+ * THREE, and the fourth is gone on purpose. "Why I build" was here and
+ * it answers a question a PEER asks: that building is fun, that AI made
+ * trying things easy again. Under a headline reading "Have a project in
+ * mind?" that is a non-sequitur, and it was the whole reason this block
+ * read as part studio and part diary. Somebody deciding whether to hire
+ * him does not need to know why he enjoys it. The line is good and it
+ * belongs where peers read, which is the daybook or the rail.
+ *
  * Deliberately uneven. The last one is twice the length of the first,
- * because a set of four paragraphs cut to the same measure is the
- * house's own listed tell for machine writing. */
+ * because a set of paragraphs cut to the same measure is the house's
+ * own listed tell for machine writing. */
 const METHOD: { head: string; body: string }[] = [
   {
     head: "How it starts",
@@ -143,12 +151,6 @@ const METHOD: { head: string; body: string }[] = [
     body:
       "The brand, the thing people use, and the back of house that keeps it " +
       "running. Not just a handoff, and not just a tool.",
-  },
-  {
-    head: "Why I build",
-    body:
-      "I build something most days. I want to create and learn at the same " +
-      "time, and AI made trying things fun again instead of laborious.",
   },
   {
     head: "When it's done",
