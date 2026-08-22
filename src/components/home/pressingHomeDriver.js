@@ -3226,7 +3226,15 @@ function armRows(rowsEl) {
     const range = document.createRange();
     range.selectNodeContents(lbl);
     const ink = range.getBoundingClientRect().width;
-    const slide = Math.max(0, lbl.getBoundingClientRect().width - ink);
+    /* MEASURED AGAINST THE OPENED FRAME, not against the label's own
+       box. That box is only --share of the column — the width the
+       picture has at REST — so a name travelling the slack inside it
+       stopped a fraction of the way across and never reached the edge
+       the picture had just opened to. The frame opens to
+       shot.offsetWidth * grow, which is the column, so that is the
+       distance the name has to cover. */
+    const opened = shot.offsetWidth * grow;
+    const slide = Math.max(0, opened - ink);
     /* THE NAME ALWAYS ENDS UP ON THE EDGE THE FRAME OPENS TOWARD. The
        left column's frames are hung on the rule beside the note rail
        and grow right, so their names start left and swing right; the
