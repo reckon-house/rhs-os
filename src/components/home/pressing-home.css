@@ -57,6 +57,11 @@
     --gap: 6px;
     --nav: 54px;
     --gut: 50px;
+    /* The column gap, at the root so anything can reason about the
+       grid — the answer's spoken line sits outside .ixbody and still
+       has to land on the same column the statement does. The daybook
+       overrides it on its own .ixbody for its wider alley. */
+    --ixgap: clamp(24px, 3.4vw, 56px);
     /* THE RAIL PAYS FOR THE WIDER MARGINS. Going from a 40px gutter to
        50 costs the content 20px, so the note column gives up the same
        20 and the two image columns keep the width they had. It was
@@ -716,7 +721,7 @@
      daybook widens it for its own alley; the pinned rules inherit
      whatever it is rather than assuming the default, which is how
      they ended up 47px off that page. */
-  .ixbody { position: relative; --ixgap: clamp(24px, 3.4vw, 56px);
+  .ixbody { position: relative;
     display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: var(--ixgap); align-items: start;
     padding: 0 var(--gut); }
@@ -1044,6 +1049,8 @@
        the column it came from is still legible in the stack. */
     /* Less air on a phone, where the fold is the scarce thing. */
     .cover { --cover-air: 24px; }
+    .anshead { padding-left: var(--gut); }
+    .ansprose { max-width: none; }
     .covermark { display: block;
       padding-bottom: clamp(22px, 5vw, 40px); }
     .covercols { grid-template-columns: 1fr;
@@ -1236,7 +1243,15 @@
   body.asked .answer { display: block; }
   body.asked .stratum { display: none; }
 
-  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut) clamp(18px, 3dvh, 32px); }
+  /* THE ANSWER SPEAKS FROM THE SAME COLUMN THE STATEMENT DOES. It ran
+     from the page gutter, across the note rail's column and on past
+     the middle one — so asking a question moved the voice, when the
+     whole idea is that the statement rewrites itself into the answer
+     without going anywhere. Left padding clears the rail and its
+     gutter; the line then caps at a single column. */
+  .anshead { padding: clamp(26px, 4dvh, 52px) var(--gut)
+    clamp(18px, 3dvh, 32px)
+    calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap)); }
   /* ── the answer, spoken ──────────────────────────────────────────
      One line at the statement's own scale, typed out. The receipts
      did not go away, they went into the writing: every clause is
@@ -1286,8 +1301,12 @@
   /* THE SAME SIZE AS THE STATEMENT IT REPLACES. It was 44 against the
      statement's 36 — same voice, same position on the page, arriving a
      fifth larger. */
-  .ansprose { font-size: clamp(21px, 2.4vw, 32px); font-weight: 500;
-    line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
+  /* One column wide, like the statement. The box it sits in spans two
+     columns and the gutter between them, so half of that less half a
+     gutter is exactly one. */
+  .ansprose { max-width: calc((100% - var(--ixgap)) / 2);
+    font-size: clamp(21px, 2.4vw, 32px); font-weight: 500;
+    line-height: 1.18; letter-spacing: -0.02em;
     min-height: 2.4em; }
   #ansSay.typing::after { content: ""; display: inline-block;
     width: 0.45ch; height: 0.92em; margin-left: 4px;
