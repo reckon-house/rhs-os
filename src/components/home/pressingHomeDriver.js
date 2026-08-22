@@ -3207,8 +3207,16 @@ function armRows(rowsEl) {
        cursor. What moves is the content below, away from it. */
     grow = Math.max(1.04, grow);
     card.style.setProperty("--ix-grow", grow.toFixed(3));
-    card.style.setProperty("--drop",
-      (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");
+    const drop = shot.offsetHeight * (grow - 1);
+    card.style.setProperty("--drop", drop.toFixed(1) + "px");
+    /* THE LEAD FRAME IS OUT OF FLOW, so the bottom margin every other
+       card uses to open the page under itself moves nothing at all —
+       it just grew over the pair below it. Its push is handed to the
+       first pair instead, which carries the rest of the index down on
+       the same clock. */
+    if (card.closest(".ixlead")) {
+      rowsEl.style.setProperty("--lead-drop", drop.toFixed(1) + "px");
+    }
 
     /* How far the name is from the right edge. Measured with a Range
        over the label's own contents, because the element is a full-
@@ -3219,7 +3227,19 @@ function armRows(rowsEl) {
     range.selectNodeContents(lbl);
     const ink = range.getBoundingClientRect().width;
     const slide = Math.max(0, lbl.getBoundingClientRect().width - ink);
-    card.style.setProperty("--slide", slide.toFixed(1) + "px");
+    /* THE NAME ALWAYS ENDS UP ON THE EDGE THE FRAME OPENS TOWARD. The
+       left column's frames are hung on the rule beside the note rail
+       and grow right, so their names start left and swing right; the
+       right column's are hung on the page edge and grow left, so
+       theirs do the opposite. Same measured distance, opposite sign —
+       the label is right-aligned at rest there, so travelling
+       backwards by the slack lands it on the left edge. */
+    const cell = card.closest(".cell");
+    const rightCol = Boolean(card.closest(".ixlead")) ||
+      Boolean(cell && cell.parentElement &&
+        cell.parentElement.children[1] === cell);
+    card.style.setProperty("--slide",
+      (rightCol ? -slide : slide).toFixed(1) + "px");
     /* and anything to its left moves only as far as it must */
     const hr = shot.getBoundingClientRect();
     const openTo = hr.right - hr.width * grow;
@@ -3244,6 +3264,7 @@ function armRows(rowsEl) {
     card.style.removeProperty("--drop");
     card.style.removeProperty("--slide");
     card.style.removeProperty("--ix-grow");
+    rowsEl.style.removeProperty("--lead-drop");
   });
 }
 

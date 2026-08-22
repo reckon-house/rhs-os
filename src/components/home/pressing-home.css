@@ -848,6 +848,11 @@
      right column reads against the page edge, the left against the
      rule beside the note rail. Growth follows the anchor, or a hover
      would walk the frame off its line. */
+  /* The name sits on the same edge its frame is hung from: left
+     column left, right column right. Hover swings each to the other
+     edge — see --slide in the driver. */
+  .ixrow .cell:nth-child(2) .fd-it .lbl { text-align: right; }
+  .ixrow.ixlead .cell .fd-it .lbl { text-align: right; }
   .ixrow .cell:first-child { justify-content: flex-start; }
   .ixrow .cell:first-child .fd-it { transform-origin: left center; }
   .ixrow .cell:first-child .fd-it .shot { transform-origin: left top; }
@@ -989,6 +994,11 @@
        makes one diagonal move rather than two unrelated ones. */
     .ixrow .fd-it:hover .lbl {
       transform: translate(var(--slide, 0px), var(--drop, 0px)); }
+    /* The lead frame's room, since it cannot make its own: the first
+       pair takes the drop as real margin and the whole index follows
+       it down, on the same clock as the picture opening. */
+    .ixlead + .ixrow { margin-top: var(--lead-drop, 0px);
+      transition: margin-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   }
 
   @media (max-width: 860px) {
