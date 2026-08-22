@@ -28,6 +28,17 @@ import { useEffect } from "react";
  *
  * Renders nothing. The class comes off on unmount so the classic routes
  * (category, info) keep their texture.
+ *
+ * THIS EFFECT IS NO LONGER THE FIRST TO SET IT, and must not be. An
+ * effect runs after hydration, so on a refresh the ground painted cream
+ * with the classic type and flipped a beat later. A blocking script in
+ * <head> now stamps the class before the first paint, from the route
+ * list in src/lib/paper-routes.ts. Add a white page THERE as well as
+ * rendering this, or the flash comes back on that one route only.
+ *
+ * The effect still earns its place: a soft navigation never re-runs a
+ * <head> script, so mount and unmount remain what keeps the class
+ * honest once the app is running.
  */
 export function PaperGround() {
   useEffect(() => {

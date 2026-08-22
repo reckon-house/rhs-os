@@ -50,7 +50,12 @@ export function PressingHome() {
        While they were one class the daybook rendered a masthead with
        neither in it: the handoff's hidden state applied there, and
        body.headgone, which drops them back in, is written by the
-       driver below, which only runs here. */
+       driver below, which only runs here.
+
+       Both are ALSO stamped before the first paint by the head script
+       in src/lib/paper-routes.ts, because an effect runs too late to
+       decide what colour the page opens as. This one still matters for
+       soft navigation, which never re-runs that script. */
     document.documentElement.classList.add("rh-home", "rh-cover");
     /* One effect, one init, and the teardown is real: React 18's dev
        double-invoke runs this twice, so a driver that could not be

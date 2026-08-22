@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { stampScript } from "@/lib/paper-routes";
 import "./globals.css";
 import { SmoothScroll } from "@/components/shell/SmoothScroll";
 import { HeroPreloader } from "@/components/shell/HeroPreloader";
@@ -76,6 +77,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* THE GROUND, BEFORE THE FIRST PAINT. The white routes ask for
+            their ground in a useEffect, which runs after hydration, so
+            until this existed a refresh painted the shell's cream and
+            the classic type for a beat and then flipped. Blocking and
+            first in <head> on purpose: anything after it in the
+            document would already have been painted against the wrong
+            ground. See src/lib/paper-routes.ts, which owns the list
+            this and the components both read. */}
+        <script dangerouslySetInnerHTML={{ __html: stampScript() }} />
         {/* Preload the primary body font so the first paint doesn't flash in fallback. */}
         <link
           rel="preload"
