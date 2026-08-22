@@ -115,6 +115,50 @@ const CONTACT = [
   },
 ];
 const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors"];
+
+/* ── HOW THE WORK GOES ───────────────────────────────────────────────
+ * The Services column beside this is four nouns, which tells a visitor
+ * the categories and nothing about the engagement. This is the layer
+ * above it: what a first week looks like, what gets taken on, and when
+ * it stops.
+ *
+ * Every sentence here is Jeremy's, from his own answers, edited only
+ * for spelling and order. The four LABELS are not his; they are joins.
+ * VOICE.md's rule is that composition from nothing is where the AI
+ * voice gets in, so nothing was composed — "back of house" doing the
+ * work of a whole positioning statement is exactly why.
+ *
+ * Deliberately uneven. The last one is twice the length of the first,
+ * because a set of four paragraphs cut to the same measure is the
+ * house's own listed tell for machine writing. */
+const METHOD: { head: string; body: string }[] = [
+  {
+    head: "How it starts",
+    body:
+      "A real conversation and a brainstorm, and a direction we both agree on. " +
+      "The work moves quickly from there.",
+  },
+  {
+    head: "What I take on",
+    body:
+      "The brand, the thing people use, and the back of house that keeps it " +
+      "running. Not just a handoff, and not just a tool.",
+  },
+  {
+    head: "Why I build",
+    body:
+      "I build something most days. I want to create and learn at the same " +
+      "time, and AI made trying things fun again instead of laborious.",
+  },
+  {
+    head: "When it's done",
+    body:
+      "A brand, a piece of software, a room. None of them are ever really " +
+      "done. There's a time to launch, let it sit, see how people use it, " +
+      "and decide what's next. You can't keep working on it in the " +
+      "background forever.",
+  },
+];
 const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
 /* News is the daybook, not a second list. The footer already renders the
    daybook strip below this, and the rail's "Recently" carries the same
@@ -295,6 +339,21 @@ export function PressingContact({ className }: PressingContactProps) {
       </RevealHeadline>
 
       <div ref={colRef} className={styles.col}>
+        {/* Above the ledger, not inside it: this says how the work goes
+            and the ledger below says what it is called. */}
+        <div className={styles.method}>
+          {METHOD.map((m) => (
+            <div key={m.head}>
+              <BodyReveal as="h4" className={styles.colHead}>
+                {m.head}
+              </BodyReveal>
+              <BodyReveal as="p" className={styles.methodBody}>
+                {m.body}
+              </BodyReveal>
+            </div>
+          ))}
+        </div>
+
         <div className={styles.cols}>
           <div>
             <BodyReveal as="h4" className={styles.colHead}>
