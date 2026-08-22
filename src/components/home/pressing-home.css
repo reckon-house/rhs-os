@@ -154,13 +154,69 @@
   /* One column now. The question, then who is asking — the two
      paragraphs explaining the field are gone, because a field that
      needs explaining in two paragraphs has not been designed yet. */
-  .cover { padding: clamp(34px, 5dvh, 74px) var(--gut) clamp(30px, 4dvh, 56px); }
+  /* No horizontal padding: the .ixbody inside supplies the page
+     gutter, and doubling it would push the cover's columns off the
+     index's. Vertical only. */
+  .cover { padding: clamp(34px, 5dvh, 74px) 0 clamp(30px, 4dvh, 56px); }
+
+  /* ── the cover's three columns ───────────────────────────────────
+     The wordmark takes the note rail's column and the address the last
+     run of work, so the top of the page is the same grid as the body
+     of it. Both are set in the masthead's own type — this IS the
+     masthead, laid into the page instead of floating over it. */
+  .covermark { font-size: var(--nav-size, 16px); font-weight: 700;
+    letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
+  .covercols { display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: var(--ixgap); align-items: start;
+    /* THE RULES REACH THE INDEX'S. Without this the three verticals
+       stop at the statement and start again under it, and the columns
+       read as two stacked headers rather than one structure. The
+       bridge is the only two values between the last rule pixel here
+       and the first one there: this section's bottom padding and the
+       index stratum's top padding. Measured at 117px on a 900px
+       window, which is exactly 36 + 81. */
+    --cover-bridge: calc(clamp(30px, 4dvh, 56px) + clamp(56px, 9dvh, 120px));
+    background-size: 1px calc(100% + var(--cover-bridge)); }
+  .covercols::before, .covercols::after {
+    bottom: calc(-1 * var(--cover-bridge)); }
+  .covermeta { justify-self: end; text-align: right;
+    font-size: var(--nav-size, 16px); font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.04;
+    color: rgba(0, 0, 0, 0.42); }
+  .covermeta a { text-decoration: none; transition: color 0.2s ease; }
+  .covermeta a:hover { color: var(--ink); }
+
+  /* THE BAR GIVES UP ITS ENDS WHILE THE COVER HOLDS THEM. attop is the
+     driver's own flag for "the field is still at full size in the
+     cover", which is exactly the moment the wordmark and the address
+     are on the page below. Opacity rather than display, so nothing
+     reflows when they come back on the first scroll. Scoped to
+     rh-home: attop is only ever set by the homepage driver, but a
+     stale class on another route must not be able to blank its bar. */
+  /* THE BAR IS THE COLUMNS, COMPRESSED. The wordmark takes the left
+     gutter, over the note rail; the field stays in the middle column
+     and only ever travels vertically; the address keeps the right
+     edge. So a scroll reads as the three column heads rising into the
+     bar, not as three elements swapping places on the way up. The
+     phone block below keeps its own arrangement, where there is one
+     column and the wordmark takes the right end. */
+  @media (min-width: 761px) {
+    html.rh-home #nav [data-mark] {
+      grid-column: 1; justify-self: start; }
+  }
+  html.rh-home body.attop #nav [data-mark],
+  html.rh-home body.attop #nav [data-meta] {
+    opacity: 0; visibility: hidden; }
+  html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
+    transition: opacity 0.3s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
+      transition: none; }
+  }
   body.asked .cover { display: none; }
-  /* the statement takes the field's measure, so the two hang off the
-     same right edge and the page keeps one vertical line down its
-     middle. Set below the field, not level with it: a display size
-     here would compete with the question rather than answer it. */
-  .coverR { padding-top: clamp(30px, 4dvh, 58px);
+  /* The statement leads now and the field follows as its continuation,
+     so the top padding that used to clear the field is gone. */
+  .coverR { padding-top: 0;
     width: min(52%, 700px); }
   /* The statement is set exactly as PressingCover sets it on a case
      study — clamp(24px, 3.2vw, 44px)/1.18/-0.02em at 500, over a 21em
@@ -170,17 +226,51 @@
      The measure is what makes 44px work here: 21em at 44px is 924px,
      wider than the field's 52% column, so the statement is allowed
      out past it rather than being crushed into eight short lines. */
-  .coverR { width: auto; }
-  .coverR .statement { font-size: clamp(24px, 3.2vw, 44px);
+  .coverR { width: auto; min-width: 0; }
+  /* Sized to the COLUMN it now lives in. 3.2vw was set when the
+     statement had a 700px block to itself; in a third of the grid the
+     same clamp gave about twelve characters a line. 2.5vw holds the
+     same proportion the cover always had between type and measure. */
+  .coverR .statement { font-size: clamp(21px, 2.5vw, 36px);
     line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
     max-width: 21em; }
   .ledelbl { display: block; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
     opacity: 0.5; padding-bottom: 14px; }
-  /* the field takes half the measure, so its rule stops mid-page and
-     the statement below it reads against open space */
-  #askSlot { width: min(52%, 700px);
-    height: calc(clamp(32px, 5.6vw, 88px) * 1.28); }
+  /* The slot is the sentence's last word: inline-block at the
+     statement's own type size, wide enough for the longest rotation
+     line, wrapping to its own line when the paragraph's last line has
+     no room — exactly what a long word would do. em units on purpose,
+     so it scales with the statement rather than with the viewport. */
+  #askSlot { display: inline-block; width: min(9.5em, 92%);
+    height: 1.12em; vertical-align: middle; }
+  /* The field wears the terms' own hairline while it rides the
+     sentence — same 1px, same grey, hugging the words rather than
+     running the slot's full width. --ask-uw is the driver's measure of
+     the visible text, so the rule ends where the words do, exactly as
+     an underline would. Focus fills it black left to right, the same
+     move the terms make on hover. Parked in the bar it all reverts to
+     the masthead's own border behaviour. */
+  /* border-bottom 0, not transparent: the masthead's #nav:hover
+     #query rule re-colours the border with two ids of specificity, so
+     a transparent border comes back as a second, lower line on hover.
+     A zero-width border has nothing to colour. */
+  .ask.big #query { border-bottom: 0; padding-bottom: 0;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, var(--ask-uw, 100%) 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) {
+    .ask.big #query:hover {
+      background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
+  }
+  .ask.big #query:focus {
+    background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
+  @media (prefers-reduced-motion: reduce) {
+    .ask.big #query { transition: none; }
+  }
 
   .statement { font-size: clamp(20px, 2.6vw, 36px); line-height: 1.2;
     letter-spacing: -0.02em; font-weight: 500; max-width: 30em; }
@@ -723,6 +813,13 @@
     .ixrows::before, .ixrows::after { display: none; }
     .ixrows { background-image: none; }
     .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
+    /* The cover stacks with everything else: wordmark, the statement
+       and its question, then the address. It keeps its right edge so
+       the column it came from is still legible in the stack. */
+    .covermark { display: block;
+      padding-bottom: clamp(22px, 5vw, 40px); }
+    .covercols { grid-template-columns: 1fr;
+      row-gap: clamp(22px, 5vw, 38px); }
   }
 
   /* ── the work: blocks, and the air between them ──────────────────
@@ -930,14 +1027,30 @@
      the recessive run above and have to grey with it, or the sentence
      grows a second tone it never asked for. */
   .statement .term { display: inline; color: inherit; cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: rgba(0, 0, 0, 0.22);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.14em;
-    transition: text-decoration-color 0.22s ease; }
-  .statement .term:hover { text-decoration-color: currentColor; }
+    /* Two stacked underlines drawn as backgrounds, because
+       text-decoration cannot animate directionally: the grey hairline
+       always spans the word, and the black one grows over it from the
+       left on hover, braking at the end. The trade against
+       text-decoration is skip-ink — a background line does not part
+       around descenders, so it rides the inline box's bottom edge,
+       tangent to their tips, rather than the old 0.14em offset that
+       skip-ink made possible. Raised back to that offset ON PURPOSE:
+       the line cuts straight through the p and y tails, which is the
+       look — a drawn rule over the words, not type furniture politely
+       stepping around them. 0.07em is the gap between Helvetica's
+       descent (~0.21em) and the 0.14em the underlines always sat at. */
+    text-decoration: none;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) {
+    .statement .term:hover { background-size: 100% 1px, 100% 1px; }
+  }
   .statement .term:focus-visible { outline: 1px solid var(--ink);
-    outline-offset: 3px; }
+    outline-offset: 3px; background-size: 100% 1px, 100% 1px; }
   @media (prefers-reduced-motion: reduce) {
     .statement .term { transition: none; }
   }
@@ -1111,7 +1224,16 @@
   @media (max-width: 760px) {
     :root { --nav: 48px; --gut: 20px; }
     #nav { --nav-size: 11px; --nav-gutter: 16px; --nav-overhang: 10px;
-      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em; }
+      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em;
+      /* RESET, not merely "not set". The comment above says this bar
+         wants no overflow context, and the homepage duly never added
+         one — but Masthead.module.css sets overflow-x: auto on phones
+         as its own safety net, and a sheet that stays silent inherits
+         it. overflow-x on one axis computes overflow-y to auto too, so
+         the bar became a clip, and the field it lends to the cover is
+         translated ~318px below the bar: outside the clip, invisible
+         on every phone. The id outranks the module's class. */
+      overflow: visible; }
     /* 390pt cannot centre a wordmark AND seat a field beside it, so
        the wordmark takes the right end (the mailto's slot, which is
        hidden here anyway) and the field keeps the left gutter — the

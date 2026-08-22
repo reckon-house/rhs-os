@@ -94,7 +94,7 @@ const NOTES = [
      opening claim here runs two sentences, the closer is one, and the
      enumeration between them is what greys. Say it in the data and it
      is right by construction. */
-  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things.",
+  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things:",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
@@ -2751,10 +2751,16 @@ const TOUR = ["All work", "Interior projects", "App development",
 const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
 let tourFull = "";                     /* what placeAsk should size to */
 (() => {
-  if (REDUCE()) { input.placeholder = TOUR[0]; return; }
+  /* The suggestions arrive QUOTED: the field rides inside the lede's
+     sentence now, and the curly quotes are what mark its words as a
+     visitor speaking back rather than the paragraph continuing. The
+     close quote rides the typing. A visitor's own words show unquoted,
+     in ink — the quotes belong to the suggestions, not the field. */
+  const Q = (t) => (t ? "\u201c" + t + "\u201d" : "");
+  if (REDUCE()) { input.placeholder = Q(TOUR[0]); return; }
   let k = 0, i = 0, mode = "in", timer = 0;
   const show = (n) => {
-    input.placeholder = TOUR[k].slice(0, n);
+    input.placeholder = Q(TOUR[k].slice(0, n));
     if (window.placeAsk) placeAsk();
   };
   const step = () => {
@@ -2768,7 +2774,7 @@ let tourFull = "";                     /* what placeAsk should size to */
       return;
     }
     const word = TOUR[k];
-    tourFull = word;
+    tourFull = "\u201c" + word + "\u201d";
     if (mode === "in") {
       i += 1;
       show(i);
@@ -2782,11 +2788,11 @@ let tourFull = "";                     /* what placeAsk should size to */
     if (i <= 0) {
       mode = "in";
       k = (k + 1) % TOUR.length;
-      tourFull = TOUR[k];
+      tourFull = "\u201c" + TOUR[k] + "\u201d";
       timer = setTimeout(step, TYPE_GAP);
     } else timer = setTimeout(step, TYPE_OUT);
   };
-  tourFull = TOUR[0];
+  tourFull = "\u201c" + TOUR[0] + "\u201d";
   timer = setTimeout(step, 600);
 })();
 /* ── the travel ───────────────────────────────────────────────────
@@ -2804,9 +2810,12 @@ let tourFull = "";                     /* what placeAsk should size to */
   const bar = document.getElementById("nav");
   const ask = document.querySelector(".ask");
   const slot = document.getElementById("askSlot");
-  const mark = document.querySelector("#nav [data-mark], #nav .mark");
   const SMALL = 16;
   let raf = 0, settleT = 0;
+  /* The field's column, remembered: an open answer hides the cover and
+     with it the slot, and the bar still has to know which column the
+     field belongs to. */
+  let lastCol = null;
 
   const gutter = () => parseFloat(getComputedStyle(bar).paddingLeft) || 40;
 
@@ -2826,7 +2835,11 @@ let tourFull = "";                     /* what placeAsk should size to */
     "font-size:100px";
   document.body.appendChild(ghost);
   const fitSize = (text, room) => {
-    const cap = Math.max(32, Math.min(88, innerWidth * 0.056));
+    /* The statement's own clamp (24px, 3.2vw, 44px), not display scale:
+       the field rests under the lede as its continuation now, and a
+       question set bigger than the sentence that invites it would put
+       the hierarchy back the way it was. */
+    const cap = Math.max(21, Math.min(36, innerWidth * 0.025));
     ghost.textContent = text || "";
     const per = ghost.getBoundingClientRect().width / 100;
     if (!per || !room) return cap;
@@ -2836,7 +2849,7 @@ let tourFull = "";                     /* what placeAsk should size to */
   };
 
   const place = () => {
-    /* `bar`, `ask` and `mark` are all the masthead's, and only `slot`
+    /* `bar` and `ask` are both the masthead's, and only `slot`
        belongs to this page — so a stale place() does not throw, it
        does something worse and quiet: it goes on sizing the live
        field from a detached slot and can leave the bar wearing
@@ -2857,23 +2870,31 @@ let tourFull = "";                     /* what placeAsk should size to */
       ? Math.max(1, s.top + scrollY + s.height / 2 - barH / 2) : 1;
     const p = Math.min(1, drop / total);           /* 1 big, 0 parked */
     const g = gutter();
-    const narrow = Math.max(150, mark.getBoundingClientRect().left - g - 26);
-    /* the left column IS the slot, so the big field's width is measured
-       from the layout rather than computed from the viewport */
-    const wide = live ? s.width : narrow;
+    /* THE FIELD BELONGS TO THE MIDDLE COLUMN AT BOTH ENDS OF THE TRAVEL.
+       It used to walk left as it shrank, into the gutter seat the
+       wordmark left open for it. The wordmark holds that gutter now, so
+       a walk would park the question underneath the name. Keeping the
+       slot's left and width the whole way also makes the move read as
+       the column head rising into the bar rather than as an element
+       crossing the page, which is the point of the columns. */
+    if (live) lastCol = { left: s.left, w: s.width };
+    const col = lastCol || { left: g, w: Math.max(150, innerWidth * 0.34) };
+    const wide = col.w;
     /* the WHOLE word while the tour types, so the type does not
        resize on every character */
     const big = fitSize(input.value || tourFull || input.placeholder, wide);
-    /* The masthead keeps a tighter gutter than the page does (16 against
-       20 on a phone; they are both 40 on a desktop, where this is a
-       no-op). So the question rides the PAGE's gutter while it is in
-       the page and the BAR's once it lands, walking the few pixels
-       between them over the travel rather than sitting wrong at one
-       end. Read off the slot, so it cannot disagree with the cards. */
-    ask.style.setProperty("--ask-left",
-      (g + ((live ? s.left : g) - g) * p).toFixed(1) + "px");
+    /* The rule under the field hugs the words the way the terms'
+       hairlines hug theirs: measured on the same ghost, but against
+       the VISIBLE text — the value while someone types, the
+       placeholder's current slice while the tour speaks — so the line
+       ends where the words do and follows them as they change. */
+    ghost.textContent = input.value || input.placeholder || "";
+    const uw = (ghost.getBoundingClientRect().width / 100) *
+      (SMALL + (big - SMALL) * p);
+    ask.style.setProperty("--ask-uw", Math.min(wide, uw + 2).toFixed(1) + "px");
+    ask.style.setProperty("--ask-left", col.left.toFixed(1) + "px");
     ask.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
-    ask.style.setProperty("--ask-w", (narrow + (wide - narrow) * p).toFixed(1) + "px");
+    ask.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
     ask.style.setProperty("--ask-fs", (SMALL + (big - SMALL) * p).toFixed(2) + "px");
     /* display type wants negative tracking, the bar wants the module's
        positive 0.04em — walk between them rather than picking one */

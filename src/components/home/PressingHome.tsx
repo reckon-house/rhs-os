@@ -76,11 +76,37 @@ export function PressingHome() {
           masthead, which is the end of its journey and the only place
           its position has to be exact. This is the room it travels
           through, and the driver measures the gap between the two. */}
+      {/* THE COVER IS THE PAGE'S OWN THREE COLUMNS, not a bar above
+          them. It borrows .ixbody and .ixrows verbatim from the index
+          below, so the wordmark sits over the note rail, the statement
+          over the first run of work, and the address over the second,
+          and the standing rules run through all of it. Alignment is by
+          construction rather than by matching numbers in two places.
+
+          The masthead keeps the field and gives up its wordmark and
+          address while the cover holds them — see body.attop in the
+          stylesheet. */}
       <section className="hero-breakout cover">
-        <div id="askSlot" aria-hidden="true" />
-        <div className="coverR">
-          <span className="ledelbl">The practice</span>
-          <p className="statement" id="infoLead" />
+        <div className="ixbody">
+          <span className="covermark">Reckon House Staples</span>
+          <div className="ixrows covercols">
+            {/* The question rides INSIDE the statement: the paragraph
+                is Jeremy speaking and the quoted words that type
+                themselves after the colon are the visitor speaking
+                back. The slot is a SIBLING of #infoLead, never a child
+                — renderToned rewrites the lede's innerHTML on every
+                answer, and anything inside it would be thrown away. */}
+            <div className="coverR">
+              <span className="ledelbl">The practice</span>
+              <p className="statement">
+                <span id="infoLead" />{" "}
+                <span id="askSlot" aria-hidden="true" />
+              </p>
+            </div>
+            <div className="covermeta">
+              <a href="mailto:hello@reckon.house">hello@reckon.house</a>
+            </div>
+          </div>
         </div>
       </section>
 

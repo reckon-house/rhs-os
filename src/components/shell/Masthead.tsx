@@ -279,7 +279,11 @@ export function Masthead() {
             &times;
           </button>
         </div>
-        <a className={styles.meta} href="mailto:hello@reckon.house">
+        {/* data-meta is a stable hook for the same reason data-mark is:
+            the homepage hides both ends of the bar while its cover
+            holds them, and a CSS-module class name is hashed at build
+            time, so no other file can name it. */}
+        <a data-meta className={styles.meta} href="mailto:hello@reckon.house">
           hello@reckon.house
         </a>
       </nav>
