@@ -59,7 +59,6 @@
  */
 
 import { useEffect, useId, useLayoutEffect, useRef } from "react";
-import { DAYBOOK } from "@/data/daybook";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -162,17 +161,18 @@ const METHOD: { head: string; body: string }[] = [
   },
 ];
 const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
-/* News is the daybook, not a second list. The footer already renders the
-   daybook strip below this, and the rail's "Recently" carries the same
-   three lines as this column did — so a reader met the identical items
-   twice within a screen. The column now names the newest three entries,
-   which means it changes when the daybook does and never goes stale on
-   its own. Titled entries use their title; the rest their first clause. */
-const NEWS = DAYBOOK.slice(0, 3).map((e) => {
-  if (e.title) return e.title;
-  const first = Array.isArray(e.body) ? e.body[0] : e.body;
-  return first.split(/[.:]/)[0].trim();
-});
+/* THERE IS NO NEWS COLUMN. It held the newest three daybook entries as
+   bare titles, and PressingReturn renders the daybook strip about two
+   hundred pixels below this in the same footer: the newest TWO, with
+   their dates, their bodies and a link to the full log. So the same
+   entries met a reader twice on one screen, the second time properly.
+
+   The comment that used to sit here already said "News is the daybook,
+   not a second list" — it had been deduped once against the rail's
+   "Recently" and then collided again with the strip, which is what
+   happens when the fix is to change what a duplicate SAYS rather than
+   to remove it. The strip wins on every count and it is the one that
+   stays. */
 
 /** A ledger column of LINKS. The reveal rides inside the anchor for the
  *  same reason it does in the contact column: the splitter flattens
@@ -385,7 +385,6 @@ export function PressingContact({ className }: PressingContactProps) {
           <LinkColumn title="Pages" items={PAGES} />
           <LedgerColumn title="Services" items={SERVICES} />
           <LedgerColumn title="Practice" items={PRACTICE} />
-          <LedgerColumn title="News" items={NEWS} />
         </div>
 
         {/* A real mailto form, exactly as the prototype ships it: the browser
