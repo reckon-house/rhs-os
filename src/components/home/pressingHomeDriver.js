@@ -1982,6 +1982,8 @@ function buildMagazine() {
   observeArrivals(workEls);
   armReels();
   if (window.armDrift) armDrift(workEls);
+  /* the outer columns can only be measured once the frames exist */
+  if (window.fitColumns) fitColumns();
 }
 
 /* ── the answer, as an act ─────────────────────────────────────────
@@ -2791,6 +2793,67 @@ let tourFull = "";                     /* what placeAsk should size to */
   tourFull = "\u201c" + TOUR[0] + "\u201d";
   timer = setTimeout(step, 600);
 })();
+/* ── the outer columns, lifted ────────────────────────────────────
+   The cover is exactly as tall as its statement, and the statement
+   lives in the middle column. So the wordmark and the address each
+   ended up hundreds of pixels above their own column's next thing,
+   holding a gap that belonged to a neighbour: 423px under each,
+   against 117px under the statement itself.
+
+   These pull the note rail and the first right-hand frame back up
+   under their own headers. MEASURED, not authored: the statement
+   rewraps at every width, so any fixed number would be right at one
+   viewport and wrong at the rest. Written as custom properties the
+   stylesheet reads, and left at zero until this runs — a failed
+   script leaves the untightened page rather than an overlapped one.
+
+   Only above 860, where the three columns exist at all; below that
+   the grid stacks and a lift would drag content over the block
+   above it. */
+(() => {
+  /* the air left under each header once it is lifted */
+  const GAP = 44;
+  const root = document.documentElement;
+  let raf = 0;
+
+  const fit = () => {
+    if (!alive) return;
+    /* Queried HERE, not in the closure: the rail and the frames are
+       dealt after this module runs, so anything captured up top is
+       null forever. That is exactly how the first version of this
+       silently did nothing. */
+    const mark = document.querySelector(".covermark");
+    const meta = document.querySelector(".covermeta");
+    const rail = document.querySelector("#stIndex .ixnotes");
+    const cell = document.querySelector("#ixRows .ixrow .cell:nth-child(2)");
+    if (!mark || !meta || !rail || !cell) return;
+    if (innerWidth <= 860) {
+      root.style.setProperty("--rail-lift", "0px");
+      root.style.setProperty("--col3-lift", "0px");
+      return;
+    }
+    /* Measure with the lifts OFF, so each pass reads the natural
+       position rather than the one the last pass produced — the
+       feedback loop this would otherwise be. */
+    root.style.setProperty("--rail-lift", "0px");
+    root.style.setProperty("--col3-lift", "0px");
+    const markBottom = mark.getBoundingClientRect().bottom;
+    const metaBottom = meta.getBoundingClientRect().bottom;
+    const railTop = rail.getBoundingClientRect().top;
+    const cellTop = cell.getBoundingClientRect().top;
+    root.style.setProperty("--rail-lift",
+      Math.max(0, railTop - markBottom - GAP).toFixed(1) + "px");
+    root.style.setProperty("--col3-lift",
+      Math.max(0, cellTop - metaBottom - GAP).toFixed(1) + "px");
+  };
+
+  const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); };
+  listen(window, "resize", on, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.fitColumns = fit;
+  fit();
+})();
+
 /* ── the travel ───────────────────────────────────────────────────
    Everything the field does between the cover and the bar is here.
    Drop is measured, never authored: the distance from the reserved
