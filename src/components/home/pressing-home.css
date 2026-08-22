@@ -272,45 +272,45 @@
     html.rh-home #nav [data-mark] {
       grid-column: 1; justify-self: start; }
   }
-  html.rh-home body.attop #nav [data-mark],
-  html.rh-home body.attop #nav [data-meta] {
-    opacity: 0; visibility: hidden; }
-  /* The other half of the same swap: the cover's ends leave exactly as
-     the bar's arrive. Without this both are on screen for the ~15px of
-     scroll it takes attop to flip, 1.5px apart, which reads as the
-     wordmark ghosting rather than staying put. */
-  /* The pill is dark while the cover shares the bar's band, so the
-     page's own masthead line is never displaced by it, and lights as
-     the work arrives underneath. See the coverbar flag in the driver
-     for why waiting beats lifting. */
-  /* COLUMNS ONE AND THREE COME UP ON THEIR OWN. The cover is as tall
-     as the statement, and in a single column that statement runs long
-     — so the wordmark and the address each sat hundreds of pixels
-     above their column's next thing, waiting on a neighbour. These
-     lift each of them back under its own header. The values are
-     MEASURED by the driver (railLift below), because the statement's
-     line count changes with the viewport and an authored number would
-     be wrong at every width but one. Zero until the driver writes
-     them, so a failed script leaves the honest untightened page. */
-  @media (min-width: 861px) {
-    #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
-    #ixRows .ixcol:nth-child(2) {
-      margin-top: calc(-1 * var(--col3-lift, 0px)); }
+/* ── the handover ────────────────────────────────────────────────
+     The cover's wordmark and address scroll away with the page, like
+     any other line on it. The bar's copies do not cross-fade in behind
+     them — they DROP, from just above the bar into their seat, once
+     the page's own pair has left the screen. So the name is never in
+     two places at once, and arriving reads as a thing falling into
+     position rather than a thing materialising.
+
+     visibility rides along so the hidden copies cannot be tabbed to;
+     it switches at the end of the way out and immediately on the way
+     in. The address follows the name by a beat. */
+  html.rh-home #nav [data-mark],
+  html.rh-home #nav [data-meta] {
+    opacity: 0; visibility: hidden;
+    transform: translateY(-14px);
+    transition: opacity 0.2s ease,
+      transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0.32s; }
+  html.rh-home body.headgone #nav [data-mark],
+  html.rh-home body.headgone #nav [data-meta] {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.22s ease,
+      transform 0.34s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0s; }
+  html.rh-home body.headgone #nav [data-meta] {
+    transition-delay: 0.05s, 0.05s, 0s; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-mark],
+    html.rh-home #nav [data-meta] { transition: none; transform: none; }
   }
   html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
   html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
   @media (prefers-reduced-motion: reduce) {
     html.rh-home #nav [data-burn] { transition: none; }
   }
-  html.rh-home body:not(.attop) .covermark,
-  html.rh-home body:not(.attop) .covermeta {
-    opacity: 0; visibility: hidden; }
-  html.rh-home .covermark, html.rh-home .covermeta {
-    transition: opacity 0.3s ease; }
-  @media (prefers-reduced-motion: reduce) {
-    html.rh-home .covermark, html.rh-home .covermeta {
-      transition: none; }
-  }
+  /* The cover's pair fades no more: it scrolls off the top with the
+     rest of the page, and the bar's copies drop in only once it has
+     gone. Vanishing at the first pixel of scroll was what made the
+     handover read as a swap rather than a hand-off. */
   /* THE BAR'S GUTTER IS THE PAGE'S GUTTER. The masthead carries its
      own 40px, invisible while the wordmark only ever lived in the bar
      — but the cover holds a second copy on the page's 50px gutter now,

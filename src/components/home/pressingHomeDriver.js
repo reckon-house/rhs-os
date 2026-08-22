@@ -2989,8 +2989,16 @@ let tourFull = "";                     /* what placeAsk should size to */
        header line is what must not be rippled while it sits still, so
        that line is the gate: clean at rest, lit as soon as it moves. */
     const line = document.querySelector(".covermark");
-    document.body.classList.toggle("coverbar",
-      Boolean(line) && line.getBoundingClientRect().bottom > barH);
+    const lr = line ? line.getBoundingClientRect() : null;
+    document.body.classList.toggle("coverbar", Boolean(lr) && lr.bottom > barH);
+    /* THE BAR TAKES THE NAME ONCE THE COVER'S COPY HAS LEFT THE TOP.
+       Not a crossfade at the first pixel of scroll: the page's own
+       wordmark and address scroll away like everything else, and only
+       when they are off the screen entirely do the bar's drop in from
+       above it. A zero-height rect means the cover is gone altogether
+       (an answer is open), which counts as left. */
+    document.body.classList.toggle("headgone",
+      !lr || lr.height === 0 || lr.bottom <= 0);
   };
 
   /* the one time the move is not scroll-driven: opening or closing an
