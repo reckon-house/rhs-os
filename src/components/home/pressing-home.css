@@ -862,7 +862,12 @@
     grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap);
     row-gap: clamp(56px, 6.6vw, 108px);
-    margin-bottom: clamp(18px, 2.1vw, 34px); }
+    /* THE INTERVAL BETWEEN PAIRS. Measured from the taller frame in a
+       row to the top of the next pair, so a row that leaves negative
+       space beside a short frame still hands over on the same beat.
+       Only ever desktop: below 860 the rows dissolve to
+       display:contents and the container's own row-gap takes over. */
+    margin-bottom: clamp(64px, 7vw, 100px); }
   .ixrow:last-child { margin-bottom: 0; }
   .ixrow .cell { display: flex; justify-content: flex-end; }
 
