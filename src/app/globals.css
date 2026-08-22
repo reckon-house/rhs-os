@@ -532,16 +532,29 @@ body {
 }
 
 /* Hero breakout — extends beyond max-w container to fill the scroll area */
+/* FULL BLEED, MEASURED FROM THE COLUMN RATHER THAN FROM 100vw.
+   100vw includes the scrollbar. <main> is the scroller, so its content
+   is narrower than 100vw by exactly the scrollbar's width, and a
+   section sized to 100vw and centred with 50% therefore sat half a
+   scrollbar to the LEFT and overhung the right by the same — measured
+   at -3px and +3px against a 6px bar. Every full-bleed section on the
+   site carried that tilt, which is why the page's left and right
+   margins never matched.
+
+   100% is the content box of main's own child, so it already excludes
+   the scrollbar; the only thing to add back is main's gutter, which is
+   0 below md and 50px above it. Exact, and nothing to measure. */
 .hero-breakout {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
 }
 @media (min-width: 768px) {
   .hero-breakout {
-    width: 100vw;
-    max-width: none;
-    margin-left: calc(-50vw + 50%);
+    width: calc(100% + 100px);
+    margin-left: -50px;
+    margin-right: -50px;
   }
 }
 

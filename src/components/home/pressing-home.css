@@ -56,7 +56,12 @@
     --r: 16px;
     --gap: 6px;
     --nav: 54px;
-    --gut: 40px;
+    --gut: 50px;
+    /* THE RAIL PAYS FOR THE WIDER MARGINS. Going from a 40px gutter to
+       50 costs the content 20px, so the note column gives up the same
+       20 and the two image columns keep the width they had. It was
+       never declared before, only ever the 200px fallback. */
+    --ix-note-w: 180px;
     --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
@@ -712,12 +717,14 @@
      sticky clamps the child to `top` regardless, so nothing is ever
      drawn above the bar. */
   .ixrules { position: absolute; pointer-events: none;
-    --ixgap: clamp(24px, 3.4vw, 56px);
+    --ixgap: clamp(24px, 3.4vw, 56px); --cover-air: 50px;
     top: calc(-1 * 100dvh); bottom: 0;
     left: calc(var(--gut) + var(--ix-note-w, 200px) + var(--ixgap) / 2);
     right: calc(var(--gut) - var(--ixgap) / 2); }
-  .ixrulesPin { position: sticky; top: var(--nav);
-    height: calc(100dvh - var(--nav));
+  /* 50, the same as the margins, rather than the bar's height — the
+     top of the frame should read as one value with the sides. */
+  .ixrulesPin { position: sticky; top: var(--cover-air, 50px);
+    height: calc(100dvh - var(--cover-air, 50px));
     /* TWO, not three. The far-right rule drew a boundary the browser
        edge already draws. */
     background-image:
