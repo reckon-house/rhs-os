@@ -2897,6 +2897,10 @@ let tourFull = "";                     /* what placeAsk should size to */
     if (innerWidth <= 860) {
       root.style.setProperty("--rail-lift", "0px");
       root.style.setProperty("--col3-lift", "0px");
+      /* the rail is position: static down here, so a pin left over from
+         a wider layout would be a number waiting to be wrong */
+      document.querySelectorAll(".ixnotes")
+        .forEach((el) => el.style.removeProperty("--rail-pin"));
       return;
     }
     /* Measure with the lifts OFF, so each pass reads the natural
@@ -2912,6 +2916,54 @@ let tourFull = "";                     /* what placeAsk should size to */
       Math.max(0, railTop - markBottom - GAP).toFixed(1) + "px");
     root.style.setProperty("--col3-lift",
       Math.max(0, cellTop - metaBottom - GAP).toFixed(1) + "px");
+    pinRails();
+  };
+
+  /* EVERY NOTE RAIL PINS EXACTLY WHERE IT RESTS. The stylesheet's
+     default is right for a rail that starts at the top of its stratum;
+     neither of this page's two does. The index rail is LIFTED to meet
+     the first frame, and the answer's sits under a paragraph whose
+     height is the answer's own, so both resting lines are measured
+     quantities and neither can be authored.
+
+     Measured with position: static, the same trick the lifts above
+     use, because a sticky box that has already caught reports the pin
+     rather than the rest. Read against the scroller and not the
+     window: <main> owns the scroll here, so rect.top alone is only
+     true at the top of the page. */
+  const pinRails = () => {
+    const scroller = document.querySelector("main");
+    const off = scroller ? scroller.scrollTop : 0;
+    document.querySelectorAll(".ixnotes").forEach((el) => {
+      if (!el.offsetParent) return;             // hidden state, nothing to measure
+      const was = el.style.position;
+      el.style.position = "static";
+      const rest = el.getBoundingClientRect().top + off;
+      el.style.position = was;
+      el.style.setProperty("--rail-pin", rest.toFixed(1) + "px");
+      watch(el.closest("section"));
+    });
+  };
+
+  /* A DEAL IS NOT THE LAST WORD ON HEIGHT. The answer's rail rests
+     under a paragraph that is still being typed when the deal ends,
+     and that paragraph is replaced again when the model reports in. A
+     pin measured once is stale by the time anyone reads it.
+
+     Watching the section rather than chasing the three call sites that
+     change it: this also covers the compose box opening, a late font,
+     and anything added later that nobody thinks to hook. Re-pinning
+     writes a custom property and never changes a height, so there is
+     no loop to guard against beyond the frame throttle. */
+  const watched = new WeakSet();
+  let pinRaf = 0;
+  const watch = (section) => {
+    if (!section || watched.has(section) || typeof ResizeObserver === "undefined") return;
+    watched.add(section);
+    new ResizeObserver(() => {
+      cancelAnimationFrame(pinRaf);
+      pinRaf = requestAnimationFrame(pinRails);
+    }).observe(section);
   };
 
   const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); };

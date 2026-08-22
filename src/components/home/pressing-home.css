@@ -67,6 +67,7 @@
        20 and the two image columns keep the width they had. It was
        never declared before, only ever the 200px fallback. */
     --ix-note-w: 180px;
+  --stratum-air: clamp(56px, 9dvh, 120px);
     --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
@@ -428,7 +429,11 @@
      Each stratum announces itself on one line: what it is at the left,
      the way further in at the right, both on the page gutter so the
      row reads as the same container the cards below it sit in. */
-  .stratum { padding-top: clamp(56px, 9dvh, 120px); }
+  /* The air above a stratum, as a token rather than a number, because
+     the note rail pins on it: a rail whose sticky top is not exactly
+     its resting top slides before it catches, and the two values have
+     to be the same quantity, not two copies of one. */
+  .stratum { padding-top: var(--stratum-air); }
   .stratum .shead { display: flex; justify-content: space-between;
     align-items: baseline; gap: 24px; flex-wrap: wrap;
     padding: 0 var(--gut) clamp(20px, 3dvh, 36px); }
@@ -787,7 +792,20 @@
      align-self: start is load-bearing — a stretched grid item is as
      tall as the whole index, and a sticky box that tall never has
      anywhere to travel. */
-  .ixnotes { position: sticky; top: calc(var(--nav) + clamp(18px, 3vh, 40px));
+  /* IT PINS WHERE IT RESTS, so it does not move at all. The top used
+     to be a flat calc that had nothing to do with where the column
+     actually started, so the rail slid up to meet it and then caught:
+     34px on the homepage, 48 on the daybook, 129 in an answer, all
+     read as the column drifting out from under its own heading before
+     settling. The standing rule beside it never did this, because its
+     pin and its start are the same number.
+
+     The default is right for any page whose rail starts at the top of
+     its stratum, which is the daybook and Staples. The homepage lifts
+     its rail to meet the first frame instead, so the driver measures
+     that line and writes --rail-pin per rail. */
+  .ixnotes { position: sticky;
+    top: var(--rail-pin, calc(var(--nav) + var(--stratum-air)));
     align-self: start;
     display: flex; flex-direction: column;
     /* Measured against the WINDOW, not the page width, because pinning
