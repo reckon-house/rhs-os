@@ -213,13 +213,11 @@ export function PressingContact({ className }: PressingContactProps) {
         return;
       }
 
-      // Cleared before measuring: the column and the headline share a grid
-      // row, so a stale margin inflates the row and the reading compounds on
-      // every resize.
-      col.style.marginTop = "0px";
-      const drop =
-        parseFloat(getComputedStyle(h2).marginTop) + h2.offsetHeight + GAP;
-      col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
+      // NO DROP ANY MORE. The ledger used to start below the headline
+      // because the two shared a column; on the page's three tracks they
+      // sit side by side, so the ledger begins at the top of its own
+      // column and an offset would just be a hole.
+      col.style.marginTop = "";
 
       // The footer beat's placement. `top` on a sticky element computes to
       // the used pixel value, so this reads the resolved calc() rather than

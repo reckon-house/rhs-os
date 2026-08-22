@@ -166,14 +166,13 @@ export function PressingCredits({ className }: PressingCreditsProps) {
         return;
       }
 
-      col.style.marginTop = "0px";
-      const hs = getComputedStyle(h2);
-      const drop = parseFloat(hs.marginTop) + h2.offsetHeight + GAP;
-      col.style.marginTop = Math.max(0, Math.round(drop)) + "px";
+      // NO DROP. The ledger sits beside the headline on the page's three
+      // tracks now, not under it, so an offset would just be a hole.
+      col.style.marginTop = "";
 
       // The sticky offset resolves the calc() to px here, so the hold
       // follows the masthead without this file restating its height.
-      const pin = parseFloat(hs.top) || 0;
+      const pin = parseFloat(getComputedStyle(h2).top) || 0;
       const pad = Math.max(0, Math.round(vh() - pin - h2.offsetHeight));
       sec.style.paddingBottom = pad + "px";
     };

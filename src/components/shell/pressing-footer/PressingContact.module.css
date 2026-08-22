@@ -62,8 +62,15 @@
      2 is pushed off the page gutter. Clamping the minimum to 0 pins track 1
      to the leftover width. */
   display: grid;
-  grid-template-columns: minmax(0, 1fr) min(380px, 40vw);
-  column-gap: clamp(28px, 5vw, 78px);
+  /* THE PAGE'S THREE COLUMNS. The beat used to run headline-then-column
+     on its own two-track grid, which read as a different object from
+     everything above it. Same tracks as .ixbody now: the note rail's
+     width, then two equal columns. The label takes the rail, the
+     headline takes the middle where the statement and the answer
+     speak, and the ledger takes the last one — wider than the 380px
+     cap it used to sit in. */
+  grid-template-columns: var(--ix-note-w, 180px) minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--ixgap, clamp(24px, 3.4vw, 56px));
   align-items: start;
   /* Rows hug their content. Without this a viewport-tall beat stretches its
      rows to fill, and the label row gets handed space the headline and the
@@ -90,32 +97,38 @@
 
 /* The label row spans both tracks so the mark sits on the page's left rule
    while the grid below splits into headline and column. */
+/* The label sits in the rail's column, where the wordmark does on the
+   page above. It no longer spans: the three columns are the layout. */
 .markRow {
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 1;
 }
 
 .headline {
-  grid-column: 1;
+  grid-column: 2;
   /* Headline and column share row 2 so they occupy the same vertical band:
      the row is as tall as the column, which is the travel the pinned headline
      needs. In separate rows they could never overlap and the headline would
      have nothing to stick through. Sticky releases when its containing
      block's bottom arrives, so "the column's bottom meets the headline's
      bottom" is the natural release, not a threshold anyone has to compute. */
-  grid-row: 2;
+  grid-row: 1;
   align-self: start;
-  font-size: clamp(30px, 4.4vw, 62px);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-weight: 700;
+  /* The answer's voice exactly: same clamp, same weight, same measure.
+     It was 62px at 700, which made the footer shout in a register
+     nothing else on the site uses. */
+  font-size: clamp(21px, 2.4vw, 32px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 500;
   text-transform: none;
   /* The prototype's own limits for this beat. The base .brief headline also
      carries a 100% guard against overflowing track 1; the footer beats
      restate only the measure, and at this scale the two authored lines never
      reach the limit anyway. */
-  max-width: min(11em, 50vw);
-  margin-top: clamp(24px, 5dvh, 70px);
+  /* The column is the measure now. */
+  max-width: none;
+  margin-top: 0;
   /* The pin. var(--nav-h) is the sticky masthead above the page, where the prototype
      used var(--nav). The placement pass READS this back through
      getComputedStyle, so the offset lives here and only here. */
@@ -127,8 +140,8 @@
    height plus the gap, so the column starts just under it. The headline
    rewraps at every breakpoint, so a fixed value drifts out of register. */
 .col {
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 3;
+  grid-row: 1;
   font-size: var(--mt-note);
   line-height: 1.55;
   padding-bottom: 4dvh;
