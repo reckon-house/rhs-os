@@ -187,7 +187,19 @@
      masthead, laid into the page instead of floating over it. */
   .covermark { font-size: var(--nav-size, 16px); font-weight: 700;
     letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
+  /* THE STATEMENT TAKES BOTH COLUMNS, and that is what brings the
+     other two up. In one column it ran eight lines and made the cover
+     379px tall, which every column paid for: 423px of dead air under
+     the wordmark and under the address against 117px under the
+     statement itself. The tiles below are row-locked to each other, so
+     the only honest way to raise columns one and three is to stop the
+     middle needing the height. Across the pair the same words run
+     about half as many lines.
+     The address keeps its corner: it sits in row one, right-aligned,
+     and a floated notch of its own width holds the statement's first
+     line clear of it. */
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
+    --meta-notch: 200px;
     column-gap: var(--ixgap); align-items: baseline;
     /* THE RULES REACH THE INDEX'S. Without this the three verticals
        stop at the statement and start again under it, and the columns
@@ -220,8 +232,13 @@
       linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
       linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
       linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
-    background-size: 1px 100%, 1px 100%, 1px 100%;
-    background-position: 0 0, 50% 0, 100% 0;
+    /* The middle rule runs ONLY the bridge — the stretch below the
+       statement, where two columns exist again. Above that the
+       statement spans the pair, so a rule at 50% would strike straight
+       through the headline. The edge rules run the full height,
+       because those boundaries are real the whole way up. */
+    background-size: 1px 100%, 1px var(--cover-bridge), 1px 100%;
+    background-position: 0 0, 50% 100%, 100% 0;
     background-repeat: no-repeat; }
   .covermeta { justify-self: end; text-align: right;
     font-size: var(--nav-size, 16px); font-weight: 500;
@@ -292,14 +309,18 @@
      The measure is what makes 44px work here: 21em at 44px is 924px,
      wider than the field's 52% column, so the statement is allowed
      out past it rather than being crushed into eight short lines. */
-  .coverR { width: auto; min-width: 0; }
+  .coverR { width: auto; min-width: 0;
+    grid-column: 1 / -1; grid-row: 1; }
+  .coverR .statement::before { content: ""; float: right;
+    width: var(--meta-notch); height: 1.3em; }
+  .covermeta { grid-column: 2; grid-row: 1; }
   /* Sized to the COLUMN it now lives in. 3.2vw was set when the
      statement had a 700px block to itself; in a third of the grid the
      same clamp gave about twelve characters a line. 2.5vw holds the
      same proportion the cover always had between type and measure. */
   .coverR .statement { font-size: clamp(21px, 2.5vw, 36px);
     line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
-    max-width: 21em; }
+    max-width: none; }
   .ledelbl { display: block; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
     opacity: 0.5; padding-bottom: 14px; }
