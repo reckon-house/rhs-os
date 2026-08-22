@@ -2981,9 +2981,16 @@ let tourFull = "";                     /* what placeAsk should size to */
        below the bar's. So the pill waits instead. Measured, not
        timed: it stays off while any part of the cover still overlaps
        the bar, and lights the moment the work starts passing under. */
-    const cov = document.querySelector(".cover");
+    /* THE WORDMARK'S OWN LINE, not the whole cover. Gated on the
+       section, the pill waited for the statement AND the section's
+       bottom padding to clear — around 380px of scroll, by which time
+       the first frames had already left the top of the screen and the
+       bar arrived after the thing it was meant to sit over. The
+       header line is what must not be rippled while it sits still, so
+       that line is the gate: clean at rest, lit as soon as it moves. */
+    const line = document.querySelector(".covermark");
     document.body.classList.toggle("coverbar",
-      Boolean(cov) && cov.getBoundingClientRect().bottom > barH);
+      Boolean(line) && line.getBoundingClientRect().bottom > barH);
   };
 
   /* the one time the move is not scroll-driven: opening or closing an

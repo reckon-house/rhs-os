@@ -39,9 +39,15 @@
      left by half the viewport minus half the column re-anchors a 100vw
      strip to the screen edge. Sticky only pins the vertical axis; the
      margin survives it. */
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  /* Measured from the column, not from 100vw — the same correction
+     .hero-breakout took. 100vw includes the scrollbar and <main> does
+     not, so the bar sat half a scrollbar left of every full-bleed
+     section under it and its wordmark never lined up with the page's
+     own left margin. */
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
 
   /* The prototype's Helvetica system stack, not Satoshi — the Swiss bar
      keeps its own voice. */
@@ -141,6 +147,13 @@
    net for anything narrower — a nav you must drag sideways reads as a bug.
    The gutter halves, so the pill's inset follows it; a smaller overhang
    too, because 18px reads as generous at 40px in and as sloppy at 16px. */
+@media (min-width: 768px) {
+  .nav {
+    width: calc(100% + 100px);
+    margin-left: -50px;
+    margin-right: -50px;
+  }
+}
 @media (max-width: 760px) {
   .nav {
     --nav-size: 11px;

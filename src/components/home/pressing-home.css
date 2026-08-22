@@ -217,7 +217,9 @@
      run of work, so the top of the page is the same grid as the body
      of it. Both are set in the masthead's own type — this IS the
      masthead, laid into the page instead of floating over it. */
-  .covermark { font-size: var(--nav-size, 16px); font-weight: 700;
+  /* 500, the weight the bar has carried sitewide. The cover's copy was
+     700, so the name changed weight as it handed over on scroll. */
+  .covermark { font-size: var(--nav-size, 12px); font-weight: 500;
     letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap); align-items: start;
@@ -309,6 +311,13 @@
     html.rh-home .covermark, html.rh-home .covermeta {
       transition: none; }
   }
+  /* THE BAR'S GUTTER IS THE PAGE'S GUTTER. The masthead carries its
+     own 40px, invisible while the wordmark only ever lived in the bar
+     — but the cover holds a second copy on the page's 50px gutter now,
+     and on scroll the name jumped 10px left as the two swapped.
+     Scoped to this route: other pages have no second copy to agree
+     with. */
+  html.rh-home #nav { --nav-gutter: var(--gut); }
   html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
     transition: opacity 0.3s ease; }
   @media (prefers-reduced-motion: reduce) {
