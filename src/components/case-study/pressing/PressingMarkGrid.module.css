@@ -1,0 +1,108 @@
+/*
+ * PressingMarkGrid — logos as marks on mats, not as photographs.
+ *
+ * A plate row sizes each frame from its own ratio, which is right for
+ * photographs and wrong for these: five logos exported at five
+ * different ratios came out five different heights, leaning on each
+ * other down the page. A mark's ratio is an accident of how tightly
+ * someone cropped the artboard, so it must not be allowed to drive
+ * the layout.
+ *
+ * One cell shape, one mat, and the mark sits inside it at whatever
+ * size it honestly supports.
+ */
+
+/* ONE GAP, both directions. The two mark rows are separate sections
+   and nothing between them was setting any space, so they met edge to
+   edge while their own cells had air on every other side. The bottom
+   margin is the column gap, not a new number: the rhythm across a row
+   and the rhythm down to the next one are the same measurement. */
+.grid {
+  --mark-gap: clamp(14px, 1.8vw, 24px);
+  display: grid;
+  gap: var(--mark-gap);
+  margin: 0 0 var(--mark-gap);
+}
+.grid[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid[data-cols="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid[data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.cell {
+  margin: 0;
+  min-width: 0;
+}
+
+/* THE MAT. --surface-alt is the ground the classic renderer already
+   puts behind every un-transparent image, so a mark card reads as the
+   same material as the rest of the site rather than a new one. The
+   radius is the plate's own, which is what makes these read as small
+   plates instead of as buttons. */
+.mat {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--pp-r, 16px);
+  overflow: hidden;
+  /* DERIVED, not a fourth beige. --surface-alt at #EDE9E3 is the mat
+     behind a photograph and sat too heavy under type this fine; mixed
+     back toward paper it lightens without leaving the family or
+     inventing a value nobody else can find. The flat colour first is
+     the fallback for anything without color-mix. */
+  background: #f4f2ee;
+  background: color-mix(in srgb, var(--surface-alt, #ede9e3) 60%, var(--pp-paper, #fff));
+}
+
+/* HOW MUCH OF THE MAT THE MARK IS ALLOWED. One number, because the air
+   around a logo is the whole point of putting it on a mat: filling the
+   card edge to edge is what the plate row was already doing. */
+.mat { --mark-fill: 56%; }
+
+/* MULTIPLY, because every one of these is a JPEG on pure white. Laid
+   on the mat as-is, each mark would sit in a white rectangle and the
+   card would read as a picture of a logo rather than as the logo.
+   Multiply drops white to nothing and leaves the ink alone.
+ *
+ * The clip-path is the house rule for a blended image, and it is not
+ * optional: Chrome composites a mix-blend-mode element in its own
+ * layer, which escapes the parent's overflow + radius, so the corners
+ * come back square without it. Applied to the img because clipping
+ * happens before the blend step. */
+.mark {
+  display: block;
+  /* Sized as a share of the MAT rather than by padding. Padding leaves
+     a wide mark still spanning the whole inner box, so the five would
+     have gone back to five different visual weights; a share of the
+     card gives every one of them the same room and the same air. */
+  width: var(--mark-fill);
+  height: var(--mark-fill);
+  max-width: var(--native, none);
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  clip-path: inset(0 round var(--pp-r, 16px));
+}
+
+/* The plate's figcaption, unchanged, so a caption reads the same
+   wherever it lands. Absent on most of these: five marks together are
+   the argument, and naming each one turns a range into a list. */
+.cap {
+  font-size: var(--pp-cap);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.5;
+  opacity: 0.55;
+  margin-top: 10px;
+}
+
+/* Two up on a phone whatever the desktop count is: three marks across
+   a 335px column leaves each about 100px, which is under the size the
+   finer ones (the vines, the halftone) stay legible at. A single
+   column would run the section far too long. */
+@media (max-width: 640px) {
+  .grid[data-cols="3"],
+  .grid[data-cols="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* More of the card on a phone: 56% of a 178px mat is 100px of mark,
+     which is under what the vines and the halftone survive. The air is
+     a luxury the wide screen can afford and this one cannot. */
+  .mat { --mark-fill: 72%; }
+}

@@ -178,6 +178,14 @@ interface BaseSection {
        *  files their real size — a third of a row is half the resolution
        *  a 2400px export carries. Sticky-only, no driver. */
       stack?: boolean;
+      /** Deal a multi-image section as LOGOS: one cell shape, one mat,
+       *  each mark contained inside it rather than filling a frame cut
+       *  to its own ratio. A photograph's ratio is information and a
+       *  plate row is right for it; a logo's ratio is how tightly
+       *  somebody cropped the artboard, and letting it set the layout
+       *  is what leaves five marks at five heights. Skin only, no
+       *  driver, no new section type. */
+      marks?: boolean;
     };
     /** Figcaption footnote under a plate ("Yellow blazer, studio") */
     caption?: string;

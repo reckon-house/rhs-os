@@ -402,6 +402,12 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-row-1",
       type: "triple-image",
       transparent: true,
+      // Dealt as marks, not as plates. A plate row cuts each frame to
+      // its own ratio, which put these five logos at five different
+      // heights with the last two stranded on a line of their own. A
+      // logo's ratio is how tightly the artboard was cropped, not
+      // information about the work.
+      pressing: { choreo: { marks: true } },
       images: [
         {
           src: `${IMG}/branding-graphics-logo-spear-collective-art-nouveau-vines.jpg`,
@@ -421,6 +427,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-row-2",
       type: "dual-image",
       transparent: true,
+      pressing: { choreo: { marks: true } },
       left: {
         src: `${IMG}/branding-graphics-logo-dj-mia-halftone-dots.jpg`,
         alt: "DJ MIA logo, geometric sans wordmark above pink halftone dot fade",

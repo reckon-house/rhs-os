@@ -24,6 +24,7 @@ import { JC_PALETTE } from "./viz/palettes";
 import { PressingCarouselPlate } from "./PressingCarouselPlate";
 import { PressingStatsSummary } from "./viz/PressingStatsSummary";
 import { PressingPlateStack } from "./PressingPlateStack";
+import { PressingMarkGrid } from "./PressingMarkGrid";
 import { PressingSpectrum } from "./viz/PressingSpectrum";
 import { PressingMaterialSpan } from "./viz/PressingMaterialSpan";
 import { PressingIntelligenceWheel } from "./viz/PressingIntelligenceWheel";
@@ -417,6 +418,31 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       continue;
     }
 
+    /* Marks before plates, same shape as the stack branch above: one
+       skin, the same section types, chosen off the bag. */
+    if (
+      p?.choreo?.marks &&
+      (s.type === "dual-image" || s.type === "triple-image" ||
+       s.type === "quad-image" || s.type === "quad-grid" || s.type === "masonry")
+    ) {
+      const imgs =
+        s.type === "dual-image"
+          ? [{ ...s.left }, { ...s.right }]
+          : s.images.map((im) => ({ ...im }));
+      out.push(
+        <PressingMarkGrid
+          key={s.id}
+          images={imgs.map((img, k) => ({
+            src: img.src,
+            alt: img.alt,
+            caption: splitCaption(p?.captions?.[k])?.label,
+          }))}
+        />
+      );
+      i += 1;
+      continue;
+    }
+
     if (
       s.type === "dual-image" ||
       s.type === "triple-image" ||
@@ -444,7 +470,19 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
               ...dim(img.src),
             };
           })}
-          cols={s.type === "masonry" ? s.columns : undefined}
+          /* quad-grid MEANS two by two. The classic renderer has always
+             drawn it grid-cols-2; here it fell through to one column
+             per image and came out as a row of four, so the same
+             section was a square in one renderer and a strip in the
+             other. The type carries the shape, so the shape is read off
+             the type rather than off a flag a study has to remember. */
+          cols={
+            s.type === "masonry"
+              ? s.columns
+              : s.type === "quad-grid"
+                ? 2
+                : undefined
+          }
           /* `native` on the section means the same thing here as in the
              classic renderer: show the frame whole. It zeroes the row's
              bleed, which is a crop before it is a parallax. */
