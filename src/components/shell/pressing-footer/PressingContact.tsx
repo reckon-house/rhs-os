@@ -344,7 +344,7 @@ export function PressingContact({ className }: PressingContactProps) {
         <div className={styles.method}>
           {METHOD.map((m) => (
             <div key={m.head}>
-              <BodyReveal as="h4" className={styles.colHead}>
+              <BodyReveal as="h4" className={styles.methodHead}>
                 {m.head}
               </BodyReveal>
               <BodyReveal as="p" className={styles.methodBody}>

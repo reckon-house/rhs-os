@@ -158,17 +158,42 @@
    The heads borrow .colHead so a heading is one treatment in this beat
    whatever it sits over, and the bodies sit at .dim's opacity so the
    labels stay the brighter thing. */
+/* ROWS, not a two-by-two. Four cells asked the reader which way to go,
+   across or down, and gave each paragraph a 30-character measure to
+   answer in. A row settles both: the label is the left column, the
+   sentence is the right one, and the order is simply downward.
+
+   It is also the shape this footer already uses. The daybook strip
+   below is a row ledger, date left and entry right, so the method
+   reads as the same kind of object rather than a second grammar
+   three hundred pixels above it. */
 .method {
   display: grid;
-  /* TWO, not four. The beat's headline owns the left half and this
-     lives in the right one, so four tracks came out around 60px each
-     and the paragraphs ran eight characters wide. .cols beneath it
-     settled on two for the same reason, and matching it means the
-     method and the ledger read as one column structure. */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(22px, 3dvh, 34px) 26px;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   margin-bottom: clamp(34px, 6dvh, 72px);
+}
+.method > div {
+  display: grid;
+  grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  /* The hairline belongs to the ROW now, not under the label: a rule
+     that stopped at 116px read as an underline on the word rather than
+     as a line between entries. Same weight the ledger heads carry. */
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding: clamp(16px, 2.4dvh, 24px) 0;
+}
+.method > div:first-child { border-top: 0; padding-top: 0; }
+
+/* The label, without .colHead's own underline: the row draws the line. */
+.methodHead {
+  margin: 0;
+  font-size: var(--mt-note);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.55;
+  opacity: 0.45;
 }
 .methodBody {
   margin: 0;
@@ -178,8 +203,10 @@
   line-height: 1.55;
   opacity: 0.5;
 }
+/* The label stacks over its sentence once 116px of it is most of the
+   column. */
 @media (max-width: 560px) {
-  .method { grid-template-columns: minmax(0, 1fr); }
+  .method > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }
 
 .cols {
