@@ -1260,6 +1260,26 @@
        which of the two a frame is. */
     transition-delay: var(--lag, 0s); }
   .fd-on .shot > * { clip-path: inset(0 0 0 0); transform: none; }
+  /* AND CLOSING, IN THE SAME DIRECTION IT OPENED. The frame's curtain
+     draws back from the top on the way in; on the way out the top edge
+     keeps travelling down until nothing is left, so a query reads as
+     one continuous sweep rather than a rewind. Quicker than the way in
+     and on a sharper ease, the same rule the page curtain follows:
+     arriving is the flourish, leaving should not hold anyone up.
+
+     After .fd-on and therefore winning it: a frame being swept out
+     carries both classes. */
+  .fd-out .shot > * {
+    clip-path: inset(100% 0 0 0);
+    transform: scale(1.06);
+    transition: clip-path 0.4s cubic-bezier(0.5, 0, 0.75, 0),
+      transform 0.4s cubic-bezier(0.5, 0, 0.75, 0);
+    transition-delay: var(--lag, 0s); }
+  .fd-out .fd-note { opacity: 0;
+    transition: opacity 0.28s ease var(--lag, 0s); }
+  @media (prefers-reduced-motion: reduce) {
+    .fd-out .shot > *, .fd-out .fd-note { transition: none; }
+  }
   /* the text cards keep the quiet fade — there is no picture to draw
      back a curtain from */
   .fd-note { opacity: 0; transform: translateY(14px);

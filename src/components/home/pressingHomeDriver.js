@@ -2201,10 +2201,6 @@ function buildAnswer() {
   if (!rowsEl || !notesEl || !sayEl) return;
   const still = REDUCE();
 
-  /* captured by apply() before the jump home; empty when asked cold */
-  const seats = window.__seatRects || new Map();
-  window.__seatRects = null;
-
   /* the plan first: intents, then facts. The matcher answers whatever
      the index has no opinion about. Whichever speaks, the split is
      the same: pictures go to the rows, words go to the notes column. */
@@ -2610,18 +2606,11 @@ function buildAnswer() {
     return;
   }
 
-  /* stage every card: seated cards travel, the rest rise */
-  els.forEach((el) => {
-    el.classList.add("fd-on");
-    const to = el.getBoundingClientRect();
-    const from = seats.get(el.dataset.key);
-    el.style.transition = "none";
-    el.style.opacity = "0";
-    el.style.transform = from
-      ? "translate(" + (from.left - to.left).toFixed(1) + "px," +
-        (from.top - to.top).toFixed(1) + "px)"
-      : "translateY(34px)";
-  });
+  /* No staging. A fresh card is already closed — the curtain's start
+     state is the stylesheet's resting state — so opening it is the
+     whole arrival, and there is nothing to set here to be undone
+     later. The fade and the 34px rise that used to run OVER the
+     curtain are gone with the travel they existed to smooth. */
 
   document.body.classList.add("working");
   sayEl.textContent = "";
@@ -2650,21 +2639,12 @@ function buildAnswer() {
   holdAsk(typeOn, 180);
 
   /* the cards do not wait for the sentence: they arrive while it is
-     being said. Two frames to a row, so the stagger is the row
-     cascade the curtains are lagged to. */
+     being said. One class each, on the row cascade, and the frame's
+     own curtain does the rest — the same one the magazine opens with
+     on a cold load. */
   const STAG = 55;
   els.forEach((el, k) => {
-    const at = 300 + k * STAG;
-    holdAsk(() => {
-      el.style.transition =
-        "opacity 0.46s ease, transform 0.52s cubic-bezier(0.2, 0.7, 0.2, 1)";
-      el.getBoundingClientRect();
-      el.style.opacity = "1";
-      el.style.transform = "";
-    }, at);
-    holdAsk(() => {
-      el.style.transition = ""; el.style.opacity = ""; el.style.transform = "";
-    }, at + 640);
+    holdAsk(() => el.classList.add("fd-on"), 300 + k * STAG);
   });
 }
 
@@ -2688,9 +2668,38 @@ function onQuery(v, now) {
   if (now) { apply(); return; }
   if (!query.trim()) { apply(); return; }   /* clearing is instant, no theatre */
   document.body.classList.add("working");
-  qTimer = setTimeout(apply, 420);
+  qTimer = setTimeout(() => apply(), 420);
 }
-function apply() {
+/* The sweep the query plays over whatever is currently on screen. Only
+   the frames actually in view: a card below the fold closing is a
+   quarter second nobody sees, charged to everybody. The stagger is
+   capped so a full magazine does not take longer to clear than an
+   answer takes to arrive. */
+const SWEEP_MS = 400, SWEEP_STEP = 30, SWEEP_CAP = 5;
+function sweepOut() {
+  if (REDUCE()) return Promise.resolve();
+  const live = [...document.querySelectorAll(".stratum [data-key], .answer [data-key]")]
+    .filter((el) => {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+    });
+  if (!live.length) return Promise.resolve();
+  live.forEach((el, i) => {
+    el.style.setProperty("--lag", (Math.min(i, SWEEP_CAP) * SWEEP_STEP) / 1000 + "s");
+    el.classList.add("fd-out");
+  });
+  return new Promise((r) =>
+    setTimeout(r, SWEEP_MS + Math.min(live.length - 1, SWEEP_CAP) * SWEEP_STEP));
+}
+
+/* `cold` is the application that comes from the URL rather than from a
+   person. Arriving straight at /?q=interior+design deals the magazine
+   and asks in the same task, so a sweep there would close frames
+   nobody was ever shown and charge the visitor half a second for it.
+   Passed explicitly by the one caller that means it: a flag that
+   guessed "the first apply()" instead skipped the first thing anyone
+   actually typed, which is the one time it most needs to run. */
+async function apply(cold) {
   /* Before syncUrl, not after. The pause timer can land on another
      route, and syncUrl writes the query string with replaceState —
      it would rewrite the case study's own address to `?q=`. */
@@ -2699,20 +2708,28 @@ function apply() {
   const next = Boolean(query.trim());
   const changed = next !== asked;
   if (!next) cancelAsk();
-  /* Seats are read from the page AS THE VISITOR LEFT IT — before the
-     asked class hides the strata (display:none zeroes every rect) and
-     before the jump home moves them. Order is the whole trick here:
-     capture, then change the world. */
-  window.__seatRects = new Map();
-  if (next && !REDUCE()) {
-    document.querySelectorAll(".stratum [data-key]").forEach((el) => {
-      const r = el.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < innerHeight) {
-        __seatRects.set(el.dataset.key, r);
-      }
-    });
-  }
+  /* WHAT IS ON SCREEN CLOSES BEFORE WHAT IS ASKED FOR OPENS. Frames
+     used to TRAVEL here: a card visible in the magazine remembered its
+     seat and slid from it to its answer position, so a surviving
+     picture appeared to stay put while the page rearranged. A good
+     idea that only reads when most things move a little. On "interior
+     design" exactly one of eight cards had a seat and crossed 559px
+     while its seven neighbours rose 34, and the outlier looked like a
+     bug rather than a memory.
+
+     Every frame already owns a curtain, drawn back from the top as it
+     arrives. Closing it is the same gesture continued, so the page has
+     one move at two scales: the full-screen curtain for a navigation
+     or a filter, this one for a query. Nothing has to remember where
+     it used to be. */
+  if (next && !cold) await sweepOut();
+  if (!alive) return;
   document.body.classList.toggle("asked", next);
+  /* Cleared while the strata are hidden, so nothing animates back. */
+  document.querySelectorAll(".fd-out").forEach((el) => {
+    el.classList.remove("fd-out");
+    el.style.removeProperty("--lag");
+  });
   if (changed && window.settleAsk) settleAsk();
   if (next) {
     if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
@@ -3450,7 +3467,7 @@ function armRows(rowsEl) {
   const d = parseInt(p.get("deal") || "5", 10);
   if (Number.isFinite(d)) seedNo = d;
   buildMagazine();
-  if (q) { input.value = q; query = q; apply(); }
+  if (q) { input.value = q; query = q; apply(true); }
   let rw = 0;
   /* The redeal on resize. window outlives the route, and this handler
      rebuilds BOTH columns from scratch — it was the shortest path
