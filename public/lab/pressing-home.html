@@ -1118,8 +1118,39 @@
        children, ordered by the deal index each carries — so one track
        reads 0,1,2,3 rather than the whole left column then the whole
        right. */
-    .ixrows.ixcols { display: grid; grid-template-columns: 1fr;
+    /* ── THE PHONE'S OWN RHYTHM ──────────────────────────────────
+       Thirty frames at one width is a stack, and a stack has no
+       shape: every project arrives at the same size, so nothing is
+       emphasised and scrolling it is a chore rather than a read.
+
+       Six tracks, and a cell takes a span. The cycle is seven cells:
+
+         hero        (6)     one full-width frame
+         pair        (3 + 3) an even split
+         hero        (6)
+         hero        (6)
+         pair        (2 + 4) a third against two thirds
+
+       The two halves of a pair are NOT the same height and are not
+       meant to be: every card carries its own --ar off the index, and
+       the ratios in here run from a 3:2 landscape to a 3:4 portrait.
+       That difference is the whole reason a pair is worth having,
+       which is what the Big Bend spread already does on desktop.
+
+       The span classes come from the dealer, not from nth-child. The
+       phone dissolves .ixrow with display:contents, which takes the
+       box out of layout and leaves it in the DOM, so a positional
+       selector counts inside a two-cell row and never sees a seventh
+       child. Only the deal knows a frame's flat place. */
+    .ixrows.ixcols { display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      align-items: start;
+      column-gap: clamp(10px, 3vw, 18px);
       row-gap: clamp(30px, 7vw, 48px); }
+    .ixrows.ixcols .cell { grid-column: span 6; }
+    .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
+    .ixrows.ixcols .cell.mThird { grid-column: span 2; }
+    .ixrows.ixcols .cell.mTwoThirds { grid-column: span 4; }
     .ixrow, .ixlead { display: contents; }
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
@@ -3816,9 +3847,29 @@ function buildMagazine() {
      hold the slot — but that placeholder carried order -1, so it
      sorted ahead of the real frame, took column one, and left the last
      picture in the right column wearing the left column's alignment. */
+  /* THE PHONE'S RHYTHM, ASSIGNED HERE because only the dealer knows a
+     frame's flat position. It was nth-child in the stylesheet first and
+     could never have worked: the phone dissolves .ixrow with
+     display:contents, which takes the box out of LAYOUT but leaves it
+     in the DOM, so :nth-child kept counting inside a row that holds two
+     cells and never reached the seventh. The grid was right and the
+     pattern silently matched nothing.
+
+     Seven-cell cycle: a full-width frame, an even pair, two more
+     full-width, then a third against two thirds. */
+  const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mThird", "mTwoThirds"];
   const mk = (ci, i, side) => {
     const cell = document.createElement("div");
     cell.className = "cell col" + side + (i === 0 ? " first" : "");
+    /* A pair needs two. When the deal runs out on a slot that OPENS one
+       (positions 1 and 5), the last frame would stand at a third or a
+       half of the width with nothing beside it, which reads as a
+       picture that failed to load rather than as a composition. */
+    const slot = i % 7;
+    const opensPair = slot === 1 || slot === 5;
+    cell.classList.add(
+      opensPair && i === workIdx.length - 1 ? "mHero" : M_RHYTHM[slot]
+    );
     cell.style.order = String(i);
     if (ci !== undefined) {
       const c = cards[ci];

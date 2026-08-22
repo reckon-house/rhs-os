@@ -1063,8 +1063,39 @@
        children, ordered by the deal index each carries — so one track
        reads 0,1,2,3 rather than the whole left column then the whole
        right. */
-    .ixrows.ixcols { display: grid; grid-template-columns: 1fr;
+    /* ── THE PHONE'S OWN RHYTHM ──────────────────────────────────
+       Thirty frames at one width is a stack, and a stack has no
+       shape: every project arrives at the same size, so nothing is
+       emphasised and scrolling it is a chore rather than a read.
+
+       Six tracks, and a cell takes a span. The cycle is seven cells:
+
+         hero        (6)     one full-width frame
+         pair        (3 + 3) an even split
+         hero        (6)
+         hero        (6)
+         pair        (2 + 4) a third against two thirds
+
+       The two halves of a pair are NOT the same height and are not
+       meant to be: every card carries its own --ar off the index, and
+       the ratios in here run from a 3:2 landscape to a 3:4 portrait.
+       That difference is the whole reason a pair is worth having,
+       which is what the Big Bend spread already does on desktop.
+
+       The span classes come from the dealer, not from nth-child. The
+       phone dissolves .ixrow with display:contents, which takes the
+       box out of layout and leaves it in the DOM, so a positional
+       selector counts inside a two-cell row and never sees a seventh
+       child. Only the deal knows a frame's flat place. */
+    .ixrows.ixcols { display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      align-items: start;
+      column-gap: clamp(10px, 3vw, 18px);
       row-gap: clamp(30px, 7vw, 48px); }
+    .ixrows.ixcols .cell { grid-column: span 6; }
+    .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
+    .ixrows.ixcols .cell.mThird { grid-column: span 2; }
+    .ixrows.ixcols .cell.mTwoThirds { grid-column: span 4; }
     .ixrow, .ixlead { display: contents; }
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }

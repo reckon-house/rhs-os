@@ -1973,9 +1973,29 @@ function buildMagazine() {
      hold the slot — but that placeholder carried order -1, so it
      sorted ahead of the real frame, took column one, and left the last
      picture in the right column wearing the left column's alignment. */
+  /* THE PHONE'S RHYTHM, ASSIGNED HERE because only the dealer knows a
+     frame's flat position. It was nth-child in the stylesheet first and
+     could never have worked: the phone dissolves .ixrow with
+     display:contents, which takes the box out of LAYOUT but leaves it
+     in the DOM, so :nth-child kept counting inside a row that holds two
+     cells and never reached the seventh. The grid was right and the
+     pattern silently matched nothing.
+
+     Seven-cell cycle: a full-width frame, an even pair, two more
+     full-width, then a third against two thirds. */
+  const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mThird", "mTwoThirds"];
   const mk = (ci, i, side) => {
     const cell = document.createElement("div");
     cell.className = "cell col" + side + (i === 0 ? " first" : "");
+    /* A pair needs two. When the deal runs out on a slot that OPENS one
+       (positions 1 and 5), the last frame would stand at a third or a
+       half of the width with nothing beside it, which reads as a
+       picture that failed to load rather than as a composition. */
+    const slot = i % 7;
+    const opensPair = slot === 1 || slot === 5;
+    cell.classList.add(
+      opensPair && i === workIdx.length - 1 ? "mHero" : M_RHYTHM[slot]
+    );
     cell.style.order = String(i);
     if (ci !== undefined) {
       const c = cards[ci];
