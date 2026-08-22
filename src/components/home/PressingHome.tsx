@@ -39,18 +39,26 @@ import "./pressing-home.css";
 
 export function PressingHome() {
   useEffect(() => {
-    /* The ground. This page is white paper on pure black type, and the
-       rest of the site is not — so the flag goes on <html>, where it
-       can paint behind the sticky masthead too. Without it the shell's
-       textured ground shows through the bar's translucent burn. */
-    document.documentElement.classList.add("rh-home");
+    /* TWO FLAGS, TWO MEANINGS, and keeping them apart is load bearing.
+       rh-home is "this page is white paper": it paints behind the
+       sticky masthead so the bar's translucent burn has white to
+       filter rather than the shell's textured ground. PaperGround puts
+       the same flag on every other white route for the same reason.
+       rh-cover is "this page's own cover is holding the bar's ends",
+       and it is the homepage alone, because only this page carries a
+       second copy of the wordmark and the address on the page itself.
+       While they were one class the daybook rendered a masthead with
+       neither in it: the handoff's hidden state applied there, and
+       body.headgone, which drops them back in, is written by the
+       driver below, which only runs here. */
+    document.documentElement.classList.add("rh-home", "rh-cover");
     /* One effect, one init, and the teardown is real: React 18's dev
        double-invoke runs this twice, so a driver that could not be
        stopped would leave two of every timer behind. */
     const stop = initPressingHome();
     return () => {
       stop();
-      document.documentElement.classList.remove("rh-home");
+      document.documentElement.classList.remove("rh-home", "rh-cover");
     };
   }, []);
 

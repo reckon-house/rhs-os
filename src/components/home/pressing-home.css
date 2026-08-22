@@ -263,9 +263,18 @@
      driver's own flag for "the field is still at full size in the
      cover", which is exactly the moment the wordmark and the address
      are on the page below. Opacity rather than display, so nothing
-     reflows when they come back on the first scroll. Scoped to
-     rh-home: attop is only ever set by the homepage driver, but a
-     stale class on another route must not be able to blank its bar. */
+     reflows when they come back on the first scroll.
+
+     SCOPED TO rh-cover, NOT rh-home, and the difference is the whole
+     rule. rh-home means "this page is white paper", which PaperGround
+     puts on every white route so the bar's burn has something to
+     filter. rh-cover means "this page's own cover is holding the bar's
+     ends", which is true of the homepage alone. They were one class
+     for a night, and the daybook inherited a bar with no name and no
+     address in it: the hidden state applied, and headgone, which drops
+     them back, is only ever set by the homepage driver, which does not
+     run there. A flag that means two things is a flag that will be
+     wrong on one of them. */
   /* THE BAR IS THE COLUMNS, COMPRESSED. The wordmark takes the left
      gutter, over the note rail; the field stays in the middle column
      and only ever travels vertically; the address keeps the right
@@ -284,24 +293,24 @@
      visibility rides along so the hidden copies cannot be tabbed to;
      it switches at the end of the way out and immediately on the way
      in. The address follows the name by a beat. */
-  html.rh-home #nav [data-mark],
-  html.rh-home #nav [data-meta] {
+  html.rh-cover #nav [data-mark],
+  html.rh-cover #nav [data-meta] {
     opacity: 0; visibility: hidden;
     transform: translateY(-14px);
     transition: opacity 0.2s ease,
       transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
       visibility 0s linear 0.32s; }
-  html.rh-home body.headgone #nav [data-mark],
-  html.rh-home body.headgone #nav [data-meta] {
+  html.rh-cover body.headgone #nav [data-mark],
+  html.rh-cover body.headgone #nav [data-meta] {
     opacity: 1; visibility: visible; transform: none;
     transition: opacity 0.22s ease,
       transform 0.34s cubic-bezier(0.2, 0.9, 0.25, 1),
       visibility 0s linear 0s; }
-  html.rh-home body.headgone #nav [data-meta] {
+  html.rh-cover body.headgone #nav [data-meta] {
     transition-delay: 0.05s, 0.05s, 0s; }
   @media (prefers-reduced-motion: reduce) {
-    html.rh-home #nav [data-mark],
-    html.rh-home #nav [data-meta] { transition: none; transform: none; }
+    html.rh-cover #nav [data-mark],
+    html.rh-cover #nav [data-meta] { transition: none; transform: none; }
   }
   /* COLUMNS ONE AND THREE COME UP ON THEIR OWN. The cover is as tall
      as the statement, and the statement lives in the middle column —
