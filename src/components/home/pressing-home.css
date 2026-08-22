@@ -1275,10 +1275,14 @@
     transition: clip-path 0.4s cubic-bezier(0.5, 0, 0.75, 0),
       transform 0.4s cubic-bezier(0.5, 0, 0.75, 0);
     transition-delay: var(--lag, 0s); }
-  .fd-out .fd-note { opacity: 0;
+  /* A note card IS the .fd-note element and carries the sweep class
+     itself, so this is a compound and not a descendant. Written the
+     other way first, where it matched nothing and the text cards
+     simply blinked out under the swap. */
+  .fd-note.fd-out { opacity: 0;
     transition: opacity 0.28s ease var(--lag, 0s); }
   @media (prefers-reduced-motion: reduce) {
-    .fd-out .shot > *, .fd-out .fd-note { transition: none; }
+    .fd-out .shot > *, .fd-note.fd-out { transition: none; }
   }
   /* the text cards keep the quiet fade — there is no picture to draw
      back a curtain from */

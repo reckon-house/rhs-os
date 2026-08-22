@@ -2692,6 +2692,41 @@ function sweepOut() {
     setTimeout(r, SWEEP_MS + Math.min(live.length - 1, SWEEP_CAP) * SWEEP_STEP));
 }
 
+/* THE MAGAZINE DRAWS ITSELF BACK IN. Returning from an answer, the
+   frames still carry the open state they were left with, so without
+   this they are simply present the instant the answer is hidden. The
+   same curtain that opened them on the way in opens them again, on the
+   row cascade, so leaving a query is the mirror of entering one.
+
+   Closed with transitions OFF and committed before they are re-armed:
+   removing fd-on from a visible frame would otherwise play the 1.4s
+   open backwards, which is the one thing the closing curtain exists
+   not to do.
+
+   In-view frames only, matching the sweep. A card further down was
+   never opened, and its observer is still watching for it. */
+function reopenIndex() {
+  if (REDUCE()) return;
+  const live = [...document.querySelectorAll(".stratum [data-key].fd-on")]
+    .filter((el) => {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+    });
+  if (!live.length) return;
+  const inner = (el) => el.querySelectorAll(".shot > *");
+  live.forEach((el) => {
+    el.style.transition = "none";
+    inner(el).forEach((n) => { n.style.transition = "none"; });
+    el.classList.remove("fd-on");
+  });
+  document.body.getBoundingClientRect();   /* commit the closed state */
+  live.forEach((el, i) => {
+    el.style.removeProperty("transition");
+    inner(el).forEach((n) => { n.style.removeProperty("transition"); });
+    setTimeout(() => el.classList.add("fd-on"), 40 + Math.min(i, 8) * 55);
+  });
+}
+
 /* `cold` is the application that comes from the URL rather than from a
    person. Arriving straight at /?q=interior+design deals the magazine
    and asks in the same task, so a sweep there would close frames
@@ -2722,7 +2757,18 @@ async function apply(cold) {
      one move at two scales: the full-screen curtain for a navigation
      or a filter, this one for a query. Nothing has to remember where
      it used to be. */
-  if (next && !cold) await sweepOut();
+  /* BOTH DIRECTIONS. Closing the field used to be the one instant act
+     on the page: the answer vanished and the magazine was simply
+     there, which after everything else reads as the page giving up
+     rather than returning. The X, "Back to the house", Escape and the
+     wordmark all arrive here through onQuery("", true), so one line
+     covers all four.
+
+     `asked` still holds the OLD state here, which is what makes the
+     guard right: clearing a field nobody had asked with sweeps
+     nothing, rather than closing the magazine and reopening it over a
+     query that never happened. */
+  if (!cold && (next || asked)) await sweepOut();
   if (!alive) return;
   document.body.classList.toggle("asked", next);
   /* Cleared while the strata are hidden, so nothing animates back. */
@@ -2731,6 +2777,7 @@ async function apply(cold) {
     el.style.removeProperty("--lag");
   });
   if (changed && window.settleAsk) settleAsk();
+  if (!next && asked && !cold) reopenIndex();
   if (next) {
     if (scrollY > 4) scrollTo({ top: 0, behavior: "auto" });
     buildAnswer();
