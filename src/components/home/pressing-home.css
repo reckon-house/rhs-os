@@ -154,10 +154,31 @@
   /* One column now. The question, then who is asking — the two
      paragraphs explaining the field are gone, because a field that
      needs explaining in two paragraphs has not been designed yet. */
-  /* No horizontal padding: the .ixbody inside supplies the page
+  /* THE COVER STARTS IN THE BAR, NOT UNDER IT. The wordmark and the
+     address ARE the navigation now, so the bar cannot also be a 54px
+     empty band above them — that read as a nav with nothing in it,
+     then padding, then the page. Pulling the section up by the bar's
+     own height puts its first line in that band, and the bar's own
+     ends stay hidden underneath (body.attop) so nothing doubles.
+
+     No horizontal padding: the .ixbody inside supplies the page
      gutter, and doubling it would push the cover's columns off the
-     index's. Vertical only. */
-  .cover { padding: clamp(34px, 5dvh, 74px) 0 clamp(30px, 4dvh, 56px); }
+     index's. */
+  /* AIR AT THE TOP, and the rules take it too. The header row shares
+     the bar's band, so the offset is measured from the viewport
+     rather than from the bar: pull up by the bar's height, push down
+     by the air wanted above everything. The rules hang off .covercols,
+     whose top is this section's content top, so they start on the same
+     line the type does instead of running up into the white. */
+  .cover { --cover-air: 50px;
+    margin-top: calc(var(--cover-air) - var(--nav));
+    padding: 0 0 clamp(30px, 4dvh, 56px);
+    position: relative; }
+  /* One line, three columns. Baseline rather than start, so the
+     wordmark and the address sit on the statement's first baseline
+     instead of hanging from their own box tops at three different
+     sizes. This is what makes the row read as the bar. */
+  .cover .ixbody { align-items: baseline; }
 
   /* ── the cover's three columns ───────────────────────────────────
      The wordmark takes the note rail's column and the address the last
@@ -167,7 +188,7 @@
   .covermark { font-size: var(--nav-size, 16px); font-weight: 700;
     letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
-    column-gap: var(--ixgap); align-items: start;
+    column-gap: var(--ixgap); align-items: baseline;
     /* THE RULES REACH THE INDEX'S. Without this the three verticals
        stop at the statement and start again under it, and the columns
        read as two stacked headers rather than one structure. The
@@ -175,10 +196,33 @@
        and the first one there: this section's bottom padding and the
        index stratum's top padding. Measured at 117px on a 900px
        window, which is exactly 36 + 81. */
-    --cover-bridge: calc(clamp(30px, 4dvh, 56px) + clamp(56px, 9dvh, 120px));
-    background-size: 1px calc(100% + var(--cover-bridge)); }
-  .covercols::before, .covercols::after {
-    bottom: calc(-1 * var(--cover-bridge)); }
+    --cover-bridge: calc(clamp(30px, 4dvh, 56px) + clamp(56px, 9dvh, 120px)); }
+  /* ALL THREE RULES ON ONE PSEUDO, because .ixrows draws its middle
+     rule as a BACKGROUND and a background cannot paint outside its own
+     box — sizing it past 100% just clips. So the two edge rules
+     bridged the gap and the middle one could not, which is exactly
+     what it looked like.
+     This is a single overflowing box spanning covercols plus half a
+     gutter each side, carrying three 1px gradients at 0, 50% and 100%.
+     Its 50% is the gap's centre, the same point the background used.
+     Doubled selectors on purpose: .covercols alone ties .ixrows on
+     specificity and loses on source order, since .ixrows is defined
+     further down this file. */
+  .ixrows.covercols { background-image: none; }
+  .ixrows.covercols::after { display: none; }
+  .ixrows.covercols::before {
+    content: ""; position: absolute; pointer-events: none;
+    top: 0; bottom: calc(-1 * var(--cover-bridge));
+    left: calc(var(--ixgap) / -2);
+    right: calc(var(--ixgap) / -2);
+    width: auto; background: none;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%, 1px 100%, 1px 100%;
+    background-position: 0 0, 50% 0, 100% 0;
+    background-repeat: no-repeat; }
   .covermeta { justify-self: end; text-align: right;
     font-size: var(--nav-size, 16px); font-weight: 500;
     letter-spacing: 0.04em; line-height: 1.04;
@@ -207,6 +251,28 @@
   html.rh-home body.attop #nav [data-mark],
   html.rh-home body.attop #nav [data-meta] {
     opacity: 0; visibility: hidden; }
+  /* The other half of the same swap: the cover's ends leave exactly as
+     the bar's arrive. Without this both are on screen for the ~15px of
+     scroll it takes attop to flip, 1.5px apart, which reads as the
+     wordmark ghosting rather than staying put. */
+  /* The pill is dark while the cover shares the bar's band, so the
+     page's own masthead line is never displaced by it, and lights as
+     the work arrives underneath. See the coverbar flag in the driver
+     for why waiting beats lifting. */
+  html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
+  html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-burn] { transition: none; }
+  }
+  html.rh-home body:not(.attop) .covermark,
+  html.rh-home body:not(.attop) .covermeta {
+    opacity: 0; visibility: hidden; }
+  html.rh-home .covermark, html.rh-home .covermeta {
+    transition: opacity 0.3s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    html.rh-home .covermark, html.rh-home .covermeta {
+      transition: none; }
+  }
   html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
     transition: opacity 0.3s ease; }
   @media (prefers-reduced-motion: reduce) {
@@ -816,6 +882,8 @@
     /* The cover stacks with everything else: wordmark, the statement
        and its question, then the address. It keeps its right edge so
        the column it came from is still legible in the stack. */
+    /* Less air on a phone, where the fold is the scarce thing. */
+    .cover { --cover-air: 24px; }
     .covermark { display: block;
       padding-bottom: clamp(22px, 5vw, 40px); }
     .covercols { grid-template-columns: 1fr;

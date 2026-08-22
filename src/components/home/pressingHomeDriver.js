@@ -2898,6 +2898,19 @@ let tourFull = "";                     /* what placeAsk should size to */
     ask.style.setProperty("--ask-fw", p > 0.35 ? "700" : "500");
     ask.classList.toggle("big", p > 0.35);
     document.body.classList.toggle("attop", p > 0.96);
+    /* THE MELT IS FOR THE WORK, NOT FOR THE MASTHEAD LINE. The cover's
+       wordmark, statement and address share the bar's band by design,
+       and the burn pill displaces whatever painted beneath it — so at
+       rest the page's own header was being rippled by the effect that
+       exists to keep the bar legible over photography. It cannot be
+       lifted over the pill: the homepage wrapper carries isolation:
+       isolate for its paper layer, which caps every z-index inside it
+       below the bar's. So the pill waits instead. Measured, not
+       timed: it stays off while any part of the cover still overlaps
+       the bar, and lights the moment the work starts passing under. */
+    const cov = document.querySelector(".cover");
+    document.body.classList.toggle("coverbar",
+      Boolean(cov) && cov.getBoundingClientRect().bottom > barH);
   };
 
   /* the one time the move is not scroll-driven: opening or closing an

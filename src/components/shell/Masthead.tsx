@@ -237,7 +237,7 @@ export function Masthead() {
         className={[styles.nav, overDark && styles.rev, overDark && "is-rev",
           styles.home].filter(Boolean).join(" ")}
       >
-        <div ref={burnRef} className={styles.burn} aria-hidden="true" />
+        <div ref={burnRef} data-burn className={styles.burn} aria-hidden="true" />
         {/* data-mark is a stable hook for the same reason id="nav" is:
             the homepage's field measures its travel against the
             wordmark's left edge, and a CSS-module class name is hashed
