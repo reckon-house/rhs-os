@@ -28,6 +28,7 @@ import {
   type DaybookProject,
 } from "@/data/daybook";
 import { HoverPlate } from "@/components/daybook/HoverPlate";
+import { curtain } from "@/lib/curtain";
 import { useLedgerArrival } from "@/lib/ledger-arrival";
 import { PaperGround } from "@/components/shell/PaperGround";
 import styles from "./daybook.module.css";
@@ -39,6 +40,13 @@ const SEQ = new Map(DAYBOOK.map((e, i) => [e.id, DAYBOOK.length - i]));
 const no = (id: string) => `No. ${String(SEQ.get(id) ?? 0).padStart(3, "0")}`;
 
 const PROJECTS: DaybookProject[] = ["RHS", "Sally", "A.R.C.", "Lab"];
+
+/* Entries per project. Module scope like SEQ above, and for the same
+   reason: it is a fact about the whole log, not about a render. It was
+   a useMemo until the filter needed it before its own declaration,
+   which the React Compiler could not reason about and bailed on. */
+const COUNTS = new Map<DaybookProject, number>();
+DAYBOOK.forEach((e) => COUNTS.set(e.project, (COUNTS.get(e.project) ?? 0) + 1));
 
 const finePointer = () =>
   window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -94,66 +102,55 @@ function Entry({ e, first }: { e: DaybookEntry; first: boolean }) {
 
 export function DaybookLedger() {
   const [proj, setProj] = useState<DaybookProject | null>(null);
-  const [outgo, setOutgo] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const swapping = useRef(false);
 
-  /* Filtering is a two-beat swap: the current rows draw OUT (rules
-     retract, words sink), the list changes, and the new rows draw IN on
-     the arrival's own stagger. Reduced motion swaps instantly. The
-     swapping latch means a second click mid-flight is ignored rather
-     than queued into a mess. */
+  /* FILTERING PLAYS THE SITE'S CURTAIN, the same one a case-study link
+     plays: white down, black up, the list rebuilt under full black, and
+     the black lifting to reveal it. It used to have a private two-beat
+     animation instead, rows drawing out and back in, which meant this
+     site had two different transitions and the quieter one was doing a
+     smaller version of the other's job.
+
+     The curtain's repeated word is the filter's own name, and the sub
+     is its count, so the panel reads "Sally 19 entries" down the page
+     while the list behind it is rebuilt.
+
+     No reduced-motion branch here on purpose, and none needed: play()
+     runs the commit bare under reduced motion, when a sequence is
+     already in flight, or when nothing is registered at all. The
+     filter changes in every one of those cases; only the curtain is
+     conditional. One place decides. */
   const queued = useRef<DaybookProject | null | undefined>(undefined);
   const pick = (p: DaybookProject | null) => {
     const next = p !== null && proj === p ? null : p;
-    /* A click mid-swap is not dropped, it is the new destination: the
-       latest choice waits out the flight and then plays. */
+    if (next === proj) return;
+    /* A click mid-flight is not dropped, it is the new destination: the
+       latest choice waits out the sequence and then plays. */
     if (swapping.current) {
       queued.current = next;
       return;
     }
-    if (next === proj) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setProj(next);
-      return;
-    }
     swapping.current = true;
-    setOutgo(true);
-    window.setTimeout(() => {
-      setProj(next);
-      setOutgo(false);
-      requestAnimationFrame(() => {
-        const list = listRef.current;
-        if (!list) {
-          swapping.current = false;
-          return;
-        }
-        const items = list.querySelectorAll<HTMLElement>(
-          `.${styles.row}, .${styles.month}`
-        );
-        items.forEach((el, i) => {
-          el.classList.add(styles.pre);
-          el.style.setProperty("--dbd", `${Math.min(i, 10) * 55}ms`);
-        });
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            items.forEach((el) => el.classList.remove(styles.pre));
-            window.setTimeout(() => {
-              swapping.current = false;
-              if (queued.current !== undefined) {
-                const q = queued.current;
-                queued.current = undefined;
-                pick(q as DaybookProject | null);
-              }
-            }, 420);
-          })
-        );
-      });
-    }, 300);
+    const n = next ? COUNTS.get(next) ?? 0 : DAYBOOK.length;
+    void curtain(
+      next ?? "Everything",
+      `${n} ${n === 1 ? "entry" : "entries"}`,
+      () => setProj(next)
+    ).then(() => {
+      swapping.current = false;
+      if (queued.current !== undefined) {
+        const q = queued.current;
+        queued.current = undefined;
+        pick(q as DaybookProject | null);
+      }
+    });
   };
 
-  useLedgerArrival(rootRef, `.${styles.row}, .${styles.month}`, styles.pre);
+  /* Keyed on proj: a rebuilt list is new DOM, and without the key its
+     below-fold rows would arrive already settled. */
+  useLedgerArrival(rootRef, `.${styles.row}, .${styles.month}`, styles.pre, proj);
 
   /* THE PAGE ENTERS. The statement, the rail blocks, and the rows
      already inside the first viewport rise in sequence on mount — the
@@ -180,11 +177,6 @@ export function DaybookLedger() {
     return () => window.clearTimeout(belt);
   }, []);
 
-  const counts = useMemo(() => {
-    const m = new Map<DaybookProject, number>();
-    DAYBOOK.forEach((e) => m.set(e.project, (m.get(e.project) ?? 0) + 1));
-    return m;
-  }, []);
   const months = useMemo(
     () => byMonth(proj ? DAYBOOK.filter((e) => e.project === proj) : DAYBOOK),
     [proj]
@@ -249,7 +241,7 @@ export function DaybookLedger() {
                     className={proj === p ? styles.on : undefined}
                     onClick={() => pick(p)}
                   >
-                    {p} &middot; {counts.get(p) ?? 0}
+                    {p} &middot; {COUNTS.get(p) ?? 0}
                   </button>
                 ))}
               </div>
@@ -265,10 +257,7 @@ export function DaybookLedger() {
             </div>
           </div>
 
-          <div
-            ref={listRef}
-            className={`${styles.list} ${outgo ? styles.outgo : ""}`}
-          >
+          <div ref={listRef} className={styles.list}>
             {months.map((m) => (
               <section key={m.key}>
                 {/* The month is a beat, not a filing label: display type

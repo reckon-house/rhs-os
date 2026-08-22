@@ -75,7 +75,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    /* suppressHydrationWarning is for the class the head script below
+       stamps on this element before React ever runs. The server cannot
+       know the route's ground, the client must know it before the first
+       paint, and React sees the difference as a mismatch it refuses to
+       patch. Suppression applies to THIS element's attributes only, not
+       to its subtree, which is exactly the scope of the discrepancy. */
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* THE GROUND, BEFORE THE FIRST PAINT. The white routes ask for
             their ground in a useEffect, which runs after hydration, so

@@ -23,7 +23,12 @@ export function useLedgerArrival(
   /** Selector for the rows, resolved inside the root. */
   rowSelector: string,
   /** The JS-applied start-state class. Removing it plays the arrival. */
-  preClass: string
+  preClass: string,
+  /** Changes when the rows are REBUILT, so the new ones get armed too.
+      Without it this ran once on mount and a filtered list arrived with
+      every below-fold row already settled, which reads as the page
+      having quietly given up halfway down. */
+  key?: unknown
 ) {
   useEffect(() => {
     const root = rootRef.current;
@@ -66,5 +71,5 @@ export function useLedgerArrival(
         r.style.removeProperty("--dbd");
       });
     };
-  }, [rootRef, rowSelector, preClass]);
+  }, [rootRef, rowSelector, preClass, key]);
 }

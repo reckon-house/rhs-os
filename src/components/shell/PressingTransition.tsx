@@ -37,6 +37,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { registerCurtain } from "@/lib/curtain";
 
 /** How far apart the stacked lines arrive, and leave. Arriving is the
  *  flourish; leaving should not hold the page up. */
@@ -113,10 +114,49 @@ export function PressingTransition() {
     });
   }, []);
 
+  /* PAINTED, not merely committed. A route commits its pathname while
+     it may still have thousands of nodes left to draw, and the same is
+     true of a React state swap under the black: setState resolves long
+     before the browser has put anything on the glass. Two frames after
+     the commit it has. The timeout keeps a page that never settles
+     from holding the screen. */
+  const painted = () =>
+    new Promise<void>((resolve) => {
+      let done = false;
+      const go = () => {
+        if (done) return;
+        done = true;
+        resolve();
+      };
+      requestAnimationFrame(() => requestAnimationFrame(go));
+      setTimeout(go, 900);
+    });
+
+  /* THE CHANGE ITSELF IS A PARAMETER. It was always router.push, which
+     is why the sequence could only ever be a navigation; a daybook
+     filter rebuilds a list and changes no route, and had to grow its
+     own quieter animation to get the same beat. Now the push is one
+     commit among others. See src/lib/curtain.ts. */
   const play = useCallback(
-    async (href: string, title: string, sub: string) => {
+    async (title: string, sub: string, commit: () => void | Promise<void>) => {
       const root = rootRef.current;
-      if (!root || busy.current) return;
+
+      /* THE COMMIT HAPPENS EITHER WAY. Both of these used to be plain
+         returns, which was safe while the only commit was a navigation
+         the click handler had already declined to intercept. It is not
+         safe now: a commit that is also a state change would simply be
+         dropped, and a filter would light up with the list unchanged
+         behind it. No curtain is a missing animation; no commit is a
+         broken page.
+
+         Reduced motion lands here for non-link callers only. A link
+         never reaches play() at all under it, because the click handler
+         leaves the anchor alone and lets the browser navigate. */
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!root || busy.current || reduced) {
+        await commit();
+        return;
+      }
       busy.current = true;
 
       /* What is loading, repeated until it fills the page. The count is
@@ -180,42 +220,23 @@ export function PressingTransition() {
          floor, so a prefetched route cannot snap the black open before
          it has registered as closed, and a stalled one cannot hold the
          screen forever. */
+      /* The class goes on BEFORE the commit. Once React starts
+         committing a heavy route the main thread is gone, and a class
+         added after that would not land until the work was already
+         over. Started here, the compositor carries it straight
+         through. */
+      root.classList.add("pt-wait");
+
+      /* painted() is applied HERE and not inside each commit, so
+         "on screen" is guaranteed once for every kind of change rather
+         than being a thing each caller has to remember. A setState
+         resolves long before the browser has drawn it. */
       let ready = false;
-      const routeChange = new Promise<void>((resolve) => {
-        arrived.current = resolve;
-      })
-        /* The route arriving is not the same as the page being ON
-           SCREEN. A.R.C. commits its pathname while it still has
-           thousands of SVG nodes left to paint, so lifting on the
-           pathname alone handed the reader a curtain rising over a
-           page that was still assembling — the stutter moved out from
-           under the black instead of being hidden by it. Two frames
-           after the commit, the browser has painted; a timeout keeps
-           a page that never settles from holding the screen. */
-        .then(
-          () =>
-            new Promise<void>((resolve) => {
-              let done = false;
-              const go = () => {
-                if (done) return;
-                done = true;
-                resolve();
-              };
-              requestAnimationFrame(() => requestAnimationFrame(go));
-              setTimeout(go, 900);
-            })
-        )
+      void Promise.resolve(commit())
+        .then(painted)
         .then(() => {
           ready = true;
         });
-      void routeChange;
-
-      /* The class goes on BEFORE the push. Once React starts committing
-         a heavy route the main thread is gone, and a class added after
-         that would not land until the work was already over. Started
-         here, the compositor carries it straight through. */
-      root.classList.add("pt-wait");
-      router.push(href);
 
       /* the floor: a prefetched route must not snap the black open
          before the eye has registered it closed */
@@ -265,8 +286,28 @@ export function PressingTransition() {
       root.className = "pt";
       busy.current = false;
     },
-    [beat, stopWaiting, router]
+    [beat, stopWaiting]
   );
+
+  /* THE NAVIGATION, AS A COMMIT. The arrival promise is armed BEFORE
+     the push, because a prefetched route can resolve inside it. */
+  const goTo = useCallback(
+    (href: string) => () => {
+      const landed = new Promise<void>((resolve) => {
+        arrived.current = resolve;
+      });
+      router.push(href);
+      return landed.then(() => {
+        arrived.current = null;
+      });
+    },
+    [router]
+  );
+
+  /* Published for the leaves that want the sequence without a
+     navigation. Registered on mount, withdrawn on unmount, and
+     curtain() runs the commit bare when nothing is registered. */
+  useEffect(() => registerCurtain(play), [play]);
 
   useEffect(() => {
     const reduce = () =>
@@ -301,12 +342,12 @@ export function PressingTransition() {
       const sub = lbl?.querySelector(".sub")?.textContent?.trim() ?? "";
       const title =
         (lbl ? lbl.textContent?.replace(sub, "") : a.textContent)?.trim() ?? "";
-      void play(href, title, sub);
+      void play(title, sub, goTo(href));
     };
 
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [pathname, play]);
+  }, [pathname, play, goTo]);
 
   return (
     <div className="pt" id="pt" ref={rootRef} aria-hidden="true">
