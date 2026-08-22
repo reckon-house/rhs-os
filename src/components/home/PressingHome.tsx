@@ -173,6 +173,15 @@ export function PressingHome() {
           No lede: the field is the title. */}
       <section className="hero-breakout stratum" id="stIndex">
         <div className="ixbody">
+          {/* The standing rules, pinned. They live HERE rather than on
+              #ixRows because the deal empties that container on every
+              answer, and a rule that is rebuilt is a rule that can be
+              forgotten. Absolute wrapper spans the whole index; the
+              sticky child inside it is one viewport tall and holds its
+              distance from the top while the work runs past. */}
+          <div className="ixrules" aria-hidden="true">
+            <div className="ixrulesPin" />
+          </div>
           <div className="ixnotes" id="ixNotes" />
           <div className="ixrows" id="ixRows" />
         </div>

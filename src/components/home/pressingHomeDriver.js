@@ -1945,38 +1945,43 @@ function buildMagazine() {
      deal order IS the reading order, left then right, top to bottom. */
   const rowsEl = document.getElementById("ixRows");
   rowsEl.innerHTML = "";
+  rowsEl.classList.add("ixcols");
   const workEls = [];
-  for (let i = 0; i < workIdx.length; i += 2) {
-    const row = document.createElement("div");
-    row.className = "ixrow";
-    [0, 1].forEach((k) => {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      const ci = workIdx[i + k];
-      if (ci !== undefined) {
-        const c = cards[ci];
-        const shot = c.href && window.__evidence && window.__evidence.get(c.href);
-        const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
-        /* an authored size wins over the dealt tier */
-        const sz = cards[ci].size != null ? cards[ci].size : shares[i + k];
-        el.style.setProperty("--share", String(sz));
-        /* the right-hand frame follows the left one in */
-        if (k) el.style.setProperty("--lag", CURTAIN_LAG);
-        cell.appendChild(el);
-        workEls.push(el);
-      }
-      row.appendChild(cell);
-    });
-    /* One length for every rule: the full width of the image area. It
-       used to start under the left frame, indented by that frame's
-       size, so each rule ran a different length; the ask was to make
-       them uniform, so the indent is gone and grid-column 1/-1 runs
-       every rule the whole width — the longest a rule could be. */
-    const rule = document.createElement("div");
-    rule.className = "ixrule";
-    row.appendChild(rule);
-    rowsEl.appendChild(row);
-  }
+  /* TWO COLUMNS THAT PACK, not rows that lock. A row is as tall as its
+     taller frame, so a portrait beside a landscape left a hole under
+     the short one — a 2169px-tall phone next to a kitchen leaves
+     several hundred pixels of nothing, and no amount of padding
+     touches it because the space belongs to the neighbour. Each column
+     stacks on its own now and the hole cannot form.
+
+     Deal order is unchanged: even indexes left, odd right, the same
+     left-then-right reading the rows produced. `order` carries the
+     flat deal index so that on a phone, where the columns collapse to
+     display:contents, the frames still read 0,1,2,3 down one track
+     rather than all of the left column and then all of the right. */
+  const cols = [0, 1].map(() => {
+    const c = document.createElement("div");
+    c.className = "ixrow ixcol";
+    rowsEl.appendChild(c);
+    return c;
+  });
+  workIdx.forEach((ci, i) => {
+    if (ci === undefined) return;
+    const cell = document.createElement("div");
+    cell.className = "cell" + (i === 0 ? " first" : "");
+    cell.style.order = String(i);
+    const c = cards[ci];
+    const shot = c.href && window.__evidence && window.__evidence.get(c.href);
+    const el = imgCard(shot ? { ...c, shot } : c, rnd, false);
+    /* an authored size wins over the dealt tier */
+    const sz = cards[ci].size != null ? cards[ci].size : shares[i];
+    el.style.setProperty("--share", String(sz));
+    /* the right-hand frame follows the left one in */
+    if (i % 2) el.style.setProperty("--lag", CURTAIN_LAG);
+    cell.appendChild(el);
+    workEls.push(el);
+    cols[i % 2].appendChild(cell);
+  });
   armRows(rowsEl);
 
   observeArrivals(workEls);
@@ -2253,6 +2258,11 @@ function buildAnswer() {
 
   const shares = dealShares(pairs.length * 2, rnd);
   rowsEl.innerHTML = "";
+  /* The answer keeps ROWS: it pairs a work frame with a board frame on
+     purpose, left and right, and that pairing is the reading. The
+     index below packs into columns instead, which is why the class
+     comes off here. */
+  rowsEl.classList.remove("ixcols");
   const els = [];
   pairs.forEach(([a, b], r) => {
     const row = document.createElement("div");
@@ -2825,7 +2835,7 @@ let tourFull = "";                     /* what placeAsk should size to */
     const mark = document.querySelector(".covermark");
     const meta = document.querySelector(".covermeta");
     const rail = document.querySelector("#stIndex .ixnotes");
-    const cell = document.querySelector("#ixRows .ixrow .cell:nth-child(2)");
+    const cell = document.querySelector("#ixRows .ixcol:nth-child(2) .cell");
     if (!mark || !meta || !rail || !cell) return;
     if (innerWidth <= 860) {
       root.style.setProperty("--rail-lift", "0px");

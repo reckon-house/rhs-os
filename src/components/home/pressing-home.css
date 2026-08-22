@@ -270,10 +270,7 @@
      them, so a failed script leaves the honest untightened page. */
   @media (min-width: 861px) {
     #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
-    /* nth-child(2), not .cell: BOTH cells in a row carry that class,
-       so the bare selector lifted the left frame too and dragged it up
-       over the statement it is supposed to sit under. */
-    #ixRows .ixrow:first-child .cell:nth-child(2) {
+    #ixRows .ixcol:nth-child(2) {
       margin-top: calc(-1 * var(--col3-lift, 0px)); }
   }
   html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
@@ -672,9 +669,38 @@
      two cannot drift into two slightly different intervals. */
   #stIndex, .answer { padding-bottom: 200px; }
 
-  .ixbody { display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
+  .ixbody { position: relative;
+    display: grid; grid-template-columns: var(--ix-note-w, 200px) minmax(0, 1fr);
     column-gap: clamp(24px, 3.4vw, 56px); align-items: start;
     padding: 0 var(--gut); }
+
+  /* ── the standing rules, pinned ──────────────────────────────────
+     They used to be drawn on .ixrows and scrolled away with the work,
+     which made them read as decoration on the frames rather than as
+     the page's own structure. The wrapper is absolute and spans the
+     whole index, so the lines can never outlive it; the child inside
+     is sticky and one viewport tall, so it holds its distance from the
+     top the whole way down and stops when the index does.
+
+     The wrapper spans rule ONE to rule THREE — from half a gutter past
+     the note rail to half a gutter past the last column — so the three
+     lines are simply 0, 50% and 100% of it. Offsets count from the
+     padding box, which is why --gut appears: absolute positioning does
+     not know about the gutter the grid is padded by. */
+  .ixrules { position: absolute; pointer-events: none;
+    --ixgap: clamp(24px, 3.4vw, 56px);
+    top: 0; bottom: 0;
+    left: calc(var(--gut) + var(--ix-note-w, 200px) + var(--ixgap) / 2);
+    right: calc(var(--gut) - var(--ixgap) / 2); }
+  .ixrulesPin { position: sticky; top: var(--nav);
+    height: calc(100dvh - var(--nav));
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
+      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
+    background-size: 1px 100%, 1px 100%, 1px 100%;
+    background-position: 0 0, 50% 0, 100% 0;
+    background-repeat: no-repeat; }
 
   /* PINNED. The four statements hold at the top while the magazine
      runs past them, which is the point of a column that was never
@@ -750,6 +776,28 @@
      the gap under the pictures and tightening the gap under the rule
      pulls every row up to the line above it, with the white space
      falling below — which is the ask. */
+  /* THE INDEX PACKS, THE ANSWER PAIRS. .ixcols turns the container
+     into the two columns each frame stacks inside; without it (the
+     answer) the children stay rows of two, which is what makes a work
+     frame and a board frame read as a pair. */
+  .ixrows.ixcols { display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: var(--ixgap); align-items: start; }
+  /* .ixrow.ixcol, not .ixcol: this file defines .ixrow further down
+     with grid-template-columns: 1fr 1fr, and an equal-specificity rule
+     written earlier loses on source order — so the frames kept pairing
+     and stacked two to a row. Third time this stylesheet has caught me
+     with that; anything overriding .ixrow or .ixrows from up here has
+     to double the selector. */
+  .ixrow.ixcol { grid-template-columns: 1fr;
+    row-gap: clamp(56px, 6.6vw, 108px); margin-bottom: 0; }
+  /* THE LEFT COLUMN HANGS OFF ITS OWN RULE. Frames are a fraction of
+     their column, so which edge they sit on is a real choice: the
+     right column reads against the page edge, the left against the
+     rule beside the note rail. Growth follows the anchor, or a hover
+     would walk the frame off its line. */
+  .ixcol:first-child .cell { justify-content: flex-start; }
+  .ixcol:first-child .fd-it { transform-origin: left center; }
+  .ixcol:first-child .fd-it .shot { transform-origin: left top; }
   .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
@@ -797,16 +845,13 @@
      Two are pseudo-elements, an element having only two. The middle one
      is a 1px background instead, which is the same hairline by another
      route and takes a percentage position without needing a third. */
-  .ixrows {
-    position: relative; --ixgap: clamp(24px, 3.4vw, 56px);
-    background-image: linear-gradient(
-      to right, rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
-    background-size: 1px 100%;
-    background-position: 50% 0;
-    background-repeat: no-repeat; }
+  .ixrows { position: relative; --ixgap: clamp(24px, 3.4vw, 56px); }
+  /* .ixrules carries these now. The cover keeps its own copy, which is
+     correct: those scroll away with the cover, and the pinned set
+     stands behind them at the same three x positions. */
   .ixrows::before, .ixrows::after {
     content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
-    background: rgba(0, 0, 0, 0.13); pointer-events: none; }
+    background: none; pointer-events: none; }
   /* half a gutter out from each edge: the middle of the gap to the note
      rail on the left, and the matching interval past the last column */
   .ixrows::before { left: calc(var(--ixgap) / -2); }
@@ -889,11 +934,23 @@
     .ixnotes { position: static; width: auto; left: auto;
       padding-bottom: clamp(40px, 9vw, 64px); }
     .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
+    /* The columns dissolve and their frames become the container's own
+       children, ordered by the deal index each carries — so one track
+       reads 0,1,2,3 rather than the whole left column then the whole
+       right. */
+    .ixrows.ixcols { display: grid; grid-template-columns: 1fr;
+      row-gap: clamp(30px, 7vw, 48px); }
+    .ixcol { display: contents; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
+    /* the rule that separated rows, now separating frames */
+    .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
+      padding-top: clamp(20px, 5vw, 34px); }
+    .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
     /* One column and no note rail, so there are no gutters left for a
        vertical to stand in. The row rule comes back to do the work. */
     .ixrows::before, .ixrows::after { display: none; }
+    .ixrules { display: none; }
     .ixrows { background-image: none; }
     .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
     /* The cover stacks with everything else: wordmark, the statement
