@@ -54,6 +54,90 @@ export interface DaybookEntry {
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
   {
+    id: "rhs-three-columns",
+    date: "2026-08-22",
+    project: "RHS",
+    title: "The homepage, in three columns",
+    body: [
+      "The homepage is three columns now: the wordmark left, the sentence and the question in the middle, the address right. They sit on the nav bar rather than under it, so the bar carries the page's own type instead of a strip of empty rule. Everything came down to two sizes, 32 and 12, inside a 50px frame on all four sides.",
+      "The work below runs in offset pairs, the right column a frame ahead of the left, 100px between one pair and the next. A name sits on the outside edge of its picture and swings across to the far side as the picture opens. Two hairlines run the height of the page and hold their place while the work scrolls past.",
+      "Then the same pass across every route: search results, the studies, the daybook, and the two black beats in the footer. Two old bugs fell out of it. The full-bleed rule measured 100vw, which is three pixels wider than the page whenever a scrollbar is showing, so every page sat three pixels left and the burn pill was off centre. And the masthead scrolled sideways on a phone, which hid the question field completely.",
+      "The lab caught up last. The homepage stylesheet and its driver are generated from public/lab/pressing-home.html, and none of this had been written back, so running the port would have regenerated the old homepage over the new one. It regenerates both byte for byte now.",
+    ],
+    link: { href: "/", label: "The homepage" },
+  },
+  {
+    id: "sally-edit-image-cap",
+    date: "2026-08-22",
+    project: "Sally",
+    body: "Image editing takes twelve inputs instead of four.",
+  },
+  {
+    id: "cover-three-columns",
+    date: "2026-08-21",
+    project: "RHS",
+    body: "The homepage cover became the page's own three columns instead of a bar sitting above them. The rail dropped its labels at the same time; six of them were naming things the type already said.",
+  },
+  {
+    id: "sally-inline-card",
+    date: "2026-08-21",
+    project: "Sally",
+    body: "The inline image card had never rendered. Fixed, and a check for placeholders went in so it cannot come back quietly.",
+  },
+  {
+    id: "receipt-ledger",
+    date: "2026-08-20",
+    project: "RHS",
+    body: "The ask receipt reads as a ledger now. It names the model, keeps each source in its own row, and says plainly that this site is a working concept testing AI as the thing that runs it. Info is gone, because every line on it was the homepage's left rail restated, and Staples moved onto the current design. The old desk drawings were still mounted behind every page and only ever showed up as a bug; they are unmounted.",
+    link: { href: "/", label: "Ask the house" },
+  },
+  {
+    id: "jim-attachments",
+    date: "2026-08-20",
+    project: "Sally",
+    body: "Jim takes attachments. A .pptx comes back as a designer's review with real edits made to it, and images generate or restyle inside the chat. The body cap went from 1MB to 24MB, which is what an attached image needs to get through the door at all. Jim also reads its own build before a human does, and reports the copy and the image as a pair rather than scoring them apart.",
+  },
+  {
+    id: "spring-one-card",
+    date: "2026-08-19",
+    project: "RHS",
+    body: "Jeffrey Spring had two cards on the homepage and now has one. The contact form's email line steps back from the button.",
+  },
+  {
+    id: "sally-drawing-era",
+    date: "2026-08-19",
+    project: "Sally",
+    title: "The drawing era",
+    body: [
+      "The Figma plugin draws every asset now. Until today it filled in master frames a designer had built by hand, which meant a template with no master could not be produced at all. It builds the frame from the same spec that drives the portal's own preview, so there is nothing to keep in sync and nobody to wait on.",
+      "Around that: it lists what the open file can actually build before you click, it picks the sheet from a list instead of asking anyone to type a slug, and it carries its own token so nobody pastes a credential. Building is the default now. The dry run that used to gate it was ceremony.",
+    ],
+  },
+  {
+    id: "sally-sheets-phase-two",
+    date: "2026-08-18",
+    project: "Sally",
+    body: "Campaign sheets reached phase two: a selector, patch and resolve endpoints, and a rewrite that edits a built sheet in place. The Figma plugin moved into the repo instead of living beside it. An adversarial review of the two found twenty defects, and all of them were fixed before any of it deployed.",
+  },
+  {
+    id: "index-standing-rules",
+    date: "2026-08-16",
+    project: "RHS",
+    body: "The homepage index got standing rules: two running down the page instead of one per row, then a third. A frame opens to the column edge on hover, and the cap is worked out from geometry rather than waiting on paint to report it.",
+  },
+  {
+    id: "covers-and-tiles",
+    date: "2026-08-16",
+    project: "RHS",
+    body: "Cover and tile pass across sixteen studies. Fairview's hero went back in at 3840 wide. Three new heroes compressed, 703K off, nothing visible lost.",
+  },
+  {
+    id: "copy-pass-thirty",
+    date: "2026-08-15",
+    project: "RHS",
+    body: "Copy pass across all 30 studies. Every headline says a sentence now instead of performing one, and the site went sentence case throughout. Black & white type lost its pattern matrix and had its prints named right. The Sally study was reordered to run in the order the loop actually runs.",
+  },
+  {
     id: "the-loop-closes",
     date: "2026-08-14",
     project: "RHS",

@@ -20,7 +20,8 @@
     "interiors:check": "node --no-warnings scripts/build-interiors-index.mjs --check",
     "palette-rings": "node --no-warnings scripts/derive-palette-rings.mjs",
     "inbox": "node --env-file=.env.local --experimental-strip-types scripts/inbox.mjs",
-    "tells": "node scripts/tells.mjs"
+    "tells": "node scripts/tells.mjs",
+    "daybook:gap": "node --no-warnings scripts/daybook-gap.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
