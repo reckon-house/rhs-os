@@ -29,6 +29,12 @@
  * that does not exist; a model that is never asked for a path cannot.
  * The frames are on screen before this route has finished thinking.
  *
+ * It is TOLD about them, though, in two separate lists. `frames` are
+ * Jeremy's own photographs; `pulls` are pictures from the inspiration
+ * board, which are other people's work that he saved. They stay apart
+ * the whole way through because the licence differs: the model may call
+ * a frame his, and may never call a pull his.
+ *
  * It does not stream. The answer is one to three sentences and the
  * results are already rendered underneath it, so a single JSON response
  * is simpler than an SSE protocol and no slower in the way that counts.
@@ -146,6 +152,12 @@ export async function POST(req: NextRequest) {
   const frames = Array.isArray(body.frames)
     ? body.frames.filter((f): f is string => typeof f === "string")
     : [];
+  /* board pictures, validated the same way and kept apart from frames:
+     what the model is allowed to claim about a picture depends on which
+     of the two lists it arrived in. */
+  const pulls = Array.isArray(body.pulls)
+    ? body.pulls.filter((p): p is string => typeof p === "string")
+    : [];
   /* the trail is validated against the server's own index, same as
      hrefs: a term the index never minted is dropped, so this field can
      carry taste and cannot carry prompt. */
@@ -159,7 +171,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "empty question" }, { status: 400 });
   }
 
-  const { text, used } = contextFor(hrefs, frames);
+  const { text, used } = contextFor(hrefs, frames, pulls);
 
   try {
     const client = new Anthropic();

@@ -2775,7 +2775,12 @@ function think(q) {
   if (FACTS && asks(/\b(inspires?|inspiration|influenc|muse)\b/) ||
       asks(/\bfavou?rite (designer|musician|artist|creative|person)\b/)) {
     const board = FACTS ? FACTS.pulls.filter((pl) => pl.f && pl.f.muse) : [];
-    const names = [...new Set(board.flatMap((pl) => pl.f.muse.map(([t]) => t)))];
+    /* f.muse holds plain strings in the .min index. ([t]) => t
+       destructured each one and yielded its first LETTER, so this
+       list read W, M, S. Harmless only because names is used as a
+       count below and never printed. */
+    const names = [...new Set(board.flatMap((pl) =>
+      pl.f.muse.map((t) => (Array.isArray(t) ? t[0] : t))))];
     if (names.length) {
       return {
         say: setLines0.board || "These are things I love and inspired by.",
@@ -4177,6 +4182,21 @@ function buildAnswer() {
       leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
     /* chosen here, on the visitor's machine, before the request leaves */
     const askFrames = frameMatch(query);
+    /* THE BOARD PICTURES THE DEAL IS ALREADY SHOWING. They are in
+       rightIdx, not leftIdx: a plan splits work left and board right,
+       and the hrefs line above reads the work side only. Nothing on the
+       board carries an href anyway, and frameMatch reads the
+       case-study index only. So a question the
+       board answered used to reach the route as nothing at all: the
+       pictures were on screen and the model was told the index had no
+       match, which is how "what inspires you" came back with an email
+       address under two portraits. Sent apart from frames, never folded
+       in: these are other people's work and the route's rules turn on
+       knowing that. */
+    const askPulls = [...new Set(
+      rightIdx.map((ci) => cards[ci])
+        .filter((c) => c && c.kind === "pull" && c.img)
+        .map((c) => c.img))].slice(0, 8);
     if (askAbort) askAbort.abort();
     const ac = new AbortController();
     askAbort = ac;
@@ -4185,6 +4205,7 @@ function buildAnswer() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ q: query, hrefs, frames: askFrames.map((f) => f.src),
+        pulls: askPulls,
         trail: trailTerms(5) }),
       signal: ac.signal
     })

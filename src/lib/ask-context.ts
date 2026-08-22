@@ -20,6 +20,7 @@ import { plainStatement } from "@/lib/site";
 export const MAX_Q = 300;
 export const MAX_HREFS = 8;
 export const MAX_FRAMES = 6;
+export const MAX_PULLS = 8;
 
 export interface AskBody {
   q: string;
@@ -27,6 +28,12 @@ export interface AskBody {
   /* frames the client already chose to show, so the answer can talk
      about the pictures the visitor is looking at */
   frames?: string[];
+  /* board pictures the client chose to show. A SEPARATE field from
+     frames, not folded in, because the two carry opposite licences:
+     a frame is Jeremy's work and the model may say so, a pull is
+     somebody else's that he saved. Merging them is how a portrait of
+     Waylon Jennings becomes a project he shipped. */
+  pulls?: string[];
   /* facet terms this tab has lingered on — dwell, hover, opens —
      computed client-side from its own session log. Terms only, ever:
      no timings, no coordinates, no identifiers. */
@@ -61,15 +68,28 @@ export interface Frame {
   f?: Record<string, string[]>;
 }
 
+/* A picture from the inspiration board. Note `facets`, not `f`: the
+   server reads project-facts.json and the client reads the .min.json,
+   which shortens the key. The two files disagreeing on that name is
+   exactly the kind of thing that goes unnoticed until an answer comes
+   out wrong, so the shape is written down here rather than inferred. */
+export interface Pull {
+  src: string;
+  alt: string;
+  facets?: Record<string, string[]>;
+}
+
 /* Through `unknown`: the generated index is a literal type with a
    different optional-key shape per project, and TypeScript will not
    narrow it to the interface directly. The runtime shape is guaranteed
    by build-facts.mjs, which is the actual contract. */
-const INDEX = facts as unknown as { projects: Project[]; images?: Frame[] };
+const INDEX = facts as unknown as { projects: Project[]; images?: Frame[]; pulls?: Pull[] };
 const PROJECTS: Project[] = INDEX.projects;
 const BY_HREF = new Map(PROJECTS.map((p) => [p.href, p]));
 const FRAMES: Frame[] = INDEX.images ?? [];
 const BY_SRC = new Map(FRAMES.map((f) => [f.src, f]));
+const PULLS: Pull[] = INDEX.pulls ?? [];
+const BY_PULL = new Map(PULLS.map((p) => [p.src, p]));
 
 /* every term the index has ever minted, for validating the trail */
 export const KNOWN_TERMS = new Set(
@@ -109,7 +129,9 @@ Rules, all of them hard:
 - Stay on the portfolio. If the question is off-topic, say in one plain sentence that you only answer questions about the work, then give the address hello@reckon.house verbatim so they have somewhere to go. No moralizing, no formula. The keyword matcher already catches most ways of asking to make contact and answers them from a template; this is the net under the ones it misses, and turning away the one visitor who wants to reach Jeremy is the most expensive thing this prompt can do.
 - A TRAIL line may accompany the question: terms the visitor has lingered on this visit. Use it only to pick emphasis or a nearest neighbour when several answers would do. Never announce it, never say they seem interested in something, never treat it as something they asked.
 
-Some facts are marked SEEN IN. Those were observed in a photograph, not written by Jeremy. You may say such a thing is visible in the work. You may not turn it into a claim about why it was done or what it achieved.`;
+Some facts are marked SEEN IN. Those were observed in a photograph, not written by Jeremy. You may say such a thing is visible in the work. You may not turn it into a claim about why it was done or what it achieved.
+
+Some answers come from the INSPIRATION BOARD instead of a project, and it will be labelled as such when it does. The board is pictures Jeremy saved because he likes them: other people's work, other people's photographs, sometimes a musician or a designer he admires. None of it is his and no claim is made on it. Questions like what inspires you, who do you admire, what do you look at, are ON TOPIC and the board is the answer to them, so answer from it plainly and name what is actually there. Never describe a board picture as his work, his client or his project, and never say the board is a project.`;
 
 /* ── the shelf ─────────────────────────────────────────────────────
    Every project, on every request, as part of the cached prefix.
@@ -225,7 +247,7 @@ export function throttleState() {
   return { day: dayStamp, globalToday, cap: GLOBAL_DAY };
 }
 
-export function contextFor(hrefs: string[], frames: string[]): { text: string; used: string[] } {
+export function contextFor(hrefs: string[], frames: string[], pulls: string[] = []): { text: string; used: string[] } {
   const picked = hrefs
     .slice(0, MAX_HREFS)
     .map((h) => BY_HREF.get(h))
@@ -276,6 +298,41 @@ export function contextFor(hrefs: string[], frames: string[]): { text: string; u
     );
   }
 
+  /* THE BOARD, in its own block. Its own block and not folded into the
+     frames above, because the two say different things about who made
+     the picture, and one paragraph holding both is one paragraph the
+     model can blur. Same trust model as everything else: the client
+     sends paths, the server re-reads them from its own copy, unknown
+     paths are dropped.
+
+     Until this existed a question the board answered arrived here as
+     nothing at all. The client matched the board, dealt the pictures,
+     and sent hrefs (a pull card has none) and frames (frameMatch reads
+     the case-study index only), so both came back empty, the context
+     read "Nothing in the index matched", and the model did the correct
+     thing with nothing and handed over the email address. The pictures
+     were on screen the whole time. */
+  const board = pulls
+    .slice(0, MAX_PULLS)
+    .map((src) => BY_PULL.get(src))
+    .filter((p): p is Pull => Boolean(p));
+
+  if (board.length) {
+    blocks.push(
+      "ON SCREEN beside your answer, pictures from the INSPIRATION BOARD. " +
+      "These are saved work by other people, never Jeremy's own:\n" +
+      board.map((p) => {
+        const named = Object.entries(p.facets ?? {})
+          .flatMap(([facet, list]) => list.map((t) => `${facet}: ${t}`))
+          .slice(0, 6);
+        return [
+          `  ${p.alt}`,
+          named.length && `    ${named.join(", ")}`,
+        ].filter(Boolean).join("\n");
+      }).join("\n")
+    );
+  }
+
   /* No shelf fallback here any more: the whole shelf is in the cached
      prefix on every request, so an unmatched question already has the
      full list to reach for. */
@@ -293,6 +350,11 @@ export function contextFor(hrefs: string[], frames: string[]): { text: string; u
     const room = p.category?.split(",").pop()?.trim();
     return room ? `${p.title} (${room})` : p.title;
   });
+
+  /* The board is a source and the receipt has to say so. Without this
+     the ledger under a board answer read "no match" while two of its
+     pictures sat directly beneath. */
+  if (board.length) used.push("the inspiration board");
 
   return {
     text: blocks.length ? blocks.join("\n\n") : "Nothing in the index matched this question.",
