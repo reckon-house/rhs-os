@@ -10,7 +10,10 @@
      the gutter edges, so the pill's inset is the gutter minus the
      overhang. --nav-size is its own token, not the label size: navigation
      is a different job from the page's small labels. */
-  --nav-size: 16px;
+  /* 12, with the rest of the small type. The bar is the homepage's
+     own masthead line now, so it reads the same size as everything
+     beside it rather than sitting a step above. */
+  --nav-size: 12px;
   --nav-gutter: 40px;
   --nav-overhang: 18px;
   /* The prototype's palette, deliberately: pure black on pure white, not

@@ -2908,7 +2908,7 @@ let tourFull = "";                     /* what placeAsk should size to */
        the field rests under the lede as its continuation now, and a
        question set bigger than the sentence that invites it would put
        the hierarchy back the way it was. */
-    const cap = Math.max(21, Math.min(36, innerWidth * 0.025));
+    const cap = Math.max(21, Math.min(32, innerWidth * 0.024));
     ghost.textContent = text || "";
     const per = ghost.getBoundingClientRect().width / 100;
     if (!per || !room) return cap;

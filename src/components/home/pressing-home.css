@@ -45,7 +45,11 @@
     --lbl: clamp(9px, 0.75vw, 10px);
     --lbl-track: 0.04em;
     --lbl-weight: 500;
-    --note: clamp(12px, 1.2vw, 16px);
+    /* ONE SMALL SIZE, not a ramp. 12 was already this token's floor,
+       so a 16px ceiling only ever showed up on wide screens; holding
+       it at 12 makes the secondary type the same everywhere and lets
+       weight and colour do the hierarchy on their own. */
+    --note: 12px;
     --cap: clamp(10px, 0.82vw, 11px);
     /* --pp-r in globals.css, which is what PressingIndex reads through
        --ix-r. One radius for every framed asset on the site. */
@@ -185,17 +189,22 @@
      down by exactly the amount the statement's own leading puts above
      it and the three cap-heights land on one line.
 
-     The constants come from Helvetica Neue's metrics (ascent .952,
-     descent .213, cap .714 per em: air above the caps is half-leading
-     plus ascent minus cap) and were then corrected against the ink
-     itself — the glyphs rendered to a canvas and the first row of
-     pixels measured, which put the paper metrics 1.5px out at 36px.
-     Trust the measurement, not the table. At 36/16 the nudge is 7.5px
-     and the three cap-tops land within 0.2px. */
+     The two constants are the font's OWN, measured rather than taken
+     from a metrics table: each is the distance from a line box's top
+     to its cap top, over the font size — a per-font, per-line-height
+     ratio that holds at any size. .2031 for the statement's 1.18
+     leading, .0417 for the small type's 1.04. A first attempt used
+     published ascent/descent/cap figures and was 1.5px out, then a
+     single-point correction fixed 36/16 and broke 32/12; ratios
+     measured off the rendered pixels hold at both. */
   .cover .ixbody { align-items: start; }
-  .cover { --stmt-fs: clamp(21px, 2.5vw, 36px);
-    --cap-align: calc(0.2872 * var(--stmt-fs)
-      - 0.1755 * var(--nav-size, 16px)); }
+  /* --nav-size is declared on .nav, which the cover is not inside, so
+     without this the wordmark and the address fell back to the 16px
+     default while everything around them came down to 12. */
+  .cover { --nav-size: 12px;
+    --stmt-fs: clamp(21px, 2.4vw, 32px);
+    --cap-align: calc(0.2031 * var(--stmt-fs)
+      - 0.0417 * var(--nav-size, 12px)); }
   .covermark, .covermeta { padding-top: var(--cap-align); }
 
   /* ── the cover's three columns ───────────────────────────────────
@@ -226,21 +235,11 @@
      Doubled selectors on purpose: .covercols alone ties .ixrows on
      specificity and loses on source order, since .ixrows is defined
      further down this file. */
+  /* The cover draws no rules of its own. The pinned set behind it
+     covers the same band at the same x, and two identical lines where
+     one of them scrolls is what read as the rules drifting. */
   .ixrows.covercols { background-image: none; }
-  .ixrows.covercols::after { display: none; }
-  .ixrows.covercols::before {
-    content: ""; position: absolute; pointer-events: none;
-    top: 0; bottom: calc(-1 * var(--cover-bridge));
-    left: calc(var(--ixgap) / -2);
-    right: calc(var(--ixgap) / -2);
-    width: auto; background: none;
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
-      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
-      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
-    background-size: 1px 100%, 1px 100%, 1px 100%;
-    background-position: 0 0, 50% 0, 100% 0;
-    background-repeat: no-repeat; }
+  .ixrows.covercols::before, .ixrows.covercols::after { display: none; }
   .covermeta { justify-self: end; text-align: right;
     font-size: var(--nav-size, 16px); font-weight: 500;
     letter-spacing: 0.04em; line-height: 1.04;
@@ -329,7 +328,7 @@
      statement had a 700px block to itself; in a third of the grid the
      same clamp gave about twelve characters a line. 2.5vw holds the
      same proportion the cover always had between type and measure. */
-  .coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.5vw, 36px));
+  .coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.4vw, 32px));
     line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
     max-width: 21em; }
   .ledelbl { display: block; font-size: var(--lbl);
@@ -705,19 +704,27 @@
      lines are simply 0, 50% and 100% of it. Offsets count from the
      padding box, which is why --gut appears: absolute positioning does
      not know about the gutter the grid is padded by. */
+  /* THE WRAPPER STARTS ABOVE THE FOLD so the pin is already stuck at
+     scroll zero. Anchored at the index's own top it had to travel
+     ~380px before reaching the pin line, and for those first 380px the
+     rules scrolled with the page — which is exactly the drift they
+     were meant to stop doing. A viewport of headroom costs nothing:
+     sticky clamps the child to `top` regardless, so nothing is ever
+     drawn above the bar. */
   .ixrules { position: absolute; pointer-events: none;
     --ixgap: clamp(24px, 3.4vw, 56px);
-    top: 0; bottom: 0;
+    top: calc(-1 * 100dvh); bottom: 0;
     left: calc(var(--gut) + var(--ix-note-w, 200px) + var(--ixgap) / 2);
     right: calc(var(--gut) - var(--ixgap) / 2); }
   .ixrulesPin { position: sticky; top: var(--nav);
     height: calc(100dvh - var(--nav));
+    /* TWO, not three. The far-right rule drew a boundary the browser
+       edge already draws. */
     background-image:
       linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
-      linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13)),
       linear-gradient(rgba(0, 0, 0, 0.13), rgba(0, 0, 0, 0.13));
-    background-size: 1px 100%, 1px 100%, 1px 100%;
-    background-position: 0 0, 50% 0, 100% 0;
+    background-size: 1px 100%, 1px 100%;
+    background-position: 0 0, 50% 0;
     background-repeat: no-repeat; }
 
   /* PINNED. The four statements hold at the top while the magazine
@@ -1215,7 +1222,10 @@
     .statement .term { transition: none; }
   }
 
-  .ansprose { font-size: clamp(24px, 3.2vw, 44px); font-weight: 500;
+  /* THE SAME SIZE AS THE STATEMENT IT REPLACES. It was 44 against the
+     statement's 36 — same voice, same position on the page, arriving a
+     fifth larger. */
+  .ansprose { font-size: clamp(21px, 2.4vw, 32px); font-weight: 500;
     line-height: 1.18; letter-spacing: -0.02em; max-width: 21em;
     min-height: 2.4em; }
   #ansSay.typing::after { content: ""; display: inline-block;
