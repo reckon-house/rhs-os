@@ -174,11 +174,29 @@
     margin-top: calc(var(--cover-air) - var(--nav));
     padding: 0 0 clamp(30px, 4dvh, 56px);
     position: relative; }
-  /* One line, three columns. Baseline rather than start, so the
-     wordmark and the address sit on the statement's first baseline
-     instead of hanging from their own box tops at three different
-     sizes. This is what makes the row read as the bar. */
-  .cover .ixbody { align-items: baseline; }
+  /* One line, three columns, TOPS even. Baseline alignment put the
+     three on a shared baseline, which meant their tops stepped: a 16px
+     line box and a 36px one hang different amounts of air above the
+     letters, so the wordmark and the address sat visibly low.
+
+     Start alignment evens the BOXES, which is not the same as evening
+     the letters — the big line box still carries more air above its
+     caps. --cap-align is that difference, so the small type is nudged
+     down by exactly the amount the statement's own leading puts above
+     it and the three cap-heights land on one line.
+
+     The constants come from Helvetica Neue's metrics (ascent .952,
+     descent .213, cap .714 per em: air above the caps is half-leading
+     plus ascent minus cap) and were then corrected against the ink
+     itself — the glyphs rendered to a canvas and the first row of
+     pixels measured, which put the paper metrics 1.5px out at 36px.
+     Trust the measurement, not the table. At 36/16 the nudge is 7.5px
+     and the three cap-tops land within 0.2px. */
+  .cover .ixbody { align-items: start; }
+  .cover { --stmt-fs: clamp(21px, 2.5vw, 36px);
+    --cap-align: calc(0.2872 * var(--stmt-fs)
+      - 0.1755 * var(--nav-size, 16px)); }
+  .covermark, .covermeta { padding-top: var(--cap-align); }
 
   /* ── the cover's three columns ───────────────────────────────────
      The wordmark takes the note rail's column and the address the last
@@ -188,7 +206,7 @@
   .covermark { font-size: var(--nav-size, 16px); font-weight: 700;
     letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
-    column-gap: var(--ixgap); align-items: baseline;
+    column-gap: var(--ixgap); align-items: start;
     /* THE RULES REACH THE INDEX'S. Without this the three verticals
        stop at the statement and start again under it, and the columns
        read as two stacked headers rather than one structure. The
@@ -311,7 +329,7 @@
      statement had a 700px block to itself; in a third of the grid the
      same clamp gave about twelve characters a line. 2.5vw holds the
      same proportion the cover always had between type and measure. */
-  .coverR .statement { font-size: clamp(21px, 2.5vw, 36px);
+  .coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.5vw, 36px));
     line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
     max-width: 21em; }
   .ledelbl { display: block; font-size: var(--lbl);
