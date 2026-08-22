@@ -1907,10 +1907,10 @@ function buildMagazine() {
   const rail = noteIdx.map((ci) => {
     const blk = document.createElement("div");
     blk.className = "blk";
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.textContent = cards[ci].word;
-    blk.appendChild(tag);
+    /* NO LABEL. The rail's eyebrows named what each block obviously
+       was: "What I do" over a list of what he does, "Get in touch"
+       over an address. The word survives as the block's key and its
+       seat, which is what it was actually doing. */
     blk.appendChild(document.createTextNode(cards[ci].full));
     /* same key noteCard writes, so a note the brain surfaces can
        travel out of this column */
@@ -1923,10 +1923,6 @@ function buildMagazine() {
      from RAIL like everything else here. */
   const filt = document.createElement("div");
   filt.className = "blk filt";
-  const ftag = document.createElement("span");
-  ftag.className = "tag";
-  ftag.textContent = "Filter";
-  filt.appendChild(ftag);
   FILTERS.forEach(([label, fq]) => {
     const b = document.createElement("button");
     b.type = "button";

@@ -72,10 +72,6 @@ export function PressingHome() {
           image's edge lines up with the type above it. Breaking out
           lets --gut be the only gutter again. */}
 
-      {/* THE COVER. The question field is not here: it lives in the
-          masthead, which is the end of its journey and the only place
-          its position has to be exact. This is the room it travels
-          through, and the driver measures the gap between the two. */}
       {/* THE COVER IS THE PAGE'S OWN THREE COLUMNS, not a bar above
           them. It borrows .ixbody and .ixrows verbatim from the index
           below, so the wordmark sits over the note rail, the statement
@@ -97,7 +93,6 @@ export function PressingHome() {
                 — renderToned rewrites the lede's innerHTML on every
                 answer, and anything inside it would be thrown away. */}
             <div className="coverR">
-              <span className="ledelbl">The practice</span>
               <p className="statement">
                 <span id="infoLead" />{" "}
                 <span id="askSlot" aria-hidden="true" />
