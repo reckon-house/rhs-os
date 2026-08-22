@@ -893,6 +893,9 @@
      declared on .ixnotes below and inherits down, so the rail and the
      fold's body are one number rather than two that agree today. */
   .railfold { display: block; }
+  /* Above 860 the slot is a plain box: the fold is held open and there
+     is nothing to travel. */
+  .railslot { display: block; }
   .railbody { display: flex; flex-direction: column; gap: var(--rail-gap); }
   .railfold > summary { display: none; }
   .ixnotes .blk { font-size: var(--note); line-height: 1.45;
@@ -1138,7 +1141,29 @@
        makes the open state long. One override, and the body reads it
        through the same property. */
     .ixnotes { --rail-gap: clamp(22px, 5.5vw, 34px); }
-    .railbody { padding-top: var(--rail-gap); }
+    /* The air under the rule is the FIRST BLOCK'S, not the body's.
+       min-height: 0 lets a grid item shrink past its content and not
+       past its own padding, so 22px of padding on the body was a floor
+       the closed row could never get under: the fold shut to 22 rather
+       than to nothing. As the block's padding it is content, and the
+       slot's clip reaches it. */
+    .railbody > .blk:first-child { padding-top: var(--rail-gap); }
+    /* 0fr to 1fr, which is the one height animation that does not need
+       a measured pixel value: the track resolves to the content's own
+       height at 1fr and collapses at 0. min-height 0 on the child is
+       load bearing, since a grid item refuses to shrink below its
+       content without it and the row would never close. */
+    .railslot { display: grid; grid-template-rows: 0fr;
+      /* The clip belongs to the SLOT. On the child it hid the child's
+         CONTENT while the child's own padding still took height, so a
+         closed fold left 22px of dead space under the rule. */
+      overflow: hidden;
+      transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .railslot.on { grid-template-rows: 1fr; }
+    .railslot > .railbody { min-height: 0; }
+    @media (prefers-reduced-motion: reduce) {
+      .railslot { transition: none; }
+    }
     .railfold > summary {
       display: flex; align-items: baseline; justify-content: space-between;
       gap: 12px; cursor: pointer; list-style: none;
@@ -1196,7 +1221,12 @@
       grid-template-columns: repeat(6, minmax(0, 1fr));
       align-items: start;
       column-gap: clamp(10px, 3vw, 18px);
-      row-gap: clamp(30px, 7vw, 48px); }
+      /* DOUBLED. The rule between two frames had about 50px of air
+         around it, which on a phone reads as a list with dividers
+         rather than as work with room. The column gap is untouched:
+         that one holds a pair together and widening it would break
+         the pair apart. */
+      row-gap: clamp(60px, 14vw, 96px); }
     .ixrows.ixcols .cell { grid-column: span 6; }
     .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
     .ixrows.ixcols .cell.mThird { grid-column: span 2; }
@@ -1207,7 +1237,7 @@
     .ixrow .fd-it { width: 100%; }
     /* the rule that separated rows, now separating frames */
     .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
-      padding-top: clamp(20px, 5vw, 34px); }
+      padding-top: clamp(40px, 10vw, 68px); }
     .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
     /* One column and no note rail, so there are no gutters left for a
        vertical to stand in. The row rule comes back to do the work. */
@@ -3920,10 +3950,50 @@ function buildMagazine() {
   const body = document.createElement("div");
   body.className = "railbody";
   rail.forEach((r) => body.appendChild(r.el));
-  fold.appendChild(body);
+  /* THE SLOT IS WHAT ANIMATES. A details cannot be transitioned open on
+     its own: the UA hides the content outright, so there is no height
+     to travel from and it arrives in one frame. This wrapper is a grid
+     that goes 0fr to 1fr, which does animate, and it works everywhere
+     rather than only where ::details-content has landed. */
+  const slot = document.createElement("div");
+  slot.className = "railslot";
+  slot.appendChild(body);
+  fold.appendChild(slot);
   notesEl.appendChild(fold);
 
-  const foldByWidth = () => { fold.open = innerWidth > 860; };
+  /* OPEN AND CLOSE ARE NOT SYMMETRICAL, because the content has to be
+     in the DOM before it can be measured and out of it after. Opening
+     sets the attribute first and animates on the next frame, so there
+     is a 0fr to start from. Closing animates first and drops the
+     attribute at the end, so the content survives its own exit.
+
+     preventDefault on the summary keeps the UA from doing its instant
+     version underneath. The element stays a real <details>, so the
+     keyboard and the screen reader are unaffected. */
+  const OPEN_MS = 420;
+  let busy = false;
+  const setOpen = (want, animate) => {
+    if (want) {
+      fold.open = true;
+      if (!animate) { slot.classList.add("on"); return; }
+      requestAnimationFrame(() => slot.classList.add("on"));
+      return;
+    }
+    if (!animate) { slot.classList.remove("on"); fold.open = false; return; }
+    busy = true;
+    slot.classList.remove("on");
+    setTimeout(() => { fold.open = false; busy = false; }, OPEN_MS);
+  };
+
+  listen(cap, "click", (e) => {
+    if (innerWidth > 860) return;      /* not a fold up there */
+    e.preventDefault();
+    if (busy) return;
+    setOpen(!fold.open, !REDUCE());
+  });
+
+  /* Held open above 860, where the summary is not rendered at all. */
+  const foldByWidth = () => setOpen(innerWidth > 860, false);
   foldByWidth();
   listen(window, "resize", foldByWidth, { passive: true });
 

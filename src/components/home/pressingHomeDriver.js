@@ -1973,10 +1973,50 @@ function buildMagazine() {
   const body = document.createElement("div");
   body.className = "railbody";
   rail.forEach((r) => body.appendChild(r.el));
-  fold.appendChild(body);
+  /* THE SLOT IS WHAT ANIMATES. A details cannot be transitioned open on
+     its own: the UA hides the content outright, so there is no height
+     to travel from and it arrives in one frame. This wrapper is a grid
+     that goes 0fr to 1fr, which does animate, and it works everywhere
+     rather than only where ::details-content has landed. */
+  const slot = document.createElement("div");
+  slot.className = "railslot";
+  slot.appendChild(body);
+  fold.appendChild(slot);
   notesEl.appendChild(fold);
 
-  const foldByWidth = () => { fold.open = innerWidth > 860; };
+  /* OPEN AND CLOSE ARE NOT SYMMETRICAL, because the content has to be
+     in the DOM before it can be measured and out of it after. Opening
+     sets the attribute first and animates on the next frame, so there
+     is a 0fr to start from. Closing animates first and drops the
+     attribute at the end, so the content survives its own exit.
+
+     preventDefault on the summary keeps the UA from doing its instant
+     version underneath. The element stays a real <details>, so the
+     keyboard and the screen reader are unaffected. */
+  const OPEN_MS = 420;
+  let busy = false;
+  const setOpen = (want, animate) => {
+    if (want) {
+      fold.open = true;
+      if (!animate) { slot.classList.add("on"); return; }
+      requestAnimationFrame(() => slot.classList.add("on"));
+      return;
+    }
+    if (!animate) { slot.classList.remove("on"); fold.open = false; return; }
+    busy = true;
+    slot.classList.remove("on");
+    setTimeout(() => { fold.open = false; busy = false; }, OPEN_MS);
+  };
+
+  listen(cap, "click", (e) => {
+    if (innerWidth > 860) return;      /* not a fold up there */
+    e.preventDefault();
+    if (busy) return;
+    setOpen(!fold.open, !REDUCE());
+  });
+
+  /* Held open above 860, where the summary is not rendered at all. */
+  const foldByWidth = () => setOpen(innerWidth > 860, false);
   foldByWidth();
   listen(window, "resize", foldByWidth, { passive: true });
 
