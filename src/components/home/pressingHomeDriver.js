@@ -1962,9 +1962,15 @@ function buildMagazine() {
      The lead frame is taken out of flow rather than given a row of its
      own: a row would hold height the pairs then have to start under,
      and the whole point is that it sits up in the cover's band. */
-  const mk = (ci, i, lead) => {
+  /* side is "L" or "R" and is the ONLY thing that decides which column
+     a frame belongs to. It used to be read off DOM position, and a row
+     whose right-hand partner ran out got an empty placeholder cell to
+     hold the slot — but that placeholder carried order -1, so it
+     sorted ahead of the real frame, took column one, and left the last
+     picture in the right column wearing the left column's alignment. */
+  const mk = (ci, i, side) => {
     const cell = document.createElement("div");
-    cell.className = "cell" + (i === 0 ? " first" : "");
+    cell.className = "cell col" + side + (i === 0 ? " first" : "");
     cell.style.order = String(i);
     if (ci !== undefined) {
       const c = cards[ci];
@@ -1974,7 +1980,7 @@ function buildMagazine() {
       const sz = cards[ci].size != null ? cards[ci].size : shares[i];
       el.style.setProperty("--share", String(sz));
       /* the right-hand frame follows the left one in */
-      if (!lead && i % 2) el.style.setProperty("--lag", CURTAIN_LAG);
+      if (side === "R") el.style.setProperty("--lag", CURTAIN_LAG);
       cell.appendChild(el);
       workEls.push(el);
     }
@@ -1988,15 +1994,17 @@ function buildMagazine() {
   if (leadFrame) {
     const row = document.createElement("div");
     row.className = "ixrow ixlead";
-    row.appendChild(mk(leadFrame.ci, leadFrame.i, true));
+    row.appendChild(mk(leadFrame.ci, leadFrame.i, "R"));
     rowsEl.appendChild(row);
   }
   for (let k = 0; k < Math.max(evens.length, odds.length); k++) {
     const row = document.createElement("div");
     row.className = "ixrow";
+    /* Only real frames get cells. A placeholder would draw its own
+       separator rule on a phone, where every cell carries one. */
     const l = evens[k], r = odds[k];
-    row.appendChild(l ? mk(l.ci, l.i) : mk(undefined, -1));
-    row.appendChild(r ? mk(r.ci, r.i) : mk(undefined, -1));
+    if (l) row.appendChild(mk(l.ci, l.i, "L"));
+    if (r) row.appendChild(mk(r.ci, r.i, "R"));
     /* NO .ixrule. It is height 0 with no border on desktop, and each
        cell carries its own separator on a phone — but it had no
        `order`, so against cells that do it sorted BETWEEN them and
@@ -3250,9 +3258,7 @@ function armRows(rowsEl) {
        the label is right-aligned at rest there, so travelling
        backwards by the slack lands it on the left edge. */
     const cell = card.closest(".cell");
-    const rightCol = Boolean(card.closest(".ixlead")) ||
-      Boolean(cell && cell.parentElement &&
-        cell.parentElement.children[1] === cell);
+    const rightCol = Boolean(cell && cell.classList.contains("colR"));
     card.style.setProperty("--slide",
       (rightCol ? -slide : slide).toFixed(1) + "px");
     /* and anything to its left moves only as far as it must */

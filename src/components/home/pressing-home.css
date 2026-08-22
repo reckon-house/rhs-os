@@ -864,20 +864,28 @@
      right column reads against the page edge, the left against the
      rule beside the note rail. Growth follows the anchor, or a hover
      would walk the frame off its line. */
-  /* The name sits on the same edge its frame is hung from: left
-     column left, right column right. Hover swings each to the other
-     edge — see --slide in the driver. */
-  .ixrow .cell:nth-child(2) .fd-it .lbl { text-align: right; }
-  .ixrow.ixlead .cell .fd-it .lbl { text-align: right; }
-  .ixrow .cell:first-child { justify-content: flex-start; }
-  .ixrow .cell:first-child .fd-it { transform-origin: left center; }
-  .ixrow .cell:first-child .fd-it .shot { transform-origin: left top; }
-  /* .ixrow.ixlead .cell:first-child, not .ixlead .cell: the lead has
-     exactly one cell and it IS a first child, so the left-column rule
-     above out-specified it and threw the frame to the wrong edge. */
-  .ixrow.ixlead .cell:first-child { justify-content: flex-end; }
-  .ixrow.ixlead .cell:first-child .fd-it { transform-origin: right center; }
-  .ixrow.ixlead .cell:first-child .fd-it .shot { transform-origin: right top; }
+  /* WHICH COLUMN A FRAME IS IN IS A CLASS, not its position among its
+     siblings. Position was fragile in both directions: a row missing
+     its right-hand partner put the survivor in the wrong column, and
+     the lead frame's only cell is a first child while belonging to
+     the right. The name sits on the edge its frame is hung from and
+     swings to the other on hover — see --slide in the driver.
+
+     The explicit track is desktop-only: on a phone the rows dissolve
+     to display:contents and a grid-column: 2 would invent a second
+     track in a one-track grid. */
+  @media (min-width: 861px) {
+    .ixrow .cell.colL { grid-column: 1; }
+    .ixrow .cell.colR { grid-column: 2; }
+    .ixrow.ixlead .cell { grid-column: 1; }
+  }
+  .ixrow .cell.colL { justify-content: flex-start; }
+  .ixrow .cell.colL .fd-it { transform-origin: left center; }
+  .ixrow .cell.colL .fd-it .shot { transform-origin: left top; }
+  .ixrow .cell.colR { justify-content: flex-end; }
+  .ixrow .cell.colR .fd-it { transform-origin: right center; }
+  .ixrow .cell.colR .fd-it .shot { transform-origin: right top; }
+  .ixrow .cell.colR .fd-it .lbl { text-align: right; }
   .ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
