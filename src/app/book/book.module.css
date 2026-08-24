@@ -31,85 +31,115 @@
   padding-bottom: clamp(80px, 12dvh, 140px);
 }
 
-/* Five days across, each a column of half-hours. The days are the
-   columns rather than the rows because a week reads left to right and
-   the shape of it — which days have anything in them — is the first
-   thing worth seeing. */
+/* ── the matrix ──────────────────────────────────────────────────────
+   Days down, times across, on one rigid set of columns. Every column is
+   the same half-hour on all five days, so the shape of the week reads
+   before any label does — the dot-grid poster's logic with times where
+   its dots were.
+
+   HAIRLINES, NOT BOXES. A rule per row and nothing else: a box around a
+   time turns it into a control, and the argument here is that these are
+   data that happen to be live. The only filled thing on the page is the
+   one slot the visitor has chosen, which is what makes it read as a
+   choice rather than as a button that was always dark. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(10px, 1.4vw, 18px);
-  margin: 0 0 clamp(20px, 3vw, 32px);
+  margin: 0 0 clamp(22px, 3vw, 34px);
+  border-bottom: 1px solid var(--pp-ink, #000);
 }
 
-.day {
-  min-width: 0;
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 40px);
+  align-items: start;
+  border-top: 1px solid var(--pp-ink, #000);
+  padding: clamp(14px, 2vw, 20px) 0 clamp(16px, 2.4vw, 26px);
 }
 
-/* The day, at the label size. Wrapped rather than truncated: "Wednesday
-   27 August" over two lines is fine and an ellipsis is not. */
-.dayHead {
-  margin: 0 0 10px;
-  padding-bottom: 9px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+/* THE DATE IS THE ANCHOR. Weekday and month sit at label size on either
+   side of a display numeral, which is the one piece of type on this
+   page allowed to be large: it is what a reader scans for. */
+.date {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  column-gap: 10px;
+}
+.wd,
+.mo {
   font-size: var(--pp-lbl, 10px);
   letter-spacing: var(--pp-lbl-track, 0.04em);
   font-weight: var(--pp-lbl-weight, 500);
   text-transform: uppercase;
-  line-height: 1.4;
   opacity: 0.55;
 }
-
-.slots {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
+.wd { grid-column: 1; grid-row: 1; }
+.mo { grid-column: 1; grid-row: 3; }
+.num {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: clamp(34px, 4.6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.94;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ONE SHAPE, TWO STATES, and the closed one says nothing. A slot that
-   is merely not offered and a slot somebody has taken are the same box
-   on purpose: only one of them is a fact about a booking, and labelling
-   both "taken" would be inventing meetings. Grey carries the scarcity
-   without the claim. */
+/* Six tracks, fixed. minmax(0,1fr) rather than auto so a 10:00 AM and a
+   9:30 AM sit on the same column edge down the whole calendar; auto
+   would let each row size to its own content and the matrix would stop
+   being one. */
+.times {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px clamp(4px, 1vw, 12px);
+  align-content: start;
+  padding-top: 4px;
+}
+
 .slot,
 .closed {
   display: block;
   width: 100%;
-  padding: 9px 10px;
-  border-radius: 8px;
+  padding: 5px 0;
+  border: 0;
+  background: none;
   font: inherit;
   font-size: var(--pp-note, 12px);
   line-height: 1.4;
   text-align: left;
-  border: 1px solid transparent;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 
 .slot {
-  background: var(--pp-paper, #fff);
-  border-color: rgba(0, 0, 0, 0.28);
   color: var(--pp-ink, #000);
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  /* The rule under an open time is the only mark that says "live", and
+     it is the same hairline the rest of the site underlines with. */
+  box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.28);
+  transition: box-shadow 0.18s ease, color 0.18s ease;
 }
 @media (hover: hover) {
-  .slot:hover { border-color: var(--pp-ink, #000); }
+  .slot:hover { box-shadow: inset 0 -1px 0 0 var(--pp-ink, #000); }
 }
-.slot:focus-visible {
-  outline: 1px solid var(--pp-ink, #000);
-  outline-offset: 3px;
-}
+.slot:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 2px; }
+
+/* Chosen: ink block, knocked out. The one reversal on the page. */
 .on,
 .slot.on:hover {
   background: var(--pp-ink, #000);
-  border-color: var(--pp-ink, #000);
   color: var(--pp-paper, #fff);
+  box-shadow: none;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
+/* Closed says nothing. No rule, no fill, no label: it is the time
+   printed and not offered, which is exactly what it is. */
 .closed {
-  background: color-mix(in srgb, var(--surface-alt, #ede9e3) 55%, var(--pp-paper, #fff));
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.22);
   cursor: default;
 }
 
@@ -130,7 +160,7 @@
 .form {
   max-width: 62ch;
 }
-.row {
+.frow {
   display: grid;
   grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
   gap: 26px;
@@ -222,10 +252,15 @@
 /* Two columns of days on a tablet, one on a phone. Five columns at
    375px would give each day about 60px, which is narrower than the
    times inside them. */
-@media (max-width: 900px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 560px) {
-  .grid { grid-template-columns: minmax(0, 1fr); }
-  .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+/* The rows survive a phone; only the two inside them stack. Three
+   times across is the most that stays legible at 335px, and the date
+   goes horizontal so it does not eat a third of the row. */
+@media (max-width: 640px) {
+  .row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .date { grid-template-columns: auto auto 1fr; column-gap: 8px; align-items: baseline; }
+  .wd { grid-column: 1; grid-row: 1; }
+  .num { grid-column: 2; grid-row: 1; font-size: clamp(28px, 9vw, 40px); }
+  .mo { grid-column: 3; grid-row: 1; }
+  .times { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 0; }
+  .frow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }

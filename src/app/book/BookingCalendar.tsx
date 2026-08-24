@@ -19,13 +19,25 @@
  * only thing hydration adds is the ability to claim one.
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { Day } from "@/lib/booking";
 import { HOUSE_TZ, SLOT_MINUTES } from "@/data/booking";
 import styles from "./book.module.css";
 
 type Sending = "idle" | "sending" | "done";
+
+const NO_SUB = () => () => {};
+/* Cached, because getSnapshot must be referentially stable or React
+   loops: a fresh string every call reads as a change every render. */
+let ZONE: string | null | undefined;
+function readZone(): string | null {
+  if (ZONE === undefined) {
+    try { ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone ?? null; }
+    catch { ZONE = null; }
+  }
+  return ZONE;
+}
 
 export function BookingCalendar({ days }: { days: Day[] }) {
   const [picked, setPicked] = useState<string | null>(null);
@@ -39,21 +51,23 @@ export function BookingCalendar({ days }: { days: Day[] }) {
   const [gone, setGone] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement | null>(null);
 
-  /* The reader's zone, read after mount: on the server there is no such
-     thing, and guessing produces a page that changes under them. */
-  const [tz, setTz] = useState<string | null>(null);
-  useEffect(() => {
-    try { setTz(Intl.DateTimeFormat().resolvedOptions().timeZone); } catch { /* older engine */ }
-  }, []);
+  /* THE READER'S ZONE IS A CLIENT-ONLY FACT, so it is read the way
+     React reads those: a server snapshot of null and a client snapshot
+     of the real thing. An effect calling setState would say the same
+     thing and cascade a render to do it. Never changes while the page
+     is open, so the subscribe is a no-op. */
+  const tz = useSyncExternalStore(NO_SUB, readZone, () => null);
 
   const local = useMemo(
     () => new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
     []
   );
-  const dayName = useMemo(
-    () => new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long" }),
-    []
-  );
+  /* Split rather than formatted whole: the row wants the weekday as a
+     small caps label and the date as a display numeral, which is the
+     move every one of the references makes. */
+  const wd = useMemo(() => new Intl.DateTimeFormat("en-US", { weekday: "short" }), []);
+  const dd = useMemo(() => new Intl.DateTimeFormat("en-US", { day: "2-digit" }), []);
+  const mo = useMemo(() => new Intl.DateTimeFormat("en-US", { month: "short" }), []);
 
   const differs = Boolean(tz && tz !== HOUSE_TZ);
 
@@ -117,41 +131,51 @@ export function BookingCalendar({ days }: { days: Day[] }) {
 
   return (
     <div className={styles.wrap}>
+      {/* A MATRIX, NOT A SET OF CARDS. Days run down and times run
+          across, so every column is the same half-hour on five days and
+          the shape of the week is legible before a single label is
+          read. Hairlines carry the structure; there are no boxes,
+          because a box around a time makes it a control and the point
+          is that it is a piece of data that happens to be live. */}
       <div className={styles.grid} role="group" aria-label="Available times">
-        {days.map((d) => (
-          <div key={d.date} className={styles.day}>
-            <h3 className={styles.dayHead}>
-              {dayName.format(new Date(`${d.date}T12:00:00Z`))}
-            </h3>
-            <ul className={styles.slots}>
-              {d.slots.map((s) => {
-                const taken = gone.includes(s.at);
-                const open = s.open && !taken;
-                const label = local.format(new Date(s.at));
-                return (
-                  <li key={s.at}>
-                    {open ? (
-                      <button
-                        type="button"
-                        className={`${styles.slot} ${picked === s.at ? styles.on : ""}`}
-                        aria-pressed={picked === s.at}
-                        onClick={() => { setPicked(s.at); setWhy(""); }}
-                      >
-                        {label}
-                      </button>
-                    ) : (
-                      /* Not a button, not focusable, and it says nothing
-                         about why. aria-disabled rather than hidden: a
-                         screen reader should read the same shape of week
-                         a sighted reader sees. */
-                      <span className={styles.closed} aria-disabled="true">{label}</span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
+        {days.map((d) => {
+          const dt = new Date(`${d.date}T12:00:00Z`);
+          return (
+            <div key={d.date} className={styles.row}>
+              <div className={styles.date}>
+                <span className={styles.wd}>{wd.format(dt)}</span>
+                <span className={styles.num}>{dd.format(dt)}</span>
+                <span className={styles.mo}>{mo.format(dt)}</span>
+              </div>
+              <div className={styles.times}>
+                {d.slots.map((s) => {
+                  const taken = gone.includes(s.at);
+                  const open = s.open && !taken;
+                  const label = local.format(new Date(s.at)).replace(" ", "");
+                  return open ? (
+                    <button
+                      key={s.at}
+                      type="button"
+                      className={`${styles.slot} ${picked === s.at ? styles.on : ""}`}
+                      aria-pressed={picked === s.at}
+                      onClick={() => { setPicked(s.at); setWhy(""); }}
+                    >
+                      {label}
+                    </button>
+                  ) : (
+                    /* Not a button, not focusable, and it says nothing
+                       about why. aria-disabled rather than hidden: a
+                       screen reader should read the same shape of week a
+                       sighted reader sees. */
+                    <span key={s.at} className={styles.closed} aria-disabled="true">
+                      {label}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {differs ? (
@@ -161,17 +185,17 @@ export function BookingCalendar({ days }: { days: Day[] }) {
       ) : null}
 
       <form ref={formRef} className={styles.form} onSubmit={submit}>
-        <div className={styles.row}>
+        <div className={styles.frow}>
           <label className={styles.lbl} htmlFor="bkName">Name</label>
           <input className={styles.field} id="bkName" name="name" type="text"
             maxLength={120} autoComplete="name" required placeholder="Your name" />
         </div>
-        <div className={styles.row}>
+        <div className={styles.frow}>
           <label className={styles.lbl} htmlFor="bkMail">Email</label>
           <input className={styles.field} id="bkMail" name="email" type="email"
             maxLength={254} autoComplete="email" required placeholder="So I can confirm" />
         </div>
-        <div className={styles.row}>
+        <div className={styles.frow}>
           <label className={styles.lbl} htmlFor="bkNote">Anything to read first</label>
           <textarea className={`${styles.field} ${styles.area}`} id="bkNote" name="note"
             rows={3} maxLength={4000} placeholder="What you're working on. Optional." />
