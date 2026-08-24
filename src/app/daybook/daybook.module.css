@@ -122,6 +122,13 @@
 .row {
   position: relative; /* anchors the hover plate */
   display: grid;
+  /* THE ROW CARRIES THE ENTRY'S OWN SIZE so that 64ch below means 64
+     characters OF THE ENTRY. ch resolves against the element it is
+     written on, and this row was inheriting 16px while .t dropped to
+     12, so the track stayed 569px and the measure went to 91
+     characters. The date and the project set their own size, so
+     nothing else moves. */
+  font-size: var(--pp-note, 12px);
   grid-template-columns: 84px minmax(0, 64ch) max-content;
   justify-content: start;
   column-gap: clamp(20px, 2.6vw, 40px);

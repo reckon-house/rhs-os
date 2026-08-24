@@ -92,6 +92,14 @@
   margin: 0;
   font-size: var(--pp-note, 16px);
   line-height: 1.55;
+  /* A MEASURE, because the page is 760px wide and the body size came
+     down to 12 with the rest of the site. 760 at 12px is about 123
+     characters to a line, which is roughly twice what anyone tracks
+     comfortably, and this is the one surface here that exists purely
+     to be READ: it is where somebody opens a reply. 62ch resolves at
+     this element's own size, so it follows the token rather than
+     needing to be revisited if the token moves again. */
+  max-width: 62ch;
   /* A stranger's writing, so newlines are honoured and nothing else is
      interpreted. */
   white-space: pre-wrap;

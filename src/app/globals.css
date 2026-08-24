@@ -632,7 +632,13 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
   --pp-lbl: 10px;
   --pp-lbl-track: 0.04em;
   --pp-lbl-weight: 500;
-  --pp-note: 16px;
+  /* THE BODY SIZE, and it is the homepage's. The homepage settled on a
+     two-size ramp, 32 for prose and 12 for everything else, and this
+     token stayed at 16 — so the footer sat at 16 UNDER a homepage that
+     was otherwise 32 and 12, and every case study's copy column was a
+     size the rest of the site had stopped using. One number, read by
+     the briefs, the footer, the daybook and the thread pages. */
+  --pp-note: 12px;
   --pp-cap: 11px;
   --pp-r: 16px;
   /* Every reel thumb's corner, in one place. A reel box is always
