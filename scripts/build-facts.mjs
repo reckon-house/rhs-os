@@ -147,6 +147,49 @@ const voice = {
   set: VLINES.voiceSet,
 };
 
+/* ── the daybook ────────────────────────────────────────────────────
+ * The freshest thing on the site and the brain could not see it. The
+ * case studies say what the work IS; the daybook says what happened
+ * this week, and until now "what are you working on" reached the model
+ * with nothing and came back with the address.
+ *
+ * IT GOES IN THE SERVER PAYLOAD ONLY. The compact file is downloaded by
+ * every visitor and the client has no use for this: it never matches
+ * against the daybook, and the answer that needs it is composed on the
+ * server. Same source, and this one has an audience of one.
+ *
+ * RECENT, NOT ALL. These entries ride in the model's CACHED PREFIX, so
+ * they are billed at read rates and cost almost nothing per answer, but
+ * the prefix must stay bounded: fifty today is two hundred in a year,
+ * and a prefix that grows forever is a bill that grows forever. Twelve
+ * is about a fortnight of work, which is what "lately" means. The
+ * totals below cover the rest, so the model can still say how long the
+ * log runs without carrying every line of it.
+ *
+ * The citation rule holds without any work here. A daybook entry IS its
+ * own citation: it carries the date it happened on and the project it
+ * belongs to, which is exactly what a claim about recent work needs. */
+const DAYBOOK_N = 12;
+const DAYBOOK_CHARS = 260;
+const DB = (await import(pathToFileURL(resolve("src/data/daybook.ts")).href)).DAYBOOK;
+const dbBody = (e) => {
+  const t = (Array.isArray(e.body) ? e.body.join(" ") : e.body).replace(/\s+/g, " ").trim();
+  return t.length > DAYBOOK_CHARS ? t.slice(0, DAYBOOK_CHARS).replace(/\s+\S*$/, "") + "…" : t;
+};
+const daybook = {
+  total: DB.length,
+  newest: DB[0].date,
+  oldest: DB[DB.length - 1].date,
+  byProject: DB.reduce((m, e) => ((m[e.project] = (m[e.project] || 0) + 1), m), {}),
+  recent: DB.slice(0, DAYBOOK_N).map((e) => ({
+    date: e.date,
+    project: e.project,
+    ...(e.title ? { title: e.title } : {}),
+    body: dbBody(e),
+    ...(e.link ? { href: e.link.href } : {}),
+  })),
+};
+
 const projects = [];
 const coverage = { facet: {}, term: {}, negated: 0, guarded: 0, studies: 0 };
 
@@ -408,6 +451,7 @@ const lines = [
   `statistics        ${projects.reduce((a, p) => a + p.stats.length, 0)}`,
   `pulls indexed     ${pulls.length} (${pulls.filter((p) => Object.keys(p.facets).length).length} carry facts)`,
   `voice lines       ${Object.keys(voice.terms).length} terms, ${Object.keys(voice.set).length} set pieces`,
+  `daybook           ${daybook.recent.length} of ${daybook.total} entries, newest ${daybook.newest}`,
   `cover reels       ${reels.have.length}/${reels.have.length + reels.missing.length} pressing studies${reels.missing.length ? ", MISSING: " + reels.missing.join(", ") : ""}${reels.transparent.length ? ", TRANSPARENT FRAMES: " + reels.transparent.join("; ") : ", every frame opaque"}`,
   `hits rejected     ${coverage.negated} negated, ${coverage.guarded} guarded`,
   `citations checked ${bad.length ? "FAILED — " + bad.length + " quotes do not contain their term" : "all quotes contain their term"}`,
@@ -541,7 +585,7 @@ for (const [src, rec] of Object.entries(vision.images || {})) {
 for (const p of projects)
   for (const list of Object.values(p.facets)) list.sort((a, b) => b.n - a.n);
 
-const payload = { vocabularyVersion: VOCAB_VERSION, voice, projects, pulls, images };
+const payload = { vocabularyVersion: VOCAB_VERSION, voice, daybook, projects, pulls, images };
 writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1));
 
 /* A second, compact file for the client. The full index carries

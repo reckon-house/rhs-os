@@ -31,6 +31,83 @@
    "searchMeta": "It's a brand brain, not ChatGPT with a logo on it. Custom built for this site, from my own projects, and tuned to sound like me. The same thing can be made for any company out of their own work and words."
   }
  },
+ "daybook": {
+  "total": 50,
+  "newest": "2026-08-22",
+  "oldest": "2026-06-25",
+  "byProject": {
+   "RHS": 27,
+   "Sally": 19,
+   "Lab": 1,
+   "A.R.C.": 3
+  },
+  "recent": [
+   {
+    "date": "2026-08-22",
+    "project": "RHS",
+    "title": "The homepage, in three columns",
+    "body": "The homepage is three columns now: the wordmark left, the sentence and the question in the middle, the address right. They sit on the nav bar rather than under it, so the bar carries the page's own type instead of a strip of empty rule. Everything came down…",
+    "href": "/"
+   },
+   {
+    "date": "2026-08-22",
+    "project": "Sally",
+    "body": "Image editing takes twelve inputs instead of four."
+   },
+   {
+    "date": "2026-08-21",
+    "project": "RHS",
+    "body": "The homepage cover became the page's own three columns instead of a bar sitting above them. The rail dropped its labels at the same time; six of them were naming things the type already said."
+   },
+   {
+    "date": "2026-08-21",
+    "project": "Sally",
+    "body": "The inline image card had never rendered. Fixed, and a check for placeholders went in so it cannot come back quietly."
+   },
+   {
+    "date": "2026-08-20",
+    "project": "RHS",
+    "body": "The ask receipt reads as a ledger now. It names the model, keeps each source in its own row, and says plainly that this site is a working concept testing AI as the thing that runs it. Info is gone, because every line on it was the homepage's left rail…",
+    "href": "/"
+   },
+   {
+    "date": "2026-08-20",
+    "project": "Sally",
+    "body": "Jim takes attachments. A .pptx comes back as a designer's review with real edits made to it, and images generate or restyle inside the chat. The body cap went from 1MB to 24MB, which is what an attached image needs to get through the door at all. Jim also…"
+   },
+   {
+    "date": "2026-08-19",
+    "project": "RHS",
+    "body": "Jeffrey Spring had two cards on the homepage and now has one. The contact form's email line steps back from the button."
+   },
+   {
+    "date": "2026-08-19",
+    "project": "Sally",
+    "title": "The drawing era",
+    "body": "The Figma plugin draws every asset now. Until today it filled in master frames a designer had built by hand, which meant a template with no master could not be produced at all. It builds the frame from the same spec that drives the portal's own preview, so…"
+   },
+   {
+    "date": "2026-08-18",
+    "project": "Sally",
+    "body": "Campaign sheets reached phase two: a selector, patch and resolve endpoints, and a rewrite that edits a built sheet in place. The Figma plugin moved into the repo instead of living beside it. An adversarial review of the two found twenty defects, and all of…"
+   },
+   {
+    "date": "2026-08-16",
+    "project": "RHS",
+    "body": "The homepage index got standing rules: two running down the page instead of one per row, then a third. A frame opens to the column edge on hover, and the cap is worked out from geometry rather than waiting on paint to report it."
+   },
+   {
+    "date": "2026-08-16",
+    "project": "RHS",
+    "body": "Cover and tile pass across sixteen studies. Fairview's hero went back in at 3840 wide. Three new heroes compressed, 703K off, nothing visible lost."
+   },
+   {
+    "date": "2026-08-15",
+    "project": "RHS",
+    "body": "Copy pass across all 30 studies. Every headline says a sentence now instead of performing one, and the site went sentence case throughout. Black & white type lost its pattern matrix and had its prints named right. The Sally study was reordered to run in the…"
+   }
+  ]
+ },
  "projects": [
   {
    "slug": "amber-shockey-co",

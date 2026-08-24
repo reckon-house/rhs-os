@@ -43,7 +43,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import {
-  SYSTEM, SHELF, contextFor, throttled, throttleState, KNOWN_TERMS,
+  SYSTEM, SHELF, DAYBOOK_TEXT, contextFor, throttled, throttleState, KNOWN_TERMS,
   MAX_Q, type AskBody,
 } from "@/lib/ask-context";
 
@@ -112,6 +112,16 @@ const PREFIX: Anthropic.TextBlockParam[] = [
   {
     type: "text",
     text: `THE COMPLETE SHELF — every project the house holds:\n\n${SHELF}`,
+  },
+  /* THE DAYBOOK RIDES IN THE PREFIX, and the breakpoint moved to the
+     end of it. The shelf says what the work is and this says what
+     happened lately; both are identical on every request, so both cache
+     and only the question and its facts are billed at full rate. It
+     also pushes the prefix further above Haiku's 4,096-token minimum,
+     which the note on MODEL above has been watching. */
+  {
+    type: "text",
+    text: DAYBOOK_TEXT,
     cache_control: { type: "ephemeral" },
   },
 ];
@@ -171,7 +181,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "empty question" }, { status: 400 });
   }
 
-  const { text, used } = contextFor(hrefs, frames, pulls);
+  const { text, used } = contextFor(hrefs, frames, pulls, q);
 
   try {
     const client = new Anthropic();

@@ -79,11 +79,27 @@ export interface Pull {
   facets?: Record<string, string[]>;
 }
 
+/** The dated log, as build-facts emits it. Server-side only: it is not
+ *  in the compact file every visitor downloads. */
+export interface Daybook {
+  total: number;
+  newest: string;
+  oldest: string;
+  byProject: Record<string, number>;
+  recent: {
+    date: string;
+    project: string;
+    title?: string;
+    body: string;
+    href?: string;
+  }[];
+}
+
 /* Through `unknown`: the generated index is a literal type with a
    different optional-key shape per project, and TypeScript will not
    narrow it to the interface directly. The runtime shape is guaranteed
    by build-facts.mjs, which is the actual contract. */
-const INDEX = facts as unknown as { projects: Project[]; images?: Frame[]; pulls?: Pull[] };
+const INDEX = facts as unknown as { projects: Project[]; images?: Frame[]; pulls?: Pull[]; daybook?: Daybook };
 const PROJECTS: Project[] = INDEX.projects;
 const BY_HREF = new Map(PROJECTS.map((p) => [p.href, p]));
 const FRAMES: Frame[] = INDEX.images ?? [];
@@ -131,7 +147,37 @@ Rules, all of them hard:
 
 Some facts are marked SEEN IN. Those were observed in a photograph, not written by Jeremy. You may say such a thing is visible in the work. You may not turn it into a claim about why it was done or what it achieved.
 
+You are also given THE DAYBOOK: the dated log of what has actually been built lately, newest first. The case studies say what the work IS; the daybook says what happened this week. Questions about what he is working on, what is new, what he has been building or what changed recently are answered from it, and they are ON TOPIC. Name the thing that was built, in the same plain register as the rest.
+
+Two limits on the daybook, and they are the reason it can be trusted. DATES THERE ARE REAL and you may use them: a daybook entry is dated by nature, so saying which day a thing landed is reporting, not stamping. That is the one exception to the no-dating rule above, and it does not extend to the projects: never give a case study a year. And do not work out how long ago something was, or say this week, last week or a fortnight. You do not know today's date. The newest entry is the most recent work and that is as far as you can go.
+
 Some answers come from the INSPIRATION BOARD instead of a project, and it will be labelled as such when it does. The board is pictures Jeremy saved because he likes them: other people's work, other people's photographs, sometimes a musician or a designer he admires. None of it is his and no claim is made on it. Questions like what inspires you, who do you admire, what do you look at, are ON TOPIC and the board is the answer to them, so answer from it plainly and name what is actually there. Never describe a board picture as his work, his client or his project, and never say the board is a project.`;
+
+/* ── the daybook, as the model reads it ─────────────────────────────
+   Built once at module load and shipped in the CACHED PREFIX beside
+   the shelf. That is the whole reason this is affordable: it is
+   identical on every request, so it is billed at read rates rather
+   than at full rate, and it lifts the prefix further clear of Haiku's
+   4,096-token cacheable minimum instead of threatening it.
+
+   Anything per-visitor must stay out of here. A prefix that changes
+   with the question is a prefix that never caches. */
+const DB = INDEX.daybook;
+export const DAYBOOK_TEXT = DB
+  ? [
+      `THE DAYBOOK — the dated log of what has been built, newest first.`,
+      `${DB.total} entries from ${DB.oldest} to ${DB.newest}. ` +
+        Object.entries(DB.byProject)
+          .sort((a, b) => b[1] - a[1])
+          .map(([k, n]) => `${k} ${n}`)
+          .join(", ") + ".",
+      ``,
+      `The ${DB.recent.length} most recent:`,
+      ...DB.recent.map((e) =>
+        `  ${e.date} · ${e.project}${e.title ? ` · ${e.title}` : ""}\n` +
+        `    ${e.body}`),
+    ].join("\n")
+  : "";
 
 /* ── the shelf ─────────────────────────────────────────────────────
    Every project, on every request, as part of the cached prefix.
@@ -247,7 +293,18 @@ export function throttleState() {
   return { day: dayStamp, globalToday, cap: GLOBAL_DAY };
 }
 
-export function contextFor(hrefs: string[], frames: string[], pulls: string[] = []): { text: string; used: string[] } {
+/* A question the daybook answers. Deliberately narrow: this decides
+   what the RECEIPT claims as a source, and a receipt that credits the
+   daybook for an answer that never touched it is the same lie as a
+   citation pointing at the wrong sentence. */
+const RECENCY = /\b(working on|work on|lately|recently|latest|newest|these days|right now|currently|what'?s new|new lately|up to|been building|been working|this week|last week|daybook|shipped)\b/i;
+
+export function contextFor(
+  hrefs: string[],
+  frames: string[],
+  pulls: string[] = [],
+  q = ""
+): { text: string; used: string[] } {
   const picked = hrefs
     .slice(0, MAX_HREFS)
     .map((h) => BY_HREF.get(h))
@@ -355,6 +412,9 @@ export function contextFor(hrefs: string[], frames: string[], pulls: string[] = 
      the ledger under a board answer read "no match" while two of its
      pictures sat directly beneath. */
   if (board.length) used.push("the inspiration board");
+  /* The daybook is in the prefix on every request, so it is only worth
+     CLAIMING when the question actually reached for it. */
+  if (DB && RECENCY.test(q)) used.push("the daybook");
 
   return {
     text: blocks.length ? blocks.join("\n\n") : "Nothing in the index matched this question.",

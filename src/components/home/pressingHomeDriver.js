@@ -447,7 +447,15 @@ function trailTerms(n) {
 const STOP = new Set(("a an and any all are as at be been by can could did do does " +
   "every everything for from get got has have how i if in is it its me my of on or please " +
   "should show some that the their them there they this to us was we what " +
-  "which who with would you your company thing things stuff").split(" "));
+  /* "new" is a stopword because it is never the subject here and it
+     was reaching one: "new" is a token of the term "new york", the
+     lookup matches a query against the WORDS of a multi-word term, and
+     so "what's new" answered "New York work: Jeffrey NYC and Jeffrey
+     Spring Campaign." A question about what is being built now was
+     being answered with two of the oldest studies on the site.
+     Dropping it costs nothing, because "new york" still reaches the
+     term through "york". */
+  "which who with would you your company thing things stuff new").split(" "));
 
 function analyse(q) {
   const raw = q.toLowerCase().replace(/[^a-z0-9&\s]/g, " ").split(/\s+/).filter(Boolean);
