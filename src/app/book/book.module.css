@@ -1,0 +1,231 @@
+/*
+ * The booking page, in the homepage's grammar.
+ *
+ * Nothing new is invented here: the lede is .statement, the rail is
+ * .ixnotes, the grid sits in the content column. The type is the site's
+ * two sizes and the rules are its hairlines, because the point of not
+ * using Calendly is that this page looks like the rest of the site.
+ */
+
+/* The grid placement every white page here uses: the lede is row 1 of
+   the content column, the rail and the body share row 2, and the rail
+   hangs from the top of both. Written out rather than shared because
+   the three pages that do this are three different components; if a
+   fourth arrives it is worth a common class. */
+:global(.stratum) :global(.ixbody) .lede {
+  grid-column: 2;
+  grid-row: 1;
+  padding-left: 0;
+  padding-right: 0;
+}
+.rail {
+  grid-column: 1;
+  grid-row: 1 / -1;
+}
+.body {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.wrap {
+  padding-bottom: clamp(80px, 12dvh, 140px);
+}
+
+/* Five days across, each a column of half-hours. The days are the
+   columns rather than the rows because a week reads left to right and
+   the shape of it — which days have anything in them — is the first
+   thing worth seeing. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 18px);
+  margin: 0 0 clamp(20px, 3vw, 32px);
+}
+
+.day {
+  min-width: 0;
+}
+
+/* The day, at the label size. Wrapped rather than truncated: "Wednesday
+   27 August" over two lines is fine and an ellipsis is not. */
+.dayHead {
+  margin: 0 0 10px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  line-height: 1.4;
+  opacity: 0.55;
+}
+
+.slots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+/* ONE SHAPE, TWO STATES, and the closed one says nothing. A slot that
+   is merely not offered and a slot somebody has taken are the same box
+   on purpose: only one of them is a fact about a booking, and labelling
+   both "taken" would be inventing meetings. Grey carries the scarcity
+   without the claim. */
+.slot,
+.closed {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: var(--pp-note, 12px);
+  line-height: 1.4;
+  text-align: left;
+  border: 1px solid transparent;
+}
+
+.slot {
+  background: var(--pp-paper, #fff);
+  border-color: rgba(0, 0, 0, 0.28);
+  color: var(--pp-ink, #000);
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+@media (hover: hover) {
+  .slot:hover { border-color: var(--pp-ink, #000); }
+}
+.slot:focus-visible {
+  outline: 1px solid var(--pp-ink, #000);
+  outline-offset: 3px;
+}
+.on,
+.slot.on:hover {
+  background: var(--pp-ink, #000);
+  border-color: var(--pp-ink, #000);
+  color: var(--pp-paper, #fff);
+}
+
+.closed {
+  background: color-mix(in srgb, var(--surface-alt, #ede9e3) 55%, var(--pp-paper, #fff));
+  color: rgba(0, 0, 0, 0.3);
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot { transition: none; }
+}
+
+.tz {
+  margin: 0 0 clamp(24px, 4vw, 40px);
+  font-size: var(--pp-cap, 11px);
+  line-height: 1.5;
+  opacity: 0.55;
+}
+
+/* ── the form ──
+   The contact form's own shape: a label column, a rule under each
+   field, no boxes. One form language on the site. */
+.form {
+  max-width: 62ch;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  border-top: 1px solid rgba(0, 0, 0, 0.13);
+  padding: clamp(14px, 2dvh, 20px) 0;
+}
+.lbl {
+  font-size: var(--pp-note, 12px);
+  line-height: 1.55;
+  opacity: 0.45;
+}
+.field {
+  font: inherit;
+  font-size: var(--pp-note, 12px);
+  line-height: 1.55;
+  color: var(--pp-ink, #000);
+  background: none;
+  border: 0;
+  padding: 0;
+  width: 100%;
+}
+.field::placeholder { color: rgba(0, 0, 0, 0.3); }
+.field:focus { outline: none; }
+.field:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 4px; }
+.area { resize: vertical; min-height: 3.4em; }
+
+/* Off-screen rather than display:none — a bot that skips hidden fields
+   is not caught by a field it cannot see. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(0, 0, 0, 0.13);
+  padding-top: clamp(14px, 2dvh, 20px);
+}
+.send {
+  font: inherit;
+  font-size: var(--pp-note, 12px);
+  line-height: 1;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--pp-ink, #000);
+  background: var(--pp-ink, #000);
+  color: var(--pp-paper, #fff);
+  cursor: pointer;
+}
+.send:disabled {
+  background: none;
+  color: rgba(0, 0, 0, 0.35);
+  border-color: rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+.send:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 3px; }
+
+.why {
+  font-size: var(--pp-note, 12px);
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+/* ── booked ── */
+.done { padding-bottom: clamp(80px, 12dvh, 140px); }
+.doneLine {
+  margin: 0 0 12px;
+  font-size: clamp(20px, 2.4vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.doneNote {
+  margin: 0 0 8px;
+  font-size: var(--pp-note, 12px);
+  line-height: 1.55;
+  opacity: 0.6;
+  max-width: 62ch;
+}
+.link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Two columns of days on a tablet, one on a phone. Five columns at
+   375px would give each day about 60px, which is narrower than the
+   times inside them. */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
