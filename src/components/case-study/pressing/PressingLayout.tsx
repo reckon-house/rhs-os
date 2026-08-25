@@ -137,6 +137,39 @@ function splitCaption(caption?: string): { label: string; sub?: string } | undef
   return { label, sub };
 }
 
+/**
+ * The vertical spec line on the cover's edge, derived when a study has
+ * not written one.
+ *
+ * Robert's is hand-set — "Spring Campaign · Art Direction · Photo
+ * Compositing · Capture One" — and for a long time he and A.R.C. were
+ * the only two covers carrying the mark at all, which made a nice piece
+ * of the language read as a one-off on one page.
+ *
+ * DERIVED, NOT AUTHORED, and that is the point. Every study already
+ * declares its own classification and stack at the top of its file, so
+ * the line is assembled from what the work actually was rather than
+ * from twenty-eight sentences somebody would have to invent. The
+ * fabrication rule is the reason: hand-writing these would mean
+ * guessing which camera or which application a project used, on
+ * covers, in small caps, where nobody would ever check.
+ *
+ * Three disciplines and the primary tool, which is the shape Robert's
+ * own line takes. Four items is also as many as the edge holds before
+ * the type runs past the corner it is meant to stop at.
+ *
+ * A study that wants better than derived writes its own; specLine still
+ * wins. That is how Robert and A.R.C. keep theirs.
+ */
+function edgeSpec(study: CaseStudy): string | undefined {
+  const cls = (study.classification ?? []).filter(Boolean);
+  const tool = (study.stack ?? []).filter(Boolean)[0];
+  const parts = [...cls.slice(0, 3), ...(tool ? [tool] : [])];
+  /* One item is a label, not a spine. Two is where it starts to read
+     as a spec rather than as a stray word down the page edge. */
+  return parts.length >= 2 ? parts.join(" · ") : undefined;
+}
+
 export function PressingLayout({ study }: { study: CaseStudy }) {
   const out: React.ReactNode[] = [];
   const sections = study.sections;
@@ -159,7 +192,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
           title={s.title}
           statement={s.subtitle}
           reel={s.reel}
-          specLine={s.specLine}
+          specLine={s.specLine ?? edgeSpec(study)}
           mark={p?.mark}
           // Climb room only when something actually climbs — same
           // derivation as the zoom plates.
