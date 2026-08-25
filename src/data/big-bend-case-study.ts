@@ -27,7 +27,7 @@ export const bigBendCaseStudy: CaseStudy = {
   status: "Personal",
   classification: ["Photography", "Landscape", "Personal Work"],
   services: ["Photography"],
-  stack: ["Camera"],
+  stack: ["Fuji X-T30 35mm prime"],
   links: [],
   heroImage: "",
   style: "pressing",
@@ -277,7 +277,7 @@ export const bigBendCaseStudy: CaseStudy = {
       id: "closing",
       type: "closing",
       services: ["Photography"],
-      stack: ["Camera"],
+      stack: ["Fuji X-T30 35mm prime"],
       links: [{ label: "See the Capitan Boot Co. campaign", url: "/case-studies/capitan-boot-co" }],
       content:
         "The photographs came home from a family trip and sat in a folder. Later, Capitan Boot Co. needed the West Texas desert behind its boots, and it was already in there.",
