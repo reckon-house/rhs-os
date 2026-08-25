@@ -4419,7 +4419,15 @@ function buildAnswer() {
     row.className = "ixrow";
     [a, b].forEach((ci, k) => {
       const cell = document.createElement("div");
-      cell.className = "cell";
+      /* WHICH COLUMN, said out loud. The answer's cells were built
+         plain, so every rule keyed to .colL / .colR missed them and
+         both frames fell back to the bare .cell: hung right, opening
+         left, with a left-aligned name. The right-hand one was right
+         by accident. The left one hung on the wrong edge, and its
+         name — driven by the same missing class — swung right, out of
+         its column and across the gutter, while the right one's swung
+         off the page. Same two lines the index deals, k is the side. */
+      cell.className = "cell col" + (k ? "R" : "L");
       if (ci !== undefined) {
         const el = imgCard(cards[ci], rnd, false);
         el.style.setProperty("--share", String(shares[r * 2 + k]));
