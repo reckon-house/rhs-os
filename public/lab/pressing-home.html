@@ -869,12 +869,24 @@
        taller than the viewport cannot pin — the bottom simply never
        arrives. At 7.5vw the five blocks ran 915px against a 900px
        window and the filter was being cut off.
-       vh is the honest unit here: 60px is the ceiling and it holds
-       from roughly 860px of window upward, so this reads as a flat 60
+       vh is the honest unit here: 40px is the ceiling and it holds
+       from roughly 910px of window upward, so this reads as a flat 40
        on any normal screen. Below that it shrinks rather than pushing
        the last block off the bottom, which is the one thing a pinned
-       column must never do. */
-    --rail-gap: clamp(28px, 7vh, 60px);
+       column must never do.
+
+       40 rather than 60. At 12px the blocks are small and the air
+       between them was reading as three blank lines, which separates
+       them further than they are actually separate: they are five
+       notes on one card, not five cards. Two lines of air still
+       breaks them apart and stops the column looking like a list of
+       unrelated fragments.
+
+       It buys headroom as well, which is the constraint above. Five
+       blocks came to 506px at the old ceiling and come to 426px at
+       this one, so the height at which the rail stops being able to
+       pin moves down by 80px. */
+    --rail-gap: clamp(24px, 4.4vh, 40px);
     gap: var(--rail-gap); }
   /* ── the rail's fold ──────────────────────────────────────────────
      Above 860 there is nothing to disclose: the summary is gone and
