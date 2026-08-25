@@ -60,6 +60,9 @@ import styles from "./PressingCover.module.css";
    pixels and close that gap as the block settles. A staggered progress
    instead gave every line its own start and finish, which at 86vh of travel
    pulled them ~70px apart — four objects arriving, not a paragraph. */
+/** Air between the reel's caption and the top of the edge spine. */
+const EDGE_GAP = 34;
+
 const COPY_IN = 0.3;
 const COPY_SPAN = 0.55;
 const COPY_DRAG = 13;
@@ -347,6 +350,39 @@ export function PressingCover({
       (box.getBoundingClientRect().width / r).toFixed(1) + "px";
   }, []);
 
+  /* WHERE THE SPINE MAY START, which is under the reel at its TALLEST.
+     The edge line used to begin at a hardcoded 356px, a number tuned
+     against Robert's reel, and it held only because his frames are
+     landscape. Ivy Park's cut between 245 and 539 and ran the spine
+     straight through the thumbnail for 129px of it.
+
+     Measured ONCE, from the tallest declared frame, not per beat. A top
+     that followed the box would jitter down the page eight times a
+     cycle, and it would also settle several seconds after the reader
+     arrived. Every ratio is already known here — the reel does not
+     mount until they have all loaded — so the tallest state can be
+     reserved before the first cut rather than discovered during it. */
+  const placeEdge = useCallback(() => {
+    const box = boxRef.current;
+    const sticky = stickyRef.current;
+    if (!box || !sticky) return;
+    const rs = ratiosRef.current.filter((r) => r && r > 0);
+    if (!rs.length) return;
+    const fig = box.parentElement as HTMLElement | null;
+    if (!fig) return;
+    /* Smallest ratio is the tallest frame. */
+    const tallest = box.getBoundingClientRect().width / Math.min(...rs);
+    const cap = fig.querySelector("figcaption") as HTMLElement | null;
+    const capH = cap
+      ? cap.offsetHeight + parseFloat(getComputedStyle(cap).marginTop || "0")
+      : 0;
+    /* offsetTop rather than a repeat of the 64px in the stylesheet: the
+       figure's own placement is the stylesheet's business and this only
+       needs to know where it landed. */
+    const top = fig.offsetTop + tallest + capH + EDGE_GAP;
+    sticky.style.setProperty("--edge-top", Math.round(top) + "px");
+  }, []);
+
   const images = reel?.images;
   useEffect(() => {
     if (!images || images.length === 0) return;
@@ -369,6 +405,7 @@ export function PressingCover({
     ).then(() => {
       if (!alive) return;
       shape(0);
+      placeEdge();
       setReelReady(true);
     });
     const onResize = () => {
@@ -376,6 +413,9 @@ export function PressingCover({
       // Let it re-derive on the next beat rather than going stale at the
       // old width.
       if (box && parseFloat(box.style.height)) box.style.height = "";
+      /* The box width is a clamp, so the tallest state moves with the
+         viewport and the reserved space has to move with it. */
+      placeEdge();
     };
     window.addEventListener("resize", onResize);
     return () => {
@@ -388,7 +428,7 @@ export function PressingCover({
     // rebuilds an equal array inline must not tear down and re-preload the
     // whole reel.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [images ? images.join(",") : "", shape]);
+  }, [images ? images.join(",") : "", shape, placeEdge]);
 
   const onBeat = useCallback(
     (_i: number, beat: SizzleBeat) => {

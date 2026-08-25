@@ -151,12 +151,17 @@
   opacity: 0.55;
 }
 
-/* The vertical spec line on the page edge. Starts below the reel block and
-   runs to the lower corner the headline never reaches. */
+/* The vertical spec line on the page edge. Starts below the reel block at
+   its TALLEST and runs to the lower corner the headline never reaches.
+
+   --edge-top is written by the cover once every frame's ratio is known.
+   The 356px fallback is Robert's old hardcode and survives only as the
+   value used if that measurement never runs; it is correct for a
+   landscape reel and was wrong for every portrait one. */
 .edgeV {
   position: absolute;
   right: 40px;
-  top: 356px;
+  top: var(--edge-top, 356px);
   bottom: 48px;
   writing-mode: vertical-rl;
   font-size: var(--pp-lbl);
