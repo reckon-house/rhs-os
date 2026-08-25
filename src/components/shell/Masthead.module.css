@@ -114,9 +114,57 @@
   color: rgba(0, 0, 0, 0.42);
   text-decoration: none;
 }
+
+/* ── ONE WAY THROUGH ────────────────────────────────────────────────
+   The site has one gesture for a live word: a grey hairline at rest and
+   an ink one drawn over it from the left on approach. The statement's
+   terms, the question field, the rail's filters and its booking link
+   all wear it. The address used to answer by changing colour instead,
+   which was a third language in a bar that already has two.
+
+   THE TYPE HOLDS ITS TONE. Everywhere else the rule fills and the words
+   stay whatever grey they were — the statement's terms sit inside its
+   recessive run and must grey with it — so the address does the same
+   and keeps its 0.42. `#nav a:hover` still has to be opted out of; that
+   0.45 fade is the wordmark's cue, not this one's.
+
+   WRITTEN OUT AGAIN HERE, on purpose. port-home.mjs drops the lab's
+   `#nav` rules because the masthead is shell furniture and appears on
+   every route, not just the homepage — so the shared declaration in
+   pressing-home.css cannot reach this element. The two are kept in
+   step by hand; the numbers below are the lab's, unchanged.
+   Full geometry and reasoning: the ONE WAY THROUGH block in
+   public/lab/pressing-home.html. */
+.nav a.meta {
+  background-image:
+    linear-gradient(var(--rule-ink, #000), var(--rule-ink, #000)),
+    linear-gradient(var(--rule-rest, rgba(0, 0, 0, 0.22)),
+                    var(--rule-rest, rgba(0, 0, 0, 0.22)));
+  background-repeat: no-repeat;
+  background-size: 0 1px, 100% 1px;
+  background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+  /* one transition, two properties: the colour fade below is what keeps
+     the dark-zone handover from reading as a flicker, and a second rule
+     naming only background-size would replace it rather than add to it */
+  transition:
+    background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.28s ease;
+}
+@media (hover: hover) {
+  .nav a.meta:hover {
+    background-size: 100% 1px, 100% 1px;
+  }
+}
 .nav a.meta:hover {
-  color: var(--masthead-ink);
   opacity: 1;
+}
+.nav a.meta:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav a.meta {
+    transition: none;
+  }
 }
 
 /* Reversed over dark ground. mix-blend-mode would be the tidier answer but
@@ -125,9 +173,11 @@
    instead of the page and the type just stays white. A driver toggles the
    class against declared [data-nav-dark] zones instead. The transition is
    what keeps the handover from reading as a flicker at the boundary. */
+/* .meta is not here: it carries colour and background-size on one
+   transition above, and naming it again would replace that with a
+   colour-only rule and kill the fill. */
 .mark,
-.links a,
-.meta {
+.links a {
   transition: color 0.28s ease;
 }
 .nav.rev {
@@ -137,8 +187,16 @@
 .nav.rev .meta {
   color: rgba(255, 255, 255, 0.5);
 }
-.nav.rev a.meta:hover {
-  color: var(--masthead-paper);
+
+/* THE RULE INVERTS WITH THE BAR. Black on a dark zone is no line at
+   all, and the address is the one live word that crosses those
+   boundaries — it holds its seat in the bar the whole way down a page
+   while the ground beneath it changes. Custom properties rather than a
+   second copy of the rule: they inherit from .nav down to the link, so
+   the declaration above reads whichever pair is in force. */
+.nav.rev {
+  --rule-ink: var(--masthead-paper);
+  --rule-rest: rgba(255, 255, 255, 0.32);
 }
 
 

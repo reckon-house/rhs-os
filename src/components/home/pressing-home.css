@@ -109,6 +109,10 @@
 
   /* the field is NOT in this list — it is positioned, not merely
      raised, and #nav .ask would out-specify the .ask rule below */
+  /* #nav a:hover fades every link in the bar to 0.45, which is the
+     wordmark's cue and not this one's. The address answers with the
+     rule instead — see ONE WAY THROUGH — so it holds its tone and only
+     has to opt out of the fade. */
 
   /* ── the question, which travels ─────────────────────────────────
      There is one field, not two. It begins at display size in the
@@ -151,6 +155,15 @@
      context, so a driver toggles this against declared
      [data-nav-dark] zones. The transition is what keeps the handover
      from reading as a flicker at the boundary. */
+  /* .meta is not in this list: it carries colour AND background-size on
+     one transition in the shared rule below, which out-specifies this
+     one, so naming it here would only look like it did something. */
+  /* THE RULE INVERTS WITH THE BAR. Black on a dark zone is no line at
+     all, and the address is the one live word that crosses those
+     boundaries — it sits in the bar the whole way down the page while
+     the ground under it changes. Custom properties rather than a
+     second copy of the rule: they inherit from #nav to the link, so
+     the shared declaration below reads whichever pair is in force. */
 
   /* ── the cover: the question, and what the question is for ───────
      Term left, definition right. The left column is the way in — the
@@ -342,8 +355,18 @@
      Scoped to this route: other pages have no second copy to agree
      with. */
   html.rh-home #nav { --nav-gutter: var(--gut); }
-  html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
-    transition: opacity 0.3s ease; }
+  html.rh-home #nav [data-mark] { transition: opacity 0.3s ease; }
+  /* THE ADDRESS HAS TO CARRY THREE THINGS ON ONE LIST. It fades in
+     with the wordmark here, it fades its tone across a dark zone's
+     edge, and it draws the rule every live word on the site draws.
+     transition is not additive: this selector is (1,2,1) and the
+     masthead's own .nav a.meta is (0,2,1), so naming only opacity
+     here left the fill with no transition and the rule snapped on —
+     on the homepage alone, which is the sort of difference nobody
+     finds by looking at one page. */
+  html.rh-home #nav [data-meta] {
+    transition: opacity 0.3s ease, color 0.28s ease,
+      background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
   @media (prefers-reduced-motion: reduce) {
     html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
       transition: none; }
@@ -391,21 +414,15 @@
      a transparent border comes back as a second, lower line on hover.
      A zero-width border has nothing to colour. */
   .ask.big #query { border-bottom: 0; padding-bottom: 0;
-    background-image: linear-gradient(#000, #000),
-      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
-    background-repeat: no-repeat;
-    background-size: 0 1px, var(--ask-uw, 100%) 1px;
-    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
-  @media (hover: hover) {
-    .ask.big #query:hover {
-      background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
-  }
+    /* the one difference from every other drawn rule on the page: the
+       line is the width of the TYPED TEXT, which the driver measures,
+       and not of the box the field reserves inside the sentence */
+    --rule-w: var(--ask-uw, 100%); }
+  /* a field has no focus-visible distinction worth drawing — it either
+     has the caret or it does not, and the rule should be full either
+     way, so this is :focus and carries no outline */
   .ask.big #query:focus {
-    background-size: var(--ask-uw, 100%) 1px, var(--ask-uw, 100%) 1px; }
-  @media (prefers-reduced-motion: reduce) {
-    .ask.big #query { transition: none; }
-  }
+    background-size: var(--rule-w) 1px, var(--rule-w) 1px; }
 
   /* 32, with the rest of the ramp. The cover sets its own --stmt-fs
      to the same ceiling; this is what the daybook and staples read. */
@@ -863,62 +880,40 @@
   /* the model receipt: key-value rows, grey key, plain value, one per
      line. Machine chrome states facts; the paragraph version narrated
      its own process and read as a robot easing you into it. */
-  /* THE WAY THROUGH, on its own line. Same hairline the statement's
-     live words carry, so a door in this column reads as the same kind
-     of thing as a door in the sentence above it. */
-  /* block + fit-content, not inline-block: it has to START a line, and
+  /* THE WAY THROUGH, on its own line, wearing the same rule every
+     live word wears. See ONE WAY THROUGH below.
+     block + fit-content, not inline-block: it has to START a line, and
      an inline-block simply carried on from the address. The width still
-     hugs the words so the underline is the length of the link rather
-     than the width of the column. */
-  .ixnotes .blk .blkgo { display: block; width: fit-content; margin-top: 10px;
-    color: inherit; text-decoration: none;
-    background-image: linear-gradient(#000, #000),
-      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
-    background-repeat: no-repeat;
-    background-size: 0 1px, 100% 1px;
-    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
-  @media (hover: hover) {
-    .ixnotes .blk .blkgo:hover { background-size: 100% 1px, 100% 1px; }
-  }
-  .ixnotes .blk .blkgo:focus-visible { outline: 1px solid var(--ink);
-    outline-offset: 3px; background-size: 100% 1px, 100% 1px; }
-  @media (prefers-reduced-motion: reduce) {
-    .ixnotes .blk .blkgo { transition: none; }
-  }
+     hugs the words so the rule is the length of the link rather than
+     the width of the column. */
+  .ixnotes .blk .blkgo { display: block; width: fit-content;
+    margin-top: 10px; color: inherit; }
   .ixnotes .blk .rl { display: block; padding-top: 4px; }
   .ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
   /* the filter reads as the column's own list: same body size, one per
-     line, underlined on approach rather than boxed. A button that
-     looked like a button would be the only chrome on the page. */
-  .ixnotes .filt button, .ixnotes .filt a { position: relative;
+     line, ruled rather than boxed. A button that looked like a button
+     would be the only chrome on the page.
+
+     IT LOST ITS OWN UNDERLINE. There was a ::after here that scaled
+     from zero on hover: a different curve, a different duration, and
+     nothing at rest, so four live words sat in this column looking
+     like four dead ones. It wears the shared rule now — see ONE WAY
+     THROUGH below — which means the hairline is there before the
+     pointer is, and the fill is the same move the sentence makes.
+
+     PADDING BECAME MARGIN. The 7px that separates one filter from the
+     next used to be padding, and a background paints to the padding
+     box: the rule would have hung 7px under its own word. As margin it
+     is air between the buttons and the line sits on the type.
+
+     background-color rather than the background shorthand, which would
+     reset the image the shared rule draws with. */
+  .ixnotes .filt button, .ixnotes .filt a {
     display: block; width: fit-content; text-align: left;
-    text-decoration: none;
-    background: none; border: 0; padding: 0 0 7px; cursor: pointer;
+    background-color: transparent; border: 0; padding: 0;
+    margin: 0 0 7px; cursor: pointer;
     font: inherit; font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
-  /* THE RULE IS DRAWN, NOT SWITCHED ON. text-decoration cannot animate,
-     so the underline appeared in a single frame while every other line
-     on this site grows from the left. Same scaleX from origin 0 the
-     compose form's rules and the daybook's rows use, on the house
-     curve, which eases out at the end.
-     The button is fit-content so the line belongs to the WORDS: at
-     width 100% it would run the whole rail, well past the label it
-     underlines. Sits at 10px to land where text-underline-offset: 4px
-     did, measured against the line box rather than guessed. */
-  .ixnotes .filt button::after, .ixnotes .filt a::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 10px;
-    height: 1px; background: currentColor;
-    transform: scaleX(0); transform-origin: 0 50%;
-    transition: transform 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .ixnotes .filt button:hover::after, .ixnotes .filt a:hover::after,
-  .ixnotes .filt button:focus-visible::after, .ixnotes .filt a:focus-visible::after {
-    transform: scaleX(1); }
-  @media (prefers-reduced-motion: reduce) {
-    .ixnotes .filt button::after, .ixnotes .filt a::after { transition: none; }
-  }
-  .ixnotes .filt button:focus-visible, .ixnotes .filt a:focus-visible { outline: 1px solid var(--ink);
-    outline-offset: 3px; }
 
   /* the row: notes column left empty (the notes float over it), then
      two frames, each hung from the top and pushed to the right of its
@@ -1522,36 +1517,90 @@
   /* The statement's nouns, clickable. They have to read as the sentence
      first and as controls second, so they take the paragraph's type
      whole and carry a hairline underneath — more than a hover cue, less
-     than a link. Colour is INHERITED, not set: most of them sit inside
-     the recessive run above and have to grey with it, or the sentence
-     grows a second tone it never asked for. */
-  .statement .term { display: inline; color: inherit; cursor: pointer;
-    /* Two stacked underlines drawn as backgrounds, because
-       text-decoration cannot animate directionally: the grey hairline
-       always spans the word, and the black one grows over it from the
-       left on hover, braking at the end. The trade against
-       text-decoration is skip-ink — a background line does not part
-       around descenders, so it rides the inline box's bottom edge,
-       tangent to their tips, rather than the old 0.14em offset that
-       skip-ink made possible. Raised back to that offset ON PURPOSE:
-       the line cuts straight through the p and y tails, which is the
-       look — a drawn rule over the words, not type furniture politely
-       stepping around them. 0.07em is the gap between Helvetica's
-       descent (~0.21em) and the 0.14em the underlines always sat at. */
+     than a link. */
+  .statement .term { display: inline; color: inherit; cursor: pointer; }
+
+  /* ── ONE WAY THROUGH ──────────────────────────────────────────────
+     Every live word on the site wears this and nothing wears anything
+     else. There were three languages: the statement's terms drew a
+     rule that filled from the left, the rail's filters grew a rule
+     that was not there at rest, and the masthead's address only
+     changed colour. Three ways of saying "this is a door" is two more
+     than a reader should have to learn.
+
+     Two stacked underlines drawn as backgrounds, because
+     text-decoration cannot animate directionally: the grey hairline
+     always spans the word, and the ink one grows over it from the left
+     on hover, braking at the end. The trade against text-decoration is
+     skip-ink — a background line does not part around descenders, so
+     it rides the inline box's bottom edge, tangent to their tips,
+     rather than the old 0.14em offset that skip-ink made possible.
+     Raised back to that offset ON PURPOSE: the line cuts straight
+     through the p and y tails, which is the look — a drawn rule over
+     the words, not type furniture politely stepping around them.
+     0.07em is the gap between Helvetica's descent (~0.21em) and the
+     0.14em the underlines always sat at.
+
+     THE HAIRLINE AT REST IS THE POINT, and it is what the filters
+     gained: a word that only admits it is live once the pointer is
+     already on it has told the reader nothing.
+
+     COLOUR IS INHERITED, never set here. Most of the statement's terms
+     sit inside its recessive grey run and have to grey with it, and
+     the masthead's address is quiet on purpose. The RULE goes to full
+     ink; the type stays whatever tone it was. That is why the address
+     could give up its colour change and lose nothing — the fill says
+     the same thing, in the language everything else speaks.
+
+     Three properties tune it. --rule-w is the line's length, defaulting
+     to the element's own width; the ask field overrides it, because
+     there the line belongs to the typed text and not to the box the
+     sentence reserves for it. --rule-ink and --rule-rest are the two
+     tones, and they invert under the masthead over a dark zone, where
+     black on black is no line at all. */
+  .statement .term,
+  .ask.big #query,
+  .ixnotes .blk .blkgo,
+  .ixnotes .filt button,
+  .ixnotes .filt a,
+  #nav a.meta {
     text-decoration: none;
-    background-image: linear-gradient(#000, #000),
-      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-image:
+      linear-gradient(var(--rule-ink, #000), var(--rule-ink, #000)),
+      linear-gradient(var(--rule-rest, rgba(0, 0, 0, 0.22)),
+                      var(--rule-rest, rgba(0, 0, 0, 0.22)));
     background-repeat: no-repeat;
-    background-size: 0 1px, 100% 1px;
+    background-size: 0 1px, var(--rule-w, 100%) 1px;
     background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+    /* colour rides along for the masthead, which fades its own tone
+       across a dark zone's edge. Nothing else here changes colour, so
+       it costs them nothing and saves a second transition rule that
+       would have had to out-specify this one. */
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.28s ease; }
   @media (hover: hover) {
-    .statement .term:hover { background-size: 100% 1px, 100% 1px; }
+    .statement .term:hover,
+    .ask.big #query:hover,
+    .ixnotes .blk .blkgo:hover,
+    .ixnotes .filt button:hover,
+    .ixnotes .filt a:hover,
+    #nav a.meta:hover {
+      background-size: var(--rule-w, 100%) 1px, var(--rule-w, 100%) 1px; }
   }
-  .statement .term:focus-visible { outline: 1px solid var(--ink);
-    outline-offset: 3px; background-size: 100% 1px, 100% 1px; }
+  .statement .term:focus-visible,
+  .ixnotes .blk .blkgo:focus-visible,
+  .ixnotes .filt button:focus-visible,
+  .ixnotes .filt a:focus-visible,
+  #nav a.meta:focus-visible {
+    outline: 1px solid var(--ink); outline-offset: 3px;
+    background-size: var(--rule-w, 100%) 1px, var(--rule-w, 100%) 1px; }
   @media (prefers-reduced-motion: reduce) {
-    .statement .term { transition: none; }
+    .statement .term,
+    .ask.big #query,
+    .ixnotes .blk .blkgo,
+    .ixnotes .filt button,
+    .ixnotes .filt a,
+    #nav a.meta { transition: none; }
   }
 
   /* THE SAME SIZE AS THE STATEMENT IT REPLACES. It was 44 against the
