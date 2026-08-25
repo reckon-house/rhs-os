@@ -18,6 +18,10 @@ export interface PracticeNote {
   /** An exact substring of `body` to set in grey. Tone is an authoring
    *  decision — the machine only greys what the machine appended. */
   quiet?: string;
+  /** One way through, rendered on its own line under the body. A note
+   *  in this column is a statement, and a link inside the sentence
+   *  reads as a footnote rather than as a door. */
+  link?: { label: string; href: string };
 }
 
 /** Ordered as the column reads. The practice bio is not here: the
@@ -25,7 +29,11 @@ export interface PracticeNote {
  *  repeat it under the footer. */
 export const practiceNotes: PracticeNote[] = [
   { title: "Recently", body: "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online." },
-  { title: "Get in touch", body: "hello@reckon.house" },
+  {
+    title: "Get in touch",
+    body: "hello@reckon.house",
+    link: { label: "Book 30 minutes", href: "/book" },
+  },
   { title: "The setup", body: "Independent, Texas. Design and build. I love the work." },
   { title: "What I do", body: "Art direction. Brand systems. Digital design. Interiors." },
 ];

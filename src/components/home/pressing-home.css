@@ -851,6 +851,29 @@
   /* the model receipt: key-value rows, grey key, plain value, one per
      line. Machine chrome states facts; the paragraph version narrated
      its own process and read as a robot easing you into it. */
+  /* THE WAY THROUGH, on its own line. Same hairline the statement's
+     live words carry, so a door in this column reads as the same kind
+     of thing as a door in the sentence above it. */
+  /* block + fit-content, not inline-block: it has to START a line, and
+     an inline-block simply carried on from the address. The width still
+     hugs the words so the underline is the length of the link rather
+     than the width of the column. */
+  .ixnotes .blk .blkgo { display: block; width: fit-content; margin-top: 10px;
+    color: inherit; text-decoration: none;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) {
+    .ixnotes .blk .blkgo:hover { background-size: 100% 1px, 100% 1px; }
+  }
+  .ixnotes .blk .blkgo:focus-visible { outline: 1px solid var(--ink);
+    outline-offset: 3px; background-size: 100% 1px, 100% 1px; }
+  @media (prefers-reduced-motion: reduce) {
+    .ixnotes .blk .blkgo { transition: none; }
+  }
   .ixnotes .blk .rl { display: block; padding-top: 4px; }
   .ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
   /* the filter reads as the column's own list: same body size, one per

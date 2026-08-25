@@ -94,12 +94,16 @@ const NOTES = [
      opening claim here runs two sentences, the closer is one, and the
      enumeration between them is what greys. Say it in the data and it
      is right by construction. */
-  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things:",
+  ["The practice", "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Or just ask me:",
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
   ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
-  ["Get in touch", "hello@reckon.house"]
+  /* The fourth slot is a LINK the block renders under its text. The
+     address alone left the only committing thing on the site reachable
+     from nowhere: a reader who wanted to talk had to compose an email
+     from scratch. See the renderer below. */
+  ["Get in touch", "hello@reckon.house", null, ["Book 30 minutes", "/book"]]
 ];
 
 /* The plain way in. The brain answers questions, and a first-time
@@ -341,7 +345,7 @@ QUOTES.forEach((q) => cards.push({
     ["what it is", "staple quote board words"]]
 }));
 NOTES.forEach((n) => cards.push({
-  kind: "note", word: n[0], full: n[1], quiet: n[2],
+  kind: "note", word: n[0], full: n[1], quiet: n[2], link: n[3],
   fields: [["the practice", n[0] + " " + n[1]],
     ["what it is", "info about the practice studio contact"]]
 }));
@@ -1925,6 +1929,18 @@ function buildMagazine() {
        over an address. The word survives as the block's key and its
        seat, which is what it was actually doing. */
     blk.appendChild(document.createTextNode(cards[ci].full));
+    /* A NOTE MAY CARRY ONE WAY THROUGH. Its own line under the text
+       rather than inline: the blocks in this column are statements, and
+       a link buried in the middle of one reads as a footnote instead of
+       as a door. */
+    const link = cards[ci].link;
+    if (link) {
+      const a = document.createElement("a");
+      a.className = "blkgo";
+      a.href = link[1];
+      a.textContent = link[0];
+      blk.appendChild(a);
+    }
     /* same key noteCard writes, so a note the brain surfaces can
        travel out of this column */
     blk.dataset.key = "note:" + (cards[ci].word || "");

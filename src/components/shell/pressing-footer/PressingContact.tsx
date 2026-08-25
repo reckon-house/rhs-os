@@ -101,6 +101,10 @@ const PAGES = [
   { label: "Staples", href: "/inspiration", external: false },
 ];
 const CONTACT = [
+  /* Booking sits with the other ways in rather than in Pages: it is a
+     way to REACH him, not a place on the site. First, because it is the
+     one that ends in a conversation. */
+  { label: "Book 30 minutes", href: "/book", external: false },
   { label: "Email", href: "mailto:hello@reckon.house", external: false },
   {
     label: "LinkedIn",

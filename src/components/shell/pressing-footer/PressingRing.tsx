@@ -90,6 +90,11 @@ export function PressingRing() {
           <div className="blk" key={n.title}>
             <span className="tag">{n.title}</span>
             {n.quiet ? toned(n.body, n.quiet) : n.body}
+            {/* Same way through the homepage's rail carries, on the
+                same class, so the door looks the same in both places. */}
+            {n.link ? (
+              <Link className="blkgo" href={n.link.href}>{n.link.label}</Link>
+            ) : null}
           </div>
         ))}
         <div className="blk filt">
