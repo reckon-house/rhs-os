@@ -310,6 +310,14 @@ rather than stretching.
 ### To create a new case study
 1. Create `src/data/[slug]-case-study.ts` — copy `robert-rodriguez-case-study.ts` (pressing) or `arc-case-study.ts` (classic) as the template
 2. Add images to `public/case-studies/[slug]/` AND register every one in `src/data/image-dimensions.ts` — for pressing studies the declared ratio is load-bearing scroll math, not just CLS
+2b. **Run `npm run reels`** if the study has a cover reel. The reel plays
+   512px AVIF thumbnails from a `reel/` subdirectory, never the plates —
+   a reel box is 98px on a phone and the frames are fetched EAGERLY, so
+   pointing it at the plates cost 1.5-9.4 MB per study before a word was
+   read. `src/lib/reel-thumb.ts` owns the path convention and both the
+   generator and PressingCover import it. `npm run reels -- --check`
+   fails if a frame has no thumbnail; a missing one renders as a broken
+   image, which is loud on purpose.
 3. Register in `src/app/case-studies/[slug]/page.tsx`
 4. Update homepage `src/app/page.tsx` to add thumbnail to the grid (the all-work footer index derives from `src/data/projects.ts` automatically)
 

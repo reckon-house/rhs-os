@@ -42,6 +42,7 @@ import {
   useState,
 } from "react";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
+import { reelThumb } from "@/lib/reel-thumb";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
@@ -383,7 +384,12 @@ export function PressingCover({
     sticky.style.setProperty("--edge-top", Math.round(top) + "px");
   }, []);
 
-  const images = reel?.images;
+  /* THE REEL PLAYS THUMBNAILS, NOT PLATES. The data names the real
+     photograph, which is what it means; reelThumb turns that into the
+     512px frame this box can actually use. Both the ratio-measuring
+     preload below and the render take the same array, so there is no
+     path where a plate is fetched for a 98px box. See src/lib/reel-thumb.ts. */
+  const images = useMemo(() => reel?.images?.map(reelThumb), [reel?.images]);
   useEffect(() => {
     if (!images || images.length === 0) return;
     let alive = true;
@@ -471,7 +477,12 @@ export function PressingCover({
             <div ref={boxRef} className={styles.reelBox}>
               {reelReady ? (
                 <SizzleReel
-                  images={reel.images}
+                  /* `images`, not reel.images: the thumbnails the
+                     measuring pass above already fetched. Passing the
+                     raw array here fetched BOTH — 132KB of frames and
+                     11MB of plates on one cover — because SizzleReel
+                     mounts every frame as its own <img>. */
+                  images={images ?? reel.images}
                   colors={reel.colors.length > 0 ? reel.colors : undefined}
                   style={{ width: "100%", height: "100%" }}
                   onBeatChange={onBeat}
