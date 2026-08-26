@@ -149,17 +149,25 @@ export async function availability(now = new Date()): Promise<Day[]> {
   let taken = new Set<string>();
   if (bookingReady) {
     try {
-      const { data } = await db().rpc("taken_slots", {
+      const { data, error } = await db().rpc("taken_slots", {
         p_from: from.toISOString(),
         p_to: to.toISOString(),
       });
+      if (error) {
+        /* Same reasoning as claim_slot: the page still draws, but the reason
+           it drew a stale week belongs somewhere a person can read it. */
+        console.error("[booking] taken_slots failed:", {
+          code: error.code, message: error.message, hint: error.hint,
+        });
+      }
       if (Array.isArray(data)) {
         taken = new Set(
           data.map((r: { slot_at: string }) => new Date(r.slot_at).toISOString())
         );
       }
-    } catch {
+    } catch (e) {
       /* drawn as if nothing is taken; see the note above */
+      console.error("[booking] taken_slots threw:", e instanceof Error ? e.message : e);
     }
   }
 
@@ -208,12 +216,29 @@ export async function claimSlot(v: {
       p_note: v.note ?? null,
       p_token: v.token ?? null,
     });
-    if (error) return { ok: false, why: "failed" };
+    /* THE VISITOR GETS ONE SENTENCE; THE LOG GETS THE REASON. This used to
+       return "failed" and drop the error on the floor, which meant a booking
+       that would not save looked identical from outside whether the function
+       was missing, the grant was wrong, or Postgres was simply down — and the
+       first real end-to-end test of this route hit exactly that wall.
+
+       Postgres error codes are safe to log: 42883 is "function does not
+       exist", 42501 is a missing grant, 42P01 is a missing table. None of
+       them carry the visitor's details, which stay out on purpose. */
+    if (error) {
+      console.error("[booking] claim_slot failed:", {
+        code: error.code, message: error.message,
+        details: error.details, hint: error.hint,
+      });
+      return { ok: false, why: "failed" };
+    }
     if (data === "ok") return { ok: true };
     if (data === "taken") return { ok: false, why: "taken" };
     if (data === "rate") return { ok: false, why: "rate" };
+    console.error("[booking] claim_slot returned an unknown value:", data);
     return { ok: false, why: "failed" };
-  } catch {
+  } catch (e) {
+    console.error("[booking] claim_slot threw:", e instanceof Error ? e.message : e);
     return { ok: false, why: "failed" };
   }
 }
