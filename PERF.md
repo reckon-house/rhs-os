@@ -226,3 +226,40 @@ but Lenis owns `<main>` and CLAUDE.md marks it load-bearing. Making `/book`
 static is wrong — `availability()` filters on `now`. And the "unreferenced
 images" list does not reproduce; deleting a file that *is* looked up returns
 `undefined` and breaks pressing scroll math.
+
+---
+
+## After the first four fixes — measured 26 Aug 2026
+
+Same harness, same conditions, production.
+
+| homepage, fully scrolled | before | after | |
+|---|---|---|---|
+| **total** | 18.76 MB | **14.45 MB** | −4.31 MB |
+| images | 18 660 KB | 14 387 KB | −4 273 KB |
+| **javascript** | 407.5 KB | **214.1 KB** | **−47 %** |
+| est. wasted to overscale | 10.37 MB | 6.69 MB | |
+
+`/book`, first load before any scroll, measured on a local production
+build both times: **1 947.9 KB → 26.9 KB**, and zero images. Every image
+byte that page used to carry was the preloader warming studies nobody
+had asked about.
+
+What did it:
+
+1. **`HeroPreloader` is intent-driven on phones.** It fetched six
+   full-size heroes on every mobile route from the root layout. Now the
+   sweep is desktop-only and a phone warms exactly the hero of the study
+   a pointer has landed on, with the burn's own 520ms of cover behind
+   it. Nothing runs under Save-Data or on 2g/3g.
+2. **The facts index loads on demand.** 151 KB brotli off first load.
+   Requested on field focus and from `apply()`, which is the only path a
+   deep link takes.
+3. **Fifteen inputs are 16px on touch**, gated on `pointer: coarse`.
+   iOS no longer zooms the page mid-booking.
+4. **The ask field stops hanging off the left edge** — `left` and
+   `width` now read one variable instead of disagreeing.
+
+Still open, unchanged: no image on the site has a `srcset`, and the
+cover reel still fills a 98 px box with full-size plates. Those two are
+where the remaining 14 MB is.
