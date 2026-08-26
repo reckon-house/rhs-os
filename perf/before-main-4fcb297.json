@@ -1,0 +1,304 @@
+{
+  "label": "before \u2014 main @ 4fcb297",
+  "when": "2026-08-26T00:42:09.532Z",
+  "pages": [
+    {
+      "url": "https://reckon.house/",
+      "documentBytes": 8089,
+      "totalBytes": 19675283,
+      "byType": {
+        "font": {
+          "n": 1,
+          "bytes": 42588
+        },
+        "css": {
+          "n": 6,
+          "bytes": 35160
+        },
+        "js": {
+          "n": 14,
+          "bytes": 417316
+        },
+        "svg": {
+          "n": 5,
+          "bytes": 15312
+        },
+        "image": {
+          "n": 40,
+          "bytes": 19108203
+        },
+        "other": {
+          "n": 6,
+          "bytes": 48615
+        }
+      },
+      "imageCount": 39,
+      "withSrcset": 0,
+      "lazy": 39,
+      "overscaleTop": [
+        {
+          "src": "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg",
+          "ratio": 1.9,
+          "naturalW": 1962,
+          "shownAt": 1032,
+          "bytes": 923280
+        },
+        {
+          "src": "/case-studies/big-bend/hero.jpg",
+          "ratio": 2.48,
+          "naturalW": 2560,
+          "shownAt": 1032,
+          "bytes": 885657
+        },
+        {
+          "src": "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg",
+          "ratio": 1.55,
+          "naturalW": 1600,
+          "shownAt": 1032,
+          "bytes": 876509
+        },
+        {
+          "src": "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg",
+          "ratio": 5.98,
+          "naturalW": 1920,
+          "shownAt": 321,
+          "bytes": 831541
+        },
+        {
+          "src": "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg",
+          "ratio": 3.86,
+          "naturalW": 1920,
+          "shownAt": 498,
+          "bytes": 793656
+        },
+        {
+          "src": "/case-studies/hp/rhs-you-by-sally-street-display.jpg",
+          "ratio": 5.98,
+          "naturalW": 1920,
+          "shownAt": 321,
+          "bytes": 785538
+        },
+        {
+          "src": "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3",
+          "ratio": 1.55,
+          "naturalW": 1600,
+          "shownAt": 1032,
+          "bytes": 710377
+        },
+        {
+          "src": "/case-studies/hp/rhs-arc-app-project-select-phone.jpg",
+          "ratio": 3.21,
+          "naturalW": 1600,
+          "shownAt": 498,
+          "bytes": 653400
+        },
+        {
+          "src": "/case-studies/hp/rhs-nordstrom-beauty-hub-laptop.jpg",
+          "ratio": 1.86,
+          "naturalW": 1920,
+          "shownAt": 1032,
+          "bytes": 577103
+        },
+        {
+          "src": "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg",
+          "ratio": 2.37,
+          "naturalW": 1600,
+          "shownAt": 675,
+          "bytes": 521675
+        }
+      ],
+      "estimatedWastedImageBytes": 10877115,
+      "heaviest": [
+        {
+          "url": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+          "bytes": 1200577
+        },
+        {
+          "url": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+          "bytes": 1018274
+        },
+        {
+          "url": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+          "bytes": 938764
+        },
+        {
+          "url": "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg",
+          "bytes": 923280
+        },
+        {
+          "url": "/case-studies/big-bend/hero.jpg",
+          "bytes": 885657
+        },
+        {
+          "url": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+          "bytes": 880063
+        },
+        {
+          "url": "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg",
+          "bytes": 876509
+        },
+        {
+          "url": "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg",
+          "bytes": 831541
+        },
+        {
+          "url": "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg",
+          "bytes": 793656
+        },
+        {
+          "url": "/case-studies/hp/rhs-you-by-sally-street-display.jpg",
+          "bytes": 785538
+        }
+      ]
+    },
+    {
+      "url": "https://reckon.house/case-studies/dsc",
+      "documentBytes": 21473,
+      "totalBytes": 26423300,
+      "byType": {
+        "font": {
+          "n": 4,
+          "bytes": 285168
+        },
+        "image": {
+          "n": 63,
+          "bytes": 25370456
+        },
+        "css": {
+          "n": 6,
+          "bytes": 34607
+        },
+        "js": {
+          "n": 16,
+          "bytes": 510703
+        },
+        "svg": {
+          "n": 5,
+          "bytes": 15312
+        },
+        "other": {
+          "n": 14,
+          "bytes": 185581
+        }
+      },
+      "imageCount": 72,
+      "withSrcset": 0,
+      "lazy": 61,
+      "overscaleTop": [
+        {
+          "src": "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
+          "ratio": 1.83,
+          "naturalW": 2000,
+          "shownAt": 1095,
+          "bytes": 1205300
+        },
+        {
+          "src": "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg",
+          "ratio": 1.9,
+          "naturalW": 1962,
+          "shownAt": 1032,
+          "bytes": 923280
+        },
+        {
+          "src": "/case-studies/big-bend/hero.jpg",
+          "ratio": 1.98,
+          "naturalW": 2560,
+          "shownAt": 1290,
+          "bytes": 885657
+        },
+        {
+          "src": "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg",
+          "ratio": 1.55,
+          "naturalW": 1600,
+          "shownAt": 1032,
+          "bytes": 876509
+        },
+        {
+          "src": "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg",
+          "ratio": 1.86,
+          "naturalW": 1920,
+          "shownAt": 1032,
+          "bytes": 831541
+        },
+        {
+          "src": "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg",
+          "ratio": 1.86,
+          "naturalW": 1920,
+          "shownAt": 1035,
+          "bytes": 793656
+        },
+        {
+          "src": "/case-studies/hp/rhs-you-by-sally-street-display.jpg",
+          "ratio": 1.86,
+          "naturalW": 1920,
+          "shownAt": 1032,
+          "bytes": 785538
+        },
+        {
+          "src": "/case-studies/hp/rhs-capitan-boot-co-branding.jpg?v=3",
+          "ratio": 1.55,
+          "naturalW": 1600,
+          "shownAt": 1032,
+          "bytes": 710377
+        },
+        {
+          "src": "/case-studies/hp/rhs-arc-app-project-select-phone.jpg",
+          "ratio": 1.55,
+          "naturalW": 1600,
+          "shownAt": 1032,
+          "bytes": 653400
+        },
+        {
+          "src": "/case-studies/dsc/dsc-marketing-site-laptop-hero.jpg",
+          "ratio": 6.6,
+          "naturalW": 2000,
+          "shownAt": 303,
+          "bytes": 643708
+        }
+      ],
+      "estimatedWastedImageBytes": 15138095,
+      "heaviest": [
+        {
+          "url": "/case-studies/dsc/dsc-owner-calendar-phone-hero.jpg",
+          "bytes": 1205300
+        },
+        {
+          "url": "/case-studies/arc/arc-app-kitchen-project-selection-lifestyle.jpg",
+          "bytes": 1200577
+        },
+        {
+          "url": "/case-studies/black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg",
+          "bytes": 1018274
+        },
+        {
+          "url": "/case-studies/hill-country-kitchen/hill-country-kitchen-island-pendants-marble-wide.jpg",
+          "bytes": 938764
+        },
+        {
+          "url": "/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg",
+          "bytes": 923280
+        },
+        {
+          "url": "/case-studies/big-bend/hero.jpg",
+          "bytes": 885657
+        },
+        {
+          "url": "/case-studies/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign.jpg",
+          "bytes": 880063
+        },
+        {
+          "url": "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg",
+          "bytes": 876509
+        },
+        {
+          "url": "/case-studies/hp/rhs-hill-country-oakworks-billboard.jpg",
+          "bytes": 831541
+        },
+        {
+          "url": "/case-studies/hp/rhs-nordstrom-framework-on-our-list.jpg",
+          "bytes": 793656
+        }
+      ]
+    }
+  ]
+}

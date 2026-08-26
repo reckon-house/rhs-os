@@ -56,3 +56,6 @@ sally-marketing-case-study.pdf
 /public/case-studies/**/Group [0-9]*.png
 .vercel-bypass
 public/lab/_review/
+
+# performance measurement scratch (traces are ~50MB each)
+.perf-baseline/
