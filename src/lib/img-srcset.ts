@@ -30,6 +30,14 @@
  *  full-bleed heroes reaching 3188. */
 export const PLATE_WIDTHS = [640, 1080, 1600, 2400] as const;
 
+/* Every width next.config.ts allows, in order. The ladder above is the
+   preferred set; this is what a source that falls BETWEEN two rungs
+   gets to reach for. A 772px plate offered only `640w` is capped at 640
+   for a slot that wants 1032 — worse than no srcset at all, because the
+   file did have 772 to give. The nearest allowed size under its native
+   width is 750, so that becomes its top rung. */
+const ALLOWED = [640, 750, 828, 1080, 1200, 1600, 1920, 2048, 2400, 3840] as const;
+
 /** The quality must be in the allowed set too. Next 16 rejects anything
  *  not configured — q=70 answers `"q" parameter (quality) of 70 is not
  *  allowed`, which looks exactly like a broken URL until it is read. */
@@ -58,9 +66,20 @@ export function plateSrcSet(src: string, nativeWidth?: number): string | undefin
   if (!src.startsWith("/")) return undefined;
 
   const clean = src.split("?")[0];
-  const rungs = nativeWidth
-    ? PLATE_WIDTHS.filter((w) => w <= nativeWidth)
-    : [...PLATE_WIDTHS];
+
+  let rungs: number[] = [...PLATE_WIDTHS];
+  if (nativeWidth) {
+    rungs = PLATE_WIDTHS.filter((w) => w <= nativeWidth);
+    /* THE TOP RUNG HAS TO REACH THE FILE'S OWN WIDTH. Filtering alone
+       throws away everything between the last rung and the source: a
+       772px plate keeps only 640w and is then permanently capped there,
+       which is worse than shipping no srcset, because the browser would
+       at least have used all 772. The nearest allowed width under
+       native closes that gap. */
+    const top = [...ALLOWED].reverse().find((w) => w <= nativeWidth);
+    if (top && !rungs.includes(top)) rungs.push(top);
+    rungs.sort((a, b) => a - b);
+  }
   if (rungs.length === 0) return undefined;
 
   return rungs
