@@ -13,7 +13,6 @@
  * init() returns a teardown, which the lab never needed: it was the
  * only page in its document. This route can be navigated away from.
  */
-import FACTS_INDEX from "@/data/generated/project-facts.min.json";
 
 export function initPressingHome() {
   let alive = true;
@@ -536,16 +535,43 @@ function analyse(q) {
    The matcher stays underneath as the safety net: the index only
    speaks about what it verified, and everything else (a band's name,
    "ridgeline", a half-remembered filename) still deserves an answer. */
-/* The one deliberate divergence from the lab. There the index arrives
-   over fetch, because a file opened straight from disk has no bundler;
-   here it is imported, so the facts are in hand before the first answer
-   composes. That deletes the lab's rebuild-when-it-lands race too. */
-const FACTS = FACTS_INDEX;
+let FACTS = null;
 const factCard = { work: new Map(), pull: new Map() };
 cards.forEach((c, i) => {
   if (c.kind === "work") factCard.work.set(c.href, i);
   if (c.kind === "pull") factCard.pull.set(c.img, i);
 });
+/* ── THE INDEX ARRIVES WHEN SOMEBODY ASKS FOR IT ──────────────────
+   It is 655KB of vocabulary and it answers questions. Nobody who
+   scrolls the magazine and leaves ever needs a byte of it, and on a
+   phone that was the largest single thing the page fetched before the
+   first word was typed.
+
+   Every FACTS read is already null-guarded, and think() works without
+   it on the matcher alone, so "not yet" is a state the page has always
+   been able to render. That is what makes this safe to defer rather
+   than a race to be managed.
+
+   Requested from two places: focus on the field, which buys the whole
+   time somebody spends typing, and apply(), which catches a deep link
+   and anything programmatic. Once, either way — the promise is the
+   latch. */
+let factsWanted = null;
+function wantFacts() {
+  if (factsWanted) return factsWanted;
+  factsWanted = import("@/data/generated/project-facts.min.json")
+    .then((m) => m.default)
+    .then((j) => {
+      FACTS = j;
+      /* a deep-linked ?q= builds its answer before this lands, on
+         the matcher alone. If the facts have something better to say
+         about the standing question, say it — the rebuild happens
+         inside the first beats of arrival, not mid-read */
+      if (asked && query.trim() && think(query)) buildAnswer();
+    })
+    .catch(() => {});
+  return factsWanted;
+}
 
 const fold = (s) => s.toLowerCase().replace(/[^a-z0-9&]+/g, " ").trim();
 /* alias values keep their authored casing (neiman → "Neiman Marcus"),
@@ -2869,6 +2895,10 @@ async function apply(cold) {
   if (!alive) return;
   syncUrl();
   const next = Boolean(query.trim());
+  /* Every route to an answer passes here: typed through onQuery, and
+     the boot's deep link, which sets `query` directly and calls
+     apply(true) without going through onQuery at all. */
+  if (next) wantFacts();
   const changed = next !== asked;
   if (!next) cancelAsk();
   /* WHAT IS ON SCREEN CLOSES BEFORE WHAT IS ASKED FOR OPENS. Frames
@@ -2944,6 +2974,8 @@ listen(input, "input", (e) => {
    stops wherever it happens to be, and a half-typed question sitting
    greyed under a cursor reads as a mistake rather than an invitation. */
 listen(input, "focus", () => {
+  /* The whole time somebody spends typing is free loading time. */
+  wantFacts();
   if (tourFull && !input.value) {
     input.placeholder = tourFull;
     if (window.placeAsk) placeAsk();
