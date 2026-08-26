@@ -182,7 +182,7 @@ export function BookingDemo() {
               type="text"
               value={serviceName}
               onChange={(e) => setServiceName(e.target.value.slice(0, 40))}
-              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
             />
           </div>
 
@@ -198,7 +198,7 @@ export function BookingDemo() {
               step={15}
               value={duration}
               onChange={(e) => setDuration(Math.max(15, Math.min(480, Number(e.target.value) || 60)))}
-              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
             />
           </div>
 
@@ -235,14 +235,14 @@ export function BookingDemo() {
                 type="time"
                 value={openTime}
                 onChange={(e) => setOpenTime(e.target.value)}
-                className="flex-1 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+                className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
               />
               <span className="text-foreground/40 text-[12px]">to</span>
               <input
                 type="time"
                 value={closeTime}
                 onChange={(e) => setCloseTime(e.target.value)}
-                className="flex-1 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+                className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
               />
             </div>
           </div>
@@ -264,7 +264,7 @@ export function BookingDemo() {
                 value={lunchStart}
                 onChange={(e) => setLunchStart(e.target.value)}
                 disabled={!lunchEnabled}
-                className="flex-1 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30 disabled:cursor-not-allowed"
+                className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30 disabled:cursor-not-allowed"
               />
               <span className="text-foreground/40 text-[12px]">to</span>
               <input
@@ -272,7 +272,7 @@ export function BookingDemo() {
                 value={lunchEnd}
                 onChange={(e) => setLunchEnd(e.target.value)}
                 disabled={!lunchEnabled}
-                className="flex-1 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30 disabled:cursor-not-allowed"
+                className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -289,7 +289,7 @@ export function BookingDemo() {
               step={5}
               value={buffer}
               onChange={(e) => setBuffer(Math.max(0, Math.min(120, Number(e.target.value) || 0)))}
-              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+              className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
             />
           </div>
 

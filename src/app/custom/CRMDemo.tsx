@@ -205,7 +205,7 @@ export function CRMDemo() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={`Search ${schema.searchable.join(", ").toLowerCase()}…`}
-          className="flex-1 bg-white border border-foreground/10 rounded-full px-4 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+          className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-full px-4 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
         />
         <button
           type="button"
@@ -229,7 +229,7 @@ export function CRMDemo() {
                   type="text"
                   value={newRow[col] ?? ""}
                   onChange={(e) => setNewRow((prev) => ({ ...prev, [col]: e.target.value }))}
-                  className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] focus:outline-none focus:border-foreground/30"
+                  className="w-full bg-white border border-foreground/10 rounded-md px-2 py-1.5 text-[13px] pointer-coarse:text-[16px] focus:outline-none focus:border-foreground/30"
                 />
               </div>
             ))}

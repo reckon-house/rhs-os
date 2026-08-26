@@ -184,6 +184,24 @@
   width: 100%;
 }
 .field::placeholder { color: rgba(0, 0, 0, 0.3); }
+/* ── 16px, or iOS zooms the page mid-booking ─────────────────────────
+   Safari magnifies the whole document when a focused input is under
+   16px, and it does not zoom back out. On this page that fires the
+   moment somebody taps Name: the layout jumps ~1.33x and the masthead
+   leaves the right edge, on the one form the site exists to have filled.
+
+   Gated on pointer: coarse rather than a width, because the trigger is
+   the input device and not the screen. A 744px iPad zooms too, and a
+   width query written for phones lets it through.
+
+   16px exactly. It is the threshold, not a preference — the rest of the
+   page keeps --pp-note at 12, and raising that token globally would move
+   six other rules here plus daybook.module.css. */
+@media (pointer: coarse) {
+  .field { font-size: 16px; }
+}
+
+
 .field:focus { outline: none; }
 .field:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 4px; }
 .area { resize: vertical; min-height: 3.4em; }

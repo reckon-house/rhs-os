@@ -149,7 +149,7 @@ export function AIAgentDemo() {
           value={businessDescription}
           onChange={(e) => setBusinessDescription(e.target.value.slice(0, 2000))}
           rows={4}
-          className="w-full bg-transparent text-[13px] md:text-[14px] leading-[1.5] text-white/90 resize-none focus:outline-none placeholder:text-white/30"
+          className="w-full bg-transparent text-[13px] pointer-coarse:text-[16px] md:text-[14px] leading-[1.5] text-white/90 resize-none focus:outline-none placeholder:text-white/30"
           placeholder="Describe your business. Hours, products, voice, anything customers might ask about."
         />
       </div>
@@ -224,7 +224,7 @@ export function AIAgentDemo() {
           onChange={(e) => setInput(e.target.value)}
           disabled={isStreaming}
           placeholder="Ask the agent anything…"
-          className="flex-1 bg-white border border-foreground/10 rounded-full px-4 py-2 text-[13px] md:text-[14px] focus:outline-none focus:border-foreground/30 transition-colors disabled:opacity-60"
+          className="flex-1 min-w-0 bg-white border border-foreground/10 rounded-full px-4 py-2 text-[13px] pointer-coarse:text-[16px] md:text-[14px] focus:outline-none focus:border-foreground/30 transition-colors disabled:opacity-60"
         />
         <button
           type="submit"

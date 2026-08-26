@@ -1719,6 +1719,17 @@
     padding: 2px 0; font: inherit; font-size: var(--note);
     color: var(--ink); }
   .cmpf::placeholder { color: rgba(0, 0, 0, 0.3); }
+  /* 16px on touch, or iOS zooms the page the moment this is focused and
+     never zooms back out. The compose box is where a visitor writes to
+     the house, so the zoom lands mid-sentence. pointer: coarse rather
+     than a width: the trigger is the input device, and a 744px iPad
+     zooms exactly the same way a phone does.
+     16 is the threshold, not a size choice — --note stays 12 for
+     everything on this page that is not a field. */
+  @media (pointer: coarse) {
+    .cmpf { font-size: 16px; }
+  }
+
   /* The row is the box, so focus marks the ROW rather than drawing a
      second outline inside one that is already there. */
   .cmpf:focus { outline: none; }

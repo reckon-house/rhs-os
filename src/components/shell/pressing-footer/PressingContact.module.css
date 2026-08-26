@@ -319,6 +319,17 @@
   padding: 7px 0;
   border-radius: 0;
 }
+
+/* 16px on touch, or iOS zooms the page when this is focused and never
+   zooms back. Same threshold and same reasoning as book.module.css; this
+   form sits in the footer of every page, so it is the most reachable
+   input on the site. pointer: coarse, not a width — an iPad zooms too. */
+@media (pointer: coarse) {
+  .input,
+  .textarea {
+    font-size: 16px;
+  }
+}
 .textarea {
   resize: vertical;
   min-height: 46px;
