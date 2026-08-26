@@ -260,6 +260,32 @@ What did it:
 4. **The ask field stops hanging off the left edge** — `left` and
    `width` now read one variable instead of disagreeing.
 
-Still open, unchanged: no image on the site has a `srcset`, and the
-cover reel still fills a 98 px box with full-size plates. Those two are
-where the remaining 14 MB is.
+### Then the cover reel
+
+`PressingCover` measures every reel frame's ratio with
+`new window.Image()` before it will mount the reel, and a
+JS-constructed Image ignores `loading="lazy"`. So all 218 frames across
+30 studies were fetched **eagerly, at full size**, into a box that
+clamps to 98 CSS px on a phone.
+
+| | before | after |
+|---|---|---|
+| all 30 studies' reels | 192 MB | **4.08 MB** (−97.9 %) |
+| hill-country-oak, before any scroll | 10.91 MB | **130 KB** |
+| big-bend | 10.11 MB | 211 KB |
+| DSC case study, fully scrolled | 25.20 MB | **19.88 MB** |
+
+512px AVIF, because the largest box on the densest screen asks for 510
+(170 CSS px at DPR 3). Measured on Robert at 1440/DPR2 the frame has
+1.51x headroom over what the screen can paint.
+
+`src/lib/reel-thumb.ts` owns the path convention and both the generator
+and the renderer import it, so the file asked for is the file written.
+`npm run reels` generates; `-- --check` fails on a gap.
+
+### Still open
+
+**No image on the site has a `srcset`.** That is where the remaining
+~19 MB of a fully-scrolled case study lives, and it is now the single
+largest item left. The overscale table above is unchanged by the reel
+work — those are plates, not frames.
