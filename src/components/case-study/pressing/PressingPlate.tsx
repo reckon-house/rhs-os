@@ -26,6 +26,7 @@
  */
 
 import { RisingPlate } from "@/components/fx/RisingPlate";
+import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
 import styles from "./PressingPlates.module.css";
 
 export interface PressingPlateProps {
@@ -118,6 +119,11 @@ export function PressingPlate({
     >
       <img
         src={src}
+        /* The same <img>, told what sizes exist. src stays as the
+           fallback for anything that cannot use a srcset, and for
+           development, where the optimizer is deliberately off. */
+        srcSet={plateSrcSet(src, width)}
+        sizes={plateSizes(bleed)}
         alt={alt}
         width={width}
         height={height}

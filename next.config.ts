@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // AVIF first, WebP behind it. The optimizer picks by the browser's
+    // Accept header, so anything too old for AVIF still gets WebP and
+    // anything too old for both gets the original. Measured on a 1177KB
+    // plate at w=640: 62KB WebP against 35KB AVIF.
+    formats: ["image/avif", "image/webp"],
     // Allow our hero/spread widths so /_next/image doesn't 400 when components
     // request 2400px (default deviceSizes top out at 3840 but skip 2400).
     deviceSizes: [640, 750, 828, 1080, 1200, 1600, 1920, 2048, 2400, 3840],

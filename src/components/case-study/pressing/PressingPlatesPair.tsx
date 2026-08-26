@@ -36,6 +36,7 @@
 
 import { useEffect, useRef , type CSSProperties } from "react";
 import { onTick, vh } from "@/lib/scrub";
+import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
 import { PinStage } from "@/components/fx/PinStage";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingPlates.module.css";
@@ -246,6 +247,10 @@ export function PressingPlatesPair({
                   imgRefs.current[i] = el;
                 }}
                 src={im.src}
+                srcSet={plateSrcSet(im.src, im.width)}
+                /* Two across above the phone breakpoint, so each one is
+                   about half the column rather than all of it. */
+                sizes="(max-width: 760px) 100vw, 40vw"
                 alt={im.alt}
                 width={im.width}
                 height={im.height}

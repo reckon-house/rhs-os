@@ -39,6 +39,7 @@
  */
 
 import { Fragment, useEffect, useId, useRef } from "react";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { onTick, vh } from "@/lib/scrub";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -735,6 +736,8 @@ export function PressingZoomPlate({
           <img
             ref={imgRef}
             src={src}
+            srcSet={plateSrcSet(src, width)}
+            sizes="100vw"
             alt={alt}
             width={width}
             height={height}

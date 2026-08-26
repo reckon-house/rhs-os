@@ -31,6 +31,7 @@
  */
 
 import { useEffect, useRef, type CSSProperties } from "react";
+import { plateSrcSet } from "@/lib/img-srcset";
 import Link from "next/link";
 import { projects } from "@/data/projects";
 import { practiceNotes, practiceFilters } from "@/data/practice-notes";
@@ -177,7 +178,17 @@ function Frame({
             image is left alone. One element per animated property. */}
         <span className="plate">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={project.image} alt="" loading="lazy" decoding="async" />
+          <img
+            src={project.image}
+            /* The all-work index sits in the footer of every non-home
+               page: 18 tiles, and they were the homepage's full-size
+               thumbnails at 1920px feeding a 344px slot. */
+            srcSet={plateSrcSet(project.image)}
+            sizes="(max-width: 760px) 92vw, 30vw"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
         </span>
       </span>
       <span className="lbl">

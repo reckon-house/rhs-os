@@ -39,6 +39,7 @@
  */
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
@@ -365,6 +366,10 @@ export function PressingBrief({
                         className={styles.colImg}
                         data-col-drift
                         src={c.image.src}
+                        srcSet={plateSrcSet(c.image.src, c.image.width)}
+                        /* Column measure, ~380px. See the note in
+                           CLAUDE.md about small assets living here. */
+                        sizes="(max-width: 760px) 90vw, 30vw"
                         alt={c.image.alt}
                         width={c.image.width}
                         height={c.image.height}

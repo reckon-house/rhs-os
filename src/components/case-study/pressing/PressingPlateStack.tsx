@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { onTick } from "@/lib/scrub";
+import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
 import { SectionMark } from "@/components/fx/SectionMark";
 import styles from "./PressingPlateStack.module.css";
 
@@ -114,6 +115,8 @@ export function PressingPlateStack({ images, mark }: PressingPlateStackProps) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img.src}
+                srcSet={plateSrcSet(img.src, img.width)}
+                sizes={plateSizes()}
                 alt={img.alt}
                 width={img.width}
                 height={img.height}

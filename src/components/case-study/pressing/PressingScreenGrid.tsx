@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { imageDimensions } from "@/data/image-dimensions";
 import styles from "./PressingScreenGrid.module.css";
 
@@ -51,6 +52,9 @@ export function PressingScreenGrid({ items }: PressingScreenGridProps) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={it.image}
+                srcSet={plateSrcSet(it.image, dim?.[0])}
+                /* A grid of app screens: several across a column. */
+                sizes="(max-width: 760px) 45vw, 22vw"
                 alt={it.title}
                 width={dim?.[0]}
                 height={dim?.[1]}

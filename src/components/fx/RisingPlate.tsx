@@ -43,6 +43,7 @@
 
 import { useEffect, useRef } from "react";
 import { onTick } from "@/lib/scrub";
+import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
 import { RISE } from "@/lib/choreo";
 
 // Resting scale and corner, verbatim from the prototype. The plate already
@@ -184,6 +185,11 @@ export function RisingPlate({
       <img
         ref={imgRef}
         src={src}
+        /* A phone asks for 1170 device pixels of this, not 2560. The
+           note above is right that the RATIO needs no help at viewport
+           width; the resolution always did. */
+        srcSet={plateSrcSet(src, width)}
+        sizes="100vw"
         alt={alt}
         width={width}
         height={height}
