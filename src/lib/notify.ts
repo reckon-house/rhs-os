@@ -124,7 +124,11 @@ export async function notifyNewMessage(args: {
   email: string | null;
   body: string;
   transcript: string[];
-  token: string;
+  /* NULL WHEN THERE IS NO THREAD, which is the case this mail exists to
+     survive. When the store is unreachable this email is the ONLY copy
+     of what someone wrote, so it has to carry the whole message and say
+     plainly that replying by hand is the only way back. */
+  token: string | null;
 }): Promise<MailResult> {
   if (!KEY) return { ok: false, why: "No Resend key in the environment" };
 
@@ -138,16 +142,23 @@ export async function notifyNewMessage(args: {
      like it came from the person who wrote in. That happened on the
      first real message. So the mail leads with the one thing that
      answers as the house, and names the link for what it is. */
-  const text = `${who} wrote in${args.email ? ` (${args.email})` : ""}.
-
-${args.body}
-${asked}
-To answer, from the repo:
+  const how = args.token
+    ? `To answer, from the repo:
 npm run inbox -- reply ${args.token} "your answer"
 
 Their view of the thread (the box on this page posts as THEM, not you):
 ${SITE}/thread/${args.token}
+`
+    : `NOT SAVED. The message store could not be reached, so this email is
+the only copy and there is no thread to reply into.
+${args.email ? `Reply to this email and it goes straight to them.` : `No address came with it, so there is no way to answer.`}
 `;
+
+  const text = `${who} wrote in${args.email ? ` (${args.email})` : ""}.
+
+${args.body}
+${asked}
+${how}`;
 
   try {
     const res = await fetch("https://api.resend.com/emails", {

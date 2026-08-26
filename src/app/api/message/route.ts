@@ -26,16 +26,30 @@ import { notifyNewMessage } from "@/lib/notify";
 
 export const runtime = "nodejs";
 
-export async function POST(req: Request) {
-  if (!storeReady) {
-    /* Not an error the visitor caused, and not one they can do anything
-       about, so it says the one useful thing instead of a status code. */
-    return NextResponse.json(
-      { ok: false, why: "The message store is not connected yet. hello@reckon.house reaches me directly." },
-      { status: 503 }
-    );
-  }
+/* ── the ceiling that survives a missing database ────────────────────
+ * The real hourly cap lives inside open_thread, where it holds for
+ * anything reaching the table. That is the right place for it and it is
+ * unavailable in exactly the situation this file now handles: no store.
+ *
+ * Without a cap the fallback path is an unauthenticated endpoint that
+ * sends mail, which is worth more to an abuser than a contact form. So
+ * a counter in module scope, honest about what it is: Fluid Compute
+ * reuses instances, so this holds within one and resets when a new one
+ * starts. A speed bump, not a guarantee. The guarantee only ever
+ * existed in Postgres, and that is the thing that is missing.
+ */
+const FALLBACK_CEILING = 8;
+const HOUR = 3_600_000;
+let fallbackSends: number[] = [];
 
+function fallbackAllows(now: number): boolean {
+  fallbackSends = fallbackSends.filter((t) => now - t < HOUR);
+  if (fallbackSends.length >= FALLBACK_CEILING) return false;
+  fallbackSends.push(now);
+  return true;
+}
+
+export async function POST(req: Request) {
   let raw: Record<string, unknown>;
   try {
     raw = (await req.json()) as Record<string, unknown>;
@@ -53,37 +67,69 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, why: parsed.why }, { status: 400 });
   }
 
-  /* The hourly ceiling is enforced INSIDE open_thread, so it holds for
-     anything calling the database, not only for callers who came
-     through this route. Here it is only translated into words. */
-  const res = await openThread(parsed.value);
-  if (!res.ok) {
-    return res.why === "rate"
-      ? NextResponse.json(
-          { ok: false, why: "Too many messages just came through. Try again shortly, or use hello@reckon.house." },
-          { status: 429 }
-        )
-      : NextResponse.json(
-          /* Never the database's own error: a Postgres message in a 500
-             body describes the schema to a stranger. */
-          { ok: false, why: "That did not save. hello@reckon.house reaches me directly." },
-          { status: 500 }
-        );
-  }
-  /* THE ALERT GOES OUT AFTER THE RESPONSE, NOT BEFORE IT. `after` runs
-     once the visitor already has their token, so a slow mail API cannot
-     make the form feel slow, and a Resend outage cannot turn a saved
-     message into a failed one on their screen. The message is in the
-     database either way; the email is a courtesy to the person who owns
-     the inbox.
-     Nothing is awaited on the caller's path and nothing throws out of
-     here: notifyNewMessage never rejects, it returns a reason. The
-     reason is logged for the server, never returned — who gets told
-     about a message is not a visitor's business. */
-  after(async () => {
-    const sent = await notifyNewMessage({ ...parsed.value, token: res.token });
-    if (!sent.ok) console.warn("[message] new-message alert not sent:", sent.why);
-  });
+  /* THE MESSAGE MATTERS MORE THAN THE ARCHIVE, and it took losing a
+     database to make that obvious. This used to store first and email
+     only on success, so when the Supabase project was deleted every
+     message vanished twice over: no row, and no mail either. The
+     visitor was told it did not save, and that was the entire record of
+     someone trying to get in touch.
 
-  return NextResponse.json({ ok: true, token: res.token });
+     The store is still tried first, because a thread is worth having
+     and the token has to come from somewhere. What changed is that
+     failing to get one is no longer the end of the request. */
+  const res = storeReady
+    ? await openThread(parsed.value)
+    : ({ ok: false, why: "failed" } as const);
+
+  /* The one failure that IS the visitor's to act on, and only when the
+     database is the thing saying so. */
+  if (!res.ok && res.why === "rate") {
+    return NextResponse.json(
+      { ok: false, why: "Too many messages just came through. Try again shortly, or use hello@reckon.house." },
+      { status: 429 }
+    );
+  }
+
+  if (res.ok) {
+    /* THE ALERT GOES OUT AFTER THE RESPONSE. `after` runs once the
+       visitor already has their token, so a slow mail API cannot make
+       the form feel slow, and a Resend outage cannot turn a saved
+       message into a failed one on their screen. Safe precisely because
+       the message is already in the database: a failed send is
+       recoverable from `npm run inbox`, so nobody needs to be told. */
+    after(async () => {
+      const sent = await notifyNewMessage({ ...parsed.value, token: res.token });
+      if (!sent.ok) console.warn("[message] new-message alert not sent:", sent.why);
+    });
+    return NextResponse.json({ ok: true, token: res.token });
+  }
+
+  /* NO STORE, SO THE EMAIL IS THE ONLY COPY — and that is the one case
+     where it has to be awaited. `after` would let this return ok before
+     knowing, and "ok" would then mean nothing at all: no row to recover
+     from and no mail on its way. Slower, and only on the path that is
+     already broken. */
+  if (!fallbackAllows(Date.now())) {
+    return NextResponse.json(
+      { ok: false, why: "Too many messages just came through. Try again shortly, or use hello@reckon.house." },
+      { status: 429 }
+    );
+  }
+
+  console.error("[message] store unavailable, falling back to email only");
+  const sent = await notifyNewMessage({ ...parsed.value, token: null });
+  if (!sent.ok) {
+    console.error("[message] fallback email failed too:", sent.why);
+    /* Never the database's own error: a Postgres message in a 500 body
+       describes the schema to a stranger. */
+    return NextResponse.json(
+      { ok: false, why: "That did not send. hello@reckon.house reaches me directly." },
+      { status: 500 }
+    );
+  }
+
+  /* It reached him, which is what the person actually wanted. There is
+     no thread to offer, so the token is null and the form says its
+     plain thank-you instead of pointing at a page that does not exist. */
+  return NextResponse.json({ ok: true, token: null });
 }
