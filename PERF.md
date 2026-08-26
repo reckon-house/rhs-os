@@ -283,9 +283,50 @@ clamps to 98 CSS px on a phone.
 and the renderer import it, so the file asked for is the file written.
 `npm run reels` generates; `-- --check` fails on a gap.
 
+### Then srcset
+
+Not one image carried one. Every phone downloaded the file a desktop
+would.
+
+| DSC case study, fully scrolled | |
+|---|---|
+| baseline | 25.20 MB |
+| after the reel | 19.88 MB |
+| **after srcset** | **6.12 MB** |
+
+images 24 776 KB -> 4 867 KB; bytes wasted to overscale 14.44 MB ->
+1.51 MB; 42 of 65 images now carry a srcset.
+
+The optimizer was already configured in `next.config.ts` and had never
+been called — every plate is a raw `<img>`. `src/lib/img-srcset.ts`
+builds `/_next/image` URLs and hangs them off that same `<img>` rather
+than swapping in `next/image`, because the pressing components size
+their boxes from declared ratios and the scroll maths reads those boxes.
+
+**Two ways to measure this wrong, both paid for once:**
+
+`naturalWidth` is **density-corrected** once a srcset is involved — it
+reports the CSS width at 1:1, so a 1600px file in a `100vw` slot on a
+390px phone reports 390. Read as a fault it looks exactly like a broken
+optimizer. The real width is the chosen candidate's `w` descriptor. Same
+lesson as the `getBoundingClientRect`-includes-transforms note in
+CLAUDE.md, wearing a different hat.
+
+`/_next/image` URLs end in a query, not an extension, so this file's own
+`kindOf` filed 4.5 MB of plates under "other" and made the work look
+like it had done nothing.
+
+**`next start` cannot verify this.** Its in-process image worker returns
+640 and 1080 correctly and something unparseable at 1600 — the
+intermittent fault `next.config.ts` already documents. Only Vercel's
+pipeline is reliable, so check against production.
+
 ### Still open
 
-**No image on the site has a `srcset`.** That is where the remaining
-~19 MB of a fully-scrolled case study lives, and it is now the single
-largest item left. The overscale table above is unchanged by the reel
-work — those are plates, not frames.
+23 images on a case study still have no srcset: `PressingCredits` brand
+marks, `PressingSystemIndex`, `HeroCarousel` and the daybook plates.
+Small files, high overscale.
+
+**The homepage tiles have none either**, and they are 13.4 MB. They are
+injected client-side by `pressingHomeDriver.js`, so they need the lab
+changed and re-ported rather than a component edit.

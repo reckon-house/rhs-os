@@ -43,6 +43,11 @@ const KB = (b) => b / 1024;
 const MB = (b) => b / 1048576;
 
 function kindOf(url) {
+  /* An optimized plate is still an image. /_next/image URLs end in a
+     query, not an extension, so the extension test below files them
+     under "other" — which quietly moved 4.5MB out of the image row and
+     made the srcset work look like it had done nothing. */
+  if (/\/_next\/image\?/.test(url)) return "image";
   if (/\.(jpe?g|png|webp|avif|gif)(\?|$)/i.test(url)) return "image";
   if (/\.svg(\?|$)/i.test(url)) return "svg";
   if (/\.(woff2?|otf|ttf)(\?|$)/i.test(url)) return "font";
