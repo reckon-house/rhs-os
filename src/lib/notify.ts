@@ -172,3 +172,77 @@ ${SITE}/thread/${args.token}
     return { ok: false, why: e instanceof Error ? e.message : "Send failed" };
   }
 }
+
+/* ── Telling the visitor their call is real ─────────────────────────
+ *
+ * THE PAGE ALREADY PROMISED THIS. BookingCalendar's done state says "A
+ * confirmation is on its way to your inbox," and for the life of the
+ * route nothing sent one: /api/book called notifyNewMessage, which goes
+ * to the owner. The visitor got a sentence on screen, closed the tab,
+ * and had nothing to show for a call they had just committed to.
+ *
+ * THE ZONE IS THE WHOLE POINT. `when` arrives already spoken as
+ * "Monday 31 August, 4:00pm Central" and goes in the SUBJECT, because
+ * the failure this prevents is someone in London reading a bare number
+ * off a lock screen and arriving five hours out. A confirmation whose
+ * one fact needs opening the mail is not doing its job.
+ *
+ * MINUTES ARE PASSED, NOT IMPORTED. SLOT_MINUTES lives in
+ * @/data/booking, and scripts/inbox.mjs imports this module from plain
+ * Node where that alias does not resolve. See the note at the top of
+ * this file: keeping the mailer importable from the CLI is worth more
+ * than saving an argument.
+ */
+export async function notifyBookingConfirmed(args: {
+  to: string;
+  name: string | null;
+  /** already spoken, with the zone named. */
+  when: string;
+  minutes: number;
+  /** null when the thread failed to open; the booking still stands. */
+  token: string | null;
+}): Promise<MailResult> {
+  if (!KEY) return { ok: false, why: "No Resend key in the environment" };
+
+  const who = args.name ? `${args.name},` : "Hello,";
+  /* Only offered when there is a thread to point at. A booking whose
+     thread failed to open is still a real booking, and a link to
+     nowhere is worse than no link. */
+  const thread = args.token
+    ? `\nAnything you want me to read before we talk can go here, and it
+reaches me the same way a message does:
+${SITE}/thread/${args.token}\n`
+    : "";
+
+  const text = `${who}
+
+Booked: ${args.minutes} minutes, ${args.when}.
+${thread}
+If you need to move it, reply to this email.
+
+Reckon House Staples
+`;
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: FROM,
+        to: [args.to],
+        subject: `Booked: ${args.when}`,
+        text,
+        /* Explicit rather than relying on FROM, which MAIL_FROM can
+           point somewhere unread. "Reply to this email" is a promise. */
+        reply_to: TO_OWNER,
+      }),
+    });
+    const json = (await res.json().catch(() => null)) as
+      | { id?: string; message?: string }
+      | null;
+    if (!res.ok) return { ok: false, why: json?.message || `Resend returned ${res.status}` };
+    return json?.id ? { ok: true, id: json.id } : { ok: false, why: "No id returned" };
+  } catch (e) {
+    return { ok: false, why: e instanceof Error ? e.message : "Send failed" };
+  }
+}

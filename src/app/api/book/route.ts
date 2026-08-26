@@ -29,7 +29,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { claimSlot, isOfferable, bookingReady, linkThread } from "@/lib/booking";
 import { LIMITS, openThread, storeReady } from "@/lib/messages";
-import { notifyNewMessage } from "@/lib/notify";
+import { notifyBookingConfirmed, notifyNewMessage } from "@/lib/notify";
 import { HOUSE_TZ, SLOT_MINUTES } from "@/data/booking";
 
 export const runtime = "nodejs";
@@ -122,13 +122,24 @@ export async function POST(req: NextRequest) {
 
   /* After the response, like the contact form: a slow mail API must not
      make a confirmed booking feel unconfirmed, and a Resend outage must
-     not turn a claimed slot into a failed one on their screen. */
-  if (token) {
-    after(async () => {
+     not turn a claimed slot into a failed one on their screen.
+
+     THE VISITOR'S MAIL GOES FIRST, and outside the token check. They are
+     the one who just committed to a time and closed the tab, and the
+     screen has already told them a confirmation is coming. A thread that
+     failed to open is a reason to send it without a link, not a reason
+     to skip it — the booking is held either way. */
+  after(async () => {
+    const conf = await notifyBookingConfirmed({
+      to: email, name, when, minutes: SLOT_MINUTES, token,
+    });
+    if (!conf.ok) console.warn("[book] confirmation not sent:", conf.why);
+
+    if (token) {
       const sent = await notifyNewMessage({ name, email, body, transcript, token });
       if (!sent.ok) console.warn("[book] alert not sent:", sent.why);
-    });
-  }
+    }
+  });
 
   return NextResponse.json({ ok: true, token, when });
 }
