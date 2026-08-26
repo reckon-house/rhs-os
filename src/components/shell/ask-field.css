@@ -23,15 +23,25 @@
    wordmark sits centre so this seat stays open. */
 #nav .ask {
   position: absolute;
+  /* ONE WIDTH, READ TWICE. `left` centres the field by subtracting half
+     its width, so the two have to be the same number — and they were
+     not. The phone block below overrode `width` to min(56vw, 260px) and
+     left `left` centring the 420px default, so at 390px the box was
+     218px wide but offset as though it were 420: left came out at -18px
+     and the placeholder read "k the house." on every route except the
+     homepage, whose driver writes --ask-left and never noticed.
+     Naming it once means a future override cannot reintroduce the
+     disagreement — change --ask-width and both follow. */
+  --ask-width: var(--ask-w, 420px);
   /* Centred by default, which is every route but the homepage: the
      wordmark has the left gutter now, so a question parked there
      would sit under the name. The homepage's driver overrides this
      with the measured position of the column the field belongs to. */
-  left: var(--ask-left, calc(50% - var(--ask-w, 420px) / 2));
+  left: var(--ask-left, calc(50% - var(--ask-width) / 2));
   z-index: 1;
   top: 50%;
   transform: translateY(-50%) translateY(var(--ask-drop, 0px));
-  width: var(--ask-w, 420px);
+  width: var(--ask-width);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -112,6 +122,9 @@ body.asked .clear {
 
 @media (max-width: 760px) {
   #nav .ask {
-    width: var(--ask-w, min(56vw, 260px));
+    /* The variable, not `width` directly: `left` reads it too, and
+       setting only the one it does not read is what put the field off
+       the left edge of every phone. */
+    --ask-width: var(--ask-w, min(56vw, 260px));
   }
 }
