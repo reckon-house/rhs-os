@@ -3769,6 +3769,27 @@ function observeArrivals(els) {
 }
 
 let reelBoxes = [];
+/* ONE `sizes` CANNOT SERVE THESE TILES. The magazine deals them at
+   wildly different shares — measured at 107, 166, 225 and 344 CSS px on
+   the same 390px phone — and a single blanket value made every one of
+   them ask for 1080w, which is 3.4x more than the smallest can paint.
+
+   The dealer already knows both numbers it needs, so it says them: the
+   phone tier is the M_RHYTHM class it is about to add, and the desktop
+   width is the --share it is about to set. TILE_FALLBACK covers the
+   answer deal, whose shares are dealt the same way but whose cells have
+   no rhythm tier. */
+const M_FRAC = { mHero: 1, mHalf: 0.5, mThird: 0.34, mTwoThirds: 0.67 };
+const TILE_FALLBACK = "(max-width: 760px) 92vw, 44vw";
+function tileSizes(tier, share) {
+  const phone = Math.round((M_FRAC[tier] || 1) * 92);
+  /* Half the content column, which is itself about half the viewport. */
+  const desk = Math.max(8, Math.round((Number(share) || 0.7) * 44));
+  return `(max-width: 760px) ${phone}vw, ${desk}vw`;
+}
+/* Swapped at port time. See the note at the call site. */
+function tileSrcSet() { return ""; }
+
 function imgCard(card, rnd, allowShare) {
   /* every card knows what it is, so an answer card can find the same
      card's rect in the magazine and travel from it */
@@ -3810,7 +3831,27 @@ function imgCard(card, rnd, allowShare) {
        something INSIDE a study, the card shows that frame instead of
        the project's thumbnail. The card stops being a cover and starts
        being the evidence, and it still links where it always did. */
-    img.src = card.shot || card.img;
+    const plateSrc = card.shot || card.img;
+    img.src = plateSrc;
+    /* THE PORT REPLACES tileSrcSet. A file opened straight from disk has
+       no image optimizer behind it, so the lab serves the original and
+       this is honestly a no-op here; in the app it becomes a ladder of
+       /_next/image URLs. Guarded rather than assigned blind, because an
+       empty srcset attribute is not the same as no srcset attribute —
+       it makes the browser ignore src entirely.
+
+       plateSrc, NOT img.src. Reading .src back off the element returns
+       the RESOLVED ABSOLUTE url — http://host/case-studies/… — and the
+       builder only rewrites paths that begin with a slash, so every
+       tile silently got no srcset at all and the whole change looked
+       like it had never shipped. */
+    const ss = tileSrcSet(plateSrc);
+    /* TILE_FALLBACK until the dealer knows better. Both dealers below
+       overwrite it the moment they set --share; this is what an answer
+       frame keeps, and what a tile would keep if a third dealer ever
+       forgot. Never left empty: an empty srcset makes the browser
+       ignore src entirely. */
+    if (ss) { img.srcset = ss; img.sizes = TILE_FALLBACK; }
     img.alt = card.kind === "pull" ? card.title : "";
     img.loading = "lazy"; img.decoding = "async";
     plate.appendChild(img);
@@ -4197,6 +4238,13 @@ function buildMagazine() {
       /* an authored size wins over the dealt tier */
       const sz = cards[ci].size != null ? cards[ci].size : shares[i];
       el.style.setProperty("--share", String(sz));
+      /* The tier is on the cell, the share is on the frame, and the
+         image needs both to ask for the right rung. */
+      const tim = el.querySelector("img");
+      if (tim && tim.srcset) {
+        tim.sizes = tileSizes(
+          [...cell.classList].find((c) => c.startsWith("m")), sz);
+      }
       /* the right-hand frame follows the left one in */
       if (side === "R") el.style.setProperty("--lag", CURTAIN_LAG);
       cell.appendChild(el);
