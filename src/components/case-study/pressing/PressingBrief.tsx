@@ -175,7 +175,7 @@ export function PressingBrief({
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduce.matches) return;
 
-    let lines = cutHeadline(head, headText, styles.ln);
+    const lines = cutHeadline(head, headText, styles.ln);
     let last = -1;
     const off = onTick(() => {
       if (reduce.matches) {

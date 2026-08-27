@@ -43,7 +43,7 @@
 
 import { useEffect, useRef } from "react";
 import { onTick } from "@/lib/scrub";
-import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { CHOREO_BREAKPOINT, RISE } from "@/lib/choreo";
 import styles from "./RisingPlate.module.css";
 
