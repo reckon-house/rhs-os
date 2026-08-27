@@ -321,12 +321,35 @@ like it had done nothing.
 intermittent fault `next.config.ts` already documents. Only Vercel's
 pipeline is reliable, so check against production.
 
+### And the homepage tiles
+
+The last images without one. Built client-side by the driver, so the
+lab declares a stub returning `""` — honest there, a page opened from
+disk has no optimizer — and `port-home.mjs` swaps it for the same
+`plateSrcSet` the plates use.
+
+| homepage, fully scrolled | before | after |
+|---|---|---|
+| **total** | 18.76 MB | **3.29 MB** |
+| images | 18 660 KB | 2 954 KB |
+| javascript | 407.5 KB | 214.6 KB |
+| wasted to overscale | 10.37 MB | **0.67 MB** |
+
+`sizes` is per tile, not blanket. The magazine deals slots measuring
+107, 166, 225 and 344 CSS px on the same 390px phone, so one value made
+every tile ask for 1080w — 3.4x more than the smallest can paint. The
+dealer already holds both numbers it needs: the phone tier is the
+`M_RHYTHM` class it is about to add, the desktop width is the `--share`
+it is about to set.
+
+**A third way to measure this wrong.** `img.src` reads back as an
+absolute URL, so passing it to a builder that only rewrites paths
+starting with `/` returns undefined and sets nothing. The code was in
+the bundle and the bundle was on the page; the attribute was simply
+never written.
+
 ### Still open
 
-23 images on a case study still have no srcset: `PressingCredits` brand
-marks, `PressingSystemIndex`, `HeroCarousel` and the daybook plates.
-Small files, high overscale.
-
-**The homepage tiles have none either**, and they are 13.4 MB. They are
-injected client-side by `pressingHomeDriver.js`, so they need the lab
-changed and re-ported rather than a component edit.
+Brand marks in `PressingCredits` (`rejuvenation.png` is 4253px feeding
+276), `PressingSystemIndex`, `HeroCarousel` and the daybook plates.
+Small files, high overscale, and the last of it.
