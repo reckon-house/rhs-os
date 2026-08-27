@@ -46,6 +46,7 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { reducedMotion, vh } from "@/lib/scrub";
 import styles from "./PressingCredits.module.css";
@@ -301,6 +302,13 @@ export function PressingCredits({ className }: PressingCreditsProps) {
                 <img
                   className={c.asis ? `${styles.mark} ${styles.asis}` : styles.mark}
                   src={c.src}
+                  /* 15px-tall logotypes fed by files up to 4253px wide —
+                     rejuvenation.png was 126KB into a ~60px slot. The
+                     ladder's smallest rung is 640, still 10x what the
+                     slot needs, but a 640w AVIF of a logotype is a few
+                     KB where the PNG was six figures of bytes. */
+                  srcSet={plateSrcSet(c.src)}
+                  sizes="120px"
                   alt=""
                   aria-hidden="true"
                   loading="lazy"

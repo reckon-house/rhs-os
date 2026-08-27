@@ -345,10 +345,28 @@ export function HeroCarousel({
           the next image loads in. Slot A & B already cover slides[0] and slides[1];
           everything from slides[2] onward gets a hidden eager-loaded preload tag. */}
       {slides.length > 2 && (
-        <div aria-hidden className="absolute pointer-events-none opacity-0 w-0 h-0 overflow-hidden">
+        <div aria-hidden className="absolute pointer-events-none opacity-0 w-px h-px overflow-hidden">
           {slides.slice(2).map((slide, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={`preload-${i}`} src={slide.src} alt="" loading="eager" />
+            /* next/image, NOT a raw img: the visible slots above are
+               next/image, so they will request the OPTIMIZER's url. The
+               raw-img version of this preload eagerly fetched the
+               original files — warming megabytes of urls the slots
+               never display, which is a preload that preloads the
+               wrong thing. Same component, same sizes, same url. */
+            <span key={`preload-${i}`} className="absolute inset-0">
+              <Image
+                src={slide.src}
+                alt=""
+                /* fill + the SAME sizes as the slots: a fixed-size Image
+                   emits x-descriptor candidates and would preload a
+                   thumbnail; fill emits the viewport ladder, so the url
+                   warmed here is byte-identical to the one the slot
+                   requests when this slide's turn comes. */
+                fill
+                sizes="100vw"
+                loading="eager"
+              />
+            </span>
           ))}
         </div>
       )}

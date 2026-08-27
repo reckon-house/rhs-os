@@ -17,6 +17,7 @@
  */
 
 import { projects } from "@/data/projects";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { imageDimensions } from "@/data/image-dimensions";
 import styles from "./hover-plate.module.css";
 
@@ -35,7 +36,14 @@ export function HoverPlate({ href, on }: { href: string; on: boolean }) {
       style={dim ? { aspectRatio: `${dim[0]} / ${dim[1]}` } : undefined}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={p.image} alt="" loading="lazy" decoding="async" />
+      <img
+        src={p.image}
+        srcSet={plateSrcSet(p.image)}
+        sizes="clamp(170px, 15vw, 230px)"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
     </span>
   );
 }

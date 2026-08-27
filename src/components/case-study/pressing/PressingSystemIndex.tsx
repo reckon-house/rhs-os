@@ -49,6 +49,7 @@ import type {
   MarksAndMaterialsSection,
 } from "@/lib/types";
 import { onTick, reducedMotion } from "@/lib/scrub";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { SectionMark } from "@/components/fx/SectionMark";
 import {
   SizzleReel,
@@ -757,6 +758,10 @@ export function PressingSystemIndex({ section, mark }: PressingSystemIndexProps)
               { "--native": dim ? `${Math.floor(dim[0] / 2)}px` : undefined } as CSSProperties
             }
             src={m.src}
+            srcSet={plateSrcSet(m.src, dim?.[0])}
+            /* the mark renders at native/2 (--native above), inside a
+               column that is the viewport on a phone */
+            sizes="(max-width: 760px) 90vw, 40vw"
             /* The caption says what this is; the alt should agree with
                it rather than claim every logotype row is a construction
                drawing. */

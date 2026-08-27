@@ -28,6 +28,7 @@ import {
   type DaybookProject,
 } from "@/data/daybook";
 import { HoverPlate } from "@/components/daybook/HoverPlate";
+import { plateSrcSet } from "@/lib/img-srcset";
 import { curtain } from "@/lib/curtain";
 import { useLedgerArrival } from "@/lib/ledger-arrival";
 import { PaperGround } from "@/components/shell/PaperGround";
@@ -82,7 +83,15 @@ function Entry({ e, first }: { e: DaybookEntry; first: boolean }) {
         {e.image ? (
           <figure className={styles.pic}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={e.image.src} alt={e.image.alt} loading="lazy" decoding="async" />
+            <img
+              src={e.image.src}
+              srcSet={plateSrcSet(e.image.src)}
+              /* .pic caps at 480px; one column on a phone */
+              sizes="(max-width: 760px) 92vw, 480px"
+              alt={e.image.alt}
+              loading="lazy"
+              decoding="async"
+            />
             {e.image.caption ? (
               <figcaption className={styles.cap}>{e.image.caption}</figcaption>
             ) : null}
