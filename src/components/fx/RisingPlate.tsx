@@ -178,7 +178,11 @@ export function RisingPlate({
       lastKey = "";
       img.style.transform = "";
       img.style.borderRadius = "";
-      if (clip) clip.style.clipPath = "";
+      if (clip) {
+        clip.style.clipPath = "";
+        clip.style.height = "";
+        clip.style.borderRadius = "";
+      }
     };
 
     const off = onTick(() => {
@@ -224,30 +228,30 @@ export function RisingPlate({
       const p = Math.max(0, Math.min(1, (vh - top) / (vh - end)));
 
       if (morphing) {
-        /* The tall morph: the wide band opens into the tall crop, the
-           corner squares on the same clock, one gesture. The clip
-           carries the radius because the visible edge mid-morph IS the
-           clip — the img's own corners are outside it.
-
-           offsetWidth/offsetHeight, never rects: rects report the
-           painted size under the very transform this writes (the
-           lesson CLAUDE.md keeps). H0 is the img's unscaled layout
-           height — width/ratio — so T/H0 is exactly the scale at
-           which the image covers the tall box. */
-        const T = clip.offsetHeight;
-        const H0 = img.offsetHeight || 1;
-        const sEnd = Math.max(T / H0, 1);
-        const scl = REST + (sEnd - REST) * p;
-        const insetY = Math.max(0, (T - H0 * scl) / 2);
+        /* THE BOX ITSELF GROWS, wide to tall, and that is the gesture.
+           The first cut reserved the tall box in layout and scrubbed a
+           clip-path window open inside it — geometrically identical,
+           and it read wrong on a real phone: "the image is trying to
+           increase in height but the container never does." The
+           container is the thing the eye tracks. So the clip's HEIGHT
+           runs from the image's own wide shape to the tall crop, the
+           img covers it (object-fit does the cropping), and the corner
+           rides the same clock. The section's phone min-height means
+           the growth displaces nothing outside its own screen. */
+        const W = clip.offsetWidth || 1;
+        const H0 = nativeRatio ? W / nativeRatio : clip.offsetHeight;
+        const T = tallRatio
+          ? Math.min(W / tallRatio, vh * 0.62)
+          : H0;
+        const h = H0 + Math.max(0, T - H0) * p;
         const r = Math.round(morphR * (1 - p));
-        const key = `m${p.toFixed(4)}|${T}`;
+        const scl = REST + (1 - REST) * p;
+        const key = `m${p.toFixed(4)}|${Math.round(T)}`;
         if (key === lastKey) return;
         lastKey = key;
-        clip.style.clipPath = `inset(${insetY.toFixed(1)}px 0 round ${r}px)`;
-        img.style.transform = `translate(-50%,-50%) scale(${scl.toFixed(4)})`;
-        /* the clip's round is the corner now; the class's 44px would
-           poke out of it as the clip squares */
-        img.style.borderRadius = "0px";
+        clip.style.height = h.toFixed(1) + "px";
+        clip.style.borderRadius = r + "px";
+        img.style.transform = `scale(${scl.toFixed(4)})`;
         return;
       }
 
@@ -287,7 +291,9 @@ export function RisingPlate({
       style={{
         "--choreo-rise": RISE,
         marginTop: `calc(-1 * ${RISE})`,
-        ...(tallRatio ? { "--tall-ar": String(tallRatio) } : null),
+        ...(tallRatio && nativeRatio
+          ? { "--tall-ar": String(tallRatio), "--nat-ar": String(nativeRatio) }
+          : null),
       } as React.CSSProperties}
     >
       {/* No fixed height and no cover-crop ON GLASS WIDE ENOUGH TO SHOW

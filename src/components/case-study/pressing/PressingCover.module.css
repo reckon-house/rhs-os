@@ -216,6 +216,22 @@
     /* same 40px desktop gutter as .h1, same fix */
     left: 20px;
     right: 20px;
+    /* BELOW THE REEL, always. The desktop's 22dvh seat was written when
+       the reel was a 130px stamp; at 50vw a portrait frame reaches
+       ~330px down an 844px screen and the landed statement printed
+       straight across it. The seat now clears the reel's capped worst
+       case (box cap below + caption + air), and 22dvh still wins on
+       screens tall enough that it clears anyway. */
+    top: max(22dvh, calc(min(52vw, 40dvh) + 96px));
+  }
+  /* The box the reel reshapes per frame. Capped so a portrait frame
+     cannot run the cover's whole upper half — the frames are
+     object-fit: cover inside the box, so the cap crops a tall frame
+     gracefully instead of letting it push the statement's seat down
+     the page. max-height wins against the inline height the reel's
+     shape() writes, which is the point. */
+  .reelBox {
+    max-height: min(52vw, 40dvh);
   }
   /* The reel keeps the corner it has on every screen; only its size and
      inset come down. */

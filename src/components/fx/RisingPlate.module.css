@@ -29,41 +29,57 @@
  */
 
 @media (max-width: 760px) {
+  /* THE SECTION OWNS A FULL SCREEN while its plate climbs. The climb is
+     96dvh and a phone plate is at most 62dvh, so without this the
+     content AFTER the riser rode up underneath the still-crossing plate
+     and the next section's headline printed beside it mid-flight —
+     measured on loved-by-nordstrom, the crossing played over "The
+     Heart"'s opener. The section's own paper is what fills the
+     difference, exactly what the desktop gets for free from a plate
+     taller than the glass. Phones only: desktop rhythm is tuned and a
+     capped desktop riser must not grow its section. */
+  .riser {
+    min-height: 100dvh;
+  }
+
   .riser[data-tallmorph] .clip {
     position: relative;
-    /* The tall box. Bounded by the glass, not only the ratio: 62dvh
-       keeps a very wide file from morphing taller than the screen can
-       frame. */
-    height: min(calc(100vw / var(--tall-ar)), 62dvh);
-    /* Before the driver's first tick: the whole image, wide, rounded at
-       the system's plate radius (--pp-r, not the climb's desktop 44 —
-       at 390px wide, 44 reads stadium-shaped). The plate enters from
-       below the fold, so this state is never seen; it exists so a
-       dropped script degrades to a centred picture rather than a
-       broken one. */
-    clip-path: inset(0 0 round var(--pp-r, 16px));
+    overflow: hidden;
+    /* The WIDE state, from the declared ratio: the box literally IS the
+       image's own shape until the driver starts growing it. This is
+       also the no-JS and reduced-motion state — the full composition,
+       uncropped, in flow. */
+    height: calc(100vw / var(--nat-ar, 1.5));
+    border-radius: var(--pp-r, 16px);
   }
   .riser[data-tallmorph] .clip > img {
+    /* cover inside the growing box: as the driver raises the box's
+       height past the native ratio, the crop happens by itself and the
+       CONTAINER is what visibly goes wide to tall — the first cut kept
+       the box fixed and opened a clip window inside it, and the owner
+       read it exactly as that: an image straining inside a box that
+       never grows. */
     position: absolute;
-    left: 50%;
-    top: 50%;
+    inset: 0;
     width: 100%;
-    /* the scale-up past the box is the crop; a max-width would refuse it */
-    max-width: none;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    object-fit: cover;
   }
 }
 
-/* Reduced motion stands the morph down entirely, matching the driver's
-   own reduce branch: static layout, the image in flow at its native
-   ratio, nothing cropped and nothing for the driver to write. */
+/* Reduced motion stands the morph down: the wide composition, static,
+   nothing cropped and nothing for the driver to write. */
 @media (prefers-reduced-motion: reduce) {
+  .riser {
+    min-height: 0;
+  }
   .riser[data-tallmorph] .clip {
     height: auto;
-    clip-path: none;
+    border-radius: 0;
   }
   .riser[data-tallmorph] .clip > img {
     position: static;
-    transform: none;
+    width: 100%;
+    height: auto;
   }
 }
