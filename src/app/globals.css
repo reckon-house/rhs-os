@@ -648,7 +648,16 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
      ledgers on 14 — which is how the small box ended up rounder than
      the big one. Change it here or not at all. */
   --pp-r-reel: calc(var(--pp-r) * 0.75);
-  --pp-rise: 96dvh;
+  /* THE SAME STRING AS choreo.ts's RISE, and that is a contract, not a
+     coincidence. PRESSING.md dual-homes the climb: the TS constant
+     drives the plate's pull-up and the stage spacers, this token sizes
+     the cover's and the zoom's held tails. For a while the phone block
+     below zeroed this token while the TS side kept pulling plates up
+     351px — so on every phone the climb ate the end of the cover's own
+     pin instead of playing over a held screen, and the crossing the
+     whole gesture exists for happened during the handover, invisible.
+     One value, both homes, every width. */
+  --pp-rise: min(96dvh, 170vw);
   --pp-plate-hold: 13dvh;
 
   /* The masthead's height — the ONE copy. The bar itself sizes from it and
@@ -672,7 +681,8 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
 @media (max-width: 760px) {
   :root {
     --pp-lbl: 9px;
-    --pp-rise: 0px;
-    --pp-plate-hold: 0px;
+    /* --pp-rise and --pp-plate-hold are deliberately NOT zeroed here any
+       more. Zeroing them was how the phone lost the crossing: the token
+       said "no climb room" while choreo.ts kept the climb. */
   }
 }

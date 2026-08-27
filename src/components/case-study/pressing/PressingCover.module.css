@@ -177,9 +177,9 @@
   right: 40px;
 }
 
-/* Below 760px there is no pin: headline, statement and reel stack in flow,
-   bottom-weighted so the block still reads as a cover. --pp-rise is already
-   0 here, but the tail is hidden anyway so nothing depends on the token. */
+/* Below 760px the pin runs exactly as it does everywhere, and --pp-rise
+   is live again (it was zeroed on phones for a while, which is what cost
+   the phone its crossing — see globals.css). */
 /* PHONE LAYOUT ONLY. This block used to switch the cover's choreography
    off as well — height auto on the wrap, static on the sticky and the
    headline, `transform: none !important` on the statement — so a phone
@@ -195,18 +195,41 @@
     padding: 76px 20px 84px;
   }
   .h1 {
-    font-size: clamp(38px, 13.6vw, 96px);
+    /* 15.5vw, up from 13.6. The phone cover's first screen is the reel
+       at the top and the headline at the bottom with the middle empty —
+       measured 592px of air between them at 390x844 — because the
+       spine, the credits and the statement's desktop seat all leave at
+       this width. The type is what remains, so it carries more of the
+       screen. The 96px cap is the desktop tier's floor and holds. */
+    font-size: clamp(42px, 15.5vw, 96px);
+    /* The base rule's left: 40px is the DESKTOP gutter. The phone's is
+       20, and coverSticky already pads it — so 40 here put the headline
+       20px right of every other block on the page and 6px from the
+       right edge. Measured before the fix: left 40, right 6; the body
+       sections sit 20/26. */
+    left: 20px;
+    right: 20px;
   }
   .statement {
     max-width: none;
     font-size: clamp(19px, 5.4vw, 30px);
+    /* same 40px desktop gutter as .h1, same fix */
+    left: 20px;
+    right: 20px;
   }
   /* The reel keeps the corner it has on every screen; only its size and
      inset come down. */
   .plateThumb {
     top: 30px;
     right: 20px;
-    width: clamp(84px, 26vw, 130px);
+    /* Half the screen's width, up from 26vw. On a desktop the reel is a
+       stamp in a corner the spine and credits also occupy; on a phone it
+       is the only moving thing on an otherwise empty first screen, and
+       at 101px it read as an afterthought. 50vw is 195px at 390 — the
+       reel becomes the cover's opening image rather than its favicon.
+       The frames are 512px AVIFs, so twice the box is still under their
+       resolution at DPR 3. */
+    width: clamp(160px, 50vw, 230px);
   }
   .edgeV {
     display: none;

@@ -70,7 +70,19 @@
  * disagree, and the page loses the scroll it was spending on a picture
  * that had already gone by.
  */
-export const RISE = "min(96dvh, 90vw)";
+/* 170vw, was 90vw — the one re-derivation in the phone retune, and the
+ * measurement that produced 90vw is the thing that changed. 90vw was
+ * sized against plates that were `width / ratio` tall on a phone: 0.23
+ * to 0.44 screens, so a longer climb just floated a small picture over
+ * empty air. The tall morph (RisingPlate.module.css) makes a wide
+ * phone plate up to 62dvh tall — the plate is viewport-scaled again,
+ * and 170vw at 390x844 is a 663px climb ≈ 1.3x the morphed plate's
+ * height, which is the same coverage ratio the 96dvh arm gives a
+ * desktop plate. The arm still only ever binds on portrait glass:
+ * 170vw crosses 96dvh at an aspect of ~0.56, so every landscape and
+ * tablet screen keeps 96dvh exactly and the desktop tuning does not
+ * move. */
+export const RISE = "min(96dvh, 170vw)";
 
 /** The beat of held, fully-visible content before a plate starts to climb. */
 export const PLATE_HOLD = "13dvh";

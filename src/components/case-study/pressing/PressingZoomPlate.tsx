@@ -40,6 +40,7 @@
 
 import { Fragment, useEffect, useId, useRef } from "react";
 import { plateSrcSet } from "@/lib/img-srcset";
+import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { onTick, vh } from "@/lib/scrub";
 import { usePinDrift } from "@/lib/pin-drift";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -297,7 +298,20 @@ export function PressingZoomPlate({
       } else {
         endScale = 1;
         spill = Math.max(0, box.h * endScale - matH);
-        parkY = MASTHEAD;
+        /* Desktop width-fit plates park under the masthead because they
+           are about to FILL the mat — a screen-height frame whose top
+           belongs at the top. A phone-width landscape plate never
+           fills anything: at 390 wide it grows to ~230px tall and the
+           masthead park strands it in the top third of an 844px screen,
+           which is where the whole zoom was peaking. So on a phone it
+           takes the same centered seat the `contain` branch above has
+           always used — a reuse of that branch's expression, not a new
+           number. Everything downstream reads parkY per tick, so the
+           travel and the ink knockout follow it. */
+        parkY =
+          window.innerWidth <= CHOREO_BREAKPOINT
+            ? Math.max(MASTHEAD, (vh() - box.h * endScale) / 2)
+            : MASTHEAD;
       }
       /* A contained plate is narrower than the screen and centres; a
          width-fit plate starts at the viewport's left edge. */

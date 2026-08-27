@@ -559,3 +559,23 @@ Inside an SVG path template every interpolation is a coordinate.
 7. Copy pass against CLAUDE.md; skim the mark spine.
 8. Screenshot next to the lab file if the study has a lab prototype;
    pixel-match is the bar.
+
+## The phone's tall morph (site-first, no lab source)
+
+Wide rise plates (declared ratio >= 1.3) morph on phones: they enter as
+the full wide composition and settle into a taller cover-crop as the
+scrub completes, radius squaring on the same clock. Mechanism and taste
+both live in `src/components/fx/RisingPlate.tsx` + `.module.css` — one
+consumer, so nothing is shared to src/lib yet.
+
+The numbers — 1.3 eligibility gate, 1.3x crop cap (rest state keeps
+~77% of the file's width; 0.58 sliced Sally's laptop UI and was
+rejected), 0.85 tall floor, 62dvh box cap, 0.35vh end anchor — were
+born against the site at 390x844, NOT in swiss-spread.html. The lab has
+no phone morph. If the lab ever grows one, its values win and these
+port back over.
+
+Related retune, same session: `--pp-rise` un-zeroed on phones (globals)
+so the token agrees with choreo.ts's RISE at every width, and RISE's
+width arm raised 90vw -> 170vw — rationale recorded in choreo.ts, the
+measurement that produced 90vw predates the morph.

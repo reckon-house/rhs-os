@@ -1,0 +1,68 @@
+/* ── The phone's tall morph ──────────────────────────────────────────
+ *
+ * Desktop plates are viewport-scaled: at 1440x900 a wide riser is 0.8
+ * to 1.5 screens tall, the -96dvh pull-up sweeps it ACROSS the held
+ * section, and the scrub completing at the viewport top still reads
+ * mid-screen because the plate is taller than the glass. On a phone the
+ * same plate is content-scaled — a 16:9 file at 390px wide is 219px,
+ * a quarter of the screen — so every one of those tuned gestures
+ * shrinks with it. Measured on Sally at 390x844: the climb crosses
+ * empty cover tail, and the corner squares off with the plate's centre
+ * at 7% of the screen.
+ *
+ * So on a phone a wide riser MORPHS: it enters as the full wide
+ * composition (nothing cropped — the band at progress 0 is the whole
+ * picture) and settles into a taller crop as it scrubs, radius
+ * squaring on the same clock. The rest state trades the frames' edges
+ * for presence, which is the trade the desktop never has to make.
+ *
+ * This deviates from the component's own "no fixed height and no
+ * cover-crop" rule, and the material difference is the screen: that
+ * rule protects compositions on glass wide enough to show them. A
+ * phone showing a quarter-screen letterbox is not showing the
+ * composition either — it is showing a thumbnail.
+ *
+ * The driver owns clip-path on .clip and transform on the img; these
+ * rules are the static seats it writes over. --tall-ar is set inline
+ * by the component from the DECLARED dimensions, so layout needs no
+ * measurement and no JS: the box is CSS from first paint.
+ */
+
+@media (max-width: 760px) {
+  .riser[data-tallmorph] .clip {
+    position: relative;
+    /* The tall box. Bounded by the glass, not only the ratio: 62dvh
+       keeps a very wide file from morphing taller than the screen can
+       frame. */
+    height: min(calc(100vw / var(--tall-ar)), 62dvh);
+    /* Before the driver's first tick: the whole image, wide, rounded —
+       exactly the desktop rest state, centred in the tall box. The
+       plate enters from below the fold, so this state is never seen;
+       it exists so a dropped script degrades to a centred picture
+       rather than a broken one. */
+    clip-path: inset(0 0 round 44px);
+  }
+  .riser[data-tallmorph] .clip > img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    /* the scale-up past the box is the crop; a max-width would refuse it */
+    max-width: none;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Reduced motion stands the morph down entirely, matching the driver's
+   own reduce branch: static layout, the image in flow at its native
+   ratio, nothing cropped and nothing for the driver to write. */
+@media (prefers-reduced-motion: reduce) {
+  .riser[data-tallmorph] .clip {
+    height: auto;
+    clip-path: none;
+  }
+  .riser[data-tallmorph] .clip > img {
+    position: static;
+    transform: none;
+  }
+}

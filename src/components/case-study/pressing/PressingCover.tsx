@@ -167,6 +167,59 @@ export function PressingCover({
     return { words: [...factWords, ...restWords], dimFrom: restWords.length ? factWords.length : Infinity };
   }, [statement]);
 
+  /* ── the headline fits its own box ────────────────────────────────
+     One vw size cannot serve thirty titles: at the phone tier's 15.5vw,
+     Sally's "Marketing OS" wraps and reads taller — fine — but
+     "Personalization" is a single unbreakable word that OVERFLOWS the
+     viewport, and a word off the edge of the glass is a bug at any
+     size. So the CSS clamp is the ceiling, and each cover steps its own
+     type down only as far as its longest word demands. Sally keeps the
+     big tier; Nordstrom Personalization lands wherever 15 characters
+     fit. Desktop titles were authored against their tier and fit
+     already, so the pass is a no-op there — it runs everywhere anyway,
+     because "measure, then only act on overflow" is cheaper than a
+     width gate that would need its own keeping-in-step.
+
+     offsetWidth of the WORD spans, and nothing else survived contact:
+     rects lie under the reveal's entrance transforms (the CLAUDE.md
+     trap, again), and the line wrappers' scrollWidth reported 344 while
+     holding a 405px word — an unbreakable inline-block overflowing a
+     masked line never reaches its ancestor's scroll metrics. The word
+     span's own offsetWidth is layout, transform-free, and is the ink
+     that matters, since only a single word can force overflow (multi
+     word lines wrap instead). Re-run on resize and once fonts are in,
+     since Helvetica's metrics arrive late and the fallback face
+     measures narrower. */
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const h1 = wrap.querySelector<HTMLElement>("h1");
+    if (!h1) return;
+
+    const fit = () => {
+      h1.style.fontSize = "";
+      const base = parseFloat(getComputedStyle(h1).fontSize);
+      const box = h1.clientWidth;
+      if (!base || !box) return;
+      let worst = 1;
+      for (const word of h1.querySelectorAll<HTMLElement>(
+        "." + revealStyles.rwd
+      )) {
+        const ink = word.offsetWidth;
+        if (ink > box) worst = Math.min(worst, box / ink);
+      }
+      if (worst < 1) h1.style.fontSize = `${Math.floor(base * worst * 0.99)}px`;
+    };
+
+    fit();
+    document.fonts?.ready.then(fit).catch(() => {});
+    window.addEventListener("resize", fit);
+    return () => {
+      window.removeEventListener("resize", fit);
+      h1.style.fontSize = "";
+    };
+  }, []);
+
   /* ── the handover driver ─────────────────────────────────────────── */
   useEffect(() => {
     const wrap = wrapRef.current;

@@ -44,7 +44,8 @@
 import { useEffect, useRef } from "react";
 import { onTick } from "@/lib/scrub";
 import { plateSizes, plateSrcSet } from "@/lib/img-srcset";
-import { RISE } from "@/lib/choreo";
+import { CHOREO_BREAKPOINT, RISE } from "@/lib/choreo";
+import styles from "./RisingPlate.module.css";
 
 // Resting scale and corner, verbatim from the prototype. The plate already
 // sits close to full width, so the growth is ~5% — the live HeroBlock's
@@ -81,6 +82,7 @@ export function RisingPlate({
   className = "",
 }: RisingPlateProps) {
   const secRef = useRef<HTMLElement>(null);
+  const clipRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
   /* ── a riser never scales past the picture it has ─────────────────
@@ -115,24 +117,59 @@ export function RisingPlate({
       ? Math.min(native, editorial)
       : (editorial ?? native);
 
+  /* ── the phone's tall morph: which plates, and how tall ──────────
+     Wide plates only — a portrait or squarish file already has phone
+     presence and cropping it buys nothing. 1.3 is the line between
+     "wide" and "roughly how the screen already is".
+
+     The target is DERIVED from the file's own ratio rather than being
+     one number, and the crop is the binding constraint: the rest state
+     keeps at least ~77% of the file's width (a 1.3x cover scale, never
+     more). The first cut of this used 0.58 and looked spectacular on
+     photography — and sliced a third off both sides of Sally's laptop
+     mockup, cutting through the UI inside the screen. Device mockups
+     and app screens cannot give up their edges, and this component
+     cannot tell a portrait from a laptop, so the universal number is
+     the one the worst case can afford. 0.85 stays as the tall floor
+     for anything so wide that even 1.3x leaves it squat.
+
+     From the DECLARED dimensions, not a measurement: the same numbers
+     that make the ratio load-bearing for the scroll maths make the
+     tall box knowable before the image arrives. No declared size, no
+     morph. A capped riser keeps its cap and skips the morph too — its
+     whole point is refusing to fill the screen. */
+  const nativeRatio =
+    typeof width === "number" && typeof height === "number" && height > 0
+      ? width / height
+      : undefined;
+  const tallMorph =
+    nativeRatio != null && nativeRatio >= 1.3 && editorial == null;
+  const tallRatio = tallMorph
+    ? Math.max(nativeRatio / 1.3, 0.85)
+    : undefined;
+
   useEffect(() => {
     const sec = secRef.current;
     const img = imgRef.current;
     if (!sec || !img) return;
 
+    const clip = clipRef.current;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let lastP = -1;
+    let lastKey = "";
+
+    const clear = () => {
+      lastKey = "";
+      img.style.transform = "";
+      img.style.borderRadius = "";
+      if (clip) clip.style.clipPath = "";
+    };
 
     const off = onTick(() => {
       // Checked per tick so a viewport crossing the breakpoint mid-session
       // hands the element back to its CSS state instead of freezing the
       // last frame the driver wrote.
       if (reduce.matches) {
-        if (lastP !== -1) {
-          lastP = -1;
-          img.style.transform = "";
-          img.style.borderRadius = "";
-        }
+        if (lastKey !== "") clear();
         return;
       }
       // The VisibilityPause convention. The shared loop in scrub.ts already
@@ -140,14 +177,67 @@ export function RisingPlate({
       // if it is ever rewired to a driver that does not.
       if (document.documentElement.hasAttribute("data-paused")) return;
 
-      // 0 as the plate's top enters at the viewport bottom, 1 when it
-      // reaches the top — scrubbed, not fired once on entry, so scrolling
-      // back down runs it in reverse for free. Linear on purpose; the
-      // travel is a full screen and easing made the corner hang.
+      const vh = window.innerHeight;
+      const phone = window.innerWidth <= CHOREO_BREAKPOINT;
+      const morphing = phone && clip != null && sec.dataset.tallmorph != null;
+
+      /* THE PHONE FINISHES MID-SCREEN. The desktop scrub runs 0 as the
+         plate's top enters at the viewport bottom to 1 as it reaches
+         the top, and that is right there: a desktop plate is taller
+         than the glass, so "top at top" still leaves its body filling
+         the screen. A phone plate is a fraction of the glass — the
+         same anchor finishes the corner and the settle with the
+         plate's centre at 7% of the screen, which is to say after the
+         reader has stopped looking at it. Ending at 0.35vh puts the
+         completed plate's centre near the middle of the phone.
+
+         MORPHING PLATES ONLY. A portrait or squarish plate keeps the
+         desktop anchors even on a phone: it is already tall, its
+         payoff does not vanish at the exit, and finishing its corner
+         at 35% of the screen would square a full-bleed radius while
+         both top corners are plainly visible — the exact "reads as a
+         clipping bug" case the bleeds note below warns about. Inside
+         the morph the clip's round term owns the corner, so the early
+         finish is safe there and only there.
+         Desktop anchors untouched; scrubbed, not fired, so scrolling
+         back runs it in reverse for free. Linear on purpose; the
+         travel is a full screen and easing made the corner hang. */
+      const end = morphing ? vh * 0.35 : 0;
       const top = sec.getBoundingClientRect().top;
-      const p = Math.max(0, Math.min(1, 1 - top / window.innerHeight));
-      if (p === lastP) return;
-      lastP = p;
+      const p = Math.max(0, Math.min(1, (vh - top) / (vh - end)));
+
+      if (morphing) {
+        /* The tall morph: the wide band opens into the tall crop, the
+           corner squares on the same clock, one gesture. The clip
+           carries the radius because the visible edge mid-morph IS the
+           clip — the img's own corners are outside it.
+
+           offsetWidth/offsetHeight, never rects: rects report the
+           painted size under the very transform this writes (the
+           lesson CLAUDE.md keeps). H0 is the img's unscaled layout
+           height — width/ratio — so T/H0 is exactly the scale at
+           which the image covers the tall box. */
+        const T = clip.offsetHeight;
+        const H0 = img.offsetHeight || 1;
+        const sEnd = Math.max(T / H0, 1);
+        const scl = REST + (sEnd - REST) * p;
+        const insetY = Math.max(0, (T - H0 * scl) / 2);
+        const r = Math.round(RADIUS * (1 - p));
+        const key = `m${p.toFixed(4)}|${T}`;
+        if (key === lastKey) return;
+        lastKey = key;
+        clip.style.clipPath = `inset(${insetY.toFixed(1)}px 0 round ${r}px)`;
+        img.style.transform = `translate(-50%,-50%) scale(${scl.toFixed(4)})`;
+        /* the clip's round is the corner now; the class's 44px would
+           poke out of it as the clip squares */
+        img.style.borderRadius = "0px";
+        return;
+      }
+
+      const key = `d${p.toFixed(4)}`;
+      if (key === lastKey) return;
+      lastKey = key;
+      if (clip) clip.style.clipPath = "";
       img.style.transform = `scale(${(REST + (1 - REST) * p).toFixed(4)})`;
       /* Square the corner only for a plate that actually REACHES the
          viewport edges. One held back by its own pixels never does, and
@@ -163,8 +253,7 @@ export function RisingPlate({
     });
     return () => {
       off();
-      img.style.transform = "";
-      img.style.borderRadius = "";
+      clear();
     };
   }, []);
 
@@ -176,12 +265,25 @@ export function RisingPlate({
       // plate that kept its -RISE pull-up would statically cover the last
       // ~screen of the held section's content. The margin and the spacer
       // are two halves of one contract and must switch off together.
-      className={`hero-breakout relative isolate z-[3] bg-transparent motion-reduce:!mt-0 ${className}`}
-      style={{ "--choreo-rise": RISE, marginTop: `calc(-1 * ${RISE})` } as React.CSSProperties}
+      className={`hero-breakout relative isolate z-[3] bg-transparent motion-reduce:!mt-0 ${styles.riser} ${className}`}
+      data-tallmorph={tallMorph ? "" : undefined}
+      style={{
+        "--choreo-rise": RISE,
+        marginTop: `calc(-1 * ${RISE})`,
+        ...(tallRatio ? { "--tall-ar": String(tallRatio) } : null),
+      } as React.CSSProperties}
     >
-      {/* No fixed height and no cover-crop: the section hugs the image and
-          the image keeps its own ratio. Forcing plates into viewport-tall
-          boxes cropped the exact compositions they exist to show. */}
+      {/* No fixed height and no cover-crop ON GLASS WIDE ENOUGH TO SHOW
+          THE COMPOSITION: the section hugs the image and the image keeps
+          its own ratio, because forcing plates into viewport-tall boxes
+          cropped the exact compositions they exist to show. The phone is
+          the exception, and RisingPlate.module.css names why: a
+          quarter-screen letterbox is not showing the composition either.
+          There the .clip box goes tall (from the declared ratio, so no
+          measurement) and the driver scrubs the wide band open into the
+          tall crop. On every other screen this div is a layout-neutral
+          block around an in-flow image. */}
+      <div ref={clipRef} className={styles.clip}>
       <img
         ref={imgRef}
         src={src}
@@ -189,7 +291,11 @@ export function RisingPlate({
            note above is right that the RATIO needs no help at viewport
            width; the resolution always did. */
         srcSet={plateSrcSet(src, width)}
-        sizes="100vw"
+        /* A morphing plate is drawn at up to 1.3x the viewport width —
+           the cover-crop scale — so telling the browser 100vw would
+           under-request by exactly that factor at the moment the plate
+           is largest. Desktop and non-morph plates stay 100vw. */
+        sizes={tallMorph ? "(max-width: 760px) 130vw, 100vw" : "100vw"}
         alt={alt}
         width={width}
         height={height}
@@ -202,6 +308,7 @@ export function RisingPlate({
         className="block w-full h-auto origin-center will-change-[transform,border-radius] [transform:scale(0.95)] rounded-[44px] motion-reduce:[transform:none] motion-reduce:rounded-none"
         style={ceiling ? { maxWidth: `${ceiling}px`, margin: "0 auto" } : undefined}
       />
+      </div>
     </section>
   );
 }

@@ -43,6 +43,7 @@ import { plateSrcSet } from "@/lib/img-srcset";
 import { useColumnDrop } from "@/lib/column-drop";
 import { onTick, reducedMotion, vh } from "@/lib/scrub";
 import { cutHeadline, lineOffset, LINE_SPAN_VH } from "@/lib/cut-lines";
+import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { usePinDrift } from "@/lib/pin-drift";
 
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
@@ -189,8 +190,20 @@ export function PressingBrief({
          span is Robert's, in viewports, so the two stagings of this
          gesture take the same amount of scrolling — the pin engages at
          one viewport and the last line lands shortly after, which reads
-         as the headline settling rather than as a separate event. */
-      const p = Math.min(1, Math.max(0, (h - r.top) / (h * LINE_SPAN_VH)));
+         as the headline settling rather than as a separate event.
+
+         THE PHONE'S SPAN IS SHORTER, and the reason is that the span
+         constant's premise does not hold there: "the pin engages at one
+         viewport" is desktop truth, but below the breakpoint .held is
+         static (no pin at all), so at 1.2 viewports the last line lands
+         with the headline already above the fold — the gesture finished
+         where nobody was looking. 0.8 lands it around the upper middle
+         of an 844px screen. Robert's constant is untouched: cut-lines'
+         LINE_SPAN_VH keeps its one desktop consumer here and
+         PressingCrossing derives its span from its own wrap height. */
+      const spanVH =
+        window.innerWidth <= CHOREO_BREAKPOINT ? 0.8 : LINE_SPAN_VH;
+      const p = Math.min(1, Math.max(0, (h - r.top) / (h * spanVH)));
       if (p === last) return;
       last = p;
       const w = window.innerWidth;
