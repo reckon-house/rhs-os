@@ -1,0 +1,577 @@
+<!doctype html>
+<!--
+  light-headline — radiance cascades under the dark beat's type.
+
+  The reference is vgpu.sh/examples/agent-radiance-cascades: WebGPU,
+  jump-flooded distance field, six cascades, dots as HDR emitters and
+  occluders. This is the same idea rebuilt for THIS site's constraints:
+
+  · WEBGL2, NOT WEBGPU. The session that preceded this one was spent
+    making the site behave on phones; an effect the median iPhone cannot
+    run is decoration for the wrong audience. WebGL2 runs everywhere the
+    site does.
+  · THE TYPE IS THE LAMP. The reference lights dots; here the crossing's
+    own headline is the emitter, so the words genuinely cast — glow
+    falls off with distance, and letterforms shadow each other.
+  · The DOM keeps the real text on top, selectable; the canvas draws the
+    same string underneath as the light source. What the GI contributes
+    is everything AROUND the glyphs, so sub-pixel registration between
+    the two copies is invisible by construction.
+
+  Standing lab rules: standalone file, no bundler, judge it here first.
+  Values that survive get ported; the file stays as the spec.
+-->
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>light-headline · lab</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: #000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  /* air above and below so the beat scrolls in the way it does on site */
+  .spacer { height: 90vh; display: grid; place-items: center; color: #333;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .beat {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #000;
+    overflow: hidden;
+  }
+  .beat canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  /* The real type, on top. The crossing's own scale ramp. */
+  .head {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-weight: 700;
+    font-size: clamp(34px, 10.4vw, 74px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-align: center;
+    max-width: 10em;
+    padding: 0 20px;
+  }
+  @media (min-width: 761px) {
+    .head { font-size: clamp(48px, 7.4vw, 118px); max-width: 14em; }
+  }
+  .cap {
+    position: absolute;
+    bottom: 26px;
+    left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    z-index: 1;
+  }
+</style>
+
+<div class="spacer">scroll · the beat lights as it enters</div>
+
+<section class="beat" id="beat">
+  <canvas id="gl"></canvas>
+  <h2 class="head" id="head">A competitor launches something, and the feed writes Sally's Take on it.</h2>
+  <div class="cap">radiance cascades · the type is the lamp · move the pointer</div>
+</section>
+
+<div class="spacer">after</div>
+
+<script>
+"use strict";
+/* ── the pipeline ────────────────────────────────────────────────────
+   1. SEED   the headline drawn to a 2D canvas: rgb = emission, a = occluder.
+   2. JFA    jump flood to nearest-seed, then distance field.
+   3. RC     cascades, coarse to fine: each probe marches its interval
+             against the SDF, samples emission where it lands, and merges
+             the cascade above for everything farther. c0 is per-pixel.
+   4. OUT    tonemap emission + gathered radiance; DOM text sits on top.
+   Internal buffers run at half resolution, DPR capped — the glow is low
+   frequency, the crisp edge is the DOM's job. */
+
+const CASCADES = 5;          // interval doubles per level
+const BASE_DIRS = 4;         // c0 directions; level i has 4·4^i
+const INTERNAL_SCALE = 0.5;  // GI resolution vs canvas
+const DPR_CAP = 1.5;
+
+const beat = document.getElementById("beat");
+const head = document.getElementById("head");
+const canvas = document.getElementById("gl");
+const gl = canvas.getContext("webgl2", { alpha: false, antialias: false });
+
+if (!gl) {
+  document.querySelector(".cap").textContent = "webgl2 unavailable — static beat";
+} else {
+  main();
+}
+
+function main() {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* float color buffers make the HDR add cheap; EXT_color_buffer_float
+     is universal on WebGL2 hardware */
+  gl.getExtension("EXT_color_buffer_float");
+
+  const quad = gl.createVertexArray();
+  gl.bindVertexArray(quad);
+
+  const VS = `#version 300 es
+  /* the OVERSIZED triangle: (-1,-1) (3,-1) (-1,3). The first cut dropped
+     the *2 and produced the unit triangle — half the screen — so every
+     pass wrote half of every buffer and the other half showed as a hard
+     diagonal of garbage. The debug taps found it in one frame. */
+  void main(){
+    vec2 p = vec2(float((gl_VertexID<<1) & 2), float(gl_VertexID & 2)) * 2. - 1.;
+    gl_Position = vec4(p,0.,1.);
+  }`;
+
+  function prog(fs) {
+    const p = gl.createProgram();
+    const compile = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+        throw new Error(gl.getShaderInfoLog(s) + "\n" + src);
+      gl.attachShader(p, s);
+    };
+    compile(gl.VERTEX_SHADER, VS);
+    compile(gl.FRAGMENT_SHADER, fs);
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS))
+      throw new Error(gl.getProgramInfoLog(p));
+    return p;
+  }
+
+  /* JFA: seed then flood. Stores nearest seed uv in rg, seed alpha in b. */
+  const FS_JFA_SEED = `#version 300 es
+  precision highp float;
+  uniform sampler2D uSrc; uniform vec2 uRes;
+  out vec4 o;
+  void main(){
+    vec2 uv = gl_FragCoord.xy / uRes;
+    float a = texture(uSrc, uv).a;
+    o = a > 0.5 ? vec4(uv, 1., 0.) : vec4(-1., -1., 0., 0.);
+  }`;
+
+  const FS_JFA_STEP = `#version 300 es
+  precision highp float;
+  uniform sampler2D uSrc; uniform vec2 uRes; uniform float uStep;
+  out vec4 o;
+  void main(){
+    vec2 uv = gl_FragCoord.xy / uRes;
+    vec2 px = 1. / uRes;
+    vec4 best = vec4(-1.,-1.,0.,1e9);
+    for (int y=-1; y<=1; y++) for (int x=-1; x<=1; x++){
+      vec4 s = texture(uSrc, uv + vec2(x,y) * px * uStep);
+      if (s.b < 0.5) continue;
+      float d = distance(uv, s.rg);
+      if (d < best.a) best = vec4(s.rg, 1., d);
+    }
+    o = vec4(best.rg, best.b, 0.);
+  }`;
+
+  const FS_DIST = `#version 300 es
+  precision highp float;
+  uniform sampler2D uSrc; uniform vec2 uRes;
+  out vec4 o;
+  void main(){
+    vec2 uv = gl_FragCoord.xy / uRes;
+    vec4 s = texture(uSrc, uv);
+    /* pixel-space distance: uv-space is anisotropic on a non-square
+       field and the march multiplies by one scalar */
+    float d = s.b > 0.5 ? distance(uv * uRes, s.rg * uRes) : 1e5;
+    o = vec4(d, 0., 0., 1.);
+  }`;
+
+  /* One cascade level. Each texel of the level's storage is one probe
+     direction bin: probes sit on a grid 2^i apart, each owning 4·4^i
+     directions packed in blocks. Marches its own [t0,t1) interval
+     against the SDF; on a hit inside the interval it takes the seed's
+     emission, otherwise it inherits the level above (pre-averaged into
+     4 dirs per probe of THIS level's spacing by uUpper sampling). */
+  const FS_CASCADE = `#version 300 es
+  precision highp float;
+  uniform sampler2D uDist;    // r = distance, uv space
+  uniform sampler2D uEmit;    // rgb emission, a occluder
+  uniform sampler2D uUpper;   // cascade i+1 (radiance per dir bin)
+  uniform vec2  uRes;         // this cascade's storage res
+  uniform vec2  uField;       // field res (pixels)
+  uniform float uSpacing;     // probe spacing in field px (2^i)
+  uniform float uDirs;        // directions this level
+  uniform float uT0;          // interval start, field px
+  uniform float uT1;          // interval end
+  uniform float uHasUpper;
+  uniform float uUpperSpacing;
+  uniform float uUpperDirs;
+  out vec4 o;
+
+  uniform vec2 uUpperRes;
+  /* One storage layout, both ends: a level packs probe (px,py) at
+     direction d into texel  probe * dirsAxis + (d % dirsAxis,
+     d / dirsAxis),  dirsAxis = sqrt(dirs). This reads the level above
+     with the SAME formula main() writes this level with — the bug this
+     function had was a second, imagined layout. Bilinear over the four
+     surrounding upper probes, averaging the 4 upper directions that
+     subdivide this direction. */
+  vec3 upperSample(vec2 probePx, float dirF){
+    float upAxis = sqrt(uUpperDirs);
+    vec2 upProbes = ceil(uField / uUpperSpacing);
+    vec2 ug = probePx / uUpperSpacing - 0.5;
+    vec2 base = floor(ug);
+    vec2 f = ug - base;
+    vec3 acc = vec3(0.);
+    for (int k=0; k<4; k++){
+      float ud = dirF * 4. + float(k);
+      vec2 dcell = vec2(mod(ud, upAxis), floor(ud / upAxis));
+      for (int j=0; j<4; j++){
+        vec2 corner = clamp(base + vec2(j&1, j>>1), vec2(0.), upProbes - 1.);
+        float w = ((j&1)==0 ? 1.-f.x : f.x) * ((j>>1)==0 ? 1.-f.y : f.y);
+        vec2 uv = (corner * upAxis + dcell + .5) / uUpperRes;
+        acc += w * texture(uUpper, uv).rgb;
+      }
+    }
+    return acc / 4.;
+  }
+
+  void main(){
+    // layout: storage x = probeX * dirsX + dirX, y = probeY * dirsY + dirY
+    float dirsAxis = sqrt(uDirs);
+    vec2 cell = floor(gl_FragCoord.xy);
+    vec2 probe = floor(cell / dirsAxis);
+    vec2 dir2 = mod(cell, dirsAxis);
+    float dirIdx = dir2.y * dirsAxis + dir2.x;
+    float ang = (dirIdx + .5) / uDirs * 6.2831853;
+    vec2 dirV = vec2(cos(ang), sin(ang));
+    vec2 origin = (probe + .5) * uSpacing;      // field px
+
+    // ray march the interval against the SDF
+    float t = uT0;
+    vec3 rad = vec3(0.);
+    float hit = 0.;
+    for (int i=0; i<24; i++){
+      if (t >= uT1) break;
+      vec2 p = origin + dirV * t;
+      if (p.x < 0. || p.y < 0. || p.x >= uField.x || p.y >= uField.y) break;
+      vec2 uv = p / uField;
+      float d = texture(uDist, uv).r;                 // already px
+      if (d < 1.0){
+        vec4 e = texture(uEmit, uv);
+        rad = e.rgb;
+        hit = 1.;
+        break;
+      }
+      t += max(d * .9, 1.5);
+    }
+    if (hit < .5 && uHasUpper > .5){
+      /* absorption per merge: each hand-off dims what arrives from the
+         level above, so radiance genuinely falls with distance instead
+         of accumulating into a fog. The room reads dark with light
+         POOLED at the words, which is the whole point of the beat. */
+      rad = upperSample(origin, dirIdx) * .72;
+    }
+    o = vec4(rad, 1.);
+  }`;
+
+  /* Gather c0's four directions per pixel probe and tonemap. */
+  const FS_OUT = `#version 300 es
+  precision highp float;
+  uniform sampler2D uC0;
+  uniform vec2 uCanvas;   // output res
+  uniform vec2 uFieldRes; // GI res
+  uniform vec2 uC0Res;    // c0 storage res (field * 2)
+  uniform float uGain;
+  out vec4 o;
+  void main(){
+    /* THE GLOW ONLY. The DOM renders the glyphs; drawing the seed's
+       copy of the text here doubled it and made every registration
+       error visible. The canvas's whole job is what surrounds the
+       letters. */
+    vec2 fieldPx = gl_FragCoord.xy * (uFieldRes / uCanvas);
+    vec2 probe = floor(fieldPx);
+    vec3 gi = vec3(0.);
+    for (int d=0; d<4; d++){
+      vec2 cell = probe * 2. + vec2(d&1, d>>1);
+      gi += texture(uC0, (cell + .5) / uC0Res).rgb;
+    }
+    gi *= .25 * uGain;
+    /* exponential response instead of reinhard: reinhard plateaued the
+       mid-field into one grey sheet. 1-exp keeps the toe dark and lets
+       only the near field approach white. */
+    vec3 col = 1. - exp(-gi * 2.4);
+    col = pow(col, vec3(1.45));          // deepen the falloff
+    col = pow(col, vec3(1./2.2));
+    o = vec4(col, 1.);
+  }`;
+
+  /* ?debug=dist | c0..c4 — draws one intermediate buffer instead of the
+     composite, because staring at a wedge guessing which pass made it
+     is slower than looking at the passes. */
+  const FS_SHOW = `#version 300 es
+  precision highp float;
+  uniform sampler2D uTex; uniform vec2 uCanvas; uniform float uScale;
+  out vec4 o;
+  void main(){
+    vec3 t = texture(uTex, gl_FragCoord.xy / uCanvas).rgb;
+    o = vec4(t * uScale, 1.);
+  }`;
+  const pShow = prog(FS_SHOW);
+  const DEBUG = new URLSearchParams(location.search).get("debug");
+
+  const pJfaSeed = prog(FS_JFA_SEED);
+  const pJfaStep = prog(FS_JFA_STEP);
+  const pDist = prog(FS_DIST);
+  const pCasc = prog(FS_CASCADE);
+  const pOut = prog(FS_OUT);
+
+  const U = (p, n) => gl.getUniformLocation(p, n);
+
+  function makeTex(w, h, internal, filter) {
+    const t = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texStorage2D(gl.TEXTURE_2D, 1, internal, w, h);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return t;
+  }
+  function fbo(tex) {
+    const f = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return f;
+  }
+
+  /* ── sizing + the emitter canvas ── */
+  const seed2d = document.createElement("canvas");
+  const s2 = seed2d.getContext("2d", { willReadFrequently: false });
+
+  let W = 0, H = 0, fieldW = 0, fieldH = 0;
+  let texEmit, fboEmit, jfaA, jfaB, fboA, fboB, texDist, fboDist;
+  let cascTex = [], cascFbo = [], cascRes = [];
+  let pointer = { x: -1, y: -1, on: false };
+  let intensity = 0;          // scroll-driven breathe
+  let dirty = true;
+
+  function layout() {
+    const dpr = Math.min(devicePixelRatio || 1, DPR_CAP);
+    const r = beat.getBoundingClientRect();
+    W = Math.round(r.width * dpr);
+    H = Math.round(r.height * dpr);
+    canvas.width = W; canvas.height = H;
+    fieldW = Math.max(2, Math.round(W * INTERNAL_SCALE));
+    fieldH = Math.max(2, Math.round(H * INTERNAL_SCALE));
+    seed2d.width = fieldW; seed2d.height = fieldH;
+
+    texEmit = makeTex(fieldW, fieldH, gl.RGBA16F, gl.LINEAR); fboEmit = fbo(texEmit);
+    jfaA = makeTex(fieldW, fieldH, gl.RGBA16F, gl.NEAREST); fboA = fbo(jfaA);
+    jfaB = makeTex(fieldW, fieldH, gl.RGBA16F, gl.NEAREST); fboB = fbo(jfaB);
+    texDist = makeTex(fieldW, fieldH, gl.R16F, gl.LINEAR); fboDist = fbo(texDist);
+
+    cascTex = []; cascFbo = []; cascRes = [];
+    for (let i = 0; i < CASCADES; i++) {
+      const spacing = Math.pow(2, i);
+      const dirsAxis = Math.pow(2, i + 1); // sqrt(4·4^i)
+      const rw = Math.ceil(fieldW / spacing) * dirsAxis;
+      const rh = Math.ceil(fieldH / spacing) * dirsAxis;
+      cascTex[i] = makeTex(rw, rh, gl.RGBA16F, gl.LINEAR);
+      cascFbo[i] = fbo(cascTex[i]);
+      cascRes[i] = [rw, rh];
+    }
+    dirty = true;
+  }
+
+  function drawSeed() {
+    /* the same string the DOM shows, same face, centered the same way */
+    s2.clearRect(0, 0, fieldW, fieldH);
+    const cs = getComputedStyle(head);
+    const size = parseFloat(cs.fontSize) * INTERNAL_SCALE *
+      Math.min(devicePixelRatio || 1, DPR_CAP);
+    s2.font = `700 ${size}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+    /* the DOM tracks at -0.02em and the canvas defaulted to 0, so the
+       two copies broke lines differently and the glow spelled out a
+       ghost of the mismatch. Chrome's canvas has letterSpacing; where
+       it is missing the blur below still hides the drift. */
+    s2.letterSpacing = `${(-0.02 * size).toFixed(2)}px`;
+    /* the lamp is LIGHT, not type: a couple of pixels of blur keeps the
+       word rhythm as emitter shapes without the halo re-tracing glyph
+       edges — the crisp letterforms are the DOM's job */
+    s2.filter = "blur(2.5px)";
+    s2.textAlign = "center";
+    s2.textBaseline = "middle";
+    const lh = size * 1.04;
+    /* naive re-wrap to the DOM's measure — the glow forgives the odd
+       one-word disagreement; the crisp copy on top is the DOM's */
+    const maxW = head.getBoundingClientRect().width * INTERNAL_SCALE *
+      Math.min(devicePixelRatio || 1, DPR_CAP) - size * .5;
+    const words = head.textContent.split(/\s+/);
+    const lines = [];
+    let line = "";
+    for (const w of words) {
+      const test = line ? line + " " + w : w;
+      if (s2.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    const cx = fieldW / 2, cy = fieldH / 2 - (lines.length - 1) * lh / 2;
+    const glow = 0.16 + 0.34 * intensity;
+    s2.fillStyle = `rgba(255,255,255,1)`;
+    lines.forEach((l, i) => s2.fillText(l, cx, cy + i * lh));
+
+    /* pointer lamp: a small extra emitter, desktop only */
+    if (pointer.on) {
+      const g = s2.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 14);
+      g.addColorStop(0, "rgba(255,244,224,1)");
+      g.addColorStop(1, "rgba(255,244,224,0)");
+      s2.fillStyle = g;
+      s2.beginPath(); s2.arc(pointer.x, pointer.y, 14, 0, 7); s2.fill();
+    }
+
+    gl.bindTexture(gl.TEXTURE_2D, texEmit);
+    /* the 2D canvas is top-left origin, GL is bottom-left — without the
+       flip the lamp is an upside-down ghost of the type */
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, seed2d);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    return glow;
+  }
+
+  function pass(program, target, w, h, bind) {
+    gl.useProgram(program);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target);
+    gl.viewport(0, 0, w, h);
+    bind();
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  const bindTex = (unit, tex, loc) => {
+    gl.activeTexture(gl.TEXTURE0 + unit);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.uniform1i(loc, unit);
+  };
+
+  function frame() {
+    const glow = drawSeed();
+
+    // JFA seed + flood
+    pass(pJfaSeed, fboA, fieldW, fieldH, () => {
+      bindTex(0, texEmit, U(pJfaSeed, "uSrc"));
+      gl.uniform2f(U(pJfaSeed, "uRes"), fieldW, fieldH);
+    });
+    let src = jfaA, srcF = fboA, dst = jfaB, dstF = fboB;
+    for (let step = Math.pow(2, Math.ceil(Math.log2(Math.max(fieldW, fieldH)))); step >= 1; step = Math.floor(step / 2)) {
+      pass(pJfaStep, dstF, fieldW, fieldH, () => {
+        bindTex(0, src, U(pJfaStep, "uSrc"));
+        gl.uniform2f(U(pJfaStep, "uRes"), fieldW, fieldH);
+        gl.uniform1f(U(pJfaStep, "uStep"), step);
+      });
+      [src, srcF, dst, dstF] = [dst, dstF, src, srcF];
+      if (step === 1) break;
+    }
+    pass(pDist, fboDist, fieldW, fieldH, () => {
+      bindTex(0, src, U(pDist, "uSrc"));
+      gl.uniform2f(U(pDist, "uRes"), fieldW, fieldH);
+    });
+
+    // cascades, top down
+    const diag = Math.hypot(fieldW, fieldH);
+    for (let i = CASCADES - 1; i >= 0; i--) {
+      const spacing = Math.pow(2, i);
+      const dirs = 4 * Math.pow(4, i);
+      const t0 = i === 0 ? 3 : diag * Math.pow(4, i - 1) / Math.pow(4, CASCADES - 1) * 0.25;
+      const t1 = diag * Math.pow(4, i) / Math.pow(4, CASCADES - 1) * 0.25 + spacing * 2.;
+      pass(pCasc, cascFbo[i], cascRes[i][0], cascRes[i][1], () => {
+        bindTex(0, texDist, U(pCasc, "uDist"));
+        bindTex(1, texEmit, U(pCasc, "uEmit"));
+        bindTex(2, cascTex[Math.min(i + 1, CASCADES - 1)], U(pCasc, "uUpper"));
+        gl.uniform2f(U(pCasc, "uRes"), cascRes[i][0], cascRes[i][1]);
+        gl.uniform2f(U(pCasc, "uField"), fieldW, fieldH);
+        gl.uniform1f(U(pCasc, "uSpacing"), spacing);
+        gl.uniform1f(U(pCasc, "uDirs"), dirs);
+        gl.uniform1f(U(pCasc, "uT0"), t0);
+        gl.uniform1f(U(pCasc, "uT1"), t1);
+        gl.uniform1f(U(pCasc, "uHasUpper"), i < CASCADES - 1 ? 1 : 0);
+        gl.uniform1f(U(pCasc, "uUpperSpacing"), Math.pow(2, i + 1));
+        gl.uniform1f(U(pCasc, "uUpperDirs"), 4 * Math.pow(4, i + 1));
+        const up = Math.min(i + 1, CASCADES - 1);
+        gl.uniform2f(U(pCasc, "uUpperRes"), cascRes[up][0], cascRes[up][1]);
+      });
+    }
+
+    if (DEBUG) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, W, H);
+      gl.useProgram(pShow);
+      const pick = DEBUG === "dist" ? texDist
+        : DEBUG === "emit" ? texEmit
+        : cascTex[Math.min(parseInt(DEBUG.slice(1) || "0", 10), CASCADES - 1)];
+      bindTex(0, pick, U(pShow, "uTex"));
+      gl.uniform2f(U(pShow, "uCanvas"), W, H);
+      gl.uniform1f(U(pShow, "uScale"), DEBUG === "dist" ? 0.004 : 1);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      return;
+    }
+
+    // out
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, W, H);
+    gl.useProgram(pOut);
+    bindTex(0, cascTex[0], U(pOut, "uC0"));
+    bindTex(1, texEmit, U(pOut, "uEmit"));
+    gl.uniform2f(U(pOut, "uCanvas"), W, H);
+    gl.uniform2f(U(pOut, "uFieldRes"), fieldW, fieldH);
+    gl.uniform2f(U(pOut, "uC0Res"), cascRes[0][0], cascRes[0][1]);
+    gl.uniform1f(U(pOut, "uGain"), glow);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  /* ── liveness: draw only in view, breathe with scroll ── */
+  let inView = false, raf = 0;
+  const io = new IntersectionObserver((es) => {
+    inView = es[0].isIntersecting;
+    if (inView) tick();
+  }, { threshold: 0.05 });
+  io.observe(beat);
+
+  function tick() {
+    cancelAnimationFrame(raf);
+    if (!inView) return;
+    const r = beat.getBoundingClientRect();
+    /* brightest when the beat's centre crosses the screen's centre */
+    const c = (r.top + r.height / 2 - innerHeight / 2) / (innerHeight * .9);
+    intensity = Math.max(0, 1 - Math.abs(c));
+    if (reduce.matches) { frame(); return; }   // one static frame
+    frame();
+    raf = requestAnimationFrame(tick);
+  }
+
+  addEventListener("scroll", () => inView && !raf && tick(), { passive: true });
+  addEventListener("resize", () => { layout(); tick(); });
+  beat.addEventListener("pointermove", (e) => {
+    if (matchMedia("(hover: hover)").matches) {
+      const r = beat.getBoundingClientRect();
+      pointer.x = (e.clientX - r.left) * INTERNAL_SCALE * Math.min(devicePixelRatio || 1, DPR_CAP);
+      pointer.y = (e.clientY - r.top) * INTERNAL_SCALE * Math.min(devicePixelRatio || 1, DPR_CAP);
+      pointer.on = true;
+    }
+  });
+  beat.addEventListener("pointerleave", () => { pointer.on = false; });
+
+  layout();
+  tick();
+}
+</script>
+</html>
