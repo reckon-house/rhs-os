@@ -4908,13 +4908,19 @@ function buildAnswer() {
   holdAsk(typeOn, 180);
 
   /* the cards do not wait for the sentence: they arrive while it is
-     being said. One class each, on the row cascade, and the frame's
-     own curtain does the rest — the same one the magazine opens with
-     on a cold load. */
-  const STAG = 55;
-  els.forEach((el, k) => {
-    holdAsk(() => el.classList.add("fd-on"), 300 + k * STAG);
-  });
+     being said. THE MAGAZINE'S OWN OBSERVER arms them, not a timer, and
+     the difference is where the page might be running. An embedded or
+     prerendering browser (the in-app Chat pane does this) runs timers
+     while the page is still invisible, so a timer-armed curtain has
+     finished before anyone sees it — which is exactly how the homepage
+     kept its arrival in those browsers while the answers lost theirs:
+     IntersectionObserver callbacks are DEFERRED until a prerendered
+     page is actually shown. One mechanism for both surfaces now; the
+     row cascade survives because --lag carries the stagger as a
+     transition-delay, which was always its job. And a card dealt below
+     the fold now opens when it is scrolled to, the same as the
+     magazine, instead of silently opening off screen. */
+  observeArrivals(els);
 }
 
 /* The deal is still here — ?deal=7 reshuffles the work order and the
