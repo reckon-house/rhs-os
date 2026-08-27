@@ -157,6 +157,23 @@ export function RisingPlate({
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let lastKey = "";
 
+    /* The MORPH's corner opens at the system's own plate radius, not the
+       climb's. RADIUS = 44 is the prototype's number for a plate that is
+       1200-1500px wide on a desktop; on a 390px phone plate the same 44
+       reads nearly four times as round and the clip band came out
+       stadium-shaped. Every resting plate on the page wears --pp-r
+       (16px at every width), so the morph starts there and squares from
+       there. Read from the cascade so a token change follows; the
+       fallback is the token's value, not the climb's. */
+    let morphR = 16;
+    const readR = () => {
+      const v = parseFloat(
+        getComputedStyle(sec).getPropertyValue("--pp-r")
+      );
+      if (Number.isFinite(v) && v > 0) morphR = v;
+    };
+    readR();
+
     const clear = () => {
       lastKey = "";
       img.style.transform = "";
@@ -222,7 +239,7 @@ export function RisingPlate({
         const sEnd = Math.max(T / H0, 1);
         const scl = REST + (sEnd - REST) * p;
         const insetY = Math.max(0, (T - H0 * scl) / 2);
-        const r = Math.round(RADIUS * (1 - p));
+        const r = Math.round(morphR * (1 - p));
         const key = `m${p.toFixed(4)}|${T}`;
         if (key === lastKey) return;
         lastKey = key;

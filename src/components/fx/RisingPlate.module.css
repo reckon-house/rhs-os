@@ -35,12 +35,13 @@
        keeps a very wide file from morphing taller than the screen can
        frame. */
     height: min(calc(100vw / var(--tall-ar)), 62dvh);
-    /* Before the driver's first tick: the whole image, wide, rounded —
-       exactly the desktop rest state, centred in the tall box. The
-       plate enters from below the fold, so this state is never seen;
-       it exists so a dropped script degrades to a centred picture
-       rather than a broken one. */
-    clip-path: inset(0 0 round 44px);
+    /* Before the driver's first tick: the whole image, wide, rounded at
+       the system's plate radius (--pp-r, not the climb's desktop 44 —
+       at 390px wide, 44 reads stadium-shaped). The plate enters from
+       below the fold, so this state is never seen; it exists so a
+       dropped script degrades to a centred picture rather than a
+       broken one. */
+    clip-path: inset(0 0 round var(--pp-r, 16px));
   }
   .riser[data-tallmorph] .clip > img {
     position: absolute;

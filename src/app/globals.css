@@ -657,7 +657,7 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
      pin instead of playing over a held screen, and the crossing the
      whole gesture exists for happened during the handover, invisible.
      One value, both homes, every width. */
-  --pp-rise: min(96dvh, 170vw);
+  --pp-rise: 96dvh;
   --pp-plate-hold: 13dvh;
 
   /* The masthead's height — the ONE copy. The bar itself sizes from it and

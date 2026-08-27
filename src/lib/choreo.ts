@@ -70,19 +70,26 @@
  * disagree, and the page loses the scroll it was spending on a picture
  * that had already gone by.
  */
-/* 170vw, was 90vw — the one re-derivation in the phone retune, and the
- * measurement that produced 90vw is the thing that changed. 90vw was
- * sized against plates that were `width / ratio` tall on a phone: 0.23
- * to 0.44 screens, so a longer climb just floated a small picture over
- * empty air. The tall morph (RisingPlate.module.css) makes a wide
- * phone plate up to 62dvh tall — the plate is viewport-scaled again,
- * and 170vw at 390x844 is a 663px climb ≈ 1.3x the morphed plate's
- * height, which is the same coverage ratio the 96dvh arm gives a
- * desktop plate. The arm still only ever binds on portrait glass:
- * 170vw crosses 96dvh at an aspect of ~0.56, so every landscape and
- * tablet screen keeps 96dvh exactly and the desktop tuning does not
- * move. */
-export const RISE = "min(96dvh, 170vw)";
+/* 96dvh flat — the width arm is GONE, and that is a restoration, not a
+ * third tuning. The arm existed because a phone plate was content-scaled
+ * (width / ratio ≈ 0.23-0.44 screens tall) and a near-viewport climb
+ * floated a small picture over empty air; 90vw, then 170vw, were both
+ * attempts to size the climb to that small plate. The tall morph
+ * (RisingPlate.module.css) removed the premise: a wide phone plate is
+ * now up to 62dvh tall, viewport-scaled like the desktop's.
+ *
+ * And the near-viewport climb turned out to be load-bearing for the
+ * crossing itself, because of pin drift: the held cover creeps UP at 8%
+ * of scroll speed (pin-drift.ts), which on the phone's ~1740px pin
+ * lifts the landed statement ~139px by the end of the climb. A 663px
+ * (170vw) climb ended with the plate's top at 181px — 120px SHORT of
+ * copy that had drifted up to ~47px. 96dvh ends it at ~34px, past the
+ * drifted copy, so the plate actually covers what it crosses, which is
+ * the whole gesture. Verified at 390x844 and 320x568.
+ *
+ * Still under the shortest pinned stretch (910px in the prototype) at
+ * every real phone height. */
+export const RISE = "96dvh";
 
 /** The beat of held, fully-visible content before a plate starts to climb. */
 export const PLATE_HOLD = "13dvh";
