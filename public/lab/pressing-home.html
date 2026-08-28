@@ -1021,9 +1021,6 @@
      own tiles, the cover reel's signature at rail scale. */
   .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
     border-radius: 10px; overflow: hidden; }
-  .ixnotes .rdrawer .rnumcap { font-size: var(--lbl);
-    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
-    text-transform: uppercase; opacity: 0.6; margin-top: 10px; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
     opacity: 0.75; margin-top: 12px; max-width: 24ch; }
 
@@ -4417,16 +4414,12 @@ function buildMagazine() {
     const works = worksFor(fq);
     const box = document.createElement("div");
     box.className = "rreel sz-stage";
-    const nc = document.createElement("div");
-    nc.className = "rnumcap";
-    nc.textContent = works.length + " Projects";
     const d = document.createElement("div");
     d.className = "rdesc";
     d.textContent = desc;
     pad.appendChild(box);
-    pad.appendChild(nc);
     pad.appendChild(d);
-    const rl = { row: r, box, cap: nc, fq, timer: null,
+    const rl = { row: r, box, fq, timer: null,
       frames: works.map((ci) => cards[ci].img) };
     szStage(rl);
     reels.push(rl);
@@ -4461,7 +4454,6 @@ function buildMagazine() {
   function refreshReels() {
     reels.forEach((rl) => {
       const works = worksFor(rl.fq);
-      rl.cap.textContent = works.length + " Projects";
       const srcs = works.map((ci) => cards[ci].img);
       if (srcs.join("|") === rl.frames.join("|")) return;
       rl.frames = srcs;
