@@ -971,6 +971,66 @@
     font: inherit; font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
 
+  /* ── THE RAIL AS AN INDEX (lab: rail-variants.html, variant L) ────
+     Rows, drawers and counts in place of the stacked blocks. The
+     hairline, the curve and the 90ms text lag are the daybook
+     ledger's own values, so the rail and the ledger move as one
+     language. Rows bleed 12px past the column so the ink band reads
+     as a band while the closed labels hold the column's left edge. */
+  .ixnotes .rdrawer .rrow { margin: 0 -12px; padding: 0 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-top-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14); }
+  .ixnotes .rdrawer .rrow.open { background: var(--ink); color: #fff;
+    border-top-color: var(--ink); }
+  .ixnotes .rdrawer .rhead { display: flex; align-items: center; gap: 10px;
+    width: 100%; text-align: left; background: none; border: 0;
+    padding: 11px 0; margin: 0; cursor: pointer; font: inherit;
+    font-size: var(--note); line-height: 1.45; color: inherit; }
+  .ixnotes .rdrawer .rhead:focus-visible {
+    outline: 1px solid currentColor; outline-offset: 3px; }
+  .ixnotes .rdrawer .rglyph { font-size: 8px; line-height: 1; width: 10px;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open .rglyph { transform: scale(1.55); }
+  .ixnotes .rdrawer .rbody { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open .rbody { grid-template-rows: 1fr; }
+  .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
+  /* the drawer's type is on its own clock: 90ms behind the structure
+     on the way in, gone at once on the way out (the .dbpre pattern) */
+  .ixnotes .rdrawer .rpad { padding: 3px 0 16px;
+    opacity: 0; transform: translateY(10px); transition: none; }
+  .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
+  .ixnotes .rdrawer .rsub { font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    text-transform: uppercase; opacity: 0.6; margin: 12px 0 5px; }
+  .ixnotes .rdrawer .rsub:first-child { margin-top: 0; }
+  .ixnotes .rdrawer .rtxt { font-size: var(--note); line-height: 1.5; }
+  .ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
+    color: inherit; font-size: var(--note);
+    text-decoration: underline; text-underline-offset: 3px; }
+  .ixnotes .rdrawer .rgap { height: 18px; }
+  .ixnotes .rdrawer .rcat { display: grid;
+    grid-template-columns: auto 1fr; column-gap: 14px; align-items: end; }
+  .ixnotes .rdrawer .rnum { font-size: 40px; font-weight: 200;
+    line-height: 0.9; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; }
+  .ixnotes .rdrawer .rnumcap { font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    text-transform: uppercase; opacity: 0.6; margin-top: 5px; }
+  .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
+    opacity: 0.75; align-self: end; }
+  @media (prefers-reduced-motion: reduce) {
+    .ixnotes .rdrawer .rrow, .ixnotes .rdrawer .rbody,
+    .ixnotes .rdrawer .rglyph, .ixnotes .rdrawer .rpad {
+      transition: none; }
+  }
+
   /* the row: notes column left empty (the notes float over it), then
      two frames, each hung from the top and pushed to the right of its
      half — the two right edges are the only vertical lines the eye
@@ -2178,11 +2238,15 @@ const NOTES = [
    query, not a separate route: clicking types it into the house and
    the same machinery answers. The labels are the visitor's words, the
    queries are the studies'. */
+/* Third and fourth elements are the drawer's furniture: a small
+   geometric mark for the closed row (Swiss basic forms — the site has
+   no icon language and four rows is not a reason to invent one) and
+   the one-liner shown beside the count when the row opens. */
 const FILTERS = [
-  ["Digital Experiences", "digital"],
-  ["App Development", "app development"],
-  ["Campaign/Creative", "campaign"],
-  ["Interiors", "interiors"],
+  ["Digital Experiences", "digital", "\u25CF", "Sites, stores and platforms, designed and shipped."],
+  ["App Development", "app development", "\u25A0", "Native tools and AI products, built end to end."],
+  ["Campaign/Creative", "campaign", "\u25B2", "Art direction and campaigns for retail's big names."],
+  ["Interiors", "interiors", "\u25C6", "Rooms designed like products, down to the hardware."],
 ];
 
 /* The practice statement's own nouns, wired to the field. The words a
@@ -4053,53 +4117,165 @@ function buildMagazine() {
 
   const notesEl = document.getElementById("ixNotes");
   notesEl.innerHTML = "";
-  /* Every block carries its seat and the column is ordered once, at the
-     end, so notes and the filter interleave by the same rule. */
-  const rail = noteIdx.map((ci) => {
-    const blk = document.createElement("div");
-    blk.className = "blk";
-    /* NO LABEL. The rail's eyebrows named what each block obviously
-       was: "What I do" over a list of what he does, "Get in touch"
-       over an address. The word survives as the block's key and its
-       seat, which is what it was actually doing. */
-    blk.appendChild(document.createTextNode(cards[ci].full));
-    /* A NOTE MAY CARRY ONE WAY THROUGH. Its own line under the text
-       rather than inline: the blocks in this column are statements, and
-       a link buried in the middle of one reads as a footnote instead of
-       as a door. */
-    const link = cards[ci].link;
-    if (link) {
-      const a = document.createElement("a");
-      a.className = "blkgo";
-      a.href = link[1];
-      a.textContent = link[0];
-      blk.appendChild(a);
-    }
-    /* same key noteCard writes, so a note the brain surfaces can
-       travel out of this column */
-    blk.dataset.key = "note:" + (cards[ci].word || "");
-    return { at: seat(cards[ci].word), el: blk };
-  });
+  /* ── THE RAIL AS AN INDEX ─────────────────────────────────────────
+     Variant L from lab/rail-variants.html, in place of the five
+     stacked blocks: nothing in the column but rows. Info and Contact
+     open as drawers holding what the blocks used to say; the four
+     categories follow after a breath, each flooding to ink on hover
+     with its count and one-liner inside. Hover previews (mouse only),
+     the click still answers — a category tap on touch filters
+     directly, exactly what the old buttons did.
 
-  /* the filter rides the same pinned column, so it stays in reach for
-     the whole scroll instead of living at one altitude. Its seat comes
-     from RAIL like everything else here. */
-  const filt = document.createElement("div");
-  filt.className = "blk filt";
-  FILTERS.forEach(([label, fq]) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = label;
-    b.addEventListener("click", () => {
+     The counts come from the SAME machinery that answers the click —
+     think() first, the matcher underneath — so the numeral a row
+     shows and the shelf the click deals can never disagree. */
+  const railEl = document.createElement("div");
+  railEl.className = "blk rdrawer";
+  const rrows = [];
+  const openOnly = (r) =>
+    rrows.forEach((o) => o.classList.toggle("open", o === r));
+  const closeRows = () => rrows.forEach((o) => o.classList.remove("open"));
+  const mkRow = (label, glyph) => {
+    const r = document.createElement("div");
+    r.className = "rrow";
+    const h = document.createElement("button");
+    h.type = "button";
+    h.className = "rhead";
+    if (glyph) {
+      const g = document.createElement("span");
+      g.className = "rglyph";
+      g.textContent = glyph;
+      h.appendChild(g);
+    }
+    h.appendChild(document.createTextNode(label));
+    const b = document.createElement("div");
+    const inner = document.createElement("div");
+    const pad = document.createElement("div");
+    b.className = "rbody";
+    pad.className = "rpad";
+    inner.appendChild(pad);
+    b.appendChild(inner);
+    r.appendChild(h);
+    r.appendChild(b);
+    r.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse") openOnly(r);
+    });
+    rrows.push(r);
+    railEl.appendChild(r);
+    return { r, h, pad };
+  };
+  const sub = (pad, cap, text, key) => {
+    if (cap) {
+      const c = document.createElement("div");
+      c.className = "rsub";
+      c.textContent = cap;
+      pad.appendChild(c);
+    }
+    const t = document.createElement("div");
+    t.className = "rtxt";
+    t.textContent = text;
+    /* same key noteCard writes, so a note the brain surfaces can
+       still travel out of this column */
+    if (key) t.dataset.key = "note:" + key;
+    pad.appendChild(t);
+    return t;
+  };
+  const note = (re) => {
+    const i = allNotes.find((ci) => re.test(cards[ci].word || ""));
+    return i === undefined ? null : cards[i];
+  };
+
+  /* Info: About (the two practice notes, one thought again) and News */
+  {
+    const { r, h, pad } = mkRow("Info");
+    const about = [note(/what i do/i), note(/setup/i)].filter(Boolean);
+    if (about.length)
+      sub(pad, "About", about.map((c) => c.full).join(" "), about[0].word);
+    const news = note(/recently/i);
+    if (news) sub(pad, "News", news.full, news.word);
+    h.addEventListener("click", () =>
+      r.classList.contains("open") ? closeRows() : openOnly(r));
+  }
+
+  /* Contact: the address and the one committing link */
+  {
+    const { r, h, pad } = mkRow("Contact");
+    const touch = note(/touch/i);
+    if (touch) {
+      sub(pad, null, touch.full, touch.word);
+      if (touch.link) {
+        const a = document.createElement("a");
+        a.className = "rgo";
+        a.href = touch.link[1];
+        a.textContent = touch.link[0];
+        pad.appendChild(a);
+      }
+    }
+    h.addEventListener("click", () =>
+      r.classList.contains("open") ? closeRows() : openOnly(r));
+  }
+
+  /* the breath between the utility rows and the categories */
+  const rgap = document.createElement("div");
+  rgap.className = "rgap";
+  railEl.appendChild(rgap);
+
+  const countFor = (fq) => {
+    try {
+      const plan = think(fq);
+      const idx = plan ? plan.workIdx : ((analyse(fq) || { idx: [] }).idx || []);
+      return idx.filter((ci) => cards[ci].kind === "work").length;
+    } catch (e) { return 0; }
+  };
+  FILTERS.forEach(([label, fq, glyph, desc]) => {
+    const { r, h, pad } = mkRow(label, glyph);
+    pad.classList.add("rcat");
+    const left = document.createElement("div");
+    const n = document.createElement("div");
+    n.className = "rnum";
+    n.textContent = countFor(fq);
+    n.dataset.fq = fq;
+    const nc = document.createElement("div");
+    nc.className = "rnumcap";
+    nc.textContent = "Projects";
+    left.appendChild(n);
+    left.appendChild(nc);
+    const d = document.createElement("div");
+    d.className = "rdesc";
+    d.textContent = desc;
+    pad.appendChild(left);
+    pad.appendChild(d);
+    /* A CATEGORY HOVER IS INTENT, the same way focus on the field is:
+       whoever previews a shelf is one click from needing the index.
+       So the hover requests the facts, and the numerals recount when
+       they land — see setCounts below. */
+    r.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse") wantFacts().then(setCounts);
+    });
+    /* the old filter button's click, verbatim */
+    h.addEventListener("click", () => {
       const el = document.getElementById("query");
       if (el) el.value = label;
       askSource = "chip";   /* navigation: the template answers */
       onQuery(fq, true);
     });
-    filt.appendChild(b);
   });
-  rail.push({ at: seat("Filter"), el: filt });
-  rail.sort((a, b) => a.at - b.at);
+  /* THE NUMERAL TRACKS THE TRUTH AVAILABLE. At build the counts are
+     the matcher's, because the 655KB facts index is deferred and four
+     numerals are no reason to fetch it. When the index does arrive —
+     rail hover, field focus, deep link — the numerals recount through
+     think(), so what a row shows and what its click deals agree at
+     every moment: matcher truth before, facts truth after. Without
+     this the rail said 3 where the click dealt 10. */
+  function setCounts() {
+    railEl.querySelectorAll(".rnum").forEach((n) => {
+      n.textContent = countFor(n.dataset.fq);
+    });
+  }
+  if (factsWanted) factsWanted.then(setCounts);
+  railEl.addEventListener("pointerleave", closeRows);
+
+  const rail = [{ at: 0, el: railEl }];
 
   /* ── THE RAIL FOLDS ON A PHONE ────────────────────────────────────
      Five blocks stacked ahead of the first picture is 800px of reading
