@@ -2578,6 +2578,18 @@ function buildAnswer() {
      navigation and never come here. */
   let modelSay = null;
   let lineDone = false;
+  /* HOLD FOR THE MODEL. When a typed question is on its way to Claude,
+     the matcher's instant line no longer types first — a finished
+     sentence being torn up and rewritten read as the site changing its
+     mind. The working state holds the floor instead, and the first
+     answer anyone sees is the one that was actually written for them.
+     The matcher is demoted to what it should have been on this path:
+     the fallback, typed only if the model errors or dawdles past
+     HOLD_FOR_MODEL. Filter chips and template answers never involve
+     the model and keep their instant line. */
+  let askingModel = false;
+  let typingStarted = false;
+  const HOLD_FOR_MODEL = 8000;
   const typeModel = () => {
     const t = modelSay;
     if (!t) return;
@@ -2591,6 +2603,11 @@ function buildAnswer() {
       renderToned(sayEl, segs2, j);
       if (j < t.length) { holdAsk(on, step2); return; }
       sayEl.classList.remove("typing");
+      /* the matcher's completion used to be the only path that ran
+         these; under the hold the model's line can be the FIRST line,
+         so its completion carries them too */
+      linkMail();
+      showCompose();
       notesEl.classList.add("on");
       holdAsk(() => document.body.classList.remove("working"), 200);
     };
@@ -2637,6 +2654,7 @@ function buildAnswer() {
     if (askAbort) askAbort.abort();
     const ac = new AbortController();
     askAbort = ac;
+    askingModel = true;
     const gen = askGen;
     fetch("/api/ask", {
       method: "POST",
@@ -2693,7 +2711,12 @@ function buildAnswer() {
           wk.appendChild(dq);
         }
         if (still) { renderToned(sayEl, [{ t: modelSay, q: false }]); modelSay = null; return; }
-        if (lineDone) typeModel();
+        /* lineDone: the old handoff, matcher finished first. !typingStarted:
+           the hold — nothing has typed yet, the floor is the model's.
+           Mid-typing needs neither: typeOn's own tick sees modelSay and
+           hands over, and calling typeModel here as well would null
+           modelSay and let the matcher line resume underneath it. */
+        if (lineDone || !typingStarted) typeModel();
       })
       .catch(() => {});
   }
@@ -2827,6 +2850,7 @@ function buildAnswer() {
     /* the model's line took over between ticks: hand the clock to it
        mid-sentence rather than finishing a line about to be replaced */
     if (modelSay) { typeModel(); return; }
+    typingStarted = true;
     i += 1;
     renderToned(sayEl, segs, i);
     if (i < say.length) holdAsk(typeOn, step);
@@ -2839,7 +2863,15 @@ function buildAnswer() {
       holdAsk(() => document.body.classList.remove("working"), 200);
     }
   };
-  holdAsk(typeOn, 180);
+  /* The 180ms clock is the instant paths' — chips, templates, anything
+     the model never sees. A typed question that reached Claude holds
+     instead: the same typeOn fires only as the FALLBACK, so a model
+     that errors or stalls past the hold still gets answered by the
+     matcher, and its first tick hands over anyway if the model landed
+     while the timer ran. Locally, with no API key, /api/ask fails fast
+     and this fallback is the whole path — which makes the failure mode
+     testable on every dev machine. */
+  holdAsk(typeOn, askingModel ? HOLD_FOR_MODEL : 180);
 
   /* the cards do not wait for the sentence: they arrive while it is
      being said. THE MAGAZINE'S OWN OBSERVER arms them, not a timer, and
