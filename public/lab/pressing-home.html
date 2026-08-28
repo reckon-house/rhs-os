@@ -5746,8 +5746,17 @@ let tourFull = "";                     /* what placeAsk should size to */
      window: <main> owns the scroll here, so rect.top alone is only
      true at the top of the page. */
   const pinRails = () => {
-    const scroller = document.querySelector("main");
-    const off = scroller ? scroller.scrollTop : 0;
+    /* THE SCROLLER DEPENDS ON WHO IS RENDERING THIS FILE. In the app
+       Lenis owns <main> and its scrollTop is the truth; on this page
+       <main> is the shell's element and does not exist, and the
+       DOCUMENT scrolls. Falling through to 0 here was the rail
+       blinking away: any section resize while scrolled — a frame
+       hover's drop, the rail's own drawer opening — re-ran this
+       measure, rect.top came back viewport-relative, and the pin was
+       written 600px above the glass. */
+    const scroller = document.querySelector("main") ||
+      document.scrollingElement || document.documentElement;
+    const off = scroller.scrollTop;
     document.querySelectorAll(".ixnotes").forEach((el) => {
       if (!el.offsetParent) return;             // hidden state, nothing to measure
       const was = el.style.position;
