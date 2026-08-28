@@ -4315,6 +4315,13 @@ function buildMagazine() {
     const im = document.createElement("img");
     im.className = cls;
     im.src = src;
+    /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
+       lab's stub here and the optimizer's ladder in the app, so this
+       line costs nothing on this page and saves megabytes on the real
+       one — the browser picks a ~384px candidate for a 128px box at
+       DPR 3 instead of the original file. */
+    const ss = tileSrcSet(src);
+    if (ss) { im.srcset = ss; im.sizes = "128px"; }
     im.alt = "";
     im.decoding = "async";
     return im;
@@ -4388,6 +4395,7 @@ function buildMagazine() {
     document.__railReels.forEach((rl) => {
       clearTimeout(rl.timer);
       if (rl.mo) rl.mo.disconnect();
+      if (rl.unscrub) rl.unscrub();
     });
   }
   const reels = [];
@@ -4481,9 +4489,17 @@ function buildMagazine() {
       rl.at = at >= 0 ? at : 0;
       if (rl.row.classList.contains("open")) szStart(rl);
     };
-    /* on window, so a drag released off the stamp still ends */
+    /* on window, so a drag released off the stamp still ends — and
+       remembered on the reel, so the retire pass below can REMOVE
+       them: buildMagazine reruns on resize, and window listeners
+       added per build with no teardown are the same slow leak the
+       reel timers had. */
     addEventListener("pointerup", up);
     addEventListener("pointercancel", up);
+    rl.unscrub = () => {
+      removeEventListener("pointerup", up);
+      removeEventListener("pointercancel", up);
+    };
     rl.box.addEventListener("touchmove", (e) => {
       if (g.on) e.preventDefault();
     }, { passive: false });
@@ -6403,11 +6419,20 @@ function armRows(rowsEl) {
   if (typeof matchMedia !== "function") return;
   const TRIGGER = 78;              /* px of pull that commits */
   const MAX = 132;                 /* the rubber band's ceiling */
-  const el = document.createElement("div");
-  el.id = "pullask";
-  el.innerHTML = '<div class="pa-in"></div>';
+  /* REUSED, NOT REBUILT. In the app this module re-runs every time the
+     homepage mounts; a second #pullask on the body would stack. The
+     listeners below go through listen() for the same reason — raw
+     window listeners outlive the route here, and a pull at the top of
+     a case study was otherwise going to offer a question to a page
+     that cannot answer it. */
+  const el = document.getElementById("pullask") || (() => {
+    const d = document.createElement("div");
+    d.id = "pullask";
+    d.innerHTML = '<div class="pa-in"></div>';
+    document.body.appendChild(d);
+    return d;
+  })();
   const label = el.firstChild;
-  document.body.appendChild(el);
 
   let k = 0;                       /* which tour question is next */
   let y0 = 0, pulling = false, live = false, armed = false;
@@ -6434,7 +6459,8 @@ function armRows(rowsEl) {
     }
     pulling = live = armed = false;
   };
-  addEventListener("touchstart", (e) => {
+  listen(window, "touchstart", (e) => {
+    if (!alive) return;
     if (!phone() || REDUCE() || e.touches.length !== 1) return;
     if (sc().scrollTop > 0) return;
     /* not while someone is typing their own question */
@@ -6443,7 +6469,7 @@ function armRows(rowsEl) {
     pulling = true;
     live = false;
   }, { passive: true });
-  addEventListener("touchmove", (e) => {
+  listen(window, "touchmove", (e) => {
     if (!pulling) return;
     /* A second finger ends the pull rather than steering it: touches[0]
        is not necessarily the finger that started this, and a pinch that
@@ -6473,12 +6499,12 @@ function armRows(rowsEl) {
     askSource = "chip";            /* navigation: the template answers */
     onQuery(q, true);
   };
-  addEventListener("touchend", (e) => {
+  listen(window, "touchend", (e) => {
     /* only the release that ends the LAST finger commits */
     if (e.touches.length) { reset(true); return; }
     release();
   }, { passive: true });
-  addEventListener("touchcancel", () => reset(true), { passive: true });
+  listen(window, "touchcancel", () => reset(true), { passive: true });
 })();
 
 /* boot */

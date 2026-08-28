@@ -915,6 +915,128 @@
     font: inherit; font-size: var(--note); line-height: 1.45;
     color: rgba(0, 0, 0, 0.78); }
 
+  /* ── THE RAIL AS AN INDEX (lab: rail-variants.html, variant L) ────
+     Rows, drawers and counts in place of the stacked blocks. The
+     hairline, the curve and the 90ms text lag are the daybook
+     ledger's own values, so the rail and the ledger move as one
+     language. Rows bleed 12px past the column so the ink band reads
+     as a band while the closed labels hold the column's left edge. */
+  /* no rules: the owner asked to see it bare. The rows are labels in
+     air until one floods; the hairline version is one commit back. */
+  .ixnotes .rdrawer .rrow { margin: 0 -12px; padding: 0 12px;
+    transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open { background: var(--ink); color: #fff; }
+  .ixnotes .rdrawer .rhead { display: flex; align-items: center; gap: 10px;
+    width: 100%; text-align: left; background: none; border: 0;
+    padding: 11px 0; margin: 0; cursor: pointer; font: inherit;
+    font-size: var(--note); line-height: 1.45; color: inherit; }
+  .ixnotes .rdrawer .rhead:focus-visible {
+    outline: 1px solid currentColor; outline-offset: 3px; }
+  .ixnotes .rdrawer .rglyph { font-size: 8px; line-height: 1; width: 10px;
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open .rglyph { transform: scale(1.55); }
+  .ixnotes .rdrawer .rbody { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open .rbody { grid-template-rows: 1fr; }
+  .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
+  /* the drawer's type is on its own clock: 90ms behind the structure
+     on the way in, gone at once on the way out (the .dbpre pattern) */
+  .ixnotes .rdrawer .rpad { padding: 10px 0 18px;
+    opacity: 0; transform: translateY(10px); transition: none; }
+  /* the stamp band breathes: more air above the reel and below the
+     one-liner than the text drawers carry */
+  .ixnotes .rdrawer .rpad.rcat { padding: 32px 0 24px; }
+  .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
+  .ixnotes .rdrawer .rsub { font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    text-transform: uppercase; opacity: 0.6; margin: 12px 0 5px; }
+  .ixnotes .rdrawer .rsub:first-child { margin-top: 0; }
+  .ixnotes .rdrawer .rtxt { font-size: var(--note); line-height: 1.5; }
+  .ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
+    color: inherit; font-size: var(--note);
+    text-decoration: underline; text-underline-offset: 3px; }
+  .ixnotes .rdrawer .rgap { height: 18px; }
+
+  /* ── PULL TO ASK (phones) ─────────────────────────────────────────
+     The gesture every phone already knows, pointed at the house. It
+     rides above the masthead and stays out of the way until pulled. */
+  #pullask { position: fixed; left: 0; right: 0; top: 0; z-index: 60;
+    display: flex; align-items: flex-end; justify-content: center;
+    height: 0; overflow: hidden; pointer-events: none;
+    font-size: var(--note); letter-spacing: -0.01em;
+    color: rgba(0, 0, 0, 0.62); background: var(--paper, #F3F0ED); }
+  #pullask b { font-weight: 500; color: var(--ink); }
+  #pullask .pa-in { padding-bottom: 9px; text-align: center;
+    line-height: 1.35; }
+  #pullask.pa-snap { transition: height 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  @media (prefers-reduced-motion: reduce) {
+    #pullask { display: none; }
+  }
+  /* one column, stacked: the reel, its caption, then the one-liner —
+     the emptied right half is the band's negative space. THE REEL IS
+     THE COUNT: a stamp-size faux reel cutting through the category's
+     own tiles, the cover reel's signature at rail scale. */
+  .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
+    border-radius: 10px; overflow: hidden;
+    /* held and dragged sideways to scrub; vertical stays the page's,
+       and pinch-zoom is named so two fingers still zoom */
+    touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none;
+    -webkit-touch-callout: none; }
+  .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
+    opacity: 0.75; margin-top: 12px; max-width: 24ch; }
+
+  /* ── THE STAMP RUNS THE REAL REEL ─────────────────────────────────
+     The sz-* rules below are SizzleReel.tsx's own, copied verbatim —
+     the photo beats only (shutter, fade, pinch, slat, burn, curtain,
+     color curtain, cut) — so the rail stamp and the case-study covers
+     are one mechanism, not a lookalike. At port time the real
+     homepage imports the component's stylesheet instead of this. */
+  .sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size}
+  .sz-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .sz-layer{position:absolute;inset:0;will-change:transform,opacity,clip-path}
+  .sz-shutter{animation:szShutter var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szShutter{from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-fade{animation:szFade var(--d) ease both}
+  @keyframes szFade{from{opacity:0}to{opacity:1}}
+  .sz-cut{animation:szCut var(--d) steps(2) both}
+  @keyframes szCut{from{opacity:0}to{opacity:1}}
+  .sz-curtain{animation:szCurtain var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szCurtain{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-pinchP{position:absolute;left:0;right:0;height:50.5%}
+  .sz-pinchT{top:0;transform:translateY(-102%);animation:szPinchT var(--d) cubic-bezier(.7,0,.15,1) both}
+  .sz-pinchB{bottom:0;transform:translateY(102%);animation:szPinchB var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szPinchT{0%{transform:translateY(-102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(-102%)}}
+  @keyframes szPinchB{0%{transform:translateY(102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(102%)}}
+  .sz-pinchswap{animation:szPinchSwap var(--d) linear both}
+  @keyframes szPinchSwap{0%{opacity:0}49%{opacity:0}50%{opacity:1}100%{opacity:1}}
+  .sz-strip{position:absolute;top:0;height:100%;overflow:hidden;clip-path:inset(0 0 100% 0);animation:szSlat var(--sd) cubic-bezier(.6,0,.15,1) both}
+  .sz-strip img{position:absolute;top:0;height:100%;max-width:none;object-fit:cover;display:block}
+  @keyframes szSlat{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-burnimg{animation:szBurnImg var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnImg{0%{opacity:0;transform:scale(1.02);filter:brightness(1.5) saturate(2.6) contrast(1.5)}22%{opacity:1;transform:scale(1.015);filter:brightness(1.35) saturate(2.2) contrast(1.4)}100%{opacity:1;transform:scale(1);filter:brightness(1) saturate(1) contrast(1)}}
+  .sz-burnpop{position:absolute;inset:0;pointer-events:none;background:rgba(243,240,237,.35);opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1);animation:szBurnPop var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnPop{0%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}18%{opacity:1;-webkit-backdrop-filter:blur(4px) saturate(4.5) contrast(2.2);backdrop-filter:blur(4px) saturate(4.5) contrast(2.2)}100%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}}
+  .sz-burnwash{position:absolute;inset:0;pointer-events:none;background:#F3F0ED;opacity:0;animation:szBurnWash var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnWash{0%{opacity:0}16%{opacity:.95}40%{opacity:.3}100%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){
+    .sz-layer,.sz-strip{animation:none!important}
+    .sz-shutter,.sz-curtain,.sz-strip{clip-path:inset(0 0 0 0)!important}
+    .sz-fade,.sz-cut{opacity:1!important}
+    .sz-pinchswap{animation:none!important;opacity:1!important}
+    .sz-pinchT{animation:none!important;transform:translateY(-102%)!important}
+    .sz-pinchB{animation:none!important;transform:translateY(102%)!important}
+    .sz-burnimg{opacity:1!important;filter:none!important;transform:none!important}
+    .sz-burnpop,.sz-burnwash{opacity:0!important;animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ixnotes .rdrawer .rrow, .ixnotes .rdrawer .rbody,
+    .ixnotes .rdrawer .rglyph, .ixnotes .rdrawer .rpad {
+      transition: none; }
+  }
+
   /* the row: notes column left empty (the notes float over it), then
      two frames, each hung from the top and pushed to the right of its
      half — the two right edges are the only vertical lines the eye

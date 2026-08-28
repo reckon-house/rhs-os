@@ -113,11 +113,15 @@ const NOTES = [
    query, not a separate route: clicking types it into the house and
    the same machinery answers. The labels are the visitor's words, the
    queries are the studies'. */
+/* Third and fourth elements are the drawer's furniture: a small
+   geometric mark for the closed row (Swiss basic forms — the site has
+   no icon language and four rows is not a reason to invent one) and
+   the one-liner shown beside the count when the row opens. */
 const FILTERS = [
-  ["Digital Experiences", "digital"],
-  ["App Development", "app development"],
-  ["Campaign/Creative", "campaign"],
-  ["Interiors", "interiors"],
+  ["Digital Experiences", "digital", "\u25CF", "Sites, stores and platforms, designed and shipped."],
+  ["App Development", "app development", "\u25A0", "Native tools and AI products, built end to end."],
+  ["Campaign/Creative", "campaign", "\u25B2", "Art direction and campaigns for retail's big names."],
+  ["Interiors", "interiors", "\u25C6", "Rooms designed like products, down to the hardware."],
 ];
 
 /* The practice statement's own nouns, wired to the field. The words a
@@ -1987,53 +1991,409 @@ function buildMagazine() {
 
   const notesEl = document.getElementById("ixNotes");
   notesEl.innerHTML = "";
-  /* Every block carries its seat and the column is ordered once, at the
-     end, so notes and the filter interleave by the same rule. */
-  const rail = noteIdx.map((ci) => {
-    const blk = document.createElement("div");
-    blk.className = "blk";
-    /* NO LABEL. The rail's eyebrows named what each block obviously
-       was: "What I do" over a list of what he does, "Get in touch"
-       over an address. The word survives as the block's key and its
-       seat, which is what it was actually doing. */
-    blk.appendChild(document.createTextNode(cards[ci].full));
-    /* A NOTE MAY CARRY ONE WAY THROUGH. Its own line under the text
-       rather than inline: the blocks in this column are statements, and
-       a link buried in the middle of one reads as a footnote instead of
-       as a door. */
-    const link = cards[ci].link;
-    if (link) {
-      const a = document.createElement("a");
-      a.className = "blkgo";
-      a.href = link[1];
-      a.textContent = link[0];
-      blk.appendChild(a);
-    }
-    /* same key noteCard writes, so a note the brain surfaces can
-       travel out of this column */
-    blk.dataset.key = "note:" + (cards[ci].word || "");
-    return { at: seat(cards[ci].word), el: blk };
-  });
+  /* ── THE RAIL AS AN INDEX ─────────────────────────────────────────
+     Variant L from lab/rail-variants.html, in place of the five
+     stacked blocks: nothing in the column but rows. Info and Contact
+     open as drawers holding what the blocks used to say; the four
+     categories follow after a breath, each flooding to ink on hover
+     with its count and one-liner inside. Hover previews (mouse only),
+     the click still answers — a category tap on touch filters
+     directly, exactly what the old buttons did.
 
-  /* the filter rides the same pinned column, so it stays in reach for
-     the whole scroll instead of living at one altitude. Its seat comes
-     from RAIL like everything else here. */
-  const filt = document.createElement("div");
-  filt.className = "blk filt";
-  FILTERS.forEach(([label, fq]) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = label;
-    b.addEventListener("click", () => {
+     The counts come from the SAME machinery that answers the click —
+     think() first, the matcher underneath — so the numeral a row
+     shows and the shelf the click deals can never disagree. */
+  const railEl = document.createElement("div");
+  railEl.className = "blk rdrawer";
+  const rrows = [];
+  const openOnly = (r) =>
+    rrows.forEach((o) => o.classList.toggle("open", o === r));
+  const closeRows = () => rrows.forEach((o) => o.classList.remove("open"));
+  const mkRow = (label, glyph) => {
+    const r = document.createElement("div");
+    r.className = "rrow";
+    const h = document.createElement("button");
+    h.type = "button";
+    h.className = "rhead";
+    if (glyph) {
+      const g = document.createElement("span");
+      g.className = "rglyph";
+      g.textContent = glyph;
+      h.appendChild(g);
+    }
+    h.appendChild(document.createTextNode(label));
+    const b = document.createElement("div");
+    const inner = document.createElement("div");
+    const pad = document.createElement("div");
+    b.className = "rbody";
+    pad.className = "rpad";
+    inner.appendChild(pad);
+    b.appendChild(inner);
+    r.appendChild(h);
+    r.appendChild(b);
+    r.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse") openOnly(r);
+    });
+    rrows.push(r);
+    railEl.appendChild(r);
+    return { r, h, pad };
+  };
+  const sub = (pad, cap, text, key) => {
+    if (cap) {
+      const c = document.createElement("div");
+      c.className = "rsub";
+      c.textContent = cap;
+      pad.appendChild(c);
+    }
+    const t = document.createElement("div");
+    t.className = "rtxt";
+    t.textContent = text;
+    /* same key noteCard writes, so a note the brain surfaces can
+       still travel out of this column */
+    if (key) t.dataset.key = "note:" + key;
+    pad.appendChild(t);
+    return t;
+  };
+  const note = (re) => {
+    const i = allNotes.find((ci) => re.test(cards[ci].word || ""));
+    return i === undefined ? null : cards[i];
+  };
+
+  /* Info: About (the two practice notes, one thought again) and News */
+  {
+    const { r, h, pad } = mkRow("Info");
+    const about = [note(/what i do/i), note(/setup/i)].filter(Boolean);
+    if (about.length)
+      sub(pad, "About", about.map((c) => c.full).join(" "), about[0].word);
+    const news = note(/recently/i);
+    if (news) sub(pad, "News", news.full, news.word);
+    h.addEventListener("click", () =>
+      r.classList.contains("open") ? closeRows() : openOnly(r));
+  }
+
+  /* Contact: the address and the one committing link */
+  {
+    const { r, h, pad } = mkRow("Contact");
+    const touch = note(/touch/i);
+    if (touch) {
+      sub(pad, null, touch.full, touch.word);
+      if (touch.link) {
+        const a = document.createElement("a");
+        a.className = "rgo";
+        a.href = touch.link[1];
+        a.textContent = touch.link[0];
+        pad.appendChild(a);
+      }
+    }
+    h.addEventListener("click", () =>
+      r.classList.contains("open") ? closeRows() : openOnly(r));
+  }
+
+  /* the breath between the utility rows and the categories */
+  const rgap = document.createElement("div");
+  rgap.className = "rgap";
+  railEl.appendChild(rgap);
+
+  const worksFor = (fq) => {
+    try {
+      const plan = think(fq);
+      const idx = plan ? plan.workIdx : ((analyse(fq) || { idx: [] }).idx || []);
+      return idx.filter((ci) => cards[ci].kind === "work");
+    } catch (e) { return []; }
+  };
+  /* THE REEL IS THE COUNT, and it runs the REAL reel. Each category's
+     drawer carries a stamp-size faux reel playing SizzleReel's own
+     photo choreography — shutter, fade, pinch, slat, burn, color
+     curtain, curtain, cut — through that category's tiles. The frames
+     are the SAME urls the magazine below fetches, so the stamp costs
+     no new bytes here; the real port mounts the component itself.
+
+     The sequence is buildSequence()'s photo spine with the word beats
+     dropped (a stamp carries no headline), timings verbatim. The two
+     color beats run the site's paper, so the pinch blinks cream and
+     the held curtain reads as the page showing through the band. */
+  const SZ_CREAM = "#F3F0ED";
+  const szSeq = (n) => [
+    { fx: "shutter", img: 0 % n, ms: 640 },
+    { fx: "fade", img: 1 % n, ms: 420 },
+    { fx: "pinch", color: SZ_CREAM, img: 2 % n, ms: 520 },
+    { fx: "slat", img: 3 % n, ms: 700 },
+    { fx: "burn", img: 4 % n, ms: 640 },
+    { fx: "ccurtain", color: SZ_CREAM, ms: 380 },
+    { fx: "curtain", img: 5 % n, ms: 720 },
+    { fx: "cut", img: 6 % n, ms: 640 },
+  ];
+  const szImg = (src, cls) => {
+    const im = document.createElement("img");
+    im.className = cls;
+    im.src = src;
+    /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
+       lab's stub here and the optimizer's ladder in the app, so this
+       line costs nothing on this page and saves megabytes on the real
+       one — the browser picks a ~384px candidate for a 128px box at
+       DPR 3 instead of the original file. */
+    const ss = tileSrcSet(src);
+    if (ss) { im.srcset = ss; im.sizes = "128px"; }
+    im.alt = "";
+    im.decoding = "async";
+    return im;
+  };
+  /* One beat's layer, the component's BeatLayer by hand. --d is the
+     animation length: 72% of the hold, so the wipe settles and the
+     frame rests before the next cut — the component's own ratio. */
+  const szLayer = (beat, frames, dur) => {
+    const d = document.createElement("div");
+    d.style.setProperty("--d", dur + "ms");
+    if (beat.fx === "ccurtain") {
+      d.className = "sz-layer sz-curtain";
+      d.style.background = beat.color;
+      return d;
+    }
+    if (beat.fx === "pinch") {
+      d.className = "sz-layer";
+      const sw = szImg(frames[beat.img], "sz-fill sz-pinchswap");
+      sw.style.setProperty("--d", dur + "ms");
+      d.appendChild(sw);
+      ["sz-pinchP sz-pinchT", "sz-pinchP sz-pinchB"].forEach((cls) => {
+        const pnl = document.createElement("div");
+        pnl.className = cls;
+        pnl.style.setProperty("--d", dur + "ms");
+        pnl.style.background = beat.color;
+        d.appendChild(pnl);
+      });
+      return d;
+    }
+    if (beat.fx === "burn") {
+      d.className = "sz-layer";
+      const im = szImg(frames[beat.img], "sz-fill sz-burnimg");
+      im.style.setProperty("--d", dur + "ms");
+      d.appendChild(im);
+      ["sz-burnpop", "sz-burnwash"].forEach((cls) => {
+        const fx = document.createElement("div");
+        fx.className = cls;
+        fx.style.setProperty("--d", dur + "ms");
+        d.appendChild(fx);
+      });
+      return d;
+    }
+    if (beat.fx === "slat") {
+      d.className = "sz-layer";
+      d.style.setProperty("--sd", Math.round(dur * 0.7) + "ms");
+      const N = 6;
+      for (let k = 0; k < N; k++) {
+        const strip = document.createElement("div");
+        strip.className = "sz-strip";
+        strip.style.left = (k * 100) / N + "%";
+        strip.style.width = "calc(" + 100 / N + "% + 1px)";
+        strip.style.animationDelay = Math.round(k * dur * 0.08) + "ms";
+        const im = szImg(frames[beat.img], "");
+        im.style.left = (-k * 100) / N + "cqw";
+        im.style.width = "100cqw";
+        strip.appendChild(im);
+        d.appendChild(strip);
+      }
+      return d;
+    }
+    d.className = "sz-layer sz-" + beat.fx;
+    d.appendChild(szImg(frames[beat.img], "sz-fill"));
+    return d;
+  };
+  /* buildMagazine() runs again on every resize and builds a whole new
+     rail. The previous build's reel timers and MutationObservers went
+     on running against detached boxes — an open drawer left a
+     setTimeout chain alive forever, one more per resize. The handle
+     lives on document so each build retires the last one's. */
+  if (document.__railReels) {
+    document.__railReels.forEach((rl) => {
+      clearTimeout(rl.timer);
+      if (rl.mo) rl.mo.disconnect();
+      if (rl.unscrub) rl.unscrub();
+    });
+  }
+  const reels = [];
+  document.__railReels = reels;
+  /* All stills stay mounted and the underlay toggles opacity, exactly
+     as the component does — swapping one img's src per beat risks a
+     one-frame decode blank at every photo boundary. loading=lazy keeps
+     a closed drawer's stills unfetched (0fr clips them out of view);
+     they are the grid's own urls, so an open fetch is a cache hit. */
+  const szStage = (rl) => {
+    rl.box.innerHTML = "";
+    rl.stills = rl.frames.map((src) => {
+      const im = szImg(src, "sz-fill");
+      im.loading = "lazy";
+      im.style.opacity = 0;
+      rl.box.appendChild(im);
+      return im;
+    });
+    rl.tint = document.createElement("div");
+    rl.tint.className = "sz-fill";
+    rl.tint.style.opacity = 0;
+    rl.box.appendChild(rl.tint);
+    rl.layer = null;
+    rl.at = 0;
+    rl.surface = { img: 0 };
+    if (rl.stills[0]) rl.stills[0].style.opacity = 1;
+  };
+  const szPaint = (rl) => {
+    rl.stills.forEach((im, k) => {
+      im.style.opacity = rl.surface.img === k ? 1 : 0;
+    });
+    rl.tint.style.opacity = rl.surface.color != null ? 1 : 0;
+    if (rl.surface.color != null) rl.tint.style.background = rl.surface.color;
+  };
+  const szStop = (rl) => { clearTimeout(rl.timer); rl.timer = null; };
+  /* ── HOLD TO SCRUB, the stamp's phone toy ─────────────────────────
+     The component gesture (SizzleReel.tsx), rebuilt for the vanilla
+     stamp: hold ~220ms without moving and the loop parks; drag
+     sideways and the frames shuttle like a contact sheet; release and
+     it plays on from the frame under the finger. The hold is what
+     keeps this off the page's own gestures — a scroll or a tap has
+     moved or lifted long before it lands. */
+  const szScrub = (rl) => {
+    const g = { x0: 0, y0: 0, at: 0, id: null, hold: null, on: false };
+    const end = () => { clearTimeout(g.hold); g.hold = null; };
+    const show = (k) => {
+      rl.stills.forEach((im, j) => { im.style.opacity = j === k ? 1 : 0; });
+      rl.tint.style.opacity = 0;
+      if (rl.layer) { rl.layer.remove(); rl.layer = null; }
+    };
+    rl.box.addEventListener("pointerdown", (e) => {
+      if (rl.frames.length < 2) return;
+      /* touch and pen only, and never a second finger onto a live
+         drag — the same two gates SizzleReel.tsx carries, and for the
+         same reasons: a slow mouse press is a click, not a hold. */
+      if (e.pointerType === "mouse") return;
+      if (g.on || g.id != null) return;
+      g.x0 = e.clientX; g.y0 = e.clientY; g.id = e.pointerId;
+      end();
+      g.hold = setTimeout(() => {
+        g.on = true;
+        szStop(rl);
+        /* read at COMMIT time: 220ms of loop has run since the press */
+        g.at = rl.surface.img || 0;
+        try { rl.box.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
+        show(g.at);
+      }, 220);
+    });
+    rl.box.addEventListener("pointermove", (e) => {
+      if (g.id !== e.pointerId) return;
+      if (g.on) {
+        const n = rl.frames.length;
+        const step = Math.round((e.clientX - g.x0) / 36);
+        const k = (((g.at - step) % n) + n) % n;
+        rl.surface = { img: k };
+        show(k);
+        return;
+      }
+      if (g.hold && Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 10) end();
+    });
+    const up = (e) => {
+      if (e && g.id != null && g.id !== e.pointerId) return;
+      end();
+      g.id = null;
+      if (!g.on) return;
+      g.on = false;
+      /* resume from the beat that shows the frame it was left on; a
+         frame no beat carries restarts the loop rather than jumping */
+      const seq = szSeq(rl.frames.length);
+      const at = seq.findIndex((b) => b.img === (rl.surface.img || 0));
+      rl.at = at >= 0 ? at : 0;
+      if (rl.row.classList.contains("open")) szStart(rl);
+    };
+    /* on window, so a drag released off the stamp still ends — and
+       remembered on the reel, so the retire pass below can REMOVE
+       them: buildMagazine reruns on resize, and window listeners
+       added per build with no teardown are the same slow leak the
+       reel timers had. */
+    addEventListener("pointerup", up);
+    addEventListener("pointercancel", up);
+    rl.unscrub = () => {
+      removeEventListener("pointerup", up);
+      removeEventListener("pointercancel", up);
+    };
+    rl.box.addEventListener("touchmove", (e) => {
+      if (g.on) e.preventDefault();
+    }, { passive: false });
+  };
+  const szStart = (rl) => {
+    if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
+    const step = () => {
+      if (document.hidden) { rl.timer = setTimeout(step, 400); return; }
+      const seq = szSeq(rl.frames.length);
+      const beat = seq[rl.at % seq.length];
+      szPaint(rl);
+      if (rl.layer) rl.layer.remove();
+      rl.layer = szLayer(beat, rl.frames, Math.round(beat.ms * 0.72));
+      rl.box.appendChild(rl.layer);
+      rl.surface = beat.fx === "ccurtain"
+        ? { color: beat.color } : { img: beat.img };
+      rl.at = (rl.at + 1) % seq.length;
+      rl.timer = setTimeout(step, beat.ms);
+    };
+    step();
+  };
+  FILTERS.forEach(([label, fq, glyph, desc]) => {
+    const { r, h, pad } = mkRow(label, glyph);
+    pad.classList.add("rcat");
+    const works = worksFor(fq);
+    const box = document.createElement("div");
+    box.className = "rreel sz-stage";
+    const d = document.createElement("div");
+    d.className = "rdesc";
+    d.textContent = desc;
+    pad.appendChild(box);
+    pad.appendChild(d);
+    const rl = { row: r, box, fq, timer: null,
+      frames: works.map((ci) => cards[ci].img) };
+    szStage(rl);
+    szScrub(rl);
+    reels.push(rl);
+    /* the reel runs while its row is open, and only then — the row's
+       class is the one source of open truth, so the player watches it
+       instead of duplicating the hover/click logic */
+    rl.mo = new MutationObserver(() => {
+      if (rl.row.classList.contains("open")) szStart(rl);
+      else szStop(rl);
+    });
+    rl.mo.observe(rl.row, { attributes: true, attributeFilter: ["class"] });
+    /* A CATEGORY HOVER IS INTENT, the same way focus on the field is:
+       whoever previews a shelf is one click from needing the index.
+       So the hover requests the facts, and the stamps re-deal when
+       they land — see refreshReels below. */
+    r.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "mouse") wantFacts().then(refreshReels);
+    });
+    /* the old filter button's click, verbatim */
+    h.addEventListener("click", () => {
       const el = document.getElementById("query");
       if (el) el.value = label;
       askSource = "chip";   /* navigation: the template answers */
       onQuery(fq, true);
     });
-    filt.appendChild(b);
   });
-  rail.push({ at: seat("Filter"), el: filt });
-  rail.sort((a, b) => a.at - b.at);
+  /* THE STAMP TRACKS THE TRUTH AVAILABLE. At build the caption and
+     the frame list are the matcher's, because the 655KB facts index
+     is deferred and four stamps are no reason to fetch it. When the
+     index arrives — rail hover, field focus, deep link — both re-deal
+     through think(), so what a row shows and what its click deals
+     agree at every moment: matcher truth before, facts truth after. */
+  function refreshReels() {
+    reels.forEach((rl) => {
+      const works = worksFor(rl.fq);
+      const srcs = works.map((ci) => cards[ci].img);
+      if (srcs.join("|") === rl.frames.join("|")) return;
+      rl.frames = srcs;
+      const playing = !!rl.timer;
+      szStop(rl);
+      szStage(rl);
+      if (playing) szStart(rl);
+    });
+  }
+  if (factsWanted) factsWanted.then(refreshReels);
+  railEl.addEventListener("pointerleave", closeRows);
+
+  const rail = [{ at: 0, el: railEl }];
 
   /* ── THE RAIL FOLDS ON A PHONE ────────────────────────────────────
      Five blocks stacked ahead of the first picture is 800px of reading
@@ -3252,8 +3612,17 @@ let tourFull = "";                     /* what placeAsk should size to */
      window: <main> owns the scroll here, so rect.top alone is only
      true at the top of the page. */
   const pinRails = () => {
-    const scroller = document.querySelector("main");
-    const off = scroller ? scroller.scrollTop : 0;
+    /* THE SCROLLER DEPENDS ON WHO IS RENDERING THIS FILE. In the app
+       Lenis owns <main> and its scrollTop is the truth; on this page
+       <main> is the shell's element and does not exist, and the
+       DOCUMENT scrolls. Falling through to 0 here was the rail
+       blinking away: any section resize while scrolled — a frame
+       hover's drop, the rail's own drawer opening — re-ran this
+       measure, rect.top came back viewport-relative, and the pin was
+       written 600px above the glass. */
+    const scroller = document.querySelector("main") ||
+      document.scrollingElement || document.documentElement;
+    const off = scroller.scrollTop;
     document.querySelectorAll(".ixnotes").forEach((el) => {
       if (!el.offsetParent) return;             // hidden state, nothing to measure
       const was = el.style.position;
@@ -3770,6 +4139,115 @@ function armRows(rowsEl) {
     });
   };
   requestAnimationFrame(tick);
+})();
+
+/* ── PULL TO ASK ───────────────────────────────────────────────────
+   A phone already knows one gesture at the top of a page: pull down
+   and something refreshes. Here it asks. Drag past the top of the
+   index and the house takes the next question from the tour, types it
+   into the field and answers it — the plainest way in the site has,
+   worked by the plainest gesture a phone has.
+
+   The tour list is the source, so the questions a visitor pulls are
+   the same ones the field offers on its own, and adding one there
+   adds it here. It walks rather than randomises: a second pull is a
+   different question, which is the whole reason to pull twice.
+
+   Only where the gesture means anything: a touch pointer, a phone
+   width, and the scroller genuinely at 0. Reduced motion opts out
+   (the indicator is display: none and the handler checks it), and a
+   pull that never reaches the threshold springs back having done
+   nothing. */
+(() => {
+  if (typeof matchMedia !== "function") return;
+  const TRIGGER = 78;              /* px of pull that commits */
+  const MAX = 132;                 /* the rubber band's ceiling */
+  /* REUSED, NOT REBUILT. In the app this module re-runs every time the
+     homepage mounts; a second #pullask on the body would stack. The
+     listeners below go through listen() for the same reason — raw
+     window listeners outlive the route here, and a pull at the top of
+     a case study was otherwise going to offer a question to a page
+     that cannot answer it. */
+  const el = document.getElementById("pullask") || (() => {
+    const d = document.createElement("div");
+    d.id = "pullask";
+    d.innerHTML = '<div class="pa-in"></div>';
+    document.body.appendChild(d);
+    return d;
+  })();
+  const label = el.firstChild;
+
+  let k = 0;                       /* which tour question is next */
+  let y0 = 0, pulling = false, live = false, armed = false;
+  const sc = () => document.querySelector("main") ||
+    document.scrollingElement || document.documentElement;
+  const phone = () => innerWidth <= 860 &&
+    matchMedia("(pointer: coarse)").matches;
+  const paint = (d) => {
+    el.style.height = d.toFixed(0) + "px";
+    const hot = d >= TRIGGER;
+    if (hot !== armed) armed = hot;
+    label.innerHTML = hot
+      ? "Release to ask <b>\u201c" + TOUR[k] + "\u201d</b>"
+      : "Pull to ask <b>\u201c" + TOUR[k] + "\u201d</b>";
+  };
+  const reset = (snap) => {
+    if (snap) {
+      el.classList.add("pa-snap");
+      el.style.height = "0px";
+      setTimeout(() => el.classList.remove("pa-snap"), 460);
+    } else {
+      el.classList.remove("pa-snap");
+      el.style.height = "0px";
+    }
+    pulling = live = armed = false;
+  };
+  listen(window, "touchstart", (e) => {
+    if (!alive) return;
+    if (!phone() || REDUCE() || e.touches.length !== 1) return;
+    if (sc().scrollTop > 0) return;
+    /* not while someone is typing their own question */
+    if (document.activeElement === input) return;
+    y0 = e.touches[0].clientY;
+    pulling = true;
+    live = false;
+  }, { passive: true });
+  listen(window, "touchmove", (e) => {
+    if (!pulling) return;
+    /* A second finger ends the pull rather than steering it: touches[0]
+       is not necessarily the finger that started this, and a pinch that
+       begins at the top of the page was otherwise driving the banner
+       and committing a question on release. */
+    if (e.touches.length !== 1) { reset(true); return; }
+    const dy = e.touches[0].clientY - y0;
+    if (!live) {
+      if (dy < 12) { if (dy < -6) pulling = false; return; }
+      /* a pull that starts after the page has scrolled is a scroll */
+      if (sc().scrollTop > 0) { pulling = false; return; }
+      live = true;
+    }
+    /* rubber band: the first pixels move freely, the last barely */
+    const d = Math.min(MAX, MAX * (1 - Math.exp(-dy / 90)));
+    paint(d);
+    e.preventDefault();
+  }, { passive: false });
+  const release = () => {
+    if (!pulling) return;
+    const go = armed;
+    const q = TOUR[k];
+    reset(true);
+    if (!go) return;
+    k = (k + 1) % TOUR.length;     /* the next pull asks the next one */
+    input.value = q;
+    askSource = "chip";            /* navigation: the template answers */
+    onQuery(q, true);
+  };
+  listen(window, "touchend", (e) => {
+    /* only the release that ends the LAST finger commits */
+    if (e.touches.length) { reset(true); return; }
+    release();
+  }, { passive: true });
+  listen(window, "touchcancel", () => reset(true), { passive: true });
 })();
 
 /* boot */
