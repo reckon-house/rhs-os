@@ -34,7 +34,7 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import { plateSrcSet } from "@/lib/img-srcset";
 import Link from "next/link";
 import { projects } from "@/data/projects";
-import { practiceNotes, practiceFilters } from "@/data/practice-notes";
+import { IndexRail } from "@/components/shell/IndexRail";
 import { imageDimensions } from "@/data/image-dimensions";
 import { dealWidths, HOUSE_SEED } from "@/lib/deal";
 import { cellSpec, tileSizes } from "@/lib/index-cells";
@@ -93,30 +93,14 @@ export function PressingRing() {
         <div className="ixrulesPin" />
       </div>
 
-      {/* The pinned column, exactly as the homepage keeps it. The
-          filter's buttons are links here rather than live queries: the
-          brain lives on the homepage, so a filter pressed from the
-          tail of a case study carries its question there. */}
+      {/* THE DRAWER RAIL, the same one the homepage carries. It used to
+          be five stacked .blk blocks here — the retired design — while
+          the homepage had moved to the drawer index. Both rule sets
+          survive in the generated stylesheet, so neither surface
+          looked broken; they were two designs sharing one page. One
+          component now, in src/components/shell/IndexRail.tsx. */}
       <div className="ixnotes">
-        {practiceNotes.map((n) => (
-          <div className="blk" key={n.title}>
-            <span className="tag">{n.title}</span>
-            {n.quiet ? toned(n.body, n.quiet) : n.body}
-            {/* Same way through the homepage's rail carries, on the
-                same class, so the door looks the same in both places. */}
-            {n.link ? (
-              <Link className="blkgo" href={n.link.href}>{n.link.label}</Link>
-            ) : null}
-          </div>
-        ))}
-        <div className="blk filt">
-          <span className="tag">Filter</span>
-          {practiceFilters.map(([label, query]) => (
-            <Link key={label} href={`/?q=${encodeURIComponent(query)}`}>
-              {label}
-            </Link>
-          ))}
-        </div>
+        <IndexRail />
       </div>
 
       {/* ixcols IS LOAD-BEARING BELOW 861px. `.ixrow, .ixlead {
@@ -157,19 +141,6 @@ export function PressingRing() {
         ))}
       </div>
     </div>
-  );
-}
-
-/** The authored recessive run, the same split the homepage makes. */
-function toned(body: string, quiet: string) {
-  const at = body.indexOf(quiet);
-  if (at === -1) return body;
-  return (
-    <>
-      {body.slice(0, at)}
-      <span className="q">{quiet}</span>
-      {body.slice(at + quiet.length)}
-    </>
   );
 }
 

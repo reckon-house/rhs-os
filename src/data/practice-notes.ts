@@ -6,9 +6,16 @@
  * than being typed out in both.
  *
  * The lab (public/lab/pressing-home.html) keeps its own copy, because
- * it has to run as a standalone file with no bundler. If you change a
- * line here, change it there. scripts/port-home.mjs --check does not
- * cover this, which is the one seam in that arrangement.
+ * it has to run as a standalone file with no bundler — and the port
+ * carries that copy into pressingHomeDriver.js as its NOTES literal.
+ * If you change a line here, change it there.
+ *
+ * `npm run rail:check` now compares the two and fails the build when
+ * they disagree. That seam used to be documented and unenforced, and
+ * it drifted exactly as you would expect: "What I do" was rewritten in
+ * the lab and this file kept the retired sentence, so the rail in
+ * every case-study footer described a different practice than the
+ * homepage did.
  */
 
 export interface PracticeNote {
@@ -35,7 +42,7 @@ export const practiceNotes: PracticeNote[] = [
     link: { label: "Book 30 minutes", href: "/book" },
   },
   { title: "The setup", body: "Independent, Texas. Design and build. I love the work." },
-  { title: "What I do", body: "Art direction. Brand systems. Digital design. Interiors." },
+  { title: "What I do", body: "Creative technologist. AI development. Brand systems. Digital design. Interior design." },
 ];
 
 /* The plain way in. The brain answers questions and a first-time

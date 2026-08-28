@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run port:home:check && npm run dims:check && next build",
+    "build": "npm run port:home:check && npm run dims:check && npm run rail:check && next build",
     "start": "next start",
     "lint": "eslint",
     "facts": "node --no-warnings scripts/build-facts.mjs",
@@ -12,6 +12,7 @@
     "port:home": "node scripts/port-home.mjs",
     "port:home:check": "node scripts/port-home.mjs --check",
     "dims:check": "node scripts/check-dimensions.mjs",
+    "rail:check": "node scripts/check-rail.mjs",
     "dims": "python3 scripts/build-image-dimensions.py",
     "viz-audit": "node scripts/viz-audit.mjs",
     "vision": "node --no-warnings scripts/build-vision.mjs",
