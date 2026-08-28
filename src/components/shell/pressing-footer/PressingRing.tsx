@@ -37,6 +37,7 @@ import { projects } from "@/data/projects";
 import { practiceNotes, practiceFilters } from "@/data/practice-notes";
 import { imageDimensions } from "@/data/image-dimensions";
 import { dealWidths, HOUSE_SEED } from "@/lib/deal";
+import { cellSpec, tileSizes } from "@/lib/index-cells";
 import "@/components/home/pressing-home.css";
 
 /* One deal for the tail, taken off the house seed so it is the same on
@@ -82,6 +83,16 @@ export function PressingRing() {
 
   return (
     <div className="ixbody" ref={rootRef}>
+      {/* THE TWO STANDING HAIRLINES. They moved out of .ixrows into
+          this pinned wrapper and .ixrows::before/::after were left at
+          `background: none`, so a surface that does not render it
+          draws no vertical structure at all. The ring did not, which
+          is why the footer index had no rules while the homepage kept
+          both. Same markup as PressingHome. */}
+      <div className="ixrules" aria-hidden="true">
+        <div className="ixrulesPin" />
+      </div>
+
       {/* The pinned column, exactly as the homepage keeps it. The
           filter's buttons are links here rather than live queries: the
           brain lives on the homepage, so a filter pressed from the
@@ -108,28 +119,40 @@ export function PressingRing() {
         </div>
       </div>
 
-      <div className="ixrows">
+      {/* ixcols IS LOAD-BEARING BELOW 861px. `.ixrow, .ixlead {
+          display: contents }` fires unconditionally down there, so the
+          row's own box — and with it its row-gap and margin-bottom —
+          is gone, while every rule that catches the freed cells is
+          keyed `.ixrows.ixcols`. Without the class the phone grid, its
+          gap and the per-cell separators all matched nothing and the
+          tiles stacked flush. */}
+      <div className="ixrows ixcols">
         {ROWS.map((pair, r) => (
           <div className="ixrow" key={r}>
             {[0, 1].map((k) => {
               const p = pair[k];
+              /* A cell with no frame is not rendered at all. An empty
+                 one draws its own separator and, having no order,
+                 sorts ahead of real frames — the same reason the
+                 driver dropped its placeholder. */
+              if (!p) return null;
+              const i = r * 2 + k;
+              const spec = cellSpec(i, projects.length);
               return (
-                <div className="cell" key={k}>
-                  {p ? (
-                    <Frame project={p} share={SHARES[r * 2 + k]} lag={k ? "0.25s" : "0s"} />
-                  ) : null}
+                <div className={spec.className} style={{ order: spec.order }} key={k}>
+                  <Frame
+                    project={p}
+                    share={SHARES[i]}
+                    tier={spec.className.split(" ").pop() as string}
+                    lag={k ? "0.25s" : "0s"}
+                  />
                 </div>
               );
             })}
-            {/* NO INLINE WIDTH. This used to inset the rule to where the
-                left frame's edge fell, which is what the homepage did
-                until "Row rules run one length" changed it there and
-                not here: the fix lived in the lab's stylesheet, and an
-                inline style is the one thing a shared stylesheet
-                cannot reach. So the rule is left entirely to .ixrule,
-                which both surfaces already import, and the next change
-                to it lands on both without anyone remembering. */}
-            <div className="ixrule" />
+            {/* NO .ixrule. It is inert on desktop but takes a real 1px
+                border below 861, and having no order it sorts between
+                cells — which is why the driver removed it. The phone
+                separator is the cell's own border-top now. */}
           </div>
         ))}
       </div>
@@ -153,10 +176,14 @@ function toned(body: string, quiet: string) {
 function Frame({
   project,
   share,
+  tier,
   lag,
 }: {
   project: (typeof projects)[number];
   share: number;
+  /** the cell's phone tier, which decides how much of the screen this
+   *  picture actually occupies down there */
+  tier: string;
   /** the right frame's curtain follows the left one in, so a row reads
    *  as one gesture with two beats rather than two shutters at once */
   lag: string;
@@ -171,7 +198,20 @@ function Frame({
       href={project.href ?? "/"}
       className="fd-it k-work"
       aria-label={`${project.title}, ${project.category}`}
-      style={{ "--share": String(share), "--lag": lag } as CSSProperties}
+      /* --ix-grow: 1 PINS HOVER TO A NO-OP, deliberately and for now.
+         The growth is scale(var(--ix-grow, 1.32)) paired with a --drop
+         that makes room for it, and both are written by the driver's
+         armRows, which does not run here. So the ring was inflating
+         32% while the page made no room, covering its own caption and
+         the row beneath. A still frame is better than half a gesture
+         until armRows is lifted into lib alongside cellSpec. */
+      style={
+        {
+          "--share": String(share),
+          "--lag": lag,
+          "--ix-grow": "1",
+        } as CSSProperties
+      }
     >
       <span className="shot" style={{ "--ar": ar } as CSSProperties}>
         {/* The plate is what the curtain clips and what settles; the
@@ -184,7 +224,11 @@ function Frame({
                page: 18 tiles, and they were the homepage's full-size
                thumbnails at 1920px feeding a 344px slot. */
             srcSet={plateSrcSet(project.image)}
-            sizes="(max-width: 760px) 92vw, 30vw"
+            /* From the cell's tier and the frame's dealt share, so the
+               two surfaces ask for the same bytes for the same
+               picture. The flat 30vw here carried a 760px breakpoint
+               against a layout that turns over at 860. */
+            sizes={tileSizes(tier, share)}
             alt=""
             loading="lazy"
             decoding="async"

@@ -296,6 +296,12 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hp/rhs-campaign-design-amber-shockey-blue-plate.jpg": [1920, 1154],
   "/case-studies/hp/rhs-campaign-design-j-christianson-branding.jpg": [1920, 1280],
   "/case-studies/hp/rhs-campaign-design-neiman-marcus-editorial-design.jpg": [1920, 1280],
+  /* The current filename. projects.ts was recropped to these two and the
+     registry kept only the old keys, so both tiles fell through to the
+     1:1 fallback — harmless for Neiman, which is genuinely square, and
+     wrong for Various design at 728x604. The old keys stay: the lab
+     prototypes still reference them. */
+  "/case-studies/hp/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg": [1600, 1600],
   "/case-studies/hp/rhs-campaign-design-nordstrom-loved-by-campaign.jpg": [1920, 1280],
   "/case-studies/hp/rhs-loved-by-nordstrom-ipad.jpg": [1600, 1811],
   "/case-studies/hp/rhs-campaign-design-sally-beauty-you-by-sally-campaign.jpg": [1920, 1280],
@@ -331,6 +337,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   "/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg": [1920, 1254],
   "/case-studies/hp/rhs-you-by-sally-street-display.jpg": [1920, 1138],
   "/case-studies/hp/rhs-various-design-branding-art-apparel.jpg": [1920, 1280],
+  "/case-studies/hp/rhs-various-design-branding-graphics-prints-apparel.jpg": [728, 604],
   "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg": [500, 699],
   "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg": [736, 736],
   "/case-studies/inspiration/3a241cf6a04019e84573d7711d0b3822.jpg": [1056, 720],
