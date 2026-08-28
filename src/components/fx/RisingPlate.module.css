@@ -45,6 +45,9 @@
   .riser[data-tallmorph] .clip {
     position: relative;
     overflow: hidden;
+    /* the crop pans under a horizontal drag (RisingPlate.tsx): vertical
+       scrolling stays the browser's, sideways is the picture's */
+    touch-action: pan-y;
     /* The WIDE state, from the declared ratio: the box literally IS the
        image's own shape until the driver starts growing it. This is
        also the no-JS and reduced-motion state — the full composition,

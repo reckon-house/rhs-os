@@ -37,7 +37,8 @@ export interface SizzleBeat {
 
 const STYLE_ID = "sz-reel-css";
 const CSS = `
-.sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size}
+.sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size;touch-action:pan-y;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.sz-scrubchip{position:absolute;left:8px;bottom:8px;z-index:2;font-size:9px;font-weight:500;letter-spacing:.04em;line-height:1;color:#fff;background:rgba(14,14,14,.55);padding:4px 6px;border-radius:4px;pointer-events:none;font-variant-numeric:tabular-nums}
 .sz-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .sz-layer{position:absolute;inset:0;will-change:transform,opacity,clip-path}
 .sz-shutter{animation:szShutter var(--d) cubic-bezier(.7,0,.15,1) both}
@@ -287,9 +288,110 @@ export function SizzleReel({
     });
   }, [images]);
 
+  /* ── press-and-hold to scrub ──────────────────────────────────────
+     Hold the reel (~220ms without moving) and the loop pauses; drag
+     left-right and the frames shuttle like a contact sheet — drag
+     right goes back, the filmstrip following the finger. Release
+     resumes the loop from a beat that shows the frame you left it on.
+
+     touch-action: pan-y on the stage is what makes this coexist with
+     the page: vertical swipes scroll as ever, and because the finger
+     has HELD STILL before scrubbing starts, the browser has not begun
+     a pan — so the manual non-passive touchmove listener below can
+     still claim the gesture and preventDefault the scroll. (React's
+     root touch listeners are passive; an onTouchMove prop cannot.) */
+  const [scrub, setScrub] = useState<number | null>(null);
+  const gRef = useRef<{
+    x0: number;
+    y0: number;
+    img0: number;
+    hold: ReturnType<typeof setTimeout> | null;
+    on: boolean;
+    just: boolean;
+  }>({ x0: 0, y0: 0, img0: 0, hold: null, on: false, just: false });
+
+  const beatNow = seq[active];
+  const visibleImg =
+    beatNow.img ?? (underlayBefore(seq, active) as { img?: number }).img ?? 0;
+
+  const endHold = () => {
+    const g = gRef.current;
+    if (g.hold) clearTimeout(g.hold);
+    g.hold = null;
+  };
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (images.length < 2) return;
+    const g = gRef.current;
+    g.x0 = e.clientX;
+    g.y0 = e.clientY;
+    g.img0 = visibleImg;
+    g.just = false;
+    endHold();
+    const el = e.currentTarget as HTMLElement;
+    const id = e.pointerId;
+    g.hold = setTimeout(() => {
+      g.on = true;
+      try {
+        el.setPointerCapture(id);
+      } catch {
+        /* the pointer may already be gone */
+      }
+      setScrub(g.img0);
+    }, 220);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const g = gRef.current;
+    if (g.on) {
+      const step = Math.round((e.clientX - g.x0) / 36);
+      const n = images.length;
+      setScrub((((g.img0 - step) % n) + n) % n);
+      return;
+    }
+    // moved before the hold landed: it's a scroll or a tap, not a scrub
+    if (
+      g.hold &&
+      Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 10
+    )
+      endHold();
+  };
+  const onPointerEnd = () => {
+    const g = gRef.current;
+    endHold();
+    if (!g.on) return;
+    g.on = false;
+    g.just = true; // swallow the click this gesture would otherwise fire
+    setScrub((s) => {
+      if (s != null && !controlled) {
+        // resume from a beat that shows the frame the finger left
+        const at = seq.findIndex((b) => b.img === s);
+        if (at >= 0) setI(at);
+      }
+      return null;
+    });
+  };
+  // A scrub that ends over a link must not navigate; a plain tap must.
+  const onClickCapture = (e: React.MouseEvent) => {
+    const g = gRef.current;
+    if (g.just) {
+      g.just = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const block = (e: TouchEvent) => {
+      if (gRef.current.on) e.preventDefault();
+    };
+    el.addEventListener("touchmove", block, { passive: false });
+    return () => el.removeEventListener("touchmove", block);
+  }, []);
+
   useEffect(() => {
     if (controlled) return; // step mode: the parent drives the beat
     if (!inView) return; // paused off-screen; resumes from the same beat
+    if (scrub != null) return; // a held finger owns the reel
     if (i >= seq.length) {
       setI(0);
       return;
@@ -297,7 +399,7 @@ export function SizzleReel({
     const hold = Math.max(120, seq[i].ms / Math.max(speed, 0.1));
     const t = setTimeout(() => setI((v) => (v + 1) % seq.length), hold);
     return () => clearTimeout(t);
-  }, [i, seq, speed, controlled, inView]);
+  }, [i, seq, speed, controlled, inView, scrub]);
 
   useEffect(() => {
     onBeatChange?.(active, seq[active]);
@@ -312,7 +414,16 @@ export function SizzleReel({
   const dur = Math.round(beat.fx === "flash" ? holdMs : holdMs * 0.72);
 
   return (
-    <div ref={stageRef} className={`sz-stage ${className}`} style={style}>
+    <div
+      ref={stageRef}
+      className={`sz-stage ${className}`}
+      style={style}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerEnd}
+      onPointerCancel={onPointerEnd}
+      onClickCapture={onClickCapture}
+    >
       {/* All stills stay mounted; the underlay just toggles opacity. Swapping
           one img's src per beat risked a one-frame decode blank (a dark
           blink) at every photo-to-photo boundary. */}
@@ -324,10 +435,19 @@ export function SizzleReel({
           src={src}
           alt=""
           aria-hidden="true"
-          style={{ opacity: under.kind === "img" && under.img === k ? 1 : 0 }}
+          style={{
+            opacity:
+              scrub != null
+                ? scrub === k
+                  ? 1
+                  : 0
+                : under.kind === "img" && under.img === k
+                  ? 1
+                  : 0,
+          }}
         />
       ))}
-      {under.kind === "color" ? (
+      {under.kind === "color" && scrub == null ? (
         <div
           className="sz-fill sz-word"
           style={{ background: under.color, color: textColor ?? autoTextColor(under.color) }}
@@ -335,13 +455,21 @@ export function SizzleReel({
           {under.text ? <span className="sz-line">{under.text}</span> : null}
         </div>
       ) : null}
-      <BeatLayer
-        key={`${active}:${nonce}`}
-        beat={beat}
-        images={images}
-        dur={dur}
-        textColor={textColor}
-      />
+      {/* A held reel is a contact sheet: no beat layer, just the frame
+          under the finger and its place in the run. */}
+      {scrub != null ? (
+        <div className="sz-scrubchip">
+          {scrub + 1}/{images.length}
+        </div>
+      ) : (
+        <BeatLayer
+          key={`${active}:${nonce}`}
+          beat={beat}
+          images={images}
+          dur={dur}
+          textColor={textColor}
+        />
+      )}
     </div>
   );
 }

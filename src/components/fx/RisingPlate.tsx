@@ -148,6 +148,27 @@ export function RisingPlate({
     ? Math.max(nativeRatio / 1.3, 0.85)
     : undefined;
 
+  /* ── the crop is draggable ────────────────────────────────────────
+     The morph buys phone presence by cropping width away — up to 23%
+     of the file, off both sides. That trade is invisible and
+     un-arguable: the reader cannot know what left. A horizontal drag
+     pans the crop across the hidden width, so the picture can be
+     pushed against and let go.
+     The pan is a percentage of the hidden overflow (never of the
+     image), so a plate with nothing hidden has nothing to drag, and
+     it is written as object-position — the driver owns transform and
+     the two must not fight over one property. Vertical scroll is
+     untouched: the gesture only claims the pointer once the finger
+     has travelled further sideways than down. */
+  const panRef = useRef({
+    x0: 0,
+    y0: 0,
+    p0: 50,
+    p: 50,
+    on: false,
+    live: false,
+  });
+
   useEffect(() => {
     const sec = secRef.current;
     const img = imgRef.current;
@@ -272,11 +293,86 @@ export function RisingPlate({
         ? Math.round(RADIUS * (1 - p)) + "px"
         : RADIUS + "px";
     });
+    /* Only a morphing plate on a phone hides any width, so only that
+       plate listens. Registered natively rather than through props
+       because the move handler must be able to preventDefault the
+       page scroll once the gesture is claimed, and React's touch
+       listeners are passive. */
+    let panOff = () => {};
+    if (clip && tallMorph) {
+      const g = panRef.current;
+      const phone = () => window.innerWidth <= CHOREO_BREAKPOINT;
+      // How much of the image is off the box, as a fraction of its
+      // drawn width. cover scales by the ratio difference, so the
+      // hidden part is what the box cannot show.
+      const hidden = () => {
+        const bw = clip.offsetWidth || 1;
+        const bh = clip.offsetHeight || 1;
+        const ar = nativeRatio ?? bw / bh;
+        const drawn = (bh * ar) / bw; // drawn width ÷ box width
+        return Math.max(0, drawn - 1);
+      };
+      const down = (e: PointerEvent) => {
+        if (!phone() || reduce.matches || hidden() < 0.02) return;
+        g.x0 = e.clientX;
+        g.y0 = e.clientY;
+        g.p0 = g.p;
+        g.on = true;
+        g.live = false;
+      };
+      const move = (e: PointerEvent) => {
+        if (!g.on) return;
+        const dx = e.clientX - g.x0;
+        const dy = e.clientY - g.y0;
+        if (!g.live) {
+          // let the page have any gesture that is mostly vertical
+          if (Math.abs(dy) > Math.abs(dx) || Math.abs(dx) < 12) {
+            if (Math.abs(dy) > 12) g.on = false;
+            return;
+          }
+          g.live = true;
+          try {
+            clip.setPointerCapture(e.pointerId);
+          } catch {
+            /* pointer already released */
+          }
+        }
+        // The full hidden width is one box-width of travel, so the
+        // drag maps to what is actually there rather than to a
+        // constant that would feel different on every plate.
+        const span = clip.offsetWidth || 1;
+        const next = g.p0 - (dx / span) * 100;
+        g.p = Math.max(0, Math.min(100, next));
+        img.style.objectPosition = g.p.toFixed(1) + "% 50%";
+      };
+      const up = () => {
+        g.on = false;
+        g.live = false;
+      };
+      const block = (e: TouchEvent) => {
+        if (g.live) e.preventDefault();
+      };
+      clip.addEventListener("pointerdown", down);
+      clip.addEventListener("pointermove", move);
+      clip.addEventListener("pointerup", up);
+      clip.addEventListener("pointercancel", up);
+      clip.addEventListener("touchmove", block, { passive: false });
+      panOff = () => {
+        clip.removeEventListener("pointerdown", down);
+        clip.removeEventListener("pointermove", move);
+        clip.removeEventListener("pointerup", up);
+        clip.removeEventListener("pointercancel", up);
+        clip.removeEventListener("touchmove", block);
+        img.style.objectPosition = "";
+      };
+    }
+
     return () => {
       off();
+      panOff();
       clear();
     };
-  }, []);
+  }, [tallMorph, nativeRatio, tallRatio]);
 
   return (
     <section

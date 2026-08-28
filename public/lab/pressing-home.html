@@ -1015,12 +1015,31 @@
     color: inherit; font-size: var(--note);
     text-decoration: underline; text-underline-offset: 3px; }
   .ixnotes .rdrawer .rgap { height: 18px; }
+
+  /* ── PULL TO ASK (phones) ─────────────────────────────────────────
+     The gesture every phone already knows, pointed at the house. It
+     rides above the masthead and stays out of the way until pulled. */
+  #pullask { position: fixed; left: 0; right: 0; top: 0; z-index: 60;
+    display: flex; align-items: flex-end; justify-content: center;
+    height: 0; overflow: hidden; pointer-events: none;
+    font-size: var(--note); letter-spacing: -0.01em;
+    color: rgba(0, 0, 0, 0.62); background: var(--paper, #F3F0ED); }
+  #pullask b { font-weight: 500; color: var(--ink); }
+  #pullask .pa-in { padding-bottom: 9px; text-align: center;
+    line-height: 1.35; }
+  #pullask.pa-snap { transition: height 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  @media (prefers-reduced-motion: reduce) {
+    #pullask { display: none; }
+  }
   /* one column, stacked: the reel, its caption, then the one-liner —
      the emptied right half is the band's negative space. THE REEL IS
      THE COUNT: a stamp-size faux reel cutting through the category's
      own tiles, the cover reel's signature at rail scale. */
   .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
-    border-radius: 10px; overflow: hidden; }
+    border-radius: 10px; overflow: hidden;
+    /* held and dragged sideways to scrub; vertical stays the page's */
+    touch-action: pan-y; user-select: none; -webkit-user-select: none;
+    -webkit-touch-callout: none; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
     opacity: 0.75; margin-top: 12px; max-width: 24ch; }
 
@@ -4391,6 +4410,60 @@ function buildMagazine() {
     if (rl.surface.color != null) rl.tint.style.background = rl.surface.color;
   };
   const szStop = (rl) => { clearTimeout(rl.timer); rl.timer = null; };
+  /* ── HOLD TO SCRUB, the stamp's phone toy ─────────────────────────
+     The component gesture (SizzleReel.tsx), rebuilt for the vanilla
+     stamp: hold ~220ms without moving and the loop parks; drag
+     sideways and the frames shuttle like a contact sheet; release and
+     it plays on from the frame under the finger. The hold is what
+     keeps this off the page's own gestures — a scroll or a tap has
+     moved or lifted long before it lands. */
+  const szScrub = (rl) => {
+    const g = { x0: 0, y0: 0, at: 0, hold: null, on: false };
+    const end = () => { clearTimeout(g.hold); g.hold = null; };
+    const show = (k) => {
+      rl.stills.forEach((im, j) => { im.style.opacity = j === k ? 1 : 0; });
+      rl.tint.style.opacity = 0;
+      if (rl.layer) { rl.layer.remove(); rl.layer = null; }
+    };
+    rl.box.addEventListener("pointerdown", (e) => {
+      if (rl.frames.length < 2) return;
+      g.x0 = e.clientX; g.y0 = e.clientY;
+      g.at = rl.surface.img || 0;
+      end();
+      g.hold = setTimeout(() => {
+        g.on = true;
+        szStop(rl);
+        try { rl.box.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
+        show(g.at);
+      }, 220);
+    });
+    rl.box.addEventListener("pointermove", (e) => {
+      if (g.on) {
+        const n = rl.frames.length;
+        const step = Math.round((e.clientX - g.x0) / 36);
+        const k = (((g.at - step) % n) + n) % n;
+        rl.surface = { img: k };
+        show(k);
+        return;
+      }
+      if (g.hold && Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 10) end();
+    });
+    const up = () => {
+      end();
+      if (!g.on) return;
+      g.on = false;
+      /* resume from the beat that shows the frame it was left on */
+      const seq = szSeq(rl.frames.length);
+      const at = seq.findIndex((b) => b.img === (rl.surface.img || 0));
+      rl.at = at >= 0 ? at : 0;
+      if (rl.row.classList.contains("open")) szStart(rl);
+    };
+    rl.box.addEventListener("pointerup", up);
+    rl.box.addEventListener("pointercancel", up);
+    rl.box.addEventListener("touchmove", (e) => {
+      if (g.on) e.preventDefault();
+    }, { passive: false });
+  };
   const szStart = (rl) => {
     if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
     const step = () => {
@@ -4422,6 +4495,7 @@ function buildMagazine() {
     const rl = { row: r, box, fq, timer: null,
       frames: works.map((ci) => cards[ci].img) };
     szStage(rl);
+    szScrub(rl);
     reels.push(rl);
     /* the reel runs while its row is open, and only then — the row's
        class is the one source of open truth, so the player watches it
@@ -6281,6 +6355,96 @@ function armRows(rowsEl) {
     });
   };
   requestAnimationFrame(tick);
+})();
+
+/* ── PULL TO ASK ───────────────────────────────────────────────────
+   A phone already knows one gesture at the top of a page: pull down
+   and something refreshes. Here it asks. Drag past the top of the
+   index and the house takes the next question from the tour, types it
+   into the field and answers it — the plainest way in the site has,
+   worked by the plainest gesture a phone has.
+
+   The tour list is the source, so the questions a visitor pulls are
+   the same ones the field offers on its own, and adding one there
+   adds it here. It walks rather than randomises: a second pull is a
+   different question, which is the whole reason to pull twice.
+
+   Only where the gesture means anything: a touch pointer, a phone
+   width, and the scroller genuinely at 0. Reduced motion opts out
+   (the indicator is display: none and the handler checks it), and a
+   pull that never reaches the threshold springs back having done
+   nothing. */
+(() => {
+  if (typeof matchMedia !== "function") return;
+  const TRIGGER = 78;              /* px of pull that commits */
+  const MAX = 132;                 /* the rubber band's ceiling */
+  const el = document.createElement("div");
+  el.id = "pullask";
+  el.innerHTML = '<div class="pa-in"></div>';
+  const label = el.firstChild;
+  document.body.appendChild(el);
+
+  let k = 0;                       /* which tour question is next */
+  let y0 = 0, pulling = false, live = false, armed = false;
+  const sc = () => document.querySelector("main") ||
+    document.scrollingElement || document.documentElement;
+  const phone = () => innerWidth <= 860 &&
+    matchMedia("(pointer: coarse)").matches;
+  const paint = (d) => {
+    el.style.height = d.toFixed(0) + "px";
+    const hot = d >= TRIGGER;
+    if (hot !== armed) armed = hot;
+    label.innerHTML = hot
+      ? "Release to ask <b>\u201c" + TOUR[k] + "\u201d</b>"
+      : "Pull to ask <b>\u201c" + TOUR[k] + "\u201d</b>";
+  };
+  const reset = (snap) => {
+    if (snap) {
+      el.classList.add("pa-snap");
+      el.style.height = "0px";
+      setTimeout(() => el.classList.remove("pa-snap"), 460);
+    } else {
+      el.classList.remove("pa-snap");
+      el.style.height = "0px";
+    }
+    pulling = live = armed = false;
+  };
+  addEventListener("touchstart", (e) => {
+    if (!phone() || REDUCE() || e.touches.length !== 1) return;
+    if (sc().scrollTop > 0) return;
+    /* not while someone is typing their own question */
+    if (document.activeElement === input) return;
+    y0 = e.touches[0].clientY;
+    pulling = true;
+    live = false;
+  }, { passive: true });
+  addEventListener("touchmove", (e) => {
+    if (!pulling) return;
+    const dy = e.touches[0].clientY - y0;
+    if (!live) {
+      if (dy < 12) { if (dy < -6) pulling = false; return; }
+      /* a pull that starts after the page has scrolled is a scroll */
+      if (sc().scrollTop > 0) { pulling = false; return; }
+      live = true;
+    }
+    /* rubber band: the first pixels move freely, the last barely */
+    const d = Math.min(MAX, MAX * (1 - Math.exp(-dy / 90)));
+    paint(d);
+    e.preventDefault();
+  }, { passive: false });
+  const release = () => {
+    if (!pulling) return;
+    const go = armed;
+    const q = TOUR[k];
+    reset(true);
+    if (!go) return;
+    k = (k + 1) % TOUR.length;     /* the next pull asks the next one */
+    input.value = q;
+    askSource = "chip";            /* navigation: the template answers */
+    onQuery(q, true);
+  };
+  addEventListener("touchend", release, { passive: true });
+  addEventListener("touchcancel", () => reset(true), { passive: true });
 })();
 
 /* boot */
