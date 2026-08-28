@@ -210,6 +210,52 @@
   .vE .etimes .t.on { background-color: #fff; color: var(--ink); }
   .vE .etimes .x { color: rgba(255,255,255,0.3); }
 
+  /* ── F · the spine, opened (A × E) ────────────────────────────────
+     A's armature — the rotated month, the stacked numerals, the one
+     vertical rule — carrying E's drawer: closed, the days are just
+     numerals with a quiet count; the one you touch floods to ink,
+     blooms a little taller, and its hours arrive beside the numeral
+     on the drawer's own 90ms lag. */
+  .vF .cal { display: grid; grid-template-columns: 200px 1fr;
+    column-gap: 44px; margin-top: 64px; }
+  .vF .month { writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: clamp(120px, 13vw, 200px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.8;
+    justify-self: start; align-self: start; }
+  .vF .days { border-left: 1px solid var(--ink); }
+  .vF .day { display: grid;
+    grid-template-columns: 170px 44px 1fr max-content;
+    align-items: center; column-gap: 28px;
+    padding: 8px 56px 8px 44px; margin-right: -56px;
+    cursor: pointer;
+    transition: background-color 0.5s var(--curve),
+      color 0.5s var(--curve),
+      padding-top 0.56s var(--curve), padding-bottom 0.56s var(--curve); }
+  .vF .day.open { background: var(--ink); color: #fff;
+    padding-top: 30px; padding-bottom: 30px; }
+  .vF .num { font-size: clamp(64px, 7vw, 104px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.92;
+    font-variant-numeric: tabular-nums; }
+  .vF .day.shut .num, .vF .day.shut .wd { color: rgba(0,0,0,0.22); }
+  .vF .wd { font-size: 15px; font-weight: 700; }
+  .vF .slots { display: flex; gap: 26px; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0; transform: translateY(10px); transition: none; }
+  .vF .day.open .slots { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s var(--curve) 90ms; }
+  .vF .day.open .t { color: inherit;
+    background-image: linear-gradient(#fff, #fff),
+      linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)); }
+  .vF .day.open .t.on { background-color: #fff; color: var(--ink); }
+  .vF .day.open .x { color: rgba(255,255,255,0.3); }
+  .vF .free { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; opacity: 0.45;
+    transition: opacity 0.3s var(--curve); }
+  .vF .day.open .free { opacity: 0; }  /* the count yields to the hours */
+  .vF .note { margin-top: 40px; font-size: var(--note);
+    color: rgba(0,0,0,0.5); max-width: 34em; }
+
   @media (max-width: 900px) {
     .cols3 { grid-template-columns: 1fr; row-gap: 34px; }
     .vA .cal { grid-template-columns: 1fr; row-gap: 30px; }
@@ -219,6 +265,11 @@
     .vC .cal { grid-template-columns: 1fr; row-gap: 24px; }
     .stage { padding: 36px 22px 44px; }
     .vE .drow { margin: 0 -22px; padding: 0 22px; }
+    .vF .cal { grid-template-columns: 1fr; row-gap: 30px; }
+    .vF .month { writing-mode: horizontal-tb; transform: none; }
+    .vF .day { grid-template-columns: 90px 40px 1fr; column-gap: 14px;
+      padding: 8px 22px 8px 14px; margin-right: -22px; }
+    .vF .free { display: none; }
   }
 </style>
 </head>
@@ -433,6 +484,34 @@ VARIANTS.push({
     </div>`,
 });
 
+/* ── F · the spine, opened ───────────────────────────────────────── */
+VARIANTS.push({
+  key: "vF", name: "F · The spine, opened (A × E)",
+  why: "A's armature carrying E's drawer. Closed, the calendar is nothing but the rotated month and the stacked numerals with a quiet count on the far edge. The day you touch floods to ink and blooms taller, and its hours arrive beside the numeral on the drawer's 90ms lag — the FEB poster you can open.",
+  html: `
+    <div class="cols3">
+      <div></div>
+      <h2 class="lede" style="grid-column: 2 / 4">${LEDE}</h2>
+    </div>
+    <div class="cal">
+      <div class="month">${esc(firstOpen.mon.toUpperCase())}</div>
+      <div class="days">
+        ${DAYS.map(d => {
+          const n = d.slots.filter(s => s.open).length;
+          return `
+        <div class="day ${n ? "" : "shut"}">
+          <div class="num">${d.num}</div>
+          <div class="wd">${esc(d.wd1)}</div>
+          <div class="slots">${slotBtns(d)}</div>
+          <div class="free">${n ? n + " open" : "—"}</div>
+        </div>`;
+        }).join("")}
+      </div>
+    </div>
+    <p class="note">These are the hours I keep. If none of them work,
+      say so at hello@reckon.house and we’ll find one.</p>`,
+});
+
 const root = document.getElementById("vars");
 for (const v of VARIANTS) {
   const s = document.createElement("section");
@@ -460,6 +539,24 @@ document.querySelectorAll(".vC .run").forEach((r) => {
     r.classList.add("on");
   });
 });
+/* F: E's wiring on A's rows — a shut day never opens */
+document.querySelectorAll(".vF .day").forEach((r) => {
+  if (r.classList.contains("shut")) return;
+  const openIt = () => {
+    r.parentElement.querySelectorAll(".day.open")
+      .forEach((o) => { if (o !== r) o.classList.remove("open"); });
+    r.classList.add("open");
+  };
+  r.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") openIt();
+  });
+  r.addEventListener("click", (e) => {
+    if (e.target.closest(".t")) return;
+    if (r.classList.contains("open")) r.classList.remove("open");
+    else openIt();
+  });
+});
+
 /* E: the drawer, on the rail's wiring — hover opens, click holds */
 document.querySelectorAll(".vE .drow").forEach((r) => {
   const openIt = () => {
