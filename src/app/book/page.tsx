@@ -42,9 +42,16 @@ export default async function BookPage() {
 
       <section className="hero-breakout stratum">
         <div className="ixbody">
-          {/* The standing rule, pinned, the same one the daybook and
-              the homepage carry. */}
-          <div className="ixrules ixrule1" aria-hidden="true">
+          {/* BOTH standing rules, pinned — the homepage's own pair, not
+              the single-boundary ixrule1 variant. The second lands at
+              50% of the rules box, which is exactly the middle of the
+              gutter now that the calendar splits its column 1fr 1fr on
+              --ixgap: the line between the month and the dates is the
+              same line the homepage draws between its two columns,
+              drawn by the same rule. The calendar used to paint its
+              own border on the days column, which sat hard against
+              the ink band and got covered by it. */}
+          <div className="ixrules" aria-hidden="true">
             <div className="ixrulesPin" />
           </div>
 

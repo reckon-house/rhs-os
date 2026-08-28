@@ -161,13 +161,19 @@ export function BookingCalendar({
           open from the server, so the page shows real times before a
           byte of script arrives — and a no-script reader gets at least
           that day's hours. */}
-      <div className={styles.cal}>
-        <div className={styles.leftcol}>
-          {children}
-          <div className={styles.month} aria-hidden="true">
-            {spineMon.toUpperCase()}
-          </div>
+      <div className={styles.leftcol}>
+        {children}
+        <div className={styles.month} aria-hidden="true">
+          {spineMon.toUpperCase()}
         </div>
+      </div>
+      {/* THE RIGHT COLUMN CARRIES THE WHOLE TRANSACTION: the dates,
+          then the zone line, then the form under them. The form used
+          to span both columns and sat in a band of its own below the
+          calendar, which read as a second page. Here the eye goes
+          down one column — pick a day, pick a time, say who you
+          are. */}
+      <div className={styles.rightcol}>
         <div
           className={styles.days}
           role="group"
@@ -240,7 +246,6 @@ export function BookingCalendar({
             );
           })}
         </div>
-      </div>
 
       {differs ? (
         <p className={styles.tz}>
@@ -281,6 +286,7 @@ export function BookingCalendar({
           {why ? <span className={styles.why} role="status">{why}</span> : null}
         </div>
       </form>
+      </div>
     </div>
   );
 }

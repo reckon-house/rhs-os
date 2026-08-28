@@ -25,9 +25,22 @@
   grid-row: 1 / -1;
 }
 
+/* THE HOMEPAGE'S SPLIT, TO THE PIXEL, ON THE WHOLE PAGE. .covercols
+   divides the content column 1fr 1fr on --ixgap and the homepage
+   statement sits in the first half — 528px at a 1440 window. Copying
+   that rule rather than approximating it is what puts the lede here
+   on exactly the line the homepage's intro lands on.
+   The grid lives on .wrap rather than on an inner box so the form can
+   sit in the right column under the dates: one column for the month,
+   one for the whole transaction. */
 .wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--ixgap, clamp(24px, 3.4vw, 56px));
+  align-items: start;
   padding-bottom: clamp(80px, 12dvh, 140px);
 }
+.rightcol { min-width: 0; }
 
 /* ── the spine, opened ───────────────────────────────────────────────
    Variant F from lab/book-variants.html, the survivor of six: the FEB
@@ -37,16 +50,6 @@
    floods to ink, blooms taller on the daybook curve, and its hours
    arrive beside the numeral on the drawer's 90ms lag. A day with
    nothing to offer stays grey and never opens. */
-/* The homepage's own split: the lede and the month hold the left half
-   the way the statement holds its column, and the days run down the
-   right, across the same thin grey rule the homepage draws — not the
-   lab's solid ink. One geometry for the whole site. */
-.cal {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  column-gap: clamp(28px, 4vw, 56px);
-  margin: 0 0 clamp(22px, 3vw, 34px);
-}
 .leftcol {
   display: flex;
   flex-direction: column;
@@ -54,17 +57,27 @@
   align-self: start;
   min-width: 0;
 }
+/* SIDEWAYS, as the poster has it. rotate(180deg) on top of vertical-rl
+   is what makes it read bottom-to-top rather than top-to-bottom, which
+   is the FEB poster's own direction. align-self keeps it from
+   stretching to the flex column's width, and the height is its own
+   type — a rotated line has no intrinsic block size the column can
+   use. */
 .month {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  align-self: start;
   font-size: clamp(110px, 12vw, 200px);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.8;
   user-select: none;
 }
-.days {
-  border-left: 1px solid rgba(0, 0, 0, 0.14);
-  min-width: 0;
-}
+/* No border here: the standing rule in .ixrules draws this boundary,
+   pinned, the way it does on every other page. A border on this
+   column sat inside the gutter's right half and the ink band painted
+   straight over it. */
+.days { min-width: 0; }
 
 .day {
   display: grid;
@@ -211,9 +224,8 @@
 /* ── the form ──
    The contact form's own shape: a label column, a rule under each
    field, no boxes. One form language on the site. */
-.form {
-  max-width: 62ch;
-}
+/* No max-width: the right column is the measure now. */
+.form { margin-top: clamp(28px, 4vw, 48px); }
 .frow {
   display: grid;
   grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
@@ -332,9 +344,16 @@
    (no hover to do it). The count hides — at this width it crowded the
    weekday letter, and the tap answers the same question. */
 @media (max-width: 640px) {
-  .cal { grid-template-columns: minmax(0, 1fr); row-gap: 22px; }
+  .wrap { grid-template-columns: minmax(0, 1fr); row-gap: 22px; }
   .leftcol { gap: 26px; }
-  .month { font-size: clamp(64px, 22vw, 110px); }
+  /* HORIZONTAL ON A PHONE. Sideways here would run the month down the
+     whole screen and push the dates below the fold, which is the one
+     thing the calendar cannot afford at this width. */
+  .month {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: clamp(64px, 22vw, 110px);
+  }
   .day { padding-left: 14px; padding-right: 14px; column-gap: 12px; }
   .dayBtn { grid-template-columns: 78px auto; column-gap: 12px; }
   .num { font-size: clamp(40px, 12vw, 56px); }
