@@ -1,0 +1,443 @@
+<!doctype html>
+<!--
+  rail-variants — six Swiss treatments of the homepage's left rail,
+  side by side, real content, real tokens. An exploration page, not a
+  spec: whichever column (or combination) survives gets ported into
+  pressing-home.html properly and THAT stays the spec.
+
+  Ground rules kept from the system: Helvetica only, --note 12 / --lbl
+  9-10, ink on paper, the drawn-underline for live words, middle dots.
+  One variant deliberately breaks the palette (F, the Swiss red) so the
+  question "should the site ever have an accent" gets asked with eyes
+  rather than in the abstract.
+-->
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>rail-variants · lab</title>
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf8;
+    --ink: #000;
+    --note: 12px;
+    --lbl: 9px;
+    --track: 0.08em;
+    --red: #e63329; /* variant F only */
+  }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #e8e6e2;
+    color: var(--ink);
+    padding: 48px 40px 80px;
+  }
+  h1 { font-size: 12px; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 6px; }
+  .sub { font-size: 11px; opacity: 0.55; margin-bottom: 36px; max-width: 60ch; line-height: 1.5; }
+
+  .row { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+  .spec {
+    width: 236px;
+    flex: none;
+  }
+  .spec .card {
+    background: var(--paper);
+    padding: 28px 22px 36px;
+    min-height: 560px;
+  }
+  .spec .name {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 10px 0 3px;
+  }
+  .spec .why {
+    font-size: 10.5px;
+    line-height: 1.5;
+    opacity: 0.55;
+  }
+
+  /* shared type inside cards */
+  .card { font-size: var(--note); line-height: 1.5; color: rgba(0,0,0,0.78); }
+  .card a { color: inherit; }
+
+  /* the drawn underline, the site's own live-word gesture */
+  .go {
+    display: block; width: fit-content;
+    text-decoration: none; cursor: pointer;
+    background-image: linear-gradient(#000, #000),
+      linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22,1,0.36,1);
+  }
+  .go:hover { background-size: 100% 1px, 100% 1px; }
+
+  /* ── A · as-is (control) ─────────────────────────────────────────── */
+  .vA .blk { margin-bottom: 34px; }
+  .vA .blk:last-child { margin-bottom: 0; }
+  .vA .mark { font-weight: 700; margin-bottom: 34px; font-size: 13px; }
+  .vA .filt a { margin-bottom: 7px; }
+  .vA .go { margin-top: 8px; }
+
+  /* ── B · the ledger ──────────────────────────────────────────────── */
+  .vB .mark { font-weight: 700; font-size: 13px; padding-bottom: 18px; }
+  .vB .blk {
+    border-top: 1px solid var(--ink);
+    padding: 12px 0 18px;
+  }
+  .vB .tag {
+    display: block;
+    font-size: var(--lbl);
+    font-weight: 500;
+    letter-spacing: var(--track);
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 8px;
+  }
+  .vB .blk:last-child { border-bottom: 1px solid var(--ink); }
+  .vB .filt a { margin-bottom: 6px; }
+  .vB .go { margin-top: 8px; }
+
+  /* ── C · the numbered index ──────────────────────────────────────── */
+  .vC .mark { font-weight: 700; font-size: 13px; margin-bottom: 30px; }
+  .vC .blk {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    column-gap: 12px;
+    margin-bottom: 30px;
+    border-top: 1px solid rgba(0,0,0,0.14);
+    padding-top: 10px;
+  }
+  .vC .n {
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+  }
+  .vC .filt a { margin-bottom: 6px; }
+  .vC .go { margin-top: 8px; }
+
+  /* ── D · the spine ───────────────────────────────────────────────── */
+  .vD .mark { font-weight: 700; font-size: 13px; margin-bottom: 30px; }
+  .vD .blk {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    column-gap: 14px;
+    margin-bottom: 26px;
+  }
+  .vD .tag {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: var(--lbl);
+    font-weight: 500;
+    letter-spacing: var(--track);
+    text-transform: uppercase;
+    opacity: 0.45;
+    border-right: 1px solid rgba(0,0,0,0.18);
+    padding-right: 0;
+    padding-left: 6px;
+    justify-self: start;
+  }
+  .vD .filt a { margin-bottom: 6px; }
+  .vD .go { margin-top: 8px; }
+
+  /* ── E · the poster ──────────────────────────────────────────────── */
+  .vE .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
+  .vE .lede { font-size: 11px; line-height: 1.5; opacity: 0.6; margin-bottom: 26px; }
+  .vE .filt a {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.28;
+    margin-bottom: 2px;
+  }
+  .vE .filt { margin-bottom: 30px; }
+  .vE .small { font-size: 10px; line-height: 1.55; letter-spacing: 0.04em;
+    text-transform: uppercase; opacity: 0.55; margin-bottom: 18px; }
+  .vE .go { margin-top: 6px; font-size: var(--note); }
+
+  /* ── F · the red nod (off-palette on purpose) ───────────────────── */
+  .vF .mark { font-weight: 700; font-size: 13px; padding-bottom: 18px; }
+  .vF .blk { border-top: 1px solid var(--ink); padding: 12px 0 18px; }
+  .vF .tag {
+    display: block; font-size: var(--lbl); font-weight: 500;
+    letter-spacing: var(--track); text-transform: uppercase;
+    opacity: 0.5; margin-bottom: 8px;
+  }
+  .vF .blk:last-child { border-bottom: 1px solid var(--ink); }
+  .vF .filt a { margin-bottom: 6px; }
+  .vF .go {
+    margin-top: 8px;
+    background-image: linear-gradient(var(--red), var(--red)),
+      linear-gradient(rgba(230,51,41,0.35), rgba(230,51,41,0.35));
+  }
+  .vF .filt .go {
+    background-image: linear-gradient(var(--red), var(--red)),
+      linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22));
+  }
+  .vF .dotred { color: var(--red); }
+  /* ── G · the dossier (accordion) ─────────────────────────────────── */
+  .vG .mark { font-weight: 700; font-size: 13px; padding-bottom: 16px; }
+  .vG .row2 { border-top: 1px solid var(--ink); }
+  .vG .row2:last-child { border-bottom: 1px solid var(--ink); }
+  .vG .head2 {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 11px 0; cursor: pointer; user-select: none;
+  }
+  .vG .head2 .tag {
+    font-size: var(--lbl); font-weight: 500; letter-spacing: var(--track);
+    text-transform: uppercase;
+  }
+  .vG .head2 .ind {
+    font-size: 11px; font-weight: 300; line-height: 1;
+    transition: transform 0.5s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%);
+  }
+  .vG .row2.open .ind { transform: rotate(45deg); }
+  .vG .body2 {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.6s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%);
+  }
+  .vG .row2.open .body2 { grid-template-rows: 1fr; }
+  .vG .body2 > div { overflow: hidden; min-height: 0; }
+  .vG .body2 .pad { padding: 2px 0 16px; }
+  .vG .filt a { margin-bottom: 6px; }
+  .vG .go { margin-top: 8px; }
+
+  /* ── H · the segment (sliding ink pill) ──────────────────────────── */
+  .vH .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
+  .vH .blk { margin-bottom: 30px; }
+  .vH .seg {
+    position: relative;
+    border: 1px solid var(--ink);
+    margin-bottom: 30px;
+  }
+  .vH .seg .pill {
+    position: absolute; left: 0; width: 100%;
+    background: var(--ink);
+    z-index: 0;
+    transition: top 0.55s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%),
+      height 0.55s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%);
+  }
+  .vH .seg a {
+    position: relative; z-index: 1;
+    display: block; padding: 9px 12px;
+    text-decoration: none;
+    font-size: var(--note);
+    transition: color 0.25s ease;
+  }
+  .vH .seg a.on { color: #fff; }
+  .vH .go { margin-top: 8px; }
+
+  /* ── I · the loupe (proximity magnify) ───────────────────────────── */
+  .vI .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
+  .vI .line {
+    display: block;
+    font-size: var(--note);
+    line-height: 1.45;
+    text-decoration: none;
+    transform-origin: left center;
+    transition: transform 0.18s ease-out, font-weight 0.18s;
+    will-change: transform;
+    margin-bottom: 7px;
+  }
+  .vI .quiet { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
+    opacity: 0.55; line-height: 1.6; margin: 22px 0 0; }
+</style>
+
+<h1>The left rail · six Swiss treatments</h1>
+<p class="sub">Same content, same tokens, one idea per column. A is today's rail
+for comparison. F breaks the palette on purpose so the accent question is
+answered by looking, not arguing.</p>
+
+<div class="row" id="row"></div>
+
+<script>
+"use strict";
+/* the rail's real content, once — every variant renders from this */
+const C = {
+  mark: "Reckon House Staples",
+  practice: "Creative technologist. AI development. Brand systems. Digital design. Interior design.",
+  filters: ["Digital Experiences", "App Development", "Campaign/Creative", "Interiors"],
+  mail: "hello@reckon.house",
+  book: "Book 30 minutes",
+  recently: "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online.",
+  setup: "Independent, Texas. Design and build. I love the work.",
+};
+
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const filt = (cls) => `<div class="filt">` +
+  C.filters.map((f) => `<a class="${cls}" href="#">${esc(f)}</a>`).join("") + `</div>`;
+
+const VARIANTS = [
+  {
+    key: "vA", name: "A · As-is",
+    why: "Today's rail: air does the separating, one weight, labels only where a block needs one.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="blk">${C.practice}</div>
+      <div class="blk">${filt("go")}</div>
+      <div class="blk">${C.mail}<a class="go" href="#">${C.book}</a></div>
+      <div class="blk">${C.recently}</div>
+      <div class="blk">${C.setup}</div>`,
+  },
+  {
+    key: "vB", name: "B · The ledger",
+    why: "Vignelli timetable: every block a ruled row with a caps label. The rail becomes a document with visible structure — closest sibling to the answer receipt's key-value rows.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="blk"><span class="tag">Practice</span>${C.practice}</div>
+      <div class="blk"><span class="tag">Filter</span>${filt("go")}</div>
+      <div class="blk"><span class="tag">Contact</span>${C.mail}<a class="go" href="#">${C.book}</a></div>
+      <div class="blk"><span class="tag">Recently</span>${C.recently}</div>
+      <div class="blk"><span class="tag">Setup</span>${C.setup}</div>`,
+  },
+  {
+    key: "vC", name: "C · The index",
+    why: "Numbered like the studies' own section marks (01 Statement, 02 The Heart) — the rail joins the same numbering system the case studies already speak.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="blk"><span class="n">01</span><div>${C.practice}</div></div>
+      <div class="blk"><span class="n">02</span>${filt("go")}</div>
+      <div class="blk"><span class="n">03</span><div>${C.mail}<a class="go" href="#">${C.book}</a></div></div>
+      <div class="blk"><span class="n">04</span><div>${C.recently}</div></div>
+      <div class="blk"><span class="n">05</span><div>${C.setup}</div></div>`,
+  },
+  {
+    key: "vD", name: "D · The spine",
+    why: "Labels rotated into the gutter with a hairline — the covers' vertical spec line, miniaturized. Quietest of the labeled variants; the text column stays exactly as wide as today's.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="blk"><span class="tag">Practice</span><div>${C.practice}</div></div>
+      <div class="blk"><span class="tag">Filter</span>${filt("go")}</div>
+      <div class="blk"><span class="tag">Contact</span><div>${C.mail}<a class="go" href="#">${C.book}</a></div></div>
+      <div class="blk"><span class="tag">Recently</span><div>${C.recently}</div></div>
+      <div class="blk"><span class="tag">Setup</span><div>${C.setup}</div></div>`,
+  },
+  {
+    key: "vE", name: "E · The poster",
+    why: "Müller-Brockmann inversion: the filters become the rail's display type — they are its only real controls, so they get the poster voice. Everything else drops to caps footnotes.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="lede">${C.practice}</div>
+      ${filt("go")}
+      <div class="small">${C.mail}</div>
+      <a class="go" href="#" style="margin-bottom:30px">${C.book}</a>
+      <div class="small">${C.recently}</div>
+      <div class="small">${C.setup}</div>`,
+  },
+  {
+    key: "vF", name: "F · The red nod",
+    why: "B's ledger with the one classic Swiss move this site has never made: a single red, spent only on the live words. Off-palette on purpose — the question is whether it earns it.",
+    html: `
+      <div class="mark">${C.mark}<span class="dotred"> *</span></div>
+      <div class="blk"><span class="tag">Practice</span>${C.practice}</div>
+      <div class="blk"><span class="tag">Filter</span>${filt("go")}</div>
+      <div class="blk"><span class="tag">Contact</span>${C.mail}<a class="go" href="#">${C.book}</a></div>
+      <div class="blk"><span class="tag">Recently</span>${C.recently}</div>
+      <div class="blk"><span class="tag">Setup</span>${C.setup}</div>`,
+  },
+];
+
+VARIANTS.push(
+  {
+    key: "vG", name: "G · The dossier",
+    why: "iOS disclosure wearing a Swiss suit: collapsed, the rail is a five-line ruled index you can read in a second; a row springs open (real spring, CSS linear()) to its content. One open at a time. The + rotating to x is the only ornament.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      ${[["Practice", C.practice],
+         ["Filter", filt("go")],
+         ["Contact", `${C.mail}<a class="go" href="#">${C.book}</a>`],
+         ["Recently", C.recently],
+         ["Setup", C.setup]].map(([t, b], i) => `
+      <div class="row2${i === 1 ? " open" : ""}">
+        <div class="head2"><span class="tag">${t}</span><span class="ind">+</span></div>
+        <div class="body2"><div><div class="pad">${b}</div></div></div>
+      </div>`).join("")}`,
+  },
+  {
+    key: "vH", name: "H · The segment",
+    why: "The iOS segmented control redrawn with a hairline and ink: the filters live in one bordered box and a solid ink pill springs to whichever you're on, knocking its label to paper. The control IS the composition.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div class="blk">${C.practice}</div>
+      <div class="seg" id="seg">
+        <div class="pill" id="pill"></div>
+        ${C.filters.map((f, i) => `<a href="#"${i === 0 ? ' class="on"' : ""}>${esc(f)}</a>`).join("")}
+      </div>
+      <div class="blk">${C.mail}<a class="go" href="#">${C.book}</a></div>
+      <div class="blk">${C.setup}</div>`,
+  },
+  {
+    key: "vI", name: "I · The loupe",
+    why: "The dock's magnify, flattened to type: rows nearest the pointer grow a step and gain weight, falling off with distance. No chrome at all — the interaction is the hierarchy. Reads as a plain list until touched.",
+    html: `
+      <div class="mark">${C.mark}</div>
+      <div id="loupe">
+        ${C.filters.map((f) => `<a class="line" href="#">${esc(f)}</a>`).join("")}
+        <a class="line" href="#">${C.mail}</a>
+        <a class="line" href="#">${C.book}</a>
+      </div>
+      <div class="quiet">${C.recently}</div>
+      <div class="quiet">${C.setup}</div>`,
+  }
+);
+
+const row = document.getElementById("row");
+for (const v of VARIANTS) {
+  const d = document.createElement("div");
+  d.className = "spec";
+  d.innerHTML = `<div class="card ${v.key}">${v.html}</div>
+    <div class="name">${v.name}</div><div class="why">${v.why}</div>`;
+  row.appendChild(d);
+}
+
+/* G: accordion, one open */
+document.querySelectorAll(".vG .head2").forEach((h) => {
+  h.addEventListener("click", () => {
+    const r = h.parentElement;
+    const open = r.classList.contains("open");
+    r.parentElement.querySelectorAll(".row2.open").forEach((o) => o.classList.remove("open"));
+    if (!open) r.classList.add("open");
+  });
+});
+
+/* H: the pill springs to the hovered / clicked segment */
+const seg = document.getElementById("seg");
+if (seg) {
+  const pill = document.getElementById("pill");
+  const links = [...seg.querySelectorAll("a")];
+  const seat = (a) => {
+    pill.style.top = a.offsetTop + "px";
+    pill.style.height = a.offsetHeight + "px";
+    links.forEach((l) => l.classList.toggle("on", l === a));
+  };
+  requestAnimationFrame(() => seat(links[0]));
+  links.forEach((a) => {
+    a.addEventListener("pointerenter", () => seat(a));
+    a.addEventListener("click", (e) => { e.preventDefault(); seat(a); });
+  });
+  seg.addEventListener("pointerleave", () => seat(links.find((l) => l.classList.contains("on")) || links[0]));
+}
+
+/* I: proximity magnify, dock-style */
+const loupe = document.getElementById("loupe");
+if (loupe) {
+  const lines = [...loupe.querySelectorAll(".line")];
+  loupe.addEventListener("pointermove", (e) => {
+    for (const l of lines) {
+      const r = l.getBoundingClientRect();
+      const d = Math.abs(e.clientY - (r.top + r.height / 2));
+      const k = Math.max(0, 1 - d / 90);
+      l.style.transform = `scale(${(1 + 0.5 * k * k).toFixed(3)})`;
+      l.style.fontWeight = k > 0.6 ? 700 : 400;
+    }
+  });
+  loupe.addEventListener("pointerleave", () => {
+    lines.forEach((l) => { l.style.transform = ""; l.style.fontWeight = ""; });
+  });
+}
+</script>
+</html>
