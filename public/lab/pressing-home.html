@@ -998,8 +998,11 @@
   .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
   /* the drawer's type is on its own clock: 90ms behind the structure
      on the way in, gone at once on the way out (the .dbpre pattern) */
-  .ixnotes .rdrawer .rpad { padding: 3px 0 16px;
+  .ixnotes .rdrawer .rpad { padding: 10px 0 18px;
     opacity: 0; transform: translateY(10px); transition: none; }
+  /* the stamp band breathes: more air above the reel and below the
+     one-liner than the text drawers carry */
+  .ixnotes .rdrawer .rpad.rcat { padding: 16px 0 24px; }
   .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
     transition: opacity 0.5s ease 90ms,
       transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
@@ -1017,15 +1020,56 @@
      THE COUNT: a stamp-size faux reel cutting through the category's
      own tiles, the cover reel's signature at rail scale. */
   .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
-    border-radius: 10px; overflow: hidden;
-    background: rgba(255, 255, 255, 0.08); }
-  .ixnotes .rdrawer .rreel img { width: 100%; height: 100%;
-    object-fit: cover; display: block; }
+    border-radius: 10px; overflow: hidden; }
   .ixnotes .rdrawer .rnumcap { font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
-    text-transform: uppercase; opacity: 0.6; margin-top: 8px; }
+    text-transform: uppercase; opacity: 0.6; margin-top: 10px; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
     opacity: 0.75; margin-top: 12px; max-width: 24ch; }
+
+  /* ── THE STAMP RUNS THE REAL REEL ─────────────────────────────────
+     The sz-* rules below are SizzleReel.tsx's own, copied verbatim —
+     the photo beats only (shutter, fade, pinch, slat, burn, curtain,
+     color curtain, cut) — so the rail stamp and the case-study covers
+     are one mechanism, not a lookalike. At port time the real
+     homepage imports the component's stylesheet instead of this. */
+  .sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size}
+  .sz-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .sz-layer{position:absolute;inset:0;will-change:transform,opacity,clip-path}
+  .sz-shutter{animation:szShutter var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szShutter{from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-fade{animation:szFade var(--d) ease both}
+  @keyframes szFade{from{opacity:0}to{opacity:1}}
+  .sz-cut{animation:szCut var(--d) steps(2) both}
+  @keyframes szCut{from{opacity:0}to{opacity:1}}
+  .sz-curtain{animation:szCurtain var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szCurtain{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-pinchP{position:absolute;left:0;right:0;height:50.5%}
+  .sz-pinchT{top:0;transform:translateY(-102%);animation:szPinchT var(--d) cubic-bezier(.7,0,.15,1) both}
+  .sz-pinchB{bottom:0;transform:translateY(102%);animation:szPinchB var(--d) cubic-bezier(.7,0,.15,1) both}
+  @keyframes szPinchT{0%{transform:translateY(-102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(-102%)}}
+  @keyframes szPinchB{0%{transform:translateY(102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(102%)}}
+  .sz-pinchswap{animation:szPinchSwap var(--d) linear both}
+  @keyframes szPinchSwap{0%{opacity:0}49%{opacity:0}50%{opacity:1}100%{opacity:1}}
+  .sz-strip{position:absolute;top:0;height:100%;overflow:hidden;clip-path:inset(0 0 100% 0);animation:szSlat var(--sd) cubic-bezier(.6,0,.15,1) both}
+  .sz-strip img{position:absolute;top:0;height:100%;max-width:none;object-fit:cover;display:block}
+  @keyframes szSlat{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  .sz-burnimg{animation:szBurnImg var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnImg{0%{opacity:0;transform:scale(1.02);filter:brightness(1.5) saturate(2.6) contrast(1.5)}22%{opacity:1;transform:scale(1.015);filter:brightness(1.35) saturate(2.2) contrast(1.4)}100%{opacity:1;transform:scale(1);filter:brightness(1) saturate(1) contrast(1)}}
+  .sz-burnpop{position:absolute;inset:0;pointer-events:none;background:rgba(243,240,237,.35);opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1);animation:szBurnPop var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnPop{0%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}18%{opacity:1;-webkit-backdrop-filter:blur(4px) saturate(4.5) contrast(2.2);backdrop-filter:blur(4px) saturate(4.5) contrast(2.2)}100%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}}
+  .sz-burnwash{position:absolute;inset:0;pointer-events:none;background:#F3F0ED;opacity:0;animation:szBurnWash var(--d) cubic-bezier(.72,0,.18,1) both}
+  @keyframes szBurnWash{0%{opacity:0}16%{opacity:.95}40%{opacity:.3}100%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){
+    .sz-layer,.sz-strip{animation:none!important}
+    .sz-shutter,.sz-curtain,.sz-strip{clip-path:inset(0 0 0 0)!important}
+    .sz-fade,.sz-cut{opacity:1!important}
+    .sz-pinchswap{animation:none!important;opacity:1!important}
+    .sz-pinchT{animation:none!important;transform:translateY(-102%)!important}
+    .sz-pinchB{animation:none!important;transform:translateY(102%)!important}
+    .sz-burnimg{opacity:1!important;filter:none!important;transform:none!important}
+    .sz-burnpop,.sz-burnwash{opacity:0!important;animation:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  }
   @media (prefers-reduced-motion: reduce) {
     .ixnotes .rdrawer .rrow, .ixnotes .rdrawer .rbody,
     .ixnotes .rdrawer .rglyph, .ixnotes .rdrawer .rpad {
@@ -4228,23 +4272,151 @@ function buildMagazine() {
       return idx.filter((ci) => cards[ci].kind === "work");
     } catch (e) { return []; }
   };
-  /* THE REEL IS THE COUNT. Each category's drawer carries a stamp-size
-     faux reel cutting through that category's own tiles — the cover
-     reel made a signature across the site, at rail scale. The frames
+  /* THE REEL IS THE COUNT, and it runs the REAL reel. Each category's
+     drawer carries a stamp-size faux reel playing SizzleReel's own
+     photo choreography — shutter, fade, pinch, slat, burn, color
+     curtain, curtain, cut — through that category's tiles. The frames
      are the SAME urls the magazine below fetches, so the stamp costs
-     no new bytes here; the real port points these at reel thumbs. */
+     no new bytes here; the real port mounts the component itself.
+
+     The sequence is buildSequence()'s photo spine with the word beats
+     dropped (a stamp carries no headline), timings verbatim. The two
+     color beats run the site's paper, so the pinch blinks cream and
+     the held curtain reads as the page showing through the band. */
+  const SZ_CREAM = "#F3F0ED";
+  const szSeq = (n) => [
+    { fx: "shutter", img: 0 % n, ms: 640 },
+    { fx: "fade", img: 1 % n, ms: 420 },
+    { fx: "pinch", color: SZ_CREAM, img: 2 % n, ms: 520 },
+    { fx: "slat", img: 3 % n, ms: 700 },
+    { fx: "burn", img: 4 % n, ms: 640 },
+    { fx: "ccurtain", color: SZ_CREAM, ms: 380 },
+    { fx: "curtain", img: 5 % n, ms: 720 },
+    { fx: "cut", img: 6 % n, ms: 640 },
+  ];
+  const szImg = (src, cls) => {
+    const im = document.createElement("img");
+    im.className = cls;
+    im.src = src;
+    im.alt = "";
+    im.decoding = "async";
+    return im;
+  };
+  /* One beat's layer, the component's BeatLayer by hand. --d is the
+     animation length: 72% of the hold, so the wipe settles and the
+     frame rests before the next cut — the component's own ratio. */
+  const szLayer = (beat, frames, dur) => {
+    const d = document.createElement("div");
+    d.style.setProperty("--d", dur + "ms");
+    if (beat.fx === "ccurtain") {
+      d.className = "sz-layer sz-curtain";
+      d.style.background = beat.color;
+      return d;
+    }
+    if (beat.fx === "pinch") {
+      d.className = "sz-layer";
+      const sw = szImg(frames[beat.img], "sz-fill sz-pinchswap");
+      sw.style.setProperty("--d", dur + "ms");
+      d.appendChild(sw);
+      ["sz-pinchP sz-pinchT", "sz-pinchP sz-pinchB"].forEach((cls) => {
+        const pnl = document.createElement("div");
+        pnl.className = cls;
+        pnl.style.setProperty("--d", dur + "ms");
+        pnl.style.background = beat.color;
+        d.appendChild(pnl);
+      });
+      return d;
+    }
+    if (beat.fx === "burn") {
+      d.className = "sz-layer";
+      const im = szImg(frames[beat.img], "sz-fill sz-burnimg");
+      im.style.setProperty("--d", dur + "ms");
+      d.appendChild(im);
+      ["sz-burnpop", "sz-burnwash"].forEach((cls) => {
+        const fx = document.createElement("div");
+        fx.className = cls;
+        fx.style.setProperty("--d", dur + "ms");
+        d.appendChild(fx);
+      });
+      return d;
+    }
+    if (beat.fx === "slat") {
+      d.className = "sz-layer";
+      d.style.setProperty("--sd", Math.round(dur * 0.7) + "ms");
+      const N = 6;
+      for (let k = 0; k < N; k++) {
+        const strip = document.createElement("div");
+        strip.className = "sz-strip";
+        strip.style.left = (k * 100) / N + "%";
+        strip.style.width = "calc(" + 100 / N + "% + 1px)";
+        strip.style.animationDelay = Math.round(k * dur * 0.08) + "ms";
+        const im = szImg(frames[beat.img], "");
+        im.style.left = (-k * 100) / N + "cqw";
+        im.style.width = "100cqw";
+        strip.appendChild(im);
+        d.appendChild(strip);
+      }
+      return d;
+    }
+    d.className = "sz-layer sz-" + beat.fx;
+    d.appendChild(szImg(frames[beat.img], "sz-fill"));
+    return d;
+  };
   const reels = [];
+  /* All stills stay mounted and the underlay toggles opacity, exactly
+     as the component does — swapping one img's src per beat risks a
+     one-frame decode blank at every photo boundary. loading=lazy keeps
+     a closed drawer's stills unfetched (0fr clips them out of view);
+     they are the grid's own urls, so an open fetch is a cache hit. */
+  const szStage = (rl) => {
+    rl.box.innerHTML = "";
+    rl.stills = rl.frames.map((src) => {
+      const im = szImg(src, "sz-fill");
+      im.loading = "lazy";
+      im.style.opacity = 0;
+      rl.box.appendChild(im);
+      return im;
+    });
+    rl.tint = document.createElement("div");
+    rl.tint.className = "sz-fill";
+    rl.tint.style.opacity = 0;
+    rl.box.appendChild(rl.tint);
+    rl.layer = null;
+    rl.at = 0;
+    rl.surface = { img: 0 };
+    if (rl.stills[0]) rl.stills[0].style.opacity = 1;
+  };
+  const szPaint = (rl) => {
+    rl.stills.forEach((im, k) => {
+      im.style.opacity = rl.surface.img === k ? 1 : 0;
+    });
+    rl.tint.style.opacity = rl.surface.color != null ? 1 : 0;
+    if (rl.surface.color != null) rl.tint.style.background = rl.surface.color;
+  };
+  const szStop = (rl) => { clearTimeout(rl.timer); rl.timer = null; };
+  const szStart = (rl) => {
+    if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
+    const step = () => {
+      if (document.hidden) { rl.timer = setTimeout(step, 400); return; }
+      const seq = szSeq(rl.frames.length);
+      const beat = seq[rl.at % seq.length];
+      szPaint(rl);
+      if (rl.layer) rl.layer.remove();
+      rl.layer = szLayer(beat, rl.frames, Math.round(beat.ms * 0.72));
+      rl.box.appendChild(rl.layer);
+      rl.surface = beat.fx === "ccurtain"
+        ? { color: beat.color } : { img: beat.img };
+      rl.at = (rl.at + 1) % seq.length;
+      rl.timer = setTimeout(step, beat.ms);
+    };
+    step();
+  };
   FILTERS.forEach(([label, fq, glyph, desc]) => {
     const { r, h, pad } = mkRow(label, glyph);
     pad.classList.add("rcat");
     const works = worksFor(fq);
     const box = document.createElement("div");
-    box.className = "rreel";
-    const im = document.createElement("img");
-    im.alt = "";
-    im.decoding = "async";
-    if (works.length) im.src = cards[works[0]].img;
-    box.appendChild(im);
+    box.className = "rreel sz-stage";
     const nc = document.createElement("div");
     nc.className = "rnumcap";
     nc.textContent = works.length + " Projects";
@@ -4254,8 +4426,17 @@ function buildMagazine() {
     pad.appendChild(box);
     pad.appendChild(nc);
     pad.appendChild(d);
-    reels.push({ row: r, img: im, cap: nc, fq,
-      frames: works.map((ci) => cards[ci].img), at: 0 });
+    const rl = { row: r, box, cap: nc, fq, timer: null,
+      frames: works.map((ci) => cards[ci].img) };
+    szStage(rl);
+    reels.push(rl);
+    /* the reel runs while its row is open, and only then — the row's
+       class is the one source of open truth, so the player watches it
+       instead of duplicating the hover/click logic */
+    new MutationObserver(() => {
+      if (rl.row.classList.contains("open")) szStart(rl);
+      else szStop(rl);
+    }).observe(rl.row, { attributes: true, attributeFilter: ["class"] });
     /* A CATEGORY HOVER IS INTENT, the same way focus on the field is:
        whoever previews a shelf is one click from needing the index.
        So the hover requests the facts, and the stamps re-deal when
@@ -4281,33 +4462,16 @@ function buildMagazine() {
     reels.forEach((rl) => {
       const works = worksFor(rl.fq);
       rl.cap.textContent = works.length + " Projects";
-      rl.frames = works.map((ci) => cards[ci].img);
-      if (rl.at >= rl.frames.length) rl.at = 0;
+      const srcs = works.map((ci) => cards[ci].img);
+      if (srcs.join("|") === rl.frames.join("|")) return;
+      rl.frames = srcs;
+      const playing = !!rl.timer;
+      szStop(rl);
+      szStage(rl);
+      if (playing) szStart(rl);
     });
   }
   if (factsWanted) factsWanted.then(refreshReels);
-  /* ONE CLOCK, VARIED BEATS. The cover reel's manifest runs 340-620ms
-     per frame, never a metronome — the stamp keeps that cadence with
-     hard cuts so it reads as the same signature. Only the open row's
-     reel advances; closed drawers cost nothing. The handle lives on
-     document so a rebuilt rail replaces the clock instead of stacking
-     a second one. */
-  if (document.__railTick) clearTimeout(document.__railTick);
-  if (!REDUCE()) {
-    const beats = [540, 420, 620, 460, 380];
-    let b = 0;
-    const tick = () => {
-      const live = reels.find((rl) =>
-        rl.row.classList.contains("open") && rl.frames.length > 1);
-      if (live && !document.hidden) {
-        live.at = (live.at + 1) % live.frames.length;
-        live.img.src = live.frames[live.at];
-      }
-      b = (b + 1) % beats.length;
-      document.__railTick = setTimeout(tick, beats[b]);
-    };
-    document.__railTick = setTimeout(tick, beats[0]);
-  }
   railEl.addEventListener("pointerleave", closeRows);
 
   const rail = [{ at: 0, el: railEl }];
