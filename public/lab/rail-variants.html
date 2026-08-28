@@ -282,6 +282,14 @@
   }
   .vJ .fdesc { font-size: 11px; line-height: 1.5; opacity: 0.75; align-self: end; }
 
+  /* ── K · the collapse (J's filters, everything else folded in) ──── */
+  .vK .mark { font-weight: 700; font-size: 13px; padding-bottom: 16px; }
+  .vK .para { font-size: var(--note); line-height: 1.5; padding-bottom: 20px; }
+  .vK .contact { padding-top: 20px; }
+  .vK .go { margin-top: 6px; }
+  .vK .quiet { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
+    opacity: 0.5; line-height: 1.6; margin-top: 24px; }
+
   /* ── I · the loupe (proximity magnify) ───────────────────────────── */
   .vI .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
   .vI .line {
@@ -456,6 +464,28 @@ VARIANTS.push({
     <div class="quiet" style="margin-top:26px">${C.mail}</div>
     <a class="go" href="#">${C.book}</a>
     <div class="quiet">${C.setup}</div>`,
+});
+
+VARIANTS.push({
+  key: "vK vJ", name: "K · The collapse",
+  why: "The whole rail in four moves: one merged paragraph (practice and setup were always one thought split in two), J's inversion filters, one contact unit, and the receipts as a single quiet line. Nothing labeled, nothing ruled except the rows that do something.",
+  html: `
+    <div class="mark">${C.mark}</div>
+    <div class="para">${C.practice} ${C.setup}</div>
+    ${[["\u25CF", "Digital Experiences", 9, "Sites, stores and platforms, designed and shipped."],
+       ["\u25A0", "App Development", 4, "Native tools and AI products, built end to end."],
+       ["\u25B2", "Campaign/Creative", 11, "Art direction and campaigns for retail's big names."],
+       ["\u25C6", "Interiors", 8, "Rooms designed like products, down to the hardware."]]
+      .map(([g, label, n, d]) => `
+    <div class="frow">
+      <div class="fhead"><span class="glyph">${g}</span>${esc(label)}</div>
+      <div class="fbody"><div><div class="fpad">
+        <div><div class="num">${n}</div><div class="numcap">Projects</div></div>
+        <div class="fdesc">${esc(d)}</div>
+      </div></div></div>
+    </div>`).join("")}
+    <div class="contact">${C.mail}<a class="go" href="#">${C.book}</a></div>
+    <div class="quiet">${C.recently}</div>`,
 });
 
 const row = document.getElementById("row");
