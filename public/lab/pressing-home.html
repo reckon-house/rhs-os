@@ -977,15 +977,12 @@
      ledger's own values, so the rail and the ledger move as one
      language. Rows bleed 12px past the column so the ink band reads
      as a band while the closed labels hold the column's left edge. */
+  /* no rules: the owner asked to see it bare. The rows are labels in
+     air until one floods; the hairline version is one commit back. */
   .ixnotes .rdrawer .rrow { margin: 0 -12px; padding: 0 12px;
-    border-top: 1px solid rgba(0, 0, 0, 0.14);
     transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      border-top-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .ixnotes .rdrawer .rrow:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.14); }
-  .ixnotes .rdrawer .rrow.open { background: var(--ink); color: #fff;
-    border-top-color: var(--ink); }
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open { background: var(--ink); color: #fff; }
   .ixnotes .rdrawer .rhead { display: flex; align-items: center; gap: 10px;
     width: 100%; text-align: left; background: none; border: 0;
     padding: 11px 0; margin: 0; cursor: pointer; font: inherit;

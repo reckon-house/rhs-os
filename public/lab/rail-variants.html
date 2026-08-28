@@ -241,22 +241,17 @@
        the way the crossing owns its full width */
     margin: 0 -22px;
     padding: 0 22px;
-    /* the daybook ledger's hairline, not full ink: rgba(0,0,0,0.14) */
-    border-top: 1px solid rgba(0, 0, 0, 0.14);
     background: transparent;
     color: inherit;
     cursor: pointer;
     /* the site's motion curve — the daybook's 0.2,0.7,0.2,1 — everywhere
        in this drawer, replacing the lab's bouncy spring */
     transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      border-top-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .vJ .frow:last-of-type { border-bottom: 1px solid rgba(0, 0, 0, 0.14); }
   .vJ .frow.open {
     background: var(--ink);
     color: #fff;
-    border-top-color: var(--ink);
   }
   .vJ .fhead {
     display: flex; align-items: center; gap: 10px;
