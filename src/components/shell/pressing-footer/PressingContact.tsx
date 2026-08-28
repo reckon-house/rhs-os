@@ -58,7 +58,7 @@
  * are cleared so the stylesheet owns the spacing.
  */
 
-import { useEffect, useId, useLayoutEffect, useRef } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { RevealHeadline } from "@/components/fx/RevealHeadline";
 import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
@@ -244,6 +244,54 @@ export function PressingContact({ className }: PressingContactProps) {
   // through hydration, and unique in case this beat is ever rendered twice.
   const uid = useId();
 
+  /* ── the send ─────────────────────────────────────────────────────
+     Posts to /api/message, the same endpoint the compose box uses.
+     The states are the button's own text, so the form needs no extra
+     furniture: Send → Sending → Sent. A failure says so and names the
+     address, because the one thing this form must never do is
+     swallow somebody's message silently. */
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [say, setSay] = useState("");
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (sending || sent) return;
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const body = String(fd.get("message") ?? "").trim();
+    if (!body) {
+      setSay("Say a little about the project first.");
+      return;
+    }
+    setSending(true);
+    setSay("");
+    try {
+      const res = await fetch("/api/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fd.get("name"),
+          email: fd.get("email"),
+          body,
+          company: fd.get("company"),
+        }),
+      });
+      const j = await res.json();
+      if (j.ok) {
+        setSent(true);
+        setSay("Got it. I'll come back to you at that address.");
+        form.reset();
+      } else {
+        setSay(j.why || "That didn't go through. hello@reckon.house reaches me directly.");
+      }
+    } catch {
+      setSay("That didn't go through. hello@reckon.house reaches me directly.");
+    } finally {
+      setSending(false);
+    }
+  };
+
   useIsoLayoutEffect(() => {
     const sec = sectionRef.current;
     const col = colRef.current;
@@ -391,16 +439,26 @@ export function PressingContact({ className }: PressingContactProps) {
           <LedgerColumn title="Practice" items={PRACTICE} />
         </div>
 
-        {/* A real mailto form, exactly as the prototype ships it: the browser
-            hands it to the user's mail client, there is no endpoint and no
-            fetch behind it. The note under the button is the fallback for
-            anyone whose browser declines to open one. */}
-        <form
-          className={styles.form}
-          action="mailto:hello@reckon.house"
-          method="post"
-          encType="text/plain"
-        >
+        {/* IT POSTS TO THE HOUSE, not to a mail client. This was
+            `action="mailto:"` — the prototype's shape — and every
+            browser since Chrome 84 treats a non-HTTPS form action as
+            insecure: it disables autofill and prints "This form is not
+            secure" in red the moment anyone focuses a field. On HTTPS
+            too, because it is the ACTION that is insecure, not the
+            page. That warning was showing on the footer of every page,
+            to people who had just decided to get in touch.
+
+            A mailto POST was also unreliable on its own terms: plenty
+            of browsers drop the body, and anyone without a configured
+            mail client got nothing at all.
+
+            /api/message is the endpoint the compose box already uses —
+            it stores a thread, emails the alert after responding, and
+            falls back to email-only if the database is unreachable, so
+            a message survives more failures here than the mail client
+            ever guaranteed. The address stays under the button for
+            anyone who would rather write it themselves. */}
+        <form className={styles.form} onSubmit={submit}>
           <span className={styles.field}>
             {/* The label keeps htmlFor and the reveal sits inside it — same
                 reason as the links above: BodyReveal takes no arbitrary
@@ -439,16 +497,33 @@ export function PressingContact({ className }: PressingContactProps) {
               id={`${uid}-message`}
               name="message"
               rows={2}
+              required
             />
           </span>
 
-          <button className={styles.send} type="submit">
-            Send
+          {/* Off-screen rather than hidden — a bot that skips
+              display:none is not caught by a field it cannot see. */}
+          <input
+            className={styles.hp}
+            name="company"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
+          <button className={styles.send} type="submit" disabled={sending}>
+            {sending ? "Sending" : sent ? "Sent" : "Send"}
           </button>
 
           <BodyReveal as="span" className={styles.note}>
             Or · hello@reckon.house
           </BodyReveal>
+          {say ? (
+            <span className={styles.say} role="status">
+              {say}
+            </span>
+          ) : null}
         </form>
       </div>
     </section>

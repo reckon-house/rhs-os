@@ -418,3 +418,23 @@
     gap: 22px;
   }
 }
+
+/* Off-screen, not display:none — a bot that skips hidden fields is not
+   caught by a field it cannot see. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* What the send says back. Sits under the address line in the form's
+   own quiet tone; role="status" so it is announced when it arrives. */
+.say {
+  display: block;
+  margin-top: 10px;
+  font-size: var(--pp-note, 12px);
+  line-height: 1.5;
+  opacity: 0.7;
+}
