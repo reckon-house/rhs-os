@@ -4655,11 +4655,13 @@ function buildAnswer() {
      the model and keep their instant line. */
   let askingModel = false;
   let typingStarted = false;
+  let modelTook = false;
   const HOLD_FOR_MODEL = 8000;
   const typeModel = () => {
     const t = modelSay;
     if (!t) return;
     modelSay = null;
+    modelTook = true;
     const segs2 = [{ t, q: false }];
     const step2 = Math.max(9, Math.min(26, Math.round(2100 / Math.max(1, t.length))));
     let j = 0;
@@ -4916,6 +4918,13 @@ function buildAnswer() {
     /* the model's line took over between ticks: hand the clock to it
        mid-sentence rather than finishing a line about to be replaced */
     if (modelSay) { typeModel(); return; }
+    /* THE FALLBACK STANDS DOWN once the model has the floor. The check
+       above reads modelSay, which typeModel consumes — so when the 8s
+       fallback timer outlived a model that landed at 3s, it sailed past
+       that check and retyped the matcher's line OVER the model's
+       answer. Caught on the first production run of the hold: Haiku's
+       line at 3.3s, replaced by "These are things I love" at 8.5s. */
+    if (modelTook) return;
     typingStarted = true;
     i += 1;
     renderToned(sayEl, segs, i);
