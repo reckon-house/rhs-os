@@ -165,6 +165,7 @@ export function RisingPlate({
     y0: 0,
     p0: 50,
     p: 50,
+    id: null as number | null,
     on: false,
     live: false,
   });
@@ -314,14 +315,20 @@ export function RisingPlate({
       };
       const down = (e: PointerEvent) => {
         if (!phone() || reduce.matches || hidden() < 0.02) return;
+        if (e.pointerType === "mouse") return; // a phone gesture, on phones
+        // A second finger must not re-origin a drag in flight, and it
+        // must not un-claim one: a pinch that starts on the plate was
+        // otherwise read as a new pan whose axis check had been reset.
+        if (g.on) return;
         g.x0 = e.clientX;
         g.y0 = e.clientY;
         g.p0 = g.p;
+        g.id = e.pointerId;
         g.on = true;
         g.live = false;
       };
       const move = (e: PointerEvent) => {
-        if (!g.on) return;
+        if (!g.on || g.id !== e.pointerId) return;
         const dx = e.clientX - g.x0;
         const dy = e.clientY - g.y0;
         if (!g.live) {
@@ -345,24 +352,27 @@ export function RisingPlate({
         g.p = Math.max(0, Math.min(100, next));
         img.style.objectPosition = g.p.toFixed(1) + "% 50%";
       };
-      const up = () => {
+      const up = (e?: PointerEvent) => {
+        if (e && g.id != null && g.id !== e.pointerId) return;
         g.on = false;
         g.live = false;
+        g.id = null;
       };
       const block = (e: TouchEvent) => {
         if (g.live) e.preventDefault();
       };
       clip.addEventListener("pointerdown", down);
       clip.addEventListener("pointermove", move);
-      clip.addEventListener("pointerup", up);
-      clip.addEventListener("pointercancel", up);
       clip.addEventListener("touchmove", block, { passive: false });
+      // On window: a drag released off the element must still end.
+      window.addEventListener("pointerup", up);
+      window.addEventListener("pointercancel", up);
       panOff = () => {
         clip.removeEventListener("pointerdown", down);
         clip.removeEventListener("pointermove", move);
-        clip.removeEventListener("pointerup", up);
-        clip.removeEventListener("pointercancel", up);
         clip.removeEventListener("touchmove", block);
+        window.removeEventListener("pointerup", up);
+        window.removeEventListener("pointercancel", up);
         img.style.objectPosition = "";
       };
     }

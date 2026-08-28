@@ -37,8 +37,8 @@ export interface SizzleBeat {
 
 const STYLE_ID = "sz-reel-css";
 const CSS = `
-.sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size;touch-action:pan-y;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
-.sz-scrubchip{position:absolute;left:8px;bottom:8px;z-index:2;font-size:9px;font-weight:500;letter-spacing:.04em;line-height:1;color:#fff;background:rgba(14,14,14,.55);padding:4px 6px;border-radius:4px;pointer-events:none;font-variant-numeric:tabular-nums}
+.sz-stage{position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size;touch-action:pan-y pinch-zoom;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.sz-scrubchip{position:absolute;left:8px;bottom:8px;z-index:2;font-size:10px;font-weight:500;letter-spacing:.04em;line-height:1;color:#fff;background:rgba(14,14,14,.86);padding:4px 6px;border-radius:4px;pointer-events:none;font-variant-numeric:tabular-nums}
 .sz-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .sz-layer{position:absolute;inset:0;will-change:transform,opacity,clip-path}
 .sz-shutter{animation:szShutter var(--d) cubic-bezier(.7,0,.15,1) both}
@@ -294,25 +294,43 @@ export function SizzleReel({
      right goes back, the filmstrip following the finger. Release
      resumes the loop from a beat that shows the frame you left it on.
 
-     touch-action: pan-y on the stage is what makes this coexist with
-     the page: vertical swipes scroll as ever, and because the finger
-     has HELD STILL before scrubbing starts, the browser has not begun
-     a pan — so the manual non-passive touchmove listener below can
-     still claim the gesture and preventDefault the scroll. (React's
-     root touch listeners are passive; an onTouchMove prop cannot.) */
+     TOUCH AND PEN ONLY. A mouse is not gated by hold time, it is
+     gated by intent: the first cut armed on every pointer, so a slow
+     deliberate CLICK — 250ms, no movement, which is an ordinary
+     trackpad press — committed a scrub and then swallowed its own
+     click. The Faux Reel tile is a SizzleReel inside a <Link>, so
+     that tile simply stopped opening its study for anyone who
+     presses slowly. A phone toy has no business arming on a mouse.
+
+     touch-action: pan-y pinch-zoom on the stage is what makes this
+     coexist with the page: vertical swipes scroll and two fingers
+     still zoom, and because the finger has HELD STILL before
+     scrubbing starts, the browser has not begun a pan — so the
+     manual non-passive touchmove listener below can still claim the
+     gesture and preventDefault the scroll. (React's root touch
+     listeners are passive; an onTouchMove prop cannot.) */
   const [scrub, setScrub] = useState<number | null>(null);
   const gRef = useRef<{
     x0: number;
     y0: number;
     img0: number;
+    id: number | null;
     hold: ReturnType<typeof setTimeout> | null;
     on: boolean;
+    moved: boolean;
     just: boolean;
-  }>({ x0: 0, y0: 0, img0: 0, hold: null, on: false, just: false });
+  }>({ x0: 0, y0: 0, img0: 0, id: null, hold: null, on: false, moved: false, just: false });
 
   const beatNow = seq[active];
   const visibleImg =
     beatNow.img ?? (underlayBefore(seq, active) as { img?: number }).img ?? 0;
+  // Read inside the hold timer, which fires 220ms after the press —
+  // by which time the loop has usually cut to another frame. Capturing
+  // at pointerdown engaged the scrub on a frame that was already gone.
+  const visRef = useRef(visibleImg);
+  useEffect(() => {
+    visRef.current = visibleImg;
+  }, [visibleImg]);
 
   const endHold = () => {
     const g = gRef.current;
@@ -321,16 +339,20 @@ export function SizzleReel({
   };
   const onPointerDown = (e: React.PointerEvent) => {
     if (images.length < 2) return;
+    if (e.pointerType === "mouse") return; // see the note above
     const g = gRef.current;
+    if (g.on || g.id != null) return; // a second finger never re-origins a live drag
     g.x0 = e.clientX;
     g.y0 = e.clientY;
-    g.img0 = visibleImg;
+    g.id = e.pointerId;
+    g.moved = false;
     g.just = false;
     endHold();
     const el = e.currentTarget as HTMLElement;
     const id = e.pointerId;
     g.hold = setTimeout(() => {
       g.on = true;
+      g.img0 = visRef.current;
       try {
         el.setPointerCapture(id);
       } catch {
@@ -341,8 +363,10 @@ export function SizzleReel({
   };
   const onPointerMove = (e: React.PointerEvent) => {
     const g = gRef.current;
+    if (g.id !== e.pointerId) return; // another finger's move is not this gesture
     if (g.on) {
       const step = Math.round((e.clientX - g.x0) / 36);
+      if (step !== 0) g.moved = true;
       const n = images.length;
       setScrub((((g.img0 - step) % n) + n) % n);
       return;
@@ -354,30 +378,45 @@ export function SizzleReel({
     )
       endHold();
   };
-  const onPointerEnd = () => {
+  /* ONE ENDING, however the pointer leaves. React's onPointerUp and
+     the window listener below both arrive for the same release, and
+     the first cut let them differ: the window one ran first, cleared
+     g.on, and React's then returned early without ever arming the
+     click swallow — so a scrub on the Faux Reel tile still navigated.
+     Whoever gets here first does the whole ending; g.on is the latch
+     that makes the second call a no-op. */
+  const finish = (id?: number) => {
     const g = gRef.current;
+    if (id != null && g.id != null && g.id !== id) return;
     endHold();
+    g.id = null;
     if (!g.on) return;
     g.on = false;
-    g.just = true; // swallow the click this gesture would otherwise fire
+    // Swallow the click ONLY for a scrub that actually shuttled. A hold
+    // that never moved a frame is, to the reader, a press — and a press
+    // on a reel inside a link has to reach the link.
+    g.just = g.moved;
+    g.moved = false;
     setScrub((s) => {
       if (s != null && !controlled) {
-        // resume from a beat that shows the frame the finger left
+        /* Resume from a beat that shows the frame the finger left. It
+           may not exist: buildSequence only ever references images
+           0-6, so a longer run has frames no beat carries. Rather
+           than silently leaving the loop wherever it was — an
+           arbitrary jump — a frame the sequence cannot resume on
+           restarts the loop, and the shutter opening reads as a
+           deliberate cut back into the reel. */
         const at = seq.findIndex((b) => b.img === s);
-        if (at >= 0) setI(at);
+        setI(at >= 0 ? at : 0);
       }
       return null;
     });
   };
-  // A scrub that ends over a link must not navigate; a plain tap must.
-  const onClickCapture = (e: React.MouseEvent) => {
-    const g = gRef.current;
-    if (g.just) {
-      g.just = false;
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
+  const finishRef = useRef(finish);
+  useEffect(() => {
+    finishRef.current = finish;
+  });
+  const onPointerEnd = (e?: React.PointerEvent) => finish(e?.pointerId);
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -385,7 +424,70 @@ export function SizzleReel({
       if (gRef.current.on) e.preventDefault();
     };
     el.addEventListener("touchmove", block, { passive: false });
-    return () => el.removeEventListener("touchmove", block);
+    /* A SCRUB THAT ENDS OVER A LINK MUST NOT NAVIGATE — and the
+       listener has to sit on WINDOW, in the capture phase.
+       Two earlier cuts failed, both measured on the Faux Reel tile
+       (a reel inside a <Link>): React's onClickCapture is delegated
+       to the root and runs too late, and a native capture listener on
+       the stage runs too late as well, because capture descends from
+       the window and any handler on an ANCESTOR — the anchor
+       included — fires before the target's own. Window capture is the
+       first thing to see the click, which is the only place a
+       gesture can veto it outright.
+       Scoped by containment, so this reel only ever swallows clicks
+       that started inside its own stage. */
+    const swallow = (e: MouseEvent) => {
+      const g = gRef.current;
+      if (!g.just) return;
+      const t = e.target as Node | null;
+      if (!t || !el.contains(t)) return;
+      g.just = false;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    };
+    window.addEventListener("click", swallow, true);
+    /* THE ESCAPE HATCHES. Every cancel path was bound to the stage, so
+       a pointer that left the box before the timer fired — a press
+       near the edge that drifts a few px out, a context menu, an
+       interrupted touch — never reached endHold: the timer landed on
+       a pointer that no longer existed, parked the reel with
+       scrub != null, and nothing put it back. These listen where the
+       pointer actually goes. */
+    /* A release anywhere ends the gesture the same way it would on the
+       stage — including arming the click swallow, since a scrub that
+       ends past the edge of the reel is still a scrub. */
+    const stray = (ev: PointerEvent) => {
+      const g = gRef.current;
+      if (g.id != null && g.id === ev.pointerId) finishRef.current(ev.pointerId);
+    };
+    /* An INTERRUPTION, not a release: the gesture is abandoned, so the
+       loop simply resumes and no click is swallowed. */
+    const bail = () => {
+      const g = gRef.current;
+      endHold();
+      g.id = null;
+      if (!g.on) return;
+      g.on = false;
+      g.moved = false;
+      g.just = false;
+      setScrub(null);
+    };
+    el.addEventListener("lostpointercapture", stray);
+    window.addEventListener("pointerup", stray);
+    window.addEventListener("pointercancel", stray);
+    window.addEventListener("contextmenu", bail);
+    window.addEventListener("blur", bail);
+    return () => {
+      el.removeEventListener("touchmove", block);
+      window.removeEventListener("click", swallow, true);
+      el.removeEventListener("lostpointercapture", stray);
+      window.removeEventListener("pointerup", stray);
+      window.removeEventListener("pointercancel", stray);
+      window.removeEventListener("contextmenu", bail);
+      window.removeEventListener("blur", bail);
+      endHold();
+    };
   }, []);
 
   useEffect(() => {
@@ -401,9 +503,19 @@ export function SizzleReel({
     return () => clearTimeout(t);
   }, [i, seq, speed, controlled, inView, scrub]);
 
+  /* The cover reshapes its box from the beat it is told about, so a
+     scrub has to report the frame under the finger — otherwise the
+     box stays locked to the ratio of whatever beat was playing when
+     the hold landed while the contact sheet shuttles through frames
+     of other shapes. A synthetic cut beat is exactly what a scrubbed
+     frame IS: this frame, no transition. */
   useEffect(() => {
+    if (scrub != null) {
+      onBeatChange?.(active, { fx: "cut", img: scrub, ms: 0 });
+      return;
+    }
     onBeatChange?.(active, seq[active]);
-  }, [active, seq, onBeatChange]);
+  }, [active, seq, onBeatChange, scrub]);
 
   const beat = seq[active];
   const under = underlayBefore(seq, active);
@@ -422,7 +534,6 @@ export function SizzleReel({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}
       onPointerCancel={onPointerEnd}
-      onClickCapture={onClickCapture}
     >
       {/* All stills stay mounted; the underlay just toggles opacity. Swapping
           one img's src per beat risked a one-frame decode blank (a dark

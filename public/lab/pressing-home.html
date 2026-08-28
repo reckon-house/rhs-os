@@ -1037,8 +1037,9 @@
      own tiles, the cover reel's signature at rail scale. */
   .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
     border-radius: 10px; overflow: hidden;
-    /* held and dragged sideways to scrub; vertical stays the page's */
-    touch-action: pan-y; user-select: none; -webkit-user-select: none;
+    /* held and dragged sideways to scrub; vertical stays the page's,
+       and pinch-zoom is named so two fingers still zoom */
+    touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none;
     -webkit-touch-callout: none; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
     opacity: 0.75; margin-top: 12px; max-width: 24ch; }
@@ -4378,7 +4379,19 @@ function buildMagazine() {
     d.appendChild(szImg(frames[beat.img], "sz-fill"));
     return d;
   };
+  /* buildMagazine() runs again on every resize and builds a whole new
+     rail. The previous build's reel timers and MutationObservers went
+     on running against detached boxes — an open drawer left a
+     setTimeout chain alive forever, one more per resize. The handle
+     lives on document so each build retires the last one's. */
+  if (document.__railReels) {
+    document.__railReels.forEach((rl) => {
+      clearTimeout(rl.timer);
+      if (rl.mo) rl.mo.disconnect();
+    });
+  }
   const reels = [];
+  document.__railReels = reels;
   /* All stills stay mounted and the underlay toggles opacity, exactly
      as the component does — swapping one img's src per beat risks a
      one-frame decode blank at every photo boundary. loading=lazy keeps
@@ -4418,7 +4431,7 @@ function buildMagazine() {
      keeps this off the page's own gestures — a scroll or a tap has
      moved or lifted long before it lands. */
   const szScrub = (rl) => {
-    const g = { x0: 0, y0: 0, at: 0, hold: null, on: false };
+    const g = { x0: 0, y0: 0, at: 0, id: null, hold: null, on: false };
     const end = () => { clearTimeout(g.hold); g.hold = null; };
     const show = (k) => {
       rl.stills.forEach((im, j) => { im.style.opacity = j === k ? 1 : 0; });
@@ -4427,17 +4440,24 @@ function buildMagazine() {
     };
     rl.box.addEventListener("pointerdown", (e) => {
       if (rl.frames.length < 2) return;
-      g.x0 = e.clientX; g.y0 = e.clientY;
-      g.at = rl.surface.img || 0;
+      /* touch and pen only, and never a second finger onto a live
+         drag — the same two gates SizzleReel.tsx carries, and for the
+         same reasons: a slow mouse press is a click, not a hold. */
+      if (e.pointerType === "mouse") return;
+      if (g.on || g.id != null) return;
+      g.x0 = e.clientX; g.y0 = e.clientY; g.id = e.pointerId;
       end();
       g.hold = setTimeout(() => {
         g.on = true;
         szStop(rl);
+        /* read at COMMIT time: 220ms of loop has run since the press */
+        g.at = rl.surface.img || 0;
         try { rl.box.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
         show(g.at);
       }, 220);
     });
     rl.box.addEventListener("pointermove", (e) => {
+      if (g.id !== e.pointerId) return;
       if (g.on) {
         const n = rl.frames.length;
         const step = Math.round((e.clientX - g.x0) / 36);
@@ -4448,18 +4468,22 @@ function buildMagazine() {
       }
       if (g.hold && Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 10) end();
     });
-    const up = () => {
+    const up = (e) => {
+      if (e && g.id != null && g.id !== e.pointerId) return;
       end();
+      g.id = null;
       if (!g.on) return;
       g.on = false;
-      /* resume from the beat that shows the frame it was left on */
+      /* resume from the beat that shows the frame it was left on; a
+         frame no beat carries restarts the loop rather than jumping */
       const seq = szSeq(rl.frames.length);
       const at = seq.findIndex((b) => b.img === (rl.surface.img || 0));
       rl.at = at >= 0 ? at : 0;
       if (rl.row.classList.contains("open")) szStart(rl);
     };
-    rl.box.addEventListener("pointerup", up);
-    rl.box.addEventListener("pointercancel", up);
+    /* on window, so a drag released off the stamp still ends */
+    addEventListener("pointerup", up);
+    addEventListener("pointercancel", up);
     rl.box.addEventListener("touchmove", (e) => {
       if (g.on) e.preventDefault();
     }, { passive: false });
@@ -4500,10 +4524,11 @@ function buildMagazine() {
     /* the reel runs while its row is open, and only then — the row's
        class is the one source of open truth, so the player watches it
        instead of duplicating the hover/click logic */
-    new MutationObserver(() => {
+    rl.mo = new MutationObserver(() => {
       if (rl.row.classList.contains("open")) szStart(rl);
       else szStop(rl);
-    }).observe(rl.row, { attributes: true, attributeFilter: ["class"] });
+    });
+    rl.mo.observe(rl.row, { attributes: true, attributeFilter: ["class"] });
     /* A CATEGORY HOVER IS INTENT, the same way focus on the field is:
        whoever previews a shelf is one click from needing the index.
        So the hover requests the facts, and the stamps re-deal when
@@ -6420,6 +6445,11 @@ function armRows(rowsEl) {
   }, { passive: true });
   addEventListener("touchmove", (e) => {
     if (!pulling) return;
+    /* A second finger ends the pull rather than steering it: touches[0]
+       is not necessarily the finger that started this, and a pinch that
+       begins at the top of the page was otherwise driving the banner
+       and committing a question on release. */
+    if (e.touches.length !== 1) { reset(true); return; }
     const dy = e.touches[0].clientY - y0;
     if (!live) {
       if (dy < 12) { if (dy < -6) pulling = false; return; }
@@ -6443,7 +6473,11 @@ function armRows(rowsEl) {
     askSource = "chip";            /* navigation: the template answers */
     onQuery(q, true);
   };
-  addEventListener("touchend", release, { passive: true });
+  addEventListener("touchend", (e) => {
+    /* only the release that ends the LAST finger commits */
+    if (e.touches.length) { reset(true); return; }
+    release();
+  }, { passive: true });
   addEventListener("touchcancel", () => reset(true), { passive: true });
 })();
 
