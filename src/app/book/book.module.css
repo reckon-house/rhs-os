@@ -12,7 +12,15 @@
    hangs from the top of both. Written out rather than shared because
    the three pages that do this are three different components; if a
    fourth arrives it is worth a common class. */
-.lede {
+/* THE GUTTER PADDING HAS TO BE BEATEN, not merely set. Every
+   .statement inside a .stratum takes `padding: 0 var(--gut) ...` —
+   50px each side — which is right for a statement that spans the
+   content column and wrong for one that IS a column: it inset the
+   lede 50px from both rules while the homepage's intro copy sits
+   flush against them. .stratum .statement is two classes, so a plain
+   .lede loses; this selector is three and wins. The BOTTOM padding
+   stays, because that is the air under the lede on every page. */
+:global(.stratum) :global(.ixbody) .lede {
   padding-left: 0;
   padding-right: 0;
 }
