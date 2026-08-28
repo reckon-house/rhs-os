@@ -229,35 +229,51 @@
   opacity: 0.55;
 }
 
-/* ── the form ──
-   The contact form's own shape: a label column, a rule under each
-   field, no boxes. One form language on the site. */
-/* No max-width: the right column is the measure now. */
+/* ── the form ──────────────────────────────────────────────────────
+   THE FOOTER'S ARRANGEMENT, VERBATIM, on the light ground. The
+   contact form in the footer is the site's other place to type, and
+   it breathes: a rule, the label hanging just under it, the field,
+   then real air below. This form was a tight two-column ledger —
+   label at 116px, field beside it — which packed the same three
+   entries into two thirds the height and read as a control panel next
+   to a calendar that is mostly white space.
+
+   11 above and 24 below, from PressingContact.module.css and for its
+   reason: even padding reads as a box; this reads as an entry hanging
+   off its own line. */
 .form { margin-top: clamp(28px, 4vw, 48px); }
 .frow {
   display: grid;
-  grid-template-columns: minmax(0, 116px) minmax(0, 1fr);
-  gap: 26px;
-  align-items: start;
+  gap: 4px;
   border-top: 1px solid rgba(0, 0, 0, 0.13);
-  padding: clamp(14px, 2dvh, 20px) 0;
+  padding: 11px 0 24px;
 }
+/* Focus marks the ROW, since the row owns the rule. */
+.frow:focus-within { border-top-color: var(--pp-ink, #000); }
+
 .lbl {
   font-size: var(--pp-note, 12px);
   line-height: 1.55;
+  font-weight: 400;
   opacity: 0.45;
 }
+
+/* Form controls do NOT inherit font-family — the browser hands them a
+   UA default unless told otherwise. */
 .field {
-  font: inherit;
-  font-size: var(--pp-note, 12px);
+  font-family: inherit;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--pp-ink, #000);
   background: none;
   border: 0;
-  padding: 0;
+  border-radius: 0;
+  padding: 7px 0;
   width: 100%;
 }
-.field::placeholder { color: rgba(0, 0, 0, 0.3); }
+/* NO PLACEHOLDERS. The labels already say what each field is, and a
+   second sentence of grey inside the box was the only thing on this
+   page saying something twice. */
 /* ── 16px, or iOS zooms the page mid-booking ─────────────────────────
    Safari magnifies the whole document when a focused input is under
    16px, and it does not zoom back out. On this page that fires the
@@ -266,19 +282,13 @@
 
    Gated on pointer: coarse rather than a width, because the trigger is
    the input device and not the screen. A 744px iPad zooms too, and a
-   width query written for phones lets it through.
-
-   16px exactly. It is the threshold, not a preference — the rest of the
-   page keeps --pp-note at 12, and raising that token globally would move
-   six other rules here plus daybook.module.css. */
+   width query written for phones lets it through. */
 @media (pointer: coarse) {
   .field { font-size: 16px; }
 }
-
-
 .field:focus { outline: none; }
 .field:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 4px; }
-.area { resize: vertical; min-height: 3.4em; }
+.area { resize: vertical; min-height: 46px; }
 
 /* Off-screen rather than display:none — a bot that skips hidden fields
    is not caught by a field it cannot see. */
@@ -290,19 +300,22 @@
   opacity: 0;
 }
 
+/* No rule above the button: the last field's air is the separation,
+   the way the footer form has it. */
 .foot {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  border-top: 1px solid rgba(0, 0, 0, 0.13);
-  padding-top: clamp(14px, 2dvh, 20px);
+  padding-top: 6px;
 }
 .send {
-  font: inherit;
-  font-size: var(--pp-note, 12px);
+  font-family: inherit;
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
   line-height: 1;
-  padding: 11px 22px;
+  padding: 11px 26px;
   border-radius: 999px;
   border: 1px solid var(--pp-ink, #000);
   background: var(--pp-ink, #000);
@@ -366,5 +379,4 @@
   .dayBtn { grid-template-columns: 78px auto; column-gap: 12px; }
   .num { font-size: clamp(40px, 12vw, 56px); }
   .free { display: none; }
-  .frow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }

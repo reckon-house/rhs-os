@@ -254,20 +254,28 @@ export function BookingCalendar({
       ) : null}
 
       <form ref={formRef} className={styles.form} onSubmit={submit}>
+        {/* No placeholders. The label above each field already says
+            what it is, and a second grey sentence inside the box was
+            the only thing on this page saying something twice. */}
         <div className={styles.frow}>
           <label className={styles.lbl} htmlFor="bkName">Name</label>
           <input className={styles.field} id="bkName" name="name" type="text"
-            maxLength={120} autoComplete="name" required placeholder="Your name" />
+            maxLength={120} autoComplete="name" required />
         </div>
         <div className={styles.frow}>
           <label className={styles.lbl} htmlFor="bkMail">Email</label>
           <input className={styles.field} id="bkMail" name="email" type="email"
-            maxLength={254} autoComplete="email" required placeholder="So I can confirm" />
+            maxLength={254} autoComplete="email" required />
         </div>
         <div className={styles.frow}>
-          <label className={styles.lbl} htmlFor="bkNote">Anything to read first</label>
+          {/* His phrasing, trimmed: "prior to our meeting" is doing
+              work the lede already did ("I'll read it before we
+              talk"), and "prior to" is not a thing he says. */}
+          <label className={styles.lbl} htmlFor="bkNote">
+            Feel free to leave a note
+          </label>
           <textarea className={`${styles.field} ${styles.area}`} id="bkNote" name="note"
-            rows={3} maxLength={4000} placeholder="What you're working on. Optional." />
+            rows={3} maxLength={4000} />
         </div>
         {/* The honeypot, same as the contact form. */}
         <input className={styles.hp} name="company" type="text" tabIndex={-1}
