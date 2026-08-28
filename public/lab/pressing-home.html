@@ -1012,14 +1012,18 @@
     color: inherit; font-size: var(--note);
     text-decoration: underline; text-underline-offset: 3px; }
   .ixnotes .rdrawer .rgap { height: 18px; }
-  /* one column, stacked: numeral, its caption, then the one-liner
-     under it — the emptied right half is the band's negative space */
-  .ixnotes .rdrawer .rnum { font-size: 40px; font-weight: 700;
-    line-height: 0.9; letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums; }
+  /* one column, stacked: the reel, its caption, then the one-liner —
+     the emptied right half is the band's negative space. THE REEL IS
+     THE COUNT: a stamp-size faux reel cutting through the category's
+     own tiles, the cover reel's signature at rail scale. */
+  .ixnotes .rdrawer .rreel { width: 128px; height: 96px;
+    border-radius: 10px; overflow: hidden;
+    background: rgba(255, 255, 255, 0.08); }
+  .ixnotes .rdrawer .rreel img { width: 100%; height: 100%;
+    object-fit: cover; display: block; }
   .ixnotes .rdrawer .rnumcap { font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
-    text-transform: uppercase; opacity: 0.6; margin-top: 5px; }
+    text-transform: uppercase; opacity: 0.6; margin-top: 8px; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
     opacity: 0.75; margin-top: 12px; max-width: 24ch; }
   @media (prefers-reduced-motion: reduce) {
@@ -4217,37 +4221,47 @@ function buildMagazine() {
   rgap.className = "rgap";
   railEl.appendChild(rgap);
 
-  const countFor = (fq) => {
+  const worksFor = (fq) => {
     try {
       const plan = think(fq);
       const idx = plan ? plan.workIdx : ((analyse(fq) || { idx: [] }).idx || []);
-      return idx.filter((ci) => cards[ci].kind === "work").length;
-    } catch (e) { return 0; }
+      return idx.filter((ci) => cards[ci].kind === "work");
+    } catch (e) { return []; }
   };
+  /* THE REEL IS THE COUNT. Each category's drawer carries a stamp-size
+     faux reel cutting through that category's own tiles — the cover
+     reel made a signature across the site, at rail scale. The frames
+     are the SAME urls the magazine below fetches, so the stamp costs
+     no new bytes here; the real port points these at reel thumbs. */
+  const reels = [];
   FILTERS.forEach(([label, fq, glyph, desc]) => {
     const { r, h, pad } = mkRow(label, glyph);
     pad.classList.add("rcat");
-    const left = document.createElement("div");
-    const n = document.createElement("div");
-    n.className = "rnum";
-    n.textContent = countFor(fq);
-    n.dataset.fq = fq;
+    const works = worksFor(fq);
+    const box = document.createElement("div");
+    box.className = "rreel";
+    const im = document.createElement("img");
+    im.alt = "";
+    im.decoding = "async";
+    if (works.length) im.src = cards[works[0]].img;
+    box.appendChild(im);
     const nc = document.createElement("div");
     nc.className = "rnumcap";
-    nc.textContent = "Projects";
-    left.appendChild(n);
-    left.appendChild(nc);
+    nc.textContent = works.length + " Projects";
     const d = document.createElement("div");
     d.className = "rdesc";
     d.textContent = desc;
-    pad.appendChild(left);
+    pad.appendChild(box);
+    pad.appendChild(nc);
     pad.appendChild(d);
+    reels.push({ row: r, img: im, cap: nc, fq,
+      frames: works.map((ci) => cards[ci].img), at: 0 });
     /* A CATEGORY HOVER IS INTENT, the same way focus on the field is:
        whoever previews a shelf is one click from needing the index.
-       So the hover requests the facts, and the numerals recount when
-       they land — see setCounts below. */
+       So the hover requests the facts, and the stamps re-deal when
+       they land — see refreshReels below. */
     r.addEventListener("pointerenter", (e) => {
-      if (e.pointerType === "mouse") wantFacts().then(setCounts);
+      if (e.pointerType === "mouse") wantFacts().then(refreshReels);
     });
     /* the old filter button's click, verbatim */
     h.addEventListener("click", () => {
@@ -4257,19 +4271,43 @@ function buildMagazine() {
       onQuery(fq, true);
     });
   });
-  /* THE NUMERAL TRACKS THE TRUTH AVAILABLE. At build the counts are
-     the matcher's, because the 655KB facts index is deferred and four
-     numerals are no reason to fetch it. When the index does arrive —
-     rail hover, field focus, deep link — the numerals recount through
-     think(), so what a row shows and what its click deals agree at
-     every moment: matcher truth before, facts truth after. Without
-     this the rail said 3 where the click dealt 10. */
-  function setCounts() {
-    railEl.querySelectorAll(".rnum").forEach((n) => {
-      n.textContent = countFor(n.dataset.fq);
+  /* THE STAMP TRACKS THE TRUTH AVAILABLE. At build the caption and
+     the frame list are the matcher's, because the 655KB facts index
+     is deferred and four stamps are no reason to fetch it. When the
+     index arrives — rail hover, field focus, deep link — both re-deal
+     through think(), so what a row shows and what its click deals
+     agree at every moment: matcher truth before, facts truth after. */
+  function refreshReels() {
+    reels.forEach((rl) => {
+      const works = worksFor(rl.fq);
+      rl.cap.textContent = works.length + " Projects";
+      rl.frames = works.map((ci) => cards[ci].img);
+      if (rl.at >= rl.frames.length) rl.at = 0;
     });
   }
-  if (factsWanted) factsWanted.then(setCounts);
+  if (factsWanted) factsWanted.then(refreshReels);
+  /* ONE CLOCK, VARIED BEATS. The cover reel's manifest runs 340-620ms
+     per frame, never a metronome — the stamp keeps that cadence with
+     hard cuts so it reads as the same signature. Only the open row's
+     reel advances; closed drawers cost nothing. The handle lives on
+     document so a rebuilt rail replaces the clock instead of stacking
+     a second one. */
+  if (document.__railTick) clearTimeout(document.__railTick);
+  if (!REDUCE()) {
+    const beats = [540, 420, 620, 460, 380];
+    let b = 0;
+    const tick = () => {
+      const live = reels.find((rl) =>
+        rl.row.classList.contains("open") && rl.frames.length > 1);
+      if (live && !document.hidden) {
+        live.at = (live.at + 1) % live.frames.length;
+        live.img.src = live.frames[live.at];
+      }
+      b = (b + 1) % beats.length;
+      document.__railTick = setTimeout(tick, beats[b]);
+    };
+    document.__railTick = setTimeout(tick, beats[0]);
+  }
   railEl.addEventListener("pointerleave", closeRows);
 
   const rail = [{ at: 0, el: railEl }];
