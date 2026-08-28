@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>book-variants · lab</title>
+<style>
+  /* ── the calendar, pressed: five ways ──────────────────────────────
+     The owner's brief: the /book grid runs day-rows across the two
+     main columns and it has not been nailed. References on the table:
+     the FEB poster (stacked display numerals, a rotated month, grey
+     for the days that are not offered), the M2-Systems year database
+     (one giant numeral, ruled sections, tiny caps labels), the Dutch
+     73-12 calendar (tabular figure runs, weekday letters, the week
+     number), and the March student-events poster (weekday columns
+     with entries hung beneath).
+
+     Same judging rules as rail-variants: real copy, real day math,
+     the site's own tokens and motion. Whichever survives gets built
+     into /book properly. */
+  :root {
+    --ink: #000;
+    --paper: #fff;            /* /book runs on white, not the cream */
+    --note: 12px;
+    --lbl: 10px;
+    --track: 0.04em;
+    --curve: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --hair: rgba(0, 0, 0, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #e8e6e3;
+    color: var(--ink);
+    padding: 60px 40px 120px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .intro { max-width: 640px; margin: 0 auto 70px; }
+  .intro h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .intro p { font-size: 13px; line-height: 1.55; color: rgba(0,0,0,0.6);
+    margin-top: 10px; }
+
+  .var { max-width: 1400px; margin: 0 auto 90px; }
+  .vhead { max-width: 640px; margin-bottom: 18px; }
+  .vname { font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    text-transform: uppercase; }
+  .vwhy { font-size: 12px; line-height: 1.55; color: rgba(0,0,0,0.55);
+    margin-top: 6px; }
+  .stage { background: var(--paper); padding: 64px 56px 72px;
+    overflow: hidden; }
+
+  /* the shared three-column armature: rail, then the two work columns,
+     the homepage's own structure */
+  .cols3 { display: grid; grid-template-columns: 200px 1fr 1fr;
+    column-gap: 44px; }
+  .lede { font-size: clamp(22px, 2.6vw, 34px); line-height: 1.2;
+    letter-spacing: -0.02em; font-weight: 500; max-width: 21em; }
+  .lede .dim { color: rgba(0,0,0,0.42); }
+  .railblk { font-size: var(--note); line-height: 1.5;
+    color: rgba(0,0,0,0.78); }
+  .railblk + .railblk { margin-top: 26px; }
+  .cap { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; font-weight: 500; }
+  .quietcap { composes: cap; opacity: 0.5; }
+
+  /* the one interaction every variant shares: an open time wears the
+     drawn rule at rest and fills it on hover, the site's single CTA
+     move; picked floods to ink */
+  .t {
+    font: inherit; background: none; border: 0; padding: 0 2px;
+    cursor: pointer; color: var(--ink);
+    background-image:
+      linear-gradient(var(--ink), var(--ink)),
+      linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22));
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22,1,0.36,1),
+      background-color 0.3s var(--curve), color 0.3s var(--curve);
+  }
+  .t:hover { background-size: 100% 1px, 100% 1px; }
+  .t.on { background-color: var(--ink); color: #fff; padding: 2px 7px;
+    background-image: none; }
+  .x { color: rgba(0,0,0,0.28); }   /* a closed time says nothing */
+
+  /* ── A · the month spine (FEB poster) ─────────────────────────────── */
+  .vA .cal { display: grid; grid-template-columns: 200px 1fr; column-gap: 44px;
+    margin-top: 64px; }
+  .vA .month {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: clamp(120px, 13vw, 200px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.8;
+    justify-self: start; align-self: start;
+  }
+  .vA .days { border-left: 1px solid var(--ink); padding-left: 44px; }
+  .vA .day { display: grid; grid-template-columns: 170px 44px 1fr;
+    align-items: center; column-gap: 28px; padding: 6px 0; }
+  .vA .num { font-size: clamp(64px, 7vw, 104px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.92;
+    font-variant-numeric: tabular-nums; }
+  .vA .day.shut .num { color: rgba(0,0,0,0.22); }  /* the FEB grey */
+  .vA .wd { font-size: 15px; font-weight: 700; }
+  .vA .day.shut .wd { color: rgba(0,0,0,0.22); }
+  .vA .slots { display: flex; gap: 26px; font-size: 14px;
+    font-variant-numeric: tabular-nums; }
+  .vA .note { margin-top: 40px; font-size: var(--note);
+    color: rgba(0,0,0,0.5); max-width: 34em; }
+
+  /* ── B · the booking sheet (M2-Systems) ───────────────────────────── */
+  .vB .sheetrule { border-top: 1px solid var(--ink); display: flex;
+    justify-content: space-between; padding: 6px 0 0; }
+  .vB .sheethead { margin-bottom: 54px; }
+  .vB .hero { display: grid; grid-template-columns: auto 1fr;
+    column-gap: 56px; align-items: end; margin: 54px 0 64px; }
+  .vB .heronum { font-size: clamp(200px, 24vw, 340px); font-weight: 400;
+    letter-spacing: -0.05em; line-height: 0.78;
+    font-variant-numeric: tabular-nums; }
+  .vB .herotxt { padding-bottom: 12px; max-width: 30em; }
+  .vB .herotxt .cap { opacity: 0.5; display: block; margin-bottom: 10px; }
+  .vB .heroline { font-size: clamp(18px, 2vw, 26px); font-weight: 500;
+    letter-spacing: -0.015em; line-height: 1.25; }
+  .vB .heroline .t { font-size: inherit; }
+  .vB table { width: 100%; border-collapse: collapse; }
+  .vB th { text-align: left; font-size: var(--lbl);
+    letter-spacing: var(--track); text-transform: uppercase;
+    font-weight: 500; opacity: 0.5; padding: 0 0 8px;
+    border-bottom: 1px solid var(--ink); }
+  .vB td { padding: 13px 0; border-bottom: 1px solid var(--hair);
+    font-size: 14px; font-variant-numeric: tabular-nums; }
+  .vB td.d { font-weight: 700; width: 220px; }
+  .vB td.d .m { color: rgba(0,0,0,0.4); font-weight: 400; }
+  .vB .tds { display: flex; gap: 24px; }
+
+  /* ── C · the tabular run (december 73) ────────────────────────────── */
+  .vC .cal { display: grid; grid-template-columns: 200px 1fr 120px;
+    column-gap: 44px; margin-top: 64px; }
+  .vC .monthword { font-size: clamp(32px, 3.4vw, 46px); font-weight: 700;
+    letter-spacing: -0.02em; }
+  .vC .wk { align-self: end; font-size: clamp(32px, 3.4vw, 46px);
+    font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; }
+  .vC .wk .cap { display: block; opacity: 0.5; margin-bottom: 4px; }
+  .vC .runs { }
+  .vC .run { display: grid;
+    grid-template-columns: repeat(3, max-content) 1fr max-content;
+    column-gap: 0.6em; align-items: baseline;
+    font-size: clamp(26px, 2.8vw, 38px); font-weight: 700;
+    letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
+    padding: 7px 0; border-bottom: 1px solid var(--hair);
+    cursor: pointer; transition: background-color 0.4s var(--curve),
+      color 0.4s var(--curve); }
+  .vC .run:first-child { border-top: 1px solid var(--ink); }
+  .vC .run .wd2 { justify-self: end; font-weight: 400;
+    color: rgba(0,0,0,0.4); text-transform: lowercase; }
+  .vC .run .tm { margin-left: 0.8em; }
+  .vC .run:hover { background: rgba(0,0,0,0.04); }
+  .vC .run.on { background: var(--ink); color: #fff;
+    margin: 0 -16px; padding: 7px 16px; border-bottom-color: var(--ink); }
+  .vC .run.on .wd2 { color: rgba(255,255,255,0.5); }
+  .vC .foot { margin-top: 32px; font-size: var(--note);
+    color: rgba(0,0,0,0.5); max-width: 34em; }
+
+  /* ── D · the week board (March poster) ────────────────────────────── */
+  .vD .board { display: grid; grid-template-columns: repeat(5, 1fr);
+    column-gap: 1px; background: var(--hair);
+    border-top: 1px solid var(--ink); margin-top: 64px; }
+  .vD .col { background: var(--paper); padding: 20px 22px 34px;
+    min-height: 300px; }
+  .vD .col .cap { opacity: 0.5; display: block; }
+  .vD .dnum { font-size: clamp(48px, 5.4vw, 84px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.95; margin: 8px 0 26px;
+    font-variant-numeric: tabular-nums; }
+  .vD .col.shut .dnum { color: rgba(0,0,0,0.22); }
+  .vD .list { display: flex; flex-direction: column; gap: 12px;
+    align-items: flex-start; font-size: 14px;
+    font-variant-numeric: tabular-nums; }
+
+  /* ── E · the day drawer (the rail's own inversion) ────────────────── */
+  .vE .rows { margin-top: 64px; border-top: 1px solid var(--hair); }
+  .vE .drow { border-bottom: 1px solid var(--hair); cursor: pointer;
+    margin: 0 -56px; padding: 0 56px;
+    transition: background-color 0.5s var(--curve), color 0.5s var(--curve); }
+  .vE .drow.open { background: var(--ink); color: #fff; }
+  .vE .dhead { display: grid;
+    grid-template-columns: 64px 1fr max-content; align-items: baseline;
+    column-gap: 24px; padding: 14px 0; font-size: 15px; }
+  .vE .dhead .n { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .vE .dhead .free { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; opacity: 0.45; }
+  .vE .dbody { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s var(--curve); }
+  .vE .drow.open .dbody { grid-template-rows: 1fr; }
+  .vE .dbody > div { overflow: hidden; min-height: 0; }
+  .vE .dpad { padding: 10px 0 34px; display: grid;
+    grid-template-columns: auto 1fr; column-gap: 56px; align-items: end;
+    opacity: 0; transform: translateY(10px); transition: none; }
+  .vE .drow.open .dpad { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms, transform 0.56s var(--curve) 90ms; }
+  .vE .bignum { font-size: clamp(110px, 13vw, 190px); font-weight: 700;
+    letter-spacing: -0.05em; line-height: 0.8;
+    font-variant-numeric: tabular-nums; }
+  .vE .bigcap { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; opacity: 0.55; margin-top: 12px; }
+  .vE .etimes { display: flex; flex-wrap: wrap; gap: 14px 26px;
+    font-size: 16px; font-variant-numeric: tabular-nums;
+    padding-bottom: 10px; }
+  .vE .etimes .t { color: inherit;
+    background-image: linear-gradient(#fff, #fff),
+      linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)); }
+  .vE .etimes .t.on { background-color: #fff; color: var(--ink); }
+  .vE .etimes .x { color: rgba(255,255,255,0.3); }
+
+  @media (max-width: 900px) {
+    .cols3 { grid-template-columns: 1fr; row-gap: 34px; }
+    .vA .cal { grid-template-columns: 1fr; row-gap: 30px; }
+    .vA .month { writing-mode: horizontal-tb; transform: none; }
+    .vA .day { grid-template-columns: 90px 40px 1fr; column-gap: 14px; }
+    .vD .board { grid-template-columns: 1fr; }
+    .vC .cal { grid-template-columns: 1fr; row-gap: 24px; }
+    .stage { padding: 36px 22px 44px; }
+    .vE .drow { margin: 0 -22px; padding: 0 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>The calendar, pressed — five ways</h1>
+  <p>The /book grid, redesigned against the references: the FEB poster,
+  the M2 year database, the Dutch 73-12 sheet, the March events board,
+  and the site's own drawer language. Real copy, real day math, fake
+  availability (first day closed, 9:30 and 4:00 open elsewhere — the
+  production pattern). Open times wear the site's drawn rule; a pick
+  floods to ink.</p>
+</div>
+
+<div id="vars"></div>
+
+<script>
+/* ── the real shapes ─────────────────────────────────────────────── */
+const TIMES = [
+  { h: "9:00",  ap: "AM", open: false },
+  { h: "9:30",  ap: "AM", open: true  },
+  { h: "10:00", ap: "AM", open: false },
+  { h: "3:30",  ap: "PM", open: false },
+  { h: "4:00",  ap: "PM", open: true  },
+  { h: "4:30",  ap: "PM", open: false },
+];
+/* next five weekdays, today first — the page's own window */
+const DAYS = (() => {
+  const out = [];
+  const d = new Date();
+  while (out.length < 5) {
+    if (d.getDay() >= 1 && d.getDay() <= 5) {
+      const first = out.length === 0;
+      out.push({
+        date: new Date(d),
+        wd: d.toLocaleDateString("en-US", { weekday: "short" }),
+        wd1: d.toLocaleDateString("en-US", { weekday: "narrow" }),
+        num: String(d.getDate()).padStart(2, "0"),
+        mm: String(d.getMonth() + 1).padStart(2, "0"),
+        mon: d.toLocaleDateString("en-US", { month: "short" }),
+        monLong: d.toLocaleDateString("en-US", { month: "long" }),
+        wk: (dd => { const j = new Date(dd.getFullYear(),0,1);
+          return Math.ceil((((dd - j) / 86400000) + j.getDay() + 1) / 7); })(d),
+        /* production's shape on the screenshot: today closed, the rest
+           offer 9:30 and 4:00 */
+        slots: TIMES.map(t => ({ ...t, open: t.open && !first })),
+      });
+    }
+    d.setDate(d.getDate() + 1);
+  }
+  return out;
+})();
+const openDays = DAYS.filter(d => d.slots.some(s => s.open));
+const firstOpen = openDays[0];
+
+const esc = (s) => String(s).replace(/[&<>"]/g,
+  c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const LEDE = `30 minutes, to talk about what you have in mind.
+  <span class="dim">Pick a time that works. I’ll come having read
+  whatever you want to tell me first.</span>`;
+const RAIL = `
+  <div>
+    <div class="railblk">These are the hours I keep. If none of them
+      work, say so at hello@reckon.house and we’ll find one.</div>
+    <div class="railblk">A booking opens a thread, so anything you add
+      before we talk reaches me the same way a message does.</div>
+  </div>`;
+const slotBtns = (d, cls) => d.slots.map(s => s.open
+  ? `<button class="t ${cls || ""}" type="button">${s.h}${s.ap}</button>`
+  : `<span class="x">${s.h}${s.ap}</span>`).join("");
+
+const VARIANTS = [];
+
+/* ── A · the month spine ─────────────────────────────────────────── */
+VARIANTS.push({
+  key: "vA", name: "A · The month spine",
+  why: "The FEB poster. The month runs as a rotated display word in the rail's column; the days stand as stacked numerals against one vertical rule, greyed when nothing is offered — exactly the poster's move for the weekend. Slots run beside each numeral at reading size.",
+  html: `
+    <div class="cols3">
+      <div></div>
+      <h2 class="lede" style="grid-column: 2 / 4">${LEDE}</h2>
+    </div>
+    <div class="cal">
+      <div class="month">${esc(firstOpen.mon.toUpperCase())}</div>
+      <div class="days">
+        ${DAYS.map(d => `
+        <div class="day ${d.slots.some(s => s.open) ? "" : "shut"}">
+          <div class="num">${d.num}</div>
+          <div class="wd">${esc(d.wd1)}</div>
+          <div class="slots">${slotBtns(d)}</div>
+        </div>`).join("")}
+      </div>
+    </div>
+    <p class="note">These are the hours I keep. If none of them work,
+      say so at hello@reckon.house and we’ll find one.</p>`,
+});
+
+/* ── B · the booking sheet ───────────────────────────────────────── */
+VARIANTS.push({
+  key: "vB", name: "B · The booking sheet",
+  why: "The M2 year database. One ruled sheet: tiny caps in the margins, a single giant numeral — the next day with an opening — carrying the page, and the rest of the week as a dense ruled table beneath. The hierarchy argues: here is the soonest we can talk; everything else is the index.",
+  html: `
+    <div class="sheethead">
+      <div class="sheetrule">
+        <span class="cap">Reckon House Staples</span>
+        <span class="cap" style="opacity:.5">Booking sheet</span>
+        <span class="cap" style="opacity:.5">30 minutes · Central</span>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="heronum">${firstOpen.num}</div>
+      <div class="herotxt">
+        <span class="cap">Next opening · ${esc(firstOpen.monLong)}</span>
+        <div class="heroline">${esc(firstOpen.date.toLocaleDateString("en-US", { weekday: "long" }))}, at
+          ${firstOpen.slots.filter(s => s.open).map(s =>
+            `<button class="t" type="button">${s.h}${s.ap}</button>`).join(" or ")}.
+          <span style="color:rgba(0,0,0,0.42)">I’ll come having read
+          whatever you want to tell me first.</span>
+        </div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Day</th><th>Morning</th><th>Afternoon</th></tr></thead>
+      <tbody>
+        ${DAYS.map(d => `
+        <tr>
+          <td class="d">${esc(d.wd)} ${d.num} <span class="m">${esc(d.mon)}</span></td>
+          <td><div class="tds">${d.slots.slice(0, 3).map(s => s.open
+            ? `<button class="t" type="button">${s.h}</button>`
+            : `<span class="x">${s.h}</span>`).join("")}</div></td>
+          <td><div class="tds">${d.slots.slice(3).map(s => s.open
+            ? `<button class="t" type="button">${s.h}</button>`
+            : `<span class="x">${s.h}</span>`).join("")}</div></td>
+        </tr>`).join("")}
+      </tbody>
+    </table>`,
+});
+
+/* ── C · the tabular run ─────────────────────────────────────────── */
+VARIANTS.push({
+  key: "vC", name: "C · The tabular run",
+  why: "The Dutch 73-12 sheet. Only what is real: every OPEN slot is one row of tabular figures — month, day, time — with the weekday letter hung on the right and the week number standing in the corner. Closed hours simply do not print. Picking a row floods it to ink.",
+  html: `
+    <div class="cols3" style="margin-bottom: 54px">
+      <div></div>
+      <h2 class="lede" style="grid-column: 2 / 4">${LEDE}</h2>
+    </div>
+    <div class="cal">
+      <div class="monthword">${esc(firstOpen.monLong.toLowerCase())}</div>
+      <div class="runs">
+        ${openDays.flatMap(d => d.slots.filter(s => s.open).map(s => `
+        <div class="run" role="button" tabindex="0">
+          <span>${d.mm}</span><span>${d.num}</span><span class="tm">${s.h}<span style="font-weight:400">${s.ap.toLowerCase()}</span></span>
+          <span></span>
+          <span class="wd2">${esc(d.wd.toLowerCase())}</span>
+        </div>`)).join("")}
+      </div>
+      <div class="wk"><span class="cap">Week</span>${firstOpen.wk}</div>
+    </div>
+    <p class="foot">These are the hours I keep — 30 minutes, Central.
+      If none of them work, say so at hello@reckon.house and we’ll
+      find one.</p>`,
+});
+
+/* ── D · the week board ──────────────────────────────────────────── */
+VARIANTS.push({
+  key: "vD", name: "D · The week board",
+  why: "The March poster. The week stands as five ruled columns, each day's numeral at the top and its hours hung beneath — the shape of the week is the layout itself. A day with nothing to offer keeps its column and goes grey, which is the honest version of scarcity.",
+  html: `
+    <div class="cols3">
+      <div></div>
+      <h2 class="lede" style="grid-column: 2 / 4">${LEDE}</h2>
+    </div>
+    <div class="board">
+      ${DAYS.map(d => `
+      <div class="col ${d.slots.some(s => s.open) ? "" : "shut"}">
+        <span class="cap">${esc(d.wd)} · ${esc(d.mon)}</span>
+        <div class="dnum">${d.num}</div>
+        <div class="list">${slotBtns(d)}</div>
+      </div>`).join("")}
+    </div>`,
+});
+
+/* ── E · the day drawer ──────────────────────────────────────────── */
+VARIANTS.push({
+  key: "vE", name: "E · The day drawer",
+  why: "The site's own newest language, pointed at the week: days are quiet ruled rows, and the one you touch floods to ink and opens — the date as a display numeral, the hours reversed out beside it. The homepage rail and the calendar become one system.",
+  html: `
+    <div class="cols3">
+      ${RAIL}
+      <h2 class="lede" style="grid-column: 2 / 4">${LEDE}</h2>
+    </div>
+    <div class="rows">
+      ${DAYS.map((d, i) => `
+      <div class="drow" data-i="${i}">
+        <div class="dhead">
+          <span class="n">${d.num}</span>
+          <span>${esc(d.date.toLocaleDateString("en-US", { weekday: "long" }))}</span>
+          <span class="free">${d.slots.filter(s => s.open).length
+            ? d.slots.filter(s => s.open).length + " open"
+            : "—"}</span>
+        </div>
+        <div class="dbody"><div><div class="dpad">
+          <div>
+            <div class="bignum">${d.num}</div>
+            <div class="bigcap">${esc(d.wd)} · ${esc(d.mon)}</div>
+          </div>
+          <div class="etimes">${slotBtns(d)}</div>
+        </div></div></div>
+      </div>`).join("")}
+    </div>`,
+});
+
+const root = document.getElementById("vars");
+for (const v of VARIANTS) {
+  const s = document.createElement("section");
+  s.className = `var ${v.key}`;
+  s.innerHTML = `<header class="vhead"><div class="vname">${v.name}</div>
+    <p class="vwhy">${v.why}</p></header>
+    <div class="stage">${v.html}</div>`;
+  root.appendChild(s);
+}
+
+/* picks: one live time per variant */
+document.querySelectorAll(".stage").forEach((stage) => {
+  stage.querySelectorAll(".t").forEach((b) => {
+    b.addEventListener("click", () => {
+      stage.querySelectorAll(".t.on").forEach((o) => o.classList.remove("on"));
+      b.classList.add("on");
+    });
+  });
+});
+/* C: the whole row is the control */
+document.querySelectorAll(".vC .run").forEach((r) => {
+  r.addEventListener("click", () => {
+    r.closest(".runs").querySelectorAll(".run.on")
+      .forEach((o) => o.classList.remove("on"));
+    r.classList.add("on");
+  });
+});
+/* E: the drawer, on the rail's wiring — hover opens, click holds */
+document.querySelectorAll(".vE .drow").forEach((r) => {
+  const openIt = () => {
+    r.parentElement.querySelectorAll(".drow.open")
+      .forEach((o) => { if (o !== r) o.classList.remove("open"); });
+    r.classList.add("open");
+  };
+  r.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") openIt();
+  });
+  r.addEventListener("click", (e) => {
+    if (e.target.closest(".t")) return;  /* a time pick is not a toggle */
+    if (r.classList.contains("open")) r.classList.remove("open");
+    else openIt();
+  });
+});
+</script>
+
+</body>
+</html>
