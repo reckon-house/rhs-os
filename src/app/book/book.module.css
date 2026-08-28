@@ -31,120 +31,166 @@
   padding-bottom: clamp(80px, 12dvh, 140px);
 }
 
-/* ── the matrix ──────────────────────────────────────────────────────
-   Days down, times across, on one rigid set of columns. Every column is
-   the same half-hour on all five days, so the shape of the week reads
-   before any label does — the dot-grid poster's logic with times where
-   its dots were.
-
-   HAIRLINES, NOT BOXES. A rule per row and nothing else: a box around a
-   time turns it into a control, and the argument here is that these are
-   data that happen to be live. The only filled thing on the page is the
-   one slot the visitor has chosen, which is what makes it read as a
-   choice rather than as a button that was always dark. */
-.grid {
+/* ── the spine, opened ───────────────────────────────────────────────
+   Variant F from lab/book-variants.html, the survivor of six: the FEB
+   poster's armature — a rotated month, stacked display numerals, one
+   vertical rule — carrying the site's drawer. Closed, the calendar is
+   nothing but numerals and a quiet count. The day under the pointer
+   floods to ink, blooms taller on the daybook curve, and its hours
+   arrive beside the numeral on the drawer's 90ms lag. A day with
+   nothing to offer stays grey and never opens. */
+.cal {
   display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
+  column-gap: clamp(24px, 4vw, 44px);
   margin: 0 0 clamp(22px, 3vw, 34px);
-  border-bottom: 1px solid var(--pp-ink, #000);
+}
+.month {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(110px, 12vw, 190px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+  justify-self: start;
+  align-self: start;
+  user-select: none;
+}
+.days { border-left: 1px solid var(--pp-ink, #000); }
+
+.day {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) max-content;
+  align-items: center;
+  column-gap: clamp(16px, 2.4vw, 28px);
+  padding: 8px clamp(16px, 2vw, 28px) 8px clamp(20px, 3vw, 44px);
+  transition:
+    background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    padding-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+    padding-bottom 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.dayOpen {
+  background: var(--pp-ink, #000);
+  color: var(--pp-paper, #fff);
+  padding-top: clamp(20px, 3vw, 30px);
+  padding-bottom: clamp(20px, 3vw, 30px);
 }
 
-.row {
+/* The head is the toggle: numeral and weekday in one button, because
+   the slots inside the row are buttons of their own and buttons do not
+   nest. A shut day's head is not a control at all. */
+.dayBtn {
   display: grid;
-  grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
-  gap: clamp(16px, 3vw, 40px);
-  align-items: start;
-  border-top: 1px solid var(--pp-ink, #000);
-  padding: clamp(14px, 2vw, 20px) 0 clamp(16px, 2.4vw, 26px);
+  grid-template-columns: minmax(96px, 170px) auto;
+  align-items: center;
+  column-gap: clamp(14px, 2.4vw, 28px);
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
-
-/* THE DATE IS THE ANCHOR. Weekday and month sit at label size on either
-   side of a display numeral, which is the one piece of type on this
-   page allowed to be large: it is what a reader scans for. */
-.date {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  column-gap: 10px;
+.dayBtn:disabled { cursor: default; }
+.dayBtn:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
 }
-.wd,
-.mo {
+.num {
+  font-size: clamp(52px, 6.6vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+}
+.wd { font-size: 15px; font-weight: 700; }
+/* the month, named only when a day has crossed into the next one —
+   an 01 under an AUG spine would otherwise be a small lie */
+.mox {
+  display: block;
   font-size: var(--pp-lbl, 10px);
   letter-spacing: var(--pp-lbl-track, 0.04em);
   font-weight: var(--pp-lbl-weight, 500);
   text-transform: uppercase;
-  opacity: 0.55;
+  opacity: 0.5;
 }
-.wd { grid-column: 1; grid-row: 1; }
-.mo { grid-column: 1; grid-row: 3; }
-.num {
-  grid-column: 1;
-  grid-row: 2;
-  font-size: clamp(34px, 4.6vw, 56px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.94;
-  font-variant-numeric: tabular-nums;
-}
+.shut .num,
+.shut .wd { color: rgba(0, 0, 0, 0.22); }
 
-/* Six tracks, fixed. minmax(0,1fr) rather than auto so a 10:00 AM and a
-   9:30 AM sit on the same column edge down the whole calendar; auto
-   would let each row size to its own content and the matrix would stop
-   being one. */
+/* The drawer's own clock: hidden text is INSTANTLY hidden (and out of
+   the tab order — visibility, not opacity alone), arriving text runs
+   90ms behind the flood. */
 .times {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 6px clamp(4px, 1vw, 12px);
-  align-content: start;
-  padding-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px clamp(14px, 2vw, 26px);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
 }
+.dayOpen .times {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease 90ms,
+    transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms;
+}
+.free {
+  font-size: var(--pp-lbl, 10px);
+  letter-spacing: var(--pp-lbl-track, 0.04em);
+  font-weight: var(--pp-lbl-weight, 500);
+  text-transform: uppercase;
+  opacity: 0.45;
+  transition: opacity 0.3s ease;
+}
+.dayOpen .free { opacity: 0; }
 
+/* An open time wears the site's drawn rule in the band's own white;
+   the pick reverses to paper. Closed hours print faint and say
+   nothing about why. */
 .slot,
 .closed {
-  display: block;
-  width: 100%;
-  padding: 5px 0;
+  display: inline-block;
   border: 0;
   background: none;
   font: inherit;
-  font-size: var(--pp-note, 12px);
+  font-size: 14px;
   line-height: 1.4;
-  text-align: left;
+  padding: 0 2px;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
-
 .slot {
-  color: var(--pp-ink, #000);
+  color: inherit;
   cursor: pointer;
-  /* The rule under an open time is the only mark that says "live", and
-     it is the same hairline the rest of the site underlines with. */
-  box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.28);
-  transition: box-shadow 0.18s ease, color 0.18s ease;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35));
+  background-repeat: no-repeat;
+  background-size: 0 1px, 100% 1px;
+  background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+  transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (hover: hover) {
-  .slot:hover { box-shadow: inset 0 -1px 0 0 var(--pp-ink, #000); }
+  .slot:hover { background-size: 100% 1px, 100% 1px; }
 }
-.slot:focus-visible { outline: 1px solid var(--pp-ink, #000); outline-offset: 2px; }
-
-/* Chosen: ink block, knocked out. The one reversal on the page. */
+.slot:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 .on,
 .slot.on:hover {
-  background: var(--pp-ink, #000);
-  color: var(--pp-paper, #fff);
-  box-shadow: none;
-  padding-left: 6px;
-  padding-right: 6px;
+  background-color: var(--pp-paper, #fff);
+  color: var(--pp-ink, #000);
+  background-image: none;
+  padding: 2px 7px;
 }
-
-/* Closed says nothing. No rule, no fill, no label: it is the time
-   printed and not offered, which is exactly what it is. */
-.closed {
-  color: rgba(0, 0, 0, 0.22);
-  cursor: default;
-}
+.closed { color: rgba(255, 255, 255, 0.3); cursor: default; }
 
 @media (prefers-reduced-motion: reduce) {
-  .slot { transition: none; }
+  .day, .times, .free, .slot { transition: none; }
 }
 
 .tz {
@@ -273,12 +319,17 @@
 /* The rows survive a phone; only the two inside them stack. Three
    times across is the most that stays legible at 335px, and the date
    goes horizontal so it does not eat a third of the row. */
+/* The spine lies down on a phone: the month runs horizontal above the
+   days, the numerals come down a size, and the drawer opens on tap
+   (no hover to do it). The count hides — at this width it crowded the
+   weekday letter, and the tap answers the same question. */
 @media (max-width: 640px) {
-  .row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .date { grid-template-columns: auto auto 1fr; column-gap: 8px; align-items: baseline; }
-  .wd { grid-column: 1; grid-row: 1; }
-  .num { grid-column: 2; grid-row: 1; font-size: clamp(28px, 9vw, 40px); }
-  .mo { grid-column: 3; grid-row: 1; }
-  .times { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 0; }
+  .cal { grid-template-columns: minmax(0, 1fr); row-gap: 22px; }
+  .month { writing-mode: horizontal-tb; transform: none;
+    font-size: clamp(64px, 22vw, 110px); }
+  .day { padding-left: 14px; padding-right: 14px; column-gap: 12px; }
+  .dayBtn { grid-template-columns: 78px auto; column-gap: 12px; }
+  .num { font-size: clamp(40px, 12vw, 56px); }
+  .free { display: none; }
   .frow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }

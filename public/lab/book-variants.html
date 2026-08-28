@@ -328,13 +328,18 @@ const firstOpen = openDays[0];
 
 const esc = (s) => String(s).replace(/[&<>"]/g,
   c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
-const LEDE = `30 minutes, to talk about what you have in mind.
-  <span class="dim">Pick a time that works. I’ll come having read
-  whatever you want to tell me first.</span>`;
+/* The copy is the shipped page's, rewritten by ear against VOICE.md:
+   "Let's talk about what you have in mind" is his own sentence, and
+   nobody has ever said "I'll come having read" out loud. */
+const LEDE = `Let’s talk about what you have in mind.
+  <span class="dim">Pick a time that works, it’s a 30 minute call.
+  If you want to send anything over first, I’ll read it before we
+  talk.</span>`;
 const RAIL = `
   <div>
-    <div class="railblk">These are the hours I keep. If none of them
-      work, say so at hello@reckon.house and we’ll find one.</div>
+    <div class="railblk">These are the times I’m usually free. If none
+      of them work, email hello@reckon.house and we’ll find one that
+      does.</div>
     <div class="railblk">A booking opens a thread, so anything you add
       before we talk reaches me the same way a message does.</div>
   </div>`;
@@ -364,8 +369,8 @@ VARIANTS.push({
         </div>`).join("")}
       </div>
     </div>
-    <p class="note">These are the hours I keep. If none of them work,
-      say so at hello@reckon.house and we’ll find one.</p>`,
+    <p class="note">These are the times I’m usually free. If none of them work,
+      email hello@reckon.house and we’ll find one that does.</p>`,
 });
 
 /* ── B · the booking sheet ───────────────────────────────────────── */
@@ -430,9 +435,9 @@ VARIANTS.push({
       </div>
       <div class="wk"><span class="cap">Week</span>${firstOpen.wk}</div>
     </div>
-    <p class="foot">These are the hours I keep — 30 minutes, Central.
-      If none of them work, say so at hello@reckon.house and we’ll
-      find one.</p>`,
+    <p class="foot">These are the times I’m usually free — 30 minutes, Central.
+      If none of them work, email hello@reckon.house and we’ll find
+      one that does.</p>`,
 });
 
 /* ── D · the week board ──────────────────────────────────────────── */
@@ -508,8 +513,8 @@ VARIANTS.push({
         }).join("")}
       </div>
     </div>
-    <p class="note">These are the hours I keep. If none of them work,
-      say so at hello@reckon.house and we’ll find one.</p>`,
+    <p class="note">These are the times I’m usually free. If none of them work,
+      email hello@reckon.house and we’ll find one that does.</p>`,
 });
 
 const root = document.getElementById("vars");

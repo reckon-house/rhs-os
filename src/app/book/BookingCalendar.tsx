@@ -49,6 +49,14 @@ export function BookingCalendar({ days }: { days: Day[] }) {
      the render, so losing a race greys the box the visitor was looking
      at rather than only telling them in a sentence. */
   const [gone, setGone] = useState<string[]>([]);
+  /* The drawer. Defaulted to the first day with an opening so the
+     server HTML already shows real hours — the drawer is choreography
+     on top of a complete page, not the door to it. Hover moves it
+     (mouse), tap toggles it, and it never closes to nothing on its
+     own: an open day is information, not a flourish. */
+  const [openDay, setOpenDay] = useState<string | null>(
+    () => days.find((d) => d.slots.some((s) => s.open))?.date ?? null
+  );
   const formRef = useRef<HTMLFormElement | null>(null);
 
   /* THE READER'S ZONE IS A CLIENT-ONLY FACT, so it is read the way
@@ -66,8 +74,14 @@ export function BookingCalendar({ days }: { days: Day[] }) {
      small caps label and the date as a display numeral, which is the
      move every one of the references makes. */
   const wd = useMemo(() => new Intl.DateTimeFormat("en-US", { weekday: "short" }), []);
+  const wd1 = useMemo(() => new Intl.DateTimeFormat("en-US", { weekday: "narrow" }), []);
   const dd = useMemo(() => new Intl.DateTimeFormat("en-US", { day: "2-digit" }), []);
   const mo = useMemo(() => new Intl.DateTimeFormat("en-US", { month: "short" }), []);
+  /* the spine wears the month of the first day that has an opening */
+  const spineMon = useMemo(() => {
+    const first = days.find((d) => d.slots.some((s) => s.open)) ?? days[0];
+    return first ? mo.format(new Date(`${first.date}T12:00:00Z`)) : "";
+  }, [days, mo]);
 
   const differs = Boolean(tz && tz !== HOUSE_TZ);
 
@@ -131,51 +145,86 @@ export function BookingCalendar({ days }: { days: Day[] }) {
 
   return (
     <div className={styles.wrap}>
-      {/* A MATRIX, NOT A SET OF CARDS. Days run down and times run
-          across, so every column is the same half-hour on five days and
-          the shape of the week is legible before a single label is
-          read. Hairlines carry the structure; there are no boxes,
-          because a box around a time makes it a control and the point
-          is that it is a piece of data that happens to be live. */}
-      <div className={styles.grid} role="group" aria-label="Available times">
-        {days.map((d) => {
-          const dt = new Date(`${d.date}T12:00:00Z`);
-          return (
-            <div key={d.date} className={styles.row}>
-              <div className={styles.date}>
-                <span className={styles.wd}>{wd.format(dt)}</span>
-                <span className={styles.num}>{dd.format(dt)}</span>
-                <span className={styles.mo}>{mo.format(dt)}</span>
+      {/* THE SPINE, OPENED — lab/book-variants.html variant F, the
+          survivor. The month stands rotated beside one vertical rule;
+          the days are stacked display numerals with a quiet count, and
+          the day under the pointer floods to ink and reveals its hours
+          on the drawer's clock. The first day with an opening renders
+          open from the server, so the page shows real times before a
+          byte of script arrives — and a no-script reader gets at least
+          that day's hours. */}
+      <div className={styles.cal} role="group" aria-label="Available times">
+        <div className={styles.month} aria-hidden="true">
+          {spineMon.toUpperCase()}
+        </div>
+        <div className={styles.days}>
+          {days.map((d) => {
+            const dt = new Date(`${d.date}T12:00:00Z`);
+            const openCount = d.slots.filter(
+              (s) => s.open && !gone.includes(s.at)
+            ).length;
+            const has = openCount > 0;
+            const isOpen = openDay === d.date && has;
+            const crossed = mo.format(dt) !== spineMon;
+            return (
+              <div
+                key={d.date}
+                className={`${styles.day} ${isOpen ? styles.dayOpen : ""} ${has ? "" : styles.shut}`}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === "mouse" && has) setOpenDay(d.date);
+                }}
+              >
+                <button
+                  type="button"
+                  className={styles.dayBtn}
+                  disabled={!has}
+                  aria-expanded={isOpen}
+                  aria-label={`${wd.format(dt)} ${dd.format(dt)} ${mo.format(dt)}, ${
+                    has ? `${openCount} times open` : "nothing open"
+                  }`}
+                  onClick={() => setOpenDay(isOpen ? null : d.date)}
+                >
+                  <span className={styles.num}>{dd.format(dt)}</span>
+                  <span className={styles.wd}>
+                    {wd1.format(dt)}
+                    {crossed ? (
+                      <span className={styles.mox}>{mo.format(dt)}</span>
+                    ) : null}
+                  </span>
+                </button>
+                <div className={styles.times}>
+                  {d.slots.map((s) => {
+                    const taken = gone.includes(s.at);
+                    const open = s.open && !taken;
+                    const label = local.format(new Date(s.at)).replace(" ", "");
+                    return open ? (
+                      <button
+                        key={s.at}
+                        type="button"
+                        className={`${styles.slot} ${picked === s.at ? styles.on : ""}`}
+                        aria-pressed={picked === s.at}
+                        onClick={() => { setPicked(s.at); setWhy(""); }}
+                      >
+                        {label}
+                      </button>
+                    ) : (
+                      /* Not a button, not focusable, and it says nothing
+                         about why. aria-disabled rather than hidden: a
+                         screen reader should read the same shape of day a
+                         sighted reader sees. */
+                      <span key={s.at} className={styles.closed} aria-disabled="true">
+                        {label}
+                      </span>
+                    );
+                  })}
+                </div>
+                <span className={styles.free} aria-hidden="true">
+                  {has ? `${openCount} open` : "\u2014"}
+                </span>
               </div>
-              <div className={styles.times}>
-                {d.slots.map((s) => {
-                  const taken = gone.includes(s.at);
-                  const open = s.open && !taken;
-                  const label = local.format(new Date(s.at)).replace(" ", "");
-                  return open ? (
-                    <button
-                      key={s.at}
-                      type="button"
-                      className={`${styles.slot} ${picked === s.at ? styles.on : ""}`}
-                      aria-pressed={picked === s.at}
-                      onClick={() => { setPicked(s.at); setWhy(""); }}
-                    >
-                      {label}
-                    </button>
-                  ) : (
-                    /* Not a button, not focusable, and it says nothing
-                       about why. aria-disabled rather than hidden: a
-                       screen reader should read the same shape of week a
-                       sighted reader sees. */
-                    <span key={s.at} className={styles.closed} aria-disabled="true">
-                      {label}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       {differs ? (
@@ -206,7 +255,13 @@ export function BookingCalendar({ days }: { days: Day[] }) {
 
         <div className={styles.foot}>
           <button className={styles.send} type="submit" disabled={!picked || state === "sending"}>
-            {state === "sending" ? "Booking" : picked ? "Book it" : "Pick a time"}
+            {state === "sending"
+              ? "Booking"
+              : picked
+                ? `Book ${wd.format(new Date(picked))} ${local
+                    .format(new Date(picked))
+                    .replace(" ", "")}`
+                : "Pick a time"}
           </button>
           {why ? <span className={styles.why} role="status">{why}</span> : null}
         </div>

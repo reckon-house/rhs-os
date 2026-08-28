@@ -50,18 +50,25 @@ export default async function BookPage() {
 
           {/* The lede stands in the column the calendar stands in, the
               same as every other page here. */}
+          {/* His line, verbatim — "Let's talk about what you have in
+              mind" is the sentence he wrote for the contact beat. The
+              earlier lede ("I'll come having read whatever you want to
+              tell me first") failed his own test: nobody has ever said
+              a sentence shaped like that out loud. */}
           <h1 className={`statement ${styles.lede}`}>
-            {SLOT_MINUTES} minutes, to talk about what you have in mind.{" "}
+            Let&rsquo;s talk about what you have in mind.{" "}
             <span className="dim">
-              Pick a time that works. I&rsquo;ll come having read whatever you
-              want to tell me first.
+              Pick a time that works, it&rsquo;s a {SLOT_MINUTES} minute
+              call. If you want to send anything over first, I&rsquo;ll
+              read it before we talk.
             </span>
           </h1>
 
           <div className={`ixnotes ${styles.rail}`}>
             <div className="blk">
-              These are the hours I keep. If none of them work, say so at
-              hello@reckon.house and we&rsquo;ll find one.
+              These are the times I&rsquo;m usually free. If none of them
+              work, email hello@reckon.house and we&rsquo;ll find one that
+              does.
             </div>
             <div className="blk">
               A booking opens a thread, so anything you add before we talk
