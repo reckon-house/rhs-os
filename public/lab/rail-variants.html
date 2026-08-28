@@ -290,6 +290,20 @@
   .vK .quiet { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
     opacity: 0.5; line-height: 1.6; margin-top: 24px; }
 
+  /* ── L · the index (everything is a row) ─────────────────────────── */
+  .vL .lpad { padding: 6px 0 18px; }
+  .vL .sub { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; opacity: 0.6; margin: 12px 0 5px; }
+  .vL .sub:first-child { margin-top: 0; }
+  .vL .ltxt { font-size: 11px; line-height: 1.55; opacity: 0.9; }
+  .vL .lmail { font-size: var(--note); }
+  .vL .lgo { display: inline-block; margin-top: 8px; font-size: var(--note);
+    color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  /* no closing rule on the utility group: the breath between the groups is
+     bounded by the categories' own top rule alone — two hairlines around an
+     empty 20px band read as a dead seventh row */
+  .vL .fgap { height: 20px; }
+
   /* ── I · the loupe (proximity magnify) ───────────────────────────── */
   .vI .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
   .vI .line {
@@ -486,6 +500,42 @@ VARIANTS.push({
     </div>`).join("")}
     <div class="contact">${C.mail}<a class="go" href="#">${C.book}</a></div>
     <div class="quiet">${C.recently}</div>`,
+});
+
+VARIANTS.push({
+  key: "vL vJ", name: "L · The index",
+  why: "Tighter than K: nothing on the rail but the mark and rows. Info opens to About and News as sub-sections inside the ink band, Contact opens to the address and the booking link, and the categories follow after a breath. Closed, the whole rail is six ruled lines — a table of contents for the practice.",
+  html: `
+    <div class="mark">${C.mark}</div>
+    <div class="frow">
+      <div class="fhead">Info</div>
+      <div class="fbody"><div><div class="lpad">
+        <div class="sub">About</div>
+        <div class="ltxt">${C.practice} ${C.setup}</div>
+        <div class="sub">News</div>
+        <div class="ltxt">${C.recently}</div>
+      </div></div></div>
+    </div>
+    <div class="frow">
+      <div class="fhead">Contact</div>
+      <div class="fbody"><div><div class="lpad">
+        <div class="lmail">${C.mail}</div>
+        <a class="lgo" href="#">${C.book}</a>
+      </div></div></div>
+    </div>
+    <div class="fgap"></div>
+    ${[["\u25CF", "Digital Experiences", 9, "Sites, stores and platforms, designed and shipped."],
+       ["\u25A0", "App Development", 4, "Native tools and AI products, built end to end."],
+       ["\u25B2", "Campaign/Creative", 11, "Art direction and campaigns for retail's big names."],
+       ["\u25C6", "Interiors", 8, "Rooms designed like products, down to the hardware."]]
+      .map(([g, label, n, d]) => `
+    <div class="frow">
+      <div class="fhead"><span class="glyph">${g}</span>${esc(label)}</div>
+      <div class="fbody"><div><div class="fpad">
+        <div><div class="num">${n}</div><div class="numcap">Projects</div></div>
+        <div class="fdesc">${esc(d)}</div>
+      </div></div></div>
+    </div>`).join("")}`,
 });
 
 const row = document.getElementById("row");
