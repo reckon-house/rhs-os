@@ -39,7 +39,14 @@ function readZone(): string | null {
   return ZONE;
 }
 
-export function BookingCalendar({ days }: { days: Day[] }) {
+export function BookingCalendar({
+  days,
+  children,
+}: {
+  days: Day[];
+  /** the page's lede — it stands above the month in the left column */
+  children?: React.ReactNode;
+}) {
   const [picked, setPicked] = useState<string | null>(null);
   const [state, setState] = useState<Sending>("idle");
   const [why, setWhy] = useState("");
@@ -127,6 +134,7 @@ export function BookingCalendar({ days }: { days: Day[] }) {
   if (state === "done") {
     return (
       <div className={styles.done}>
+        {children}
         <p className={styles.doneLine}>
           Booked. {SLOT_MINUTES} minutes{when ? `, ${when}` : ""}.
         </p>
@@ -153,11 +161,18 @@ export function BookingCalendar({ days }: { days: Day[] }) {
           open from the server, so the page shows real times before a
           byte of script arrives — and a no-script reader gets at least
           that day's hours. */}
-      <div className={styles.cal} role="group" aria-label="Available times">
-        <div className={styles.month} aria-hidden="true">
-          {spineMon.toUpperCase()}
+      <div className={styles.cal}>
+        <div className={styles.leftcol}>
+          {children}
+          <div className={styles.month} aria-hidden="true">
+            {spineMon.toUpperCase()}
+          </div>
         </div>
-        <div className={styles.days}>
+        <div
+          className={styles.days}
+          role="group"
+          aria-label="Available times"
+        >
           {days.map((d) => {
             const dt = new Date(`${d.date}T12:00:00Z`);
             const openCount = d.slots.filter(

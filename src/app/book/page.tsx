@@ -50,20 +50,6 @@ export default async function BookPage() {
 
           {/* The lede stands in the column the calendar stands in, the
               same as every other page here. */}
-          {/* His line, verbatim — "Let's talk about what you have in
-              mind" is the sentence he wrote for the contact beat. The
-              earlier lede ("I'll come having read whatever you want to
-              tell me first") failed his own test: nobody has ever said
-              a sentence shaped like that out loud. */}
-          <h1 className={`statement ${styles.lede}`}>
-            Let&rsquo;s talk about what you have in mind.{" "}
-            <span className="dim">
-              Pick a time that works, it&rsquo;s a {SLOT_MINUTES} minute
-              call. If you want to send anything over first, I&rsquo;ll
-              read it before we talk.
-            </span>
-          </h1>
-
           <div className={`ixnotes ${styles.rail}`}>
             <div className="blk">
               These are the times I&rsquo;m usually free. If none of them
@@ -76,8 +62,27 @@ export default async function BookPage() {
             </div>
           </div>
 
+          {/* THE HOMEPAGE'S OWN GEOMETRY: the lede stands where the
+              statement stands, the month below it, and the dates run
+              on the other side of a thin grey rule — so /book and the
+              homepage read as the same page doing two jobs. The lede
+              rides in as the calendar's children so both halves share
+              one grid. His line, verbatim — "Let's talk about what
+              you have in mind" is the sentence he wrote for the
+              contact beat; the earlier "I'll come having read" failed
+              his own test: nobody has ever said a sentence shaped
+              like that out loud. */}
           <div className={styles.body}>
-            <BookingCalendar days={days} />
+            <BookingCalendar days={days}>
+              <h1 className={`statement ${styles.lede}`}>
+                Let&rsquo;s talk about what you have in mind.{" "}
+                <span className="dim">
+                  Pick a time that works, it&rsquo;s a {SLOT_MINUTES}{" "}
+                  minute call. If you want to send anything over first,
+                  I&rsquo;ll read it before we talk.
+                </span>
+              </h1>
+            </BookingCalendar>
           </div>
         </div>
       </section>
