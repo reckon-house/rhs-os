@@ -241,14 +241,18 @@
        the way the crossing owns its full width */
     margin: 0 -22px;
     padding: 0 22px;
-    border-top: 1px solid var(--ink);
+    /* the daybook ledger's hairline, not full ink: rgba(0,0,0,0.14) */
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
     background: transparent;
     color: inherit;
     cursor: pointer;
-    transition: background-color 0.45s cubic-bezier(0.22,1,0.36,1),
-      color 0.45s cubic-bezier(0.22,1,0.36,1);
+    /* the site's motion curve — the daybook's 0.2,0.7,0.2,1 — everywhere
+       in this drawer, replacing the lab's bouncy spring */
+    transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-top-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .vJ .frow:last-of-type { border-bottom: 1px solid var(--ink); }
+  .vJ .frow:last-of-type { border-bottom: 1px solid rgba(0, 0, 0, 0.14); }
   .vJ .frow.open {
     background: var(--ink);
     color: #fff;
@@ -261,12 +265,12 @@
   }
   .vJ .glyph {
     font-size: 8px; line-height: 1; width: 10px;
-    transition: transform 0.5s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%);
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .vJ .frow.open .glyph { transform: scale(1.55); }
   .vJ .fbody {
     display: grid; grid-template-rows: 0fr;
-    transition: grid-template-rows 0.6s linear(0, 0.008 1.1%, 0.031 2.2%, 0.129 4.8%, 0.257 7.2%, 0.671 14.2%, 0.895 18.7%, 0.986 21.2%, 1.055 24.2%, 1.079 27.7%, 1.063 31.2%, 1.014 38.3%, 0.997 46%, 1 100%);
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .vJ .frow.open .fbody { grid-template-rows: 1fr; }
   .vJ .fbody > div { overflow: hidden; min-height: 0; }
@@ -281,6 +285,14 @@
     text-transform: uppercase; opacity: 0.6; margin-top: 6px;
   }
   .vJ .fdesc { font-size: 11px; line-height: 1.5; opacity: 0.75; align-self: end; }
+  .vJ .fpad, .vJ .lpad {
+    opacity: 0; transform: translateY(10px); transition: none;
+  }
+  .vJ .frow.open .fpad, .vJ .frow.open .lpad {
+    opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms;
+  }
 
   /* ── K · the collapse (J's filters, everything else folded in) ──── */
   .vK .mark { font-weight: 700; font-size: 13px; padding-bottom: 16px; }
