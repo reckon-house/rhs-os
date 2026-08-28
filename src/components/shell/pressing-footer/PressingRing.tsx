@@ -146,11 +146,12 @@ export function PressingRing() {
 
 function Frame({
   project,
-  share,
+  share: dealt,
   tier,
   lag,
 }: {
   project: (typeof projects)[number];
+  /** the dealt tier; project.size overrides it when authored */
   share: number;
   /** the cell's phone tier, which decides how much of the screen this
    *  picture actually occupies down there */
@@ -164,6 +165,11 @@ function Frame({
   // recropped thumbnail defeats the immutable cache.
   const dim = imageDimensions[project.image.split("?")[0]];
   const ar = dim ? `${dim[0]} / ${dim[1]}` : "1";
+  /* AN AUTHORED SIZE WINS OVER THE DEALT TIER, the same rule the
+     homepage deal follows. Until projects.ts became the one list these
+     lived only in the lab's copy, so a picture pinned to 0.86 up there
+     was dealt a 0.33 stamp down here. */
+  const share = project.size != null ? project.size : dealt;
   return (
     <Link
       href={project.href ?? "/"}
@@ -184,7 +190,18 @@ function Frame({
         } as CSSProperties
       }
     >
-      <span className="shot" style={{ "--ar": ar } as CSSProperties}>
+      {/* --drift is how far the crop may wander off centre. The CSS
+          default is 16%; nine studies carry a tighter authored value
+          and the ring used to ignore all of them. */}
+      <span
+        className="shot"
+        style={
+          {
+            "--ar": ar,
+            ...(project.drift != null ? { "--drift": `${project.drift}%` } : null),
+          } as CSSProperties
+        }
+      >
         {/* The plate is what the curtain clips and what settles; the
             image is left alone. One element per animated property. */}
         <span className="plate">
