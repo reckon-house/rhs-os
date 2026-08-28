@@ -1015,16 +1015,16 @@
     color: inherit; font-size: var(--note);
     text-decoration: underline; text-underline-offset: 3px; }
   .ixnotes .rdrawer .rgap { height: 18px; }
-  .ixnotes .rdrawer .rcat { display: grid;
-    grid-template-columns: auto 1fr; column-gap: 14px; align-items: end; }
-  .ixnotes .rdrawer .rnum { font-size: 40px; font-weight: 200;
+  /* one column, stacked: numeral, its caption, then the one-liner
+     under it — the emptied right half is the band's negative space */
+  .ixnotes .rdrawer .rnum { font-size: 40px; font-weight: 700;
     line-height: 0.9; letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums; }
   .ixnotes .rdrawer .rnumcap { font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
     text-transform: uppercase; opacity: 0.6; margin-top: 5px; }
   .ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
-    opacity: 0.75; align-self: end; }
+    opacity: 0.75; margin-top: 12px; max-width: 24ch; }
   @media (prefers-reduced-motion: reduce) {
     .ixnotes .rdrawer .rrow, .ixnotes .rdrawer .rbody,
     .ixnotes .rdrawer .rglyph, .ixnotes .rdrawer .rpad {

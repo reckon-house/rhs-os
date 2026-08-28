@@ -274,17 +274,17 @@
   }
   .vJ .frow.open .fbody { grid-template-rows: 1fr; }
   .vJ .fbody > div { overflow: hidden; min-height: 0; }
-  .vJ .fpad { padding: 4px 0 18px; display: grid;
-    grid-template-columns: auto 1fr; column-gap: 16px; align-items: end; }
+  .vJ .fpad { padding: 4px 0 18px; }
   .vJ .num {
-    font-size: 44px; font-weight: 200; line-height: 0.9;
+    font-size: 44px; font-weight: 700; line-height: 0.9;
     letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
   }
   .vJ .numcap {
     font-size: var(--lbl); letter-spacing: var(--track);
     text-transform: uppercase; opacity: 0.6; margin-top: 6px;
   }
-  .vJ .fdesc { font-size: 11px; line-height: 1.5; opacity: 0.75; align-self: end; }
+  .vJ .fdesc { font-size: 11px; line-height: 1.5; opacity: 0.75;
+    margin-top: 12px; max-width: 24ch; }
   .vJ .fpad, .vJ .lpad {
     opacity: 0; transform: translateY(10px); transition: none;
   }
