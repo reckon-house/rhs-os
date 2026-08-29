@@ -333,7 +333,8 @@
      different lengths. */
   .vM .mark { font-weight: 700; font-size: 19px; letter-spacing: -0.02em;
     padding-bottom: 26px; }
-  .vM .mark i { font-style: normal; opacity: 0.4; }
+  /* the asterisks read as part of the name, not as a lighter joint */
+  .vM .mark i { font-style: normal; }
   .vM .chips { display: flex; flex-direction: column; gap: 10px; }
 
   /* ONE CLOCK, ONE MOVEMENT — which is how every image on this site
@@ -370,11 +371,18 @@
     letter-spacing: -0.01em; color: rgba(0,0,0,0.82);
     transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .vM .crow.open .chip { color: #fff; }
-  .vM .chip .g { display: inline-block; width: 15px; font-size: 8px;
-    vertical-align: middle; }
-  .vM .chip .sl { color: rgba(0,0,0,0.32);
+  /* BIGGER, AND CLOSE TO THE WORD. The mark was 8px inside a 15px box,
+     which left more air after it than the space between two words and
+     read as a bullet in a list rather than as part of the label. It is
+     11px in a 14px box now: the box still holds, so the four labels
+     stay aligned down the column whatever shape precedes them, but
+     the gap after the glyph is about 3px instead of 7. */
+  .vM .chip .g { display: inline-block; width: 14px; font-size: 11px;
+    vertical-align: baseline; }
+  /* the slash is ink, like the word it introduces */
+  .vM .chip .sl { color: var(--ink);
     transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .vM .crow.open .chip .sl { color: rgba(255,255,255,0.45); }
+  .vM .crow.open .chip .sl { color: #fff; }
 
   .vM .cbody { display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
