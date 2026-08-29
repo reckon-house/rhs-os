@@ -77,6 +77,37 @@ export function IndexRail() {
     return () => window.removeEventListener("resize", fit);
   }, []);
 
+  /* ── EVERY CHIP STOPS AT ITS OWN WORDS ────────────────────────────
+     --hug is how much of the full-width row is clipped away at rest.
+     It has to be measured: each label is a different length, and a
+     guessed percentage clips a word in half. The driver runs the same
+     arithmetic on the homepage — see hugChips there — so the two
+     surfaces hug identically.
+
+     Re-run on resize and once the webfont settles, since both move the
+     ink width. */
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const hug = () => {
+      rail.querySelectorAll<HTMLElement>(".rrow").forEach((r) => {
+        const ink = r.querySelector<HTMLElement>(".rink");
+        const head = r.querySelector<HTMLElement>(".rhead");
+        if (!ink || !head) return;
+        const full = r.getBoundingClientRect().width;
+        if (!full) return;
+        const pad = parseFloat(getComputedStyle(head).paddingLeft) || 20;
+        const want = ink.getBoundingClientRect().width + pad * 2;
+        const v = Math.max(0, Math.min(92, ((full - want) / full) * 100));
+        r.style.setProperty("--hug", v.toFixed(2) + "%");
+      });
+    };
+    hug();
+    window.addEventListener("resize", hug, { passive: true });
+    if (document.fonts?.ready) document.fonts.ready.then(hug);
+    return () => window.removeEventListener("resize", hug);
+  }, [folded]);
+
   const about = [note(/what i do/i), note(/setup/i)].filter(Boolean);
   const news = note(/recently/i);
   const touch = note(/touch/i);
@@ -105,7 +136,7 @@ export function IndexRail() {
 
       <Row
         id="contact"
-        label="Contact"
+        label="Connect"
         open={open === "contact"}
         setOpen={setOpen}
       >
@@ -179,8 +210,18 @@ function Row({
         aria-expanded={open}
         onClick={() => setOpen(open ? null : id)}
       >
-        {glyph ? <span className="rglyph">{glyph}</span> : null}
-        {label}
+        {/* the words in their own inline box, so the hug pass can
+            measure them — the button is the full column */}
+        <span className="rink">
+          {glyph ? (
+            <span className="rglyph">{glyph}</span>
+          ) : (
+            <>
+              <span className="rslash">/</span>{" "}
+            </>
+          )}
+          {label}
+        </span>
       </button>
       <div className="rbody">
         <div>
@@ -217,8 +258,10 @@ function CategoryRow({
           a link, not a button, so it opens in a new tab and shows its
           destination like any other. */}
       <Link className="rhead" href={`/?q=${encodeURIComponent(cat.query)}`}>
-        <span className="rglyph">{cat.glyph}</span>
-        {cat.label}
+        <span className="rink">
+          <span className="rglyph">{cat.glyph}</span>
+          {cat.label}
+        </span>
       </Link>
       <div className="rbody">
         <div>

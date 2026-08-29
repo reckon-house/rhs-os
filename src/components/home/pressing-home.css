@@ -923,30 +923,76 @@
      as a band while the closed labels hold the column's left edge. */
   /* no rules: the owner asked to see it bare. The rows are labels in
      air until one floods; the hairline version is one commit back. */
-  .ixnotes .rdrawer .rrow { margin: 0 -12px; padding: 0 12px;
-    transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .ixnotes .rdrawer .rrow.open { background: var(--ink); color: #fff; }
-  .ixnotes .rdrawer .rhead { display: flex; align-items: center; gap: 10px;
-    width: 100%; text-align: left; background: none; border: 0;
-    padding: 11px 0; margin: 0; cursor: pointer; font: inherit;
-    font-size: var(--note); line-height: 1.45; color: inherit; }
+  /* ── THE CHIPS ─────────────────────────────────────────────────────
+     Each row is a rounded chip on grey that hugs its own words, and
+     opens by un-hugging: it runs the column, floods to ink, squares
+     its corner and reveals the drawer. Ported from lab/rail-variants
+     variant M.
+
+     THE HUG IS A CLIP, NOT A WIDTH. Width will not transition from
+     fit-content, and the chip has to travel from its own words to the
+     full column. So every row is laid out at full width and clipped
+     back with an inset — which does animate — and the type never
+     reflows, because it was always sitting where it ends up.
+
+     ONE CLOCK. The inset, the corner and the ink all ride one
+     clip-path transition on the drawer body's own 0.56s, so the width,
+     the height and the radius land together. That is how every image
+     on this site squares off: the index frame puts border-radius on
+     exactly the transition its growth rides, and the rising plate
+     scrubs r = radius * (1 - p). Nothing here is delayed.
+
+     --hug is MEASURED per row by the driver, because every label is a
+     different length and a guessed percentage clips a word in half. */
+  .ixnotes .rdrawer .rrow {
+    background: rgba(0, 0, 0, 0.045);
+    clip-path: inset(0 var(--hug, 45%) 0 0 round 16px);
+    transition: clip-path 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open {
+    clip-path: inset(0 0 0 0 round 0px);
+    background: var(--ink); color: #fff; }
+  .ixnotes .rdrawer .rhead { display: block; width: 100%;
+    text-align: left; background: none; border: 0;
+    /* 14/16, not the lab card's 15/20. The variants page gave the rail
+       236px to play with; the real note column is 180 (--ix-note-w),
+       and at 15px with 20px of side padding the two longest labels —
+       Digital Experiences and Campaign/Creative — needed exactly 180,
+       so they filled the column edge to edge and stopped reading as
+       chips at all. Measured, not guessed: their ink is 140px, and
+       140 + 40 is the whole column.
+
+       This is the one value that had to move on the way in, and it
+       moved because the column is narrower, which is a real material
+       difference rather than a preference. */
+    padding: 13px 16px; margin: 0; cursor: pointer; font: inherit;
+    font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+    line-height: 1.45; color: inherit; }
   .ixnotes .rdrawer .rhead:focus-visible {
-    outline: 1px solid currentColor; outline-offset: 3px; }
-  .ixnotes .rdrawer .rglyph { font-size: 8px; line-height: 1; width: 10px;
-    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .ixnotes .rdrawer .rrow.open .rglyph { transform: scale(1.55); }
+    outline: 1px solid currentColor; outline-offset: -3px; }
+  /* the words themselves, so their width can be measured — the button
+     is full-column and would only ever report that */
+  .ixnotes .rdrawer .rink { display: inline-block; }
+  /* the mark sits close to its word: 11px in a 14px box, so the four
+     labels stay aligned whatever shape precedes them */
+  .ixnotes .rdrawer .rglyph { display: inline-block; width: 14px;
+    font-size: 11px; line-height: 1; vertical-align: baseline; }
+  /* the slash is ink, like the word it introduces */
+  .ixnotes .rdrawer .rslash { color: var(--ink);
+    transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ixnotes .rdrawer .rrow.open .rslash { color: #fff; }
   .ixnotes .rdrawer .rbody { display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .ixnotes .rdrawer .rrow.open .rbody { grid-template-rows: 1fr; }
   .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
   /* the drawer's type is on its own clock: 90ms behind the structure
      on the way in, gone at once on the way out (the .dbpre pattern) */
-  .ixnotes .rdrawer .rpad { padding: 10px 0 18px;
+  .ixnotes .rdrawer .rpad { padding: 4px 16px 18px;
     opacity: 0; transform: translateY(10px); transition: none; }
   /* the stamp band breathes: more air above the reel and below the
      one-liner than the text drawers carry */
-  .ixnotes .rdrawer .rpad.rcat { padding: 32px 0 24px; }
+  .ixnotes .rdrawer .rpad.rcat { padding: 8px 16px 20px; }
   .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
     transition: opacity 0.5s ease 90ms,
       transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
@@ -958,7 +1004,8 @@
   .ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
     color: inherit; font-size: var(--note);
     text-decoration: underline; text-underline-offset: 3px; }
-  .ixnotes .rdrawer .rgap { height: 18px; }
+  .ixnotes .rdrawer { display: flex; flex-direction: column; gap: 10px; }
+  .ixnotes .rdrawer .rgap { height: 8px; }
 
   /* ── PULL TO ASK (phones) ─────────────────────────────────────────
      The gesture every phone already knows, pointed at the house. It

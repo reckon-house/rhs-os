@@ -1986,13 +1986,26 @@ function buildMagazine() {
     const h = document.createElement("button");
     h.type = "button";
     h.className = "rhead";
+    /* THE WORDS GO IN THEIR OWN INLINE BOX so hugChips can measure
+       them: the button is the full column and would only ever report
+       that width. */
+    const ink = document.createElement("span");
+    ink.className = "rink";
     if (glyph) {
       const g = document.createElement("span");
       g.className = "rglyph";
       g.textContent = glyph;
-      h.appendChild(g);
+      ink.appendChild(g);
+    } else {
+      /* the utility rows take a slash the way a path does */
+      const sl = document.createElement("span");
+      sl.className = "rslash";
+      sl.textContent = "/";
+      ink.appendChild(sl);
+      ink.appendChild(document.createTextNode(" "));
     }
-    h.appendChild(document.createTextNode(label));
+    ink.appendChild(document.createTextNode(label));
+    h.appendChild(ink);
     const b = document.createElement("div");
     const inner = document.createElement("div");
     const pad = document.createElement("div");
@@ -2044,7 +2057,7 @@ function buildMagazine() {
 
   /* Contact: the address and the one committing link */
   {
-    const { r, h, pad } = mkRow("Contact");
+    const { r, h, pad } = mkRow("Connect");
     const touch = note(/touch/i);
     if (touch) {
       sub(pad, null, touch.full, touch.word);
@@ -2363,6 +2376,32 @@ function buildMagazine() {
   }
   if (factsWanted) factsWanted.then(refreshReels);
   railEl.addEventListener("pointerleave", closeRows);
+
+  /* ── EVERY CHIP STOPS AT ITS OWN WORDS ────────────────────────────
+     --hug is how much of the full-width row is clipped away at rest.
+     It has to be measured: each label is a different length, and a
+     guessed percentage clips a word in half. Reads the ink box, adds
+     the chip's own padding on both sides, and expresses the remainder
+     as a percentage of the row.
+
+     Re-run on resize and once the webfont has settled, since both
+     move the ink width. */
+  const hugChips = () => {
+    railEl.querySelectorAll(".rrow").forEach((r) => {
+      const ink = r.querySelector(".rink");
+      const head = r.querySelector(".rhead");
+      if (!ink || !head) return;
+      const full = r.getBoundingClientRect().width;
+      if (!full) return;
+      const pad = parseFloat(getComputedStyle(head).paddingLeft) || 20;
+      const want = ink.getBoundingClientRect().width + pad * 2;
+      const hug = Math.max(0, Math.min(92, ((full - want) / full) * 100));
+      r.style.setProperty("--hug", hug.toFixed(2) + "%");
+    });
+  };
+  hugChips();
+  listen(window, "resize", hugChips, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(hugChips);
 
   const rail = [{ at: 0, el: railEl }];
 
