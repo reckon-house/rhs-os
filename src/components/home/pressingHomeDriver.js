@@ -17,6 +17,7 @@
 import { plateSrcSet } from "@/lib/img-srcset";
 import { projects } from "@/data/projects";
 import { imageDimensions } from "@/data/image-dimensions";
+import { armRows } from "@/lib/index-hover";
 
 export function initPressingHome() {
   let alive = true;
@@ -3925,110 +3926,6 @@ async function playTransition(href, title, sub) {
 
    Delegated on the container, which survives a redeal; the rows
    inside it do not. */
-function armRows(rowsEl) {
-  if (rowsEl.dataset.armed) return;
-  rowsEl.dataset.armed = "1";
-  const GAP = 24;
-  const live = () => innerWidth > 760 && matchMedia("(hover: hover)").matches;
-
-  rowsEl.addEventListener("pointerover", (e) => {
-    const card = e.target.closest && e.target.closest(".fd-it");
-    if (!card || !live()) return;
-    const row = card.closest(".ixrow");
-    const shot = card.querySelector(".shot");
-    if (!row || !shot) return;
-    /* OPEN TO THE COLUMN, not by a fixed factor. Every frame is
-       `--share` of its half, so 1/share is exactly the scale that puts
-       its right edge on the column's. A flat 1.32 made a 0.33 frame
-       stop well short of the line and pushed an 0.86 one past it, so
-       no two hovers agreed on how big "open" is. Now they all land on
-       the same width, which is the width the standing rules draw. */
-    const share =
-      parseFloat(getComputedStyle(card).getPropertyValue("--share")) || 0.7;
-    let grow = 1 / share;
-    /* NO CAP. There used to be one, measured against the end of the
-       card's own band, because the frame opens with a transform and a
-       transform costs no layout — so the index sat still and got
-       covered. Every frame whose band was shorter than its growth
-       stopped early, and no two hovers opened to the same width again.
-       Oakworks was the loudest case.
-
-       The page makes room instead: the card takes --drop as real
-       bottom margin, normal flow carries every row below it down, and
-       the frame is free to reach the column whatever row it is in.
-
-       It cannot flicker, which is the usual objection to moving the
-       page under a pointer. The frame's origin is `right top`, so it
-       only ever grows DOWN and LEFT and its top edge never leaves the
-       cursor. What moves is the content below, away from it. */
-    grow = Math.max(1.04, grow);
-    card.style.setProperty("--ix-grow", grow.toFixed(3));
-    const drop = shot.offsetHeight * (grow - 1);
-    card.style.setProperty("--drop", drop.toFixed(1) + "px");
-    /* THE LEAD FRAME IS OUT OF FLOW, so the bottom margin every other
-       card uses to open the page under itself moves nothing at all —
-       it just grew over the pair below it. Its push is handed to the
-       first pair instead, which carries the rest of the index down on
-       the same clock. */
-    if (card.closest(".ixlead")) {
-      rowsEl.style.setProperty("--lead-drop", drop.toFixed(1) + "px");
-    }
-
-    /* How far the name is from the right edge. Measured with a Range
-       over the label's own contents, because the element is a full-
-       width block and its rect would say zero — the Range reports the
-       INK, which on a wrapped label is its widest line. */
-    const lbl = card.querySelector(".lbl");
-    const range = document.createRange();
-    range.selectNodeContents(lbl);
-    const ink = range.getBoundingClientRect().width;
-    /* MEASURED AGAINST THE OPENED FRAME, not against the label's own
-       box. That box is only --share of the column — the width the
-       picture has at REST — so a name travelling the slack inside it
-       stopped a fraction of the way across and never reached the edge
-       the picture had just opened to. The frame opens to
-       shot.offsetWidth * grow, which is the column, so that is the
-       distance the name has to cover. */
-    const opened = shot.offsetWidth * grow;
-    const slide = Math.max(0, opened - ink);
-    /* THE NAME ALWAYS ENDS UP ON THE EDGE THE FRAME OPENS TOWARD. The
-       left column's frames are hung on the rule beside the note rail
-       and grow right, so their names start left and swing right; the
-       right column's are hung on the page edge and grow left, so
-       theirs do the opposite. Same measured distance, opposite sign —
-       the label is right-aligned at rest there, so travelling
-       backwards by the slack lands it on the left edge. */
-    const cell = card.closest(".cell");
-    const rightCol = Boolean(cell && cell.classList.contains("colR"));
-    card.style.setProperty("--slide",
-      (rightCol ? -slide : slide).toFixed(1) + "px");
-    /* and anything to its left moves only as far as it must */
-    const hr = shot.getBoundingClientRect();
-    const openTo = hr.right - hr.width * grow;
-    [...row.querySelectorAll(".fd-it")].forEach((other) => {
-      if (other === card) return;
-      const or = other.querySelector(".shot").getBoundingClientRect();
-      if (or.right > hr.left + 1) return;          /* not to the left */
-      const push = Math.max(0, or.right + GAP - openTo);
-      other.style.transform = push
-        ? "translateX(" + (-push).toFixed(1) + "px)" : "";
-    });
-  });
-
-  rowsEl.addEventListener("pointerout", (e) => {
-    const card = e.target.closest && e.target.closest(".fd-it");
-    if (!card) return;
-    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
-    const row = card.closest(".ixrow");
-    if (row) {
-      row.querySelectorAll(".fd-it").forEach((c) => { c.style.transform = ""; });
-    }
-    card.style.removeProperty("--drop");
-    card.style.removeProperty("--slide");
-    card.style.removeProperty("--ix-grow");
-    rowsEl.style.removeProperty("--lead-drop");
-  });
-}
 
 /* The neighbour-shift driver went with the rails. It existed because
    a hovered frame in a tight 5px stack had to push its column apart to

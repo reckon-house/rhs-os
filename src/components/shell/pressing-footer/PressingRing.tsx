@@ -46,6 +46,7 @@ import { IndexRail } from "@/components/shell/IndexRail";
 import { imageDimensions } from "@/data/image-dimensions";
 import { dealWidths, HOUSE_SEED } from "@/lib/deal";
 import { cellSpec, tileSizes } from "@/lib/index-cells";
+import { armRows } from "@/lib/index-hover";
 import "@/components/home/pressing-home.css";
 
 /* THE SAME HAND THE HOMEPAGE DEALS. Same ladder, same LCG, same
@@ -94,6 +95,17 @@ export function PressingRing() {
       { threshold: 0.05, rootMargin: "0px 0px -5% 0px" }
     );
     frames.forEach((el) => io.observe(el));
+
+    /* THE HOVER, the homepage's own. It writes --ix-grow and the
+       --drop that makes real room for the growth; without it the CSS
+       fallback inflated every frame a third while the page stayed
+       still, so a picture covered its own caption and the row below.
+       That was pinned to a no-op until this could be shared. Same
+       function the homepage arms, so the two behave identically —
+       and it no-ops itself on coarse pointers and narrow screens. */
+    const rows = root.querySelector<HTMLElement>(".ixrows");
+    if (rows) armRows(rows);
+
     return () => io.disconnect();
   }, []);
 
@@ -191,20 +203,7 @@ function Frame({
       href={project.href ?? "/"}
       className="fd-it k-work"
       aria-label={`${project.title}, ${project.category}`}
-      /* --ix-grow: 1 PINS HOVER TO A NO-OP, deliberately and for now.
-         The growth is scale(var(--ix-grow, 1.32)) paired with a --drop
-         that makes room for it, and both are written by the driver's
-         armRows, which does not run here. So the ring was inflating
-         32% while the page made no room, covering its own caption and
-         the row beneath. A still frame is better than half a gesture
-         until armRows is lifted into lib alongside cellSpec. */
-      style={
-        {
-          "--share": String(share),
-          "--lag": lag,
-          "--ix-grow": "1",
-        } as CSSProperties
-      }
+      style={{ "--share": String(share), "--lag": lag } as CSSProperties}
     >
       {/* --drift is how far the crop may wander off centre. The CSS
           default is 16%; nine studies carry a tighter authored value
