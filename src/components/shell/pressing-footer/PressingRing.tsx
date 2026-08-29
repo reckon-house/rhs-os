@@ -24,10 +24,18 @@
  * dress both and there is no second definition to keep in step.
  *
  * It is the homepage's body, repeated. Not an edited version of it and
- * not a summary: the same notes column, the same filter, the same
- * rows, dressed by the same stylesheet. A reader who reaches the
+ * not a summary: the same list in the same editorial order, the same
+ * hand off the same seed, the same drawer rail, the same cell
+ * contract, dressed by the same stylesheet. A reader who reaches the
  * bottom of a case study arrives at the front page, which is what a
  * ring is.
+ *
+ * The one thing it does not repeat is the COMPOSITION of the rows: the
+ * homepage lifts its first odd frame out of flow to sit beside the
+ * cover statement, and there is no cover down here for it to sit
+ * beside. So the ring pairs consecutively instead. Everything that
+ * decides how a single frame looks is shared; how the pairs are
+ * arranged is the one honest difference.
  */
 
 import { useEffect, useRef, type CSSProperties } from "react";
@@ -40,10 +48,18 @@ import { dealWidths, HOUSE_SEED } from "@/lib/deal";
 import { cellSpec, tileSizes } from "@/lib/index-cells";
 import "@/components/home/pressing-home.css";
 
-/* One deal for the tail, taken off the house seed so it is the same on
-   every route and every reload. The homepage deals its own hand from
-   the same ladder; these are siblings, not copies. */
-const SHARES = dealWidths(projects.length, HOUSE_SEED + 11);
+/* THE SAME HAND THE HOMEPAGE DEALS. Same ladder, same LCG, same
+   minimum step — and now the same seed, so a picture that is 0.53 up
+   there is 0.53 down here. It used to deal off HOUSE_SEED + 11, which
+   made the ring a sibling rather than a copy; the header called it
+   "the homepage's body, repeated" and it was not.
+
+   Verified rather than assumed: the driver's dealShares guards a
+   too-close redraw at 24 attempts and dealWidths at 14, which could
+   have desynced the stream. Over thirty draws from seed 5 neither
+   dealer ever rejects that many times in a row, so the two hands come
+   out identical, position for position. */
+const SHARES = dealWidths(projects.length, HOUSE_SEED);
 
 /* Consecutive pairs, which is the reading order the rows were built
    for: left then right, top to bottom. */
