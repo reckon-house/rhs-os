@@ -129,6 +129,14 @@
   display: block;
 }
 
+/* The slot's aspect comes through a var so the phone block can retarget
+   it to the tall crop; the component sets aspect-ratio to this var
+   rather than to a literal, because an inline literal would beat any
+   stylesheet. Default is the file's own ratio. */
+.wrap {
+  --zp-slot-ar: var(--zp-nat-ar, 1.5);
+}
+
 
 /* The plate numeral renders as plain ink and is knocked OUT over the
    plate's rectangle, rewritten per frame by the driver: four half-plane
@@ -242,6 +250,12 @@
    the driver only ever writes on top of the active state and cleans up
    behind itself. */
 @media (prefers-reduced-motion: reduce) {
+  /* nothing is scrubbing, so the crop buys nothing — the plate shows
+     its whole composition, in flow, like every other reduced state */
+  .wrap[data-tallmorph] .fig { aspect-ratio: auto; }
+  .wrap[data-tallmorph] .fig img { height: auto; object-fit: fill; }
+  .wrap[data-tallmorph] { --zp-slot-ar: var(--zp-nat-ar, 1.5); }
+
   .burn,
   .risetail {
     display: none;
@@ -280,6 +294,35 @@
   .fig {
     grid-column: 1;
     grid-row: 1;
+  }
+
+  /* ── THE TALL CROP, on the phone only ─────────────────────────────
+     A landscape plate that zooms to the width of a phone runs out of
+     picture long before it runs out of screen: measured on Sally at
+     390, a 1.53 plate parked 291px tall inside a 770px pin, so the
+     gesture peaked with two thirds of the screen empty and read as
+     nothing having happened.
+
+     So the phone crops the plate to the tall ratio for the whole
+     travel — the same 1.3x-capped target RisingPlate morphs to, and
+     the same reason: a quarter-screen letterbox is not showing the
+     composition either. The figure takes the ratio, the image covers
+     it, and the resting slot takes the same ratio so the zoom's start
+     and end are the same shape and the travel stays a pure scale.
+
+     Only when the file is wide enough to have a tall target. A
+     portrait or squarish plate keeps its own ratio, because cropping
+     it buys nothing. */
+  .wrap[data-tallmorph] {
+    --zp-slot-ar: var(--zp-tall-ar);
+  }
+  .wrap[data-tallmorph] .fig {
+    aspect-ratio: var(--zp-tall-ar);
+  }
+  .wrap[data-tallmorph] .fig img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .left {
     grid-column: 1;

@@ -698,12 +698,52 @@ export function PressingZoomPlate({
     };
   }, [meltId, plate, captionKey, instruction]);
 
+  /* ── THE PHONE'S TALL CROP ────────────────────────────────────────
+     The same rule RisingPlate uses, and the same numbers: wide plates
+     only (1.3 is the line between "wide" and "roughly how the screen
+     already is"), the target derived from the file's own ratio, and
+     the crop capped at 1.3x so a device mockup never loses a third of
+     its width. See RisingPlate.tsx for why that cap is the universal
+     number rather than something prettier.
+
+     WHY THE RATIO IS SET RATHER THAN SCRUBBED, which is the one place
+     this differs from RisingPlate. That component owns a plain box and
+     can grow its height per frame. This one lays the figure out at its
+     FINAL full-bleed size and scales it DOWN onto a resting slot, and
+     measure() caches that box once — box.h feeds endScale, parkY and
+     the spill, which are constants for the whole gesture. Changing the
+     height per frame would invalidate the measurement underneath the
+     scrub every frame. So the phone gets the tall box for the whole
+     travel: the plate rests tall-cropped in its slot and zooms to a
+     tall full-bleed plate that actually fills the screen, instead of
+     parking short in the middle of an empty 100dvh pin. */
+  const natRatio =
+    typeof width === "number" && typeof height === "number" && height > 0
+      ? width / height
+      : undefined;
+  const tallRatio =
+    natRatio != null && natRatio >= 1.3
+      ? Math.max(natRatio / 1.3, 0.85)
+      : undefined;
+
   return (
     /* hero-breakout: <main> carries md:px-[50px] gutters and the plate has
        to grow to true viewport width, so the whole wrap runs full-bleed.
        The breakout is plain flow (width + negative margin, no transform),
        so the sticky inside survives it. */
-    <section ref={wrapRef} className={`${styles.wrap} ${reserveRise ? "" : styles.noTail} hero-breakout`}>
+    <section
+      ref={wrapRef}
+      className={`${styles.wrap} ${reserveRise ? "" : styles.noTail} hero-breakout`}
+      data-tallmorph={tallRatio != null ? "" : undefined}
+      style={
+        natRatio != null
+          ? ({
+              "--zp-nat-ar": String(natRatio),
+              ...(tallRatio != null ? { "--zp-tall-ar": String(tallRatio) } : null),
+            } as React.CSSProperties)
+          : undefined
+      }
+    >
       <div ref={stickyRef} className={styles.sticky}>
         {/* The melt, sized for glyphs — finer noise than the nav-bar melt,
             verbatim from the prototype's #numMelt. Inline in the component
@@ -743,7 +783,11 @@ export function PressingZoomPlate({
           ref={slotRef}
           className={styles.slot}
           aria-hidden="true"
-          style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+          /* A VAR, not the literal ratio: the phone block below retargets
+             it to the tall crop, and an inline literal would win over
+             any stylesheet. --zp-slot-ar defaults to the native ratio
+             in the module CSS. */
+          style={width && height ? { aspectRatio: "var(--zp-slot-ar)" } : undefined}
         />
 
         <figure ref={figRef} className={styles.fig}>
