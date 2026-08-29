@@ -336,12 +336,38 @@
   .vM .mark i { font-style: normal; opacity: 0.4; }
   .vM .chips { display: flex; flex-direction: column; gap: 10px; }
 
-  .vM .crow { border-radius: 16px; background: #f4f4f4; cursor: pointer;
-    clip-path: inset(0 var(--hug, 45%) 0 0 round 16px);
-    transition: clip-path 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+  /* THE CORNER SQUARES OFF AT THE VERY END, which is the move every
+     image on this site makes as it completes — the plate's radius
+     runs to 0 on the same clock as its arrival, and the chip should
+     read as the same family.
+
+     TWO REGISTERED PROPERTIES, because one clip-path cannot carry two
+     clocks. The inset (the hug opening to the full column) and the
+     corner want different timing, and `transition: clip-path` would
+     interpolate the whole shape on one curve. Registering --chipHug
+     and --chipR makes each a real animatable value; clip-path just
+     reads them and recomputes per frame, so the width opens over 0.5s
+     while the corner waits 0.42s and then squares in 0.24s — landing
+     after the drawer has finished its own 0.56s.
+
+     Closing re-rounds immediately (no delay), so the corner is back
+     before the chip has hugged in. A square chip mid-close reads as a
+     glitch; a rounded one reads as the chip returning. */
+  @property --chipHug { syntax: "<percentage>"; inherits: false; initial-value: 45%; }
+  @property --chipR { syntax: "<length>"; inherits: false; initial-value: 16px; }
+
+  .vM .crow { background: #f4f4f4; cursor: pointer;
+    --chipHug: var(--hug, 45%);
+    --chipR: 16px;
+    clip-path: inset(0 var(--chipHug) 0 0 round var(--chipR));
+    transition: --chipHug 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      --chipR 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
       background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .vM .crow.open { clip-path: inset(0 0 0 0 round 16px);
-    background: var(--ink); }
+  .vM .crow.open { --chipHug: 0%; --chipR: 0px;
+    background: var(--ink);
+    transition: --chipHug 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      --chipR 0.24s cubic-bezier(0.2, 0.7, 0.2, 1) 0.42s,
+      background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
 
   /* .ink is the words themselves, inline-block so it reports its own
      width — the button is full-column and would only ever report
