@@ -311,6 +311,75 @@
      empty 20px band read as a dead seventh row */
   .vL .fgap { height: 20px; }
 
+
+  /* ── M · the chips (the owner's sketch) ───────────────────────────
+     CLOSED is the new part: no rules anywhere, each row a rounded chip
+     on grey that hugs its own words, the utility rows prefixed with a
+     slash the way a path is, the wordmark carrying the site's own
+     asterisks.
+
+     OPEN IS WHAT ALREADY SHIPS — his call. The chip stops hugging,
+     runs the column, floods to ink and shows the reel and the
+     one-liner: the drawer built earlier today, unchanged. So this is a
+     change of RESTING state, not a new interaction.
+
+     THE TWEAK THE DESIGN FORCES, and it is the interesting one: a
+     hugging chip and a full-width band are different widths, and width
+     cannot be transitioned from fit-content. So each row is laid out
+     at the full column width and CLIPPED back to its own words with a
+     clip-path inset, which does animate — and the type never reflows,
+     because it was always sitting where it ends up. --hug is how much
+     of the row is clipped away at rest, per row, since the words are
+     different lengths. */
+  .vM .mark { font-weight: 700; font-size: 19px; letter-spacing: -0.02em;
+    padding-bottom: 26px; }
+  .vM .mark i { font-style: normal; opacity: 0.4; }
+  .vM .chips { display: flex; flex-direction: column; gap: 10px; }
+
+  .vM .crow { border-radius: 16px; background: #f4f4f4; cursor: pointer;
+    clip-path: inset(0 var(--hug, 45%) 0 0 round 16px);
+    transition: clip-path 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .vM .crow.open { clip-path: inset(0 0 0 0 round 16px);
+    background: var(--ink); }
+
+  /* .ink is the words themselves, inline-block so it reports its own
+     width — the button is full-column and would only ever report
+     that. The measured pass below turns those widths into --hug. */
+  .vM .chip .ink { display: inline-block; }
+  .vM .chip { display: block; width: 100%; text-align: left;
+    background: none; border: 0; padding: 14px 20px; cursor: pointer;
+    font: inherit; font-size: 15px; font-weight: 600;
+    letter-spacing: -0.01em; color: rgba(0,0,0,0.82);
+    transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .vM .crow.open .chip { color: #fff; }
+  .vM .chip .g { display: inline-block; width: 15px; font-size: 8px;
+    vertical-align: middle; }
+  .vM .chip .sl { color: rgba(0,0,0,0.32);
+    transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .vM .crow.open .chip .sl { color: rgba(255,255,255,0.45); }
+
+  .vM .cbody { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .vM .crow.open .cbody { grid-template-rows: 1fr; }
+  .vM .cbody > div { overflow: hidden; min-height: 0; }
+  .vM .cpad { color: #fff; padding: 4px 20px 20px;
+    opacity: 0; transform: translateY(10px); transition: none; }
+  .vM .crow.open .cpad { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
+  .vM .csub { font-size: var(--lbl); letter-spacing: var(--track);
+    text-transform: uppercase; opacity: 0.55; margin: 10px 0 4px; }
+  .vM .ctxt { font-size: 12px; line-height: 1.5; max-width: 28ch; }
+  .vM .cgo { display: inline-block; margin-top: 9px; color: inherit;
+    font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+  /* the reel stamp's box, at the size the shipped rail gives it */
+  .vM .creel { width: 128px; height: 96px; border-radius: 10px;
+    overflow: hidden; margin-top: 6px; }
+  .vM .creel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vM .cdesc { font-size: 11px; line-height: 1.5; opacity: 0.75;
+    margin-top: 12px; max-width: 24ch; }
+
   /* ── I · the loupe (proximity magnify) ───────────────────────────── */
   .vI .mark { font-weight: 700; font-size: 13px; margin-bottom: 26px; }
   .vI .line {
@@ -545,6 +614,43 @@ VARIANTS.push({
     </div>`).join("")}`,
 });
 
+VARIANTS.push({
+  key: "vM", name: "M · The chips",
+  why: "The owner's sketch as the RESTING state: no rules, each row a rounded chip on grey hugging its own words, a slash on the utility rows, asterisks in the wordmark. Open is unchanged from what ships — the row runs the column, floods to ink, and shows the reel. The tweak the design forces: a hugging chip and a full-width band are different widths, and width will not transition from fit-content, so each row is laid out full width and clipped back to its text. clip-path animates where width does not, and the type never reflows because it was always where it ends up.",
+  html: `
+    <div class="mark">Reckon<i>*</i>House<i>*</i>Staples</div>
+    <div class="chips">
+      <div class="crow">
+        <button class="chip" type="button"><span class="ink"><span class="sl">/</span> Info</span></button>
+        <div class="cbody"><div><div class="cpad">
+          <div class="csub">About</div>
+          <div class="ctxt">${C.practice} ${C.setup}</div>
+          <div class="csub">News</div>
+          <div class="ctxt">${C.recently}</div>
+        </div></div></div>
+      </div>
+      <div class="crow">
+        <button class="chip" type="button"><span class="ink"><span class="sl">/</span> Connect</span></button>
+        <div class="cbody"><div><div class="cpad">
+          <div class="ctxt" style="margin-top:10px">${C.mail}</div>
+          <a class="cgo" href="#">${C.book}</a>
+        </div></div></div>
+      </div>
+      ${[["\u25CF","Digital Experiences","/case-studies/hp/rhs-sally-os-asset-hub-laptop.jpg","Sites, stores and platforms, designed and shipped."],
+         ["\u25A0","App Development","/case-studies/hp/rhs-arc-app-project-select-phone.jpg","Native tools and AI products, built end to end."],
+         ["\u25B2","Campaign/Creative","/case-studies/hp/rhs-robert-rodriguez-storefront-window.jpg","Art direction and campaigns for retail's big names."],
+         ["\u25C6","Interiors","/case-studies/hp/rhs-interior-design-kitchen-modern-meets-vintage.jpg?v=3","Rooms designed like products, down to the hardware."]]
+        .map(([g, label, img, d]) => `
+      <div class="crow">
+        <button class="chip" type="button"><span class="ink"><span class="g">${g}</span>${esc(label)}</span></button>
+        <div class="cbody"><div><div class="cpad">
+          <div class="creel"><img src="${img}" alt="" loading="lazy"></div>
+          <div class="cdesc">${esc(d)}</div>
+        </div></div></div>
+      </div>`).join("")}
+    </div>`,
+});
+
 const row = document.getElementById("row");
 for (const v of VARIANTS) {
   const d = document.createElement("div");
@@ -581,6 +687,49 @@ if (seg) {
   });
   seg.addEventListener("pointerleave", () => seat(links.find((l) => l.classList.contains("on")) || links[0]));
 }
+
+/* M: --hug is MEASURED, not guessed. A first pass at hand-picked
+   percentages clipped "Connect" and "App Development" mid-word, which
+   is the whole reason this is arithmetic: the chip has to stop exactly
+   at its own words plus the padding, and every label is a different
+   length. Re-run on resize and once the webfont lands, since both
+   change the ink width. */
+function hugChips() {
+  document.querySelectorAll(".vM .crow").forEach((r) => {
+    const ink = r.querySelector(".chip .ink");
+    const chip = r.querySelector(".chip");
+    if (!ink || !chip) return;
+    const pad = parseFloat(getComputedStyle(chip).paddingLeft) || 20;
+    const full = r.getBoundingClientRect().width;
+    if (!full) return;
+    const want = ink.getBoundingClientRect().width + pad * 2;
+    const hug = Math.max(0, Math.min(92, ((full - want) / full) * 100));
+    r.style.setProperty("--hug", hug.toFixed(2) + "%");
+  });
+}
+hugChips();
+addEventListener("resize", hugChips, { passive: true });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(hugChips);
+
+/* M: the chip is the head; hover opens on a mouse, click toggles */
+document.querySelectorAll(".vM .crow").forEach((r) => {
+  const openIt = () => {
+    r.parentElement.querySelectorAll(".crow.open")
+      .forEach((o) => { if (o !== r) o.classList.remove("open"); });
+    r.classList.add("open");
+  };
+  r.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") openIt();
+  });
+  r.querySelector(".chip").addEventListener("click", () => {
+    if (r.classList.contains("open")) r.classList.remove("open");
+    else openIt();
+  });
+});
+document.querySelectorAll(".vM .chips").forEach((c) => {
+  c.addEventListener("pointerleave", () =>
+    c.querySelectorAll(".crow.open").forEach((o) => o.classList.remove("open")));
+});
 
 /* J: hover floods the row to ink; click for touch. One open. */
 document.querySelectorAll(".vJ .frow").forEach((r) => {
