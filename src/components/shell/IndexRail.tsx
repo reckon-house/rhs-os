@@ -33,6 +33,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { projects } from "@/data/projects";
 import { practiceNotes } from "@/data/practice-notes";
@@ -241,6 +242,7 @@ function CategoryRow({
   open: boolean;
   setOpen: (v: string | null) => void;
 }) {
+  const router = useRouter();
   const frames = cat.ids
     .map((id) => byId.get(id)?.image)
     .filter((s): s is string => Boolean(s));
@@ -265,7 +267,24 @@ function CategoryRow({
       </Link>
       <div className="rbody">
         <div>
-          <div className="rpad rcat">
+          {/* THE WHOLE OPEN PANEL ASKS, not just its label. Once a row
+              is open the reel and the one-liner are the biggest things
+              in it and read as decoration otherwise, so they carry the
+              same destination. A handler rather than a second <Link>:
+              the head above is already the reachable control, and a
+              duplicate would announce the same place twice to a screen
+              reader. This only widens the target for a pointer.
+              A scrub on the reel swallows its own click, so shuttling
+              frames never navigates. */}
+          {/* data-cursor-grow, not cursor: pointer. The site draws its
+              own cursor and sets `cursor: none` on everything, so the
+              CSS property is dead; this attribute is what
+              CustomCursor's INTERACTIVE selector looks for. */}
+          <div
+            className="rpad rcat"
+            data-cursor-grow=""
+            onClick={() => router.push(`/?q=${encodeURIComponent(cat.query)}`)}
+          >
             {frames.length ? (
               <SizzleReel
                 className="rreel"

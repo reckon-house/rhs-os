@@ -2349,12 +2349,26 @@ function buildMagazine() {
       if (e.pointerType === "mouse") wantFacts().then(refreshReels);
     });
     /* the old filter button's click, verbatim */
-    h.addEventListener("click", () => {
+    const ask = () => {
       const el = document.getElementById("query");
       if (el) el.value = label;
       askSource = "chip";   /* navigation: the template answers */
       onQuery(fq, true);
-    });
+    };
+    h.addEventListener("click", ask);
+    /* THE WHOLE OPEN PANEL ASKS, not just its label. Once a row is
+       open the reel and the one-liner are the biggest things in it and
+       reading as decoration, so they take the same click. No second
+       link in the accessibility tree — the head is already the
+       reachable control, and this only widens the target for a
+       pointer. A scrub on the reel still swallows its own click, so
+       shuttling frames never navigates. */
+    pad.addEventListener("click", ask);
+    /* data-cursor-grow, not cursor: pointer. The site draws its own
+       cursor and sets `cursor: none` on everything, so the CSS
+       property is dead here; this attribute is what CustomCursor's
+       INTERACTIVE selector looks for, alongside a and button. */
+    pad.setAttribute("data-cursor-grow", "");
   });
   /* THE STAMP TRACKS THE TRUTH AVAILABLE. At build the caption and
      the frame list are the matcher's, because the 655KB facts index
