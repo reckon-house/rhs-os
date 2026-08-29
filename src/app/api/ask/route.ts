@@ -56,12 +56,15 @@ export const runtime = "nodejs";
    as not, which was the surprise.
 
    THE ONE THING TO WATCH is the cache floor. Haiku's minimum cacheable
-   prefix is 4,096 tokens and it counts this one at ~4,719, so the margin
-   is about 15%. It was 36 tokens at one point today and only cleared
-   because the system prompt grew. Caching below the minimum fails
-   silently: no error, and the sole symptom is cache_read_input_tokens
-   sitting at zero in the log line below. If projects are ever removed
-   from the shelf, read that number before assuming the bill is fine.
+   prefix is 4,096 tokens. This one is 6,907, read off the tokenizer via
+   the log line at the foot of this file on 29 Aug 2026, so the margin
+   is about 69%. The estimate that stood here before said 4,719 and a
+   15% margin; it was counted rather than measured, and it was wrong in
+   the reassuring direction, which is the direction that matters when
+   the failure is silent. Caching below the minimum does not error. The
+   sole symptom is cache_read_input_tokens sitting at zero. If projects
+   are ever removed from the shelf, read that number again before
+   assuming the bill is fine, and write down what it actually said.
 
    Effort is not set here on purpose. Haiku 4.5 rejects
    output_config.effort with a 400 rather than ignoring it. */
@@ -80,22 +83,23 @@ const MODEL = process.env.ASK_MODEL || "claude-haiku-4-5";
    than the model's minimum is not cached and no error says so — the
    only symptom is cache_read_input_tokens staying at zero.
 
-   MEASURED, Aug 2026: SYSTEM ~625 tokens, SHELF ~3,782 across 30
-   projects, so the prefix is ~4,407.
+   MEASURED ON THE TOKENIZER, 29 Aug 2026: the prefix is 6,907 tokens.
+   Not estimated. That is the number Haiku itself reported, read off
+   cache_creation_input_tokens in production, and it is the only kind
+   of reading worth writing down here.
 
-   THAT NUMBER IS THE THING TO WATCH, now that this runs on Haiku. Its
-   minimum cacheable prefix is 4,096 and it counts this one at ~4,719,
-   a margin of about 15%. Earlier today the margin was 36 tokens, and it
-   only opened up because the system prompt gained rules. Drop a project,
-   trim subtitles or shrink the facet lists and the prefix falls back
-   under the floor, caching switches off, and nothing on the page changes
-   to say so. The estimate that put this at "one percent" was made by
-   counting characters; the tokenizer is the only thing worth trusting
-   here, and the reading is in the log line at the foot of this file.
+   THAT NUMBER IS THE THING TO WATCH. Haiku's minimum cacheable prefix
+   is 4,096, so the margin is about 69%. Drop a project, trim subtitles
+   or shrink the facet lists and the prefix falls toward the floor,
+   caching switches off, and nothing on the page changes to say so.
+   Read the log line at the foot of this file rather than counting
+   characters: two earlier estimates in this comment were made that way
+   and both landed under the truth, which is the direction that hides
+   the problem.
 
-   Sonnet 5 counts the same prefix at ~6,983 against a 1,024 minimum, so
-   if the shelf ever does shrink past Haiku's floor, pointing ASK_MODEL
-   back at Sonnet is the escape hatch.
+   Sonnet 5's minimum is 1,024, so if the shelf ever does shrink past
+   Haiku's floor, pointing ASK_MODEL back at Sonnet is the escape
+   hatch.
 
    The price difference is real but not the argument: at this shape
    (~46 input tokens per output token, so the bill is essentially an
