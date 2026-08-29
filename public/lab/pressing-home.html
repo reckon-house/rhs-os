@@ -3598,10 +3598,11 @@ const vary = (q, n) => {
 
    THIS USED TO END "and no model runs at ask time", which was true
    when it was written and stopped being true the day /api/ask shipped.
-   A model runs now, on every typed search. What did not change is the
-   part that mattered: it is handed the same build-time index and
-   nothing else, so the facts are still looked up rather than generated.
-   Only the sentence around them is written fresh.
+   A model runs now, on every search a chip or a keyboard commits.
+   What did not change is the part that mattered: it is handed the same
+   build-time index and nothing else, so the facts are still looked up
+   rather than generated. Only the sentence around them is written
+   fresh.
 
    This text is now the FIRST paint rather than the last word. It shows
    instantly, then the model's line replaces it, and it stands alone
@@ -4219,7 +4220,6 @@ function buildMagazine() {
     linkLeadTerms(lead, LEAD_TERMS, (label, q) => {
       const el = document.getElementById("query");
       if (el) el.value = label;
-      askSource = "chip";   /* navigation: the template answers */
       onQuery(q, true);
     });
   }
@@ -4616,7 +4616,6 @@ function buildMagazine() {
     const ask = () => {
       const el = document.getElementById("query");
       if (el) el.value = label;
-      askSource = "chip";   /* navigation: the template answers */
       onQuery(fq, true);
     };
     h.addEventListener("click", ask);
@@ -4887,16 +4886,31 @@ function buildMagazine() {
 let askGen = 0;
 let askTimers = [];
 function holdAsk(fn, ms) {
-  if (!alive) return;
+  if (!alive) return 0;
   const gen = askGen;
-  askTimers.push(setTimeout(() => { if (gen === askGen && alive) fn(); }, ms));
+  const t = setTimeout(() => { if (gen === askGen && alive) fn(); }, ms);
+  askTimers.push(t);
+  /* handed back so one caller can let go early — see the floor the
+     model holds in buildAnswer, which a failed request releases rather
+     than sitting on for the full eight seconds */
+  return t;
 }
 function cancelAsk() {
   askGen += 1;
   askTimers.forEach(clearTimeout);
   askTimers = [];
-  if (askAbort) { askAbort.abort(); askAbort = null; }
+  floorRelease = null;
   document.body.classList.remove("working");
+}
+/* THE FLIGHT IS DROPPED WHEN THE QUESTION CHANGES, and only then.
+   This used to live inside cancelAsk, which buildAnswer calls first
+   thing — so every rebuild killed a request that was already most of
+   the way home. A rebuild is not a new question: the columns re-deal
+   on a resize and again when the facts land behind a deep link, and
+   both were paying for the same answer twice. */
+function dropFlight() {
+  if (askAbort) { askAbort.abort(); askAbort = null; }
+  asking = null;
 }
 
 /* ── the model half ────────────────────────────────────────────────
@@ -4905,13 +4919,96 @@ function cancelAsk() {
    projects from its own copy of the facts index and Claude writes the
    line, under the house copy rules. The client sends hrefs, never
    facts: the server drops anything not in its own index, so the model
-   only ever sees what the build generated. Chips and filter clicks
-   never come here. They are navigation, and the template line is the
-   honest, instant answer for a click nobody typed. On any failure the
-   template stands; a fallback sentence pretending to be the model
-   would be worse than the template. */
+   only ever sees what the build generated. On any failure the template
+   stands; a fallback sentence pretending to be the model would be
+   worse than the template.
+
+   A CHIP COMES HERE TOO NOW. It used to be held back by an askSource
+   flag on the theory that a click is navigation and the template is
+   the honest answer for a question nobody typed. The theory broke on
+   contact with the two surfaces: the rail's Interiors chip answered
+   from the template, and the identical chip in the footer ring of a
+   case study answered from the model, because that one navigates and
+   arrives as a deep link. Same word, same shelf, two different
+   answers depending on which page it was pressed on.
+
+   It is also the same mistake worthAsking made one layer down, and
+   the note there already argues itself out of it: a category IS what
+   people ask for, and a chip is that question with the typing done
+   for you. */
 let askAbort = null;
-let askSource = "typed";
+/* THE QUESTION A REQUEST IS OUT FOR, so a rebuild can tell "this is
+   already being answered" from "nobody has asked this yet". */
+let asking = null;
+/* WHOEVER IS HOLDING THE FLOOR RIGHT NOW, which is not always the
+   build that sent the request. A rebuild between the send and the
+   reply — a scroll on a phone is one — takes the floor over from the
+   build that asked, and the reply then belongs to a build nobody is
+   looking at any more. Held out here so a failure can hand back the
+   floor that is actually up, rather than one that was cleared.
+   cancelAsk drops it, so a build that returns early never leaves a
+   handle behind. */
+let floorRelease = null;
+/* THE ANSWER OUTLIVES THE BUILD THAT ASKED FOR IT.
+   { q, text, used, model }
+
+   buildAnswer runs again on a resize and again when the facts land
+   behind a deep link, and both used to start the whole act over: a
+   second request, the model's line wiped back to the template, the
+   ledger back to a paragraph, and another eight seconds of held floor.
+   On a phone that is not an edge case — hiding the URL bar IS a
+   resize — so an answer could not survive a scroll, and six scrolls
+   spent the visitor's minute of rate limit.
+
+   Kept against the question it answers. Same question, no second
+   request: the line and its ledger are put back rather than performed
+   again. The trail rides along with a request and is not re-read on a
+   replay, which is the one thing a replay is not: it is the answer to
+   that question, not a fresh reading of the visit. */
+let kept = null;
+
+/* ── the working note, once the model has reported in ──────────────
+   THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. The first version was
+   three sentences trying to sound relaxed about being machinery ("the
+   facts are the index's, the words are the model's...") and read as
+   exactly that. Machine chrome states facts and never narrates its own
+   process, so this is key-value rows: what was read, where the facts
+   come from, which model wrote the words, and the one honest line
+   about trusting it. The tag stays; everything after it is replaced.
+
+   Out here rather than inside the request, because a replay writes the
+   same ledger without one. */
+function writeLedger(notesEl, a) {
+  const wk = notesEl.querySelector(".blk.working");
+  if (!wk) return;
+  while (wk.childNodes.length > 1) wk.removeChild(wk.lastChild);
+  const row = (k, v) => {
+    const s = document.createElement("span");
+    s.className = "rl";
+    const key = document.createElement("span");
+    key.className = "rk";
+    key.textContent = k + " · ";
+    s.appendChild(key);
+    s.appendChild(document.createTextNode(v));
+    return s;
+  };
+  /* deduped: three projects are all titled "Hill Country home", and a
+     ledger that says a name twice reads as a bug */
+  const used = [...new Set(a.used || [])];
+  /* The frame comes first: this feature is Jeremy trying AI in the
+     open, and a visitor should read that before the mechanics. */
+  wk.appendChild(row("Status", "a working concept, testing AI in the open"));
+  wk.appendChild(row("Sources", used.length
+    ? used.slice(0, 3).join(", ") +
+      (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
+    : "no match; the full project list, titles only"));
+  wk.appendChild(row("Facts", "the case studies, indexed when the site builds"));
+  wk.appendChild(row("Words", a.model || "claude"));
+  const dq = document.createElement("span");
+  dq.className = "rl rk";
+  dq.textContent = "Claude can make mistakes.";
+  wk.appendChild(dq);
+}
 /* A KEYWORD REACHES THE MODEL NOW, and the old rule was drawing the
    line in the wrong place. The gate used to require a question shape:
    a "?", an interrogative opener, or four words of free typing.
@@ -4931,10 +5028,13 @@ let askSource = "typed";
    typing "ecommerce" spends one request, not nine. Enter and Escape
    pass `now` and fire it immediately, which is still one.
 
-   Three characters, because two is a typo in progress rather than a
-   search, and the template is already on screen either way. */
+   Two characters, not three. Three was picked as "two is a typo in
+   progress", which is true of two letters arriving one at a time and
+   false of the ones people mean: AI is on the shelf as a discipline
+   and in the rail as App Development, and it was the one search on
+   this site guaranteed never to reach the model. */
 function worthAsking(q) {
-  return q.trim().length >= 3;
+  return q.trim().length >= 2;
 }
 
 /* ── the answer, composed ─────────────────────────────────────────
@@ -5104,12 +5204,17 @@ function buildAnswer() {
      once, used twice: the cards wear these, and the model is told
      which ones are on screen so it can describe them. Only for
      questions with words in them — the resting deal shows covers. */
+  /* Held, not recomputed, because the request below is told these are
+     ON SCREEN beside the answer and has to be told the truth. A cold
+     deep link builds with FACTS still null, so this comes back empty
+     and every card draws its cover; recomputing it inside the deferred
+     send would find the index landed and hand the model six
+     photographs that are not on the page. */
+  const shownFrames = query.trim() ? frameMatch(query) : [];
   const evidence = new Map();
-  if (query.trim()) {
-    for (const fr of frameMatch(query)) {
-      const href = "/case-studies/" + fr.slug;
-      if (!evidence.has(href)) evidence.set(href, fr.src);
-    }
+  for (const fr of shownFrames) {
+    const href = "/case-studies/" + fr.slug;
+    if (!evidence.has(href)) evidence.set(href, fr.src);
   }
   window.__evidence = evidence;
 
@@ -5226,19 +5331,37 @@ function buildAnswer() {
      navigation and never come here. */
   let modelSay = null;
   let lineDone = false;
-  /* HOLD FOR THE MODEL. When a typed question is on its way to Claude,
-     the matcher's instant line no longer types first — a finished
-     sentence being torn up and rewritten read as the site changing its
-     mind. The working state holds the floor instead, and the first
-     answer anyone sees is the one that was actually written for them.
-     The matcher is demoted to what it should have been on this path:
-     the fallback, typed only if the model errors or dawdles past
-     HOLD_FOR_MODEL. Filter chips and template answers never involve
-     the model and keep their instant line. */
+  /* HOLD FOR THE MODEL. When a question is on its way to Claude, the
+     matcher's instant line no longer types first — a finished sentence
+     being torn up and rewritten read as the site changing its mind.
+     The working state holds the floor instead, and the first answer
+     anyone sees is the one that was actually written for them. The
+     matcher is demoted to what it should have been on this path: the
+     fallback, typed only if the model errors or dawdles past
+     HOLD_FOR_MODEL. A chip is held now too, since a chip asks; the
+     held plans and anything under two characters keep their instant
+     line, because nothing was ever sent for them. */
   let askingModel = false;
   let typingStarted = false;
   let modelTook = false;
   const HOLD_FOR_MODEL = 8000;
+  /* the fallback's timer, assigned at the foot of this function.
+     Kept so a request that has already failed can hand the floor back
+     at once instead of leaving the line blank for the full hold.
+
+     THE `still` GUARD IS LOAD-BEARING, not a tidy-up. typeOn is a
+     const declared at the foot of this function and the reduced-motion
+     branch returns before reaching it, so under that branch the
+     binding is never initialised and calling it here throws a
+     ReferenceError out of the promise. There is nothing to release on
+     that path anyway: the line was painted synchronously and no floor
+     was ever held. */
+  let floorHeld = 0;
+  const releaseFloor = () => {
+    if (still || typingStarted || modelTook) return;
+    clearTimeout(floorHeld);
+    typeOn();
+  };
   const typeModel = () => {
     const t = modelSay;
     if (!t) return;
@@ -5272,21 +5395,74 @@ function buildAnswer() {
      model never got to improve.
 
      The same mistake was in the shape test, one layer down, and it
-     survived that fix. See worthAsking(): anything typed reaches the
-     model now, keyword included, because a keyword is what people
-     actually type.
+     survived that fix twice: worthAsking let a keyword through, and
+     an askSource flag still held every chip back. Both are gone. What
+     reaches the model now is every question the index can answer,
+     however it was asked.
 
-     A plan may still opt OUT with `hold: true`, for the cases where the
-     template is genuinely the better answer: contact (the model is
-     never given the email address, so it would hedge or omit it) and
-     the two trail plans (session-local, and the system prompt forbids
-     announcing the trail at all). */
-  if ((!plan || !plan.hold) && askSource === "typed" && worthAsking(query)) {
-    const hrefs = [...new Set(
-      leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
-    /* chosen here, on the visitor's machine, before the request leaves */
-    const askFrames = frameMatch(query);
-    /* THE BOARD PICTURES THE DEAL IS ALREADY SHOWING. They are in
+     A plan may still opt OUT with `hold: true`, and those four are the
+     whole list. Contact and the five owner templates: the index holds
+     projects, not an address or a price, so the model has nothing to
+     read and would hedge or invent the one answer that has to be
+     exact. The two trail plans: the visit log never leaves the tab,
+     the model is sent facet terms only, and the system prompt forbids
+     mentioning the trail at all — it cannot answer these, not merely
+     answer them worse. */
+  /* ── WHAT COUNTS AS THE SAME ANSWER ───────────────────────────────
+     Three conditions, and the question's words are only the first of
+     them.
+
+     THE DEAL HAS TO MATCH TOO. A deictic question resolves against the
+     PREVIOUS answer, which every build rewrites, so "more like that"
+     rebuilt on a resize deals a different set than the one the model
+     was told about. Keyed on the string alone, the sentence and the
+     ledger would name three projects while the columns showed three
+     others. For an ordinary question the deal is deterministic, so
+     this costs nothing and the replay still hits.
+
+     A HOLD STILL HOLDS. Two of the four held plans are state
+     dependent: they return null while the visit log is empty and
+     become hold:true the moment it fills. So the same words can reach
+     the model once and be off limits a minute later, and a replay that
+     did not re-read the plan would put the model's line back on a
+     question the template now owns. */
+  const deal = leftIdx.join(",");
+  const have = kept && kept.q === query && kept.deal === deal &&
+    !(plan && plan.hold) ? kept : null;
+  /* ALREADY ANSWERED, or already being answered. Either way this
+     build asks nothing: `have` replays below, and a flight in the air
+     lands on its own and rebuilds from there. */
+  if ((!plan || !plan.hold) && worthAsking(query) && !have && asking !== query) {
+    /* Claimed here rather than at the send, because the send may be
+       deferred a beat behind the facts and the floor has to be held
+       from now: a template typed into the gap is a sentence that
+       exists only to be torn up. */
+    askingModel = true;
+    const askedQ = query;
+    const askedDeal = deal;
+    const gen = askGen;
+    /* THE FACTS FIRST, when they are seconds away. A deep-linked ?q=
+       builds twice — once on the matcher alone, once when the index
+       lands — and both builds were asking, so the better request
+       aborted the worse one after paying for it. Deferring the send
+       behind the same latch costs nothing against a three-second
+       round trip and spends one request instead of two, on the hrefs
+       the facts chose rather than the ones the matcher guessed.
+
+       Guarded by askGen, which buildAnswer bumps: if the facts landing
+       supersedes this build, its own send has already gone and this
+       one stands down. If nothing supersedes it — the facts had
+       nothing to add to this question — this is the send. */
+    const send = () => {
+      if (gen !== askGen || !alive) return;
+      const hrefs = [...new Set(
+        leftIdx.map((ci) => cards[ci].href).filter(Boolean))].slice(0, 8);
+      /* the frames THIS BUILD DREW, chosen on the visitor's machine
+         before the request leaves. Not a fresh match: the route is
+         told these are on screen, and a deferred send that re-matched
+         would answer about pictures nobody can see. */
+      const askFrames = shownFrames;
+      /* THE BOARD PICTURES THE DEAL IS ALREADY SHOWING. They are in
        rightIdx, not leftIdx: a plan splits work left and board right,
        and the hrefs line above reads the work side only. Nothing on the
        board carries an href anyway, and frameMatch reads the
@@ -5297,78 +5473,83 @@ function buildAnswer() {
        address under two portraits. Sent apart from frames, never folded
        in: these are other people's work and the route's rules turn on
        knowing that. */
-    const askPulls = [...new Set(
-      rightIdx.map((ci) => cards[ci])
-        .filter((c) => c && c.kind === "pull" && c.img)
-        .map((c) => c.img))].slice(0, 8);
-    if (askAbort) askAbort.abort();
-    const ac = new AbortController();
-    askAbort = ac;
-    askingModel = true;
-    const gen = askGen;
-    fetch("/api/ask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: query, hrefs, frames: askFrames.map((f) => f.src),
-        pulls: askPulls,
-        trail: trailTerms(5) }),
-      signal: ac.signal
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        if (!j || !j.answer || gen !== askGen) return;
-        /* the model's line goes through the same mechanical voice
-           pass as the house's own — the rules don't care who typed */
-        modelSay = voice(String(j.answer));
-        const wk = notesEl.querySelector(".blk.working");
-        if (wk) {
-          /* THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. The first version
-             was three sentences trying to sound relaxed about being
-             machinery ("the facts are the index's, the words are the
-             model's...") and read as exactly that. Machine chrome
-             states facts and never narrates its own process, so this is
-             key-value rows now: what was read, where the facts come
-             from, which model wrote the words, and the one honest line
-             about trusting it. The tag stays; everything after it is
-             replaced when the model reports in. */
-          while (wk.childNodes.length > 1) wk.removeChild(wk.lastChild);
-          const row = (k, v) => {
-            const s = document.createElement("span");
-            s.className = "rl";
-            const key = document.createElement("span");
-            key.className = "rk";
-            key.textContent = k + " · ";
-            s.appendChild(key);
-            s.appendChild(document.createTextNode(v));
-            return s;
-          };
-          /* deduped: three projects are all titled "Hill Country
-             home", and a ledger that says a name twice reads as a bug */
-          const used = [...new Set(j.used || [])];
-          /* The frame comes first: this feature is Jeremy trying AI
-             in the open, and a visitor should read that before the
-             mechanics. One row, stated as fact like the rest. */
-          wk.appendChild(row("Status", "a working concept, testing AI in the open"));
-          wk.appendChild(row("Sources", used.length
-            ? used.slice(0, 3).join(", ") +
-              (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
-            : "no match; the full project list, titles only"));
-          wk.appendChild(row("Facts", "the case studies, indexed when the site builds"));
-          wk.appendChild(row("Words", j.model || "claude"));
-          const dq = document.createElement("span");
-          dq.className = "rl rk";
-          dq.textContent = "Claude can make mistakes.";
-          wk.appendChild(dq);
-        }
-        if (still) { renderToned(sayEl, [{ t: modelSay, q: false }]); modelSay = null; return; }
-        /* lineDone: the old handoff, matcher finished first. !typingStarted:
-           the hold — nothing has typed yet, the floor is the model's.
-           Mid-typing needs neither: typeOn's own tick sees modelSay and
-           hands over, and calling typeModel here as well would null
-           modelSay and let the matcher line resume underneath it. */
-        if (lineDone || !typingStarted) typeModel();
+      const askPulls = [...new Set(
+        rightIdx.map((ci) => cards[ci])
+          .filter((c) => c && c.kind === "pull" && c.img)
+          .map((c) => c.img))].slice(0, 8);
+      dropFlight();
+      const ac = new AbortController();
+      askAbort = ac;
+      asking = askedQ;
+      fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ q: askedQ, hrefs, frames: askFrames.map((f) => f.src),
+          pulls: askPulls,
+          trail: trailTerms(5) }),
+        signal: ac.signal
       })
-      .catch(() => {});
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => {
+          if (asking === askedQ) asking = null;
+          if (!j || !j.answer) {
+            /* NOTHING IS COMING. A 503 with no key, a 429 from the
+               throttle, a 502 from the model: the hold was sized for
+               a model that is thinking, not for one that has already
+               answered no. Give the template the floor now rather
+               than eight seconds from now.
+
+               Asked of the QUESTION, not of this build. A rebuild in
+               the meantime holds a floor of its own and has no request
+               to fail, so checking build identity here left the line
+               blank for the whole eight seconds on the commonest
+               mobile path there is: ask, scroll, URL bar hides,
+               resize, rebuild. */
+            if (alive && askedQ === query && floorRelease) floorRelease();
+            return;
+          }
+          if (!alive) return;
+          /* FILED AGAINST THE QUESTION BEFORE IT IS DRAWN. A rebuild
+             may have superseded this build while the request was out,
+             and the answer still belongs to the question on screen —
+             so it is kept first and painted second. */
+          kept = { q: askedQ, deal: askedDeal, text: voice(String(j.answer)),
+            used: j.used || [], model: j.model || "claude" };
+          if (gen !== askGen) {
+            /* Superseded, but the answer is not stale — only its build
+               is. If the question on screen is still this one, build
+               once more and it replays from `kept`, instantly. */
+            if (askedQ === query) buildAnswer();
+            return;
+          }
+          /* the model's line goes through the same mechanical voice
+             pass as the house's own — the rules don't care who typed */
+          modelSay = kept.text;
+          writeLedger(notesEl, kept);
+          if (still) { renderToned(sayEl, [{ t: modelSay, q: false }]); modelSay = null; return; }
+          /* lineDone: the old handoff, matcher finished first. !typingStarted:
+             the hold — nothing has typed yet, the floor is the model's.
+             Mid-typing needs neither: typeOn's own tick sees modelSay and
+             hands over, and calling typeModel here as well would null
+             modelSay and let the matcher line resume underneath it. */
+          if (lineDone || !typingStarted) typeModel();
+        })
+        .catch(() => {
+          if (asking === askedQ) asking = null;
+          /* an abort is not a failure: the question changed, and the
+             build that changed it owns the floor now */
+          if (!ac.signal.aborted && alive && askedQ === query && floorRelease) floorRelease();
+        });
+    };
+    /* The latch, not a fetch: wantFacts resolves instantly once the
+       index is in hand, so a chip click on a warm page sends now. */
+    if (FACTS) send();
+    else wantFacts().then(send);
+  } else if (asking === query) {
+    /* A rebuild that landed on a question already in the air holds the
+       floor exactly as the build that sent it did. The answer is
+       coming; a template typed underneath it would only be replaced. */
+    askingModel = true;
   }
 
   /* ── the compose box ──
@@ -5474,11 +5655,35 @@ function buildAnswer() {
 
   if (still) {
     sayEl.classList.remove("typing");
-    renderToned(sayEl, segs);
+    renderToned(sayEl, have ? [{ t: have.text, q: false }] : segs);
+    if (have) writeLedger(notesEl, have);
     linkMail();
     showCompose();
     notesEl.classList.add("on");
     els.forEach((el) => el.classList.add("fd-on"));
+    return;
+  }
+
+  /* ── A REPLAY, NOT AN ANSWER ──────────────────────────────────────
+     Same question, rebuilt. The columns re-deal on a resize and again
+     when the facts land behind a deep link, and the model's line was
+     already written for this question — so it is put back rather than
+     performed again. Typing it a second time would tell the visitor
+     something happened when nothing did, and on a phone the URL bar
+     hiding IS a resize.
+
+     The frames still arrive the way any deal arrives: a rebuild really
+     did re-deal them, and they are closed until observeArrivals opens
+     them. It is only the sentence that has nothing new to say. */
+  if (have) {
+    sayEl.classList.remove("typing");
+    renderToned(sayEl, [{ t: have.text, q: false }]);
+    writeLedger(notesEl, have);
+    linkMail();
+    showCompose();
+    notesEl.classList.add("on");
+    document.body.classList.remove("working");
+    observeArrivals(els);
     return;
   }
 
@@ -5520,15 +5725,21 @@ function buildAnswer() {
       holdAsk(() => document.body.classList.remove("working"), 200);
     }
   };
-  /* The 180ms clock is the instant paths' — chips, templates, anything
-     the model never sees. A typed question that reached Claude holds
-     instead: the same typeOn fires only as the FALLBACK, so a model
-     that errors or stalls past the hold still gets answered by the
-     matcher, and its first tick hands over anyway if the model landed
-     while the timer ran. Locally, with no API key, /api/ask fails fast
-     and this fallback is the whole path — which makes the failure mode
-     testable on every dev machine. */
-  holdAsk(typeOn, askingModel ? HOLD_FOR_MODEL : 180);
+  /* The 180ms clock belongs to the answers the model never sees: the
+     held plans, and anything too short to be a search. A question that
+     reached Claude holds instead, and typeOn fires only as the
+     FALLBACK — so a model that errors or stalls past the hold still
+     gets answered by the matcher, and its first tick hands over anyway
+     if the model landed while the timer ran. A failed request does not
+     wait out the hold at all; see releaseFloor above. Locally, with no
+     API key, /api/ask 503s and this fallback is the whole path, which
+     makes the failure mode testable on every dev machine. */
+  floorHeld = holdAsk(typeOn, askingModel ? HOLD_FOR_MODEL : 180);
+  /* published only HERE, where the floor is actually taken. Not beside
+     releaseFloor: the two early returns above reach that line and not
+     this one, and a handle left by a build that never armed a
+     typewriter would throw when someone called it. */
+  floorRelease = releaseFloor;
 
   /* the cards do not wait for the sentence: they arrive while it is
      being said. THE MAGAZINE'S OWN OBSERVER arms them, not a timer, and
@@ -5644,7 +5855,9 @@ async function apply(cold) {
      apply(true) without going through onQuery at all. */
   if (next) wantFacts();
   const changed = next !== asked;
-  if (!next) cancelAsk();
+  /* Closing the field is the one place a request in the air is
+     genuinely unwanted: there is no question left for it to answer. */
+  if (!next) { cancelAsk(); dropFlight(); }
   /* WHAT IS ON SCREEN CLOSES BEFORE WHAT IS ASKED FOR OPENS. Frames
      used to TRAVEL here: a card visible in the magazine remembered its
      seat and slid from it to its answer position, so a surviving
@@ -5710,7 +5923,6 @@ const input = document.getElementById("query");
    unmounted. `resetQ` below is the homepage's own and dies with it;
    it goes through the same door for the sake of one rule. */
 listen(input, "input", (e) => {
-  askSource = "typed";   /* a hand on the keys can reach the model */
   onQuery(e.target.value);
   if (window.placeAsk) placeAsk();   /* typing at display size refits */
 });
@@ -6596,7 +6808,6 @@ function armRows(rowsEl) {
     if (!go) return;
     k = (k + 1) % TOUR.length;     /* the next pull asks the next one */
     input.value = q;
-    askSource = "chip";            /* navigation: the template answers */
     onQuery(q, true);
   };
   listen(window, "touchend", (e) => {
