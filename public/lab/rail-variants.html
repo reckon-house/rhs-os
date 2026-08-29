@@ -367,7 +367,12 @@
 
   .vM .chip { display: block; width: 100%; text-align: left;
     background: none; border: 0; padding: 14px 20px; cursor: pointer;
-    font: inherit; font-size: 15px; font-weight: 600;
+    /* 500, the lede's own weight. 600 read as a UI control next to a
+       page whose heaviest running type is the wordmark at 700; the
+       shipping rail's rows are 400. Same face throughout — the
+       pressing scope is Helvetica Neue, so what the lab shows is what
+       the site renders. */
+    font: inherit; font-size: 15px; font-weight: 500;
     letter-spacing: -0.01em; color: rgba(0,0,0,0.82);
     transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .vM .crow.open .chip { color: #fff; }
