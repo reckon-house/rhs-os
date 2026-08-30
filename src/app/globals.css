@@ -147,6 +147,39 @@ html.cursor-shape-on * { cursor: none !important; }
   font-style: normal;
 }
 
+/* ── REGULAR IS THE ONE WEIGHT NOT HOSTED ──────────────────────────
+   The five files below were licensed for the brand-system specimens in
+   A.R.C. and Ivy Park, where Avenir is the CLIENT's face and only the
+   display weights are set. Now that the shell reads in Avenir too,
+   weight 400 is the most-used value on the site — fifteen declarations,
+   every run of body copy — and there is no file for it.
+
+   A family defined by @font-face does not fall through to a local font
+   of the same name, so without this rule 400 resolves to the nearest
+   declared face, Medium, and every paragraph on the site sets one step
+   heavy. local() first is what fixes that on a Mac today.
+
+   THIS IS NOT SHIPPABLE AS IT STANDS. A visitor without Avenir Next
+   installed still gets Medium for body copy. Shipping the shift means
+   licensing AvenirNext-Regular (and its italic) as a hosted woff2, the
+   same way the five above were. Until then this is a look, not a
+   launch. */
+@font-face {
+  font-family: 'Avenir Next';
+  src: local('Avenir Next Regular'), local('AvenirNext-Regular'),
+       local('Avenir Next'), local('AvenirNext');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: local('Avenir Next Italic'), local('AvenirNext-Italic');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+
 @font-face {
   font-family: 'Avenir Next';
   src: url('/fonts/AvenirNext-Medium.woff') format('woff');
@@ -674,7 +707,7 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
 }
 
 .pressing {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: var(--pp-paper);
   color: var(--pp-ink);
 }

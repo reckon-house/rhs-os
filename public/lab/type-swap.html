@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>type-swap · Helvetica vs Avenir Next · lab</title>
+<style>
+  /* ── the swap, judged on the site's own settings ──────────────────
+     Not a type specimen. Every row below is a real declaration lifted
+     from the shipped stylesheets — the same size, weight and tracking
+     the site actually sets — so the comparison is the decision rather
+     than a demonstration of two typefaces.
+
+     Avenir Next is self-hosted at 500/600/700/800 (licensed for the
+     A.R.C. and Ivy Park brand-system specimens, where it is the
+     CLIENT's face). 400 is NOT hosted: it resolves from local() here,
+     which is true on a Mac and false everywhere else. That gap is the
+     whole shipping question, and the body rows are where it shows. */
+  :root {
+    --helv: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --aven: "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
+    --paper: #F3F0ED;
+    --ink: #111;
+  }
+  @font-face { font-family: 'Avenir Next';
+    src: local('Avenir Next Regular'), local('AvenirNext-Regular');
+    font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Avenir Next';
+    src: url('/fonts/AvenirNext-Medium.woff') format('woff');
+    font-weight: 500; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Avenir Next';
+    src: url('/fonts/AvenirNext-DemiBold.woff') format('woff');
+    font-weight: 600; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Avenir Next';
+    src: url('/fonts/AvenirNext-Bold.woff') format('woff');
+    font-weight: 700; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'Avenir Next';
+    src: url('/fonts/AvenirNext-Heavy.woff') format('woff');
+    font-weight: 800; font-style: normal; font-display: swap; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--helv);
+    -webkit-font-smoothing: antialiased; padding: 56px 50px 140px; }
+
+  .intro { max-width: 620px; margin-bottom: 46px; }
+  .intro h1 { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; }
+  .intro p { font-size: 13px; line-height: 1.6; color: rgba(0,0,0,.6);
+    margin-top: 11px; }
+  .intro b { font-weight: 700; color: rgba(0,0,0,.8); }
+
+  /* one switch, so the whole page can be read in either face */
+  .bar { position: sticky; top: 0; z-index: 5; background: var(--paper);
+    padding: 12px 0 18px; margin-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,.12); display: flex; gap: 10px;
+    align-items: baseline; }
+  .bar button { font: 500 12px var(--helv); letter-spacing: 0.02em;
+    padding: 7px 13px; border: 0; border-radius: 12px; cursor: pointer;
+    background: rgba(0,0,0,.05); color: var(--ink); }
+  .bar button.on { background: var(--ink); color: #fff; }
+  .bar span { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: rgba(0,0,0,.35); margin-left: auto; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 46px;
+    max-width: 1340px; }
+  .head { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 500; color: rgba(0,0,0,.4); padding-bottom: 16px;
+    position: sticky; top: 62px; background: var(--paper); }
+  .lbl { grid-column: 1 / -1; font-size: 9px; letter-spacing: 0.11em;
+    text-transform: uppercase; color: rgba(0,0,0,.3);
+    border-top: 1px solid rgba(0,0,0,.1); padding: 26px 0 12px; }
+  .h { font-family: var(--helv); }
+  .a { font-family: var(--aven); }
+  body.solo .grid { grid-template-columns: 1fr; max-width: 760px; }
+  body.solo .head, body.solo .h { display: none; }
+  body.solo-h .grid { grid-template-columns: 1fr; max-width: 760px; }
+  body.solo-h .head, body.solo-h .a { display: none; }
+
+  /* THE SITE'S OWN VALUES. Each block below is copied from the rule it
+     names, so a difference here is a difference on the page. */
+  .s-mark { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+  .s-nav  { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; }
+  .s-say  { font-size: 32px; font-weight: 500; letter-spacing: -0.02em;
+            line-height: 1.18; }
+  .s-head { font-size: 32px; font-weight: 700; letter-spacing: -0.02em;
+            line-height: 1.18; }
+  .s-stat { font-size: 23px; font-weight: 500; letter-spacing: -0.015em;
+            line-height: 1.3; color: rgba(0,0,0,.42); }
+  .s-chip { font-size: 13px; font-weight: 500; letter-spacing: -0.01em; }
+  .s-note { font-size: 12px; font-weight: 400; line-height: 1.55; }
+  .s-cap  { font-size: 11px; font-weight: 700; }
+  .s-cap i { font-style: normal; font-weight: 400; color: rgba(0,0,0,.5); }
+  .s-tag  { font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+            text-transform: uppercase; color: rgba(0,0,0,.45); }
+  .s-disp { font-size: 62px; font-weight: 700; letter-spacing: -0.03em;
+            line-height: 1.02; }
+  .s-num  { font-size: 23px; font-weight: 500; font-variant-numeric: tabular-nums;
+            letter-spacing: -0.015em; }
+
+  .chip { display: inline-block; background: rgba(0,0,0,.045);
+    border-radius: 12px; padding: 8px 12px; }
+  .dark { background: #000; color: #fff; padding: 26px 24px; margin-top: 8px; }
+  .dark .s-head { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>Helvetica Neue &rarr; Avenir Next</h1>
+  <p>Every row is a real declaration from the shipped stylesheets, at the
+  size, weight and tracking the site actually sets. Nothing here is tuned
+  for the comparison &mdash; if a line reads worse on the right, it reads
+  worse on the page.</p>
+  <p><b>The one gap:</b> Avenir Next is self-hosted at 500, 600, 700 and
+  800 &mdash; licensed for the A.R.C. and Ivy Park brand-system sections,
+  where it is the client&rsquo;s face. Weight <b>400 is not hosted</b>. It
+  is resolving from your own Mac right now, which is why the body rows
+  look right here and would set one step heavy for a visitor on Windows.
+  Shipping this means licensing the Regular.</p>
+</div>
+
+<div class="bar">
+  <button id="bBoth" class="on">Both</button>
+  <button id="bAven">Avenir only</button>
+  <button id="bHelv">Helvetica only</button>
+  <span id="avail">checking&hellip;</span>
+</div>
+
+<div class="grid">
+  <div class="head">Helvetica Neue &mdash; now</div>
+  <div class="head">Avenir Next &mdash; proposed</div>
+
+  <div class="lbl">Masthead wordmark &middot; 12 / 700 / -0.01em</div>
+  <div class="h s-mark">Reckon*House*Staples</div>
+  <div class="a s-mark">Reckon*House*Staples</div>
+
+  <div class="lbl">Masthead address &middot; 12 / 500 / +0.04em</div>
+  <div class="h s-nav">hello@reckon.house</div>
+  <div class="a s-nav">hello@reckon.house</div>
+
+  <div class="lbl">The statement &middot; 32 / 500 / -0.02em</div>
+  <div class="h s-say">I&rsquo;m Jeremy Prasatik. I make things across brand, product, and place.</div>
+  <div class="a s-say">I&rsquo;m Jeremy Prasatik. I make things across brand, product, and place.</div>
+
+  <div class="lbl">The answer &middot; 32 / 500 &mdash; what Haiku writes</div>
+  <div class="h s-say">Hill Country Kitchen is the one to open first. Sage green cabinetry anchors it, paired with raw white oak, veined marble, and unlacquered brass.</div>
+  <div class="a s-say">Hill Country Kitchen is the one to open first. Sage green cabinetry anchors it, paired with raw white oak, veined marble, and unlacquered brass.</div>
+
+  <div class="lbl">The stat band &middot; 23 / 500 / -0.015em &mdash; numerals matter here</div>
+  <div class="h s-stat">Read &middot; 30 case studies, 358 photographs, 2,192 catalogued terms<br>Caught &middot; &ldquo;green&rdquo; in 19 projects, 97 photographs<br>Time &middot; 8ms on your machine, before any model</div>
+  <div class="a s-stat">Read &middot; 30 case studies, 358 photographs, 2,192 catalogued terms<br>Caught &middot; &ldquo;green&rdquo; in 19 projects, 97 photographs<br>Time &middot; 8ms on your machine, before any model</div>
+
+  <div class="lbl">Rail chips &middot; 13 / 500 / -0.01em</div>
+  <div><span class="h s-chip chip">Digital Experiences</span>
+       <span class="h s-chip chip">Interiors</span></div>
+  <div><span class="a s-chip chip">Digital Experiences</span>
+       <span class="a s-chip chip">Interiors</span></div>
+
+  <div class="lbl">Note rail body &middot; 12 / 400 &mdash; THE UNHOSTED WEIGHT</div>
+  <div class="h s-note">Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work.</div>
+  <div class="a s-note">Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work.</div>
+
+  <div class="lbl">Frame captions &middot; 11 / 700 + 400</div>
+  <div class="h s-cap">Hill Country home <i>Interior design, kitchen</i><br>Ivy Park by Beyonc&eacute; <i>Digital design, brand launch</i></div>
+  <div class="a s-cap">Hill Country home <i>Interior design, kitchen</i><br>Ivy Park by Beyonc&eacute; <i>Digital design, brand launch</i></div>
+
+  <div class="lbl">Section tag &middot; 10 / 500 / +0.04em / caps</div>
+  <div class="h s-tag">How it works</div>
+  <div class="a s-tag">How it works</div>
+
+  <div class="lbl">Footer headline on ink &middot; 32 / 700 / -0.02em</div>
+  <div class="h"><div class="dark"><div class="s-head">Have a project<br>in mind?</div></div></div>
+  <div class="a"><div class="dark"><div class="s-head">Worked with,<br>spotted by &amp; featured in.</div></div></div>
+
+  <div class="lbl">Numerals in a row &middot; 23 / 500 / tabular</div>
+  <div class="h s-num">358 &nbsp; 2,192 &nbsp; 19 &nbsp; 97 &nbsp; 8ms &nbsp; 0123456789</div>
+  <div class="a s-num">358 &nbsp; 2,192 &nbsp; 19 &nbsp; 97 &nbsp; 8ms &nbsp; 0123456789</div>
+
+  <div class="lbl">Display, for reference &middot; 62 / 700 / -0.03em</div>
+  <div class="h s-disp">Everything.</div>
+  <div class="a s-disp">Everything.</div>
+</div>
+
+<script>
+  /* the availability line is a fact, not a caption: ask the browser
+     which weights it can actually resolve before anything is judged */
+  document.fonts.ready.then(() => {
+    const w = [400, 500, 600, 700, 800].filter(
+      (x) => document.fonts.check(x + ' 16px "Avenir Next"'));
+    const hosted = [500, 600, 700, 800];
+    const local400 = document.fonts.check('400 16px "Avenir Next"');
+    document.getElementById("avail").textContent =
+      "Avenir resolving at " + w.join(", ") +
+      (local400 ? " · 400 from your Mac, not hosted" : " · NO 400");
+  });
+  const set = (cls) => { document.body.className = cls;
+    ["bBoth", "bAven", "bHelv"].forEach((id) =>
+      document.getElementById(id).classList.remove("on")); };
+  document.getElementById("bBoth").onclick = (e) => { set(""); e.target.classList.add("on"); };
+  document.getElementById("bAven").onclick = (e) => { set("solo"); e.target.classList.add("on"); };
+  document.getElementById("bHelv").onclick = (e) => { set("solo-h"); e.target.classList.add("on"); };
+</script>
+</body>
+</html>

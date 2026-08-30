@@ -68,7 +68,7 @@
        never declared before, only ever the 200px fallback. */
     --ix-note-w: 180px;
   --stratum-air: clamp(56px, 9dvh, 120px);
-    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --sans: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
   /* SCOPED BY THE PORT. The lab can say `html { background }` because
@@ -248,7 +248,7 @@
      They were unified at 500 to stop the name changing weight across
      that handover, and they are unified at 700 now for the same
      reason. If this moves, move .mark in Masthead.module.css with it. */
-  .covermark { font-size: var(--nav-size, 12px); font-weight: 700;
+  .covermark { font-size: var(--nav-size, 12px); font-weight: 600;
     letter-spacing: -0.01em; line-height: 1.04; white-space: nowrap; }
   /* THE ASTERISKS ARE THE NAME, not punctuation between three words.
      Upright and the same weight as the letters, so nothing reads as a
@@ -406,7 +406,7 @@
      same clamp gave about twelve characters a line. 2.5vw holds the
      same proportion the cover always had between type and measure. */
   .coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.4vw, 32px));
-    line-height: 1.18; letter-spacing: -0.02em; font-weight: 500;
+    line-height: 1.18; letter-spacing: -0.05em; font-weight: 600;
     max-width: 21em; }
   .ledelbl { display: block; font-size: var(--lbl);
     font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
@@ -429,21 +429,17 @@
      #query rule re-colours the border with two ids of specificity, so
      a transparent border comes back as a second, lower line on hover.
      A zero-width border has nothing to colour. */
-  .ask.big #query { border-bottom: 0; padding-bottom: 0;
-    /* the one difference from every other drawn rule on the page: the
-       line is the width of the TYPED TEXT, which the driver measures,
-       and not of the box the field reserves inside the sentence */
-    --rule-w: var(--ask-uw, 100%); }
+  .ask.big #query { border-bottom: 0; padding-bottom: 0; }
   /* a field has no focus-visible distinction worth drawing — it either
      has the caret or it does not, and the rule should be full either
      way, so this is :focus and carries no outline */
   .ask.big #query:focus {
-    background-size: var(--rule-w) 1px, var(--rule-w) 1px; }
+    text-decoration-color: var(--rule-ink, #000); }
 
   /* 32, with the rest of the ramp. The cover sets its own --stmt-fs
      to the same ceiling; this is what the daybook and staples read. */
   .statement { font-size: clamp(20px, 2.4vw, 32px); line-height: 1.2;
-    letter-spacing: -0.02em; font-weight: 500; max-width: 30em; }
+    letter-spacing: -0.05em; font-weight: 600; max-width: 30em; }
   .statement .dim { color: rgba(0, 0, 0, 0.42); }
   .stratum .statement { padding: 0 var(--gut) clamp(26px, 4dvh, 48px); }
 
@@ -614,7 +610,7 @@
      nothing a page does to <body> can reach it. */
   .pt { position: fixed; inset: 0; z-index: 200; pointer-events: none;
     visibility: hidden;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased; }
   .pt.pt-run { visibility: visible; pointer-events: auto; }
   .ptw, .ptb { position: absolute; inset: 0; }
@@ -652,8 +648,8 @@
      translate3d keeps the layer for the whole sequence, so the text is
      drawn one way from first frame to last. */
   .ptl { display: block; white-space: nowrap;
-    font-size: clamp(20px, 2.6vw, 38px); font-weight: 500;
-    line-height: var(--ptlh, 1.18); letter-spacing: -0.02em;
+    font-size: clamp(20px, 2.6vw, 38px); font-weight: 600;
+    line-height: var(--ptlh, 1.18); letter-spacing: -0.05em;
     -webkit-font-smoothing: antialiased;
     opacity: 0; transform: translate3d(0, 14px, 0);
     transition: opacity 0.3s ease,
@@ -1638,7 +1634,7 @@
     display: flex; align-items: flex-end; padding: 22px; }
   .fd-note { aspect-ratio: var(--nar, 4 / 3); }
   .fd-note .word { font-size: clamp(19px, 1.7vw, 30px); font-weight: 700;
-    letter-spacing: -0.03em; line-height: 1.05; }
+    letter-spacing: -0.05em; line-height: 1.05; }
   .fd-note .full { display: none; }
   .fd-note .idx { position: absolute; top: 14px; left: 22px;
     font-size: var(--lbl); font-weight: var(--lbl-weight);
@@ -1790,8 +1786,8 @@
      the machine's rows are the site's grey, both at reading size.
      Lines land one at a time on the rail's own landing move. */
   .ansstats { margin-top: 18px;
-    font-size: clamp(16px, 1.7vw, 23px); font-weight: 500;
-    line-height: 1.3; letter-spacing: -0.015em;
+    font-size: clamp(16px, 1.7vw, 23px); font-weight: 600;
+    line-height: 1.3; letter-spacing: -0.05em;
     color: rgba(0, 0, 0, 0.42);
     max-width: calc((100% - var(--ixgap)) / 2); }
   .ansstats .asl { display: block; opacity: 0; transform: translateY(6px);
@@ -1817,18 +1813,35 @@
      changed colour. Three ways of saying "this is a door" is two more
      than a reader should have to learn.
 
-     Two stacked underlines drawn as backgrounds, because
-     text-decoration cannot animate directionally: the grey hairline
-     always spans the word, and the ink one grows over it from the left
-     on hover, braking at the end. The trade against text-decoration is
-     skip-ink — a background line does not part around descenders, so
-     it rides the inline box's bottom edge, tangent to their tips,
-     rather than the old 0.14em offset that skip-ink made possible.
-     Raised back to that offset ON PURPOSE: the line cuts straight
-     through the p and y tails, which is the look — a drawn rule over
-     the words, not type furniture politely stepping around them.
-     0.07em is the gap between Helvetica's descent (~0.21em) and the
-     0.14em the underlines always sat at.
+     SKIP-INK WON, and the directional grow is what it cost.
+
+     These were two stacked background gradients, because
+     text-decoration cannot animate its width: the grey hairline spanned
+     the word and an ink one grew over it from the left on hover. The
+     note here used to argue that cutting straight through the p and y
+     tails WAS the look — a drawn rule over the words rather than type
+     furniture stepping politely around them.
+
+     Set in Avenir at display size that stopped reading as a decision
+     and started reading as a rule someone forgot to finish: the tails
+     of photography and campaign are struck through rather than
+     underlined. A real underline parts around them, which is the
+     finished thing, and it cannot be had from a background image at
+     any offset.
+
+     So: text-decoration, skip-ink on, and the hover moves the COLOUR
+     from the rest tone to full ink over the same beat. One language
+     still, one property animating instead of another. What is gone is
+     the left-to-right wipe, which no single element can do while a
+     line also breaks around a descender — the growing layer would have
+     to be a second copy of the text, absolutely placed, and the
+     statement's terms wrap.
+
+     THICKNESS IS PROPORTIONAL NOW, which is the other half of what a
+     finished underline means: max(1px, 0.05em) holds a hairline at
+     12px and gives the 32px display line the ~1.6px that matches its
+     stroke. 0.15em of offset is the clearance the descenders need to
+     part cleanly.
 
      THE HAIRLINE AT REST IS THE POINT, and it is what the filters
      gained: a word that only admits it is live once the pointer is
@@ -1848,33 +1861,49 @@
      tones, and they invert under the masthead over a dark zone, where
      black on black is no line at all. */
   .statement .term,
-  .ask.big #query,
   .ixnotes .blk .blkgo,
   .ixnotes .filt button,
   .ixnotes .filt a,
   #nav a.meta {
-    text-decoration: none;
-    background-image:
-      linear-gradient(var(--rule-ink, #000), var(--rule-ink, #000)),
-      linear-gradient(var(--rule-rest, rgba(0, 0, 0, 0.22)),
-                      var(--rule-rest, rgba(0, 0, 0, 0.22)));
-    background-repeat: no-repeat;
-    background-size: 0 1px, var(--rule-w, 100%) 1px;
-    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-rest, rgba(0, 0, 0, 0.22));
+    text-decoration-thickness: max(1px, 0.05em);
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+    background-image: none;
     /* colour rides along for the masthead, which fades its own tone
-       across a dark zone's edge. Nothing else here changes colour, so
-       it costs them nothing and saves a second transition rule that
-       would have had to out-specify this one. */
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                color 0.28s ease; }
+       across a dark zone's edge. */
+    transition: text-decoration-color 0.3s ease, color 0.28s ease; }
+  /* THE FIELD TAKES IT TOO, and the objection to that turned out to be
+     wrong. The worry was that an input with no value has no text for a
+     text-decoration to underline, so the line would vanish in the one
+     state it most needs to be in. It does not: a placeholder takes the
+     decoration the same as a value, tested in the browser with the
+     tour's own question in the box, descenders parting and all.
+
+     What it retires is --ask-uw. The driver measured the visible text
+     on a ghost span so the drawn rule could be sized to the words
+     rather than the box — "the line ends where the words do" — which
+     is what a text-decoration does natively, and exactly. The measure
+     is still written, because the same ghost fits the field's size,
+     but nothing reads it for the rule any more. */
+  .ask.big #query {
+    text-decoration: underline;
+    text-decoration-color: var(--rule-rest, rgba(0, 0, 0, 0.22));
+    text-decoration-thickness: max(1px, 0.05em);
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+    background-image: none;
+    transition: text-decoration-color 0.3s ease, color 0.28s ease; }
   @media (hover: hover) {
     .statement .term:hover,
-    .ask.big #query:hover,
     .ixnotes .blk .blkgo:hover,
     .ixnotes .filt button:hover,
     .ixnotes .filt a:hover,
     #nav a.meta:hover {
-      background-size: var(--rule-w, 100%) 1px, var(--rule-w, 100%) 1px; }
+      text-decoration-color: var(--rule-ink, #000); }
+    .ask.big #query:hover {
+      text-decoration-color: var(--rule-ink, #000); }
   }
   .statement .term:focus-visible,
   .ixnotes .blk .blkgo:focus-visible,
@@ -1899,8 +1928,8 @@
      columns and the gutter between them, so half of that less half a
      gutter is exactly one. */
   .ansprose { max-width: calc((100% - var(--ixgap)) / 2);
-    font-size: clamp(21px, 2.4vw, 32px); font-weight: 500;
-    line-height: 1.18; letter-spacing: -0.02em;
+    font-size: clamp(21px, 2.4vw, 32px); font-weight: 600;
+    line-height: 1.18; letter-spacing: -0.05em;
     min-height: 2.4em; }
   #ansSay.typing::after { content: ""; display: inline-block;
     width: 0.45ch; height: 0.92em; margin-left: 4px;

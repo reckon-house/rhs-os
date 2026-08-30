@@ -17,7 +17,7 @@
   color: var(--rt-ink);
   /* The Swiss shell keeps its own voice, the same call the masthead
      and the index made. */
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   /* 40px matches the masthead's gutter, and is not doubled against
      main's md:px-[50px] because the root carries .hero-breakout. */

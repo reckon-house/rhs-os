@@ -95,8 +95,10 @@
   z-index: 2;
   font-size: clamp(24px, 3.2vw, 44px);
   line-height: 1.18;
-  letter-spacing: -0.02em;
-  font-weight: 500;
+  /* one heavier and -5%, the Avenir compensation — see .mark in
+     Masthead.module.css for why the face needed it. */
+  letter-spacing: -0.05em;
+  font-weight: 600;
   max-width: 21em;
   transform: translateY(86dvh);
   will-change: transform;

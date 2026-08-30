@@ -27,6 +27,21 @@
      on ink. */
 
   position: relative;
+
+  /* THE ONLY BEAT IN THE FOOTER THAT NEVER NAMED ITS FACE. Every other
+     one does — closing, credits, return, the index — and this one
+     inherited Satoshi from the app shell instead, so the two halves of
+     the same black slab have always been set in two different
+     typefaces. It hid while the rest was Helvetica, because Satoshi
+     next to Helvetica is a subtle difference; against Avenir it is
+     obvious, and Jeremy caught it by eye from the weight alone.
+
+     Same declaration PressingCredits carries, for the reason its
+     comment gives: the Pressing C shell keeps the prototype's voice,
+     and these two beats are partners. */
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
   /* The prototype's .screen height, with the sticky var(--nav-h) masthead standing in
      for its var(--nav). dvh, not vh: the shell is h-dvh and 100vh overreaches
      by the mobile browser-chrome delta. */
@@ -126,8 +141,11 @@
      and reads as the same voice or as a mistake. */
   font-size: clamp(21px, 2.4vw, 32px);
   line-height: 1.18;
+  /* 600, joining the display register. 700 was the right weight for
+     Helvetica; Avenir Next Bold carries more ink at the same nominal
+     value, so Demi Bold is what 700 used to look like. */
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: none;
   /* The prototype's own limits for this beat. The base .brief headline also
      carries a 100% guard against overflowing track 1; the footer beats

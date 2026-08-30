@@ -4282,9 +4282,13 @@ let tourFull = "";                     /* what placeAsk should size to */
     ask.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
     ask.style.setProperty("--ask-fs", (SMALL + (big - SMALL) * p).toFixed(2) + "px");
     /* display type wants negative tracking, the bar wants the module's
-       positive 0.04em — walk between them rather than picking one */
-    ask.style.setProperty("--ask-ls", (0.04 - 0.085 * p).toFixed(4) + "em");
-    ask.style.setProperty("--ask-fw", p > 0.35 ? "700" : "500");
+       positive 0.04em — walk between them rather than picking one.
+       The display end is the STATEMENT'S value, because the field sits
+       inside that sentence: -0.05em to land on it, 600 to weigh the
+       same. Both were a step off after the face changed, and the field
+       read bolder than the words on either side of it. */
+    ask.style.setProperty("--ask-ls", (0.04 - 0.09 * p).toFixed(4) + "em");
+    ask.style.setProperty("--ask-fw", p > 0.35 ? "600" : "500");
     ask.classList.toggle("big", p > 0.35);
     document.body.classList.toggle("attop", p > 0.96);
     /* THE MELT IS FOR THE WORK, NOT FOR THE MASTHEAD LINE. The cover's
