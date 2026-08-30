@@ -2916,6 +2916,7 @@ function wantFacts() {
     .then((r) => (r.ok ? r.json() : null))
     .then((j) => {
       FACTS = j;
+      buildSeen();
       /* a deep-linked ?q= builds its answer before this lands, on
          the matcher alone. If the facts have something better to say
          about the standing question, say it — the rebuild happens
@@ -2952,6 +2953,52 @@ const namesTerm = (t, q) => {
   return false;
 };
 
+/* ── THE SEEN LAYER, aggregated up to projects ─────────────────────
+   The vision index catalogues 358 photographs — subjects, colours,
+   mood — and until this map existed, only frameMatch could read it.
+   The DEAL followed factMatches, which reads the studies' prose, so a
+   search for "green" answered "no match" while the kitchen's sage
+   cabinetry, Capitan's desert and Jeffrey's greenery sat in nineteen
+   projects' worth of frames. 2,477 distinct terms the camera caught
+   and the matcher could not: every colour, every mood, every object
+   no sentence happens to name.
+
+   One pass over the images when the index lands: href → word →
+   {n, term}, where n counts FRAMES rather than mentions, because "in
+   six photographs of the kitchen" is the claim the answer gets to
+   make. The representative term prefers the bare word, so a hit on
+   "sage green cabinetry" still prints as green when green was asked
+   for. */
+let SEEN = null;
+function buildSeen() {
+  SEEN = new Map();
+  if (!FACTS || !FACTS.images) return;
+  for (const im of FACTS.images) {
+    const href = "/case-studies/" + im.slug;
+    let per = SEEN.get(href);
+    if (!per) SEEN.set(href, per = new Map());
+    /* words this FRAME holds, deduped, so a tub named three ways still
+       counts the frame once */
+    const words = new Map();
+    const take = (t) => {
+      const f0 = fold(String(t));
+      for (const w of f0.split(" ")) {
+        if (w.length < 3 || STOP.has(w) || FILLER.has(w)) continue;
+        if (!words.has(w) || f0 === w) words.set(w, f0);
+      }
+    };
+    for (const facet in im.f || {}) (im.f[facet] || []).forEach(take);
+    (im.subjects || []).forEach(take);
+    (im.mood || []).forEach(take);
+    (im.colours || []).forEach(take);
+    for (const [w, term] of words) {
+      const e = per.get(w);
+      if (e) { e.n += 1; if (term === w) e.term = term; }
+      else per.set(w, { n: 1, term });
+    }
+  }
+}
+
 function factMatches(p, q) {
   /* facet terms arrive as [term, evidenceCount]; the count is the
      ranking signal. Disciplines and tools are curated, count 1. */
@@ -2977,6 +3024,27 @@ function factMatches(p, q) {
      a category never outshouts a specific fact. */
   if (p.category && namesTerm(p.category, q)) {
     m.push({ facet: "category", term: p.category, n: 1 });
+  }
+  /* OBSERVED, NOT WRITTEN. What the camera caught in this project's
+     photographs, weighted by how many frames carry it and capped so a
+     much-photographed colour never outranks a mined fact of real
+     evidence: prose is intentional, a frame is circumstantial. 0.3 a
+     frame, ceiling 8 — ten green frames score 2.4, against mined
+     counts that run to seventeen. A multi-word query must land every
+     word in the same project's frames, at the weight of its rarest. */
+  const sm = SEEN && SEEN.get(p.href);
+  if (sm) {
+    const parts = q.split(" ").filter((w) => w.length > 2 && !STOP.has(w));
+    if (parts.length) {
+      let n = Infinity, term = null;
+      for (const w of parts) {
+        const e = sm.get(w) ||
+          (w.length > 3 && w.endsWith("s") ? sm.get(w.slice(0, -1)) : null);
+        if (!e) { n = 0; break; }
+        if (e.n < n) { n = e.n; term = e.term; }
+      }
+      if (n) m.push({ facet: "seen", term, n: Math.min(n, 8) * 0.3 });
+    }
   }
   return m;
 }
@@ -3061,13 +3129,24 @@ function frameMatch(q0) {
 function factLookup(q0) {
   const q = resolveAlias(fold(q0));
   if (!q || !FACTS) return { hits: [], pulls: [], dead: [], and: false };
-  const seek = (qw) => ({
-    hits: FACTS.projects.map((p) => ({ p, m: factMatches(p, qw) })).filter((h) => h.m.length),
-    pulls: FACTS.pulls.filter((p) => {
-      for (const facet in p.f) if (p.f[facet].some((t) => namesTerm(t, qw))) return true;
-      return false;
-    })
-  });
+  const seek = (qw) => {
+    let hits = FACTS.projects.map((p) => ({ p, m: factMatches(p, qw) })).filter((h) => h.m.length);
+    /* A CLASSIFICATION IS A CURATED SHELF. When the word IS a category
+       — the four chips, mostly — the photographs do not get to widen
+       it: "interiors" grew from the shelf's 8 to 12 because A.R.C.'s
+       app screenshots show rooms, and the rail's captured counts in
+       rail-categories.ts drifted against the live answer. A project
+       whose only claim is a frame stands aside when a shelf answered. */
+    if (hits.some((h) => h.m.some((m) => m.facet === "category")))
+      hits = hits.filter((h) => h.m.some((m) => m.facet !== "seen"));
+    return {
+      hits,
+      pulls: FACTS.pulls.filter((p) => {
+        for (const facet in p.f) if (p.f[facet].some((t) => namesTerm(t, qw))) return true;
+        return false;
+      })
+    };
+  };
   let r = seek(q);
   if (r.hits.length || r.pulls.length) return { ...r, dead: [], and: false };
   /* Several terms at once. Only words the index KNOWS anything about
@@ -3731,6 +3810,9 @@ const FACET_PLAIN = {
      term is true of the client or the subject, not of the work, and
      the receipt should not upgrade that into a claim. */
   keyword: "a related term",
+  /* the claim stays at what a photograph can hold: the word was seen,
+     not written */
+  seen: "something the camera catches",
 };
 function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }) {
   const bits = [];
@@ -3758,7 +3840,7 @@ function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }
    tools are built with. Same copy rules as everything else in the
    house: short sentences, contractions, no em dashes. */
 const FACET_RANK = ["client", "material", "furniture", "room", "colour", "place",
-  "tool", "discipline", "category", "keyword"];
+  "tool", "discipline", "category", "seen", "keyword"];
 function planFacts(q, f) {
   /* Most evidence first, then the order the house would walk you
      through them. Weight is the mined count riding on each term: the
@@ -3810,7 +3892,11 @@ function planFacts(q, f) {
      told a visitor that six studies claiming ecommerce design on their
      covers had matched "a related term". It leads only when it is the
      only thing that matched, which is the one case where it is true. */
-  const speaks = (fa) => fa !== "keyword" || facets.length === 1;
+  /* seen joins keyword in deferring: a photograph is circumstantial
+     evidence and must not change what an existing mined answer says.
+     Either speaks only when nothing written matched at all. */
+  const MUTE = new Set(["keyword", "seen"]);
+  const speaks = (fa) => !MUTE.has(fa) || facets.every((x) => MUTE.has(x));
   let lead = exactFacets.find(speaks) || facets.find(speaks) || facets[0];
   /* no project answered, so the board is the evidence: the speaking
      facet and term come from the pulls that matched, or "miles davis"
@@ -3961,6 +4047,16 @@ function planFacts(q, f) {
       : ["Built with " + term + ", all through the work below.",
          "Everything below went through " + term + ".",
          term + " is in every one of these."][v];
+  } else if (lead === "seen") {
+    /* the observed register: the word lives in the photographs, and
+       the sentence says so rather than promoting it to a material or
+       a room the studies never wrote down */
+    say = bridge + (wl === 1
+      ? "You can see " + term + " in " + tl[0] + "."
+      : ["You can see " + term + " all through the photographs below. " +
+           tl[0] + " has the most of it.",
+         cap(term) + " keeps showing up on camera here. Start with " + tl[0] + ".",
+         "The camera keeps finding " + term + ": " + nameList(tl.slice(0, 3)) + "."][v]);
   } else {
     say = wl === 1
       ? "One project: " + tl[0] + "."
