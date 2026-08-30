@@ -404,6 +404,23 @@
   opacity: 0.35;
 }
 
+/* The address inside that note, and the only part of it that is a
+   control. currentColor rather than the page's link tone: this beat is
+   white on ink and the shared underline draws in --rule-rest, a black
+   value that vanishes here. It also lifts out of the note's 0.35 on
+   hover, so the thing you can press is the thing that answers. */
+.mail {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.25s ease;
+}
+@media (hover: hover) {
+  .mail:hover {
+    opacity: 0.6;
+  }
+}
+
 /* ── phones ──────────────────────────────────────────────────────────
    One track: the headline and the column stack rather than sitting beside
    each other. They must go back to SEPARATE rows — sharing row 2 is what

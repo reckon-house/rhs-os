@@ -1012,11 +1012,30 @@
   .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
   /* the drawer's type is on its own clock: 90ms behind the structure
      on the way in, gone at once on the way out (the .dbpre pattern) */
-  .ixnotes .rdrawer .rpad { padding: 4px 16px 18px;
+  /* THE AIR ABOVE THE CONTENT IS ONE NUMBER NOW, and it is the stamp
+     band's — see the note on .rcat below. The text drawers carried 4px
+     against the band's 16 because a picture was thought to want more
+     room than a paragraph does; opened side by side that read as two
+     drawers built to different rules rather than as one rail. Same
+     number, so Info and Connect open the way a category does. */
+  .ixnotes .rdrawer .rpad { padding: 64px 16px 18px;
     opacity: 0; transform: translateY(10px); transition: none; }
-  /* the stamp band breathes: more air above the reel and below the
-     one-liner than the text drawers carry */
-  .ixnotes .rdrawer .rpad.rcat { padding: 16px 16px 20px; }
+  /* ── THE AIR ABOVE THE STAMP IS THE OWNER'S NUMBER ────────────────
+     Not a derived value and not a guess. It has moved four times: 16
+     at first, then 32 by Jeremy's explicit call (27d906b, "owner's
+     call"), then 8 as collateral in the chips rework, which was a
+     change about chip SHAPE and took the band's air with it without
+     saying so, then 16 again, which put back half of what was lost.
+
+     64 now, which is the gap he can actually see tripled: 8px of that
+     is the chip's own bottom padding, so the word-to-picture distance
+     goes 24 to 72. Measured, not counted from the declaration.
+
+     If this looks wrong to a later reader, it is still not a value to
+     re-derive. Ask. */
+  /* Only the trailing air differs now: the one-liner under the reel
+     wants a little more beneath it than a paragraph does. */
+  .ixnotes .rdrawer .rpad.rcat { padding-bottom: 20px; }
   .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
     transition: opacity 0.5s ease 90ms,
       transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
@@ -1027,6 +1046,13 @@
   .ixnotes .rdrawer .rtxt { font-size: var(--note); line-height: 1.5; }
   .ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
     color: inherit; font-size: var(--note);
+    text-decoration: underline; text-underline-offset: 3px; }
+  /* Set like .rgo above it rather than like the page's other links:
+     the drawer reverses to white on ink when it opens, and the shared
+     skip-ink treatment draws its rule in --rule-rest, which is a black
+     tone and disappears there. currentColor, so the line reverses with
+     the words. */
+  .rmail { color: inherit;
     text-decoration: underline; text-underline-offset: 3px; }
   .ixnotes .rdrawer { display: flex; flex-direction: column; gap: 10px; }
   .ixnotes .rdrawer .rgap { height: 8px; }
@@ -1266,6 +1292,31 @@
   .ixrows::before { left: calc(var(--ixgap) / -2); }
   .ixrows::after { left: calc(100% + var(--ixgap) / 2); }
 
+  /* ── THE BOARD'S OWN PACKING ─────────────────────────────────────
+     Staples deals the whole board and it packs rather than pairs — see
+     buildAnswer. Three columns at the tiles' own ratios, which is
+     staples.module.css's layout brought onto the answer so the board
+     reads the same wherever it is met: dense, unsorted, no two tiles
+     the same height.
+
+     CSS columns, not a grid. A masonry has to know each tile's height
+     before it can place the next one, and only the browser knows that;
+     a grid would want a row span per tile computed from a measurement
+     that is not final until the picture lands. `columns` does it with
+     one declaration and break-inside on the child.
+
+     Gap and count are the board page's values, not new ones. */
+  .ixrows.ansboard { columns: 3; column-gap: clamp(16px, 2vw, 28px); }
+  .ansboard .btile { break-inside: avoid;
+    margin-bottom: clamp(16px, 2vw, 28px); }
+  /* Full column width, and no hover growth: a board tile is already as
+     wide as its column, so there is nowhere for it to open to. */
+  .ansboard .fd-it { width: 100%; }
+  /* The standing name a work frame carries under it, and the caption a
+     pull shows on hover, both stay as they are — a pull has only the
+     caption, and it is the one thing naming a picture nobody made
+     here. */
+
   .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
     transform-origin: right center;
     transition: opacity 0.8s ease,
@@ -1478,6 +1529,14 @@
     .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
       padding-top: clamp(40px, 10vw, 68px); }
     .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
+    /* The board keeps packing on a phone, at two columns rather than
+       one: three tiles across a 329px column is a contact sheet nobody
+       can read, and one is a hundred and seven full-width pictures to
+       scroll past. Both numbers are staples.module.css's own phone
+       values, so the board reads the same on a phone as it does on the
+       page it came from. */
+    .ixrows.ansboard { columns: 2; column-gap: 14px; }
+    .ansboard .btile { margin-bottom: 14px; }
     /* One column and no note rail, so there are no gutters left for a
        vertical to stand in. The row rule comes back to do the work. */
     .ixrows::before, .ixrows::after { display: none; }
@@ -1728,6 +1787,54 @@
   .fd-note { opacity: 0; transform: translateY(14px);
     transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .fd-note.fd-on { opacity: 1; transform: none; }
+
+  /* ── A KEPT LINE, AMONG THE PICTURES ──────────────────────────────
+     The board page's quote tile (InspirationQuoteTile), in the
+     answer's own grid. Sizes are that component's, written as a clamp
+     across the two breakpoints it steps between, so a line reads the
+     same wherever it is met.
+
+     It takes the TEXT arrival above rather than the curtain: there is
+     no plate to uncover, and a quote sliding out from behind a falling
+     edge would be a picture pretending to be words. --lag still
+     applies, so a line is the second beat of its row when it is dealt
+     on the right. */
+  .fd-quote { display: flex; flex-direction: column; justify-content: center;
+    padding: 6px 0 20px;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease var(--lag, 0s),
+      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  .fd-quote.fd-on { opacity: 1; transform: none; }
+  .fd-quote.fd-out { opacity: 0;
+    transition: opacity 0.28s ease var(--lag, 0s); }
+  /* UPRIGHT, AND A WEIGHT UP. It was italic at 400, which is the
+     convention for a quotation and was the wrong call here: everything
+     around it is upright Avenir at 600, so the one italic block read as
+     a caption from another document rather than as a line held up
+     beside the pictures. 500 rather than the display 600 — these are
+     somebody else's words, and matching the site's own weight exactly
+     would put them in its voice. The quote marks do the quoting. */
+  .fd-quote .qtext { margin: 0; font-weight: 500;
+    font-size: clamp(20px, 1.7vw, 26px); line-height: 1.35;
+    letter-spacing: -0.02em; }
+  /* One block per written line, so text-indent can reapply: it only
+     ever indents the FIRST line of a block, which is why pre-line and
+     a hanging indent cannot be combined — every line of the lyric is
+     one line box inside a single block, and only the top one moves.
+     Negative indent plus matching padding leaves the written line
+     flush and hangs its runover under it. */
+  .fd-quote .verse .qline { display: block;
+    text-indent: -1.1em; padding-left: 1.1em; }
+  /* A blank line between stanzas. None of the three kept lines has one
+     and one may arrive; an empty block is zero pixels tall without
+     this, so the stanza break would silently vanish. */
+  .fd-quote .verse .qline:empty { height: 0.6em; }
+  .fd-quote .qatt { margin: 24px 0 0; font-size: clamp(10px, 0.85vw, 11px);
+    letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500;
+    opacity: 0.45; }
+  @media (prefers-reduced-motion: reduce) {
+    .fd-quote, .fd-quote.fd-out { transition: none; }
+  }
   /* the card itself no longer fades: the curtain IS the arrival, and a
      fade under it would grey the picture while it was being drawn */
   .fd-it { opacity: 1; }

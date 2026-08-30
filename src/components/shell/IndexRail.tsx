@@ -3,9 +3,10 @@
 /* ── The index rail ──────────────────────────────────────────────────
  *
  * The drawer rail, canonical. Info and Contact open as drawers holding
- * what the old stacked blocks used to say; the four categories follow
+ * what the old stacked blocks used to say; the five categories follow
  * after a breath, each flooding to ink and revealing a stamp-size faux
- * reel of that category's own work with the count beside it.
+ * reel of that category's own work with the count beside it. The fifth,
+ * Staples, shows the inspiration board instead — see rail-categories.ts.
  *
  * WHY THIS FILE EXISTS. The rail was rebuilt in the lab as this drawer
  * index, and the port carried it to the homepage — which is driven by
@@ -59,6 +60,23 @@ function stampSequence(n: number): SizzleBeat[] {
 
 const byId = new Map(projects.map((p) => [p.id, p]));
 const note = (re: RegExp) => practiceNotes.find((n) => re.test(n.title));
+
+/* The homepage driver's linkMail, as JSX. One address, two surfaces,
+   and it has to be a control on both. */
+const MAIL_RX = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+function mailify(text: string): React.ReactNode {
+  const m = text.match(MAIL_RX);
+  if (!m || m.index === undefined) return text;
+  return (
+    <>
+      {text.slice(0, m.index)}
+      <a className="rmail" href={`mailto:${m[0]}`}>
+        {m[0]}
+      </a>
+      {text.slice(m.index + m[0].length)}
+    </>
+  );
+}
 
 export function IndexRail() {
   /* One drawer at a time. The homepage keeps a category open from the
@@ -145,7 +163,13 @@ export function IndexRail() {
       >
         {touch ? (
           <>
-            <div className="rtxt">{touch.body}</div>
+            {/* THE ADDRESS IS A LINK, matching the driver's linkMail on
+                the homepage. It was printed as text on both surfaces,
+                so the one committing thing in the rail could be read
+                and not used. Found rather than hardcoded, the same way,
+                so the note's copy can gain words around the address
+                without either copy having to be told. */}
+            <div className="rtxt">{mailify(touch.body)}</div>
             {touch.link ? (
               <Link className="rgo" href={touch.link.href}>
                 {touch.link.label}
@@ -250,9 +274,13 @@ function CategoryRow({
   setOpen: (v: string | null) => void;
 }) {
   const router = useRouter();
-  const frames = cat.ids
-    .map((id) => byId.get(id)?.image)
-    .filter((s): s is string => Boolean(s));
+  /* Frames first, ids second. Four rows read their stamp off the
+     studies they count; Staples counts none, because its shelf is the
+     inspiration board, so it carries its eight frames written down.
+     See the note on RailCategory.frames. */
+  const frames =
+    cat.frames ??
+    cat.ids.map((id) => byId.get(id)?.image).filter((s): s is string => Boolean(s));
 
   return (
     <div

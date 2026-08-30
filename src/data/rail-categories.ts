@@ -1,4 +1,4 @@
-/* ── The four doors, and what is behind each one ─────────────────────
+/* ── The five doors, and what is behind each one ─────────────────────
  *
  * The rail's category rows: the label a visitor reads, the query the
  * homepage answers, the mark that stands beside it, the one-liner
@@ -18,6 +18,10 @@
  * two are subsets of `creative` that only the corpus can separate,
  * which is why all four are written the same way rather than two being
  * derived and two authored.
+ *
+ * STAPLES IS THE FIFTH AND IT COUNTS NO STUDIES. Its shelf is the
+ * inspiration board, so it carries `frames` instead of `ids` — see the
+ * note on that field.
  *
  * `npm run rail:check` verifies every id exists in projects.ts, so a
  * renamed or deleted study fails the build instead of quietly
@@ -42,7 +46,22 @@ export interface RailCategory {
   note: string;
   /** project ids, in the order the brain deals them */
   ids: string[];
+  /** Stamp frames for a row whose shelf is not the case studies. Only
+   *  Staples has one: the board is not in projects.ts, so there are no
+   *  ids to read images off. Written down for the same reason the id
+   *  lists are — importing src/data/inspiration.ts here would put a
+   *  hundred and four alt strings into the footer of every case study
+   *  to show eight pictures. Captured, not chosen: these are the head
+   *  of the board in its own order, which is what the click deals
+   *  first. Re-capture by reading the first eight of `inspiration`. */
+  frames?: string[];
 }
+
+/* The board's folder, the same constant src/data/inspiration.ts
+   declares. Written again rather than imported: the import is the
+   hundred and four alt strings this file exists to keep out of the
+   footer. */
+const IMG = "/case-studies/inspiration";
 
 export const railCategories: RailCategory[] = [
   {
@@ -98,6 +117,28 @@ export const railCategories: RailCategory[] = [
       "fairviewBedroom",
       "fairviewFoyer",
       "mountainView",
+    ],
+  },
+  {
+    /* The board, and the one row here whose shelf is not the work. The
+       homepage answers this word with every picture on the board and
+       the kept lines beside them; /inspiration still holds the same
+       board at full size, and the footer's Pages column still links it
+       by name. */
+    label: "Staples",
+    query: "staples",
+    glyph: "",
+    note: "Saved pictures and kept lines. None of it mine.",
+    ids: [],
+    frames: [
+      `${IMG}/infographic-italian-tv-ridgeline-chart.jpeg`,
+      `${IMG}/bw-waylon-jennings-aviators-cigarette-portrait.jpg`,
+      `${IMG}/bw-bespectacled-man-coca-cola-bottle-table.jpg`,
+      `${IMG}/Mother-Anthropic-Claude-1-1024x782.jpg`,
+      `${IMG}/vintage-turntable-stylus-balance-tool.jpg`,
+      `${IMG}/e72ca366b285901ef15c1bfe0a9c5f3b.jpg`,
+      `${IMG}/1f09c02d4b42c58ce9826cceed8f3704.jpg`,
+      `${IMG}/miles-davis-suede-jacket-fur-bedspread.jpg`,
     ],
   },
 ];

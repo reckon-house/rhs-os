@@ -1070,11 +1070,30 @@
   .ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
   /* the drawer's type is on its own clock: 90ms behind the structure
      on the way in, gone at once on the way out (the .dbpre pattern) */
-  .ixnotes .rdrawer .rpad { padding: 4px 16px 18px;
+  /* THE AIR ABOVE THE CONTENT IS ONE NUMBER NOW, and it is the stamp
+     band's — see the note on .rcat below. The text drawers carried 4px
+     against the band's 16 because a picture was thought to want more
+     room than a paragraph does; opened side by side that read as two
+     drawers built to different rules rather than as one rail. Same
+     number, so Info and Connect open the way a category does. */
+  .ixnotes .rdrawer .rpad { padding: 64px 16px 18px;
     opacity: 0; transform: translateY(10px); transition: none; }
-  /* the stamp band breathes: more air above the reel and below the
-     one-liner than the text drawers carry */
-  .ixnotes .rdrawer .rpad.rcat { padding: 16px 16px 20px; }
+  /* ── THE AIR ABOVE THE STAMP IS THE OWNER'S NUMBER ────────────────
+     Not a derived value and not a guess. It has moved four times: 16
+     at first, then 32 by Jeremy's explicit call (27d906b, "owner's
+     call"), then 8 as collateral in the chips rework, which was a
+     change about chip SHAPE and took the band's air with it without
+     saying so, then 16 again, which put back half of what was lost.
+
+     64 now, which is the gap he can actually see tripled: 8px of that
+     is the chip's own bottom padding, so the word-to-picture distance
+     goes 24 to 72. Measured, not counted from the declaration.
+
+     If this looks wrong to a later reader, it is still not a value to
+     re-derive. Ask. */
+  /* Only the trailing air differs now: the one-liner under the reel
+     wants a little more beneath it than a paragraph does. */
+  .ixnotes .rdrawer .rpad.rcat { padding-bottom: 20px; }
   .ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
     transition: opacity 0.5s ease 90ms,
       transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
@@ -1085,6 +1104,13 @@
   .ixnotes .rdrawer .rtxt { font-size: var(--note); line-height: 1.5; }
   .ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
     color: inherit; font-size: var(--note);
+    text-decoration: underline; text-underline-offset: 3px; }
+  /* Set like .rgo above it rather than like the page's other links:
+     the drawer reverses to white on ink when it opens, and the shared
+     skip-ink treatment draws its rule in --rule-rest, which is a black
+     tone and disappears there. currentColor, so the line reverses with
+     the words. */
+  .rmail { color: inherit;
     text-decoration: underline; text-underline-offset: 3px; }
   .ixnotes .rdrawer { display: flex; flex-direction: column; gap: 10px; }
   .ixnotes .rdrawer .rgap { height: 8px; }
@@ -1324,6 +1350,31 @@
   .ixrows::before { left: calc(var(--ixgap) / -2); }
   .ixrows::after { left: calc(100% + var(--ixgap) / 2); }
 
+  /* ── THE BOARD'S OWN PACKING ─────────────────────────────────────
+     Staples deals the whole board and it packs rather than pairs — see
+     buildAnswer. Three columns at the tiles' own ratios, which is
+     staples.module.css's layout brought onto the answer so the board
+     reads the same wherever it is met: dense, unsorted, no two tiles
+     the same height.
+
+     CSS columns, not a grid. A masonry has to know each tile's height
+     before it can place the next one, and only the browser knows that;
+     a grid would want a row span per tile computed from a measurement
+     that is not final until the picture lands. `columns` does it with
+     one declaration and break-inside on the child.
+
+     Gap and count are the board page's values, not new ones. */
+  .ixrows.ansboard { columns: 3; column-gap: clamp(16px, 2vw, 28px); }
+  .ansboard .btile { break-inside: avoid;
+    margin-bottom: clamp(16px, 2vw, 28px); }
+  /* Full column width, and no hover growth: a board tile is already as
+     wide as its column, so there is nowhere for it to open to. */
+  .ansboard .fd-it { width: 100%; }
+  /* The standing name a work frame carries under it, and the caption a
+     pull shows on hover, both stay as they are — a pull has only the
+     caption, and it is the one thing naming a picture nobody made
+     here. */
+
   .ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
     transform-origin: right center;
     transition: opacity 0.8s ease,
@@ -1536,6 +1587,14 @@
     .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
       padding-top: clamp(40px, 10vw, 68px); }
     .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
+    /* The board keeps packing on a phone, at two columns rather than
+       one: three tiles across a 329px column is a contact sheet nobody
+       can read, and one is a hundred and seven full-width pictures to
+       scroll past. Both numbers are staples.module.css's own phone
+       values, so the board reads the same on a phone as it does on the
+       page it came from. */
+    .ixrows.ansboard { columns: 2; column-gap: 14px; }
+    .ansboard .btile { margin-bottom: 14px; }
     /* One column and no note rail, so there are no gutters left for a
        vertical to stand in. The row rule comes back to do the work. */
     .ixrows::before, .ixrows::after { display: none; }
@@ -1786,6 +1845,54 @@
   .fd-note { opacity: 0; transform: translateY(14px);
     transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .fd-note.fd-on { opacity: 1; transform: none; }
+
+  /* ── A KEPT LINE, AMONG THE PICTURES ──────────────────────────────
+     The board page's quote tile (InspirationQuoteTile), in the
+     answer's own grid. Sizes are that component's, written as a clamp
+     across the two breakpoints it steps between, so a line reads the
+     same wherever it is met.
+
+     It takes the TEXT arrival above rather than the curtain: there is
+     no plate to uncover, and a quote sliding out from behind a falling
+     edge would be a picture pretending to be words. --lag still
+     applies, so a line is the second beat of its row when it is dealt
+     on the right. */
+  .fd-quote { display: flex; flex-direction: column; justify-content: center;
+    padding: 6px 0 20px;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease var(--lag, 0s),
+      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  .fd-quote.fd-on { opacity: 1; transform: none; }
+  .fd-quote.fd-out { opacity: 0;
+    transition: opacity 0.28s ease var(--lag, 0s); }
+  /* UPRIGHT, AND A WEIGHT UP. It was italic at 400, which is the
+     convention for a quotation and was the wrong call here: everything
+     around it is upright Avenir at 600, so the one italic block read as
+     a caption from another document rather than as a line held up
+     beside the pictures. 500 rather than the display 600 — these are
+     somebody else's words, and matching the site's own weight exactly
+     would put them in its voice. The quote marks do the quoting. */
+  .fd-quote .qtext { margin: 0; font-weight: 500;
+    font-size: clamp(20px, 1.7vw, 26px); line-height: 1.35;
+    letter-spacing: -0.02em; }
+  /* One block per written line, so text-indent can reapply: it only
+     ever indents the FIRST line of a block, which is why pre-line and
+     a hanging indent cannot be combined — every line of the lyric is
+     one line box inside a single block, and only the top one moves.
+     Negative indent plus matching padding leaves the written line
+     flush and hangs its runover under it. */
+  .fd-quote .verse .qline { display: block;
+    text-indent: -1.1em; padding-left: 1.1em; }
+  /* A blank line between stanzas. None of the three kept lines has one
+     and one may arrive; an empty block is zero pixels tall without
+     this, so the stanza break would silently vanish. */
+  .fd-quote .verse .qline:empty { height: 0.6em; }
+  .fd-quote .qatt { margin: 24px 0 0; font-size: clamp(10px, 0.85vw, 11px);
+    letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500;
+    opacity: 0.45; }
+  @media (prefers-reduced-motion: reduce) {
+    .fd-quote, .fd-quote.fd-out { transition: none; }
+  }
   /* the card itself no longer fades: the curtain IS the arrival, and a
      fade under it would grey the picture while it was being drawn */
   .fd-it { opacity: 1; }
@@ -2477,7 +2584,14 @@ const WORK = [
 ];
 
 /* Injected from src/data/inspiration.ts + inspiration-quotes.ts. */
-const PULLS = [{"src": "/case-studies/inspiration/infographic-italian-tv-ridgeline-chart.jpeg", "alt": "Italian-language infographic, circular ridgeline chart with bubble groupings"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-aviators-cigarette-portrait.jpg", "alt": "Black-and-white portrait of Waylon Jennings in aviator sunglasses with a cigarette"}, {"src": "/case-studies/inspiration/bw-bespectacled-man-coca-cola-bottle-table.jpg", "alt": "Black-and-white portrait, young man in glasses at a table with a Coca-Cola bottle"}, {"src": "/case-studies/inspiration/Mother-Anthropic-Claude-1-1024x782.jpg", "alt": "Mother x Anthropic film still, three figures watching a model rocket launch in the desert"}, {"src": "/case-studies/inspiration/vintage-turntable-stylus-balance-tool.jpg", "alt": "Vintage black-and-white photo, hand using a stylus pressure gauge on a turntable"}, {"src": "/case-studies/inspiration/e72ca366b285901ef15c1bfe0a9c5f3b.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/miles-davis-suede-jacket-fur-bedspread.jpg", "alt": "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf"}, {"src": "/case-studies/inspiration/sepia-waylon-jennings-cowboy-hat-bottle.jpg", "alt": "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle"}, {"src": "/case-studies/inspiration/west-texas-concrete-patio-desert-loungers.webp", "alt": "Concrete patio overlooking the West Texas desert with loungers and a fire pit"}, {"src": "/case-studies/inspiration/painted-skeleton-cowboy-sombrero-revolver.webp", "alt": "Painted folk-art skeleton cowboy in sombrero with revolver and money sack"}, {"src": "/case-studies/inspiration/no-country-josh-brolin-kelly-macdonald-trailer.jpg", "alt": "No Country for Old Men film still, couple seated on a trailer couch with Lone Star beer"}, {"src": "/case-studies/inspiration/Walden-Retreats-11-1440x960.jpg", "alt": "Walden Retreats living room with stone fireplace, stacked firewood, and chess board"}, {"src": "/case-studies/inspiration/bw-southern-rock-singer-stage-spotlight.jpg", "alt": "Black-and-white live shot, long-haired singer with electric guitar in stage spotlights"}, {"src": "/case-studies/inspiration/jack-white-red-shirt-red-guitar-stage.jpeg", "alt": "Jack White on stage in red shirt with red electric guitar"}, {"src": "/case-studies/inspiration/infographic-large-scale-data-ridgeline.jpeg", "alt": "Large-scale data visualization, ridgeline chart with bubble cluster heads"}, {"src": "/case-studies/inspiration/dead-weather-band-portrait-ornate-room.jpg", "alt": "Black-and-white band portrait, four musicians in an ornate floral-walled room"}, {"src": "/case-studies/inspiration/dieter-rams-braun-radio-product-shot.jpg", "alt": "Dieter Rams Braun radio with circular speaker grille and aluminum knob"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg", "alt": "Black-and-white portrait, suited bluesman with a motorcycle and parked cars behind"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-mixing-desk.jpg", "alt": "Black-and-white portrait, man in pinstripe suit and round glasses at a studio mixing desk"}, {"src": "/case-studies/inspiration/johnny-cash-fishing-jacket-rifle-fall.jpg", "alt": "Johnny Cash holding a transistor radio outdoors in fall, hunter beside him with a rifle"}, {"src": "/case-studies/inspiration/engraved-silver-belt-buckle-leather.webp", "alt": "Engraved silver and copper belt buckle on a brown leather belt"}, {"src": "/case-studies/inspiration/menswear-store-deer-mount-velvet-chair.jpg", "alt": "Eclectic menswear store interior with mounted deer head, mustard velvet chair, gallery wall"}, {"src": "/case-studies/inspiration/bw-dead-weather-rooftop-empire-state.jpg", "alt": "Black-and-white band portrait on a rooftop with the Empire State Building behind"}, {"src": "/case-studies/inspiration/editorial-leather-bass-helmet-portrait.jpg", "alt": "Editorial portrait, figure in motorcycle helmet and leather jacket with a bass guitar"}, {"src": "/case-studies/inspiration/Bert and May Kitchen5566.jpg.webp", "alt": "Bert and May kitchen with patterned tile backsplash and oak cabinetry"}, {"src": "/case-studies/inspiration/bw-dead-weather-mosshart-white-fur-coat.jpg", "alt": "Black-and-white portrait of Allison Mosshart and Jack White seated on concrete"}, {"src": "/case-studies/inspiration/frank-lloyd-wright-built-in-bookshelves.jpg", "alt": "Frank Lloyd Wright Usonian living room with built-in bookshelves and stone fireplace"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-cigar-archtop-guitar.jpg", "alt": "Black-and-white portrait of bluesman in fedora smoking a cigar with an archtop guitar"}, {"src": "/case-studies/inspiration/rrl-cattle-ranch-store-mannequins.jpg", "alt": "Double RL Cattle Ranch store display with denim mannequins and antler chandelier"}, {"src": "/case-studies/inspiration/bw-musician-studio-mic-acoustic-guitar.jpg", "alt": "Black-and-white musician at studio microphone with acoustic guitar"}, {"src": "/case-studies/inspiration/bw-wes-anderson-camera-paris-courtyard.jpg", "alt": "Black-and-white shot of Wes Anderson with camera in a Paris courtyard"}, {"src": "/case-studies/inspiration/richie-tenenbaum-camera-headband-yacht.jpg", "alt": "Royal Tenenbaums film still, Richie with camera, headband, and beard"}, {"src": "/case-studies/inspiration/vintage-portrait-fedora-sunglasses-profile.jpg", "alt": "Black-and-white profile portrait, man in fedora and dark sunglasses"}, {"src": "/case-studies/inspiration/country-singer-cowboy-hat-honky-tonk-neon.jpg", "alt": "Country singer in cowboy hat with acoustic guitar, Miller High Life neon sign behind"}, {"src": "/case-studies/inspiration/fluted-tile-kitchen-stone-counter-cutting-boards.jpeg", "alt": "Modern kitchen with fluted white tile, stone counter, dark cutting boards, brass sconce"}, {"src": "/case-studies/inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif", "alt": "Black-and-white portrait of Wes Anderson in tweed suit on a tufted leather armchair"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-tweed-guitar-shop.jpg", "alt": "Country singer in cowboy hat and tweed suit standing inside a hanging-guitar shop"}, {"src": "/case-studies/inspiration/calacatta-viola-marble-fluted-columns.jpg", "alt": "Calacatta viola marble fluted columns in cream and burgundy veining"}, {"src": "/case-studies/inspiration/wes-anderson-royal-tenenbaums-couch-portrait.jpg", "alt": "Royal Tenenbaums film still, two figures seated on a couch in a red-walled room"}, {"src": "/case-studies/inspiration/devol-shaker-kitchen-dark-blue-cabinetry.webp", "alt": "DeVol Shaker kitchen with dark blue painted cabinetry and stacked firewood"}, {"src": "/case-studies/inspiration/ryman-auditorium-pews-stained-glass.jpg", "alt": "Empty Ryman Auditorium pews with stained-glass arched windows in primary colors"}, {"src": "/case-studies/inspiration/alexander-mcqueen-skull-print-scarf.jpg", "alt": "Alexander McQueen black-and-white skull print scarf detail"}, {"src": "/case-studies/inspiration/bw-miles-davis-tweed-suit-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in tweed suit smoking a cigarette"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-wallpaper.jpg", "alt": "Black-and-white band portrait, four musicians against patterned wallpaper"}, {"src": "/case-studies/inspiration/bw-portrait-aviators-leather-jacket-beach.jpg", "alt": "Black-and-white portrait, man in aviator sunglasses and leather jacket at the beach"}, {"src": "/case-studies/inspiration/bw-portrait-glasses-clasped-hands-dark-shirt.avif", "alt": "Black-and-white portrait of a man in glasses with hands clasped in front of him"}, {"src": "/case-studies/inspiration/bw-cowboy-boot-maker-workshop-leather-lasts.webp", "alt": "Black-and-white photo of a cowboy boot maker shaping leather over wooden lasts"}, {"src": "/case-studies/inspiration/painted-cowgirl-orange-dress-green-sofa.webp", "alt": "Painted portrait of a cowgirl in orange dress and brown hat on a green sofa"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California19-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-warehouse.jpg", "alt": "Black-and-white band portrait of two musicians in a derelict warehouse"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California26-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette"}, {"src": "/case-studies/inspiration/rrl-denim-leather-detail-rope-stitching.jpg", "alt": "Close-up of vintage RRL denim with leather inset and rope-tied detail"}, {"src": "/case-studies/inspiration/bw-whitey-morgan-band-honky-tonk-stage.jpg", "alt": "Black-and-white live shot of country band on a small honky-tonk stage"}, {"src": "/case-studies/inspiration/3a241cf6a04019e84573d7711d0b3822.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/dark-wood-paneled-room-trophy-mounts-cabinet.jpg", "alt": "Dark wood-paneled hunting den with antler mounts, oil paintings, and a carved cabinet"}, {"src": "/case-studies/inspiration/bw-bluesman-fedora-cigar-vest-doorway.jpg", "alt": "Black-and-white portrait, suited bluesman in fedora and round glasses with cigar in a doorway"}, {"src": "/case-studies/inspiration/bw-musicians-black-rebel-motorcycle-club-marquee.jpg", "alt": "Black-and-white street shot of two musicians under a Black Rebel Motorcycle Club marquee"}, {"src": "/case-studies/inspiration/felt-cowboy-hat-horsehair-brush-flat-lay.webp", "alt": "Camel felt cowboy hat with horsehair brush flat lay"}, {"src": "/case-studies/inspiration/reckonhouse-asterisk-spray-mark-on-cream.jpeg", "alt": "Black spray-paint asterisk mark centered on a cream background"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-barn-siding.jpg", "alt": "Black-and-white band portrait against weathered barn siding"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California25-min.jpg", "alt": "Amber Interior Design, Montana residence"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-leather-acoustic.jpg", "alt": "Country singer in cowboy hat and leather jacket holding an acoustic guitar"}, {"src": "/case-studies/inspiration/tricolor-cowhide-texture-brown-white.png", "alt": "Tricolor cowhide texture in brown, white, and black patches"}, {"src": "/case-studies/inspiration/vintage-clothing-store-zebra-ottoman-rack.jpg", "alt": "Vintage clothing store interior with zebra-print ottoman and dark cabinetry"}, {"src": "/case-studies/inspiration/leather-chesterfield-armchair-fireplace-stone.jpg", "alt": "Olive leather button-tufted chair beside a stone fireplace with mounted antelope head"}, {"src": "/case-studies/inspiration/rrl-denim-shirt-corduroy-collar-bandana.jpeg", "alt": "Close-up of an RRL denim shirt with corduroy collar and red paisley bandana"}, {"src": "/case-studies/inspiration/bw-cowboy-rearing-horse-field.jpg", "alt": "Black-and-white photograph, cowboy rearing on a horse in a grassy field"}, {"src": "/case-studies/inspiration/monument-valley-mittens-dawn-light.jpg", "alt": "Monument Valley mittens at dawn under low cloud cover"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-cowboy-hat-portfolio.jpg", "alt": "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio"}, {"src": "/case-studies/inspiration/sepia-three-cowboys-walking-dirt-road.jpg", "alt": "Sepia photograph, three cowboys walking down a dirt road"}, {"src": "/case-studies/inspiration/bw-dead-weather-keyboards-live-leather.jpg", "alt": "Black-and-white live shot, two band members at keyboards in leather jackets"}, {"src": "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/wabi-sabi-living-room-mushroom-mirror-beams.jpeg", "alt": "Wabi-sabi living room with exposed beams, large mushroom mirror, plaster fireplace"}, {"src": "/case-studies/inspiration/dieter-rams-palette-braun-grille-knobs.jpg", "alt": "Dieter Rams design palette, Braun speaker grille pattern with color knobs"}, {"src": "/case-studies/inspiration/vintage-transparent-solar-system-chart.jpeg", "alt": "Antique educational print, transparent solar system chart with planet orbits"}, {"src": "/case-studies/inspiration/denim-glasses-portrait-bookshelf-armchair.jpg", "alt": "Bearded man in denim shirt and tortoiseshell glasses, seated in a carved armchair"}, {"src": "/case-studies/inspiration/tarantino-king-of-golf-robe-bedroom.jpg", "alt": "Quentin Tarantino in a printed silk robe seated in a floral-wallpapered bedroom"}, {"src": "/case-studies/inspiration/bw-dead-weather-railroad-tracks.jpg", "alt": "Black-and-white shot of band members walking along railroad tracks"}, {"src": "/case-studies/inspiration/lee-denim-shirts-stack-button-detail.jpg", "alt": "Stack of vintage Lee denim and corduroy shirts showing button and label detail"}, {"src": "/case-studies/inspiration/rrl-vintage-vest-fedora-flat-lay.jpeg", "alt": "Flat lay of vintage tweed vest, dark fedora, knit tie, and RRL striped shirt"}, {"src": "/case-studies/inspiration/organ-mountains-moonrise-orange-glow.jpg", "alt": "Organ Mountains glowing orange at sunset with the moon rising behind the peaks"}, {"src": "/case-studies/inspiration/hill-country-stone-foyer-portrait-painting.jpeg", "alt": "Texas Hill Country stone foyer with antique portrait, dark wood console, and a monstera leaf"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-fedora-guitar.jpg", "alt": "Black-and-white live shot, man in pinstripe suit and fedora playing electric guitar"}, {"src": "/case-studies/inspiration/bw-feather-headdress-indian-motorcycle.jpg", "alt": "Black-and-white photograph, figure in feather headdress arms outstretched behind an Indian motorcycle"}, {"src": "/case-studies/inspiration/swiss-typographic-grid-flag-signal-poster.jpeg", "alt": "Swiss typographic poster with maritime signal flags arranged on a grid"}, {"src": "/case-studies/inspiration/wes-anderson-budapest-doorway-frame.jpeg", "alt": "Wes Anderson film still, narrow doorway framing a small interior scene"}, {"src": "/case-studies/inspiration/87119dea487a846ff65070db9ec9c847.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/denim-suede-jacket-rodeo-belt-buckle.webp", "alt": "Torso shot, suede jacket over denim shirt with engraved rodeo belt buckle"}, {"src": "/case-studies/inspiration/musician-acoustic-guitar-floral-wallpaper.jpg", "alt": "Musician with acoustic guitar against peeling vintage floral wallpaper"}, {"src": "/case-studies/inspiration/ac0ea29344e67e06b29ddde6a22f57f9.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/leather-bench-corner-stitching-wood-detail.jpeg", "alt": "Tan leather bench corner with whip-stitched seam against a raw wood block"}, {"src": "/case-studies/inspiration/rrl-trading-co-store-display-blankets.jpg", "alt": "Double RL store interior with antlers, vintage trunks, knit hats, and a gallery wall"}, {"src": "/case-studies/inspiration/brass-zippo-lighter-shotgun-shell-detail.webp", "alt": "Brass Zippo lighter open with embedded 12-gauge shotgun shell base"}, {"src": "/case-studies/inspiration/wes-anderson-asteroid-city-diner.jpg", "alt": "Asteroid City film still, three figures at a 1950s diner counter"}, {"src": "/case-studies/inspiration/bw-cinematic-portrait-fedora-cigarette.jpg", "alt": "Black-and-white cinematic close-up, man in wide-brim hat smoking a cigarette"}, {"src": "/case-studies/inspiration/bw-gruene-hall-water-tower-honky-tonk.jpg", "alt": "Black-and-white shot of Gruene Hall dance hall with water tower behind"}, {"src": "/case-studies/inspiration/bw-jack-white-third-man-records-piano.jpeg", "alt": "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar"}, {"src": "/case-studies/inspiration/bw-miles-davis-pinstripe-suit-st-george-street.jpg", "alt": "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street"}, {"src": "/case-studies/inspiration/utah-desert-canyons-sagebrush-warm-light.jpg", "alt": "Utah desert canyons in warm afternoon light with sagebrush in the foreground"}, {"src": "/case-studies/inspiration/5c08f1591729fa6d1ada2d377448d215.jpg", "alt": "Saved image"}, {"src": "/case-studies/inspiration/bw-3614-jackson-highway-muscle-shoals.jpg", "alt": "Black-and-white photo, four musicians outside the 3614 Jackson Highway studio"}, {"src": "/case-studies/inspiration/red-leather-bruno-mathsson-jetson-chair.jpeg", "alt": "Red leather Bruno Mathsson Jetson swivel chair on wood floor"}];
+const PULLS = [{"src": "/case-studies/inspiration/infographic-italian-tv-ridgeline-chart.jpeg", "alt": "Italian-language infographic, circular ridgeline chart with bubble groupings", "ar": "736 / 740"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-aviators-cigarette-portrait.jpg", "alt": "Black-and-white portrait of Waylon Jennings in aviator sunglasses with a cigarette", "ar": "629 / 960"}, {"src": "/case-studies/inspiration/bw-bespectacled-man-coca-cola-bottle-table.jpg", "alt": "Black-and-white portrait, young man in glasses at a table with a Coca-Cola bottle", "ar": "680 / 924"}, {"src": "/case-studies/inspiration/Mother-Anthropic-Claude-1-1024x782.jpg", "alt": "Mother x Anthropic film still, three figures watching a model rocket launch in the desert", "ar": "1024 / 782"}, {"src": "/case-studies/inspiration/vintage-turntable-stylus-balance-tool.jpg", "alt": "Vintage black-and-white photo, hand using a stylus pressure gauge on a turntable", "ar": "1200 / 1251"}, {"src": "/case-studies/inspiration/e72ca366b285901ef15c1bfe0a9c5f3b.jpg", "alt": "Western film still, symmetrical frontier main street, a figure in a white suit fallen in the foreground dust and a gunslinger standing far down the road", "ar": "1080 / 1063"}, {"src": "/case-studies/inspiration/1f09c02d4b42c58ce9826cceed8f3704.jpg", "alt": "Film still, man in a dark leather uniform coat exhaling smoke from an oversized meerschaum pipe", "ar": "736 / 736"}, {"src": "/case-studies/inspiration/miles-davis-suede-jacket-fur-bedspread.jpg", "alt": "Miles Davis seated on fur bedspread in suede jacket and printed silk scarf", "ar": "735 / 919"}, {"src": "/case-studies/inspiration/sepia-waylon-jennings-cowboy-hat-bottle.jpg", "alt": "Sepia portrait of Waylon Jennings in cowboy hat smoking a cigarette beside a bottle", "ar": "540 / 720"}, {"src": "/case-studies/inspiration/west-texas-concrete-patio-desert-loungers.webp", "alt": "Concrete patio overlooking the West Texas desert with loungers and a fire pit", "ar": "1806 / 1370"}, {"src": "/case-studies/inspiration/painted-skeleton-cowboy-sombrero-revolver.webp", "alt": "Painted folk-art skeleton cowboy in sombrero with revolver and money sack", "ar": "1080 / 1081"}, {"src": "/case-studies/inspiration/no-country-josh-brolin-kelly-macdonald-trailer.jpg", "alt": "No Country for Old Men film still, couple seated on a trailer couch with Lone Star beer", "ar": "736 / 489"}, {"src": "/case-studies/inspiration/Walden-Retreats-11-1440x960.jpg", "alt": "Walden Retreats living room with stone fireplace, stacked firewood, and chess board", "ar": "1440 / 960"}, {"src": "/case-studies/inspiration/bw-southern-rock-singer-stage-spotlight.jpg", "alt": "Black-and-white live shot, long-haired singer with electric guitar in stage spotlights", "ar": "415 / 403"}, {"src": "/case-studies/inspiration/jack-white-red-shirt-red-guitar-stage.jpeg", "alt": "Jack White on stage in red shirt with red electric guitar", "ar": "500 / 734"}, {"src": "/case-studies/inspiration/infographic-large-scale-data-ridgeline.jpeg", "alt": "Large-scale data visualization, ridgeline chart with bubble cluster heads", "ar": "647 / 332"}, {"src": "/case-studies/inspiration/dead-weather-band-portrait-ornate-room.jpg", "alt": "Black-and-white band portrait, four musicians in an ornate floral-walled room", "ar": "500 / 526"}, {"src": "/case-studies/inspiration/dieter-rams-braun-radio-product-shot.jpg", "alt": "Dieter Rams Braun radio with circular speaker grille and aluminum knob", "ar": "600 / 726"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg", "alt": "Black-and-white portrait, suited bluesman with a motorcycle and parked cars behind", "ar": "397 / 594"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-mixing-desk.jpg", "alt": "Black-and-white portrait, man in pinstripe suit and round glasses at a studio mixing desk", "ar": "640 / 1044"}, {"src": "/case-studies/inspiration/johnny-cash-fishing-jacket-rifle-fall.jpg", "alt": "Johnny Cash holding a transistor radio outdoors in fall, hunter beside him with a rifle", "ar": "651 / 960"}, {"src": "/case-studies/inspiration/engraved-silver-belt-buckle-leather.webp", "alt": "Engraved silver and copper belt buckle on a brown leather belt", "ar": "1024 / 682"}, {"src": "/case-studies/inspiration/menswear-store-deer-mount-velvet-chair.jpg", "alt": "Eclectic menswear store interior with mounted deer head, mustard velvet chair, gallery wall", "ar": "800 / 799"}, {"src": "/case-studies/inspiration/bw-dead-weather-rooftop-empire-state.jpg", "alt": "Black-and-white band portrait on a rooftop with the Empire State Building behind", "ar": "474 / 710"}, {"src": "/case-studies/inspiration/editorial-leather-bass-helmet-portrait.jpg", "alt": "Editorial portrait, figure in motorcycle helmet and leather jacket with a bass guitar", "ar": "1200 / 1600"}, {"src": "/case-studies/inspiration/Bert and May Kitchen5566.jpg.webp", "alt": "Bert and May kitchen with patterned tile backsplash and oak cabinetry", "ar": "1067 / 1600"}, {"src": "/case-studies/inspiration/bw-dead-weather-mosshart-white-fur-coat.jpg", "alt": "Black-and-white portrait of Allison Mosshart and Jack White seated on concrete", "ar": "500 / 705"}, {"src": "/case-studies/inspiration/frank-lloyd-wright-built-in-bookshelves.jpg", "alt": "Frank Lloyd Wright Usonian living room with built-in bookshelves and stone fireplace", "ar": "960 / 540"}, {"src": "/case-studies/inspiration/bw-lightnin-hopkins-cigar-archtop-guitar.jpg", "alt": "Black-and-white portrait of bluesman in fedora smoking a cigar with an archtop guitar", "ar": "494 / 700"}, {"src": "/case-studies/inspiration/rrl-cattle-ranch-store-mannequins.jpg", "alt": "Double RL Cattle Ranch store display with denim mannequins and antler chandelier", "ar": "1199 / 898"}, {"src": "/case-studies/inspiration/bw-musician-studio-mic-acoustic-guitar.jpg", "alt": "Black-and-white musician at studio microphone with acoustic guitar", "ar": "457 / 583"}, {"src": "/case-studies/inspiration/bw-wes-anderson-camera-paris-courtyard.jpg", "alt": "Black-and-white shot of Wes Anderson with camera in a Paris courtyard", "ar": "652 / 367"}, {"src": "/case-studies/inspiration/richie-tenenbaum-camera-headband-yacht.jpg", "alt": "Royal Tenenbaums film still, Richie with camera, headband, and beard", "ar": "500 / 700"}, {"src": "/case-studies/inspiration/vintage-portrait-fedora-sunglasses-profile.jpg", "alt": "Black-and-white profile portrait, man in fedora and dark sunglasses", "ar": "633 / 663"}, {"src": "/case-studies/inspiration/country-singer-cowboy-hat-honky-tonk-neon.jpg", "alt": "Country singer in cowboy hat with acoustic guitar, Miller High Life neon sign behind", "ar": "1000 / 1250"}, {"src": "/case-studies/inspiration/fluted-tile-kitchen-stone-counter-cutting-boards.jpeg", "alt": "Modern kitchen with fluted white tile, stone counter, dark cutting boards, brass sconce", "ar": "1080 / 1350"}, {"src": "/case-studies/inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif", "alt": "Black-and-white portrait of Wes Anderson in tweed suit on a tufted leather armchair", "ar": "460 / 276"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-tweed-guitar-shop.jpg", "alt": "Country singer in cowboy hat and tweed suit standing inside a hanging-guitar shop", "ar": "639 / 639"}, {"src": "/case-studies/inspiration/calacatta-viola-marble-fluted-columns.jpg", "alt": "Calacatta viola marble fluted columns in cream and burgundy veining", "ar": "1199 / 1614"}, {"src": "/case-studies/inspiration/wes-anderson-royal-tenenbaums-couch-portrait.jpg", "alt": "Royal Tenenbaums film still, two figures seated on a couch in a red-walled room", "ar": "569 / 701"}, {"src": "/case-studies/inspiration/devol-shaker-kitchen-dark-blue-cabinetry.webp", "alt": "DeVol Shaker kitchen with dark blue painted cabinetry and stacked firewood", "ar": "1068 / 1600"}, {"src": "/case-studies/inspiration/ryman-auditorium-pews-stained-glass.jpg", "alt": "Empty Ryman Auditorium pews with stained-glass arched windows in primary colors", "ar": "640 / 640"}, {"src": "/case-studies/inspiration/alexander-mcqueen-skull-print-scarf.jpg", "alt": "Alexander McQueen black-and-white skull print scarf detail", "ar": "1125 / 1500"}, {"src": "/case-studies/inspiration/bw-miles-davis-tweed-suit-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in tweed suit smoking a cigarette", "ar": "384 / 500"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-wallpaper.jpg", "alt": "Black-and-white band portrait, four musicians against patterned wallpaper", "ar": "563 / 720"}, {"src": "/case-studies/inspiration/bw-portrait-aviators-leather-jacket-beach.jpg", "alt": "Black-and-white portrait, man in aviator sunglasses and leather jacket at the beach", "ar": "361 / 419"}, {"src": "/case-studies/inspiration/bw-portrait-glasses-clasped-hands-dark-shirt.avif", "alt": "Black-and-white portrait of a man in glasses with hands clasped in front of him", "ar": "1200 / 1200"}, {"src": "/case-studies/inspiration/bw-cowboy-boot-maker-workshop-leather-lasts.webp", "alt": "Black-and-white photo of a cowboy boot maker shaping leather over wooden lasts", "ar": "798 / 1001"}, {"src": "/case-studies/inspiration/painted-cowgirl-orange-dress-green-sofa.webp", "alt": "Painted portrait of a cowgirl in orange dress and brown hat on a green sofa", "ar": "906 / 906"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California19-min.jpg", "alt": "Amber Interior Design, Montana residence", "ar": "1706 / 2560"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-warehouse.jpg", "alt": "Black-and-white band portrait of two musicians in a derelict warehouse", "ar": "1200 / 666"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California26-min.jpg", "alt": "Amber Interior Design, Montana residence", "ar": "1706 / 2560"}, {"src": "/case-studies/inspiration/bw-miles-davis-cat-eye-sunglasses-cigarette.jpg", "alt": "Black-and-white portrait of Miles Davis in cat-eye sunglasses with a cigarette", "ar": "736 / 705"}, {"src": "/case-studies/inspiration/rrl-denim-leather-detail-rope-stitching.jpg", "alt": "Close-up of vintage RRL denim with leather inset and rope-tied detail", "ar": "1200 / 900"}, {"src": "/case-studies/inspiration/bw-whitey-morgan-band-honky-tonk-stage.jpg", "alt": "Black-and-white live shot of country band on a small honky-tonk stage", "ar": "900 / 900"}, {"src": "/case-studies/inspiration/3a241cf6a04019e84573d7711d0b3822.jpg", "alt": "Sepia-graded film still, men in Depression-era workwear singing around a vintage ribbon microphone, seated guitarist at left", "ar": "1056 / 720"}, {"src": "/case-studies/inspiration/dark-wood-paneled-room-trophy-mounts-cabinet.jpg", "alt": "Dark wood-paneled hunting den with antler mounts, oil paintings, and a carved cabinet", "ar": "875 / 1313"}, {"src": "/case-studies/inspiration/bw-bluesman-fedora-cigar-vest-doorway.jpg", "alt": "Black-and-white portrait, suited bluesman in fedora and round glasses with cigar in a doorway", "ar": "300 / 347"}, {"src": "/case-studies/inspiration/bw-musicians-black-rebel-motorcycle-club-marquee.jpg", "alt": "Black-and-white street shot of two musicians under a Black Rebel Motorcycle Club marquee", "ar": "468 / 700"}, {"src": "/case-studies/inspiration/felt-cowboy-hat-horsehair-brush-flat-lay.webp", "alt": "Camel felt cowboy hat with horsehair brush flat lay", "ar": "1024 / 635"}, {"src": "/case-studies/inspiration/reckonhouse-asterisk-spray-mark-on-cream.jpeg", "alt": "Black spray-paint asterisk mark centered on a cream background", "ar": "1251 / 1251"}, {"src": "/case-studies/inspiration/bw-dead-weather-portrait-barn-siding.jpg", "alt": "Black-and-white band portrait against weathered barn siding", "ar": "700 / 467"}, {"src": "/case-studies/inspiration/Amber-Interior-Design_Ambers-Montana-Extravaganza_Los-Angeles-California25-min.jpg", "alt": "Amber Interior Design, Montana residence", "ar": "1714 / 2560"}, {"src": "/case-studies/inspiration/charley-crockett-cowboy-hat-leather-acoustic.jpg", "alt": "Country singer in cowboy hat and leather jacket holding an acoustic guitar", "ar": "736 / 920"}, {"src": "/case-studies/inspiration/tricolor-cowhide-texture-brown-white.png", "alt": "Tricolor cowhide texture in brown, white, and black patches", "ar": "1152 / 2048"}, {"src": "/case-studies/inspiration/vintage-clothing-store-zebra-ottoman-rack.jpg", "alt": "Vintage clothing store interior with zebra-print ottoman and dark cabinetry", "ar": "1199 / 1148"}, {"src": "/case-studies/inspiration/leather-chesterfield-armchair-fireplace-stone.jpg", "alt": "Olive leather button-tufted chair beside a stone fireplace with mounted antelope head", "ar": "1199 / 1491"}, {"src": "/case-studies/inspiration/rrl-denim-shirt-corduroy-collar-bandana.jpeg", "alt": "Close-up of an RRL denim shirt with corduroy collar and red paisley bandana", "ar": "735 / 917"}, {"src": "/case-studies/inspiration/bw-cowboy-rearing-horse-field.jpg", "alt": "Black-and-white photograph, cowboy rearing on a horse in a grassy field", "ar": "1200 / 1600"}, {"src": "/case-studies/inspiration/monument-valley-mittens-dawn-light.jpg", "alt": "Monument Valley mittens at dawn under low cloud cover", "ar": "640 / 800"}, {"src": "/case-studies/inspiration/bw-waylon-jennings-cowboy-hat-portfolio.jpg", "alt": "Black-and-white portrait of Waylon Jennings in cowboy hat carrying a portfolio", "ar": "827 / 1022"}, {"src": "/case-studies/inspiration/sepia-three-cowboys-walking-dirt-road.jpg", "alt": "Sepia photograph, three cowboys walking down a dirt road", "ar": "480 / 563"}, {"src": "/case-studies/inspiration/bw-dead-weather-keyboards-live-leather.jpg", "alt": "Black-and-white live shot, two band members at keyboards in leather jackets", "ar": "400 / 400"}, {"src": "/case-studies/inspiration/0d9081db73ef35126fc6037023b9c3ce.jpg", "alt": "No Country for Old Men film still, Josh Brolin in a straw cowboy hat crouched in dry scrubland with binoculars and a slung rifle", "ar": "500 / 699"}, {"src": "/case-studies/inspiration/wabi-sabi-living-room-mushroom-mirror-beams.jpeg", "alt": "Wabi-sabi living room with exposed beams, large mushroom mirror, plaster fireplace", "ar": "1080 / 1350"}, {"src": "/case-studies/inspiration/dieter-rams-palette-braun-grille-knobs.jpg", "alt": "Dieter Rams design palette, Braun speaker grille pattern with color knobs", "ar": "1080 / 1350"}, {"src": "/case-studies/inspiration/vintage-transparent-solar-system-chart.jpeg", "alt": "Antique educational print, transparent solar system chart with planet orbits", "ar": "1035 / 1280"}, {"src": "/case-studies/inspiration/denim-glasses-portrait-bookshelf-armchair.jpg", "alt": "Bearded man in denim shirt and tortoiseshell glasses, seated in a carved armchair", "ar": "683 / 1024"}, {"src": "/case-studies/inspiration/tarantino-king-of-golf-robe-bedroom.jpg", "alt": "Quentin Tarantino in a printed silk robe seated in a floral-wallpapered bedroom", "ar": "640 / 799"}, {"src": "/case-studies/inspiration/bw-dead-weather-railroad-tracks.jpg", "alt": "Black-and-white shot of band members walking along railroad tracks", "ar": "612 / 612"}, {"src": "/case-studies/inspiration/lee-denim-shirts-stack-button-detail.jpg", "alt": "Stack of vintage Lee denim and corduroy shirts showing button and label detail", "ar": "612 / 612"}, {"src": "/case-studies/inspiration/rrl-vintage-vest-fedora-flat-lay.jpeg", "alt": "Flat lay of vintage tweed vest, dark fedora, knit tie, and RRL striped shirt", "ar": "1429 / 1507"}, {"src": "/case-studies/inspiration/organ-mountains-moonrise-orange-glow.jpg", "alt": "Organ Mountains glowing orange at sunset with the moon rising behind the peaks", "ar": "500 / 625"}, {"src": "/case-studies/inspiration/hill-country-stone-foyer-portrait-painting.jpeg", "alt": "Texas Hill Country stone foyer with antique portrait, dark wood console, and a monstera leaf", "ar": "1080 / 1317"}, {"src": "/case-studies/inspiration/bw-jack-white-pinstripe-suit-fedora-guitar.jpg", "alt": "Black-and-white live shot, man in pinstripe suit and fedora playing electric guitar", "ar": "564 / 848"}, {"src": "/case-studies/inspiration/bw-feather-headdress-indian-motorcycle.jpg", "alt": "Black-and-white photograph, figure in feather headdress arms outstretched behind an Indian motorcycle", "ar": "657 / 506"}, {"src": "/case-studies/inspiration/swiss-typographic-grid-flag-signal-poster.jpeg", "alt": "Swiss typographic poster with maritime signal flags arranged on a grid", "ar": "376 / 486"}, {"src": "/case-studies/inspiration/wes-anderson-budapest-doorway-frame.jpeg", "alt": "Wes Anderson film still, narrow doorway framing a small interior scene", "ar": "300 / 168"}, {"src": "/case-studies/inspiration/87119dea487a846ff65070db9ec9c847.jpg", "alt": "No Country for Old Men film still, Josh Brolin crossing a motel lobby with the case and a shotgun, Western mural, table lamp and armchair behind", "ar": "531 / 800"}, {"src": "/case-studies/inspiration/denim-suede-jacket-rodeo-belt-buckle.webp", "alt": "Torso shot, suede jacket over denim shirt with engraved rodeo belt buckle", "ar": "1024 / 819"}, {"src": "/case-studies/inspiration/musician-acoustic-guitar-floral-wallpaper.jpg", "alt": "Musician with acoustic guitar against peeling vintage floral wallpaper", "ar": "720 / 470"}, {"src": "/case-studies/inspiration/ac0ea29344e67e06b29ddde6a22f57f9.jpg", "alt": "Black-and-white magazine scan, four musicians against a blank wall in denim and cowboy hats, one seated on the kerb", "ar": "497 / 700"}, {"src": "/case-studies/inspiration/leather-bench-corner-stitching-wood-detail.jpeg", "alt": "Tan leather bench corner with whip-stitched seam against a raw wood block", "ar": "414 / 612"}, {"src": "/case-studies/inspiration/rrl-trading-co-store-display-blankets.jpg", "alt": "Double RL store interior with antlers, vintage trunks, knit hats, and a gallery wall", "ar": "1200 / 1200"}, {"src": "/case-studies/inspiration/brass-zippo-lighter-shotgun-shell-detail.webp", "alt": "Brass Zippo lighter open with embedded 12-gauge shotgun shell base", "ar": "1024 / 1024"}, {"src": "/case-studies/inspiration/wes-anderson-asteroid-city-diner.jpg", "alt": "Asteroid City film still, three figures at a 1950s diner counter", "ar": "736 / 1104"}, {"src": "/case-studies/inspiration/bw-cinematic-portrait-fedora-cigarette.jpg", "alt": "Black-and-white cinematic close-up, man in wide-brim hat smoking a cigarette", "ar": "1200 / 853"}, {"src": "/case-studies/inspiration/bw-gruene-hall-water-tower-honky-tonk.jpg", "alt": "Black-and-white shot of Gruene Hall dance hall with water tower behind", "ar": "600 / 400"}, {"src": "/case-studies/inspiration/bw-jack-white-third-man-records-piano.jpeg", "alt": "Black-and-white portrait, Jack White in studio with upright piano and Jaguar guitar", "ar": "736 / 1125"}, {"src": "/case-studies/inspiration/bw-miles-davis-pinstripe-suit-st-george-street.jpg", "alt": "Black-and-white street portrait of Miles Davis in pinstripe suit on St. George Street", "ar": "735 / 936"}, {"src": "/case-studies/inspiration/utah-desert-canyons-sagebrush-warm-light.jpg", "alt": "Utah desert canyons in warm afternoon light with sagebrush in the foreground", "ar": "736 / 1104"}, {"src": "/case-studies/inspiration/5c08f1591729fa6d1ada2d377448d215.jpg", "alt": "Black-and-white portrait, two filmmakers beside a 35mm projector and a mounted film reel", "ar": "356 / 449"}, {"src": "/case-studies/inspiration/bw-3614-jackson-highway-muscle-shoals.jpg", "alt": "Black-and-white photo, four musicians outside the 3614 Jackson Highway studio", "ar": "600 / 428"}, {"src": "/case-studies/inspiration/red-leather-bruno-mathsson-jetson-chair.jpeg", "alt": "Red leather Bruno Mathsson Jetson swivel chair on wood floor", "ar": "736 / 920"}];
+/* Where the lines sit among the pictures. Injected from
+   quoteInsertionPoints in src/data/inspiration-quotes.ts, so the board
+   page and the Staples answer weave the same lines at the same places
+   rather than each choosing. Index into the merged list, spliced from
+   the end so an earlier insertion never shifts a later one. */
+const QUOTE_AT = [5, 38, 90];
+
 const QUOTES = [
   {"text": "Came up on a tornado, sunlight in the sky\nI went around all day with the moon sticking in my eye", "attribution": "Don Van Vliet, Captain Beefheart"},
   {"text": "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", "attribution": "Jack White"},
@@ -2532,6 +2646,14 @@ const FILTERS = [
   ["App Development", "app development", "", "Native tools and AI products, built end to end."],
   ["Campaign/Creative", "campaign", "", "Art direction and campaigns for retail's big names."],
   ["Interiors", "interiors", "", "Rooms designed like products, down to the hardware."],
+  /* THE FIFTH ROW IS NOT A SHELF OF WORK. The four above deal case
+     studies; this one deals the board — other people's pictures, kept
+     because they are good, and the handful of lines that sit among
+     them. It is the same act as the others (a word typed into the
+     house, answered by the same machinery) which is why it lives here
+     rather than as a link out to /inspiration. That page still holds
+     the board at full size; this row is the door to it from the index. */
+  ["Staples", "staples", "", "Saved pictures and kept lines. None of it mine."],
 ];
 
 /* The practice statement's own nouns, wired to the field. The words a
@@ -2748,8 +2870,14 @@ WORK.forEach((r) => cards.push({
     ["the images", r[6] || ""],
     ["what it is", "work project case study portfolio"]]
 }));
+/* THE BOARD KEEPS ITS OWN SHAPES. `ar` was null here and .shot falls
+   back to a square, which is right for the case-study tiles (they are
+   cropped to squares on purpose) and wrong for a pull: these are other
+   people's pictures and cropping them to a grid is editing them. The
+   ratio comes from src/data/image-dimensions.ts, the same table the
+   board page reserves space with, injected alongside the alt. */
 PULLS.forEach((p) => cards.push({
-  kind: "pull", title: p.alt, img: p.src, ar: null,
+  kind: "pull", title: p.alt, img: p.src, ar: p.ar || null,
   fields: [["description", p.alt], ["filename", p.src.split("/").pop()],
     ["what it is", "staple pull board inspiration what inspires me reference kept"]]
 }));
@@ -3454,6 +3582,56 @@ function followUp(q) {
   return null;
 }
 
+/* ── THE BOARD'S OWN DIALS ──────────────────────────────────────────
+   The panel reads the case-study corpus on every other answer, and
+   that is the wrong instrument for this one. A board answer never went
+   through the studies, so "30 case studies, 358 photographs" describes
+   a haystack that was not searched, and the "1 photograph" beside it
+   was a case-study frame whose alt happens to carry the word — noise
+   dressed as a finding.
+
+   Measured off the index rather than written down, because the shelf
+   grows every time a picture is dropped in the folder.
+
+   `terms` is the board's WHOLE searchable layer and not an estimate of
+   it: factLookup matches a pull on its facets and on nothing else (the
+   alt text is read by the client matcher, never by the index), so this
+   is exactly what a query can reach.
+
+   Everything here describes the BOARD, not the deal. Counting the
+   names inside a 24-picture slice gave a different number for the same
+   shelf depending on which question was asked, which is a dial that
+   moves while the thing it measures does not. `shown` is the one
+   exception, and it exists only to say how much of the board is on
+   screen. */
+function boardDials(shown) {
+  const all = (FACTS && FACTS.pulls) || [];
+  const terms = new Set();
+  all.forEach((pl) =>
+    Object.keys(pl.f || {}).forEach((facet) =>
+      (pl.f[facet] || []).forEach((t) =>
+        terms.add(facet + ":" + (Array.isArray(t) ? t[0] : t)))));
+  /* WHO COMES BACK. A name on one picture is a picture; a name on
+     eight is a taste, and that is the one thing about this shelf worth
+     saying out loud that no count can say. Only names that actually
+     repeat: calling a single appearance "recurring" would be the panel
+     inventing a finding. */
+  const tally = new Map();
+  all.forEach((pl) => ((pl.f && pl.f.muse) || []).forEach((t) => {
+    const k = Array.isArray(t) ? t[0] : t;
+    tally.set(k, (tally.get(k) || 0) + 1);
+  }));
+  return {
+    pictures: all.length,
+    lines: QUOTES.length,
+    terms: terms.size,
+    shown: (shown || []).length,
+    named: tally.size,
+    top: [...tally.entries()].filter(([, c]) => c > 1)
+      .sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k),
+  };
+}
+
 function think(q) {
   const words = rawWords(q);
   if (!words.length) return null;
@@ -3553,6 +3731,62 @@ function think(q) {
      saw "who" and stopped reading. */
   const setLines0 = (FACTS && FACTS.voice && FACTS.voice.set) || {};
   const asks = (re) => re.test(fold(q));
+
+  /* ── THE WHOLE BOARD, ON ITS OWN WORD ─────────────────────────────
+     The muse intent below answers "who inspires you" with the pulls
+     that carry a NAME — thirty-six of a hundred and four — which is
+     the right answer to that question and the wrong one to this one.
+     Staples is the shelf itself, so it deals every picture on it and
+     the kept lines with them.
+
+     Ahead of the muse test on purpose: "inspiration board" satisfies
+     both regexes and the narrower ask has to win the tie.
+
+     THE LINES ARE DEALT, NOT FILED. They go into pullIdx with the
+     pictures, spliced at the board page's own anchors, so a quote
+     arrives as a tile in the run of frames the way it does on
+     /inspiration. Sent through workIdx first, they landed in the notes
+     rail — correct for a quote the matcher surfaces beside an answer
+     about something else, wrong for the board itself, where the lines
+     are part of what is being shown. pullIdx is taken verbatim by
+     buildAnswer; only workIdx goes through route(). */
+  if (FACTS && (asks(/\bstaples\b/) ||
+      asks(/\b(inspiration|mood|the) board\b/))) {
+    const boardIdx = FACTS.pulls
+      .map((pl) => factCard.pull.get(pl.src))
+      .filter((i) => i != null);
+    const lineIdx = cards
+      .map((c, i) => (c.kind === "quote" ? i : -1))
+      .filter((i) => i >= 0);
+    if (boardIdx.length) {
+      /* From the END, so an earlier splice never shifts a later
+         anchor; an anchor past the run appends. Same three lines the
+         board page splices, at the same three places. */
+      const dealt = boardIdx.slice();
+      QUOTE_AT.map((at, i) => [at, lineIdx[i]])
+        .filter(([, ci]) => ci != null)
+        .sort((a, b) => b[0] - a[0])
+        .forEach(([at, ci]) => dealt.splice(Math.min(at, dealt.length), 0, ci));
+      return {
+        say: setLines0.boardAll || setLines0.board ||
+          "A shelf of staples I keep coming back to.",
+        receipt: "The whole board. " + boardSource(),
+        workIdx: [],
+        pullIdx: dealt,
+        /* The panel reads these instead of the case-study corpus. */
+        board: boardDials(FACTS.pulls),
+        /* HOW IT WANTS TO BE DEALT. Every other answer pairs a work
+           frame with a board frame, left and right, because that
+           pairing IS the reading: the built beside the kept. The board
+           has no other half to sit against, and a hundred and four
+           pictures dealt two to a row is fifty-two rows of half-empty
+           page. It packs instead, the way /inspiration does. */
+        deal: "board",
+        mailto: false
+      };
+    }
+  }
+
   if (FACTS && asks(/\b(inspires?|inspiration|influenc|muse)\b/) ||
       asks(/\bfavou?rite (designer|musician|artist|creative|person)\b/)) {
     const board = FACTS ? FACTS.pulls.filter((pl) => pl.f && pl.f.muse) : [];
@@ -3563,13 +3797,26 @@ function think(q) {
     const names = [...new Set(board.flatMap((pl) =>
       pl.f.muse.map((t) => (Array.isArray(t) ? t[0] : t))))];
     if (names.length) {
+      /* Held once and used twice, as the deal and as the count. */
+      const shown = FACTS.pulls
+        .filter((pl) => Object.keys(pl.f || {}).length)
+        .filter((pl) => factCard.pull.get(pl.src) != null)
+        .slice(0, 24);
       return {
         say: setLines0.board || "These are things I love and inspired by.",
-        receipt: "These are from the inspiration board. " + machinery(),
+        receipt: "The pictures on the board with a name attached. " +
+          boardSource(),
         workIdx: [],
-        pullIdx: FACTS.pulls.map((pl, i) => [pl, i])
-          .filter(([pl]) => Object.keys(pl.f || {}).length)
-          .map(([pl]) => factCard.pull.get(pl.src)).filter((i) => i != null).slice(0, 24),
+        pullIdx: shown.map((pl) => factCard.pull.get(pl.src)),
+        /* The dials count what is DEALT, not the shelf it came off:
+           this answer shows two dozen of the board, so the names it
+           reports have to be the names in those two dozen. */
+        board: boardDials(shown),
+        /* Packs, like Staples. This is the board too, just the named
+           part of it, and it has no work to sit opposite either: two
+           dozen pictures dealt two to a row was twelve rows with half
+           of each one empty. */
+        deal: "board",
         mailto: false
       };
     }
@@ -3821,6 +4068,21 @@ function renderToned(el, segs, n) {
 const VOICE_VERSION = 9;
 
 /* One-line source attribution, appended to every receipt. */
+/* THE BOARD'S PROVENANCE, standing in for machinery(). That one names
+   the case studies and the catalogued photographs, which is true of
+   every answer except the two that come off the board: neither index
+   was touched. The muse receipt read "These are from the inspiration
+   board. Everything here comes from the case studies and 358
+   catalogued photographs", two sentences flatly contradicting each
+   other under two dozen pictures from neither place.
+
+   No counts. The stat band above prints what is on the shelf and what
+   is catalogued on it; a receipt that repeats them is the same fact
+   twice on one screen. */
+function boardSource() {
+  return "Nothing here comes from the case studies. Every picture on " +
+    "the board is someone else's work, saved and not claimed.";
+}
 function machinery() {
   const seen = FACTS && FACTS.images && FACTS.images.length;
   return "Everything here comes from the case studies" +
@@ -4335,6 +4597,98 @@ function imgCard(card, rnd, allowShare) {
   return el;
 }
 
+/* ── A KEPT LINE, DEALT AS A TILE ──────────────────────────────────
+   The board page's own quote treatment, brought into the answer's
+   grid: words straight onto the paper with no frame and no ground.
+   InspirationQuoteTile carries the same setting, and the two are meant
+   to stay one design — change the type here and change it there.
+   That absence is the whole distinction between a line and a picture,
+   and putting a container round it would make it a picture OF a quote.
+
+   Not an .fd-it, deliberately. There is no plate here to draw a
+   curtain back from, so it takes the text arrival instead — a fade and
+   a short rise, the same grammar the note cards use — and armRows,
+   armDrift and armReels all skip it on their own because each looks
+   for a .shot it will not find. */
+function quoteCard(card) {
+  const el = document.createElement("div");
+  el.className = "fd-quote";
+  el.dataset.key = "quote:" + (card.att || card.word || "");
+  const t = document.createElement("p");
+  /* ── VERSE BREAKS WHERE IT WAS WRITTEN TO ─────────────────────────
+     Two of the three kept lines are lyrics and carry their own breaks;
+     the third is a paragraph of prose. Under white-space: pre-line
+     both looked the same and neither read: a column this narrow wraps
+     a lyric line as well as breaking it, so "And this old man in front
+     of / me wearing canes and ruby / rings" showed three line ends and
+     only the last one was the song's. A reader cannot tell which is
+     which, which is the whole information a line break carries.
+
+     So verse is set as verse. One block per written line, each with a
+     hanging indent, which is how a poem has been set in a narrow
+     measure for as long as there have been narrow measures: the line
+     the writer wrote starts flush, and anything that could not fit
+     hangs under it. Prose gets none of that — it never had breaks to
+     protect, and indented runovers on a paragraph read as a mistake. */
+  const body = String(card.full || "");
+  const lines = body.split("\n");
+  const verse = lines.length > 1;
+  t.className = "qtext" + (verse ? " verse" : "");
+  if (verse) {
+    lines.forEach((ln, i) => {
+      const sp = document.createElement("span");
+      sp.className = "qline";
+      sp.textContent = (i === 0 ? "\u201C" : "") + ln +
+        (i === lines.length - 1 ? "\u201D" : "");
+      t.appendChild(sp);
+    });
+  } else {
+    t.textContent = "\u201C" + body + "\u201D";
+  }
+  const a = document.createElement("p");
+  a.className = "qatt";
+  /* A middle dot, never an em dash. */
+  a.textContent = "\u00B7 " + (card.att || "");
+  el.appendChild(t);
+  el.appendChild(a);
+  return el;
+}
+
+/* ── THE ADDRESS IS A LINK, NOT A STRING ───────────────────────────
+   The Connect drawer printed hello@reckon.house as text, so the one
+   committing thing in the rail could be read and not used: a visitor
+   who wanted to write had to select it and copy it by hand, on the
+   surface that exists to be pressed.
+
+   Found rather than hardcoded, so the note's copy can gain words
+   around the address later without this having to be told. Built as
+   nodes and never as an innerHTML string — the copy reaches here
+   already escaped, and putting it back through a concatenation is how
+   escaping comes undone by accident. */
+const MAIL_RX = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+/* NOT linkMail. buildAnswer already has one — a zero-arg closure that
+   rewrites the say line's HTML once the typing clock stops — and a
+   hoisted `function linkMail` beside a `const linkMail` in the same
+   scope puts the const's binding in charge and leaves every earlier
+   call reaching into its temporal dead zone. The rail and the answer
+   notes both called it before that line runs, so both threw and the
+   answer came up blank. Two jobs, two names. */
+function linkAddress(el) {
+  const s = el.textContent || "";
+  const m = s.match(MAIL_RX);
+  if (!m) return el;
+  el.textContent = "";
+  if (m.index) el.appendChild(document.createTextNode(s.slice(0, m.index)));
+  const a = document.createElement("a");
+  a.className = "rmail";
+  a.href = "mailto:" + m[0];
+  a.textContent = m[0];
+  el.appendChild(a);
+  const tail = s.slice(m.index + m[0].length);
+  if (tail) el.appendChild(document.createTextNode(tail));
+  return el;
+}
+
 function noteCard(card, rnd) {
   const el = document.createElement("button");
   el.type = "button";
@@ -4610,7 +4964,7 @@ function buildMagazine() {
     const { r, h, pad } = mkRow("Connect", "slash");
     const touch = note(/touch/i);
     if (touch) {
-      sub(pad, null, touch.full, touch.word);
+      linkAddress(sub(pad, null, touch.full, touch.word));
       if (touch.link) {
         const a = document.createElement("a");
         a.className = "rgo";
@@ -4628,11 +4982,27 @@ function buildMagazine() {
   rgap.className = "rgap";
   railEl.appendChild(rgap);
 
+  /* THE STAMP SHOWS WHAT THE CLICK DEALS. Work leads wherever there is
+     any, which is the four category rows unchanged. Staples deals the
+     BOARD, whose cards are pulls: filtering to work only left its
+     drawer with an empty stage and a reel that could not start, since
+     szStart wants two frames before it will run.
+
+     Ten, not all hundred and four. szStage builds an <img> per frame
+     and szSeq only ever reaches the seventh, so the rest would be
+     stacked, invisible, and fetched the moment the drawer opened. Ten
+     is a stamp's worth and they are the first ten the click deals, so
+     the preview is the head of the real hand rather than a sample of
+     it. */
   const worksFor = (fq) => {
     try {
       const plan = think(fq);
-      const idx = plan ? plan.workIdx : ((analyse(fq) || { idx: [] }).idx || []);
-      return idx.filter((ci) => cards[ci].kind === "work");
+      const idx = plan ? plan.workIdx.concat(plan.pullIdx || [])
+        : ((analyse(fq) || { idx: [] }).idx || []);
+      const kept = (kind) =>
+        idx.filter((ci) => cards[ci] && cards[ci].kind === kind);
+      const work = kept("work");
+      return work.length ? work : kept("pull").slice(0, 10);
     } catch (e) { return []; }
   };
   /* THE REEL IS THE COUNT, and it runs the REAL reel. Each category's
@@ -5318,6 +5688,16 @@ function renderWorking(wk, model) {
      Jeremy's call, so the good stuff is not buried in a 12px rail.
      This block keeps the frame and the model's bookkeeping. */
   if (st || model) row("Status", "a working concept, testing AI in the open");
+  /* THE CLOCK, IN THE MECHANICS BLOCK where it belongs. It sat in the
+     stat band at display size reading "8ms on your machine, before any
+     model", which asks a visitor to work out what it means before they
+     can work out whether to care. The fact is worth keeping and it is
+     a fact about how this is built, so it sits with Status, Sources
+     and Words. Reworded to say the point rather than only the
+     measurement: the search ran on the reader's machine and it ran
+     first. */
+  if (st) row("Search", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
+    ", here in your browser, before the model was asked");
   if (model) {
     /* deduped: three projects are all titled "Hill Country home", and
        a ledger that says a name twice reads as a bug */
@@ -5359,17 +5739,53 @@ function renderStats() {
     return sp;
   };
   const lines = [];
-  lines.push(line("Read", st.studies + " case studies, " + st.photos +
-    " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
-  const parts = [];
-  if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
-  if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
-  if (st.pulls) parts.push(st.pulls + " from the board");
-  lines.push(line("Caught",
-    (st.q ? "\u201c" + st.q + "\u201d in " : "") +
-    (parts.length ? parts.join(", ") : "nothing in the index")));
-  lines.push(line("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
-    " on your machine, before any model"));
+  const n = (x, one, many) => x + " " + (x === 1 ? one : many);
+  if (st.board) {
+    /* THE BOARD IS A DIFFERENT SHELF AND SAYS SO. Read is what is on
+       it, Caught is what came back, and the term the visitor typed is
+       not quoted: pressing Staples is not a search for the word, it is
+       the door to the whole thing, and "staples" in quotes made it look
+       like a lookup that happened to return everything. */
+    const b = st.board;
+    /* Plain nouns. This read "104 saved pictures and 3 kept lines",
+       which is the machine choosing a word nobody uses for a quote in
+       order to avoid saying "quote" twice on one screen. They are
+       pictures and quotes.
+
+       How much is on screen rides in this line rather than taking one
+       of its own: a fourth row of display type to say "24 of them" is
+       a row too many, and without it a reader looking at two dozen
+       pictures under the number 104 has been told something untrue. */
+    lines.push(line("Saved", n(b.pictures, "picture", "pictures") +
+      " and " + n(b.lines, "quote", "quotes") +
+      (b.shown && b.shown < b.pictures ? ", " + b.shown + " of them here" : "")));
+    lines.push(line("Catalogued",
+      n(b.terms, "term", "terms") + " across the board" +
+      (b.named ? ", " + n(b.named, "person", "people") + " named" : "")));
+    /* The third reading, in place of the clock. A stopwatch measured
+       the machinery; this measures the shelf, which is what a visitor
+       came to look at. Held back when nothing repeats, since a list of
+       one-offs under the word "recurring" would be a lie. */
+    if (b.top && b.top.length > 1)
+      lines.push(line("Recurring", b.top.join(", ")));
+  } else {
+    lines.push(line("Read", st.studies + " case studies, " + st.photos +
+      " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
+    const parts = [];
+    if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
+    if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
+    if (st.pulls) parts.push(st.pulls + " from the board");
+    lines.push(line("Caught",
+      (st.q ? "\u201c" + st.q + "\u201d in " : "") +
+      (parts.length ? parts.join(", ") : "nothing in the index")));
+  }
+  /* NO CLOCK HERE. "8ms on your machine, before any model" was the one
+     row of this band that measured the plumbing rather than the work,
+     set at display size where a reader has to decide what it means
+     before they can decide whether to care. It says something worth
+     keeping — the search ran here, first — so it moves down to the
+     mechanics block in the note rail, which is where Status, Sources
+     and Words already explain how the answer was made. */
   lines.forEach((sp, i) => {
     if (REDUCE()) { sp.classList.add("on"); return; }
     sp.style.transitionDelay = (i * 130) + "ms";
@@ -5621,6 +6037,50 @@ function buildAnswer() {
      comes off here. */
   rowsEl.classList.remove("ixcols");
   const els = [];
+
+  /* ── THE BOARD PACKS, IT DOES NOT PAIR ────────────────────────────
+     One plan asks for this: Staples, which deals the whole board. The
+     pair grammar above is a reading — the built on the left, the kept
+     on the right — and the board has nothing to sit opposite, so a
+     hundred and seven tiles came down the page two at a time with half
+     of every row empty. Here they pack into three columns at their own
+     ratios, which is /inspiration's own layout and the shape a board
+     wants: dense, unsorted, no two the same height.
+
+     CSS columns rather than a grid, the same call staples.module.css
+     makes. A masonry needs to know each tile's height to place the
+     next, and only the browser knows that; a grid would need a row
+     span per tile computed from a measurement that is not final until
+     the picture lands.
+
+     The middle standing rule goes with the pairing. It marks the
+     divide between the two columns, and there are three now, so it
+     would cut through the middle one. .ixrule1 is the single-rule
+     variant the board page already uses. */
+  const packed = Boolean(plan && plan.deal === "board");
+  rowsEl.classList.toggle("ansboard", packed);
+  const ansRules = document.querySelector(".answer .ixrules");
+  if (ansRules) ansRules.classList.toggle("ixrule1", packed);
+  if (packed) {
+    leftIdx.concat(rightIdx).forEach((ci, i) => {
+      const tile = document.createElement("div");
+      tile.className = "btile";
+      const el = cards[ci].kind === "quote"
+        ? quoteCard(cards[ci]) : imgCard(cards[ci], rnd, false);
+      /* Full column width. --share is how much of its HALF a paired
+         frame takes, and there are no halves here. It also decides how
+         far the hover opens a frame, which is why armRows is left to
+         no-op: with no .ixrow to find it never arms, and a board tile
+         is already as wide as its column. */
+      el.style.setProperty("--share", "1");
+      /* The curtain still falls, staggered across the three columns so
+         a row of tiles arrives left to right rather than at once. */
+      el.style.setProperty("--lag", ((i % 3) * 0.1).toFixed(2) + "s");
+      tile.appendChild(el);
+      rowsEl.appendChild(tile);
+      els.push(el);
+    });
+  } else {
   pairs.forEach(([a, b], r) => {
     const row = document.createElement("div");
     row.className = "ixrow";
@@ -5636,7 +6096,9 @@ function buildAnswer() {
          off the page. Same two lines the index deals, k is the side. */
       cell.className = "cell col" + (k ? "R" : "L");
       if (ci !== undefined) {
-        const el = imgCard(cards[ci], rnd, false);
+        /* A line is dealt like a picture and drawn like a line. */
+        const el = cards[ci].kind === "quote"
+          ? quoteCard(cards[ci]) : imgCard(cards[ci], rnd, false);
         el.style.setProperty("--share", String(shares[r * 2 + k]));
         /* the cascade: every row's curtains follow the row above, and
            the right frame follows the left — the ring's own lag
@@ -5654,6 +6116,7 @@ function buildAnswer() {
     row.appendChild(rule);
     rowsEl.appendChild(row);
   });
+  }
   armRows(rowsEl);
 
   /* The working notes: whatever text the answer carries — practice
@@ -5670,7 +6133,12 @@ function buildAnswer() {
     tag.className = "tag";
     tag.textContent = cards[ci].kind === "quote" ? "A line I keep" : (cards[ci].word || "");
     blk.appendChild(tag);
-    blk.appendChild(document.createTextNode(cards[ci].full || ""));
+    /* Same note, same treatment: the contact intents push "Get in
+       touch" into this column, and the address was dead text here for
+       exactly the reason it was dead in the drawer. */
+    const body = document.createElement("span");
+    body.textContent = cards[ci].full || "";
+    blk.appendChild(linkAddress(body));
     if (cards[ci].att) {
       const att = document.createElement("span");
       att.style.cssText = "display:block;padding-top:8px;opacity:0.55";
@@ -5694,6 +6162,11 @@ function buildAnswer() {
       projects: leftIdx.filter((ci) => cards[ci].kind === "work").length,
       frames: shownFrames.total || 0,
       pulls: rightIdx.filter((ci) => cards[ci].kind === "pull").length,
+      /* Present only on a board answer, and when it is there it
+         REPLACES the corpus readings rather than joining them: the
+         board and the studies are two different haystacks and this
+         answer went through one of them. */
+      board: (plan && plan.board) || null,
       q: query.trim().slice(0, 32),
       ms: thinkMs + framesMs,
     } : null,
@@ -6028,13 +6501,22 @@ function buildAnswer() {
           /* honeypot path: the server said yes and stored nothing */
           compose.innerHTML = '<p class="cmpnote">That is with me.</p>';
         } else {
-          if (note) note.textContent =
-            (j && j.why) || "That did not send. hello@reckon.house reaches me directly.";
+          /* linkMail, because this is the worst place on the site for a
+             dead address: the form has just failed and the fallback is
+             the only way left to reach anyone. It was printed as text. */
+          if (note) {
+            note.textContent =
+              (j && j.why) || "That did not send. hello@reckon.house reaches me directly.";
+            linkAddress(note);
+          }
           btn.disabled = false;
         }
       } catch {
-        if (note) note.textContent =
-          "That did not send. hello@reckon.house reaches me directly.";
+        if (note) {
+          note.textContent =
+            "That did not send. hello@reckon.house reaches me directly.";
+          linkAddress(note);
+        }
         btn.disabled = false;
       }
     });
@@ -7037,10 +7519,20 @@ function armRows(rowsEl) {
        over the label's own contents, because the element is a full-
        width block and its rect would say zero — the Range reports the
        INK, which on a wrapped label is its widest line. */
+    /* NOT EVERY FRAME HAS A NAME. Only work carries .lbl — a board
+       pull has a hover caption and nothing standing under it — and
+       selectNodeContents(null) threw on the first one, which killed
+       the rest of this handler: the neighbours below never got their
+       push. It was unreachable while answers dealt work only, and the
+       Staples row deals a hundred and four pulls. No name, no slide;
+       the growth and the push are the same either way. */
     const lbl = card.querySelector(".lbl");
-    const range = document.createRange();
-    range.selectNodeContents(lbl);
-    const ink = range.getBoundingClientRect().width;
+    let ink = 0;
+    if (lbl) {
+      const range = document.createRange();
+      range.selectNodeContents(lbl);
+      ink = range.getBoundingClientRect().width;
+    }
     /* MEASURED AGAINST THE OPENED FRAME, not against the label's own
        box. That box is only --share of the column — the width the
        picture has at REST — so a name travelling the slack inside it
@@ -7059,8 +7551,9 @@ function armRows(rowsEl) {
        backwards by the slack lands it on the left edge. */
     const cell = card.closest(".cell");
     const rightCol = Boolean(cell && cell.classList.contains("colR"));
-    card.style.setProperty("--slide",
-      (rightCol ? -slide : slide).toFixed(1) + "px");
+    if (lbl)
+      card.style.setProperty("--slide",
+        (rightCol ? -slide : slide).toFixed(1) + "px");
     /* and anything to its left moves only as far as it must */
     const hr = shot.getBoundingClientRect();
     const openTo = hr.right - hr.width * grow;

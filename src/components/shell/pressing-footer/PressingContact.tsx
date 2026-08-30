@@ -237,6 +237,24 @@ export interface PressingContactProps {
   className?: string;
 }
 
+/* The driver's linkMail, as JSX — one address, and it has to be a
+   control wherever it is printed. Found rather than hardcoded so a
+   reworded failure message keeps working without being told. */
+const MAIL_RX = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+function mailify(text: string): React.ReactNode {
+  const m = text.match(MAIL_RX);
+  if (!m || m.index === undefined) return text;
+  return (
+    <>
+      {text.slice(0, m.index)}
+      <a className={styles.mail} href={`mailto:${m[0]}`}>
+        {m[0]}
+      </a>
+      {text.slice(m.index + m[0].length)}
+    </>
+  );
+}
+
 export function PressingContact({ className }: PressingContactProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const colRef = useRef<HTMLDivElement | null>(null);
@@ -516,12 +534,34 @@ export function PressingContact({ className }: PressingContactProps) {
             {sending ? "Sending" : sent ? "Sent" : "Send"}
           </button>
 
-          <BodyReveal as="span" className={styles.note}>
-            Or · hello@reckon.house
-          </BodyReveal>
+          {/* THE ADDRESS IS A LINK, AND THAT COST THIS LINE ITS REVEAL.
+              It was a string, so the fallback under the Send button
+              could be read and not used: the one line on the beat that
+              exists for someone who would rather write than fill in a
+              form made them select it and copy it by hand.
+
+              BodyReveal cannot carry it. That component splits its
+              children into lines and rewrites its own innerHTML from
+              escaped TEXT, so an anchor inside it is flattened back to
+              a string — which is what happened on the first attempt,
+              silently. The alternatives were to wrap the reveal in the
+              anchor, which makes "Or ·" part of the link's name, or to
+              drop the reveal on one short line at 0.35 opacity. The
+              line is worth less than the link, and a bare address is
+              how the masthead and the board page set theirs. */}
+          <span className={styles.note}>
+            Or ·{" "}
+            <a className={styles.mail} href="mailto:hello@reckon.house">
+              hello@reckon.house
+            </a>
+          </span>
+          {/* mailify, for the same reason the note above is a link and
+              more urgently: every one of these strings is a failure,
+              and the address in them was the only way left to reach
+              anyone. It was printed as text. */}
           {say ? (
             <span className={styles.say} role="status">
-              {say}
+              {mailify(say)}
             </span>
           ) : null}
         </form>

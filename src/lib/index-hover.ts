@@ -111,10 +111,20 @@ export function armRows(rowsEl: HTMLElement) {
        over the label's own contents, because the element is a full-
        width block and its rect would say zero — the Range reports the
        INK, which on a wrapped label is its widest line. */
+    /* NOT EVERY FRAME HAS A NAME. Only work carries .lbl — a board
+       pull has a hover caption and nothing standing under it — and the
+       assertion here threw on the first one, which killed the rest of
+       this handler: the neighbours below never got their push. It was
+       unreachable while answers dealt work only, and the Staples row
+       deals a hundred and four pulls. No name, no slide; the growth
+       and the push are the same either way. */
     const lbl = card.querySelector<HTMLElement>(".lbl");
-    const range = document.createRange();
-    range.selectNodeContents(lbl!);
-    const ink = range.getBoundingClientRect().width;
+    let ink = 0;
+    if (lbl) {
+      const range = document.createRange();
+      range.selectNodeContents(lbl);
+      ink = range.getBoundingClientRect().width;
+    }
     /* MEASURED AGAINST THE OPENED FRAME, not against the label's own
        box. That box is only --share of the column — the width the
        picture has at REST — so a name travelling the slack inside it
@@ -133,8 +143,9 @@ export function armRows(rowsEl: HTMLElement) {
        backwards by the slack lands it on the left edge. */
     const cell = card.closest(".cell");
     const rightCol = Boolean(cell && cell.classList.contains("colR"));
-    card.style.setProperty("--slide",
-      (rightCol ? -slide : slide).toFixed(1) + "px");
+    if (lbl)
+      card.style.setProperty("--slide",
+        (rightCol ? -slide : slide).toFixed(1) + "px");
     /* and anything to its left moves only as far as it must */
     const hr = shot.getBoundingClientRect();
     const openTo = hr.right - hr.width * grow;

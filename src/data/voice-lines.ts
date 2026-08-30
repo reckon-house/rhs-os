@@ -59,6 +59,17 @@ export const voiceSet = {
   contact:
     "Here's a few ways to get in touch with me. If you have a potential project or just want to chat, I would love to introduce myself and talk. hello@reckon.house.",
   board: "These are things I love and inspired by.",
+
+  /* Two answers about the same shelf, because they are two questions.
+     `board` answers "who inspires you" and is handed the pulls that
+     carry a name. `boardAll` answers Staples — the shelf itself — and
+     is handed every picture on it and the kept lines with them.
+
+     Not newly written. It is the lede of /inspiration verbatim, which
+     is Jeremy's own sentence for this exact object; the same reuse
+     NOTES makes when the practice statement renders as a card. */
+  boardAll:
+    "A shelf of staples I keep coming back to. The people, the work and the rooms that show up in everything I make, whether I notice or not.",
   miss: "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.",
 
   /* The owner questions. A visitor sizing this up for their own
