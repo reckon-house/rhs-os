@@ -1234,13 +1234,28 @@
     display: grid; align-items: start;
     grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap);
+    /* THE ANSWER'S GAP, not the index's. The answer still deals an
+       .ixrule into every row, so this is the space above it there. The
+       index stopped emitting one, which leaves each index row a single
+       grid track with nothing for a row-gap to fall between — measured
+       on production: rows are 801px of cell and 801px tall. So this
+       value is live on the answer and inert on the index, and the note
+       below is the whole interval on the page you actually scroll. */
     row-gap: clamp(56px, 6.6vw, 108px);
-    /* THE INTERVAL BETWEEN PAIRS. Measured from the taller frame in a
-       row to the top of the next pair, so a row that leaves negative
-       space beside a short frame still hands over on the same beat.
+    /* THE INTERVAL BETWEEN PAIRS, and on the index it is the ENTIRE
+       interval. Measured from the taller frame in a row to the top of
+       the next pair, so a row that leaves negative space beside a short
+       frame still hands over on the same beat.
+
+       DOUBLED, Aug 2026: 100px to 200px at the cap, the floor and the
+       vw term with it, so the interval opens at every width rather
+       than only on a wide screen. The index reads as a gallery hang
+       rather than a feed, and the frames needed the wall.
+
        Only ever desktop: below 860 the rows dissolve to
-       display:contents and the container's own row-gap takes over. */
-    margin-bottom: clamp(64px, 7vw, 100px); }
+       display:contents and the container's own rhythm takes over, so
+       a phone keeps its tighter beat without an override. */
+    margin-bottom: clamp(128px, 14vw, 200px); }
   .ixrow:last-child { margin-bottom: 0; }
   .ixrow .cell { display: flex; justify-content: flex-end; }
 
