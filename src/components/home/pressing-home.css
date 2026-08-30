@@ -1911,6 +1911,16 @@
   .answer .ixnotes { opacity: 0; transition: opacity 0.4s ease; }
   .answer .ixnotes.on { opacity: 1; }
   .answer .ixnotes .blk.working { color: rgba(0, 0, 0, 0.5); }
+  /* the panel: prose first, then measured rows that land one at a
+     time. The stagger is per-row transition-delay written by the
+     renderer, so newcomers land and settled rows hold still. */
+  .answer .ixnotes .blk.working .rprose { display: block; margin-bottom: 10px; }
+  .answer .ixnotes .blk.working .rl { opacity: 0; transform: translateY(5px);
+    transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .answer .ixnotes .blk.working .rl.on { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .answer .ixnotes .blk.working .rl { transition: none; transform: none; opacity: 1; }
+  }
   /* a pull's name is its description: it reads as a caption, not a
      title, or the board would look like it was claiming credit */
   .ixrow .fd-it.k-pull .lbl { font-weight: 400; font-size: var(--cap);

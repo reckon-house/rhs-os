@@ -1969,6 +1969,16 @@
   .answer .ixnotes { opacity: 0; transition: opacity 0.4s ease; }
   .answer .ixnotes.on { opacity: 1; }
   .answer .ixnotes .blk.working { color: rgba(0, 0, 0, 0.5); }
+  /* the panel: prose first, then measured rows that land one at a
+     time. The stagger is per-row transition-delay written by the
+     renderer, so newcomers land and settled rows hold still. */
+  .answer .ixnotes .blk.working .rprose { display: block; margin-bottom: 10px; }
+  .answer .ixnotes .blk.working .rl { opacity: 0; transform: translateY(5px);
+    transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .answer .ixnotes .blk.working .rl.on { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .answer .ixnotes .blk.working .rl { transition: none; transform: none; opacity: 1; }
+  }
   /* a pull's name is its description: it reads as a caption, not a
      title, or the board would look like it was claiming credit */
   .ixrow .fd-it.k-pull .lbl { font-weight: 400; font-size: var(--cap);
@@ -2970,8 +2980,13 @@ const namesTerm = (t, q) => {
    "sage green cabinetry" still prints as green when green was asked
    for. */
 let SEEN = null;
+/* distinct words the camera caught, counted once for the panel's Read
+   row — the honest size of the haystack, not a marketing number */
+let SEEN_VOCAB = 0;
 function buildSeen() {
   SEEN = new Map();
+  SEEN_VOCAB = 0;
+  const vocab = new Set();
   if (!FACTS || !FACTS.images) return;
   for (const im of FACTS.images) {
     const href = "/case-studies/" + im.slug;
@@ -2992,11 +3007,13 @@ function buildSeen() {
     (im.mood || []).forEach(take);
     (im.colours || []).forEach(take);
     for (const [w, term] of words) {
+      vocab.add(w);
       const e = per.get(w);
       if (e) { e.n += 1; if (term === w) e.term = term; }
       else per.set(w, { n: 1, term });
     }
   }
+  SEEN_VOCAB = vocab.size;
 }
 
 function factMatches(p, q) {
@@ -3123,6 +3140,9 @@ function frameMatch(q0) {
     out.push(im);
     if (out.length >= 6) break;
   }
+  /* the panel's number, riding on the array: how many photographs
+     held the word at all, before the six-frame cap for display */
+  out.total = scored.length;
   return out;
 }
 
@@ -3824,14 +3844,12 @@ function explain({ q, lead, term, w, p, vl, forked, and, dead, bridged, nudged }
      only earns its place when the typed word and the filed name differ. */
   else bits.push(qd + " is " + (FACET_PLAIN[lead] || "a search term") + " here" +
     (fold(term) !== resolveAlias(fold(q)) && !forked ? ", filed as " + term : "") + ".");
-  /* "That gives" implies arithmetic. "That's" is what a person says,
-     and it sidesteps making a verb agree with two counts. */
-  bits.push("That's " + (w ? w + " project" + (w === 1 ? "" : "s") : "no projects") +
-    (p ? " and " + p + " photograph" + (p === 1 ? "" : "s") : "") + ".");
+  /* the counts moved to the panel's Caught row — one fact, one home;
+     this prose now only says what KIND of word answered */
   if (dead.length) bits.push("\u201c" + dead.join("\u201d, \u201c") +
     "\u201d didn't match anything.");
   if (nudged) bits.push("Two results tied, so the one you've spent more time on is shown first.");
-  bits.push(machinery());
+  /* machinery()'s sentence lives in the panel's Read row now */
   return bits.join(" ");
 }
 
@@ -5181,6 +5199,10 @@ let floorRelease = null;
    replay, which is the one thing a replay is not: it is the answer to
    that question, not a fresh reading of the visit. */
 let kept = null;
+/* what the panel renders for the standing build: the receipt prose and
+   the measured quantities. Set by every buildAnswer before the panel
+   draws, read again when the model's rows join it. */
+let WORKING = null;
 
 /* ── the working note, once the model has reported in ──────────────
    THE RECEIPT IS A LEDGER, NOT A PARAGRAPH. The first version was
@@ -5193,36 +5215,86 @@ let kept = null;
 
    Out here rather than inside the request, because a replay writes the
    same ledger without one. */
+/* ── the instrument panel ──────────────────────────────────────────
+   THE LEDGER SHOWS THE MEAL BEING MADE. A sentence typing out is what
+   every AI product shows; the numbers underneath are what nobody
+   shows, and here they are the more impressive object: the visitor's
+   own machine reads 358 photographs and weighs a few thousand terms
+   in about a millisecond, before any model is consulted. So the block
+   is rows of measured quantities, landing one at a time — theater,
+   but theater of true numbers, never an invented "thinking" line.
+
+   Rebuilt whole on every call and idempotent; rows that have already
+   landed do not land again when the model's rows join them, which is
+   what data-landed remembers. Reads WORKING, the per-build bag of
+   receipt prose and measurements. */
+function renderWorking(wk, model) {
+  const w = WORKING || {};
+  const had = +(wk.dataset.landed || 0);
+  wk.innerHTML = "";
+  const tag = document.createElement("span");
+  tag.className = "tag";
+  tag.textContent = "How it works";
+  wk.appendChild(tag);
+  if (w.receipt) {
+    const pr = document.createElement("span");
+    pr.className = "rprose";
+    pr.textContent = w.receipt;
+    wk.appendChild(pr);
+  }
+  const rows = [];
+  const row = (k, v, cls) => {
+    const sp = document.createElement("span");
+    sp.className = cls || "rl";
+    if (k) {
+      const key = document.createElement("span");
+      key.className = "rk";
+      key.textContent = k + " · ";
+      sp.appendChild(key);
+    }
+    sp.appendChild(document.createTextNode(v));
+    wk.appendChild(sp);
+    rows.push(sp);
+  };
+  const st = w.stats;
+  /* the frame comes first: this feature is Jeremy trying AI in the
+     open, and a visitor should read that before the mechanics. The
+     held plans carry authored receipts and no measurements, so they
+     take no rows at all. */
+  if (st || model) row("Status", "a working concept, testing AI in the open");
+  if (st) {
+    row("Read", st.studies + " case studies, " + st.photos +
+      " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms");
+    const parts = [];
+    if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
+    if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
+    if (st.pulls) parts.push(st.pulls + " from the board");
+    row("Caught", parts.length ? parts.join(", ") : "nothing in the index");
+    row("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
+      " on your machine, before any model");
+  }
+  if (model) {
+    /* deduped: three projects are all titled "Hill Country home", and
+       a ledger that says a name twice reads as a bug */
+    const used = [...new Set(model.used || [])];
+    row("Sources", used.length
+      ? used.slice(0, 3).join(", ") +
+        (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
+      : "no match; the full project list, titles only");
+    row("Words", model.model || "claude");
+    row(null, "Claude can make mistakes.", "rl rk");
+  }
+  wk.dataset.landed = String(rows.length);
+  rows.forEach((sp, i) => {
+    if (i < had || REDUCE()) { sp.classList.add("on"); return; }
+    sp.style.transitionDelay = ((i - had) * 110) + "ms";
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    rows.forEach((sp) => sp.classList.add("on"))));
+}
 function writeLedger(notesEl, a) {
   const wk = notesEl.querySelector(".blk.working");
-  if (!wk) return;
-  while (wk.childNodes.length > 1) wk.removeChild(wk.lastChild);
-  const row = (k, v) => {
-    const s = document.createElement("span");
-    s.className = "rl";
-    const key = document.createElement("span");
-    key.className = "rk";
-    key.textContent = k + " · ";
-    s.appendChild(key);
-    s.appendChild(document.createTextNode(v));
-    return s;
-  };
-  /* deduped: three projects are all titled "Hill Country home", and a
-     ledger that says a name twice reads as a bug */
-  const used = [...new Set(a.used || [])];
-  /* The frame comes first: this feature is Jeremy trying AI in the
-     open, and a visitor should read that before the mechanics. */
-  wk.appendChild(row("Status", "a working concept, testing AI in the open"));
-  wk.appendChild(row("Sources", used.length
-    ? used.slice(0, 3).join(", ") +
-      (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
-    : "no match; the full project list, titles only"));
-  wk.appendChild(row("Facts", "the case studies, indexed when the site builds"));
-  wk.appendChild(row("Words", a.model || "claude"));
-  const dq = document.createElement("span");
-  dq.className = "rl rk";
-  dq.textContent = "Claude can make mistakes.";
-  wk.appendChild(dq);
+  if (wk) renderWorking(wk, a);
 }
 /* A KEYWORD REACHES THE MODEL NOW, and the old rule was drawing the
    line in the wrong place. The gate used to require a question shape:
@@ -5293,7 +5365,10 @@ function composeAnswer(a) {
   }
   if (a.dead.length) sentences.push("Nothing matched \u201c" + a.dead.join("\u201d, \u201c") + "\u201d.");
   if (a.skipped.length) sentences.push("Set aside as common words: " + [...new Set(a.skipped)].join(", ") + ".");
-  sentences.push((total === 1 ? "1 piece" : total + " pieces") + " below. " + machinery());
+  /* with the index in hand the panel carries provenance; before it
+     lands this sentence is the only place the claim can live */
+  sentences.push((total === 1 ? "1 piece" : total + " pieces") + " below." +
+    (FACTS ? "" : " " + machinery()));
   const receipt = sentences.join(" ");
 
   let say;
@@ -5362,7 +5437,9 @@ function buildAnswer() {
   /* the plan first: intents, then facts. The matcher answers whatever
      the index has no opinion about. Whichever speaks, the split is
      the same: pictures go to the rows, words go to the notes column. */
+  const t0 = performance.now();
   const plan = think(query);
+  const thinkMs = performance.now() - t0;
   let say, receipt, mailto = false, quiet = [];
   let leftIdx = [], rightIdx = [];
   const textIdx = [];
@@ -5425,7 +5502,9 @@ function buildAnswer() {
      and every card draws its cover; recomputing it inside the deferred
      send would find the index landed and hand the model six
      photographs that are not on the page. */
+  const tf0 = performance.now();
   const shownFrames = query.trim() ? frameMatch(query) : [];
+  const framesMs = performance.now() - tf0;
   const evidence = new Map();
   for (const fr of shownFrames) {
     const href = "/case-studies/" + fr.slug;
@@ -5518,12 +5597,28 @@ function buildAnswer() {
   });
   const wk = document.createElement("div");
   wk.className = "blk working";
-  const wtag = document.createElement("span");
-  wtag.className = "tag";
-  wtag.textContent = "How it works";
-  wk.appendChild(wtag);
-  wk.appendChild(document.createTextNode(receipt));
+  /* the panel's readings, all measured this build: the haystack, the
+     catch, and the clock. Held plans carry authored receipts and no
+     measurements — a hand-written answer did not read anything. */
+  WORKING = {
+    receipt,
+    stats: FACTS && query.trim() && !(plan && plan.hold) ? {
+      studies: FACTS.projects.length,
+      photos: (FACTS.images || []).length,
+      vocab: SEEN_VOCAB,
+      projects: leftIdx.filter((ci) => cards[ci].kind === "work").length,
+      frames: shownFrames.total || 0,
+      pulls: rightIdx.filter((ci) => cards[ci].kind === "pull").length,
+      ms: thinkMs + framesMs,
+    } : null,
+  };
+  renderWorking(wk, null);
   notesEl.appendChild(wk);
+  /* THE NOTES NO LONGER WAIT FOR THE SENTENCE. The panel is the show
+     while the model thinks — the whole point of it — so the column
+     fades in with the deal and the rows land through it. One frame
+     later than the remove() above, so the 0.4s fade actually plays. */
+  requestAnimationFrame(() => { if (alive) notesEl.classList.add("on"); });
 
   const segs = toneSplit(say, quiet);
 
