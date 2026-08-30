@@ -1839,6 +1839,27 @@
      value for both the statement and the answers, because they are the
      same voice at the same size. */
   .statement .q, .ansprose .q { color: rgba(0, 0, 0, 0.42); }
+  /* ── THE STAT BAND ────────────────────────────────────────────────
+     The instrument panel's Read/Caught/Time rows, set at the answer's
+     own scale instead of buried in the 12px rail — Jeremy's call: the
+     numbers are the good stuff, and a millisecond lookup over 358
+     photographs deserves the same register as the sentence it feeds.
+     The recessive tone keeps the hierarchy: the model's line is ink,
+     the machine's rows are the site's grey, both at reading size.
+     Lines land one at a time on the rail's own landing move. */
+  .ansstats { margin-top: 18px;
+    font-size: clamp(16px, 1.7vw, 23px); font-weight: 500;
+    line-height: 1.3; letter-spacing: -0.015em;
+    color: rgba(0, 0, 0, 0.42);
+    max-width: calc((100% - var(--ixgap)) / 2); }
+  .ansstats .asl { display: block; opacity: 0; transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ansstats .asl.on { opacity: 1; transform: none; }
+  .ansstats .ask2 { color: rgba(0, 0, 0, 0.26); }
+  @media (prefers-reduced-motion: reduce) {
+    .ansstats .asl { transition: none; transform: none; opacity: 1; }
+  }
+  @media (max-width: 860px) { .ansstats { max-width: none; } }
 
   /* The statement's nouns, clickable. They have to read as the sentence
      first and as controls second, so they take the paragraph's type
@@ -2214,6 +2235,9 @@
   <div class="ixbody">
   <div class="anshead">
     <p class="ansprose" id="ansSay"></p>
+    <!-- the meal being made, at reading size: the panel's measured
+         rows promoted out of the note rail. Filled by renderStats. -->
+    <div class="ansstats" id="ansStats" hidden></div>
 
     <!-- THE COMPOSE BOX. Shown only when the contact intent fires, which
          is the one answer where the reader wants to do something rather
@@ -5261,18 +5285,10 @@ function renderWorking(wk, model) {
      open, and a visitor should read that before the mechanics. The
      held plans carry authored receipts and no measurements, so they
      take no rows at all. */
+  /* Read/Caught/Time live in the stat band under the say line now —
+     Jeremy's call, so the good stuff is not buried in a 12px rail.
+     This block keeps the frame and the model's bookkeeping. */
   if (st || model) row("Status", "a working concept, testing AI in the open");
-  if (st) {
-    row("Read", st.studies + " case studies, " + st.photos +
-      " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms");
-    const parts = [];
-    if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
-    if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
-    if (st.pulls) parts.push(st.pulls + " from the board");
-    row("Caught", parts.length ? parts.join(", ") : "nothing in the index");
-    row("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
-      " on your machine, before any model");
-  }
   if (model) {
     /* deduped: three projects are all titled "Hill Country home", and
        a ledger that says a name twice reads as a bug */
@@ -5291,6 +5307,46 @@ function renderWorking(wk, model) {
   });
   requestAnimationFrame(() => requestAnimationFrame(() =>
     rows.forEach((sp) => sp.classList.add("on"))));
+}
+/* the band under the say line: the same measured rows, promoted.
+   Landing is staggered AFTER the sentence's floor settles — these are
+   on screen during the whole model hold, which is the point. */
+function renderStats() {
+  const el = document.getElementById("ansStats");
+  if (!el) return;
+  const st = WORKING && WORKING.stats;
+  el.innerHTML = "";
+  el.hidden = !st;
+  if (!st) return;
+  const line = (k, v) => {
+    const sp = document.createElement("span");
+    sp.className = "asl";
+    const key = document.createElement("span");
+    key.className = "ask2";
+    key.textContent = k + " · ";
+    sp.appendChild(key);
+    sp.appendChild(document.createTextNode(v));
+    el.appendChild(sp);
+    return sp;
+  };
+  const lines = [];
+  lines.push(line("Read", st.studies + " case studies, " + st.photos +
+    " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
+  const parts = [];
+  if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
+  if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
+  if (st.pulls) parts.push(st.pulls + " from the board");
+  lines.push(line("Caught",
+    (st.q ? "\u201c" + st.q + "\u201d in " : "") +
+    (parts.length ? parts.join(", ") : "nothing in the index")));
+  lines.push(line("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
+    " on your machine, before any model"));
+  lines.forEach((sp, i) => {
+    if (REDUCE()) { sp.classList.add("on"); return; }
+    sp.style.transitionDelay = (i * 130) + "ms";
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    lines.forEach((sp) => sp.classList.add("on"))));
 }
 function writeLedger(notesEl, a) {
   const wk = notesEl.querySelector(".blk.working");
@@ -5609,10 +5665,12 @@ function buildAnswer() {
       projects: leftIdx.filter((ci) => cards[ci].kind === "work").length,
       frames: shownFrames.total || 0,
       pulls: rightIdx.filter((ci) => cards[ci].kind === "pull").length,
+      q: query.trim().slice(0, 32),
       ms: thinkMs + framesMs,
     } : null,
   };
   renderWorking(wk, null);
+  renderStats();
   notesEl.appendChild(wk);
   /* THE NOTES NO LONGER WAIT FOR THE SENTENCE. The panel is the show
      while the model thinks — the whole point of it — so the column

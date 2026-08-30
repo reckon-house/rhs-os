@@ -138,6 +138,10 @@ export function PressingHome() {
         <div className="ixbody">
           <div className="anshead">
           <p className="ansprose" id="ansSay" />
+          {/* the meal being made, at reading size: the instrument
+              panel's Read/Caught/Time rows promoted out of the note
+              rail. The driver's renderStats fills it per build. */}
+          <div className="ansstats" id="ansStats" hidden />
 
           {/* THE COMPOSE BOX, shown only when the contact intent fires.
               The field they typed the question into is the field that

@@ -1781,6 +1781,27 @@
      value for both the statement and the answers, because they are the
      same voice at the same size. */
   .statement .q, .ansprose .q { color: rgba(0, 0, 0, 0.42); }
+  /* ── THE STAT BAND ────────────────────────────────────────────────
+     The instrument panel's Read/Caught/Time rows, set at the answer's
+     own scale instead of buried in the 12px rail — Jeremy's call: the
+     numbers are the good stuff, and a millisecond lookup over 358
+     photographs deserves the same register as the sentence it feeds.
+     The recessive tone keeps the hierarchy: the model's line is ink,
+     the machine's rows are the site's grey, both at reading size.
+     Lines land one at a time on the rail's own landing move. */
+  .ansstats { margin-top: 18px;
+    font-size: clamp(16px, 1.7vw, 23px); font-weight: 500;
+    line-height: 1.3; letter-spacing: -0.015em;
+    color: rgba(0, 0, 0, 0.42);
+    max-width: calc((100% - var(--ixgap)) / 2); }
+  .ansstats .asl { display: block; opacity: 0; transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ansstats .asl.on { opacity: 1; transform: none; }
+  .ansstats .ask2 { color: rgba(0, 0, 0, 0.26); }
+  @media (prefers-reduced-motion: reduce) {
+    .ansstats .asl { transition: none; transform: none; opacity: 1; }
+  }
+  @media (max-width: 860px) { .ansstats { max-width: none; } }
 
   /* The statement's nouns, clickable. They have to read as the sentence
      first and as controls second, so they take the paragraph's type

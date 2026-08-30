@@ -2886,18 +2886,10 @@ function renderWorking(wk, model) {
      open, and a visitor should read that before the mechanics. The
      held plans carry authored receipts and no measurements, so they
      take no rows at all. */
+  /* Read/Caught/Time live in the stat band under the say line now —
+     Jeremy's call, so the good stuff is not buried in a 12px rail.
+     This block keeps the frame and the model's bookkeeping. */
   if (st || model) row("Status", "a working concept, testing AI in the open");
-  if (st) {
-    row("Read", st.studies + " case studies, " + st.photos +
-      " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms");
-    const parts = [];
-    if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
-    if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
-    if (st.pulls) parts.push(st.pulls + " from the board");
-    row("Caught", parts.length ? parts.join(", ") : "nothing in the index");
-    row("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
-      " on your machine, before any model");
-  }
   if (model) {
     /* deduped: three projects are all titled "Hill Country home", and
        a ledger that says a name twice reads as a bug */
@@ -2916,6 +2908,46 @@ function renderWorking(wk, model) {
   });
   requestAnimationFrame(() => requestAnimationFrame(() =>
     rows.forEach((sp) => sp.classList.add("on"))));
+}
+/* the band under the say line: the same measured rows, promoted.
+   Landing is staggered AFTER the sentence's floor settles — these are
+   on screen during the whole model hold, which is the point. */
+function renderStats() {
+  const el = document.getElementById("ansStats");
+  if (!el) return;
+  const st = WORKING && WORKING.stats;
+  el.innerHTML = "";
+  el.hidden = !st;
+  if (!st) return;
+  const line = (k, v) => {
+    const sp = document.createElement("span");
+    sp.className = "asl";
+    const key = document.createElement("span");
+    key.className = "ask2";
+    key.textContent = k + " · ";
+    sp.appendChild(key);
+    sp.appendChild(document.createTextNode(v));
+    el.appendChild(sp);
+    return sp;
+  };
+  const lines = [];
+  lines.push(line("Read", st.studies + " case studies, " + st.photos +
+    " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
+  const parts = [];
+  if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
+  if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
+  if (st.pulls) parts.push(st.pulls + " from the board");
+  lines.push(line("Caught",
+    (st.q ? "\u201c" + st.q + "\u201d in " : "") +
+    (parts.length ? parts.join(", ") : "nothing in the index")));
+  lines.push(line("Time", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
+    " on your machine, before any model"));
+  lines.forEach((sp, i) => {
+    if (REDUCE()) { sp.classList.add("on"); return; }
+    sp.style.transitionDelay = (i * 130) + "ms";
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    lines.forEach((sp) => sp.classList.add("on"))));
 }
 function writeLedger(notesEl, a) {
   const wk = notesEl.querySelector(".blk.working");
@@ -3234,10 +3266,12 @@ function buildAnswer() {
       projects: leftIdx.filter((ci) => cards[ci].kind === "work").length,
       frames: shownFrames.total || 0,
       pulls: rightIdx.filter((ci) => cards[ci].kind === "pull").length,
+      q: query.trim().slice(0, 32),
       ms: thinkMs + framesMs,
     } : null,
   };
   renderWorking(wk, null);
+  renderStats();
   notesEl.appendChild(wk);
   /* THE NOTES NO LONGER WAIT FOR THE SENTENCE. The panel is the show
      while the model thinks — the whole point of it — so the column
