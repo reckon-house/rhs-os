@@ -32,6 +32,15 @@
  * own change.
  */
 
+/* THE STANDING ROOM UNDER THE LEAD FRAME, in pixels. The homepage
+   driver measures it every fit() pass and publishes it here, because
+   only that pass knows where the absolutely-positioned lead frame's
+   bottom lands. The ring has no lead frame and never calls this. */
+function leadRoom(): number {
+  const f = (window as unknown as { leadRoomPx?: () => number }).leadRoomPx;
+  return typeof f === "function" ? f() : 0;
+}
+
 export function armRows(rowsEl: HTMLElement) {
   if (rowsEl.dataset.armed) return;
   rowsEl.dataset.armed = "1";
@@ -79,7 +88,23 @@ export function armRows(rowsEl: HTMLElement) {
        first pair instead, which carries the rest of the index down on
        the same clock. */
     if (card.closest(".ixlead")) {
-      rowsEl.style.setProperty("--lead-drop", drop.toFixed(1) + "px");
+      /* THE PUSH IS PADDING NOW, AND IT IS WRITTEN HERE. It used to be
+         --lead-drop, read by a margin-top rule on .ixlead + .ixrow. Two
+         things changed underneath that and both landed in this file's
+         blind spot: the room became padding (a margin on the first
+         in-flow child of .ixrows collapses through its parent), and the
+         standing interval moved into --lead-room, so a bare --lead-drop
+         had nothing left reading it.
+         Base plus push as ONE number, because a calc over two custom
+         properties dies outright if either is declared-and-empty. */
+      const base = leadRoom();
+      const first = rowsEl.querySelector<HTMLElement>(".ixlead + .ixrow");
+      if (first) {
+        first.style.transition =
+          "padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1)";
+        first.style.paddingTop = (base + drop).toFixed(1) + "px";
+      }
+      rowsEl.style.setProperty("--lead-room", (base + drop).toFixed(1) + "px");
     }
 
     /* How far the name is from the right edge. Measured with a Range
@@ -138,6 +163,14 @@ export function armRows(rowsEl: HTMLElement) {
     card.style.removeProperty("--drop");
     card.style.removeProperty("--slide");
     card.style.removeProperty("--ix-grow");
-    rowsEl.style.removeProperty("--lead-drop");
+    /* back to the standing room, never to nothing: clearing it outright
+       would drop the interval that holds the first pair clear of the
+       lead frame at rest. */
+    if (card.closest(".ixlead")) {
+      const base = leadRoom().toFixed(1) + "px";
+      const first = rowsEl.querySelector<HTMLElement>(".ixlead + .ixrow");
+      if (first) first.style.paddingTop = base;
+      rowsEl.style.setProperty("--lead-room", base);
+    }
   });
 }

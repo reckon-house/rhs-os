@@ -235,7 +235,37 @@ const WORK = projects.map((p) => {
    whose frames grow without making room. */
 const ARM_RX = /function armRows\(rowsEl\) \{[\s\S]*?\n\}\n/;
 if (!ARM_RX.test(jsOut)) throw new Error("port: lab armRows not found");
+const labArm = jsOut.match(ARM_RX)[0];
 jsOut = jsOut.replace(ARM_RX, "");
+
+/* ── 4b. THE TWO COPIES MUST WRITE THE SAME PROPERTIES ──────────────
+   Deleting the lab's armRows and importing the lib's is the one swap
+   here that replaces a body rather than a reference, so the two can
+   drift while every other check still passes — and they did. The
+   lead frame's hover push was rewritten in the LAB, which this line
+   throws away, while the lib went on writing a --lead-drop that
+   nothing had read since the room became padding. The frame grew and
+   the column under it stopped moving, and no guard here noticed.
+
+   Comparing whole bodies is not possible (one is TypeScript), but the
+   custom properties each one WRITES are the contract between them and
+   the stylesheet. If those sets disagree, one of the copies is talking
+   to CSS that no longer exists. */
+const propsOf = (src) =>
+  new Set([...src.matchAll(/setProperty\(\s*"(--[a-z0-9-]+)"/g)].map((m) => m[1]));
+const labProps = propsOf(labArm);
+const libProps = propsOf(readFileSync("src/lib/index-hover.ts", "utf8"));
+const onlyLab = [...labProps].filter((x) => !libProps.has(x));
+const onlyLib = [...libProps].filter((x) => !labProps.has(x));
+if (onlyLab.length || onlyLib.length) {
+  throw new Error(
+    "port: armRows has drifted between the lab and src/lib/index-hover.ts.\n" +
+    "      The lab's copy is deleted at port time and the lib's is what runs,\n" +
+    "      so a property written in only one of them reaches nothing.\n" +
+    (onlyLab.length ? "      only in the lab: " + onlyLab.join(", ") + "\n" : "") +
+    (onlyLib.length ? "      only in the lib: " + onlyLib.join(", ") + "\n" : "")
+  );
+}
 
 /* ── 5. the liveness pair comes from the wrapper, not the lab ──
    The lab declares its own `alive` and `listen` so it still runs when
