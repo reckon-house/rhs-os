@@ -114,13 +114,20 @@
      bottom" is the natural release, not a threshold anyone has to compute. */
   grid-row: 1;
   align-self: start;
-  /* The answer's voice exactly: same clamp, same weight, same measure.
-     It was 62px at 700, which made the footer shout in a register
-     nothing else on the site uses. */
+  /* The answer's MEASURE, at a heading's weight. This was 62px at 700
+     and went to the answer's clamp at the answer's 500, which fixed the
+     right problem — the footer was shouting in a register nothing else
+     on the site uses — and overcorrected on the one axis that was not
+     the problem. The size was the shout. 500 at 32px on black is a
+     spoken line, and this is a heading: it names the beat, it does not
+     say anything. 700 back, size unchanged.
+
+     Kept in step with PressingCredits, which is the other black beat
+     and reads as the same voice or as a mistake. */
   font-size: clamp(21px, 2.4vw, 32px);
   line-height: 1.18;
   letter-spacing: -0.02em;
-  font-weight: 500;
+  font-weight: 700;
   text-transform: none;
   /* The prototype's own limits for this beat. The base .brief headline also
      carries a 100% guard against overflowing track 1; the footer beats
