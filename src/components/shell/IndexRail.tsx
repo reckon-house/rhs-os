@@ -38,7 +38,6 @@ import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { projects } from "@/data/projects";
 import { practiceNotes } from "@/data/practice-notes";
 import { railCategories } from "@/data/rail-categories";
-import { RailIcon } from "@/lib/rail-icons";
 
 /* The photo spine of buildSequence(), with the word beats dropped —
    a stamp carries no headline. Timings verbatim. The two color beats
@@ -119,6 +118,7 @@ export function IndexRail() {
       <Row
         id="info"
         label="Info"
+        glyph="slash"
         open={open === "info"}
         setOpen={setOpen}
       >
@@ -139,6 +139,7 @@ export function IndexRail() {
       <Row
         id="contact"
         label="Connect"
+        glyph="slash"
         open={open === "contact"}
         setOpen={setOpen}
       >
@@ -214,14 +215,19 @@ function Row({
       >
         {/* the words in their own inline box, so the hug pass can
             measure them — the button is the full column */}
+        {/* THE CATEGORIES CARRY NO MARK, and the utility rows keep the
+            slash — the same two-kinds-of-row rule the driver follows in
+            mkRow. Four solids and then four Lucide icons both told the
+            categories apart without saying anything about them, which
+            is work their own labels were already doing. The slash is a
+            different job: it separates Info and Connect from the
+            categories below them. */}
         <span className="rink">
-          {glyph ? (
-            <span className="rglyph"><RailIcon name={glyph} /></span>
-          ) : (
+          {glyph === "slash" ? (
             <>
               <span className="rslash">/</span>{" "}
             </>
-          )}
+          ) : null}
           {label}
         </span>
       </button>
@@ -262,7 +268,6 @@ function CategoryRow({
           destination like any other. */}
       <Link className="rhead" href={`/?q=${encodeURIComponent(cat.query)}`}>
         <span className="rink">
-          <span className="rglyph"><RailIcon name={cat.glyph} /></span>
           {cat.label}
         </span>
       </Link>

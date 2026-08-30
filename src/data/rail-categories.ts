@@ -29,12 +29,14 @@ export interface RailCategory {
   label: string;
   /** the studies' word — what the homepage actually answers */
   query: string;
-  /** the mark beside the label, by name: a key into RAIL_ICONS in
-   *  src/lib/rail-icons.tsx. It held a Swiss basic form until Aug 2026
-   *  — circle, square, triangle, diamond — on the grounds that the site
-   *  had no icon language and four rows was not a reason to invent one.
-   *  The solids told the rows apart without saying anything about them,
-   *  which is a legend, not a mark. */
+  /** the mark beside the label. EMPTY, and that is the setting rather
+   *  than a gap waiting to be filled. It held four Swiss solids, then
+   *  four Lucide icons, and both told the rows apart without saying
+   *  anything about them — a legend for a chart that isn't there,
+   *  when four labels of four different lengths already do the work.
+   *  The field stays because the utility rows in IndexRail pass
+   *  "slash" through it, and because check-rail compares it against
+   *  the driver's own FILTERS. */
   glyph: string;
   /** shown beside the count inside the open drawer */
   note: string;
@@ -46,7 +48,7 @@ export const railCategories: RailCategory[] = [
   {
     label: "Digital Experiences",
     query: "digital",
-    glyph: "monitor",
+    glyph: "",
     note: "Sites, stores and platforms, designed and shipped.",
     ids: [
       "cosmoProf",
@@ -64,14 +66,14 @@ export const railCategories: RailCategory[] = [
   {
     label: "App Development",
     query: "app development",
-    glyph: "smartphone",
+    glyph: "",
     note: "Native tools and AI products, built end to end.",
     ids: ["sallyOS", "arc", "dsc", "sizzle"],
   },
   {
     label: "Campaign/Creative",
     query: "campaign",
-    glyph: "camera",
+    glyph: "",
     note: "Art direction and campaigns for retail's big names.",
     ids: [
       "robertRod",
@@ -85,7 +87,7 @@ export const railCategories: RailCategory[] = [
   {
     label: "Interiors",
     query: "interiors",
-    glyph: "armchair",
+    glyph: "",
     note: "Rooms designed like products, down to the hardware.",
     ids: [
       "hillKitchen",

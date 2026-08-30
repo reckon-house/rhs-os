@@ -1057,22 +1057,13 @@
   /* the words themselves, so their width can be measured — the button
      is full-column and would only ever report that */
   .ixnotes .rdrawer .rink { display: inline-block; }
-  /* THE MARK IS A DRAWING NOW, not a character, so it needs a box of
-     its own rather than a font size. 13px square against 13px type,
-     nudged 2px below the baseline because an icon's optical centre is
-     its middle and a letter's is not. The four labels stay aligned
-     whatever is drawn beside them, which is what the fixed width and
-     the fixed gap are for.
-
-     5px, and the gap has to be STATED now. The solids were characters
-     in a 13px box: a 10px glyph left about 3px of its own trailing air
-     and the label simply followed. A drawing fills its box edge to
-     edge, so with no margin the chair would touch the I. 5 keeps the
-     tight setting that was asked for without the collision. */
+  /* NOTHING DRAWS HERE ANY MORE. .rglyph held a 13px box for a mark
+     beside each category — a Swiss solid, then a Lucide icon — and no
+     row emits one now. The rule stays as the box a mark would take if
+     one ever comes back, and costs nothing while nothing uses it. */
   .ixnotes .rdrawer .rglyph { display: inline-block; width: 13px;
     height: 13px; margin-right: 5px; vertical-align: -2px;
     line-height: 1; }
-  .ixnotes .rdrawer .rglyph svg { display: block; width: 100%; height: 100%; }
   /* the slash is ink, like the word it introduces */
   .ixnotes .rdrawer .rslash { color: var(--ink);
     transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -2461,68 +2452,23 @@ const NOTES = [
    geometric mark for the closed row (Swiss basic forms — the site has
    no icon language and four rows is not a reason to invent one) and
    the one-liner shown beside the count when the row opens. */
-/* \u2500\u2500 the four marks \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
- * Lucide, drawn rather than imported: four icons is not a dependency,
- * and the driver has no bundler to import through anyway. Every shape
- * is written as a path so both surfaces can render one <path> per
- * entry \u2014 no rect/circle/line special cases, and nothing has to inject
- * raw markup. 24x24 box, stroke 2, round joins, which is Lucide's own
- * grid; at the 13px these render into that comes out just over a
- * pixel, the weight of the 500 beside it.
+/* THE FOUR MARKS ARE GONE. This held a Lucide set drawn as raw paths
+ * so both surfaces could render them without a dependency: monitor,
+ * smartphone, camera, armchair. They read as a legend for a chart that
+ * isn't there, which is exactly what the four geometric solids before
+ * them did. A mark tells the rows apart without saying anything about
+ * them, and four labels of four different lengths already do that on
+ * their own. The third position in FILTERS is empty now, and each row
+ * leads with its word.
  *
- * WHAT THEY REPLACED, and why. The rail carried four geometric
- * solids \u2014 circle, square, triangle, diamond \u2014 chosen because the site
- * had no icon language and four rows was not a reason to invent one.
- * They read as a legend for a chart that isn't there: the shapes
- * differentiate the rows without saying anything about them, so the
- * eye has to learn an arbitrary key. A screen, a phone, a camera and a
- * chair say what is behind the door.
- *
- * MIRRORED IN src/lib/rail-icons.ts, and `npm run rail:check` compares
- * them, because the ring in every case-study footer draws the same
- * rail from the app's own copy. */
-const RAIL_ICONS = {
-  /* monitor: sites, stores, platforms */
-  monitor: ["M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
-    "M8 21h8", "M12 17v4"],
-  /* smartphone: native tools and the AI products */
-  smartphone: ["M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z",
-    "M12 18h.01"],
-  /* camera: art direction, which is shoot days */
-  camera: ["M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z",
-    "M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"],
-  /* armchair: rooms */
-  armchair: ["M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3",
-    "M3 11v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H7v-2a2 2 0 0 0-4 0z",
-    "M5 18v2", "M19 18v2"],
-};
-const SVGNS = "http://www.w3.org/2000/svg";
-function railIcon(name) {
-  const paths = RAIL_ICONS[name];
-  if (!paths) return null;
-  const svg = document.createElementNS(SVGNS, "svg");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  /* currentColor, so the mark turns with the row when it floods to
-     ink. The solids inherited that for free by being text. */
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  svg.setAttribute("aria-hidden", "true");
-  paths.forEach((d) => {
-    const p = document.createElementNS(SVGNS, "path");
-    p.setAttribute("d", d);
-    svg.appendChild(p);
-  });
-  return svg;
-}
-
+ * The slot itself stays: it is what the utility rows pass "slash"
+ * through, and check-rail still reads it across both surfaces.
+ */
 const FILTERS = [
-  ["Digital Experiences", "digital", "monitor", "Sites, stores and platforms, designed and shipped."],
-  ["App Development", "app development", "smartphone", "Native tools and AI products, built end to end."],
-  ["Campaign/Creative", "campaign", "camera", "Art direction and campaigns for retail's big names."],
-  ["Interiors", "interiors", "armchair", "Rooms designed like products, down to the hardware."],
+  ["Digital Experiences", "digital", "", "Sites, stores and platforms, designed and shipped."],
+  ["App Development", "app development", "", "Native tools and AI products, built end to end."],
+  ["Campaign/Creative", "campaign", "", "Art direction and campaigns for retail's big names."],
+  ["Interiors", "interiors", "", "Rooms designed like products, down to the hardware."],
 ];
 
 /* The practice statement's own nouns, wired to the field. The words a
@@ -4422,14 +4368,18 @@ function buildMagazine() {
        that width. */
     const ink = document.createElement("span");
     ink.className = "rink";
-    if (glyph) {
-      const g = document.createElement("span");
-      g.className = "rglyph";
-      const svg = railIcon(glyph);
-      if (svg) g.appendChild(svg);
-      else g.textContent = glyph;   /* a name with no drawing still shows */
-      ink.appendChild(g);
-    } else {
+    /* THE CATEGORIES CARRY NO MARK. They had four geometric solids,
+       then four Lucide icons, and both were answering a question
+       nobody asked: the four labels are already four different lengths
+       of different words, and the chip's own shape is the thing that
+       says "press me". A mark in front of each one is a second system
+       doing the first one's job, and it made every row start with a
+       little grey object instead of with its word.
+
+       The utility rows keep the slash, which is not decoration for the
+       same reason: it is what separates Info and Connect from the
+       categories under them. Two kinds of row, one mark. */
+    if (glyph === "slash") {
       /* the utility rows take a slash the way a path does */
       const sl = document.createElement("span");
       sl.className = "rslash";
@@ -4478,7 +4428,7 @@ function buildMagazine() {
 
   /* Info: About (the two practice notes, one thought again) and News */
   {
-    const { r, h, pad } = mkRow("Info");
+    const { r, h, pad } = mkRow("Info", "slash");
     const about = [note(/what i do/i), note(/setup/i)].filter(Boolean);
     if (about.length)
       sub(pad, "About", about.map((c) => c.full).join(" "), about[0].word);
@@ -4490,7 +4440,7 @@ function buildMagazine() {
 
   /* Contact: the address and the one committing link */
   {
-    const { r, h, pad } = mkRow("Connect");
+    const { r, h, pad } = mkRow("Connect", "slash");
     const touch = note(/touch/i);
     if (touch) {
       sub(pad, null, touch.full, touch.word);

@@ -999,22 +999,13 @@
   /* the words themselves, so their width can be measured — the button
      is full-column and would only ever report that */
   .ixnotes .rdrawer .rink { display: inline-block; }
-  /* THE MARK IS A DRAWING NOW, not a character, so it needs a box of
-     its own rather than a font size. 13px square against 13px type,
-     nudged 2px below the baseline because an icon's optical centre is
-     its middle and a letter's is not. The four labels stay aligned
-     whatever is drawn beside them, which is what the fixed width and
-     the fixed gap are for.
-
-     5px, and the gap has to be STATED now. The solids were characters
-     in a 13px box: a 10px glyph left about 3px of its own trailing air
-     and the label simply followed. A drawing fills its box edge to
-     edge, so with no margin the chair would touch the I. 5 keeps the
-     tight setting that was asked for without the collision. */
+  /* NOTHING DRAWS HERE ANY MORE. .rglyph held a 13px box for a mark
+     beside each category — a Swiss solid, then a Lucide icon — and no
+     row emits one now. The rule stays as the box a mark would take if
+     one ever comes back, and costs nothing while nothing uses it. */
   .ixnotes .rdrawer .rglyph { display: inline-block; width: 13px;
     height: 13px; margin-right: 5px; vertical-align: -2px;
     line-height: 1; }
-  .ixnotes .rdrawer .rglyph svg { display: block; width: 100%; height: 100%; }
   /* the slash is ink, like the word it introduces */
   .ixnotes .rdrawer .rslash { color: var(--ink);
     transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
