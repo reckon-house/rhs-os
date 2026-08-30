@@ -3855,6 +3855,12 @@ let tourFull = "";                     /* what placeAsk should size to */
 (() => {
   /* the air left under each header once it is lifted */
   const GAP = 44;
+  /* THE STANDING ROOM UNDER THE LEAD FRAME, in pixels, shared with the
+     hover push below so the two can be added in JS. They used to be two
+     custom properties added in a calc, and an emptied property took the
+     whole declaration to zero — see .ixlead + .ixrow in the stylesheet. */
+  let leadRoom = 0;
+  window.leadRoomPx = () => leadRoom;
   const root = document.documentElement;
   let raf = 0;
 
@@ -3917,8 +3923,18 @@ let tourFull = "";                     /* what placeAsk should size to */
       const want = parseFloat(getComputedStyle(gauge).marginBottom) || 0;
       const have = pair.getBoundingClientRect().top -
         cell.getBoundingClientRect().bottom;
-      ixRows.style.setProperty("--lead-room",
-        Math.max(0, want - have).toFixed(1) + "px");
+      /* Kept as a number as well as written as a length: the hover
+         push adds to it and there is no second property for it to add
+         through. See --lead-drop's removal in the stylesheet. */
+      leadRoom = Math.max(0, want - have);
+      /* WRITTEN ON THE ROW, not left to a rule to pick up. Every other
+         measured quantity on this page lands the same way — --drop,
+         --slide, --share, the cell order — and a value the driver
+         already holds does not need a stylesheet to carry it. The
+         property below stays because the transition reads it and
+         because a second surface can. */
+      ixRows.style.setProperty("--lead-room", leadRoom.toFixed(1) + "px");
+      pair.style.paddingTop = leadRoom.toFixed(1) + "px";
     }
     pinRails();
   };
@@ -4483,7 +4499,14 @@ async function playTransition(href, title, sub) {
      from a route change to `rowsEl.innerHTML` on a null. */
   listen(window, "resize", () => {
     clearTimeout(rw);
-    rw = setTimeout(() => { buildMagazine(); if (query.trim()) buildAnswer(); }, 180);
+    rw = setTimeout(() => {
+      buildMagazine();
+      if (query.trim()) buildAnswer();
+      /* AFTER the redeal, not before. fit() is on the same resize
+         through a rAF, so it runs first and writes the lead's room onto
+         a row this rebuild then throws away. */
+      if (window.fitColumns) fitColumns();
+    }, 180);
   });
 })();
 

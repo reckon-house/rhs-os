@@ -1350,17 +1350,25 @@
     /* The lead frame's room, since it cannot make its own: the first
        pair takes the drop as real margin and the whole index follows
        it down, on the same clock as the picture opening. */
-    /* The hover push RIDES ON the standing room rather than replacing
-       it: this rule wins the cascade, so a bare --lead-drop here would
-       drop the interval on every hover-capable screen.
+    /* ONE PROPERTY, NO CALC, and that is not tidiness. This was
+       `calc(var(--lead-room, 0px) + var(--lead-drop, 0px))` and it
+       computed to ZERO on production, with --lead-room inheriting a
+       perfectly good 120.4px. A custom property that has been declared
+       and then emptied is VALID AND EMPTY, not invalid — so var() does
+       not reach for its fallback, it substitutes nothing, the calc
+       becomes `calc(120.4px + )`, and an invalid calc takes the whole
+       declaration down to the property's initial value. The hover
+       push wrote --lead-drop and the standing interval disappeared
+       with it.
 
-       Padding for the same reason the standing rule uses it — a margin
-       on the first in-flow child of .ixrows collapses through its
-       parent and moves nothing. Which means the hover push has never
-       worked either; the lead frame has been growing over the pair
-       below it since this was written. */
+       So the driver adds the two itself and writes one number. There
+       is nothing here for a second property to poison.
+
+       The transition is all this rule does now. Padding, not margin,
+       for the reason the standing rule gives — which also means the
+       hover push had never worked, and the lead frame has been growing
+       over the pair below it since it was written. */
     .ixlead + .ixrow {
-      padding-top: calc(var(--lead-room, 0px) + var(--lead-drop, 0px));
       transition: padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   }
 

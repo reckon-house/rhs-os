@@ -1408,17 +1408,25 @@
     /* The lead frame's room, since it cannot make its own: the first
        pair takes the drop as real margin and the whole index follows
        it down, on the same clock as the picture opening. */
-    /* The hover push RIDES ON the standing room rather than replacing
-       it: this rule wins the cascade, so a bare --lead-drop here would
-       drop the interval on every hover-capable screen.
+    /* ONE PROPERTY, NO CALC, and that is not tidiness. This was
+       `calc(var(--lead-room, 0px) + var(--lead-drop, 0px))` and it
+       computed to ZERO on production, with --lead-room inheriting a
+       perfectly good 120.4px. A custom property that has been declared
+       and then emptied is VALID AND EMPTY, not invalid — so var() does
+       not reach for its fallback, it substitutes nothing, the calc
+       becomes `calc(120.4px + )`, and an invalid calc takes the whole
+       declaration down to the property's initial value. The hover
+       push wrote --lead-drop and the standing interval disappeared
+       with it.
 
-       Padding for the same reason the standing rule uses it — a margin
-       on the first in-flow child of .ixrows collapses through its
-       parent and moves nothing. Which means the hover push has never
-       worked either; the lead frame has been growing over the pair
-       below it since this was written. */
+       So the driver adds the two itself and writes one number. There
+       is nothing here for a second property to poison.
+
+       The transition is all this rule does now. Padding, not margin,
+       for the reason the standing rule gives — which also means the
+       hover push had never worked, and the lead frame has been growing
+       over the pair below it since it was written. */
     .ixlead + .ixrow {
-      padding-top: calc(var(--lead-room, 0px) + var(--lead-drop, 0px));
       transition: padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   }
 
@@ -6264,6 +6272,12 @@ let tourFull = "";                     /* what placeAsk should size to */
 (() => {
   /* the air left under each header once it is lifted */
   const GAP = 44;
+  /* THE STANDING ROOM UNDER THE LEAD FRAME, in pixels, shared with the
+     hover push below so the two can be added in JS. They used to be two
+     custom properties added in a calc, and an emptied property took the
+     whole declaration to zero — see .ixlead + .ixrow in the stylesheet. */
+  let leadRoom = 0;
+  window.leadRoomPx = () => leadRoom;
   const root = document.documentElement;
   let raf = 0;
 
@@ -6326,8 +6340,18 @@ let tourFull = "";                     /* what placeAsk should size to */
       const want = parseFloat(getComputedStyle(gauge).marginBottom) || 0;
       const have = pair.getBoundingClientRect().top -
         cell.getBoundingClientRect().bottom;
-      ixRows.style.setProperty("--lead-room",
-        Math.max(0, want - have).toFixed(1) + "px");
+      /* Kept as a number as well as written as a length: the hover
+         push adds to it and there is no second property for it to add
+         through. See --lead-drop's removal in the stylesheet. */
+      leadRoom = Math.max(0, want - have);
+      /* WRITTEN ON THE ROW, not left to a rule to pick up. Every other
+         measured quantity on this page lands the same way — --drop,
+         --slide, --share, the cell order — and a value the driver
+         already holds does not need a stylesheet to carry it. The
+         property below stays because the transition reads it and
+         because a second surface can. */
+      ixRows.style.setProperty("--lead-room", leadRoom.toFixed(1) + "px");
+      pair.style.paddingTop = leadRoom.toFixed(1) + "px";
     }
     pinRails();
   };
@@ -6750,7 +6774,13 @@ function armRows(rowsEl) {
        first pair instead, which carries the rest of the index down on
        the same clock. */
     if (card.closest(".ixlead")) {
-      rowsEl.style.setProperty("--lead-drop", drop.toFixed(1) + "px");
+      /* the standing room PLUS the push, as one number. Adding them in
+         CSS meant a calc over two custom properties, and an emptied one
+         voids the declaration rather than falling back. */
+      const base = window.leadRoomPx ? window.leadRoomPx() : 0;
+      const first = rowsEl.querySelector(".ixlead + .ixrow");
+      if (first) first.style.paddingTop = (base + drop).toFixed(1) + "px";
+      rowsEl.style.setProperty("--lead-room", (base + drop).toFixed(1) + "px");
     }
 
     /* How far the name is from the right edge. Measured with a Range
@@ -6805,7 +6835,14 @@ function armRows(rowsEl) {
     card.style.removeProperty("--drop");
     card.style.removeProperty("--slide");
     card.style.removeProperty("--ix-grow");
-    rowsEl.style.removeProperty("--lead-drop");
+    /* back to the standing room, not to nothing: clearing it outright
+       would drop the interval under the lead frame too */
+    if (window.leadRoomPx) {
+      const base = window.leadRoomPx().toFixed(1) + "px";
+      const first = rowsEl.querySelector(".ixlead + .ixrow");
+      if (first) first.style.paddingTop = base;
+      rowsEl.style.setProperty("--lead-room", base);
+    }
   });
 }
 
@@ -7012,7 +7049,14 @@ function armRows(rowsEl) {
      from a route change to `rowsEl.innerHTML` on a null. */
   listen(window, "resize", () => {
     clearTimeout(rw);
-    rw = setTimeout(() => { buildMagazine(); if (query.trim()) buildAnswer(); }, 180);
+    rw = setTimeout(() => {
+      buildMagazine();
+      if (query.trim()) buildAnswer();
+      /* AFTER the redeal, not before. fit() is on the same resize
+         through a rAF, so it runs first and writes the lead's room onto
+         a row this rebuild then throws away. */
+      if (window.fitColumns) fitColumns();
+    }, 180);
   });
 })();
 </script>
