@@ -39,7 +39,7 @@
      Same declaration PressingCredits carries, for the reason its
      comment gives: the Pressing C shell keeps the prototype's voice,
      and these two beats are partners. */
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 
   /* The prototype's .screen height, with the sticky var(--nav-h) masthead standing in

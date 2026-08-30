@@ -51,7 +51,7 @@
 
   /* The prototype's Helvetica system stack, not Satoshi — the Swiss bar
      keeps its own voice. */
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: var(--nav-size);
   letter-spacing: 0.04em;
   font-weight: 500;

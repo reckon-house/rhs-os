@@ -61,7 +61,7 @@
   /* Helvetica, not Satoshi. The Pressing C shell keeps the prototype's own
      voice — the same call the Masthead makes at the top of the page, and
      the footer is its partner. */
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 
   /* minmax(0, …) on track 1, not a bare 1fr. The headline's reveal wraps

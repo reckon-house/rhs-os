@@ -68,7 +68,7 @@
        never declared before, only ever the 200px fallback. */
     --ix-note-w: 180px;
   --stratum-air: clamp(56px, 9dvh, 120px);
-    --sans: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
   /* SCOPED BY THE PORT. The lab can say `html { background }` because
@@ -610,7 +610,7 @@
      nothing a page does to <body> can reach it. */
   .pt { position: fixed; inset: 0; z-index: 200; pointer-events: none;
     visibility: hidden;
-    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased; }
   .pt.pt-run { visibility: visible; pointer-events: auto; }
   .ptw, .ptb { position: absolute; inset: 0; }

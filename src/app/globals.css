@@ -147,31 +147,30 @@ html.cursor-shape-on * { cursor: none !important; }
   font-style: normal;
 }
 
-/* ── REGULAR IS THE ONE WEIGHT NOT HOSTED ──────────────────────────
-   The five files below were licensed for the brand-system specimens in
-   A.R.C. and Ivy Park, where Avenir is the CLIENT's face and only the
-   display weights are set. Now that the shell reads in Avenir too,
-   weight 400 is the most-used value on the site — fifteen declarations,
-   every run of body copy — and there is no file for it.
+/* ── REGULAR CARRIES THE BODY OF THE SITE ──────────────────────────
+   Weight 400 is the most-used value here — fifteen declarations, every
+   run of body copy — and for one day it was the only weight without a
+   file, resolving from local() and therefore only on a Mac. A family
+   defined by @font-face does not fall through to a system font of the
+   same name, so a visitor without Avenir Next installed got the
+   nearest declared face, Medium, and every paragraph set one step
+   heavy. Licensed and hosted now, like the rest.
 
-   A family defined by @font-face does not fall through to a local font
-   of the same name, so without this rule 400 resolves to the nearest
-   declared face, Medium, and every paragraph on the site sets one step
-   heavy. local() first is what fixes that on a Mac today.
-
-   THIS IS NOT SHIPPABLE AS IT STANDS. A visitor without Avenir Next
-   installed still gets Medium for body copy. Shipping the shift means
-   licensing AvenirNext-Regular (and its italic) as a hosted woff2, the
-   same way the five above were. Until then this is a look, not a
-   launch. */
+   woff2, cut from the purchased woff: 127KB to 66KB for the same 1130
+   glyphs. The four .woff files below are the older format and are
+   worth re-cutting the same way when someone is next in here. */
 @font-face {
   font-family: 'Avenir Next';
-  src: local('Avenir Next Regular'), local('AvenirNext-Regular'),
-       local('Avenir Next'), local('AvenirNext');
+  src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'),
+       url('/fonts/AvenirNext-Regular.woff') format('woff');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
+/* ITALIC IS STILL local(). The shell sets italic almost nowhere, so
+   this is the one face left where a non-Mac visitor falls to the
+   nearest declared weight. Drop AvenirNext-RegularItalic.woff2 in
+   beside its upright and this becomes a url() like the others. */
 @font-face {
   font-family: 'Avenir Next';
   src: local('Avenir Next Italic'), local('AvenirNext-Italic');
@@ -706,8 +705,15 @@ input[type="color"].sz-swatch::-moz-color-swatch { border: none; border-radius: 
   }
 }
 
+/* NO BARE `Avenir` IN THE STACK. It was the hedge for a machine that
+   had Avenir but not Avenir Next, and every weight the site sets is
+   hosted now, so the only moment it could ever fire is the swap window
+   while the files download — where it would show an OLDER, different
+   face (smaller x-height, different terminals) and then reflow into
+   Avenir Next. Falling to Helvetica there is one honest substitution
+   instead of two. */
 .pressing {
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: var(--pp-paper);
   color: var(--pp-ink);
 }
