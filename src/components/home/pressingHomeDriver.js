@@ -3934,6 +3934,10 @@ let tourFull = "";                     /* what placeAsk should size to */
          property below stays because the transition reads it and
          because a second surface can. */
       ixRows.style.setProperty("--lead-room", leadRoom.toFixed(1) + "px");
+      /* transition off: this is where the row RESTS, and a rest
+         position that animates into place is an arrival nobody asked
+         for. The hover push turns it on for its own move. */
+      pair.style.transition = "none";
       pair.style.paddingTop = leadRoom.toFixed(1) + "px";
     }
     pinRails();

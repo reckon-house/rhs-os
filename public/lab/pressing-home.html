@@ -1426,8 +1426,18 @@
        for the reason the standing rule gives — which also means the
        hover push had never worked, and the lead frame has been growing
        over the pair below it since it was written. */
-    .ixlead + .ixrow {
-      transition: padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* NO STANDING TRANSITION HERE, and that is the fix rather than a
+       simplification. Declared on the rule, it applied to the room the
+       fit() pass writes on first paint — so the interval under the lead
+       frame ANIMATED IN from zero over 0.62s on every load, which is a
+       layout constant behaving like a gesture. It also hid itself:
+       getComputedStyle reports the animating value, so every
+       measurement of this row read 0px while the transition was still
+       running, and in a throttled tab it never finished at all.
+
+       The hover push arms the transition inline for the length of the
+       push and the driver takes it off again. See the lead branch in
+       the pointer handler. */
   }
 
   @media (max-width: 860px) {
@@ -6351,6 +6361,10 @@ let tourFull = "";                     /* what placeAsk should size to */
          property below stays because the transition reads it and
          because a second surface can. */
       ixRows.style.setProperty("--lead-room", leadRoom.toFixed(1) + "px");
+      /* transition off: this is where the row RESTS, and a rest
+         position that animates into place is an arrival nobody asked
+         for. The hover push turns it on for its own move. */
+      pair.style.transition = "none";
       pair.style.paddingTop = leadRoom.toFixed(1) + "px";
     }
     pinRails();
@@ -6779,7 +6793,11 @@ function armRows(rowsEl) {
          voids the declaration rather than falling back. */
       const base = window.leadRoomPx ? window.leadRoomPx() : 0;
       const first = rowsEl.querySelector(".ixlead + .ixrow");
-      if (first) first.style.paddingTop = (base + drop).toFixed(1) + "px";
+      if (first) {
+        /* armed for the push and only for the push */
+        first.style.transition = "padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1)";
+        first.style.paddingTop = (base + drop).toFixed(1) + "px";
+      }
       rowsEl.style.setProperty("--lead-room", (base + drop).toFixed(1) + "px");
     }
 
