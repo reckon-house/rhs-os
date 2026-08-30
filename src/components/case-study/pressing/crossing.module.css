@@ -117,7 +117,17 @@
    fixed and the column has to fit underneath it. */
 @media (max-width: 760px) {
   .sticky {
-    padding: 30px 20px;
+    /* THE HEADLINE STARTS BELOW THE BAR. The pinned screen is top: 0 so
+       it slides UNDER the masthead, which is right on a desktop where a
+       118px headline has room to spare above it. On a phone the same
+       zero put the first line 76px down an 812px screen, so it opened
+       already half-covered by the bar and read as clipped rather than
+       as arriving. The pin holds for ~975px of scroll either way; what
+       was short was the window in which the words were legible.
+
+       nav-h plus air, not a flat number, because --nav-h steps down at
+       760 and this block is the only place that matters. */
+    padding: calc(var(--nav-h) + 46px) 20px 30px;
     grid-template-columns: 1fr;
   }
   .head {

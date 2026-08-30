@@ -1,0 +1,114 @@
+/*
+  PressingPhoneRail — the sticky section label, phones only.
+
+  WHY IT EXISTS. The pressing language was tuned on a wide screen, where a
+  section's label sits in one column while the picture moves in another, so
+  the reader always has the name of the thing beside the thing. A phone has
+  room for the gesture alone: the label scrolls past in under a second and
+  every section after it arrives mid-motion, unnamed. The owner's words for
+  it were "you don't really know what you're scrolling into".
+
+  So the label stops scrolling. One bar under the masthead carrying the
+  name of the section you are currently inside, the way a chapter heading
+  works in a long read.
+
+  FIXED, NOT STICKY, and that is the whole reason this is one element
+  rather than a wrapper per section. Sticky needs a containing block, which
+  means wrapping each run of sections in a box — and the layout's own notes
+  record what that costs: a rise plate pulls itself up by a negative margin
+  that collapses through a wrapper, and a clipping or transformed ancestor
+  kills the pins outright. Fixed needs no ancestor at all, so nothing in the
+  choreography is touched.
+*/
+
+.rail {
+  position: fixed;
+  /* THE BOTTOM, because the top is taken. The masthead already holds the
+     top of a phone screen, and a second bar under it stacked two pieces
+     of furniture over the work and ate 84px of a screen that has none to
+     spare. Down here it reads as a status line rather than a second nav,
+     it sits in the thumb's half of the phone, and the picture keeps the
+     whole top of the glass. Owner's call. */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  height: 30px;
+  /* The home indicator. Without this the label sits under it on every
+     modern iPhone, which is exactly the "reads as broken" the bar is
+     here to stop. The box grows rather than the text shifting. */
+  height: calc(30px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* The masthead's own treatment, one step quieter: this is a label, not
+     a second bar competing with the one above it. */
+  background: color-mix(in srgb, var(--pp-paper) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-top: 1px solid rgba(0, 0, 0, 0.09);
+
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  /* It arrives with the first section and leaves with the last. Held off
+     the cover on purpose: the cover names the study in full, and a label
+     repeating it under the masthead would be the title twice on one
+     screen. */
+  opacity: 0;
+  /* Down, not up: it arrives from the edge it lives on. */
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.rail[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* The number, held apart from the name. The label is authored as
+   "SECTION 03: SCHEDULING BY CHAT" and the two halves do different jobs:
+   the numeral says how far in you are, the name says what this is. Split
+   so the name can take the room and truncate on its own. */
+.n {
+  flex: none;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.name {
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--pp-ink);
+  /* One line. A label that wraps is a paragraph, and this bar is meant to
+     be read at a glance and then ignored. */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── ABOVE THE PHONE, NOTHING ────────────────────────────────────────
+   The wide layout already shows the label in its own column beside the
+   work, which is where it belongs when there is room for it. 760 is
+   CHOREO_BREAKPOINT, the same line the grid collapses on. */
+@media (min-width: 761px) {
+  .rail {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail {
+    transition: none;
+  }
+}

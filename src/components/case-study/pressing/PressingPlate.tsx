@@ -50,6 +50,8 @@ export interface PressingPlateProps {
   eager?: boolean;
   /** Editorial ceiling, under the native one. See pressing.plateWidth. */
   plateWidth?: number;
+  /** The shape this plate morphs to on a phone. See pressing.phoneRatio. */
+  phoneRatio?: number;
 }
 
 export function PressingPlate({
@@ -62,6 +64,7 @@ export function PressingPlate({
   height,
   eager = false,
   plateWidth,
+  phoneRatio,
 }: PressingPlateProps) {
   if (rise) {
     if (!caption) {
@@ -73,6 +76,7 @@ export function PressingPlate({
           height={height}
           eager={eager}
           plateWidth={plateWidth}
+          phoneRatio={phoneRatio}
         />
       );
     }
@@ -89,6 +93,7 @@ export function PressingPlate({
           height={height}
           eager={eager}
           plateWidth={plateWidth}
+          phoneRatio={phoneRatio}
         />
         <figcaption className={`${styles.caption} ${styles.riseCap}`}>
           {caption}

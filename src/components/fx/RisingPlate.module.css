@@ -39,37 +39,79 @@
      taller than the glass. Phones only: desktop rhythm is tuned and a
      capped desktop riser must not grow its section. */
   .riser {
-    min-height: 100dvh;
+    /* A FLAT SCREEN RESERVED HALF A SCREEN OF NOTHING. This was
+       100dvh, which is the room the climb needs and also, on a phone,
+       roughly twice the room the plate occupies: measured on DSC at
+       375x812 the section stood 812 tall around a 410 plate, so half
+       of every riser was empty white. The owner read it, four times,
+       as "a container that isn't growing" — and it was not the plate
+       or the image, both of which morph correctly. It was this.
+
+       Derived from the plate now rather than fixed: its own morphed
+       height (100vw ÷ the tall ratio) plus 30dvh of climb room. The
+       min() keeps the old value as a CEILING, so a plate too small to
+       need the space still gets the full screen the crossing was tuned
+       against and nothing that worked before gets shorter.
+
+       The 30dvh is the part to watch. It is the room the next section
+       is held off by while the plate is still crossing, and it is the
+       one number here that was chosen rather than measured. */
+    min-height: min(
+      100dvh,
+      calc(100vw / var(--tall-ar, 1.5) + 30dvh)
+    );
   }
 
+  /* ── THE HERO SCROLLS ITS OWN WIDTH ──────────────────────────────
+     The whole mobile problem in one line: the pressing language is
+     landscape-native and a phone is portrait, so vertically height is
+     scarce and width is fixed, and a wide picture can only get bigger
+     by being cropped. Every setting before this bought presence with
+     the picture's own edges — 23% of the width at the safe cap, 50% at
+     double height, 67% at triple, which sliced a laptop in half.
+
+     Horizontally that inverts. Height is fixed and width is FREE: a
+     1.62 hero sized to the screen's height is 1315px wide, and
+     overflowing the width stops being a crop and becomes the scroll
+     direction. Nothing is cut, the picture is as large as the glass
+     allows, and the whole composition can be panned.
+
+     Not a new idea in this codebase either. CLAUDE.md already rules
+     that charts wider than the phone take an intentional horizontal
+     scroll rather than being squeezed. This is that rule, applied to
+     the pictures.
+
+     It replaces the crop outright: no target ratio, no cover scale, no
+     per-study numbers, nothing for anyone to keep up with. */
   .riser[data-tallmorph] .clip {
     position: relative;
-    overflow: hidden;
-    /* the crop pans under a horizontal drag (RisingPlate.tsx): vertical
-       scrolling stays the browser's, sideways is the picture's.
-       pinch-zoom is named explicitly — pan-y alone withdraws it, and
-       this box is most of a phone screen, so that took two-finger
-       zoom away from the one element a reader is most likely to
-       want a closer look at. */
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* The page keeps every vertical gesture; only sideways is the
+       picture's. Native scroll, so momentum and rubber-banding come
+       free and the driver never touches it. pinch-zoom stays named:
+       pan-y alone withdraws it, and this box is most of a phone
+       screen. */
     touch-action: pan-y pinch-zoom;
-    /* The WIDE state, from the declared ratio: the box literally IS the
-       image's own shape until the driver starts growing it. This is
-       also the no-JS and reduced-motion state — the full composition,
-       uncropped, in flow. */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* The WIDE state, from the declared ratio. Still the no-JS and
+       reduced-motion state: the full composition, in flow. */
     height: calc(100vw / var(--nat-ar, 1.5));
     border-radius: var(--pp-r, 16px);
   }
+  .riser[data-tallmorph] .clip::-webkit-scrollbar {
+    display: none;
+  }
   .riser[data-tallmorph] .clip > img {
-    /* cover inside the growing box: as the driver raises the box's
-       height past the native ratio, the crop happens by itself and the
-       CONTAINER is what visibly goes wide to tall — the first cut kept
-       the box fixed and opened a clip window inside it, and the owner
-       read it exactly as that: an image straining inside a box that
-       never grows. */
-    position: absolute;
-    inset: 0;
-    width: 100%;
+    /* Height fills the box; width follows the file's own ratio and
+       overflows into the scroll. max-width: none is load-bearing — the
+       shell sets img { max-width: 100% } globally, which would shrink
+       this straight back to the box and undo the whole idea. */
+    display: block;
     height: 100%;
+    width: auto;
+    max-width: none;
     object-fit: cover;
   }
 }

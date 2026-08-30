@@ -50,6 +50,7 @@ import { PressingCoverageChart } from "./viz/PressingCoverageChart";
 import { PressingGapColumn } from "./viz/PressingGapColumn";
 import { PressingCoverageCard } from "./PressingCoverageCard";
 import { PressingScreenGrid } from "./PressingScreenGrid";
+import { PressingPhoneRail, MARK_ATTR } from "./PressingPhoneRail";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
@@ -205,6 +206,22 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     // ── Header-led clusters: brief / crossing / closing ──
     if (s.type === "section-header") {
+      /* THE PHONE RAIL'S MARKER. Zero height, no box, no styling: it
+         takes no part in layout, so the rise plates' negative margins
+         still land on the sibling they were measured against and no
+         section gains an ancestor. PressingPhoneRail reads these to
+         name the section the reader is currently inside — on a wide
+         screen the label sits in its own column beside the work, and
+         on a phone it used to scroll past in under a second. */
+      out.push(
+        <span
+          key={s.id + "-mark"}
+          {...{ [MARK_ATTR]: "" }}
+          data-label={s.label ?? ""}
+          data-title={s.title ?? ""}
+          style={{ display: "block", height: 0 }}
+        />
+      );
       // Absorb the run of text sections that follow (subhead + footnote both
       // become column paragraphs — the prototype sets them at one size), and
       // a trailing three-column-text becomes the nested method grid.
@@ -399,6 +416,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
             bleed={s.type === "image" ? s.bleed : undefined}
             eager={i <= 1}
             plateWidth={p?.plateWidth}
+            phoneRatio={p?.phoneRatio}
             {...dim(src)}
           />
         );
@@ -992,6 +1010,12 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
         className="hero-breakout absolute bottom-0 -z-10"
         style={{ background: "var(--pp-paper)", top: "-54px" }}
       />
+      {/* One bar for the whole study, fixed under the masthead and
+          hidden above 760. It is a child of the article only so it
+          inherits the .pressing token scope; being fixed, it has no
+          containing block here and nothing in the choreography sees
+          it. */}
+      <PressingPhoneRail />
       {out}
     </article>
   );

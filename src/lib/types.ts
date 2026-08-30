@@ -206,6 +206,32 @@ interface BaseSection {
      * in studies nobody asked about.
      */
     plateWidth?: number;
+    /**
+     * The shape a rising plate morphs to on a PHONE, as width ÷ height.
+     * Below 1 is portrait.
+     *
+     * Left unset, the morph derives its target from the file's own ratio
+     * and will only crop to a 1.3x cover scale — a cap that exists so a
+     * device mockup never loses a third of its width. The arithmetic of
+     * that is unavoidable: a 1.62 file targets a 1.62/1.3 = 1.25 box, so
+     * it goes from wide to slightly less wide and never becomes vertical,
+     * which on a phone reads as an animation straining inside a container
+     * that refuses to grow.
+     *
+     * WHAT IT COSTS, because the arithmetic is unforgiving. The box
+     * fills by object-fit: cover, so every pixel of height it gains is
+     * paid for in width. A 1.62 file in a 0.75 box is magnified until
+     * its width is 797px inside a 369px frame: 54% of the picture is
+     * gone off the sides. Tried on DSC and it sliced the laptop in half,
+     * which is the same failure the 1.3 cap was added to stop.
+     *
+     * So this is not the lever for "make the hero bigger on a phone".
+     * There is no such lever with one landscape source. It is only for a
+     * picture with real margin around its subject, and the number should
+     * be checked against the actual crop rather than chosen for height.
+     * Nothing sets it today.
+     */
+    phoneRatio?: number;
     /** Mono instruction line on zoom plates ("Scroll. It fills the mat...") */
     instruction?: string;
     /** The headline's separately-held final line (the prototype's .out span) */
