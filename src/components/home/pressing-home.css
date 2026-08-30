@@ -1145,6 +1145,34 @@
   .ixlead { position: absolute; right: 0;
     top: calc(-1 * var(--col3-lift, 0px));
     width: calc((100% - var(--ixgap)) / 2); }
+  /* ── THE ROOM UNDER THE LEAD FRAME ────────────────────────────────
+     Every other row opens the page under itself with margin-bottom.
+     This one cannot: it is absolutely positioned, so its own margin
+     moves nothing, and the zero above says so rather than choosing it.
+
+     What sat under it was RESIDUE. The lead's top is pinned to the
+     cover's address by --col3-lift and its bottom falls wherever the
+     picture's height puts it, while the first pair starts where it
+     would have anyway. Measured on production: 156px, against the
+     165px every other row was keeping at that width. Close enough to
+     look deliberate, and it was not — it had been 156 while the rows
+     were at 82, and it stayed 156 when they doubled to 165. It could
+     never track the interval, because nothing connected the two.
+
+     --lead-room is the difference, measured in the driver's fit() pass
+     and written on #ixRows, so the first pair clears the lead frame by
+     exactly the interval the rest of the index keeps. Zero until it is
+     measured, which is what the page did before.
+
+     PADDING, NOT MARGIN, and that is the whole trick. The first pair
+     is the first in-flow child of .ixrows — the lead above it is
+     absolute and takes no part — and .ixrows is position:relative,
+     which is not a block formatting context. So a margin-top on this
+     row COLLAPSES THROUGH its parent: it moves .ixrows instead of
+     opening a gap inside it, and the frame below stays exactly where
+     it was. Measured: margin-top 40px moved the first frame 0px,
+     padding-top 40px moved it 40. Padding does not collapse. */
+  .ixlead + .ixrow { padding-top: var(--lead-room, 0px); }
   /* THE LEFT COLUMN HANGS OFF ITS OWN RULE. Frames are a fraction of
      their column, so which edge they sit on is a real choice: the
      right column reads against the page edge, the left against the
@@ -1322,8 +1350,18 @@
     /* The lead frame's room, since it cannot make its own: the first
        pair takes the drop as real margin and the whole index follows
        it down, on the same clock as the picture opening. */
-    .ixlead + .ixrow { margin-top: var(--lead-drop, 0px);
-      transition: margin-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* The hover push RIDES ON the standing room rather than replacing
+       it: this rule wins the cascade, so a bare --lead-drop here would
+       drop the interval on every hover-capable screen.
+
+       Padding for the same reason the standing rule uses it — a margin
+       on the first in-flow child of .ixrows collapses through its
+       parent and moves nothing. Which means the hover push has never
+       worked either; the lead frame has been growing over the pair
+       below it since this was written. */
+    .ixlead + .ixrow {
+      padding-top: calc(var(--lead-room, 0px) + var(--lead-drop, 0px));
+      transition: padding-top 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   }
 
   @media (max-width: 860px) {

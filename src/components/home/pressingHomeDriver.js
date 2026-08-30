@@ -3891,6 +3891,35 @@ let tourFull = "";                     /* what placeAsk should size to */
       Math.max(0, railTop - markBottom - GAP).toFixed(1) + "px");
     root.style.setProperty("--col3-lift",
       Math.max(0, cellTop - metaBottom - GAP).toFixed(1) + "px");
+
+    /* ── THE ROOM UNDER THE LEAD FRAME ──────────────────────────────
+       Only a measurement can know this one. The lead is out of flow,
+       so the interval below it is whatever is left over once its top
+       is pinned to the cover and its picture has whatever height it
+       has — see .ixlead + .ixrow in the stylesheet. Read the interval
+       off a real row rather than re-deriving the clamp, so the two can
+       never disagree, then hand the first pair the shortfall.
+
+       MEASURED OFF THE ROW'S BORDER BOX, which is the whole reason
+       this pass needs no zeroing and cannot oscillate. The room is
+       PADDING inside that row, so it moves the frames and never the
+       row's own top edge — the quantity read here is independent of
+       the quantity written, and running the pass twice gives the same
+       answer. Measuring the frame's top instead makes it read its own
+       last answer, and the value chased itself between 112 and 8
+       across passes when it was written that way. */
+    const ixRows = document.getElementById("ixRows");
+    const pair = ixRows && ixRows.querySelector(".ixlead + .ixrow");
+    if (ixRows && pair) {
+      /* not :last-child, whose margin is zeroed — that row would report
+         no interval at all and the lead would keep its residue */
+      const gauge = ixRows.querySelector(".ixrow:not(.ixlead):not(:last-child)") || pair;
+      const want = parseFloat(getComputedStyle(gauge).marginBottom) || 0;
+      const have = pair.getBoundingClientRect().top -
+        cell.getBoundingClientRect().bottom;
+      ixRows.style.setProperty("--lead-room",
+        Math.max(0, want - have).toFixed(1) + "px");
+    }
     pinRails();
   };
 
