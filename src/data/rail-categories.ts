@@ -29,8 +29,12 @@ export interface RailCategory {
   label: string;
   /** the studies' word — what the homepage actually answers */
   query: string;
-  /** a Swiss basic form. The site has no icon language to borrow and
-   *  four rows is not a reason to invent one. */
+  /** the mark beside the label, by name: a key into RAIL_ICONS in
+   *  src/lib/rail-icons.tsx. It held a Swiss basic form until Aug 2026
+   *  — circle, square, triangle, diamond — on the grounds that the site
+   *  had no icon language and four rows was not a reason to invent one.
+   *  The solids told the rows apart without saying anything about them,
+   *  which is a legend, not a mark. */
   glyph: string;
   /** shown beside the count inside the open drawer */
   note: string;
@@ -42,7 +46,7 @@ export const railCategories: RailCategory[] = [
   {
     label: "Digital Experiences",
     query: "digital",
-    glyph: "●",
+    glyph: "monitor",
     note: "Sites, stores and platforms, designed and shipped.",
     ids: [
       "cosmoProf",
@@ -60,14 +64,14 @@ export const railCategories: RailCategory[] = [
   {
     label: "App Development",
     query: "app development",
-    glyph: "■",
+    glyph: "smartphone",
     note: "Native tools and AI products, built end to end.",
     ids: ["sallyOS", "arc", "dsc", "sizzle"],
   },
   {
     label: "Campaign/Creative",
     query: "campaign",
-    glyph: "▲",
+    glyph: "camera",
     note: "Art direction and campaigns for retail's big names.",
     ids: [
       "robertRod",
@@ -81,7 +85,7 @@ export const railCategories: RailCategory[] = [
   {
     label: "Interiors",
     query: "interiors",
-    glyph: "◆",
+    glyph: "armchair",
     note: "Rooms designed like products, down to the hardware.",
     ids: [
       "hillKitchen",

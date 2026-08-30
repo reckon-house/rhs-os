@@ -90,6 +90,31 @@
   z-index: 1;
 }
 
+/* THE MARK IS SET, THE BAR IS TRACKED. Navigation gets the +0.04em
+   this bar carries at 12px, because small type needs the air to stay
+   legible as a row of separate words. A logotype is the opposite job:
+   it has to read as one object, so it takes 700 and -0.01em and closes
+   up. This is the only place in the bar where the two differ.
+
+   BOTH COPIES MOVE TOGETHER. The homepage cover carries the same
+   wordmark laid into the page and hands it over to this one on scroll
+   — see .covermark in pressing-home.css. They were unified at 500
+   precisely because the name used to change weight across that
+   handover; changing one without the other brings that back. */
+.mark {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* THE ASTERISKS ARE THE NAME, not punctuation between three words.
+   Upright and the same weight as the letters, so nothing reads as a
+   lighter joint. <i> only because it is the shortest element there is;
+   everything it would normally do is turned off here. */
+.mark i {
+  font-style: normal;
+  margin: 0 -0.01em;
+}
+
 .nav a {
   color: inherit;
   text-decoration: none;

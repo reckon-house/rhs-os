@@ -242,8 +242,23 @@ export function Masthead() {
             the homepage's field measures its travel against the
             wordmark's left edge, and a CSS-module class name is hashed
             at build time, so no other file can name it. */}
-        <Link href="/" data-mark className={styles.mark}>
-          Reckon House Staples
+        {/* THE ASTERISKS ARE PART OF THE NAME. They were already the
+            written form everywhere else — SITE_NAME is "Reckon*House",
+            and the board says "Reckon*House is what gets made,
+            House*Staples is what holds it up" — so the bar was the last
+            place still spelling it as three loose words. The joint is
+            what lets the name split two ways, which is the whole idea,
+            and it only reads that way when it is set.
+
+            aria-label because a screen reader says the glyph out loud.
+            The name is three words to anyone listening. */}
+        <Link
+          href="/"
+          data-mark
+          className={styles.mark}
+          aria-label="Reckon House Staples"
+        >
+          Reckon<i>*</i>House<i>*</i>Staples
         </Link>
         {/* ONE BAR. The field is here on every route, not just the
             homepage, because it is the way into the work now: the

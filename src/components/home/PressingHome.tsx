@@ -97,7 +97,12 @@ export function PressingHome() {
           stylesheet. */}
       <section className="hero-breakout cover">
         <div className="ixbody">
-          <span className="covermark">Reckon House Staples</span>
+          {/* the bar's own name, laid into the page — so it carries the
+              same asterisks the masthead does, or it would change
+              spelling as it hands over on scroll */}
+          <span className="covermark" aria-label="Reckon House Staples">
+            Reckon<i>*</i>House<i>*</i>Staples
+          </span>
           <div className="ixrows covercols">
             {/* The question rides INSIDE the statement: the paragraph
                 is Jeremy speaking and the quoted words that type

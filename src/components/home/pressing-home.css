@@ -109,6 +109,8 @@
 
   /* the field is NOT in this list — it is positioned, not merely
      raised, and #nav .ask would out-specify the .ask rule below */
+  /* the logotype closes up where the navigation stays tracked — the
+     shipped pair is .mark in Masthead.module.css and .covermark below */
   /* #nav a:hover fades every link in the bar to 0.45, which is the
      wordmark's cue and not this one's. The address answers with the
      rule instead — see ONE WAY THROUGH — so it holds its tone and only
@@ -236,10 +238,24 @@
      run of work, so the top of the page is the same grid as the body
      of it. Both are set in the masthead's own type — this IS the
      masthead, laid into the page instead of floating over it. */
-  /* 500, the weight the bar has carried sitewide. The cover's copy was
-     700, so the name changed weight as it handed over on scroll. */
-  .covermark { font-size: var(--nav-size, 12px); font-weight: 500;
-    letter-spacing: 0.04em; line-height: 1.04; white-space: nowrap; }
+  /* THE MARK IS SET, THE BAR IS TRACKED. 700 and -0.01em, against the
+     bar's own 500 and +0.04em. Small navigation type needs the air to
+     read as separate words; a logotype has the opposite job and has to
+     close into one object.
+
+     This number and the masthead's are ONE VALUE IN TWO FILES, because
+     the cover holds the name until it hands over to the bar on scroll.
+     They were unified at 500 to stop the name changing weight across
+     that handover, and they are unified at 700 now for the same
+     reason. If this moves, move .mark in Masthead.module.css with it. */
+  .covermark { font-size: var(--nav-size, 12px); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1.04; white-space: nowrap; }
+  /* THE ASTERISKS ARE THE NAME, not punctuation between three words.
+     Upright and the same weight as the letters, so nothing reads as a
+     lighter joint. The tag is <i> only because it is the shortest
+     element there is; every visual thing it would normally do is
+     turned off here. */
+  .covermark i { font-style: normal; margin: 0 -0.01em; }
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap); align-items: start;
     /* THE RULES REACH THE INDEX'S. Without this the three verticals
@@ -946,7 +962,10 @@
      different length and a guessed percentage clips a word in half. */
   .ixnotes .rdrawer .rrow {
     background: rgba(0, 0, 0, 0.045);
-    clip-path: inset(0 var(--hug, 45%) 0 0 round 16px);
+    /* 12px, not 16. The chip's own height came down with its padding
+       and a radius held at 16 turned a 35px row into a lozenge — the
+       corner has to fall with the box or the shape changes meaning. */
+    clip-path: inset(0 var(--hug, 45%) 0 0 round 12px);
     transition: clip-path 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
       background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
       color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -965,8 +984,14 @@
 
        This is the one value that had to move on the way in, and it
        moved because the column is narrower, which is a real material
-       difference rather than a preference. */
-    padding: 12px 15px; margin: 0; cursor: pointer; font: inherit;
+       difference rather than a preference.
+
+       PADDING 8/12, DOWN FROM 12/15. At 12 the chip stood 43px around
+       an 19px word and read as a bubble rather than a label — the grey
+       was the loudest thing in the column. 35px is the same chip with
+       the air taken out of it. The side value carries twice into the
+       measured hug, so the resting width came in 6px with it. */
+    padding: 8px 12px; margin: 0; cursor: pointer; font: inherit;
     font-size: 13px; font-weight: 500; letter-spacing: -0.01em;
     line-height: 1.45; color: inherit; }
   .ixnotes .rdrawer .rhead:focus-visible {
@@ -974,10 +999,22 @@
   /* the words themselves, so their width can be measured — the button
      is full-column and would only ever report that */
   .ixnotes .rdrawer .rink { display: inline-block; }
-  /* the mark sits close to its word: 11px in a 14px box, so the four
-     labels stay aligned whatever shape precedes them */
+  /* THE MARK IS A DRAWING NOW, not a character, so it needs a box of
+     its own rather than a font size. 13px square against 13px type,
+     nudged 2px below the baseline because an icon's optical centre is
+     its middle and a letter's is not. The four labels stay aligned
+     whatever is drawn beside them, which is what the fixed width and
+     the fixed gap are for.
+
+     5px, and the gap has to be STATED now. The solids were characters
+     in a 13px box: a 10px glyph left about 3px of its own trailing air
+     and the label simply followed. A drawing fills its box edge to
+     edge, so with no margin the chair would touch the I. 5 keeps the
+     tight setting that was asked for without the collision. */
   .ixnotes .rdrawer .rglyph { display: inline-block; width: 13px;
-    font-size: 10px; line-height: 1; vertical-align: baseline; }
+    height: 13px; margin-right: 5px; vertical-align: -2px;
+    line-height: 1; }
+  .ixnotes .rdrawer .rglyph svg { display: block; width: 100%; height: 100%; }
   /* the slash is ink, like the word it introduces */
   .ixnotes .rdrawer .rslash { color: var(--ink);
     transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }

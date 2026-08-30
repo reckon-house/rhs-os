@@ -106,6 +106,53 @@ if (driverFilters.length && appCats.length) {
     });
 }
 
+/* ── 2b. the marks ─────────────────────────────────────────────────
+   The four icons are drawn, not imported, so the path data exists
+   twice: RAIL_ICONS in the lab (which the port carries into the
+   driver) and RAIL_ICONS in src/lib/rail-icons.tsx, which the footer
+   ring renders. Two copies of a path string is exactly the drift this
+   script exists to catch — and a wrong one fails silently, as a mark
+   that is subtly the wrong shape on one surface only.
+
+   Both the NAMES the filters reference and the PATHS behind them are
+   compared, so a renamed icon and a nudged curve both fail here. */
+const iconsOf = (src, label) => {
+  const block = src.match(/RAIL_ICONS[^=]*= \{([\s\S]*?)\n\};/);
+  if (!block) {
+    fail.push(`could not find the RAIL_ICONS literal in ${label}`);
+    return null;
+  }
+  const out = new Map();
+  /* no path string contains a bracket, so the array closes at the
+     first one — which beats trying to find the end of the last entry */
+  for (const m of block[1].matchAll(/(\w+):\s*\[([^\]]*)\]/g))
+    out.set(m[1], [...m[2].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => unesc(x[1])));
+  return out;
+};
+
+const driverIcons = iconsOf(driver, "pressingHomeDriver.js");
+const appIcons = iconsOf(read("src/lib/rail-icons.tsx"), "src/lib/rail-icons.tsx");
+
+if (driverIcons && appIcons) {
+  const names = new Set([...driverIcons.keys(), ...appIcons.keys()]);
+  for (const n of names) {
+    const a = driverIcons.get(n);
+    const b = appIcons.get(n);
+    if (!a) fail.push(`icon "${n}" is missing from the driver's RAIL_ICONS`);
+    else if (!b) fail.push(`icon "${n}" is missing from rail-icons.tsx`);
+    else if (a.join("|") !== b.join("|"))
+      fail.push(
+        `icon "${n}" is drawn differently:\n      lab/driver: ${a.length} path(s)\n      app:        ${b.length} path(s)\n      first difference: ${
+          a.find((d, i) => d !== b[i]) ?? "(path count)"
+        }`
+      );
+  }
+  /* every mark a filter asks for has to exist, or the row loses it */
+  for (const m of railTs.matchAll(/glyph:\s*"([^"]+)"/g))
+    if (!appIcons.has(m[1]))
+      fail.push(`rail-categories.ts asks for the mark "${m[1]}", which nothing draws`);
+}
+
 /* ── 3. the category rosters ───────────────────────────────────────
    Every id the rail counts must be a real project, or a renamed study
    silently shortens a count and the reel drops a frame. */

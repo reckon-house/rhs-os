@@ -38,6 +38,7 @@ import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import { projects } from "@/data/projects";
 import { practiceNotes } from "@/data/practice-notes";
 import { railCategories } from "@/data/rail-categories";
+import { RailIcon } from "@/lib/rail-icons";
 
 /* The photo spine of buildSequence(), with the word beats dropped —
    a stamp carries no headline. Timings verbatim. The two color beats
@@ -215,7 +216,7 @@ function Row({
             measure them — the button is the full column */}
         <span className="rink">
           {glyph ? (
-            <span className="rglyph">{glyph}</span>
+            <span className="rglyph"><RailIcon name={glyph} /></span>
           ) : (
             <>
               <span className="rslash">/</span>{" "}
@@ -261,7 +262,7 @@ function CategoryRow({
           destination like any other. */}
       <Link className="rhead" href={`/?q=${encodeURIComponent(cat.query)}`}>
         <span className="rink">
-          <span className="rglyph">{cat.glyph}</span>
+          <span className="rglyph"><RailIcon name={cat.glyph} /></span>
           {cat.label}
         </span>
       </Link>

@@ -88,11 +88,68 @@ const NOTES = [
    geometric mark for the closed row (Swiss basic forms — the site has
    no icon language and four rows is not a reason to invent one) and
    the one-liner shown beside the count when the row opens. */
+/* \u2500\u2500 the four marks \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+ * Lucide, drawn rather than imported: four icons is not a dependency,
+ * and the driver has no bundler to import through anyway. Every shape
+ * is written as a path so both surfaces can render one <path> per
+ * entry \u2014 no rect/circle/line special cases, and nothing has to inject
+ * raw markup. 24x24 box, stroke 2, round joins, which is Lucide's own
+ * grid; at the 13px these render into that comes out just over a
+ * pixel, the weight of the 500 beside it.
+ *
+ * WHAT THEY REPLACED, and why. The rail carried four geometric
+ * solids \u2014 circle, square, triangle, diamond \u2014 chosen because the site
+ * had no icon language and four rows was not a reason to invent one.
+ * They read as a legend for a chart that isn't there: the shapes
+ * differentiate the rows without saying anything about them, so the
+ * eye has to learn an arbitrary key. A screen, a phone, a camera and a
+ * chair say what is behind the door.
+ *
+ * MIRRORED IN src/lib/rail-icons.ts, and `npm run rail:check` compares
+ * them, because the ring in every case-study footer draws the same
+ * rail from the app's own copy. */
+const RAIL_ICONS = {
+  /* monitor: sites, stores, platforms */
+  monitor: ["M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
+    "M8 21h8", "M12 17v4"],
+  /* smartphone: native tools and the AI products */
+  smartphone: ["M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z",
+    "M12 18h.01"],
+  /* camera: art direction, which is shoot days */
+  camera: ["M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z",
+    "M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"],
+  /* armchair: rooms */
+  armchair: ["M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3",
+    "M3 11v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H7v-2a2 2 0 0 0-4 0z",
+    "M5 18v2", "M19 18v2"],
+};
+const SVGNS = "http://www.w3.org/2000/svg";
+function railIcon(name) {
+  const paths = RAIL_ICONS[name];
+  if (!paths) return null;
+  const svg = document.createElementNS(SVGNS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("fill", "none");
+  /* currentColor, so the mark turns with the row when it floods to
+     ink. The solids inherited that for free by being text. */
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  paths.forEach((d) => {
+    const p = document.createElementNS(SVGNS, "path");
+    p.setAttribute("d", d);
+    svg.appendChild(p);
+  });
+  return svg;
+}
+
 const FILTERS = [
-  ["Digital Experiences", "digital", "\u25CF", "Sites, stores and platforms, designed and shipped."],
-  ["App Development", "app development", "\u25A0", "Native tools and AI products, built end to end."],
-  ["Campaign/Creative", "campaign", "\u25B2", "Art direction and campaigns for retail's big names."],
-  ["Interiors", "interiors", "\u25C6", "Rooms designed like products, down to the hardware."],
+  ["Digital Experiences", "digital", "monitor", "Sites, stores and platforms, designed and shipped."],
+  ["App Development", "app development", "smartphone", "Native tools and AI products, built end to end."],
+  ["Campaign/Creative", "campaign", "camera", "Art direction and campaigns for retail's big names."],
+  ["Interiors", "interiors", "armchair", "Rooms designed like products, down to the hardware."],
 ];
 
 /* The practice statement's own nouns, wired to the field. The words a
@@ -1994,7 +2051,9 @@ function buildMagazine() {
     if (glyph) {
       const g = document.createElement("span");
       g.className = "rglyph";
-      g.textContent = glyph;
+      const svg = railIcon(glyph);
+      if (svg) g.appendChild(svg);
+      else g.textContent = glyph;   /* a name with no drawing still shows */
       ink.appendChild(g);
     } else {
       /* the utility rows take a slash the way a path does */
