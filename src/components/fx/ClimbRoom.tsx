@@ -24,12 +24,15 @@
  */
 
 import { RISE } from "@/lib/choreo";
+import styles from "./ClimbRoom.module.css";
 
 export function ClimbRoom() {
   return (
     <div
       aria-hidden="true"
-      className="motion-reduce:!h-0"
+      /* Two switches, same contract: reduced motion, and a phone. See
+         the stylesheet for why the phone needed one. */
+      className={`motion-reduce:!h-0 ${styles.room}`}
       style={{ height: RISE }}
     />
   );

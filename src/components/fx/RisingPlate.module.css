@@ -38,6 +38,22 @@
      difference, exactly what the desktop gets for free from a plate
      taller than the glass. Phones only: desktop rhythm is tuned and a
      capped desktop riser must not grow its section. */
+  /* AND THE PLATE DOES NOT CLIMB. The other half of the contract, and
+     the reason is measured rather than felt: on DSC at 375x812 a rising
+     plate painted over six text elements, the "Programs" and
+     "Registration" captions among them. The layout's guard stays quiet
+     because the contract IS satisfied — every riser follows a holding
+     section — but a section holds dvh while the content inside it is a
+     small plate and a caption, so on a phone the 96dvh climb crosses
+     its own empty tail and then keeps going into the copy.
+
+     !important because the margin is written inline by the component,
+     which is also why ClimbRoom.module.css exists next door: the pull
+     and the reservation are two halves of one thing and neither may be
+     switched off alone. */
+  .riser {
+    margin-top: 0 !important;
+  }
   .riser {
     /* A FLAT SCREEN RESERVED HALF A SCREEN OF NOTHING. This was
        100dvh, which is the room the climb needs and also, on a phone,

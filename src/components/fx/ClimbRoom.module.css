@@ -1,0 +1,29 @@
+/*
+  ClimbRoom's phone half.
+
+  The climb contract has two halves and the component's own note says
+  they must always change together: a rising plate pulls itself up by
+  RISE, and whatever reserves that RISE keeps the plate off copy. Under
+  reduced motion both switch off, which is why RisingPlate carries
+  motion-reduce:!mt-0 and this carries motion-reduce:!h-0.
+
+  A PHONE IS THE SECOND CASE, and it was missing. The contract is
+  satisfied on paper — every riser in the studies follows a holding
+  section, and the layout's guard stays quiet — but the room a section
+  holds is measured in dvh while the CONTENT inside it is a small plate
+  and a caption. On a desktop the held section fills the glass and the
+  climb crosses its own empty tail. On a phone the same 96dvh crosses
+  the tail and keeps going into the caption underneath: measured on DSC
+  at 375x812, six text elements were painted over by a rising plate,
+  including the "Programs" and "Registration" captions.
+
+  So on a phone the plate does not climb. It arrives in flow, and this
+  reserves nothing, exactly as the two halves do under reduced motion.
+  The gesture is a wide-screen one and it is the same call the
+  stylesheet next door makes about the crop.
+*/
+@media (max-width: 760px) {
+  .room {
+    height: 0 !important;
+  }
+}

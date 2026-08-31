@@ -165,8 +165,22 @@ export function RisingPlate({
     typeof width === "number" && typeof height === "number" && height > 0
       ? width / height
       : undefined;
-  const tallMorph =
-    nativeRatio != null && nativeRatio >= 1.3 && editorial == null;
+  /* EVERY HERO, not just the wide ones. The >= 1.3 gate belonged to the
+     crop: below that ratio a file was "roughly how the screen already
+     is" and cropping it toward portrait bought nothing worth the width
+     it cost. There is no crop any more. The plate fills 72% of the
+     screen's height and scrolls whatever width that produces, so the
+     ratio has stopped being a question — a 1.198 file simply ends up
+     332px wider than the phone, and a portrait one ends up with nothing
+     to scroll and is merely large.
+
+     Leaving the gate in meant Robert's editorial plates, all of them
+     under 1.3, kept the desktop's 5% scale and none of the treatment.
+
+     The two conditions that remain are real: no declared size means no
+     ratio to work from, and a CAPPED plate is one whose whole point is
+     refusing to fill the screen. */
+  const tallMorph = nativeRatio != null && editorial == null;
   /* AN AUTHORED TARGET WINS. The derived one is capped at a 1.3x cover
      scale, and that cap is doing a real job — it is what stopped a
      deeper crop slicing a third off both sides of Sally's laptop. But

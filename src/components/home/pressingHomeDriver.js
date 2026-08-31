@@ -2919,7 +2919,15 @@ function buildMagazine() {
 
      Seven-cell cycle: a full-width frame, an even pair, two more
      full-width, then a third against two thirds. */
-  const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mThird", "mTwoThirds"];
+  /* A SPLIT IS ALWAYS EVEN NOW. The cycle carried a third against two
+     thirds in its last pair, which is a real move on a wide screen and
+     a bad one at 375: the narrow frame came out 102px with a caption
+     wrapping to four lines beside a partner more than twice its size,
+     so the pair read as one picture and an offcut rather than as two
+     works. Halves throughout — the rhythm still varies by what is
+     full-width and what is split, which is the part that was doing the
+     work. Owner's call. */
+  const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mHalf", "mHalf"];
   const mk = (ci, i, side) => {
     const cell = document.createElement("div");
     cell.className = "cell col" + side + (i === 0 ? " first" : "");
@@ -2929,9 +2937,22 @@ function buildMagazine() {
        picture that failed to load rather than as a composition. */
     const slot = i % 7;
     const opensPair = slot === 1 || slot === 5;
-    cell.classList.add(
-      opensPair && i === workIdx.length - 1 ? "mHero" : M_RHYTHM[slot]
-    );
+    const lonely = opensPair && i === workIdx.length - 1;
+    cell.classList.add(lonely ? "mHero" : M_RHYTHM[slot]);
+    /* WHICH CELLS SHARE A ROW, said in the markup because CSS cannot
+       ask. On a phone .ixrow is display:contents, so the grid packs
+       every cell in order and a visual row is whatever spans add up to
+       six: slots 1+2 (half and half) and slots 5+6 (a third and two
+       thirds). Both pairs, and always the same two, because the rhythm
+       is a fixed seven-slot cycle.
+
+       Those two get a rule BETWEEN them instead of one under each. A
+       pair that lost its partner to the end of the deal is a full-width
+       frame and takes the ordinary treatment. */
+    if (!lonely) {
+      if (slot === 1 || slot === 5) cell.classList.add("pairL");
+      else if (slot === 2 || slot === 6) cell.classList.add("pairR");
+    }
     cell.style.order = String(i);
     if (ci !== undefined) {
       const c = cards[ci];

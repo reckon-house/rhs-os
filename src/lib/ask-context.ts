@@ -152,7 +152,7 @@ You are also given THE DAYBOOK: the dated log of what has actually been built la
 
 Two limits on the daybook, and they are the reason it can be trusted. DATES THERE ARE REAL and you may use them: a daybook entry is dated by nature, so saying which day a thing landed is reporting, not stamping. That is the one exception to the no-dating rule above, and it does not extend to the projects: never give a case study a year. And do not work out how long ago something was, or say this week, last week or a fortnight. You do not know today's date. The newest entry is the most recent work and that is as far as you can go.
 
-Some answers come from the INSPIRATION BOARD instead of a project, and it will be labelled as such when it does. The board is pictures Jeremy saved because he likes them: other people's work, other people's photographs, sometimes a musician or a designer he admires. None of it is his and no claim is made on it. Questions like what inspires you, who do you admire, what do you look at, are ON TOPIC and the board is the answer to them, so answer from it plainly and name what is actually there. Never describe a board picture as his work, his client or his project, and never say the board is a project.\n\nSTAPLES is the rail's own word for that board, and it arrives bare the way the category words do. It means show me the board. Answer it by naming two or three of the things actually on it and what they have in common, the same way you would name the projects worth opening first. Do not define the word, do not count the pictures, and do not describe the board as a collection: every one of them is dealt underneath you while you speak.`;
+Some answers come from the INSPIRATION BOARD instead of a project, and it will be labelled as such when it does. The board is pictures Jeremy saved because he likes them: other people's work, other people's photographs, sometimes a musician or a designer he admires. None of it is his and no claim is made on it. Questions like what inspires you, who do you admire, what do you look at, are ON TOPIC and the board is the answer to them, so answer from it plainly and name what is actually there. Never describe a board picture as his work, his client or his project, and never say the board is a project.\n\nSTAPLES is the rail's own word for that board, and it arrives bare the way the category words do. It means show me the board. DO NOT INVENTORY THE PICTURES. Every one of them is dealt on the screen underneath you while you speak, so listing what is in three of them tells the reader what they can already see, at the length of a paragraph. Say instead what the board is FOR and what keeps coming back across the whole of it: the same few people, the same register, the same materials, the same weather. The pattern is the thing no single picture on the screen can show, and it is the only thing worth saying here. Do not define the word and do not count the pictures. Never say a board picture shaped a particular project unless the facts say so.`;
 
 /* ── the daybook, as the model reads it ─────────────────────────────
    Built once at module load and shipped in the CACHED PREFIX beside
@@ -384,6 +384,30 @@ export function contextFor(
     .filter((p): p is Pull => Boolean(p));
 
   if (board.length) {
+    /* WHAT RECURS, counted across the WHOLE board rather than the eight
+       pictures being shown. The prompt asks for the pattern instead of
+       an inventory, and a pattern inferred from eight of a hundred and
+       four is a guess dressed as an observation: the model would have
+       been reaching for "musicians and film" off whichever eight the
+       deal happened to send. Counted here, it is a fact it was handed.
+       Only names that actually repeat, and only the top few. */
+    const tally = new Map<string, number>();
+    for (const p of PULLS)
+      for (const t of p.facets?.muse ?? [])
+        tally.set(t, (tally.get(t) ?? 0) + 1);
+    const recurring = [...tally.entries()]
+      .filter(([, n]) => n > 1)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([t, n]) => `${t} (${n})`);
+    if (recurring.length) {
+      blocks.push(
+        "ACROSS THE WHOLE BOARD, the names that appear on more than one " +
+        "picture, with how many. This is the pattern the reader cannot " +
+        "see by looking at any single picture, and it is what an answer " +
+        "about the board should be built from:\n  " + recurring.join(", ")
+      );
+    }
     blocks.push(
       "ON SCREEN beside your answer, pictures from the INSPIRATION BOARD. " +
       "These are saved work by other people, never Jeremy's own:\n" +

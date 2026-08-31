@@ -1510,25 +1510,100 @@
     .ixrows.ixcols { display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       align-items: start;
-      column-gap: clamp(10px, 3vw, 18px);
+      /* ONE VALUE, TWO READERS. The grid sets the gutter and the pair's
+         standing rule centres itself in it, so a variable rather than
+         the number twice: change it here and the line follows. Widened
+         from clamp(10px, 3vw, 18px) now that a rule stands in the gap —
+         the old note said a wider gutter would break a pair apart, and
+         it was right while nothing divided them. A divider wants air on
+         both sides or it reads as touching the pictures. */
+      --ixcolgap: clamp(18px, 5vw, 30px);
+      column-gap: var(--ixcolgap);
       /* DOUBLED. The rule between two frames had about 50px of air
          around it, which on a phone reads as a list with dividers
          rather than as work with room. The column gap is untouched:
          that one holds a pair together and widening it would break
          the pair apart. */
-      row-gap: clamp(60px, 14vw, 96px); }
+      /* AND HALF AGAIN, the owner's call. The doubling above was
+         measured against a layout where every row carried a rule under
+         it; with the pairs' rules now standing between them instead,
+         the horizontal air is the only thing separating one row of
+         work from the next and it was doing two jobs at the old
+         value. */
+      row-gap: clamp(90px, 21vw, 144px); }
     .ixrows.ixcols .cell { grid-column: span 6; }
     .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
+    /* mThird and mTwoThirds are gone from the rhythm — see M_RHYTHM.
+       The spans stay declared: they cost nothing, and the seven-slot
+       cycle is the kind of thing that gets a varied pair back. */
     .ixrows.ixcols .cell.mThird { grid-column: span 2; }
     .ixrows.ixcols .cell.mTwoThirds { grid-column: span 4; }
     .ixrow, .ixlead { display: contents; }
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
-    /* the rule that separated rows, now separating frames */
-    .ixrows.ixcols .cell { border-top: 1px solid rgba(0, 0, 0, 0.13);
-      padding-top: clamp(40px, 10vw, 68px); }
-    .ixrows.ixcols .cell.first { border-top: 0; padding-top: 0; }
+    /* ── NO HORIZONTAL RULES ─────────────────────────────────────────
+       Every cell drew one above itself, which turned the index into a
+       ruled list: a line, a picture, a line, a picture. With the row
+       interval half again as wide and the pairs divided by a standing
+       rule of their own, the air is doing the separating and the lines
+       were only repeating it. Owner's call, and the same instinct as
+       the four category marks that came out of the rail.
+
+       The PADDING stays. It was never the rule's — it is the air above
+       each frame, and it is what the interval is measured from. */
+    .ixrows.ixcols .cell { padding-top: clamp(40px, 10vw, 68px); }
+    .ixrows.ixcols .cell.first { padding-top: 0; }
+    /* ── ONE SPINE, BROKEN BY THE FULL-WIDTH FRAMES ─────────────────
+       The rule ran per pair: a segment in the gutter wherever two
+       frames sat side by side, and nothing between. Eight separate
+       lines down a page reads as eight decisions. This is one line
+       down the whole index instead, and the full-width frames break
+       it as they pass, which is the same figure drawn once.
+
+       It sits at 50%, which IS the pair gutter: six equal columns
+       means the gap between the third and the fourth straddles the
+       centre, so the spine divides a pair without being told about
+       pairs at all. That is why the pairL rule could go — the spine
+       was always going to run exactly where it did.
+
+       Behind everything. The cells take a stacking context above it,
+       so a picture covers the line by simply being opaque. */
+    .ixrows.ixcols { position: relative; }
+    .ixrows.ixcols::before {
+      /* display, explicitly. .ixrows::before already exists — it is one
+         of the wide layout's standing rules — and the phone block below
+         switches it off with display: none. This rule wins on
+         specificity for every property it names, and it did not name
+         that one, so the spine inherited the none and drew nothing. */
+      display: block;
+      content: ""; position: absolute; z-index: 0;
+      top: 0; bottom: 0; left: 50%;
+      width: 1px; margin-left: -0.5px;
+      background: rgba(0, 0, 0, 0.13);
+      pointer-events: none; }
+    .ixrows.ixcols .cell { position: relative; z-index: 1; }
+
+    /* AND IT DOES NOT TOUCH THEM. A full-width frame would otherwise
+       have the line running into its top edge and out of its bottom,
+       which reads as the picture interrupting a wire rather than the
+       line making room for it. The band is paper, the frame's own
+       width, reaching a little past it at both ends: the line stops
+       short, the picture stands clear, and the spine picks up again
+       underneath.
+
+       z-index: -1 inside the cell's own context, so it covers the
+       spine while staying behind the picture and its caption. */
+    .ixrows.ixcols .cell.mHero::before {
+      content: ""; position: absolute; z-index: -1;
+      left: 0; right: 0;
+      top: calc(clamp(40px, 10vw, 68px) - clamp(22px, 5vw, 36px));
+      bottom: calc(-1 * clamp(22px, 5vw, 36px));
+      background: var(--paper);
+      pointer-events: none; }
+    /* The first frame has no padding above it to borrow from. */
+    .ixrows.ixcols .cell.mHero.first::before {
+      top: calc(-1 * clamp(22px, 5vw, 36px)); }
     /* The board keeps packing on a phone, at two columns rather than
        one: three tiles across a 329px column is a contact sheet nobody
        can read, and one is a hundred and seven full-width pictures to
@@ -1542,7 +1617,9 @@
     .ixrows::before, .ixrows::after { display: none; }
     .ixrules { display: none; }
     .ixrows { background-image: none; }
-    .ixrule { border-top: 1px solid rgba(0, 0, 0, 0.13); }
+    /* The row rule goes with them. It is the ANSWER's divider rather
+       than the index's, and on a phone the two share this block. */
+    .ixrule { border-top: 0; }
     /* THE COVER'S FIRST LINE IS NAME AND ADDRESS, and it used to be
        three stacked things: the wordmark, the statement, then the
        address at the very bottom, 284px down and 260 below the name it
