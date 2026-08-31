@@ -172,9 +172,51 @@ export function PressingTransition() {
       probe.className = "ptl";
       probe.style.cssText = "position:absolute;visibility:hidden;opacity:1";
       probe.textContent = title || "—";
+      /* The probe carries the SUB too, because the line that has to fit
+         is the whole line. Measuring the title alone said a name fitted
+         while the category beside it ran off the edge. */
+      if (sub) {
+        const t = document.createElement("span");
+        t.className = "sub";
+        t.textContent = "  " + sub;
+        probe.appendChild(t);
+      }
       stacks[0].appendChild(probe);
       const lineH = probe.getBoundingClientRect().height || 44;
+
+      /* ── AND THE SIZE IS MEASURED, not just the count ──────────────
+         nowrap is what makes each repeat one line, so a line too wide
+         for the screen does not wrap, it is cut — which on a phone is
+         every long name: "Sally Marketing OS Product design,
+         engineering" runs about 430px at the clamp's 20px floor inside
+         375px of glass.
+
+         So the type is scaled to the longest line rather than trusted
+         to a clamp that cannot know how long a project's name is. Down
+         only: a short name keeps the size the stylesheet asked for. */
+      const stackW = stacks[0].clientWidth || window.innerWidth;
+      const lineW = probe.scrollWidth;
+      const cssSize = parseFloat(getComputedStyle(probe).fontSize) || 20;
       probe.remove();
+
+      /* A floor, because a very long name scaled to fit outright would
+         set the whole curtain in something unreadable. Below it the
+         CATEGORY goes instead: the name is the thing the reader needs
+         and the category is the part that can be spared. */
+      const MIN = 15;
+      let size = cssSize;
+      let dropSub = false;
+      if (lineW > stackW && stackW > 0) {
+        size = cssSize * (stackW / lineW);
+        if (size < MIN) {
+          size = cssSize;
+          dropSub = true;
+        }
+      }
+      stacks.forEach((el) => {
+        el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+        el.classList.toggle("pt-nosub", dropSub);
+      });
 
       const gut =
         parseFloat(

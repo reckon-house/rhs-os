@@ -647,8 +647,14 @@
      hundredth of a pixel); only the rasterisation does. An identity
      translate3d keeps the layer for the whole sequence, so the text is
      drawn one way from first frame to last. */
+  /* THE SIZE IS MEASURED, like the line count above it. nowrap is what
+     makes each repeat one line and the stack fill the screen, and at
+     the clamp's 20px floor a long name plus its category runs about
+     430px on a 375px phone: the line simply ran off the right edge and
+     was cut. The component measures the longest line and writes --ptfs
+     so it fits; the clamp is the fallback and the ceiling. */
   .ptl { display: block; white-space: nowrap;
-    font-size: clamp(20px, 2.6vw, 38px); font-weight: 600;
+    font-size: var(--ptfs, clamp(20px, 2.6vw, 38px)); font-weight: 600;
     line-height: var(--ptlh, 1.18); letter-spacing: -0.05em;
     -webkit-font-smoothing: antialiased;
     opacity: 0; transform: translate3d(0, 14px, 0);
@@ -712,6 +718,9 @@
     transition-duration: 0.22s, 0.24s; }
   .ptw .ptl { color: var(--ink); }
   .ptw .ptl .sub { color: rgba(0, 0, 0, 0.42); }
+  /* The last resort when even a scaled line will not fit: the name
+     stays, the category goes. Set by the component, which measures. */
+  .ptstack.pt-nosub .ptl .sub { display: none; }
   .ptb .ptl { color: var(--paper); }
   .ptb .ptl .sub { color: rgba(255, 255, 255, 0.48); }
   .ptw { background: var(--paper); clip-path: inset(0 0 100% 0); }
