@@ -7220,10 +7220,14 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
    So the opening waits for two things, and the second is the one that
    holds under a fast scroll:
 
-     1. POSITION. The ramp starts once the frame's top has climbed to
-        62% of the glass, not 86%, and finishes at 18%. A tile arrives,
-        is read as an inset rounded picture for a beat, and only then
-        starts to widen.
+     1. POSITION, AND IT IS THE WAY OUT. The ramp starts once the
+        frame's top has climbed past 45% of the glass — above the middle
+        of the screen, so the tile is already leaving — and finishes at
+        5%, fully open as its top reaches the masthead. A frame is
+        therefore an inset rounded picture for the whole of its arrival
+        and most of its time on screen, and opens as it goes. 62% was
+        the first try and still put the two moves close enough together
+        on a long tile to read as one.
 
      2. THE CURTAIN BEING DONE. Position alone is not enough — a fast
         flick can carry a tile from the bottom edge past 62% inside the
@@ -7278,8 +7282,8 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
     if (!n) return;
 
     const vh = innerHeight;
-    const start = vh * 0.62;
-    const span = vh * 0.44;
+    const start = vh * 0.45;
+    const span = vh * 0.4;
     const now = performance.now();
     const ps = new Array(n);
     for (let k = 0; k < n; k++) {
