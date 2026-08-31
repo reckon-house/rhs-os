@@ -21,15 +21,22 @@
   choreography is touched.
 */
 
-/* The ground behind an open panel, and the tap that closes it. */
+/* THE TAP THAT CLOSES IT, and nothing else. This carried a 0.28 black
+   wash, which is the convention for a sheet that takes over the screen
+   — and this one takes 104px of the bottom edge. Dimming the study to
+   open a way through the study put the work behind a grey pane for the
+   one gesture that is about getting back to it. The panel's own ink
+   already separates it from the page.
+
+   Still full-bleed and still hit-testable: a tap anywhere off the panel
+   closes it, which is the behaviour worth keeping. */
 .scrim {
   position: fixed;
   inset: 0;
   z-index: 39;
-  background: rgba(0, 0, 0, 0.28);
+  background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 .scrim[data-on] {
   opacity: 1;
@@ -136,7 +143,12 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  height: 30px;
+  /* 44, not the 30 this started at. Thirty was a status line, and the
+     owner read it as one: too small to look like a control and under
+     Apple's own 44pt floor for a target a thumb is meant to find. The
+     bar sits in the thumb's half of the phone, so it should be the
+     easiest thing on the screen to hit. */
+  height: 44px;
   padding: 0 20px;
   background: none;
   border: 0;
@@ -244,8 +256,13 @@
 .thumb {
   flex: none;
   display: block;
-  width: 54px;
-  height: 54px;
+  /* 72, up from 54. At 54 a laptop on a stool was a grey shape with a
+     darker shape on it; the picture has to be big enough to be
+     recognised or it is costing space to say nothing. The panel is only
+     up while it is being used, so the room is cheap here in a way it is
+     not on the resting bar. */
+  width: 72px;
+  height: 72px;
   overflow: hidden;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.06);
@@ -261,8 +278,8 @@
   display: block;
   /* A measure, so a long section name wraps to two lines rather than
      stretching the row until three stops fill the swipe. */
-  max-width: 116px;
-  font-size: 10px;
+  max-width: 132px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -284,7 +301,7 @@
 
 .n {
   flex: none;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.09em;
   color: rgba(0, 0, 0, 0.38);
@@ -292,7 +309,7 @@
 
 .name {
   min-width: 0;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;

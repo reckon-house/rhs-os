@@ -61,13 +61,19 @@ export function PressingPhoneRail() {
   );
   const [open, setOpen] = useState(false);
   const [stops, setStops] = useState<Stop[]>([]);
-  /* THERE FROM THE START. The bar used to arrive only once the first
-     section header had gone past, so the whole opening of a study — the
-     cover, the abstract, the first plates — had no way through it and
-     no sign that one existed. A reader meets the navigator at the same
-     moment they meet the study. Before any header has passed there is
-     no section to name, so the handle says what it is instead. */
-  const [ready, setReady] = useState(false);
+  /* IT ARRIVES WITH THE FIRST SECTION and leaves the same way. Two
+     wrong versions came before this one. It used to be held off until a
+     header passed AND then only ever named that header, which was
+     right; then it was armed on mount, which put a navigator over the
+     cover — the one screen that already names the study in full, in
+     84pt type, above a reel of its own pictures.
+
+     What the cover, the abstract and the opening plate have in common
+     is that none of them is a section, so there is nothing for the bar
+     to say while they are on screen. Past the first header there always
+     is. Scrolling back up above it takes the bar away again, on the
+     same line and the same 0.28s. `current` already tracks exactly this
+     — see the tick below — so the arrival needs no second signal. */
 
   /* Read the markers into a list, with where each one sits in the page.
      Measured at the moment of opening rather than kept in sync: the
@@ -85,21 +91,6 @@ export function PressingPhoneRail() {
       });
     });
     setStops(out);
-  }, []);
-
-  /* Armed once the markers exist, which is the same frame the study
-     renders: this is a case-study component, so there is always at
-     least one. Width-checked here and again on the tick, since a phone
-     can be rotated into a desktop layout. */
-  useEffect(() => {
-    const fit = () =>
-      setReady(
-        window.innerWidth <= CHOREO_BREAKPOINT &&
-          document.querySelectorAll(`[${MARK_ATTR}]`).length > 0,
-      );
-    fit();
-    window.addEventListener("resize", fit, { passive: true });
-    return () => window.removeEventListener("resize", fit);
   }, []);
 
   useEffect(() => {
@@ -216,7 +207,7 @@ export function PressingPhoneRail() {
       <div
         ref={railRef}
         className={styles.rail}
-        {...(ready || current || open ? { "data-on": "" } : {})}
+        {...(current || open ? { "data-on": "" } : {})}
         {...(open ? { "data-open": "" } : {})}
       >
         {/* The label IS the control. A separate affordance beside it
