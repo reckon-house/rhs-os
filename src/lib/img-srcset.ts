@@ -60,12 +60,28 @@ const Q = 75;
  *  · WHEN THE FILE IS ALREADY SMALLER than the first rung. Asking for
  *    640 from a 500px source upscales it into a bigger file showing no
  *    more detail.
+ *  · WHEN THE SOURCE IS AN SVG. The optimizer refuses them outright
+ *    unless dangerouslyAllowSVG is set, so every rung answered 400 and
+ *    the browser has no fallback: a srcset whose candidates all fail
+ *    does NOT drop back to src, it fails the image. Measured on
+ *    production, all five SVG marks in the credits ledger 400ed
+ *    through the optimizer while their raw files served 200 — the five
+ *    logos that would not appear on hover.
+ *
+ *    It hid in development because next.config.ts sets `unoptimized`
+ *    under isDev, so the first rule above returns undefined and the
+ *    raw src is used. Locally every mark worked; only production ever
+ *    built the URLs that fail.
+ *
+ *    A srcset for an SVG was never worth having in any case: it is
+ *    resolution independent, so one file serves every rung.
  */
 export function plateSrcSet(src: string, nativeWidth?: number): string | undefined {
   if (process.env.NODE_ENV === "development") return undefined;
   if (!src.startsWith("/")) return undefined;
 
   const clean = src.split("?")[0];
+  if (/\.svg$/i.test(clean)) return undefined;
 
   let rungs: number[] = [...PLATE_WIDTHS];
   if (nativeWidth) {
