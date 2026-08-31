@@ -138,10 +138,22 @@ export function PressingHome() {
         <div className="ixbody">
           <div className="anshead">
           <p className="ansprose" id="ansSay" />
-          {/* the meal being made, at reading size: the instrument
-              panel's Read/Caught/Time rows promoted out of the note
-              rail. The driver's renderStats fills it per build. */}
-          <div className="ansstats" id="ansStats" hidden />
+          {/* THE RECEIPTS, IN TWO COLUMNS. What was searched on the
+              left, how it was searched on the right. They used to be a
+              screen apart — the readings here under the say line, the
+              mechanics down in the note rail past "Back to the house" —
+              which made one set of facts read as two unrelated blocks.
+              Side by side at one small size they are what they are: the
+              ledger for this answer.
+
+              Kept in step with the same markup in the lab. The port
+              carries the stylesheet and the driver, never the JSX, so a
+              structural change has to be made in both places or the
+              driver here writes into a shape that is not there. */}
+          <div className="ansmeta" id="ansMeta" hidden>
+            <div className="ansstats" id="ansStats" />
+            <div className="blk working" id="ansWorking" />
+          </div>
 
           {/* THE COMPOSE BOX, shown only when the contact intent fires.
               The field they typed the question into is the field that

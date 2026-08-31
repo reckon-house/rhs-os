@@ -969,17 +969,17 @@
     margin-top: 10px; color: inherit; }
   .ixnotes .blk .rl { display: block; padding-top: 4px; }
   .ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
-  /* The mechanics rows take the stat band's two columns, at the rail's
-     own size. One ledger read twice: the band says what was searched,
-     this says how. A row with no label keeps the single column — the
-     disclaimer is a sentence, not an entry. */
-  .ixnotes .blk.working .rl { display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    align-items: baseline; column-gap: 16px; padding-top: 7px; }
-  .ixnotes .blk.working .rl.rlfull { display: block; }
-  .ixnotes .blk.working .rk { letter-spacing: 0.06em;
-    text-transform: uppercase; }
-  .ixnotes .blk.working .rv > span { display: block; }
+  /* The right column of the ledger, in the same hand as the left. */
+  .ansmeta .working { display: block; }
+  .ansmeta .working .tag { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  .ansmeta .working .rprose { display: block; padding-bottom: 4px; }
+  .ansmeta .working .rl { display: block; padding-top: 14px; }
+  .ansmeta .working .rk { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  .ansmeta .working .rv > span { display: block; }
   /* the filter reads as the column's own list: same body size, one per
      line, ruled rather than boxed. A button that looked like a button
      would be the only chrome on the page.
@@ -2098,52 +2098,55 @@
      The recessive tone keeps the hierarchy: the model's line is ink,
      the machine's rows are the site's grey, both at reading size.
      Lines land one at a time on the rail's own landing move. */
-  .ansstats { margin-top: 18px;
-    /* A STEP DOWN, now that the rows are a ledger. At 23px these were
-       sentences and needed to hold their own against the say line above
-       them; in two columns with one fact per line they are data, and
-       data at display size shouts the loudest thing on the screen. Not
-       down to the rail's 12px though — this band was promoted out of
-       that rail on purpose, and the point of the promotion stands. */
-    font-size: clamp(15px, 1.4vw, 18px); font-weight: 600;
-    line-height: 1.3; letter-spacing: -0.05em;
-    color: rgba(0, 0, 0, 0.42);
-    max-width: calc((100% - var(--ixgap)) / 2); }
-  /* ── LABEL LEFT, FACTS RIGHT ──────────────────────────────────────
-     Each row is its own two-column grid rather than the block sharing
-     one: the landing move transforms a row at a time, and display:
-     contents would hand the halves to an outer grid and leave nothing
-     to move. The label column is a fixed width, so identical templates
-     line the rows up with each other anyway.
+  /* ── THE ANSWER'S LEDGER ──────────────────────────────────────────
+     What was searched on the left, how it was searched on the right.
+     Two real columns rather than two blocks a screen apart, which is
+     what they were: the readings sat under the say line and the
+     mechanics down in the note rail past "Back to the house".
 
-     The label goes small and lettered out. It is a field name now, not
-     the first word of a sentence, and at the value's size it competed
-     with the numbers it was introducing. */
-  .ansstats .asl { display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    align-items: baseline;
-    column-gap: 16px; padding-top: 8px;
+     Both columns at one small size. These went 23px, then 18, and both
+     were the same mistake in different amounts — display type for a
+     receipt. The say line above is the voice; this is the paperwork,
+     and paperwork is small. */
+  .ansmeta { display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--ixgap); margin-top: 22px;
+    max-width: calc(100% - var(--ixgap));
+    font-size: 12px; font-weight: 500;
+    line-height: 1.45; letter-spacing: 0;
+    color: rgba(0, 0, 0, 0.42); }
+  .ansmeta[hidden] { display: none; }
+  .ansstats { font: inherit; color: inherit; }
+  /* ── LABEL ABOVE, FACTS UNDER ─────────────────────────────────────
+     The label had its own left-hand track, which works at full measure
+     and does not survive being put in a half-width column: 78px of
+     label inside a 160px column leaves the facts a ribbon. Above it,
+     the way the reference sets SOLUTIONS over its list, every value
+     gets the whole column.
+
+     The label is a field name, so it is small, lettered out and
+     recessive. It is not the first word of a sentence any more. */
+  .ansstats .asl { display: block; padding-top: 14px;
     opacity: 0; transform: translateY(6px);
     transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ansstats .asl:first-child { padding-top: 0; }
   .ansstats .asl.on { opacity: 1; transform: none; }
-  .ansstats .ask2 { color: rgba(0, 0, 0, 0.26);
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; line-height: 1.9; }
-  /* ONE FACT PER LINE. The whole point of the two columns: three
-     countable things stack and can be read down instead of parsed
-     along a wrapped sentence. */
+  .ansstats .ask2 { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  /* ONE FACT PER LINE, which is the whole point: three countable things
+     stack and can be read down instead of parsed along a wrapped
+     sentence. */
   .ansstats .asv > span { display: block; }
   @media (prefers-reduced-motion: reduce) {
     .ansstats .asl { transition: none; transform: none; opacity: 1; }
   }
   @media (max-width: 860px) {
-    .ansstats { max-width: none; }
-    /* 104px is a third of a phone's content column. The label still
-       gets its own track — that is the layout — but a narrower one. */
-    .ansstats .asl { grid-template-columns: 78px minmax(0, 1fr);
-      column-gap: 12px; }
-    .ixnotes .blk.working .rl { grid-template-columns: 78px minmax(0, 1fr);
-      column-gap: 12px; }
+    /* Two columns still, on the full width. A phone's content column is
+       329px, so each of these is about 150 — narrow, which is why the
+       labels sit above rather than beside. */
+    .ansmeta { max-width: none; column-gap: 18px; }
   }
 
   /* The statement's nouns, clickable. They have to read as the sentence
@@ -2307,16 +2310,18 @@
      replacing it with a different-looking page. */
   .answer .ixnotes { opacity: 0; transition: opacity 0.4s ease; }
   .answer .ixnotes.on { opacity: 1; }
-  .answer .ixnotes .blk.working { color: rgba(0, 0, 0, 0.5); }
-  /* the panel: prose first, then measured rows that land one at a
-     time. The stagger is per-row transition-delay written by the
+  /* THE WORKING BLOCK LEFT THE RAIL. It is the right column of
+     .ansmeta now, beside the readings it belongs with, so these
+     selectors follow it there — written .ixnotes .blk.working they
+     matched nothing and the rows would have appeared with no landing
+     at all. The stagger is per-row transition-delay written by the
      renderer, so newcomers land and settled rows hold still. */
-  .answer .ixnotes .blk.working .rprose { display: block; margin-bottom: 10px; }
-  .answer .ixnotes .blk.working .rl { opacity: 0; transform: translateY(5px);
+  .ansmeta .working .rprose { display: block; margin-bottom: 10px; }
+  .ansmeta .working .rl { opacity: 0; transform: translateY(5px);
     transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .answer .ixnotes .blk.working .rl.on { opacity: 1; transform: none; }
+  .ansmeta .working .rl.on { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
-    .answer .ixnotes .blk.working .rl { transition: none; transform: none; opacity: 1; }
+    .ansmeta .working .rl { transition: none; transform: none; opacity: 1; }
   }
   /* a pull's name is its description: it reads as a caption, not a
      title, or the board would look like it was claiming credit */
@@ -2553,9 +2558,17 @@
   <div class="ixbody">
   <div class="anshead">
     <p class="ansprose" id="ansSay"></p>
-    <!-- the meal being made, at reading size: the panel's measured
-         rows promoted out of the note rail. Filled by renderStats. -->
-    <div class="ansstats" id="ansStats" hidden></div>
+    <!-- THE RECEIPTS, IN TWO COLUMNS. What was searched on the left,
+         how it was searched on the right. They used to be a screen
+         apart — the readings here under the say line, the mechanics
+         down in the note rail past "Back to the house" — which made
+         one set of facts read as two unrelated blocks. Side by side at
+         one small size they are what they are: the ledger for this
+         answer. Filled by renderStats and renderWorking. -->
+    <div class="ansmeta" id="ansMeta" hidden>
+      <div class="ansstats" id="ansStats"></div>
+      <div class="blk working" id="ansWorking"></div>
+    </div>
 
     <!-- THE COMPOSE BOX. Shown only when the contact intent fires, which
          is the one answer where the reader wants to do something rather
@@ -5987,7 +6000,10 @@ function renderStats() {
   if (!el) return;
   const st = WORKING && WORKING.stats;
   el.innerHTML = "";
-  el.hidden = !st;
+  /* The REGION hides, not this column: the mechanics beside it are
+     shown whenever a model answered, which is not the same condition. */
+  const meta = document.getElementById("ansMeta");
+  if (meta) meta.hidden = !(st || (WORKING && WORKING.receipt));
   if (!st) return;
   /* TWO COLUMNS, AND ONE FACT PER LINE. These rows were sentences —
      "Read · 30 case studies, 358 photographs, 2,192 catalogued terms" —
@@ -6096,7 +6112,7 @@ function renderStats() {
     lines.forEach((sp) => sp.classList.add("on"))));
 }
 function writeLedger(notesEl, a) {
-  const wk = notesEl.querySelector(".blk.working");
+  const wk = document.getElementById("ansWorking");
   if (wk) renderWorking(wk, a);
 }
 /* A KEYWORD REACHES THE MODEL NOW, and the old rule was drawing the
@@ -6486,8 +6502,10 @@ function buildAnswer() {
     blk.dataset.key = "note:" + (cards[ci].word || "");
     notesEl.appendChild(blk);
   });
-  const wk = document.createElement("div");
-  wk.className = "blk working";
+  /* NOT APPENDED TO THE RAIL ANY MORE. It has a standing mount beside
+     the readings — see #ansWorking in the markup. The rail keeps the
+     word and quote notes, which is what a column of words is for. */
+  const wk = document.getElementById("ansWorking") || document.createElement("div");
   /* the panel's readings, all measured this build: the haystack, the
      catch, and the clock. Held plans carry authored receipts and no
      measurements — a hand-written answer did not read anything. */
@@ -6510,9 +6528,11 @@ function buildAnswer() {
       ms: thinkMs + framesMs,
     } : null,
   };
-  renderWorking(wk, null);
+  /* renderStats first: it un-hides the region the working block lives
+     in, and a block written into a hidden parent lands with nothing to
+     stagger against. */
   renderStats();
-  notesEl.appendChild(wk);
+  renderWorking(wk, null);
   /* THE NOTES NO LONGER WAIT FOR THE SENTENCE. The panel is the show
      while the model thinks — the whole point of it — so the column
      fades in with the deal and the rows land through it. One frame
@@ -7191,14 +7211,33 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
    writes one number per tile, --gp, and the stylesheet above turns it
    into a bleed and a radius. See the CSS note for the geometry.
 
-   0 when the frame's top is still near the bottom of the glass, 1 by
-   the time it has climbed to a third of the way up, and it HOLDS at 1
-   above that. Open-and-stay rather than open-and-close: a frame that
-   narrowed again on its way off the top would read as the page
-   breathing, and the gesture is meant to be about arriving.
+   TWO GESTURES, ONE AT A TIME. The frame's curtain drops as it comes
+   in from the bottom edge — 1.4s of clip and a settle from 1.25 — and
+   the opening used to start at that same edge. Scrolled slowly they
+   read as a sequence; scrolled fast they landed on top of each other
+   and a tile appeared to arrive and lose its corners in one move.
 
-   Purely positional, so it reverses on its own — scroll back and every
-   frame closes in the order it opened.
+   So the opening waits for two things, and the second is the one that
+   holds under a fast scroll:
+
+     1. POSITION. The ramp starts once the frame's top has climbed to
+        62% of the glass, not 86%, and finishes at 18%. A tile arrives,
+        is read as an inset rounded picture for a beat, and only then
+        starts to widen.
+
+     2. THE CURTAIN BEING DONE. Position alone is not enough — a fast
+        flick can carry a tile from the bottom edge past 62% inside the
+        1.4s the curtain takes. So a frame is not eligible until its
+        own arrival has finished: the driver stamps the time it first
+        sees .fd-on and waits out the curtain, per tile, including the
+        lag the second frame in a row carries.
+
+   Above the ramp it HOLDS at 1. Open-and-stay rather than
+   open-and-close: a frame that narrowed again on its way off the top
+   would read as the page breathing, and the gesture is about arriving.
+
+   Purely positional after that, so it reverses on its own — scroll back
+   and every frame closes in the order it opened.
 
    READ, THEN WRITE. Every rect is taken in one pass and every property
    written in a second, because interleaving them makes the browser
@@ -7207,6 +7246,10 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
    report of a stutter. */
 (() => {
   const PHONE = 860;
+  /* The curtain above: 1.4s of clip-path and transform. Read from the
+     stylesheet would be better and is not worth a getComputedStyle per
+     tile per frame; if that transition changes, change this. */
+  const CURTAIN = 1400;
   let tiles = [], n = -1;
   const collect = () => {
     tiles = [...document.querySelectorAll(".ixrows.ixcols .fd-it .shot")];
@@ -7235,12 +7278,34 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
     if (!n) return;
 
     const vh = innerHeight;
-    const start = vh * 0.86;
-    const span = vh * 0.5;
+    const start = vh * 0.62;
+    const span = vh * 0.44;
+    const now = performance.now();
     const ps = new Array(n);
     for (let k = 0; k < n; k++) {
-      const t = tiles[k].getBoundingClientRect().top;
-      let p = (start - t) / span;
+      const sh = tiles[k];
+      /* The curtain's own clock, per tile. .fd-on is added by the
+         arrival observer; the stamp is written the first frame this
+         loop sees it, and the tile is eligible CURTAIN ms later. The
+         lag is the wait the dealer put on the second frame of a row,
+         which delays that frame's transition and therefore its finish.
+         Held on the element so a re-collect after a deal does not
+         restart anybody's clock. */
+      const card = sh.parentElement;
+      let ready = false;
+      if (card && card.classList.contains("fd-on")) {
+        let t0 = +(sh.dataset.gpAt || 0);
+        if (!t0) { t0 = now; sh.dataset.gpAt = String(now); }
+        const lag = parseFloat(getComputedStyle(card).getPropertyValue("--lag")) || 0;
+        ready = now - t0 >= CURTAIN + lag * 1000;
+      } else if (sh.dataset.gpAt) {
+        /* Swept out and coming back on a new deal: forget the old
+           clock, or the second arrival would be waved through. */
+        delete sh.dataset.gpAt;
+      }
+      if (!ready) { ps[k] = 0; continue; }
+      const t = sh.getBoundingClientRect().top;
+      const p = (start - t) / span;
       ps[k] = p < 0 ? 0 : p > 1 ? 1 : p;
     }
     for (let k = 0; k < n; k++) {

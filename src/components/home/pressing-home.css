@@ -911,17 +911,17 @@
     margin-top: 10px; color: inherit; }
   .ixnotes .blk .rl { display: block; padding-top: 4px; }
   .ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
-  /* The mechanics rows take the stat band's two columns, at the rail's
-     own size. One ledger read twice: the band says what was searched,
-     this says how. A row with no label keeps the single column — the
-     disclaimer is a sentence, not an entry. */
-  .ixnotes .blk.working .rl { display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    align-items: baseline; column-gap: 16px; padding-top: 7px; }
-  .ixnotes .blk.working .rl.rlfull { display: block; }
-  .ixnotes .blk.working .rk { letter-spacing: 0.06em;
-    text-transform: uppercase; }
-  .ixnotes .blk.working .rv > span { display: block; }
+  /* The right column of the ledger, in the same hand as the left. */
+  .ansmeta .working { display: block; }
+  .ansmeta .working .tag { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  .ansmeta .working .rprose { display: block; padding-bottom: 4px; }
+  .ansmeta .working .rl { display: block; padding-top: 14px; }
+  .ansmeta .working .rk { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  .ansmeta .working .rv > span { display: block; }
   /* the filter reads as the column's own list: same body size, one per
      line, ruled rather than boxed. A button that looked like a button
      would be the only chrome on the page.
@@ -2040,52 +2040,55 @@
      The recessive tone keeps the hierarchy: the model's line is ink,
      the machine's rows are the site's grey, both at reading size.
      Lines land one at a time on the rail's own landing move. */
-  .ansstats { margin-top: 18px;
-    /* A STEP DOWN, now that the rows are a ledger. At 23px these were
-       sentences and needed to hold their own against the say line above
-       them; in two columns with one fact per line they are data, and
-       data at display size shouts the loudest thing on the screen. Not
-       down to the rail's 12px though — this band was promoted out of
-       that rail on purpose, and the point of the promotion stands. */
-    font-size: clamp(15px, 1.4vw, 18px); font-weight: 600;
-    line-height: 1.3; letter-spacing: -0.05em;
-    color: rgba(0, 0, 0, 0.42);
-    max-width: calc((100% - var(--ixgap)) / 2); }
-  /* ── LABEL LEFT, FACTS RIGHT ──────────────────────────────────────
-     Each row is its own two-column grid rather than the block sharing
-     one: the landing move transforms a row at a time, and display:
-     contents would hand the halves to an outer grid and leave nothing
-     to move. The label column is a fixed width, so identical templates
-     line the rows up with each other anyway.
+  /* ── THE ANSWER'S LEDGER ──────────────────────────────────────────
+     What was searched on the left, how it was searched on the right.
+     Two real columns rather than two blocks a screen apart, which is
+     what they were: the readings sat under the say line and the
+     mechanics down in the note rail past "Back to the house".
 
-     The label goes small and lettered out. It is a field name now, not
-     the first word of a sentence, and at the value's size it competed
-     with the numbers it was introducing. */
-  .ansstats .asl { display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    align-items: baseline;
-    column-gap: 16px; padding-top: 8px;
+     Both columns at one small size. These went 23px, then 18, and both
+     were the same mistake in different amounts — display type for a
+     receipt. The say line above is the voice; this is the paperwork,
+     and paperwork is small. */
+  .ansmeta { display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--ixgap); margin-top: 22px;
+    max-width: calc(100% - var(--ixgap));
+    font-size: 12px; font-weight: 500;
+    line-height: 1.45; letter-spacing: 0;
+    color: rgba(0, 0, 0, 0.42); }
+  .ansmeta[hidden] { display: none; }
+  .ansstats { font: inherit; color: inherit; }
+  /* ── LABEL ABOVE, FACTS UNDER ─────────────────────────────────────
+     The label had its own left-hand track, which works at full measure
+     and does not survive being put in a half-width column: 78px of
+     label inside a 160px column leaves the facts a ribbon. Above it,
+     the way the reference sets SOLUTIONS over its list, every value
+     gets the whole column.
+
+     The label is a field name, so it is small, lettered out and
+     recessive. It is not the first word of a sentence any more. */
+  .ansstats .asl { display: block; padding-top: 14px;
     opacity: 0; transform: translateY(6px);
     transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .ansstats .asl:first-child { padding-top: 0; }
   .ansstats .asl.on { opacity: 1; transform: none; }
-  .ansstats .ask2 { color: rgba(0, 0, 0, 0.26);
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; line-height: 1.9; }
-  /* ONE FACT PER LINE. The whole point of the two columns: three
-     countable things stack and can be read down instead of parsed
-     along a wrapped sentence. */
+  .ansstats .ask2 { display: block; color: rgba(0, 0, 0, 0.26);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; line-height: 1.6; padding-bottom: 2px; }
+  /* ONE FACT PER LINE, which is the whole point: three countable things
+     stack and can be read down instead of parsed along a wrapped
+     sentence. */
   .ansstats .asv > span { display: block; }
   @media (prefers-reduced-motion: reduce) {
     .ansstats .asl { transition: none; transform: none; opacity: 1; }
   }
   @media (max-width: 860px) {
-    .ansstats { max-width: none; }
-    /* 104px is a third of a phone's content column. The label still
-       gets its own track — that is the layout — but a narrower one. */
-    .ansstats .asl { grid-template-columns: 78px minmax(0, 1fr);
-      column-gap: 12px; }
-    .ixnotes .blk.working .rl { grid-template-columns: 78px minmax(0, 1fr);
-      column-gap: 12px; }
+    /* Two columns still, on the full width. A phone's content column is
+       329px, so each of these is about 150 — narrow, which is why the
+       labels sit above rather than beside. */
+    .ansmeta { max-width: none; column-gap: 18px; }
   }
 
   /* The statement's nouns, clickable. They have to read as the sentence
@@ -2249,16 +2252,18 @@
      replacing it with a different-looking page. */
   .answer .ixnotes { opacity: 0; transition: opacity 0.4s ease; }
   .answer .ixnotes.on { opacity: 1; }
-  .answer .ixnotes .blk.working { color: rgba(0, 0, 0, 0.5); }
-  /* the panel: prose first, then measured rows that land one at a
-     time. The stagger is per-row transition-delay written by the
+  /* THE WORKING BLOCK LEFT THE RAIL. It is the right column of
+     .ansmeta now, beside the readings it belongs with, so these
+     selectors follow it there — written .ixnotes .blk.working they
+     matched nothing and the rows would have appeared with no landing
+     at all. The stagger is per-row transition-delay written by the
      renderer, so newcomers land and settled rows hold still. */
-  .answer .ixnotes .blk.working .rprose { display: block; margin-bottom: 10px; }
-  .answer .ixnotes .blk.working .rl { opacity: 0; transform: translateY(5px);
+  .ansmeta .working .rprose { display: block; margin-bottom: 10px; }
+  .ansmeta .working .rl { opacity: 0; transform: translateY(5px);
     transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .answer .ixnotes .blk.working .rl.on { opacity: 1; transform: none; }
+  .ansmeta .working .rl.on { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
-    .answer .ixnotes .blk.working .rl { transition: none; transform: none; opacity: 1; }
+    .ansmeta .working .rl { transition: none; transform: none; opacity: 1; }
   }
   /* a pull's name is its description: it reads as a caption, not a
      title, or the board would look like it was claiming credit */

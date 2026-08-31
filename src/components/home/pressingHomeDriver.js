@@ -3270,7 +3270,10 @@ function renderStats() {
   if (!el) return;
   const st = WORKING && WORKING.stats;
   el.innerHTML = "";
-  el.hidden = !st;
+  /* The REGION hides, not this column: the mechanics beside it are
+     shown whenever a model answered, which is not the same condition. */
+  const meta = document.getElementById("ansMeta");
+  if (meta) meta.hidden = !(st || (WORKING && WORKING.receipt));
   if (!st) return;
   /* TWO COLUMNS, AND ONE FACT PER LINE. These rows were sentences —
      "Read · 30 case studies, 358 photographs, 2,192 catalogued terms" —
@@ -3379,7 +3382,7 @@ function renderStats() {
     lines.forEach((sp) => sp.classList.add("on"))));
 }
 function writeLedger(notesEl, a) {
-  const wk = notesEl.querySelector(".blk.working");
+  const wk = document.getElementById("ansWorking");
   if (wk) renderWorking(wk, a);
 }
 /* A KEYWORD REACHES THE MODEL NOW, and the old rule was drawing the
@@ -3769,8 +3772,10 @@ function buildAnswer() {
     blk.dataset.key = "note:" + (cards[ci].word || "");
     notesEl.appendChild(blk);
   });
-  const wk = document.createElement("div");
-  wk.className = "blk working";
+  /* NOT APPENDED TO THE RAIL ANY MORE. It has a standing mount beside
+     the readings — see #ansWorking in the markup. The rail keeps the
+     word and quote notes, which is what a column of words is for. */
+  const wk = document.getElementById("ansWorking") || document.createElement("div");
   /* the panel's readings, all measured this build: the haystack, the
      catch, and the clock. Held plans carry authored receipts and no
      measurements — a hand-written answer did not read anything. */
@@ -3793,9 +3798,11 @@ function buildAnswer() {
       ms: thinkMs + framesMs,
     } : null,
   };
-  renderWorking(wk, null);
+  /* renderStats first: it un-hides the region the working block lives
+     in, and a block written into a hidden parent lands with nothing to
+     stagger against. */
   renderStats();
-  notesEl.appendChild(wk);
+  renderWorking(wk, null);
   /* THE NOTES NO LONGER WAIT FOR THE SENTENCE. The panel is the show
      while the model thinks — the whole point of it — so the column
      fades in with the deal and the rows land through it. One frame
@@ -4474,14 +4481,33 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
    writes one number per tile, --gp, and the stylesheet above turns it
    into a bleed and a radius. See the CSS note for the geometry.
 
-   0 when the frame's top is still near the bottom of the glass, 1 by
-   the time it has climbed to a third of the way up, and it HOLDS at 1
-   above that. Open-and-stay rather than open-and-close: a frame that
-   narrowed again on its way off the top would read as the page
-   breathing, and the gesture is meant to be about arriving.
+   TWO GESTURES, ONE AT A TIME. The frame's curtain drops as it comes
+   in from the bottom edge — 1.4s of clip and a settle from 1.25 — and
+   the opening used to start at that same edge. Scrolled slowly they
+   read as a sequence; scrolled fast they landed on top of each other
+   and a tile appeared to arrive and lose its corners in one move.
 
-   Purely positional, so it reverses on its own — scroll back and every
-   frame closes in the order it opened.
+   So the opening waits for two things, and the second is the one that
+   holds under a fast scroll:
+
+     1. POSITION. The ramp starts once the frame's top has climbed to
+        62% of the glass, not 86%, and finishes at 18%. A tile arrives,
+        is read as an inset rounded picture for a beat, and only then
+        starts to widen.
+
+     2. THE CURTAIN BEING DONE. Position alone is not enough — a fast
+        flick can carry a tile from the bottom edge past 62% inside the
+        1.4s the curtain takes. So a frame is not eligible until its
+        own arrival has finished: the driver stamps the time it first
+        sees .fd-on and waits out the curtain, per tile, including the
+        lag the second frame in a row carries.
+
+   Above the ramp it HOLDS at 1. Open-and-stay rather than
+   open-and-close: a frame that narrowed again on its way off the top
+   would read as the page breathing, and the gesture is about arriving.
+
+   Purely positional after that, so it reverses on its own — scroll back
+   and every frame closes in the order it opened.
 
    READ, THEN WRITE. Every rect is taken in one pass and every property
    written in a second, because interleaving them makes the browser
@@ -4490,6 +4516,10 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
    report of a stutter. */
 (() => {
   const PHONE = 860;
+  /* The curtain above: 1.4s of clip-path and transform. Read from the
+     stylesheet would be better and is not worth a getComputedStyle per
+     tile per frame; if that transition changes, change this. */
+  const CURTAIN = 1400;
   let tiles = [], n = -1;
   const collect = () => {
     tiles = [...document.querySelectorAll(".ixrows.ixcols .fd-it .shot")];
@@ -4518,12 +4548,34 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
     if (!n) return;
 
     const vh = innerHeight;
-    const start = vh * 0.86;
-    const span = vh * 0.5;
+    const start = vh * 0.62;
+    const span = vh * 0.44;
+    const now = performance.now();
     const ps = new Array(n);
     for (let k = 0; k < n; k++) {
-      const t = tiles[k].getBoundingClientRect().top;
-      let p = (start - t) / span;
+      const sh = tiles[k];
+      /* The curtain's own clock, per tile. .fd-on is added by the
+         arrival observer; the stamp is written the first frame this
+         loop sees it, and the tile is eligible CURTAIN ms later. The
+         lag is the wait the dealer put on the second frame of a row,
+         which delays that frame's transition and therefore its finish.
+         Held on the element so a re-collect after a deal does not
+         restart anybody's clock. */
+      const card = sh.parentElement;
+      let ready = false;
+      if (card && card.classList.contains("fd-on")) {
+        let t0 = +(sh.dataset.gpAt || 0);
+        if (!t0) { t0 = now; sh.dataset.gpAt = String(now); }
+        const lag = parseFloat(getComputedStyle(card).getPropertyValue("--lag")) || 0;
+        ready = now - t0 >= CURTAIN + lag * 1000;
+      } else if (sh.dataset.gpAt) {
+        /* Swept out and coming back on a new deal: forget the old
+           clock, or the second arrival would be waved through. */
+        delete sh.dataset.gpAt;
+      }
+      if (!ready) { ps[k] = 0; continue; }
+      const t = sh.getBoundingClientRect().top;
+      const p = (start - t) / span;
       ps[k] = p < 0 ? 0 : p > 1 ? 1 : p;
     }
     for (let k = 0; k < n; k++) {
