@@ -4423,6 +4423,74 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
   else scrollTo({ top: 0, behavior: "smooth" });
 });
 
+/* ── THE FRAMES OPEN ON THE WAY DOWN ───────────────────────────────
+   Phones only, and only where the index is the packed column: this
+   writes one number per tile, --gp, and the stylesheet above turns it
+   into a bleed and a radius. See the CSS note for the geometry.
+
+   0 when the frame's top is still near the bottom of the glass, 1 by
+   the time it has climbed to a third of the way up, and it HOLDS at 1
+   above that. Open-and-stay rather than open-and-close: a frame that
+   narrowed again on its way off the top would read as the page
+   breathing, and the gesture is meant to be about arriving.
+
+   Purely positional, so it reverses on its own — scroll back and every
+   frame closes in the order it opened.
+
+   READ, THEN WRITE. Every rect is taken in one pass and every property
+   written in a second, because interleaving them makes the browser
+   recompute layout once per tile. This is the same shape as the plate
+   stack's fix, and it is here from the start rather than after a
+   report of a stutter. */
+(() => {
+  const PHONE = 860;
+  let tiles = [], n = -1;
+  const collect = () => {
+    tiles = [...document.querySelectorAll(".ixrows.ixcols .fd-it .shot")];
+    n = tiles.length;
+  };
+  const clear = () => tiles.forEach((t) => t.style.removeProperty("--gp"));
+
+  const tick = () => {
+    requestAnimationFrame(tick);
+    if (document.hidden) return;
+    /* The shell parks every scrub loop this way when the pane is
+       hidden; a driver that ignores it is one that keeps painting into
+       a tab nobody is looking at. */
+    if (document.documentElement.hasAttribute("data-paused")) return;
+
+    const rows = document.querySelector(".ixrows.ixcols");
+    if (!rows || innerWidth > PHONE || REDUCE()) {
+      if (n > 0) { clear(); tiles = []; n = 0; }
+      return;
+    }
+    /* Re-collected when the count changes rather than every frame: the
+       dealer rebuilds this grid on every answer, and a stale list would
+       write to detached nodes and leave the new ones flat. */
+    const live = rows.querySelectorAll(".fd-it .shot").length;
+    if (live !== n) collect();
+    if (!n) return;
+
+    const vh = innerHeight;
+    const start = vh * 0.86;
+    const span = vh * 0.5;
+    const ps = new Array(n);
+    for (let k = 0; k < n; k++) {
+      const t = tiles[k].getBoundingClientRect().top;
+      let p = (start - t) / span;
+      ps[k] = p < 0 ? 0 : p > 1 ? 1 : p;
+    }
+    for (let k = 0; k < n; k++) {
+      /* Two decimals. The property is read by two calc()s and a
+         repaint, and past a hundredth of the way open there is nothing
+         on screen to see for it. */
+      tiles[k].style.setProperty("--gp", ps[k].toFixed(2));
+    }
+  };
+  requestAnimationFrame(tick);
+  addEventListener("resize", collect, { passive: true });
+})();
+
 
 
 

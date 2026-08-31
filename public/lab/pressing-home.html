@@ -1632,6 +1632,84 @@
        display:none rather than a zero border, because the box is the
        problem and not the line. The line itself went earlier. */
     .ixrows.ixcols .ixrule { display: none; }
+
+    /* ── THE FRAME OPENS AS YOU COME DOWN THE PAGE ────────────────────
+       Each picture arrives inset by the page gutter and rounded, and
+       widens to the full glass with its corners squaring off as it
+       climbs. A pair opens the same way and meets in the middle: the
+       left frame takes the left gutter and half the column gap, the
+       right one mirrors it, so the two edges land against each other
+       with nothing between them.
+
+       THE LAYOUT NEVER MOVES. .shot keeps its rest width and its
+       declared ratio, so it holds the row height and the caption under
+       it stays exactly where it was — which is the point, because a
+       caption that slid while its picture opened would read as the page
+       reflowing rather than as a frame opening. What actually grows is
+       the plate INSIDE the frame, taken out of flow and pushed past
+       both edges. Nothing in the grid is re-measured; the driver writes
+       one custom property per tile.
+
+       The plate was already there, holding the arrival curtain and the
+       settle from 1.25. It gains the clip and the radius that .shot
+       used to own — same box, same result — and .shot gives up its
+       overflow so the plate has somewhere to go. clip-path stays the
+       curtain's; the corners are border-radius, so the two never
+       collide over one property. */
+    .ixrows.ixcols .fd-it .shot {
+      position: relative;
+      overflow: visible;
+      border-radius: 0;
+    }
+    .ixrows.ixcols .fd-it .shot > * {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      /* !important, and it is armReels that makes it necessary: the
+         reel writes width:100%;height:100% as an INLINE style, which
+         beats any stylesheet, so a reel tile took left:-20px and then
+         sized itself to the frame anyway. It bled off the left edge and
+         stayed 40px short of the right one — the one tile in forty that
+         opened crooked. The inline pair has to stay for the wide
+         layout, where nothing sets the box but the reel itself. */
+      width: auto !important;
+      /* AND THE RATIO, for the same reason and the same offender. The
+         reel element carries aspect-ratio: 16/9, and a box with a ratio
+         and a fixed height DERIVES its width from them — so left and
+         right were computed, ignored, and the two reel tiles in ten
+         opened 61 and 121px wide instead of 40 and 30. Measured with
+         offsetWidth: the rects had said the plain tiles were wrong too,
+         because a rect carries every ancestor transform and the
+         arrival's scale was still running. */
+      aspect-ratio: auto !important;
+      left: calc(-1 * var(--bl, 0px) * var(--gp, 0));
+      right: calc(-1 * var(--br, 0px) * var(--gp, 0));
+      overflow: hidden;
+      border-radius: calc(var(--r) * (1 - var(--gp, 0)));
+    }
+    /* HOW FAR EACH SIDE HAS TO TRAVEL, declared here because only the
+       stylesheet knows the gutter and the gap. A full-width frame owes
+       the page gutter on both sides. A half owes the gutter outward and
+       half the column gap inward, so the pair closes on the centre line
+       rather than one of them crossing it. */
+    .ixrows.ixcols .cell .fd-it { --bl: var(--gut); --br: var(--gut); }
+    .ixrows.ixcols .cell.mHalf.pairL .fd-it {
+      --bl: var(--gut);
+      --br: calc(var(--ixcolgap) / 2);
+    }
+    .ixrows.ixcols .cell.mHalf.pairR .fd-it {
+      --bl: calc(var(--ixcolgap) / 2);
+      --br: var(--gut);
+    }
+    /* An unpaired half sits alone in its row and has no middle to meet,
+       so it opens outward only. */
+    .ixrows.ixcols .cell.mHalf:not(.pairL):not(.pairR) .fd-it {
+      --bl: var(--gut);
+      --br: var(--gut);
+    }
+    /* Reduced motion keeps every frame at its rest inset, rounded. The
+       driver never writes --gp, and the fallback of 0 is the whole
+       stand-down. */
     /* NO RULE HERE AT ALL. This drew a spine down the index at 50%,
        broken around the full-width frames by paper bands. It replaced
        eight per-pair segments, which replaced a horizontal rule under
@@ -7016,6 +7094,74 @@ listen(document.querySelector("[data-mark]"), "click", (e) => {
   if (main && main.scrollTop) main.scrollTo({ top: 0, behavior: "smooth" });
   else scrollTo({ top: 0, behavior: "smooth" });
 });
+
+/* ── THE FRAMES OPEN ON THE WAY DOWN ───────────────────────────────
+   Phones only, and only where the index is the packed column: this
+   writes one number per tile, --gp, and the stylesheet above turns it
+   into a bleed and a radius. See the CSS note for the geometry.
+
+   0 when the frame's top is still near the bottom of the glass, 1 by
+   the time it has climbed to a third of the way up, and it HOLDS at 1
+   above that. Open-and-stay rather than open-and-close: a frame that
+   narrowed again on its way off the top would read as the page
+   breathing, and the gesture is meant to be about arriving.
+
+   Purely positional, so it reverses on its own — scroll back and every
+   frame closes in the order it opened.
+
+   READ, THEN WRITE. Every rect is taken in one pass and every property
+   written in a second, because interleaving them makes the browser
+   recompute layout once per tile. This is the same shape as the plate
+   stack's fix, and it is here from the start rather than after a
+   report of a stutter. */
+(() => {
+  const PHONE = 860;
+  let tiles = [], n = -1;
+  const collect = () => {
+    tiles = [...document.querySelectorAll(".ixrows.ixcols .fd-it .shot")];
+    n = tiles.length;
+  };
+  const clear = () => tiles.forEach((t) => t.style.removeProperty("--gp"));
+
+  const tick = () => {
+    requestAnimationFrame(tick);
+    if (document.hidden) return;
+    /* The shell parks every scrub loop this way when the pane is
+       hidden; a driver that ignores it is one that keeps painting into
+       a tab nobody is looking at. */
+    if (document.documentElement.hasAttribute("data-paused")) return;
+
+    const rows = document.querySelector(".ixrows.ixcols");
+    if (!rows || innerWidth > PHONE || REDUCE()) {
+      if (n > 0) { clear(); tiles = []; n = 0; }
+      return;
+    }
+    /* Re-collected when the count changes rather than every frame: the
+       dealer rebuilds this grid on every answer, and a stale list would
+       write to detached nodes and leave the new ones flat. */
+    const live = rows.querySelectorAll(".fd-it .shot").length;
+    if (live !== n) collect();
+    if (!n) return;
+
+    const vh = innerHeight;
+    const start = vh * 0.86;
+    const span = vh * 0.5;
+    const ps = new Array(n);
+    for (let k = 0; k < n; k++) {
+      const t = tiles[k].getBoundingClientRect().top;
+      let p = (start - t) / span;
+      ps[k] = p < 0 ? 0 : p > 1 ? 1 : p;
+    }
+    for (let k = 0; k < n; k++) {
+      /* Two decimals. The property is read by two calc()s and a
+         repaint, and past a hundredth of the way open there is nothing
+         on screen to see for it. */
+      tiles[k].style.setProperty("--gp", ps[k].toFixed(2));
+    }
+  };
+  requestAnimationFrame(tick);
+  addEventListener("resize", collect, { passive: true });
+})();
 
 /* ── the burn, lifted from Masthead.tsx ────────────────────────────
    Three stages: climb hard while the page moves, hold with a slow
