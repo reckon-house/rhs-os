@@ -31,6 +31,13 @@ import styles from "./PressingPhoneRail.module.css";
 
 /** The attribute PressingLayout stamps on each marker. */
 export const MARK_ATTR = "data-pressing-mark";
+/* WHERE THE BAR COMES IN. A zero-height span dropped straight after the
+   study's first picture, so the arrival is keyed to the opening plate
+   rather than to a section header several screens further down. Every
+   pressing study opens the same way — cover, then one full plate — so
+   one rule covers all of them and none has to say where its own bar
+   should start. */
+export const ARM_ATTR = "data-pressing-arm";
 
 /* The MARKER, not a number. An offset measured when the panel opened is
    stale by the time it is used: a study is 40,000px of lazy images, and
@@ -61,6 +68,11 @@ export function PressingPhoneRail() {
   );
   const [open, setOpen] = useState(false);
   const [stops, setStops] = useState<Stop[]>([]);
+  /* Past the opening plate. Separate from `current` because there is a
+     stretch between the two — the copy under the first plate — where
+     the bar should be up but no section has been entered yet, and the
+     handle says what it is instead of naming one. */
+  const [armed, setArmed] = useState(false);
   /* IT ARRIVES WITH THE FIRST SECTION and leaves the same way. Two
      wrong versions came before this one. It used to be held off until a
      header passed AND then only ever named that header, which was
@@ -102,6 +114,7 @@ export function PressingPhoneRail() {
         if (lastKey !== "") {
           lastKey = "";
           setCurrent(null);
+          setArmed(false);
         }
         return;
       }
@@ -122,9 +135,13 @@ export function PressingPhoneRail() {
         else break;
       }
 
-      const key = found ? `${found.dataset.label}|${found.dataset.title}` : "";
+      const arm = document.querySelector<HTMLElement>(`[${ARM_ATTR}]`);
+      const isArmed = arm ? arm.getBoundingClientRect().top <= line : true;
+
+      const key = `${isArmed}|${found ? `${found.dataset.label}|${found.dataset.title}` : ""}`;
       if (key === lastKey) return;
       lastKey = key;
+      setArmed(isArmed);
       if (!found) {
         setCurrent(null);
         return;
@@ -207,7 +224,7 @@ export function PressingPhoneRail() {
       <div
         ref={railRef}
         className={styles.rail}
-        {...(current || open ? { "data-on": "" } : {})}
+        {...(armed || current || open ? { "data-on": "" } : {})}
         {...(open ? { "data-open": "" } : {})}
       >
         {/* The label IS the control. A separate affordance beside it

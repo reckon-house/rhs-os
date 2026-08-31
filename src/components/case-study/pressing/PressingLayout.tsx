@@ -50,7 +50,7 @@ import { PressingCoverageChart } from "./viz/PressingCoverageChart";
 import { PressingGapColumn } from "./viz/PressingGapColumn";
 import { PressingCoverageCard } from "./PressingCoverageCard";
 import { PressingScreenGrid } from "./PressingScreenGrid";
-import { PressingPhoneRail, MARK_ATTR } from "./PressingPhoneRail";
+import { PressingPhoneRail, MARK_ATTR, ARM_ATTR } from "./PressingPhoneRail";
 import { PressingSpeedComparison } from "./viz/PressingSpeedComparison";
 import { PressingDevTimeline } from "./viz/PressingDevTimeline";
 import { SectionRenderer } from "../SectionRenderer";
@@ -238,9 +238,39 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
   };
 
 
+  /* ── WHERE THE PHONE BAR COMES IN ─────────────────────────────────
+     After the study's first picture. The bar was keyed to the first
+     section header, which on DSC put it three screens down — past the
+     cover, the opening plate AND the editorial line under it — and the
+     opening plate is the moment the study stops introducing itself and
+     starts showing work.
+
+     Derived, not authored: the first hero or image section, whichever
+     comes first. Every pressing study opens cover-then-plate, so one
+     rule covers all of them and no study has to declare its own. */
+  const armAfter = sections.findIndex(
+    (x) => x.type === "hero" || x.type === "image"
+  );
+  let armPlaced = armAfter < 0;
+
   let i = 0;
 
   while (i < sections.length) {
+    /* Emitted on the first pass AFTER that section was consumed, rather
+       than inside its branch: several branches absorb a run of siblings
+       and leave i somewhere past the plate, so keying off the index
+       having moved is the one test that holds for all of them. */
+    if (!armPlaced && i > armAfter) {
+      armPlaced = true;
+      out.push(
+        <span
+          key="pressing-arm"
+          {...{ [ARM_ATTR]: "" }}
+          style={{ display: "block", height: 0 }}
+        />
+      );
+    }
+
     const s = sections[i];
     const p = s.pressing;
 
