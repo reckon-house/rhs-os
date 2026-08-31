@@ -45,12 +45,20 @@ type Stop = { n: string; name: string; thumb: string; el: HTMLElement };
 function split(label: string): [string, string] {
   const at = label.indexOf(":");
   if (at === -1) return ["", label.trim()];
-  return [label.slice(0, at).replace(/^section\s*/i, "").trim(), label.slice(at + 1).trim()];
+  return [
+    label
+      .slice(0, at)
+      .replace(/^section\s*/i, "")
+      .trim(),
+    label.slice(at + 1).trim(),
+  ];
 }
 
 export function PressingPhoneRail() {
   const railRef = useRef<HTMLDivElement | null>(null);
-  const [current, setCurrent] = useState<{ n: string; name: string } | null>(null);
+  const [current, setCurrent] = useState<{ n: string; name: string } | null>(
+    null,
+  );
   const [open, setOpen] = useState(false);
   const [stops, setStops] = useState<Stop[]>([]);
   /* THERE FROM THE START. The bar used to arrive only once the first
@@ -87,7 +95,7 @@ export function PressingPhoneRail() {
     const fit = () =>
       setReady(
         window.innerWidth <= CHOREO_BREAKPOINT &&
-          document.querySelectorAll(`[${MARK_ATTR}]`).length > 0
+          document.querySelectorAll(`[${MARK_ATTR}]`).length > 0,
       );
     fit();
     window.addEventListener("resize", fit, { passive: true });
@@ -165,7 +173,10 @@ export function PressingPhoneRail() {
     const aim = () =>
       Math.max(
         0,
-        (main ? main.scrollTop : 0) + el.getBoundingClientRect().top - navH - 12
+        (main ? main.scrollTop : 0) +
+          el.getBoundingClientRect().top -
+          navH -
+          12,
       );
 
     const travel = (to: number, immediate: boolean) => {
@@ -183,10 +194,13 @@ export function PressingPhoneRail() {
        grew on the way. One re-measure after the scroll settles, and
        only when it is off by more than a nudge, so an accurate landing
        is never jostled. */
-    window.setTimeout(() => {
-      const to = aim();
-      if (Math.abs(to - (main ? main.scrollTop : 0)) > 24) travel(to, true);
-    }, still ? 60 : 1150);
+    window.setTimeout(
+      () => {
+        const to = aim();
+        if (Math.abs(to - (main ? main.scrollTop : 0)) > 24) travel(to, true);
+      },
+      still ? 60 : 1150,
+    );
   };
 
   return (
@@ -222,28 +236,44 @@ export function PressingPhoneRail() {
           <span className={styles.chev} aria-hidden="true" />
         </button>
 
+        {/* THE BARE DIV IS LOAD-BEARING. It is the same three-deep
+            anatomy the footer rail's drawer uses — .rbody > div > .rpad
+            — and for the same reason: a 0fr grid row cannot shrink
+            below its item's PADDING, because min-height only ever
+            constrains a content box. The track carries 2px over and
+            18px under, so closed the panel stood 20px tall and a strip
+            of the thumbnails showed under the bar. This div carries the
+            clip and no padding of its own; the track keeps the padding
+            inside it. */}
         <div className={styles.panel} aria-hidden={!open}>
-          <div className={styles.track}>
-            {stops.map((s, i) => (
-              <button
-                key={s.name + i}
-                type="button"
-                className={styles.stop}
-                onClick={() => goTo(s.el)}
-                tabIndex={open ? 0 : -1}
-              >
-                <span className={styles.thumb}>
-                  {s.thumb ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={s.thumb} alt="" loading="lazy" decoding="async" />
-                  ) : null}
-                </span>
-                <span className={styles.stopLabel}>
-                  {s.n ? <span className={styles.stopN}>{s.n}</span> : null}
-                  {s.name}
-                </span>
-              </button>
-            ))}
+          <div>
+            <div className={styles.track}>
+              {stops.map((s, i) => (
+                <button
+                  key={s.name + i}
+                  type="button"
+                  className={styles.stop}
+                  onClick={() => goTo(s.el)}
+                  tabIndex={open ? 0 : -1}
+                >
+                  <span className={styles.thumb}>
+                    {s.thumb ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={s.thumb}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : null}
+                  </span>
+                  <span className={styles.stopLabel}>
+                    {s.n ? <span className={styles.stopN}>{s.n}</span> : null}
+                    {s.name}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

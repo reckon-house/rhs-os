@@ -122,6 +122,17 @@
     touch-action: pan-x pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    /* THE BOUNCE AT EACH END IS OVERSCROLL, not momentum. Native
+       inertia is already what carries the pan after the finger lifts;
+       what read as loose was the rubber band past the last pixel of the
+       picture, and the gesture then chaining to the page underneath so
+       a fast flick sideways could also nudge the whole study. none
+       stops both, so the pan ends where the photograph ends.
+
+       X only. Vertical MUST still chain — a finger that starts on the
+       hero is how most readers will try to scroll the page, and
+       containing that axis would trap them on the picture. */
+    overscroll-behavior-x: none;
     /* The WIDE state, from the declared ratio. Still the no-JS and
        reduced-motion state: the full composition, in flow. */
     height: calc(100vw / var(--nat-ar, 1.5));
