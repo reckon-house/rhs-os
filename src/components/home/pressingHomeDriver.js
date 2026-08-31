@@ -1328,6 +1328,40 @@ function think(q) {
   }
 
   const f = factLookup(q);
+
+  /* ── A FRAME IS NOT A DISCIPLINE ──────────────────────────────────
+     factLookup answers first and the bridge below only ever ran when
+     it found nothing, so ONE weak hit was enough to shut the bridge
+     out. "app" is the case: the camera caught an app screen in a
+     single project, that counted as an answer, and the four actual app
+     projects — Sally, A.R.C., DSC, Faux Reel — never got asked for.
+     Measured: "app" returned 1, "app development" and "software"
+     returned 4, and a visitor clicking the word "Apps" in the opening
+     paragraph got the 1.
+
+     The rule already exists one layer up, for classifications: a
+     project whose only claim is a frame stands aside when a shelf
+     answered. This is the same rule against the sense bridge. It
+     applies ONLY when every hit is seen-only — a mined fact, a
+     discipline, a client, a category all still beat the bridge — and
+     only when the bridge actually returns more. */
+  if (f.hits.length && !f.pulls.length &&
+      f.hits.every((h) => h.m.every((m) => m.facet === "seen"))) {
+    const seenOnlyKey = SENSES[fold(q)] ? fold(q) : null;
+    const alt = seenOnlyKey ? senseBridge(seenOnlyKey) : null;
+    if (alt && alt.hits > f.hits.length) {
+      const plan = planFacts(alt.target, factLookup(alt.target));
+      plan.say = "\u201c" + cap(seenOnlyKey) + "\u201d files under " +
+        alt.target + " here. That work is below.";
+      plan.receipt = "\u201c" + seenOnlyKey + "\u201d files under " + alt.target +
+        " here, which is " + plan.workIdx.length + " project" +
+        (plan.workIdx.length === 1 ? "" : "s") +
+        ". The camera also caught it in " + f.hits.length +
+        ", which is the weaker claim. " + machinery();
+      return plan;
+    }
+  }
+
   if (f.hits.length || f.pulls.length) return planFacts(q, f);
 
   /* Nothing matched, but the question might be using the world's word
@@ -2250,6 +2284,27 @@ function dealShares(n, rnd) {
 }
 
 /* ── the magazine ── */
+/* THE PHONE'S RHYTHM, at the top level because TWO dealers lay out
+   cells now: the index below and the answer. It sat inside
+   buildMagazine while only the index needed it, and the answer's rows
+   got no rhythm classes at all — which on a phone left them as bare
+   stacked blocks with no grid and no gaps, so every result touched the
+   one under it. One array, one layout, both surfaces. */
+const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mHalf", "mHalf"];
+/* Which slot opens a pair, and therefore which cell carries the
+   standing rule's side. Shared for the same reason. */
+function rhythmClasses(flat, isLast) {
+  const slot = flat % 7;
+  const opensPair = slot === 1 || slot === 5;
+  const lonely = opensPair && isLast;
+  const out = [lonely ? "mHero" : M_RHYTHM[slot]];
+  if (!lonely) {
+    if (slot === 1 || slot === 5) out.push("pairL");
+    else if (slot === 2 || slot === 6) out.push("pairR");
+  }
+  return out;
+}
+
 function buildMagazine() {
   /* the debounced resize can land after the route changed */
   if (!alive) return;
@@ -2927,7 +2982,6 @@ function buildMagazine() {
      works. Halves throughout — the rhythm still varies by what is
      full-width and what is split, which is the part that was doing the
      work. Owner's call. */
-  const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mHalf", "mHalf"];
   const mk = (ci, i, side) => {
     const cell = document.createElement("div");
     cell.className = "cell col" + side + (i === 0 ? " first" : "");
@@ -2935,24 +2989,10 @@ function buildMagazine() {
        (positions 1 and 5), the last frame would stand at a third or a
        half of the width with nothing beside it, which reads as a
        picture that failed to load rather than as a composition. */
-    const slot = i % 7;
-    const opensPair = slot === 1 || slot === 5;
-    const lonely = opensPair && i === workIdx.length - 1;
-    cell.classList.add(lonely ? "mHero" : M_RHYTHM[slot]);
-    /* WHICH CELLS SHARE A ROW, said in the markup because CSS cannot
-       ask. On a phone .ixrow is display:contents, so the grid packs
-       every cell in order and a visual row is whatever spans add up to
-       six: slots 1+2 (half and half) and slots 5+6 (a third and two
-       thirds). Both pairs, and always the same two, because the rhythm
-       is a fixed seven-slot cycle.
-
-       Those two get a rule BETWEEN them instead of one under each. A
-       pair that lost its partner to the end of the deal is a full-width
-       frame and takes the ordinary treatment. */
-    if (!lonely) {
-      if (slot === 1 || slot === 5) cell.classList.add("pairL");
-      else if (slot === 2 || slot === 6) cell.classList.add("pairR");
-    }
+    /* The slot's width class and, where it opens a pair, the side that
+       carries the standing rule. Both come from rhythmClasses, which
+       the answer's dealer reads too — see the note above it. */
+    cell.classList.add(...rhythmClasses(i, i === workIdx.length - 1));
     cell.style.order = String(i);
     if (ci !== undefined) {
       const c = cards[ci];
@@ -3257,6 +3297,18 @@ function renderStats() {
   } else {
     lines.push(line("Read", st.studies + " case studies, " + st.photos +
       " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
+    /* A MISS SAYS MISS. The comparable hand is pushed into the same
+       register a real answer uses, so this counted six offered
+       projects as six found ones and announced "\u201cios\u201d in 6
+       projects" in display type over a receipt that said no match. The
+       band is the loudest thing on the screen; it does not get to be
+       the least accurate. */
+    if (st.miss) {
+      lines.push(line("Caught",
+        "nothing for " + (st.q ? "\u201c" + st.q + "\u201d" : "that")));
+      lines.push(line("Showing",
+        n(st.miss, "project", "projects") + " that might be comparable"));
+    } else {
     const parts = [];
     if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
     if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
@@ -3264,6 +3316,7 @@ function renderStats() {
     lines.push(line("Caught",
       (st.q ? "\u201c" + st.q + "\u201d in " : "") +
       (parts.length ? parts.join(", ") : "nothing in the index")));
+    }
   }
   /* NO CLOCK HERE. "8ms on your machine, before any model" was the one
      row of this band that measured the plumbing rather than the work,
@@ -3428,6 +3481,9 @@ function buildAnswer() {
   const plan = think(query);
   const thinkMs = performance.now() - t0;
   let say, receipt, mailto = false, quiet = [];
+  /* How many projects were offered as COMPARABLE rather than found. 0
+     when the question was actually answered. See the miss branch. */
+  let missHand = 0;
   let leftIdx = [], rightIdx = [];
   const textIdx = [];
   const route = (ci, into) =>
@@ -3471,6 +3527,14 @@ function buildAnswer() {
         "That's one I haven't worked into a project or saved as inspiration. Have a look at the work that might be comparable.";
       receipt = "No match for " + fold(query) + ". Showing " +
         hand.length + " comparable projects instead. " + machinery();
+      /* AND THE BAND HAS TO SAY SO. The hand is pushed into leftIdx, so
+         the panel counted six comparable projects as six projects
+         CAUGHT and printed "Caught · \u201cios\u201d in 6 projects" at
+         display size while the receipt underneath said no match. The
+         receipt was right and the band was the bigger type, which is
+         the worst way round for a panel whose whole job is showing the
+         machinery honestly. */
+      missHand = hand.length;
     }
   }
 
@@ -3516,12 +3580,29 @@ function buildAnswer() {
   while (rest.length) pairs.push([rest.shift(), rest.shift()]);
 
   const shares = dealShares(pairs.length * 2, rnd);
+  /* Flat position across the answer's cells, for the phone rhythm. The
+     pairs array holds [a, b] tuples and either may be undefined on the
+     tail, so the row index is not the cell index. */
+  let flat = 0;
+  const dealtCount = pairs.reduce(
+    (n, [a, b]) => n + (a !== undefined ? 1 : 0) + (b !== undefined ? 1 : 0), 0);
   rowsEl.innerHTML = "";
   /* The answer keeps ROWS: it pairs a work frame with a board frame on
      purpose, left and right, and that pairing is the reading. The
      index below packs into columns instead, which is why the class
      comes off here. */
-  rowsEl.classList.remove("ixcols");
+  /* THE ANSWER TAKES THE INDEX'S LAYOUT ON A PHONE. It used to drop
+     .ixcols outright, which was a decision about the WIDE screen —
+     pairing a work frame with a board frame is the reading there. On a
+     phone that class is the whole grid: .ixrow is display:contents
+     below 860, so without it the answer's cells had no grid, no rhythm
+     and no gaps, and every result sat flush against the next one with
+     its caption touching the picture below.
+
+     Safe to leave on at every width: every .ixcols rule lives inside
+     @media (max-width: 860px), so above that it is an inert class and
+     the pair grammar is untouched. */
+  rowsEl.classList.add("ixcols");
   const els = [];
 
   /* ── THE BOARD PACKS, IT DOES NOT PAIR ────────────────────────────
@@ -3581,6 +3662,14 @@ function buildAnswer() {
          its column and across the gutter, while the right one's swung
          off the page. Same two lines the index deals, k is the side. */
       cell.className = "cell col" + (k ? "R" : "L");
+      /* The phone rhythm, counted across the whole deal rather than
+         per row: same seven-slot cycle the index runs, so an answer and
+         the index below it are one layout. Inert above 860. */
+      if (ci !== undefined) {
+        cell.classList.add(...rhythmClasses(flat, flat === dealtCount - 1));
+        if (flat === 0) cell.classList.add("first");
+        flat += 1;
+      }
       if (ci !== undefined) {
         /* A line is dealt like a picture and drawn like a line. */
         const el = cards[ci].kind === "quote"
@@ -3648,6 +3737,7 @@ function buildAnswer() {
       projects: leftIdx.filter((ci) => cards[ci].kind === "work").length,
       frames: shownFrames.total || 0,
       pulls: rightIdx.filter((ci) => cards[ci].kind === "pull").length,
+      miss: missHand,
       /* Present only on a board answer, and when it is there it
          REPLACES the corpus readings rather than joining them: the
          board and the studies are two different haystacks and this
@@ -4675,7 +4765,31 @@ let tourFull = "";                     /* what placeAsk should size to */
     ask.style.setProperty("--ask-uw", Math.min(wide, uw + 2).toFixed(1) + "px");
     ask.style.setProperty("--ask-left", col.left.toFixed(1) + "px");
     ask.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
-    ask.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
+    /* ── THE FIELD STOPS AT THE WORDMARK ON A PHONE ────────────────
+       --ask-w was the statement column's width the whole way, which is
+       right at the display end: in the cover the question IS that
+       column. At the bar end on a phone the column is still the full
+       content width, so the settled field spanned 20 to 349 while the
+       wordmark sat at 235 to 349 — the input covering the name
+       entirely, and an input on top of a link takes every tap. The
+       owner could not press his own logo.
+
+       So the bar end is measured off the mark instead and the two ends
+       are walked between on the same p as the size and the tracking.
+       Phones only: on a desktop the field is centred and the wordmark
+       is at the far left, a geometry this measurement does not
+       describe and which is tuned. Guarded on a real width too, since
+       the mark is hidden while the cover holds it. */
+    let askW = col.w;
+    if (innerWidth <= 760) {
+      const mk = document.querySelector("[data-mark]");
+      const mkL = mk ? mk.getBoundingClientRect().left : 0;
+      if (mkL > col.left + 40) {
+        const barW = mkL - col.left - 18;
+        askW = barW + (col.w - barW) * p;
+      }
+    }
+    ask.style.setProperty("--ask-w", askW.toFixed(1) + "px");
     ask.style.setProperty("--ask-fs", (SMALL + (big - SMALL) * p).toFixed(2) + "px");
     /* display type wants negative tracking, the bar wants the module's
        positive 0.04em — walk between them rather than picking one.

@@ -1,27 +1,43 @@
 "use client";
 
 /* ── PressingPhoneRail ──────────────────────────────────────────────
- * The sticky section label, phones only. See the stylesheet for why it
- * exists and why it is fixed rather than sticky.
+ * The phone's section furniture, in two states.
  *
- * HOW IT KNOWS WHERE YOU ARE. PressingLayout drops a zero-height marker
- * at every section-header, carrying that header's label and title. This
- * reads the markers' positions on the shared scrub tick and shows the
- * last one to have passed under the bar. No wrapper, no observer per
- * section, and nothing between the choreography and <main>.
+ * CLOSED it is a label on the bottom edge naming the section you are
+ * inside — see the stylesheet for why that exists and why it is fixed
+ * rather than sticky.
  *
- * A marker is a <span> with height 0 and no box of its own, so it takes
- * no part in layout: the rise plates' negative margins still land on the
- * sibling they were measured against.
+ * OPEN it is the way through the study. A case study runs 40,000px on
+ * a phone and the only way to reach the middle of one was to scroll
+ * there, which is why the label alone only half answered "what am I
+ * scrolling into": it says where you ARE and nothing about where you
+ * could go. Tapping it raises a row of the study's sections, each with
+ * the first picture from that section, scrolled sideways. Tap one and
+ * the panel closes and the page travels there.
+ *
+ * HOW IT KNOWS THE SECTIONS. PressingLayout drops a zero-height marker
+ * at every section-header carrying that header's label, title and the
+ * section's first picture. This reads the markers' positions on the
+ * shared scrub tick for the closed label, and reads the whole list when
+ * it opens. No wrapper, no observer per section, and nothing between
+ * the choreography and <main>.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
-import { onTick } from "@/lib/scrub";
+import { onTick, reducedMotion } from "@/lib/scrub";
+import { getLenis } from "@/lib/lenis";
 import styles from "./PressingPhoneRail.module.css";
 
 /** The attribute PressingLayout stamps on each marker. */
 export const MARK_ATTR = "data-pressing-mark";
+
+/* The MARKER, not a number. An offset measured when the panel opened is
+   stale by the time it is used: a study is 40,000px of lazy images, and
+   every one that loads between the tap and the arrival moves everything
+   below it. Holding the element means the position can be asked for at
+   the moment it is needed, and asked again after landing. */
+type Stop = { n: string; name: string; thumb: string; el: HTMLElement };
 
 /* The authored label is one string, "SECTION 03: SCHEDULING BY CHAT".
    Split on the first colon so the numeral and the name can be set
@@ -35,14 +51,51 @@ function split(label: string): [string, string] {
 export function PressingPhoneRail() {
   const railRef = useRef<HTMLDivElement | null>(null);
   const [current, setCurrent] = useState<{ n: string; name: string } | null>(null);
+  const [open, setOpen] = useState(false);
+  const [stops, setStops] = useState<Stop[]>([]);
+  /* THERE FROM THE START. The bar used to arrive only once the first
+     section header had gone past, so the whole opening of a study — the
+     cover, the abstract, the first plates — had no way through it and
+     no sign that one existed. A reader meets the navigator at the same
+     moment they meet the study. Before any header has passed there is
+     no section to name, so the handle says what it is instead. */
+  const [ready, setReady] = useState(false);
+
+  /* Read the markers into a list, with where each one sits in the page.
+     Measured at the moment of opening rather than kept in sync: the
+     page's own height moves while images load, and a stale offset sends
+     the reader to the wrong place. */
+  const readStops = useCallback(() => {
+    const out: Stop[] = [];
+    document.querySelectorAll<HTMLElement>(`[${MARK_ATTR}]`).forEach((m) => {
+      const [n, name] = split(m.dataset.label || "");
+      out.push({
+        n,
+        name: name || m.dataset.title || "",
+        thumb: m.dataset.thumb || "",
+        el: m,
+      });
+    });
+    setStops(out);
+  }, []);
+
+  /* Armed once the markers exist, which is the same frame the study
+     renders: this is a case-study component, so there is always at
+     least one. Width-checked here and again on the tick, since a phone
+     can be rotated into a desktop layout. */
+  useEffect(() => {
+    const fit = () =>
+      setReady(
+        window.innerWidth <= CHOREO_BREAKPOINT &&
+          document.querySelectorAll(`[${MARK_ATTR}]`).length > 0
+      );
+    fit();
+    window.addEventListener("resize", fit, { passive: true });
+    return () => window.removeEventListener("resize", fit);
+  }, []);
 
   useEffect(() => {
     if (!railRef.current) return;
-
-    /* Re-read the markers each tick rather than caching them. The list is
-       short (a study has a handful of headers), and a study whose sections
-       mount late — a viz frame, a demo iframe — would otherwise pin the
-       rail to a stale list. */
     let lastKey = "";
 
     const stop = onTick(() => {
@@ -56,13 +109,12 @@ export function PressingPhoneRail() {
       const marks = document.querySelectorAll<HTMLElement>(`[${MARK_ATTR}]`);
       if (!marks.length) return;
 
-      /* THE LINE IS NOT THE BAR. The bar sits on the bottom edge now, and
+      /* THE LINE IS NOT THE BAR. The bar sits on the bottom edge, and
          keying off its own box would make a section "current" the moment
          its header appeared from below — naming a thing before the reader
          has reached it. You are inside a section once its header has gone
          past you, so the line stays at the top of the reading area: the
-         underside of the masthead. Measured rather than assumed, because
-         --nav-h steps down at 760 and the bar is only ever shown there. */
+         underside of the masthead. */
       const nav = document.getElementById("nav");
       const line = nav ? nav.getBoundingClientRect().bottom : 54;
       let found: HTMLElement | null = null;
@@ -71,12 +123,6 @@ export function PressingPhoneRail() {
         else break;
       }
 
-      /* Keyed on the LABEL, not on the marker attribute. That attribute
-         is stamped empty (it is a selector hook, not a value), so every
-         marker keyed to "" — which is also lastKey's initial value, so
-         the guard below returned on the first tick and the bar never
-         turned on once. A cheap mistake to make and a silent one: the
-         logic was right and nothing threw. */
       const key = found ? `${found.dataset.label}|${found.dataset.title}` : "";
       if (key === lastKey) return;
       lastKey = key;
@@ -84,29 +130,123 @@ export function PressingPhoneRail() {
         setCurrent(null);
         return;
       }
-      const label = found.dataset.label || "";
-      const title = found.dataset.title || "";
-      const [n, name] = split(label);
-      /* The label is the descriptor; the title is the fallback for a
-         header authored without one. Never both: two names for one
-         section in a 30px bar is the mess this is meant to answer. */
-      setCurrent({ n, name: name || title });
+      const [n, name] = split(found.dataset.label || "");
+      setCurrent({ n, name: name || found.dataset.title || "" });
     });
     return stop;
   }, []);
 
+  /* Escape closes it, the way any disclosure over the page should. */
+  useEffect(() => {
+    if (!open) return;
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, [open]);
+
+  const toggle = () => {
+    if (!open) readStops();
+    setOpen((v) => !v);
+  };
+
+  /* Close first, then travel. Lenis owns <main>, so the page has to be
+     moved through the instance: writing main.scrollTop looks like it
+     works and is snapped back on the next frame. */
+  const goTo = (el: HTMLElement) => {
+    setOpen(false);
+    const main = document.querySelector("main");
+    const nav = document.getElementById("nav");
+    const navH = nav ? nav.getBoundingClientRect().height : 54;
+    const still = reducedMotion();
+
+    /* Measured at the tap, not at the open. */
+    const aim = () =>
+      Math.max(
+        0,
+        (main ? main.scrollTop : 0) + el.getBoundingClientRect().top - navH - 12
+      );
+
+    const travel = (to: number, immediate: boolean) => {
+      const lenis = getLenis();
+      if (lenis) lenis.scrollTo(to, { immediate });
+      else main?.scrollTo({ top: to });
+    };
+
+    travel(aim(), still);
+
+    /* AND CORRECT ON ARRIVAL. Ten thousand pixels of travel through a
+       page whose images are still arriving means the destination has
+       moved by the time it is reached: measured on DSC, a jump to the
+       owner console landed 930px short because the sections above it
+       grew on the way. One re-measure after the scroll settles, and
+       only when it is off by more than a nudge, so an accurate landing
+       is never jostled. */
+    window.setTimeout(() => {
+      const to = aim();
+      if (Math.abs(to - (main ? main.scrollTop : 0)) > 24) travel(to, true);
+    }, still ? 60 : 1150);
+  };
+
   return (
-    <div
-      ref={railRef}
-      className={styles.rail}
-      /* aria-hidden: this is orientation furniture that duplicates a
-         heading already in the document. A screen reader gets the real
-         heading in its real place and should not hear it twice. */
-      aria-hidden="true"
-      {...(current ? { "data-on": "" } : {})}
-    >
-      {current?.n ? <span className={styles.n}>{current.n}</span> : null}
-      <span className={styles.name}>{current?.name ?? ""}</span>
-    </div>
+    <>
+      {/* The ground behind an open panel. It takes the tap that closes
+          it, which is the gesture every sheet on a phone answers to. */}
+      <div
+        className={styles.scrim}
+        {...(open ? { "data-on": "" } : {})}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        ref={railRef}
+        className={styles.rail}
+        {...(ready || current || open ? { "data-on": "" } : {})}
+        {...(open ? { "data-open": "" } : {})}
+      >
+        {/* The label IS the control. A separate affordance beside it
+            would be a second thing to explain on the one screen with no
+            room to explain anything. */}
+        <button
+          type="button"
+          className={styles.handle}
+          onClick={toggle}
+          aria-expanded={open}
+          aria-label={
+            open ? "Close section navigation" : "Open section navigation"
+          }
+        >
+          {current?.n ? <span className={styles.n}>{current.n}</span> : null}
+          <span className={styles.name}>{current?.name ?? "Sections"}</span>
+          <span className={styles.chev} aria-hidden="true" />
+        </button>
+
+        <div className={styles.panel} aria-hidden={!open}>
+          <div className={styles.track}>
+            {stops.map((s, i) => (
+              <button
+                key={s.name + i}
+                type="button"
+                className={styles.stop}
+                onClick={() => goTo(s.el)}
+                tabIndex={open ? 0 : -1}
+              >
+                <span className={styles.thumb}>
+                  {s.thumb ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={s.thumb} alt="" loading="lazy" decoding="async" />
+                  ) : null}
+                </span>
+                <span className={styles.stopLabel}>
+                  {s.n ? <span className={styles.stopN}>{s.n}</span> : null}
+                  {s.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

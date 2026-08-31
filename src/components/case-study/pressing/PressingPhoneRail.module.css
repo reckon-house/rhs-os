@@ -21,6 +21,21 @@
   choreography is touched.
 */
 
+/* The ground behind an open panel, and the tap that closes it. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  background: rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.scrim[data-on] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .rail {
   position: fixed;
   /* THE BOTTOM, because the top is taken. The masthead already holds the
@@ -34,23 +49,29 @@
   right: 0;
   z-index: 40;
 
+  /* A COLUMN NOW, not a row: the handle sits on top and the panel
+     grows underneath it, so the whole thing rises from the bottom edge
+     as one object rather than the label being pushed off by a sheet
+     appearing over it. */
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 20px;
-  height: 30px;
+  flex-direction: column;
+  align-items: stretch;
   /* The home indicator. Without this the label sits under it on every
      modern iPhone, which is exactly the "reads as broken" the bar is
      here to stop. The box grows rather than the text shifting. */
-  height: calc(30px + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
 
-  /* The masthead's own treatment, one step quieter: this is a label, not
-     a second bar competing with the one above it. */
-  background: color-mix(in srgb, var(--pp-paper) 88%, transparent);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
-  backdrop-filter: saturate(1.4) blur(14px);
-  border-top: 1px solid rgba(0, 0, 0, 0.09);
+  /* ── THE RAIL'S OWN CHIP, ON THE BOTTOM EDGE ──────────────────────
+     Not a bar of its own invention: the same object the drawer rail
+     uses on a wide screen, so the two surfaces say the same thing the
+     same way. Grey at rest, flooding to ink when it opens, on the
+     drawer's own 0.56s and its own curve. Every value below is copied
+     from .ixnotes .rdrawer .rrow rather than re-derived. */
+  background: rgba(0, 0, 0, 0.045);
+  transition: opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
 
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -63,18 +84,204 @@
   /* Down, not up: it arrives from the edge it lives on. */
   transform: translateY(8px);
   pointer-events: none;
-  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* OPEN, IT IS INK. The drawer's move: the chip floods and its type
+   reverses, on the same clock. */
+.rail[data-open] {
+  background: var(--pp-ink);
+  color: var(--pp-paper);
+}
+/* 0.6, not the 0.45 this started at. A numeral is two glyphs with no
+   word shape to recover from, so it needs more contrast than a name of
+   the same size to read at a glance rather than be deciphered. */
+.rail[data-open] .n,
+.rail[data-open] .stopN {
+  color: rgba(255, 255, 255, 0.6);
+}
+.rail[data-open] .name,
+.rail[data-open] .stopLabel {
+  color: var(--pp-paper);
+}
+.rail[data-open] .chev {
+  border-color: var(--pp-paper);
+}
+.rail[data-open] .thumb {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .rail[data-on] {
   opacity: 1;
   transform: none;
+  /* AND IT TAKES A TAP AGAIN. The resting state sets pointer-events:
+     none so the bar cannot intercept anything while it is invisible,
+     and this restored the opacity and the position and forgot the one
+     property that makes it a control. It read as a working label and
+     was untouchable — a programmatic click still fired, which is
+     exactly why it passed a test and failed a finger. */
+  pointer-events: auto;
 }
 
 /* The number, held apart from the name. The label is authored as
    "SECTION 03: SCHEDULING BY CHAT" and the two halves do different jobs:
    the numeral says how far in you are, the name says what this is. Split
    so the name can take the room and truncate on its own. */
+/* ── THE HANDLE ─────────────────────────────────────────────────────
+   The label is the control. A separate affordance beside it would be a
+   second thing to explain on the one screen with no room to explain
+   anything, so the thing naming where you are is the thing that opens
+   the way to somewhere else. */
+.handle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 30px;
+  padding: 0 20px;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.handle:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -3px;
+}
+
+/* A caret, turned when the panel is up. Drawn rather than typed: a
+   glyph would bring a second typeface's idea of what an arrow is. */
+.chev {
+  margin-left: auto;
+  width: 9px;
+  height: 9px;
+  border-right: 1px solid var(--pp-ink);
+  border-bottom: 1px solid var(--pp-ink);
+  opacity: 0.5;
+  transform: rotate(-135deg) translate(-1px, -1px);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.rail[data-open] .chev {
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+
+/* ── THE PANEL ──────────────────────────────────────────────────────
+   Every section of the study in a row that scrolls sideways, which is
+   the same answer the heroes take to a portrait screen: height is
+   scarce and width is free. Closed it is a zero-height box rather than
+   display:none, so the open is something that can be animated and the
+   buttons inside keep their place in the document.
+
+   grid-template-rows 0fr to 1fr is the drawer the rail in the footer
+   already uses: it animates, and it needs no measured height. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.rail[data-open] .panel {
+  grid-template-rows: 1fr;
+}
+.panel > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.track {
+  display: flex;
+  gap: 14px;
+  padding: 2px 20px 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* The page keeps every vertical gesture; only sideways is the row's.
+     pan-x is named because listing axes withdraws the others, and a row
+     that cannot be swiped is a row nobody will find. */
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* THE NAME SITS BESIDE THE PICTURE, not under it. Stacked, each stop
+   was as tall as a thumbnail plus two lines of wrapped caps, which made
+   the open panel a third of the screen and the row itself hard to read
+   across. Side by side it is one line high, so more of the study fits
+   in a swipe and the eye runs along the names rather than down them. */
+.stop {
+  flex: none;
+  display: flex;
+  /* BOTTOM ALIGNED, not centred. Names run one line or two, and centred
+     each pair the last line landed at a different height, so reading
+     across the strip the words stepped up and down against a row of
+     thumbnails that never move. Aligned to the foot, the names sit on
+     one line and the numeral above each does the moving. */
+  align-items: flex-end;
+  gap: 11px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+.stop:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* A section is known by what it shows. A row of names with no pictures
+   is a table of contents rather than a way through the work. */
+/* ONE SIZE, EVERY SECTION. A square, so a landscape plate and a
+   portrait app screen occupy the same box and the row reads as a set of
+   equals rather than as pictures of assorted shapes. cover does the
+   rest. */
+.thumb {
+  flex: none;
+  display: block;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.06);
+}
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stopLabel {
+  display: block;
+  /* A measure, so a long section name wraps to two lines rather than
+     stretching the row until three stops fill the swipe. */
+  max-width: 116px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--pp-ink);
+}
+/* THE NUMERAL SITS ABOVE THE NAME, on its own line. Inline it read as
+   the first word of the title, so "03 Scheduling by chat" had to be
+   parsed before the number fell away.
+
+   And it carries no `opacity` of its own. It had 0.38, which MULTIPLIES
+   with the colour: on the open panel's ink the number was white at 0.45
+   alpha dimmed again to an effective 0.17, which is barely there. One
+   place decides how faint it is, and that is the colour. */
+.stopN {
+  display: block;
+  color: rgba(0, 0, 0, 0.42);
+}
+
 .n {
   flex: none;
   font-size: 10px;

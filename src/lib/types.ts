@@ -149,6 +149,19 @@ interface BaseSection {
   pressing?: {
     /** Scroll-scrubbed disc label, e.g. { n: "02", name: "Statement" } */
     mark?: { n: string; name: string; dark?: boolean };
+    /**
+     * The face this section wears in the phone navigator, when the
+     * section's own pictures are the wrong ones to show at 54px.
+     *
+     * On a section-header only. PressingLayout finds a face on its own
+     * for most sections — see the walk there — and this overrides it.
+     * Two cases need it: a section that holds no picture at all (a
+     * closing is title, stats and links), and one whose pictures are
+     * all interface. A UI screenshot at thumbnail size is a grey
+     * rectangle with grey marks on it; a device photographed on
+     * concrete still reads as something.
+     */
+    thumb?: string;
     choreo?: {
       /** Hold this section on screen while the next sibling climbs over it */
       pin?: boolean;

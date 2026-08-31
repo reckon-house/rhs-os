@@ -103,12 +103,23 @@
     position: relative;
     overflow-x: auto;
     overflow-y: hidden;
-    /* The page keeps every vertical gesture; only sideways is the
-       picture's. Native scroll, so momentum and rubber-banding come
-       free and the driver never touches it. pinch-zoom stays named:
-       pan-y alone withdraws it, and this box is most of a phone
-       screen. */
-    touch-action: pan-y pinch-zoom;
+    /* PAN-X, AND THAT WORD IS THE WHOLE FEATURE. touch-action names the
+       gestures the BROWSER is allowed to handle, and this said pan-y:
+       vertical yes, horizontal withheld. That was right when the crop
+       was panned by a hand-rolled pointer gesture which needed the
+       horizontal for itself. The box scrolls natively now, and the
+       declaration was still telling the browser not to do the one
+       thing being asked of it.
+
+       It could not be caught in a preview. A trackpad is not governed
+       by touch-action the way a finger is, so the emulated phone
+       scrolled and a real one only ever zoomed and grew. Owner found
+       it on the device.
+
+       pan-y stays so the page keeps every vertical gesture, and
+       pinch-zoom is named because listing axes withdraws it and this
+       box is most of a phone screen. */
+    touch-action: pan-x pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     /* The WIDE state, from the declared ratio. Still the no-JS and

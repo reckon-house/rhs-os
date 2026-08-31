@@ -88,12 +88,12 @@ export const dscCaseStudy: CaseStudy = {
     },
 
     // ════════════════════════════════════════
-    // 1. GETTING IN - the organizing first step
+    // 1. THE FRONT DOOR - the organizing first step
     // ════════════════════════════════════════
     {
       id: "signup-header",
       type: "section-header",
-      label: "SECTION 02: GETTING IN",
+      label: "SECTION 02: THE FRONT DOOR",
       title: "None of the scheduling works",
       pressing: {
         mark: { n: "02", name: "Join the" },
@@ -481,6 +481,10 @@ export const dscCaseStudy: CaseStudy = {
       pressing: {
         mark: { n: "06", name: "Live at" },
         heldLine: "of the gym nobody saw.",
+        // A closing holds no picture — title, stats, links — so the
+        // navigator had an empty box for it. The study's own opening
+        // hero closes the loop, and it is the best-looking file here.
+        thumb: "/case-studies/dsc/dsc-marketing-site-laptop-stool-hero.jpg",
       },
     },
     {

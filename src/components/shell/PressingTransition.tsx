@@ -194,7 +194,18 @@ export function PressingTransition() {
          So the type is scaled to the longest line rather than trusted
          to a clamp that cannot know how long a project's name is. Down
          only: a short name keeps the size the stylesheet asked for. */
-      const stackW = stacks[0].clientWidth || window.innerWidth;
+      /* THE CONTENT BOX, not clientWidth. clientWidth INCLUDES padding,
+         and the stack carries a gutter: measured at 375 while the line
+         it holds had 335 to live in. Scaling against the wrong number
+         fit the line to the box it was compared with and overflowed
+         the box it was actually in, by exactly the padding. */
+      const sc = getComputedStyle(stacks[0]);
+      const stackW = Math.max(
+        1,
+        (stacks[0].clientWidth || window.innerWidth) -
+          (parseFloat(sc.paddingLeft) || 0) -
+          (parseFloat(sc.paddingRight) || 0)
+      );
       const lineW = probe.scrollWidth;
       const cssSize = parseFloat(getComputedStyle(probe).fontSize) || 20;
       probe.remove();
@@ -203,7 +214,14 @@ export function PressingTransition() {
          set the whole curtain in something unreadable. Below it the
          CATEGORY goes instead: the name is the thing the reader needs
          and the category is the part that can be spared. */
-      const MIN = 15;
+      /* 14, measured rather than picked. At 15 exactly two of the
+         thirty cards on the site lost their category — A.R.C. wanting
+         15.0 and Robert Rodriguez 14.7 — which is a real loss of
+         information to save three tenths of a pixel. At 14 every card
+         keeps its category, and the name alone was verified to fit at
+         full size for all thirty, so the drop below can never leave a
+         line that still overruns. */
+      const MIN = 14;
       let size = cssSize;
       let dropSub = false;
       if (lineW > stackW && stackW > 0) {
@@ -240,6 +258,29 @@ export function PressingTransition() {
             line.appendChild(t);
           }
           el.appendChild(line);
+        });
+      }
+
+      /* ── AND THEN CHECK THE REAL ONE ──────────────────────────────
+         Everything above is a prediction made from a probe. This is
+         the correction, measured on the line that actually rendered:
+         if it still overruns, shrink by exactly the ratio it overran
+         by. It costs one layout read and it is what makes this hold
+         for names nobody has written yet — the probe can be wrong
+         about the box, about the font that had loaded, about anything,
+         and the rendered line cannot. */
+      const real = stacks[0].querySelector<HTMLElement>(".ptl");
+      if (real && real.scrollWidth > stackW + 1) {
+        const corrected = size * (stackW / real.scrollWidth);
+        if (corrected >= MIN) {
+          size = corrected;
+        } else {
+          size = cssSize;
+          dropSub = true;
+        }
+        stacks.forEach((el) => {
+          el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+          el.classList.toggle("pt-nosub", dropSub);
         });
       }
 

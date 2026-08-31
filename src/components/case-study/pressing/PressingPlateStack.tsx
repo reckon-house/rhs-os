@@ -63,15 +63,28 @@ export function PressingPlateStack({ images, mark }: PressingPlateStackProps) {
       .map((slot) => ({ slot, slab: slot.firstElementChild as HTMLElement | null }))
       .filter((p): p is { slot: HTMLElement; slab: HTMLElement } => Boolean(p.slab));
 
-    const stop = onTick(() => {
-      /* The hold line, read from the shell rather than hardcoded: the
-         masthead's height is a custom property and 48 is the plate
-         row's own rhythm. */
+    /* ── THE HOLD LINE IS READ ONCE, NOT EVERY FRAME ─────────────────
+       getComputedStyle forces a style recalculation, and this called it
+       on <html> sixty times a second to fetch a number that changes
+       only at a breakpoint. Read at mount and on resize instead. */
+    let hold = 0;
+    const readHold = () => {
       const navH =
         parseFloat(
           getComputedStyle(document.documentElement).getPropertyValue("--nav-h")
         ) || 54;
-      const hold = navH + 48;
+      /* 48 is the plate row's own rhythm. */
+      hold = navH + 48;
+    };
+    readHold();
+    window.addEventListener("resize", readHold, { passive: true });
+
+    /* Written last frame, so a slab whose position has not moved is not
+       given the same transform again. A redundant style write still
+       costs the compositor a look. */
+    const wrote = new WeakMap<HTMLElement, string>();
+
+    const stop = onTick(() => {
 
       /* THE CLAMP IS THE WHOLE DECK, NOT THE SLOT. Clamping each slab to
          its own slot was the first build and it does not stack: a slab
@@ -83,22 +96,41 @@ export function PressingPlateStack({ images, mark }: PressingPlateStackProps) {
          order, so the deck reads front to back with no z-index. */
       const secBottom = root.getBoundingClientRect().bottom;
 
+      /* ── READ EVERYTHING, THEN WRITE EVERYTHING ────────────────────
+         This loop used to measure a slot and immediately write its
+         slab's transform, then measure the next one. Each write
+         invalidates layout, so every measurement after the first forced
+         the browser to lay the page out again: three slabs meant three
+         synchronous reflows per frame, which is the stutter on a phone.
+         Same arithmetic, split into a read pass and a write pass, so
+         the frame costs one layout instead of one per slab.
+
+         rect for the SCROLL question (where is this on screen now),
+         offsetHeight for the LAYOUT question (how tall is it). Mixing
+         them up is how a driver reads its own transform back — the
+         slab's rect carries the translate this loop wrote last frame,
+         the slot's does not. */
+      const ys: number[] = [];
       for (const { slot, slab } of pairs) {
-        /* rect for the SCROLL question (where is this on screen now),
-           offsetHeight for the LAYOUT question (how tall is it). Mixing
-           them up is how a driver reads its own transform back — the
-           slab's rect carries the translate this loop wrote last frame,
-           the slot's does not. */
         const slotTop = slot.getBoundingClientRect().top;
         const past = hold - slotTop;
         const room = secBottom - slab.offsetHeight - slotTop;
-        const y = Math.max(0, Math.min(past, room));
-        slab.style.transform = y > 0 ? `translate3d(0, ${y.toFixed(1)}px, 0)` : "";
+        ys.push(Math.max(0, Math.min(past, room)));
+      }
+      for (let i = 0; i < pairs.length; i += 1) {
+        const { slab } = pairs[i];
+        const y = ys[i];
+        const next = y > 0 ? `translate3d(0, ${y.toFixed(1)}px, 0)` : "";
+        if (wrote.get(slab) !== next) {
+          slab.style.transform = next;
+          wrote.set(slab, next);
+        }
       }
     });
 
     return () => {
       stop();
+      window.removeEventListener("resize", readHold);
       pairs.forEach(({ slab }) => {
         slab.style.transform = "";
       });
@@ -128,10 +160,23 @@ export function PressingPlateStack({ images, mark }: PressingPlateStackProps) {
               />
             </span>
             {img.caption ? (
-              <figcaption className={styles.cap}>
-                <span className={styles.capName}>{img.caption}</span>
-                {img.sub ? <span className={styles.capSub}>{img.sub}</span> : null}
-              </figcaption>
+              /* THE CAPTION SPLITS ON ITS OWN NEWLINE. The studies write
+                 the bucket and what it sorts for as one string joined by
+                 \n — "What's Now\nOf the moment. Trending, hot." — and
+                 this rendered the whole thing into .capName, which is
+                 white-space: nowrap. The newline collapsed to nothing
+                 and the two ran together as "What's NowOf the moment".
+                 An explicit `sub` still wins where a study sets one. */
+              (() => {
+                const [name, ...rest] = String(img.caption).split("\n");
+                const sub = img.sub ?? rest.join(" ").trim();
+                return (
+                  <figcaption className={styles.cap}>
+                    <span className={styles.capName}>{name}</span>
+                    {sub ? <span className={styles.capSub}>{sub}</span> : null}
+                  </figcaption>
+                );
+              })()
             ) : null}
           </figure>
         </div>

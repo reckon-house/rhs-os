@@ -124,7 +124,24 @@ body.asked .clear {
   #nav .ask {
     /* The variable, not `width` directly: `left` reads it too, and
        setting only the one it does not read is what put the field off
-       the left edge of every phone. */
-    --ask-width: var(--ask-w, min(56vw, 260px));
+       the left edge of every phone.
+
+       AND A THIRD TERM, so the field cannot reach the wordmark. The
+       mark measures 114px and sits hard right on a phone; the centred
+       210px field ran 80 to 290 against a mark starting at 239, so it
+       covered 51px of the name and an input on top of a link takes the
+       tap. 132 is that 114 plus air. */
+    --ask-width: var(
+      --ask-w,
+      min(56vw, 260px, calc(100vw - var(--nav-gutter) - 132px))
+    );
+    /* LEFT, NOT CENTRED, at this width. The default centres because on
+       a desktop the wordmark holds the left gutter and a question
+       parked there would sit under the name. On a phone the mark is at
+       the RIGHT, so the left gutter is the free one — and it is where
+       the homepage's own field settles, which is what makes the bar
+       read the same on a study as it does at home. --ask-left still
+       wins where a driver writes one. */
+    left: var(--ask-left, var(--nav-gutter));
   }
 }

@@ -1563,56 +1563,29 @@
        each frame, and it is what the interval is measured from. */
     .ixrows.ixcols .cell { padding-top: clamp(40px, 10vw, 68px); }
     .ixrows.ixcols .cell.first { padding-top: 0; }
-    /* ── ONE SPINE, BROKEN BY THE FULL-WIDTH FRAMES ─────────────────
-       The rule ran per pair: a segment in the gutter wherever two
-       frames sat side by side, and nothing between. Eight separate
-       lines down a page reads as eight decisions. This is one line
-       down the whole index instead, and the full-width frames break
-       it as they pass, which is the same figure drawn once.
+    /* THE ANSWER'S ROW RULE IS NOT A GRID ITEM. buildAnswer appends an
+       .ixrule to every row for the wide layout's divider, and the row
+       is display:contents here — so that div became a cell in the six
+       column grid, 329px wide, sitting between a pair and shoving its
+       two halves onto separate rows. The halves were correctly span 3
+       and correctly marked pairL/pairR; something invisible was simply
+       standing between them.
 
-       It sits at 50%, which IS the pair gutter: six equal columns
-       means the gap between the third and the fourth straddles the
-       centre, so the spine divides a pair without being told about
-       pairs at all. That is why the pairL rule could go — the spine
-       was always going to run exactly where it did.
+       display:none rather than a zero border, because the box is the
+       problem and not the line. The line itself went earlier. */
+    .ixrows.ixcols .ixrule { display: none; }
+    /* NO RULE HERE AT ALL. This drew a spine down the index at 50%,
+       broken around the full-width frames by paper bands. It replaced
+       eight per-pair segments, which replaced a horizontal rule under
+       every cell. Three treatments of the same line, and the owner's
+       call on the third was the same as on the first two: the air is
+       doing the separating and the line was repeating it.
 
-       Behind everything. The cells take a stacking context above it,
-       so a picture covers the line by simply being opaque. */
-    .ixrows.ixcols { position: relative; }
-    .ixrows.ixcols::before {
-      /* display, explicitly. .ixrows::before already exists — it is one
-         of the wide layout's standing rules — and the phone block below
-         switches it off with display: none. This rule wins on
-         specificity for every property it names, and it did not name
-         that one, so the spine inherited the none and drew nothing. */
-      display: block;
-      content: ""; position: absolute; z-index: 0;
-      top: 0; bottom: 0; left: 50%;
-      width: 1px; margin-left: -0.5px;
-      background: rgba(0, 0, 0, 0.13);
-      pointer-events: none; }
-    .ixrows.ixcols .cell { position: relative; z-index: 1; }
+       The pairL / pairR classes stay on the cells. They cost nothing,
+       they are the only place that knows which frames share a row, and
+       that knowledge is what any future treatment of the gutter would
+       need. Nothing reads them today. */
 
-    /* AND IT DOES NOT TOUCH THEM. A full-width frame would otherwise
-       have the line running into its top edge and out of its bottom,
-       which reads as the picture interrupting a wire rather than the
-       line making room for it. The band is paper, the frame's own
-       width, reaching a little past it at both ends: the line stops
-       short, the picture stands clear, and the spine picks up again
-       underneath.
-
-       z-index: -1 inside the cell's own context, so it covers the
-       spine while staying behind the picture and its caption. */
-    .ixrows.ixcols .cell.mHero::before {
-      content: ""; position: absolute; z-index: -1;
-      left: 0; right: 0;
-      top: calc(clamp(40px, 10vw, 68px) - clamp(22px, 5vw, 36px));
-      bottom: calc(-1 * clamp(22px, 5vw, 36px));
-      background: var(--paper);
-      pointer-events: none; }
-    /* The first frame has no padding above it to borrow from. */
-    .ixrows.ixcols .cell.mHero.first::before {
-      top: calc(-1 * clamp(22px, 5vw, 36px)); }
     /* The board keeps packing on a phone, at two columns rather than
        one: three tiles across a 329px column is a contact sheet nobody
        can read, and one is a hundred and seven full-width pictures to

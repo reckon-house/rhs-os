@@ -179,6 +179,65 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
   const coverReelColors = (
     sections.find((x) => x.type === "meta") as { reel?: { colors?: string[] } } | undefined
   )?.reel?.colors;
+  /* ── THE PHONE RAIL'S MARKER ──────────────────────────────────────
+     Zero height, no box, no styling: it takes no part in layout, so the
+     rise plates' negative margins still land on the sibling they were
+     measured against and no section gains an ancestor.
+     PressingPhoneRail reads these to name the section the reader is
+     currently inside, and to build the navigator it opens.
+
+     Every section that names itself gets one — the header-led clusters
+     and the brand ledger, which carries its own label and title and was
+     otherwise the one numbered section missing from the navigator. */
+  const navMarker = (idx: number) => {
+    const sec = sections[idx] as Section & { label?: string; title?: string };
+    const bag = sec.pressing;
+
+    /* THE SECTION'S OWN FACE. A section is known by what it shows, and
+       a row of names with no pictures is a table of contents rather
+       than a way through the work. Resolved here rather than in the
+       rail because this is the only place holding the sections array;
+       the rail only ever sees the DOM.
+
+       THE HERO THAT INTRODUCES A SECTION SITS BEFORE ITS HEADER, which
+       is the rhythm this whole language is built on: the divider plate
+       climbs across the held section above, and the header lands under
+       it. So a forward-only walk was looking the wrong way. On DSC it
+       stepped past a phone on concrete to land on the app screenshots
+       below the copy, three times over — and a UI screenshot at 54px is
+       a grey rectangle with grey marks on it. Look back one first, take
+       it if it is a hero, and only then walk forward.
+
+       An explicit pressing.thumb outranks both, for a section that
+       holds no picture at all. */
+    const thumb = (() => {
+      if (bag?.thumb) return bag.thumb;
+      const prev = idx > 0 ? sections[idx - 1] : null;
+      if (prev && prev.type === "hero") return prev.image;
+      for (let k = idx + 1; k < sections.length; k += 1) {
+        const n = sections[k];
+        if (n.type === "section-header") break;
+        if (n.type === "hero") return n.image;
+        if (n.type === "image") return n.src;
+        if ("images" in n && Array.isArray(n.images) && n.images[0]?.src)
+          return n.images[0].src;
+      }
+      return "";
+    })();
+
+    return (
+      <span
+        key={sec.id + "-mark"}
+        {...{ [MARK_ATTR]: "" }}
+        data-label={sec.label ?? ""}
+        data-title={sec.title ?? ""}
+        data-thumb={thumb}
+        style={{ display: "block", height: 0 }}
+      />
+    );
+  };
+
+
   let i = 0;
 
   while (i < sections.length) {
@@ -206,22 +265,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
 
     // ── Header-led clusters: brief / crossing / closing ──
     if (s.type === "section-header") {
-      /* THE PHONE RAIL'S MARKER. Zero height, no box, no styling: it
-         takes no part in layout, so the rise plates' negative margins
-         still land on the sibling they were measured against and no
-         section gains an ancestor. PressingPhoneRail reads these to
-         name the section the reader is currently inside — on a wide
-         screen the label sits in its own column beside the work, and
-         on a phone it used to scroll past in under a second. */
-      out.push(
-        <span
-          key={s.id + "-mark"}
-          {...{ [MARK_ATTR]: "" }}
-          data-label={s.label ?? ""}
-          data-title={s.title ?? ""}
-          style={{ display: "block", height: 0 }}
-        />
-      );
+      out.push(navMarker(i));
       // Absorb the run of text sections that follow (subhead + footnote both
       // become column paragraphs — the prototype sets them at one size), and
       // a trailing three-column-text becomes the nested method grid.
@@ -579,6 +623,7 @@ export function PressingLayout({ study }: { study: CaseStudy }) {
       s.type === "marks-materials" ||
       s.type === "brand-system-volume"
     ) {
+      out.push(navMarker(i));
       out.push(<PressingSystemIndex key={s.id} section={s} mark={p?.mark} />);
       i += 1;
       continue;
