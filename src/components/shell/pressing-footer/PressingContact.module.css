@@ -438,6 +438,12 @@
   .headline {
     grid-column: 1;
     grid-row: 2;
+    /* AIR UNDER THE LABEL. Stacked on a phone the mark and the headline
+       sat at a measured 0px, so "Contact" and "Credits" read as the
+       first line of the sentence under them rather than as the name of
+       the beat. On the wide layout the two are side by side in their
+       own columns and need nothing. */
+    margin-top: 16px;
     /* Same specificity as the base rule so source order decides. The
        prototype's own phone rule lost this fight on specificity and left the
        beat headlines sticky on a phone. */

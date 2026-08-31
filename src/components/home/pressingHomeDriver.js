@@ -3192,16 +3192,30 @@ function renderWorking(wk, model) {
     wk.appendChild(pr);
   }
   const rows = [];
-  const row = (k, v, cls) => {
+  /* The same two columns the stat band above takes, at the rail's size.
+     One ledger read two ways: label left, one fact per line right. See
+     the note on `line` in renderStats.
+
+     A row with no label keeps its single column — the disclaimer is a
+     sentence, not an entry. */
+  const row = (k, vals, cls) => {
+    const list = (Array.isArray(vals) ? vals : [vals]).filter(Boolean);
     const sp = document.createElement("span");
-    sp.className = cls || "rl";
+    sp.className = (cls || "rl") + (k ? "" : " rlfull");
     if (k) {
       const key = document.createElement("span");
       key.className = "rk";
-      key.textContent = k + " · ";
+      key.textContent = k;
       sp.appendChild(key);
     }
-    sp.appendChild(document.createTextNode(v));
+    const val = document.createElement("span");
+    val.className = "rv";
+    list.forEach((v) => {
+      const one = document.createElement("span");
+      one.textContent = v;
+      val.appendChild(one);
+    });
+    sp.appendChild(val);
     wk.appendChild(sp);
     rows.push(sp);
   };
@@ -3222,16 +3236,21 @@ function renderWorking(wk, model) {
      and Words. Reworded to say the point rather than only the
      measurement: the search ran on the reader's machine and it ran
      first. */
-  if (st) row("Search", (st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms") +
-    ", here in your browser, before the model was asked");
+  if (st) row("Search", [
+    st.ms < 1 ? "under a millisecond" : Math.round(st.ms) + "ms",
+    "here in your browser, before the model was asked",
+  ]);
   if (model) {
     /* deduped: three projects are all titled "Hill Country home", and
        a ledger that says a name twice reads as a bug */
     const used = [...new Set(model.used || [])];
+    /* One study per line now that there is a column for them. Still
+       capped at three with a count for the rest: the point of this row
+       is what the model was shown, not a second index. */
     row("Sources", used.length
-      ? used.slice(0, 3).join(", ") +
-        (used.length > 3 ? ", +" + (used.length - 3) + " more" : "")
-      : "no match; the full project list, titles only");
+      ? [...used.slice(0, 3),
+         used.length > 3 ? "+" + (used.length - 3) + " more" : null]
+      : ["no match; the full project list, titles only"]);
     row("Words", model.model || "claude");
     row(null, "Claude can make mistakes.", "rl rk");
   }
@@ -3253,14 +3272,35 @@ function renderStats() {
   el.innerHTML = "";
   el.hidden = !st;
   if (!st) return;
-  const line = (k, v) => {
+  /* TWO COLUMNS, AND ONE FACT PER LINE. These rows were sentences —
+     "Read · 30 case studies, 358 photographs, 2,192 catalogued terms" —
+     which at display size wrapped mid-list and made three countable
+     things read as one long clause. The label goes into its own column
+     and each value takes its own line, so the numbers stack and can be
+     compared down the page rather than parsed along it.
+
+     The middle dot goes with it. It was doing the separating; the
+     column does that now, and keeping both would be saying it twice.
+
+     The row stays ONE element, with the two columns inside it, because
+     the landing animation transforms these one at a time — display:
+     contents on a row would put the halves into the outer grid and
+     leave nothing to move. */
+  const line = (k, ...vals) => {
     const sp = document.createElement("span");
     sp.className = "asl";
     const key = document.createElement("span");
     key.className = "ask2";
-    key.textContent = k + " · ";
+    key.textContent = k;
     sp.appendChild(key);
-    sp.appendChild(document.createTextNode(v));
+    const val = document.createElement("span");
+    val.className = "asv";
+    vals.filter(Boolean).forEach((v) => {
+      const one = document.createElement("span");
+      one.textContent = v;
+      val.appendChild(one);
+    });
+    sp.appendChild(val);
     el.appendChild(sp);
     return sp;
   };
@@ -3282,12 +3322,13 @@ function renderStats() {
        of its own: a fourth row of display type to say "24 of them" is
        a row too many, and without it a reader looking at two dozen
        pictures under the number 104 has been told something untrue. */
-    lines.push(line("Saved", n(b.pictures, "picture", "pictures") +
-      " and " + n(b.lines, "quote", "quotes") +
-      (b.shown && b.shown < b.pictures ? ", " + b.shown + " of them here" : "")));
+    lines.push(line("Saved",
+      n(b.pictures, "picture", "pictures"),
+      n(b.lines, "quote", "quotes"),
+      b.shown && b.shown < b.pictures ? b.shown + " of them here" : null));
     lines.push(line("Catalogued",
-      n(b.terms, "term", "terms") + " across the board" +
-      (b.named ? ", " + n(b.named, "person", "people") + " named" : "")));
+      n(b.terms, "term", "terms") + " across the board",
+      b.named ? n(b.named, "person", "people") + " named" : null));
     /* The third reading, in place of the clock. A stopwatch measured
        the machinery; this measures the shelf, which is what a visitor
        came to look at. Held back when nothing repeats, since a list of
@@ -3295,8 +3336,10 @@ function renderStats() {
     if (b.top && b.top.length > 1)
       lines.push(line("Recurring", b.top.join(", ")));
   } else {
-    lines.push(line("Read", st.studies + " case studies, " + st.photos +
-      " photographs, " + st.vocab.toLocaleString("en-US") + " catalogued terms"));
+    lines.push(line("Read",
+      st.studies + " case studies",
+      st.photos + " photographs",
+      st.vocab.toLocaleString("en-US") + " catalogued terms"));
     /* A MISS SAYS MISS. The comparable hand is pushed into the same
        register a real answer uses, so this counted six offered
        projects as six found ones and announced "\u201cios\u201d in 6
@@ -3313,9 +3356,12 @@ function renderStats() {
     if (st.projects) parts.push(st.projects + (st.projects === 1 ? " project" : " projects"));
     if (st.frames) parts.push(st.frames + (st.frames === 1 ? " photograph" : " photographs"));
     if (st.pulls) parts.push(st.pulls + " from the board");
-    lines.push(line("Caught",
-      (st.q ? "\u201c" + st.q + "\u201d in " : "") +
-      (parts.length ? parts.join(", ") : "nothing in the index")));
+    lines.push(parts.length
+      ? line("Caught", ...(st.q
+          ? [String.fromCharCode(8220) + st.q + String.fromCharCode(8221) +
+             " in " + parts[0], ...parts.slice(1)]
+          : parts))
+      : line("Caught", "nothing in the index"));
     }
   }
   /* NO CLOCK HERE. "8ms on your machine, before any model" was the one
