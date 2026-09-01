@@ -2112,7 +2112,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
     column-gap: var(--ixgap); margin-top: 22px;
-    max-width: calc(100% - var(--ixgap));
+    /* THE PROSE'S OWN MEASURE, exactly — the two receipts are
+       sub-columns WITHIN the column the sentence set, not a second
+       layout. At calc(100% - gap) the right half crossed the page's
+       centre rule and sat in the third region, reading as furniture of
+       the grid rather than as paperwork under the words. */
+    max-width: calc((100% - var(--ixgap)) / 2);
     font-size: 12px; font-weight: 500;
     line-height: 1.45; letter-spacing: 0;
     color: rgba(0, 0, 0, 0.42); }
