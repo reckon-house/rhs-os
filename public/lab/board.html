@@ -181,26 +181,63 @@
      The clip has to go with them. --hug is measured against a
      full-width column and there is no column now; left on, every chip
      would be clipped to a fraction of a width it never had. */
+  /* ── THE COMMAND SURFACE ──────────────────────────────────────────
+     One sheet the bar owns on a phone. It rises from the bar on the
+     drawer's own 0fr→1fr and carries the ENTIRE rail — the drawers,
+     the reels, the categories, the way back — because the bar is the
+     one nav entry there and everything reachable has to be reachable
+     through it. Desktop never shows it: the rail column stands. */
+  #cmdSheet {
+    position: fixed; left: 0; right: 0; z-index: 55;
+    bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px));
+    display: none;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    background: var(--paper, #fff);
+    border-top: 1px solid rgba(0, 0, 0, 0.13);
+  }
+  #cmdSheet[data-on] { grid-template-rows: 1fr; }
+  #cmdSheet > div { overflow: hidden; min-height: 0; }
+  #cmdIn {
+    max-height: min(66dvh, 560px);
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 18px 20px 14px;
+  }
+  #cmdChev { display: none; }
+
   @media (max-width: 760px) {
-    #railwrap {
-      left: 0; right: 0; width: auto; top: auto; bottom: 0;
-      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(to top,
-        rgba(255, 255, 255, 0.96) 62%, rgba(255, 255, 255, 0));
-      overflow-x: auto; scrollbar-width: none;
-    }
-    #railwrap::-webkit-scrollbar { display: none; }
-    #rdrawer { flex-direction: row; gap: 8px; width: max-content; }
-    #rdrawer .rrow { clip-path: none; border-radius: 12px;
-      flex: none; }
-    #rdrawer .rrow .rhead { white-space: nowrap; font-size: 12px;
-      padding: 8px 13px; }
-    #rdrawer .rbody, #rdrawer .rgap { display: none; }
+    /* ── ONE NAV ENTRY, AND IT LIVES AT THE BOTTOM — logo and all.
+       The top of the glass belongs entirely to the work; the bar is
+       the site's whole face down where the thumb is. The safe-area
+       pad grows the box, and the grid centres in the content box, so
+       the row itself stays on the bar's own 54px line. */
+    #nav { top: auto; bottom: 0;
+      height: calc(var(--nav) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: var(--paper, #fff);
+      border-top: 1px solid rgba(0, 0, 0, 0.08); }
+    /* the pull-to-ask rides the top edge; the bar no longer does */
+    #cmdSheet { display: grid; }
+    /* THE WORDMARK IS THE HANDLE. On a phone the mark stops being a
+       link out and becomes the sheet's toggle — the brand is the
+       button. A drawn caret beside it says so. */
+    #cmdChev { display: inline-block; width: 8px; height: 8px;
+      margin-left: 8px; vertical-align: 1px;
+      border-right: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      transform: rotate(-135deg);
+      transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    #nav.cmdopen #cmdChev { transform: rotate(45deg); }
+
+    /* the rail, re-homed into the sheet: back to the desktop drawer
+       anatomy — column, hugs, bodies, reels — because the sheet gives
+       it the room the strip never had */
+    #cmdIn #railwrap { position: static; width: auto; height: auto;
+      padding: 0; display: flex; flex-direction: column; }
+    #cmdIn #home { margin-top: 14px; }
+
     #field { left: 0; }
     #rules { display: none; }
-    #railwrap { display: block; }
-    #home { position: fixed; right: 16px; bottom: 74px; margin: 0; }
-    #home .rhead { white-space: nowrap; font-size: 12px; padding: 8px 13px; }
   }
 </style>
 </head>
@@ -213,9 +250,11 @@
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
   </div>
-  <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples</a>
+  <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
+
+<div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
 <!-- the melt: the burn pill's displacement, lifted from the masthead -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1199,10 +1238,15 @@ FILTERS.forEach(([label, tag, desc]) => {
      a mouse the hover has already opened it so one click filters. */
   const ask = () => setMode(MODE === tag ? null : tag);
   h.addEventListener("click", () => {
-    /* No drawer on a phone: the strip has nowhere to open to, so the
-       tap is the filter. On a pointer the hover has already opened the
-       row, so one click still filters there too. */
-    if (PHONE || r.classList.contains("open")) { ask(); return; }
+    /* Open first, ask second — everywhere now. The sheet gives a
+       phone the room the old strip never had, so the drawers, the
+       reels and the two-step run the same on both surfaces. Filtering
+       closes the sheet: the answer happens on the glass behind it. */
+    if (r.classList.contains("open")) {
+      ask();
+      if (PHONE && window.toggleSheet) toggleSheet(false);
+      return;
+    }
     openOnly(r);
   });
   pad.addEventListener("click", ask);
@@ -1220,9 +1264,57 @@ homeRow.h.addEventListener("click", () => {
   pageTo(0); tgt.y = START.y; velY = 0;
 });
 
+/* ── THE SHEET, the bar's own surface on a phone ────────────────────
+   The rail moves INTO it wholesale — same nodes, same listeners, the
+   drawer anatomy it has on a desktop — so the sheet is not a second
+   navigation, it is the first one re-homed. The wordmark is the
+   toggle: one nav entry, and the brand is its handle. */
+const sheet = document.getElementById("cmdSheet");
+const sheetIn = document.getElementById("cmdIn");
+const nav = document.getElementById("nav");
+if (PHONE) {
+  sheetIn.appendChild(document.getElementById("railwrap"));
+  const mark = nav.querySelector(".mark");
+  const toggleSheet = (on) => {
+    const open = on != null ? on : !sheet.hasAttribute("data-on");
+    sheet.toggleAttribute("data-on", open);
+    nav.classList.toggle("cmdopen", open);
+    /* hugs can only be measured once the rows have width, and a
+       closed sheet's rows have none — measure on the way open */
+    if (open) requestAnimationFrame(() => requestAnimationFrame(hug));
+    else closeRows();
+  };
+  window.toggleSheet = toggleSheet;
+  mark.addEventListener("click", (e) => { e.preventDefault(); toggleSheet(); });
+  /* a tap on the bar's empty ground toggles too — the whole bar is
+     the handle, the mark just names it */
+  nav.addEventListener("click", (e) => {
+    if (e.target === nav || e.target.id === "navBurn") toggleSheet();
+  });
+  /* asking closes the sheet: the field needs the glass */
+  const q = document.getElementById("query");
+  if (q) q.addEventListener("focus", () => toggleSheet(false));
+
+  /* ── the keyboard ─────────────────────────────────────────────────
+     A bottom-anchored input meets the phone keyboard: it rises and
+     covers the bar. visualViewport says exactly how much of the
+     layout viewport the keyboard ate, and the bar rides up by that
+     amount while editing, back down on blur. Guarded — desktop and
+     the lab pane never fire it. */
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const lift = () => {
+      const off = Math.max(0, innerHeight - vv.height - vv.offsetTop);
+      nav.style.transform = off ? "translateY(" + -off + "px)" : "";
+      sheet.style.transform = nav.style.transform;
+    };
+    vv.addEventListener("resize", lift);
+    vv.addEventListener("scroll", lift);
+  }
+}
+
 /* every chip stops at its own words */
 const hug = () => {
-  if (PHONE) return;
   document.querySelectorAll("#railwrap .rrow").forEach((r) => {
     const ink = r.querySelector(".rink");
     const head = r.querySelector(".rhead");
