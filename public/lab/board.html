@@ -545,19 +545,49 @@ for (const it of items) {
   sized.push({ ...it, w, h });
 }
 
-/* the grid: rows per column chosen so a period stays a few screens
-   tall at any viewport; columns fall out of the count */
+/* ── THE ROWS ARE DEALT, THE CONTENT FITS THE ROWS ─────────────────
+   Row height = max(content) was the trap: one tall portrait anywhere
+   in a row's fifty columns inflated that row for everyone, and the
+   front page lost its grid to a stranger three screens to the right.
+   So the heights are DEALT — tiers off the seed, shared by every
+   column, the same move the phone grid makes with its shapes — and a
+   tile taller than its row renders SMALLER rather than pushing
+   fifty columns down. An image scaled to its row is honest thumbnail
+   behavior; a row scaled to one image was weather.
+
+   Row zero is the statement's own: nothing in the first row stands
+   taller than the intro, so the field opens level. Quotes are text
+   and cannot scale — a long one spends its row's air instead, which
+   the air can afford. */
 const ROWS = Math.max(8, Math.round((innerHeight * 6) / 560));
 const COLS = Math.ceil(sized.length / ROWS);
-const rowH = new Array(ROWS).fill(0);
-sized.forEach((it, i) => { const r = i % ROWS;
-  if (it.h > rowH[r]) rowH[r] = it.h; });
+const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
+const rowH = new Array(ROWS);
+let prevTier = -1;
+for (let r = 0; r < ROWS; r += 1) {
+  if (r === 0) { rowH[0] = STATEMENT_H; continue; }
+  let t, guard = 0;
+  do { t = ROW_TIERS[Math.floor(rnd() * ROW_TIERS.length)]; }
+  while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
+  prevTier = t;
+  rowH[r] = Math.round(COL * t);
+}
 const rowY = [TOP0];
 for (let r = 0; r < ROWS; r += 1) rowY.push(rowY[r] + rowH[r] + air());
 PH = rowY[ROWS];
 sized.forEach((it, i) => {
   const c = Math.floor(i / ROWS), r = i % ROWS;
-  tiles.push({ ...it, x: c * MOD_X, y: rowY[r], col: c });
+  let { w, h } = it;
+  if (it.kind === "img") {
+    const budget = rowH[r] - (GROUPS[it.g] ? CAP_H : 0);
+    if (h - (GROUPS[it.g] ? CAP_H : 0) > budget) {
+      const imgH = h - (GROUPS[it.g] ? CAP_H : 0);
+      const f = budget / imgH;
+      w = Math.max(60, Math.round(w * f));
+      h = budget + (GROUPS[it.g] ? CAP_H : 0);
+    }
+  }
+  tiles.push({ ...it, w, h, x: c * MOD_X, y: rowY[r], col: c });
 });
 const PW = COLS * MOD_X;
 meas.remove();
