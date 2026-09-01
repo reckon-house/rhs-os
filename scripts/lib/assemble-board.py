@@ -254,11 +254,15 @@ head = r'''<!doctype html>
   }
   #thread[data-on] { grid-template-rows: 1fr; pointer-events: auto; }
   #thread > div { overflow: hidden; min-height: 0; }
+  /* NO RULES OF ITS OWN. The panel used to draw left and right
+     borders meant to sit on the standing rules — and a painted copy
+     can never be trusted to land exactly on the original, so any
+     drift showed two lines. The panel is inset one pixel INSIDE the
+     rules instead: the homepage's own lines stay visible at both
+     edges and there is nothing to disagree with them. */
   #threadIn {
     height: calc(100dvh - var(--nav));
     background: var(--paper, #fff);
-    border-left: 1px solid rgba(0, 0, 0, 0.13);
-    border-right: 1px solid rgba(0, 0, 0, 0.13);
     padding: 26px calc(var(--thread-pad, 20px)) 20px;
     overflow-y: auto;
     display: flex; flex-direction: column; gap: 22px;
@@ -593,8 +597,8 @@ if (!PHONE) {
   navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
   navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
   const th = document.getElementById("thread");
-  th.style.setProperty("--thread-x", fieldL + "px");
-  th.style.setProperty("--thread-w", (COL + GAP) + "px");
+  th.style.setProperty("--thread-x", (fieldL + 1) + "px");
+  th.style.setProperty("--thread-w", (COL + GAP - 2) + "px");
   th.style.setProperty("--thread-pad", (GAP / 2) + "px");
 }
 
@@ -664,6 +668,10 @@ const drawThread = () => {
 const openThread = () => {
   if (PHONE || threadOpen) return;
   threadOpen = true;
+  /* the rules the panel reveals are the field's, and they pan — so
+     the field comes to its grid rest the moment the panel opens */
+  pageTo(colIdx);
+  cur.x = tgt.x;
   /* the intro leads the conversation: the panel's header is the
      statement itself, rotation and all, so nothing is lost when the
      column opens — the transcript continues from the sentence that
