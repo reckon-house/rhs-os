@@ -3635,11 +3635,31 @@ function buildAnswer() {
       board: rightIdx.slice()
     };
   }
-  const L = leftIdx.slice(), R = rightIdx.slice();
+  /* ── ONE STREAM, NOT TWO REGISTERS ────────────────────────────────
+     This paired a work frame with a board frame on every row — the
+     built on the left, the kept on the right — which was a reading,
+     and it cost more than it said. Six projects and two pulls came
+     down as six rows with the right half of four of them empty, and
+     the two registers alternating meant a visitor scanning for work
+     read every other frame.
+
+     Projects first, in their order, then anything from the board. The
+     cells fill in reading order and the answer runs back and forth
+     across the two columns the way the index does.
+
+     The board deal is untouched: it packs into three columns below and
+     never reaches this. */
+  const stream = leftIdx.concat(rightIdx);
+  /* THE FIRST FRAME SITS BESIDE THE SENTENCE. The head's right half
+     was empty on every answer — the prose is capped at one column and
+     nothing else was in the box — so the page opened with a paragraph
+     and a rectangle of nothing, and the work started a screen down.
+     The lead takes that space, which also means the deal starts top
+     RIGHT and the rows below alternate under it. */
+  const packed = Boolean(plan && plan.deal === "board");
+  const leadIdx = packed ? undefined : stream.shift();
   const pairs = [];
-  while (L.length && R.length) pairs.push([L.shift(), R.shift()]);
-  const rest = L.length ? L : R;
-  while (rest.length) pairs.push([rest.shift(), rest.shift()]);
+  while (stream.length) pairs.push([stream.shift(), stream.shift()]);
 
   const shares = dealShares(pairs.length * 2, rnd);
   /* Flat position across the answer's cells, for the phone rhythm. The
@@ -3667,6 +3687,24 @@ function buildAnswer() {
   rowsEl.classList.add("ixcols");
   const els = [];
 
+  /* The lead frame, into its slot beside the sentence. Cleared every
+     build, because an answer with no work at all must not leave the
+     last one standing there. */
+  const leadEl = document.getElementById("ansLead");
+  if (leadEl) {
+    leadEl.innerHTML = "";
+    if (leadIdx !== undefined) {
+      const el = cards[leadIdx].kind === "quote"
+        ? quoteCard(cards[leadIdx]) : imgCard(cards[leadIdx], rnd, false);
+      /* Full slot. --share is how much of its half a paired frame
+         takes and this one has no partner to share with. */
+      el.style.setProperty("--share", "1");
+      el.style.setProperty("--lag", "0s");
+      leadEl.appendChild(el);
+      els.push(el);
+    }
+  }
+
   /* ── THE BOARD PACKS, IT DOES NOT PAIR ────────────────────────────
      One plan asks for this: Staples, which deals the whole board. The
      pair grammar above is a reading — the built on the left, the kept
@@ -3686,7 +3724,6 @@ function buildAnswer() {
      divide between the two columns, and there are three now, so it
      would cut through the middle one. .ixrule1 is the single-rule
      variant the board page already uses. */
-  const packed = Boolean(plan && plan.deal === "board");
   rowsEl.classList.toggle("ansboard", packed);
   const ansRules = document.querySelector(".answer .ixrules");
   if (ansRules) ansRules.classList.toggle("ixrule1", packed);
@@ -3741,7 +3778,7 @@ function buildAnswer() {
            the right frame follows the left — the ring's own lag
            grammar, timed to the arrival stagger below */
         el.style.setProperty("--lag",
-          (r * 0.11 + (k ? 0.25 : 0)).toFixed(2) + "s");
+          (0.14 + r * 0.11 + (k ? 0.25 : 0)).toFixed(2) + "s");
         cell.appendChild(el);
         els.push(el);
       }

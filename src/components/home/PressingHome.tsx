@@ -197,6 +197,18 @@ export function PressingHome() {
             </div>
           </form>
 
+            {/* THE LEAD FRAME. The head's right half was empty on every
+
+                answer, so the deal starts here and the rows below
+
+                alternate under it. Filled by buildAnswer. Kept in step
+
+                with the lab: the port carries the stylesheet and the
+
+                driver, never the JSX. */}
+
+            <div className="anslead" id="ansLead" />
+
             <div className="ansback">
               <button type="button" id="resetQ">
                 Back to the house

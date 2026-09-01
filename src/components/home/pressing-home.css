@@ -1720,7 +1720,20 @@
     .cover { --cover-air: 24px; }
     /* .ixbody carries the gutter down here, so the head must not add
        a second one. It used to sit outside and needed its own. */
+    /* ONE COLUMN ON A PHONE, and the lead falls back into the flow
+       where its DOM position puts it: under the receipts and above the
+       rows, which is the reading order it already had. */
     .anshead { padding-left: 0; }
+    /* .answer prefixed, and the note below says why: a media query
+       adds no specificity and the head's two-column rule is written
+       further down this stylesheet, so a bare .anshead here loses on
+       source order. It lost exactly that way first time out — the
+       prose, the receipts and the back link were squeezed into 152px
+       with the lead frame beside them on a 375 screen. */
+    .answer .anshead {
+      grid-template-columns: minmax(0, 1fr); }
+    .answer .anshead > .anslead { grid-column: 1; grid-row: auto;
+      padding-top: 26px; }
     /* TWO CLASSES, because one loses. A media query adds no
        specificity, and the desktop .ansprose cap is written further
        down this stylesheet, so a bare .ansprose here has never won:
@@ -2018,8 +2031,23 @@
      is the air above BOTH, which is what the stratum's own token does
      for the other three pages. */
   .answer .ixbody { padding-top: clamp(26px, 4dvh, 52px); }
+  /* ── THE HEAD IS TWO COLUMNS ──────────────────────────────────────
+     The sentence and its receipts on the left, the deal's first frame
+     on the right. It was one box with the prose capped at half its
+     width, which left a column of nothing beside every answer and put
+     the work a screen below the fold.
+
+     Every child takes column one by default, so the compose form and
+     the back link need no rule of their own; the lead is the single
+     exception and spans whatever rows the left side runs to. */
   .anshead { grid-column: 2; grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--ixgap);
+    align-items: start;
     padding: 0 0 clamp(18px, 3dvh, 32px); }
+  .anshead > * { grid-column: 1; min-width: 0; }
+  .anshead > .anslead { grid-column: 2; grid-row: 1 / -1; }
   .answer .ixnotes { grid-column: 1; grid-row: 1 / -1; }
   #ansRows { grid-column: 2; grid-row: 2; }
   /* ── the answer, spoken ──────────────────────────────────────────
@@ -2054,12 +2082,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
     column-gap: var(--ixgap); margin-top: 22px;
-    /* THE PROSE'S OWN MEASURE, exactly — the two receipts are
-       sub-columns WITHIN the column the sentence set, not a second
-       layout. At calc(100% - gap) the right half crossed the page's
-       centre rule and sat in the third region, reading as furniture of
-       the grid rather than as paperwork under the words. */
-    max-width: calc((100% - var(--ixgap)) / 2);
+    /* Full width of the head's first column, which IS the sentence's
+       measure now that the head is a real two-column grid. The two
+       receipts are sub-columns within it, not a second layout. */
+    max-width: none;
     font-size: 12px; font-weight: 500;
     line-height: 1.45; letter-spacing: 0;
     color: rgba(0, 0, 0, 0.42); }
@@ -2224,7 +2250,11 @@
   /* One column wide, like the statement. The box it sits in spans two
      columns and the gutter between them, so half of that less half a
      gutter is exactly one. */
-  .ansprose { max-width: calc((100% - var(--ixgap)) / 2);
+  /* THE COLUMN IS THE MEASURE NOW. This carried its own cap — half the
+     frames columns less half a gutter — which is exactly what the
+     head's first grid column is, so the cap would only ever halve it
+     again. */
+  .ansprose { max-width: none;
     font-size: clamp(21px, 2.4vw, 32px); font-weight: 600;
     line-height: 1.18; letter-spacing: -0.05em;
     min-height: 2.4em; }
