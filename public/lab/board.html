@@ -160,8 +160,8 @@
   #railwrap { display: flex; flex-direction: column;
     height: calc(100dvh - var(--nav) - 52px); }
   #rdrawer { flex: none; }
+  #homewrap { margin-top: auto; }
   #home {
-    margin-top: auto;
     opacity: 0; pointer-events: none; transform: translateY(6px);
     transition: opacity 0.3s ease, transform 0.3s ease,
       clip-path 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
@@ -287,7 +287,7 @@
        it the room the strip never had */
     #cmdIn #railwrap { position: static; width: auto; height: auto;
       padding: 0; display: flex; flex-direction: column; }
-    #cmdIn #home { margin-top: 14px; }
+    #cmdIn #homewrap { margin-top: 14px; }
 
     #field { left: 0; }
     #rules { display: none; }
@@ -1438,7 +1438,17 @@ const home = homeRow.r;
 home.id = "home";
 rrows.pop();                 /* not one of the drawers: it never opens */
 homeRow.r.remove();
-document.getElementById("railwrap").appendChild(home);
+/* IN ITS OWN .rdrawer, and that wrapper is not packaging — it is the
+   selector chain. Every chip treatment lives under `.ixnotes .rdrawer
+   .rrow`, so a row appended straight to the rail wore none of it: the
+   raw button's outline and square corners showed through, the one
+   control on the page outside the family. The wrapper puts it back in
+   the chain; the foot anchoring rides on the wrapper. */
+const homeWrap = document.createElement("div");
+homeWrap.className = "blk rdrawer";
+homeWrap.id = "homewrap";
+homeWrap.appendChild(home);
+document.getElementById("railwrap").appendChild(homeWrap);
 homeRow.h.addEventListener("click", () => {
   pageTo(0); tgt.y = START.y; velY = 0;
 });
