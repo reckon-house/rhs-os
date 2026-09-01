@@ -245,9 +245,19 @@
   /* the thread's header IS the statement — same setting, same size,
      the rotation still running inside it */
   #threadLede { position: static; margin-bottom: 6px; }
-  .thq { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
-  .tha { font-size: 13px; line-height: 1.55; color: rgba(0, 0, 0, 0.55);
-    margin-top: 6px; }
+  /* ── THE TRANSCRIPT SPEAKS IN THE STATEMENT'S OWN VOICE ───────────
+     Same size, same weight, same leading — the conversation is a
+     continuation of the intro, not a widget under it. The visitor's
+     question is ink, the house's answer is the grey the statement
+     already uses for its own recessive run, and the air between
+     entries does the separating; the quotes came off because at this
+     size they were furniture. */
+  #threadLog { display: flex; flex-direction: column; gap: 34px; }
+  .thq, .tha {
+    font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
+    line-height: 1.22; letter-spacing: -0.04em;
+  }
+  .tha { color: rgba(0, 0, 0, 0.42); margin-top: 10px; }
 
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
@@ -597,7 +607,7 @@ const drawThread = () => {
     const box = document.createElement("div");
     const q = document.createElement("div");
     q.className = "thq";
-    q.textContent = "\u201C" + en.q + "\u201D";
+    q.textContent = en.q;
     const a = document.createElement("div");
     a.className = "tha";
     a.textContent = en.n
