@@ -7,6 +7,7 @@
     "build": "npm run port:home:check && npm run dims:check && npm run rail:check && next build",
     "start": "next start",
     "lint": "eslint",
+    "board": "node --no-warnings scripts/build-board-thumbs.mjs",
     "facts": "node --no-warnings scripts/build-facts.mjs",
     "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
     "port:home": "node scripts/port-home.mjs",

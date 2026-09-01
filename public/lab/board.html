@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>The board · lab</title>
+<!--
+  ── THE BOARD ────────────────────────────────────────────────────────
+  Everything the house holds, on one field: every image from every
+  study, the inspiration pulls, the kept lines. 541 tiles and three
+  quotes, dealt onto a column grid that extends in every direction.
+  Drag anywhere. The premise is that the default state is deliberately
+  too much — the whole brain — and filtering is the way through it,
+  which is where the thinking layer eventually plugs in. For now the
+  two chips are the proof of that gesture: Everything, and just the
+  work, with the rest receding in place.
+
+  WHAT THIS PROTOTYPE IS TESTING
+  1. Whether an all-of-it field reads as a board or a dump. The column
+     module and the air between tiles are carried from the site — the
+     negative space is the argument that it is a board.
+  2. Whether 541 tiles pan at 60fps. They never all exist: tiles are
+     mounted into a window around the viewport and unmounted behind
+     you. The window is possible because every position is COMPUTED,
+     never measured — the generator recorded each file's ratio, so the
+     whole field is laid out from data before a single image loads.
+  3. Whether "infinite" earns the word. The field is periodic: the
+     ~28-column deal repeats in x and y, so there is no edge in any
+     direction. You meet a repeat after three-plus screens, which
+     reads as pattern, not error.
+
+  MECHANISM NOTES
+  - One plane node takes a translate3d per frame; tiles are positioned
+    once at mount and never written to again. The pan is a lerp toward
+    a target the pointer or wheel moves, with velocity carried on
+    release. No scroll anywhere — the page has no scrollbar to own.
+  - Placement is seeded (?seed=N re-deals). Same seed, same field.
+  - The thumbs are a 384px webp tier built by scripts/
+    build-board-thumbs.mjs. NEVER point this at the plates: the corpus
+    is 388MB of originals and 7.8MB of thumbs.
+-->
+<script src="board-data.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --paper: #F3F0ED;
+    --ink: #141414;
+  }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── the field ── */
+  #stage {
+    position: fixed; inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+  }
+  #stage.dragging { cursor: grabbing; }
+  #plane {
+    position: absolute; left: 0; top: 0;
+    will-change: transform;
+  }
+  .tile {
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.045);
+    contain: layout style;
+  }
+  .tile img {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .tile img.in { opacity: 1; }
+  /* A kept line sits on the paper with no frame — the same rule the
+     site holds everywhere: the absence of a container is what makes it
+     a line rather than a picture of one. */
+  .tile.quote {
+    border-radius: 0; overflow: visible; background: none;
+    font-size: 15px; line-height: 1.4; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .tile.quote .att {
+    display: block; padding-top: 10px;
+    font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase;
+    opacity: 0.45;
+  }
+
+  /* ── the subtraction ──
+     Filtering recedes in place rather than re-dealing: the geography
+     holds, so what you watched happen is subtraction, not a new page. */
+  #plane.mode-work .tile:not(.work) { opacity: 0.05; pointer-events: none; }
+  #plane .tile { transition: opacity 0.5s ease; }
+
+  /* ── chrome ── */
+  .mark {
+    position: fixed; top: 18px; left: 20px; z-index: 10;
+    font-weight: 700; font-size: 15px; letter-spacing: -0.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .mark i { font-style: normal; }
+  #countline {
+    position: fixed; top: 20px; right: 20px; z-index: 10;
+    font-size: 11px; letter-spacing: 0.04em;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: right;
+  }
+  /* The chips are the drawer rows' language: grey at rest, ink when
+     they are the active answer. */
+  #chips {
+    position: fixed; left: 20px; bottom: 18px; z-index: 10;
+    display: flex; gap: 8px;
+  }
+  .chip {
+    border: 0; font: inherit; cursor: pointer;
+    font-size: 12px; font-weight: 600; letter-spacing: 0;
+    padding: 9px 14px; border-radius: 12px;
+    background: rgba(0, 0, 0, 0.055); color: var(--ink);
+    transition: background-color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .chip[data-on] { background: var(--ink); color: #fff; }
+  #home {
+    position: fixed; right: 20px; bottom: 18px; z-index: 10;
+    opacity: 0; pointer-events: none; transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  #home[data-on] { opacity: 1; pointer-events: auto; transform: none; }
+
+  /* A phone's one row of chrome cannot hold both the mark and a
+     sentence; the countline drops to a number and steps down. */
+  @media (max-width: 560px) {
+    .mark { font-size: 13px; }
+    #countline { top: 21px; font-size: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile img { transition: none; }
+    .tile img.in { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage"><div id="plane"></div></div>
+
+<a class="mark" href="/">Reckon<i>*</i>House<i>*</i>Staples</a>
+<div id="countline"></div>
+<div id="chips">
+  <button type="button" class="chip" data-mode="all" data-on>Everything</button>
+  <button type="button" class="chip" data-mode="work">Just the work</button>
+</div>
+<button type="button" class="chip" id="home">Back to start</button>
+
+<script>
+/* the site's own seeded LCG, so a seed is a field */
+const mkRnd = (s0) => { let s = s0;
+  return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; };
+const seed = parseInt(new URLSearchParams(location.search).get("seed") || "7", 10);
+const rnd = mkRnd(Number.isFinite(seed) ? seed : 7);
+
+/* ── the corpus ── */
+const QUOTES = [
+  { text: "Came up on a tornado, sunlight in the sky\nI went around all day with the moon sticking in my eye", att: "Don Van Vliet, Captain Beefheart" },
+  { text: "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", att: "Jack White" },
+  { text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", att: "Cormac McCarthy" },
+];
+
+const imgs = (window.BOARD_ITEMS || []).slice();
+/* Fisher–Yates on the seed: the deal, not the folder order. */
+for (let i = imgs.length - 1; i > 0; i--) {
+  const j = Math.floor(rnd() * (i + 1));
+  [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
+}
+const items = imgs.map((it) => ({ kind: "img", ...it }));
+/* The kept lines are sprinkled at fixed depths in the deal, so a seed
+   decides their neighbourhood but they never clump. */
+QUOTES.forEach((q, k) => {
+  items.splice(Math.min(items.length, 45 + k * 190), 0, { kind: "quote", ...q });
+});
+
+/* ── the field's module ─────────────────────────────────────────────
+   The site's column discipline, tiled out: a fixed column the tile
+   sits IN, air beside it, and shares of the column the way the index
+   deals shares. Vertical air is dealt per gap. All of it from the
+   seed, so the whole field is computable before anything loads. */
+const COL = 172;              /* the column a tile sits in */
+const AIR_X = 92;             /* standing air between columns */
+const MOD_X = COL + AIR_X;
+const PH = 6200;              /* the period's height — one deal tall */
+const GAP_MIN = 90, GAP_MAX = 300;
+const gap = () => GAP_MIN + rnd() * (GAP_MAX - GAP_MIN);
+
+/* Quote tiles need a real height before placement, and text height
+   cannot be declared — so measure the three of them once, offscreen,
+   before the field is laid out. */
+const meas = document.createElement("div");
+meas.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL +
+  "px;font-family:'Avenir Next','Helvetica Neue',Helvetica,Arial,sans-serif;" +
+  "font-size:15px;line-height:1.4;font-weight:500;letter-spacing:-0.01em;white-space:pre-line";
+document.body.appendChild(meas);
+const quoteH = (q) => {
+  meas.textContent = "“" + q.text + "”";
+  return meas.getBoundingClientRect().height + 26; /* + attribution line */
+};
+
+/* ── placement: fill columns to the period height ── */
+const tiles = [];
+let col = 0, y = gap() * 0.5;
+for (const it of items) {
+  /* EVERY TILE TAKES ITS COLUMN, full width, left edge on the line —
+     the homepage's own discipline, tiled out. The first cut of this
+     dealt shares of the column with random right-hugs, which read as
+     scatter; aligned, the columns become the thing you travel along,
+     and the variety comes from the ratios alone, the same call the
+     phone grid made. Owner's call. */
+  let w = COL, h;
+  if (it.kind === "quote") h = quoteH(it);
+  else {
+    h = Math.round(COL * (it.h / it.w));
+    if (h > 420) h = 420;
+  }
+  if (y + h > PH - GAP_MIN) { col += 1; y = gap() * 0.5; }
+  tiles.push({ ...it, x: col * MOD_X, y, w, h });
+  y += h + gap();
+}
+const COLS = col + 1;
+const PW = COLS * MOD_X;
+meas.remove();
+
+/* ── the pan ── */
+const stage = document.getElementById("stage");
+const plane = document.getElementById("plane");
+
+/* ── THE STANDING RULES ─────────────────────────────────────────────
+   A thin line in every gutter, centred in the air the way the
+   homepage's rules stand between its columns — so moving right means
+   another column arriving behind another line. Drawn as a repeating
+   gradient on the stage rather than as nodes on the plane: the lines
+   are infinite vertically by nature, they wrap with the module for
+   free, and the only cost is one background-position write per frame,
+   made from the same constants the placement uses so the line can
+   never drift off the gutter's centre. */
+const RULE_X = COL + AIR_X / 2;
+stage.style.backgroundImage =
+  `repeating-linear-gradient(90deg,
+    transparent 0, transparent ${RULE_X}px,
+    rgba(0,0,0,0.13) ${RULE_X}px, rgba(0,0,0,0.13) ${RULE_X + 1}px,
+    transparent ${RULE_X + 1}px, transparent ${MOD_X}px)`;
+const START = { x: PW * 0.5 - innerWidth * 0.5, y: PH * 0.4 - innerHeight * 0.5 };
+const cur = { ...START }, tgt = { ...START };
+const vel = { x: 0, y: 0 };
+let dragging = false, lastMount = { x: 1e9, y: 1e9 };
+
+stage.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  tgt.x += e.deltaX; tgt.y += e.deltaY;
+  vel.x = vel.y = 0;
+}, { passive: false });
+
+let px = 0, py = 0, moved = 0;
+const trail = [];
+stage.addEventListener("pointerdown", (e) => {
+  dragging = true; moved = 0;
+  px = e.clientX; py = e.clientY;
+  trail.length = 0;
+  vel.x = vel.y = 0;
+  stage.classList.add("dragging");
+  stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - px, dy = e.clientY - py;
+  px = e.clientX; py = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  tgt.x -= dx; tgt.y -= dy;
+  trail.push({ dx, dy, t: performance.now() });
+  if (trail.length > 6) trail.shift();
+});
+const release = () => {
+  if (!dragging) return;
+  dragging = false;
+  stage.classList.remove("dragging");
+  /* velocity from the last few moves, so a flick carries */
+  const now = performance.now();
+  const recent = trail.filter((m) => now - m.t < 90);
+  if (recent.length) {
+    const dx = recent.reduce((s, m) => s + m.dx, 0);
+    const dy = recent.reduce((s, m) => s + m.dy, 0);
+    vel.x = -dx * 1.6; vel.y = -dy * 1.6;
+  }
+};
+stage.addEventListener("pointerup", release);
+stage.addEventListener("pointercancel", release);
+/* a drag is not a click: a tile tap after a real pan should not fire */
+stage.addEventListener("click", (e) => {
+  if (moved > 6) { e.stopPropagation(); e.preventDefault(); }
+}, true);
+
+/* ── the window ─────────────────────────────────────────────────────
+   Mount what is near, drop what is not. The field is periodic, so the
+   window may straddle up to four copies of the deal; a mounted node is
+   keyed by tile and copy. Rechecked only after real travel — the
+   transform itself costs nothing per frame. */
+const MARGIN = 560;
+const live = new Map();
+function remount() {
+  lastMount = { x: cur.x, y: cur.y };
+  const x0 = cur.x - MARGIN, y0 = cur.y - MARGIN;
+  const x1 = cur.x + innerWidth + MARGIN, y1 = cur.y + innerHeight + MARGIN;
+  const want = new Set();
+  for (let i = Math.floor(x0 / PW); i * PW < x1; i++) {
+    for (let j = Math.floor(y0 / PH); j * PH < y1; j++) {
+      for (let k = 0; k < tiles.length; k++) {
+        const t = tiles[k];
+        const gx = t.x + i * PW, gy = t.y + j * PH;
+        if (gx + t.w < x0 || gx > x1 || gy + t.h < y0 || gy > y1) continue;
+        const key = k + ":" + i + ":" + j;
+        want.add(key);
+        if (!live.has(key)) live.set(key, mount(t, gx, gy));
+      }
+    }
+  }
+  for (const [key, el] of live) {
+    if (!want.has(key)) { el.remove(); live.delete(key); }
+  }
+}
+function mount(t, gx, gy) {
+  const el = document.createElement("div");
+  el.className = "tile" + (t.kind === "img" && t.g !== "inspiration" ? " work" : "");
+  el.style.cssText = `left:${gx}px;top:${gy}px;width:${t.w}px;height:${t.h}px`;
+  if (t.kind === "quote") {
+    el.classList.add("quote");
+    el.style.height = "auto";
+    el.textContent = "“" + t.text + "”";
+    const att = document.createElement("span");
+    att.className = "att";
+    att.textContent = "· " + t.att;
+    el.appendChild(att);
+  } else {
+    const img = document.createElement("img");
+    img.src = encodeURI(t.t);
+    img.alt = "";
+    img.decoding = "async";
+    img.title = t.g;
+    if (img.complete && img.naturalWidth) img.classList.add("in");
+    else img.addEventListener("load", () => img.classList.add("in"), { once: true });
+    el.appendChild(img);
+  }
+  plane.appendChild(el);
+  return el;
+}
+
+/* ── the loop ── */
+const home = document.getElementById("home");
+function tick() {
+  requestAnimationFrame(tick);
+  if (document.hidden) return;
+  if (!dragging && (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1)) {
+    tgt.x += vel.x; tgt.y += vel.y;
+    vel.x *= 0.93; vel.y *= 0.93;
+  }
+  cur.x += (tgt.x - cur.x) * 0.16;
+  cur.y += (tgt.y - cur.y) * 0.16;
+  plane.style.transform = `translate3d(${-cur.x}px, ${-cur.y}px, 0)`;
+  stage.style.backgroundPositionX = -cur.x + "px";
+  if (Math.abs(cur.x - lastMount.x) > 110 || Math.abs(cur.y - lastMount.y) > 110)
+    remount();
+  const far = Math.hypot(cur.x - START.x, cur.y - START.y) > innerHeight * 1.4;
+  if (far !== home.hasAttribute("data-on"))
+    far ? home.setAttribute("data-on", "") : home.removeAttribute("data-on");
+}
+
+window.__b = { cur, tgt, START };
+home.addEventListener("click", () => {
+  tgt.x = START.x; tgt.y = START.y; vel.x = vel.y = 0;
+});
+
+/* ── the chips ── */
+const countline = document.getElementById("countline");
+const workCount = tiles.filter((t) => t.kind === "img" && t.g !== "inspiration").length;
+function setMode(mode) {
+  plane.classList.toggle("mode-work", mode === "work");
+  document.querySelectorAll(".chip[data-mode]").forEach((c) =>
+    c.dataset.mode === mode ? c.setAttribute("data-on", "") : c.removeAttribute("data-on"));
+  const narrow = innerWidth <= 560;
+  countline.innerHTML = mode === "work"
+    ? (narrow ? `${workCount} of ${tiles.length}` : `${workCount} of ${tiles.length} pieces · the work`)
+    : (narrow ? `${tiles.length} pieces` : `${tiles.length} pieces · the whole house · drag anywhere`);
+}
+addEventListener("resize", () =>
+  setMode(plane.classList.contains("mode-work") ? "work" : "all"),
+  { passive: true });
+document.querySelectorAll(".chip[data-mode]").forEach((c) =>
+  c.addEventListener("click", () => setMode(c.dataset.mode)));
+setMode("all");
+
+addEventListener("resize", () => remount(), { passive: true });
+remount();
+requestAnimationFrame(tick);
+</script>
+
+</body>
+</html>
