@@ -1,4 +1,46 @@
-<!doctype html>
+#!/usr/bin/env python3
+"""Assemble public/lab/board.html from the homepage lab.
+
+    npm run board:page
+
+The board is the homepage opened in every direction, so it does not
+own its own copy of the homepage: the rail's reel machinery and the
+masthead's burn are LIFTED OUT OF public/lab/pressing-home.html here,
+function for function, and the stylesheet is lifted by
+build-board-thumbs.mjs. Tune the lab, re-run both, and the board
+follows. Nothing about the homepage is retyped in the board.
+
+The two blocks are found by their own first and last lines rather than
+by line number, so an edit above them in the lab does not silently
+lift the wrong code. If a marker moves, this fails loudly.
+"""
+import io, sys
+
+lab = io.open("public/lab/pressing-home.html", encoding="utf-8").read().split("\n")
+
+def block(first_pred, last_pred, what):
+    try:
+        a = next(i for i, l in enumerate(lab) if first_pred(l))
+        b = next(i for i, l in enumerate(lab[a:], a) if last_pred(l))
+    except StopIteration:
+        sys.exit("assemble-board: could not find the %s block in the lab" % what)
+    return "\n".join(lab[a:b + 1])
+
+# the reel: SZ_CREAM through the close of szStart
+sz_a = next(i for i, l in enumerate(lab) if l.strip().startswith("const SZ_CREAM"))
+sz_s = next(i for i, l in enumerate(lab[sz_a:], sz_a) if l.strip() == "step();")
+sz_e = next(i for i, l in enumerate(lab[sz_s:], sz_s) if l.rstrip() == "  };")
+sz = "\n".join(lab[sz_a:sz_e + 1])
+
+# the burn, its whole IIFE
+burn = block(lambda l: "the burn, lifted from Masthead.tsx" in l,
+             lambda l: l.rstrip() == "})();", "burn")
+
+for name, body in (("reel", sz), ("burn", burn)):
+    if len(body.split("\n")) < 20:
+        sys.exit("assemble-board: the %s block came back too short" % name)
+
+head = r'''<!doctype html>
 <html lang="en" class="rh-home">
 <head>
 <meta charset="utf-8">
@@ -561,258 +603,9 @@ home.addEventListener("click", () => { pageTo(0); tgt.y = START.y; velY = 0; });
   requestAnimationFrame(step);
 })();
 
-  const SZ_CREAM = "#F3F0ED";
-  const szSeq = (n) => [
-    { fx: "shutter", img: 0 % n, ms: 640 },
-    { fx: "fade", img: 1 % n, ms: 420 },
-    { fx: "pinch", color: SZ_CREAM, img: 2 % n, ms: 520 },
-    { fx: "slat", img: 3 % n, ms: 700 },
-    { fx: "burn", img: 4 % n, ms: 640 },
-    { fx: "ccurtain", color: SZ_CREAM, ms: 380 },
-    { fx: "curtain", img: 5 % n, ms: 720 },
-    { fx: "cut", img: 6 % n, ms: 640 },
-  ];
-  const szImg = (src, cls) => {
-    const im = document.createElement("img");
-    im.className = cls;
-    im.src = src;
-    /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
-       lab's stub here and the optimizer's ladder in the app, so this
-       line costs nothing on this page and saves megabytes on the real
-       one — the browser picks a ~384px candidate for a 128px box at
-       DPR 3 instead of the original file. */
-    const ss = tileSrcSet(src);
-    if (ss) { im.srcset = ss; im.sizes = "128px"; }
-    im.alt = "";
-    im.decoding = "async";
-    return im;
-  };
-  /* One beat's layer, the component's BeatLayer by hand. --d is the
-     animation length: 72% of the hold, so the wipe settles and the
-     frame rests before the next cut — the component's own ratio. */
-  const szLayer = (beat, frames, dur) => {
-    const d = document.createElement("div");
-    d.style.setProperty("--d", dur + "ms");
-    if (beat.fx === "ccurtain") {
-      d.className = "sz-layer sz-curtain";
-      d.style.background = beat.color;
-      return d;
-    }
-    if (beat.fx === "pinch") {
-      d.className = "sz-layer";
-      const sw = szImg(frames[beat.img], "sz-fill sz-pinchswap");
-      sw.style.setProperty("--d", dur + "ms");
-      d.appendChild(sw);
-      ["sz-pinchP sz-pinchT", "sz-pinchP sz-pinchB"].forEach((cls) => {
-        const pnl = document.createElement("div");
-        pnl.className = cls;
-        pnl.style.setProperty("--d", dur + "ms");
-        pnl.style.background = beat.color;
-        d.appendChild(pnl);
-      });
-      return d;
-    }
-    if (beat.fx === "burn") {
-      d.className = "sz-layer";
-      const im = szImg(frames[beat.img], "sz-fill sz-burnimg");
-      im.style.setProperty("--d", dur + "ms");
-      d.appendChild(im);
-      ["sz-burnpop", "sz-burnwash"].forEach((cls) => {
-        const fx = document.createElement("div");
-        fx.className = cls;
-        fx.style.setProperty("--d", dur + "ms");
-        d.appendChild(fx);
-      });
-      return d;
-    }
-    if (beat.fx === "slat") {
-      d.className = "sz-layer";
-      d.style.setProperty("--sd", Math.round(dur * 0.7) + "ms");
-      const N = 6;
-      for (let k = 0; k < N; k++) {
-        const strip = document.createElement("div");
-        strip.className = "sz-strip";
-        strip.style.left = (k * 100) / N + "%";
-        strip.style.width = "calc(" + 100 / N + "% + 1px)";
-        strip.style.animationDelay = Math.round(k * dur * 0.08) + "ms";
-        const im = szImg(frames[beat.img], "");
-        im.style.left = (-k * 100) / N + "cqw";
-        im.style.width = "100cqw";
-        strip.appendChild(im);
-        d.appendChild(strip);
-      }
-      return d;
-    }
-    d.className = "sz-layer sz-" + beat.fx;
-    d.appendChild(szImg(frames[beat.img], "sz-fill"));
-    return d;
-  };
-  /* buildMagazine() runs again on every resize and builds a whole new
-     rail. The previous build's reel timers and MutationObservers went
-     on running against detached boxes — an open drawer left a
-     setTimeout chain alive forever, one more per resize. The handle
-     lives on document so each build retires the last one's. */
-  if (document.__railReels) {
-    document.__railReels.forEach((rl) => {
-      clearTimeout(rl.timer);
-      if (rl.mo) rl.mo.disconnect();
-      if (rl.unscrub) rl.unscrub();
-    });
-  }
-  const reels = [];
-  document.__railReels = reels;
-  /* All stills stay mounted and the underlay toggles opacity, exactly
-     as the component does — swapping one img's src per beat risks a
-     one-frame decode blank at every photo boundary. loading=lazy keeps
-     a closed drawer's stills unfetched (0fr clips them out of view);
-     they are the grid's own urls, so an open fetch is a cache hit. */
-  const szStage = (rl) => {
-    rl.box.innerHTML = "";
-    rl.stills = rl.frames.map((src) => {
-      const im = szImg(src, "sz-fill");
-      im.loading = "lazy";
-      im.style.opacity = 0;
-      rl.box.appendChild(im);
-      return im;
-    });
-    rl.tint = document.createElement("div");
-    rl.tint.className = "sz-fill";
-    rl.tint.style.opacity = 0;
-    rl.box.appendChild(rl.tint);
-    rl.layer = null;
-    rl.at = 0;
-    rl.surface = { img: 0 };
-    if (rl.stills[0]) rl.stills[0].style.opacity = 1;
-  };
-  const szPaint = (rl) => {
-    rl.stills.forEach((im, k) => {
-      im.style.opacity = rl.surface.img === k ? 1 : 0;
-    });
-    rl.tint.style.opacity = rl.surface.color != null ? 1 : 0;
-    if (rl.surface.color != null) rl.tint.style.background = rl.surface.color;
-  };
-  const szStop = (rl) => { clearTimeout(rl.timer); rl.timer = null; };
-  /* ── HOLD TO SCRUB, the stamp's phone toy ─────────────────────────
-     The component gesture (SizzleReel.tsx), rebuilt for the vanilla
-     stamp: hold ~220ms without moving and the loop parks; drag
-     sideways and the frames shuttle like a contact sheet; release and
-     it plays on from the frame under the finger. The hold is what
-     keeps this off the page's own gestures — a scroll or a tap has
-     moved or lifted long before it lands. */
-  const szScrub = (rl) => {
-    const g = { x0: 0, y0: 0, at: 0, id: null, hold: null, on: false };
-    const end = () => { clearTimeout(g.hold); g.hold = null; };
-    const show = (k) => {
-      rl.stills.forEach((im, j) => { im.style.opacity = j === k ? 1 : 0; });
-      rl.tint.style.opacity = 0;
-      if (rl.layer) { rl.layer.remove(); rl.layer = null; }
-    };
-    rl.box.addEventListener("pointerdown", (e) => {
-      if (rl.frames.length < 2) return;
-      /* touch and pen only, and never a second finger onto a live
-         drag — the same two gates SizzleReel.tsx carries, and for the
-         same reasons: a slow mouse press is a click, not a hold. */
-      if (e.pointerType === "mouse") return;
-      if (g.on || g.id != null) return;
-      g.x0 = e.clientX; g.y0 = e.clientY; g.id = e.pointerId;
-      end();
-      g.hold = setTimeout(() => {
-        g.on = true;
-        szStop(rl);
-        /* read at COMMIT time: 220ms of loop has run since the press */
-        g.at = rl.surface.img || 0;
-        try { rl.box.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
-        show(g.at);
-      }, 220);
-    });
-    rl.box.addEventListener("pointermove", (e) => {
-      if (g.id !== e.pointerId) return;
-      if (g.on) {
-        const n = rl.frames.length;
-        const step = Math.round((e.clientX - g.x0) / 36);
-        const k = (((g.at - step) % n) + n) % n;
-        rl.surface = { img: k };
-        show(k);
-        return;
-      }
-      if (g.hold && Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 10) end();
-    });
-    const up = (e) => {
-      if (e && g.id != null && g.id !== e.pointerId) return;
-      end();
-      g.id = null;
-      if (!g.on) return;
-      g.on = false;
-      /* resume from the beat that shows the frame it was left on; a
-         frame no beat carries restarts the loop rather than jumping */
-      const seq = szSeq(rl.frames.length);
-      const at = seq.findIndex((b) => b.img === (rl.surface.img || 0));
-      rl.at = at >= 0 ? at : 0;
-      if (rl.row.classList.contains("open")) szStart(rl);
-    };
-    /* on window, so a drag released off the stamp still ends — and
-       remembered on the reel, so the retire pass below can REMOVE
-       them: buildMagazine reruns on resize, and window listeners
-       added per build with no teardown are the same slow leak the
-       reel timers had. */
-    addEventListener("pointerup", up);
-    addEventListener("pointercancel", up);
-    rl.unscrub = () => {
-      removeEventListener("pointerup", up);
-      removeEventListener("pointercancel", up);
-    };
-    rl.box.addEventListener("touchmove", (e) => {
-      if (g.on) e.preventDefault();
-    }, { passive: false });
-  };
-  const szStart = (rl) => {
-    if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
-    const step = () => {
-      if (document.hidden) { rl.timer = setTimeout(step, 400); return; }
-      const seq = szSeq(rl.frames.length);
-      const beat = seq[rl.at % seq.length];
-      szPaint(rl);
-      if (rl.layer) rl.layer.remove();
-      rl.layer = szLayer(beat, rl.frames, Math.round(beat.ms * 0.72));
-      rl.box.appendChild(rl.layer);
-      rl.surface = beat.fx === "ccurtain"
-        ? { color: beat.color } : { img: beat.img };
-      rl.at = (rl.at + 1) % seq.length;
-      rl.timer = setTimeout(step, beat.ms);
-    };
-    step();
-  };
-/* ── the burn, lifted from Masthead.tsx ────────────────────────────
-   Three stages: climb hard while the page moves, hold with a slow
-   bleed for two seconds after it stops, then fade out properly. The
-   middle stage is what stops it flickering on and off during short
-   bursts. These constants are the module's — tune them there. */
-(() => {
-  const burn = document.getElementById("navBurn");
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  let heat = 0, lastScroll = 0;
-  const onInput = () => { lastScroll = Date.now(); };
-  onScrollAnywhere(onInput);
-  addEventListener("wheel", onInput, { passive: true });
-  addEventListener("touchmove", onInput, { passive: true });
-  const tick = () => {
-    requestAnimationFrame(tick);
-    if (document.hidden) return;
-    if (reduced.matches) { heat = 0; return; }
-    const since = Date.now() - lastScroll;
-    if (since < 500) heat += (1 - heat) * 0.06;
-    else if (since < 2500) heat += (0 - heat) * 0.015;
-    else heat += (0 - heat) * 0.03;
-    if (heat < 0.005) heat = 0;
-    const css = "blur(" + heat * 4 + "px) saturate(" + (1 + heat * 7) +
-      ") contrast(" + (1 + heat * 2) + ")";
-    burn.style.backdropFilter = "url(#mastheadMelt) " + css;
-    burn.style.setProperty("-webkit-backdrop-filter", css);
-    burn.style.background = "rgba(243, 240, 237, " + (0.05 + heat * 0.1) + ")";
-  };
-  requestAnimationFrame(tick);
-})();
+'''
 
+rail = r'''
 /* ── THE RAIL, the drawer the homepage already had ──────────────────
    Same DOM, same classes, same stylesheet: .rrow clipped to --hug at
    rest and flooding to ink on open, .rbody a 0fr→1fr grid, the pad's
@@ -998,3 +791,9 @@ requestAnimationFrame(tick);
 
 </body>
 </html>
+'''
+
+out = head + sz + "\n" + burn + "\n" + rail
+io.open("public/lab/board.html", "w", encoding="utf-8").write(out)
+print("board: public/lab/board.html — %d lines (reel %d, burn %d, lifted from the lab)"
+      % (len(out.split("\n")), len(sz.split("\n")), len(burn.split("\n"))))
