@@ -410,12 +410,19 @@ const QUOTES = [
   { text: "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", att: "Jack White" },
   { text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", att: "Cormac McCarthy" },
 ];
-const imgs = (window.BOARD_ITEMS || []).slice();
-for (let i = imgs.length - 1; i > 0; i--) {
+/* ── PORTFOLIO FIRST ────────────────────────────────────────────────
+   The thirty covers the live homepage deals lead the field, in the
+   homepage's own order and never shuffled — a visitor's first screens
+   are the portfolio, and the archive begins where the covers run out.
+   Only the rest takes the seed. */
+const all = (window.BOARD_ITEMS || []).slice();
+const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
+const rest = all.filter((i) => i.c == null);
+for (let i = rest.length - 1; i > 0; i--) {
   const j = Math.floor(rnd() * (i + 1));
-  [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
+  [rest[i], rest[j]] = [rest[j], rest[i]];
 }
-const items = imgs.map((it) => ({ kind: "img", ...it }));
+const items = covers.concat(rest).map((it) => ({ kind: "img", ...it }));
 QUOTES.forEach((q, k) => {
   items.splice(Math.min(items.length, 45 + k * 190), 0, { kind: "quote", ...q });
 });

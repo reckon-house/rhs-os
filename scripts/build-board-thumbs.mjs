@@ -121,6 +121,16 @@ const groups = {};
 /* One project per line in that file, so the parse is per line — a
    cross-line regex died on the `${HP}` inside every image template
    literal, whose closing brace ended a [^}] run mid-entry. */
+/* ── the covers ─────────────────────────────────────────────────────
+   This is a portfolio first, so the thirty tiles the live homepage
+   deals come FIRST on the board, in the homepage's own order. Each
+   project's image line names the file (all in hp/ except sizzle,
+   whose cover lives outside case-studies and sits this out), and the
+   stem is enough to find the corpus item. The cover is also re-homed
+   to its STUDY's slug on the way through, so it carries the study's
+   caption and tags instead of hp's nothing. */
+const coverByStem = {};
+let coverOrder = 0;
 for (const line of projTs.split("\n")) {
   const id = line.match(/\bid:\s*"([^"]+)"/);
   const slug = line.match(/href:\s*"\/case-studies\/([^"]+)"/);
@@ -131,6 +141,13 @@ for (const line of projTs.split("\n")) {
   groups[slug[1]] = { id: id[1],
     t: title ? title[1] : "", s: category ? category[1] : "",
     tags: tags ? [...tags[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]) : [] };
+  const img = line.match(/image:\s*(?:\`\$\{HP\}\/|")([^"\`?]+)/);
+  if (img && img[1].includes("/") === false) {
+    const stem = img[1].replace(/\.[^.]+$/, "");
+    coverByStem[stem] = { c: coverOrder++, slug: slug[1] };
+  } else {
+    coverOrder++;
+  }
 }
 /* Three studies keep their images in a folder named differently from
    their route. Measured, not guessed: these are the only mismatches
@@ -151,6 +168,21 @@ for (const g of Object.values(groups))
 const nGroups = Object.keys(groups).length;
 if (nGroups < 20) throw new Error(
   `projects.ts parse looks broken: only ${nGroups} groups matched`);
+
+/* stamp the covers: order + the study they belong to (post-alias) */
+const ALIAS = { sally: "sally-os", "fairview-suite": "fairview-bedroom" };
+let coversFound = 0;
+for (const it of items) {
+  if (it.g !== "hp") continue;
+  const stem = it.t.split("/").pop().replace(/\.webp$/, "");
+  const cov = coverByStem[stem];
+  if (!cov) continue;
+  it.c = cov.c;
+  it.g = ALIAS[cov.slug] || cov.slug;
+  coversFound += 1;
+}
+if (coversFound < 25) throw new Error(
+  `only ${coversFound} homepage covers matched — the stem match broke`);
 
 /* Sorted so the data file is stable: a re-run with nothing new
    produces an identical literal and a quiet diff. */
