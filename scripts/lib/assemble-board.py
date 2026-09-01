@@ -127,8 +127,32 @@ head = r'''<!doctype html>
 
   /* the tiles ARE .fd-it cards — frame, radius, curtain, drift and
      caption all come from the stylesheet above */
-  .tile { position: absolute; }
+  /* The tile IS an .ixrow so the index's label and hover rules reach
+     it, and .ixrow dissolves to display:contents below 860 — which
+     would drop these out of their own absolute placement. Two classes
+     and an id, so this wins wherever that rule applies. */
+  #plane .tile.ixrow { position: absolute; display: block;
+    /* the push under an opening frame, on the index's own clock */
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+  /* ...except while a page turn is scrubbing it, where the transform
+     IS the position and a transition would lag the pan by 0.62s */
+  #plane.turning .tile.ixrow { transition: none; }
   .tile .fd-it { width: 100%; }
+  /* ── THE FRAME OPENS INTO ITS COLUMN ──────────────────────────────
+     The index hangs every frame from the same right edge, so its grow
+     always opens down and left. Here a column's side flips with the
+     slot it stands in, so a left-hugging frame opening leftward would
+     climb out of its column and over the gutter. The origin follows
+     the side instead: the picture always opens into the column's own
+     air. That is a real difference in the material — the index's
+     columns never move — not a preference.
+
+     --drop is the pixels the grow adds, set per tile at mount so the
+     name rides down and stays under its picture. --slide stays 0: the
+     index swings its label to the right edge because every frame there
+     hangs from it, and here half of them do not. */
+  .tile .fd-it .shot { transform-origin: left top; }
+  .tile.hangR .fd-it .shot { transform-origin: right top; }
   .tile.hangR .lbl { text-align: right; }
 
   /* a kept line: the board's own treatment, no frame */
@@ -162,13 +186,29 @@ head = r'''<!doctype html>
   #plane .tile { transition: opacity 0.5s ease; }
   #plane .tile.dim { opacity: 0.05; pointer-events: none; }
 
+  /* ── BACK TO START, IN THE RAIL ────────────────────────────────────
+     It was a floating pill in the far corner, the one control on the
+     page in a style of its own. It is a .rrow now, built into the
+     drawer, so it wears the chip every other row wears and hugs its
+     own words the same way.
+
+     Anchored to the FOOT of the rail column rather than sitting under
+     the categories: it is not one of them, and the gap says so. It
+     still fades in only once there is somewhere to come back from. */
+  /* The height is stated rather than left to top+bottom, because
+     .ixnotes is a flex column with its own gap and the pair alone did
+     not stretch it — the column stopped at its content and the way
+     back sat halfway up the screen. */
+  #railwrap { display: flex; flex-direction: column;
+    height: calc(100dvh - var(--nav) - 52px); }
+  #rdrawer { flex: none; }
   #home {
-    position: fixed; right: var(--gut); bottom: 22px; z-index: 20;
-    border: 0; font: inherit; cursor: pointer;
-    font-size: 13px; font-weight: 500; padding: 9px 16px;
-    border-radius: 12px; background: var(--ink); color: #fff;
+    margin-top: auto;
     opacity: 0; pointer-events: none; transform: translateY(6px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease,
+      clip-path 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   #home[data-on] { opacity: 1; pointer-events: auto; transform: none; }
 
@@ -200,7 +240,9 @@ head = r'''<!doctype html>
     #rdrawer .rbody, #rdrawer .rgap { display: none; }
     #field { left: 0; }
     #rules { display: none; }
-    #home { right: 16px; bottom: 74px; }
+    #railwrap { display: block; }
+    #home { position: fixed; right: 16px; bottom: 74px; margin: 0; }
+    #home .rhead { white-space: nowrap; font-size: 12px; padding: 8px 13px; }
   }
 </style>
 </head>
@@ -229,14 +271,17 @@ head = r'''<!doctype html>
   </filter>
 </svg>
 
-<div id="railwrap" class="ixnotes"><div class="blk rdrawer" id="rdrawer"></div></div>
+<div id="railwrap" class="ixnotes">
+  <div class="blk rdrawer" id="rdrawer"></div>
+  <!-- built into the drawer as a .rrow so it wears the rail's own chip
+       — see the note where it is wired -->
+</div>
 
 <div id="field">
   <div id="rules"></div>
   <div id="plane"></div>
 </div>
 
-<button type="button" id="home">Back to start</button>
 
 <script>
 /* the site's own seeded LCG, so a seed is a field */
@@ -290,6 +335,16 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
    where the negative space between everything comes from. */
 const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
 const SHARES = PHONE ? [0.62, 0.74, 0.86] : IX_TIERS;
+/* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
+   The tier is 768px wide, or the original if that was smaller, so the
+   largest honest CSS width is that divided by the screen's own pixel
+   ratio — not by an assumed 2. On a 3x phone an assumed 2 would have
+   been a 1.5x upscale on every tile, and on a 1x screen it threw away
+   half the resolution it had. Clamped at 3 because past that the file
+   would have to be enormous to keep up and the eye stops collecting
+   the difference. checkScale() below verifies the result against the
+   pictures that actually loaded. */
+const DPR = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
 const CAP_H = 30;
 
 /* ── the corpus ── */
@@ -360,7 +415,7 @@ for (const it of items) {
        so a small file lands on the same ladder as everything else and
        the family holds. Only if even the smallest tier would magnify
        it does it take its honest width outright. */
-    const honest = Math.min(768, it.w) / 2;
+    const honest = Math.min(768, it.w) / DPR;
     while (COL * share > honest && share > SHARES[0]) {
       share = SHARES[SHARES.indexOf(share) - 1];
     }
@@ -390,7 +445,7 @@ const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
 let velY = 0;
-let dragging = false, lastMount = { x: 1e9, y: 1e9 };
+let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
 const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
 
 let hCool = 0;
@@ -518,7 +573,10 @@ function remount() {
 }
 function mount(t, gx, gy) {
   const el = document.createElement("div");
-  el.className = "tile";
+  /* .ixrow, because that is the ancestor the index's own label and
+     hover rules are scoped to. Same classes, same stylesheet, same
+     0.62s curve — nothing about the card is re-specified here. */
+  el.className = "tile ixrow";
   el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px";
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
@@ -546,6 +604,10 @@ function mount(t, gx, gy) {
     const shot = document.createElement("span");
     shot.className = "shot";
     shot.style.setProperty("--ar", t.w + " / " + (t.h - (g ? CAP_H : 0)));
+    /* what the label rides down by when the frame opens: exactly the
+       pixels the 1.32 scale adds to the picture's height */
+    card.style.setProperty("--drop",
+      Math.round((1.32 - 1) * (t.h - (g ? CAP_H : 0))) + "px");
     const plate = document.createElement("span");
     plate.className = "plate";
     const img = document.createElement("img");
@@ -591,9 +653,12 @@ function mount(t, gx, gy) {
    on, toggled only when it actually crosses. */
 function swapSides() {
   for (const el of live.values()) {
-    if (!el.__slack) continue;
+    const push = el.__push || 0;
+    if (!el.__slack && !push && !el.__hadPush) continue;
+    el.__hadPush = push !== 0;
     const t = Math.min(1, Math.max(0, (el.__wx - cur.x - GAP / 2) / MOD_X));
-    el.style.transform = "translate3d(" + (t * el.__slack).toFixed(1) + "px,0,0)";
+    el.style.transform = "translate3d(" +
+      (t * (el.__slack || 0)).toFixed(1) + "px," + push.toFixed(1) + "px,0)";
     const right = t > 0.5;
     if (right !== el.__right) {
       el.__right = right;
@@ -602,15 +667,139 @@ function swapSides() {
   }
 }
 
+/* ── THE HOVER, from armRows ────────────────────────────────────────
+   The index's own interaction, with one thing rebuilt because the
+   material is different.
+
+   WHAT IS THE SAME. A frame opens to its COLUMN, never past it:
+   grow = 1 / share, so a 0.33 frame and an 0.86 frame both land their
+   edge on the same line — the line the standing rule draws. A flat
+   factor made small frames stop short and large ones cross over, and
+   no two hovers agreed on how big "open" is. The name rides down by
+   exactly the pixels the growth added and slides to the edge the frame
+   opened toward, measured with a Range over its own ink because the
+   label is a full-width block whose rect would say zero.
+
+   WHAT IS DIFFERENT, and it is the whole reason this is not a copy.
+   On the index the card takes --drop as real bottom margin and NORMAL
+   FLOW carries every row below it out of the way. Nothing on this
+   board is in flow: every tile is absolutely placed on a computed
+   plane, so a margin moves nothing at all and the opening frame would
+   simply cover its neighbours. The push is therefore explicit — every
+   tile below it in the same column is translated down by the same
+   drop, on the same clock — and it rides in the same transform the
+   side-swap already writes, so the two can never fight over the
+   property.
+
+   The origin follows the side the column is hugging, so the picture
+   always opens into its own air rather than out over the gutter. */
+function armHover() {
+  const HOVER = matchMedia("(hover: hover)").matches && !PHONE;
+  if (!HOVER) return;
+  let openCard = null;
+
+  const clearPush = () => {
+    for (const el of live.values()) el.__push = 0;
+  };
+
+  plane.addEventListener("pointerover", (e) => {
+    const card = e.target.closest && e.target.closest(".fd-it");
+    if (!card || card === openCard) return;
+    const tile = card.closest(".tile");
+    const shot = card.querySelector(".shot");
+    if (!tile || !shot) return;
+    openCard = card;
+
+    const share = shot.offsetWidth / COL;
+    const grow = Math.max(1.04, 1 / share);
+    card.style.setProperty("--ix-grow", grow.toFixed(3));
+    const drop = shot.offsetHeight * (grow - 1);
+    card.style.setProperty("--drop", drop.toFixed(1) + "px");
+
+    /* the name travels to the edge the frame opens toward: the same
+       measured distance, opposite sign on a right-hugging column */
+    const lbl = card.querySelector(".lbl");
+    if (lbl) {
+      const range = document.createRange();
+      range.selectNodeContents(lbl);
+      const ink = range.getBoundingClientRect().width;
+      const slide = Math.max(0, shot.offsetWidth * grow - ink);
+      const right = tile.classList.contains("hangR");
+      card.style.setProperty("--slide",
+        (right ? -slide : slide).toFixed(1) + "px");
+    }
+
+    /* and the column makes room under it */
+    clearPush();
+    const colOf = (el) => Math.round(el.__wx / MOD_X);
+    const c = colOf(tile), y0 = parseFloat(tile.style.top);
+    for (const el of live.values()) {
+      if (el === tile || colOf(el) !== c) continue;
+      if (parseFloat(el.style.top) > y0) el.__push = drop;
+    }
+  });
+
+  plane.addEventListener("pointerout", (e) => {
+    const card = e.target.closest && e.target.closest(".fd-it");
+    if (!card) return;
+    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+    card.style.removeProperty("--ix-grow");
+    card.style.removeProperty("--drop");
+    card.style.removeProperty("--slide");
+    if (card === openCard) openCard = null;
+    clearPush();
+  });
+}
+armHover();
+
+/* ── THE GUARD ──────────────────────────────────────────────────────
+   The no-upscale rule is arithmetic at deal time, and arithmetic can
+   be wrong about a file it never opened. This checks the pictures that
+   actually loaded: device pixels asked for against pixels the file
+   has. It reads offsetWidth, never a rect — a rect carries the hover
+   scale and every ancestor transform, and would report a magnified
+   picture as crisp, which is the exact mistake this exists to catch.
+
+   Silent when everything is honest; one grouped warning when it is
+   not, naming the worst offender. Runs once a second while anything is
+   still arriving, then stops. */
+function checkScale() {
+  const bad = [];
+  for (const el of live.values()) {
+    const img = el.querySelector("img");
+    if (!img || !img.naturalWidth || !img.offsetWidth) continue;
+    const asked = img.offsetWidth * DPR;
+    if (asked > img.naturalWidth + 1)
+      bad.push({ src: img.src.split("/").pop(),
+        asked: Math.round(asked), has: img.naturalWidth,
+        over: +(asked / img.naturalWidth).toFixed(2) });
+  }
+  if (!bad.length) return true;
+  bad.sort((a, b) => b.over - a.over);
+  console.warn("board: " + bad.length + " picture(s) upscaled, worst " +
+    bad[0].over + "x — " + bad[0].src +
+    " (asked " + bad[0].asked + "px, has " + bad[0].has + ")");
+  return false;
+}
+let checks = 0;
+const checkTimer = setInterval(() => {
+  checkScale();
+  if (++checks > 8) clearInterval(checkTimer);
+}, 1000);
+
 /* ── the loop ── */
-const home = document.getElementById("home");
 function tick() {
   requestAnimationFrame(tick);
   if (document.hidden) return;
   if (!dragging && Math.abs(velY) > 0.1) { tgt.y += velY; velY *= 0.93; }
   /* x eases a touch slower than y follows — the arriving column gets
      its glide without the scroll feeling detached */
-  if (Math.abs(tgt.x - cur.x) > 0.5 || Math.abs(tgt.y - cur.y) > 0.5) pokeBurn();
+  const turning = Math.abs(tgt.x - cur.x) > 0.5;
+  if (turning !== wasTurning) {
+    wasTurning = turning;
+    plane.classList.toggle("turning", turning);
+  }
+  if (turning || Math.abs(tgt.y - cur.y) > 0.5) pokeBurn();
   cur.x += (tgt.x - cur.x) * 0.11;
   cur.y += (tgt.y - cur.y) * 0.16;
   plane.style.transform = "translate3d(" + (-cur.x) + "px," + (-cur.y) + "px,0)";
@@ -624,8 +813,6 @@ function tick() {
   if (far !== home.hasAttribute("data-on"))
     far ? home.setAttribute("data-on", "") : home.removeAttribute("data-on");
 }
-home.addEventListener("click", () => { pageTo(0); tgt.y = START.y; velY = 0; });
-
 /* ── THE DRIFT, lifted from the driver ─────────────────────────────
    Every image is cut taller than the frame that clips it, and walks
    the slack as its card crosses the glass. Verbatim except the frame
@@ -815,10 +1002,21 @@ FILTERS.forEach(([label, tag, desc]) => {
   r.dataset.tag = tag;
 });
 
+/* ── the way back, as a row of the rail ── */
+const homeRow = mkRow("Back to start", false);
+const home = homeRow.r;
+home.id = "home";
+rrows.pop();                 /* not one of the drawers: it never opens */
+homeRow.r.remove();
+document.getElementById("railwrap").appendChild(home);
+homeRow.h.addEventListener("click", () => {
+  pageTo(0); tgt.y = START.y; velY = 0;
+});
+
 /* every chip stops at its own words */
 const hug = () => {
   if (PHONE) return;
-  drawer.querySelectorAll(".rrow").forEach((r) => {
+  document.querySelectorAll("#railwrap .rrow").forEach((r) => {
     const ink = r.querySelector(".rink");
     const head = r.querySelector(".rhead");
     if (!ink || !head) return;
@@ -848,7 +1046,8 @@ function setMode(mode) {
 }
 
 window.__b = { cur, tgt, START, pageTo, get colIdx() { return colIdx; },
-  MOD_X, COL, GAP, COLS, PW, PH, setMode, get MODE() { return MODE; } };
+  MOD_X, COL, GAP, COLS, PW, PH, setMode, checkScale, DPR,
+  get MODE() { return MODE; } };
 addEventListener("resize", () => remount(), { passive: true });
 remount();
 requestAnimationFrame(tick);
