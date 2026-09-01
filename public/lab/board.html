@@ -221,18 +221,34 @@
     overflow-y: auto;
     display: flex; flex-direction: column; gap: 22px;
   }
+  /* the question is a button wearing the sentence's own clothes */
+  .askgo { border: 0; background: none; padding: 0; margin: 0;
+    font: inherit; color: inherit; letter-spacing: inherit;
+    cursor: pointer; text-align: left; }
+  .askgo u { text-decoration-color: rgba(0, 0, 0, 0.22);
+    text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
+
+  /* ── THE CLOSE RIDES THE FIELD ─────────────────────────────────────
+     Beside the input in the bar, where the conversation's control
+     belongs — not floating in the transcript. Only there while the
+     thread is open; the bar carries a .threadon class so the CSS can
+     know. */
   #threadClose {
-    position: absolute; top: 12px; right: 14px;
+    display: none;
     border: 0; background: none; font: inherit; cursor: pointer;
-    font-size: 20px; line-height: 1; color: rgba(0, 0, 0, 0.4);
-    padding: 6px;
+    font-size: 19px; line-height: 1; color: rgba(0, 0, 0, 0.4);
+    padding: 2px 6px; flex: none;
   }
+  #nav.threadon #threadClose { display: block; }
   #threadClose:hover { color: var(--ink); }
+
+  /* the thread's header IS the statement — same setting, same size,
+     the rotation still running inside it */
+  #threadLede { position: static; margin-bottom: 6px; }
   .thq { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
   .tha { font-size: 13px; line-height: 1.55; color: rgba(0, 0, 0, 0.55);
     margin-top: 6px; }
-  .thhint { font-size: 11px; letter-spacing: 0.03em;
-    color: rgba(0, 0, 0, 0.35); }
+
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -302,6 +318,7 @@
     <input id="query" type="text" placeholder="Ask the house."
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
+    <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
   </div>
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
@@ -310,9 +327,7 @@
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
 <div id="thread"><div><div id="threadIn">
-  <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
-  <div class="thhint">This session's questions. The brain ships with the
-  homepage; here the house counts what it can see.</div>
+  <div class="tile statement" id="threadLede"></div>
   <div id="threadLog"></div>
 </div></div></div>
 
@@ -439,15 +454,30 @@ const quoteH = (q) => {
   return meas.getBoundingClientRect().height + 28;
 };
 
+/* ── ONE FIELD, THREE FACES ─────────────────────────────────────────
+   The homepage has one living field: it rests inside the statement as
+   the rotating question, travels to the bar, and is the same object
+   throughout. The board had a dead replica — static quote, nothing to
+   click — so the three pieces (statement, bar, thread) never met.
+
+   The statement's question is ALIVE now: the homepage's own TOUR
+   typed at the homepage's own cadence, and it is a button — tap it
+   and the thread opens with that question asked. The same statement
+   leads the thread as its header, rotation still running, so opening
+   the conversation never loses the intro: the transcript simply
+   continues from the sentence that invited it. */
 const STATEMENT_HTML =
   "I'm Jeremy Prasatik. I make things across <u>brand</u>, <u>product</u>, and <u>place</u>. " +
   "<span class=\"q\"><u>Apps</u> and <u>ecommerce</u>, <u>campaigns</u> and <u>brand systems</u>, " +
   "<u>photography and art direction</u>, <u>custom interiors</u>, <u>AI tools</u>.</span> " +
-  "Or just ask me:<br><u>“Marble surfaces”</u>";
+  "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">“Marble surfaces”</span></u></button>";
 const smeas = document.createElement("div");
 smeas.className = "tile statement";
 smeas.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
 smeas.innerHTML = STATEMENT_HTML;
+/* measured with the LONGEST question in place, so no rotation entry
+   can ever rewrap the tile past the room it reserved */
+smeas.querySelector(".asktxt").textContent = "“How do I reach you?”";
 document.body.appendChild(smeas);
 const STATEMENT_H = smeas.getBoundingClientRect().height;
 smeas.remove();
@@ -582,17 +612,37 @@ const drawThread = () => {
 const openThread = () => {
   if (PHONE || threadOpen) return;
   threadOpen = true;
+  /* the intro leads the conversation: the panel's header is the
+     statement itself, rotation and all, so nothing is lost when the
+     column opens — the transcript continues from the sentence that
+     invited it */
+  const lede = document.getElementById("threadLede");
+  if (!lede.innerHTML) lede.innerHTML = STATEMENT_HTML;
   drawThread();
   thread.setAttribute("data-on", "");
+  nav.classList.add("threadon");
 };
 const closeThread = () => {
   if (!threadOpen) return;
   threadOpen = false;
   thread.removeAttribute("data-on");
+  nav.classList.remove("threadon");
   textDim = null;
   applyTextDim();
   const q = document.getElementById("query");
   if (q) q.blur();
+};
+const submitQ = (text) => {
+  text = (text || "").trim();
+  if (!text) return;
+  openThread();
+  const { n, m, needle } = countQ(text);
+  const list = readThread();
+  list.push({ q: text, n, m });
+  try { sessionStorage.setItem(THREAD_KEY, JSON.stringify(list)); } catch (er) {}
+  textDim = n ? needle : null;
+  applyTextDim();
+  drawThread();
 };
 {
   const q = document.getElementById("query");
@@ -601,15 +651,7 @@ const closeThread = () => {
     q.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { closeThread(); return; }
       if (e.key !== "Enter") return;
-      const text = q.value.trim();
-      if (!text) return;
-      const { n, m, needle } = countQ(text);
-      const list = readThread();
-      list.push({ q: text, n, m });
-      try { sessionStorage.setItem(THREAD_KEY, JSON.stringify(list)); } catch (er) {}
-      textDim = n ? needle : null;
-      applyTextDim();
-      drawThread();
+      submitQ(q.value);
       q.value = "";
     });
   }
@@ -617,7 +659,56 @@ const closeThread = () => {
   addEventListener("keydown", (e) => {
     if (e.key === "Escape" && threadOpen) closeThread();
   });
+  /* the rotating question is a door: tap it anywhere it appears — the
+     field's statement or the thread's header — and that question is
+     asked. Delegated, because the header's copy is written at open. */
+  document.addEventListener("click", (e) => {
+    const go = e.target.closest && e.target.closest(".askgo");
+    if (!go) return;
+    /* the INTENDED word, not the painted fragment — a tap that lands
+       mid-erase would otherwise ask an empty string and do nothing */
+    submitQ(window.__tourWord || "All work");
+  });
 }
+
+/* ── THE ROTATION, the homepage's own ───────────────────────────────
+   TOUR and cadence lifted verbatim; the one change is the surface it
+   types onto — every .asktxt on the page at once, so the statement in
+   the field and the statement leading the thread stay in step. It
+   stands down while the visitor is typing, and under reduced motion
+   it holds the first question. */
+const TOUR = ["All work", "Interior projects", "App development",
+  "Kitchen design", "What inspires you?", "Marble surfaces", "How do I reach you?"];
+(() => {
+  const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
+  const QQ = (t) => "\u201c" + t + "\u201d";
+  const paint = (t) =>
+    document.querySelectorAll(".asktxt").forEach((el) => { el.textContent = t; });
+  if (REDUCE()) { paint(QQ(TOUR[0])); return; }
+  const input = document.getElementById("query");
+  let k = 0, i = TOUR[0].length, mode = "hold";
+  window.__tourWord = TOUR[0];
+  const step = () => {
+    if (document.hidden || (input && (document.activeElement === input || input.value))) {
+      setTimeout(step, 500); return;
+    }
+    const word = TOUR[k];
+    if (mode === "in") {
+      i += 1; paint(QQ(word.slice(0, i)));
+      if (i >= word.length) { mode = "hold"; setTimeout(step, TYPE_HOLD); }
+      else setTimeout(step, TYPE_IN);
+      return;
+    }
+    if (mode === "hold") { mode = "out"; setTimeout(step, TYPE_OUT); return; }
+    i -= 1; paint(QQ(word.slice(0, Math.max(0, i))));
+    if (i <= 0) {
+      mode = "in"; k = (k + 1) % TOUR.length;
+      window.__tourWord = TOUR[k];
+      setTimeout(step, TYPE_GAP);
+    } else setTimeout(step, TYPE_OUT);
+  };
+  setTimeout(step, 1400);
+})();
 
 const plane = document.getElementById("plane");
 const rulesEl = document.getElementById("rules");
