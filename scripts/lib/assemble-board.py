@@ -283,7 +283,13 @@ const MOD_X = COL + GAP;
 const PH = Math.max(5600, innerHeight * 6);
 const AIR_MIN = 120, AIR_MAX = 340;
 const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
-const SHARES = PHONE ? [0.82, 0.92, 1] : [0.55, 0.66, 0.78, 0.9, 1];
+/* THE INDEX'S OWN TIERS, verbatim, and the 0.17 anti-repeat with them.
+   Mine ran 0.55 to 1.0, so tiles filled their column and the air went
+   out of the page — and the live site has never had a frame at full
+   column width. These top out at 0.86 and reach down to 0.33, which is
+   where the negative space between everything comes from. */
+const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+const SHARES = PHONE ? [0.62, 0.74, 0.86] : IX_TIERS;
 const CAP_H = 30;
 
 /* ── the corpus ── */
@@ -342,19 +348,24 @@ for (const it of items) {
   else {
     let share, guard = 0;
     do { share = SHARES[Math.floor(rnd() * SHARES.length)]; }
-    while (Math.abs(share - prevShare) < 0.12 && guard++ < 8);
-    prevShare = share;
-    w = Math.round(COL * share);
+    while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
     /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ─────────────────────
        CLAUDE.md's rule, applied where it bites: native width / 2 is
        the largest honest CSS width on a 2x screen. 103 of the 541
        files are under 754px wide — old exports, board pulls saved at
-       screen size — and dealt a full column they were being magnified,
-       which is most of what read as crunchy. They take a smaller share
-       instead, which is the same answer the site gives a small asset:
-       put it in the column, do not stretch it to the plate. */
+       screen size — and dealt a wide share they were magnified, which
+       is most of what read as crunchy.
+
+       It steps DOWN THE TIERS rather than picking an arbitrary width,
+       so a small file lands on the same ladder as everything else and
+       the family holds. Only if even the smallest tier would magnify
+       it does it take its honest width outright. */
     const honest = Math.min(768, it.w) / 2;
-    if (w > honest) w = Math.max(Math.round(COL * SHARES[0]), Math.round(honest));
+    while (COL * share > honest && share > SHARES[0]) {
+      share = SHARES[SHARES.indexOf(share) - 1];
+    }
+    prevShare = share;
+    w = Math.min(Math.round(COL * share), Math.round(honest));
     h = Math.round(w * (it.h / it.w));
     if (h > COL * 1.6) h = Math.round(COL * 1.6);
     if (GROUPS[it.g]) h += CAP_H;
