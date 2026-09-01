@@ -1288,18 +1288,21 @@ drawer.appendChild(gap);
 /* which pictures a category's stamp cuts through: the board's own
    thumbs for the studies that carry the tag, one per study so a stamp
    is a survey rather than a slideshow of one project */
+/* THE STAMP CUTS THROUGH THE COVERS, not the archive. Walking the
+   whole corpus dealt whatever sorted first — product crops, board
+   pulls — and the reel is a preview of the shelf, so it shows the
+   same heroes the live homepage leads with: the covers, in the
+   homepage's own order, one per study by construction. Staples has no
+   covers and keeps the board's own head. */
 const framesFor = (tag) => {
-  const seen = new Set(), out = [];
-  for (const it of (window.BOARD_ITEMS || [])) {
-    const g = GROUPS[it.g];
-    const hit = tag === "staples" ? it.g === "inspiration"
-      : g && g.tags.includes(tag);
-    if (!hit || seen.has(it.g)) continue;
-    seen.add(it.g);
-    out.push(it.t);
-    if (out.length >= 8) break;
-  }
-  return out;
+  if (tag === "staples")
+    return (window.BOARD_ITEMS || [])
+      .filter((i) => i.g === "inspiration").slice(0, 8).map((i) => i.t);
+  return (window.BOARD_ITEMS || [])
+    .filter((i) => i.c != null && GROUPS[i.g] && GROUPS[i.g].tags.includes(tag))
+    .sort((a, b) => a.c - b.c)
+    .slice(0, 8)
+    .map((i) => i.t);
 };
 
 const catReels = [];
