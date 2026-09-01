@@ -1553,11 +1553,24 @@
       row-gap: clamp(90px, 21vw, 144px); }
     .ixrows.ixcols .cell { grid-column: span 6; }
     .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
-    /* mThird and mTwoThirds are gone from the rhythm — see M_RHYTHM.
-       The spans stay declared: they cost nothing, and the seven-slot
-       cycle is the kind of thing that gets a varied pair back. */
+    /* mThird and mTwoThirds are not dealt — see rhythmClasses, which
+       deals halves and nothing else. The spans stay declared: they cost
+       nothing, and a varied pair is the kind of thing that comes back. */
     .ixrows.ixcols .cell.mThird { grid-column: span 2; }
     .ixrows.ixcols .cell.mTwoThirds { grid-column: span 4; }
+    /* ── THE DEALT SHAPES ─────────────────────────────────────────────
+       Two overrides of the frame's declared ratio, on the phone only
+       and on a cycle — see M_HEIGHTS. They crop, which is the trade:
+       at 155px these are thumbnails, and a thumbnail grid where every
+       tile is the same landscape reads as a table of contents. The
+       majority of tiles keep their own ratio, so this is the accent.
+
+       On .shot, which is the box that holds the row height. The image
+       inside is already object-fit: cover at any shape, and the plate
+       that bleeds on scroll takes its height from this box, so both
+       follow without knowing. */
+    .ixrows.ixcols .cell.mTall .shot { aspect-ratio: 3 / 4; }
+    .ixrows.ixcols .cell.mSquare .shot { aspect-ratio: 1 / 1; }
     .ixrow, .ixlead { display: contents; }
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }

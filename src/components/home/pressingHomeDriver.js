@@ -1997,7 +1997,7 @@ let reelBoxes = [];
    them ask for 1080w, which is 3.4x more than the smallest can paint.
 
    The dealer already knows both numbers it needs, so it says them: the
-   phone tier is the M_RHYTHM class it is about to add, and the desktop
+   phone tier is the rhythm class it is about to add, and the desktop
    width is the --share it is about to set. TILE_FALLBACK covers the
    answer deal, whose shares are dealt the same way but whose cells have
    no rhythm tier. */
@@ -2296,18 +2296,55 @@ function dealShares(n, rnd) {
    got no rhythm classes at all — which on a phone left them as bare
    stacked blocks with no grid and no gaps, so every result touched the
    one under it. One array, one layout, both surfaces. */
-const M_RHYTHM = ["mHero", "mHalf", "mHalf", "mHero", "mHero", "mHalf", "mHalf"];
-/* Which slot opens a pair, and therefore which cell carries the
-   standing rule's side. Shared for the same reason. */
+/* EVERY TILE IS HALF. This was a seven-slot cycle with three
+   full-width frames in it — hero, pair, hero, hero, pair — and on a
+   phone a full-width frame is the whole screen, so a scroll was one
+   picture, then two, then one, then one. The three-of-seven at full
+   width also ate most of the page's length.
+
+   Side by side throughout, and the heights vary on their own: every
+   tile is the same width now, so its height is entirely its own
+   picture's ratio, and the column's bottom edge goes ragged the way an
+   editorial grid's does. That variation is real rather than dealt,
+   which is why there is no longer a cycle here to tune.
+
+   The one exception is an odd tile at the end. It has no partner, so
+   it takes the full width rather than sitting half-width beside a hole. */
+/* AND THE HEIGHTS ARE DEALT, because leaving them to the pictures was
+   not enough. Measured across the thirty tiles: heights ran 92 to 210
+   but the median was 103 and twenty of them sat between 92 and 130,
+   because most of the work is photographed landscape. Side by side at
+   one width that reads as a table.
+
+   Dealt BY THE PAIR, not by the cell. A flat cycle of six put two tall
+   tiles opposite each other on the first row of the real page, because
+   the statement takes the first slot and shifts every picture's phase
+   by one — so a cycle that reads right in the abstract cannot be
+   trusted to land right on the page. A table of pairs cannot get this
+   wrong: each row names both sides, and no row names the same shape
+   twice.
+
+   Which side is tall moves down the table, so the ragged edge does not
+   settle into a stripe. The empty slots keep their own picture's
+   ratio, and there are more of them than dealt ones: the shapes are
+   the accent, not the rule. */
+const M_PAIRS = [
+  ["mTall", ""],
+  ["", "mSquare"],
+  ["mSquare", ""],
+  ["", "mTall"],
+  ["mTall", ""],
+  ["", ""],
+  ["", "mTall"],
+  ["mSquare", ""],
+];
 function rhythmClasses(flat, isLast) {
-  const slot = flat % 7;
-  const opensPair = slot === 1 || slot === 5;
+  const opensPair = flat % 2 === 0;
   const lonely = opensPair && isLast;
-  const out = [lonely ? "mHero" : M_RHYTHM[slot]];
-  if (!lonely) {
-    if (slot === 1 || slot === 5) out.push("pairL");
-    else if (slot === 2 || slot === 6) out.push("pairR");
-  }
+  if (lonely) return ["mHero"];
+  const out = ["mHalf", opensPair ? "pairL" : "pairR"];
+  const shape = M_PAIRS[Math.floor(flat / 2) % M_PAIRS.length][opensPair ? 0 : 1];
+  if (shape) out.push(shape);
   return out;
 }
 
