@@ -1593,22 +1593,26 @@
        is the same span, so dense reorders nothing: it fills the holes
        in dealing order. */
     .ixrows.ixcols { grid-auto-flow: row dense; }
-    .ixrows.ixcols > .coverR {
+    .ixrows.ixcols > .ixcopy {
       grid-column: 1 / span 3; grid-row: span 2;
-      align-self: start; padding-top: 0; width: auto; }
+      align-self: start; min-width: 0; }
+    .ixrows.ixcols .ixcopy > .coverR {
+      padding-top: 0; width: auto; }
+    /* The filters follow the sentence directly. The interval is the
+       air between two things that belong together, not the grid's own
+       row gap, which separates unrelated work. */
+    .ixrows.ixcols .ixcopy > .ixnotes { padding-top: 30px; }
     /* THE MEASURE HALVED, SO THE TYPE COMES DOWN. This is set at the
        cover's own size, which was right when the statement ran the
        full width of a phone; in a 155px column it gave three words a
        line and pushed the question off the right edge. 17px is about
        twenty characters here, which is a column rather than a stack of
        fragments. */
-    .ixrows.ixcols > .coverR .statement { font-size: clamp(15px, 4.5vw, 18px); }
+    .ixrows.ixcols .ixcopy .statement { font-size: clamp(15px, 4.5vw, 18px); }
     /* And the question fills the column rather than 9.5 of its own
        ems, which at this size overflowed it. */
-    .ixrows.ixcols > .coverR #askSlot { width: 100%; }
-    .ixrows.ixcols > .ixnotes {
-      grid-column: 1 / span 3; align-self: start;
-      padding-top: clamp(40px, 10vw, 68px); }
+    .ixrows.ixcols .ixcopy #askSlot { width: 100%; }
+
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }

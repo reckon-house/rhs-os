@@ -304,7 +304,26 @@ function CategoryRow({
           carries its query there rather than answering in place. It is
           a link, not a button, so it opens in a new tab and shows its
           destination like any other. */}
-      <Link className="rhead" href={`/?q=${encodeURIComponent(cat.query)}`}>
+      {/* ── OPEN FIRST, ASK SECOND ─────────────────────────────────
+          A closed row opens instead of navigating. Hover opens it for
+          a pointer, so on a mouse the row is already open when a click
+          lands and this changes nothing; touch has no hover, so a tap
+          used to leave the page before the reel or the one-liner had
+          ever been seen. Info and Connect have always worked this way.
+
+          Still a Link, and that is the point of doing it with
+          preventDefault rather than a button: the destination stays
+          real, so it opens in a new tab, shows in the status bar and
+          reads as a link to a screen reader. */}
+      <Link
+        className="rhead"
+        href={`/?q=${encodeURIComponent(cat.query)}`}
+        onClick={(e) => {
+          if (open) return;
+          e.preventDefault();
+          setOpen(cat.query);
+        }}
+      >
         <span className="rink">
           {cat.label}
         </span>

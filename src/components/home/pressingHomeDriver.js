@@ -2329,7 +2329,13 @@ function dealShares(n, rnd) {
    ratio, and there are more of them than dealt ones: the shapes are
    the accent, not the rule. */
 const M_PAIRS = [
-  ["mTall", ""],
+  /* THE SHAPE GOES TO THE SECOND FRAME HERE, and the reason is what is
+     IN the two: the first is a laptop mockup and the second is a
+     figure. Cropping a screenshot tall throws away the screen, which
+     is the whole subject; cropping a photograph of a person tall is
+     what a portrait crop is. Both are landscape files, so no rule
+     about ratios could have told them apart. */
+  ["", "mTall"],
   ["", "mSquare"],
   ["mSquare", ""],
   ["", "mTall"],
@@ -2392,13 +2398,21 @@ function homeCopy(notesEl) {
 function placeCopy(rowsEl, notesEl) {
   const coverR = document.querySelector(".coverR");
   if (innerWidth <= 860) {
-    /* Statement first, filters second, both before the tiles: the
-       packer needs the two-row hole to exist before it has anything to
-       put in it. */
-    if (coverR && coverR.parentElement !== rowsEl)
-      rowsEl.insertBefore(coverR, rowsEl.firstChild);
-    if (notesEl.parentElement !== rowsEl)
-      rowsEl.insertBefore(notesEl, coverR ? coverR.nextSibling : rowsEl.firstChild);
+    /* ONE BLOCK, NOT TWO ITEMS. Placed as siblings the statement took
+       rows one and two and the filters fell to row three, whose top is
+       set by the two tiles beside them — so the filters sat a couple
+       of hundred pixels below the sentence they belong under, with
+       nothing in between. Inside one item they stack the way they
+       read, and the item spans the rows instead.
+
+       Built here rather than in the markup because the build empties
+       this grid: the wrapper is disposable, the two nodes inside it
+       are not, which is why homeCopy lifts them out first. */
+    const box = document.createElement("div");
+    box.className = "ixcopy";
+    rowsEl.insertBefore(box, rowsEl.firstChild);
+    if (coverR) box.appendChild(coverR);
+    box.appendChild(notesEl);
   }
   /* No else. homeCopy already ran at the top of this build, so above
      860 the nodes are where they started and there is nothing to do. */
@@ -2927,7 +2941,23 @@ function buildMagazine() {
       if (el) el.value = label;
       onQuery(fq, true);
     };
-    h.addEventListener("click", ask);
+    /* ── OPEN FIRST, ASK SECOND ───────────────────────────────────
+       A category used to answer on the first click, which was right
+       on a mouse and wrong under a finger: hover opens the row for a
+       pointer, so by the time a mouse clicks it has already seen the
+       reel and the one-liner. Touch has no hover, so a tap went
+       straight to the results and the panel behind these rows was
+       something a phone could not reach at all.
+
+       So the row opens, and the next tap on it asks. On a mouse
+       nothing changes: the row is already open when the click lands,
+       and the click falls through to ask on the first press. Info and
+       Connect have worked this way from the start; this makes the
+       categories agree with them. */
+    h.addEventListener("click", () => {
+      if (r.classList.contains("open")) { ask(); return; }
+      openOnly(r);
+    });
     /* THE WHOLE OPEN PANEL ASKS, not just its label. Once a row is
        open the reel and the one-liner are the biggest things in it and
        reading as decoration, so they take the same click. No second
