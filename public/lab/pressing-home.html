@@ -2811,6 +2811,12 @@ const NOTES = [
     "Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools."],
   ["What I do", "Creative technologist. AI development. Brand systems. Digital design. Interior design."],
   ["The setup", "Independent, Texas. Design and build. I love the work."],
+  /* THE OTHER STACK, and it follows "The setup" on purpose: that note
+     sets up a reader to expect a framework list, and this one is the
+     answer to a question nobody asked in the register they asked it
+     in. The third element greys the tail, because the correction is
+     the joke and a punchline lands better said quietly. */
+  ["The stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales.", "and lagers, and stouts, and ales."],
   ["Recently", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
   /* The fourth slot is a LINK the block renders under its text. The
      address alone left the only committing thing on the site reachable
@@ -5210,6 +5216,13 @@ function buildMagazine() {
       sub(pad, "About", about.map((c) => c.full).join(" "), about[0].word);
     const news = note(/recently/i);
     if (news) sub(pad, "News", news.full, news.word);
+    /* THE OTHER STACK, last in the drawer. A reader opens Info for the
+       bio and gets two subs of it before this one, which is what makes
+       a sub called "Stack" read as the framework list it is not. Last
+       rather than beside About, because the wink only works after the
+       straight answer. */
+    const stack = note(/stack/i);
+    if (stack) sub(pad, "Stack", stack.full, stack.word);
     h.addEventListener("click", () =>
       r.classList.contains("open") ? closeRows() : openOnly(r));
   }

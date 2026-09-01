@@ -43,6 +43,16 @@ export const practiceNotes: PracticeNote[] = [
   },
   { title: "The setup", body: "Independent, Texas. Design and build. I love the work." },
   { title: "What I do", body: "Creative technologist. AI development. Brand systems. Digital design. Interior design." },
+  /* THE OTHER STACK. It sits next to "The setup" and "What I do"
+     because that is where a reader is expecting Next.js and React, and
+     the whole thing only works if the expectation is set first. The
+     tail greys: the correction is the joke, and a punchline reads
+     better spoken quietly than delivered at full volume. */
+  {
+    title: "The stack",
+    body: "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales.",
+    quiet: "and lagers, and stouts, and ales.",
+  },
 ];
 
 /* The plain way in. The brain answers questions and a first-time

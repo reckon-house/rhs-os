@@ -43,7 +43,9 @@ const fail = [];
    The driver's NOTES is an array of ["Title", "body", …] tuples. Only
    the titles the rail actually reads are compared: the practice bio is
    the homepage's cover statement and the ring does not repeat it. */
-const RAIL_READS = ["What I do", "The setup", "Recently", "Get in touch"];
+const RAIL_READS = [
+  "What I do", "The setup", "Recently", "Get in touch", "The stack",
+];
 
 const driverNotes = new Map();
 {

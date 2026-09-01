@@ -129,6 +129,10 @@ export function IndexRail() {
 
   const about = [note(/what i do/i), note(/setup/i)].filter(Boolean);
   const news = note(/recently/i);
+  /* THE OTHER STACK. Last in the drawer, matching the homepage: two
+     subs of straight bio first, which is what makes a sub called
+     "Stack" read as the framework list it is not. */
+  const stack = note(/stack/i);
   const touch = note(/touch/i);
 
   const rows = (
@@ -150,6 +154,12 @@ export function IndexRail() {
           <>
             <div className="rsub">News</div>
             <div className="rtxt">{news.body}</div>
+          </>
+        ) : null}
+        {stack ? (
+          <>
+            <div className="rsub">Stack</div>
+            <div className="rtxt">{stack.body}</div>
           </>
         ) : null}
       </Row>
