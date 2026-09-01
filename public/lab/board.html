@@ -303,6 +303,16 @@ for (const it of items) {
     while (Math.abs(share - prevShare) < 0.12 && guard++ < 8);
     prevShare = share;
     w = Math.round(COL * share);
+    /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ─────────────────────
+       CLAUDE.md's rule, applied where it bites: native width / 2 is
+       the largest honest CSS width on a 2x screen. 103 of the 541
+       files are under 754px wide — old exports, board pulls saved at
+       screen size — and dealt a full column they were being magnified,
+       which is most of what read as crunchy. They take a smaller share
+       instead, which is the same answer the site gives a small asset:
+       put it in the column, do not stretch it to the plate. */
+    const honest = Math.min(768, it.w) / 2;
+    if (w > honest) w = Math.max(Math.round(COL * SHARES[0]), Math.round(honest));
     h = Math.round(w * (it.h / it.w));
     if (h > COL * 1.6) h = Math.round(COL * 1.6);
     if (GROUPS[it.g]) h += CAP_H;

@@ -30,7 +30,17 @@ const FORCE = process.argv.includes("--force");
 const ROOT = "public/case-studies";
 const OUT = "public/lab/board-thumbs";
 const DATA = "public/lab/board-data.js";
-const W = 384;
+/* 768, not 384. CLAUDE.md's own rule: native width / 2 is the largest
+   honest CSS width, so a 384px file is crisp to about 192 CSS px and
+   soft above it — and a board column is up to 377. Every picture was
+   being drawn at half the resolution it needed, which is what
+   "compressed and crunchy" was. 768 covers a full-width column on a
+   2x screen exactly.
+
+   Quality up with it: 68 is a thumbnail's number and these are not
+   thumbnails any more, they are the work at column size. */
+const W = 768;
+const Q = 78;
 
 const IMG_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
@@ -80,7 +90,7 @@ for (const from of walk(ROOT)) {
       const img = sharp(from, { failOn: "none" });
       meta = await img.metadata();
       await img.resize({ width: W, withoutEnlargement: true })
-        .webp({ quality: 68 })
+        .webp({ quality: Q })
         .toFile(to);
       wrote += 1;
     }

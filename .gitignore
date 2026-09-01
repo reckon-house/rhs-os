@@ -59,3 +59,8 @@ public/lab/_review/
 
 # performance measurement scratch (traces are ~50MB each)
 .perf-baseline/
+
+# The board's generated thumbnail tier: 541 files, 28MB, rebuilt by
+# `npm run board` from the originals that ARE tracked. A derived
+# artifact the size of a small repo has no business in git history.
+public/lab/board-thumbs/
