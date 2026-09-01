@@ -223,6 +223,59 @@ head = r'''<!doctype html>
      The clip has to go with them. --hug is measured against a
      full-width column and there is no column now; left on, every chip
      would be clipped to a fraction of a width it never had. */
+  /* ── THE BAR'S ITEMS SIT OVER THE COLUMNS THEY COMMAND ────────────
+     Desktop only. The wordmark moves LEFT, over the rail column, with
+     the nav options it introduces; the field parks over the chat
+     column — the same x as the statement's own text — because that is
+     where the conversation lives. When the statement scrolls away the
+     field is simply still there, pinned in its column's slot in the
+     bar. The mail keeps the right edge. */
+  @media (min-width: 761px) {
+    #nav { --nav-gutter: var(--gut); }
+    #nav .mark { grid-column: 1; justify-self: start; }
+  }
+
+  /* ── THE THREAD: the chat flows down its own column ───────────────
+     Click into the field and the column under it becomes the session's
+     conversation — a paper panel from the bar to the floor, exactly
+     one module wide, its edges on the standing rules' own lines. The
+     field stays in the bar as the input; the panel is the transcript.
+     A close (or Esc) hands the column back to the scroll.
+
+     The drawer's 0fr→1fr again, so it flows DOWN from the bar the way
+     the sheet rises from it on a phone: one grammar, two edges. */
+  #thread {
+    position: fixed; z-index: 45;
+    top: var(--nav); bottom: 0;
+    left: var(--thread-x, 0px); width: var(--thread-w, 420px);
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+  }
+  #thread[data-on] { grid-template-rows: 1fr; pointer-events: auto; }
+  #thread > div { overflow: hidden; min-height: 0; }
+  #threadIn {
+    height: calc(100dvh - var(--nav));
+    background: var(--paper, #fff);
+    border-left: 1px solid rgba(0, 0, 0, 0.13);
+    border-right: 1px solid rgba(0, 0, 0, 0.13);
+    padding: 26px calc(var(--thread-pad, 20px)) 20px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  #threadClose {
+    position: absolute; top: 12px; right: 14px;
+    border: 0; background: none; font: inherit; cursor: pointer;
+    font-size: 20px; line-height: 1; color: rgba(0, 0, 0, 0.4);
+    padding: 6px;
+  }
+  #threadClose:hover { color: var(--ink); }
+  .thq { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+  .tha { font-size: 13px; line-height: 1.55; color: rgba(0, 0, 0, 0.55);
+    margin-top: 6px; }
+  .thhint { font-size: 11px; letter-spacing: 0.03em;
+    color: rgba(0, 0, 0, 0.35); }
+
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
      drawer's own 0fr→1fr and carries the ENTIRE rail — the drawers,
@@ -297,6 +350,13 @@ head = r'''<!doctype html>
 </nav>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
+
+<div id="thread"><div><div id="threadIn">
+  <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
+  <div class="thhint">This session's questions. The brain ships with the
+  homepage; here the house counts what it can see.</div>
+  <div id="threadLog"></div>
+</div></div></div>
 
 <!-- the melt: the burn pill's displacement, lifted from the masthead -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -475,8 +535,125 @@ const COLS = col + 1;
 const PW = COLS * MOD_X;
 meas.remove();
 
-/* ── the two temperaments ── */
+/* ── the bar over its columns, the thread down the chat column ──────
+   The field's parked slot and the thread's box are the same geometry:
+   the chat column's own edges. Set from the measured numbers so the
+   panel's hairlines land exactly on the standing rules. */
 const field = document.getElementById("field");
+if (!PHONE) {
+  const fieldL = field.getBoundingClientRect().left;
+  const navEl = document.getElementById("nav");
+  navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
+  navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
+  const th = document.getElementById("thread");
+  th.style.setProperty("--thread-x", fieldL + "px");
+  th.style.setProperty("--thread-w", (COL + GAP) + "px");
+  th.style.setProperty("--thread-pad", (GAP / 2) + "px");
+}
+
+/* ── THE THREAD ─────────────────────────────────────────────────────
+   Click into the field and the chat column opens beneath it; close or
+   Esc hands the column back. The transcript is the SESSION'S —
+   sessionStorage, so a reload keeps the conversation and a new visit
+   starts clean.
+
+   The answers here are honest about what this page is: there is no
+   model on the board, so the house answers with what it can count —
+   the same matcher arithmetic the chips use, run over titles,
+   categories, tags and the kept lines, and the field dims to show
+   exactly the pieces it counted. The model's sentence arrives when
+   this merges with the homepage, where think() and the facts live. */
+const thread = document.getElementById("thread");
+const threadLog = document.getElementById("threadLog");
+let threadOpen = false;
+let textDim = null; /* the free-text filter while the thread is open */
+
+const wordsOf = (t) => {
+  if (t.kind === "quote") return (t.text + " " + t.att).toLowerCase();
+  const g = GROUPS[t.g];
+  return (t.g + " " + (g ? g.t + " " + g.s + " " + g.tags.join(" ") : ""))
+    .toLowerCase();
+};
+const countQ = (q) => {
+  const needle = q.toLowerCase();
+  const hit = tiles.filter((t) => t.kind !== "statement" && wordsOf(t).includes(needle));
+  const studies = new Set(hit.filter((t) => t.kind === "img").map((t) => t.g));
+  return { n: hit.length, m: studies.size, needle };
+};
+const applyTextDim = () => {
+  for (const [key, el] of live) {
+    if (key.startsWith("R:")) continue;
+    const t = tiles[parseInt(key, 10)];
+    const ok = textDim
+      ? (t.kind === "statement" || wordsOf(t).includes(textDim))
+      : matches(t);
+    el.classList.toggle("dim", !ok);
+  }
+};
+
+const THREAD_KEY = "board-thread";
+const readThread = () => {
+  try { return JSON.parse(sessionStorage.getItem(THREAD_KEY)) || []; }
+  catch (e) { return []; }
+};
+const drawThread = () => {
+  threadLog.innerHTML = "";
+  for (const en of readThread()) {
+    const box = document.createElement("div");
+    const q = document.createElement("div");
+    q.className = "thq";
+    q.textContent = "\u201C" + en.q + "\u201D";
+    const a = document.createElement("div");
+    a.className = "tha";
+    a.textContent = en.n
+      ? en.n + " pieces across " + en.m +
+        (en.m === 1 ? " study" : " studies") + ", dealt beside."
+      : "Nothing caught on the board. The homepage's brain reads deeper.";
+    box.appendChild(q); box.appendChild(a);
+    threadLog.appendChild(box);
+  }
+  threadLog.scrollTop = threadLog.scrollHeight;
+};
+const openThread = () => {
+  if (PHONE || threadOpen) return;
+  threadOpen = true;
+  drawThread();
+  thread.setAttribute("data-on", "");
+};
+const closeThread = () => {
+  if (!threadOpen) return;
+  threadOpen = false;
+  thread.removeAttribute("data-on");
+  textDim = null;
+  applyTextDim();
+  const q = document.getElementById("query");
+  if (q) q.blur();
+};
+{
+  const q = document.getElementById("query");
+  if (q) {
+    q.addEventListener("focus", openThread);
+    q.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { closeThread(); return; }
+      if (e.key !== "Enter") return;
+      const text = q.value.trim();
+      if (!text) return;
+      const { n, m, needle } = countQ(text);
+      const list = readThread();
+      list.push({ q: text, n, m });
+      try { sessionStorage.setItem(THREAD_KEY, JSON.stringify(list)); } catch (er) {}
+      textDim = n ? needle : null;
+      applyTextDim();
+      drawThread();
+      q.value = "";
+    });
+  }
+  document.getElementById("threadClose").addEventListener("click", closeThread);
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && threadOpen) closeThread();
+  });
+}
+
 const plane = document.getElementById("plane");
 const rulesEl = document.getElementById("rules");
 let colIdx = 0;
@@ -490,6 +667,7 @@ const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
 let hCool = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
+  if (threadOpen) return;
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
     const now = performance.now();
     if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
@@ -502,6 +680,7 @@ field.addEventListener("wheel", (e) => {
 let pxx = 0, pyy = 0, moved = 0;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
+  if (threadOpen) return;
   dragging = true; moved = 0;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
