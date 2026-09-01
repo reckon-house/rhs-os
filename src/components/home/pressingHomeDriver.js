@@ -2348,6 +2348,87 @@ function rhythmClasses(flat, isLast) {
   return out;
 }
 
+/* ── THE COPY JOINS THE GRID ON A PHONE ─────────────────────────────
+   The statement lives in the cover stratum and the filters in the note
+   rail, two containers the tiles are not in, so no stylesheet can put
+   the three in one column. The nodes move instead, and they move
+   rather than being cloned because both carry wiring: #infoLead and
+   #askSlot are rewritten by id inside the statement, and the rail's
+   rows hold their own listeners. A clone would leave the handlers on
+   the copy nobody can see.
+
+   Their homes are remembered on the first pass, before anything has
+   moved, so the desktop layout can be put back exactly. buildMagazine
+   runs again on every resize, which is what makes this reversible. */
+let COPY_HOME = null;
+/* PUT THEM BACK BEFORE ANYTHING IS CLEARED, and this is not optional.
+   buildMagazine empties #ixRows on every run, so a statement parked
+   inside it is destroyed by the next rebuild — which is every resize.
+   It cost the whole cover the first time out: one resize and the node
+   was gone from the document, not moved, gone. The rail went with it,
+   because getElementById had already handed the build a node that was
+   about to be detached.
+
+   So the pass runs at the top of the build, before the clear, and
+   placeCopy runs at the end, after the tiles exist. Restoring first
+   also means the desktop branch needs no separate path: the nodes are
+   always home by the time anyone asks where they are. */
+function homeCopy(notesEl) {
+  const coverR = document.querySelector(".coverR");
+  if (!COPY_HOME) {
+    COPY_HOME = {
+      cover: coverR ? coverR.parentElement : null,
+      coverNext: coverR ? coverR.nextElementSibling : null,
+      notes: notesEl.parentElement,
+      notesNext: notesEl.nextElementSibling,
+    };
+    return;
+  }
+  if (coverR && COPY_HOME.cover && coverR.parentElement !== COPY_HOME.cover)
+    COPY_HOME.cover.insertBefore(coverR, COPY_HOME.coverNext);
+  if (COPY_HOME.notes && notesEl.parentElement !== COPY_HOME.notes)
+    COPY_HOME.notes.insertBefore(notesEl, COPY_HOME.notesNext);
+}
+function placeCopy(rowsEl, notesEl) {
+  const coverR = document.querySelector(".coverR");
+  if (innerWidth <= 860) {
+    /* Statement first, filters second, both before the tiles: the
+       packer needs the two-row hole to exist before it has anything to
+       put in it. */
+    if (coverR && coverR.parentElement !== rowsEl)
+      rowsEl.insertBefore(coverR, rowsEl.firstChild);
+    if (notesEl.parentElement !== rowsEl)
+      rowsEl.insertBefore(notesEl, coverR ? coverR.nextSibling : rowsEl.firstChild);
+  }
+  /* No else. homeCopy already ran at the top of this build, so above
+     860 the nodes are where they started and there is nothing to do. */
+}
+
+/* ── WHICH SIDE A TILE IS ACTUALLY ON ───────────────────────────────
+   pairL and pairR decide which way a frame opens as it scrolls, and
+   they were dealt from the tile's place in the deal — which was right
+   only while placement followed dealing order. It no longer does: the
+   packer backfills the hole beside the statement, so the first tile
+   dealt is the one on the RIGHT. A frame reading its side from the
+   deal would bleed off the wrong edge.
+
+   Measured instead. One read per tile after layout, on build and on
+   resize, which is also strictly better than the assumption it
+   replaces: the classes can no longer disagree with the page. */
+function markSides(rowsEl) {
+  const cells = rowsEl.querySelectorAll(".cell");
+  if (!cells.length) return;
+  const mid = rowsEl.getBoundingClientRect().left + rowsEl.getBoundingClientRect().width / 2;
+  const lefts = [];
+  cells.forEach((c) => lefts.push(c.getBoundingClientRect().left));
+  cells.forEach((c, i) => {
+    if (!c.classList.contains("mHalf")) return;
+    const onLeft = lefts[i] < mid;
+    c.classList.toggle("pairL", onLeft);
+    c.classList.toggle("pairR", !onLeft);
+  });
+}
+
 function buildMagazine() {
   /* the debounced resize can land after the route changed */
   if (!alive) return;
@@ -2404,6 +2485,8 @@ function buildMagazine() {
      effect on the route that is arriving. */
   if (!lead || !document.getElementById("ixNotes") ||
       !document.getElementById("ixRows")) return;
+  /* Before the clear below. See the note on homeCopy. */
+  homeCopy(document.getElementById("ixNotes"));
   if (bio !== undefined) {
     /* The statement's rhythm comes from NOTES, which carries the
        recessive run as its own field. Answers mark their asides
@@ -3091,6 +3174,12 @@ function buildMagazine() {
     rowsEl.appendChild(row);
   }
   armRows(rowsEl);
+
+  /* The copy joins the grid before anything is measured, because the
+     packer's answer depends on it being there. markSides then reads
+     where every tile actually landed. */
+  placeCopy(rowsEl, notesEl);
+  markSides(rowsEl);
 
   observeArrivals(workEls);
   armReels();
@@ -4966,8 +5055,21 @@ let tourFull = "";                     /* what placeAsk should size to */
     /* The statement's own clamp (24px, 3.2vw, 44px), not display scale:
        the field rests under the lede as its continuation now, and a
        question set bigger than the sentence that invites it would put
-       the hierarchy back the way it was. */
-    const cap = Math.max(21, Math.min(32, innerWidth * 0.024));
+       the hierarchy back the way it was.
+
+       READ OFF THE SENTENCE, not off the viewport. The floor was 21px
+       whatever happened, which was safe while the statement ran the
+       full width of a phone; in the two-column layout the statement is
+       17px in a 155px measure, so the question came in four points
+       BIGGER than the line inviting it and ran off the column. The
+       lede's own computed size is the honest ceiling: the question is
+       its continuation and should never outrank it. */
+    const lede = document.getElementById("infoLead");
+    const ledeSize = lede
+      ? parseFloat(getComputedStyle(lede).fontSize) || 0 : 0;
+    const cap = ledeSize
+      ? Math.min(ledeSize, Math.max(21, Math.min(32, innerWidth * 0.024)))
+      : Math.max(21, Math.min(32, innerWidth * 0.024));
     ghost.textContent = text || "";
     const per = ghost.getBoundingClientRect().width / 100;
     if (!per || !room) return cap;

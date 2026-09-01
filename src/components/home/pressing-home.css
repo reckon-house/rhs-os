@@ -1550,7 +1550,13 @@
          the horizontal air is the only thing separating one row of
          work from the next and it was doing two jobs at the old
          value. */
-      row-gap: clamp(90px, 21vw, 144px); }
+      /* AND DOWN AGAIN, because the layout under it changed twice. The
+         90-to-144 was measured against a deal with full-width frames
+         in it, where the air had to separate one big picture from the
+         next. Every tile is half now and most are shorter than they
+         were, so the same interval left a phone scrolling through more
+         gap than work. Owner's call if this wants to go back up. */
+      row-gap: clamp(52px, 12vw, 88px); }
     .ixrows.ixcols .cell { grid-column: span 6; }
     .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
     /* mThird and mTwoThirds are not dealt — see rhythmClasses, which
@@ -1572,6 +1578,37 @@
     .ixrows.ixcols .cell.mTall .shot { aspect-ratio: 3 / 4; }
     .ixrows.ixcols .cell.mSquare .shot { aspect-ratio: 1 / 1; }
     .ixrow, .ixlead { display: contents; }
+    /* ── THE COPY IS A COLUMN, NOT A HEADER ───────────────────────────
+       The statement and the filters used to run full width above the
+       work, so a phone opened on a screen of words with the first
+       picture below the fold. They are grid items now — the driver
+       moves both into this grid on a phone, see placeCopy — which puts
+       them in the left half with the work climbing the right from the
+       very top.
+
+       dense is what makes that work. The statement is placed first and
+       spans two rows, so the packer has a two-row hole beside it;
+       without dense the tiles would queue after the filters and leave
+       that hole empty, which is the layout this replaces. Every tile
+       is the same span, so dense reorders nothing: it fills the holes
+       in dealing order. */
+    .ixrows.ixcols { grid-auto-flow: row dense; }
+    .ixrows.ixcols > .coverR {
+      grid-column: 1 / span 3; grid-row: span 2;
+      align-self: start; padding-top: 0; width: auto; }
+    /* THE MEASURE HALVED, SO THE TYPE COMES DOWN. This is set at the
+       cover's own size, which was right when the statement ran the
+       full width of a phone; in a 155px column it gave three words a
+       line and pushed the question off the right edge. 17px is about
+       twenty characters here, which is a column rather than a stack of
+       fragments. */
+    .ixrows.ixcols > .coverR .statement { font-size: clamp(15px, 4.5vw, 18px); }
+    /* And the question fills the column rather than 9.5 of its own
+       ems, which at this size overflowed it. */
+    .ixrows.ixcols > .coverR #askSlot { width: 100%; }
+    .ixrows.ixcols > .ixnotes {
+      grid-column: 1 / span 3; align-self: start;
+      padding-top: clamp(40px, 10vw, 68px); }
     .ixlead { position: static; }
     .ixrow .cell { justify-content: stretch; }
     .ixrow .fd-it { width: 100%; }
