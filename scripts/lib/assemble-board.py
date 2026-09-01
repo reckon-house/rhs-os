@@ -453,7 +453,7 @@ const GAP = PHONE ? 20 : IXGAP;
    VISIBLE+1, or the resting edge lands mid-tile */
 const COL = (FIELD_W - GAP * VISIBLE) / VISIBLE;
 const MOD_X = COL + GAP;
-const PH = Math.max(5600, innerHeight * 6);
+let PH = 0; /* the period's height — computed by the row grid below */
 const AIR_MIN = 120, AIR_MAX = 340;
 const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
 /* THE INDEX'S OWN TIERS, verbatim, and the 0.17 anti-repeat with them.
@@ -538,15 +538,29 @@ document.body.appendChild(smeas);
 const STATEMENT_H = smeas.getBoundingClientRect().height;
 smeas.remove();
 
-/* ── placement ── */
+/* ── placement: GLOBAL ROWS, the homepage's own alignment ───────────
+   The columns used to stack independently, each with its own dealt
+   air, so tiles across a gutter landed at unrelated heights. The
+   homepage's grammar is the opposite: every row shares one TOP line,
+   the tallest frame sets the row, and the bottoms go ragged. So the
+   field is a row grid now — one baseline per row across EVERY column,
+   one dealt air per row shared by all of them — and any two columns
+   the paging puts side by side are aligned, not just a lucky pair.
+
+   The deal stays column-major: down column zero, then down column
+   one. The covers still lead in the homepage's order, and the period
+   height is COMPUTED from the rows rather than aimed at, so the
+   vertical wrap is exact. */
 const tiles = [];
 /* Content starts clear of the masthead. It still SCROLLS under it —
    that is what the burn pill is for — but nothing should be born
    beneath the bar, least of all the statement. */
 const NAV_H = px("--nav", 54);
-let col = 0, y = NAV_H + (PHONE ? 30 : 46), prevShare = -1;
-tiles.push({ kind: "statement", x: 0, y, w: COL, h: STATEMENT_H });
-y += STATEMENT_H + air();
+const TOP0 = NAV_H + (PHONE ? 30 : 46);
+
+/* size pass: every item's box, before anything is seated */
+let prevShare = -1, sinceCol = 0;
+const sized = [{ kind: "statement", w: COL, h: STATEMENT_H }];
 for (const it of items) {
   let w = COL, h;
   if (it.kind === "quote") h = quoteH(it);
@@ -555,16 +569,11 @@ for (const it of items) {
     do { share = SHARES[Math.floor(rnd() * SHARES.length)]; }
     while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
     /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ─────────────────────
-       CLAUDE.md's rule, applied where it bites: native width / 2 is
-       the largest honest CSS width on a 2x screen. 103 of the 541
-       files are under 754px wide — old exports, board pulls saved at
-       screen size — and dealt a wide share they were magnified, which
-       is most of what read as crunchy.
-
-       It steps DOWN THE TIERS rather than picking an arbitrary width,
-       so a small file lands on the same ladder as everything else and
-       the family holds. Only if even the smallest tier would magnify
-       it does it take its honest width outright. */
+       CLAUDE.md's rule, applied where it bites: native width / DPR is
+       the largest honest CSS width. It steps DOWN THE TIERS rather
+       than picking an arbitrary width, so a small file lands on the
+       same ladder as everything else; only if even the smallest tier
+       would magnify it does it take its honest width outright. */
     const honest = Math.min(768, it.w) / DPR;
     while (COL * share > honest && share > SHARES[0]) {
       share = SHARES[SHARES.indexOf(share) - 1];
@@ -575,14 +584,23 @@ for (const it of items) {
     if (h > COL * 1.6) h = Math.round(COL * 1.6);
     if (GROUPS[it.g]) h += CAP_H;
   }
-  if (y + h > PH - AIR_MIN) { col += 1; y = air() * 0.5; prevShare = -1; }
-  /* Every tile is laid on its column's LEFT edge and slides from there
-     — see the note on the swap in tick(). Which side it hugs is not a
-     property of the tile any more. */
-  tiles.push({ ...it, x: col * MOD_X, y, w, h, col });
-  y += h + air();
+  sized.push({ ...it, w, h });
 }
-const COLS = col + 1;
+
+/* the grid: rows per column chosen so a period stays a few screens
+   tall at any viewport; columns fall out of the count */
+const ROWS = Math.max(8, Math.round((innerHeight * 6) / 560));
+const COLS = Math.ceil(sized.length / ROWS);
+const rowH = new Array(ROWS).fill(0);
+sized.forEach((it, i) => { const r = i % ROWS;
+  if (it.h > rowH[r]) rowH[r] = it.h; });
+const rowY = [TOP0];
+for (let r = 0; r < ROWS; r += 1) rowY.push(rowY[r] + rowH[r] + air());
+PH = rowY[ROWS];
+sized.forEach((it, i) => {
+  const c = Math.floor(i / ROWS), r = i % ROWS;
+  tiles.push({ ...it, x: c * MOD_X, y: rowY[r], col: c });
+});
 const PW = COLS * MOD_X;
 meas.remove();
 
