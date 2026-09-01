@@ -227,7 +227,12 @@ const PHONE = innerWidth <= 760;
 const GUT = px("--gut", 50), NOTE_W = px("--ix-note-w", 180);
 const IXGAP = px("--ixgap", 40);
 const VISIBLE = PHONE ? 1 : 2;
-const FIELD_W = PHONE ? innerWidth : innerWidth - (GUT + NOTE_W + IXGAP);
+/* MEASURED, not derived from innerWidth. The field's left edge is set
+   in CSS from --gut, --ix-note-w and --ixgap, and re-deriving it here
+   put the column 2.5px out: innerWidth reported 1065 while the field's
+   own box was 833.6, because innerWidth is not always the width the
+   layout is using. The element knows; ask it. */
+const FIELD_W = document.getElementById("field").getBoundingClientRect().width;
 const GAP = PHONE ? 20 : IXGAP;
 /* half gutter, column, gutter, column, half gutter: VISIBLE gaps, not
    VISIBLE+1, or the resting edge lands mid-tile */
@@ -290,7 +295,7 @@ let col = 0, y = NAV_H + (PHONE ? 30 : 46), prevShare = -1;
 tiles.push({ kind: "statement", x: 0, y, w: COL, h: STATEMENT_H });
 y += STATEMENT_H + air();
 for (const it of items) {
-  let w = COL, h, hang = 0;
+  let w = COL, h;
   if (it.kind === "quote") h = quoteH(it);
   else {
     let share, guard = 0;
@@ -300,11 +305,13 @@ for (const it of items) {
     w = Math.round(COL * share);
     h = Math.round(w * (it.h / it.w));
     if (h > COL * 1.6) h = Math.round(COL * 1.6);
-    if (w < COL && rnd() > 0.6) hang = 1;
     if (GROUPS[it.g]) h += CAP_H;
   }
   if (y + h > PH - AIR_MIN) { col += 1; y = air() * 0.5; prevShare = -1; }
-  tiles.push({ ...it, x: col * MOD_X + (hang ? COL - w : 0), y, w, h, hang });
+  /* Every tile is laid on its column's LEFT edge and slides from there
+     — see the note on the swap in tick(). Which side it hugs is not a
+     property of the tile any more. */
+  tiles.push({ ...it, x: col * MOD_X, y, w, h, col });
   y += h + air();
 }
 const COLS = col + 1;
@@ -443,12 +450,17 @@ function remount() {
     n += 1;
   }
   while (kids.length > n) rulesEl.removeChild(kids[kids.length - 1]);
+  /* a tile that mounts mid-turn must be on its side before it paints */
+  swapSides();
 }
 function mount(t, gx, gy) {
   const el = document.createElement("div");
   el.className = "tile";
   el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px";
-  if (t.hang) el.classList.add("hangR");
+  /* what the swap reads: where this tile's column sits in the world,
+     and how far the tile can travel inside it */
+  el.__wx = gx;
+  el.__slack = COL - t.w;
   if (!matches(t)) el.classList.add("dim");
   if (t.kind === "statement") {
     el.classList.add("statement");
@@ -496,6 +508,37 @@ function mount(t, gx, gy) {
   return el;
 }
 
+/* ── WHICH SIDE A COLUMN HUGS IS WHERE IT IS ────────────────────────
+   Not a property of the tile and not of the column: of the SLOT. The
+   column standing in the left slot hugs left, the one in the right
+   slot hugs right, so the two columns on screen always press to the
+   outer edges and the negative space collects down the middle where
+   the standing rule is.
+
+   Which makes the page turn do something better than slide. A column
+   crossing from the right slot to the left carries its tiles across
+   their own width as it goes — they start against the right edge of
+   their column and end against the left, scrubbed by the same pan
+   that moves them. Nothing is animated on a timer; it is a function
+   of position, so it runs backwards for free.
+
+   A transform, never `left`: this writes to every mounted tile on
+   every frame of a page turn, and a layout property there would cost
+   a reflow per tile per frame. The caption follows the side it lands
+   on, toggled only when it actually crosses. */
+function swapSides() {
+  for (const el of live.values()) {
+    if (!el.__slack) continue;
+    const t = Math.min(1, Math.max(0, (el.__wx - cur.x - GAP / 2) / MOD_X));
+    el.style.transform = "translate3d(" + (t * el.__slack).toFixed(1) + "px,0,0)";
+    const right = t > 0.5;
+    if (right !== el.__right) {
+      el.__right = right;
+      el.classList.toggle("hangR", right);
+    }
+  }
+}
+
 /* ── the loop ── */
 const home = document.getElementById("home");
 function tick() {
@@ -508,6 +551,7 @@ function tick() {
   cur.x += (tgt.x - cur.x) * 0.11;
   cur.y += (tgt.y - cur.y) * 0.16;
   plane.style.transform = "translate3d(" + (-cur.x) + "px," + (-cur.y) + "px,0)";
+  swapSides();
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
