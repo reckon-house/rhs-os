@@ -319,6 +319,11 @@
     line-height: 1.22; letter-spacing: -0.04em;
   }
   #previewHead .pvs { color: rgba(0, 0, 0, 0.42); }
+  /* the study's own opening line, at the rail's reading size — the
+     preview says what the study says, never something written for it */
+  #previewHead .pvd { margin-top: 12px;
+    font-size: 13px; line-height: 1.5; color: var(--ink); }
+  #previewHead .pvq { color: rgba(0, 0, 0, 0.42); }
   #previewGo {
     display: inline-block; margin-top: 14px;
     font-size: 13px; font-weight: 500;
@@ -406,6 +411,11 @@
 </nav>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
+
+<div class="pt" id="pt" aria-hidden="true">
+  <div class="ptw"><div class="ptstack" id="ptwT"></div></div>
+  <div class="ptb"><div class="ptstack" id="ptbT"></div></div>
+</div>
 
 <div id="preview"><div><div id="previewIn">
   <div id="previewHead"></div>
@@ -1223,7 +1233,7 @@ plane.addEventListener("click", (e) => {
       e.preventDefault();
       openPreview(pickedTile);
     }
-    return;                                /* the link goes where it goes */
+    return;                                /* the link is handled below */
   }
   const tile = e.target.closest && e.target.closest(".tile");
   pickTile(tile && tile.dataset.slug ? tile : null);
@@ -1259,6 +1269,25 @@ function openPreview(tile) {
   go.href = "/case-studies/" + (g.h || slug);
   go.textContent = "See the full study";
   head.appendChild(t1);
+  if (g.d) {
+    /* THE PIPE IS THE STUDY'S OWN SPLIT, not a stray character. Every
+       subtitle is written "the fact | the rest", and the cover reads
+       it that way — see PressingCover's statement.split("|"). The
+       preview honours the same break: the fact in ink, the rest in
+       the grey the statement already uses for its continuation. */
+    const [fact, ...more] = g.d.split("|");
+    const d = document.createElement("div");
+    d.className = "pvd";
+    d.textContent = fact.trim() + " ";
+    const rest = more.join("|").trim();
+    if (rest) {
+      const q = document.createElement("span");
+      q.className = "pvq";
+      q.textContent = rest;
+      d.appendChild(q);
+    }
+    head.appendChild(d);
+  }
   head.appendChild(go);
 
   const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug);
@@ -1643,6 +1672,109 @@ function tick() {
   };
   requestAnimationFrame(tick);
 })();
+const PT = document.getElementById("pt");
+/* how far apart the lines arrive. Fast enough to read as one sweep
+   down the page rather than a list being typed out. */
+const PT_STEP = 0.03;
+/* the exit runs tighter than the entry: arriving is the flourish,
+   leaving should not hold the page up */
+const PT_STEP_OUT = 0.02;
+let ptLines = 0;
+
+function ptBeat(cls, el) {
+  return new Promise((res) => {
+    let done = false;
+    /* transitionend BUBBLES. Every line inside the panel finishes its
+       own transition and the event arrives here, so without this the
+       first line to land ends the beat — the sequence collapsed to
+       about a third of its length. Only the panel's own transition
+       counts. */
+    const end = (e) => { if (done || (e && e.target !== el)) return; done = true;
+      el.removeEventListener("transitionend", end); res(); };
+    el.addEventListener("transitionend", end);
+    PT.classList.add(cls);
+    /* a floor, in case the transition never fires (tab hidden, etc) */
+    setTimeout(end, 1400);
+  });
+}
+
+async function playTransition(href, title, sub) {
+  if (PT.dataset.busy) return;
+  PT.dataset.busy = "1";
+  /* What is loading, repeated until it fills the page. The count is
+     measured, not fixed: a line is whatever the type actually renders
+     at, so the stack fills a phone and a display alike. */
+  const stacks = ["ptwT", "ptbT"].map((id) => document.getElementById(id));
+  stacks.forEach((el) => { el.innerHTML = ""; });
+  const probe = document.createElement("span");
+  probe.className = "ptl";
+  probe.style.cssText = "position:absolute;visibility:hidden;opacity:1";
+  probe.textContent = title || "—";
+  stacks[0].appendChild(probe);
+  const lineH = probe.getBoundingClientRect().height || 44;
+  probe.remove();
+  /* fill the inset box exactly: round to a whole number of lines, then
+     hand back the line-height that makes them add up to it */
+  const gut = parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue("--gut")) || 40;
+  const avail = innerHeight - gut * 2;
+  const N = Math.max(3, Math.round(avail / lineH));
+  stacks.forEach((el) => el.style.setProperty("--ptlh",
+    (avail / N).toFixed(2) + "px"));
+  ptLines = N;
+  for (let i = 0; i < N; i++) {
+    stacks.forEach((el) => {
+      const line = document.createElement("span");
+      line.className = "ptl";
+      line.style.setProperty("--d", (i * PT_STEP).toFixed(3) + "s");
+      line.textContent = title || "";
+      if (sub) {
+        const t = document.createElement("span");
+        t.className = "sub";
+        t.textContent = "  " + sub;
+        line.appendChild(t);
+      }
+      el.appendChild(line);
+    });
+  }
+  const white = PT.querySelector(".ptw");
+  const black = PT.querySelector(".ptb");
+  PT.classList.add("pt-run");
+  /* Commit the lines' start state before the class that animates them.
+     Built and revealed in the same task, they have never been rendered
+     hidden, so there is nothing to transition FROM and all 22 arrive
+     at once — the stagger silently does nothing. Reading a layout
+     property forces the frame. */
+  void PT.offsetHeight;
+  await ptBeat("pt-1", white);          /* white falls */
+  await ptBeat("pt-2", black);          /* black rises over it */
+  /* ── in the app, the document swap goes HERE, under full black ── */
+  /* reverse every line's delay before the last beat: they leave from
+     the bottom, which is the direction the lifting clip already
+     removes them in */
+  /* per stack, not across both: querySelectorAll returns document
+     order, which is all of the white panel's lines and THEN all of the
+     black's — indexing across the pair would give each panel a
+     different sequence and break their registration */
+  PT.querySelectorAll(".ptstack").forEach((stack) => {
+    [...stack.children].forEach((line, i) => {
+      line.style.setProperty("--d",
+        ((ptLines - 1 - i) * PT_STEP_OUT).toFixed(3) + "s");
+    });
+  });
+  /* Beat 3 is over when BOTH the curtain and the last line are done.
+     Waiting only on the curtain reset the overlay at 0.68s while lines
+     were still leaving, and hiding the panel cut the stagger off
+     mid-flight. */
+  const outMs = ((ptLines - 1) * PT_STEP_OUT + 0.26) * 1000;
+  await Promise.all([
+    ptBeat("pt-3", black),              /* black lifts from the bottom */
+    new Promise((r) => setTimeout(r, outMs)),
+  ]);
+  PT.className = "pt";
+  delete PT.dataset.busy;
+  if (href) location.href = href;
+}
 
 /* ── THE RAIL, the drawer the homepage already had ──────────────────
    Same DOM, same classes, same stylesheet: .rrow clipped to --hug at
@@ -1896,6 +2028,28 @@ function setMode(mode) {
     el.classList.toggle("dim", !matches(tiles[k]));
   }
 }
+
+/* ── EVERY DOOR TO A STUDY PLAYS THE SEQUENCE ───────────────────────
+   The site's own transition — white curtain down, black over it, the
+   name of what is arriving repeating down both panels — lifted from
+   the lab and given the one thing it does not have there: somewhere
+   to go. In the lab it plays and stays, because that page has no
+   routes; here it is handed the href, so the black lifts on the study
+   itself rather than on the board again.
+
+   Delegated on the document, so it catches the chip on a frame and
+   the button at the head of a preview with one rule. */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;
+  e.preventDefault();
+  /* the name that repeats down the curtain is the study's own, and
+     its category line rides under it — the same pair the frame's
+     label carries */
+  const slug = a.getAttribute("href").split("/").pop();
+  const g = Object.values(GROUPS).find((x) => (x.h || "") === slug);
+  playTransition(a.getAttribute("href"), g ? g.t : "", g ? g.s : "");
+});
 
 window.__b = { cur, tgt, START, pageTo, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, COLS, PW, PH, setMode, checkScale, DPR,

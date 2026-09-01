@@ -36,6 +36,15 @@ sz = "\n".join(lab[sz_a:sz_e + 1])
 burn = block(lambda l: "the burn, lifted from Masthead.tsx" in l,
              lambda l: l.rstrip() == "})();", "burn")
 
+# the page transition: its constants through the close of playTransition
+pt_a = next(i for i, l in enumerate(lab) if l.startswith("const PT = document.getElementById"))
+pt_b = next(i for i, l in enumerate(lab[pt_a:], pt_a)
+            if l.startswith("async function playTransition"))
+pt_e = next(i for i, l in enumerate(lab[pt_b:], pt_b) if l.rstrip() == "}")
+pt = "\n".join(lab[pt_a:pt_e + 1])
+if len(pt.split("\n")) < 40:
+    sys.exit("assemble-board: the transition block came back too short")
+
 for name, body in (("reel", sz), ("burn", burn)):
     if len(body.split("\n")) < 20:
         sys.exit("assemble-board: the %s block came back too short" % name)
@@ -361,6 +370,11 @@ head = r'''<!doctype html>
     line-height: 1.22; letter-spacing: -0.04em;
   }
   #previewHead .pvs { color: rgba(0, 0, 0, 0.42); }
+  /* the study's own opening line, at the rail's reading size — the
+     preview says what the study says, never something written for it */
+  #previewHead .pvd { margin-top: 12px;
+    font-size: 13px; line-height: 1.5; color: var(--ink); }
+  #previewHead .pvq { color: rgba(0, 0, 0, 0.42); }
   #previewGo {
     display: inline-block; margin-top: 14px;
     font-size: 13px; font-weight: 500;
@@ -448,6 +462,11 @@ head = r'''<!doctype html>
 </nav>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
+
+<div class="pt" id="pt" aria-hidden="true">
+  <div class="ptw"><div class="ptstack" id="ptwT"></div></div>
+  <div class="ptb"><div class="ptstack" id="ptbT"></div></div>
+</div>
 
 <div id="preview"><div><div id="previewIn">
   <div id="previewHead"></div>
@@ -1265,7 +1284,7 @@ plane.addEventListener("click", (e) => {
       e.preventDefault();
       openPreview(pickedTile);
     }
-    return;                                /* the link goes where it goes */
+    return;                                /* the link is handled below */
   }
   const tile = e.target.closest && e.target.closest(".tile");
   pickTile(tile && tile.dataset.slug ? tile : null);
@@ -1301,6 +1320,25 @@ function openPreview(tile) {
   go.href = "/case-studies/" + (g.h || slug);
   go.textContent = "See the full study";
   head.appendChild(t1);
+  if (g.d) {
+    /* THE PIPE IS THE STUDY'S OWN SPLIT, not a stray character. Every
+       subtitle is written "the fact | the rest", and the cover reads
+       it that way — see PressingCover's statement.split("|"). The
+       preview honours the same break: the fact in ink, the rest in
+       the grey the statement already uses for its continuation. */
+    const [fact, ...more] = g.d.split("|");
+    const d = document.createElement("div");
+    d.className = "pvd";
+    d.textContent = fact.trim() + " ";
+    const rest = more.join("|").trim();
+    if (rest) {
+      const q = document.createElement("span");
+      q.className = "pvq";
+      q.textContent = rest;
+      d.appendChild(q);
+    }
+    head.appendChild(d);
+  }
   head.appendChild(go);
 
   const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug);
@@ -1690,6 +1728,28 @@ function setMode(mode) {
   }
 }
 
+/* ── EVERY DOOR TO A STUDY PLAYS THE SEQUENCE ───────────────────────
+   The site's own transition — white curtain down, black over it, the
+   name of what is arriving repeating down both panels — lifted from
+   the lab and given the one thing it does not have there: somewhere
+   to go. In the lab it plays and stays, because that page has no
+   routes; here it is handed the href, so the black lifts on the study
+   itself rather than on the board again.
+
+   Delegated on the document, so it catches the chip on a frame and
+   the button at the head of a preview with one rule. */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;
+  e.preventDefault();
+  /* the name that repeats down the curtain is the study's own, and
+     its category line rides under it — the same pair the frame's
+     label carries */
+  const slug = a.getAttribute("href").split("/").pop();
+  const g = Object.values(GROUPS).find((x) => (x.h || "") === slug);
+  playTransition(a.getAttribute("href"), g ? g.t : "", g ? g.s : "");
+});
+
 window.__b = { cur, tgt, START, pageTo, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, COLS, PW, PH, setMode, checkScale, DPR,
   get MODE() { return MODE; } };
@@ -1702,7 +1762,7 @@ requestAnimationFrame(tick);
 </html>
 '''
 
-out = head + sz + "\n" + burn + "\n" + rail
+out = head + sz + "\n" + burn + "\n" + pt + "\n" + rail
 io.open("public/lab/board.html", "w", encoding="utf-8").write(out)
 print("board: public/lab/board.html — %d lines (reel %d, burn %d, lifted from the lab)"
       % (len(out.split("\n")), len(sz.split("\n")), len(burn.split("\n"))))

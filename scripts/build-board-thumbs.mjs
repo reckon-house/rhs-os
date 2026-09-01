@@ -164,6 +164,20 @@ for (const [href, folder] of [
 ]) {
   if (groups[href]) { groups[folder] = groups[href]; delete groups[href]; }
 }
+/* ── a line of the study's own copy ─────────────────────────────────
+   The preview should say something, and the study already says it:
+   the subtitle is the one line each case study leads with. Read from
+   the study file rather than written here, so the preview and the
+   study can never disagree — and if a file has none, the preview
+   simply shows none rather than inventing one. */
+for (const [folder, g] of Object.entries(groups)) {
+  const file = `src/data/${g.h}-case-study.ts`;
+  if (!existsSync(file)) continue;
+  const src = readFileSync(file, "utf8");
+  const m = src.match(/\n  subtitle:\s*\n?\s*"([^"]+)"/);
+  if (m) g.d = m[1];
+}
+
 const railTs = readFileSync("src/data/rail-categories.ts", "utf8");
 const appBlock = railTs.match(/query:\s*"app development"[\s\S]*?ids:\s*\[([^\]]*)\]/);
 const appIds = appBlock
