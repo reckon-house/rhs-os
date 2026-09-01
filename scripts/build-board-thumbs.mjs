@@ -140,6 +140,11 @@ for (const line of projTs.split("\n")) {
   const tags = line.match(/tags:\s*\[([^\]]*)\]/);
   groups[slug[1]] = { id: id[1],
     t: title ? title[1] : "", s: category ? category[1] : "",
+    /* the ROUTE, kept beside the folder key. Two studies keep their
+       images in a folder named differently from their route, and a
+       link built from the folder would 404 — sally-os is the drawer,
+       /case-studies/sally is the door. */
+    h: slug[1],
     tags: tags ? [...tags[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]) : [] };
   const img = line.match(/image:\s*(?:\`\$\{HP\}\/|")([^"\`?]+)/);
   if (img && img[1].includes("/") === false) {

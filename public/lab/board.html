@@ -264,6 +264,73 @@
   .tha { color: rgba(0, 0, 0, 0.42); margin-top: 10px; }
 
 
+  /* ── A TILE OFFERS ITS TWO WAYS IN ────────────────────────────────
+     Tap a picture and the study behind it names itself: a preview
+     that stays on this page, or the study itself. Two chips in the
+     rail's own language, sitting on the frame they belong to, so the
+     choice is made where the eye already is rather than in a menu
+     somewhere else. */
+  .tileacts {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    display: flex; gap: 6px; padding: 10px;
+    opacity: 0; transform: translateY(4px); pointer-events: none;
+    transition: opacity 0.28s ease,
+      transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tile.picked .tileacts { opacity: 1; transform: none; pointer-events: auto; }
+  .tile.hangR .tileacts { justify-content: flex-end; }
+  .tileact {
+    border: 0; font: inherit; cursor: pointer; text-decoration: none;
+    font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
+    padding: 7px 12px; border-radius: 11px;
+    background: rgba(255, 255, 255, 0.94); color: var(--ink);
+    backdrop-filter: blur(6px);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .tileact:hover { background: var(--ink); color: #fff; }
+  /* the frame stays open while its chips are showing */
+  .tile.picked .fd-it .shot { transform: scale(var(--ix-grow, 1)); }
+
+  /* ── THE PREVIEW: a study, down the column it was tapped in ───────
+     The same panel the thread uses, pointed at a different content —
+     every picture the study holds, at column width, scrollable, with
+     the way to the study itself at its head. The column it opens in
+     is the column the tile was in: the field pages there first, so
+     the preview always arrives in the slot the eye was already on. */
+  #preview {
+    position: fixed; z-index: 46;
+    top: var(--nav); bottom: 0;
+    left: var(--thread-x, 0px); width: var(--thread-w, 420px);
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+  }
+  #preview[data-on] { grid-template-rows: 1fr; pointer-events: auto; }
+  #preview > div { overflow: hidden; min-height: 0; }
+  #previewIn {
+    height: calc(100dvh - var(--nav));
+    background: var(--paper, #fff);
+    padding: 26px var(--thread-pad, 20px) 40px;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  #previewHead { margin-bottom: 22px; }
+  #previewHead .pvt {
+    font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
+    line-height: 1.22; letter-spacing: -0.04em;
+  }
+  #previewHead .pvs { color: rgba(0, 0, 0, 0.42); }
+  #previewGo {
+    display: inline-block; margin-top: 14px;
+    font-size: 13px; font-weight: 500;
+    padding: 9px 15px; border-radius: 12px;
+    background: var(--ink); color: #fff; text-decoration: none;
+  }
+  #previewIn figure { margin: 0 0 18px; }
+  #previewIn img { display: block; width: 100%; height: auto;
+    border-radius: 14px; background: rgba(0, 0, 0, 0.04); }
+  #previewCount { font-size: 11px; letter-spacing: 0.04em;
+    color: rgba(0, 0, 0, 0.35); margin: 4px 0 18px; }
+
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
      drawer's own 0fr→1fr and carries the ENTIRE rail — the drawers,
@@ -339,6 +406,12 @@
 </nav>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
+
+<div id="preview"><div><div id="previewIn">
+  <div id="previewHead"></div>
+  <div id="previewCount"></div>
+  <div id="previewImgs"></div>
+</div></div></div>
 
 <div id="thread"><div><div id="threadIn">
   <div class="tile statement" id="threadLede"></div>
@@ -602,10 +675,13 @@ if (!PHONE) {
   const navEl = document.getElementById("nav");
   navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
   navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
-  const th = document.getElementById("thread");
-  th.style.setProperty("--thread-x", (fieldL + 1) + "px");
-  th.style.setProperty("--thread-w", (COL + GAP - 2) + "px");
-  th.style.setProperty("--thread-pad", (GAP / 2) + "px");
+  /* on the ROOT, not on one panel: the thread and the preview are the
+     same column box and both read these, so a var scoped to either
+     one left the other on its fallback — a 420px panel at x 0. */
+  const root = document.documentElement.style;
+  root.setProperty("--thread-x", (fieldL + 1) + "px");
+  root.setProperty("--thread-w", (COL + GAP - 2) + "px");
+  root.setProperty("--thread-pad", (GAP / 2) + "px");
 }
 
 /* ── THE THREAD ─────────────────────────────────────────────────────
@@ -721,9 +797,12 @@ const submitQ = (text) => {
       q.value = "";
     });
   }
-  document.getElementById("threadClose").addEventListener("click", closeThread);
+  document.getElementById("threadClose").addEventListener("click", () => {
+    closePreview(); closeThread();
+  });
   addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && threadOpen) closeThread();
+    if (e.key !== "Escape") return;
+    if (previewOpen) closePreview(); else if (threadOpen) closeThread();
   });
   /* the rotating question is a door: tap it anywhere it appears — the
      field's statement or the thread's header — and that question is
@@ -789,7 +868,7 @@ const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
 let hCool = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
-  if (threadOpen) return;
+  if (threadOpen || previewOpen) return;
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
     const now = performance.now();
     if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
@@ -802,7 +881,7 @@ field.addEventListener("wheel", (e) => {
 let pxx = 0, pyy = 0, moved = 0;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
-  if (threadOpen) return;
+  if (threadOpen || previewOpen) return;
   dragging = true; moved = 0;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
@@ -966,6 +1045,22 @@ function mount(t, gx, gy) {
       sub.textContent = g.s;
       lbl.appendChild(sub);
       card.appendChild(lbl);
+      /* the two ways in, on the frame itself */
+      const acts = document.createElement("span");
+      acts.className = "tileacts";
+      const pv = document.createElement("button");
+      pv.type = "button";
+      pv.className = "tileact";
+      pv.dataset.act = "preview";
+      pv.textContent = "Preview";
+      const go = document.createElement("a");
+      go.className = "tileact";
+      go.href = "/case-studies/" + (g.h || t.g);
+      go.textContent = "See the study";
+      acts.appendChild(pv);
+      acts.appendChild(go);
+      shot.appendChild(acts);
+      el.dataset.slug = t.g;
     }
     el.appendChild(card);
   }
@@ -1091,6 +1186,108 @@ function armHover() {
   });
 }
 armHover();
+
+/* ── TAP A PICTURE, AND THE STUDY NAMES ITSELF ──────────────────────
+   One tap picks the tile and shows its two ways in; a tap on the
+   ground puts it back. On a pointer the frame is already open from
+   the hover, so the chips simply arrive inside a frame that is
+   already the reader's — nothing jumps.
+
+   Only a tile that HAS a study offers anything: a board pull and a
+   kept line have nowhere to go, and a chip that led nowhere would be
+   the first dead end on a board built to have none. */
+let pickedTile = null;
+const pickTile = (el) => {
+  if (pickedTile === el) return;
+  if (pickedTile) pickedTile.classList.remove("picked");
+  pickedTile = el;
+  if (el) {
+    el.classList.add("picked");
+    /* the frame holds open while the chips are up, and the grow is
+       the hover's own number so the two never disagree */
+    const shot = el.querySelector(".shot");
+    const card = el.querySelector(".fd-it");
+    if (shot && card) {
+      const grow = Math.max(1.04, COL / shot.offsetWidth);
+      card.style.setProperty("--ix-grow", grow.toFixed(3));
+      card.style.setProperty("--drop",
+        (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");
+    }
+  }
+};
+plane.addEventListener("click", (e) => {
+  if (moved > 6) return;                  /* a drag is not a tap */
+  const act = e.target.closest && e.target.closest(".tileact");
+  if (act) {
+    if (act.dataset.act === "preview") {
+      e.preventDefault();
+      openPreview(pickedTile);
+    }
+    return;                                /* the link goes where it goes */
+  }
+  const tile = e.target.closest && e.target.closest(".tile");
+  pickTile(tile && tile.dataset.slug ? tile : null);
+});
+
+/* ── THE PREVIEW ────────────────────────────────────────────────────
+   Every picture the study holds, down the column the tile was tapped
+   in — the field pages to that column first, so the preview always
+   arrives in the slot the eye was already on. Full size and
+   scrollable; the way to the study itself sits at its head. */
+const preview = document.getElementById("preview");
+let previewOpen = false;
+function openPreview(tile) {
+  if (!tile) return;
+  const slug = tile.dataset.slug;
+  const g = GROUPS[slug];
+  if (!g) return;
+  /* the column it was tapped in becomes the column it opens in */
+  pageTo(Math.round(tile.__wx / MOD_X));
+  cur.x = tgt.x;
+
+  const head = document.getElementById("previewHead");
+  head.innerHTML = "";
+  const t1 = document.createElement("div");
+  t1.className = "pvt";
+  t1.textContent = g.t + " ";
+  const t2 = document.createElement("span");
+  t2.className = "pvs";
+  t2.textContent = g.s;
+  t1.appendChild(t2);
+  const go = document.createElement("a");
+  go.id = "previewGo";
+  go.href = "/case-studies/" + (g.h || slug);
+  go.textContent = "See the full study";
+  head.appendChild(t1);
+  head.appendChild(go);
+
+  const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug);
+  document.getElementById("previewCount").textContent =
+    shots.length + (shots.length === 1 ? " picture" : " pictures");
+  const box = document.getElementById("previewImgs");
+  box.innerHTML = "";
+  shots.forEach((i) => {
+    const fig = document.createElement("figure");
+    const im = document.createElement("img");
+    im.src = encodeURI(i.t);
+    im.alt = "";
+    im.loading = "lazy";
+    im.decoding = "async";
+    fig.appendChild(im);
+    box.appendChild(fig);
+  });
+  document.getElementById("previewIn").scrollTop = 0;
+  previewOpen = true;
+  preview.setAttribute("data-on", "");
+  nav.classList.add("threadon");           /* the bar's close serves both */
+  pickTile(null);
+}
+function closePreview() {
+  if (!previewOpen) return;
+  previewOpen = false;
+  preview.removeAttribute("data-on");
+  if (!threadOpen) nav.classList.remove("threadon");
+}
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
    The no-upscale rule is arithmetic at deal time, and arithmetic can
