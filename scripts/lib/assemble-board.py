@@ -382,12 +382,26 @@ head = r'''<!doctype html>
     overflow: hidden; text-overflow: ellipsis; }
   .nextup:hover .nu-t { text-decoration: underline;
     text-underline-offset: 4px; text-decoration-color: rgba(0, 0, 0, 0.25); }
-  #nextUp { position: absolute; z-index: 1; top: 50%;
-    transform: translateY(-50%); font-size: 13px;
-    left: var(--next-left, 0px); width: var(--next-w, 260px); }
-  @media (min-width: 761px) {
-    #nav.previewon #nextUp:not([hidden]) { display: block; }
-  }
+  /* ── THE NEXT IS SOMETHING THE HOUSE SAYS ─────────────────────────
+     Not a control of its own: it sits in the field where the house's
+     words go, in the place of the resting prompt, so the chat reads
+     as predictive — the house has already named the next room before
+     you ask. Typing or focusing the field puts the prompt back; the
+     line also stands as the last thing said in the open thread. */
+  .ask #askNext { position: absolute; left: 0; right: 36px; top: 50%;
+    transform: translateY(-50%); font-size: 14px; line-height: 1.2;
+    letter-spacing: -0.004em; }
+  #nav.previewon .ask #askNext:not([hidden]) { display: block; }
+  #nav.previewon .ask.typing #askNext { display: none; }
+  #nav.previewon #query::placeholder { color: transparent; }
+  #threadNext { margin-top: 6px; font-size: clamp(20px, 2.2vw, 30px);
+    font-weight: 600; line-height: 1.22; letter-spacing: -0.04em;
+    color: rgba(0, 0, 0, 0.42); }
+  #threadNext .nu-k { color: rgba(0, 0, 0, 0.42); }
+  #threadNext .nu-t { color: var(--ink); font-weight: 600; }
+  #threadNext .nu-line { white-space: normal; }
+  #threadNext .nu-why { font-size: inherit; margin-top: 0; }
+  body.previewing #threadNext:not([hidden]) { display: block; }
 
   /* ── THE PREVIEW IS THE FIELD, DEALT TO ONE STUDY ─────────────────
      Not a panel over the board: the board itself, re-dealt. The
@@ -410,12 +424,20 @@ head = r'''<!doctype html>
   }
   .tile.head .hd-n { margin-top: 14px; font-size: 11px; font-weight: 500;
     letter-spacing: 0.04em; line-height: 1.3; color: rgba(0, 0, 0, 0.35); }
-  /* the house's next rides the head on a phone, where the bar has no
-     room for it; on a desktop the bar carries it and this stays shut */
-  .tile.head .hd-next { margin-top: 16px; font-size: 13px; }
-  @media (max-width: 760px) {
-    .tile.head .hd-next:not([hidden]) { display: block; }
-  }
+  /* ── THE HEAD HOLDS, THE PICTURES PASS UNDER IT ──────────────────
+     On a desktop the head is not a tile: it holds at the top of its
+     column while the pictures scroll beneath it, on a paper that
+     fades out below so they are seen going under rather than cut. It
+     arrives and leaves the way the statement does. On a phone the
+     column is the screen and a held head would own a third of it, so
+     there the head stays a tile and scrolls away. */
+  #stickyHead { position: fixed; z-index: 30; display: none;
+    top: var(--head-top, 100px); left: var(--head-x, 0px);
+    width: var(--head-w, 380px); padding-bottom: 40px;
+    background: linear-gradient(var(--paper, #fff) calc(100% - 40px),
+      rgba(255, 255, 255, 0)); }
+  @media (min-width: 761px) { body.previewing #stickyHead { display: block; } }
+  .tile.spacer { pointer-events: none; }
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -485,15 +507,18 @@ head = r'''<!doctype html>
     <input id="query" type="text" placeholder="Ask the house."
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
+    <button type="button" class="nextup" id="askNext" hidden>
+      <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
+      <span class="nu-why"></span>
+    </button>
     <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
   </div>
-  <button type="button" class="nextup" id="nextUp" hidden>
-    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
-    <span class="nu-why"></span>
-  </button>
+
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
+
+<div id="stickyHead" class="tile statement head" aria-live="polite"></div>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
@@ -505,6 +530,10 @@ head = r'''<!doctype html>
 <div id="thread"><div><div id="threadIn">
   <div class="tile statement" id="threadLede"></div>
   <div id="threadLog"></div>
+  <button type="button" class="nextup" id="threadNext" hidden>
+    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
+    <span class="nu-why"></span>
+  </button>
 </div></div></div>
 
 <!-- the melt: the burn pill's displacement, lifted from the masthead -->
@@ -800,18 +829,15 @@ if (!PHONE) {
   const navEl = document.getElementById("nav");
   navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
   navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
-  /* the house's next, over the right-hand column's own text edge,
-     stopping short of the address at the bar's end */
-  const nextL = fieldL + MOD_X + GAP / 2;
-  const mail = navEl.querySelector(".meta");
-  const mailL = mail ? mail.getBoundingClientRect().left : innerWidth;
-  navEl.style.setProperty("--next-left", nextL + "px");
-  navEl.style.setProperty("--next-w",
-    Math.max(120, Math.min(COL * 0.6, mailL - nextL - 28)) + "px");
+  const root = document.documentElement.style;
+  /* the held head: column zero's own text edge, the column's width,
+     the top the statement is born at */
+  root.setProperty("--head-x", (fieldL + GAP / 2) + "px");
+  root.setProperty("--head-w", COL + "px");
+  root.setProperty("--head-top", TOP0 + "px");
   /* on the ROOT, not on one panel: the thread and the preview are the
      same column box and both read these, so a var scoped to either
      one left the other on its fallback — a 420px panel at x 0. */
-  const root = document.documentElement.style;
   root.setProperty("--thread-x", (fieldL + 1) + "px");
   root.setProperty("--thread-w", (COL + GAP - 2) + "px");
   root.setProperty("--thread-pad", (GAP / 2) + "px");
@@ -924,6 +950,19 @@ const submitQ = (text) => {
   const q = document.getElementById("query");
   if (q) {
     q.addEventListener("focus", openThread);
+    /* the prompt comes back the moment the field is yours: on focus,
+       and while there is anything typed. Read from the event, not
+       from activeElement, which a background document never sets. */
+    const ask = q.closest(".ask");
+    let focused = false;
+    const typing = (e) => {
+      if (e.type === "focus") focused = true;
+      if (e.type === "blur") focused = false;
+      ask.classList.toggle("typing", focused || q.value.length > 0);
+    };
+    q.addEventListener("focus", typing);
+    q.addEventListener("blur", typing);
+    q.addEventListener("input", typing);
     q.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { closeThread(); return; }
       if (e.key !== "Enter") return;
@@ -1165,6 +1204,9 @@ function mount(t, gx, gy) {
     /* a study's head, in the statement's clothes and its slot */
     el.classList.add("statement", "head");
     el.innerHTML = t.html;
+  } else if (t.kind === "spacer") {
+    /* the held head's room: the head itself is fixed over this */
+    el.classList.add("spacer");
   } else if (t.kind === "quote") {
     el.classList.add("quote");
     el.textContent = "“" + t.text + "”";
@@ -1402,21 +1444,14 @@ function headHTML(slug) {
     (g.d ? '<div class="hd-d">' + esc(fact.trim()) +
       (rest ? ' <span class="q">' + esc(rest) + '</span>' : '') + '</div>' : '') +
     '<a class="hd-go" href="/case-studies/' + esc(g.h || slug) + '">See the full study</a>' +
-    '<div class="hd-n">' + n + (n === 1 ? ' picture' : ' pictures') + '</div>' +
-    '<button type="button" class="nextup hd-next" hidden>' + NEXT_HTML + '</button>';
+    '<div class="hd-n">' + n + (n === 1 ? ' picture' : ' pictures') + '</div>';
 }
-/* measured like the statement, with the next line IN PLACE, so the
-   phone's head reserves the room the line will take */
+/* measured like the statement, at the column's width */
 function measureHead(html) {
   const m = document.createElement("div");
   m.className = "tile statement head";
   m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
   m.innerHTML = html;
-  m.querySelectorAll(".nextup").forEach((bx) => {
-    bx.hidden = false;
-    bx.querySelector(".nu-t").textContent = "A study";
-    bx.querySelector(".nu-why").textContent = "and why";
-  });
   document.body.appendChild(m);
   const h = Math.ceil(m.getBoundingClientRect().height);
   m.remove();
@@ -1469,7 +1504,12 @@ function openPreview(target, opts) {
     .sort((x, y) => (y.c != null ? 1 : 0) - (x.c != null ? 1 : 0))
     .map((i) => ({ kind: "img", ...i }));
   const html = headHTML(slug);
-  const lead = { kind: "head", w: COL, h: measureHead(html), html };
+  const held = !PHONE;
+  const lead = held
+    ? { kind: "spacer", w: COL, h: measureHead(html) + 40 }
+    : { kind: "head", w: COL, h: measureHead(html), html };
+  const sticky = document.getElementById("stickyHead");
+  if (held && previewOpen) sticky.classList.add("fd-out");   /* walking on */
   /* two columns, always; the rows are however many that takes. Its
      own seed, so a study deals the same way every time it opens. */
   const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
@@ -1479,7 +1519,13 @@ function openPreview(target, opts) {
   refield(() => {
     adopt(L);
     pageTo(0); tgt.y = START.y; cur.x = tgt.x; cur.y = tgt.y;
-  }, drawNext);                       /* the head's own next, once it exists */
+  }, () => {
+    if (!held) return;
+    sticky.innerHTML = html;
+    sticky.classList.remove("fd-out");
+    /* next frame, so the swap from hidden to shown gets its transition */
+    requestAnimationFrame(() => sticky.classList.add("fd-on"));
+  });
   previewOpen = true;
   currentPreview = slug;
   document.body.classList.add("previewing");
@@ -1495,13 +1541,19 @@ function closePreview() {
   if (!previewOpen) return;
   previewOpen = false;
   currentPreview = null;
+  const sticky = document.getElementById("stickyHead");
+  sticky.classList.add("fd-out");        /* leaves with the sweep */
   refield(() => {
     adopt(BOARD);
     /* back exactly where the board was left, column and scroll */
     const col = boardPos ? boardPos.col : 0, y = boardPos ? boardPos.y : START.y;
     pageTo(col); tgt.y = y; cur.x = tgt.x; cur.y = tgt.y;
+    /* only now: the rule comes back with the board, and the held
+       head is gone before its paper is */
+    document.body.classList.remove("previewing");
+    sticky.classList.remove("fd-on", "fd-out");
+    sticky.innerHTML = "";
   });
-  document.body.classList.remove("previewing");
   nav.classList.remove("previewon");
   if (!threadOpen) nav.classList.remove("threadon");
 }
