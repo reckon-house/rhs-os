@@ -1881,9 +1881,14 @@ function tick() {
   cur.x += (tgt.x - cur.x) * 0.11;
   cur.y += (tgt.y - cur.y) * 0.16;
   plane.style.transform = "translate3d(" + (-cur.x) + "px," + (-cur.y) + "px,0)";
-  /* the cover line is page content: it goes where the plane goes */
+  /* the cover line is page content: it goes where the plane goes —
+     but only AWAY. The field wraps, so a scroll upward from the start
+     carries the plane down, and a mark riding it dropped into the
+     rail, which is fixed. It holds at rest instead and leaves with
+     the plane only upward, or leftward when paging. */
   if (coverline) coverline.style.transform =
-    "translate3d(" + (-(cur.x - START.x)) + "px," + (-cur.y) + "px,0)";
+    "translate3d(" + (-Math.max(0, cur.x - START.x)) + "px," +
+    (-Math.max(0, cur.y)) + "px,0)";
   swapSides();
   if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
