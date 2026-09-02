@@ -271,13 +271,26 @@
      choice is made where the eye already is rather than in a menu
      somewhere else. */
   .tileacts {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    position: absolute; left: 0; right: 0; z-index: 3;
+    /* the caption sits under the frame, so the chips ride the frame's
+       own foot rather than the card's */
+    top: var(--acts-y, 0px);
     display: flex; gap: 6px; padding: 10px;
     opacity: 0; transform: translateY(4px); pointer-events: none;
     transition: opacity 0.28s ease,
       transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .tile.picked .tileacts { opacity: 1; transform: none; pointer-events: auto; }
+  /* ON A POINTER THE OPTIONS COME WITH THE HOVER. The frame is already
+     opening under the cursor, so the two ways in arrive with it —
+     nothing to discover, nothing to click first. Touch keeps the tap,
+     which is what .picked is for. */
+  @media (hover: hover) and (min-width: 761px) {
+    .tile:hover .tileacts { opacity: 1; transform: none; pointer-events: auto; }
+  }
+  /* and the frame says it can be pressed */
+  .tile[data-slug] .shot { cursor: pointer; }
+  .tileact { cursor: pointer; }
   .tile.hangR .tileacts { justify-content: flex-end; }
   .tileact {
     border: 0; font: inherit; cursor: pointer; text-decoration: none;
@@ -896,13 +909,23 @@ field.addEventListener("pointerdown", (e) => {
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
   field.classList.add("dragging");
-  field.setPointerCapture(e.pointerId);
+  /* NO CAPTURE YET, and that was the whole bug. Capturing on
+     pointerdown retargets every later event — pointerup and the click
+     with them — to the field, so a click on a tile was delivered to
+     the field instead and no chip could ever be pressed. The capture
+     is what a DRAG needs, not what a press needs, so it waits until
+     the pointer has actually travelled. */
 });
 field.addEventListener("pointermove", (e) => {
   if (!dragging) return;
   const dx = e.clientX - pxx, dy = e.clientY - pyy;
   pxx = e.clientX; pyy = e.clientY;
   moved += Math.abs(dx) + Math.abs(dy);
+  /* now it is a drag: take the pointer so it cannot be lost off the
+     edge, once, and only past the threshold a tap can never reach */
+  if (moved > 6 && !field.hasPointerCapture(e.pointerId)) {
+    try { field.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
+  }
   tgt.x -= dx; tgt.y -= dy;
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
@@ -1069,7 +1092,15 @@ function mount(t, gx, gy) {
       go.textContent = "See the study";
       acts.appendChild(pv);
       acts.appendChild(go);
-      shot.appendChild(acts);
+      /* on the CARD, not inside .shot: the frame scales on hover and
+         anything inside it scales too, so chips in there arrived 1.3x
+         and clipped by the frame's own overflow. Out here they keep
+         their size and sit over the opened picture. */
+      card.appendChild(acts);
+      /* the frame's foot in card coordinates, so the chips land on the
+         picture whatever the caption does below it */
+      card.style.setProperty("--acts-y",
+        ((t.h - CAP_H) - 46) + "px");
       el.dataset.slug = t.g;
     }
     el.appendChild(card);
