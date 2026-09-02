@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Typewriter · the field</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  html { overflow-anchor: none; }
+  .rail .group:first-of-type { margin-top: 40px; }
+  .main { display: flex; flex-direction: column; }
+  /* the paper: statement at the top, the tape anchored to the line's foot until it outgrows the gap */
+  .paper { display: flex; flex-direction: column; min-height: calc(62vh - 28px - var(--nav)); }
+  .tape { margin-top: auto; padding-top: 40px; }
+  .spacer { height: calc(38vh + 28px); }
+  .line.feed { transition: height 0.6s var(--ease-settle), margin-top 0.6s var(--ease-settle); }
+  .line .label { margin-top: 8px; }
+  .line .hline { font-size: 16px; line-height: 1.5; color: var(--grey); margin: 14px 0 0; }
+  .line img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px;
+    background: var(--chip); margin-top: 18px; }
+  .line .meta { display: inline-block; margin-top: 14px; }
+  /* the line itself: fixed at the column's x, opaque paper from there to the bottom, so the tape feeds under it */
+  .fixed { position: fixed; top: 62vh; bottom: 0; background: var(--paper); z-index: 2; }
+  .fixed .fieldwrap { border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+  .next { margin-top: 12px; font-size: 13px; line-height: 1.4; color: var(--grey); cursor: pointer; min-height: 18px; }
+  .keys { margin-top: 8px; font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); }
+  .side { position: sticky; top: 0; align-self: start; max-height: 100dvh; overflow-y: auto; scrollbar-width: none; }
+  .side::-webkit-scrollbar { display: none; }
+  .side .label { margin-bottom: 14px; }
+  @media (max-width: 860px) { .side { position: static; max-height: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group">
+      <button class="chip" id="cInfo" data-line="Info">/ Info</button>
+      <button class="chip" id="cConnect" data-line="Connect">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <div class="paper">
+      <p class="statement" id="statement"></p>
+      <div class="tape" id="tape"></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="fixed" id="fixed">
+      <div class="fieldwrap">
+        <input class="field" id="field" type="text" autocomplete="off" spellcheck="false" aria-label="The line" />
+      </div>
+      <div class="next" id="next"><span></span></div>
+      <div class="keys">Enter commits. Tab or ↓ takes the next. ↑ recalls. Esc clears.</div>
+    </div>
+  </div>
+  <div class="side">
+    <div class="label" id="count"><span></span></div>
+    <div id="rows"></div>
+  </div>
+  <div class="about"><b>The Typewriter.</b> The line never moves, the paper does. The field is fixed low on the page like a terminal's prompt. Enter commits the line, the pair lands just above it, and everything older climbs. This is the opposite ordering to the board's sheet: newest at the bottom, line fixed. Try both and feel the difference. The one question: should the history scroll, or the reader? <a href="index.html">← all nine</a></div>
+</div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── The Typewriter ─────────────────────────────────────────────────
+   Mechanism. The field is fixed at 62vh and never moves. Committing a
+   line appends the question and the house's answer to the tape above
+   it, grows the new line from zero height and scrolls the window by
+   exactly that growth on the same curve, so the newest line's foot
+   stays on the fixed line while everything older climbs. The tape is
+   ordinary document flow above a spacer; the window's scroll position
+   is the only thing animated, with the base's settle curve solved here
+   because the browser's smooth scroll has its own.
+   Why it might be right. A terminal's prompt is the one text field
+   most people already trust to be filter, history and command at
+   once, and its ordering, old above, new at the hand, is the paper's.
+   The board's sheet runs the other way. Feeling both is the point. */
+(() => {
+  const F = window.FIELD, $ = (id) => document.getElementById(id);
+  const main = document.querySelector(".main"), tape = $("tape"), fixed = $("fixed"), field = $("field"),
+    next = $("next"), rows = $("rows"), count = $("count"), shelves = $("shelves");
+  const GAP = 28;
+  const INFO = "Reckon House Staples is Jeremy Prasatik's studio. It designs brands, products and rooms, " +
+    "and builds what it designs, the apps and the tools behind them. There are " + F.S.length +
+    " studies on the board, and the field answers for any of them.";
+  const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+  const typed = [];
+  let state = { shelf: null, hits: null, study: null }, pred = null, hIdx = 0, typing = false, dwellFrom = 0, raf = 0;
+
+  /* ── the base's settle curve, for the window's scroll ────────────── */
+  const bezier = (x1, y1, x2, y2) => {
+    const A = (a, b) => 1 - 3 * b + 3 * a, B = (a, b) => 3 * b - 6 * a, C = (a) => 3 * a;
+    const at = (t, a, b) => ((A(a, b) * t + B(a, b)) * t + C(a)) * t;
+    const slope = (t, a, b) => 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a);
+    return (x) => { let t = x; for (let i = 0; i < 6; i++) { const s = slope(t, x1, x2); if (!s) break; t -= (at(t, x1, x2) - x) / s; } return at(t, y1, y2); };
+  };
+  const settle = bezier(0.2, 0.55, 0.2, 1);
+  function glide(to) {
+    cancelAnimationFrame(raf);
+    const from = window.scrollY; if (Math.abs(to - from) < 1) return;
+    const t0 = performance.now();
+    const step = (now) => {
+      const k = Math.min(1, (now - t0) / 600);
+      window.scrollTo(0, from + (to - from) * settle(k));
+      if (k < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+  }
+  const foot = () => 0.62 * innerHeight - GAP;
+  const target = () => Math.max(0, tape.getBoundingClientRect().bottom + window.scrollY - foot());
+
+  /* ── the out and the in, for any box that holds one thing ────────── */
+  function swap(box, make) {
+    const gen = (box._gen = (box._gen || 0) + 1);
+    let done = false;
+    const put = () => {
+      if (done || gen !== box._gen) return; done = true;
+      box.replaceChildren();
+      const n = make(); if (n) { n.classList.add("enter"); box.appendChild(n); }
+    };
+    const old = box.firstElementChild;
+    if (!old) return put();
+    old.classList.add("leave");
+    old.addEventListener("animationend", (e) => { if (e.target === old) put(); });
+    setTimeout(put, 340);
+  }
+  document.addEventListener("animationend", (e) => { if (e.animationName === "enter") e.target.classList.remove("enter"); });
+
+  /* ── feeding a line: it grows out of the fixed line, the paper climbs */
+  function feed(l) {
+    const first = !tape.children.length;
+    tape.appendChild(l);
+    const h = l.offsetHeight, to = target();
+    l.style.height = "0px"; l.style.marginTop = "0px"; l.style.overflow = "hidden";
+    void l.offsetHeight;
+    l.classList.add("feed", "enter");
+    l.style.height = h + "px"; l.style.marginTop = first ? "0px" : "30px";
+    l.addEventListener("transitionend", (e) => {
+      if (e.target !== l) return;
+      l.classList.remove("feed"); l.style.height = l.style.marginTop = l.style.overflow = "";
+    });
+    glide(to);
+  }
+  function line(q, a, s, why, small) {
+    const l = F.el("div", "line"); l.appendChild(F.el("div", "thq", q));
+    if (!s) { l.appendChild(F.el(small ? "p" : "div", small ? "hline" : "tha", a)); return l; }
+    if (why) l.appendChild(F.el("div", "tha", why.charAt(0).toUpperCase() + why.slice(1) + "."));
+    l.appendChild(F.el("div", "label", s.cat));
+    l.appendChild(F.el("p", "hline", s.line));
+    const im = F.el("img"); im.src = s.cover; im.alt = ""; l.appendChild(im);
+    const see = F.el("a", "meta", "See the study"); see.href = "/case-studies/" + s.slug; l.appendChild(see);
+    return l;
+  }
+
+  /* ── committing: a title opens, a shelf filters, anything else asks ─ */
+  function commit(text, open) {
+    text = text.trim(); if (!text) return;
+    if (dwellFrom && state.study) trail.dwell[state.study.slug] = (trail.dwell[state.study.slug] || 0) + Date.now() - dwellFrom;
+    dwellFrom = 0;
+    const bare = text.replace(/^\/\s*/, "").toLowerCase();
+    const exact = F.S.filter((s) => s.title.toLowerCase() === bare);
+    let study = open ? open.study : exact.length === 1 ? exact[0] : null;
+    let why = open ? open.why : "", shelf = null, hits = null, answer = "", small = false;
+    if (study) { text = study.title; trail.opened.push(study.slug); dwellFrom = Date.now(); hits = [study]; }
+    else if (bare === "info") { answer = INFO; small = true; }
+    else if (bare === "connect") answer = "hello@reckon.house. Or the house answers here.";
+    else {
+      const r = F.ask(text); answer = r.line;
+      if (r.kind === "shelf") { shelf = r.shelf; hits = r.hits; trail.shelves.push(r.shelf); }
+      else if (r.kind !== "contact") { trail.asked.push(text); hits = r.kind === "staple" && !r.hits.length ? null : r.hits; }
+    }
+    typed.push(text); hIdx = typed.length;
+    feed(line(text, answer, study, why, small));
+    state = { shelf, hits, study }; render(); setNext();
+    field.value = "";
+  }
+  function render() {
+    const on = state.hits && new Set(state.hits.map((s) => s.slug));
+    rows.querySelectorAll(".study").forEach((r) => r.classList.toggle("off", !!on && !on.has(r.dataset.slug)));
+    shelves.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", c.dataset.tag === state.shelf));
+    const n = state.hits ? state.hits.length : F.S.length;
+    const label = (state.shelf ? F.shelfOf(state.shelf).name + " · " : "") + (n === F.S.length ? n + " studies" : n + " of " + F.S.length);
+    if (count.textContent !== label) swap(count, () => F.el("span", null, label));
+  }
+  /* the prediction under the line, always with its reason */
+  function setNext() {
+    pred = F.predict(trail, state.study ? state.study.slug : null);
+    const t = "Next · " + pred.study.title + ", " + pred.why;
+    if (next.textContent !== t) swap(next, () => F.el("span", null, t));
+  }
+  function accept() {
+    if (typing || !pred) return;
+    const p = pred; typeInto(p.study.title, () => commit(p.study.title, p));
+  }
+  /* a chip types its line, letter by letter, so it is visibly the same act */
+  function typeInto(text, then) {
+    if (typing) return;
+    typing = true; field.focus(); field.value = "";
+    let i = 0;
+    const tick = () => {
+      i += 1; field.value = text.slice(0, i);
+      if (i < text.length) setTimeout(tick, 30); else setTimeout(() => { typing = false; then(); }, 160);
+    };
+    setTimeout(tick, 30);
+  }
+
+  /* ── keys ────────────────────────────────────────────────────────── */
+  field.addEventListener("keydown", (e) => {
+    if (typing) { e.preventDefault(); return; }
+    const v = field.value;
+    if (e.key === "Escape") { e.preventDefault(); field.value = ""; hIdx = typed.length; return; }
+    if (e.key === "Tab" && !e.shiftKey) { e.preventDefault(); accept(); return; }
+    if (e.key === "ArrowUp") { if (hIdx > 0) { e.preventDefault(); hIdx -= 1; field.value = typed[hIdx]; } return; }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (hIdx < typed.length) { hIdx += 1; field.value = typed[hIdx] || ""; }
+      else if (!v) accept();
+      return;
+    }
+    if (e.key === "Enter") { e.preventDefault(); if (v.trim()) commit(v); else accept(); }
+  });
+  /* the line is always the line: typing anywhere lands in it */
+  document.addEventListener("keydown", (e) => {
+    if (document.activeElement !== field && e.key.length === 1 && e.key !== " " && !e.metaKey && !e.ctrlKey && !e.altKey) field.focus();
+  });
+
+  /* ── placing the fixed line on the column ───────────────────────── */
+  function place() {
+    const r = main.getBoundingClientRect(), cs = getComputedStyle(main);
+    const pl = parseFloat(cs.paddingLeft), pr = parseFloat(cs.paddingRight);
+    fixed.style.left = r.left + main.clientLeft + pl + "px";
+    fixed.style.width = main.clientWidth - pl - pr + "px";
+  }
+
+  /* ── wiring ──────────────────────────────────────────────────────── */
+  $("statement").innerHTML = F.STATEMENT;
+  document.querySelectorAll("#statement .term").forEach((t) => t.addEventListener("click", () => typeInto(t.dataset.ask, () => commit(t.dataset.ask))));
+  F.SHELVES.forEach((s) => {
+    const b = F.el("button", "chip", s.name); b.dataset.tag = s.tag;
+    b.addEventListener("click", () => typeInto(s.name, () => commit(s.name)));
+    shelves.appendChild(b);
+  });
+  [$("cInfo"), $("cConnect")].forEach((b) => b.addEventListener("click", () => typeInto(b.dataset.line, () => commit(b.dataset.line))));
+  F.S.forEach((s) => rows.appendChild(F.studyRow(s)));
+  count.firstElementChild.textContent = F.S.length + " studies";
+  next.addEventListener("click", accept);
+  place(); addEventListener("resize", place);
+  setNext(); field.focus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Ledger · the field</title>
+<link rel="stylesheet" href="base.css" />
+<script src="data.js"></script>
+<script src="field.js"></script>
+<style>
+  .main, .side { padding-top: 111px; }
+  .rail .group:first-of-type { margin-top: 40px; }
+  .ledger { position: relative; margin: 0; cursor: text; }
+  .tok, .ghost { text-decoration: underline; text-decoration-color: transparent;
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.3s ease; cursor: pointer; outline: 0; }
+  .tok:hover, .tok:focus-visible, .ghost:hover, .ghost:focus-visible { text-decoration-color: var(--grey); }
+  .sep { color: var(--faint); }
+  .ledger .field { display: inline-block; width: 1.4em; min-width: 1.4em; max-width: 100%; padding: 0;
+    vertical-align: baseline; }
+  .ghost { display: inline-block; color: var(--grey); margin-left: 0.3em; transition: opacity 0.3s ease; }
+  .hide { opacity: 0; pointer-events: none; }
+  .measure { position: absolute; top: 0; left: 0; visibility: hidden; white-space: pre; pointer-events: none; }
+  .why { font-size: var(--note); font-weight: 500; letter-spacing: 0.04em; line-height: 1.5; color: var(--grey);
+    margin: 12px 0 0; min-height: 18px; transition: opacity 0.3s ease; }
+  .panel { position: relative; margin-top: 36px; min-height: 1px; }
+  .panel img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; display: block;
+    background: var(--chip); }
+  .panel .pl { font-size: 16px; line-height: 1.4; margin: 14px 0 0; }
+  .panel .label { margin-top: 6px; }
+  .panel .say { font-size: 16px; line-height: 1.4; color: var(--grey); margin: 0; }
+  .earlier { position: relative; margin-top: 44px; }
+  .earlier .label { transition: opacity 0.3s ease; margin-bottom: 4px; }
+  .earlier .el { font-size: 14px; line-height: 1.5; color: var(--grey); cursor: pointer; padding: 7px 0; outline: 0;
+    border-top: 1px solid var(--rule); transition: color 0.3s ease; }
+  .earlier .el:hover, .earlier .el:focus-visible { color: var(--ink); }
+  .side .study { cursor: pointer; outline: 0; }
+  .side .study:focus-visible b { text-decoration: underline; text-decoration-color: var(--faint);
+    text-underline-offset: 0.15em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group">
+      <button class="chip" type="button" data-line="Info">/ Info</button>
+      <button class="chip" type="button" data-line="Connect">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <p class="statement ledger" id="ledger"><input class="field" id="field" type="text" autocomplete="off" spellcheck="false" aria-label="The line" /><span class="ghost hide" id="ghost" tabindex="-1" role="button"></span><span class="measure" id="measure"></span></p>
+    <p class="why hide" id="why"></p>
+    <div class="panel" id="panel"></div>
+    <div class="earlier" id="earlier"><div class="label hide">Earlier lines</div></div>
+  </div>
+  <div class="side" id="side"></div>
+</div>
+<div class="about">
+  <b>The Ledger</b> One editable line of everything you did. A shelf, a question and a study are the same kind
+  of thing, a token, and the line of them is the whole state. The column, the panel, the guess and the address
+  are read off it fresh every time, so nothing on the page can disagree with it. Backspace goes back a token,
+  a click on a token goes back to it. The question it answers: what if the navigation were a sentence you
+  could edit? <a href="index.html">← all nine</a>
+</div>
+<script>
+/* ── The Ledger ───────────────────────────────────────────────────────
+   Mechanism: the page has one piece of state, an array of strings, and
+   everything else is derived from it from scratch on every change: the
+   column on the right, the panel, the house's guess, the address bar,
+   the session's memory of lines. A chip, a typed line, a study row and
+   the accepted guess all do the same thing, push a token; back is pop.
+   Nothing is remembered on the side, so the line cannot lie about
+   where you are, and a URL with the line in it is the whole session
+   for whoever opens it next.
+   Why it might be right: filter, chat, history and prediction stop
+   being four features and become four readings of one line. */
+(() => {
+  const F = window.FIELD, $ = (s) => document.querySelector(s);
+  const ledger = $('#ledger'), field = $('#field'), ghost = $('#ghost'), measure = $('#measure'), why = $('#why'),
+        panel = $('#panel'), earlier = $('#earlier'), side = $('#side'), rail = $('.rail');
+  const SEP = '·', KEY = 'field-ledger-lines', EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+  let tokens = [], guess = null, written = '';
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const asText = (html) => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent; };
+
+  /* ── a study's token is its title, plus the room when the title is shared */
+  const label = (s) => F.S.some((o) => o !== s && o.title === s.title)
+    ? s.title + ', ' + (s.cat.split(', ')[1] || s.slug) : s.title;
+  const studyBy = (t) => { const q = t.toLowerCase();
+    return F.S.find((s) => label(s).toLowerCase() === q) || F.S.find((s) => s.title.toLowerCase() === q) || null; };
+
+  /* ── reading one token: a shelf, a study, or a line for the house ── */
+  function read(t) {
+    if (/^info$/i.test(t)) return { kind: 'said', say: asText(F.STATEMENT) };
+    if (/^connect$/i.test(t)) return { kind: 'said', say: F.ask('contact').line };
+    const sh = F.shelfByName(t);
+    if (sh) return { kind: 'shelf', shelf: sh, hits: F.S.filter((s) => s.tags.includes(sh.tag)), say: F.ask(sh.name).line };
+    const st = studyBy(t);
+    if (st) return { kind: 'study', study: st };
+    const a = F.ask(t);
+    return { kind: /^(hits|all|miss)$/.test(a.kind) ? 'ask' : 'said', q: t, hits: a.hits, say: a.line };
+  }
+
+  /* ── the whole state, read off the line from scratch ─────────────── */
+  function evaluate(toks) {
+    const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+    let set = null, shelf = null, study = null, last = null;
+    for (const t of toks) {
+      const r = read(t); last = r;
+      if (r.kind === 'shelf') { shelf = r.shelf; set = r.hits; study = null; trail.shelves.push(r.shelf.tag); }
+      else if (r.kind === 'study') { set = [r.study]; study = r.study; trail.opened.push(r.study.slug); }
+      else if (r.kind === 'ask') {
+        trail.asked.push(r.q); study = null;
+        const both = set ? r.hits.filter((s) => set.includes(s)) : r.hits;
+        set = both.length ? both : r.hits; /* a question that misses the shelf pivots to its own hits */
+      }
+    }
+    return { set, shelf, study, last, trail };
+  }
+
+  function commit(silent) {
+    const ev = evaluate(tokens);
+    side.querySelectorAll('.study').forEach((r) => r.classList.toggle('off', !!ev.set && !ev.set.some((s) => s.slug === r.dataset.slug)));
+    rail.querySelectorAll('[data-tag]').forEach((c) => c.classList.toggle('on', !!ev.shelf && c.dataset.tag === ev.shelf.tag));
+    showPanel(ev.last);
+    if (tokens.length) {
+      const p = F.predict(ev.trail, ev.study ? ev.study.slug : ev.set && ev.set[0] ? ev.set[0].slug : null);
+      guess = p.study; swap(ghost, label(p.study)); swap(why, cap(p.why) + '.'); field.placeholder = '';
+    } else { guess = null; swap(ghost, ''); swap(why, ''); }
+    const line = tokens.join(SEP);
+    if (!silent && line !== written) {
+      if (line) location.hash = '#' + tokens.map(encodeURIComponent).join(SEP);
+      else history.pushState(null, '', location.pathname + location.search);
+    }
+    written = line;
+    remember(line); paintEarlier(line); resize();
+  }
+
+  /* ── out, then in: a changed word fades before the new one shows ── */
+  function swap(el, text) {
+    if (el.textContent === text && !el._p) return;
+    el.classList.add('hide'); clearTimeout(el._t); el._p = true;
+    el._t = setTimeout(() => { el.textContent = text; el._p = false; sync(); }, el.textContent ? 240 : 0);
+  }
+  function sync() {
+    ghost.classList.toggle('hide', !!ghost._p || !ghost.textContent || !!field.value);
+    why.classList.toggle('hide', !!why._p || !why.textContent);
+  }
+  function resize() {
+    measure.textContent = field.value || field.placeholder || '';
+    field.style.width = (measure.offsetWidth + 6) + 'px';
+    sync();
+  }
+  function leave(el) {
+    el.style.cssText += ';position:absolute;top:' + el.offsetTop + 'px;left:0;right:0;pointer-events:none';
+    el.classList.add('leave'); setTimeout(() => el.remove(), 320);
+  }
+  /* everything under the line slides to where it lands, instead of jumping */
+  function change(fn) {
+    const els = [field, ghost, why, panel, ...earlier.children].filter((e) => !e.classList.contains('leave'));
+    const was = els.map((e) => e.getBoundingClientRect());
+    fn();
+    els.forEach((e, i) => {
+      if (e.classList.contains('leave')) return;
+      const r = e.getBoundingClientRect(), dx = was[i].left - r.left, dy = was[i].top - r.top;
+      if (dx || dy) e.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }], { duration: 600, easing: EASE });
+    });
+  }
+
+  function showPanel(r) {
+    const key = !r ? '' : r.kind === 'study' ? 'study:' + r.study.slug : 'say:' + r.say;
+    if (panel.dataset.key === key) return;
+    panel.dataset.key = key;
+    [...panel.children].forEach(leave);
+    if (!r) return;
+    const box = F.el('div', 'card enter');
+    if (r.kind === 'study') {
+      const im = F.el('img'); im.src = r.study.cover; im.alt = ''; box.appendChild(im);
+      box.appendChild(F.el('p', 'pl', r.study.line)); box.appendChild(F.el('div', 'label', r.study.cat));
+    } else box.appendChild(F.el('p', 'say', r.say));
+    panel.appendChild(box);
+  }
+
+  /* ── the line itself: tokens before the field, the ghost after it ── */
+  function setTokens(next, silent) {
+    let p = 0;
+    while (p < next.length && p < tokens.length && next[p] === tokens[p]) p += 1;
+    const gone = [...ledger.querySelectorAll('.tk:not(.leave)')].slice(p);
+    gone.forEach((el) => el.classList.add('leave'));
+    tokens = next.slice();
+    change(() => { next.slice(p).forEach(addTk); commit(silent); });
+    if (gone.length) setTimeout(() => change(() => gone.forEach((el) => el.remove())), 300);
+  }
+  function addTk(t) {
+    const tk = F.el('span', 'tk enter');
+    if (ledger.querySelector('.tk:not(.leave)')) tk.appendChild(F.el('span', 'sep', ' · '));
+    const tok = F.el('span', 'tok', t); tok.tabIndex = 0; tok.setAttribute('role', 'button'); tk.appendChild(tok);
+    ledger.insertBefore(tk, ledger.querySelector('.tk.leave') || field);
+  }
+  const toks = () => [...ledger.querySelectorAll('.tk:not(.leave) .tok')];
+  const push = (t) => { if (t && tokens[tokens.length - 1] !== t) setTokens(tokens.concat(t)); };
+  const truncate = (n) => { n = Math.max(0, n); if (n < tokens.length) setTokens(tokens.slice(0, n)); };
+  const accept = () => { if (guess) push(label(guess)); };
+
+  /* ── the session's memory of distinct lines, newest first ────────── */
+  const load = () => { try { return JSON.parse(sessionStorage.getItem(KEY) || '[]'); } catch (e) { return []; } };
+  function remember(line) {
+    if (!line) return;
+    try { sessionStorage.setItem(KEY, JSON.stringify([line].concat(load().filter((l) => l !== line)).slice(0, 12))); } catch (e) { /* no storage */ }
+  }
+  function paintEarlier(cur) {
+    const all = load(), lab = earlier.querySelector('.label');
+    const keep = all.filter((l) => l !== cur && !cur.startsWith(l + SEP) && !all.some((o) => o !== l && o.startsWith(l + SEP)));
+    const have = [...earlier.querySelectorAll('.el:not(.leave)')];
+    have.forEach((el) => { if (!keep.includes(el.dataset.line)) leave(el); });
+    keep.slice().reverse().forEach((l) => {
+      if (have.some((el) => el.dataset.line === l)) return;
+      const el = F.el('div', 'el enter', l.split(SEP).join(' · ')); el.dataset.line = l; el.tabIndex = 0; lab.after(el);
+    });
+    lab.classList.toggle('hide', !keep.length);
+  }
+  const restore = (el) => setTokens(el.dataset.line.split(SEP));
+  earlier.addEventListener('click', (e) => { const el = e.target.closest('.el'); if (el) restore(el); });
+  earlier.addEventListener('keydown', (e) => { const el = e.target.closest('.el'); if (el && e.key === 'Enter') restore(el); });
+
+  /* ── keys: Enter appends, Backspace pops, Tab takes the guess ─────── */
+  field.addEventListener('input', resize);
+  field.addEventListener('keydown', (e) => {
+    const v = field.value.trim();
+    if (e.key === 'Enter') { e.preventDefault(); if (v) { field.value = ''; push(v.replace(/·/g, ' ').trim()); } return; }
+    if (e.key === 'Backspace' && !field.value) { e.preventDefault(); truncate(tokens.length - 1); return; }
+    if (e.key === 'Tab' && !e.shiftKey && !field.value && guess) { e.preventDefault(); accept(); return; }
+    if (e.key === 'Escape') { if (field.value) { field.value = ''; resize(); } else truncate(0); return; }
+    if (e.key === 'ArrowLeft' && !field.value) { const t = toks(); if (t.length) { e.preventDefault(); t[t.length - 1].focus(); } }
+  });
+  ledger.addEventListener('keydown', (e) => {
+    const tok = e.target.closest('.tok'); if (!tok) return;
+    const all = toks(), i = all.indexOf(tok);
+    if (i < 0) return; /* a token still fading out is not on the line */
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); truncate(i + 1); field.focus(); }
+    else if (e.key === 'Backspace' || e.key === 'Delete') { e.preventDefault(); truncate(i); field.focus(); }
+    else if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); all[i - 1].focus(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); (all[i + 1] || field).focus(); }
+  });
+  ledger.addEventListener('click', (e) => {
+    const tok = e.target.closest('.tok'), i = tok ? toks().indexOf(tok) : -1;
+    if (tok) { if (i >= 0) truncate(i + 1); }
+    else if (e.target.closest('.ghost')) accept();
+    field.focus();
+  });
+
+  /* ── the rail writes the line; the rows and the guess append to it ── */
+  F.SHELVES.forEach((sh) => {
+    const c = F.el('button', 'chip', sh.name); c.type = 'button'; c.dataset.line = sh.name; c.dataset.tag = sh.tag;
+    $('#shelves').appendChild(c);
+  });
+  rail.addEventListener('click', (e) => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    field.value = c.dataset.line; resize();
+    setTimeout(() => { field.value = ''; push(c.dataset.line); }, 160);
+  });
+  F.S.forEach((s) => { const r = F.studyRow(s); r.tabIndex = 0; side.appendChild(r); });
+  const openRow = (r) => { const s = F.S.find((x) => x.slug === r.dataset.slug); if (s) push(label(s)); };
+  side.addEventListener('click', (e) => { const r = e.target.closest('.study'); if (r) openRow(r); });
+  side.addEventListener('keydown', (e) => { const r = e.target.closest('.study'); if (r && e.key === 'Enter') openRow(r); });
+
+  /* ── the line is the address ───────────────────────────────────────── */
+  const parse = () => {
+    try { const raw = decodeURIComponent(location.hash.slice(1)); return raw ? raw.split(SEP).map((s) => s.trim()).filter(Boolean) : []; }
+    catch (e) { return []; }
+  };
+  window.addEventListener('popstate', () => { const next = parse(); if (next.join(SEP) !== tokens.join(SEP)) setTokens(next, true); });
+  const first = parse();
+  written = first.join(SEP);
+  if (first.length) setTokens(first, true); else commit(true);
+  F.tour((text) => { if (!tokens.length) { field.placeholder = text; resize(); } },
+    { paused: () => tokens.length > 0 || document.activeElement === field || !!field.value });
+})();
+</script>
+</body>
+</html>

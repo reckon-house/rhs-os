@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The field · nine answers</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  .page { grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .intro { padding-top: 111px; max-width: 34em; }
+  .intro .statement { margin-bottom: 18px; }
+  .intro p { color: var(--grey); font-size: 15px; line-height: 1.5; max-width: 38em; margin: 0 0 12px; }
+  .list { margin-top: 56px; border-top: 1px solid var(--rule); }
+  .demo { display: grid; grid-template-columns: 40px minmax(0, 240px) minmax(0, 1fr);
+    column-gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule);
+    text-decoration: none; color: inherit; align-items: baseline; }
+  .demo:hover .name { text-decoration-color: var(--ink); }
+  .demo .n { font-size: var(--note); color: var(--grey); letter-spacing: 0.04em; }
+  .demo .name { font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2;
+    text-decoration: underline; text-decoration-color: var(--faint);
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.3s ease; }
+  .demo .name small { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0;
+    color: var(--grey); text-decoration: none; margin-top: 4px; }
+  .demo .why { font-size: 14px; line-height: 1.5; color: var(--grey); }
+  .demo .why b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 860px) { .demo { grid-template-columns: 1fr; row-gap: 8px; } .demo .n { display: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div style="margin-top:40px" class="label">The field · lab</div>
+  </div>
+  <div class="intro">
+    <p class="statement">One field. Filter, chat, history, prediction, navigation. <span class="dim">Nine different ways it could be the same thing.</span></p>
+    <p>Each page below is a separate answer, built on the house's own studies and the same small brain, so what differs between them is only how the field works. None is finished. Each is meant to be tried for a minute and judged on one question: where do I type, and what does typing do?</p>
+    <p>The board's current answer is a sheet that opens under the bar. These are the roads not taken, and two or three of them are better.</p>
+
+    <div class="list">
+      <a class="demo" href="sentence.html">
+        <span class="n">01</span>
+        <span class="name">The Sentence<small>The prose is the input and the output</small></span>
+        <span class="why">The statement itself is the form. Every underlined term is a live filter, typing replaces the sentence's variable, and the house answers by <b>rewriting the sentence</b>. History is the old sentences, faded, stacked beneath.</span>
+      </a>
+      <a class="demo" href="ledger.html">
+        <span class="n">02</span>
+        <span class="name">The Ledger<small>One editable line of everything you did</small></span>
+        <span class="why">Filter, question and study all append tokens to a single line: <b>interiors · kitchens · Hill Country home</b>. Delete a token to go back. The next token, in grey, is the house's guess. The line is the URL.</span>
+      </a>
+      <a class="demo" href="slash.html">
+        <span class="n">03</span>
+        <span class="name">The Slash<small>The rail's chips already say "/ Info"</small></span>
+        <span class="why">Type a slash and the rail's options appear inline as a palette. <b>/interiors</b> filters, <b>/next</b> walks, a plain sentence asks. The history is the command log and the house pre-fills the next command as a ghost.</span>
+      </a>
+      <a class="demo" href="columns.html">
+        <span class="n">04</span>
+        <span class="name">The Columns<small>Each question opens a column to the right</small></span>
+        <span class="why">The board already pages sideways. Here the conversation <b>is</b> the horizontal axis: ask, and a new column opens with the answer; page left to go back. The field sits at the head of the newest column.</span>
+      </a>
+      <a class="demo" href="margin.html">
+        <span class="n">05</span>
+        <span class="name">The Margin<small>The rail is the conversation</small></span>
+        <span class="why">The chips are past lines, the field is the newest chip, and the house's prediction is a ghost chip at the bottom. <b>Navigation and chat become the same objects</b>, in the column that already holds the navigation.</span>
+      </a>
+      <a class="demo" href="typewriter.html">
+        <span class="n">06</span>
+        <span class="name">The Typewriter<small>The line never moves; the paper does</small></span>
+        <span class="why">The field is a fixed line low on the page, like a terminal's. Enter commits the line and the paper scrolls up. Oldest at the top, newest just above the cursor. The opposite ordering to the board's, to feel the difference.</span>
+      </a>
+      <a class="demo" href="readout.html">
+        <span class="n">07</span>
+        <span class="name">The Readout<small>The field is a caption of where you are</small></span>
+        <span class="why">No input at rest. The line at the top says what you're looking at, <b>Interiors · 4 of 12</b>, and what the house would show next. Click the line and it becomes the input. The field is the site's own status line.</span>
+      </a>
+      <a class="demo" href="twospeed.html">
+        <span class="n">08</span>
+        <span class="name">Two Speeds<small>Keystrokes filter, sentences ask</small></span>
+        <span class="why">While you type, the field is a filter and the work dims live. Press Enter and it is a question the house answers. The history marks which lines were which. One field, <b>two verbs</b>, and the difference is the return key.</span>
+      </a>
+      <a class="demo" href="ghost.html">
+        <span class="n">09</span>
+        <span class="name">The Ghost<small>The prediction lives inside the field</small></span>
+        <span class="why">A shell's autosuggestion, borrowed whole: the house's guess is grey text ahead of the caret, in the same line. <b>→ takes it</b>, ↑ recalls, Enter on an empty field goes where the house would. Nothing on the page but one line and its shadow.</span>
+      </a>
+      <a class="demo" href="swipe.html">
+        <span class="n">—</span>
+        <span class="name">Swipe<small>What to steal, and from whom</small></span>
+        <span class="why">The command bars, palettes, terminals and directories that already solved a piece of this, each with one line on what it got right and what the house should take.</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

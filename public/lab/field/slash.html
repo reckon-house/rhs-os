@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Slash · the field</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  .rail .group:first-of-type { margin-top: 40px; }
+  .main { padding-bottom: 120px; }
+  .statement { margin-bottom: 44px; }
+  .prompt .label { margin-bottom: 4px; }
+  .fieldwrap { position: relative; }
+  .ghost { position: absolute; left: 0; top: 0; right: 0; padding: 4px 0 0; pointer-events: none;
+    font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink);
+    text-decoration: underline; text-decoration-color: var(--faint);
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: opacity 0.3s ease, color 0.3s ease; }
+  .ghost.next, .fieldwrap:focus-within .ghost { color: var(--grey); }
+  .why { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin-top: 10px;
+    min-height: 18px; transition: opacity 0.3s ease; }
+  .hid { opacity: 0; }
+  .palette { margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--rule); }
+  .row { display: flex; justify-content: space-between; align-items: baseline; column-gap: 14px;
+    border-radius: 14px; padding: 9px 14px 10px; font-size: 13px; line-height: 1.2; cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; }
+  .row .c { font-weight: 600; white-space: nowrap; }
+  .row .d { color: var(--grey); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.3s ease; }
+  .row.on { background: var(--ink); color: #fff; }
+  .row.on .d { color: inherit; opacity: 0.6; }
+  .none { padding: 9px 14px 10px; font-size: 13px; color: var(--grey); }
+  .reply { margin-top: 44px; }
+  .reply:empty { margin-top: 0; }
+  .head .label { margin-top: 8px; }
+  .head .label + .label { margin-top: 4px; }
+  .head .hline, .info { font-size: 16px; line-height: 1.5; color: var(--grey); margin: 14px 0 0; }
+  .head img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px;
+    background: var(--chip); margin-top: 18px; }
+  .head .meta { display: inline-block; margin-top: 14px; }
+  .info { margin: 0; max-width: 34em; }
+  .log { margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .log:empty { display: none; }
+  .log .line { transition: opacity 0.4s ease; }
+  .log .line.past { opacity: 0.45; }
+  .side .label { margin-bottom: 14px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group">
+      <button class="chip" id="cInfo" data-cmd="/info">/ Info</button>
+      <button class="chip" id="cConnect" data-cmd="/connect">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <p class="statement" id="statement"></p>
+    <div class="prompt">
+      <div class="label">Or just ask me:</div>
+      <div class="fieldwrap">
+        <input class="field" id="field" type="text" autocomplete="off" spellcheck="false" aria-label="Ask the house" />
+        <div class="ghost" id="ghost" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="why hid" id="why"><span></span></div>
+      <div class="palette" id="palette" hidden></div>
+    </div>
+    <div class="reply" id="reply"></div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="side">
+    <div class="label" id="count"><span></span></div>
+    <div id="rows"></div>
+  </div>
+  <div class="about"><b>The Slash.</b> The rail already says / Info, so the field speaks slash. Type one and the rail appears under the cursor as a palette: /interiors filters, /next walks, a plain sentence asks. The log below is the history, and the ghost in the field is the house's next move. The one question: is a menu just a command you have not typed yet? <a href="index.html">← all nine</a></div>
+</div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── The Slash ───────────────────────────────────────────────────────
+   Mechanism. The field is a shell. A leading slash opens the rail as an
+   inline palette, so the navigation is a set of commands and the chips
+   are shortcuts that type the same command into the same field.
+   Everything that runs is a line in one log, newest first, and after
+   the first line the house pre-fills the next command as a ghost that
+   the return key accepts. /back is a stack of states, not of lines.
+   Why it might be right. The rail already reads "/ Info". A slash is
+   the smallest possible mode switch: it is visible in the text itself,
+   it costs one key, and it lets one field hold two grammars, commands
+   and questions, without a toggle. The log makes the history legible as
+   what was typed, which is the whole claim. */
+(() => {
+  const F = window.FIELD, $ = (id) => document.getElementById(id);
+  const field = $("field"), ghost = $("ghost"), why = $("why"), pal = $("palette"), reply = $("reply"),
+    log = $("log"), rows = $("rows"), count = $("count"), shelves = $("shelves");
+  const INFO = "Reckon House Staples is Jeremy Prasatik's studio. It designs brands, products and rooms, " +
+    "and builds what it designs, the apps and the tools behind them. There are " + F.S.length +
+    " studies on the board, and the field answers for any of them.";
+  const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+  const stack = [];
+  let state = { kind: "rest", shelf: null, hits: null, study: null, why: "", line: "" };
+  let began = false, typing = false, dwellFrom = 0, hi = 0, items = [], tourCtl = null;
+  const hitsFor = (tag) => (tag ? F.ask(F.shelfOf(tag).name).hits : null);
+  const current = () => (state.study ? state.study.slug : null);
+  const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
+  /* ── the out and the in, for any box that holds one thing ────────── */
+  function swap(box, make) {
+    const gen = (box._gen = (box._gen || 0) + 1);
+    let done = false;
+    const put = () => {
+      if (done || gen !== box._gen) return; done = true;
+      box.replaceChildren();
+      const n = make(); if (n) { n.classList.add("enter"); box.appendChild(n); }
+    };
+    const old = box.firstElementChild;
+    if (!old) return put();
+    old.classList.add("leave");
+    old.addEventListener("animationend", (e) => { if (e.target === old) put(); });
+    setTimeout(put, 340);
+  }
+  /* an enter that has finished must not pin opacity, or .past cannot dim it */
+  document.addEventListener("animationend", (e) => { if (e.animationName === "enter") e.target.classList.remove("enter"); });
+
+  /* ── the commands: the rail, as a list ───────────────────────────── */
+  function commands() {
+    const p = F.predict(trail, current());
+    return F.SHELVES.map((s) => ({ c: "/" + s.tag, d: s.name })).concat([
+      { c: "/next", d: p.study.title + ", " + p.why },
+      { c: "/back", d: stack.length ? "the state before this one" : "nothing behind this yet" },
+      { c: "/all", d: "every study, no filter" },
+      { c: "/info", d: "about the house" },
+      { c: "/connect", d: "hello@reckon.house" }]);
+  }
+
+  /* ── the palette under the field ─────────────────────────────────── */
+  const palOpen = () => !pal.hidden && !pal.classList.contains("leave");
+  function openPal() { if (palOpen()) return; pal.hidden = false; pal.classList.remove("leave"); pal.classList.add("enter"); }
+  function closePal() {
+    if (!palOpen()) return;
+    pal.classList.remove("enter"); pal.classList.add("leave");
+    setTimeout(() => { if (pal.classList.contains("leave")) { pal.hidden = true; pal.classList.remove("leave"); } }, 300);
+  }
+  function fillPal(text) {
+    const f = text.slice(1).toLowerCase().split(/\s+/)[0];
+    const list = commands().filter((x) => x.c.slice(1).startsWith(f) || (f && x.d.toLowerCase().includes(f)));
+    pal.replaceChildren(); hi = 0;
+    items = list.map((x, i) => {
+      const r = F.el("div", "row" + (i ? "" : " on")); r.dataset.c = x.c;
+      r.appendChild(F.el("span", "c", x.c)); r.appendChild(F.el("span", "d", x.d));
+      r.addEventListener("click", () => run(x.c));
+      pal.appendChild(r); return r;
+    });
+    if (!items.length) pal.appendChild(F.el("div", "none", "Not a command here. Delete back to the slash to see them."));
+  }
+  function move(d) {
+    if (!items.length) return;
+    items[hi].classList.remove("on"); hi = (hi + d + items.length) % items.length; items[hi].classList.add("on");
+  }
+  pal.addEventListener("mousedown", (e) => e.preventDefault());
+
+  /* ── one state at a time; the stack is what /back walks ──────────── */
+  function go(next, cmd, line) {
+    stack.push(state);
+    state = Object.assign({ shelf: null, hits: null, study: null, why: "" }, next, { line });
+    render(); note(cmd, line);
+  }
+  function render() {
+    const on = state.hits && new Set(state.hits.map((s) => s.slug));
+    rows.querySelectorAll(".study").forEach((r) => r.classList.toggle("off", !!on && !on.has(r.dataset.slug)));
+    shelves.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", c.dataset.tag === state.shelf));
+    $("cInfo").classList.toggle("on", state.kind === "info");
+    $("cConnect").classList.toggle("on", state.kind === "connect");
+    const n = state.hits ? state.hits.length : F.S.length;
+    const label = (state.shelf ? F.shelfOf(state.shelf).name + " · " : "") + (n === F.S.length ? n + " studies" : n + " of " + F.S.length);
+    if (count.textContent !== label) swap(count, () => F.el("span", null, label));
+    swap(reply, () => {
+      if (state.kind === "study") return head(state.study, state.why);
+      if (state.kind === "info") return F.el("p", "info", INFO);
+      if (state.kind === "connect") { const a = F.el("a", "thq", "hello@reckon.house"); a.href = "mailto:hello@reckon.house"; return a; }
+      return null;
+    });
+  }
+  function head(s, why) {
+    const h = F.el("div", "head");
+    h.appendChild(F.el("div", "thq", s.title));
+    h.appendChild(F.el("div", "label", s.cat));
+    if (why) h.appendChild(F.el("div", "label", cap(why) + "."));
+    h.appendChild(F.el("p", "hline", s.line));
+    const im = F.el("img"); im.src = s.cover; im.alt = ""; h.appendChild(im);
+    const a = F.el("a", "meta", "See the study"); a.href = "/case-studies/" + s.slug; h.appendChild(a);
+    return h;
+  }
+  /* the log: newest first, ten deep, the oldest fading before it goes */
+  function note(q, a) {
+    log.querySelectorAll(".line").forEach((l) => l.classList.add("past"));
+    const l = F.el("div", "line enter"); l.appendChild(F.el("div", "thq", q)); l.appendChild(F.el("div", "tha", a));
+    log.prepend(l);
+    const live = log.querySelectorAll(".line:not(.leave)");
+    if (live.length > 10) { const last = live[live.length - 1]; last.classList.add("leave"); setTimeout(() => last.remove(), 300); }
+  }
+
+  /* ── running a line: a slash is a command, anything else a question ─ */
+  function run(raw) {
+    const text = raw.trim(); if (!text) return;
+    if (dwellFrom && state.study) trail.dwell[state.study.slug] = (trail.dwell[state.study.slug] || 0) + Date.now() - dwellFrom;
+    dwellFrom = 0;
+    if (!began) { began = true; if (tourCtl) tourCtl.stop(); ghost.classList.add("next"); }
+    closePal(); field.value = "";
+    if (text[0] === "/") command(text); else question(text);
+    setGhost(); ghostSync();
+  }
+  function command(text) {
+    const name = text.slice(1).split(/\s+/)[0].toLowerCase(), all = commands();
+    const cmd = all.find((x) => x.c === "/" + name) || (name && all.find((x) => x.c.startsWith("/" + name)));
+    if (!cmd) return note(text, "Not a command here. Type / to see the list.");
+    const c = cmd.c.slice(1), shelf = F.shelfOf(c);
+    if (shelf) { const r = F.ask(shelf.name); trail.shelves.push(shelf.tag); return go({ kind: "shelf", shelf: shelf.tag, hits: r.hits }, cmd.c, r.line); }
+    if (c === "all") return go({ kind: "rest" }, "/all", F.ask("all").line);
+    if (c === "info") return go({ kind: "info", shelf: state.shelf, hits: hitsFor(state.shelf) }, "/info", "About the house.");
+    if (c === "connect") return go({ kind: "connect", shelf: state.shelf, hits: hitsFor(state.shelf) }, "/connect", "hello@reckon.house. Or the house answers here.");
+    if (c === "back") {
+      if (!stack.length) return note("/back", "Nothing behind this yet.");
+      state = stack.pop(); render();
+      return note("/back", state.line || "Back to the start. " + F.S.length + " studies.");
+    }
+    const p = F.predict(trail, current()); trail.opened.push(p.study.slug); dwellFrom = Date.now();
+    go({ kind: "study", shelf: state.shelf, hits: [p.study], study: p.study, why: p.why }, "/next", p.study.title + ", " + p.why + ".");
+  }
+  function question(text) {
+    const r = F.ask(text);
+    if (r.kind === "shelf") { trail.shelves.push(r.shelf); return go({ kind: "shelf", shelf: r.shelf, hits: r.hits }, text, r.line); }
+    if (r.kind === "contact") return go({ kind: "connect", shelf: state.shelf, hits: hitsFor(state.shelf) }, text, r.line);
+    trail.asked.push(text);
+    go({ kind: "ask", hits: r.kind === "staple" && !r.hits.length ? null : r.hits }, text, r.line);
+  }
+
+  /* ── the ghost: the tour at rest, the next command once anything ran */
+  function setGhost() {
+    const p = F.predict(trail, current()), t = "/next " + p.study.title, key = t + "|" + p.why;
+    if (ghost.dataset.key === key) return;
+    ghost.dataset.key = key;
+    swap(ghost, () => F.el("span", null, t));
+    swap(why, () => F.el("span", null, p.why));
+  }
+  function ghostSync() {
+    const empty = !field.value;
+    ghost.classList.toggle("hid", !empty); why.classList.toggle("hid", !empty || !began);
+  }
+  function onInput() {
+    const v = field.value;
+    if (v[0] === "/") { openPal(); fillPal(v); } else closePal();
+    ghostSync();
+  }
+  /* a chip types its command, letter by letter, so it is visibly the same act */
+  function typeInto(text, then) {
+    if (typing) return;
+    typing = true; field.focus(); field.value = ""; onInput();
+    let i = 0;
+    const tick = () => {
+      i += 1; field.value = text.slice(0, i); onInput();
+      if (i < text.length) setTimeout(tick, 30); else setTimeout(() => { typing = false; then(); }, 160);
+    };
+    setTimeout(tick, 30);
+  }
+
+  /* ── keys ────────────────────────────────────────────────────────── */
+  field.addEventListener("input", onInput);
+  field.addEventListener("keydown", (e) => {
+    if (typing) { e.preventDefault(); return; }
+    const open = palOpen();
+    if (e.key === "Escape") { e.preventDefault(); if (open) closePal(); else { field.value = ""; ghostSync(); } return; }
+    if (open && (e.key === "ArrowDown" || e.key === "ArrowUp")) { e.preventDefault(); move(e.key === "ArrowDown" ? 1 : -1); return; }
+    if (e.key === "Tab" && !e.shiftKey && !field.value && began) { e.preventDefault(); field.value = "/next"; onInput(); return; }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const v = field.value.trim();
+    if (open && items[hi]) run(items[hi].dataset.c);
+    else if (v) run(v);
+    else if (began) run("/next");
+    else if (tourCtl) run(tourCtl.current());
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && document.activeElement !== field && !e.metaKey && !e.ctrlKey) { e.preventDefault(); field.focus(); field.value = "/"; onInput(); }
+  });
+
+  /* ── wiring ──────────────────────────────────────────────────────── */
+  $("statement").innerHTML = F.STATEMENT;
+  document.querySelectorAll("#statement .term").forEach((t) => t.addEventListener("click", () => typeInto(t.dataset.ask, () => run(t.dataset.ask))));
+  F.SHELVES.forEach((s) => {
+    const b = F.el("button", "chip", s.name); b.dataset.tag = s.tag;
+    b.addEventListener("click", () => typeInto("/" + s.tag, () => run("/" + s.tag)));
+    shelves.appendChild(b);
+  });
+  [$("cInfo"), $("cConnect")].forEach((b) => b.addEventListener("click", () => typeInto(b.dataset.cmd, () => run(b.dataset.cmd))));
+  F.S.forEach((s) => rows.appendChild(F.studyRow(s)));
+  count.firstElementChild.textContent = F.S.length + " studies";
+  tourCtl = F.tour((t) => { if (!began) ghost.firstElementChild.textContent = t; }, { paused: () => !!field.value || typing });
+  field.focus();
+})();
+</script>
+</body>
+</html>

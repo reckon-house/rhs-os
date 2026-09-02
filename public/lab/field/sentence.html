@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Sentence · the field</title>
+<link rel="stylesheet" href="base.css" />
+<script src="data.js"></script>
+<script src="field.js"></script>
+<style>
+  .main, .side { padding-top: 111px; }
+  .rail .group:first-of-type { margin-top: 40px; }
+  .live .statement { margin: 0; }
+  .statement .next { color: var(--grey); }
+  .why { font-size: var(--note); font-weight: 500; letter-spacing: 0.04em; line-height: 1.5;
+    color: var(--grey); margin: 12px 0 0; min-height: 18px; }
+  .prompt { margin-top: 36px; }
+  .prompt .statement { color: var(--grey); margin: 0; }
+  .past { position: relative; margin-top: 48px; }
+  .past .statement { color: var(--grey); cursor: pointer; margin: 0 0 20px; outline: 0;
+    transition: color 0.6s ease, opacity 0.6s ease; }
+  .past .statement:nth-child(2) { opacity: 0.78; }
+  .past .statement:nth-child(3) { opacity: 0.6; }
+  .past .statement:nth-child(4) { opacity: 0.44; }
+  .past .statement:nth-child(5) { opacity: 0.3; }
+  .past .statement:hover, .past .statement:focus-visible { color: var(--ink); }
+  .past .term, .past .dim { color: inherit; text-decoration-color: transparent; pointer-events: none; }
+  .side .study { cursor: pointer; outline: 0; }
+  .side .study:focus-visible b { text-decoration: underline; text-decoration-color: var(--faint);
+    text-underline-offset: 0.15em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group">
+      <button class="chip" type="button" data-line="Info">/ Info</button>
+      <button class="chip" type="button" data-line="Connect">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <div class="live" id="live">
+      <p class="statement" id="stmt"></p>
+      <p class="why" id="why"></p>
+    </div>
+    <div class="prompt" id="prompt">
+      <p class="statement">Or just ask me:</p>
+      <input class="field" id="field" type="text" autocomplete="off" spellcheck="false" aria-label="Ask the house" />
+    </div>
+    <div class="past" id="past" aria-label="Earlier sentences"></div>
+  </div>
+  <div class="side" id="side"></div>
+</div>
+<div class="about">
+  <b>The Sentence</b> The prose is the input and the output. Every underlined term is a filter, and the house
+  answers by rewriting its own line in place, so the page never grows a second surface for results. The old
+  sentences stack beneath in grey, each one a way back. The question it answers: can the statement be the form,
+  with nothing under it? <a href="index.html">← all nine</a>
+</div>
+<script>
+/* ── The Sentence ─────────────────────────────────────────────────────
+   Mechanism: the statement is the only surface. Every ask, whether a
+   term in the prose, a typed line, a rail chip or a row on the right,
+   goes through one door (house) and comes back as a sentence that
+   replaces the live one in place. The old sentence drops into a stack
+   under the field, grey and fainter with age, and clicking it brings
+   it back with its filter. The right column is a side effect of the
+   sentence: what it names stays lit. The prediction is the sentence's
+   last clause, so the house's guess is prose too, with its reason in
+   the small line beneath.
+   Why it might be right: nothing on the page is a control that is not
+   also a sentence, so the site's own line stays the whole interface,
+   and the history reads as a paragraph of what happened, not a log. */
+(() => {
+  const F = window.FIELD, $ = (s) => document.querySelector(s);
+  const slot = $('#live'), why = $('#why'), field = $('#field'), prompt = $('#prompt'), past = $('#past'),
+        side = $('#side'), rail = $('.rail');
+  const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+  const GREY = getComputedStyle(document.documentElement).getPropertyValue('--grey').trim() || 'rgba(0,0,0,0.42)';
+  const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+  let live = $('#stmt'), asks = 0;
+  let current = { body: F.STATEMENT, hits: null, shelf: null, slug: null, kind: 'info' };
+  live.innerHTML = F.STATEMENT;
+
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const NUM = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+  const num = (n) => NUM[n] || String(n);
+  const term = (text, ask, slug) => '<span class="term" data-ask="' + esc(ask) + '"' +
+    (slug ? ' data-slug="' + slug + '"' : '') + '>' + esc(text) + '</span>';
+  const door = (s) => term(s.title, s.title, s.slug);
+  const stack = () => [...past.children].filter((e) => !e.classList.contains('leave'));
+
+  /* ── one door for every ask ────────────────────────────────────── */
+  function house(text) {
+    const q = (text || '').trim();
+    if (/^info$/i.test(q)) return { q, kind: 'info', hits: [], line: '' };
+    if (/^connect$/i.test(q)) return Object.assign(F.ask('contact'), { q });
+    return F.ask(q);
+  }
+
+  /* ── the answer, as a sentence with doors in it ────────────────── */
+  function compose(a) {
+    if (a.kind === 'info') return F.STATEMENT;
+    const n = a.hits.length, first = a.hits[0];
+    const short = a.q.split(/\s+/).length <= 3 && !/\?/.test(a.q);
+    const asked = short ? 'You asked about ' + esc(a.q) + '.'
+      : 'You asked ' + F.quote(esc(a.q)) + (/[?.!]$/.test(a.q) ? '' : '.');
+    if (a.kind === 'shelf') {
+      const name = F.shelfOf(a.shelf).name;
+      return 'The ' + term(name, name) + ' shelf. ' + num(n) + (n === 1 ? ' study' : ' studies') +
+        (n ? ', ' + door(first) + ' first.' : '.');
+    }
+    if (a.kind === 'all') return 'All of it. ' + esc(a.line);
+    if (a.kind === 'contact') return esc(a.line);
+    if (a.kind !== 'hits') return asked + ' ' + esc(a.line);
+    if (n === 1) return asked + ' One: ' + door(first) + '. ' + esc(first.line);
+    return asked + ' ' + num(n) + ' studies, ' + door(first) + ' first, dealt beside.';
+  }
+
+  function go(text, slug) {
+    const a = house(text);
+    if (a.kind === 'empty' || (a.kind === 'info' && current.kind === 'info')) return;
+    if (slug) {
+      trail.opened.push(slug);
+      const i = a.hits.findIndex((s) => s.slug === slug);
+      if (i !== 0) { if (i > 0) a.hits.splice(i, 1); a.hits.unshift(F.S.find((s) => s.slug === slug)); }
+      if (a.kind === 'miss') a.kind = 'hits';
+    } else if (a.shelf) trail.shelves.push(a.shelf);
+    else if (a.kind === 'hits' || a.kind === 'miss') trail.asked.push(a.q);
+    asks += 1;
+    const seen = /^(hits|shelf|all|miss)$/.test(a.kind);
+    render({ body: compose(a), hits: seen ? a.hits.map((s) => s.slug) : null, shelf: a.shelf || null,
+      slug: slug || (a.hits[0] ? a.hits[0].slug : null), kind: a.kind }, null);
+  }
+
+  /* ── the rewrite: old line drops, new line enters, rest slides ─── */
+  function render(rec, from) {
+    if (rec.body === current.body && !from) return;
+    const rows = [live, prompt, ...stack()].filter((e) => e !== from);
+    const tops = rows.map((e) => e.getBoundingClientRect().top);
+    if (from) ghost(from);
+    const old = live;
+    old._rec = current; old.classList.remove('enter'); old.tabIndex = 0;
+    past.prepend(old);
+    live = F.el('p', 'statement enter'); live.innerHTML = rec.body + nextTerm(rec);
+    slot.prepend(live);
+    rows.forEach((e, i) => {
+      const d = tops[i] - e.getBoundingClientRect().top;
+      if (d) e.animate([{ transform: 'translateY(' + d + 'px)' }, { transform: 'none' }], { duration: 600, easing: EASE });
+    });
+    old.animate([{ color: '#000' }, { color: GREY }], { duration: 600, easing: 'ease' });
+    const s = stack(); while (s.length > 5) ghost(s.pop());
+    current = rec; field.value = '';
+    side.querySelectorAll('.study').forEach((r) => r.classList.toggle('off', !!rec.hits && !rec.hits.includes(r.dataset.slug)));
+    rail.querySelectorAll('[data-tag]').forEach((c) => c.classList.toggle('on', c.dataset.tag === rec.shelf));
+  }
+
+  function ghost(el) {
+    el.style.cssText += ';position:absolute;top:' + el.offsetTop + 'px;left:0;right:0;pointer-events:none';
+    el.classList.add('leave'); past.appendChild(el);
+    el.addEventListener('animationend', () => el.remove(), { once: true });
+  }
+
+  function nextTerm(rec) {
+    if (!asks) return '';
+    const p = F.predict(trail, rec.slug);
+    setWhy(p.why.charAt(0).toUpperCase() + p.why.slice(1) + '.');
+    return ' <span class="term next" data-ask="' + esc(p.study.title) + '" data-slug="' + p.study.slug + '">Next, ' +
+      esc(p.study.title) + '?</span>';
+  }
+
+  function setWhy(text) {
+    if (why.textContent === text) return;
+    why.classList.remove('enter'); why.classList.add('leave'); clearTimeout(why._t);
+    why._t = setTimeout(() => {
+      why.textContent = text; why.classList.remove('leave'); void why.offsetWidth; why.classList.add('enter');
+    }, 240);
+  }
+
+  /* ── the doors: terms, the field, the rail, the rows, the past ─── */
+  slot.addEventListener('click', (e) => {
+    const t = e.target.closest('.term'); if (t) go(t.dataset.ask, t.dataset.slug || null);
+  });
+  past.addEventListener('click', (e) => {
+    const p = e.target.closest('.statement'); if (p && p._rec) render(p._rec, p);
+  });
+  past.addEventListener('keydown', (e) => {
+    const p = e.target.closest('.statement'); if (p && p._rec && e.key === 'Enter') render(p._rec, p);
+  });
+  field.addEventListener('keydown', (e) => {
+    const v = field.value.trim();
+    if (e.key === 'Enter') { e.preventDefault(); if (v) go(v); return; }
+    if (e.key === 'Escape') { if (field.value) field.value = ''; else if (current.kind !== 'info') go('Info'); return; }
+    if (e.key === 'ArrowUp' && !field.value) { const p = stack()[0]; if (p) { e.preventDefault(); render(p._rec, p); } return; }
+    if (e.key === 'Tab' && !e.shiftKey && !field.value) { const n = live.querySelector('.next'); if (n) { e.preventDefault(); n.click(); } }
+  });
+  F.SHELVES.forEach((sh) => {
+    const c = F.el('button', 'chip', sh.name); c.type = 'button'; c.dataset.line = sh.name; c.dataset.tag = sh.tag;
+    $('#shelves').appendChild(c);
+  });
+  rail.addEventListener('click', (e) => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    field.value = c.dataset.line; /* the chip writes the line; the house reads it a beat later */
+    setTimeout(() => go(c.dataset.line), 160);
+  });
+  F.S.forEach((s) => { const r = F.studyRow(s); r.tabIndex = 0; side.appendChild(r); });
+  const openRow = (r) => { const s = F.S.find((x) => x.slug === r.dataset.slug); if (s) go(s.title, s.slug); };
+  side.addEventListener('click', (e) => { const r = e.target.closest('.study'); if (r) openRow(r); });
+  side.addEventListener('keydown', (e) => { const r = e.target.closest('.study'); if (r && e.key === 'Enter') openRow(r); });
+
+  F.tour((text) => { field.placeholder = text; }, { paused: () => document.activeElement === field || !!field.value });
+})();
+</script>
+</body>
+</html>

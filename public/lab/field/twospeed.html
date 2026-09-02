@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Two Speeds · keystrokes filter, sentences ask</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  html { scroll-behavior: smooth; }
+  .rail { position: sticky; top: 0; align-self: start; }
+  .rail .first { margin-top: 40px; }
+  .ask { margin-top: 40px; }
+  .ask > .label { margin-bottom: 2px; }
+  .lab { min-height: 17px; margin-top: 10px; }
+  .field.guess::placeholder { color: var(--grey); }
+  .now { margin-top: 40px; }
+  .now p { margin: 0; }
+  .now .tha { margin-top: 8px; }
+  .now .cat { display: block; margin-top: 6px; }
+  .now img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px;
+    margin: 18px 0 14px; background: var(--chip); }
+  /* the record is smaller than the answer: what was said once, kept, not said again */
+  .hist { margin-top: 50px; }
+  .hist .line { cursor: pointer; }
+  .hist .line:focus-visible { outline: 0; }
+  .hist .thq, .hist .tha { font-size: 16px; letter-spacing: -0.02em; }
+  .hist .tha { margin-top: 2px; }
+  .hist .line + .line { margin-top: 18px; }
+  .hist .tag { font-style: normal; font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--grey); margin-left: 8px; vertical-align: 0.15em; }
+  .hist .line:hover .thq > span, .hist .line:focus-visible .thq > span { text-decoration: underline;
+    text-decoration-color: var(--faint); text-underline-offset: 0.15em; }
+  .side .study { cursor: pointer; }
+  .side .study:focus-visible { outline: 0; }
+  .side .study:focus-visible b { text-decoration: underline; text-decoration-color: var(--ink);
+    text-underline-offset: 0.15em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail" id="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group first">
+      <button class="chip" type="button" data-ask="/ Info">/ Info</button>
+      <button class="chip" type="button" data-ask="/ Connect">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <p class="statement" id="stmt"></p>
+    <div class="ask">
+      <div class="label">Or just ask me:</div>
+      <input class="field" id="fc" type="text" autocomplete="off" spellcheck="false" aria-label="Filter or ask" />
+      <div class="label lab" id="lab"></div>
+    </div>
+    <div class="now" id="now"></div>
+    <div class="hist" id="hist"></div>
+  </div>
+  <div class="side" id="side"></div>
+</div>
+<div class="about"><b>Two Speeds.</b> Keystrokes filter, sentences ask. While you type, the field is a filter and the work dims at once. Press Enter and the same words are a question the house answers and keeps. A pause is kept too, tagged, so the record tells looking from asking. The question it answers: can the return key be the only mode? <a href="index.html">← all nine</a></div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── Two Speeds ─────────────────────────────────────────────────────
+   One field, two verbs, and the return key is the difference. Every
+   keystroke is a filter: the index dims to what the text catches, at
+   once, with no history and no sentence from the house, because
+   looking is cheap and should cost nothing. Enter is a question: the
+   same text goes through the same brain, but now the house answers
+   in a line and the exchange is kept. A filter is kept too, but only
+   when the reader pauses on it for 1.2 seconds, and it is tagged, so
+   the record shows what was asked apart from what was merely looked
+   for. The rail's chips type into the field at 30ms a character
+   rather than setting a state, so a chip and a keyboard are visibly
+   the same act. When the field is empty and something has happened,
+   the placeholder is the house's guess and Enter takes it.
+   Why it might be right: search and chat differ in cost, not in
+   kind. Letting the speed of the act decide which one it was means
+   the reader never has to choose a mode first. */
+(() => {
+  const F = window.FIELD, S = F.S, el = F.el;
+  const $ = (id) => document.getElementById(id);
+  const fc = $('fc'), lab = $('lab'), now = $('now'), hist = $('hist'), side = $('side'), rail = $('rail');
+  const PAUSE = 1200, TYPE = 30;
+  let history = [], cur = null, guessed = null, pending = 0, typing = 0;
+
+  /* ── one brain for both speeds; the rail's two offers fold into it ── */
+  const INFO = 'Jeremy Prasatik makes things across brand, product and place. ' + S.length + ' studies, five shelves, one field.';
+  const read = (text) => {
+    const t = text.replace(/^\/\s*/, '').trim(), low = t.toLowerCase();
+    if (low === 'info') return { q: t, kind: 'info', hits: S.slice(), line: INFO };
+    if (low === 'connect') return Object.assign(F.ask('reach'), { q: t });
+    return F.ask(t);
+  };
+  const trail = () => ({
+    opened: history.filter((e) => e.slug).map((e) => e.slug).reverse(),
+    shelves: history.filter((e) => e.shelf).map((e) => e.shelf).reverse(),
+    asked: history.filter((e) => e.tag === 'asked' && !e.slug && !e.shelf).map((e) => e.q).reverse(),
+    dwell: {} });
+
+  /* ── the out and the in ─────────────────────────────────────────── */
+  const swap = (box, make) => {
+    box._make = make;
+    const old = box.firstElementChild;
+    const put = () => { const m = box._make; box._make = null; if (!m) return; const n = m(); if (n) { n.classList.add('enter'); box.appendChild(n); } };
+    if (!old) return put();
+    if (old.classList.contains('leave')) return;
+    old.classList.remove('enter'); old.classList.add('leave');
+    old.addEventListener('animationend', () => { old.remove(); put(); }, { once: true });
+  };
+  /* the count is a readout and just changes; the why is a line and enters */
+  const relabel = (text, quiet) => {
+    if (lab.textContent === text) return;
+    lab.textContent = text; lab.classList.remove('enter');
+    if (!quiet) { void lab.offsetWidth; lab.classList.add('enter'); }
+  };
+
+  /* ── speed one: every keystroke filters, and nothing is said ────── */
+  const dim = (hits) => {
+    const on = hits ? new Set(hits.map((s) => s.slug)) : null;
+    side.querySelectorAll('.study').forEach((r) => r.classList.toggle('off', !!on && !on.has(r.dataset.slug)));
+  };
+  const mark = (tag) => rail.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', !!tag && c.dataset.tag === tag));
+  const filter = () => {
+    clearTimeout(pending);
+    const t = fc.value.trim();
+    cur = t ? read(t) : null;
+    dim(cur ? cur.hits : null);
+    mark(cur && cur.shelf);
+    if (!cur) return rest();
+    fc.classList.remove('guess');
+    relabel(cur.hits.length ? cur.hits.length + ' match' : 'nothing matches', true);
+    if (cur.hits.length) pending = setTimeout(() => keep({ tag: 'filter', q: cur.q, shelf: cur.shelf }), PAUSE);
+  };
+  /* the field at rest: the tour before anything happened, the house's guess after */
+  const rest = () => {
+    if (!history.length) { fc.classList.remove('guess'); guessed = null; relabel(''); return; }
+    guessed = F.predict(trail(), history[0].slug || null);
+    fc.classList.add('guess'); fc.placeholder = 'Next · ' + guessed.study.title;
+    relabel(guessed.why);
+  };
+  const tourCtl = F.tour((text) => { fc.placeholder = text; },
+    { paused: () => history.length > 0 || document.activeElement === fc || !!fc.value });
+
+  /* ── speed two: Enter asks the same text, and the exchange is kept ── */
+  const ask = () => {
+    clearTimeout(pending); clearTimeout(typing);
+    const t = fc.value.trim();
+    if (!t) return guessed ? open(guessed.study, 'Next · ' + guessed.study.title) : typeInto(tourCtl.current(), ask);
+    const a = read(t);
+    swap(now, () => el('p', 'tha', a.line));
+    keep({ tag: 'asked', q: a.q, line: a.line, shelf: a.shelf });
+    fc.value = ''; dim(a.hits.length || a.kind === 'miss' ? a.hits : null); mark(a.shelf); rest();
+  };
+  const open = (s, q) => {
+    clearTimeout(pending); clearTimeout(typing);
+    swap(now, () => head(s));
+    keep({ tag: 'asked', q: q || s.title, line: s.line, slug: s.slug });
+    fc.value = ''; dim([s]); mark(null); rest(); fc.focus();
+  };
+  const head = (s) => {
+    const h = el('div', 'head');
+    h.appendChild(el('p', 'thq', s.title)); h.appendChild(el('span', 'label cat', s.cat)); h.appendChild(el('p', 'tha', s.line));
+    const im = el('img'); im.src = s.cover; im.alt = s.title; h.appendChild(im);
+    const a = el('a', 'meta ul', 'See the study'); a.href = '/case-studies/' + s.slug; h.appendChild(a);
+    return h;
+  };
+
+  /* ── the record, newest first, each line tagged with which speed it was ── */
+  const keep = (e) => {
+    const top = history[0];
+    if (top && top.q === e.q && top.tag === e.tag && top.slug === e.slug) return;
+    const put = () => { const row = rowOf(e); row.classList.add('enter'); hist.prepend(row); };
+    if (top && top.tag === 'filter' && e.tag === 'asked' && top.q === e.q) {
+      /* a pause then Enter is one act: the filter line becomes the asked one */
+      history.shift(); const r = hist.firstElementChild; r.classList.remove('enter'); r.classList.add('leave');
+      r.addEventListener('animationend', () => { r.remove(); put(); }, { once: true });
+    } else put();
+    history.unshift(e);
+  };
+  const rowOf = (e) => {
+    const r = el('div', 'line'); r.tabIndex = 0; r.setAttribute('role', 'button');
+    const q = el('div', 'thq'); q.appendChild(el('span', null, e.q)); q.appendChild(el('i', 'tag', e.tag)); r.appendChild(q);
+    if (e.line) r.appendChild(el('div', 'tha', e.line));
+    const go = () => rerun(e);
+    r.addEventListener('click', go);
+    r.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+    return r;
+  };
+  const rerun = (e) => e.slug ? open(S.find((s) => s.slug === e.slug), e.q) : typeInto(e.q, e.tag === 'asked' ? ask : null);
+
+  /* ── a chip types; it never sets a state the keyboard could not ── */
+  const typeInto = (text, then) => {
+    clearTimeout(typing); fc.value = ''; fc.focus();
+    let i = 0;
+    const step = () => {
+      fc.value = text.slice(0, ++i); filter();
+      if (i < text.length) typing = setTimeout(step, TYPE); else if (then) typing = setTimeout(then, 120);
+    };
+    step();
+  };
+
+  fc.addEventListener('input', filter);
+  fc.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); ask(); }
+    else if (e.key === 'Tab' && !e.shiftKey && !fc.value && guessed) { e.preventDefault(); ask(); }
+    else if (e.key === 'Escape') { clearTimeout(typing); fc.value = ''; filter(); }
+  });
+  F.SHELVES.forEach((sh) => { const b = el('button', 'chip', sh.name); b.type = 'button'; b.dataset.ask = sh.name; b.dataset.tag = sh.tag; $('shelves').appendChild(b); });
+  rail.addEventListener('click', (e) => { const c = e.target.closest('.chip'); if (c) typeInto(c.dataset.ask, c.dataset.tag ? null : ask); });
+  const stmt = $('stmt'); stmt.innerHTML = F.STATEMENT;
+  stmt.querySelectorAll('.term').forEach((t) => { t.tabIndex = 0; t.setAttribute('role', 'button'); });
+  stmt.addEventListener('click', (e) => { const t = e.target.closest('.term'); if (t) typeInto(t.dataset.ask, ask); });
+  stmt.addEventListener('keydown', (e) => { const t = e.target.closest('.term'); if (t && e.key === 'Enter') typeInto(t.dataset.ask, ask); });
+  S.forEach((s) => { const r = F.studyRow(s); r.tabIndex = 0; r.setAttribute('role', 'button'); side.appendChild(r); });
+  const pick = (r) => open(S.find((s) => s.slug === r.dataset.slug));
+  side.addEventListener('click', (e) => { const r = e.target.closest('.study'); if (r) pick(r); });
+  side.addEventListener('keydown', (e) => { const r = e.target.closest('.study'); if (r && e.key === 'Enter') pick(r); });
+  rest();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Ghost</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  /* the field and its ghost share one box: the ghost is a layer under
+     the input, same type, same metrics, grey, so the suggestion reads
+     as the rest of the sentence you are already typing */
+  .askbox { position: relative; margin-top: 6px; }
+  .askbox .ghost { position: absolute; left: 0; top: 0; right: 0;
+    padding: 4px 0 0; pointer-events: none; white-space: pre; overflow: hidden;
+    font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em;
+    color: var(--grey); }
+  .askbox .ghost .typed { color: transparent; }
+  .askbox .field { position: relative; background: transparent; }
+  .askbox .field::placeholder { color: transparent; }
+  .askbox.empty .field::placeholder { color: var(--ink); }
+  /* once the house has a guess, the guess is the line; the tour's
+     placeholder would only paint under it */
+  .askbox.hasghost .field::placeholder { color: transparent; }
+  .why { margin-top: 8px; min-height: 1.2em; }
+  .why .k { color: var(--faint); }
+  .answer { margin-top: 28px; }
+  .log { margin-top: 40px; }
+  .log .line { position: relative; }
+  .log .thq { font-size: 20px; }
+  .log .tha { font-size: 20px; margin-top: 4px; }
+  .head { margin-top: 24px; }
+  .head img { display: block; width: 100%; height: auto; border-radius: 14px; margin-top: 14px; }
+  .head .go { display: inline-block; margin-top: 12px; font-size: 13px; }
+  kbd { font: inherit; font-size: 11px; letter-spacing: 0.04em; color: var(--grey);
+    border: 1px solid var(--rule); border-radius: 6px; padding: 1px 6px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group" style="margin-top:40px">
+      <button class="chip" data-ask="How do I reach you?">/ Info</button>
+      <button class="chip" data-ask="How do I reach you?">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <p class="statement" id="stmt"></p>
+    <p class="statement" style="margin-top:14px">Or just ask me:</p>
+    <div class="askbox empty" id="askbox">
+      <div class="ghost" id="ghost"></div>
+      <input class="field" id="q" type="text" autocomplete="off" spellcheck="false" aria-label="Ask the house" />
+    </div>
+    <div class="label why" id="why"></div>
+    <div id="answer"></div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="side" id="side"></div>
+  <div class="about"><b>The Ghost.</b> The prediction is not a line under the field, it is the rest of the sentence you are typing, in grey, ahead of the caret. <kbd>→</kbd> or <kbd>Tab</kbd> accepts it, <kbd>↑</kbd> recalls the last question, <kbd>Enter</kbd> on an empty field takes the house's guess. The question it answers: can the prediction live inside the field itself, the way a shell's does? <a href="index.html">← all nine</a></div>
+</div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── THE GHOST ─────────────────────────────────────────────────────
+   fish's autosuggestion, borrowed whole. The field is one input; the
+   house's guess renders as grey text on a layer beneath it, aligned
+   glyph for glyph, so the suggestion reads as the rest of the line
+   already being typed rather than as a control beside it. What the
+   ghost proposes depends on what has been typed: nothing typed, the
+   house's next study by the trail; a prefix typed, the first study,
+   shelf or tour question that starts with it. Right arrow or Tab
+   takes the whole ghost; Enter asks what stands; up recalls. Nothing
+   else is on the page but the answer and the log, which is the point:
+   the whole interaction fits in one line and its shadow. */
+const F = window.FIELD;
+const q = document.getElementById("q"), ghostEl = document.getElementById("ghost");
+const box = document.getElementById("askbox"), whyEl = document.getElementById("why");
+const answerEl = document.getElementById("answer"), logEl = document.getElementById("log");
+const side = document.getElementById("side");
+document.getElementById("stmt").innerHTML = F.STATEMENT;
+
+const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+let current = null, history = [], hIndex = -1, ghostText = "", ghostKind = "";
+
+/* the studies, and the shelves as chips */
+F.S.forEach((s) => side.appendChild(F.studyRow(s)));
+F.SHELVES.forEach((sh) => {
+  const c = F.el("button", "chip", sh.name); c.dataset.ask = sh.name;
+  document.getElementById("shelves").appendChild(c);
+});
+const dim = (hits) => {
+  const on = hits ? new Set(hits.map((s) => s.slug)) : null;
+  side.querySelectorAll(".study").forEach((r) => r.classList.toggle("off", !!on && !on.has(r.dataset.slug)));
+};
+
+/* ── what the ghost proposes ─────────────────────────────────────── */
+const candidates = () => {
+  const c = [];
+  F.SHELVES.forEach((s) => c.push({ text: s.name, kind: "shelf" }));
+  F.S.forEach((s) => c.push({ text: s.title, kind: "study", study: s }));
+  F.TOUR.forEach((t) => c.push({ text: t, kind: "ask" }));
+  return c;
+};
+function ghost() {
+  const typed = q.value;
+  box.classList.toggle("empty", !typed);
+  let g = "", kind = "", why = "";
+  if (!typed) {
+    const p = F.predict(trail, current && current.slug);
+    if (history.length || trail.shelves.length) {
+      g = "Next · " + p.study.title; kind = "next";
+      /* two studies share a name (the Hill Country kitchen and bath),
+         so the category rides along with the reason */
+      why = p.study.cat + " · " + p.why;
+      q.placeholder = "";
+    }
+  } else {
+    const lower = typed.toLowerCase();
+    const hit = candidates().find((c) => c.text.toLowerCase().startsWith(lower) && c.text.length > typed.length);
+    if (hit) { g = hit.text; kind = hit.kind;
+      why = hit.kind === "study" ? hit.study.cat : hit.kind === "shelf" ? "a shelf" : "a question the house likes"; }
+  }
+  ghostText = g; ghostKind = kind;
+  box.classList.toggle("hasghost", !!g);
+  ghostEl.innerHTML = "";
+  if (g) {
+    const t = F.el("span", "typed", typed);
+    const rest = F.el("span", null, g.slice(typed.length));
+    ghostEl.appendChild(t); ghostEl.appendChild(rest);
+  }
+  whyEl.innerHTML = "";
+  if (g && why) { whyEl.appendChild(F.el("span", "k", kind === "next" ? "→ to take it · " : "→ completes · ")); whyEl.appendChild(document.createTextNode(why)); }
+}
+
+/* ── asking ──────────────────────────────────────────────────────── */
+function show(node) {
+  const old = answerEl.firstChild;
+  if (old) { old.classList.add("leave"); setTimeout(() => old.remove(), 260); }
+  node.classList.add("enter");
+  setTimeout(() => answerEl.appendChild(node), old ? 200 : 0);
+}
+function openStudy(s, why) {
+  current = s; trail.opened.push(s.slug);
+  const h = F.el("div", "head");
+  const t = F.el("div", "thq", s.title + " "); t.appendChild(F.el("span", "dim", s.cat));
+  h.appendChild(t); h.appendChild(F.el("div", "tha", s.line));
+  if (why) h.appendChild(F.el("div", "label", why));
+  const im = F.el("img"); im.src = s.cover; im.alt = ""; h.appendChild(im);
+  const go = F.el("a", "go ul", "See the study"); go.href = "/case-studies/" + s.slug; h.appendChild(go);
+  show(h); dim([s]);
+  log(s.title, why || s.cat);
+}
+function log(qText, aText) {
+  history.push(qText); hIndex = history.length;
+  const line = F.el("div", "line enter");
+  line.appendChild(F.el("div", "thq", qText)); line.appendChild(F.el("div", "tha", aText));
+  logEl.insertBefore(line, logEl.firstChild);
+  while (logEl.children.length > 8) { const last = logEl.lastChild; last.classList.add("leave"); setTimeout(() => last.remove(), 260); break; }
+}
+function ask(text) {
+  text = (text || "").trim(); if (!text) return;
+  const study = F.S.find((s) => s.title.toLowerCase() === text.toLowerCase());
+  if (study) { openStudy(study); q.value = ""; ghost(); return; }
+  const a = F.ask(text);
+  if (a.kind === "shelf") trail.shelves.push(a.shelf); else trail.asked.push(text);
+  current = null;
+  show(F.el("div", "tha", a.line));
+  dim(a.hits.length ? a.hits : null);
+  log(text, a.line);
+  q.value = ""; ghost();
+}
+function take() {
+  if (!ghostText) return false;
+  if (ghostKind === "next") { const p = F.predict(trail, current && current.slug); q.value = ""; openStudy(p.study, p.why); ghost(); return true; }
+  q.value = ghostText; ghost(); return true;
+}
+
+/* ── keys ────────────────────────────────────────────────────────── */
+q.addEventListener("input", ghost);
+q.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" && q.selectionStart === q.value.length && ghostText) { e.preventDefault(); take(); return; }
+  if (e.key === "Tab" && ghostText) { e.preventDefault(); take(); return; }
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (!q.value && ghostKind === "next") { take(); return; }
+    ask(q.value || ghostText); return;
+  }
+  if (e.key === "Escape") { q.value = ""; current = null; dim(null); ghost(); return; }
+  if (e.key === "ArrowUp" && history.length) { e.preventDefault(); hIndex = Math.max(0, hIndex - 1); q.value = history[hIndex]; ghost(); return; }
+  if (e.key === "ArrowDown" && history.length) { e.preventDefault(); hIndex = Math.min(history.length, hIndex + 1); q.value = history[hIndex] || ""; ghost(); }
+});
+/* the rail and the terms write into the same line */
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-ask]"); if (!t) return;
+  const text = t.dataset.ask; let i = 0; q.value = ""; q.focus();
+  const type = () => { i += 1; q.value = text.slice(0, i); ghost(); if (i < text.length) setTimeout(type, 28); else setTimeout(() => ask(text), 220); };
+  type();
+});
+side.addEventListener("click", (e) => {
+  const r = e.target.closest(".study"); if (!r) return;
+  openStudy(F.S.find((s) => s.slug === r.dataset.slug));
+});
+
+/* the tour, until something has happened */
+const rot = F.tour((txt, word) => { if (!history.length && !trail.shelves.length) q.placeholder = txt; },
+  { paused: () => document.activeElement === q || q.value.length > 0 || history.length > 0 });
+ghost();
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Readout · the field</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  .rail { position: sticky; top: 0; align-self: start; }
+  /* the caption sticks at the nav line; the study and the list pass under it */
+  .cap { position: sticky; top: var(--nav); background: var(--paper); padding: 0 0 22px; z-index: 2; }
+  .ro { font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em;
+    min-height: 2.4em; margin: 0; cursor: text; outline: 0; white-space: pre-wrap; overflow-wrap: anywhere;
+    text-decoration: underline; text-decoration-color: transparent;
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.3s ease, opacity 0.15s ease; }
+  .ro:focus-visible { text-decoration-color: var(--faint); }
+  .ro.editing, .ro.editing:focus { text-decoration-color: var(--ink); caret-color: var(--ink); }
+  .ro.flip { opacity: 0; }
+  .next { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 0; margin-top: 8px;
+    cursor: pointer; font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em;
+    color: var(--grey); transition: color 0.3s ease; }
+  .next:hover, .next:focus-visible { color: var(--ink); outline: 0; }
+  .back { border: 0; background: none; padding: 0; cursor: pointer; display: block; }
+  .back:hover, .back:focus-visible { color: var(--ink); outline: 0; }
+  .opened { margin-top: 6px; }
+  .cover { width: 100%; height: auto; display: block; border-radius: 10px; background: var(--chip); margin-top: 14px; }
+  .opened .t { display: block; font-size: 16px; font-weight: 600; margin-top: 16px; }
+  .opened .c { font-size: 13px; color: var(--grey); margin-top: 2px; }
+  .opened .l { font-size: 16px; line-height: 1.4; color: var(--grey); margin: 12px 0 0; }
+  .see { display: inline-block; margin-top: 14px; font-size: 13px; }
+  .earlier { margin-top: 44px; padding-bottom: 80px; }
+  .earlier .label { margin-bottom: 6px; }
+  .h { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 7px 0; cursor: pointer;
+    font-size: 13px; line-height: 1.3; color: var(--grey); border-top: 1px solid var(--rule); transition: color 0.3s ease; }
+  .h:hover, .h:focus-visible { color: var(--ink); outline: 0; }
+  .side { padding-bottom: 40vh; }
+  .side .study { cursor: pointer; }
+  .side .study:focus-visible { outline: 0; }
+  .side .study:focus-visible b, .side .study:hover b { text-decoration: underline; text-decoration-color: var(--faint);
+    text-underline-offset: 0.15em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group" style="margin-top:40px">
+      <button class="chip" type="button" data-ask="What inspires you?">/ Info</button>
+      <button class="chip" type="button" data-ask="How do I reach you?">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="main">
+    <div class="cap">
+      <p class="ro" id="ro" tabindex="0" role="textbox" aria-label="Where you are"></p>
+      <button class="next" id="next" type="button"></button>
+    </div>
+    <div id="open"></div>
+    <div class="earlier" id="earlier" hidden><div class="label">Earlier</div><div id="hist"></div></div>
+  </div>
+  <div class="side" id="side"></div>
+</div>
+<div class="about">
+  <b>The Readout.</b> There is no input at rest. The line at the top says where you are, what is lit and what the house
+  would show next, and it keeps saying so as you scroll. Click the line and the caption becomes the field, in place.
+  The question it answers: what if the field were the site's own status line.
+  <a href="index.html">← all nine</a>
+</div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── the mechanism ─────────────────────────────────────────────────
+   One element is the whole field. At rest it is a caption computed
+   from three things: the filter (a shelf or a question), the scroll
+   (the lit row nearest the top) and the open study. Clicking it turns
+   the same element editable with its words selected, so typing
+   replaces the caption and Enter asks; the caption then reads the
+   answer back. Every discrete caption is a state, and the states you
+   left are the history, each remembering its filter and its scroll.
+   The rail's chips type into the same line and go through the same
+   ask. Why it might be right: a status line is already the one line
+   people read first, so making it the one line they write in adds no
+   surface, only a caret. */
+(() => {
+  const F = window.FIELD, $ = (s) => document.querySelector(s);
+  const ro = $("#ro"), nextBtn = $("#next"), openEl = $("#open"), earlier = $("#earlier"), histEl = $("#hist");
+  const NAV = 54, LINE = NAV + 24;
+  const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+  const rows = F.S.map((s) => { const r = F.studyRow(s); r.tabIndex = 0; r.setAttribute("role", "button"); $("#side").appendChild(r); return r; });
+  const byslug = (slug) => F.S.find((x) => x.slug === slug);
+  let state = null, hist = [], study = null, openedAt = 0;
+  let editing = false, before = "", shown = "", flipId = 0, anchor = 0, gliding = 0, nextSlug = null, raf = 0;
+
+  /* out, then in */
+  const swap = (el, fn) => { el.classList.add("leave");
+    setTimeout(() => { fn(); el.classList.remove("leave"); el.classList.add("enter"); }, 280); };
+  document.addEventListener("animationend", (e) => { if (e.animationName === "enter") e.target.classList.remove("enter"); });
+  function say(t, big) {
+    if (t === shown) return; shown = t;
+    if (big) return swap(ro, () => { ro.textContent = t; });
+    const k = ++flipId; ro.classList.add("flip");            /* scroll rewrites are lighter, or they lag the hand */
+    setTimeout(() => { if (k !== flipId) return; ro.textContent = t; ro.classList.remove("flip"); }, 150);
+  }
+
+  /* ── the caption's words ───────────────────────────────────────── */
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  function caption(a) {
+    if (!a || a.kind === "all") return "All work · " + F.S.length + " studies";
+    if (a.kind === "shelf") return F.shelfOf(a.shelf).name + " · " + a.hits.length + " of " + F.S.length;
+    if (a.kind === "hits") return cap(a.q) + " · " + (a.hits.length === 1 ? "One study, " + a.hits[0].title
+      : a.hits.length + " studies, " + a.hits[0].title + " first");
+    if (a.kind === "contact") return cap(a.q) + " · hello@reckon.house";
+    if (a.kind === "miss") return cap(a.q) + " · Nothing caught";
+    return cap(a.q) + " · " + a.line.replace(/\.$/, "");
+  }
+  const rowTop = (r) => r.getBoundingClientRect().top + window.scrollY - LINE;
+
+  /* ── the one door every state walks through ────────────────────── */
+  function go(s, y) {
+    if (state) { state.scrollY = window.scrollY; hist = [state].concat(hist.filter((h) => h !== s)).slice(0, 6); }
+    if (study && study !== s.study) trail.dwell[study] = (trail.dwell[study] || 0) + Date.now() - openedAt;
+    state = s;
+    rows.forEach((r) => r.classList.toggle("off", !!s.hits && !s.hits.includes(r.dataset.slug)));
+    if ((s.study || null) !== study) { showStudy(s.study || null); study = s.study || null; openedAt = Date.now(); }
+    if (y != null) { gliding = Date.now() + 900; anchor = y; window.scrollTo({ top: y, behavior: "smooth" }); }
+    else anchor = window.scrollY;
+    say(s.text, true); mark(); renderHist(); predict();
+  }
+  function ask(text) {
+    const a = F.ask(text); if (a.kind === "empty") return;
+    if (a.kind === "shelf") trail.shelves.push(a.shelf); else trail.asked.push(text);
+    const hits = a.kind === "all" ? null : a.hits.length ? a.hits.map((x) => x.slug) : state.hits;  /* a reply with no studies leaves the filter alone */
+    const s = { q: a.q, shelf: a.shelf || null, hits, fcap: caption(a), study: null };
+    s.text = s.fcap;
+    const first = a.hits.length && a.kind !== "all" ? rows.find((r) => r.dataset.slug === a.hits[0].slug) : null;
+    go(s, first ? rowTop(first) : a.kind === "all" ? 0 : undefined);
+  }
+  /* a chip types into the line first, then asks, so the line is seen to be the field */
+  function type(text) { say(cap(text), true); setTimeout(() => ask(text), 320); }
+  function openStudy(slug, scroll) {
+    const s = byslug(slug); trail.opened.push(slug);
+    const r = rows.find((x) => x.dataset.slug === slug);
+    go({ q: state.q, shelf: state.shelf, hits: state.hits, fcap: state.fcap, study: slug, text: s.title + " · " + s.cat },
+      scroll ? rowTop(r) : undefined);
+  }
+  function closeStudy() {
+    if (!study) return;
+    go({ q: state.q, shelf: state.shelf, hits: state.hits, fcap: state.fcap, study: null, text: state.fcap });
+  }
+  function restore(h) { hist = hist.filter((x) => x !== h); go(Object.assign({}, h), h.scrollY); }
+  function accept() { if (nextSlug) openStudy(nextSlug, true); }
+
+  /* ── what hangs under the caption ──────────────────────────────── */
+  function showStudy(slug) {
+    const old = openEl.firstElementChild;
+    const build = () => {
+      if (!slug) return;
+      const s = byslug(slug), b = F.el("div", "opened enter");
+      const close = F.el("button", "back label", "Close"); close.type = "button"; close.addEventListener("click", closeStudy);
+      const im = F.el("img", "cover"); im.src = s.cover; im.alt = s.title;
+      const a = F.el("a", "see ul", "See the study"); a.href = "/case-studies/" + s.slug;
+      [close, im, F.el("b", "t", s.title), F.el("div", "c", s.cat), F.el("p", "l", s.line + " " + s.rest), a]
+        .forEach((x) => b.appendChild(x));
+      openEl.appendChild(b);
+    };
+    if (old) { old.classList.add("leave"); setTimeout(() => { old.remove(); build(); }, 280); } else build();
+  }
+  function renderHist() {
+    swap(earlier, () => {
+      histEl.replaceChildren(...hist.map((h) => { const b = F.el("button", "h", h.text); b.type = "button";
+        b.addEventListener("click", () => restore(h)); return b; }));
+      earlier.hidden = !hist.length;
+    });
+  }
+  function predict() {
+    const p = F.predict(trail, study || undefined); nextSlug = p.study.slug;
+    swap(nextBtn, () => { nextBtn.textContent = "Next · " + p.study.title + ", " + p.why; });
+  }
+  function mark() {
+    document.querySelectorAll(".rail .chip").forEach((ch) =>
+      ch.classList.toggle("on", ch.dataset.tag ? ch.dataset.tag === state.shelf : ch.dataset.ask === state.q));
+  }
+
+  /* ── the scroll is the caption's third input ───────────────────── */
+  function onScroll() {
+    if (editing || study || Date.now() < gliding) return;
+    if (Math.abs(window.scrollY - anchor) < 60) return say(state.text);
+    const lit = rows.filter((r) => !r.classList.contains("off"));
+    const cur = lit.find((r) => r.getBoundingClientRect().bottom > LINE) || lit[lit.length - 1];
+    if (!cur) return say(state.text);
+    say("Now · " + byslug(cur.dataset.slug).title + " · " + (lit.indexOf(cur) + 1) + " of " + lit.length);
+  }
+  addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; onScroll(); }); }, { passive: true });
+
+  /* ── the caption becomes the field, in place ───────────────────── */
+  function edit() {
+    if (editing) return; editing = true; before = ro.textContent;
+    try { ro.contentEditable = "plaintext-only"; } catch (e) { ro.contentEditable = "true"; }
+    ro.classList.add("editing"); ro.focus();
+    const r = document.createRange(); r.selectNodeContents(ro);
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  }
+  function done(restore) {           /* the typed words stay for the fade when they are about to be asked */
+    if (!editing) return; editing = false;
+    ro.contentEditable = "false"; ro.classList.remove("editing");
+    if (restore) ro.textContent = before;
+    ro.blur();
+  }
+  ro.addEventListener("click", () => edit());
+  ro.addEventListener("blur", () => done(true));
+  ro.addEventListener("keydown", (e) => {
+    if (!editing) {
+      if (e.key === "Enter" || (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey)) { edit(); if (e.key === "Enter") e.preventDefault(); }
+      return;
+    }
+    if (e.key === "Enter") { e.preventDefault(); const t = ro.textContent.trim();
+      if (t && t !== before) { done(false); ask(t); } else done(true); }
+    else if (e.key === "Escape") { e.preventDefault(); done(true); }
+    else if (e.key === "Tab") { e.preventDefault(); done(true); accept(); }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (editing || e.target.matches("input, [contenteditable=true], [contenteditable=plaintext-only]")) return;
+    if (e.key === "/") { e.preventDefault(); edit(); }
+    else if (e.key === "Escape") { if (study) closeStudy(); else if (state.hits) ask("All work"); }
+  });
+  nextBtn.addEventListener("click", accept);
+  rows.forEach((r) => {
+    const open = () => openStudy(r.dataset.slug, false);
+    r.addEventListener("click", open);
+    r.addEventListener("keydown", (e) => { if (e.key === "Enter") open(); });
+  });
+
+  /* ── the rail ──────────────────────────────────────────────────── */
+  F.SHELVES.forEach((sh) => {
+    const b = F.el("button", "chip", sh.name); b.type = "button"; b.dataset.ask = sh.name; b.dataset.tag = sh.tag;
+    b.addEventListener("click", () => type(b.classList.contains("on") ? "All work" : sh.name));
+    $("#shelves").appendChild(b);
+  });
+  document.querySelectorAll(".rail .chip:not([data-tag])").forEach((b) => b.addEventListener("click", () => type(b.dataset.ask)));
+
+  go({ q: "", shelf: null, hits: null, fcap: caption(null), text: caption(null), study: null });
+})();
+</script>
+</body>
+</html>

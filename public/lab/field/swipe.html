@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Swipe · what to steal</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  .page { grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .intro { padding-top: 111px; max-width: 40em; }
+  .intro .statement { margin-bottom: 18px; }
+  .intro p { color: var(--grey); font-size: 15px; line-height: 1.5; margin: 0 0 12px; max-width: 38em; }
+  .swipe { margin-top: 48px; border-top: 1px solid var(--rule); }
+  .ref { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+    column-gap: 32px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+  .ref .who { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+  .ref .who small { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--grey); margin-top: 5px; }
+  .ref .what { font-size: 14px; line-height: 1.55; color: var(--grey); }
+  .ref .what b { color: var(--ink); font-weight: 600; }
+  .ref .what .take { display: block; margin-top: 8px; color: var(--ink); }
+  .ref .what .take::before { content: "Take: "; color: var(--grey); letter-spacing: 0.04em; font-size: 12px; }
+  h2 { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey);
+    margin: 48px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  h2 + .swipe { border-top: 0; margin-top: 0; }
+  @media (max-width: 860px) { .ref { grid-template-columns: 1fr; row-gap: 8px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div style="margin-top:40px" class="label"><a href="index.html" style="color:inherit;text-decoration:none">← all nine</a></div>
+  </div>
+  <div class="intro">
+    <p class="statement">Swipe. <span class="dim">Who already solved a piece of this, and what the house should take from each.</span></p>
+    <p>Not a mood board. Each of these is an interface where one line of text does more than one job, with a note on the exact move worth stealing and the one worth leaving. Written from memory of using them, so check the live thing before copying a number.</p>
+
+    <h2>Command bars and palettes</h2>
+    <div class="swipe">
+      <div class="ref">
+        <div class="who">Linear<small>Cmd-K</small></div>
+        <div class="what">One field that is search, navigation and every action. What makes it work is not the palette, it is that <b>every result is a verb</b>: "Go to", "Assign", "Filter by". The list never shows a noun without saying what pressing Enter will do.
+          <span class="take">Say the verb. "Interiors" is a noun; "Filter to Interiors, 4 studies" is what the house should show.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Raycast<small>The Mac launcher</small></div>
+        <div class="what">The field remembers, and the memory is ranked: what you ran last is first, what you ran often is next. Empty, it is not empty. It is <b>a prediction of what you want</b>, and it is usually right on the second day.
+          <span class="take">The empty field shows the house's guess, not a placeholder. We have this in the sheet; Raycast says it should be there before you open anything.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Notion<small>The slash menu</small></div>
+        <div class="what">A slash inside prose opens a menu inside prose. The trick is that the menu appears at the caret, so you never leave the sentence you were writing. The rail already says "/ Info". <b>The slash is the house's own punctuation.</b>
+          <span class="take">"/" opens the rail inline, at the caret. The Slash demo tries exactly this.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Arc<small>The address bar as command bar</small></div>
+        <div class="what">Typing goes to one place whether you mean a URL, a search, a tab you already have open or a command. The bar reads intent from the shape of what you typed. <b>The user never chooses a mode.</b>
+          <span class="take">Read the shape: a shelf name filters, a question asks, a study name opens. No mode switch, ever. field.js already does the first two.</span></div>
+      </div>
+    </div>
+
+    <h2>Terminals and shells</h2>
+    <div class="swipe">
+      <div class="ref">
+        <div class="who">The shell prompt<small>bash, zsh, fish</small></div>
+        <div class="what">The line never moves; the paper does. History is above, the cursor is always in the same place, and ↑ recalls. Forty years of people never once asking "where do I type". <b>Position is the affordance.</b>
+          <span class="take">A fixed line low on the page, tried in the Typewriter demo. Also ↑ for the last question, which costs nothing and every keyboard user expects.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">fish shell<small>Autosuggestions</small></div>
+        <div class="what">As you type, the rest of the most likely command appears in grey ahead of the caret, from history. Right arrow accepts. It is <b>prediction as ghost text</b>, inline, never a popup.
+          <span class="take">The house's next study as ghost text in the field itself: "Ne|xt · Dallas Sport Collective". → accepts. Quieter than a line under the field.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Warp<small>Blocks</small></div>
+        <div class="what">Every command and its output are one block, selectable and shareable as a unit. History is not a scrollback, it is a list of things that happened. <b>An exchange is an object.</b>
+          <span class="take">Question and answer as one block in the sheet, with a way to send it. A URL per exchange, which the Ledger demo tries with the hash.</span></div>
+      </div>
+    </div>
+
+    <h2>Search that is also a place</h2>
+    <div class="swipe">
+      <div class="ref">
+        <div class="who">Pentagram<small>"Showing the latest 27 projects"</small></div>
+        <div class="what">The filter is a sentence, and the sentence is the page's own status line. Change a word and the page changes. The homepage's statement already does this. <b>The readout is the control.</b>
+          <span class="take">A line that says where you are and can be edited. The Readout demo makes the caption the input.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Are.na<small>Channels and blocks</small></div>
+        <div class="what">Search results are not a list, they are a place you can keep working in: connect, add, walk sideways to a neighbouring channel. <b>A result is a room, not a row.</b>
+          <span class="take">A question opens a column, not a dropdown. The Columns demo makes the conversation the horizontal axis the board already has.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Google<small>"I'm feeling lucky"</small></div>
+        <div class="what">One button that skips the results and goes straight to the house's best guess. Used by almost no one and yet kept for twenty five years, because it says what the whole page is for. <b>Confidence as a control.</b>
+          <span class="take">Enter on an empty field goes to the house's next study. Not a menu of results; the one it would show you.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Bloomberg terminal<small>The command line at the top of every screen</small></div>
+        <div class="what">Every screen has the same one-line field at the top, and the field takes tickers, functions and questions alike. Traders never look for it because it is <b>always in the same place, on every page</b>.
+          <span class="take">The study pages should carry the same field in the same place as the board. The board's bar is already that bar; it just needs to be on every route.</span></div>
+      </div>
+    </div>
+
+    <h2>Chat that knows where it is</h2>
+    <div class="swipe">
+      <div class="ref">
+        <div class="who">iMessage<small>The compose line</small></div>
+        <div class="what">Newest at the bottom, the field below it, and the thing that makes it feel alive is not the field, it is the typing indicator. <b>The other party is visibly about to speak.</b>
+          <span class="take">The house is typing. When a question is asked, three grey dots for the beat before the line, even though the counting is instant. It reads as a reply, not a lookup.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Superhuman<small>Split-second search and the "snippets"</small></div>
+        <div class="what">Search results narrow with every keystroke and the first result is already selected, so Enter always does something. Nothing waits for a click. <b>Every keystroke changes the page.</b>
+          <span class="take">Filter on keystroke, ask on Enter. Two Speeds tries the split; the lesson from Superhuman is that the first hit is pre-selected so Enter is never a dead key.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Perplexity<small>Related questions under every answer</small></div>
+        <div class="what">Every answer ends with three questions you might ask next, written as questions, not links. It is prediction, but phrased as <b>the next thing to say</b>, so the conversation never has a dead end.
+          <span class="take">The house's next line phrased as a question you could ask: "Want the kitchen from the same house?" instead of "Next · Hill Country home". Same prediction, warmer.</span></div>
+      </div>
+    </div>
+
+    <h2>What to leave</h2>
+    <div class="swipe">
+      <div class="ref">
+        <div class="who">Hover-open menus<small>Mega menus, every airline site</small></div>
+        <div class="what">Tried on the board and thrown out in an afternoon. A pointer crossing the bar unfolded the column; reading meant holding still. <b>A decision closes it, not a drift.</b>
+          <span class="take">Nothing. Click in, click away. Already done.</span></div>
+      </div>
+      <div class="ref">
+        <div class="who">Chat bubbles<small>Left and right, two colours</small></div>
+        <div class="what">Bubbles say "two people". The house is not a second person in a room, it is the room. Ink for what you said, grey for what it said, same type, same column: <b>one voice, two weights.</b>
+          <span class="take">Nothing. The transcript's ink and grey is right; keep it.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

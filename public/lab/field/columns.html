@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Columns · the field</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  /* the rail stays; everything right of it is one horizontal path */
+  .page { grid-template-columns: var(--rail) minmax(0, 1fr); padding-right: 0; }
+  .rail { position: sticky; top: 0; align-self: start; }
+  .strip { position: relative; display: flex; align-items: stretch; min-height: 100dvh;
+    overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; }
+  /* trailing air, sized by script, so the newest column can always reach the left edge with the ghost beside it */
+  .end { flex: 0 0 0; }
+  .col { flex: 0 0 calc(var(--col) + var(--gap)); scroll-snap-align: start;
+    padding: var(--nav) calc(var(--gap) / 2) 80px; border-left: 1px solid var(--rule); }
+  .col.ghost { scroll-snap-align: none; }
+  .top { display: flex; gap: 14px; min-height: 13px; }
+  .back { border: 0; background: none; padding: 0; cursor: pointer; }
+  .back:hover, .back:focus-visible { color: var(--ink); outline: 0; }
+  .col .statement { margin-top: 0; }
+  .col .label.ask { margin-top: 26px; }
+  .ans { font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; margin: 12px 0 0; display: block; }
+  .col .field { margin-top: 18px; }
+  .field.again::placeholder { color: var(--grey); }
+  .rows { margin-top: 26px; border-top: 1px solid var(--rule); }
+  .rows .study { cursor: pointer; }
+  .rows .study:focus-visible { outline: 0; }
+  .rows .study:focus-visible b, .rows .study:hover b { text-decoration: underline; text-decoration-color: var(--faint);
+    text-underline-offset: 0.15em; }
+  .open { font-size: 16px; line-height: 1.4; color: var(--grey); margin: 22px 0 0; }
+  .cover { width: 100%; height: auto; display: block; border-radius: 10px; background: var(--chip); margin-top: 18px; }
+  .see { display: inline-block; margin-top: 16px; font-size: 13px; }
+  .note { margin-top: 44px; font-size: var(--note); line-height: 1.5; color: var(--grey); max-width: 24em; }
+  /* the ghost: the column you have not opened yet, drawn like a ghost chip */
+  .ghosthead { display: block; width: 100%; text-align: left; border: 0; background: transparent; cursor: pointer;
+    padding: 12px 16px 16px; border-radius: 14px; outline: 1px dashed var(--faint); outline-offset: -1px;
+    color: var(--grey); transition: outline-color 0.3s ease; }
+  .ghosthead:hover, .ghosthead:focus-visible { outline-color: var(--grey); }
+  .ghosthead .ans { margin-top: 4px; }
+  .ghosthead .label { display: block; margin-top: 10px; }
+  @media (max-width: 860px) {
+    .page { grid-template-columns: 1fr; padding: 0; }
+    .col { flex-basis: 100vw; padding: var(--nav) 20px 60px; border: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="rail">
+    <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+    <div class="group" style="margin-top:40px">
+      <button class="chip" type="button" data-ask="What inspires you?">/ Info</button>
+      <button class="chip" type="button" data-ask="How do I reach you?">/ Connect</button>
+    </div>
+    <div class="group" id="shelves"></div>
+  </div>
+  <div class="strip" id="strip">
+    <section class="col ghost" id="ghost">
+      <div class="top"><span class="label">Not opened yet</span></div>
+      <button class="ghosthead" id="ghosthead" type="button">
+        <span class="ans" id="gtitle"></span>
+        <span class="label" id="gwhy"></span>
+      </button>
+    </section>
+    <div class="end" id="end"></div>
+  </div>
+</div>
+<div class="about">
+  <b>The Columns.</b> The board already pages sideways through work, so the conversation pages the same way.
+  Every question opens a column to the right, every answer carries its own field, and a glance left is the whole history.
+  The question it answers: what if going back were the same gesture as looking back.
+  <a href="index.html">← all nine</a>
+</div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── the mechanism ─────────────────────────────────────────────────
+   The path is an array of columns, left to right, and the strip is
+   its only view. Every ask appends a column. Asking from an older one
+   truncates the array first, so the row never forks and the history
+   is whatever is to your left. The field lives at the head of every
+   column because the next question is asked from where you stand, and
+   the rail's chips only ever write into that field. The ghost past the
+   newest column is FIELD.predict over the trail, said with its reason,
+   so the house's guess is one more column you have not opened yet.
+   Why it might be right: the board pages sideways already, so a
+   conversation that pages the same way needs no second grammar. */
+(() => {
+  const F = window.FIELD, $ = (s, r) => (r || document).querySelector(s);
+  const strip = $("#strip"), ghost = $("#ghost"), ghostHead = $("#ghosthead");
+  const MAX = 8;
+  const cols = [];                                  /* { el, top, kind, field, q?, shelf?, study?, at } */
+  const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+  let next = null, note = null, tour = null;
+
+  /* out, then in: fade, change, rise */
+  const swap = (el, fn) => { el.classList.add("leave");
+    setTimeout(() => { fn(); el.classList.remove("leave"); el.classList.add("enter"); }, 280); };
+  document.addEventListener("animationend", (e) => { if (e.animationName === "enter") e.target.classList.remove("enter"); });
+  const split = (t) => { const m = t.match(/^(.*?[.?!])(\s.*)?$/s); return m ? [m[1], m[2] || ""] : [t, ""]; };
+
+  const head = () => cols[cols.length - 1];
+  const goTo = (c) => strip.scrollTo({ left: c.el.offsetLeft, behavior: "smooth" });
+  const inView = () => cols.reduce((b, c) =>
+    Math.abs(c.el.offsetLeft - strip.scrollLeft) < Math.abs(b.el.offsetLeft - strip.scrollLeft) ? c : b, cols[0]);
+  const atHead = () => strip.scrollLeft + strip.clientWidth >= head().el.offsetLeft + head().el.offsetWidth - 2;
+  const settle = (c) => { if (c && c.kind === "s") {
+    trail.dwell[c.study.slug] = (trail.dwell[c.study.slug] || 0) + Date.now() - c.at; c.at = Date.now(); } };
+
+  /* ── a column's shell, and its field ───────────────────────────── */
+  function column(kind) {
+    const c = { kind, el: F.el("section", "col " + kind), top: F.el("div", "top") };
+    if (kind !== "root") {
+      const back = F.el("button", "back label", "← back"); back.type = "button";
+      back.addEventListener("click", () => page(-1, c));
+      c.top.appendChild(back);
+    }
+    c.el.appendChild(c.top);
+    return c;
+  }
+  function field(c, again) {
+    const f = F.el("input", "field" + (again ? " again" : "")); f.type = "text";
+    f.autocomplete = "off"; f.spellcheck = false;
+    if (again) f.placeholder = "Ask again";
+    f.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { const t = f.value.trim() || (c.kind === "root" ? tour.current() : ""); if (t) ask(t, c); }
+      else if (e.key === "Escape") { if (f.value) swap(f, () => { f.value = ""; }); else f.blur(); }
+      else if (e.key === "Tab" && !f.value && !e.shiftKey && c === head()) { e.preventDefault(); accept(); }
+    });
+    return f;
+  }
+
+  /* ── the three kinds of column ─────────────────────────────────── */
+  function rootCol() {
+    const c = column("root");
+    const st = F.el("p", "statement"); st.innerHTML = F.STATEMENT;
+    st.querySelectorAll(".term").forEach((t) => t.addEventListener("click", () => type(t.dataset.ask, c)));
+    c.el.appendChild(st);
+    c.el.appendChild(F.el("div", "label ask", "Or just ask me:"));
+    c.field = field(c, false); c.el.appendChild(c.field);
+    note = F.el("p", "note", "Eight columns at most. When a ninth opens, the oldest after this one goes.");
+    c.el.appendChild(note);
+    return c;
+  }
+  function questionCol(a) {
+    const c = column("q"); c.q = a.q; c.shelf = a.shelf;
+    c.top.appendChild(F.el("span", "label", F.quote(a.q)));
+    const [first, rest] = split(a.line);
+    const ans = F.el("p", "ans", first); if (rest) ans.appendChild(F.el("span", "dim", rest));
+    c.el.appendChild(ans);
+    c.field = field(c, true); c.el.appendChild(c.field);
+    if (a.hits.length) {
+      const rows = F.el("div", "rows");
+      a.hits.forEach((s) => {
+        const r = F.studyRow(s); r.tabIndex = 0; r.setAttribute("role", "button");
+        const go = () => truncate(c, () => open(studyCol(s)));
+        r.addEventListener("click", go);
+        r.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+        rows.appendChild(r);
+      });
+      c.el.appendChild(rows);
+    }
+    return c;
+  }
+  function studyCol(s) {
+    const c = column("s"); c.study = s;
+    c.top.appendChild(F.el("span", "label", s.cat));
+    c.el.appendChild(F.el("p", "ans", s.title));
+    c.field = field(c, true); c.el.appendChild(c.field);
+    c.el.appendChild(F.el("p", "open", s.line + " " + s.rest));
+    const im = F.el("img", "cover"); im.src = s.cover; im.alt = s.title; c.el.appendChild(im);
+    const a = F.el("a", "see ul", "See the study"); a.href = "/case-studies/" + s.slug; c.el.appendChild(a);
+    trail.opened.push(s.slug);
+    return c;
+  }
+
+  /* ── the path: append, truncate, cap ───────────────────────────── */
+  function open(c) {
+    const go = () => {
+      settle(head());
+      cols.push(c); c.at = Date.now();
+      strip.insertBefore(c.el, ghost); c.el.classList.add("enter");
+      c.field.focus({ preventScroll: true });
+      requestAnimationFrame(() => goTo(c));
+      predict(); mark();
+    };
+    if (cols.length >= MAX) drop(go); else go();
+  }
+  function truncate(from, then) {
+    const i = cols.indexOf(from), gone = cols.splice(i + 1);
+    if (!gone.length) return then();
+    gone.forEach((c) => { settle(c); c.el.classList.add("leave"); });
+    setTimeout(() => { gone.forEach((c) => c.el.remove()); then(); }, 280);
+  }
+  function drop(then) {
+    const old = cols.splice(1, 1)[0]; settle(old);
+    const w = old.el.offsetWidth; old.el.classList.add("leave");
+    swap(note, () => { note.textContent = "Eight columns at most. " +
+      F.quote(old.q || old.study.title) + " went when the ninth opened."; });
+    setTimeout(() => { old.el.remove(); strip.scrollLeft -= w; then(); }, 280);
+  }
+  function ask(text, from) {
+    const a = F.ask(text);
+    if (a.kind === "empty") return;
+    if (a.kind === "shelf") trail.shelves.push(a.shelf); else trail.asked.push(text);
+    swap(from.field, () => { from.field.value = ""; });
+    truncate(from, () => open(questionCol(a)));
+  }
+  /* a chip or a term writes into the field it would have been typed in, then asks */
+  function type(text, c) {
+    c = c || inView(); c.field.value = text; c.field.focus({ preventScroll: true }); ask(text, c);
+  }
+  function page(d, from) {
+    const i = cols.indexOf(from || inView()) + d;
+    const c = cols[Math.max(0, Math.min(cols.length - 1, i))];
+    goTo(c); c.field.focus({ preventScroll: true });
+  }
+
+  /* ── the ghost, and the rail's state ───────────────────────────── */
+  function predict() {
+    const h = head(), p = F.predict(trail, h.kind === "s" ? h.study.slug : undefined);
+    next = p.study;
+    swap(ghostHead, () => { $("#gtitle").textContent = "Next · " + p.study.title; $("#gwhy").textContent = p.why; });
+  }
+  function accept() { if (next) truncate(head(), () => open(studyCol(next))); }
+  function mark() {
+    document.querySelectorAll(".rail .chip").forEach((ch) => ch.classList.toggle("on", ch.dataset.ask === head().q));
+  }
+  ghostHead.addEventListener("click", accept);
+  document.addEventListener("keydown", (e) => {
+    if (e.target.matches("input") && e.target.value) return;   /* arrows move the caret while there is text */
+    if (e.key === "ArrowLeft") { e.preventDefault(); page(-1); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); if (atHead()) accept(); else page(1); }
+  });
+
+  /* ── the rail ──────────────────────────────────────────────────── */
+  F.SHELVES.forEach((sh) => {
+    const b = F.el("button", "chip", sh.name); b.type = "button"; b.dataset.ask = sh.name; b.dataset.tag = sh.tag;
+    b.addEventListener("click", () => type(sh.name)); $("#shelves").appendChild(b);
+  });
+  document.querySelectorAll(".rail .chip:not([data-tag])").forEach((b) => b.addEventListener("click", () => type(b.dataset.ask)));
+
+  /* ── start: the statement, the tour, the first ghost ───────────── */
+  const root = rootCol();
+  cols.push(root); root.at = Date.now();
+  strip.insertBefore(root.el, ghost);
+  const fit = () => { $("#end").style.flexBasis = Math.max(0, strip.clientWidth - 2 * ghost.offsetWidth) + "px"; };
+  fit(); addEventListener("resize", fit);
+  tour = F.tour((t) => { root.field.placeholder = t; },
+    { paused: () => document.activeElement === root.field || !!root.field.value });
+  predict(); mark();
+})();
+</script>
+</body>
+</html>
