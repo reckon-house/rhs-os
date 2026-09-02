@@ -196,6 +196,15 @@ head = r'''<!doctype html>
   .tile.statement.fd-out, .tile.quote.fd-out {
     opacity: 0; transition: opacity 0.28s ease var(--lag, 0s);
   }
+  /* ── THE RULE GOES WHEN THE FIELD IS ONE THING ────────────────────
+     The standing rule between two columns says "two separate things".
+     In a study the two columns are one spread, so the rule slides out
+     with the sweep — down, on the sweep's own ease — and comes back
+     with the board on the arrival's. The rule between the rail and
+     the field stays: that boundary is still true. */
+  #rules i { transition: transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
+  body.previewing #rules i.mid { transform: translateY(104%);
+    transition: transform 0.45s cubic-bezier(0.5, 0, 0.75, 0); }
   .tile.statement .q { color: rgba(0, 0, 0, 0.42); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
     text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
@@ -731,14 +740,26 @@ function deal(list, opts) {
   const rows = opts.rows || Math.max(8, Math.round((innerHeight * 6) / 560));
   const cols = Math.ceil(sized.length / rows);
   const rowH = new Array(rows);
-  let prevTier = -1;
-  for (let k = 0; k < rows; k += 1) {
-    if (k === 0) { rowH[0] = lead.h; continue; }
-    let t, guard = 0;
-    do { t = tiers[Math.floor(r() * tiers.length)]; }
-    while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
-    prevTier = t;
-    rowH[k] = Math.round(COL * t);
+  if (opts.fitRows) {
+    /* A STUDY'S ROWS FIT THEIR PICTURES. The dealt tiers exist because
+       a row on the board spans fifty columns and one tall stranger
+       must not set it for everyone. A study's field is two columns of
+       one thing, so the trap is gone and the rule can be the plain
+       one: the row is as tall as the taller of its two pictures, and
+       every picture stands at its own full size. */
+    rowH.fill(0);
+    sized.forEach((it, i) => { const k = i % rows;
+      if (it.h > rowH[k]) rowH[k] = it.h; });
+  } else {
+    let prevTier = -1;
+    for (let k = 0; k < rows; k += 1) {
+      if (k === 0) { rowH[0] = lead.h; continue; }
+      let t, guard = 0;
+      do { t = tiers[Math.floor(r() * tiers.length)]; }
+      while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
+      prevTier = t;
+      rowH[k] = Math.round(COL * t);
+    }
   }
   const ys = [TOP0];
   for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
@@ -1115,6 +1136,10 @@ function remount() {
     let el = kids[n];
     if (!el) { el = document.createElement("i"); rulesEl.appendChild(el); }
     el.style.left = rx + "px";
+    /* the rule at a period's own left edge stands between the rail
+       and the field; every other one stands between two columns of
+       the field, and those are the ones a study takes away */
+    el.classList.toggle("mid", ((c % COLS) + COLS) % COLS !== 0);
     n += 1;
   }
   while (kids.length > n) rulesEl.removeChild(kids[kids.length - 1]);
@@ -1347,13 +1372,13 @@ plane.addEventListener("click", (e) => {
    bigger tiers, the cover first. Close it and the board comes back
    exactly where it was left. Walking to the next study is another
    deal, not a page turn. */
-const PREVIEW_SHARES = [0.86, 1];
-/* rows closer to the pictures' own heights and less air between them:
-   the board's ragged bottom is right for a field of strangers, but a
-   landscape under a 1.4 row in a two-column study read as a hole, not
-   as air. The pictures are the point here; let them sit closer. */
-const PREVIEW_TIERS = [0.7, 0.92, 1.18];
-const PREVIEW_AIR = [70, 170];
+/* EVERY PICTURE TAKES THE WHOLE COLUMN — the size the hover would
+   open it to, held. The pictures are the point here; the board's
+   dealt widths are for a field of strangers. And the air between
+   rows is close, so the two columns read as one spread rather than
+   as neighbours. */
+const PREVIEW_SHARES = [1];
+const PREVIEW_AIR = [56, 120];
 const esc = (v) => String(v).replace(/[&<>"]/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const hashOf = (str) => {
@@ -1449,7 +1474,7 @@ function openPreview(target, opts) {
      own seed, so a study deals the same way every time it opens. */
   const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
   const L = deal(shots, { lead, rows, shares: PREVIEW_SHARES,
-    rowTiers: PREVIEW_TIERS, air: PREVIEW_AIR, noCaptions: true,
+    fitRows: true, air: PREVIEW_AIR, noCaptions: true,
     rnd: mkRnd(hashOf(slug)) });
   refield(() => {
     adopt(L);
