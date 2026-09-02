@@ -179,6 +179,23 @@ head = r'''<!doctype html>
     font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
     line-height: 1.22; letter-spacing: -0.04em;
   }
+  /* ── AN OUT AND AN IN, EVERY TIME THE FIELD CHANGES ──────────────
+     Nothing on this board snaps. When the field re-deals, every frame
+     on it is swept out first — the stylesheet's own .fd-out, the
+     curtain closing in the direction it opened, staggered down the
+     page — and only then do the new tiles come, through the same
+     curtain they always arrive by. The text tiles fade the way a
+     note does (.fd-note's own numbers). The rules stay: they are the
+     thing that does not change. */
+  .tile.statement, .tile.quote {
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease var(--lag, 0s),
+      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s);
+  }
+  .tile.statement.fd-on, .tile.quote.fd-on { opacity: 1; transform: none; }
+  .tile.statement.fd-out, .tile.quote.fd-out {
+    opacity: 0; transition: opacity 0.28s ease var(--lag, 0s);
+  }
   .tile.statement .q { color: rgba(0, 0, 0, 0.42); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
     text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
@@ -964,7 +981,7 @@ const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
 let hCool = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
-  if (threadOpen) return;
+  if (threadOpen || dealing) return;
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
     const now = performance.now();
     if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
@@ -977,7 +994,7 @@ field.addEventListener("wheel", (e) => {
 let pxx = 0, pyy = 0, moved = 0;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
-  if (threadOpen) return;
+  if (threadOpen || dealing) return;
   dragging = true; moved = 0;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
@@ -1049,6 +1066,7 @@ const arrive = REDUCE()
     }, { threshold: 0.02 });
 const drifting = [];
 function remount() {
+  if (dealing) return;                /* nothing mounts into a field on its way out */
   lastMount = { x: cur.x, y: cur.y };
   const x0 = cur.x - MARGIN_X, y0 = cur.y - MARGIN_Y;
   const x1 = cur.x + FIELD_W + MARGIN_X, y1 = cur.y + innerHeight + MARGIN_Y;
@@ -1065,8 +1083,8 @@ function remount() {
         if (!live.has(key)) {
           const el = mount(t, gx, gy);
           live.set(key, el);
-          const card = el.querySelector(".fd-it");
-          if (card) fresh.push(card);
+          /* a frame arrives by its card; a text tile by itself */
+          fresh.push(el.querySelector(".fd-it") || el);
         }
       }
     }
@@ -1079,6 +1097,12 @@ function remount() {
      mounts while the tab is throttled still opens when it is looked
      at; the rAF version left every frame shut on a parked page. */
   if (fresh.length) {
+    /* the in cascades down the page: a lag by where each one sits,
+       which the arrival transition already honours as --lag */
+    fresh.map((c) => ({ c, y: c.getBoundingClientRect().top }))
+      .sort((a, b) => a.y - b.y)
+      .forEach(({ c }, i) => c.style.setProperty("--lag",
+        Math.min(0.36, i * 0.05).toFixed(3) + "s"));
     if (window.armDrift) armDrift(fresh);
     fresh.forEach((c) => arrive.observe(c));
   }
@@ -1377,14 +1401,37 @@ let previewOpen = false;
 let currentPreview = null;
 const walk = [];                    /* the row behind you, in order */
 let boardPos = null;                /* where the board was left */
-/* everything mounted goes, and the field starts again at its origin */
-function refield() {
-  for (const el of live.values()) el.remove();
-  live.clear();
-  if (typeof clearPush === "function") clearPush();
-  pageTo(0); tgt.y = START.y; cur.x = tgt.x; cur.y = tgt.y; velY = 0;
-  lastMount = { x: 1e9, y: 1e9 };
-  remount();
+/* ── THE OUT, THEN THE IN ───────────────────────────────────────────
+   Everything mounted is swept out first — frames by their curtain,
+   text by its fade, staggered down the page — and only when the last
+   has gone does the new layout apply and the field mount again, its
+   tiles arriving through the curtain they always arrive by. The pan
+   waits out the sweep. Reduced motion skips straight to the swap. */
+let dealing = false;
+function refield(apply, after) {
+  if (dealing) return;
+  const els = [...live.values()];
+  const go = () => {
+    for (const el of els) el.remove();
+    live.clear();
+    if (typeof clearPush === "function") clearPush();
+    velY = 0;
+    lastMount = { x: 1e9, y: 1e9 };
+    dealing = false;
+    apply();
+    remount();
+    if (after) after();
+  };
+  if (REDUCE() || !els.length) { go(); return; }
+  dealing = true;
+  els.map((el) => ({ el, y: el.getBoundingClientRect().top }))
+    .sort((a, b) => a.y - b.y)
+    .forEach(({ el }, i) => {
+      const target = el.querySelector(".fd-it") || el;
+      target.style.setProperty("--lag", Math.min(0.22, i * 0.03).toFixed(3) + "s");
+      target.classList.add("fd-out");
+    });
+  setTimeout(go, 400 + 220 + 40);   /* the sweep, its last lag, a beat */
 }
 function openPreview(target, opts) {
   opts = opts || {};
@@ -1401,10 +1448,13 @@ function openPreview(target, opts) {
   /* two columns, always; the rows are however many that takes. Its
      own seed, so a study deals the same way every time it opens. */
   const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
-  adopt(deal(shots, { lead, rows, shares: PREVIEW_SHARES,
+  const L = deal(shots, { lead, rows, shares: PREVIEW_SHARES,
     rowTiers: PREVIEW_TIERS, air: PREVIEW_AIR, noCaptions: true,
-    rnd: mkRnd(hashOf(slug)) }));
-  refield();
+    rnd: mkRnd(hashOf(slug)) });
+  refield(() => {
+    adopt(L);
+    pageTo(0); tgt.y = START.y; cur.x = tgt.x; cur.y = tgt.y;
+  }, drawNext);                       /* the head's own next, once it exists */
   previewOpen = true;
   currentPreview = slug;
   document.body.classList.add("previewing");
@@ -1420,13 +1470,12 @@ function closePreview() {
   if (!previewOpen) return;
   previewOpen = false;
   currentPreview = null;
-  adopt(BOARD);
-  refield();
-  if (boardPos) {
-    pageTo(boardPos.col); tgt.y = boardPos.y;
-    cur.x = tgt.x; cur.y = tgt.y;
-    remount();
-  }
+  refield(() => {
+    adopt(BOARD);
+    /* back exactly where the board was left, column and scroll */
+    const col = boardPos ? boardPos.col : 0, y = boardPos ? boardPos.y : START.y;
+    pageTo(col); tgt.y = y; cur.x = tgt.x; cur.y = tgt.y;
+  });
   document.body.classList.remove("previewing");
   nav.classList.remove("previewon");
   if (!threadOpen) nav.classList.remove("threadon");
