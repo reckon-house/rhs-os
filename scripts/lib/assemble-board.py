@@ -314,7 +314,7 @@ head = r'''<!doctype html>
      the sheet rises from it on a phone: one grammar, two edges. */
   #thread {
     position: fixed; z-index: 45;
-    top: var(--nav); bottom: 0;
+    top: 0; bottom: 0;
     left: var(--thread-x, 0px); width: var(--thread-w, 420px);
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -328,13 +328,21 @@ head = r'''<!doctype html>
      drift showed two lines. The panel is inset one pixel INSIDE the
      rules instead: the homepage's own lines stay visible at both
      edges and there is nothing to disagree with them. */
+  /* THE LEDE STANDS WHERE THE LEAD STOOD. The panel starts at the
+     very top and pads down to the cover air, so its lede lands on the
+     statement's own pixels and opening reads as the history unfolding
+     under a sentence that never moved. The bar is glass there, so the
+     panel's paper shows through its band. */
   #threadIn {
-    height: calc(100dvh - var(--nav));
+    height: 100dvh;
     background: var(--paper, #fff);
-    padding: 26px calc(var(--thread-pad, 20px)) 20px;
+    padding: var(--cover-air, 50px) calc(var(--thread-pad, 20px)) 20px
+      calc(var(--thread-pad, 20px) - 1px);
     overflow-y: auto;
     display: flex; flex-direction: column; gap: 22px;
   }
+  /* the house's line yields to the field at display size */
+  .ask.big #askNext { display: none !important; }
   /* the question is a button wearing the sentence's own clothes */
   .askgo { border: 0; background: none; padding: 0; margin: 0;
     font: inherit; color: inherit; letter-spacing: inherit;
@@ -474,6 +482,7 @@ head = r'''<!doctype html>
       rgba(255, 255, 255, 0)); }
   @media (min-width: 761px) { body.previewing #stickyHead { display: block; } }
   .tile.spacer { pointer-events: none; }
+  .tile.head .hd-ask { margin-top: 22px; }
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -576,11 +585,11 @@ head = r'''<!doctype html>
 
 <div id="thread"><div><div id="threadIn">
   <div class="tile statement" id="threadLede"></div>
-  <div id="threadLog"></div>
   <button type="button" class="nextup" id="threadNext" hidden>
     <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
     <span class="nu-why"></span>
   </button>
+  <div id="threadLog"></div>
 </div></div></div>
 
 <!-- the melt: the burn pill's displacement, lifted from the masthead -->
@@ -730,9 +739,10 @@ const STATEMENT_LEAD =
   "I'm Jeremy Prasatik. I make things across <u>brand</u>, <u>product</u>, and <u>place</u>. " +
   "<span class=\"q\"><u>Apps</u> and <u>ecommerce</u>, <u>campaigns</u> and <u>brand systems</u>, " +
   "<u>photography and art direction</u>, <u>custom interiors</u>, <u>AI tools</u>.</span> ";
-const STATEMENT_HTML = STATEMENT_LEAD + (PHONE
+const ASK_TAIL = PHONE
   ? "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">“Marble surfaces”</span></u></button>"
-  : "Or just ask me:<br><span class=\"askslot\" aria-hidden=\"true\"></span>");
+  : "Or just ask me:<br><span class=\"askslot\" aria-hidden=\"true\"></span>";
+const STATEMENT_HTML = STATEMENT_LEAD + ASK_TAIL;
 const smeas = document.createElement("div");
 smeas.className = "tile statement";
 smeas.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
@@ -962,7 +972,10 @@ const readThread = () => {
 };
 const drawThread = () => {
   threadLog.innerHTML = "";
-  for (const en of readThread()) {
+  /* NEWEST FIRST. The field is the column's current line and it sits
+     in the lead, so the exchange just made belongs directly under it,
+     and the older ones fall away below. */
+  for (const en of readThread().slice().reverse()) {
     const box = document.createElement("div");
     const q = document.createElement("div");
     q.className = "thq";
@@ -976,7 +989,21 @@ const drawThread = () => {
     box.appendChild(q); box.appendChild(a);
     threadLog.appendChild(box);
   }
-  threadLog.scrollTop = threadLog.scrollHeight;
+};
+/* THE LEDE IS THE COLUMN'S LEAD, and it ends in the field. On the
+   board that is the statement with its slot; in a study it is the
+   head, given the same invitation, so the entry point is always the
+   big line in the column and never the small one in the bar. Refreshed
+   whenever the lead changes — a study opening or closing under an
+   open column — not only when the column opens. */
+const refreshLede = () => {
+  const lede = document.getElementById("threadLede");
+  if (!lede) return;
+  const study = previewOpen && currentPreview;
+  lede.classList.toggle("head", !!study);
+  lede.innerHTML = study
+    ? headHTML(currentPreview) + '<div class="hd-ask">' + ASK_TAIL + '</div>'
+    : STATEMENT_HTML;
 };
 const openThread = () => {
   if (PHONE || threadOpen) return;
@@ -989,14 +1016,15 @@ const openThread = () => {
      statement itself, rotation and all, so nothing is lost when the
      column opens — the transcript continues from the sentence that
      invited it */
-  const lede = document.getElementById("threadLede");
-  /* the sentence, without the question: the field is parked in the
-     bar while the column is open, and the transcript continues from
-     the sentence that invited it */
-  if (!lede.innerHTML) lede.innerHTML = PHONE ? STATEMENT_HTML : STATEMENT_LEAD;
+  refreshLede();
   drawThread();
   thread.setAttribute("data-on", "");
   nav.classList.add("threadon");
+  /* the field moves to the lede's slot, which stands on the same
+     pixels the statement's did */
+  const tin = document.getElementById("threadIn");
+  if (tin) tin.scrollTop = 0;
+  if (window.placeAsk) placeAsk();
 };
 const closeThread = () => {
   if (!threadOpen) return;
@@ -1007,6 +1035,7 @@ const closeThread = () => {
   applyTextDim();
   const q = document.getElementById("query");
   if (q) q.blur();
+  if (window.placeAsk) placeAsk();
 };
 const submitQ = (text) => {
   text = (text || "").trim();
@@ -1614,6 +1643,7 @@ function openPreview(target, opts) {
   });
   previewOpen = true;
   currentPreview = slug;
+  if (threadOpen) { refreshLede(); drawThread(); placeAsk(); }
   document.body.classList.add("previewing");
   nav.classList.add("threadon", "previewon"); /* the bar's close serves both */
   /* the trail: you opened it, and it joins the row behind you */
@@ -1627,6 +1657,7 @@ function closePreview() {
   if (!previewOpen) return;
   previewOpen = false;
   currentPreview = null;
+  if (threadOpen) { refreshLede(); drawThread(); placeAsk(); }
   const sticky = document.getElementById("stickyHead");
   sticky.classList.add("fd-out");        /* leaves with the sweep */
   refield(() => {
@@ -2212,12 +2243,19 @@ function placeAsk() {
      run; the flag is set once they have */
   if (!window.__askReady || PHONE || !askEl) return;
   const fieldL = field.getBoundingClientRect().left;
-  const st = previewOpen ? null : live.get("0:0:0");
+  /* the slot the field rides: the open column's lede while the
+     history is unfolded, else the statement standing in the plane */
+  const tin = document.getElementById("threadIn");
+  const lede = threadOpen ? document.getElementById("threadLede") : null;
+  const st = lede || (previewOpen ? null : live.get("0:0:0"));
   const slot = st ? st.querySelector(".askslot") : null;
   const sr = slot ? slot.getBoundingClientRect() : null;
   const on = !!sr && sr.height > 0 && sr.right > fieldL + 8 && sr.bottom > 0;
   const drop = on ? Math.max(0, sr.top + sr.height / 2 - NAV_H / 2) : 0;
-  const total = on ? Math.max(1, sr.top + cur.y + sr.height / 2 - NAV_H / 2) : 1;
+  /* the travel's length is the slot's centre in the space that
+     scrolls — the panel's while it is open, the plane's otherwise */
+  const scrolled = threadOpen && tin ? tin.scrollTop : cur.y;
+  const total = on ? Math.max(1, sr.top + scrolled + sr.height / 2 - NAV_H / 2) : 1;
   const p = Math.min(1, drop / total);
   if (on) askLastCol = { left: sr.left, w: sr.width };
   const col = askLastCol || { left: fieldL + GAP / 2, w: COL * 0.63 };
@@ -2239,6 +2277,10 @@ function placeAsk() {
 }
 window.placeAsk = placeAsk;
 window.__askReady = true;
+{
+  const tin = document.getElementById("threadIn");
+  if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
+}
 /* ── THE FIELD OPENS ON HOVER ───────────────────────────────────────
    The field is the whole conversation collapsed to one line; rest on
    it and it opens down the column with the history; leave and it
