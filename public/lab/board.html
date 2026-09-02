@@ -311,55 +311,34 @@
   @media (min-width: 761px) {
     #nav.previewon #nextUp:not([hidden]) { display: block; }
   }
-  #pvNext { margin: 0 0 18px; font-size: 13px; }
-  @media (max-width: 760px) {
-    #preview[data-on] #pvNext:not([hidden]) { display: block; }
-  }
 
-  /* ── THE PREVIEW: a study, down the column it was tapped in ───────
-     The same panel the thread uses, pointed at a different content —
-     every picture the study holds, at column width, scrollable, with
-     the way to the study itself at its head. The column it opens in
-     is the column the tile was in: the field pages there first, so
-     the preview always arrives in the slot the eye was already on. */
-  #preview {
-    position: fixed; z-index: 46;
-    top: var(--nav); bottom: 0;
-    left: var(--thread-x, 0px); width: var(--thread-w, 420px);
-    display: grid; grid-template-rows: 0fr;
-    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
-    pointer-events: none;
-  }
-  #preview[data-on] { grid-template-rows: 1fr; pointer-events: auto; }
-  #preview > div { overflow: hidden; min-height: 0; }
-  #previewIn {
-    height: calc(100dvh - var(--nav));
-    background: var(--paper, #fff);
-    padding: 26px var(--thread-pad, 20px) 40px;
-    overflow-y: auto; -webkit-overflow-scrolling: touch;
-  }
-  #previewHead { margin-bottom: 22px; }
-  #previewHead .pvt {
+  /* ── THE PREVIEW IS THE FIELD, DEALT TO ONE STUDY ─────────────────
+     Not a panel over the board: the board itself, re-dealt. The
+     study's head takes the statement's slot — name, category, its
+     own opening line, the door to the study — and every picture it
+     holds follows across both columns, at the bigger tiers, in the
+     same rows and rules and sides and hover the board has. Nothing
+     new to learn; the field simply has one thing in it. */
+  .tile.head .hd-t {
     font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
     line-height: 1.22; letter-spacing: -0.04em;
   }
-  #previewHead .pvs { color: rgba(0, 0, 0, 0.42); }
-  /* the study's own opening line, at the rail's reading size — the
-     preview says what the study says, never something written for it */
-  #previewHead .pvd { margin-top: 12px;
-    font-size: 13px; line-height: 1.5; color: var(--ink); }
-  #previewHead .pvq { color: rgba(0, 0, 0, 0.42); }
-  #previewGo {
+  .tile.head .hd-d { margin-top: 12px; font-size: 13px; line-height: 1.5;
+    font-weight: 500; letter-spacing: -0.004em; }
+  .tile.head .hd-go {
     display: inline-block; margin-top: 14px;
-    font-size: 13px; font-weight: 500;
-    padding: 9px 15px; border-radius: 12px;
+    font-size: 13px; font-weight: 500; letter-spacing: -0.004em;
+    line-height: 1.2; padding: 9px 15px; border-radius: 12px;
     background: var(--ink); color: #fff; text-decoration: none;
   }
-  #previewIn figure { margin: 0 0 18px; }
-  #previewIn img { display: block; width: 100%; height: auto;
-    border-radius: 14px; background: rgba(0, 0, 0, 0.04); }
-  #previewCount { font-size: 11px; letter-spacing: 0.04em;
-    color: rgba(0, 0, 0, 0.35); margin: 4px 0 18px; }
+  .tile.head .hd-n { margin-top: 14px; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.3; color: rgba(0, 0, 0, 0.35); }
+  /* the house's next rides the head on a phone, where the bar has no
+     room for it; on a desktop the bar carries it and this stays shut */
+  .tile.head .hd-next { margin-top: 16px; font-size: 13px; }
+  @media (max-width: 760px) {
+    .tile.head .hd-next:not([hidden]) { display: block; }
+  }
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -445,16 +424,6 @@
   <div class="ptw"><div class="ptstack" id="ptwT"></div></div>
   <div class="ptb"><div class="ptstack" id="ptbT"></div></div>
 </div>
-
-<div id="preview"><div><div id="previewIn">
-  <button type="button" class="nextup" id="pvNext" hidden>
-    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
-    <span class="nu-why"></span>
-  </button>
-  <div id="previewHead"></div>
-  <div id="previewCount"></div>
-  <div id="previewImgs"></div>
-</div></div></div>
 
 <div id="thread"><div><div id="threadIn">
   <div class="tile statement" id="threadLede"></div>
@@ -625,91 +594,112 @@ smeas.remove();
    one. The covers still lead in the homepage's order, and the period
    height is COMPUTED from the rows rather than aimed at, so the
    vertical wrap is exact. */
-const tiles = [];
 /* Content starts clear of the masthead. It still SCROLLS under it —
    that is what the burn pill is for — but nothing should be born
    beneath the bar, least of all the statement. */
 const NAV_H = px("--nav", 54);
 const TOP0 = NAV_H + (PHONE ? 30 : 46);
-
-/* size pass: every item's box, before anything is seated */
-let prevShare = -1, sinceCol = 0;
-const sized = [{ kind: "statement", w: COL, h: STATEMENT_H }];
-for (const it of items) {
-  let w = COL, h;
-  if (it.kind === "quote") h = quoteH(it);
-  else {
-    let share, guard = 0;
-    do { share = SHARES[Math.floor(rnd() * SHARES.length)]; }
-    while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
-    /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ─────────────────────
-       CLAUDE.md's rule, applied where it bites: native width / DPR is
-       the largest honest CSS width. It steps DOWN THE TIERS rather
-       than picking an arbitrary width, so a small file lands on the
-       same ladder as everything else; only if even the smallest tier
-       would magnify it does it take its honest width outright. */
-    const honest = Math.min(768, it.w) / DPR;
-    while (COL * share > honest && share > SHARES[0]) {
-      share = SHARES[SHARES.indexOf(share) - 1];
-    }
-    prevShare = share;
-    w = Math.min(Math.round(COL * share), Math.round(honest));
-    h = Math.round(w * (it.h / it.w));
-    if (h > COL * 1.6) h = Math.round(COL * 1.6);
-    if (GROUPS[it.g]) h += CAP_H;
-  }
-  sized.push({ ...it, w, h });
-}
-
-/* ── THE ROWS ARE DEALT, THE CONTENT FITS THE ROWS ─────────────────
-   Row height = max(content) was the trap: one tall portrait anywhere
-   in a row's fifty columns inflated that row for everyone, and the
-   front page lost its grid to a stranger three screens to the right.
-   So the heights are DEALT — tiers off the seed, shared by every
-   column, the same move the phone grid makes with its shapes — and a
-   tile taller than its row renders SMALLER rather than pushing
-   fifty columns down. An image scaled to its row is honest thumbnail
-   behavior; a row scaled to one image was weather.
-
-   Row zero is the statement's own: nothing in the first row stands
-   taller than the intro, so the field opens level. Quotes are text
-   and cannot scale — a long one spends its row's air instead, which
-   the air can afford. */
-const ROWS = Math.max(8, Math.round((innerHeight * 6) / 560));
-const COLS = Math.ceil(sized.length / ROWS);
 const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
-const rowH = new Array(ROWS);
-let prevTier = -1;
-for (let r = 0; r < ROWS; r += 1) {
-  if (r === 0) { rowH[0] = STATEMENT_H; continue; }
-  let t, guard = 0;
-  do { t = ROW_TIERS[Math.floor(rnd() * ROW_TIERS.length)]; }
-  while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
-  prevTier = t;
-  rowH[r] = Math.round(COL * t);
-}
-const coverCol = {};
-const rowY = [TOP0];
-for (let r = 0; r < ROWS; r += 1) rowY.push(rowY[r] + rowH[r] + air());
-PH = rowY[ROWS];
-sized.forEach((it, i) => {
-  const c = Math.floor(i / ROWS), r = i % ROWS;
-  let { w, h } = it;
-  if (it.kind === "img") {
-    const budget = rowH[r] - (GROUPS[it.g] ? CAP_H : 0);
-    if (h - (GROUPS[it.g] ? CAP_H : 0) > budget) {
-      const imgH = h - (GROUPS[it.g] ? CAP_H : 0);
-      const f = budget / imgH;
-      w = Math.max(60, Math.round(w * f));
-      h = budget + (GROUPS[it.g] ? CAP_H : 0);
+
+/* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
+   The whole placement is a function of a list, so the field can be
+   dealt to everything — the board — or to one study, and the same
+   rows, rules, sides and hover hold either way. The board: the
+   statement leads, the covers follow in the homepage's order, the
+   archive after, on the seed. A study: its head leads in the
+   statement's slot and every picture it holds follows, across exactly
+   two columns at the bigger tiers. The preview is the field itself,
+   not a panel over it. */
+let tiles = [], ROWS = 0, COLS = 0, PW = 0, rowY = [], coverCol = {};
+function deal(list, opts) {
+  opts = opts || {};
+  const r = opts.rnd || rnd;
+  const shares = opts.shares || SHARES;
+  const tiers = opts.rowTiers || ROW_TIERS;
+  const lead = opts.lead;
+  const [airMin, airMax] = opts.air || [AIR_MIN, AIR_MAX];
+  const airOf = () => airMin + r() * (airMax - airMin);
+  const capOf = (it) => (GROUPS[it.g] && !opts.noCaptions) ? CAP_H : 0;
+
+  /* size pass: every item's box, before anything is seated */
+  let prevShare = -1;
+  const sized = [lead];
+  for (const it of list) {
+    let w = COL, h;
+    if (it.kind === "quote") h = quoteH(it);
+    else {
+      let share, guard = 0;
+      do { share = shares[Math.floor(r() * shares.length)]; }
+      while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
+      /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ───────────────────
+         CLAUDE.md's rule, applied where it bites: native width / DPR
+         is the largest honest CSS width. It steps DOWN THE TIERS
+         rather than picking an arbitrary width, so a small file lands
+         on the same ladder as everything else; only if even the
+         smallest tier would magnify it does it take its honest width
+         outright. */
+      const honest = Math.min(768, it.w) / DPR;
+      while (COL * share > honest && share > shares[0]) {
+        share = shares[shares.indexOf(share) - 1];
+      }
+      prevShare = share;
+      w = Math.min(Math.round(COL * share), Math.round(honest));
+      h = Math.round(w * (it.h / it.w));
+      if (h > COL * 1.6) h = Math.round(COL * 1.6);
+      h += capOf(it);
     }
+    sized.push({ ...it, w, h });
   }
-  tiles.push({ ...it, w, h, x: c * MOD_X, y: rowY[r], col: c });
-  /* where each study's cover lives, so a study can be walked to */
-  if (it.c != null && it.g && coverCol[it.g] == null) coverCol[it.g] = c;
-});
-const PW = COLS * MOD_X;
-meas.remove();
+
+  /* ── THE ROWS ARE DEALT, THE CONTENT FITS THE ROWS ───────────────
+     Row height = max(content) was the trap: one tall portrait
+     anywhere in a row's fifty columns inflated that row for everyone.
+     So the heights are DEALT — tiers off the seed, shared by every
+     column — and a tile taller than its row renders SMALLER rather
+     than pushing fifty columns down. Row zero is the lead's own:
+     nothing in the first row stands taller than the statement, or
+     the study's head, so the field opens level. Quotes are text and
+     cannot scale; a long one spends its row's air. */
+  const rows = opts.rows || Math.max(8, Math.round((innerHeight * 6) / 560));
+  const cols = Math.ceil(sized.length / rows);
+  const rowH = new Array(rows);
+  let prevTier = -1;
+  for (let k = 0; k < rows; k += 1) {
+    if (k === 0) { rowH[0] = lead.h; continue; }
+    let t, guard = 0;
+    do { t = tiers[Math.floor(r() * tiers.length)]; }
+    while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
+    prevTier = t;
+    rowH[k] = Math.round(COL * t);
+  }
+  const ys = [TOP0];
+  for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
+  const out = [], cc = {};
+  sized.forEach((it, i) => {
+    const c = Math.floor(i / rows), k = i % rows;
+    let { w, h } = it;
+    if (it.kind === "img") {
+      const cap = capOf(it), budget = rowH[k] - cap;
+      if (h - cap > budget) {
+        w = Math.max(60, Math.round(w * (budget / (h - cap))));
+        h = budget + cap;
+      }
+    }
+    out.push({ ...it, w, h, x: c * MOD_X, y: ys[k], col: c,
+      noCap: !!opts.noCaptions });
+    /* where each study's cover lives, so a study can be walked to */
+    if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
+  });
+  return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
+    PH: ys[rows], rowY: ys, coverCol: cc };
+}
+function adopt(L) {
+  tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
+  rowY = L.rowY; coverCol = L.coverCol;
+}
+const BOARD = deal(items, { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
+adopt(BOARD);
+
 
 /* ── the bar over its columns, the thread down the chat column ──────
    The field's parked slot and the thread's box are the same geometry:
@@ -771,7 +761,7 @@ const applyTextDim = () => {
   for (const [key, el] of live) {
     if (key.startsWith("R:")) continue;
     const t = tiles[parseInt(key, 10)];
-    const ok = textDim
+    const ok = previewOpen ? true : textDim
       ? (t.kind === "statement" || wordsOf(t).includes(textDim))
       : matches(t);
     el.classList.toggle("dim", !ok);
@@ -923,7 +913,7 @@ const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
 let hCool = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
-  if (threadOpen || previewOpen) return;
+  if (threadOpen) return;
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
     const now = performance.now();
     if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
@@ -936,7 +926,7 @@ field.addEventListener("wheel", (e) => {
 let pxx = 0, pyy = 0, moved = 0;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
-  if (threadOpen || previewOpen) return;
+  if (threadOpen) return;
   dragging = true; moved = 0;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
@@ -985,6 +975,7 @@ field.addEventListener("click", (e) => {
 /* ── the filter ── */
 let MODE = null;
 const matches = (t) => {
+  if (previewOpen) return true;       /* a study's field is all one thing */
   if (!MODE) return true;
   if (t.kind === "statement") return true;
   if (MODE === "staples") return t.kind === "quote" || t.g === "inspiration";
@@ -1070,6 +1061,10 @@ function mount(t, gx, gy) {
   if (t.kind === "statement") {
     el.classList.add("statement");
     el.innerHTML = STATEMENT_HTML;
+  } else if (t.kind === "head") {
+    /* a study's head, in the statement's clothes and its slot */
+    el.classList.add("statement", "head");
+    el.innerHTML = t.html;
   } else if (t.kind === "quote") {
     el.classList.add("quote");
     el.textContent = "“" + t.text + "”";
@@ -1082,6 +1077,9 @@ function mount(t, gx, gy) {
        The frame, the radius, the arrival curtain, the drift slack and
        the caption's setting are all the stylesheet's. */
     const g = GROUPS[t.g];
+    /* in a study's own field the caption would only repeat the head
+       fourteen times, so the pictures go bare */
+    const cap = (g && !t.noCap) ? CAP_H : 0;
     /* a div, not an anchor: the card carries links now, and an
        anchor inside an anchor is a nesting the parser refuses */
     const card = document.createElement("div");
@@ -1089,11 +1087,11 @@ function mount(t, gx, gy) {
     card.style.setProperty("--w", "100%");
     const shot = document.createElement("span");
     shot.className = "shot";
-    shot.style.setProperty("--ar", t.w + " / " + (t.h - (g ? CAP_H : 0)));
+    shot.style.setProperty("--ar", t.w + " / " + (t.h - cap));
     /* what the label rides down by when the frame opens: exactly the
        pixels the 1.32 scale adds to the picture's height */
     card.style.setProperty("--drop",
-      Math.round((1.32 - 1) * (t.h - (g ? CAP_H : 0))) + "px");
+      Math.round((1.32 - 1) * (t.h - cap)) + "px");
     const plate = document.createElement("span");
     plate.className = "plate";
     const img = document.createElement("img");
@@ -1103,7 +1101,7 @@ function mount(t, gx, gy) {
     plate.appendChild(img);
     shot.appendChild(plate);
     card.appendChild(shot);
-    if (g) {
+    if (g && !t.noCap) {
       const lbl = document.createElement("span");
       lbl.className = "lbl";
       lbl.textContent = g.t + " ";
@@ -1265,89 +1263,102 @@ plane.addEventListener("click", (e) => {
   if (pv) { e.preventDefault(); openPreview(pv.closest(".tile")); return; }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
-  if (shot) openPreview(shot.closest(".tile"));
+  if (shot && !previewOpen) openPreview(shot.closest(".tile"));
 });
 
-/* ── THE PREVIEW ────────────────────────────────────────────────────
-   Every picture the study holds, down the column the tile was tapped
-   in — the field pages to that column first, so the preview always
-   arrives in the slot the eye was already on. Full size and
-   scrollable; the way to the study itself sits at its head. */
-const preview = document.getElementById("preview");
+/* ── THE PREVIEW: the field, dealt to one study ─────────────────────
+   Open a study and the board is re-dealt to it: its head where the
+   statement was, every picture it holds across both columns at the
+   bigger tiers, the cover first. Close it and the board comes back
+   exactly where it was left. Walking to the next study is another
+   deal, not a page turn. */
+const PREVIEW_SHARES = [0.86, 1];
+/* rows closer to the pictures' own heights and less air between them:
+   the board's ragged bottom is right for a field of strangers, but a
+   landscape under a 1.4 row in a two-column study read as a hole, not
+   as air. The pictures are the point here; let them sit closer. */
+const PREVIEW_TIERS = [0.7, 0.92, 1.18];
+const PREVIEW_AIR = [70, 170];
+const esc = (v) => String(v).replace(/[&<>"]/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const hashOf = (str) => {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i); h = Math.imul(h, 16777619);
+  }
+  return ((h >>> 0) % 100000) + 1;
+};
+const NEXT_HTML = '<span class="nu-line"><span class="nu-k">Next &middot; </span>' +
+  '<span class="nu-t"></span></span><span class="nu-why"></span>';
+function headHTML(slug) {
+  const g = GROUPS[slug];
+  const n = (window.BOARD_ITEMS || []).filter((i) => i.g === slug).length;
+  /* THE PIPE IS THE STUDY'S OWN SPLIT: every subtitle is written
+     "the fact | the rest", and the cover reads it that way. The
+     head honours the same break, the rest in the statement's grey. */
+  const [fact, ...more] = (g.d || "").split("|");
+  const rest = more.join("|").trim();
+  return '<div class="hd-t">' + esc(g.t) + ' <span class="q">' + esc(g.s) + '</span></div>' +
+    (g.d ? '<div class="hd-d">' + esc(fact.trim()) +
+      (rest ? ' <span class="q">' + esc(rest) + '</span>' : '') + '</div>' : '') +
+    '<a class="hd-go" href="/case-studies/' + esc(g.h || slug) + '">See the full study</a>' +
+    '<div class="hd-n">' + n + (n === 1 ? ' picture' : ' pictures') + '</div>' +
+    '<button type="button" class="nextup hd-next" hidden>' + NEXT_HTML + '</button>';
+}
+/* measured like the statement, with the next line IN PLACE, so the
+   phone's head reserves the room the line will take */
+function measureHead(html) {
+  const m = document.createElement("div");
+  m.className = "tile statement head";
+  m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
+  m.innerHTML = html;
+  m.querySelectorAll(".nextup").forEach((bx) => {
+    bx.hidden = false;
+    bx.querySelector(".nu-t").textContent = "A study";
+    bx.querySelector(".nu-why").textContent = "and why";
+  });
+  document.body.appendChild(m);
+  const h = Math.ceil(m.getBoundingClientRect().height);
+  m.remove();
+  return h;
+}
 let previewOpen = false;
 let currentPreview = null;
 const walk = [];                    /* the row behind you, in order */
+let boardPos = null;                /* where the board was left */
+/* everything mounted goes, and the field starts again at its origin */
+function refield() {
+  for (const el of live.values()) el.remove();
+  live.clear();
+  if (typeof clearPush === "function") clearPush();
+  pageTo(0); tgt.y = START.y; cur.x = tgt.x; cur.y = tgt.y; velY = 0;
+  lastMount = { x: 1e9, y: 1e9 };
+  remount();
+}
 function openPreview(target, opts) {
   opts = opts || {};
   const slug = typeof target === "string"
     ? target : (target && target.dataset ? target.dataset.slug : null);
   const g = slug && GROUPS[slug];
   if (!g) return;
-  /* the column it opens in: the tile's own if one was pressed, else
-     the column the study's cover lives in — so walking to the next
-     study moves the field to where that study actually is */
-  const col = (target && target.dataset)
-    ? Math.round(target.__wx / MOD_X)
-    : (coverCol[slug] != null ? coverCol[slug] : Math.round(cur.x / MOD_X));
-  pageTo(col);
-  cur.x = tgt.x;
-
-  const head = document.getElementById("previewHead");
-  head.innerHTML = "";
-  const t1 = document.createElement("div");
-  t1.className = "pvt";
-  t1.textContent = g.t + " ";
-  const t2 = document.createElement("span");
-  t2.className = "pvs";
-  t2.textContent = g.s;
-  t1.appendChild(t2);
-  const go = document.createElement("a");
-  go.id = "previewGo";
-  go.href = "/case-studies/" + (g.h || slug);
-  go.textContent = "See the full study";
-  head.appendChild(t1);
-  if (g.d) {
-    /* THE PIPE IS THE STUDY'S OWN SPLIT, not a stray character. Every
-       subtitle is written "the fact | the rest", and the cover reads
-       it that way — see PressingCover's statement.split("|"). The
-       preview honours the same break: the fact in ink, the rest in
-       the grey the statement already uses for its continuation. */
-    const [fact, ...more] = g.d.split("|");
-    const d = document.createElement("div");
-    d.className = "pvd";
-    d.textContent = fact.trim() + " ";
-    const rest = more.join("|").trim();
-    if (rest) {
-      const q = document.createElement("span");
-      q.className = "pvq";
-      q.textContent = rest;
-      d.appendChild(q);
-    }
-    head.appendChild(d);
-  }
-  head.appendChild(go);
-
-  const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug);
-  document.getElementById("previewCount").textContent =
-    shots.length + (shots.length === 1 ? " picture" : " pictures");
-  const box = document.getElementById("previewImgs");
-  box.innerHTML = "";
-  shots.forEach((i) => {
-    const fig = document.createElement("figure");
-    const im = document.createElement("img");
-    im.src = encodeURI(i.t);
-    im.alt = "";
-    im.loading = "lazy";
-    im.decoding = "async";
-    fig.appendChild(im);
-    box.appendChild(fig);
-  });
-  document.getElementById("previewIn").scrollTop = 0;
+  if (!previewOpen) boardPos = { col: colIdx, y: tgt.y };
+  const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug)
+    .sort((x, y) => (y.c != null ? 1 : 0) - (x.c != null ? 1 : 0))
+    .map((i) => ({ kind: "img", ...i }));
+  const html = headHTML(slug);
+  const lead = { kind: "head", w: COL, h: measureHead(html), html };
+  /* two columns, always; the rows are however many that takes. Its
+     own seed, so a study deals the same way every time it opens. */
+  const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
+  adopt(deal(shots, { lead, rows, shares: PREVIEW_SHARES,
+    rowTiers: PREVIEW_TIERS, air: PREVIEW_AIR, noCaptions: true,
+    rnd: mkRnd(hashOf(slug)) }));
+  refield();
   previewOpen = true;
-  preview.setAttribute("data-on", "");
+  currentPreview = slug;
+  document.body.classList.add("previewing");
   nav.classList.add("threadon", "previewon"); /* the bar's close serves both */
   /* the trail: you opened it, and it joins the row behind you */
-  currentPreview = slug;
   if (!opts.back) {
     trailLog.opened.push(slug); saveTrail();
     if (walk[walk.length - 1] !== slug) walk.push(slug);
@@ -1358,7 +1369,14 @@ function closePreview() {
   if (!previewOpen) return;
   previewOpen = false;
   currentPreview = null;
-  preview.removeAttribute("data-on");
+  adopt(BOARD);
+  refield();
+  if (boardPos) {
+    pageTo(boardPos.col); tgt.y = boardPos.y;
+    cur.x = tgt.x; cur.y = tgt.y;
+    remount();
+  }
+  document.body.classList.remove("previewing");
   nav.classList.remove("previewon");
   if (!threadOpen) nav.classList.remove("threadon");
 }
@@ -1486,10 +1504,10 @@ function drawNext() {
     box.dataset.slug = nx.slug;
   });
 }
-document.querySelectorAll(".nextup").forEach((box) => {
-  box.addEventListener("click", () => {
-    if (box.dataset.slug) openPreview(box.dataset.slug);
-  });
+/* delegated: the head's own button is mounted fresh with every deal */
+document.addEventListener("click", (e) => {
+  const box = e.target.closest && e.target.closest(".nextup");
+  if (box && box.dataset.slug) openPreview(box.dataset.slug);
 });
 /* the row is walkable: right is the house's pick, left is the way
    you came */
@@ -1560,7 +1578,7 @@ function tick() {
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
     remount();
-  const far = Math.abs(cur.x - START.x) > MOD_X * 1.5 ||
+  const far = previewOpen || Math.abs(cur.x - START.x) > MOD_X * 1.5 ||
     Math.abs(cur.y - START.y) > innerHeight * 1.4;
   if (far !== home.hasAttribute("data-on"))
     far ? home.setAttribute("data-on", "") : home.removeAttribute("data-on");
@@ -2132,6 +2150,7 @@ homeWrap.id = "homewrap";
 homeWrap.appendChild(home);
 document.getElementById("railwrap").appendChild(homeWrap);
 homeRow.h.addEventListener("click", () => {
+  closePreview();
   pageTo(0); tgt.y = START.y; velY = 0;
 });
 
@@ -2239,7 +2258,9 @@ document.addEventListener("click", (e) => {
 });
 
 window.__b = { cur, tgt, START, pageTo, get colIdx() { return colIdx; },
-  MOD_X, COL, GAP, COLS, PW, PH, setMode, checkScale, DPR,
+  MOD_X, COL, GAP, setMode, checkScale, DPR, openPreview, closePreview,
+  get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
+  get previewOpen() { return previewOpen; },
   get MODE() { return MODE; } };
 addEventListener("resize", () => remount(), { passive: true });
 remount();
