@@ -2596,27 +2596,20 @@ window.__askReady = true;
   const tin = document.getElementById("threadIn");
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
-/* ── THE FIELD OPENS ON HOVER ───────────────────────────────────────
-   The field is the whole conversation collapsed to one line; rest on
-   it and it opens down the column with the history; leave and it
-   folds back to the last thing said. A beat before folding, so it
-   never flickers while being read, and never while the cursor is in
-   the input. Pointer only; a phone taps. */
-if (!PHONE && matchMedia("(hover: hover)").matches && askEl) {
-  let foldT = 0;
-  const unfold = () => { clearTimeout(foldT); openThread(); };
-  const fold = () => {
-    clearTimeout(foldT);
-    foldT = setTimeout(() => {
-      if (document.activeElement === askInput) return;
-      closeThread();
-    }, 520);
-  };
-  askEl.addEventListener("pointerenter", unfold);
-  askEl.addEventListener("pointerleave", fold);
-  thread.addEventListener("pointerenter", () => clearTimeout(foldT));
-  thread.addEventListener("pointerleave", fold);
-  askInput.addEventListener("blur", fold);
+/* ── THE FIELD OPENS ON A CLICK ─────────────────────────────────────
+   Hover-open was tried and was too slippery: a pointer crossing the
+   bar unfolded the column, and reading the history meant holding
+   still. So the sheet opens when the field is clicked into — the
+   focus already opens it — and closes on the ×, on Escape, or on a
+   click anywhere outside the sheet and the field. Leaving with the
+   pointer does nothing; a decision closes it, not a drift. */
+if (!PHONE && askEl) {
+  document.addEventListener("pointerdown", (e) => {
+    if (!threadOpen) return;
+    const t = e.target;
+    if (thread.contains(t) || askEl.contains(t)) return;
+    closeThread();
+  });
 }
 
 window.__b = { cur, tgt, START, pageTo, placeAsk, get colIdx() { return colIdx; },
