@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="rh-home">
+<html lang="en" class="rh-home rh-cover">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -124,9 +124,10 @@
     opacity: 0.45;
   }
   /* the statement, at the field's origin — the cover's own setting */
+  /* the homepage's own statement numbers, not a near miss of them */
   .tile.statement {
-    font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
-    line-height: 1.22; letter-spacing: -0.04em;
+    font-size: clamp(20px, 2.4vw, 32px); font-weight: 600;
+    line-height: 1.2; letter-spacing: -0.05em;
   }
   /* ── AN OUT AND AN IN, EVERY TIME THE FIELD CHANGES ──────────────
      Nothing on this board snaps. When the field re-deals, every frame
@@ -156,7 +157,8 @@
     transition: transform 0.45s cubic-bezier(0.5, 0, 0.75, 0); }
   .tile.statement .q { color: rgba(0, 0, 0, 0.42); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
-    text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
+    text-underline-offset: 0.15em; text-decoration-thickness: max(1px, 0.05em);
+    text-decoration-skip-ink: auto; }
 
   /* THE FILTER THAT IS ON STAYS ON. A drawer closes when the pointer
      leaves it, so without this the only sign of an active filter was
@@ -215,9 +217,40 @@
      field is simply still there, pinned in its column's slot in the
      bar. The mail keeps the right edge. */
   @media (min-width: 761px) {
-    #nav { --nav-gutter: var(--gut); }
+    /* 12, the shipped masthead's size, not the lab block's 16: the
+       wordmark read a third too large next to the live site */
+    #nav { --nav-gutter: var(--gut); --nav-size: 12px; }
     #nav .mark { grid-column: 1; justify-self: start; }
   }
+  /* ── THE COVER LINE ───────────────────────────────────────────────
+     Fixed, and moved by the same transform as the plane, so it is
+     page content in every way that matters: it scrolls off with the
+     statement and pages away with the first column. .cover gives it
+     the masthead's 12px and the cap-align the homepage tuned. */
+  #coverline { position: fixed; z-index: 21;
+    top: var(--cover-air, 50px); left: var(--gut); right: var(--gut);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    pointer-events: none; will-change: transform; }
+  #coverline a { pointer-events: auto; }
+  body.previewing #coverline { display: none; }
+  @media (max-width: 760px) {
+    #coverline { display: none; }
+    /* the phone's bar is the sheet's handle: its ends never hide */
+    html.rh-cover #nav [data-mark], html.rh-cover #nav [data-meta] {
+      opacity: 1; visibility: visible; transform: none; }
+  }
+  /* the rail sits under the cover line, where the homepage puts it */
+  @media (min-width: 761px) {
+    #railwrap { top: calc(var(--cover-air, 50px) + 61px); }
+  }
+  /* the room the travelling field takes inside the sentence — the
+     homepage's #askSlot, as a class because the statement is dealt
+     more than once (its wrap copies, the thread's lede) */
+  .askslot { display: inline-block; width: min(9.5em, 92%);
+    height: 1.12em; vertical-align: middle; }
+  /* the house's line in the parked field, at the bar's own size */
+  .ask #askNext { font-size: 12px; }
+  .ask #askNext .nu-why { font-size: 10.5px; }
 
   /* ── THE THREAD: the chat flows down its own column ───────────────
      Click into the field and the column under it becomes the session's
@@ -274,7 +307,10 @@
 
   /* the thread's header IS the statement — same setting, same size,
      the rotation still running inside it */
-  #threadLede { position: static; margin-bottom: 6px; }
+  /* the lede wears the statement's class for its type, not for its
+     arrival: it is always in view when the column is open */
+  #threadLede { position: static; margin-bottom: 6px;
+    opacity: 1; transform: none; }
   /* ── THE TRANSCRIPT SPEAKS IN THE STATEMENT'S OWN VOICE ───────────
      Same size, same weight, same leading — the conversation is a
      continuation of the intro, not a widget under it. The visitor's
@@ -451,7 +487,7 @@
 <body>
 
 <nav id="nav">
-  <div id="navBurn" aria-hidden="true"></div>
+  <div id="navBurn" data-burn aria-hidden="true"></div>
   <div class="ask">
     <input id="query" type="text" placeholder="Ask the house."
       autocomplete="off" autocorrect="off" spellcheck="false"
@@ -464,8 +500,19 @@
   </div>
 
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
-  <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
+  <a class="meta" data-meta href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
+
+<!-- THE COVER'S OWN LINE, in the page and not in the bar: the wordmark
+     over the rail's column, the address over the last column, both in
+     the masthead's type, both scrolling away with the statement. The
+     bar's copies drop in only once these have left the screen — the
+     homepage's handover, lifted whole. It rides the plane by
+     transform, so it pages away with the first column too. -->
+<div id="coverline" class="cover">
+  <span class="covermark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples</span>
+  <span class="covermeta"><a href="mailto:hello@reckon.house">hello@reckon.house</a></span>
+</div>
 
 <div id="stickyHead" class="tile statement head" aria-live="polite"></div>
 
@@ -620,18 +667,30 @@ const quoteH = (q) => {
    leads the thread as its header, rotation still running, so opening
    the conversation never loses the intro: the transcript simply
    continues from the sentence that invited it. */
-const STATEMENT_HTML =
+/* ONE FIELD, NOT TWO. On a desktop the question is not text in the
+   statement: it is the bar's own input, riding a slot reserved inside
+   the sentence at display size, and parking in the bar when the slot
+   scrolls under — the homepage's travelling field, lifted whole. The
+   board had the input in the bar AND a question in the statement, and
+   the two fought. On a phone the bar is at the bottom and the travel
+   has nowhere to go, so there the question stays a line in the
+   statement and the bar keeps the input. */
+const STATEMENT_LEAD =
   "I'm Jeremy Prasatik. I make things across <u>brand</u>, <u>product</u>, and <u>place</u>. " +
   "<span class=\"q\"><u>Apps</u> and <u>ecommerce</u>, <u>campaigns</u> and <u>brand systems</u>, " +
-  "<u>photography and art direction</u>, <u>custom interiors</u>, <u>AI tools</u>.</span> " +
-  "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">“Marble surfaces”</span></u></button>";
+  "<u>photography and art direction</u>, <u>custom interiors</u>, <u>AI tools</u>.</span> ";
+const STATEMENT_HTML = STATEMENT_LEAD + (PHONE
+  ? "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">“Marble surfaces”</span></u></button>"
+  : "Or just ask me:<br><span class=\"askslot\" aria-hidden=\"true\"></span>");
 const smeas = document.createElement("div");
 smeas.className = "tile statement";
 smeas.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
 smeas.innerHTML = STATEMENT_HTML;
 /* measured with the LONGEST question in place, so no rotation entry
-   can ever rewrap the tile past the room it reserved */
-smeas.querySelector(".asktxt").textContent = "“How do I reach you?”";
+   can ever rewrap the tile past the room it reserved; the slot is
+   fixed-size by construction */
+const smAsk = smeas.querySelector(".asktxt");
+if (smAsk) smAsk.textContent = "“How do I reach you?”";
 document.body.appendChild(smeas);
 const STATEMENT_H = smeas.getBoundingClientRect().height;
 smeas.remove();
@@ -653,7 +712,14 @@ smeas.remove();
    that is what the burn pill is for — but nothing should be born
    beneath the bar, least of all the statement. */
 const NAV_H = px("--nav", 54);
-const TOP0 = NAV_H + (PHONE ? 30 : 46);
+/* the cover air, as on the homepage: the statement shares the bar's
+   band at rest, which is fine because the bar is glass there — its
+   ends hidden, its burn off — until the cover line has scrolled under */
+const COVER_AIR = px("--cover-air", 50);
+const TOP0 = PHONE ? 30 : COVER_AIR;
+/* the address stands at the top of the next column, so that column's
+   first frame starts under it: measured on the live page, 61px */
+const META_DROP = PHONE ? 0 : 61;
 const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
@@ -739,20 +805,24 @@ function deal(list, opts) {
       rowH[k] = Math.round(COL * t);
     }
   }
-  const ys = [TOP0];
+  const ys = [opts.top != null ? opts.top : TOP0];
   for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
   const out = [], cc = {};
+  const metaDrop = opts.metaDrop || 0;
   sized.forEach((it, i) => {
     const c = Math.floor(i / rows), k = i % rows;
     let { w, h } = it;
+    /* the first row of every column but the first starts under the
+       address line, as the homepage's does */
+    const drop = (k === 0 && c > 0) ? metaDrop : 0;
     if (it.kind === "img") {
-      const cap = capOf(it), budget = rowH[k] - cap;
+      const cap = capOf(it), budget = rowH[k] - cap - drop;
       if (h - cap > budget) {
         w = Math.max(60, Math.round(w * (budget / (h - cap))));
         h = budget + cap;
       }
     }
-    out.push({ ...it, w, h, x: c * MOD_X, y: ys[k], col: c,
+    out.push({ ...it, w, h, x: c * MOD_X, y: ys[k] + drop, col: c,
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
@@ -764,7 +834,8 @@ function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol;
 }
-const BOARD = deal(items, { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
+const BOARD = deal(items, { lead: { kind: "statement", w: COL, h: STATEMENT_H },
+  metaDrop: META_DROP });
 adopt(BOARD);
 
 
@@ -776,14 +847,15 @@ const field = document.getElementById("field");
 if (!PHONE) {
   const fieldL = field.getBoundingClientRect().left;
   const navEl = document.getElementById("nav");
+  /* fallbacks only: placeAsk() writes the real numbers every frame */
   navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
-  navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
+  navEl.style.setProperty("--ask-w", (COL * 0.63) + "px");
   const root = document.documentElement.style;
   /* the held head: column zero's own text edge, the column's width,
      the top the statement is born at */
   root.setProperty("--head-x", (fieldL + GAP / 2) + "px");
   root.setProperty("--head-w", COL + "px");
-  root.setProperty("--head-top", TOP0 + "px");
+  root.setProperty("--head-top", (NAV_H + 46) + "px");
   /* on the ROOT, not on one panel: the thread and the preview are the
      same column box and both read these, so a var scoped to either
      one left the other on its fallback — a 420px panel at x 0. */
@@ -867,7 +939,10 @@ const openThread = () => {
      column opens — the transcript continues from the sentence that
      invited it */
   const lede = document.getElementById("threadLede");
-  if (!lede.innerHTML) lede.innerHTML = STATEMENT_HTML;
+  /* the sentence, without the question: the field is parked in the
+     bar while the column is open, and the transcript continues from
+     the sentence that invited it */
+  if (!lede.innerHTML) lede.innerHTML = PHONE ? STATEMENT_HTML : STATEMENT_LEAD;
   drawThread();
   thread.setAttribute("data-on", "");
   nav.classList.add("threadon");
@@ -915,7 +990,7 @@ const submitQ = (text) => {
     q.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { closeThread(); return; }
       if (e.key !== "Enter") return;
-      submitQ(q.value);
+      submitQ(q.value || window.__tourWord || "All work");
       q.value = "";
     });
   }
@@ -949,12 +1024,20 @@ const TOUR = ["All work", "Interior projects", "App development",
 (() => {
   const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
   const QQ = (t) => "\u201c" + t + "\u201d";
-  const paint = (t) =>
-    document.querySelectorAll(".asktxt").forEach((el) => { el.textContent = t; });
-  if (REDUCE()) { paint(QQ(TOUR[0])); return; }
   const input = document.getElementById("query");
+  /* onto the FIELD — the placeholder is the question now, at display
+     size in the statement and small in the bar — and onto any .asktxt
+     a phone's statement still carries */
+  const paint = (t) => {
+    document.querySelectorAll(".asktxt").forEach((el) => { el.textContent = t; });
+    if (input && !input.value) input.placeholder = t;
+    if (window.placeAsk) placeAsk();
+  };
+  window.tourFull = QQ(TOUR[0]);
+  if (REDUCE()) { paint(QQ(TOUR[0])); return; }
   let k = 0, i = TOUR[0].length, mode = "hold";
   window.__tourWord = TOUR[0];
+  paint(QQ(TOUR[0]));
   const step = () => {
     if (document.hidden || (input && (document.activeElement === input || input.value))) {
       setTimeout(step, 500); return;
@@ -971,6 +1054,7 @@ const TOUR = ["All work", "Interior projects", "App development",
     if (i <= 0) {
       mode = "in"; k = (k + 1) % TOUR.length;
       window.__tourWord = TOUR[k];
+      window.tourFull = QQ(TOUR[k]);   /* the whole word, for the size */
       setTimeout(step, TYPE_GAP);
     } else setTimeout(step, TYPE_OUT);
   };
@@ -1429,6 +1513,7 @@ function refield(apply, after) {
     dealing = false;
     apply();
     remount();
+    placeAsk();
     if (after) after();
   };
   if (REDUCE() || !els.length) { go(); return; }
@@ -1464,6 +1549,7 @@ function openPreview(target, opts) {
   const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
   const L = deal(shots, { lead, rows, shares: PREVIEW_SHARES,
     fitRows: true, air: PREVIEW_AIR, noCaptions: true,
+    top: NAV_H + 46,                  /* the bar is not glass in a study */
     rnd: mkRnd(hashOf(slug)) });
   refield(() => {
     adopt(L);
@@ -1699,7 +1785,11 @@ function tick() {
   cur.x += (tgt.x - cur.x) * 0.11;
   cur.y += (tgt.y - cur.y) * 0.16;
   plane.style.transform = "translate3d(" + (-cur.x) + "px," + (-cur.y) + "px,0)";
+  /* the cover line is page content: it goes where the plane goes */
+  if (coverline) coverline.style.transform =
+    "translate3d(" + (-(cur.x - START.x)) + "px," + (-cur.y) + "px,0)";
   swapSides();
+  if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
@@ -2383,13 +2473,105 @@ document.addEventListener("click", (e) => {
   playTransition(a.getAttribute("href"), g ? g.t : "", g ? g.s : "");
 });
 
-window.__b = { cur, tgt, START, pageTo, get colIdx() { return colIdx; },
+/* ── THE FIELD, BETWEEN THE STATEMENT AND THE BAR ───────────────────
+   The homepage's own driver, in the board's frame of reference. Drop
+   is measured, never authored: the distance from the reserved slot's
+   centre to the bar's centre, floored at zero — so the field rides
+   with the statement while the slot is on screen and parks the
+   instant it arrives, changing size on the way. Progress is drop over
+   the slot's centre in WORLD space (the slot's screen y plus the pan),
+   so the field is exactly full size at rest and exactly parked when
+   the slot reaches the bar, at any viewport. With no slot in sight —
+   paged away, scrolled past, a study open — it parks at the column it
+   last rode, which is where the house's line and the thread expect
+   it. The same pass reads the cover line and sets the bar's flags:
+   coverbar while the cover's wordmark overlaps the band (the burn
+   waits), headgone once it has left (the bar's ends drop in). */
+const askEl = document.querySelector("#nav .ask");
+const askInput = document.getElementById("query");
+const coverline = document.getElementById("coverline");
+const covermark = coverline ? coverline.querySelector(".covermark") : null;
+const ASK_SMALL = 12;
+const askGhost = document.createElement("span");
+askGhost.setAttribute("aria-hidden", "true");
+askGhost.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;" +
+  "white-space:pre;font-family:inherit;font-weight:700;letter-spacing:-0.045em;font-size:100px";
+document.body.appendChild(askGhost);
+let askLastCol = null;
+const askFit = (text, room, ledeSize) => {
+  const cap = ledeSize
+    ? Math.min(ledeSize, Math.max(21, Math.min(32, innerWidth * 0.024)))
+    : Math.max(21, Math.min(32, innerWidth * 0.024));
+  askGhost.textContent = text || "";
+  const per = askGhost.getBoundingClientRect().width / 100;
+  if (!per || !room) return cap;
+  return Math.max(19, Math.min(cap, (room * 0.985) / per));
+};
+function placeAsk() {
+  /* a top-level function is on window from the first line, so the
+     rotation's first paint reaches this before the consts above have
+     run; the flag is set once they have */
+  if (!window.__askReady || PHONE || !askEl) return;
+  const fieldL = field.getBoundingClientRect().left;
+  const st = previewOpen ? null : live.get("0:0:0");
+  const slot = st ? st.querySelector(".askslot") : null;
+  const sr = slot ? slot.getBoundingClientRect() : null;
+  const on = !!sr && sr.height > 0 && sr.right > fieldL + 8 && sr.bottom > 0;
+  const drop = on ? Math.max(0, sr.top + sr.height / 2 - NAV_H / 2) : 0;
+  const total = on ? Math.max(1, sr.top + cur.y + sr.height / 2 - NAV_H / 2) : 1;
+  const p = Math.min(1, drop / total);
+  if (on) askLastCol = { left: sr.left, w: sr.width };
+  const col = askLastCol || { left: fieldL + GAP / 2, w: COL * 0.63 };
+  const ledeSize = st ? parseFloat(getComputedStyle(st).fontSize) || 0 : 0;
+  const big = askFit(askInput.value || window.tourFull || askInput.placeholder, col.w, ledeSize);
+  askEl.style.setProperty("--ask-left", col.left.toFixed(1) + "px");
+  askEl.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
+  askEl.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
+  askEl.style.setProperty("--ask-fs", (ASK_SMALL + (big - ASK_SMALL) * p).toFixed(2) + "px");
+  askEl.style.setProperty("--ask-ls", (0.04 - 0.09 * p).toFixed(4) + "em");
+  askEl.style.setProperty("--ask-fw", p > 0.35 ? "600" : "500");
+  askEl.classList.toggle("big", p > 0.35);
+  document.body.classList.toggle("attop", p > 0.96);
+  /* the cover line: the wordmark is the gate, as on the homepage */
+  const mk = covermark && !previewOpen ? covermark.getBoundingClientRect() : null;
+  const onPage = !!mk && mk.height > 0 && mk.bottom > 0 && mk.right > 0;
+  document.body.classList.toggle("coverbar", onPage && mk.top < NAV_H);
+  document.body.classList.toggle("headgone", !onPage);
+}
+window.placeAsk = placeAsk;
+window.__askReady = true;
+/* ── THE FIELD OPENS ON HOVER ───────────────────────────────────────
+   The field is the whole conversation collapsed to one line; rest on
+   it and it opens down the column with the history; leave and it
+   folds back to the last thing said. A beat before folding, so it
+   never flickers while being read, and never while the cursor is in
+   the input. Pointer only; a phone taps. */
+if (!PHONE && matchMedia("(hover: hover)").matches && askEl) {
+  let foldT = 0;
+  const unfold = () => { clearTimeout(foldT); openThread(); };
+  const fold = () => {
+    clearTimeout(foldT);
+    foldT = setTimeout(() => {
+      if (document.activeElement === askInput) return;
+      closeThread();
+    }, 520);
+  };
+  askEl.addEventListener("pointerenter", unfold);
+  askEl.addEventListener("pointerleave", fold);
+  thread.addEventListener("pointerenter", () => clearTimeout(foldT));
+  thread.addEventListener("pointerleave", fold);
+  askInput.addEventListener("blur", fold);
+}
+
+window.__b = { cur, tgt, START, pageTo, placeAsk, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, setMode, checkScale, DPR, openPreview, closePreview,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
   get previewOpen() { return previewOpen; },
   get MODE() { return MODE; } };
-addEventListener("resize", () => remount(), { passive: true });
+addEventListener("resize", () => { remount(); placeAsk(); }, { passive: true });
 remount();
+placeAsk();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAsk);
 requestAnimationFrame(tick);
 </script>
 
