@@ -315,45 +315,57 @@ head = r'''<!doctype html>
   .tha { color: rgba(0, 0, 0, 0.42); margin-top: 10px; }
 
 
-  /* ── A TILE OFFERS ITS TWO WAYS IN ────────────────────────────────
-     Tap a picture and the study behind it names itself: a preview
-     that stays on this page, or the study itself. Two chips in the
-     rail's own language, sitting on the frame they belong to, so the
-     choice is made where the eye already is rather than in a menu
-     somewhere else. */
-  .tileacts {
-    position: absolute; left: 0; right: 0; z-index: 3;
-    /* the caption sits under the frame, so the chips ride the frame's
-       own foot rather than the card's */
-    top: var(--acts-y, 0px);
-    display: flex; gap: 6px; padding: 10px;
-    opacity: 0; transform: translateY(4px); pointer-events: none;
-    transition: opacity 0.28s ease,
-      transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .tile.picked .tileacts { opacity: 1; transform: none; pointer-events: auto; }
-  /* ON A POINTER THE OPTIONS COME WITH THE HOVER. The frame is already
-     opening under the cursor, so the two ways in arrive with it —
-     nothing to discover, nothing to click first. Touch keeps the tap,
-     which is what .picked is for. */
+  /* ── THE TWO WAYS IN SIT UNDER THE NAME ───────────────────────────
+     Not on the picture. Two plain links under the caption, in the
+     caption's own size and the category's own grey, so a tile reads
+     name, category, then what you can do with it — the way an index
+     entry reads. Nothing sits over the work. They ride the name on
+     hover, so the opened frame never covers them. */
+  .tilelinks { display: block; margin-top: 5px;
+    font-size: var(--note); line-height: 1.35; font-weight: 500;
+    letter-spacing: -0.004em; }
+  .tile.hangR .tilelinks { text-align: right; }
+  .tilelinks a { color: rgba(0, 0, 0, 0.42); text-decoration: none;
+    cursor: pointer; transition: color 0.3s ease; white-space: nowrap; }
+  .tilelinks a:hover { color: var(--ink); }
+  .tilelinks i { font-style: normal; color: rgba(0, 0, 0, 0.2); margin: 0 7px; }
+  .ixrow .fd-it .tilelinks {
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   @media (hover: hover) and (min-width: 761px) {
-    .tile:hover .tileacts { opacity: 1; transform: none; pointer-events: auto; }
+    .ixrow .fd-it:hover .tilelinks {
+      transform: translate(var(--slide, 0px), var(--drop, 0px)); }
   }
-  /* and the frame says it can be pressed */
+  /* the picture itself is the preview's door; it says so */
   .tile[data-slug] .shot { cursor: pointer; }
-  .tileact { cursor: pointer; }
-  .tile.hangR .tileacts { justify-content: flex-end; }
-  .tileact {
-    border: 0; font: inherit; cursor: pointer; text-decoration: none;
-    font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em;
-    padding: 7px 12px; border-radius: 11px;
-    background: rgba(255, 255, 255, 0.94); color: var(--ink);
-    backdrop-filter: blur(6px);
-    transition: background-color 0.3s ease, color 0.3s ease;
+
+  /* ── WHAT THE HOUSE LAYS NEXT ─────────────────────────────────────
+     While a preview is open the bar names the study the house would
+     put beside it — over the right-hand column, the column that IS
+     "beside this" — with its reason underneath in the grey. A button,
+     because it is the next column: press it and the field walks. On a
+     phone the same line sits at the head of the preview instead. */
+  .nextup { display: none; border: 0; background: none; font: inherit;
+    text-align: left; cursor: pointer; padding: 0; color: var(--ink);
+    letter-spacing: -0.004em; line-height: 1.25; max-width: 100%; }
+  .nextup .nu-line { display: block; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .nextup .nu-k { color: rgba(0, 0, 0, 0.42); }
+  .nextup .nu-t { font-weight: 600; }
+  .nextup .nu-why { display: block; font-size: 11.5px; margin-top: 2px;
+    color: rgba(0, 0, 0, 0.42); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .nextup:hover .nu-t { text-decoration: underline;
+    text-underline-offset: 4px; text-decoration-color: rgba(0, 0, 0, 0.25); }
+  #nextUp { position: absolute; z-index: 1; top: 50%;
+    transform: translateY(-50%); font-size: 13px;
+    left: var(--next-left, 0px); width: var(--next-w, 260px); }
+  @media (min-width: 761px) {
+    #nav.previewon #nextUp:not([hidden]) { display: block; }
   }
-  .tileact:hover { background: var(--ink); color: #fff; }
-  /* the frame stays open while its chips are showing */
-  .tile.picked .fd-it .shot { transform: scale(var(--ix-grow, 1)); }
+  #pvNext { margin: 0 0 18px; font-size: 13px; }
+  @media (max-width: 760px) {
+    #preview[data-on] #pvNext:not([hidden]) { display: block; }
+  }
 
   /* ── THE PREVIEW: a study, down the column it was tapped in ───────
      The same panel the thread uses, pointed at a different content —
@@ -470,6 +482,10 @@ head = r'''<!doctype html>
       aria-label="Ask the house" />
     <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
   </div>
+  <button type="button" class="nextup" id="nextUp" hidden>
+    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
+    <span class="nu-why"></span>
+  </button>
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
   <a class="meta" href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
@@ -482,6 +498,10 @@ head = r'''<!doctype html>
 </div>
 
 <div id="preview"><div><div id="previewIn">
+  <button type="button" class="nextup" id="pvNext" hidden>
+    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
+    <span class="nu-why"></span>
+  </button>
   <div id="previewHead"></div>
   <div id="previewCount"></div>
   <div id="previewImgs"></div>
@@ -719,6 +739,7 @@ for (let r = 0; r < ROWS; r += 1) {
   prevTier = t;
   rowH[r] = Math.round(COL * t);
 }
+const coverCol = {};
 const rowY = [TOP0];
 for (let r = 0; r < ROWS; r += 1) rowY.push(rowY[r] + rowH[r] + air());
 PH = rowY[ROWS];
@@ -735,6 +756,8 @@ sized.forEach((it, i) => {
     }
   }
   tiles.push({ ...it, w, h, x: c * MOD_X, y: rowY[r], col: c });
+  /* where each study's cover lives, so a study can be walked to */
+  if (it.c != null && it.g && coverCol[it.g] == null) coverCol[it.g] = c;
 });
 const PW = COLS * MOD_X;
 meas.remove();
@@ -749,6 +772,14 @@ if (!PHONE) {
   const navEl = document.getElementById("nav");
   navEl.style.setProperty("--ask-left", (fieldL + GAP / 2) + "px");
   navEl.style.setProperty("--ask-w", (COL * 0.72) + "px");
+  /* the house's next, over the right-hand column's own text edge,
+     stopping short of the address at the bar's end */
+  const nextL = fieldL + MOD_X + GAP / 2;
+  const mail = navEl.querySelector(".meta");
+  const mailL = mail ? mail.getBoundingClientRect().left : innerWidth;
+  navEl.style.setProperty("--next-left", nextL + "px");
+  navEl.style.setProperty("--next-w",
+    Math.max(120, Math.min(COL * 0.6, mailL - nextL - 28)) + "px");
   /* on the ROOT, not on one panel: the thread and the preview are the
      same column box and both read these, so a var scoped to either
      one left the other on its fallback — a 420px panel at x 0. */
@@ -853,6 +884,7 @@ const submitQ = (text) => {
   if (!text) return;
   openThread();
   const { n, m, needle } = countQ(text);
+  if (typeof trailLog !== "undefined") { trailLog.asked.push(text); saveTrail(); }
   const list = readThread();
   list.push({ q: text, n, m });
   try { sessionStorage.setItem(THREAD_KEY, JSON.stringify(list)); } catch (er) {}
@@ -1101,7 +1133,9 @@ function mount(t, gx, gy) {
        The frame, the radius, the arrival curtain, the drift slack and
        the caption's setting are all the stylesheet's. */
     const g = GROUPS[t.g];
-    const card = document.createElement("a");
+    /* a div, not an anchor: the card carries links now, and an
+       anchor inside an anchor is a nesting the parser refuses */
+    const card = document.createElement("div");
     card.className = "fd-it k-work";
     card.style.setProperty("--w", "100%");
     const shot = document.createElement("span");
@@ -1129,29 +1163,22 @@ function mount(t, gx, gy) {
       sub.textContent = g.s;
       lbl.appendChild(sub);
       card.appendChild(lbl);
-      /* the two ways in, on the frame itself */
-      const acts = document.createElement("span");
-      acts.className = "tileacts";
-      const pv = document.createElement("button");
-      pv.type = "button";
-      pv.className = "tileact";
+      /* the two ways in, under the name — never on the picture */
+      const links = document.createElement("span");
+      links.className = "tilelinks";
+      const pv = document.createElement("a");
+      pv.href = "#preview";
       pv.dataset.act = "preview";
       pv.textContent = "Preview";
+      const dot = document.createElement("i");
+      dot.textContent = "\u00b7";
       const go = document.createElement("a");
-      go.className = "tileact";
       go.href = "/case-studies/" + (g.h || t.g);
       go.textContent = "See the study";
-      acts.appendChild(pv);
-      acts.appendChild(go);
-      /* on the CARD, not inside .shot: the frame scales on hover and
-         anything inside it scales too, so chips in there arrived 1.3x
-         and clipped by the frame's own overflow. Out here they keep
-         their size and sit over the opened picture. */
-      card.appendChild(acts);
-      /* the frame's foot in card coordinates, so the chips land on the
-         picture whatever the caption does below it */
-      card.style.setProperty("--acts-y",
-        ((t.h - CAP_H) - 46) + "px");
+      links.appendChild(pv);
+      links.appendChild(dot);
+      links.appendChild(go);
+      card.appendChild(links);
       el.dataset.slug = t.g;
     }
     el.appendChild(card);
@@ -1279,46 +1306,17 @@ function armHover() {
 }
 armHover();
 
-/* ── TAP A PICTURE, AND THE STUDY NAMES ITSELF ──────────────────────
-   One tap picks the tile and shows its two ways in; a tap on the
-   ground puts it back. On a pointer the frame is already open from
-   the hover, so the chips simply arrive inside a frame that is
-   already the reader's — nothing jumps.
-
-   Only a tile that HAS a study offers anything: a board pull and a
-   kept line have nowhere to go, and a chip that led nowhere would be
-   the first dead end on a board built to have none. */
-let pickedTile = null;
-const pickTile = (el) => {
-  if (pickedTile === el) return;
-  if (pickedTile) pickedTile.classList.remove("picked");
-  pickedTile = el;
-  if (el) {
-    el.classList.add("picked");
-    /* the frame holds open while the chips are up, and the grow is
-       the hover's own number so the two never disagree */
-    const shot = el.querySelector(".shot");
-    const card = el.querySelector(".fd-it");
-    if (shot && card) {
-      const grow = Math.max(1.04, COL / shot.offsetWidth);
-      card.style.setProperty("--ix-grow", grow.toFixed(3));
-      card.style.setProperty("--drop",
-        (shot.offsetHeight * (grow - 1)).toFixed(1) + "px");
-    }
-  }
-};
+/* ── A PICTURE IS THE PREVIEW'S DOOR ───────────────────────────────
+   Press the picture, or the Preview link under its name, and the
+   study opens down the column. The study link beside it is a real
+   href and the curtain handles it. A drag is never a press. */
 plane.addEventListener("click", (e) => {
-  if (moved > 6) return;                  /* a drag is not a tap */
-  const act = e.target.closest && e.target.closest(".tileact");
-  if (act) {
-    if (act.dataset.act === "preview") {
-      e.preventDefault();
-      openPreview(pickedTile);
-    }
-    return;                                /* the link is handled below */
-  }
-  const tile = e.target.closest && e.target.closest(".tile");
-  pickTile(tile && tile.dataset.slug ? tile : null);
+  if (moved > 6) return;
+  const pv = e.target.closest && e.target.closest("[data-act='preview']");
+  if (pv) { e.preventDefault(); openPreview(pv.closest(".tile")); return; }
+  if (e.target.closest && e.target.closest("a[href]")) return;
+  const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
+  if (shot) openPreview(shot.closest(".tile"));
 });
 
 /* ── THE PREVIEW ────────────────────────────────────────────────────
@@ -1328,13 +1326,21 @@ plane.addEventListener("click", (e) => {
    scrollable; the way to the study itself sits at its head. */
 const preview = document.getElementById("preview");
 let previewOpen = false;
-function openPreview(tile) {
-  if (!tile) return;
-  const slug = tile.dataset.slug;
-  const g = GROUPS[slug];
+let currentPreview = null;
+const walk = [];                    /* the row behind you, in order */
+function openPreview(target, opts) {
+  opts = opts || {};
+  const slug = typeof target === "string"
+    ? target : (target && target.dataset ? target.dataset.slug : null);
+  const g = slug && GROUPS[slug];
   if (!g) return;
-  /* the column it was tapped in becomes the column it opens in */
-  pageTo(Math.round(tile.__wx / MOD_X));
+  /* the column it opens in: the tile's own if one was pressed, else
+     the column the study's cover lives in — so walking to the next
+     study moves the field to where that study actually is */
+  const col = (target && target.dataset)
+    ? Math.round(target.__wx / MOD_X)
+    : (coverCol[slug] != null ? coverCol[slug] : Math.round(cur.x / MOD_X));
+  pageTo(col);
   cur.x = tgt.x;
 
   const head = document.getElementById("previewHead");
@@ -1390,15 +1396,164 @@ function openPreview(tile) {
   document.getElementById("previewIn").scrollTop = 0;
   previewOpen = true;
   preview.setAttribute("data-on", "");
-  nav.classList.add("threadon");           /* the bar's close serves both */
-  pickTile(null);
+  nav.classList.add("threadon", "previewon"); /* the bar's close serves both */
+  /* the trail: you opened it, and it joins the row behind you */
+  currentPreview = slug;
+  if (!opts.back) {
+    trailLog.opened.push(slug); saveTrail();
+    if (walk[walk.length - 1] !== slug) walk.push(slug);
+  }
+  drawNext();
 }
 function closePreview() {
   if (!previewOpen) return;
   previewOpen = false;
+  currentPreview = null;
   preview.removeAttribute("data-on");
+  nav.classList.remove("previewon");
   if (!threadOpen) nav.classList.remove("threadon");
 }
+
+/* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
+   Everything you did on the board is a row behind you: the tiles you
+   stayed on and for how long, the studies you opened, the shelf you
+   picked, the words you asked. From it the house names the study it
+   would put beside the one you are looking at — and SAYS WHY, because
+   a next without a reason is a recommendation engine and a next with
+   one is a host walking you to the next room.
+
+   No model here. The same counting the answers use, run over the
+   trail: a study earns points for every tag it shares with a tile you
+   dwelt on, weighted by the dwell; more for one you opened; three for
+   the shelf you picked; and the words you asked count the way they
+   count in the thread. (trailLog, not trail: the drag already keeps a
+   trail of velocity samples under that name.) A study you have already
+   opened is discounted,
+   since the house would rather show you something new. With no trail
+   at all, next is the homepage's own order: the fixed sequence, never
+   nothing. */
+const TRAIL_KEY = "board-trail";
+const freshTrail = () => ({ dwell: {}, opened: [], modes: [], asked: [] });
+const trailLog = (() => {
+  try { return JSON.parse(sessionStorage.getItem(TRAIL_KEY) || "null") || freshTrail(); }
+  catch (er) { return freshTrail(); }
+})();
+const saveTrail = () => {
+  try { sessionStorage.setItem(TRAIL_KEY, JSON.stringify(trailLog)); } catch (er) {}
+};
+/* dwell: how long the pointer stayed on each study's tiles */
+let dwellSlug = null, dwellT0 = 0;
+const dwellEnd = () => {
+  if (!dwellSlug) return;
+  const ms = performance.now() - dwellT0;
+  if (ms > 120) {
+    trailLog.dwell[dwellSlug] = (trailLog.dwell[dwellSlug] || 0) + ms;
+    saveTrail();
+  }
+  dwellSlug = null;
+};
+plane.addEventListener("pointerover", (e) => {
+  const tile = e.target.closest && e.target.closest(".tile[data-slug]");
+  if (!tile || tile.dataset.slug === dwellSlug) return;
+  dwellEnd();
+  dwellSlug = tile.dataset.slug;
+  dwellT0 = performance.now();
+});
+plane.addEventListener("pointerout", (e) => {
+  const tile = e.target.closest && e.target.closest(".tile[data-slug]");
+  if (!tile) return;
+  if (e.relatedTarget && tile.contains(e.relatedTarget)) return;
+  dwellEnd();
+});
+
+/* the covers in the homepage's order: the floor the prediction stands on */
+const ORDER = (window.BOARD_ITEMS || []).filter((i) => i.c != null)
+  .sort((a, b) => a.c - b.c).map((i) => i.g)
+  .filter((sl, i, arr) => GROUPS[sl] && arr.indexOf(sl) === i);
+const shelfName = (tag) => {
+  const r = (typeof rrows !== "undefined" ? rrows : [])
+    .find((x) => x.dataset && x.dataset.tag === tag);
+  return r ? r.textContent.trim().replace(/\s+/g, " ").slice(0, 28) : tag;
+};
+function predictNext(currentSlug) {
+  const askedWords = trailLog.asked.join(" ").toLowerCase()
+    .split(/[^a-z0-9]+/).filter((w) => w.length > 3);
+  let best = null;
+  for (const slug of ORDER) {
+    if (slug === currentSlug) continue;
+    const g = GROUPS[slug];
+    let score = 0;
+    const parts = [];
+    for (const [on, ms] of Object.entries(trailLog.dwell)) {
+      if (on === slug || !GROUPS[on]) continue;
+      const shared = g.tags.filter((t) => GROUPS[on].tags.includes(t));
+      if (!shared.length) continue;
+      const v = Math.min(4, ms / 1500) * shared.length;
+      score += v; parts.push({ v, kind: "dwell", on, tag: shared[0] });
+    }
+    for (const on of trailLog.opened) {
+      if (on === slug || !GROUPS[on]) continue;
+      const shared = g.tags.filter((t) => GROUPS[on].tags.includes(t));
+      if (!shared.length) continue;
+      const v = 2.5 * shared.length;
+      score += v; parts.push({ v, kind: "opened", on, tag: shared[0] });
+    }
+    for (const m of trailLog.modes) {
+      if (!g.tags.includes(m)) continue;
+      score += 3; parts.push({ v: 3, kind: "mode", tag: m });
+    }
+    const hay = (slug + " " + g.t + " " + g.s + " " + g.tags.join(" ")).toLowerCase();
+    for (const w of askedWords) {
+      if (!hay.includes(w)) continue;
+      score += 2; parts.push({ v: 2, kind: "asked", word: w });
+    }
+    if (trailLog.opened.includes(slug)) score *= 0.35;
+    if (!best || score > best.score) best = { slug, score, parts };
+  }
+  if (!best || best.score <= 0) {
+    const i = ORDER.indexOf(currentSlug);
+    const slug = ORDER[(i + 1) % ORDER.length] || ORDER[0];
+    return { slug, reason: "next in the house's order" };
+  }
+  const top = best.parts.sort((x, y) => y.v - x.v)[0];
+  /* "since you opened Sally" is odd to read while you are on Sally;
+     when the source is the study in front of you, say what it is */
+  const here = top.on && top.on === currentSlug;
+  const why = top.kind === "mode" ? "since you picked " + shelfName(top.tag)
+    : here ? "like " + GROUPS[top.on].t
+    : top.kind === "opened" ? "since you opened " + GROUPS[top.on].t
+    : top.kind === "dwell" ? "since you stayed on " + GROUPS[top.on].t
+    : "since you asked about " + top.word;
+  return { slug: best.slug, reason: why };
+}
+function drawNext() {
+  const nx = predictNext(currentPreview);
+  const g = nx && GROUPS[nx.slug];
+  document.querySelectorAll(".nextup").forEach((box) => {
+    box.hidden = !g;
+    if (!g) return;
+    box.querySelector(".nu-t").textContent = g.t;
+    box.querySelector(".nu-why").textContent = nx.reason;
+    box.dataset.slug = nx.slug;
+  });
+}
+document.querySelectorAll(".nextup").forEach((box) => {
+  box.addEventListener("click", () => {
+    if (box.dataset.slug) openPreview(box.dataset.slug);
+  });
+});
+/* the row is walkable: right is the house's pick, left is the way
+   you came */
+addEventListener("keydown", (e) => {
+  if (!previewOpen) return;
+  if (e.key === "ArrowRight") {
+    const box = document.querySelector(".nextup");
+    if (box && box.dataset.slug) openPreview(box.dataset.slug);
+  } else if (e.key === "ArrowLeft" && walk.length > 1) {
+    walk.pop();
+    openPreview(walk[walk.length - 1], { back: true });
+  }
+});
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
    The no-upscale rule is arithmetic at deal time, and arithmetic can
@@ -1749,6 +1904,7 @@ drawer.addEventListener("pointerleave", closeRows);
 
 function setMode(mode) {
   MODE = mode;
+  if (mode && typeof trailLog !== "undefined") { trailLog.modes.push(mode); saveTrail(); }
   rrows.forEach((r) => {
     if (!r.dataset.tag) return;
     r.classList.toggle("picked", r.dataset.tag === mode);
