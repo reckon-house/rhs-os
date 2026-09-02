@@ -314,7 +314,7 @@ head = r'''<!doctype html>
      the sheet rises from it on a phone: one grammar, two edges. */
   #thread {
     position: fixed; z-index: 45;
-    top: 0; bottom: 0;
+    top: var(--nav); bottom: 0;
     left: var(--thread-x, 0px); width: var(--thread-w, 420px);
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -328,19 +328,24 @@ head = r'''<!doctype html>
      drift showed two lines. The panel is inset one pixel INSIDE the
      rules instead: the homepage's own lines stay visible at both
      edges and there is nothing to disagree with them. */
-  /* THE LEDE STANDS WHERE THE LEAD STOOD. The panel starts at the
-     very top and pads down to the cover air, so its lede lands on the
-     statement's own pixels and opening reads as the history unfolding
-     under a sentence that never moved. The bar is glass there, so the
-     panel's paper shows through its band. */
+  /* THE SHEET IS THE HISTORY, NOT A SECOND PAGE. It never carries the
+     column's lead — that stays where it was, under the paper — so
+     nothing is written twice. Top to bottom: what this is about, in
+     the bar's small grey; the field, at display size, the first thing
+     in the column and the one place to type; what the house last
+     said; what has been said, newest first. */
   #threadIn {
-    height: 100dvh;
+    height: calc(100dvh - var(--nav));
     background: var(--paper, #fff);
-    padding: var(--cover-air, 50px) calc(var(--thread-pad, 20px)) 20px
+    padding: 34px calc(var(--thread-pad, 20px)) 20px
       calc(var(--thread-pad, 20px) - 1px);
     overflow-y: auto;
     display: flex; flex-direction: column; gap: 22px;
   }
+  #threadLede .th-of { font-size: 12px; font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.04; margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.42); }
+  #threadLede .th-ask { line-height: 1.2; }
   /* the house's line yields to the field at display size */
   .ask.big #askNext { display: none !important; }
   /* the question is a button wearing the sentence's own clothes */
@@ -437,7 +442,9 @@ head = r'''<!doctype html>
     letter-spacing: -0.004em; }
   #nav.previewon .ask #askNext:not([hidden]) { display: block; }
   #nav.previewon .ask.typing #askNext { display: none; }
-  #nav.previewon #query::placeholder { color: transparent; }
+  /* only while parked, where the house's line stands over it; at
+     display size in the sheet the question shows again */
+  #nav.previewon .ask:not(.big) #query::placeholder { color: transparent; }
   #threadNext { margin-top: 6px; font-size: clamp(20px, 2.2vw, 30px);
     font-weight: 600; line-height: 1.22; letter-spacing: -0.04em;
     color: rgba(0, 0, 0, 0.42); }
@@ -482,7 +489,6 @@ head = r'''<!doctype html>
       rgba(255, 255, 255, 0)); }
   @media (min-width: 761px) { body.previewing #stickyHead { display: block; } }
   .tile.spacer { pointer-events: none; }
-  .tile.head .hd-ask { margin-top: 22px; }
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -990,20 +996,29 @@ const drawThread = () => {
     threadLog.appendChild(box);
   }
 };
-/* THE LEDE IS THE COLUMN'S LEAD, and it ends in the field. On the
-   board that is the statement with its slot; in a study it is the
-   head, given the same invitation, so the entry point is always the
-   big line in the column and never the small one in the bar. Refreshed
-   whenever the lead changes — a study opening or closing under an
-   open column — not only when the column opens. */
+/* THE SHEET'S HEAD IS NOT THE COLUMN'S LEAD. It is one small line
+   saying what the chat is about — the house, or the study open under
+   the paper — and the slot the field glides to. The lead itself stays
+   where it was, under the sheet, never written twice. Refreshed
+   whenever the lead changes, not only when the sheet opens. */
 const refreshLede = () => {
   const lede = document.getElementById("threadLede");
   if (!lede) return;
-  const study = previewOpen && currentPreview;
-  lede.classList.toggle("head", !!study);
-  lede.innerHTML = study
-    ? headHTML(currentPreview) + '<div class="hd-ask">' + ASK_TAIL + '</div>'
-    : STATEMENT_HTML;
+  const g = previewOpen && currentPreview ? GROUPS[currentPreview] : null;
+  const of = g ? g.t + " \u00b7 " + g.s : "Ask the house.";
+  lede.innerHTML = '<div class="th-of">' + esc(of) + '</div>' +
+    '<div class="th-ask"><span class="askslot" aria-hidden="true"></span></div>';
+};
+/* the one time the field's move is not scroll-driven: the sheet
+   opening pulls it up to the column's first line, closing sends it
+   back into the sentence, so let it glide — the homepage's settle */
+let settleT = 0;
+const settleAsk = () => {
+  if (!askEl) return;
+  askEl.classList.add("settling");
+  clearTimeout(settleT);
+  settleT = setTimeout(() => askEl.classList.remove("settling"), 520);
+  requestAnimationFrame(placeAsk);
 };
 const openThread = () => {
   if (PHONE || threadOpen) return;
@@ -1020,11 +1035,10 @@ const openThread = () => {
   drawThread();
   thread.setAttribute("data-on", "");
   nav.classList.add("threadon");
-  /* the field moves to the lede's slot, which stands on the same
-     pixels the statement's did */
+  /* the field glides up to the sheet's first line */
   const tin = document.getElementById("threadIn");
   if (tin) tin.scrollTop = 0;
-  if (window.placeAsk) placeAsk();
+  if (window.placeAsk) { placeAsk(); settleAsk(); }
 };
 const closeThread = () => {
   if (!threadOpen) return;
@@ -1035,7 +1049,7 @@ const closeThread = () => {
   applyTextDim();
   const q = document.getElementById("query");
   if (q) q.blur();
-  if (window.placeAsk) placeAsk();
+  if (window.placeAsk) { placeAsk(); settleAsk(); }
 };
 const submitQ = (text) => {
   text = (text || "").trim();
