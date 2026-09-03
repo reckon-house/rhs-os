@@ -151,7 +151,7 @@ head = r'''<!doctype html>
   .ccol.arriving { animation: colIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
   @keyframes colIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
   .ccol .cin { height: 100%; overflow-y: auto; scrollbar-width: none;
-    padding: var(--cover-air, 50px) calc(var(--ixgap) / 2) 90px; }
+    padding: calc(var(--cover-air, 50px) + 46px) calc(var(--ixgap) / 2) 90px; }
   .ccol .cin::-webkit-scrollbar { display: none; }
   .ccol .g { color: rgba(0, 0, 0, 0.42); }
   .ccol .chead { position: relative; padding-right: 34px; }
@@ -404,7 +404,7 @@ head = r'''<!doctype html>
   }
   /* the rail sits under the cover line, where the homepage puts it */
   @media (min-width: 761px) {
-    #railwrap { top: calc(var(--cover-air, 50px) + 61px); }
+    #railwrap { top: calc(var(--cover-air, 50px) + 62px); }
   }
   /* the room the travelling field takes inside the sentence — the
      homepage's #askSlot, as a class because the statement is dealt
@@ -748,7 +748,16 @@ const NAV_H = px("--nav", 54);
    band at rest, which is fine because the bar is glass there — its
    ends hidden, its burn off — until the cover line has scrolled under */
 const COVER_AIR = px("--cover-air", 50);
-const TOP0 = PHONE ? 30 : COVER_AIR;
+/* ── THE MASTHEAD'S OWN BAND ─────────────────────────────────────────
+   The name and the address hold a line at the cover's air, and the
+   burn pill spans it. Content born on that same line is content the
+   pill melts — the statement's first line was rippling under the
+   effect that exists to keep the masthead legible over the WORK. So
+   nothing starts inside the band: the columns and the field begin
+   below it, and everything passes under it on the way up, which is
+   what a masthead is for. */
+const HEAD_BAND = PHONE ? 0 : 46;
+const TOP0 = PHONE ? 30 : COVER_AIR + HEAD_BAND;
 /* the address stands at the top of the next column, so that column's
    first frame starts under it: measured on the live page, 61px */
 const META_DROP = PHONE ? 0 : 61;
@@ -887,7 +896,7 @@ if (!PHONE) {
      the top the statement is born at */
   root.setProperty("--head-x", (fieldL + GAP / 2) + "px");
   root.setProperty("--head-w", COL + "px");
-  root.setProperty("--head-top", (NAV_H + 46) + "px");
+  root.setProperty("--head-top", TOP0 + "px");
   /* on the ROOT, not on one panel: the thread and the preview are the
      same column box and both read these, so a var scoped to either
      one left the other on its fallback — a 420px panel at x 0. */
@@ -1554,7 +1563,10 @@ const colsEl = document.getElementById("cols");
 const ccols = [];
 let stripX = 0, stripTgt = 0;
 const fieldX = () => field.offsetLeft;
-const stripShow = (c) => { stripTgt = c ? c.offsetLeft : fieldX(); };
+/* with no columns left the field stands at zero, and it is zero the
+   strip must aim at: reading offsetLeft during the fold gives where
+   the field was a moment ago and the strip stops short of it */
+const stripShow = (c) => { stripTgt = c ? c.offsetLeft : (ccols.length ? fieldX() : 0); };
 window.stripBack = () => { if (ccols.length) stripShow(ccols[ccols.length - 1]); };
 
 /* the studies the board knows, matched the way the field is dimmed */
@@ -1653,6 +1665,7 @@ function askFrom(from, text) {
   if (tag) return openShelfColumn(tag, from);
   const hits = studiesFor(t);
   const c = colNode("answer", t);
+  if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
   if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
   else if (!hits.length) note.textContent = "Nothing caught on the board. The homepage's brain reads deeper.";
@@ -1665,6 +1678,7 @@ window.askFrom = askFrom;
 function openShelfColumn(tag, from) {
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
+  c.__mode = tag;
   c.__body.appendChild(el("div", "cnote g", tag === "staples"
     ? "Staples are the pulls and the kept lines, not studies."
     : hits.length + (hits.length === 1 ? " study." : " studies.")));
@@ -1702,20 +1716,44 @@ function openStudyColumn(folder, opts, from) {
   if (opts.preview) load();
   insertColumn(c, from);
 }
+/* ── WHAT THE FIELD SHOWS IS THE PATH'S NEWEST FILTER ───────────────
+   A shelf column dims the field to its shelf and a question column
+   to its words, so when that column is folded away the dim must go
+   with it. It was outliving the column that set it: the field stayed
+   dark with nothing on screen to explain why. Read it back from the
+   path instead — the nearest filter walking from the newest column —
+   and it can never disagree with what is open. */
+function applyFromColumns() {
+  let mode = null, needle = null;
+  for (let i = ccols.length - 1; i >= 0; i -= 1) {
+    if (ccols[i].__mode) { mode = ccols[i].__mode; break; }
+    if (ccols[i].__needle) { needle = ccols[i].__needle; break; }
+  }
+  MODE = mode; textDim = needle;
+  rrows.forEach((r) => { if (r.dataset.tag) r.classList.toggle("picked", r.dataset.tag === mode); });
+  applyTextDim();
+}
 function closeColumn(c) {
   const i = ccols.indexOf(c); if (i < 0) return;
   ccols.splice(i, 1);
   c.classList.add("closing");
   setTimeout(() => c.remove(), 520);
-  drawGhost(); drawPath();
-  if (!ccols.length) { nav.classList.remove("threadon"); stripShow(null); }
-  else stripShow(ccols[Math.max(0, i - 1)]);
+  drawGhost(); drawPath(); applyFromColumns();
+  if (!ccols.length) {
+    /* the last one folds away and the house is at its beginning
+       again: nothing filtered, the field at its first column and its
+       top, which is what closing the conversation means */
+    nav.classList.remove("threadon");
+    stripShow(null);
+    pageTo(0); setY(0); velY = 0;
+  } else stripShow(ccols[Math.max(0, i - 1)]);
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
   ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
   ccols.length = 0;
-  nav.classList.remove("threadon"); drawGhost(); drawPath(); stripShow(null);
+  nav.classList.remove("threadon"); drawGhost(); drawPath();
+  applyFromColumns(); stripShow(null);
 }
 function stripStep(dir) {
   /* where the strip stands now, in columns; the field is one past the last */
@@ -2143,8 +2181,13 @@ function setMode(mode) {
   MODE = mode;
   if (mode && typeof trailLog !== "undefined") { trailLog.modes.push(mode); saveTrail(); }
   /* a shelf is a line: it opens as a list column too, like the
-     filters on the left, and the field dims to it behind */
-  if (mode && window.askFrom) openShelfColumn(mode, null);
+     filters on the left, and the field dims to it behind. Picking the
+     same shelf again folds that column away rather than leaving one
+     open with the filter off. */
+  const had = ccols.find((c) => c.__mode === mode);
+  if (!mode) { ccols.filter((c) => c.__mode).forEach(closeColumn); return; }
+  if (had) { closeColumn(had); return; }
+  if (window.askFrom) openShelfColumn(mode, null);
   rrows.forEach((r) => {
     if (!r.dataset.tag) return;
     r.classList.toggle("picked", r.dataset.tag === mode);
