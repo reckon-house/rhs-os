@@ -320,11 +320,31 @@
      page content in every way that matters: it scrolls off with the
      statement and pages away with the first column. .cover gives it
      the masthead's 12px and the cap-align the homepage tuned. */
-  #coverline { position: fixed; z-index: 21;
+  /* ── THE MASTHEAD IS WHERE IT LANDS ───────────────────────────────
+     No handover. The wordmark and the address sit on the page's own
+     line at load and stay there: the bar's duplicate pair, and the
+     drop-in that waited for the cover to leave, are gone. One name in
+     one place, always. */
+  /* ABOVE THE BAR, not under it. The burn is a backdrop filter and
+     displaces whatever paints behind it, so a masthead sitting below
+     the pill was being rippled by the effect that exists to keep it
+     legible — the lab learned this once already. The line rides on
+     top; the burn melts only the work passing beneath. */
+  #coverline { position: fixed; z-index: 61;
     top: var(--cover-air, 50px); left: var(--gut); right: var(--gut);
     display: flex; justify-content: space-between; align-items: flex-start;
-    pointer-events: none; will-change: transform; }
+    pointer-events: none; }
   #coverline a { pointer-events: auto; }
+  @media (min-width: 761px) {
+    /* the bar keeps only the field and the ×; its own name and address
+       never arrive, because the page's have never left */
+    #nav [data-mark], #nav [data-meta] { display: none !important; }
+    /* the burn sits behind the line it exists to keep legible, from
+       the first frame — it is the work passing under the masthead
+       that the effect is for, and that starts at the first scroll */
+    #navBurn { top: calc(var(--cover-air, 50px) - 9px); bottom: auto; height: 35px; }
+    html.rh-home body.coverbar #nav [data-burn] { opacity: 1; }
+  }
   @media (max-width: 760px) {
     #coverline { display: none; }
     /* the phone's bar is the sheet's handle: its ends never hide */
@@ -986,7 +1006,7 @@ field.addEventListener("wheel", (e) => {
   if (!wheelAxis) wheelAxis = Math.abs(dx) > Math.abs(dy) * 1.2 ? "x" : "y";
   if (wheelAxis === "x") {
     if (now - hCool > 320 && Math.abs(dx) > 12) { pageTo(colIdx + Math.sign(dx)); hCool = now; }
-  } else { tgt.y += dy; velY = 0; }
+  } else { setY(tgt.y + dy); velY = 0; }
 }, { passive: false });
 
 let pxx = 0, pyy = 0, moved = 0, dragAxis = null;
@@ -1019,7 +1039,7 @@ field.addEventListener("pointermove", (e) => {
      drag that did both at once meant neither. */
   if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
   if (dragAxis === "x") tgt.x -= dx;
-  else if (dragAxis === "y") tgt.y -= dy;
+  else if (dragAxis === "y") setY(tgt.y - dy);
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
 });
@@ -1076,7 +1096,11 @@ function remount() {
   const want = new Set();
   const fresh = [];
   for (let i = Math.floor(x0 / PW); i * PW < x1; i++) {
-    for (let j = Math.floor(y0 / PH); j * PH < y1; j++) {
+    /* j is 0 and only 0: the field runs sideways for ever and DOWN
+       ONCE. A page that never ends in either direction has no bottom
+       to reach and nothing to have finished reading; the horizontal
+       is the endless axis and the vertical is a page. */
+    for (let j = 0; j < 1; j++) {
       for (let k = 0; k < tiles.length; k++) {
         const t = tiles[k];
         const gx = t.x + i * PW, gy = t.y + j * PH;
@@ -1691,8 +1715,8 @@ addEventListener("keydown", (e) => {
   if (e.target && e.target.tagName === "INPUT") return;
   if (e.key === "ArrowRight") { e.preventDefault(); if (ccols.length && stripTgt < fieldX() - 1) stripStep(1); else pageTo(colIdx + 1); }
   if (e.key === "ArrowLeft") { e.preventDefault(); if (colIdx > 0) pageTo(colIdx - 1); else stripStep(-1); }
-  if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); tgt.y += innerHeight * 0.8; velY = 0; }
-  if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); tgt.y -= innerHeight * 0.8; velY = 0; }
+  if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); setY(tgt.y + innerHeight * 0.8); velY = 0; }
+  if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); setY(tgt.y - innerHeight * 0.8); velY = 0; }
 });
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
@@ -1731,10 +1755,20 @@ const checkTimer = setInterval(() => {
 }, 1000);
 
 /* ── the loop ── */
+/* ── THE FLOOR AND THE CEILING OF THE ONE PAGE THERE IS ─────────────
+   Written where the number is set, not in the frame loop: a clamp
+   inside tick() is a clamp that does not exist while the tab is
+   parked, and the value it was meant to hold has already been used
+   by the mount. */
+const yMax = () => Math.max(0, PH - innerHeight + COVER_AIR);
+const setY = (v) => { tgt.y = Math.max(0, Math.min(yMax(), v)); };
 function tick() {
   requestAnimationFrame(tick);
   if (document.hidden) return;
-  if (!dragging && Math.abs(velY) > 0.1) { tgt.y += velY; velY *= 0.93; }
+  if (!dragging && Math.abs(velY) > 0.1) { setY(tgt.y + velY); velY *= 0.93; }
+  /* the momentum dies at the ends rather than running into nothing */
+  if (tgt.y <= 0 || tgt.y >= yMax()) velY = 0;
+  setY(tgt.y);
   /* x eases a touch slower than y follows — the arriving column gets
      its glide without the scroll feeling detached */
   const turning = Math.abs(tgt.x - cur.x) > 0.5;
@@ -1755,17 +1789,7 @@ function tick() {
      field's origin, so it rides the strip too */
   stripX += (stripTgt - stripX) * 0.11;
   stripIn.style.transform = "translate3d(" + (-stripX) + "px,0,0)";
-  /* the cover line splits now: the mark stands over the rail, which
-     the columns do not move, so it never rides the strip; the address
-     stands over the field's last column and goes where the field
-     goes, pushed right by the columns and back by the strip */
-  if (coverline) {
-    const up = -Math.max(0, cur.y), away = -Math.max(0, cur.x - START.x);
-    coverline.style.transform = "translate3d(0," + up + "px,0)";
-    if (covermark) covermark.style.transform = "translate3d(" + away + "px,0,0)";
-    const meta = coverline.querySelector(".covermeta");
-    if (meta) meta.style.transform = "translate3d(" + (away + fieldX() - stripX) + "px,0,0)";
-  }
+  /* the masthead does not move: it is the bar now */
   swapSides();
   if (turning || Math.abs(tgt.y - cur.y) > 0.5 || Math.abs(stripTgt - stripX) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
@@ -2520,11 +2544,7 @@ function placeAsk() {
   askEl.style.setProperty("--ask-fw", p > 0.35 ? "600" : "500");
   askEl.classList.toggle("big", p > 0.35);
   document.body.classList.toggle("attop", p > 0.96);
-  /* the cover line: the wordmark is the gate, as on the homepage */
-  const mk = covermark ? covermark.getBoundingClientRect() : null;
-  const onPage = !!mk && mk.height > 0 && mk.bottom > 0 && mk.right > 0;
-  document.body.classList.toggle("coverbar", onPage && mk.top < NAV_H);
-  document.body.classList.toggle("headgone", !onPage);
+  /* no handover to flag: the masthead never leaves */
 }
 window.placeAsk = placeAsk;
 window.__askReady = true;
