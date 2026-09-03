@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Columns, second cut</title>
+<link rel="stylesheet" href="base.css" />
+<style>
+  /* ── THE PAGE IS A STRIP OF COLUMNS; THE HOUSE IS THE LAST ONE ──────
+     The homepage stays exactly what it is, at the right, and every
+     column the conversation opens is inserted before it, pushing it
+     further right. No cap. Every column scrolls on its own; the page
+     only ever moves sideways. */
+  html, body { height: 100%; overflow: hidden; }
+  .rail { position: fixed; left: var(--gut); top: 0; bottom: 0; width: var(--rail);
+    padding-top: 50px; overflow-y: auto; z-index: 5; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail .path { margin: 40px 0 22px; }
+  .rail .path .chip { position: relative; padding-right: 30px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .rail .path .chip i { position: absolute; right: 10px; top: 8px; font-style: normal;
+    color: var(--grey); font-size: 14px; line-height: 1; }
+  .rail .path .chip i:hover { color: var(--ink); }
+  .mail { position: fixed; right: var(--gut); top: 50px; z-index: 5; }
+  #strip { position: fixed; top: 0; bottom: 0; right: 0;
+    left: calc(var(--gut) + var(--rail) + var(--gap) - var(--gap) / 2);
+    overflow-x: auto; overflow-y: hidden; display: flex; align-items: stretch;
+    scroll-snap-type: x proximity; scrollbar-width: none; }
+  #strip::-webkit-scrollbar { display: none; }
+  .col { flex: 0 0 calc(var(--col) + var(--gap)); width: calc(var(--col) + var(--gap));
+    height: 100%; border-left: 1px solid var(--rule); scroll-snap-align: start;
+    display: flex; flex-direction: column; position: relative;
+    transition: flex-basis 0.5s var(--ease-settle), width 0.5s var(--ease-settle), opacity 0.4s ease; }
+  .col.closing { flex-basis: 0; width: 0; opacity: 0; overflow: hidden; border-left-color: transparent; }
+  .col.wide { flex-basis: calc(var(--col) * 2 + var(--gap) * 2); width: calc(var(--col) * 2 + var(--gap) * 2); }
+  .col .in { flex: 1 1 auto; overflow-y: auto; padding: 50px calc(var(--gap) / 2) 80px; scrollbar-width: none; }
+  .col .in::-webkit-scrollbar { display: none; }
+  /* the head is the caption and the field: sticky, so the path reads
+     while the column scrolls under it */
+  .head { position: sticky; top: 0; z-index: 2; background: var(--paper); padding-bottom: 14px;
+    margin-bottom: 14px; display: grid; grid-template-columns: 1fr auto; column-gap: 10px; align-items: start; }
+  .head .cap { min-width: 0; }
+  .head .of { margin-bottom: 8px; }
+  .head .line { font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em;
+    border: 0; outline: 0; background: transparent; width: 100%; padding: 0; margin: 0;
+    text-decoration: underline; text-decoration-color: transparent;
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.3s ease; cursor: text; }
+  .head .line::placeholder { color: var(--ink); opacity: 1; }
+  .head .line:focus { text-decoration-color: var(--ink); }
+  .head .line:focus::placeholder { color: var(--grey); }
+  .head .count { margin-top: 8px; min-height: 1.1em; }
+  .head .x { border: 0; background: none; padding: 4px 2px; cursor: pointer; color: var(--grey);
+    font-size: 19px; line-height: 1; margin-top: 4px; }
+  .head .x:hover { color: var(--ink); }
+  .col.origin .head .x { display: none; }
+  /* what a column holds */
+  .rows .study { cursor: pointer; }
+  .rows .study:hover b { text-decoration: underline; text-decoration-color: var(--faint);
+    text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .rows .study.picked b { text-decoration: underline; text-decoration-color: var(--ink); text-underline-offset: 3px; }
+  .answer { margin: 6px 0 22px; }
+  .answer .door { cursor: pointer; }
+  .pics { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
+  .col.wide .pics { grid-template-columns: 1fr 1fr; }
+  .pics img { display: block; width: 100%; height: auto; border-radius: 14px; background: #f3f3f3; }
+  .go { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 500;
+    padding: 9px 15px; border-radius: 12px; background: var(--ink); color: #fff; text-decoration: none; }
+  .ways { display: flex; gap: 8px; margin-top: 14px; }
+  .ways .chip { font-size: 12px; }
+  .quiet { color: var(--grey); font-size: 14px; line-height: 1.5; margin-top: 10px; }
+  /* the house: the homepage as the last column, two columns of covers */
+  .house .in { padding-top: 50px; }
+  .house .grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--gap); }
+  .house .tile { margin-bottom: 44px; cursor: pointer; }
+  .house .tile img { display: block; width: 100%; height: auto; border-radius: 14px; background: #f3f3f3; }
+  .house .tile b { display: block; font-size: 12px; font-weight: 600; margin-top: 10px; }
+  .house .tile span { font-size: 12px; color: var(--grey); }
+  .house .grid .r { padding-top: 0; } .house .grid .r:nth-child(2) { padding-top: 120px; }
+  .house .tile:nth-child(odd) { width: 86%; } .house .tile:nth-child(even) { width: 100%; }
+  /* the ghost column: the house's next, standing between the path and the house */
+  .col.ghost .head .line { color: var(--grey); cursor: pointer; }
+  .col.ghost { border-left-style: dashed; }
+  /* the curtain, the site's own two beats in miniature */
+  #pt { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
+  #pt .w, #pt .b { position: absolute; inset: 0; transform: translateY(-101%); }
+  #pt .w { background: var(--paper); transition: transform 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+  #pt .b { background: var(--ink); transition: transform 0.52s cubic-bezier(0.33, 0.28, 0.12, 1) 0.12s;
+    color: var(--paper); font-size: var(--stmt); font-weight: 600; letter-spacing: -0.05em;
+    padding: 50px; display: flex; align-items: flex-end; }
+  #pt.run .w, #pt.run .b { transform: none; }
+  @media (max-width: 860px) {
+    .rail { display: none; } #strip { left: 0; } .col { flex-basis: 100vw; width: 100vw; }
+    .col.wide { flex-basis: 100vw; width: 100vw; } .mail { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="rail">
+  <a class="mark" href="/lab/board.html">Reckon<i>*</i>House<i>*</i>Staples</a>
+  <div class="path" id="path"></div>
+  <div class="group" id="offers">
+    <button class="chip" data-ask="Who are you?">/ Info</button>
+    <button class="chip" data-ask="How do I reach you?">/ Connect</button>
+  </div>
+  <div class="group" id="shelves"></div>
+</div>
+<a class="meta mail" href="mailto:hello@reckon.house">hello@reckon.house</a>
+<div id="strip"></div>
+<div id="pt"><div class="w"></div><div class="b"><span id="ptName"></span></div></div>
+<div class="about"><b>The Columns, second cut.</b> The homepage stays what it is, at the right. Every question, shelf or study opens a column before it, pushing it further right, with no cap. Columns scroll on their own; the page only moves sideways. Type in any head to narrow that column, press Enter to open the next. The × folds a column back to the left. The rail holds the path. <a href="index.html">← all nine</a></div>
+<script src="data.js"></script>
+<script src="field.js"></script>
+<script>
+/* ── THE STRIP ───────────────────────────────────────────────────────
+   One horizontal strip of columns. The first is the origin: the
+   statement and the field. The last is the house: the homepage's
+   covers, dealt in two columns, scrolling on their own. Everything the
+   conversation opens is inserted between the column it was asked from
+   and the next, so nothing is ever truncated — a column only leaves
+   when its × is pressed — and the house is always at the far right.
+
+   EVERY HEAD IS A FIELD. Typing in a head narrows that column live;
+   Enter opens the next column after it. So "act here" and "go deeper"
+   are the two speeds of one line: keystrokes stay, the return key
+   travels. There is no separate chat. The rail shows the path as
+   chips, which is where the history lives; the shelves below it are
+   the offers. The house's next stands as a ghost column before the
+   house, with its reason. */
+const F = window.FIELD;
+const strip = document.getElementById("strip"), pathEl = document.getElementById("path");
+const trail = { opened: [], shelves: [], asked: [], dwell: {} };
+let cols = [];  /* the conversation's columns, in strip order, origin first */
+
+/* ── building a column ───────────────────────────────────────────── */
+function column(kind, spec) {
+  const c = F.el("section", "col " + kind);
+  const inner = F.el("div", "in");
+  const head = F.el("div", "head");
+  const cap = F.el("div", "cap");
+  if (spec.of) cap.appendChild(F.el("div", "label of", spec.of));
+  const line = F.el("input", "line"); line.type = "text"; line.autocomplete = "off"; line.spellcheck = false;
+  line.placeholder = spec.caption || ""; line.setAttribute("aria-label", "Ask from here");
+  cap.appendChild(line);
+  const count = F.el("div", "label count", spec.count || "");
+  cap.appendChild(count);
+  head.appendChild(cap);
+  const x = F.el("button", "x", "×"); x.type = "button"; x.title = "Close this column";
+  head.appendChild(x);
+  inner.appendChild(head);
+  const body = F.el("div", "body");
+  inner.appendChild(body);
+  c.appendChild(inner);
+  c.__spec = spec; c.__line = line; c.__count = count; c.__body = body; c.__kind = kind;
+  x.addEventListener("click", () => close(c));
+  line.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); const t = line.value.trim() || line.placeholder; line.value = ""; narrow(c, ""); open(c, t); }
+    if (e.key === "Escape") { line.value = ""; narrow(c, ""); line.blur(); }
+  });
+  line.addEventListener("input", () => narrow(c, line.value));
+  return c;
+}
+/* keystrokes narrow the column they are typed in */
+function narrow(c, text) {
+  const rows = c.__body.querySelectorAll(".study");
+  if (!rows.length) return;
+  const hits = text.trim() ? new Set(F.ask(text).hits.map((s) => s.slug)) : null;
+  let n = 0;
+  rows.forEach((r) => { const on = !hits || hits.has(r.dataset.slug); r.classList.toggle("off", !on); if (on) n += 1; });
+  c.__count.textContent = hits ? (n ? n + " here match" : "nothing here matches") : (c.__spec.count || "");
+}
+function studyRows(list, into, from) {
+  const wrap = F.el("div", "rows");
+  list.forEach((s) => { const r = F.studyRow(s); r.addEventListener("click", () => { into.querySelectorAll(".picked").forEach((p) => p.classList.remove("picked")); r.classList.add("picked"); openStudy(from, s); }); wrap.appendChild(r); });
+  into.appendChild(wrap);
+}
+
+/* ── what opens ──────────────────────────────────────────────────── */
+function open(from, text) {
+  const t = (text || "").trim(); if (!t) return;
+  const byTitle = F.S.find((s) => s.title.toLowerCase() === t.toLowerCase());
+  if (byTitle) return openStudy(from, byTitle);
+  const a = F.ask(t);
+  if (a.kind === "shelf") trail.shelves.push(a.shelf); else trail.asked.push(t);
+  let c;
+  if (a.kind === "shelf") {
+    const name = F.shelfOf(a.shelf).name;
+    c = column("list", { of: "Shelf", caption: name, count: a.hits.length + " studies", text: t });
+    studyRows(a.hits, c.__body, c);
+  } else if (a.kind === "contact") {
+    c = column("note", { of: "Reach", caption: t, text: t });
+    const p = F.el("div", "answer tha"); p.innerHTML = 'hello@reckon.house. Or keep asking here.'; c.__body.appendChild(p);
+  } else if (a.kind === "staple" && !a.hits.length) {
+    c = column("note", { of: "Staples", caption: t, text: t });
+    c.__body.appendChild(F.el("div", "answer tha", a.line));
+  } else {
+    c = column("answer", { of: "Asked", caption: t, count: a.hits.length ? a.hits.length + (a.hits.length === 1 ? " study" : " studies") : "", text: t });
+    const p = F.el("div", "answer tha");
+    /* the answer is prose with doors in it: every study named is a term that opens */
+    if (a.hits.length) {
+      const first = a.hits[0];
+      p.appendChild(document.createTextNode((a.hits.length === 1 ? "One study. " : a.hits.length + " studies. ")));
+      const d = F.el("span", "door term", first.title); d.addEventListener("click", () => openStudy(c, first)); p.appendChild(d);
+      p.appendChild(document.createTextNode(a.hits.length > 1 ? " first." : ". " + first.line));
+    } else p.textContent = a.line;
+    c.__body.appendChild(p);
+    if (a.hits.length) studyRows(a.hits, c.__body, c);
+  }
+  insertAfter(from, c);
+}
+function openStudy(from, s) {
+  trail.opened.push(s.slug);
+  const c = column("study", { of: s.cat, caption: s.title, count: s.n + " pictures", text: s.title, slug: s.slug });
+  const p = F.el("div", "answer tha", s.line); c.__body.appendChild(p);
+  if (s.rest) c.__body.appendChild(F.el("div", "quiet", s.rest));
+  const ways = F.el("div", "ways");
+  const pv = F.el("button", "chip", "Preview"); pv.type = "button";
+  const go = F.el("a", "chip", "See the full study"); go.href = "/case-studies/" + s.slug;
+  ways.appendChild(pv); ways.appendChild(go); c.__body.appendChild(ways);
+  const pics = F.el("div", "pics");
+  c.__body.appendChild(pics);
+  pv.addEventListener("click", () => {
+    /* the preview: the study's pictures load down this column, and the
+       column widens to two modules to hold them */
+    if (pics.childElementCount) { pics.innerHTML = ""; c.classList.remove("wide"); pv.textContent = "Preview"; relayout(); return; }
+    const files = (window.BOARD_ITEMS || []).filter((i) => i.g === s.folder);
+    (files.length ? files.map((f) => f.t) : [s.cover]).forEach((src, i) => {
+      const im = F.el("img"); im.src = src; im.alt = ""; im.loading = "lazy"; im.style.animationDelay = (i * 0.05) + "s"; im.classList.add("enter"); pics.appendChild(im);
+    });
+    c.classList.add("wide"); pv.textContent = "Close the preview"; relayout(); scrollTo(c);
+  });
+  go.addEventListener("click", (e) => { e.preventDefault(); curtain(s.title, s.cat, go.href); });
+  insertAfter(from, c);
+}
+
+/* ── the strip's order ───────────────────────────────────────────── */
+function insertAfter(from, c) {
+  const i = cols.indexOf(from);
+  const at = i < 0 ? cols.length : i + 1;
+  cols.splice(at, 0, c);
+  c.classList.add("enter");
+  const next = cols[at + 1] || ghostCol || house;
+  strip.insertBefore(c, next);
+  relayout(); drawPath(); drawGhost(); writeHash();
+  scrollTo(c); setTimeout(() => c.__line.focus({ preventScroll: true }), 420);
+}
+function close(c) {
+  const i = cols.indexOf(c); if (i <= 0) return;
+  cols.splice(i, 1);
+  c.classList.add("closing");
+  setTimeout(() => { c.remove(); relayout(); }, 520);
+  drawPath(); drawGhost(); writeHash();
+  const back = cols[i - 1]; if (back) scrollTo(back);
+}
+function relayout() { /* flex does the work; kept as the one place to hook a measurement */ }
+function scrollTo(c) {
+  const x = c.offsetLeft - 1;
+  strip.scrollTo({ left: Math.max(0, x - (strip.clientWidth - c.offsetWidth) * 0), behavior: "smooth" });
+}
+
+/* ── the rail: the path, and the offers ──────────────────────────── */
+function drawPath() {
+  pathEl.innerHTML = "";
+  cols.forEach((c, i) => {
+    const chip = F.el("button", "chip", c.__spec.caption); chip.type = "button";
+    if (i === 0) chip.textContent = "Start";
+    chip.addEventListener("click", () => scrollTo(c));
+    if (i > 0) { const x = F.el("i", null, "×"); x.addEventListener("click", (e) => { e.stopPropagation(); close(c); }); chip.appendChild(x); }
+    pathEl.appendChild(chip);
+  });
+}
+F.SHELVES.forEach((sh) => {
+  const c = F.el("button", "chip", sh.name); c.type = "button"; c.dataset.ask = sh.name;
+  document.getElementById("shelves").appendChild(c);
+});
+document.querySelector(".rail").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-ask]"); if (!b) return;
+  /* a chip opens from the newest column, like typing there would */
+  open(cols[cols.length - 1], b.dataset.ask);
+});
+
+/* ── the ghost column: the house's next, with its reason ─────────── */
+let ghostCol = null;
+function drawGhost() {
+  if (ghostCol) { ghostCol.remove(); ghostCol = null; }
+  if (cols.length < 2 && !trail.shelves.length) return;
+  const last = cols[cols.length - 1];
+  const p = F.predict(trail, last.__spec.slug || null);
+  ghostCol = column("ghost", { of: "Next", caption: p.study.title, count: p.why });
+  ghostCol.querySelector(".x").remove();
+  ghostCol.__line.readOnly = true;
+  ghostCol.__line.addEventListener("click", () => openStudy(last, p.study));
+  strip.insertBefore(ghostCol, house);
+}
+
+/* ── the origin and the house ────────────────────────────────────── */
+const origin = column("origin", { of: null, caption: "", count: "" });
+origin.__body.innerHTML = "";
+const st = F.el("p", "statement"); st.innerHTML = F.STATEMENT; origin.__body.insertBefore(st, origin.__body.firstChild);
+origin.querySelector(".head").style.order = "1"; /* the statement first, the field under it */
+origin.__body.style.order = "0";
+origin.querySelector(".in").style.display = "flex"; origin.querySelector(".in").style.flexDirection = "column";
+const askLabel = F.el("p", "statement", "Or just ask me:"); askLabel.style.marginTop = "14px"; askLabel.style.order = "0";
+origin.__body.appendChild(askLabel);
+st.addEventListener("click", (e) => { const t = e.target.closest(".term"); if (t) open(origin, t.dataset.ask); });
+cols.push(origin); strip.appendChild(origin);
+/* the tour speaks in the origin's field until something has happened */
+F.tour((txt) => { if (cols.length === 1 && !origin.__line.value) origin.__line.placeholder = txt; },
+  { paused: () => document.activeElement === origin.__line || cols.length > 1 });
+
+const house = F.el("section", "col house wide");
+{
+  const inner = F.el("div", "in");
+  inner.appendChild(F.el("div", "label", "The house · " + F.S.length + " studies"));
+  const grid = F.el("div", "grid"); const a = F.el("div", "r"), b = F.el("div", "r");
+  F.S.forEach((s, i) => {
+    const t = F.el("div", "tile"); const im = F.el("img"); im.src = s.cover; im.alt = ""; im.loading = "lazy";
+    t.appendChild(im); t.appendChild(F.el("b", null, s.title)); t.appendChild(F.el("span", null, s.cat));
+    t.addEventListener("click", () => openStudy(cols[cols.length - 1], s));
+    (i % 2 ? b : a).appendChild(t);
+  });
+  grid.appendChild(a); grid.appendChild(b); inner.appendChild(grid); house.appendChild(inner);
+}
+strip.appendChild(house);
+
+/* ── keys, the hash, the curtain ─────────────────────────────────── */
+addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" && e.key !== "Escape") return;
+  if (e.key === "ArrowRight") strip.scrollBy({ left: 420, behavior: "smooth" });
+  if (e.key === "ArrowLeft") strip.scrollBy({ left: -420, behavior: "smooth" });
+  if (e.key === "Escape" && cols.length > 1) close(cols[cols.length - 1]);
+});
+function writeHash() {
+  const path = cols.slice(1).map((c) => encodeURIComponent(c.__spec.text || c.__spec.caption)).join("/");
+  history.replaceState(null, "", path ? "#" + path : location.pathname);
+}
+function curtain(title, cat, href) {
+  const pt = document.getElementById("pt");
+  document.getElementById("ptName").textContent = title + "  " + cat;
+  pt.classList.add("run");
+  setTimeout(() => { location.href = href; }, 760);
+}
+/* a shared address restores the path */
+(location.hash.slice(1).split("/").filter(Boolean)).forEach((t) => open(cols[cols.length - 1], decodeURIComponent(t)));
+</script>
+<script src="../board-data.js"></script>
+</body>
+</html>
