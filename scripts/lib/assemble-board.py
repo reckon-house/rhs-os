@@ -179,8 +179,8 @@ head = r'''<!doctype html>
   .ccol .cline::placeholder { color: var(--ink); opacity: 1; }
   .ccol .cline:focus { text-decoration-color: var(--ink); }
   .ccol .cline:focus::placeholder { color: rgba(0, 0, 0, 0.42); }
-  .ccol .cx { position: absolute; right: 0; top: 0.1em; border: 0; background: none;
-    padding: 4px; cursor: pointer; font: inherit; font-size: 0.8em; line-height: 1;
+  .ccol .cx { position: absolute; right: 0; top: 0; border: 0; background: none;
+    padding: 4px; cursor: pointer; font: inherit; line-height: 1;
     color: rgba(0, 0, 0, 0.42); }
   .ccol .cx:hover { color: var(--ink); }
   .ccol .cnote { margin-top: 0.6em; }
@@ -224,10 +224,28 @@ head = r'''<!doctype html>
     animation: picIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
   @keyframes picIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   /* the house's next, standing before the field, in the grey */
-  /* a study's head is an offer, not a label, so it wears the grey the
-     house speaks in; typing turns it back to ink */
+  /* ── TWO REGISTERS IN A COLUMN ────────────────────────────────────
+     The one-size rule is the INTRO'S, and the intro is one sentence
+     with one colour change. A study column holds five different
+     things, and setting them all at display size gave them no order
+     at all. Only one line in it is a sentence — the study's own
+     opening line — and that keeps the statement's size. Everything
+     else is furniture, and the board already has a register for
+     furniture: the caption under every tile, 12px, the name in ink
+     and the category in grey. A column's name line and a tile's name
+     line are the same object and now look it.
+
+     The head is furniture too. It is navigation, where the house
+     would go next, so it is set like the rail's chips, and typing in
+     it works at that size the way the bar's field always has. */
+  .ccol.study .chead, .ccol .cname, .ccol .cways {
+    font-size: var(--note); line-height: 1.35; letter-spacing: -0.004em; }
+  .ccol .cname { margin-bottom: 0.9em; }
+  .ccol .cname b, .ccol .crow b { font-weight: 600; }
   .ccol.study .cline::placeholder { color: rgba(0, 0, 0, 0.42); }
-  .ccol .cwhy { margin-top: 0.35em; }
+  .ccol .cwhy { margin-top: 0.3em; }
+  /* the close keeps its own size whatever register its head is in */
+  .ccol .cx { font-size: 19px; }
   .ccol.ghost { border-left-style: dashed; }
   /* the path in the rail: a study's name can be long, so its row
      wraps and takes the rail's width rather than being cut */
@@ -456,27 +474,7 @@ head = r'''<!doctype html>
      the slot inside the sentence and goes when the sentence goes. */
   #nav.threadon #query, .ask.parked #query { visibility: hidden; }
 
-  /* ── THE TWO WAYS IN SIT UNDER THE NAME ───────────────────────────
-     Not on the picture. Two plain links under the caption, in the
-     caption's own size and the category's own grey, so a tile reads
-     name, category, then what you can do with it — the way an index
-     entry reads. Nothing sits over the work. They ride the name on
-     hover, so the opened frame never covers them. */
-  .tilelinks { display: block; margin-top: 5px;
-    font-size: var(--note); line-height: 1.35; font-weight: 500;
-    letter-spacing: -0.004em; }
-  .tile.hangR .tilelinks { text-align: right; }
-  .tilelinks a { color: rgba(0, 0, 0, 0.42); text-decoration: none;
-    cursor: pointer; transition: color 0.3s ease; white-space: nowrap; }
-  .tilelinks a:hover { color: var(--ink); }
-  .tilelinks i { font-style: normal; color: rgba(0, 0, 0, 0.2); margin: 0 7px; }
-  .ixrow .fd-it .tilelinks {
-    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
-  @media (hover: hover) and (min-width: 761px) {
-    .ixrow .fd-it:hover .tilelinks {
-      transform: translate(var(--slide, 0px), var(--drop, 0px)); }
-  }
-  /* the picture itself is the preview's door; it says so */
+  /* the picture is the door to the study's column, and it says so */
   .tile[data-slug] .shot { cursor: pointer; }
 
   /* ── WHAT THE HOUSE LAYS NEXT ─────────────────────────────────────
@@ -1305,22 +1303,10 @@ function mount(t, gx, gy) {
       sub.textContent = g.s;
       lbl.appendChild(sub);
       card.appendChild(lbl);
-      /* the two ways in, under the name — never on the picture */
-      const links = document.createElement("span");
-      links.className = "tilelinks";
-      const pv = document.createElement("a");
-      pv.href = "#preview";
-      pv.dataset.act = "preview";
-      pv.textContent = "Preview";
-      const dot = document.createElement("i");
-      dot.textContent = "\u00b7";
-      const go = document.createElement("a");
-      go.href = "/case-studies/" + (g.h || t.g);
-      go.textContent = "See the study";
-      links.appendChild(pv);
-      links.appendChild(dot);
-      links.appendChild(go);
-      card.appendChild(links);
+      /* NO LINKS UNDER A TILE. The picture is the door — press it and
+         the study opens as a column, where both ways in are named
+         once — so a pair of them under every caption on the board was
+         the same offer repeated twenty-eight times. */
       el.dataset.slug = t.g;
     }
     el.appendChild(card);
@@ -1784,8 +1770,8 @@ function openStudyColumn(folder, opts, from) {
     c.__next = nx.slug;
     c.__head.appendChild(el("div", "cnote g cwhy", nx.reason));
   }
-  /* the study names itself here, where its own column begins */
-  const name = el("div", "cnote");
+  /* the study names itself here, in the caption's register */
+  const name = el("div", "cname");
   name.appendChild(el("b", null, g.t + " "));
   name.appendChild(el("span", "g", g.s));
   c.__body.appendChild(name);
