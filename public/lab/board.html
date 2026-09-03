@@ -77,9 +77,24 @@
      to haul: on a laptop a click-drag is the most awkward gesture
      available and the cursor was advertising it. Touch keeps the
      drag, because there it is the only gesture there is. */
+  /* ── THE HOUSE HOLDS THE LEFT ─────────────────────────────────────
+     New things go rightward, always: the intro anchors the far left
+     and every column opens to the right of the last, deeper and
+     deeper, the way a column browser has worked since the NeXT. Two
+     modules of the strip are visible at once, so while a conversation
+     is open the field narrows to ONE — its intro column — and the
+     newest column stands beside it. Close everything and it opens
+     back to its full width. */
   #field {
     position: relative; flex: none; height: 100%;
     overflow: hidden; touch-action: pan-y;
+    /* the BASIS is what a flex item is actually laid out from, and
+       `flex: none` leaves it `auto`: an animated width on this item
+       was being ignored in favour of the basis the first layout
+       resolved, so the field simply refused to narrow. Both are set
+       together, and both transition. */
+    transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1),
+      flex-basis 0.5s cubic-bezier(0.2, 0.55, 0.2, 1);
   }
 
   /* ── A COLUMN ─────────────────────────────────────────────────────
@@ -522,11 +537,11 @@
 </div>
 
 <div id="strip"><div id="stripIn">
-  <div id="cols"></div>
   <div id="field">
     <div id="rules"></div>
     <div id="plane"></div>
   </div>
+  <div id="cols"></div>
 </div></div>
 
 
@@ -567,7 +582,10 @@ const VISIBLE = PHONE ? 1 : 2;
    own box was 833.6, because innerWidth is not always the width the
    layout is using. The element knows; ask it. */
 const FIELD_W = document.getElementById("strip").getBoundingClientRect().width;
-document.getElementById("field").style.width = FIELD_W + "px";
+{
+  const f = document.getElementById("field");
+  f.style.width = FIELD_W + "px"; f.style.flexBasis = FIELD_W + "px";
+}
 document.documentElement.style.setProperty("--modw", "0px"); /* set once COL is known */
 const GAP = PHONE ? 20 : IXGAP;
 /* half gutter, column, gutter, column, half gutter: VISIBLE gaps, not
@@ -995,14 +1013,11 @@ const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
 let velY = 0;
 let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
-/* THE FIELD DOES NOT WRAP TO THE LEFT ANY MORE: left of its first
-   column is the conversation. Paging past the origin hands off to the
-   strip, which shows the newest column; the field itself stays at
-   its origin. Rightward it is as endless as it was. */
-const pageTo = (i) => {
-  if (i < 0) { colIdx = 0; tgt.x = restX(0); if (window.stripBack) stripBack(); return; }
-  colIdx = i; tgt.x = restX(i);
-};
+/* THE FIELD DOES NOT WRAP TO THE LEFT. Its first column is the
+   beginning of the house and there is nothing before it; the
+   conversation lives to the RIGHT, past the field, where new things
+   go. Rightward the field is as endless as it was. */
+const pageTo = (i) => { colIdx = Math.max(0, i); tgt.x = restX(colIdx); };
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
    Up and down scrolls. Left and right pages, one column at a time,
@@ -1520,12 +1535,29 @@ const stripIn = document.getElementById("stripIn");
 const colsEl = document.getElementById("cols");
 const ccols = [];
 let stripX = 0, stripTgt = 0;
-const fieldX = () => field.offsetLeft;
-/* with no columns left the field stands at zero, and it is zero the
-   strip must aim at: reading offsetLeft during the fold gives where
-   the field was a moment ago and the strip stops short of it */
-const stripShow = (c) => { stripTgt = c ? c.offsetLeft : (ccols.length ? fieldX() : 0); };
-window.stripBack = () => { if (ccols.length) stripShow(ccols[ccols.length - 1]); };
+const fieldX = () => 0;                 /* the field is the strip's head */
+/* ── ONE MODULE OF CONTEXT TO THE LEFT ──────────────────────────────
+   A column is shown with whatever stands before it — the intro for
+   the first, the column it was asked from for the rest — so the path
+   reads as a path and never as one card floating alone.
+
+   ARITHMETIC, NOT MEASUREMENT. offsetLeft was read while the field
+   was still mid-narrow, so the strip aimed at where the column had
+   been half a second earlier and scrolled clean past the intro. With
+   the conversation open the field is one module and every column is
+   one module, so the nth column's left edge is (n+1) modules and its
+   context begins at n. */
+const stripShow = (c) => {
+  const i = c ? ccols.indexOf(c) : -1;
+  stripTgt = i < 0 ? 0 : i * MOD_X;
+};
+/* the field's width IS the strip's grammar: full while it is alone,
+   one module while the conversation runs beside it */
+function fitField() {
+  const w = (ccols.length ? MOD_X : FIELD_W) + "px";
+  field.style.width = w; field.style.flexBasis = w;
+}
+window.stripBack = () => { stripShow(null); };
 
 /* the studies the board knows, matched the way the field is dimmed */
 const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
@@ -1626,10 +1658,14 @@ function studyRows(list, into, from) {
 function insertColumn(c, from) {
   const i = from ? ccols.indexOf(from) : -1;
   const at = i < 0 ? ccols.length : i + 1;
+  const first = !ccols.length;
   ccols.splice(at, 0, c);
   const next = ccols[at + 1] || ghostCol;
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   nav.classList.add("threadon");
+  /* the house steps back to its intro as the conversation begins, so
+     the column that just opened has the sentence beside it */
+  if (first) { fitField(); pageTo(0); }
   drawGhost(); drawPath();
   stripShow(c);
   setTimeout(() => { c.classList.remove("arriving"); c.__line.focus({ preventScroll: true }); }, 620);
@@ -1718,26 +1754,26 @@ function closeColumn(c) {
   drawGhost(); drawPath(); applyFromColumns();
   if (!ccols.length) {
     /* the last one folds away and the house is at its beginning
-       again: nothing filtered, the field at its first column and its
-       top, which is what closing the conversation means */
+       again: nothing filtered, its full width back, the field at its
+       first column and its top */
     nav.classList.remove("threadon");
-    stripShow(null);
+    fitField(); stripShow(null);
     pageTo(0); setY(0); velY = 0;
-  } else stripShow(ccols[Math.max(0, i - 1)]);
+  } else stripShow(ccols[Math.min(ccols.length - 1, i)]);
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
   ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
   ccols.length = 0;
   nav.classList.remove("threadon"); drawGhost(); drawPath();
-  applyFromColumns(); stripShow(null);
+  applyFromColumns(); fitField(); stripShow(null);
 }
 function stripStep(dir) {
-  /* where the strip stands now, in columns; the field is one past the last */
-  const xs = ccols.map((c) => c.offsetLeft).concat([fieldX()]);
-  let k = 0; xs.forEach((x, i) => { if (Math.abs(x - stripTgt) < Math.abs(xs[k] - stripTgt)) k = i; });
-  const n = Math.max(0, Math.min(xs.length - 1, k + dir));
-  if (n === xs.length - 1) stripShow(null); else stripShow(ccols[n]);
+  /* the stops, left to right: the field, then every column, each one
+     module apart — the same arithmetic stripShow uses */
+  const here = Math.round(stripTgt / MOD_X);
+  const n = Math.max(0, Math.min(ccols.length - 1, here + dir));
+  stripShow(ccols.length ? ccols[n] : null);
 }
 /* the ghost: the house's next, before the field */
 let ghostCol = null;
@@ -1779,8 +1815,11 @@ function drawPath() {
    columns, up and down move the page a screen at a time */
 addEventListener("keydown", (e) => {
   if (e.target && e.target.tagName === "INPUT") return;
-  if (e.key === "ArrowRight") { e.preventDefault(); if (ccols.length && stripTgt < fieldX() - 1) stripStep(1); else pageTo(colIdx + 1); }
-  if (e.key === "ArrowLeft") { e.preventDefault(); if (colIdx > 0) pageTo(colIdx - 1); else stripStep(-1); }
+  /* on the field the arrows page the work; once the strip has left
+     the field they walk the conversation */
+  const onField = stripTgt < MOD_X / 2;
+  if (e.key === "ArrowRight") { e.preventDefault(); if (onField && !ccols.length) pageTo(colIdx + 1); else stripStep(1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); if (onField) pageTo(colIdx - 1); else stripStep(-1); }
   if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); setY(tgt.y + innerHeight * 0.8); velY = 0; }
   if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); setY(tgt.y - innerHeight * 0.8); velY = 0; }
 });
