@@ -162,10 +162,18 @@ head = r'''<!doctype html>
     transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1),
       opacity 0.4s ease, border-color 0.4s ease;
   }
-  .ccol.closing { width: 0 !important; opacity: 0; overflow: hidden; border-left-color: transparent; }
-  .ccol.arriving { animation: colIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes colIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
-  .ccol .cin { height: 100%; overflow-y: auto; scrollbar-width: none;
+  /* ── A COLUMN GROWS OUT FROM BEHIND ITS NEIGHBOUR ─────────────────
+     Arriving is the exact inverse of folding: the box opens from zero
+     to one module while its contents stand still at full width behind
+     the clip, so the column is revealed left to right as though it
+     were sliding out from under the column before it — and everything
+     to its right is pushed along as it grows. It used to fly in from
+     off-screen right, which is a card being dealt onto a table rather
+     than a column being made room for. */
+  .ccol.closing, .ccol.arriving { width: 0; opacity: 0; overflow: hidden;
+    border-left-color: transparent; }
+  .ccol .cin { height: 100%; width: var(--modw); overflow-y: auto;
+    scrollbar-width: none;
     padding: calc(var(--cover-air, 50px) + 46px) calc(var(--ixgap) / 2) 90px; }
   .ccol .cin::-webkit-scrollbar { display: none; }
   .ccol .g { color: rgba(0, 0, 0, 0.42); }
@@ -217,7 +225,8 @@ head = r'''<!doctype html>
   .ccol .cpics { margin-top: 0.8em; }
   .ccol .cpics img { display: block; width: 100%; height: auto; border-radius: 14px;
     background: rgba(0, 0, 0, 0.04); margin-top: 14px;
-    animation: colIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    animation: picIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes picIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   /* the house's next, standing before the field, in the grey */
   .ccol.ghost { border-left-style: dashed; }
   /* the path in the rail: a study's name can be long, so its row
@@ -1718,8 +1727,13 @@ function insertColumn(c, from) {
      the column that just opened has the sentence beside it */
   if (first) { fitField(); pageTo(0); }
   drawGhost(); drawPath();
-  stripShow(c);
-  setTimeout(() => { c.classList.remove("arriving"); c.__line.focus({ preventScroll: true }); }, 620);
+  /* the box is at zero when it lands; one frame later it opens, and
+     the transition has a width to run from */
+  requestAnimationFrame(() => {
+    c.classList.remove("arriving");
+    stripShow(c);
+    setTimeout(() => c.__line.focus({ preventScroll: true }), 520);
+  });
 }
 function askFrom(from, text) {
   const t = (text || "").trim(); if (!t) return;
