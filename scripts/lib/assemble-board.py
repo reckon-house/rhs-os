@@ -419,25 +419,16 @@ head = r'''<!doctype html>
     cursor: pointer; text-align: left; }
   .askgo u { text-decoration-color: rgba(0, 0, 0, 0.22);
     text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
-  /* ── THE CLOSE RIDES THE FIELD ─────────────────────────────────────
-     Beside the input in the bar: it folds the newest column away.
-     Only there while a column is open. */
-  #threadClose {
-    display: none;
-    border: 0; background: none; font: inherit; cursor: pointer;
-    font-size: 19px; line-height: 1; color: rgba(0, 0, 0, 0.4);
-    padding: 2px 6px; flex: none;
-  }
-  #nav.threadon #threadClose { display: block; }
+  /* NO CLOSE IN THE BAR. Every column carries its own ×, and the rail
+     carries one per row of the path, so a third floating in the
+     masthead band belonged to nothing. Escape still folds the newest. */
   /* ── THE FIELD IS THE STATEMENT'S, AND ONLY THE STATEMENT'S ───────
      There is no parked copy any more. The question travelled to the
      bar because the bar was the only place left to ask from; every
      column's head is a field now, so a second one floating over the
      masthead was a spare control in the band the burn owns. It rides
-     the slot inside the sentence and goes when the sentence goes. The
-     × stays: it belongs to the columns, not to the field. */
+     the slot inside the sentence and goes when the sentence goes. */
   #nav.threadon #query, .ask.parked #query { visibility: hidden; }
-  #threadClose:hover { color: var(--ink); }
 
   /* ── THE TWO WAYS IN SIT UNDER THE NAME ───────────────────────────
      Not on the picture. Two plain links under the caption, in the
@@ -537,7 +528,6 @@ head = r'''<!doctype html>
     <input id="query" type="text" placeholder="Ask the house."
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
-    <button type="button" id="threadClose" aria-label="Close the newest column">&times;</button>
   </div>
 
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
@@ -970,9 +960,6 @@ const submitQ = (text) => {
       q.value = "";
     });
   }
-  document.getElementById("threadClose").addEventListener("click", () => {
-    if (window.closeNewest) closeNewest();
-  });
   addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (e.target && e.target.tagName === "INPUT") return;
