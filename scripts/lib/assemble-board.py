@@ -165,10 +165,30 @@ head = r'''<!doctype html>
     color: rgba(0, 0, 0, 0.42); }
   .ccol .cx:hover { color: var(--ink); }
   .ccol .cnote { margin-top: 0.6em; }
-  .ccol .crow { display: block; margin-top: 0.55em; cursor: pointer;
-    transition: opacity 0.4s ease; }
+  /* ── A LIST IS A LIST ─────────────────────────────────────────────
+     The one-size rule is the INTRO COPY'S: the column's own prose —
+     its head and the house's line — is set like the statement. An
+     index of eight studies is not prose, and at display type it read
+     as a shout. A row wears the board's own caption instead: the
+     tile's cover at the size it is dealt beside, the name in ink and
+     the category in grey at --note, which is the same pair the
+     pictures carry under them in the field. Two registers, prose and
+     index, each with one size, one weight, one colour change. */
+  .ccol .crows { margin-top: 1em; }
+  .ccol .crow { display: grid; grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: 14px; align-items: start; padding: 11px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer;
+    font-size: var(--note); line-height: 1.35; font-weight: 600;
+    letter-spacing: -0.004em; transition: opacity 0.4s ease; }
+  .ccol .crows .crow:first-child { border-top: 0; }
   .ccol .crow.off { opacity: 0.22; }
-  .ccol .crow .g { display: inline; }
+  .ccol .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
+    border-radius: 10px; background: rgba(0, 0, 0, 0.04); }
+  .ccol .crow b { font-weight: 600; }
+  .ccol .crow .g { display: inline; font-weight: 600; }
+  .ccol .crow:hover b { text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, 0.22);
+    text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .ccol .cways { margin-top: 0.6em; }
   .ccol .cways u, .ccol .crow:hover b { text-decoration: underline;
     text-decoration-color: rgba(0, 0, 0, 0.22);
@@ -1549,13 +1569,27 @@ function narrowColumn(c, text) {
   const hits = text.trim() ? new Set(studiesFor(text).map((x) => x.folder)) : null;
   rows.forEach((r) => r.classList.toggle("off", !!hits && !hits.has(r.dataset.folder)));
 }
+/* each study's cover, by folder: the same picture the homepage leads
+   that study with, so a row in a column and a tile in the field are
+   plainly the same thing */
+const coverOf = (() => {
+  const m = {};
+  (window.BOARD_ITEMS || []).forEach((i) => { if (i.c != null && m[i.g] == null) m[i.g] = i.t; });
+  return m;
+})();
 function studyRows(list, into, from) {
+  const wrap = el("div", "crows");
   list.forEach(({ folder, g }) => {
     const r = el("div", "crow"); r.dataset.folder = folder;
-    r.appendChild(el("b", null, g.t + " ")); r.appendChild(el("span", "g", g.s));
+    const im = el("img"); im.src = encodeURI(coverOf[folder] || ""); im.alt = ""; im.loading = "lazy";
+    const t = el("div");
+    t.appendChild(el("b", null, g.t + " "));
+    t.appendChild(el("span", "g", g.s));
+    r.appendChild(im); r.appendChild(t);
     r.addEventListener("click", () => openStudyColumn(folder, {}, from));
-    into.appendChild(r);
+    wrap.appendChild(r);
   });
+  into.appendChild(wrap);
 }
 function insertColumn(c, from) {
   const i = from ? ccols.indexOf(from) : -1;
