@@ -73,17 +73,15 @@
   }
   #stripIn { display: flex; height: 100%; }
   /* ── ONE ROW ──────────────────────────────────────────────────────
-     The conversation is not beside the field, it is IN it: the
-     columns stand in the field's own row of modules, right after the
-     statement, and the work continues to the right of them. One
-     horizontal axis pans all of it. The columns' layer pans in X only,
-     like the rules, since each column scrolls on its own; the work
-     right of them rides an inner layer shifted by one module per open
-     column, and that shift transitions, so the work slides aside in
-     step with a column growing out and slides back as one folds. */
-  #plane0, #planeRin { position: absolute; left: 0; top: 0; }
-  #planeRin { transform: translate3d(var(--shift, 0px), 0, 0);
-    transition: transform 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); will-change: transform; }
+     The conversation is not beside the field, it is IN it: a column
+     stands in the field's own row of modules, right after whatever
+     asked for it, and the work continues past it. One horizontal axis
+     pans all of it. The columns' layer pans in X only, like the
+     rules, since each column scrolls on its own; every tile right of
+     a column's anchor carries a translate of one module per column
+     standing before it, and that translate transitions, so the work
+     slides aside in step with a column growing out and slides back
+     as one folds. */
   #cols { position: absolute; top: 0; bottom: 0; z-index: 4;
     left: calc(var(--modw, 0px) - var(--gapx, 0px) / 2);
     display: flex; will-change: transform; }
@@ -249,11 +247,15 @@
      would drop these out of their own absolute placement. Two classes
      and an id, so this wins wherever that rule applies. */
   #plane .tile.ixrow { position: absolute; display: block;
-    /* the push under an opening frame, on the index's own clock */
-    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* the push under an opening frame, on the index's own clock; the
+       step aside for a column, on the column's */
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+      translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
   /* ...except while a page turn is scrubbing it, where the transform
-     IS the position and a transition would lag the pan by 0.62s */
-  #plane.turning .tile.ixrow { transition: none; }
+     IS the position and a transition would lag the pan by 0.62s. The
+     step aside keeps its clock through a turn, since a column can
+     open and the row glide to it in the same moment */
+  #plane.turning .tile.ixrow { transition: translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .tile .fd-it { width: 100%; }
   /* ── THE FRAME OPENS INTO ITS COLUMN ──────────────────────────────
      The index hangs every frame from the same right edge, so its grow
@@ -568,7 +570,7 @@
 <div id="strip"><div id="stripIn">
   <div id="field">
     <div id="rules"></div>
-    <div id="plane"><div id="plane0"></div><div id="planeRin"></div></div>
+    <div id="plane"></div>
     <div id="cols"></div>
   </div>
 </div></div>
@@ -963,7 +965,7 @@ const submitQ = (text) => {
   if (typeof trailLog !== "undefined") { trailLog.asked.push(text); saveTrail(); }
   textDim = n ? needle : null;
   applyTextDim();
-  if (window.askFrom) askFrom(null, text);
+  if (window.askFrom) askFrom(null, text, { at: anchorOfAsk() });
 };
 {
   const q = document.getElementById("query");
@@ -996,7 +998,10 @@ const submitQ = (text) => {
     if (go) { submitQ(window.__tourWord || "All work"); return; }
     /* and so is every term in the sentence, wherever it is dealt */
     const term = e.target.closest && e.target.closest(".term[data-ask]");
-    if (term && window.askFrom) askFrom(null, term.dataset.ask);
+    if (term && window.askFrom) {
+      const tile = term.closest(".tile");
+      askFrom(null, term.dataset.ask, { at: tile && tile.__u != null ? tile.__u : anchorOfAsk() });
+    }
   });
 }
 
@@ -1049,19 +1054,39 @@ const TOUR = ["All work", "Interior projects", "App development",
 })();
 
 const plane = document.getElementById("plane");
-const plane0 = document.getElementById("plane0");
-const planeRin = document.getElementById("planeRin");
 const rulesEl = document.getElementById("rules");
-/* how far the work right of the statement stands aside: one module
-   per open column. The TARGET, set the instant the count changes, so
-   the mount tests tiles where they are going; the layer's transition
-   carries them there. */
-let SHIFT = 0;
-const setShift = () => {
-  SHIFT = ccols.length * MOD_X;
-  planeRin.style.setProperty("--shift", SHIFT + "px");
-};
 let colIdx = 0;
+/* ── WHERE A COLUMN STANDS ─────────────────────────────────────────
+   A column is anchored after one module of the field as dealt,
+   c.__after (0 is the statement; a tile's module is its period times
+   the columns per period, plus its column), and ccols is kept in row
+   order. So a column's place in the row is its anchor, plus one, plus
+   the columns before it; a module's place is itself plus the columns
+   anchored before it; and a tile steps aside one module for each of
+   those. Nothing is a block: a column opened from the far end of the
+   row stands at the far end, and only what is right of it moves. */
+const colsBefore = (u) => { let n = 0; for (const c of ccols) if (c.__after < u) n += 1; return n; };
+const shiftAt = (u) => colsBefore(u) * MOD_X;
+const dispOf = (c) => c.__after + 1 + ccols.indexOf(c);
+const dispU = (u) => u + colsBefore(u);
+/* what stands at a place in the row: a column, or a module */
+const atDisp = (d) => {
+  let u = d;
+  for (const c of ccols) { const k = dispOf(c); if (k === d) return { col: c }; if (k < d) u -= 1; }
+  return { u };
+};
+/* the module a question from the statement belongs to: the statement
+   on the screen, since the sentence is dealt once a period; parked in
+   the bar with none on screen, whatever stands at the near edge */
+function anchorOfAsk() {
+  const L = field.getBoundingClientRect().left;
+  for (const el of document.querySelectorAll("#plane .tile.statement")) {
+    const r = el.getBoundingClientRect();
+    if (r.right > L && r.left < innerWidth && el.__u != null) return el.__u;
+  }
+  const here = atDisp(colIdx);
+  return here.col ? null : here.u;
+}
 const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
@@ -1214,22 +1239,20 @@ function remount() {
       for (let k = 0; k < tiles.length; k++) {
         const t = tiles[k];
         const gx = t.x + i * PW, gy = t.y + j * PH;
-        /* only what stands RIGHT of the statement shifts: the work
-           columns of this period past column 0, and every later
-           period. The statement's column stays, and so does the
-           period before it, which sits off the left edge and is only
-           ever seen on an overdrag. Shifting that too carried its last
-           column one module right, onto the statement, and a frame
-           from the far end of the row painted over the intro. By
-           column and period, not by x, since a narrow frame sits in
-           from its column's edge and its x alone would lie. */
-        const shifted = i > 0 || (i === 0 && t.col > 0);
-        const sh = shifted ? SHIFT : 0;
+        /* the tile's module as dealt, by column and period, not by x,
+           since a narrow frame sits in from its column's edge and its
+           x alone would lie; and how far it stands aside for the
+           columns anchored before it. The period before the statement
+           sits off the left edge, seen only on an overdrag, and no
+           column is anchored before it, so it never moves. Tested
+           where it is GOING: the translate's transition carries it. */
+        const u = i * COLS + t.col;
+        const sh = shiftAt(u);
         if (gx + sh + t.w < x0 || gx + sh > x1 || gy + t.h < y0 || gy > y1) continue;
         const key = k + ":" + i + ":" + j;
         want.add(key);
         if (!live.has(key)) {
-          const el = mount(t, gx, gy, shifted);
+          const el = mount(t, gx, gy, u, sh);
           live.set(key, el);
           /* a frame arrives by its card; a text tile by itself */
           fresh.push(el.querySelector(".fd-it") || el);
@@ -1238,7 +1261,14 @@ function remount() {
     }
   }
   for (const [key, el] of live) {
-    if (!want.has(key)) { el.remove(); live.delete(key); }
+    if (want.has(key)) continue;
+    /* a tile still sliding aside for a column is tested where it is
+       going, and can be out of the window there while still on the
+       screen here: it stays until it has actually left */
+    const r = el.getBoundingClientRect();
+    if (r.right > -MARGIN_X && r.left < innerWidth + MARGIN_X &&
+        r.bottom > -MARGIN_Y && r.top < innerHeight + MARGIN_Y) continue;
+    el.remove(); live.delete(key);
   }
   /* the curtain: the homepage's own arrival observer, not a rAF pair.
      An IntersectionObserver fires on its own schedule, so a tile that
@@ -1273,14 +1303,14 @@ function remount() {
   /* a tile that mounts mid-turn must be on its side before it paints */
   swapSides();
 }
-function mount(t, gx, gy, shifted) {
+function mount(t, gx, gy, u, sh) {
   const el = document.createElement("div");
-  el.__shifted = shifted;
+  el.__u = u; el.__sh = sh;
   /* .ixrow, because that is the ancestor the index's own label and
      hover rules are scoped to. Same classes, same stylesheet, same
      0.62s curve — nothing about the card is re-specified here. */
   el.className = "tile ixrow";
-  el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px";
+  el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px;translate:" + sh + "px 0";
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
   el.__wx = gx;
@@ -1348,7 +1378,7 @@ function mount(t, gx, gy, shifted) {
     }
     el.appendChild(card);
   }
-  (shifted ? planeRin : plane0).appendChild(el);
+  plane.appendChild(el);
   return el;
 }
 
@@ -1375,7 +1405,7 @@ function swapSides() {
     const push = el.__push || 0;
     if (!el.__slack && !push && !el.__hadPush) continue;
     el.__hadPush = push !== 0;
-    const wx = el.__wx + (el.__shifted ? SHIFT : 0);
+    const wx = el.__wx + el.__sh;
     const t = Math.min(1, Math.max(0, (wx - cur.x - GAP / 2) / MOD_X));
     el.style.transform = "translate3d(" +
       (t * (el.__slack || 0)).toFixed(1) + "px," + push.toFixed(1) + "px,0)";
@@ -1480,10 +1510,15 @@ armHover();
 plane.addEventListener("click", (e) => {
   if (moved > 6) return;
   const pv = e.target.closest && e.target.closest("[data-act='preview']");
-  if (pv) { e.preventDefault(); openStudyColumn(pv.closest(".tile").dataset.slug, { preview: true }); return; }
+  if (pv) {
+    e.preventDefault();
+    const tile = pv.closest(".tile");
+    openStudyColumn(tile.dataset.slug, { preview: true, at: tile.__u }); return;
+  }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
-  if (shot) openStudyColumn(shot.closest(".tile").dataset.slug, { preview: true });
+  /* the study opens right after the picture's own module */
+  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { preview: true, at: tile.__u }); }
 });
 
 /* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
@@ -1613,7 +1648,15 @@ const ccols = [];
 /* a column is a module: the kth open column stands at module k+1,
    after the statement, and is shown with the module before it — the
    statement for the first, the column it was asked from for the rest */
-const showCol = (c) => { const i = ccols.indexOf(c); pageTo(i < 0 ? 0 : i); };
+/* bring a column into view by the least move: none if it is on the
+   screen, else the row glides until it stands at the near edge */
+const reveal = (c) => {
+  if (ccols.indexOf(c) < 0) return;
+  const d = dispOf(c);
+  if (d < colIdx) pageTo(d);
+  else if (d > colIdx + VISIBLE - 1) pageTo(d - VISIBLE + 1);
+};
+const showCol = reveal;
 
 /* the studies the board knows, matched the way the field is dimmed */
 const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
@@ -1720,33 +1763,71 @@ function studyRows(list, into, from) {
   });
   into.appendChild(wrap);
 }
-function insertColumn(c, from) {
-  const i = from ? ccols.indexOf(from) : -1;
-  const at = i < 0 ? ccols.length : i + 1;
-  const first = !ccols.length;
+/* ── each column on its own module ──────────────────────────────────
+   Margins carry the work between columns: a column's left margin is
+   the modules between its anchor and the previous column's, so the
+   flex row lays every column on its own module, and the widths, which
+   are what arrive and fold, push the rest along. */
+const layoutCols = () => {
+  let prev = 0;
+  for (const c of ccols) { c.style.marginLeft = ((c.__after - prev) * MOD_X) + "px"; prev = c.__after; }
+};
+/* every mounted tile re-reads how far it stands aside, and the
+   transition carries the ones that changed. The window is re-read
+   once the slide is over: what slid off is let go, what slid on
+   arrives. */
+const reshift = () => {
+  for (const el of live.values()) {
+    const sh = shiftAt(el.__u);
+    if (sh !== el.__sh) { el.__sh = sh; el.style.translate = sh + "px 0"; }
+  }
+  setTimeout(remount, 540);
+};
+function insertColumn(c, from, opts) {
+  opts = opts || {};
+  /* RIGHT AFTER WHATEVER ASKED, before that thing's earlier answers,
+     so the newest stands nearest the asker: a column, a tile's
+     module, the statement. From the rail, which has no place in the
+     row, it is whatever stands at the near edge of the view. */
+  let at;
+  if (from && ccols.indexOf(from) >= 0) {
+    c.__after = from.__after; at = ccols.indexOf(from) + 1;
+  } else {
+    let u = opts.at;
+    if (u == null) {
+      const here = atDisp(colIdx);
+      if (here.col) return insertColumn(c, here.col, {});
+      u = here.u;
+    }
+    c.__after = u;
+    at = ccols.findIndex((x) => x.__after >= u);
+    if (at < 0) at = ccols.length;
+  }
   ccols.splice(at, 0, c);
-  const next = ccols[at + 1] || ghostCol;
+  layoutCols();
+  const next = ccols[at + 1];
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   nav.classList.add("threadon");
-  setShift(); drawGhost(); drawPath();
+  reshift(); drawPath();
   /* THE AIM IS TAKEN NOW, THE BOX OPENS NEXT FRAME. Only the class
      swap needs a frame between zero and full width for the transition
      to have something to run from; where the field should point does
      not, and putting it inside the frame meant a parked tab never
      aimed at all — rAF does not run in the background, setTimeout
      does, which is why the fallback is there too. */
-  showCol(c);
+  reveal(c);
   const open = () => c.classList.remove("arriving");
   requestAnimationFrame(open);
   setTimeout(open, 60);
   setTimeout(() => c.__line.focus({ preventScroll: true }), 560);
 }
-function askFrom(from, text) {
+function askFrom(from, text, opts) {
+  opts = opts || {};
   const t = (text || "").trim(); if (!t) return;
   const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
-  if (byTitle) return openStudyColumn(byTitle[0], {}, from);
+  if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
   const tag = shelfByText(t);
-  if (tag) return openShelfColumn(tag, from);
+  if (tag) return openShelfColumn(tag, from, opts);
   const hits = studiesFor(t);
   const c = colNode("answer", t);
   if (hits.length) c.__needle = t.toLowerCase();
@@ -1756,10 +1837,10 @@ function askFrom(from, text) {
   else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
   c.__body.appendChild(note);
   if (hits.length) studyRows(hits, c.__body, c);
-  insertColumn(c, from);
+  insertColumn(c, from, opts);
 }
 window.askFrom = askFrom;
-function openShelfColumn(tag, from) {
+function openShelfColumn(tag, from, opts) {
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
   c.__mode = tag;
@@ -1767,7 +1848,7 @@ function openShelfColumn(tag, from) {
     ? "Staples are the pulls and the kept lines, not studies."
     : hits.length + (hits.length === 1 ? " study." : " studies.")));
   studyRows(hits, c.__body, c);
-  insertColumn(c, from);
+  insertColumn(c, from, opts);
 }
 function openStudyColumn(folder, opts, from) {
   opts = opts || {};
@@ -1837,7 +1918,7 @@ function openStudyColumn(folder, opts, from) {
   };
   pv.addEventListener("click", load);
   if (opts.preview) load();
-  insertColumn(c, from);
+  insertColumn(c, from, opts);
 }
 /* ── WHAT THE FIELD SHOWS IS THE PATH'S NEWEST FILTER ───────────────
    A shelf column dims the field to its shelf and a question column
@@ -1860,31 +1941,33 @@ function applyFromColumns() {
 }
 function closeColumn(c) {
   const i = ccols.indexOf(c); if (i < 0) return;
+  const d = dispOf(c);
   ccols.splice(i, 1);
-  c.classList.add("closing");
+  /* its margin goes with it now, so the columns after it hold their
+     place while its width folds: the fold is what moves them */
+  c.classList.add("closing"); c.style.marginLeft = "0px";
   setTimeout(() => c.remove(), 520);
-  setShift(); drawGhost(); drawPath(); applyFromColumns();
-  if (!ccols.length) {
-    /* the last one folds away and the house is at its beginning
-       again: nothing filtered, the work back in its place, the field
-       at its first column */
-    nav.classList.remove("threadon");
-    pageTo(0);
-  } else pageTo(Math.max(0, Math.min(ccols.length - 1, i - 1)));
+  layoutCols(); reshift(); drawPath(); applyFromColumns();
+  if (!ccols.length) nav.classList.remove("threadon");
+  /* THE VIEW STAYS ON WHAT IT WAS LOOKING AT. A column folding left
+     of it moves that content one module left, so the view follows by
+     one; one folding in view, or right of it, just lets the work
+     slide back in. */
+  if (d < colIdx) pageTo(colIdx - 1);
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
-  ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
+  ccols.slice().forEach((c) => {
+    c.classList.add("closing"); c.style.marginLeft = "0px"; setTimeout(() => c.remove(), 520);
+  });
   ccols.length = 0;
-  nav.classList.remove("threadon"); setShift(); drawGhost(); drawPath();
+  nav.classList.remove("threadon"); reshift(); drawPath();
   applyFromColumns(); pageTo(0);
 }
 
 /* NO GHOST COLUMN. It stood past the newest column with the house's
    next in it, and the head of a study now says the same thing in the
    place the eye already is. One offer, not two. */
-let ghostCol = null;
-function drawGhost() {}
 /* the path, as rows of the rail's own kind */
 function drawPath() {
   let wrap = document.getElementById("pathwrap");
@@ -2749,7 +2832,7 @@ window.__askReady = true;
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
 window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, closeColumn, closeAllColumns,
-  showCol, get ccols() { return ccols; }, get SHIFT() { return SHIFT; }, get colIdx() { return colIdx; },
+  showCol, get ccols() { return ccols; }, dispOf, atDisp, shiftAt, VISIBLE, get live() { return live; }, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, setMode, checkScale, DPR,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
   get MODE() { return MODE; } };
