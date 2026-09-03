@@ -124,11 +124,14 @@ head = r'''<!doctype html>
   }
   #stripIn { display: flex; height: 100%; will-change: transform; }
   #cols { display: flex; height: 100%; flex: none; }
+  /* NO GRAB HAND. The field reads as a page to scroll, not a canvas
+     to haul: on a laptop a click-drag is the most awkward gesture
+     available and the cursor was advertising it. Touch keeps the
+     drag, because there it is the only gesture there is. */
   #field {
     position: relative; flex: none; height: 100%;
-    overflow: hidden; touch-action: none; cursor: grab;
+    overflow: hidden; touch-action: pan-y;
   }
-  #field.dragging { cursor: grabbing; }
 
   /* ── A COLUMN ─────────────────────────────────────────────────────
      One module wide, scrolling on its own, its head scrolling with
@@ -1014,27 +1017,36 @@ const pageTo = (i) => {
   colIdx = i; tgt.x = restX(i);
 };
 
-let hCool = 0;
+/* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
+   Up and down scrolls. Left and right pages, one column at a time,
+   and nothing in between: a trackpad's two-finger swipe carries both
+   deltas at once, so the gesture is decided by which one dominates
+   and then held for the length of that gesture. A shorter cooldown
+   than before, because a page turn that ignores the second flick
+   feels broken; a lower threshold, because a trackpad's horizontal
+   deltas are small. Shift and a wheel pages too, which is the
+   convention every mouse user already has. */
+let hCool = 0, wheelAxis = null, wheelIdle = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
   if (dealing) return;
-  if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
-    const now = performance.now();
-    if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
-      pageTo(colIdx + Math.sign(e.deltaX));
-      hCool = now;
-    }
-  } else { tgt.y += e.deltaY; velY = 0; }
+  const now = performance.now();
+  if (now - wheelIdle > 160) wheelAxis = null;   /* a new gesture */
+  wheelIdle = now;
+  const dx = e.shiftKey ? e.deltaY : e.deltaX, dy = e.shiftKey ? 0 : e.deltaY;
+  if (!wheelAxis) wheelAxis = Math.abs(dx) > Math.abs(dy) * 1.2 ? "x" : "y";
+  if (wheelAxis === "x") {
+    if (now - hCool > 320 && Math.abs(dx) > 12) { pageTo(colIdx + Math.sign(dx)); hCool = now; }
+  } else { tgt.y += dy; velY = 0; }
 }, { passive: false });
 
-let pxx = 0, pyy = 0, moved = 0;
+let pxx = 0, pyy = 0, moved = 0, dragAxis = null;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
   if (dealing) return;
-  dragging = true; moved = 0;
+  dragging = true; moved = 0; dragAxis = null;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
-  field.classList.add("dragging");
   /* NO CAPTURE YET, and that was the whole bug. Capturing on
      pointerdown retargets every later event — pointerup and the click
      with them — to the field, so a click on a tile was delivered to
@@ -1052,23 +1064,30 @@ field.addEventListener("pointermove", (e) => {
   if (moved > 6 && !field.hasPointerCapture(e.pointerId)) {
     try { field.setPointerCapture(e.pointerId); } catch (err) { /* gone */ }
   }
-  tgt.x -= dx; tgt.y -= dy;
+  /* ONE AXIS PER DRAG. The first real movement decides it and the
+     gesture holds it, so a hand that wanders never carries the page
+     diagonally: the two directions mean two different things and a
+     drag that did both at once meant neither. */
+  if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+  if (dragAxis === "x") tgt.x -= dx;
+  else if (dragAxis === "y") tgt.y -= dy;
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
 });
 const release = () => {
   if (!dragging) return;
   dragging = false;
-  field.classList.remove("dragging");
   const now = performance.now();
   const recent = trail.filter((m) => now - m.t < 90);
   const fx = recent.reduce((s, m) => s + m.dx, 0);
   const fy = recent.reduce((s, m) => s + m.dy, 0);
-  let i = Math.round((tgt.x + GAP / 2) / MOD_X);
-  if (fx < -30) i += 1;
-  if (fx > 30) i -= 1;
-  pageTo(i);
-  velY = -fy * 1.6;
+  if (dragAxis === "x") {
+    let i = Math.round((tgt.x + GAP / 2) / MOD_X);
+    if (fx < -30) i += 1;
+    if (fx > 30) i -= 1;
+    pageTo(i);
+  } else if (dragAxis === "y") velY = -fy * 1.6;
+  dragAxis = null;
 };
 field.addEventListener("pointerup", release);
 field.addEventListener("pointercancel", release);
@@ -1717,10 +1736,14 @@ function drawPath() {
   });
   wrap.style.display = ccols.length ? "" : "none";
 }
+/* the keyboard says the same two things: left and right walk the
+   columns, up and down move the page a screen at a time */
 addEventListener("keydown", (e) => {
   if (e.target && e.target.tagName === "INPUT") return;
-  if (e.key === "ArrowRight") stripStep(1);
-  if (e.key === "ArrowLeft") stripStep(-1);
+  if (e.key === "ArrowRight") { e.preventDefault(); if (ccols.length && stripTgt < fieldX() - 1) stripStep(1); else pageTo(colIdx + 1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); if (colIdx > 0) pageTo(colIdx - 1); else stripStep(-1); }
+  if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); tgt.y += innerHeight * 0.8; velY = 0; }
+  if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); tgt.y -= innerHeight * 0.8; velY = 0; }
 });
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
