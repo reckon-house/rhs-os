@@ -149,7 +149,10 @@
     font-size: var(--note); line-height: 1.35; font-weight: 600;
     letter-spacing: -0.004em; transition: opacity 0.4s ease; }
   .ccol .crows .crow:first-child { border-top: 0; }
-  .ccol .crow.off { opacity: 0.22; }
+  /* a narrowed list DROPS what it does not match rather than fading
+     it: half-visible rows are the same veil in miniature, and the
+     count above already says how many stayed */
+  .ccol .crow.off { display: none; }
   .ccol .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
     border-radius: 10px; background: rgba(0, 0, 0, 0.04); }
   .ccol .crow b { font-weight: 600; }
@@ -170,6 +173,10 @@
     animation: picIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
   @keyframes picIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   /* the house's next, standing before the field, in the grey */
+  /* a study's head is an offer, not a label, so it wears the grey the
+     house speaks in; typing turns it back to ink */
+  .ccol.study .cline::placeholder { color: rgba(0, 0, 0, 0.42); }
+  .ccol .cwhy { margin-top: 0.35em; }
   .ccol.ghost { border-left-style: dashed; }
   /* the path in the rail: a study's name can be long, so its row
      wraps and takes the rail's width rather than being cut */
@@ -905,15 +912,15 @@ const countQ = (q) => {
   const studies = new Set(hit.filter((t) => t.kind === "img").map((t) => t.g));
   return { n: hit.length, m: studies.size, needle };
 };
+/* ── NOTHING GREYS OUT ──────────────────────────────────────────────
+   A filter used to dim the whole field to whatever it caught, which
+   put most of the work behind a veil to make a point about a few
+   pieces of it. The column IS the answer: it lists the studies and
+   stands beside the board, and the board is left exactly as it was,
+   still there to scroll. So this only ever CLEARS a dim, and nothing
+   ever sets one. */
 const applyTextDim = () => {
-  for (const [key, el] of live) {
-    if (key.startsWith("R:")) continue;
-    const t = tiles[parseInt(key, 10)];
-    const ok = textDim
-      ? (t.kind === "statement" || wordsOf(t).includes(textDim))
-      : matches(t);
-    el.classList.toggle("dim", !ok);
-  }
+  for (const [, el] of live) el.classList.remove("dim");
 };
 const submitQ = (text) => {
   text = (text || "").trim();
@@ -1101,14 +1108,8 @@ field.addEventListener("click", (e) => {
 
 /* ── the filter ── */
 let MODE = null;
-const matches = (t) => {
-  if (!MODE) return true;
-  if (t.kind === "statement") return true;
-  if (MODE === "staples") return t.kind === "quote" || t.g === "inspiration";
-  if (t.kind !== "img") return false;
-  const g = GROUPS[t.g];
-  return !!g && g.tags.includes(MODE);
-};
+/* every tile belongs on the board, whatever is being asked */
+const matches = () => true;
 
 /* ── the window ── */
 const MARGIN_X = MOD_X * 0.8, MARGIN_Y = 560;
@@ -1198,7 +1199,6 @@ function mount(t, gx, gy) {
      and how far the tile can travel inside it */
   el.__wx = gx;
   el.__slack = COL - t.w;
-  if (!matches(t)) el.classList.add("dim");
   if (t.kind === "statement") {
     el.classList.add("statement");
     el.innerHTML = STATEMENT_HTML;
@@ -1606,12 +1606,21 @@ function colNode(kind, caption) {
   head.appendChild(line); head.appendChild(x);
   const body = el("div", "cbody");
   cin.appendChild(head); cin.appendChild(body); c.appendChild(cin);
-  c.__line = line; c.__body = body; c.__caption = caption; c.__kind = kind;
+  c.__line = line; c.__head = head; c.__body = body; c.__caption = caption; c.__kind = kind;
   x.addEventListener("click", () => closeColumn(c));
   line.addEventListener("input", () => narrowColumn(c, line.value));
   line.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); const t = line.value.trim(); line.value = ""; narrowColumn(c, ""); if (t) askFrom(c, t); }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const t = line.value.trim(); line.value = ""; narrowColumn(c, "");
+      /* an empty head takes the offer standing in it */
+      if (t) askFrom(c, t); else if (c.__next) openStudyColumn(c.__next, {}, c);
+    }
     if (e.key === "Escape") { line.value = ""; narrowColumn(c, ""); line.blur(); }
+  });
+  /* and a click on the offer is the same act, without the keyboard */
+  line.addEventListener("click", () => {
+    if (c.__next && !line.value) openStudyColumn(c.__next, {}, c);
   });
   /* a horizontal wheel over a column walks the strip; vertical scrolls the column */
   c.addEventListener("wheel", (e) => {
@@ -1704,9 +1713,31 @@ function openStudyColumn(folder, opts, from) {
   opts = opts || {};
   const g = GROUPS[folder]; if (!g) return;
   trailLog.opened.push(folder); saveTrail();
-  const c = colNode("study", g.t);
+  /* ── THE HEAD OF A STUDY IS THE WAY ONWARD ──────────────────────
+     It used to repeat the study's own title, which is written again
+     two lines below it, so the one line at the top of the column said
+     nothing new. A study is also the only column that is a dead end:
+     a list and an answer both hold rows to click, and a study holds
+     only itself. So the head names the study the house would go to
+     next and opens it with a click — the field is still a field, and
+     typing over the offer asks instead. */
+  const nx = predictNext(folder);
+  const ng = nx && GROUPS[nx.slug];
+  const c = colNode("study", ng ? "Next \u00b7 " + ng.t : g.t);
   c.__folder = folder;
-  c.__body.appendChild(el("div", "cnote g", g.s));
+  /* the path names what a column IS, not what it offers: the head
+     says "Next · Hill Country home" and the rail must still say
+     "A.R.C.", or the trail behind you reads as a row of predictions */
+  c.__label = g.t;
+  if (ng) {
+    c.__next = nx.slug;
+    c.__head.appendChild(el("div", "cnote g cwhy", nx.reason));
+  }
+  /* the study names itself here, where its own column begins */
+  const name = el("div", "cnote");
+  name.appendChild(el("b", null, g.t + " "));
+  name.appendChild(el("span", "g", g.s));
+  c.__body.appendChild(name);
   if (g.d) {
     const [fact, ...more] = g.d.split("|");
     const d = el("div", "cnote", fact.trim() + " ");
@@ -1719,13 +1750,30 @@ function openStudyColumn(folder, opts, from) {
   const gou = el("u"); gou.appendChild(go);
   ways.appendChild(pv); ways.appendChild(document.createTextNode(" \u00b7 ")); ways.appendChild(gou);
   c.__body.appendChild(ways);
+  /* ── A CASE ARRIVES WITH A PICTURE ────────────────────────────────
+     A column of nothing but type is a column nobody believes is about
+     photographs. The study's own cover stands from the moment it
+     opens — the same frame the homepage leads it with — and Preview
+     loads the rest UNDER it rather than being the only way to see
+     anything at all. Closing the preview takes the rest away and
+     leaves the cover. */
   const pics = el("div", "cpics"); c.__body.appendChild(pics);
+  const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
+  const firstSrc = coverOf[folder] || (files[0] && files[0].t);
+  const put = (src, i) => {
+    const im = el("img"); im.src = encodeURI(src); im.alt = ""; im.loading = "lazy";
+    im.style.animationDelay = Math.min(0.4, i * 0.05) + "s";
+    pics.appendChild(im); return im;
+  };
+  if (firstSrc) put(firstSrc, 0);
+  const rest = files.filter((f) => f.t !== firstSrc);
   const load = () => {
-    if (pics.childElementCount) { pics.innerHTML = ""; pv.textContent = "Preview"; return; }
-    const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
-    files.forEach((f, i) => { const im = el("img"); im.src = encodeURI(f.t); im.alt = ""; im.loading = "lazy";
-      im.style.animationDelay = Math.min(0.4, i * 0.05) + "s"; pics.appendChild(im); });
-    pv.textContent = "Close the preview";
+    if (pics.childElementCount > 1) {
+      [...pics.children].slice(1).forEach((n) => n.remove());
+      pv.textContent = "Preview"; return;
+    }
+    rest.forEach((f, i) => put(f.t, i));
+    pv.textContent = rest.length ? "Close the preview" : "Preview";
   };
   pv.addEventListener("click", load);
   if (opts.preview) load();
@@ -1744,6 +1792,8 @@ function applyFromColumns() {
     if (ccols[i].__mode) { mode = ccols[i].__mode; break; }
     if (ccols[i].__needle) { needle = ccols[i].__needle; break; }
   }
+  /* MODE survives only to light the rail's chip: it says which shelf
+     is open, and no longer hides anything */
   MODE = mode; textDim = needle;
   rrows.forEach((r) => { if (r.dataset.tag) r.classList.toggle("picked", r.dataset.tag === mode); });
   applyTextDim();
@@ -1777,22 +1827,11 @@ function stripStep(dir) {
   xs.forEach((x, i) => { if (Math.abs(x - stripTgt) < Math.abs(xs[k] - stripTgt)) k = i; });
   stripShow(stops[Math.max(0, Math.min(stops.length - 1, k + dir))]);
 }
-/* the ghost: the house's next, before the field */
+/* NO GHOST COLUMN. It stood past the newest column with the house's
+   next in it, and the head of a study now says the same thing in the
+   place the eye already is. One offer, not two. */
 let ghostCol = null;
-function drawGhost() {
-  if (ghostCol) { ghostCol.remove(); ghostCol = null; }
-  if (!ccols.length) return;
-  const last = ccols[ccols.length - 1];
-  const nx = predictNext(last.__folder || null);
-  const g = nx && GROUPS[nx.slug]; if (!g) return;
-  ghostCol = colNode("ghost", "Next \u00b7 " + g.t);
-  ghostCol.classList.remove("arriving");
-  ghostCol.querySelector(".cx").remove();
-  ghostCol.__line.readOnly = true;
-  ghostCol.__body.appendChild(el("div", "cnote g", g.s + " \u00b7 " + nx.reason));
-  ghostCol.__line.addEventListener("click", () => openStudyColumn(nx.slug, { preview: true }, last));
-  colsEl.appendChild(ghostCol);
-}
+function drawGhost() {}
 /* the path, as rows of the rail's own kind */
 function drawPath() {
   let wrap = document.getElementById("pathwrap");
@@ -1805,7 +1844,7 @@ function drawPath() {
   ccols.forEach((c) => {
     const r = el("div", "rrow");
     const h = el("button", "rhead"); h.type = "button";
-    const ink = el("span", "rink", c.__caption); h.appendChild(ink);
+    const ink = el("span", "rink", c.__label || c.__caption); h.appendChild(ink);
     const x = el("span", "rx", " \u00d7"); x.style.cssText = "margin-left:8px;color:rgba(0,0,0,0.42)";
     h.appendChild(x);
     h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else stripShow(c); });
@@ -2562,10 +2601,6 @@ function setMode(mode) {
     if (!r.dataset.tag) return;
     r.classList.toggle("picked", r.dataset.tag === mode);
   });
-  for (const [key, el] of live) {
-    const k = parseInt(key, 10);
-    el.classList.toggle("dim", !matches(tiles[k]));
-  }
 }
 
 /* ── EVERY DOOR TO A STUDY PLAYS THE SEQUENCE ───────────────────────
