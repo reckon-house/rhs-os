@@ -77,24 +77,17 @@
      to haul: on a laptop a click-drag is the most awkward gesture
      available and the cursor was advertising it. Touch keeps the
      drag, because there it is the only gesture there is. */
-  /* ── THE HOUSE HOLDS THE LEFT ─────────────────────────────────────
-     New things go rightward, always: the intro anchors the far left
-     and every column opens to the right of the last, deeper and
-     deeper, the way a column browser has worked since the NeXT. Two
-     modules of the strip are visible at once, so while a conversation
-     is open the field narrows to ONE — its intro column — and the
-     newest column stands beside it. Close everything and it opens
-     back to its full width. */
+  /* ── NOTHING IS PINNED; THE WHOLE STRIP MOVES ─────────────────────
+     New things go rightward and everything already there slides left
+     to make room, the intro included. Holding the intro in place was
+     tried and was the wrong instinct: a page where one column is
+     nailed down and the rest travel reads as two mechanisms, and the
+     column being read should be the one in front of you rather than
+     the one you started at. Scroll back for the intro; it is one
+     module away. */
   #field {
     position: relative; flex: none; height: 100%;
     overflow: hidden; touch-action: pan-y;
-    /* the BASIS is what a flex item is actually laid out from, and
-       `flex: none` leaves it `auto`: an animated width on this item
-       was being ignored in favour of the basis the first layout
-       resolved, so the field simply refused to narrow. Both are set
-       together, and both transition. */
-    transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1),
-      flex-basis 0.5s cubic-bezier(0.2, 0.55, 0.2, 1);
   }
 
   /* ── A COLUMN ─────────────────────────────────────────────────────
@@ -1545,27 +1538,21 @@ const colsEl = document.getElementById("cols");
 const ccols = [];
 let stripX = 0, stripTgt = 0;
 const fieldX = () => 0;                 /* the field is the strip's head */
-/* ── ONE MODULE OF CONTEXT TO THE LEFT ──────────────────────────────
-   A column is shown with whatever stands before it — the intro for
-   the first, the column it was asked from for the rest — so the path
-   reads as a path and never as one card floating alone.
+/* ── WHERE A COLUMN SITS, BY ARITHMETIC ─────────────────────────────
+   The field is two modules and every column is one, so the nth
+   column's left edge is FIELD_W + n modules. Computed, never
+   measured: a layout read taken during an animation aims at where a
+   thing was rather than where it is going.
 
-   ARITHMETIC, NOT MEASUREMENT. offsetLeft was read while the field
-   was still mid-narrow, so the strip aimed at where the column had
-   been half a second earlier and scrolled clean past the intro. With
-   the conversation open the field is one module and every column is
-   one module, so the nth column's left edge is (n+1) modules and its
-   context begins at n. */
+   A column is shown with ONE MODULE OF CONTEXT to its left — the
+   field's second column for the first, the column it was asked from
+   for the rest — so the path reads as a path, never as one card
+   floating alone, and whatever comes next peeks in at the right. */
+const colX = (i) => FIELD_W + i * MOD_X;
 const stripShow = (c) => {
   const i = c ? ccols.indexOf(c) : -1;
-  stripTgt = i < 0 ? 0 : i * MOD_X;
+  stripTgt = i < 0 ? 0 : Math.max(0, colX(i) - MOD_X);
 };
-/* the field's width IS the strip's grammar: full while it is alone,
-   one module while the conversation runs beside it */
-function fitField() {
-  const w = (ccols.length ? MOD_X : FIELD_W) + "px";
-  field.style.width = w; field.style.flexBasis = w;
-}
 window.stripBack = () => { stripShow(null); };
 
 /* the studies the board knows, matched the way the field is dimmed */
@@ -1672,17 +1659,18 @@ function insertColumn(c, from) {
   const next = ccols[at + 1] || ghostCol;
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   nav.classList.add("threadon");
-  /* the house steps back to its intro as the conversation begins, so
-     the column that just opened has the sentence beside it */
-  if (first) { fitField(); pageTo(0); }
   drawGhost(); drawPath();
-  /* the box is at zero when it lands; one frame later it opens, and
-     the transition has a width to run from */
-  requestAnimationFrame(() => {
-    c.classList.remove("arriving");
-    stripShow(c);
-    setTimeout(() => c.__line.focus({ preventScroll: true }), 520);
-  });
+  /* THE AIM IS TAKEN NOW, THE BOX OPENS NEXT FRAME. Only the class
+     swap needs a frame between zero and full width for the transition
+     to have something to run from; where the strip should point does
+     not, and putting it inside the frame meant a parked tab never
+     aimed at all — rAF does not run in the background, setTimeout
+     does, which is why the fallback is there too. */
+  stripShow(c);
+  const open = () => c.classList.remove("arriving");
+  requestAnimationFrame(open);
+  setTimeout(open, 60);
+  setTimeout(() => c.__line.focus({ preventScroll: true }), 560);
 }
 function askFrom(from, text) {
   const t = (text || "").trim(); if (!t) return;
@@ -1771,8 +1759,7 @@ function closeColumn(c) {
        again: nothing filtered, its full width back, the field at its
        first column and its top */
     nav.classList.remove("threadon");
-    fitField(); stripShow(null);
-    pageTo(0); setY(0); velY = 0;
+    stripShow(null);
   } else stripShow(ccols[Math.min(ccols.length - 1, i)]);
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
@@ -1780,14 +1767,15 @@ function closeAllColumns() {
   ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
   ccols.length = 0;
   nav.classList.remove("threadon"); drawGhost(); drawPath();
-  applyFromColumns(); fitField(); stripShow(null);
+  applyFromColumns(); stripShow(null);
 }
 function stripStep(dir) {
-  /* the stops, left to right: the field, then every column, each one
-     module apart — the same arithmetic stripShow uses */
-  const here = Math.round(stripTgt / MOD_X);
-  const n = Math.max(0, Math.min(ccols.length - 1, here + dir));
-  stripShow(ccols.length ? ccols[n] : null);
+  /* the stops, left to right: the field, then every column */
+  const stops = [null].concat(ccols);
+  const xs = stops.map((c) => (c ? Math.max(0, colX(ccols.indexOf(c)) - MOD_X) : 0));
+  let k = 0;
+  xs.forEach((x, i) => { if (Math.abs(x - stripTgt) < Math.abs(xs[k] - stripTgt)) k = i; });
+  stripShow(stops[Math.max(0, Math.min(stops.length - 1, k + dir))]);
 }
 /* the ghost: the house's next, before the field */
 let ghostCol = null;
