@@ -378,9 +378,14 @@
     padding: 2px 6px; flex: none;
   }
   #nav.threadon #threadClose { display: block; }
-  /* while a column is open its head is the field, so the bar's copy
-     stands down and leaves only the × */
-  #nav.threadon #query { visibility: hidden; }
+  /* ── THE FIELD IS THE STATEMENT'S, AND ONLY THE STATEMENT'S ───────
+     There is no parked copy any more. The question travelled to the
+     bar because the bar was the only place left to ask from; every
+     column's head is a field now, so a second one floating over the
+     masthead was a spare control in the band the burn owns. It rides
+     the slot inside the sentence and goes when the sentence goes. The
+     × stays: it belongs to the columns, not to the field. */
+  #nav.threadon #query, .ask.parked #query { visibility: hidden; }
   #threadClose:hover { color: var(--ink); }
 
   /* ── THE TWO WAYS IN SIT UNDER THE NAME ───────────────────────────
@@ -2586,6 +2591,7 @@ function placeAsk() {
   askEl.style.setProperty("--ask-ls", (0.04 - 0.09 * p).toFixed(4) + "em");
   askEl.style.setProperty("--ask-fw", p > 0.35 ? "600" : "500");
   askEl.classList.toggle("big", p > 0.35);
+  askEl.classList.toggle("parked", !on);
   document.body.classList.toggle("attop", p > 0.96);
   /* no handover to flag: the masthead never leaves */
 }
