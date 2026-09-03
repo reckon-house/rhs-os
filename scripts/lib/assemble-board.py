@@ -122,8 +122,26 @@ head = r'''<!doctype html>
     left: calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap));
     overflow: hidden;
   }
-  #stripIn { display: flex; height: 100%; will-change: transform; }
-  #cols { display: flex; height: 100%; flex: none; }
+  #stripIn { display: flex; height: 100%; }
+  /* ── ONE ROW ──────────────────────────────────────────────────────
+     The conversation is not beside the field, it is IN it: the
+     columns stand in the field's own row of modules, right after the
+     statement, and the work continues to the right of them. One
+     horizontal axis pans all of it. The columns' layer pans in X only,
+     like the rules, since each column scrolls on its own; the work
+     right of them rides an inner layer shifted by one module per open
+     column, and that shift transitions, so the work slides aside in
+     step with a column growing out and slides back as one folds. */
+  #plane0, #planeRin { position: absolute; left: 0; top: 0; }
+  #planeRin { transform: translate3d(var(--shift, 0px), 0, 0);
+    transition: transform 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); will-change: transform; }
+  #cols { position: absolute; top: 0; bottom: 0; z-index: 4;
+    left: calc(var(--modw, 0px) - var(--gapx, 0px) / 2);
+    display: flex; will-change: transform; }
+  /* a column stands on paper of its own: the work slides under it as
+     it grows and must not show through */
+  .ccol .cin { background: var(--paper, #fff); }
+  .ccol { touch-action: pan-y; }
   /* NO GRAB HAND. The field reads as a page to scroll, not a canvas
      to haul: on a laptop a click-drag is the most awkward gesture
      available and the cursor was advertising it. Touch keeps the
@@ -171,7 +189,7 @@ head = r'''<!doctype html>
     border-left-color: transparent; }
   .ccol .cin { height: 100%; width: var(--modw); overflow-y: auto;
     scrollbar-width: none;
-    padding: calc(var(--cover-air, 50px) + 46px) calc(var(--ixgap) / 2) 90px; }
+    padding: calc(var(--cover-air, 50px) + 46px) calc(var(--gapx, 20px) / 2) 90px; }
   .ccol .cin::-webkit-scrollbar { display: none; }
   .ccol .g { color: rgba(0, 0, 0, 0.42); }
   .ccol .chead { position: relative; padding-right: 34px; }
@@ -601,9 +619,9 @@ head = r'''<!doctype html>
 <div id="strip"><div id="stripIn">
   <div id="field">
     <div id="rules"></div>
-    <div id="plane"></div>
+    <div id="plane"><div id="plane0"></div><div id="planeRin"></div></div>
+    <div id="cols"></div>
   </div>
-  <div id="cols"></div>
 </div></div>
 
 
@@ -636,7 +654,18 @@ const cs = getComputedStyle(document.documentElement);
 const px = (name, fb) => parseFloat(cs.getPropertyValue(name)) || fb;
 const PHONE = innerWidth <= 760;
 const GUT = px("--gut", 50), NOTE_W = px("--ix-note-w", 180);
-const IXGAP = px("--ixgap", 40);
+/* --ixgap is a clamp(), and getPropertyValue hands back the clamp as
+   written, not a length, so parseFloat found nothing and this fell to
+   40px at every width while the CSS gap ran 24 to 56. Every edge the
+   script placed sat a few px off every edge the sheet placed. Let an
+   element resolve it: the element knows. */
+const IXGAP = (() => {
+  const m = document.createElement("i");
+  m.style.cssText = "position:absolute;visibility:hidden;width:var(--ixgap)";
+  document.body.appendChild(m);
+  const w = m.getBoundingClientRect().width; m.remove();
+  return w || 40;
+})();
 const VISIBLE = PHONE ? 1 : 2;
 /* MEASURED, not derived from innerWidth. The field's left edge is set
    in CSS from --gut, --ix-note-w and --ixgap, and re-deriving it here
@@ -655,6 +684,9 @@ const GAP = PHONE ? 20 : IXGAP;
 const COL = (FIELD_W - GAP * VISIBLE) / VISIBLE;
 const MOD_X = COL + GAP;
 document.documentElement.style.setProperty("--modw", MOD_X + "px");
+/* the gap the SCRIPT uses (20 on a phone, the token elsewhere), for
+   the column CSS that must land on the same edges as the tiles */
+document.documentElement.style.setProperty("--gapx", GAP + "px");
 let PH = 0; /* the period's height — computed by the row grid below */
 const AIR_MIN = 120, AIR_MAX = 340;
 const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
@@ -1068,7 +1100,18 @@ const TOUR = ["All work", "Interior projects", "App development",
 })();
 
 const plane = document.getElementById("plane");
+const plane0 = document.getElementById("plane0");
+const planeRin = document.getElementById("planeRin");
 const rulesEl = document.getElementById("rules");
+/* how far the work right of the statement stands aside: one module
+   per open column. The TARGET, set the instant the count changes, so
+   the mount tests tiles where they are going; the layer's transition
+   carries them there. */
+let SHIFT = 0;
+const setShift = () => {
+  SHIFT = ccols.length * MOD_X;
+  planeRin.style.setProperty("--shift", SHIFT + "px");
+};
 let colIdx = 0;
 const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
@@ -1122,11 +1165,16 @@ document.addEventListener("wheel", (e) => {
   } else { setY(tgt.y + dy); velY = 0; }
 }, { passive: false });
 
-let pxx = 0, pyy = 0, moved = 0, dragAxis = null;
+let pxx = 0, pyy = 0, moved = 0, dragAxis = null, dragFromCol = false;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
   if (dealing) return;
   dragging = true; moved = 0; dragAxis = null;
+  /* the columns stand inside the field now, so a press in one reaches
+     here too. Sideways from a column still pages the row, since the
+     row is one axis wherever the hand is; up and down in a column is
+     the column's own scroll, and the field lets go of it below */
+  dragFromCol = !!(e.target.closest && e.target.closest(".ccol"));
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
   /* NO CAPTURE YET, and that was the whole bug. Capturing on
@@ -1151,6 +1199,7 @@ field.addEventListener("pointermove", (e) => {
      diagonally: the two directions mean two different things and a
      drag that did both at once meant neither. */
   if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+  if (dragAxis === "y" && dragFromCol) { dragging = false; dragAxis = null; return; }
   if (dragAxis === "x") tgt.x -= dx;
   else if (dragAxis === "y") setY(tgt.y - dy);
   trail.push({ dx, dy, t: performance.now() });
@@ -1216,11 +1265,22 @@ function remount() {
       for (let k = 0; k < tiles.length; k++) {
         const t = tiles[k];
         const gx = t.x + i * PW, gy = t.y + j * PH;
-        if (gx + t.w < x0 || gx > x1 || gy + t.h < y0 || gy > y1) continue;
+        /* only what stands RIGHT of the statement shifts: the work
+           columns of this period past column 0, and every later
+           period. The statement's column stays, and so does the
+           period before it, which sits off the left edge and is only
+           ever seen on an overdrag. Shifting that too carried its last
+           column one module right, onto the statement, and a frame
+           from the far end of the row painted over the intro. By
+           column and period, not by x, since a narrow frame sits in
+           from its column's edge and its x alone would lie. */
+        const shifted = i > 0 || (i === 0 && t.col > 0);
+        const sh = shifted ? SHIFT : 0;
+        if (gx + sh + t.w < x0 || gx + sh > x1 || gy + t.h < y0 || gy > y1) continue;
         const key = k + ":" + i + ":" + j;
         want.add(key);
         if (!live.has(key)) {
-          const el = mount(t, gx, gy);
+          const el = mount(t, gx, gy, shifted);
           live.set(key, el);
           /* a frame arrives by its card; a text tile by itself */
           fresh.push(el.querySelector(".fd-it") || el);
@@ -1264,8 +1324,9 @@ function remount() {
   /* a tile that mounts mid-turn must be on its side before it paints */
   swapSides();
 }
-function mount(t, gx, gy) {
+function mount(t, gx, gy, shifted) {
   const el = document.createElement("div");
+  el.__shifted = shifted;
   /* .ixrow, because that is the ancestor the index's own label and
      hover rules are scoped to. Same classes, same stylesheet, same
      0.62s curve — nothing about the card is re-specified here. */
@@ -1338,7 +1399,7 @@ function mount(t, gx, gy) {
     }
     el.appendChild(card);
   }
-  plane.appendChild(el);
+  (shifted ? planeRin : plane0).appendChild(el);
   return el;
 }
 
@@ -1365,7 +1426,8 @@ function swapSides() {
     const push = el.__push || 0;
     if (!el.__slack && !push && !el.__hadPush) continue;
     el.__hadPush = push !== 0;
-    const t = Math.min(1, Math.max(0, (el.__wx - cur.x - GAP / 2) / MOD_X));
+    const wx = el.__wx + (el.__shifted ? SHIFT : 0);
+    const t = Math.min(1, Math.max(0, (wx - cur.x - GAP / 2) / MOD_X));
     el.style.transform = "translate3d(" +
       (t * (el.__slack || 0)).toFixed(1) + "px," + push.toFixed(1) + "px,0)";
     const right = t > 0.5;
@@ -1597,27 +1659,12 @@ function predictNext(currentSlug) {
    the next column after it. The rail keeps the path as rows of its
    own, and the house's next stands as a ghost column before the
    field, with its reason. */
-const stripIn = document.getElementById("stripIn");
 const colsEl = document.getElementById("cols");
 const ccols = [];
-let stripX = 0, stripTgt = 0;
-const fieldX = () => 0;                 /* the field is the strip's head */
-/* ── WHERE A COLUMN SITS, BY ARITHMETIC ─────────────────────────────
-   The field is two modules and every column is one, so the nth
-   column's left edge is FIELD_W + n modules. Computed, never
-   measured: a layout read taken during an animation aims at where a
-   thing was rather than where it is going.
-
-   A column is shown with ONE MODULE OF CONTEXT to its left — the
-   field's second column for the first, the column it was asked from
-   for the rest — so the path reads as a path, never as one card
-   floating alone, and whatever comes next peeks in at the right. */
-const colX = (i) => FIELD_W + i * MOD_X;
-const stripShow = (c) => {
-  const i = c ? ccols.indexOf(c) : -1;
-  stripTgt = i < 0 ? 0 : Math.max(0, colX(i) - MOD_X);
-};
-window.stripBack = () => { stripShow(null); };
+/* a column is a module: the kth open column stands at module k+1,
+   after the statement, and is shown with the module before it — the
+   statement for the first, the column it was asked from for the rest */
+const showCol = (c) => { const i = ccols.indexOf(c); pageTo(i < 0 ? 0 : i); };
 
 /* the studies the board knows, matched the way the field is dimmed */
 const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
@@ -1691,7 +1738,7 @@ function colNode(kind, caption) {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
       e.preventDefault();
       const now = performance.now();
-      if (now - hCool > 420 && Math.abs(e.deltaX) > 24) { stripStep(Math.sign(e.deltaX)); hCool = now; }
+      if (now - hCool > 320 && Math.abs(e.deltaX) > 12) { pageTo(colIdx + Math.sign(e.deltaX)); hCool = now; }
     }
   }, { passive: false });
   return c;
@@ -1732,14 +1779,14 @@ function insertColumn(c, from) {
   const next = ccols[at + 1] || ghostCol;
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   nav.classList.add("threadon");
-  drawGhost(); drawPath();
+  setShift(); drawGhost(); drawPath();
   /* THE AIM IS TAKEN NOW, THE BOX OPENS NEXT FRAME. Only the class
      swap needs a frame between zero and full width for the transition
-     to have something to run from; where the strip should point does
+     to have something to run from; where the field should point does
      not, and putting it inside the frame meant a parked tab never
      aimed at all — rAF does not run in the background, setTimeout
      does, which is why the fallback is there too. */
-  stripShow(c);
+  showCol(c);
   const open = () => c.classList.remove("arriving");
   requestAnimationFrame(open);
   setTimeout(open, 60);
@@ -1867,30 +1914,23 @@ function closeColumn(c) {
   ccols.splice(i, 1);
   c.classList.add("closing");
   setTimeout(() => c.remove(), 520);
-  drawGhost(); drawPath(); applyFromColumns();
+  setShift(); drawGhost(); drawPath(); applyFromColumns();
   if (!ccols.length) {
     /* the last one folds away and the house is at its beginning
-       again: nothing filtered, its full width back, the field at its
-       first column and its top */
+       again: nothing filtered, the work back in its place, the field
+       at its first column */
     nav.classList.remove("threadon");
-    stripShow(null);
-  } else stripShow(ccols[Math.min(ccols.length - 1, i)]);
+    pageTo(0);
+  } else pageTo(Math.max(0, Math.min(ccols.length - 1, i - 1)));
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
   ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
   ccols.length = 0;
-  nav.classList.remove("threadon"); drawGhost(); drawPath();
-  applyFromColumns(); stripShow(null);
+  nav.classList.remove("threadon"); setShift(); drawGhost(); drawPath();
+  applyFromColumns(); pageTo(0);
 }
-function stripStep(dir) {
-  /* the stops, left to right: the field, then every column */
-  const stops = [null].concat(ccols);
-  const xs = stops.map((c) => (c ? Math.max(0, colX(ccols.indexOf(c)) - MOD_X) : 0));
-  let k = 0;
-  xs.forEach((x, i) => { if (Math.abs(x - stripTgt) < Math.abs(xs[k] - stripTgt)) k = i; });
-  stripShow(stops[Math.max(0, Math.min(stops.length - 1, k + dir))]);
-}
+
 /* NO GHOST COLUMN. It stood past the newest column with the house's
    next in it, and the head of a study now says the same thing in the
    place the eye already is. One offer, not two. */
@@ -1911,7 +1951,7 @@ function drawPath() {
     const ink = el("span", "rink", c.__label || c.__caption); h.appendChild(ink);
     const x = el("span", "rx", " \u00d7"); x.style.cssText = "margin-left:8px;color:rgba(0,0,0,0.42)";
     h.appendChild(x);
-    h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else stripShow(c); });
+    h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else showCol(c); });
     r.appendChild(h); wrap.appendChild(r);
   });
   wrap.style.display = ccols.length ? "" : "none";
@@ -1920,11 +1960,9 @@ function drawPath() {
    columns, up and down move the page a screen at a time */
 addEventListener("keydown", (e) => {
   if (e.target && e.target.tagName === "INPUT") return;
-  /* on the field the arrows page the work; once the strip has left
-     the field they walk the conversation */
-  const onField = stripTgt < MOD_X / 2;
-  if (e.key === "ArrowRight") { e.preventDefault(); if (onField && !ccols.length) pageTo(colIdx + 1); else stripStep(1); }
-  if (e.key === "ArrowLeft") { e.preventDefault(); if (onField) pageTo(colIdx - 1); else stripStep(-1); }
+  /* one row: the arrows page it, work and conversation alike */
+  if (e.key === "ArrowRight") { e.preventDefault(); pageTo(colIdx + 1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); pageTo(colIdx - 1); }
   if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); setY(tgt.y + innerHeight * 0.8); velY = 0; }
   if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); setY(tgt.y - innerHeight * 0.8); velY = 0; }
 });
@@ -1995,13 +2033,10 @@ function tick() {
      carries the plane down, and a mark riding it dropped into the
      rail, which is fixed. It holds at rest instead and leaves with
      the plane only upward, or leftward when paging. */
-  /* the strip eases the same way; the cover line belongs to the
-     field's origin, so it rides the strip too */
-  stripX += (stripTgt - stripX) * 0.11;
-  stripIn.style.transform = "translate3d(" + (-stripX) + "px,0,0)";
-  /* the masthead does not move: it is the bar now */
+  /* the columns pan with the field in X only, like the rules */
+  colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   swapSides();
-  if (turning || Math.abs(tgt.y - cur.y) > 0.5 || Math.abs(stripTgt - stripX) > 0.5) placeAsk();
+  if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
@@ -2413,7 +2448,7 @@ window.__askReady = true;
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
 window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, closeColumn, closeAllColumns,
-  stripShow, get ccols() { return ccols; }, get stripX() { return stripX; }, get stripTgt() { return stripTgt; }, get colIdx() { return colIdx; },
+  showCol, get ccols() { return ccols; }, get SHIFT() { return SHIFT; }, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, setMode, checkScale, DPR,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
   get MODE() { return MODE; } };
