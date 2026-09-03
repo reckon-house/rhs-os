@@ -138,7 +138,11 @@ head = r'''<!doctype html>
      module away. */
   #field {
     position: relative; flex: none; height: 100%;
-    overflow: hidden; touch-action: pan-y;
+    /* none, not pan-y: pan-y lets the browser claim a vertical touch
+       pan, and the browser's pan on an overflow-hidden box moves
+       nothing while our pointer events are cancelled under it — a
+       vertical swipe on a phone did nothing at all */
+    overflow: hidden; touch-action: none;
   }
 
   /* ── A COLUMN ─────────────────────────────────────────────────────
@@ -1086,17 +1090,35 @@ const pageTo = (i) => { colIdx = Math.max(0, i); tgt.x = restX(colIdx); };
    feels broken; a lower threshold, because a trackpad's horizontal
    deltas are small. Shift and a wheel pages too, which is the
    convention every mouse user already has. */
+/* ── THE WHEEL BELONGS TO THE PAGE, NOT TO ONE BOX ──────────────────
+   It listened on the field alone, so the rail, the masthead's band,
+   the cover line and any bare strip after a column had folded were
+   DEAD: a wheel there reached nothing that scrolls, and the page sat
+   still under the hand. It listens on the document now and routes by
+   where the pointer is — a column handles its own (see colNode),
+   everything else moves the field.
+
+   AND THE AXIS LOCK HAS AN ESCAPE. A trackpad's flick tails off for a
+   second or more in decaying deltas, each one resetting the idle
+   clock, so a gesture that began sideways held the lock long after
+   the hand had changed its mind, and a vertical intent in that tail
+   moved nothing. A delta on the other axis three times the size of
+   the locked one is a new intent, and takes the axis at once. */
 let hCool = 0, wheelAxis = null, wheelIdle = 0;
-field.addEventListener("wheel", (e) => {
+document.addEventListener("wheel", (e) => {
+  if (e.target.closest && e.target.closest(".ccol")) return;   /* the column's own */
   e.preventDefault();
   if (dealing) return;
   const now = performance.now();
   if (now - wheelIdle > 160) wheelAxis = null;   /* a new gesture */
   wheelIdle = now;
   const dx = e.shiftKey ? e.deltaY : e.deltaX, dy = e.shiftKey ? 0 : e.deltaY;
-  if (!wheelAxis) wheelAxis = Math.abs(dx) > Math.abs(dy) * 1.2 ? "x" : "y";
+  const ax = Math.abs(dx), ay = Math.abs(dy);
+  if (!wheelAxis) wheelAxis = ax > ay * 1.2 ? "x" : "y";
+  else if (wheelAxis === "x" && ay > ax * 3) wheelAxis = "y";
+  else if (wheelAxis === "y" && ax > ay * 3) wheelAxis = "x";
   if (wheelAxis === "x") {
-    if (now - hCool > 320 && Math.abs(dx) > 12) { pageTo(colIdx + Math.sign(dx)); hCool = now; }
+    if (now - hCool > 320 && ax > 12) { pageTo(colIdx + Math.sign(dx)); hCool = now; }
   } else { setY(tgt.y + dy); velY = 0; }
 }, { passive: false });
 
@@ -1151,6 +1173,11 @@ const release = () => {
 };
 field.addEventListener("pointerup", release);
 field.addEventListener("pointercancel", release);
+/* a press that ends over the rail or a column never reached the
+   field's own pointerup, and the drag flag stayed set until the next
+   press: momentum off, and a stale axis. The window sees every up. */
+addEventListener("pointerup", release);
+addEventListener("pointercancel", release);
 field.addEventListener("click", (e) => {
   if (moved > 6) { e.stopPropagation(); e.preventDefault(); }
 }, true);
