@@ -111,12 +111,84 @@ head = r'''<!doctype html>
   }
 
   /* the field: everything right of the rail's column */
-  #field {
+  /* ── THE STRIP ────────────────────────────────────────────────────
+     Everything right of the rail is one horizontal strip: the columns
+     the conversation opens, then the field — the homepage, exactly
+     what it is — as the last member, pushed right by every column
+     that opens before it. The strip moves by transform, like the
+     plane, so the two share a frame. */
+  #strip {
     position: fixed; top: 0; bottom: 0; right: 0;
     left: calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap));
+    overflow: hidden;
+  }
+  #stripIn { display: flex; height: 100%; will-change: transform; }
+  #cols { display: flex; height: 100%; flex: none; }
+  #field {
+    position: relative; flex: none; height: 100%;
     overflow: hidden; touch-action: none; cursor: grab;
   }
   #field.dragging { cursor: grabbing; }
+
+  /* ── A COLUMN ─────────────────────────────────────────────────────
+     One module wide, scrolling on its own, its head scrolling with
+     it. THE SWISS RULE: one size, one weight, one colour change. Every
+     line in a column is set like the intro — the statement's size and
+     weight, ink for the thing itself and grey for what is said about
+     it — and nothing else: no labels, no pills, no small type. */
+  .ccol {
+    flex: none; width: var(--modw); height: 100%; position: relative;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    font-size: clamp(20px, 2.4vw, 32px); font-weight: 600;
+    line-height: 1.2; letter-spacing: -0.05em;
+    transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1),
+      opacity 0.4s ease, border-color 0.4s ease;
+  }
+  .ccol.closing { width: 0 !important; opacity: 0; overflow: hidden; border-left-color: transparent; }
+  .ccol.arriving { animation: colIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes colIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+  .ccol .cin { height: 100%; overflow-y: auto; scrollbar-width: none;
+    padding: var(--cover-air, 50px) calc(var(--ixgap) / 2) 90px; }
+  .ccol .cin::-webkit-scrollbar { display: none; }
+  .ccol .g { color: rgba(0, 0, 0, 0.42); }
+  .ccol .chead { position: relative; padding-right: 34px; }
+  .ccol .cline { display: block; width: 100%; border: 0; outline: 0; background: none;
+    padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: inherit;
+    text-decoration: underline; text-decoration-color: transparent;
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.3s ease; }
+  .ccol .cline::placeholder { color: var(--ink); opacity: 1; }
+  .ccol .cline:focus { text-decoration-color: var(--ink); }
+  .ccol .cline:focus::placeholder { color: rgba(0, 0, 0, 0.42); }
+  .ccol .cx { position: absolute; right: 0; top: 0.1em; border: 0; background: none;
+    padding: 4px; cursor: pointer; font: inherit; font-size: 0.8em; line-height: 1;
+    color: rgba(0, 0, 0, 0.42); }
+  .ccol .cx:hover { color: var(--ink); }
+  .ccol .cnote { margin-top: 0.6em; }
+  .ccol .crow { display: block; margin-top: 0.55em; cursor: pointer;
+    transition: opacity 0.4s ease; }
+  .ccol .crow.off { opacity: 0.22; }
+  .ccol .crow .g { display: inline; }
+  .ccol .cways { margin-top: 0.6em; }
+  .ccol .cways u, .ccol .crow:hover b { text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, 0.22);
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em; }
+  .ccol .cways u { cursor: pointer; margin-right: 0.4em; transition: text-decoration-color 0.3s ease; }
+  .ccol .cways a { color: inherit; text-decoration: none; }
+  .ccol .cways u:hover { text-decoration-color: var(--ink); }
+  .ccol .cpics { margin-top: 0.8em; }
+  .ccol .cpics img { display: block; width: 100%; height: auto; border-radius: 14px;
+    background: rgba(0, 0, 0, 0.04); margin-top: 14px;
+    animation: colIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  /* the house's next, standing before the field, in the grey */
+  .ccol.ghost { border-left-style: dashed; }
+  /* the path in the rail: a study's name can be long, so its row
+     wraps and takes the rail's width rather than being cut */
+  #pathwrap .rrow { --hug: 0%; }
+  #pathwrap .rhead { white-space: normal; text-align: left; line-height: 1.25; }
+  .ccol.ghost .cline { cursor: pointer; }
+  .ccol.ghost .cline::placeholder { color: rgba(0, 0, 0, 0.42); }
+  @media (max-width: 760px) { #strip { left: 0; } }
   #plane { position: absolute; left: 0; top: 0; will-change: transform; }
 
   /* ── the standing rules ────────────────────────────────────────────
@@ -204,8 +276,6 @@ head = r'''<!doctype html>
      with the board on the arrival's. The rule between the rail and
      the field stays: that boundary is still true. */
   #rules i { transition: transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
-  body.previewing #rules i.mid { transform: translateY(104%);
-    transition: transform 0.45s cubic-bezier(0.5, 0, 0.75, 0); }
   .tile.statement .q { color: rgba(0, 0, 0, 0.42); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
     text-underline-offset: 0.15em; text-decoration-thickness: max(1px, 0.05em);
@@ -283,7 +353,6 @@ head = r'''<!doctype html>
     display: flex; justify-content: space-between; align-items: flex-start;
     pointer-events: none; will-change: transform; }
   #coverline a { pointer-events: auto; }
-  body.previewing #coverline { display: none; }
   @media (max-width: 760px) {
     #coverline { display: none; }
     /* the phone's bar is the sheet's handle: its ends never hide */
@@ -300,66 +369,16 @@ head = r'''<!doctype html>
   .askslot { display: inline-block; width: min(9.5em, 92%);
     height: 1.12em; vertical-align: middle; }
   /* the house's line in the parked field, at the bar's own size */
-  .ask #askNext { font-size: 12px; }
-  .ask #askNext .nu-why { font-size: 10.5px; }
 
-  /* ── THE THREAD: the chat flows down its own column ───────────────
-     Click into the field and the column under it becomes the session's
-     conversation — a paper panel from the bar to the floor, exactly
-     one module wide, its edges on the standing rules' own lines. The
-     field stays in the bar as the input; the panel is the transcript.
-     A close (or Esc) hands the column back to the scroll.
-
-     The drawer's 0fr→1fr again, so it flows DOWN from the bar the way
-     the sheet rises from it on a phone: one grammar, two edges. */
-  #thread {
-    position: fixed; z-index: 45;
-    top: var(--nav); bottom: 0;
-    left: var(--thread-x, 0px); width: var(--thread-w, 420px);
-    display: grid; grid-template-rows: 0fr;
-    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
-    pointer-events: none;
-  }
-  #thread[data-on] { grid-template-rows: 1fr; pointer-events: auto; }
-  #thread > div { overflow: hidden; min-height: 0; }
-  /* NO RULES OF ITS OWN. The panel used to draw left and right
-     borders meant to sit on the standing rules — and a painted copy
-     can never be trusted to land exactly on the original, so any
-     drift showed two lines. The panel is inset one pixel INSIDE the
-     rules instead: the homepage's own lines stay visible at both
-     edges and there is nothing to disagree with them. */
-  /* THE SHEET IS THE HISTORY, NOT A SECOND PAGE. It never carries the
-     column's lead — that stays where it was, under the paper — so
-     nothing is written twice. Top to bottom: what this is about, in
-     the bar's small grey; the field, at display size, the first thing
-     in the column and the one place to type; what the house last
-     said; what has been said, newest first. */
-  #threadIn {
-    height: calc(100dvh - var(--nav));
-    background: var(--paper, #fff);
-    padding: 34px calc(var(--thread-pad, 20px)) 20px
-      calc(var(--thread-pad, 20px) - 1px);
-    overflow-y: auto;
-    display: flex; flex-direction: column; gap: 22px;
-  }
-  #threadLede .th-of { font-size: 12px; font-weight: 500;
-    letter-spacing: 0.04em; line-height: 1.04; margin-bottom: 16px;
-    color: rgba(0, 0, 0, 0.42); }
-  #threadLede .th-ask { line-height: 1.2; }
-  /* the house's line yields to the field at display size */
-  .ask.big #askNext { display: none !important; }
-  /* the question is a button wearing the sentence's own clothes */
+  /* the question is a button wearing the sentence's own clothes (phone) */
   .askgo { border: 0; background: none; padding: 0; margin: 0;
     font: inherit; color: inherit; letter-spacing: inherit;
     cursor: pointer; text-align: left; }
   .askgo u { text-decoration-color: rgba(0, 0, 0, 0.22);
     text-underline-offset: 5px; text-decoration-thickness: 1.5px; }
-
   /* ── THE CLOSE RIDES THE FIELD ─────────────────────────────────────
-     Beside the input in the bar, where the conversation's control
-     belongs — not floating in the transcript. Only there while the
-     thread is open; the bar carries a .threadon class so the CSS can
-     know. */
+     Beside the input in the bar: it folds the newest column away.
+     Only there while a column is open. */
   #threadClose {
     display: none;
     border: 0; background: none; font: inherit; cursor: pointer;
@@ -367,28 +386,10 @@ head = r'''<!doctype html>
     padding: 2px 6px; flex: none;
   }
   #nav.threadon #threadClose { display: block; }
+  /* while a column is open its head is the field, so the bar's copy
+     stands down and leaves only the × */
+  #nav.threadon #query { visibility: hidden; }
   #threadClose:hover { color: var(--ink); }
-
-  /* the thread's header IS the statement — same setting, same size,
-     the rotation still running inside it */
-  /* the lede wears the statement's class for its type, not for its
-     arrival: it is always in view when the column is open */
-  #threadLede { position: static; margin-bottom: 6px;
-    opacity: 1; transform: none; }
-  /* ── THE TRANSCRIPT SPEAKS IN THE STATEMENT'S OWN VOICE ───────────
-     Same size, same weight, same leading — the conversation is a
-     continuation of the intro, not a widget under it. The visitor's
-     question is ink, the house's answer is the grey the statement
-     already uses for its own recessive run, and the air between
-     entries does the separating; the quotes came off because at this
-     size they were furniture. */
-  #threadLog { display: flex; flex-direction: column; gap: 34px; }
-  .thq, .tha {
-    font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
-    line-height: 1.22; letter-spacing: -0.04em;
-  }
-  .tha { color: rgba(0, 0, 0, 0.42); margin-top: 10px; }
-
 
   /* ── THE TWO WAYS IN SIT UNDER THE NAME ───────────────────────────
      Not on the picture. Two plain links under the caption, in the
@@ -419,76 +420,6 @@ head = r'''<!doctype html>
      "beside this" — with its reason underneath in the grey. A button,
      because it is the next column: press it and the field walks. On a
      phone the same line sits at the head of the preview instead. */
-  .nextup { display: none; border: 0; background: none; font: inherit;
-    text-align: left; cursor: pointer; padding: 0; color: var(--ink);
-    letter-spacing: -0.004em; line-height: 1.25; max-width: 100%; }
-  .nextup .nu-line { display: block; white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis; }
-  .nextup .nu-k { color: rgba(0, 0, 0, 0.42); }
-  .nextup .nu-t { font-weight: 600; }
-  .nextup .nu-why { display: block; font-size: 11.5px; margin-top: 2px;
-    color: rgba(0, 0, 0, 0.42); white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis; }
-  .nextup:hover .nu-t { text-decoration: underline;
-    text-underline-offset: 4px; text-decoration-color: rgba(0, 0, 0, 0.25); }
-  /* ── THE NEXT IS SOMETHING THE HOUSE SAYS ─────────────────────────
-     Not a control of its own: it sits in the field where the house's
-     words go, in the place of the resting prompt, so the chat reads
-     as predictive — the house has already named the next room before
-     you ask. Typing or focusing the field puts the prompt back; the
-     line also stands as the last thing said in the open thread. */
-  .ask #askNext { position: absolute; left: 0; right: 36px; top: 50%;
-    transform: translateY(-50%); font-size: 14px; line-height: 1.2;
-    letter-spacing: -0.004em; }
-  #nav.previewon .ask #askNext:not([hidden]) { display: block; }
-  #nav.previewon .ask.typing #askNext { display: none; }
-  /* only while parked, where the house's line stands over it; at
-     display size in the sheet the question shows again */
-  #nav.previewon .ask:not(.big) #query::placeholder { color: transparent; }
-  #threadNext { margin-top: 6px; font-size: clamp(20px, 2.2vw, 30px);
-    font-weight: 600; line-height: 1.22; letter-spacing: -0.04em;
-    color: rgba(0, 0, 0, 0.42); }
-  #threadNext .nu-k { color: rgba(0, 0, 0, 0.42); }
-  #threadNext .nu-t { color: var(--ink); font-weight: 600; }
-  #threadNext .nu-line { white-space: normal; }
-  #threadNext .nu-why { font-size: inherit; margin-top: 0; }
-  body.previewing #threadNext:not([hidden]) { display: block; }
-
-  /* ── THE PREVIEW IS THE FIELD, DEALT TO ONE STUDY ─────────────────
-     Not a panel over the board: the board itself, re-dealt. The
-     study's head takes the statement's slot — name, category, its
-     own opening line, the door to the study — and every picture it
-     holds follows across both columns, at the bigger tiers, in the
-     same rows and rules and sides and hover the board has. Nothing
-     new to learn; the field simply has one thing in it. */
-  .tile.head .hd-t {
-    font-size: clamp(20px, 2.2vw, 30px); font-weight: 600;
-    line-height: 1.22; letter-spacing: -0.04em;
-  }
-  .tile.head .hd-d { margin-top: 12px; font-size: 13px; line-height: 1.5;
-    font-weight: 500; letter-spacing: -0.004em; }
-  .tile.head .hd-go {
-    display: inline-block; margin-top: 14px;
-    font-size: 13px; font-weight: 500; letter-spacing: -0.004em;
-    line-height: 1.2; padding: 9px 15px; border-radius: 12px;
-    background: var(--ink); color: #fff; text-decoration: none;
-  }
-  .tile.head .hd-n { margin-top: 14px; font-size: 11px; font-weight: 500;
-    letter-spacing: 0.04em; line-height: 1.3; color: rgba(0, 0, 0, 0.35); }
-  /* ── THE HEAD HOLDS, THE PICTURES PASS UNDER IT ──────────────────
-     On a desktop the head is not a tile: it holds at the top of its
-     column while the pictures scroll beneath it, on a paper that
-     fades out below so they are seen going under rather than cut. It
-     arrives and leaves the way the statement does. On a phone the
-     column is the screen and a held head would own a third of it, so
-     there the head stays a tile and scrolls away. */
-  #stickyHead { position: fixed; z-index: 30; display: none;
-    top: var(--head-top, 100px); left: var(--head-x, 0px);
-    width: var(--head-w, 380px); padding-bottom: 40px;
-    background: linear-gradient(var(--paper, #fff) calc(100% - 40px),
-      rgba(255, 255, 255, 0)); }
-  @media (min-width: 761px) { body.previewing #stickyHead { display: block; } }
-  .tile.spacer { pointer-events: none; }
 
   /* ── THE COMMAND SURFACE ──────────────────────────────────────────
      One sheet the bar owns on a phone. It rises from the bar on the
@@ -558,11 +489,7 @@ head = r'''<!doctype html>
     <input id="query" type="text" placeholder="Ask the house."
       autocomplete="off" autocorrect="off" spellcheck="false"
       aria-label="Ask the house" />
-    <button type="button" class="nextup" id="askNext" hidden>
-      <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
-      <span class="nu-why"></span>
-    </button>
-    <button type="button" id="threadClose" aria-label="Close the thread">&times;</button>
+    <button type="button" id="threadClose" aria-label="Close the newest column">&times;</button>
   </div>
 
   <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
@@ -580,23 +507,12 @@ head = r'''<!doctype html>
   <span class="covermeta"><a href="mailto:hello@reckon.house">hello@reckon.house</a></span>
 </div>
 
-<div id="stickyHead" class="tile statement head" aria-live="polite"></div>
-
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
 <div class="pt" id="pt" aria-hidden="true">
   <div class="ptw"><div class="ptstack" id="ptwT"></div></div>
   <div class="ptb"><div class="ptstack" id="ptbT"></div></div>
 </div>
-
-<div id="thread"><div><div id="threadIn">
-  <div class="tile statement" id="threadLede"></div>
-  <button type="button" class="nextup" id="threadNext" hidden>
-    <span class="nu-line"><span class="nu-k">Next &middot; </span><span class="nu-t"></span></span>
-    <span class="nu-why"></span>
-  </button>
-  <div id="threadLog"></div>
-</div></div></div>
 
 <!-- the melt: the burn pill's displacement, lifted from the masthead -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -616,10 +532,13 @@ head = r'''<!doctype html>
        — see the note where it is wired -->
 </div>
 
-<div id="field">
-  <div id="rules"></div>
-  <div id="plane"></div>
-</div>
+<div id="strip"><div id="stripIn">
+  <div id="cols"></div>
+  <div id="field">
+    <div id="rules"></div>
+    <div id="plane"></div>
+  </div>
+</div></div>
 
 
 <script>
@@ -658,12 +577,15 @@ const VISIBLE = PHONE ? 1 : 2;
    put the column 2.5px out: innerWidth reported 1065 while the field's
    own box was 833.6, because innerWidth is not always the width the
    layout is using. The element knows; ask it. */
-const FIELD_W = document.getElementById("field").getBoundingClientRect().width;
+const FIELD_W = document.getElementById("strip").getBoundingClientRect().width;
+document.getElementById("field").style.width = FIELD_W + "px";
+document.documentElement.style.setProperty("--modw", "0px"); /* set once COL is known */
 const GAP = PHONE ? 20 : IXGAP;
 /* half gutter, column, gutter, column, half gutter: VISIBLE gaps, not
    VISIBLE+1, or the resting edge lands mid-tile */
 const COL = (FIELD_W - GAP * VISIBLE) / VISIBLE;
 const MOD_X = COL + GAP;
+document.documentElement.style.setProperty("--modw", MOD_X + "px");
 let PH = 0; /* the period's height — computed by the row grid below */
 const AIR_MIN = 120, AIR_MAX = 340;
 const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
@@ -931,23 +853,15 @@ if (!PHONE) {
   root.setProperty("--thread-pad", (GAP / 2) + "px");
 }
 
-/* ── THE THREAD ─────────────────────────────────────────────────────
-   Click into the field and the chat column opens beneath it; close or
-   Esc hands the column back. The transcript is the SESSION'S —
-   sessionStorage, so a reload keeps the conversation and a new visit
-   starts clean.
-
-   The answers here are honest about what this page is: there is no
-   model on the board, so the house answers with what it can count —
-   the same matcher arithmetic the chips use, run over titles,
-   categories, tags and the kept lines, and the field dims to show
-   exactly the pieces it counted. The model's sentence arrives when
-   this merges with the homepage, where think() and the facts live. */
-const thread = document.getElementById("thread");
-const threadLog = document.getElementById("threadLog");
-let threadOpen = false;
-let textDim = null; /* the free-text filter while the thread is open */
-
+/* ── THE FRONT DOOR ─────────────────────────────────────────────────
+   There is no chat panel. A question, from the statement's field or
+   the bar's parked one, opens a COLUMN in the strip — see THE
+   COLUMNS below — and the field dims to what the question counted,
+   as it always did. The answers stay honest about what this page is:
+   there is no model on the board, so the house answers with what it
+   can count. */
+let textDim = null;
+let dealing = false;
 const wordsOf = (t) => {
   if (t.kind === "quote") return (t.text + " " + t.att).toLowerCase();
   const g = GROUPS[t.g];
@@ -964,113 +878,24 @@ const applyTextDim = () => {
   for (const [key, el] of live) {
     if (key.startsWith("R:")) continue;
     const t = tiles[parseInt(key, 10)];
-    const ok = previewOpen ? true : textDim
+    const ok = textDim
       ? (t.kind === "statement" || wordsOf(t).includes(textDim))
       : matches(t);
     el.classList.toggle("dim", !ok);
   }
 };
-
-const THREAD_KEY = "board-thread";
-const readThread = () => {
-  try { return JSON.parse(sessionStorage.getItem(THREAD_KEY)) || []; }
-  catch (e) { return []; }
-};
-const drawThread = () => {
-  threadLog.innerHTML = "";
-  /* NEWEST FIRST. The field is the column's current line and it sits
-     in the lead, so the exchange just made belongs directly under it,
-     and the older ones fall away below. */
-  for (const en of readThread().slice().reverse()) {
-    const box = document.createElement("div");
-    const q = document.createElement("div");
-    q.className = "thq";
-    q.textContent = en.q;
-    const a = document.createElement("div");
-    a.className = "tha";
-    a.textContent = en.n
-      ? en.n + " pieces across " + en.m +
-        (en.m === 1 ? " study" : " studies") + ", dealt beside."
-      : "Nothing caught on the board. The homepage's brain reads deeper.";
-    box.appendChild(q); box.appendChild(a);
-    threadLog.appendChild(box);
-  }
-};
-/* THE SHEET'S HEAD IS NOT THE COLUMN'S LEAD. It is one small line
-   saying what the chat is about — the house, or the study open under
-   the paper — and the slot the field glides to. The lead itself stays
-   where it was, under the sheet, never written twice. Refreshed
-   whenever the lead changes, not only when the sheet opens. */
-const refreshLede = () => {
-  const lede = document.getElementById("threadLede");
-  if (!lede) return;
-  const g = previewOpen && currentPreview ? GROUPS[currentPreview] : null;
-  const of = g ? g.t + " \u00b7 " + g.s : "Ask the house.";
-  lede.innerHTML = '<div class="th-of">' + esc(of) + '</div>' +
-    '<div class="th-ask"><span class="askslot" aria-hidden="true"></span></div>';
-};
-/* the one time the field's move is not scroll-driven: the sheet
-   opening pulls it up to the column's first line, closing sends it
-   back into the sentence, so let it glide — the homepage's settle */
-let settleT = 0;
-const settleAsk = () => {
-  if (!askEl) return;
-  askEl.classList.add("settling");
-  clearTimeout(settleT);
-  settleT = setTimeout(() => askEl.classList.remove("settling"), 520);
-  requestAnimationFrame(placeAsk);
-};
-const openThread = () => {
-  if (PHONE || threadOpen) return;
-  threadOpen = true;
-  /* the rules the panel reveals are the field's, and they pan — so
-     the field comes to its grid rest the moment the panel opens */
-  pageTo(colIdx);
-  cur.x = tgt.x;
-  /* the intro leads the conversation: the panel's header is the
-     statement itself, rotation and all, so nothing is lost when the
-     column opens — the transcript continues from the sentence that
-     invited it */
-  refreshLede();
-  drawThread();
-  thread.setAttribute("data-on", "");
-  nav.classList.add("threadon");
-  /* the field glides up to the sheet's first line */
-  const tin = document.getElementById("threadIn");
-  if (tin) tin.scrollTop = 0;
-  if (window.placeAsk) { placeAsk(); settleAsk(); }
-};
-const closeThread = () => {
-  if (!threadOpen) return;
-  threadOpen = false;
-  thread.removeAttribute("data-on");
-  nav.classList.remove("threadon");
-  textDim = null;
-  applyTextDim();
-  const q = document.getElementById("query");
-  if (q) q.blur();
-  if (window.placeAsk) { placeAsk(); settleAsk(); }
-};
 const submitQ = (text) => {
   text = (text || "").trim();
   if (!text) return;
-  openThread();
-  const { n, m, needle } = countQ(text);
+  const { n, needle } = countQ(text);
   if (typeof trailLog !== "undefined") { trailLog.asked.push(text); saveTrail(); }
-  const list = readThread();
-  list.push({ q: text, n, m });
-  try { sessionStorage.setItem(THREAD_KEY, JSON.stringify(list)); } catch (er) {}
   textDim = n ? needle : null;
   applyTextDim();
-  drawThread();
+  if (window.askFrom) askFrom(null, text);
 };
 {
   const q = document.getElementById("query");
   if (q) {
-    q.addEventListener("focus", openThread);
-    /* the prompt comes back the moment the field is yours: on focus,
-       and while there is anything typed. Read from the event, not
-       from activeElement, which a background document never sets. */
     const ask = q.closest(".ask");
     let focused = false;
     const typing = (e) => {
@@ -1082,27 +907,24 @@ const submitQ = (text) => {
     q.addEventListener("blur", typing);
     q.addEventListener("input", typing);
     q.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { closeThread(); return; }
+      if (e.key === "Escape") { q.value = ""; q.blur(); return; }
       if (e.key !== "Enter") return;
       submitQ(q.value || window.__tourWord || "All work");
       q.value = "";
     });
   }
   document.getElementById("threadClose").addEventListener("click", () => {
-    closePreview(); closeThread();
+    if (window.closeNewest) closeNewest();
   });
   addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    if (previewOpen) closePreview(); else if (threadOpen) closeThread();
+    if (e.target && e.target.tagName === "INPUT") return;
+    if (window.closeNewest) closeNewest();
   });
-  /* the rotating question is a door: tap it anywhere it appears — the
-     field's statement or the thread's header — and that question is
-     asked. Delegated, because the header's copy is written at open. */
+  /* the rotating question is a door: tap it and that question is asked */
   document.addEventListener("click", (e) => {
     const go = e.target.closest && e.target.closest(".askgo");
     if (!go) return;
-    /* the INTENDED word, not the painted fragment — a tap that lands
-       mid-erase would otherwise ask an empty string and do nothing */
     submitQ(window.__tourWord || "All work");
   });
 }
@@ -1163,12 +985,19 @@ const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
 let velY = 0;
 let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
-const pageTo = (i) => { colIdx = i; tgt.x = restX(i); };
+/* THE FIELD DOES NOT WRAP TO THE LEFT ANY MORE: left of its first
+   column is the conversation. Paging past the origin hands off to the
+   strip, which shows the newest column; the field itself stays at
+   its origin. Rightward it is as endless as it was. */
+const pageTo = (i) => {
+  if (i < 0) { colIdx = 0; tgt.x = restX(0); if (window.stripBack) stripBack(); return; }
+  colIdx = i; tgt.x = restX(i);
+};
 
 let hCool = 0;
 field.addEventListener("wheel", (e) => {
   e.preventDefault();
-  if (threadOpen || dealing) return;
+  if (dealing) return;
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
     const now = performance.now();
     if (now - hCool > 420 && Math.abs(e.deltaX) > 24) {
@@ -1181,7 +1010,7 @@ field.addEventListener("wheel", (e) => {
 let pxx = 0, pyy = 0, moved = 0;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
-  if (threadOpen || dealing) return;
+  if (dealing) return;
   dragging = true; moved = 0;
   pxx = e.clientX; pyy = e.clientY;
   trail.length = 0; velY = 0;
@@ -1230,7 +1059,6 @@ field.addEventListener("click", (e) => {
 /* ── the filter ── */
 let MODE = null;
 const matches = (t) => {
-  if (previewOpen) return true;       /* a study's field is all one thing */
   if (!MODE) return true;
   if (t.kind === "statement") return true;
   if (MODE === "staples") return t.kind === "quote" || t.g === "inspiration";
@@ -1522,172 +1350,19 @@ function armHover() {
 }
 armHover();
 
-/* ── A PICTURE IS THE PREVIEW'S DOOR ───────────────────────────────
+/* ── A PICTURE OPENS ITS STUDY IN A COLUMN ─────────────────────────
    Press the picture, or the Preview link under its name, and the
-   study opens down the column. The study link beside it is a real
-   href and the curtain handles it. A drag is never a press. */
+   study opens as a column before the field, its pictures loading
+   down it. The study link beside it is a real href and the curtain
+   handles it. A drag is never a press. */
 plane.addEventListener("click", (e) => {
   if (moved > 6) return;
   const pv = e.target.closest && e.target.closest("[data-act='preview']");
-  if (pv) { e.preventDefault(); openPreview(pv.closest(".tile")); return; }
+  if (pv) { e.preventDefault(); openStudyColumn(pv.closest(".tile").dataset.slug, { preview: true }); return; }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
-  if (shot && !previewOpen) openPreview(shot.closest(".tile"));
+  if (shot) openStudyColumn(shot.closest(".tile").dataset.slug, { preview: true });
 });
-
-/* ── THE PREVIEW: the field, dealt to one study ─────────────────────
-   Open a study and the board is re-dealt to it: its head where the
-   statement was, every picture it holds across both columns at the
-   bigger tiers, the cover first. Close it and the board comes back
-   exactly where it was left. Walking to the next study is another
-   deal, not a page turn. */
-/* EVERY PICTURE TAKES THE WHOLE COLUMN — the size the hover would
-   open it to, held. The pictures are the point here; the board's
-   dealt widths are for a field of strangers. And the air between
-   rows is close, so the two columns read as one spread rather than
-   as neighbours. */
-const PREVIEW_SHARES = [1];
-const PREVIEW_AIR = [56, 120];
-const esc = (v) => String(v).replace(/[&<>"]/g, (c) =>
-  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const hashOf = (str) => {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i); h = Math.imul(h, 16777619);
-  }
-  return ((h >>> 0) % 100000) + 1;
-};
-const NEXT_HTML = '<span class="nu-line"><span class="nu-k">Next &middot; </span>' +
-  '<span class="nu-t"></span></span><span class="nu-why"></span>';
-function headHTML(slug) {
-  const g = GROUPS[slug];
-  const n = (window.BOARD_ITEMS || []).filter((i) => i.g === slug).length;
-  /* THE PIPE IS THE STUDY'S OWN SPLIT: every subtitle is written
-     "the fact | the rest", and the cover reads it that way. The
-     head honours the same break, the rest in the statement's grey. */
-  const [fact, ...more] = (g.d || "").split("|");
-  const rest = more.join("|").trim();
-  return '<div class="hd-t">' + esc(g.t) + ' <span class="q">' + esc(g.s) + '</span></div>' +
-    (g.d ? '<div class="hd-d">' + esc(fact.trim()) +
-      (rest ? ' <span class="q">' + esc(rest) + '</span>' : '') + '</div>' : '') +
-    '<a class="hd-go" href="/case-studies/' + esc(g.h || slug) + '">See the full study</a>' +
-    '<div class="hd-n">' + n + (n === 1 ? ' picture' : ' pictures') + '</div>';
-}
-/* measured like the statement, at the column's width */
-function measureHead(html) {
-  const m = document.createElement("div");
-  m.className = "tile statement head";
-  m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
-  m.innerHTML = html;
-  document.body.appendChild(m);
-  const h = Math.ceil(m.getBoundingClientRect().height);
-  m.remove();
-  return h;
-}
-let previewOpen = false;
-let currentPreview = null;
-const walk = [];                    /* the row behind you, in order */
-let boardPos = null;                /* where the board was left */
-/* ── THE OUT, THEN THE IN ───────────────────────────────────────────
-   Everything mounted is swept out first — frames by their curtain,
-   text by its fade, staggered down the page — and only when the last
-   has gone does the new layout apply and the field mount again, its
-   tiles arriving through the curtain they always arrive by. The pan
-   waits out the sweep. Reduced motion skips straight to the swap. */
-let dealing = false;
-function refield(apply, after) {
-  if (dealing) return;
-  const els = [...live.values()];
-  const go = () => {
-    for (const el of els) el.remove();
-    live.clear();
-    if (typeof clearPush === "function") clearPush();
-    velY = 0;
-    lastMount = { x: 1e9, y: 1e9 };
-    dealing = false;
-    apply();
-    remount();
-    placeAsk();
-    if (after) after();
-  };
-  if (REDUCE() || !els.length) { go(); return; }
-  dealing = true;
-  els.map((el) => ({ el, y: el.getBoundingClientRect().top }))
-    .sort((a, b) => a.y - b.y)
-    .forEach(({ el }, i) => {
-      const target = el.querySelector(".fd-it") || el;
-      target.style.setProperty("--lag", Math.min(0.22, i * 0.03).toFixed(3) + "s");
-      target.classList.add("fd-out");
-    });
-  setTimeout(go, 400 + 220 + 40);   /* the sweep, its last lag, a beat */
-}
-function openPreview(target, opts) {
-  opts = opts || {};
-  const slug = typeof target === "string"
-    ? target : (target && target.dataset ? target.dataset.slug : null);
-  const g = slug && GROUPS[slug];
-  if (!g) return;
-  if (!previewOpen) boardPos = { col: colIdx, y: tgt.y };
-  const shots = (window.BOARD_ITEMS || []).filter((i) => i.g === slug)
-    .sort((x, y) => (y.c != null ? 1 : 0) - (x.c != null ? 1 : 0))
-    .map((i) => ({ kind: "img", ...i }));
-  const html = headHTML(slug);
-  const held = !PHONE;
-  const lead = held
-    ? { kind: "spacer", w: COL, h: measureHead(html) + 40 }
-    : { kind: "head", w: COL, h: measureHead(html), html };
-  const sticky = document.getElementById("stickyHead");
-  if (held && previewOpen) sticky.classList.add("fd-out");   /* walking on */
-  /* two columns, always; the rows are however many that takes. Its
-     own seed, so a study deals the same way every time it opens. */
-  const rows = Math.max(2, Math.ceil((shots.length + 1) / 2));
-  const L = deal(shots, { lead, rows, shares: PREVIEW_SHARES,
-    fitRows: true, air: PREVIEW_AIR, noCaptions: true,
-    top: NAV_H + 46,                  /* the bar is not glass in a study */
-    rnd: mkRnd(hashOf(slug)) });
-  refield(() => {
-    adopt(L);
-    pageTo(0); tgt.y = START.y; cur.x = tgt.x; cur.y = tgt.y;
-  }, () => {
-    if (!held) return;
-    sticky.innerHTML = html;
-    sticky.classList.remove("fd-out");
-    /* next frame, so the swap from hidden to shown gets its transition */
-    requestAnimationFrame(() => sticky.classList.add("fd-on"));
-  });
-  previewOpen = true;
-  currentPreview = slug;
-  if (threadOpen) { refreshLede(); drawThread(); placeAsk(); }
-  document.body.classList.add("previewing");
-  nav.classList.add("threadon", "previewon"); /* the bar's close serves both */
-  /* the trail: you opened it, and it joins the row behind you */
-  if (!opts.back) {
-    trailLog.opened.push(slug); saveTrail();
-    if (walk[walk.length - 1] !== slug) walk.push(slug);
-  }
-  drawNext();
-}
-function closePreview() {
-  if (!previewOpen) return;
-  previewOpen = false;
-  currentPreview = null;
-  if (threadOpen) { refreshLede(); drawThread(); placeAsk(); }
-  const sticky = document.getElementById("stickyHead");
-  sticky.classList.add("fd-out");        /* leaves with the sweep */
-  refield(() => {
-    adopt(BOARD);
-    /* back exactly where the board was left, column and scroll */
-    const col = boardPos ? boardPos.col : 0, y = boardPos ? boardPos.y : START.y;
-    pageTo(col); tgt.y = y; cur.x = tgt.x; cur.y = tgt.y;
-    /* only now: the rule comes back with the board, and the held
-       head is gone before its paper is */
-    document.body.classList.remove("previewing");
-    sticky.classList.remove("fd-on", "fd-out");
-    sticky.innerHTML = "";
-  });
-  nav.classList.remove("previewon");
-  if (!threadOpen) nav.classList.remove("threadon");
-}
 
 /* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
    Everything you did on the board is a row behind you: the tiles you
@@ -1748,7 +1423,8 @@ const ORDER = (window.BOARD_ITEMS || []).filter((i) => i.c != null)
 const shelfName = (tag) => {
   const r = (typeof rrows !== "undefined" ? rrows : [])
     .find((x) => x.dataset && x.dataset.tag === tag);
-  return r ? r.textContent.trim().replace(/\s+/g, " ").slice(0, 28) : tag;
+  const ink = r && r.querySelector(".rink");
+  return ink ? ink.textContent.trim() : tag;
 };
 function predictNext(currentSlug) {
   const askedWords = trailLog.asked.join(" ").toLowerCase()
@@ -1801,33 +1477,216 @@ function predictNext(currentSlug) {
     : "since you asked about " + top.word;
   return { slug: best.slug, reason: why };
 }
-function drawNext() {
-  const nx = predictNext(currentPreview);
-  const g = nx && GROUPS[nx.slug];
-  document.querySelectorAll(".nextup").forEach((box) => {
-    box.hidden = !g;
-    if (!g) return;
-    box.querySelector(".nu-t").textContent = g.t;
-    box.querySelector(".nu-why").textContent = nx.reason;
-    box.dataset.slug = nx.slug;
+/* ── THE COLUMNS ────────────────────────────────────────────────────
+   The conversation is a row of columns inserted before the field,
+   pushing the homepage right — no cap, and nothing truncated: a
+   column only leaves when its × folds it back to the left. Each one
+   scrolls on its own; the strip only moves sideways. EVERY HEAD IS A
+   FIELD: keystrokes narrow the column they are typed in, Enter opens
+   the next column after it. The rail keeps the path as rows of its
+   own, and the house's next stands as a ghost column before the
+   field, with its reason. */
+const stripIn = document.getElementById("stripIn");
+const colsEl = document.getElementById("cols");
+const ccols = [];
+let stripX = 0, stripTgt = 0;
+const fieldX = () => field.offsetLeft;
+const stripShow = (c) => { stripTgt = c ? c.offsetLeft : fieldX(); };
+window.stripBack = () => { if (ccols.length) stripShow(ccols[ccols.length - 1]); };
+
+/* the studies the board knows, matched the way the field is dimmed */
+const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
+const studiesFor = (text) => {
+  const lower = text.toLowerCase().trim();
+  const ws = lower.split(/[^a-z0-9']+/).filter((w) => w.length > 2).map(stem);
+  return Object.entries(GROUPS).map(([folder, g]) => {
+    const hay = (folder + " " + g.t + " " + g.s + " " + g.tags.join(" ") + " " + (g.d || "")).toLowerCase();
+    let n = 0; for (const w of ws) if (w && hay.includes(w)) n += 1;
+    if (lower.length >= 4 && hay.includes(lower)) n += 2;
+    return { folder, g, n };
+  }).filter((x) => x.n > 0).sort((a, b) => b.n - a.n);
+};
+const shelfByText = (text) => {
+  const q = text.toLowerCase().trim();
+  const r = rrows.find((x) => x.dataset && x.dataset.tag &&
+    (x.querySelector(".rink").textContent.trim().toLowerCase() === q ||
+     x.querySelector(".rink").textContent.trim().toLowerCase().split("/")[0] === q ||
+     x.dataset.tag === q));
+  return r ? r.dataset.tag : null;
+};
+
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+function colNode(kind, caption) {
+  const c = el("section", "ccol " + kind + " arriving");
+  const cin = el("div", "cin");
+  const head = el("div", "chead");
+  const line = el("input", "cline"); line.type = "text"; line.autocomplete = "off"; line.spellcheck = false;
+  line.placeholder = caption; line.setAttribute("aria-label", "Ask from here");
+  const x = el("button", "cx", "\u00d7"); x.type = "button"; x.title = "Close this column";
+  head.appendChild(line); head.appendChild(x);
+  const body = el("div", "cbody");
+  cin.appendChild(head); cin.appendChild(body); c.appendChild(cin);
+  c.__line = line; c.__body = body; c.__caption = caption; c.__kind = kind;
+  x.addEventListener("click", () => closeColumn(c));
+  line.addEventListener("input", () => narrowColumn(c, line.value));
+  line.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); const t = line.value.trim(); line.value = ""; narrowColumn(c, ""); if (t) askFrom(c, t); }
+    if (e.key === "Escape") { line.value = ""; narrowColumn(c, ""); line.blur(); }
+  });
+  /* a horizontal wheel over a column walks the strip; vertical scrolls the column */
+  c.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
+      e.preventDefault();
+      const now = performance.now();
+      if (now - hCool > 420 && Math.abs(e.deltaX) > 24) { stripStep(Math.sign(e.deltaX)); hCool = now; }
+    }
+  }, { passive: false });
+  return c;
+}
+function narrowColumn(c, text) {
+  const rows = c.__body.querySelectorAll(".crow");
+  if (!rows.length) return;
+  const hits = text.trim() ? new Set(studiesFor(text).map((x) => x.folder)) : null;
+  rows.forEach((r) => r.classList.toggle("off", !!hits && !hits.has(r.dataset.folder)));
+}
+function studyRows(list, into, from) {
+  list.forEach(({ folder, g }) => {
+    const r = el("div", "crow"); r.dataset.folder = folder;
+    r.appendChild(el("b", null, g.t + " ")); r.appendChild(el("span", "g", g.s));
+    r.addEventListener("click", () => openStudyColumn(folder, {}, from));
+    into.appendChild(r);
   });
 }
-/* delegated: the head's own button is mounted fresh with every deal */
-document.addEventListener("click", (e) => {
-  const box = e.target.closest && e.target.closest(".nextup");
-  if (box && box.dataset.slug) openPreview(box.dataset.slug);
-});
-/* the row is walkable: right is the house's pick, left is the way
-   you came */
-addEventListener("keydown", (e) => {
-  if (!previewOpen) return;
-  if (e.key === "ArrowRight") {
-    const box = document.querySelector(".nextup");
-    if (box && box.dataset.slug) openPreview(box.dataset.slug);
-  } else if (e.key === "ArrowLeft" && walk.length > 1) {
-    walk.pop();
-    openPreview(walk[walk.length - 1], { back: true });
+function insertColumn(c, from) {
+  const i = from ? ccols.indexOf(from) : -1;
+  const at = i < 0 ? ccols.length : i + 1;
+  ccols.splice(at, 0, c);
+  const next = ccols[at + 1] || ghostCol;
+  if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
+  nav.classList.add("threadon");
+  drawGhost(); drawPath();
+  stripShow(c);
+  setTimeout(() => { c.classList.remove("arriving"); c.__line.focus({ preventScroll: true }); }, 620);
+}
+function askFrom(from, text) {
+  const t = (text || "").trim(); if (!t) return;
+  const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
+  if (byTitle) return openStudyColumn(byTitle[0], {}, from);
+  const tag = shelfByText(t);
+  if (tag) return openShelfColumn(tag, from);
+  const hits = studiesFor(t);
+  const c = colNode("answer", t);
+  const note = el("div", "cnote g");
+  if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
+  else if (!hits.length) note.textContent = "Nothing caught on the board. The homepage's brain reads deeper.";
+  else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
+  c.__body.appendChild(note);
+  if (hits.length) studyRows(hits, c.__body, c);
+  insertColumn(c, from);
+}
+window.askFrom = askFrom;
+function openShelfColumn(tag, from) {
+  const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
+  const c = colNode("list", shelfName(tag));
+  c.__body.appendChild(el("div", "cnote g", tag === "staples"
+    ? "Staples are the pulls and the kept lines, not studies."
+    : hits.length + (hits.length === 1 ? " study." : " studies.")));
+  studyRows(hits, c.__body, c);
+  insertColumn(c, from);
+}
+function openStudyColumn(folder, opts, from) {
+  opts = opts || {};
+  const g = GROUPS[folder]; if (!g) return;
+  trailLog.opened.push(folder); saveTrail();
+  const c = colNode("study", g.t);
+  c.__folder = folder;
+  c.__body.appendChild(el("div", "cnote g", g.s));
+  if (g.d) {
+    const [fact, ...more] = g.d.split("|");
+    const d = el("div", "cnote", fact.trim() + " ");
+    const rest = more.join("|").trim(); if (rest) d.appendChild(el("span", "g", rest));
+    c.__body.appendChild(d);
   }
+  const ways = el("div", "cways");
+  const pv = el("u", null, "Preview");
+  const go = el("a", null, "See the full study"); go.href = "/case-studies/" + (g.h || folder);
+  const gou = el("u"); gou.appendChild(go);
+  ways.appendChild(pv); ways.appendChild(document.createTextNode(" \u00b7 ")); ways.appendChild(gou);
+  c.__body.appendChild(ways);
+  const pics = el("div", "cpics"); c.__body.appendChild(pics);
+  const load = () => {
+    if (pics.childElementCount) { pics.innerHTML = ""; pv.textContent = "Preview"; return; }
+    const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
+    files.forEach((f, i) => { const im = el("img"); im.src = encodeURI(f.t); im.alt = ""; im.loading = "lazy";
+      im.style.animationDelay = Math.min(0.4, i * 0.05) + "s"; pics.appendChild(im); });
+    pv.textContent = "Close the preview";
+  };
+  pv.addEventListener("click", load);
+  if (opts.preview) load();
+  insertColumn(c, from);
+}
+function closeColumn(c) {
+  const i = ccols.indexOf(c); if (i < 0) return;
+  ccols.splice(i, 1);
+  c.classList.add("closing");
+  setTimeout(() => c.remove(), 520);
+  drawGhost(); drawPath();
+  if (!ccols.length) { nav.classList.remove("threadon"); stripShow(null); }
+  else stripShow(ccols[Math.max(0, i - 1)]);
+}
+window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
+function closeAllColumns() {
+  ccols.slice().forEach((c) => { c.classList.add("closing"); setTimeout(() => c.remove(), 520); });
+  ccols.length = 0;
+  nav.classList.remove("threadon"); drawGhost(); drawPath(); stripShow(null);
+}
+function stripStep(dir) {
+  /* where the strip stands now, in columns; the field is one past the last */
+  const xs = ccols.map((c) => c.offsetLeft).concat([fieldX()]);
+  let k = 0; xs.forEach((x, i) => { if (Math.abs(x - stripTgt) < Math.abs(xs[k] - stripTgt)) k = i; });
+  const n = Math.max(0, Math.min(xs.length - 1, k + dir));
+  if (n === xs.length - 1) stripShow(null); else stripShow(ccols[n]);
+}
+/* the ghost: the house's next, before the field */
+let ghostCol = null;
+function drawGhost() {
+  if (ghostCol) { ghostCol.remove(); ghostCol = null; }
+  if (!ccols.length) return;
+  const last = ccols[ccols.length - 1];
+  const nx = predictNext(last.__folder || null);
+  const g = nx && GROUPS[nx.slug]; if (!g) return;
+  ghostCol = colNode("ghost", "Next \u00b7 " + g.t);
+  ghostCol.classList.remove("arriving");
+  ghostCol.querySelector(".cx").remove();
+  ghostCol.__line.readOnly = true;
+  ghostCol.__body.appendChild(el("div", "cnote g", g.s + " \u00b7 " + nx.reason));
+  ghostCol.__line.addEventListener("click", () => openStudyColumn(nx.slug, { preview: true }, last));
+  colsEl.appendChild(ghostCol);
+}
+/* the path, as rows of the rail's own kind */
+function drawPath() {
+  let wrap = document.getElementById("pathwrap");
+  if (!wrap) {
+    wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
+    const rd = document.getElementById("rdrawer");
+    rd.parentNode.insertBefore(wrap, rd);
+  }
+  wrap.innerHTML = "";
+  ccols.forEach((c) => {
+    const r = el("div", "rrow");
+    const h = el("button", "rhead"); h.type = "button";
+    const ink = el("span", "rink", c.__caption); h.appendChild(ink);
+    const x = el("span", "rx", " \u00d7"); x.style.cssText = "margin-left:8px;color:rgba(0,0,0,0.42)";
+    h.appendChild(x);
+    h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else stripShow(c); });
+    r.appendChild(h); wrap.appendChild(r);
+  });
+  wrap.style.display = ccols.length ? "" : "none";
+}
+addEventListener("keydown", (e) => {
+  if (e.target && e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowRight") stripStep(1);
+  if (e.key === "ArrowLeft") stripStep(-1);
 });
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
@@ -1886,16 +1745,28 @@ function tick() {
      carries the plane down, and a mark riding it dropped into the
      rail, which is fixed. It holds at rest instead and leaves with
      the plane only upward, or leftward when paging. */
-  if (coverline) coverline.style.transform =
-    "translate3d(" + (-Math.max(0, cur.x - START.x)) + "px," +
-    (-Math.max(0, cur.y)) + "px,0)";
+  /* the strip eases the same way; the cover line belongs to the
+     field's origin, so it rides the strip too */
+  stripX += (stripTgt - stripX) * 0.11;
+  stripIn.style.transform = "translate3d(" + (-stripX) + "px,0,0)";
+  /* the cover line splits now: the mark stands over the rail, which
+     the columns do not move, so it never rides the strip; the address
+     stands over the field's last column and goes where the field
+     goes, pushed right by the columns and back by the strip */
+  if (coverline) {
+    const up = -Math.max(0, cur.y), away = -Math.max(0, cur.x - START.x);
+    coverline.style.transform = "translate3d(0," + up + "px,0)";
+    if (covermark) covermark.style.transform = "translate3d(" + away + "px,0,0)";
+    const meta = coverline.querySelector(".covermeta");
+    if (meta) meta.style.transform = "translate3d(" + (away + fieldX() - stripX) + "px,0,0)";
+  }
   swapSides();
-  if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
+  if (turning || Math.abs(tgt.y - cur.y) > 0.5 || Math.abs(stripTgt - stripX) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
     remount();
-  const far = previewOpen || Math.abs(cur.x - START.x) > MOD_X * 1.5 ||
+  const far = ccols.length > 0 || Math.abs(cur.x - START.x) > MOD_X * 1.5 ||
     Math.abs(cur.y - START.y) > innerHeight * 1.4;
   if (far !== home.hasAttribute("data-on"))
     far ? home.setAttribute("data-on", "") : home.removeAttribute("data-on");
@@ -2115,7 +1986,7 @@ homeWrap.id = "homewrap";
 homeWrap.appendChild(home);
 document.getElementById("railwrap").appendChild(homeWrap);
 homeRow.h.addEventListener("click", () => {
-  closePreview();
+  closeAllColumns();
   pageTo(0); tgt.y = START.y; velY = 0;
 });
 
@@ -2190,6 +2061,9 @@ drawer.addEventListener("pointerleave", closeRows);
 function setMode(mode) {
   MODE = mode;
   if (mode && typeof trailLog !== "undefined") { trailLog.modes.push(mode); saveTrail(); }
+  /* a shelf is a line: it opens as a list column too, like the
+     filters on the left, and the field dims to it behind */
+  if (mode && window.askFrom) openShelfColumn(mode, null);
   rrows.forEach((r) => {
     if (!r.dataset.tag) return;
     r.classList.toggle("picked", r.dataset.tag === mode);
@@ -2264,16 +2138,16 @@ function placeAsk() {
   const fieldL = field.getBoundingClientRect().left;
   /* the slot the field rides: the open column's lede while the
      history is unfolded, else the statement standing in the plane */
-  const tin = document.getElementById("threadIn");
-  const lede = threadOpen ? document.getElementById("threadLede") : null;
-  const st = lede || (previewOpen ? null : live.get("0:0:0"));
+  const st = live.get("0:0:0");
   const slot = st ? st.querySelector(".askslot") : null;
   const sr = slot ? slot.getBoundingClientRect() : null;
-  const on = !!sr && sr.height > 0 && sr.right > fieldL + 8 && sr.bottom > 0;
+  /* on screen both ways: a slot pushed off to the right by the
+     columns is as gone as one scrolled off the top */
+  const on = !!sr && sr.height > 0 && sr.right > fieldL + 8 && sr.left < innerWidth - 8 && sr.bottom > 0;
   const drop = on ? Math.max(0, sr.top + sr.height / 2 - NAV_H / 2) : 0;
   /* the travel's length is the slot's centre in the space that
      scrolls — the panel's while it is open, the plane's otherwise */
-  const scrolled = threadOpen && tin ? tin.scrollTop : cur.y;
+  const scrolled = cur.y;
   const total = on ? Math.max(1, sr.top + scrolled + sr.height / 2 - NAV_H / 2) : 1;
   const p = Math.min(1, drop / total);
   if (on) askLastCol = { left: sr.left, w: sr.width };
@@ -2289,7 +2163,7 @@ function placeAsk() {
   askEl.classList.toggle("big", p > 0.35);
   document.body.classList.toggle("attop", p > 0.96);
   /* the cover line: the wordmark is the gate, as on the homepage */
-  const mk = covermark && !previewOpen ? covermark.getBoundingClientRect() : null;
+  const mk = covermark ? covermark.getBoundingClientRect() : null;
   const onPage = !!mk && mk.height > 0 && mk.bottom > 0 && mk.right > 0;
   document.body.classList.toggle("coverbar", onPage && mk.top < NAV_H);
   document.body.classList.toggle("headgone", !onPage);
@@ -2300,26 +2174,10 @@ window.__askReady = true;
   const tin = document.getElementById("threadIn");
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
-/* ── THE FIELD OPENS ON A CLICK ─────────────────────────────────────
-   Hover-open was tried and was too slippery: a pointer crossing the
-   bar unfolded the column, and reading the history meant holding
-   still. So the sheet opens when the field is clicked into — the
-   focus already opens it — and closes on the ×, on Escape, or on a
-   click anywhere outside the sheet and the field. Leaving with the
-   pointer does nothing; a decision closes it, not a drift. */
-if (!PHONE && askEl) {
-  document.addEventListener("pointerdown", (e) => {
-    if (!threadOpen) return;
-    const t = e.target;
-    if (thread.contains(t) || askEl.contains(t)) return;
-    closeThread();
-  });
-}
-
-window.__b = { cur, tgt, START, pageTo, placeAsk, get colIdx() { return colIdx; },
-  MOD_X, COL, GAP, setMode, checkScale, DPR, openPreview, closePreview,
+window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, closeColumn, closeAllColumns,
+  stripShow, get ccols() { return ccols; }, get stripX() { return stripX; }, get stripTgt() { return stripTgt; }, get colIdx() { return colIdx; },
+  MOD_X, COL, GAP, setMode, checkScale, DPR,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
-  get previewOpen() { return previewOpen; },
   get MODE() { return MODE; } };
 addEventListener("resize", () => { remount(); placeAsk(); }, { passive: true });
 remount();
