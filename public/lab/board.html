@@ -82,9 +82,16 @@
      standing before it, and that translate transitions, so the work
      slides aside in step with a column growing out and slides back
      as one folds. */
+  /* THE LAYER IS NOT A SURFACE. Its columns are anchored across the
+     whole row now, so their margins stretch this box over every module
+     between the first and the last — 2318px of it, at z-index 4, over
+     the work. It swallowed every hover and every click out there: a
+     frame under it could not grow and could not be opened. The layer
+     passes the pointer through; only the columns themselves take it. */
   #cols { position: absolute; top: 0; bottom: 0; z-index: 4;
     left: calc(var(--modw, 0px) - var(--gapx, 0px) / 2);
-    display: flex; will-change: transform; }
+    display: flex; will-change: transform; pointer-events: none; }
+  .ccol { pointer-events: auto; }
   /* a column stands on paper of its own: the work slides under it as
      it grows and must not show through */
   .ccol .cin { background: var(--paper, #fff); }
