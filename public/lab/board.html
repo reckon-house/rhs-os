@@ -358,6 +358,11 @@
   .ccol .cways u { cursor: pointer; margin-right: 0.4em; transition: text-decoration-color 0.3s ease; }
   .ccol .cways a { color: inherit; text-decoration: none; }
   .ccol .cways u:hover { text-decoration-color: var(--ink); }
+  /* a kept line, in the room's prose register with its name in grey
+     under it — the board sets its quote tiles the same way */
+  .ccol .cline-quote { margin: 1.6em 0 0.4em; white-space: pre-line; }
+  .ccol .cline-quote .att { display: block; margin-top: 0.5em;
+    font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; }
   .ccol .cpics { margin-top: 0.8em; }
   .ccol .cpics img { display: block; width: 100%; height: auto; border-radius: 14px;
     background: rgba(0, 0, 0, 0.04); margin-top: 14px;
@@ -2619,6 +2624,33 @@ function openShelfColumn(tag, from, opts) {
   c.__lead.appendChild(el("div", "cnote g", tag === "staples"
     ? "Staples are the pulls and the kept lines, not studies."
     : hits.length + (hits.length === 1 ? " study." : " studies.")));
+  /* ── THE SHELF THAT HOLDS NO STUDIES ──────────────────────────────
+     Every other shelf is a list of studies; Staples is the one that
+     is not, and asking GROUPS for studies tagged "staples" is asking
+     for something that by definition does not exist — so the column
+     said what it was and then showed nothing. It holds the pulls and
+     the kept lines themselves, woven the way the board weaves them:
+     a run of pictures, a line, a run of pictures. */
+  if (tag === "staples") {
+    const pulls = (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration");
+    const pics = el("div", "cpics"); c.__matter.appendChild(pics);
+    pulls.forEach((it, i) => {
+      const q = QUOTES[Math.floor(i / 12) - 1];
+      if (q && i % 12 === 0) {
+        const line = el("div", "cline-quote", "\u201c" + q.text + "\u201d");
+        line.appendChild(el("span", "att g", q.att));
+        pics.appendChild(line);
+      }
+      const im = el("img"); im.src = encodeURI(it.t); im.alt = ""; im.loading = "lazy";
+      const ss = srcsetFor(it);
+      if (ss) { im.srcset = ss; im.sizes = Math.ceil(COL) + "px"; }
+      im.style.animationDelay = Math.min(0.4, (i % 8) * 0.05) + "s";
+      if (it.w) im.style.maxWidth = Math.round(it.w / DPR) + "px";
+      pics.appendChild(im);
+    });
+    insertColumn(c, from, opts);
+    return;
+  }
   studyRows(hits, c.__matter, c);
   insertColumn(c, from, opts);
 }
