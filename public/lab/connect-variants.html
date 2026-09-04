@@ -42,7 +42,7 @@
   .cday { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: baseline;
     padding: 13px 0 26px; border-top: 1px solid rgba(0,0,0,0.12);
     transition: background-color 0.5s cubic-bezier(0.2,0.7,0.2,1), color 0.5s cubic-bezier(0.2,0.7,0.2,1),
-      padding-top 0.56s cubic-bezier(0.2,0.7,0.2,1), padding-bottom 0.56s cubic-bezier(0.2,0.7,0.2,1),
+      padding 0.56s cubic-bezier(0.2,0.7,0.2,1),
       box-shadow 0.5s cubic-bezier(0.2,0.7,0.2,1); cursor: pointer; }
   .col.dark .cday { border-top-color: rgba(255,255,255,0.28); }
   .cnum { font-variant-numeric: tabular-nums; }
@@ -70,7 +70,7 @@
   .ways .g { margin: 0 0.3em; }
 
   /* ── A · as built: the open day floods to paper ─────────────────── */
-  .v-flood .cday.open { padding: 22px 0 26px; border-top-color: transparent; background: #fff; color: #000; }
+  .v-flood .cday.open { padding: 22px 17px 26px; border-top-color: transparent; background: #fff; color: #000; }
   .v-flood .cday.open .cnum .g { color: rgba(0,0,0,0.42); }
   .v-flood .cday.open .ctime.on { background: #000; color: #fff; }
 

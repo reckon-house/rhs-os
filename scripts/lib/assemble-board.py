@@ -303,8 +303,7 @@ head = r'''<!doctype html>
     padding: 13px 0 26px; border-top: 1px solid rgba(0, 0, 0, 0.12);
     transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
       color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-      padding-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
-      padding-bottom 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+      padding 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .ccol.dark .cday { border-top-color: rgba(255, 255, 255, 0.28); }
   .ccol .cday .cnum { font-size: inherit; font-variant-numeric: tabular-nums; }
   .ccol .cday .cnum .g { margin-left: 0.35em; transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -315,8 +314,11 @@ head = r'''<!doctype html>
   .ccol .cday.shut .cnum { opacity: 0.4; }
   /* the flood: exactly as wide as the rule it opens under. Out to the
      column's edges it read as a band across the room; held to the
-     rule's width it reads as the row itself, lit. */
-  .ccol .cday.open { padding: 22px 0 26px; border-top-color: transparent; }
+     rule's width it reads as the row itself, lit. And the day moves
+     IN as it lights: the number and its times slide from the rule's
+     edge to a half-gap inside it, on the flood's own curve, so the
+     open day is set into its paper rather than pressed against it. */
+  .ccol .cday.open { padding: 22px calc(var(--gapx, 20px) / 2) 26px; border-top-color: transparent; }
   .ccol.dark .cday.open { background: #fff; color: #000; }
   .ccol.dark .cday.open .cnum .g { color: rgba(0, 0, 0, 0.42); }
   .ccol .cday.open .ccount { opacity: 0; }
