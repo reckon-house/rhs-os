@@ -174,8 +174,15 @@ head = r'''<!doctype html>
      line in a column is set like the intro — the statement's size and
      weight, ink for the thing itself and grey for what is said about
      it — and nothing else: no labels, no pills, no small type. */
+  /* ── A COLUMN IS A MODULE, OR TWO ─────────────────────────────────
+     Everything about the row is already counted in modules — where a
+     column stands, how far the work steps aside, what a page turn
+     moves by — so a column two modules wide is one number, not a new
+     idea. The width is what shifts the row: the flex line does the
+     rest, and the same 0.5s that grows a column out of nothing grows
+     this one sideways. */
   .ccol {
-    flex: none; width: var(--modw); height: 100%; position: relative;
+    flex: none; width: calc(var(--modw) * var(--span, 1)); height: 100%; position: relative;
     font-size: clamp(20px, 2.4vw, 32px); font-weight: 600;
     line-height: 1.2; letter-spacing: -0.05em;
     transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1), opacity 0.4s ease;
@@ -201,7 +208,7 @@ head = r'''<!doctype html>
   /* the rule is inside the box now, so the clip takes it as the box
      folds; it needed hiding by hand only while it was a border */
   .ccol.closing, .ccol.arriving { width: 0; opacity: 0; overflow: hidden; }
-  .ccol .cin { height: 100%; width: var(--modw); overflow-y: auto;
+  .ccol .cin { height: 100%; width: calc(var(--modw) * var(--span, 1)); overflow-y: auto;
     scrollbar-width: none; scroll-behavior: smooth;
     padding: calc(var(--cover-air, 50px) + 46px) calc(var(--gapx, 20px) / 2) 90px; }
   .ccol .cin::-webkit-scrollbar { display: none; }
@@ -415,6 +422,13 @@ head = r'''<!doctype html>
   .ccol .cline-quote .att { display: block; margin-top: 0.5em;
     font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; }
   .ccol .cpics { margin-top: 0.8em; }
+  /* wide, the pulls run as two columns of masonry: the browser's own
+     balancing, one gutter, and a picture never broken across the
+     boundary. The measure of each is a module, which is the width
+     they were already being drawn at. */
+  .ccol .cpics.wide { column-count: 2; column-gap: var(--gapx, 20px); }
+  .ccol .cpics.wide img, .ccol .cpics.wide .cline-quote { break-inside: avoid; }
+  .ccol .cpics.wide img { margin-top: 0; margin-bottom: 14px; }
   .ccol .cpics img { display: block; width: 100%; height: auto; border-radius: 14px;
     background: rgba(0, 0, 0, 0.04); margin-top: 14px;
     animation: picIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -1353,14 +1367,23 @@ let colIdx = 0;
    anchored before it; and a tile steps aside one module for each of
    those. Nothing is a block: a column opened from the far end of the
    row stands at the far end, and only what is right of it moves. */
-const colsBefore = (u) => { let n = 0; for (const c of ccols) if (c.__after < u) n += 1; return n; };
+const spanOf = (c) => c.__span || 1;
+const colsBefore = (u) => { let n = 0; for (const c of ccols) if (c.__after < u) n += spanOf(c); return n; };
 const shiftAt = (u) => colsBefore(u) * MOD_X;
-const dispOf = (c) => c.__after + 1 + ccols.indexOf(c);
+const dispOf = (c) => {
+  let n = c.__after + 1;
+  for (const x of ccols) { if (x === c) break; n += spanOf(x); }
+  return n;
+};
 const dispU = (u) => u + colsBefore(u);
 /* what stands at a place in the row: a column, or a module */
 const atDisp = (d) => {
   let u = d;
-  for (const c of ccols) { const k = dispOf(c); if (k === d) return { col: c }; if (k < d) u -= 1; }
+  for (const c of ccols) {
+    const k = dispOf(c), sp = spanOf(c);
+    if (d >= k && d < k + sp) return { col: c };
+    if (k + sp <= d) u -= sp;
+  }
   return { u };
 };
 /* the module a question from the statement belongs to: the statement
@@ -1958,9 +1981,11 @@ const ccols = [];
    screen, else the row glides until it stands at the near edge */
 const reveal = (c) => {
   if (ccols.indexOf(c) < 0) return;
-  const d = dispOf(c);
+  const d = dispOf(c), sp = spanOf(c);
   if (d < colIdx) pageTo(d);
-  else if (d > colIdx + VISIBLE - 1) pageTo(d - VISIBLE + 1);
+  /* a column wider than the view is shown from its own left edge:
+     there is no move that fits all of it */
+  else if (d + sp - 1 > colIdx + VISIBLE - 1) pageTo(Math.max(d, d + sp - VISIBLE));
 };
 const showCol = reveal;
 
@@ -2683,11 +2708,19 @@ function openShelfColumn(tag, from, opts) {
      the kept lines themselves, woven the way the board weaves them:
      a run of pictures, a line, a run of pictures. */
   if (tag === "staples") {
+    /* ── A HANDFUL, THEN ALL OF THEM, TWICE AS WIDE ──────────────────
+       A hundred and four pictures down one module is a corridor. The
+       shelf opens with a dozen and a way in; See all takes the column
+       to two modules and runs the rest as masonry, which is what the
+       board itself is — the room grows into the shape the material
+       already wanted, and the work steps aside by two instead of one
+       because the row is counted in modules either way. */
     const pulls = (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration");
-    const pics = el("div", "cpics"); c.__matter.appendChild(pics);
-    pulls.forEach((it, i) => {
-      const q = QUOTES[Math.floor(i / 12) - 1];
-      if (q && i % 12 === 0) {
+    const FEW = 12;
+    const pics = el("div", "cpics");
+    const put = (it, i) => {
+      const q = QUOTES[Math.floor(i / 34) - 1];
+      if (q && i % 34 === 0) {
         const line = el("div", "cline-quote", "\u201c" + q.text + "\u201d");
         line.appendChild(el("span", "att g", q.att));
         pics.appendChild(line);
@@ -2698,6 +2731,24 @@ function openShelfColumn(tag, from, opts) {
       im.style.animationDelay = Math.min(0.4, (i % 8) * 0.05) + "s";
       if (it.w) im.style.maxWidth = Math.round(it.w / DPR) + "px";
       pics.appendChild(im);
+    };
+    const ways = el("div", "cways");
+    const link = el("u", null, "See all " + pulls.length);
+    ways.appendChild(link);
+    c.__matter.appendChild(ways);
+    c.__matter.appendChild(pics);
+    pulls.slice(0, FEW).forEach(put);
+    let wide = false;
+    link.addEventListener("click", () => {
+      wide = !wide;
+      c.__span = wide ? 2 : 1;
+      c.style.setProperty("--span", c.__span);
+      pics.classList.toggle("wide", wide);
+      if (wide && pics.childElementCount <= FEW) pulls.slice(FEW).forEach((it, i) => put(it, i + FEW));
+      link.textContent = wide ? "Fewer" : "See all " + pulls.length;
+      /* the row is a module wider or narrower than it was: the work
+         steps, the path re-measures, and the view keeps the column */
+      reshift(); drawPath(); reveal(c);
     });
     insertColumn(c, from, opts);
     return;
