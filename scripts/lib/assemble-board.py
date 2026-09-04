@@ -176,12 +176,20 @@ head = r'''<!doctype html>
      it — and nothing else: no labels, no pills, no small type. */
   .ccol {
     flex: none; width: var(--modw); height: 100%; position: relative;
-    border-left: 1px solid rgba(0, 0, 0, 0.12);
     font-size: clamp(20px, 2.4vw, 32px); font-weight: 600;
     line-height: 1.2; letter-spacing: -0.05em;
-    transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1),
-      opacity 0.4s ease, border-color 0.4s ease;
+    transition: width 0.5s cubic-bezier(0.2, 0.55, 0.2, 1), opacity 0.4s ease;
   }
+  /* ── THE COLUMN'S RULE IS THE FIELD'S RULE ────────────────────────
+     A border runs the height of the box, and the box starts at the top
+     of the page, so the column drew a hairline up through the masthead
+     while every standing rule in the field stops below it. Same line,
+     same start: the rules layer opens at --cover-air and so does this.
+     Off the border and into the box, it also stops eating the pixel
+     that held the column's text one out from its module's edge. */
+  .ccol::before { content: ""; position: absolute; left: 0; width: 1px;
+    top: var(--cover-air, 50px); bottom: 0;
+    background: rgba(0, 0, 0, 0.12); }
   /* ── A COLUMN GROWS OUT FROM BEHIND ITS NEIGHBOUR ─────────────────
      Arriving is the exact inverse of folding: the box opens from zero
      to one module while its contents stand still at full width behind
@@ -190,8 +198,9 @@ head = r'''<!doctype html>
      to its right is pushed along as it grows. It used to fly in from
      off-screen right, which is a card being dealt onto a table rather
      than a column being made room for. */
-  .ccol.closing, .ccol.arriving { width: 0; opacity: 0; overflow: hidden;
-    border-left-color: transparent; }
+  /* the rule is inside the box now, so the clip takes it as the box
+     folds; it needed hiding by hand only while it was a border */
+  .ccol.closing, .ccol.arriving { width: 0; opacity: 0; overflow: hidden; }
   .ccol .cin { height: 100%; width: var(--modw); overflow-y: auto;
     scrollbar-width: none;
     padding: calc(var(--cover-air, 50px) + 46px) calc(var(--gapx, 20px) / 2) 90px; }
@@ -273,13 +282,10 @@ head = r'''<!doctype html>
   .ccol .cwhy { margin-top: 0.3em; }
   /* the close keeps its own size whatever register its head is in */
   .ccol .cx { font-size: 19px; }
-  .ccol.ghost { border-left-style: dashed; }
   /* the path in the rail: a study's name can be long, so its row
      wraps and takes the rail's width rather than being cut */
   #pathwrap .rrow { --hug: 0%; }
   #pathwrap .rhead { white-space: normal; text-align: left; line-height: 1.25; }
-  .ccol.ghost .cline { cursor: pointer; }
-  .ccol.ghost .cline::placeholder { color: rgba(0, 0, 0, 0.42); }
   @media (max-width: 760px) { #strip { left: 0; } }
   #plane { position: absolute; left: 0; top: 0; will-change: transform; }
 
