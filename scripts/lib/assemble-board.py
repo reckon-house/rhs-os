@@ -782,8 +782,20 @@ head = r'''<!doctype html>
        back */
     .ccol:has(~ .ccol:not(.closing)) { visibility: hidden; }
     .ccol::before { display: none; }
-    .ccol .cin { width: 100%; height: 100%; padding: 28px 20px 110px; }
+    /* no top padding on the scroller: WebKit measures a sticky top
+       from the scroll container's CONTENT box, so padding there is a
+       band the pinned head sits below and the column scrolls through.
+       The head carries the air instead. */
+    .ccol .cin { width: 100%; height: 100%; padding: 0 20px 110px; }
     .ccol .cpics.wide { column-count: 1; }
+    /* the head holds the top of the glass while the column scrolls
+       under it: on desktop the × is one of several ways out and can
+       scroll away with the column; here it is the only one, and a
+       reader four pictures down cannot be asked to find the top */
+    .ccol .chead { position: sticky; top: 0; z-index: 2;
+      margin: 0 -20px 0; padding: 28px 20px 14px;
+      background: var(--paper, #fff); }
+    .ccol.dark .chead { background: #000; }
 
     /* ── THE BAR: the field, then the handle ──────────────────────
        The field is in the grid here rather than placed over it: on
