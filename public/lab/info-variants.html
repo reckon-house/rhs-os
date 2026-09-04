@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Info · seven ways</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── seven Info columns in a row, each at module width ───────────
+     Same anatomy every time — chip, lede, field, then the material —
+     and only the material changes: the three method notes and the
+     credits, which is all the room holds. Each column scrolls on its
+     own, as the board's do, so an idea that needs scroll has scroll.
+     Where a variant borrows motion from the live site it borrows the
+     numbers: PressingCredits admits rows through an observer and
+     fires them 110ms apart, transform 0.9s on (0.2, 0.55, 0.2, 1),
+     text 0.5s ease. */
+  body { background: #e9e6e2; }
+  .strip { display: flex; gap: 40px; padding: 60px 50px 80px; overflow-x: auto; align-items: flex-start; }
+  .v { flex: none; width: 386px; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 0 14px 17px; text-transform: uppercase; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+  .col { height: 920px; overflow-y: auto; scrollbar-width: none; padding: 96px 17px 90px; position: relative;
+    background: #000; color: #fff; font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; }
+  .col::-webkit-scrollbar { display: none; }
+  .col .g { color: rgba(255,255,255,0.5); }
+  .chead { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.1em; }
+  .cchip { display: inline-flex; align-items: baseline; gap: 8px; background: rgba(255,255,255,0.1); border: 0; color: #fff;
+    border-radius: 12px; padding: 8px 12px; font: inherit; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+    cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease; }
+  .cchip:hover { background: rgba(255,255,255,0.18); }
+  .cchip.on { background: #fff; color: #000; }
+  .cchip.spent { opacity: 0.4; pointer-events: none; }
+  .cx { color: rgba(255,255,255,0.5); font-size: 15px; }
+  .lede { margin: 0; }
+  .ask { margin-top: 1.1em; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em; }
+  .matter { margin-top: 1.1em; }
+  /* rows: the list anatomy, and the text row's tighter air */
+  .row { border-top: 1px solid rgba(255,255,255,0.28); padding: 13px 0 84px; font-size: var(--note); line-height: 1.35;
+    font-weight: 600; letter-spacing: -0.004em; }
+  .row b { font-weight: 600; }
+  .tight .row { padding-bottom: 26px; }
+  .sect { margin-top: 2.2em; margin-bottom: 0.2em; }
+  .sect + .rows { margin-top: 0.6em; }
+  /* the talk */
+  .turn { margin-top: 1.1em; animation: picIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+  @keyframes picIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75em; }
+
+  /* ── B · the credits as a sentence ───────────────────────────────── */
+  .v-sentence .credits p { margin: 0; }
+
+  /* ── C · the ticker ───────────────────────────────────────────────── */
+  .v-ticker .ticker { margin-top: 1.2em; overflow: hidden; white-space: nowrap; font-size: var(--note); letter-spacing: 0.04em;
+    text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.28); border-bottom: 1px solid rgba(255,255,255,0.28); padding: 12px 0; }
+  .v-ticker .ticker span { display: inline-block; padding-right: 2.4em; animation: run 38s linear infinite; }
+  .v-ticker .ticker:hover span { animation-play-state: paused; }
+  @keyframes run { to { transform: translateX(-100%); } }
+  @media (prefers-reduced-motion: reduce) { .v-ticker .ticker span { animation: none; } }
+
+  /* ── D · the arrival queue, the live credits' own ────────────────── */
+  .v-queue .row { opacity: 0; transform: translateY(18px); }
+  .v-queue .row.on { opacity: 1; transform: none;
+    transition: transform 0.9s cubic-bezier(0.2,0.55,0.2,1), opacity 0.5s ease; }
+  .v-queue .rows { min-height: 40px; }
+
+  /* ── E · tabs ─────────────────────────────────────────────────────── */
+  .v-tabs .panel { margin-top: 1.1em; min-height: 6em; }
+  .v-tabs .panel .g { display: block; }
+
+  /* ── G · the marks ────────────────────────────────────────────────── */
+  .v-marks .stage { position: relative; height: 150px; margin-top: 1em; border-top: 1px solid rgba(255,255,255,0.28); border-bottom: 1px solid rgba(255,255,255,0.28); }
+  .v-marks .stage img, .v-marks .stage .word { position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; opacity: 0;
+    transition: opacity 0.6s ease; max-width: 60%; max-height: 44px; object-fit: contain; }
+  .v-marks .stage img.inv { filter: invert(1); }
+  .v-marks .stage .word { display: grid; place-items: center; font-size: var(--stmt); max-width: none; max-height: none; }
+  .v-marks .stage .on { opacity: 1; }
+  .v-marks .cap { margin-top: 0.8em; font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+<div class="strip" id="strip"></div>
+<script>
+const ABOUT = ["Creative technologist. AI development. Brand systems. Digital design. Interior design.", "Independent, Texas. Design and build. I love the work."];
+const NOTES = [["News", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
+  ["Stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales."]];
+const FALLBACK = { method: [
+  { k: "How it starts", v: "A real conversation and a brainstorm, and a direction we both agree on. The work moves quickly from there." },
+  { k: "What I take on", v: "The brand, the thing people use, and the back of house that keeps it running. Not just a handoff, and not just a tool." },
+  { k: "When it's done", v: "A brand, a piece of software, a room. None of them are ever really done. There's a time to launch, let it sit, see how people use it, and decide what's next. You can't keep working on it in the background forever." }],
+  credits: ["Crate & Barrel", "Nordstrom", "Ivy Park by Beyoncé", "Neiman Marcus", "Rejuvenation", "Lostine Home", "Visual Comfort", "Floor & Decor", "Kingston Brass", "Design Within Reach", "Vivir Homes", "Haven"] };
+/* the marks the live credits show, and which ones can be reversed to white */
+const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg", "Ivy Park by Beyoncé": "/brands/ivy-park.svg",
+  "Neiman Marcus": "/brands/neiman-marcus.svg", "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
+  "Visual Comfort": "/brands/visual-comfort.webp", "Floor & Decor": "/brands/floor-decor.svg", "Kingston Brass": "/brands/kingston-brass.webp",
+  "Design Within Reach": "/brands/dwr.jpg", "Vivir Homes": "/brands/vivir-homes.webp" };
+const ASIS = new Set(["Design Within Reach"]);
+const QUESTIONS = [["How does it start?", 0], ["What do you take on?", 1], ["When is it done?", 2], ["Who have you worked with?", -1]];
+const VARIANTS = [
+  ["A", "v-built", "as built", "text rows with a picture's air, twelve names in a list"],
+  ["B", "v-sentence tight", "a sentence", "the credits as one line of prose, names in ink"],
+  ["C", "v-ticker tight", "the ticker", "the names run; hover holds them"],
+  ["D", "v-queue tight", "the arrival queue", "the live credits' own motion, rows admitted 110ms apart as you scroll"],
+  ["E", "v-tabs", "tabs", "one note at a time, the chips choose"],
+  ["F", "v-talk", "a conversation", "the notes are answers, so the room offers the questions"],
+  ["G", "v-marks tight", "the marks", "the credits cut through as a reel, the way a shelf does"],
+];
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const textRow = (into, head, body) => { const r = el("div", "row"); if (head) r.appendChild(el("b", null, head + (body ? " " : ""))); if (body) r.appendChild(el("span", "g", body)); into.appendChild(r); return r; };
+const build = (h) => {
+  const strip = document.getElementById("strip");
+  VARIANTS.forEach(([k, cls, name, what]) => {
+    const v = el("div", "v");
+    const tag = el("div", "tag"); tag.appendChild(el("b", null, k)); tag.appendChild(document.createTextNode(name + " · " + what)); v.appendChild(tag);
+    const col = el("div", "col " + cls);
+    const head = el("div", "chead"); const chip = el("span", "cchip", "Info "); chip.appendChild(el("span", "cx", "×")); head.appendChild(chip); col.appendChild(head);
+    const lede = el("p", "lede", ABOUT[0] + " "); lede.appendChild(el("span", "g", ABOUT[1])); col.appendChild(lede);
+    const ask = el("div", "ask", "Ask:"); col.appendChild(ask);
+    const m = el("div", "matter"); col.appendChild(m);
+    const kind = cls.split(" ")[0];
+    const rows = el("div", "rows");
+    if (kind === "v-built" || kind === "v-sentence" || kind === "v-ticker" || kind === "v-queue" || kind === "v-marks") {
+      h.method.forEach((x) => textRow(rows, x.k, x.v));
+      NOTES.forEach(([c, t]) => textRow(rows, c, t));
+      m.appendChild(rows);
+    }
+    if (kind === "v-built") {
+      m.appendChild(el("div", "g sect", "Worked with, spotted by & featured in."));
+      const cr = el("div", "rows"); h.credits.forEach((n) => textRow(cr, n, "")); m.appendChild(cr);
+    }
+    if (kind === "v-sentence") {
+      const c = el("div", "credits sect"); const p = el("p"); p.appendChild(el("span", "g", "Worked with, spotted by & featured in "));
+      p.appendChild(document.createTextNode(h.credits.join(", ") + ".")); c.appendChild(p); m.appendChild(c);
+    }
+    if (kind === "v-ticker") {
+      m.appendChild(el("div", "g sect", "Worked with, spotted by & featured in."));
+      const t = el("div", "ticker"); const line = h.credits.join("  ·  ") + "  ·  "; t.appendChild(el("span", null, line)); t.appendChild(el("span", null, line)); m.appendChild(t);
+    }
+    if (kind === "v-queue") {
+      m.appendChild(el("div", "g sect", "Worked with, spotted by & featured in."));
+      const cr = el("div", "rows"); h.credits.forEach((n) => textRow(cr, n, "")); m.appendChild(cr);
+      /* the queue: the observer admits, the queue keeps the rhythm */
+      const items = [...m.querySelectorAll(".row")]; const q = []; let firing = false;
+      const fire = () => { if (firing) return; firing = true; const step = () => { const t = q.shift(); if (!t) { firing = false; return; } t.classList.add("on"); setTimeout(step, 110); }; step(); };
+      const io = new IntersectionObserver((es) => { es.forEach((e) => { if (e.isIntersecting) { io.unobserve(e.target); q.push(e.target); fire(); } }); }, { root: col, threshold: 0.2 });
+      items.forEach((i) => io.observe(i));
+    }
+    if (kind === "v-tabs") {
+      const tabs = el("div", "chips"); const panel = el("div", "panel");
+      const items = h.method.map((x) => [x.k, x.v]).concat([["Worked with", "Worked with, spotted by & featured in " + h.credits.join(", ") + "."]]);
+      items.forEach(([k2, v2], i) => { const b = el("button", "cchip" + (i === 0 ? " on" : ""), k2); b.type = "button";
+        b.addEventListener("click", () => { tabs.querySelectorAll(".cchip").forEach((x) => x.classList.remove("on")); b.classList.add("on"); panel.replaceChildren(); const t = el("div", "turn"); t.appendChild(el("span", "g", v2)); panel.appendChild(t); });
+        tabs.appendChild(b); });
+      m.appendChild(tabs); m.appendChild(panel); tabs.querySelector(".cchip").click();
+    }
+    if (kind === "v-talk") {
+      const talk = el("div", "talk"); const chips = el("div", "chips");
+      QUESTIONS.forEach(([q, i]) => { const b = el("button", "cchip", q); b.type = "button";
+        b.addEventListener("click", () => { b.classList.add("spent"); const t = el("div", "turn"); t.appendChild(el("div", null, q));
+          t.appendChild(el("div", "g", i >= 0 ? h.method[i].v : h.credits.join(" · ") + ".")); talk.appendChild(t); col.scrollTo({ top: ask.offsetTop + ask.offsetHeight - col.clientHeight + 40, behavior: "smooth" }); });
+        chips.appendChild(b); });
+      /* the questions stand under the field; the turns land above it, as the board's do */
+      col.insertBefore(talk, ask); m.appendChild(chips);
+    }
+    if (kind === "v-marks") {
+      m.appendChild(el("div", "g sect", "Worked with, spotted by & featured in."));
+      const stage = el("div", "stage"); const cap = el("div", "cap");
+      const frames = h.credits.map((n) => { if (MARKS[n]) { const im = el("img", ASIS.has(n) ? "" : "inv"); im.src = MARKS[n]; im.alt = n; return im; } return el("div", "word", n); });
+      frames.forEach((f) => stage.appendChild(f)); m.appendChild(stage); m.appendChild(cap);
+      let i = 0; const show = () => { frames.forEach((f, j) => f.classList.toggle("on", j === i)); cap.textContent = h.credits[i]; i = (i + 1) % frames.length; };
+      show(); if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(show, 1100);
+    }
+    v.appendChild(col); strip.appendChild(v);
+  });
+};
+fetch("/lab/board-copy.json").then((r) => r.ok ? r.json() : null).then((j) => build(j && j.house && j.house.method ? j.house : FALLBACK)).catch(() => build(FALLBACK));
+</script>
+</body>
+</html>
