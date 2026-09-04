@@ -95,23 +95,47 @@ export default function RootLayout({
         {/* ── ARRIVING UNDER A CURTAIN ─────────────────────────────
             A document reached from outside React — the lab board is a
             static page, so its link is a real navigation — lands with
-            no curtain to lift, and the study blinks in. The leaving
-            page leaves a note; this paints black before anything of
-            the arriving page can be seen, and PressingTransition
-            lifts it as beat three. Inline and synchronous on purpose:
-            a frame later is a frame of the page showing. */}
+            no curtain to lift, and the study blinked in. The leaving
+            page leaves a note; this draws the SAME curtain it was
+            looking at, name and all, before anything of the arriving
+            page can be seen, and PressingTransition lifts it as beat
+            three. Inline and synchronous on purpose: a frame later is
+            a frame of the page showing.
+
+            The note carries the measurements rather than the rules
+            for them — how many lines fill this screen, the
+            line-height that makes them add up, the size that fits the
+            longest one — because the page that left had already
+            worked all of that out against the same viewport. The
+            delays are the OUT stagger, bottom-up, since lifting is
+            the only thing this curtain will ever do. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var n=+sessionStorage.getItem('pt.arrive');" +
-              /* a note older than a moment belonged to a navigation
-                 that never landed; it must not curtain this one */
-              "if(n&&Date.now()-n<15000){" +
-              "var d=document.createElement('div');d.id='ptArrive';" +
-              "d.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
-              "document.documentElement.appendChild(d);" +
-              "document.documentElement.classList.add('pt-arriving');}" +
-              "else if(n)sessionStorage.removeItem('pt.arrive');}catch(e){}",
+              "(function(){try{" +
+              "var raw=sessionStorage.getItem('pt.arrive');if(!raw)return;" +
+              "sessionStorage.removeItem('pt.arrive');" +
+              "var d=JSON.parse(raw);" +
+              "if(!d||!d.t||Date.now()-d.t>15000)return;" +
+              "var r=document.createElement('div');r.id='ptArrive';" +
+              "r.className='pt pt-run pt-1 pt-2';r.setAttribute('aria-hidden','true');" +
+              "r.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
+              "var N=d.n||0;" +
+              "var panel=function(cls){var p=document.createElement('div');p.className=cls;" +
+              "var s=document.createElement('div');s.className='ptstack';" +
+              "if(d.lh)s.style.setProperty('--ptlh',d.lh);" +
+              "if(d.fs)s.style.setProperty('--ptfs',d.fs);" +
+              "if(!d.sub)s.className='ptstack pt-nosub';" +
+              "for(var i=0;i<N;i++){var l=document.createElement('span');l.className='ptl';" +
+              "l.style.setProperty('--d',((N-1-i)*0.02).toFixed(3)+'s');" +
+              "l.textContent=d.title||'';" +
+              "if(d.sub){var b=document.createElement('span');b.className='sub';" +
+              "b.textContent='  '+d.sub;l.appendChild(b);}s.appendChild(l);}" +
+              "p.appendChild(s);return p;};" +
+              "r.appendChild(panel('ptw'));r.appendChild(panel('ptb'));" +
+              "document.documentElement.appendChild(r);" +
+              "document.documentElement.classList.add('pt-arriving');" +
+              "}catch(e){}})()",
           }}
         />
         {/* Preload the primary body font so the first paint doesn't flash in fallback. */}

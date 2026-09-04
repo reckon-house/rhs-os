@@ -3343,7 +3343,21 @@ window.ptSwap = (href) => {
      the reveal belongs to the page that arrived, which is where it
      belonged all along. Stamped, so a navigation that never happened
      cannot curtain some unrelated page an hour later. */
-  try { sessionStorage.setItem("pt.arrive", String(Date.now())); } catch (e) { /* private mode */ }
+  /* THE LINES GO WITH IT. The leaving page has already measured what
+     fills this screen — how many lines, the line-height that makes
+     them add up to the inset box, the size that fits the longest one —
+     so it hands those over rather than making the arriving document
+     work them out again. The name is what the note is really for: a
+     curtain that comes up blank and then lifts is not the same
+     curtain the visitor was just looking at. */
+  const pt0 = document.getElementById("pt");
+  const stack0 = pt0 && pt0.querySelector(".ptw .ptstack");
+  const note = { t: Date.now(), title: (window.__ptLabel || {}).title || "",
+    sub: (window.__ptLabel || {}).sub || "",
+    n: stack0 ? stack0.childElementCount : 0,
+    lh: stack0 ? stack0.style.getPropertyValue("--ptlh") : "",
+    fs: stack0 ? stack0.style.getPropertyValue("--ptfs") : "" };
+  try { sessionStorage.setItem("pt.arrive", JSON.stringify(note)); } catch (e) { /* private mode */ }
   /* ── THE STACK REDRAWS ITSELF WHILE IT WAITS ──────────────────────
      A still page under a still curtain reads as a hang. The site's own
      transition laps its lines while a route commits, and the board
@@ -3389,6 +3403,8 @@ document.addEventListener("click", (e) => {
      label carries */
   const slug = a.getAttribute("href").split("/").pop();
   const g = Object.values(GROUPS).find((x) => (x.h || "") === slug);
+  /* what the curtain is repeating, kept for the note the swap writes */
+  window.__ptLabel = { title: g ? g.t : "", sub: g ? g.s : "" };
   playTransition(a.getAttribute("href"), g ? g.t : "", g ? g.s : "");
 });
 

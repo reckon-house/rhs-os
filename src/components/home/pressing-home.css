@@ -736,12 +736,6 @@
      STARTS rising, and clearing the white then uncovers the live page
      for the length of that beat. Measured at 95% exposed before this
      moved. */
-  /* ── PLACED CLOSED, NOT CLOSED IN FRONT OF YOU ────────────────────
-     A document that arrived under a curtain has to put its own
-     curtain where the leaving page's was — shut — without playing the
-     shutting. One frame with the transitions off does it, and the
-     class is gone before beat 3 is added. */
-  .pt-snap .ptw, .pt-snap .ptb { transition: none !important; }
   .pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
   .pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1);
     clip-path: inset(0 0 100% 0); }

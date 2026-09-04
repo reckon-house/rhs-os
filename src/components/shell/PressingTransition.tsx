@@ -82,22 +82,13 @@ export function PressingTransition() {
      real navigation — ends the leaving page at full black and lands
      here with nothing to lift, so the study blinked in.
 
-     The leaving page leaves a note, the head script paints black
-     before this document can be seen, and this puts the real curtain
-     where that cover is, shut, and lifts it. Arrivals are held while
-     it does, so the study's own headline reveals AFTER the black is
-     gone instead of behind it. */
+     The head script has already drawn that curtain, lines and all,
+     before this document could be seen, so there is nothing to build
+     and nothing to place: hold it long enough to read as a curtain
+     rather than a flash, then lift it. Arrivals are held while it
+     does, so the study's own headline reveals AFTER the black is gone
+     instead of behind it. */
   useEffect(() => {
-    let note: string | null = null;
-    try {
-      note = sessionStorage.getItem("pt.arrive");
-      if (note) sessionStorage.removeItem("pt.arrive");
-      /* stamped by the leaving page: a note left by a navigation that
-         never landed is not this page's curtain */
-      if (note && Date.now() - Number(note) > 15000) note = null;
-    } catch {
-      note = null;
-    }
     const cover = document.getElementById("ptArrive");
     /* the gate is held by the flag from the first import, so every way
        out of here has to open it */
@@ -106,38 +97,26 @@ export function PressingTransition() {
       document.documentElement.classList.remove("pt-arriving");
       releaseArrivals();
     };
-    if (!note) {
+    if (!cover) {
       give();
       return;
     }
-    const root = rootRef.current;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!root || reduced) {
+    if (reduced) {
       give();
       return;
     }
 
     let done = false;
     holdArrivals();
-    busy.current = true;
-    /* placed shut, not shut in front of anyone: one frame with the
-       transitions off, then the cover can go */
-    root.className = "pt pt-run pt-1 pt-2 pt-snap";
-    void root.offsetHeight;
-    root.classList.remove("pt-snap");
-    cover?.remove();
-
-    const black = root.querySelector<HTMLElement>(".ptb");
+    const black = cover.querySelector<HTMLElement>(".ptb");
     const finish = () => {
       if (done) return;
       done = true;
-      root.className = "pt";
-      busy.current = false;
-      document.documentElement.classList.remove("pt-arriving");
-      releaseArrivals();
+      give();
     };
     const lift = window.setTimeout(() => {
-      root.classList.add("pt-3");
+      cover.classList.add("pt-3");
       const end = (e: TransitionEvent) => {
         if (e.target !== black || e.propertyName !== "clip-path") return;
         black?.removeEventListener("transitionend", end);
