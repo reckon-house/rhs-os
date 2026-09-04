@@ -883,7 +883,13 @@ function deal(list, opts) {
       if (h > COL * 1.6) h = Math.round(COL * 1.6);
       h += capOf(it);
     }
-    sized.push({ ...it, w, h });
+    /* nw: the FILE's own width, kept before w stops being it. The
+       size pass overwrites w with the CSS box and the seating pass
+       overwrites it again, so by the time a srcset is built the
+       largest rung's descriptor had become the tile's painted width —
+       97w for a 1536px file, which is a rung no box would ever ask
+       for. */
+    sized.push({ ...it, nw: it.w, w, h });
   }
 
   /* ── THE ROWS ARE DEALT, THE CONTENT FITS THE ROWS ───────────────
@@ -1433,6 +1439,14 @@ function mount(t, gx, gy, u, sh) {
     plate.className = "plate";
     const img = document.createElement("img");
     img.src = encodeURI(t.t);
+    const ss = srcsetFor(t);
+    if (ss) {
+      img.srcset = ss;
+      /* the box it is drawn in, times the 1.32 the hover grows it to,
+         so opening a frame does not magnify a bitmap chosen for the
+         closed one */
+      img.sizes = Math.ceil(t.w * 1.32) + "px";
+    }
     img.alt = "";
     img.decoding = "async";
     plate.appendChild(img);
@@ -1802,6 +1816,18 @@ const shelfByText = (text) => {
   return inside ? inside.dataset.tag : null;
 };
 
+/* ── ONE PATH, EVERY RUNG ───────────────────────────────────────────
+   The generator writes a picture at 1536 and again at 768 and 384,
+   named with @<width> before the extension, and records which rungs
+   it actually wrote. The browser then decodes the file that fits the
+   box rather than the biggest one there is, which is the whole point:
+   a 96px row in a list was holding a 1536px bitmap. */
+const srcsetFor = (t) => {
+  if (!t.r || !t.r.length) return null;
+  const parts = t.r.map((r) => encodeURI(t.t.replace(/\.webp$/, "@" + r + ".webp")) + " " + r + "w");
+  parts.push(encodeURI(t.t) + " " + (t.nw || t.w) + "w");
+  return parts.join(", ");
+};
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 function colNode(kind, caption) {
   const c = el("section", "ccol " + kind + " arriving");
@@ -1972,14 +1998,17 @@ function narrowColumn(c, text) {
    plainly the same thing */
 const coverOf = (() => {
   const m = {};
-  (window.BOARD_ITEMS || []).forEach((i) => { if (i.c != null && m[i.g] == null) m[i.g] = i.t; });
+  (window.BOARD_ITEMS || []).forEach((i) => { if (i.c != null && m[i.g] == null) m[i.g] = i; });
   return m;
 })();
 function studyRows(list, into, from) {
   const wrap = el("div", "crows");
   list.forEach(({ folder, g }) => {
     const r = el("div", "crow"); r.dataset.folder = folder;
-    const im = el("img"); im.src = encodeURI(coverOf[folder] || ""); im.alt = ""; im.loading = "lazy";
+    const cv = coverOf[folder];
+    const im = el("img"); im.src = cv ? encodeURI(cv.t) : ""; im.alt = ""; im.loading = "lazy";
+    /* the row's picture is 96px wide and was holding a 1536px bitmap */
+    if (cv) { const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; } }
     const t = el("div");
     t.appendChild(el("b", null, g.t + " "));
     t.appendChild(el("span", "g", g.s));
@@ -2127,21 +2156,25 @@ function openStudyColumn(folder, opts, from) {
      reaches and nothing else. */
   const pics = el("div", "cpics"); c.__matter.appendChild(pics);
   const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
-  const firstSrc = coverOf[folder] || (files[0] && files[0].t);
-  const order = files.map((f) => f.t).filter((t) => t !== firstSrc);
-  if (firstSrc) order.unshift(firstSrc);
-  order.forEach((src, i) => {
-    const im = el("img"); im.src = encodeURI(src); im.alt = ""; im.loading = "lazy";
+  const cover = coverOf[folder];
+  const order = files.filter((f) => !cover || f.t !== cover.t);
+  if (cover) order.unshift(cover);
+  order.forEach((it, i) => {
+    const im = el("img"); im.src = encodeURI(it.t); im.alt = ""; im.loading = "lazy";
+    const ss = srcsetFor(it);
+    if (ss) { im.srcset = ss; im.sizes = Math.ceil(COL) + "px"; }
     im.style.animationDelay = Math.min(0.4, i * 0.05) + "s";
     /* ── NO PICTURE LARGER THAN ITS PIXELS, HERE TOO ────────────────
        The field's tiles are dealt under this rule and these were not:
        they took the column's full width, so on a 1900px window a 1280
        file was drawn at 751 and a 1099 one at 1.38x. CLAUDE.md's own
        backstop, the one PressingPlate uses — the picture stops at its
-       honest width and takes the air rather than the magnification. */
-    im.addEventListener("load", () => {
-      if (im.naturalWidth) im.style.maxWidth = Math.round(im.naturalWidth / DPR) + "px";
-    }, { once: true });
+       honest width and takes the air rather than the magnification.
+       Measured off the WIDEST file there is, not the rung the browser
+       happened to take: a srcset may hand back the 768 for a box that
+       could have carried the 1536, and capping to that would shrink
+       the picture for a reason that has nothing to do with it. */
+    if (it.w) im.style.maxWidth = Math.round(it.w / DPR) + "px";
     pics.appendChild(im);
   });
   insertColumn(c, from, opts);

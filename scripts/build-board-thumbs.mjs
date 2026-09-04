@@ -49,6 +49,17 @@ const DATA = "public/lab/board-data.js";
    seen at full size. */
 const W = 1536;
 const Q = 72;
+/* ── AND THE SMALLER RUNGS ──────────────────────────────────────────
+   One file per picture meant every picture was DECODED at 1536 no
+   matter how small it was drawn: 6.5MB of bitmap for a frame painted
+   at 200px, and 6.5MB again for a 96px row in a list. Forty-five tiles
+   came to 291MB of decoded image before a study was even opened, which
+   is why opening and closing previews made the page crawl. Transfer
+   was never the problem; decode was. Three rungs and a srcset, so the
+   browser takes the file that fits the box. The small ones are the
+   full file's name with @<width> before the extension, so the board
+   builds the whole set from one path. */
+const RUNGS = [384, 768];
 
 const IMG_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
@@ -112,11 +123,28 @@ for (const from of walk(ROOT)) {
       wrote += 1;
     }
     after += statSync(to).size;
+    /* a rung only exists when the picture is actually wider than it;
+       below that the full file IS the small one and a second copy
+       would be two names for one image */
+    const rungs = [];
+    for (const r of RUNGS) {
+      if (meta.width <= r) continue;
+      const small = to.replace(/\.webp$/, "@" + r + ".webp");
+      if (FORCE || !existsSync(small)) {
+        await sharp(from, { failOn: "none" })
+          .resize({ width: r, withoutEnlargement: true })
+          .webp({ quality: Q })
+          .toFile(small);
+      }
+      after += statSync(small).size;
+      rungs.push(r);
+    }
     items.push({
       t: to.slice("public".length),
       w: meta.width,
       h: meta.height,
       g: slug,
+      ...(rungs.length ? { r: rungs } : {}),
     });
   } catch (e) {
     failed += 1;
