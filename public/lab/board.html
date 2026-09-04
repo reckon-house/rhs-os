@@ -262,9 +262,10 @@
   .ccol.dark .cday .ccount { color: rgba(255, 255, 255, 0.5); }
   .ccol .cday.has { cursor: pointer; }
   .ccol .cday.shut .cnum { opacity: 0.4; }
-  /* the flood: the row's own box, out to the column's edges */
-  .ccol .cday.open { margin: 0 calc(var(--gapx, 20px) / -2); padding: 22px calc(var(--gapx, 20px) / 2) 26px;
-    border-top-color: transparent; }
+  /* the flood: exactly as wide as the rule it opens under. Out to the
+     column's edges it read as a band across the room; held to the
+     rule's width it reads as the row itself, lit. */
+  .ccol .cday.open { padding: 22px 0 26px; border-top-color: transparent; }
   .ccol.dark .cday.open { background: #fff; color: #000; }
   .ccol.dark .cday.open .cnum .g { color: rgba(0, 0, 0, 0.42); }
   .ccol .cday.open .ccount { opacity: 0; }
