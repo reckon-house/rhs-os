@@ -3245,10 +3245,28 @@ function setMode(mode) {
 
    Delegated on the document, so it catches the chip on a frame and
    the button at the head of a preview with one rule. */
+/* ── THE BOARD IS THE PAGE BEING LEFT, AND NOTHING MORE ─────────────
+   The lifted sequencer plays all three beats because the lab has
+   nowhere to go. The board does: it is a static page, so the swap is
+   a hard navigation and the browser keeps THIS document painted until
+   the next one is ready. Covering, then lifting, then navigating
+   showed the homepage again between the lift and the load. Navigate
+   at full black and stop: the black is the last thing this page ever
+   draws, and the study arrives under it. */
+window.ptSwap = (href) => {
+  if (!href) return false;
+  location.href = href;
+  return true;
+};
 document.addEventListener("click", (e) => {
   const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;
   e.preventDefault();
+  /* warm the document while the curtain falls: two beats is about a
+     second, which is most of a page load */
+  const pre = document.createElement("link");
+  pre.rel = "prefetch"; pre.href = a.getAttribute("href");
+  document.head.appendChild(pre);
   /* the name that repeats down the curtain is the study's own, and
      its category line rides under it — the same pair the frame's
      label carries */

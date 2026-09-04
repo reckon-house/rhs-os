@@ -8214,7 +8214,16 @@ async function playTransition(href, title, sub) {
   void PT.offsetHeight;
   await ptBeat("pt-1", white);          /* white falls */
   await ptBeat("pt-2", black);          /* black rises over it */
-  /* ── in the app, the document swap goes HERE, under full black ── */
+  /* ── in the app, the document swap goes HERE, under full black ──
+     and now it can be. ptSwap is that seam, made executable: called
+     at full black, and if it returns truthy the sequence STOPS —
+     whatever arrives owns beat 3. Unset here, so the lab still plays
+     the whole thing in one go, which is what it is for. The board
+     sets it to a hard navigation: it is a static page with no router,
+     so lifting the curtain before the browser has even started the
+     next document showed the homepage again for a beat and then blinked
+     the study in. */
+  if (window.ptSwap && await window.ptSwap(href)) return;
   /* reverse every line's delay before the last beat: they leave from
      the bottom, which is the direction the lifting clip already
      removes them in */
