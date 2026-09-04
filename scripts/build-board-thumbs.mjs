@@ -39,11 +39,15 @@ const DATA = "public/lab/board-data.js";
    43% of its own column. That is why the board read small against the
    live site, which serves originals and has no such ceiling.
 
-   1280 is crisp to 640 CSS, which covers a top-tier frame out to
-   about a 1900px window. Quality down six to pay for the pixels:
-   the file is 2.8x the area and 78 was generous for a picture that
-   was never going to be seen at full size. */
-const W = 1280;
+   1536 is crisp to 768 CSS. 1280 was chosen for a 1900px window and
+   missed it by six pixels: the column is 751 there and the live
+   site's top rung, 0.86, wants 646 of it against a 640 ceiling, so
+   every top-tier cover stepped down to 0.74 and stopped matching the
+   size reckon.house gives it. 768 carries 0.86 out to a column of
+   893, which is a window around 2200. Quality down six to pay for the
+   pixels: 78 was generous for a picture that was never going to be
+   seen at full size. */
+const W = 1536;
 const Q = 72;
 
 const IMG_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
@@ -142,8 +146,39 @@ const groups = {};
    stem is enough to find the corpus item. The cover is also re-homed
    to its STUDY's slug on the way through, so it carries the study's
    caption and tags instead of hp's nothing. */
+/* ── THE LIVE INDEX'S OWN RESTING SIZE, PER CARD ────────────────────
+   The board deals its frame widths from the same six-tier ladder the
+   live index uses, so at a matched window the two produce the same
+   SET of widths — but not the same width for the same study, because
+   each rolls its own dice. The live roll is not random in practice:
+   pressingHomeDriver deals with mkRnd(5), a plain LCG, over the
+   projects in file order, and an authored `size:` on a project wins
+   over the roll. All of that is reproducible here, so the board can
+   stand each study's cover at exactly the width reckon.house stands
+   it at today. The generator below is that file's mkRnd and
+   dealShares, copied deliberately: they live in a browser bundle this
+   script cannot import, and the count check at the end goes loud if
+   the two ever drift apart. */
+const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+const mkRnd = (s0) => { let s = s0;
+  return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; };
+const dealShares = (n, rnd) => {
+  const out = []; let prev = -1;
+  for (let i = 0; i < n; i++) {
+    let t, guard = 0;
+    do { t = IX_TIERS[Math.floor(rnd() * IX_TIERS.length)]; }
+    while (Math.abs(t - prev) < 0.17 && guard++ < 24);
+    out.push(t); prev = t;
+  }
+  return out;
+};
+const projLines = projTs.split("\n").filter((l) =>
+  /\bid:\s*"/.test(l) && /href:\s*"\/case-studies\//.test(l));
+const liveShares = dealShares(projLines.length, mkRnd(5));
+
 const coverByStem = {};
 let coverOrder = 0;
+let projSeen = 0;
 for (const line of projTs.split("\n")) {
   const id = line.match(/\bid:\s*"([^"]+)"/);
   const slug = line.match(/href:\s*"\/case-studies\/([^"]+)"/);
@@ -151,7 +186,12 @@ for (const line of projTs.split("\n")) {
   const title = line.match(/title:\s*"([^"]+)"/);
   const category = line.match(/category:\s*"([^"]+)"/);
   const tags = line.match(/tags:\s*\[([^\]]*)\]/);
-  groups[slug[1]] = { id: id[1],
+  /* the width this study's cover stands at on reckon.house right now:
+     its authored size, or the seed's roll for its place in the file */
+  const authored = line.match(/\bsize:\s*([0-9.]+)/);
+  const sz = authored ? parseFloat(authored[1]) : liveShares[projSeen];
+  projSeen += 1;
+  groups[slug[1]] = { id: id[1], sz,
     t: title ? title[1] : "", s: category ? category[1] : "",
     /* the ROUTE, kept beside the folder key. Two studies keep their
        images in a folder named differently from their route, and a

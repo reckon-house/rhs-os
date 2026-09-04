@@ -679,14 +679,12 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
    out of the page — and the live site has never had a frame at full
    column width. These top out at 0.86 and reach down to 0.33, which is
    where the negative space between everything comes from. */
-/* THE INDEX'S LADDER, ONE NOTCH UP. The live index runs 0.33 to 0.86
-   of its cell and the board ran the same six, so at a matched window
-   the two deal the same widths — but the board is two columns of a
-   field that keeps going, with air between the rows, and against that
-   the same frame reads smaller than it does in a list. The smallest
-   rung goes and a larger one arrives on top: the same ladder, one
-   notch up, and still nothing at the full width of its column. */
-const IX_TIERS = [0.43, 0.53, 0.64, 0.74, 0.86, 0.92];
+/* the live index's ladder, unchanged. A pass raised it one notch on a
+   reading that the board's frames were smaller than the site's; they
+   were not, the site was being compared in its HOVER state. Same six
+   rungs, and each study's cover takes the exact rung reckon.house
+   gives it — the board-data `sz`, mined from the live seed. */
+const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
 const SHARES = PHONE ? [0.62, 0.74, 0.86] : IX_TIERS;
 /* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
    The tier is 768px wide, or the original if that was smaller, so the
@@ -855,6 +853,15 @@ function deal(list, opts) {
       let share, guard = 0;
       do { share = shares[Math.floor(r() * shares.length)]; }
       while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
+      /* ── A COVER STANDS AT THE WIDTH THE LIVE SITE GIVES IT ───────
+         Same ladder, different dice: the board rolled its own tier for
+         every frame, so a study whose cover is 0.86 on reckon.house
+         could come up 0.43 here. The live roll is reproducible and
+         `npm run board` mines it, so a cover takes its own rung and
+         only the rest of the corpus is dealt. The roll still advances
+         either way, so the anti-repeat sees what actually landed. */
+      const own = it.c != null && GROUPS[it.g] && GROUPS[it.g].sz;
+      if (own) share = own;
       /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ───────────────────
          CLAUDE.md's rule, applied where it bites: native width / DPR
          is the largest honest CSS width. It steps DOWN THE TIERS
@@ -3025,7 +3032,8 @@ window.__askReady = true;
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
 window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, closeColumn, closeAllColumns,
-  showCol, get ccols() { return ccols; }, dispOf, atDisp, shiftAt, VISIBLE, get live() { return live; }, get colIdx() { return colIdx; },
+  showCol, get ccols() { return ccols; }, dispOf, atDisp, shiftAt, VISIBLE, get live() { return live; },
+  get tiles() { return tiles; }, remount, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, setMode, checkScale, DPR,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
   get MODE() { return MODE; } };
