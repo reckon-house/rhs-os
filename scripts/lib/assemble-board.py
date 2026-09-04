@@ -3484,8 +3484,12 @@ window.ptSwap = (href) => {
      curtain the visitor was just looking at. */
   const pt0 = document.getElementById("pt");
   const stack0 = pt0 && pt0.querySelector(".ptw .ptstack");
+  /* the sub goes over only if it survived the fit: a name too long for
+     the glass dropped its category here, and the arriving curtain has
+     to draw the same lines */
+  const nosub = !!(stack0 && stack0.classList.contains("pt-nosub"));
   const note = { t: Date.now(), title: (window.__ptLabel || {}).title || "",
-    sub: (window.__ptLabel || {}).sub || "",
+    sub: nosub ? "" : ((window.__ptLabel || {}).sub || ""),
     n: stack0 ? stack0.childElementCount : 0,
     lh: stack0 ? stack0.style.getPropertyValue("--ptlh") : "",
     fs: stack0 ? stack0.style.getPropertyValue("--ptfs") : "" };

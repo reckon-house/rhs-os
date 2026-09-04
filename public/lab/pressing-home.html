@@ -8176,9 +8176,46 @@ async function playTransition(href, title, sub) {
   probe.className = "ptl";
   probe.style.cssText = "position:absolute;visibility:hidden;opacity:1";
   probe.textContent = title || "—";
+  /* the probe carries the SUB too, because the line that has to fit is
+     the whole line: measuring the title alone said a name fitted while
+     the category beside it ran off the edge */
+  if (sub) {
+    const t = document.createElement("span");
+    t.className = "sub";
+    t.textContent = "  " + sub;
+    probe.appendChild(t);
+  }
   stacks[0].appendChild(probe);
   const lineH = probe.getBoundingClientRect().height || 44;
+  /* ── AND THE SIZE IS MEASURED, not just the count ──────────────────
+     nowrap is what makes each repeat one line, so a line too wide for
+     the screen does not wrap, it is cut — which on a phone is every
+     long name: "Nordstrom framework Content direction, design system"
+     runs well past 375px of glass at the clamp's 20px floor. So the
+     type is scaled to the longest line rather than trusted to a clamp
+     that cannot know how long a project's name is. Down only: a short
+     name keeps the size the stylesheet asked for. Against the stack's
+     CONTENT box, since clientWidth includes the gutter it carries.
+     Below a floor the CATEGORY goes instead: the name is the thing the
+     reader needs and the category is the part that can be spared. 14,
+     the shipped component's number. The same block as
+     PressingTransition's, lifted here so the board inherits it. */
+  const sc = getComputedStyle(stacks[0]);
+  const stackW = Math.max(1, (stacks[0].clientWidth || innerWidth) -
+    (parseFloat(sc.paddingLeft) || 0) - (parseFloat(sc.paddingRight) || 0));
+  const lineW = probe.scrollWidth;
+  const cssSize = parseFloat(getComputedStyle(probe).fontSize) || 20;
   probe.remove();
+  const PT_MIN = 14;
+  let size = cssSize, dropSub = false;
+  if (lineW > stackW && stackW > 0) {
+    size = cssSize * (stackW / lineW);
+    if (size < PT_MIN) { size = cssSize; dropSub = true; }
+  }
+  stacks.forEach((el) => {
+    el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+    el.classList.toggle("pt-nosub", dropSub);
+  });
   /* fill the inset box exactly: round to a whole number of lines, then
      hand back the line-height that makes them add up to it */
   const gut = parseFloat(getComputedStyle(document.documentElement)
@@ -8201,6 +8238,21 @@ async function playTransition(href, title, sub) {
         line.appendChild(t);
       }
       el.appendChild(line);
+    });
+  }
+  /* ── AND THEN CHECK THE REAL ONE ─────────────────────────────────
+     Everything above is a prediction made from a probe. This is the
+     correction, measured on the line that actually rendered: if it
+     still overruns, shrink by exactly the ratio it overran by. One
+     layout read, and it holds for names nobody has written yet. */
+  const real = stacks[0].querySelector(".ptl");
+  if (real && real.scrollWidth > stackW + 1) {
+    const corrected = size * (stackW / real.scrollWidth);
+    if (corrected >= PT_MIN) size = corrected;
+    else { size = cssSize; dropSub = true; }
+    stacks.forEach((el) => {
+      el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+      el.classList.toggle("pt-nosub", dropSub);
     });
   }
   const white = PT.querySelector(".ptw");
