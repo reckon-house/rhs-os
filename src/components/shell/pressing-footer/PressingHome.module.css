@@ -1,0 +1,107 @@
+/* ── the way back ───────────────────────────────────────────────────
+   The last thing on a case study. Same paper, same gutters and the
+   same 21/32 body the footer's rooms are set in, because it stands
+   where they used to and the reader should not feel a change of stock
+   under the last line they read.
+
+   Tokens declared locally for the reason PressingReturn declares them:
+   this sits outside .pressing, which scopes --pp-* to the study's own
+   content. Same numbers, on purpose. */
+.beat {
+  --hm-paper: var(--pp-paper, #ffffff);
+  --hm-ink: var(--pp-ink, #000000);
+  --hm-lbl: var(--pp-lbl, 10px);
+  --hm-lbl-track: var(--pp-lbl-track, 0.04em);
+  --hm-lbl-weight: var(--pp-lbl-weight, 500);
+  /* How far the pull has got, 0 to 1. Written from the event handler
+     rather than from state: a wheel burst is forty events and none of
+     them is worth a React render. */
+  --pull: 0;
+
+  display: block;
+  background: var(--hm-paper);
+  color: var(--hm-ink);
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: clamp(56px, 8vw, 120px) 0 clamp(40px, 6vw, 80px);
+}
+
+/* The rule the study's own sections are ruled with, doubling as the
+   gauge. It is the whole width of the measure, so the fill has
+   somewhere to go and reads as distance rather than as a bar. */
+.rule {
+  margin: 0 40px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.14);
+  position: relative;
+  overflow: hidden;
+}
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--hm-ink);
+  transform: scaleX(var(--pull));
+  transform-origin: 0 50%;
+  /* Fast to fill, slower to drain: the push should feel like it lands
+     and the release like it lets go. */
+  transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.row {
+  margin: 18px 40px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.line {
+  margin: 0;
+  font-size: clamp(21px, 2.4vw, 32px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  /* It brightens as the pull lands, so the words are part of the
+     gauge and not a caption sitting next to one. */
+  opacity: calc(0.42 + 0.58 * var(--pull));
+  transition: opacity 0.18s linear;
+}
+
+/* The door. A gesture with no visible alternative is a gesture some
+   readers never find, so the same act is also a thing you can press. */
+.door {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--hm-lbl);
+  font-weight: var(--hm-lbl-weight);
+  letter-spacing: var(--hm-lbl-track);
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.45;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+.door:hover,
+.door:focus-visible {
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .rule,
+  .row {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .line {
+    transition: none;
+  }
+}

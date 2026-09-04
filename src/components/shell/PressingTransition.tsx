@@ -37,7 +37,12 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { registerCurtain, holdArrivals, releaseArrivals } from "@/lib/curtain";
+import {
+  registerCurtain,
+  registerNavigator,
+  holdArrivals,
+  releaseArrivals,
+} from "@/lib/curtain";
 
 /** How far apart the stacked lines arrive, and leave. Arriving is the
  *  flourish; leaving should not hold the page up. */
@@ -139,7 +144,7 @@ export function PressingTransition() {
       /* Beat 3 is over when BOTH the curtain and the last line are
          done. Waiting only on the curtain removes the cover while
          lines are still leaving. play()'s own ending, on the cover. */
-      const outMs = ((lines - 1) * STEP_OUT + 0.26) * 1000;
+      const outMs = (lines - 1) * STEP_OUT * 1000 + OUT_TAIL_MS;
       await Promise.all([
         beat("pt-3", black as Element, cover),
         new Promise((r) => setTimeout(r, outMs)),
@@ -445,7 +450,7 @@ export function PressingTransition() {
          done. Waiting only on the curtain resets the overlay while
          lines are still leaving, and hiding the panel cuts the stagger
          off mid-flight. */
-      const outMs = ((lines - 1) * STEP_OUT + 0.26) * 1000;
+      const outMs = (lines - 1) * STEP_OUT * 1000 + OUT_TAIL_MS;
       await Promise.all([
         beat("pt-3", black),
         new Promise((r) => setTimeout(r, outMs)),
@@ -476,6 +481,9 @@ export function PressingTransition() {
      navigation. Registered on mount, withdrawn on unmount, and
      curtain() runs the commit bare when nothing is registered. */
   useEffect(() => registerCurtain(play), [play]);
+  /* and the commit a route change needs, so nothing else has to work
+     out when a page has actually arrived */
+  useEffect(() => registerNavigator(goTo), [goTo]);
 
   useEffect(() => {
     const reduce = () =>

@@ -70,6 +70,35 @@ export async function curtain(
 /** Whether a curtain is available, for callers choosing their own path. */
 export const curtainReady = () => runner !== null;
 
+/* ── AND THE NAVIGATION ITSELF ──────────────────────────────────────
+ * curtain() takes any commit, which is right: a filter that rebuilds a
+ * list is as valid a thing to draw the curtain over as a route change.
+ * But a caller that DOES want a route change should not have to
+ * re-derive what "arrived" means — the sequence already knows, and its
+ * commit waits for the pathname rather than for router.push to return.
+ * Registered beside the runner so curtainTo can borrow it.
+ */
+type Navigator = (href: string) => () => Promise<void>;
+let navigate: Navigator | null = null;
+
+export function registerNavigator(fn: Navigator): () => void {
+  navigate = fn;
+  return () => {
+    if (navigate === fn) navigate = null;
+  };
+}
+
+/** The curtain, over a real route change. */
+export async function curtainTo(
+  label: string,
+  sub: string,
+  href: string
+): Promise<void> {
+  await curtain(label, sub, navigate ? navigate(href) : () => {
+    window.location.href = href;
+  });
+}
+
 /* ── THE ARRIVAL GATE ───────────────────────────────────────────────
  * A page reached through the curtain is UNDER it while it mounts, so
  * everything that reveals on arrival — a headline whose observer sees
