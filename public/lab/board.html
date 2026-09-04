@@ -2035,11 +2035,23 @@ const coverOf = (() => {
    its study has three pictures to cut between; two frames is a blink,
    not a reel. Reduced motion gets none of it, which szStart already
    honours. */
+/* ── THE REEL REELS ─────────────────────────────────────────────────
+   Faux Reel is a tool that cuts still photographs fast enough to read
+   as motion, and the board holds exactly one picture of it: the page
+   renders the thing live, so there is nothing else to photograph. A
+   study about a reel that sits still in a list is the one row on the
+   board that has to move, so it cuts through the house's own pulls —
+   which is not a stand-in for the product, it is the product's job. */
+const ALWAYS_REEL = { sizzle: "inspiration" };
 const reelFrames = (folder) => {
   const all = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
   const cv = coverOf[folder];
   const rest = all.filter((i) => !cv || i.t !== cv.t);
-  return (cv ? [cv, ...rest] : rest).slice(0, 8).map((i) => i.t);
+  const own = cv ? [cv, ...rest] : rest;
+  const borrow = ALWAYS_REEL[folder];
+  const more = borrow
+    ? (window.BOARD_ITEMS || []).filter((i) => i.g === borrow).slice(0, 8) : [];
+  return own.concat(more).slice(0, 8).map((i) => i.t);
 };
 /* on screen it runs, off screen it stops. The viewport is the root,
    and a scrolling column clips against it like any other ancestor, so
@@ -2056,18 +2068,24 @@ function studyRows(list, into, from) {
     const r = el("div", "crow"); r.dataset.folder = folder;
     const cv = coverOf[folder];
     const frames = reelFrames(folder);
-    if (idx % 3 === 1 && frames.length >= 3 && !REDUCE()) {
+    /* every third row, and any study that IS a reel */
+    if ((idx % 3 === 1 || ALWAYS_REEL[folder]) && frames.length >= 3 && !REDUCE()) {
       const box = el("div", "creel sz-stage");
       r.appendChild(box);
       const rl = { box, frames, timer: null };
       szStage(rl);
       r.__rl = rl;
       reelIO.observe(r);
-    } else {
-      const im = el("img"); im.src = cv ? encodeURI(cv.t) : ""; im.alt = ""; im.loading = "lazy";
+    } else if (cv) {
+      const im = el("img"); im.src = encodeURI(cv.t); im.alt = ""; im.loading = "lazy";
       /* the row's picture is 96px wide and was holding a 1536px bitmap */
-      if (cv) { const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; } }
+      const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; }
       r.appendChild(im);
+    } else {
+      /* a study the board has no picture of keeps the row's shape
+         rather than an img with no src, which the browser draws as a
+         torn page */
+      r.appendChild(el("div", "creel"));
     }
     const t = el("div");
     t.appendChild(el("b", null, g.t + " "));

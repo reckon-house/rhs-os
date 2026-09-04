@@ -205,6 +205,7 @@ const projLines = projTs.split("\n").filter((l) =>
 const liveShares = dealShares(projLines.length, mkRnd(5));
 
 const coverByStem = {};
+const outsideCovers = [];
 let coverOrder = 0;
 let projSeen = 0;
 for (const line of projTs.split("\n")) {
@@ -241,6 +242,14 @@ for (const line of projTs.split("\n")) {
     const stem = img[1].replace(/\.[^.]+$/, "");
     coverByStem[stem] = { c: coverOrder++, slug: slug[1] };
   } else {
+    /* ── A COVER THAT LIVES SOMEWHERE ELSE ──────────────────────────
+       One project keeps its picture outside public/case-studies:
+       Faux Reel, whose page renders a live component and whose only
+       still sits in /images/thumbnails. The walk never saw it, so the
+       study had no cover, no tile and a broken picture in every list
+       that named it. Thumbed here by its own path instead of being
+       counted and dropped. */
+    if (img) outsideCovers.push({ c: coverOrder, slug: slug[1], path: img[1] });
     coverOrder++;
   }
 }
@@ -255,6 +264,34 @@ for (const line of projTs.split("\n")) {
    what carries over is the SEQUENCE, and it now starts where the live
    site starts. */
 for (const v of Object.values(coverByStem)) v.c ^= 1;
+for (const v of outsideCovers) v.c ^= 1;
+
+/* and thumbed like any other picture, into the study's own drawer */
+for (const cv of outsideCovers) {
+  const from = join("public", cv.path.replace(/^\//, ""));
+  if (!existsSync(from)) { console.error(`  skip (no file): ${cv.path}`); continue; }
+  const to = join(OUT, cv.slug, cv.path.split("/").pop().replace(/\.[^.]+$/, "") + ".webp");
+  mkdirSync(join(OUT, cv.slug), { recursive: true });
+  let meta;
+  if (!FORCE && existsSync(to)) meta = await sharp(to).metadata();
+  else {
+    const info = await sharp(from, { failOn: "none" })
+      .resize({ width: W, withoutEnlargement: true }).webp({ quality: Q }).toFile(to);
+    meta = { width: info.width, height: info.height };
+  }
+  const rungs = [];
+  for (const r of RUNGS) {
+    if (meta.width <= r) continue;
+    const small = to.replace(/\.webp$/, "@" + r + ".webp");
+    if (FORCE || !existsSync(small)) {
+      await sharp(from, { failOn: "none" })
+        .resize({ width: r, withoutEnlargement: true }).webp({ quality: Q }).toFile(small);
+    }
+    rungs.push(r);
+  }
+  items.push({ t: to.slice("public".length), w: meta.width, h: meta.height,
+    g: cv.slug, c: cv.c, ...(rungs.length ? { r: rungs } : {}) });
+}
 /* Three studies keep their images in a folder named differently from
    their route. Measured, not guessed: these are the only mismatches
    between the 30 hrefs and the disk. sizzle's images live outside
