@@ -277,6 +277,25 @@ head = r'''<!doctype html>
      the credits. The list's own rule and air, no thumbnail column. */
   .ccol .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
   .ccol .crow.text:hover b { text-decoration: none; }
+  /* ── THE ROOM OFFERS ITS QUESTIONS ────────────────────────────────
+     The three method notes are answers, so Info offers the questions
+     as chips under the field; a press asks it the way typing would,
+     the turn lands above the field, the chip dims as spent. The row
+     carries its own close, and the choice is kept for the session:
+     a visitor who put the questions away is not shown them again in
+     the next room. */
+  .ccol .cqs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 0.2em; }
+  .ccol .cqs .cchip.spent { opacity: 0.4; pointer-events: none; }
+  .ccol .cqs .cx { padding: 0 6px; }
+  /* ── THE CREDITS ARE A REEL OF THE MARKS ──────────────────────────
+     The live footer's marks, cut through with the house's own reel,
+     the way a shelf's stamp cuts through its covers. A mark is drawn
+     to fit, not to fill, and reversed to white in the black room;
+     the one that is a photograph of a mark stays as it is. */
+  .ccol .cmarks { height: 150px; margin-top: 0.9em; border-top: 1px solid rgba(255, 255, 255, 0.28);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28); background: #000; }
+  .ccol .cmarks img.sz-fill { object-fit: contain; padding: 44px 60px; }
+  .ccol .cmarks img.sz-fill:not([src$="dwr.jpg"]) { filter: invert(1); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -2145,9 +2164,15 @@ async function sayIn(c, q, hits) {
   trailLog.asked.push(q); saveTrail();
   /* a study answers out of its own copy; the wait is one fetch, once */
   await loadCopy();
+  /* IN THE HOUSE'S ROOMS THE HOUSE ANSWERS FIRST. "How does it start?"
+     asked in Info was finding one study with "start" in it and
+     offering that, because the board's catches were consulted before
+     the house's own notes; the notes are the room's whole point. */
+  const hl = c.__house ? houseLine(q) : null;
   const said = /reach|contact|email|hire|talk/.test(q.toLowerCase())
     ? { line: "hello@reckon.house. Or keep asking here." }
     : c.__folder ? answerAbout(c, q, hits)
+    : hl ? { line: hl }
     : { line: !hits.length ? (houseLine(q) || "Nothing caught on the board. The homepage's brain reads deeper.")
         : hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
   pushTurn(c, q, said.line, said.hits);
@@ -2263,7 +2288,7 @@ function studyRows(list, into, from) {
 /* a column that folds away takes its reels with it: a timer left
    running on a detached row is the leak the last pass went looking
    for and did not find */
-const stopReels = (c) => c.querySelectorAll(".crow").forEach((r) => {
+const stopReels = (c) => c.querySelectorAll(".crow, .cmarks").forEach((r) => {
   if (r.__rl) { szStop(r.__rl); reelIO.unobserve(r); r.__rl = null; }
 });
 /* ── each column on its own module ──────────────────────────────────
@@ -2382,6 +2407,18 @@ window.askFrom = askFrom;
    opened from the rail or by asking, and everything they say is
    mined from the footer's own source. */
 const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: [], services: [], practice: [] };
+/* what a first visitor does not yet know to ask; the answers are the
+   footer's method notes and its credits, which houseLine already
+   holds */
+const HOUSE_QUESTIONS = ["How does it start?", "What do you take on?", "When is it done?", "Who have you worked with?"];
+/* the live footer's marks, by the credit they stand for. Haven has no
+   mark and is spoken, not shown. */
+const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg",
+  "Ivy Park by Beyonc\u00e9": "/brands/ivy-park.svg", "Neiman Marcus": "/brands/neiman-marcus.svg",
+  "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
+  "Visual Comfort": "/brands/visual-comfort.webp", "Floor & Decor": "/brands/floor-decor.svg",
+  "Kingston Brass": "/brands/kingston-brass.webp", "Design Within Reach": "/brands/dwr.jpg",
+  "Vivir Homes": "/brands/vivir-homes.webp" };
 const textRow = (into, head, body) => {
   const r = el("div", "crow text");
   const t = el("div");
@@ -2404,14 +2441,30 @@ async function openHouseColumn(kind, from, opts) {
     const d = el("div", "cnote", (cut > 0 ? about.slice(0, cut) : about).trim() + " ");
     if (cut > 0) d.appendChild(el("span", "g", about.slice(cut).trim()));
     c.__lead.appendChild(d);
-    const wrap = el("div", "crows");
-    h.method.forEach((m) => textRow(wrap, m.k, m.v));
-    RAIL_NOTES.info.slice(1).forEach(([cap, t]) => textRow(wrap, cap, t));
-    c.__matter.appendChild(wrap);
+    /* the questions, unless they were put away */
+    let off = false;
+    try { off = sessionStorage.getItem("board.qs") === "off"; } catch (e) { off = false; }
+    if (!off) {
+      const qs = el("div", "cqs");
+      HOUSE_QUESTIONS.forEach((q) => {
+        const b = el("button", "cchip", q); b.type = "button";
+        b.addEventListener("click", () => { b.classList.add("spent"); askFrom(c, q); });
+        qs.appendChild(b);
+      });
+      const x = el("button", "cx", "\u00d7"); x.type = "button"; x.title = "Put the questions away";
+      x.addEventListener("click", () => { qs.remove(); try { sessionStorage.setItem("board.qs", "off"); } catch (e) { /* fine */ } });
+      qs.appendChild(x);
+      c.__matter.appendChild(qs);
+    }
     c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
-    const cred = el("div", "crows");
-    h.credits.forEach((name) => textRow(cred, name, ""));
-    c.__matter.appendChild(cred);
+    const frames = h.credits.map((name) => MARKS[name]).filter(Boolean);
+    if (frames.length >= 2) {
+      const stage = el("div", "cmarks sz-stage");
+      c.__matter.appendChild(stage);
+      const rl = { box: stage, frames, timer: null };
+      szStage(rl); szScrub(rl);
+      stage.__rl = rl; reelIO.observe(stage);
+    }
   } else {
     /* ALL IN ONE. /book's own lede, then the field as the message,
        then the week and the claim, then the ways in as plain links —
@@ -2600,7 +2653,12 @@ function houseLine(q) {
     return h.services.join(". ") + ".";
   let best = null;
   for (const m of h.method) {
-    const sc = scoreOf(m.k.toLowerCase(), ws) * 3 + scoreOf(m.v.toLowerCase(), ws);
+    /* the head's own words against the question, not only the
+       question's against the head: "done" is a stop word everywhere
+       else, and "When is it done?" has no other word in it */
+    const heads = m.k.toLowerCase().split(/[^a-z']+/).filter((w) => w.length >= 4).map(stem);
+    const byHead = heads.filter((w) => lower.includes(w)).length * 3;
+    const sc = byHead + scoreOf(m.k.toLowerCase(), ws) * 3 + scoreOf(m.v.toLowerCase(), ws);
     if (sc && (!best || sc > best.sc)) best = { m, sc };
   }
   return best ? best.m.v : null;
