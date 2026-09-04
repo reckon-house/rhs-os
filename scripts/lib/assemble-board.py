@@ -3693,6 +3693,18 @@ function placeAsk() {
   const big = askFit(askInput.value || window.tourFull || askInput.placeholder, col.w, ledeSize);
   askEl.style.setProperty("--ask-left", col.left.toFixed(1) + "px");
   askEl.style.setProperty("--ask-w", col.w.toFixed(1) + "px");
+  /* ── MASKED AT THE STRIP'S EDGES, like everything else in it ──────
+     The field lives in the bar, not in the strip, so the strip's clip
+     never touched it: as the statement slid under the rail the field
+     kept riding its slot, drawing over the rail until the slot was
+     8px from gone and then blinking out. The same edge, applied by
+     hand: whatever part of the field stands left of the strip is cut,
+     and whatever stands past its right edge too. Cleared when it is
+     wholly inside, so a settled field carries no clip at all. */
+  const cutL = Math.max(0, fieldL - col.left);
+  const cutR = Math.max(0, col.left + col.w - innerWidth);
+  askEl.style.clipPath = (cutL > 0 || cutR > 0)
+    ? "inset(0 " + cutR.toFixed(1) + "px 0 " + cutL.toFixed(1) + "px)" : "";
   askEl.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
   askEl.style.setProperty("--ask-fs", (ASK_SMALL + (big - ASK_SMALL) * p).toFixed(2) + "px");
   askEl.style.setProperty("--ask-ls", (0.04 - 0.09 * p).toFixed(4) + "em");
