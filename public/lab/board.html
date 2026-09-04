@@ -151,11 +151,26 @@
      folds; it needed hiding by hand only while it was a border */
   .ccol.closing, .ccol.arriving { width: 0; opacity: 0; overflow: hidden; }
   .ccol .cin { height: 100%; width: var(--modw); overflow-y: auto;
-    scrollbar-width: none;
+    scrollbar-width: none; scroll-behavior: smooth;
     padding: calc(var(--cover-air, 50px) + 46px) calc(var(--gapx, 20px) / 2) 90px; }
   .ccol .cin::-webkit-scrollbar { display: none; }
   .ccol .g { color: rgba(0, 0, 0, 0.42); }
-  .ccol .chead { position: relative; padding-right: 34px; }
+  /* ── EVERY COLUMN HAS THE INTRO'S ANATOMY ─────────────────────────
+     Chips, a sentence, what was asked and what came back, the field,
+     then the column's own material. The intro reads "I make things…
+     Or just ask me:" and a study now reads the same way, so the
+     conversation and the homepage are one kind of thing rather than
+     two. The chips are the rail's chips — same grey, same radius,
+     same 13px — moved inside the column, which is also the only path
+     a phone has once the rail is gone. */
+  .ccol .chead { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.1em; }
+  .ccol .cchip { display: inline-flex; align-items: baseline; gap: 8px;
+    max-width: 100%; background: rgba(0, 0, 0, 0.045); border: 0; border-radius: 12px;
+    padding: 8px 12px; margin: 0; text-align: left; color: inherit; font: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+    transition: background-color 0.3s ease; }
+  button.cchip { cursor: pointer; }
+  button.cchip:hover { background: rgba(0, 0, 0, 0.09); }
   .ccol .cline { display: block; width: 100%; border: 0; outline: 0; background: none;
     padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: inherit;
     text-decoration: underline; text-decoration-color: transparent;
@@ -164,11 +179,24 @@
   .ccol .cline::placeholder { color: var(--ink); opacity: 1; }
   .ccol .cline:focus { text-decoration-color: var(--ink); }
   .ccol .cline:focus::placeholder { color: rgba(0, 0, 0, 0.42); }
-  .ccol .cx { position: absolute; right: 0; top: 0; border: 0; background: none;
-    padding: 4px; cursor: pointer; font: inherit; line-height: 1;
-    color: rgba(0, 0, 0, 0.42); }
+  /* the close travels inside the chip that names the column, the way
+     the rail's own path rows carry theirs */
+  .ccol .cx { border: 0; background: none; padding: 0; margin: 0; cursor: pointer;
+    font: inherit; font-size: 15px; line-height: 1; color: rgba(0, 0, 0, 0.42);
+    transition: color 0.3s ease; }
   .ccol .cx:hover { color: var(--ink); }
   .ccol .cnote { margin-top: 0.6em; }
+  /* ── THE FIELD HOLDS STILL AND THE COLUMN MOVES UNDER IT ──────────
+     A turn lands under the description, above the field, and the
+     column scrolls by exactly the height it added — so the field
+     stays where the hand left it and everything above it slides up,
+     which is what a conversation does. Question in ink, answer in
+     grey: the same pair the sentence above them is set in. */
+  .ccol .cturn { margin-top: 1.1em;
+    animation: picIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .ccol .cchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.55em; }
+  .ccol .cask { margin-top: 1.1em; }
+  .ccol .cmatter { margin-top: 1.1em; }
   /* ── A LIST IS A LIST ─────────────────────────────────────────────
      The one-size rule is the INTRO COPY'S: the column's own prose —
      its head and the house's line — is set like the statement. An
@@ -220,17 +248,9 @@
      and the category in grey. A column's name line and a tile's name
      line are the same object and now look it.
 
-     The head is furniture too. It is navigation, where the house
-     would go next, so it is set like the rail's chips, and typing in
-     it works at that size the way the bar's field always has. */
-  .ccol.study .chead, .ccol .cname, .ccol .cways {
-    font-size: var(--note); line-height: 1.35; letter-spacing: -0.004em; }
-  .ccol .cname { margin-bottom: 0.9em; }
-  .ccol .cname b, .ccol .crow b { font-weight: 600; }
-  .ccol.study .cline::placeholder { color: rgba(0, 0, 0, 0.42); }
-  .ccol .cwhy { margin-top: 0.3em; }
-  /* the close keeps its own size whatever register its head is in */
-  .ccol .cx { font-size: 19px; }
+     The head is furniture too. It is navigation — this column, and
+     where the house would go next — so it IS the rail's chips. */
+  .ccol .cways { font-size: var(--note); line-height: 1.35; letter-spacing: -0.004em; }
   /* the path in the rail: a study's name can be long, so its row
      wraps and takes the rail's width rather than being cut */
   #pathwrap .rrow { --hug: 0%; }
@@ -1526,12 +1546,12 @@ plane.addEventListener("click", (e) => {
   if (pv) {
     e.preventDefault();
     const tile = pv.closest(".tile");
-    openStudyColumn(tile.dataset.slug, { preview: true, at: tile.__u }); return;
+    openStudyColumn(tile.dataset.slug, { at: tile.__u }); return;
   }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
   /* the study opens right after the picture's own module */
-  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { preview: true, at: tile.__u }); }
+  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { at: tile.__u }); }
 });
 
 /* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
@@ -1715,28 +1735,36 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 function colNode(kind, caption) {
   const c = el("section", "ccol " + kind + " arriving");
   const cin = el("div", "cin");
+  /* the head is the rail's row for this column, moved inside it: the
+     chip that names it, carrying its own close */
   const head = el("div", "chead");
-  const line = el("input", "cline"); line.type = "text"; line.autocomplete = "off"; line.spellcheck = false;
-  line.placeholder = caption; line.setAttribute("aria-label", "Ask from here");
+  const self = el("div", "cchip");
+  self.appendChild(el("span", null, caption));
   const x = el("button", "cx", "\u00d7"); x.type = "button"; x.title = "Close this column";
-  head.appendChild(line); head.appendChild(x);
+  self.appendChild(x); head.appendChild(self);
   const body = el("div", "cbody");
+  const lead = el("div", "clead");      /* the column's own sentence */
+  const talk = el("div", "ctalk");      /* what was asked, and what came back */
+  const ask = el("div", "cask");
+  const line = el("input", "cline"); line.type = "text"; line.autocomplete = "off"; line.spellcheck = false;
+  line.placeholder = "Ask:"; line.setAttribute("aria-label", "Ask from here");
+  ask.appendChild(line);
+  const matter = el("div", "cmatter"); /* its rows, or its pictures */
+  body.appendChild(lead); body.appendChild(talk); body.appendChild(ask); body.appendChild(matter);
   cin.appendChild(head); cin.appendChild(body); c.appendChild(cin);
-  c.__line = line; c.__head = head; c.__body = body; c.__caption = caption; c.__kind = kind;
+  c.__line = line; c.__head = head; c.__body = body; c.__lead = lead;
+  c.__talk = talk; c.__matter = matter; c.__caption = caption; c.__kind = kind;
   x.addEventListener("click", () => closeColumn(c));
+  /* TWO SPEEDS, ONE FIELD: keystrokes narrow whatever rows the column
+     is holding, and the return key asks */
   line.addEventListener("input", () => narrowColumn(c, line.value));
   line.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const t = line.value.trim(); line.value = ""; narrowColumn(c, "");
-      /* an empty head takes the offer standing in it */
-      if (t) askFrom(c, t); else if (c.__next) openStudyColumn(c.__next, {}, c);
+      if (t) askFrom(c, t);
     }
     if (e.key === "Escape") { line.value = ""; narrowColumn(c, ""); line.blur(); }
-  });
-  /* and a click on the offer is the same act, without the keyboard */
-  line.addEventListener("click", () => {
-    if (c.__next && !line.value) openStudyColumn(c.__next, {}, c);
   });
   /* a horizontal wheel over a column walks the strip; vertical scrolls the column */
   c.addEventListener("wheel", (e) => {
@@ -1747,6 +1775,36 @@ function colNode(kind, caption) {
     }
   }, { passive: false });
   return c;
+}
+/* ── A SENTENCE ANSWERS IN PLACE, A THING OPENS A COLUMN ───────────
+   The house answering with words is a reply, and a reply belongs in
+   the column it was asked in; answering with a study or a long index
+   is somewhere to go, and that is a column of its own. Between them
+   sit the small catches, four or fewer, which name themselves as
+   chips inline rather than spending a whole module on three rows. */
+function sayIn(c, q, hits) {
+  trailLog.asked.push(q); saveTrail();
+  const cin = c.querySelector(".cin");
+  const before = cin.scrollHeight;
+  const turn = el("div", "cturn");
+  turn.appendChild(el("div", "cq", q));
+  const line = /reach|contact|email|hire|talk/.test(q.toLowerCase())
+    ? "hello@reckon.house. Or keep asking here."
+    : !hits.length ? "Nothing caught on the board. The homepage's brain reads deeper."
+    : hits.length === 1 ? "One." : hits.length + " of them.";
+  turn.appendChild(el("div", "ca g", line));
+  if (hits.length) {
+    const row = el("div", "cchips");
+    hits.forEach(({ folder, g }) => {
+      const b = el("button", "cchip", g.t); b.type = "button";
+      b.addEventListener("click", () => openStudyColumn(folder, {}, c));
+      row.appendChild(b);
+    });
+    turn.appendChild(row);
+  }
+  c.__talk.appendChild(turn);
+  /* by exactly what it added, so the field does not move */
+  cin.scrollTop += cin.scrollHeight - before;
 }
 function narrowColumn(c, text) {
   const rows = c.__body.querySelectorAll(".crow");
@@ -1842,14 +1900,16 @@ function askFrom(from, text, opts) {
   const tag = shelfByText(t);
   if (tag) return openShelfColumn(tag, from, opts);
   const hits = studiesFor(t);
+  /* asked FROM a column, and small enough to be a reply: it stays */
+  if (from && ccols.indexOf(from) >= 0 && hits.length <= 4) return sayIn(from, t, hits);
   const c = colNode("answer", t);
   if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
   if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
   else if (!hits.length) note.textContent = "Nothing caught on the board. The homepage's brain reads deeper.";
   else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
-  c.__body.appendChild(note);
-  if (hits.length) studyRows(hits, c.__body, c);
+  c.__lead.appendChild(note);
+  if (hits.length) studyRows(hits, c.__matter, c);
   insertColumn(c, from, opts);
 }
 window.askFrom = askFrom;
@@ -1857,80 +1917,63 @@ function openShelfColumn(tag, from, opts) {
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
   c.__mode = tag;
-  c.__body.appendChild(el("div", "cnote g", tag === "staples"
+  c.__lead.appendChild(el("div", "cnote g", tag === "staples"
     ? "Staples are the pulls and the kept lines, not studies."
     : hits.length + (hits.length === 1 ? " study." : " studies.")));
-  studyRows(hits, c.__body, c);
+  studyRows(hits, c.__matter, c);
   insertColumn(c, from, opts);
 }
 function openStudyColumn(folder, opts, from) {
   opts = opts || {};
   const g = GROUPS[folder]; if (!g) return;
   trailLog.opened.push(folder); saveTrail();
-  /* ── THE HEAD OF A STUDY IS THE WAY ONWARD ──────────────────────
-     It used to repeat the study's own title, which is written again
-     two lines below it, so the one line at the top of the column said
-     nothing new. A study is also the only column that is a dead end:
-     a list and an answer both hold rows to click, and a study holds
-     only itself. So the head names the study the house would go to
-     next and opens it with a click — the field is still a field, and
-     typing over the offer asks instead. */
+  /* ── A STUDY IS NAMED BY ITS CHIP AND LEFT BY ITS NEXT ───────────
+     The head used to be a field repeating the study's own title, with
+     the house's offer written over it and a reason under that. Two
+     chips say all of it and say it in the rail's own words: this
+     study, with its close, and the one the house would go to. The
+     reason went with them — a caption explaining a chip is more to
+     read than the chip. */
   const nx = predictNext(folder);
   const ng = nx && GROUPS[nx.slug];
-  const c = colNode("study", ng ? "Next \u00b7 " + ng.t : g.t);
+  const c = colNode("study", g.t);
   c.__folder = folder;
-  /* the path names what a column IS, not what it offers: the head
-     says "Next · Hill Country home" and the rail must still say
-     "A.R.C.", or the trail behind you reads as a row of predictions */
-  c.__label = g.t;
   if (ng) {
     c.__next = nx.slug;
-    c.__head.appendChild(el("div", "cnote g cwhy", nx.reason));
+    const nb = el("button", "cchip cnext"); nb.type = "button";
+    nb.appendChild(el("span", "g", "Next:"));
+    nb.appendChild(el("span", null, ng.t));
+    nb.addEventListener("click", () => openStudyColumn(nx.slug, {}, c));
+    c.__head.appendChild(nb);
   }
-  /* the study names itself here, in the caption's register */
-  const name = el("div", "cname");
-  name.appendChild(el("b", null, g.t + " "));
-  name.appendChild(el("span", "g", g.s));
-  c.__body.appendChild(name);
+  /* the chip carries the name, so the column opens on the sentence */
   if (g.d) {
     const [fact, ...more] = g.d.split("|");
     const d = el("div", "cnote", fact.trim() + " ");
     const rest = more.join("|").trim(); if (rest) d.appendChild(el("span", "g", rest));
-    c.__body.appendChild(d);
+    c.__lead.appendChild(d);
   }
   const ways = el("div", "cways");
-  const pv = el("u", null, "Preview");
-  const go = el("a", null, "See the full study"); go.href = "/case-studies/" + (g.h || folder);
+  const go = el("a", null, "Full case study"); go.href = "/case-studies/" + (g.h || folder);
   const gou = el("u"); gou.appendChild(go);
-  ways.appendChild(pv); ways.appendChild(document.createTextNode(" \u00b7 ")); ways.appendChild(gou);
-  c.__body.appendChild(ways);
-  /* ── A CASE ARRIVES WITH A PICTURE ────────────────────────────────
-     A column of nothing but type is a column nobody believes is about
-     photographs. The study's own cover stands from the moment it
-     opens — the same frame the homepage leads it with — and Preview
-     loads the rest UNDER it rather than being the only way to see
-     anything at all. Closing the preview takes the rest away and
-     leaves the cover. */
-  const pics = el("div", "cpics"); c.__body.appendChild(pics);
+  ways.appendChild(gou);
+  c.__matter.appendChild(ways);
+  /* ── A CASE ARRIVES WITH ITS PICTURES ─────────────────────────────
+     The cover the homepage leads with stands first and the rest of
+     the study follows it down the column. There is no Preview link
+     any more: it asked for a press to see the thing the column is
+     for. Every frame is lazy, so the browser fetches what the scroll
+     reaches and nothing else. */
+  const pics = el("div", "cpics"); c.__matter.appendChild(pics);
   const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
   const firstSrc = coverOf[folder] || (files[0] && files[0].t);
-  const put = (src, i) => {
+  const order = files.map((f) => f.t).filter((t) => t !== firstSrc);
+  if (firstSrc) order.unshift(firstSrc);
+  order.forEach((src, i) => {
     const im = el("img"); im.src = encodeURI(src); im.alt = ""; im.loading = "lazy";
     im.style.animationDelay = Math.min(0.4, i * 0.05) + "s";
-    pics.appendChild(im); return im;
-  };
-  if (firstSrc) put(firstSrc, 0);
-  const rest = files.filter((f) => f.t !== firstSrc);
-  const load = () => {
-    if (pics.childElementCount > 1) {
-      [...pics.children].slice(1).forEach((n) => n.remove());
-      pv.textContent = "Preview"; return;
-    }
-    rest.forEach((f, i) => put(f.t, i));
-    pv.textContent = rest.length ? "Close the preview" : "Preview";
-  };
-  pv.addEventListener("click", load);
-  if (opts.preview) load();
+    pics.appendChild(im);
+  });
   insertColumn(c, from, opts);
 }
 /* ── WHAT THE FIELD SHOWS IS THE PATH'S NEWEST FILTER ───────────────
@@ -1993,7 +2036,7 @@ function drawPath() {
   ccols.forEach((c) => {
     const r = el("div", "rrow");
     const h = el("button", "rhead"); h.type = "button";
-    const ink = el("span", "rink", c.__label || c.__caption); h.appendChild(ink);
+    const ink = el("span", "rink", c.__caption); h.appendChild(ink);
     const x = el("span", "rx", " \u00d7"); x.style.cssText = "margin-left:8px;color:rgba(0,0,0,0.42)";
     h.appendChild(x);
     h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else showCol(c); });
