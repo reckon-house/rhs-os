@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Connect · six weights</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── six Connect columns in a row, each at module width ──────────
+     The board's column is 386px on a 1038 window and the registers
+     are the field demos' (base.css: --stmt, --note, the chips). Each
+     column here is the same anatomy — chip, lede, field, week, ways —
+     and only the thing named under its letter changes. Hover a day to
+     open it; press a time to pick it. */
+  body { background: #e9e6e2; }
+  .strip { display: flex; gap: 40px; padding: 60px 50px 80px; overflow-x: auto; align-items: flex-start; }
+  .v { flex: none; width: 386px; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 0 14px 17px;
+    text-transform: uppercase; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+  .col { min-height: 900px; padding: 96px 17px 90px; position: relative;
+    font-size: var(--stmt); font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; }
+  .col::before { content: ""; position: absolute; left: 0; top: 50px; bottom: 0; width: 1px; background: rgba(0,0,0,0.12); }
+  .col.dark { background: #000; color: #fff; }
+  .col.dark::before { background: rgba(255,255,255,0.22); }
+  .col.paper { background: #fff; color: #000; }
+  .col .g { color: rgba(0,0,0,0.42); }
+  .col.dark .g { color: rgba(255,255,255,0.5); }
+  /* chips: the rail's */
+  .chead { display: flex; gap: 6px; margin-bottom: 1.1em; }
+  .cchip { display: inline-flex; align-items: baseline; gap: 8px; background: rgba(0,0,0,0.045); border-radius: 12px;
+    padding: 8px 12px; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45; }
+  .col.dark .cchip { background: rgba(255,255,255,0.1); }
+  .cx { color: rgba(0,0,0,0.42); font-size: 15px; }
+  .col.dark .cx { color: rgba(255,255,255,0.5); }
+  .lede { margin: 0; }
+  .ask { margin-top: 1.1em; text-decoration: underline; text-decoration-color: transparent;
+    text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em; }
+  /* the week, the board's rows */
+  .cmonth { margin-top: 1.4em; font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(0,0,0,0.42); }
+  .col.dark .cmonth { color: rgba(255,255,255,0.5); }
+  .cday { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: baseline;
+    padding: 13px 0 26px; border-top: 1px solid rgba(0,0,0,0.12);
+    transition: background-color 0.5s cubic-bezier(0.2,0.7,0.2,1), color 0.5s cubic-bezier(0.2,0.7,0.2,1),
+      padding-top 0.56s cubic-bezier(0.2,0.7,0.2,1), padding-bottom 0.56s cubic-bezier(0.2,0.7,0.2,1),
+      box-shadow 0.5s cubic-bezier(0.2,0.7,0.2,1); cursor: pointer; }
+  .col.dark .cday { border-top-color: rgba(255,255,255,0.28); }
+  .cnum { font-variant-numeric: tabular-nums; }
+  .cnum .g { margin-left: 0.35em; transition: color 0.5s cubic-bezier(0.2,0.7,0.2,1); }
+  .ccount { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; color: rgba(0,0,0,0.42); transition: opacity 0.3s ease; }
+  .col.dark .ccount { color: rgba(255,255,255,0.5); }
+  .cday.open .ccount { opacity: 0; }
+  .cslots { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 0.75em;
+    font-size: var(--note); font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+    visibility: hidden; opacity: 0; transform: translateY(10px); height: 0; overflow: hidden; transition: none; }
+  .cday.open .cslots { visibility: visible; opacity: 1; transform: none; height: auto; overflow: visible;
+    transition: opacity 0.5s ease 90ms, transform 0.56s cubic-bezier(0.2,0.7,0.2,1) 90ms; }
+  .ctime { display: inline-block; padding: 0 2px; line-height: 1.4; cursor: pointer; color: inherit;
+    background-image: linear-gradient(currentColor,currentColor), linear-gradient(rgba(127,127,127,0.45),rgba(127,127,127,0.45));
+    background-repeat: no-repeat; background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22,1,0.36,1); }
+  .ctime:hover { background-size: 100% 1px, 100% 1px; }
+  .ctime.gone { opacity: 0.35; background-image: none; pointer-events: none; }
+  .ctime.on { background-image: none; padding: 2px 7px; border-radius: 6px; }
+  .col.dark .ctime.on { background: #fff; color: #000; }
+  .col.paper .ctime.on { background: #000; color: #fff; }
+  .ways { margin-top: 2.4em; font-size: var(--note); line-height: 1.35; letter-spacing: -0.004em; }
+  .ways a { color: inherit; text-decoration: underline; text-decoration-color: rgba(127,127,127,0.5); text-underline-offset: 0.15em; }
+  .ways .g { margin: 0 0.3em; }
+
+  /* ── A · as built: the open day floods to paper ─────────────────── */
+  .v-flood .cday.open { margin: 0 -17px; padding: 22px 17px 26px; border-top-color: transparent; background: #fff; color: #000; }
+  .v-flood .cday.open .cnum .g { color: rgba(0,0,0,0.42); }
+  .v-flood .cday.open .ctime.on { background: #000; color: #fff; }
+
+  /* ── B · no flood: the open day is only the day whose times show ─ */
+  .v-quiet .cday.open { padding-top: 13px; }
+
+  /* ── C · a hairline drawer: the open day is boxed, not filled ───── */
+  .v-hair .cday.open { margin: 0 -17px; padding: 22px 17px 26px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35); border-top-color: transparent; }
+
+  /* ── D · the caption register: dates small, the lede short ──────── */
+  .v-compact .lede .g { display: block; font-size: 15px; font-weight: 500; line-height: 1.45; letter-spacing: -0.004em; margin-top: 0.6em; max-width: 30em; }
+  .v-compact .cday { padding: 11px 0 14px; font-size: 15px; font-weight: 600; letter-spacing: -0.004em; }
+  .v-compact .cday.open { padding-bottom: 20px; }
+  .v-compact .cnum .g { font-weight: 500; }
+  .v-compact .cslots { margin-top: 0.7em; }
+  .v-compact .cmonth { margin-top: 1.6em; }
+
+  /* ── E · paper, /book verbatim: the open day floods to ink ──────── */
+  .v-paperflood .cday.open { margin: 0 -17px; padding: 22px 17px 26px; border-top-color: transparent; background: #000; color: #fff; }
+  .v-paperflood .cday.open .cnum .g { color: rgba(255,255,255,0.5); }
+  .v-paperflood .cday.open .ctime.on { background: #fff; color: #000; }
+
+  /* ── F · paper, quiet: a rule, the times, a pill for the pick ───── */
+  .v-paperquiet .cday.open { padding-top: 13px; }
+</style>
+</head>
+<body>
+<div class="strip" id="strip"></div>
+<script>
+/* ── the week, real if the server is up ─────────────────────────────
+   GET /api/book is the same availability() /book renders. Without a
+   server the page still stands on a fixed week, the one the screenshots
+   were taken from. */
+const FALLBACK = { minutes: 30, days: ["2026-09-04","2026-09-07","2026-09-08","2026-09-09","2026-09-10"].map((date) => ({
+  date, slots: ["09:00","09:30","10:00","15:30","16:00","16:30"].map((house) => ({
+    at: new Date(date + "T" + house + ":00-05:00").toISOString(), house, open: house === "09:30" || house === "16:00" })) })) };
+const VARIANTS = [
+  ["A", "v-flood dark", "as built", "the open day floods to paper"],
+  ["B", "v-quiet dark", "no flood", "the open day is only the day whose times show"],
+  ["C", "v-hair dark", "hairline drawer", "the open day is boxed, not filled"],
+  ["D", "v-compact dark", "caption register", "dates small, the lede short, the black kept"],
+  ["E", "v-paperflood paper", "paper, /book verbatim", "the open day floods to ink"],
+  ["F", "v-paperquiet paper", "paper, quiet", "a rule, the times, a pill for the pick"],
+];
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const build = (week) => {
+  const strip = document.getElementById("strip");
+  const mo = new Intl.DateTimeFormat("en-US", { month: "long" });
+  const wd = new Intl.DateTimeFormat("en-US", { weekday: "narrow" });
+  const local = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  const dateOf = (d) => new Date(d + "T12:00:00Z");
+  VARIANTS.forEach(([k, cls, name, what]) => {
+    const v = el("div", "v");
+    const tag = el("div", "tag"); tag.appendChild(el("b", null, k)); tag.appendChild(document.createTextNode(name + " · " + what));
+    v.appendChild(tag);
+    const col = el("div", "col " + cls);
+    const head = el("div", "chead"); const chip = el("span", "cchip", "Connect "); chip.appendChild(el("span", "cx", "×")); head.appendChild(chip); col.appendChild(head);
+    const lede = el("p", "lede", "Let’s talk about what you have in mind. ");
+    lede.appendChild(el("span", "g", "Pick a time that works, it’s a " + week.minutes + " minute call. If you want to send anything over first, I’ll read it before we talk."));
+    col.appendChild(lede);
+    col.appendChild(el("div", "ask", "The project:"));
+    col.appendChild(el("div", "cmonth", mo.format(dateOf(week.days[0].date))));
+    const rows = [];
+    week.days.forEach((day, i) => {
+      const dt = dateOf(day.date);
+      const openN = day.slots.filter((s) => s.open).length;
+      const r = el("div", "cday" + (i === 0 ? " open" : ""));
+      const num = el("div", "cnum", String(dt.getUTCDate()).padStart(2, "0")); num.appendChild(el("span", "g", wd.format(dt)));
+      r.appendChild(num); r.appendChild(el("div", "ccount", openN + " open"));
+      const slots = el("div", "cslots");
+      day.slots.forEach((s) => {
+        const t = el("span", "ctime" + (s.open ? "" : " gone"), local.format(new Date(s.at)).replace(" ", ""));
+        if (s.open) t.addEventListener("click", (e) => { e.stopPropagation(); col.querySelectorAll(".ctime.on").forEach((x) => x.classList.remove("on")); t.classList.add("on"); });
+        slots.appendChild(t);
+      });
+      r.appendChild(slots);
+      const show = () => { rows.forEach((x) => x.classList.remove("open")); r.classList.add("open"); };
+      r.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(); });
+      r.addEventListener("click", show);
+      rows.push(r); col.appendChild(r);
+    });
+    const ways = el("div", "ways");
+    const link = (t, h) => { const a = el("a", null, t); a.href = h; return a; };
+    ways.appendChild(link("Or hello@reckon.house", "mailto:hello@reckon.house"));
+    ways.appendChild(el("span", "g", "·")); ways.appendChild(link("LinkedIn", "#"));
+    ways.appendChild(el("span", "g", "·")); ways.appendChild(link("Instagram", "#"));
+    col.appendChild(ways);
+    v.appendChild(col); strip.appendChild(v);
+  });
+};
+fetch("/api/book", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((j) => build(j && j.ok && j.days && j.days.length ? j : FALLBACK)).catch(() => build(FALLBACK));
+</script>
+</body>
+</html>
