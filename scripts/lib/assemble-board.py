@@ -2973,12 +2973,38 @@ const toggleHouse = (kind) => {
   const had = ccols.find((c) => c.__house === kind);
   if (had) closeColumn(had); else openHouseColumn(kind, null, {});
 };
+/* ── A DRAWER IS A PREVIEW OF ITS ROOM ──────────────────────────────
+   The category drawers hold a reel and a sentence about the shelf. The
+   two doors emptied when their chips became doors, and an open drawer
+   with nothing in it is a mistake with a hover on it. Info's drawer
+   carries the three notes it always did — the room holds the rest.
+   Connect's carries the one live fact a visitor wants before opening
+   the room: the next open time, read from the same week the column
+   reads, in the reader's own zone, the first time the drawer opens. */
 {
-  const { h } = mkRow("Info", true);
+  const { h, pad } = mkRow("Info", true);
+  RAIL_NOTES.info.forEach(([c, t]) => sub(pad, c, t));
   h.addEventListener("click", () => toggleHouse("info"));
 }
 {
-  const { h } = mkRow("Connect", true);
+  const { r, h, pad } = mkRow("Connect", true);
+  const nx = sub(pad, "Next open", "\u2026");
+  const t = sub(pad, null, "hello@reckon.house");
+  t.innerHTML = "<a class=\"rmail\" href=\"mailto:hello@reckon.house\">hello@reckon.house</a>";
+  let asked = false;
+  const fill = async () => {
+    if (asked) return; asked = true;
+    try {
+      const j = await (await fetch("/api/book", { cache: "no-store" })).json();
+      const first = j && j.ok ? j.days.flatMap((d) => d.slots).find((x) => x.open) : null;
+      if (!first) { nx.textContent = "Nothing open this week"; return; }
+      const when = new Intl.DateTimeFormat("en-US", { weekday: "long", hour: "numeric", minute: "2-digit", hour12: true })
+        .format(new Date(first.at)).replace(",", "").replace(" AM", "am").replace(" PM", "pm");
+      nx.textContent = when + " \u00b7 " + (j.minutes || 30) + " minutes";
+    } catch (e) { nx.textContent = "Ask for a time"; }
+  };
+  r.addEventListener("pointerenter", fill);
+  h.addEventListener("focus", fill);
   h.addEventListener("click", () => toggleHouse("connect"));
 }
 const gap = document.createElement("div");
