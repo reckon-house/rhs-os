@@ -248,6 +248,38 @@ head = r'''<!doctype html>
   .ccol .cchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.55em; }
   .ccol .cask { margin-top: 1.1em; }
   .ccol .cmatter { margin-top: 1.1em; }
+  /* ── PAPER IS THE WORK, BLACK IS THE HOUSE ────────────────────────
+     The rail's Connect drawer already opened black and the curtain
+     already lifts black onto a study, so black has meant the house's
+     own voice on this site since before there was a board. Info and
+     Connect are the house talking about itself, and they stand in the
+     row as black modules among the paper ones: a door, not a footer.
+     Same anatomy, the two registers inverted — paper for the thing
+     itself, grey for what is said about it — and every rule and chip
+     re-drawn in the light it now stands in. */
+  .ccol.dark .cin { background: var(--ink); color: #fff; }
+  .ccol.dark::before { background: rgba(255, 255, 255, 0.22); }
+  .ccol.dark .g, .ccol.dark .ca { color: rgba(255, 255, 255, 0.5); }
+  .ccol.dark .cchip { background: rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none; }
+  .ccol.dark button.cchip:hover, .ccol.dark a.cchip:hover { background: rgba(255, 255, 255, 0.18); }
+  .ccol.dark .cx { color: rgba(255, 255, 255, 0.5); }
+  .ccol.dark .cx:hover { color: #fff; }
+  .ccol.dark .cline { color: #fff; }
+  .ccol.dark .cline::placeholder { color: #fff; }
+  .ccol.dark .cline:focus { text-decoration-color: #fff; }
+  .ccol.dark .cline:focus::placeholder { color: rgba(255, 255, 255, 0.5); }
+  .ccol.dark .crow { border-top-color: rgba(255, 255, 255, 0.28); }
+  .ccol.dark .crow:hover b { text-decoration-color: rgba(255, 255, 255, 0.5); }
+  .ccol.dark .cways u, .ccol.dark .cways a { color: #fff; }
+  .ccol.dark .cways u { text-decoration-color: rgba(255, 255, 255, 0.4); }
+  .ccol.dark .cways u:hover { text-decoration-color: #fff; }
+  /* a row with a line where the picture would be: the method notes,
+     the credits. The list's own rule and air, no thumbnail column. */
+  .ccol .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
+  .ccol .crow.text:hover b { text-decoration: none; }
+  /* a heading inside the material, in the prose register */
+  .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
+  .ccol .csect + .crows { margin-top: 0.6em; }
   /* ── A LIST IS A LIST ─────────────────────────────────────────────
      The one-size rule is the INTRO COPY'S: the column's own prose —
      its head and the house's line — is set like the statement. An
@@ -500,6 +532,19 @@ head = r'''<!doctype html>
     display: flex; justify-content: space-between; align-items: flex-start;
     pointer-events: none; }
   #coverline a { pointer-events: auto; }
+  /* ── THE LINE REVERSES BY THE SIDE, NOT BY THE BAR ────────────────
+     The homepage flips its whole masthead to paper over a declared
+     dark zone. A black column is one module wide, so the address can
+     be standing on black while the wordmark is still on paper: each
+     end of the line reverses on its own, against the columns that are
+     actually under it. The burn pill spans the whole bar and reads as
+     a light band over black, so it stands down while a black room is
+     anywhere beneath it; it exists to melt the work, and no work is
+     passing there. */
+  .covermark, .covermeta a { transition: color 0.28s ease; }
+  .covermark.rev { color: var(--masthead-paper, #fff); }
+  .covermeta.rev a { color: rgba(255, 255, 255, 0.5); }
+  html.rh-home body.coverbar #nav [data-burn].rev, #navBurn.rev { opacity: 0; }
   @media (min-width: 761px) {
     /* the bar keeps only the field and the ×; its own name and address
        never arrive, because the page's have never left */
@@ -2022,6 +2067,8 @@ function answerAbout(c, q, hits) {
   if (strong.length) return {
     line: strong.length > 4 ? strong.length + " on the board:" : "Not in this one. On the board:",
     hits: strong.slice(0, 4) };
+  const hl = houseLine(q);
+  if (hl) return { line: hl };
   return { line: "Nothing here answers that. The full study may." };
 }
 
@@ -2034,20 +2081,23 @@ function answerAbout(c, q, hits) {
 async function sayIn(c, q, hits) {
   trailLog.asked.push(q); saveTrail();
   /* a study answers out of its own copy; the wait is one fetch, once */
-  if (c.__folder) await loadCopy();
+  await loadCopy();
   const said = /reach|contact|email|hire|talk/.test(q.toLowerCase())
     ? { line: "hello@reckon.house. Or keep asking here." }
     : c.__folder ? answerAbout(c, q, hits)
-    : { line: !hits.length ? "Nothing caught on the board. The homepage's brain reads deeper."
+    : { line: !hits.length ? (houseLine(q) || "Nothing caught on the board. The homepage's brain reads deeper.")
         : hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
+  pushTurn(c, q, said.line, said.hits);
+}
+function pushTurn(c, q, line, hits) {
   const cin = c.querySelector(".cin");
   const before = cin.scrollHeight;
   const turn = el("div", "cturn");
   turn.appendChild(el("div", "cq", q));
-  turn.appendChild(el("div", "ca g", said.line));
-  if (said.hits && said.hits.length) {
+  turn.appendChild(el("div", "ca g", line));
+  if (hits && hits.length) {
     const row = el("div", "cchips");
-    said.hits.forEach(({ folder, g }) => {
+    hits.forEach(({ folder, g }) => {
       const b = el("button", "cchip", g.t); b.type = "button";
       b.addEventListener("click", () => openStudyColumn(folder, {}, c));
       row.appendChild(b);
@@ -2226,6 +2276,11 @@ function insertColumn(c, from, opts) {
 function askFrom(from, text, opts) {
   opts = opts || {};
   const t = (text || "").trim(); if (!t) return;
+  /* inside Connect the field is the form until the form is sent */
+  if (from && from.__intake) return intake(from, t);
+  /* a way to reach him is a room, not a line */
+  if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()))
+    return openHouseColumn("connect", from, opts);
   const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
   if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
   const tag = shelfByText(t);
@@ -2249,6 +2304,113 @@ function askFrom(from, text, opts) {
   insertColumn(c, from, opts);
 }
 window.askFrom = askFrom;
+/* ── THE HOUSE'S TWO ROOMS ──────────────────────────────────────────
+   The site's footer is not a footer on the board, because the board
+   has no bottom. Its pieces are things the system already has. The
+   method notes and the credits are rows; the ways in are chips; the
+   form is the field, since a form is a conversation with the turns
+   laid out in advance. Info and Connect are those, as columns, black,
+   opened from the rail or by asking, and everything they say is
+   mined from the footer's own source. */
+const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: [], services: [], practice: [] };
+const textRow = (into, head, body) => {
+  const r = el("div", "crow text");
+  const t = el("div");
+  if (head) t.appendChild(el("b", null, head + (body ? " " : "")));
+  if (body) t.appendChild(el("span", "g", body));
+  r.appendChild(t); into.appendChild(r); return r;
+};
+async function openHouseColumn(kind, from, opts) {
+  await loadCopy();
+  const h = HOUSE();
+  const isInfo = kind === "info";
+  const c = colNode(kind, isInfo ? "Info" : "Connect");
+  c.classList.add("dark");
+  c.__house = kind;
+  if (isInfo) {
+    /* the About line, split where it turns from what he does to how
+       he works, which is the same seam the two registers sit on */
+    const about = (RAIL_NOTES.info[0] || [])[1] || "";
+    const cut = about.indexOf("Independent");
+    const d = el("div", "cnote", (cut > 0 ? about.slice(0, cut) : about).trim() + " ");
+    if (cut > 0) d.appendChild(el("span", "g", about.slice(cut).trim()));
+    c.__lead.appendChild(d);
+    const wrap = el("div", "crows");
+    h.method.forEach((m) => textRow(wrap, m.k, m.v));
+    RAIL_NOTES.info.slice(1).forEach(([cap, t]) => textRow(wrap, cap, t));
+    c.__matter.appendChild(wrap);
+    c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
+    const cred = el("div", "crows");
+    h.credits.forEach((name) => textRow(cred, name, ""));
+    c.__matter.appendChild(cred);
+  } else {
+    h.links.forEach((l) => {
+      const a = el("a", "cchip", l.k); a.href = l.v;
+      if (/^https?:/.test(l.v)) { a.target = "_blank"; a.rel = "noopener"; }
+      c.__head.appendChild(a);
+    });
+    c.__lead.appendChild(el("div", "cnote", "Have a project in mind?"));
+    /* THE FORM IS THE FIELD. Three turns, asked one at a time, in the
+       order the form asks them: the project, then where to write
+       back, then who it is from. Sent to the same door the site's own
+       form uses. */
+    c.__intake = { step: "body" };
+    c.__line.placeholder = "The project:";
+    const ways = el("div", "cways");
+    const u = el("u"); const a = el("a", null, "Or hello@reckon.house"); a.href = "mailto:hello@reckon.house";
+    u.appendChild(a); ways.appendChild(u); c.__matter.appendChild(ways);
+  }
+  insertColumn(c, from, opts);
+}
+async function intake(c, text) {
+  const it = c.__intake; const t = text.trim(); if (!it || !t) return;
+  if (it.step === "body") {
+    it.body = t; it.step = "email";
+    c.__line.placeholder = "Email:";
+    return pushTurn(c, t, "And where should I write back?");
+  }
+  if (it.step === "email") {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(t)) return pushTurn(c, t, "That does not look like an address. Where should I write back?");
+    it.email = t; it.step = "name";
+    c.__line.placeholder = "Name:";
+    return pushTurn(c, t, "And your name?");
+  }
+  if (it.step === "name") {
+    it.name = t; it.step = "sending";
+    c.__line.placeholder = "Ask:";
+    pushTurn(c, t, "Sending.");
+    let ok = false;
+    try {
+      const res = await fetch("/api/message", { method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: it.name, email: it.email, body: it.body }) });
+      ok = res.ok;
+    } catch (e) { ok = false; }
+    const last = c.__talk.querySelector(".cturn:last-child .ca");
+    if (last) last.textContent = ok ? "Sent. I will write back." : "That did not send. hello@reckon.house works.";
+    it.step = ok ? "done" : "body";
+    if (!ok) c.__line.placeholder = "The project:";
+    return;
+  }
+  /* after a send the field is a field again */
+  c.__intake = null;
+  return askFrom(c, t);
+}
+/* what the house says about itself, wherever it is asked: a method
+   note by its head, the credits by their question */
+function houseLine(q) {
+  const h = HOUSE(); const ws = askWords(q); const lower = q.toLowerCase();
+  if (/worked with|clients?\b|featured|spotted|who have you/.test(lower) && h.credits.length)
+    return h.credits.join(" \u00b7 ") + ".";
+  if (/\bservices?\b|what do you (do|offer)|offer/.test(lower) && h.services.length)
+    return h.services.join(". ") + ".";
+  let best = null;
+  for (const m of h.method) {
+    const sc = scoreOf(m.k.toLowerCase(), ws) * 3 + scoreOf(m.v.toLowerCase(), ws);
+    if (sc && (!best || sc > best.sc)) best = { m, sc };
+  }
+  return best ? best.m.v : null;
+}
 function openShelfColumn(tag, from, opts) {
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
@@ -2476,6 +2638,7 @@ function tick() {
      the plane only upward, or leftward when paging. */
   /* the columns pan with the field in X only, like the rules */
   colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
+  handover();
   swapSides();
   if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
@@ -2608,18 +2771,21 @@ const sub = (pad, cap, text) => {
   return t;
 };
 
+/* Info and Connect were drawers in the rail. They are columns now,
+   black, with the same anatomy as everything else, and the rail's
+   chip is the door: press it to open the room, press it again to
+   fold it. The drawers' copy moved into the columns. */
+const toggleHouse = (kind) => {
+  const had = ccols.find((c) => c.__house === kind);
+  if (had) closeColumn(had); else openHouseColumn(kind, null, {});
+};
 {
-  const { r, h, pad } = mkRow("Info", true);
-  RAIL_NOTES.info.forEach(([c, t]) => sub(pad, c, t));
-  h.addEventListener("click", () =>
-    r.classList.contains("open") ? closeRows() : openOnly(r));
+  const { h } = mkRow("Info", true);
+  h.addEventListener("click", () => toggleHouse("info"));
 }
 {
-  const { r, h, pad } = mkRow("Connect", true);
-  const t = sub(pad, null, "hello@reckon.house");
-  t.innerHTML = "<a class=\"rmail\" href=\"mailto:hello@reckon.house\">hello@reckon.house</a>";
-  h.addEventListener("click", () =>
-    r.classList.contains("open") ? closeRows() : openOnly(r));
+  const { h } = mkRow("Connect", true);
+  h.addEventListener("click", () => toggleHouse("connect"));
 }
 const gap = document.createElement("div");
 gap.className = "rgap";
@@ -2831,6 +2997,35 @@ const askEl = document.querySelector("#nav .ask");
 const askInput = document.getElementById("query");
 const coverline = document.getElementById("coverline");
 const covermark = coverline ? coverline.querySelector(".covermark") : null;
+const covermeta = coverline ? coverline.querySelector(".covermeta") : null;
+const navBurn = document.getElementById("navBurn");
+/* the line and the pill are fixed; measure them once and on resize */
+let LINE = { mark: 0, meta: 0, burnL: 0, burnR: 0, fieldL: 0 };
+const measureLine = () => {
+  const mid = (el) => { if (!el) return -1; const r = el.getBoundingClientRect(); return r.left + r.width / 2; };
+  const br = navBurn ? navBurn.getBoundingClientRect() : { left: 0, right: 0 };
+  LINE = { mark: mid(covermark), meta: mid(covermeta), burnL: br.left, burnR: br.right,
+    fieldL: field.getBoundingClientRect().left };
+};
+measureLine();
+addEventListener("resize", measureLine, { passive: true });
+/* every frame, and only arithmetic: where each black column stands on
+   the screen is its place in the row minus the pan */
+const handover = () => {
+  const dark = ccols.filter((c) => c.__house);
+  if (!dark.length && !LINE.on) return;
+  let onMark = false, onMeta = false, onBurn = false;
+  for (const c of dark) {
+    const x0 = LINE.fieldL + dispOf(c) * MOD_X - GAP / 2 - cur.x, x1 = x0 + MOD_X;
+    if (LINE.mark >= x0 && LINE.mark < x1) onMark = true;
+    if (LINE.meta >= x0 && LINE.meta < x1) onMeta = true;
+    if (x0 < LINE.burnR && x1 > LINE.burnL) onBurn = true;
+  }
+  if (covermark) covermark.classList.toggle("rev", onMark);
+  if (covermeta) covermeta.classList.toggle("rev", onMeta);
+  if (navBurn) navBurn.classList.toggle("rev", onBurn);
+  LINE.on = onMark || onMeta || onBurn;
+};
 const ASK_SMALL = 12;
 const askGhost = document.createElement("span");
 askGhost.setAttribute("aria-hidden", "true");
@@ -2889,7 +3084,7 @@ window.__askReady = true;
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });
 }
 window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, closeColumn, closeAllColumns,
-  showCol, get ccols() { return ccols; }, dispOf, atDisp, shiftAt, VISIBLE, get live() { return live; },
+  showCol, get ccols() { return ccols; }, dispOf, atDisp, shiftAt, VISIBLE, openHouseColumn, handover, measureLine, get live() { return live; },
   get tiles() { return tiles; }, remount, get colIdx() { return colIdx; },
   MOD_X, COL, GAP, setMode, checkScale, DPR,
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },

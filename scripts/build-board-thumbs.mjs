@@ -346,6 +346,32 @@ for (const [folder, g] of Object.entries(groups)) {
   const para = ab ? unquote(ab[1]).split(/\n{2,}/).map((x) => x.trim()).filter(Boolean) : [];
   if (facts.length || para.length) COPY[folder] = { facts, para };
 }
+/* ── THE HOUSE'S OWN COPY ───────────────────────────────────────────
+   The footer is two columns on the board, Info and Connect, and what
+   they say is what the footer says: the three method notes and the
+   ways in from PressingContact, the credits from PressingCredits.
+   Mined from those files so the board and the site cannot disagree,
+   and loud if a block moves. */
+const contactTs = readFileSync("src/components/shell/pressing-footer/PressingContact.tsx", "utf8");
+const creditsTs = readFileSync("src/components/shell/pressing-footer/PressingCredits.tsx", "utf8");
+const js = (raw) => JSON.parse('"' + raw + '"');
+const block = (src, name) => {
+  const m = src.match(new RegExp("const " + name + "[^=]*=\\s*\\[([\\s\\S]*?)\\n?\\];"));
+  if (!m) throw new Error("board: no " + name + " block in the footer source");
+  return m[1];
+};
+const method = [...block(contactTs, "METHOD").matchAll(
+  /head:\s*"((?:[^"\\]|\\.)*)",\s*body:\s*((?:"(?:[^"\\]|\\.)*"\s*\+?\s*)+)/g)]
+  .map((m) => ({ k: js(m[1]), v: [...m[2].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => js(x[1])).join("") }));
+const links = [...block(contactTs, "CONTACT").matchAll(/label:\s*"([^"]+)",\s*href:\s*"([^"]+)"/g)]
+  .map((m) => ({ k: m[1], v: m[2] }));
+const strs = (src) => [...src.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+const services = strs(block(contactTs, "SERVICES"));
+const practice = strs(block(contactTs, "PRACTICE"));
+const credits = [...block(creditsTs, "CREDITS").matchAll(/name:\s*"([^"]+)"/g)].map((m) => m[1]);
+if (method.length < 3 || links.length < 4 || credits.length < 10)
+  throw new Error(`board: footer copy came up short (method ${method.length}, links ${links.length}, credits ${credits.length})`);
+COPY.house = { method, links, services, practice, credits };
 writeFileSync("public/lab/board-copy.json", JSON.stringify(COPY));
 
 const railTs = readFileSync("src/data/rail-categories.ts", "utf8");
@@ -412,5 +438,6 @@ console.log(
   `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +
   `\n  copy public/lab/board-copy.json (${Object.keys(COPY).length} studies, ` +
   `${Object.values(COPY).reduce((n, c) => n + c.facts.length, 0)} facts, ` +
-  `${Object.values(COPY).reduce((n, c) => n + c.para.length, 0)} paragraphs)`
+  `${Object.values(COPY).filter((c) => c.para).reduce((n, c) => n + c.para.length, 0)} paragraphs, ` +
+  `house: ${COPY.house.method.length} notes, ${COPY.house.credits.length} credits)`
 );
