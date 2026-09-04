@@ -757,6 +757,44 @@ head = r'''<!doctype html>
 
     #field { left: 0; }
     #rules { display: none; }
+    /* the field's page gutter: 10 here and 10 in the module make the
+       live grid's 20 */
+    #strip { left: 10px; right: 10px; }
+
+    /* ── A COLUMN IS THE WHOLE GLASS ──────────────────────────────
+       One module wide is the screen wide here, so a column is not
+       beside the work, it is over it: the layer lives on the body
+       (the phone block moves it there), fixed between the top of the
+       glass and the bar, and the newest column is the one shown. The
+       tile that asked is under it and × returns to it, which is what
+       "in place" means when there is one place. Arriving is a rise
+       rather than a widening: there is no neighbour to grow out from
+       behind. */
+    #cols { position: fixed; left: 0; right: 0; top: 0;
+      bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px));
+      z-index: 50; display: block; }
+    .ccol { position: absolute; inset: 0; width: auto; height: auto;
+      opacity: 1; translate: 0 0;
+      transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
+    .ccol.arriving, .ccol.closing { width: auto; opacity: 0; translate: 0 24px; }
+    /* the stack: a column with a standing column after it is under
+       it; the moment the top one starts to fold, the one beneath is
+       back */
+    .ccol:has(~ .ccol:not(.closing)) { visibility: hidden; }
+    .ccol::before { display: none; }
+    .ccol .cin { width: 100%; height: 100%; padding: 28px 20px 110px; }
+    .ccol .cpics.wide { column-count: 1; }
+
+    /* ── THE BAR: the field, then the handle ──────────────────────
+       The field is in the grid here rather than placed over it: on
+       desktop it parks on a measured column and the bar is wide; on
+       a phone there is one line and it is shared. The address goes;
+       it is the first line of Connect. */
+    #nav { grid-template-columns: minmax(0, 1fr) auto; gap: 16px;
+      padding-left: 20px; padding-right: 20px; }
+    #nav .ask { position: static; transform: none; width: auto; min-width: 0; }
+    #nav .mark { justify-self: end; white-space: nowrap; }
+    #nav .meta { display: none; }
   }
 </style>
 </head>
@@ -879,7 +917,13 @@ const IXGAP = (() => {
   const w = m.getBoundingClientRect().width; m.remove();
   return w || 40;
 })();
-const VISIBLE = PHONE ? 1 : 2;
+/* ── A PHONE IS TWO-UP AS WELL ──────────────────────────────────────
+   The live site's phone grid is the desktop pair at half the width:
+   the statement in the left column, Ivy Park top right, the same
+   seating. So the pair stands, and what a phone changes is the
+   period — one, all the way down — and the shares, which fill the
+   column the way the live frames do. */
+const VISIBLE = 2;
 /* MEASURED, not derived from innerWidth. The field's left edge is set
    in CSS from --gut, --ix-note-w and --ixgap, and re-deriving it here
    put the column 2.5px out: innerWidth reported 1065 while the field's
@@ -914,7 +958,8 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
    rungs, and each study's cover takes the exact rung reckon.house
    gives it — the board-data `sz`, mined from the live seed. */
 const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
-const SHARES = PHONE ? [0.62, 0.74, 0.86] : IX_TIERS;
+/* a phone's column is 157px: every frame fills it, as the live grid's do */
+const SHARES = PHONE ? [1] : IX_TIERS;
 /* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
    The tier is 768px wide, or the original if that was smaller, so the
    largest honest CSS width is that divided by the screen's own pixel
@@ -1089,7 +1134,7 @@ function deal(list, opts) {
          `npm run board` mines it, so a cover takes its own rung and
          only the rest of the corpus is dealt. The roll still advances
          either way, so the anti-repeat sees what actually landed. */
-      const own = it.c != null && GROUPS[it.g] && GROUPS[it.g].sz;
+      const own = !PHONE && it.c != null && GROUPS[it.g] && GROUPS[it.g].sz;
       if (own) share = own;
       /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ───────────────────
          CLAUDE.md's rule, applied where it bites: native width / DPR
@@ -1147,7 +1192,9 @@ function deal(list, opts) {
        one: the row is as tall as the taller of its two pictures, and
        every picture stands at its own full size. */
     rowH.fill(0);
-    sized.forEach((it, i) => { const k = i % rows;
+    /* the same seat the pass below gives it, across the pair; i % rows
+       was the old column-major seat and sized every row by strangers */
+    sized.forEach((it, i) => { const k = Math.floor((i % per) / VISIBLE);
       if (it.h > rowH[k]) rowH[k] = it.h; });
   } else {
     let prevTier = -1;
@@ -1162,6 +1209,14 @@ function deal(list, opts) {
   }
   const ys = [opts.top != null ? opts.top : TOP0];
   for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
+  /* ── STACKED, NOT ROWED, on a phone ──────────────────────────────
+     The live grid is two flex columns, each running its own height,
+     so Sally tucks up under Ivy Park rather than waiting for the
+     statement's row to end. Rows exist here to hold fifty columns
+     level; with two, each column keeps its own running y. The seat
+     (which column) is still the pair's; only the height is the
+     column's own. */
+  const colY = opts.stack ? new Array(cols).fill(ys[0]) : null;
   const out = [], cc = {};
   const metaDrop = opts.metaDrop || 0;
   /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
@@ -1171,8 +1226,8 @@ function deal(list, opts) {
      reckon.house has it top right. Seated across the pair of columns
      the board shows at once — a row, then the next row — the two
      agree at rest: statement, Ivy Park; Sally, the kitchen; A.R.C.,
-     Nordstrom. On a phone VISIBLE is 1 and this is the old formula
-     exactly. */
+     Nordstrom. A phone is the same pair at half the width, so the
+     same seating: one period, read downward. */
   sized.forEach((it, i) => {
     const pair = Math.floor(i / per), within = i % per;
     const c = pair * VISIBLE + (within % VISIBLE), k = Math.floor(within / VISIBLE);
@@ -1187,20 +1242,34 @@ function deal(list, opts) {
         h = budget + cap;
       }
     }
-    out.push({ ...it, w, h, x: c * MOD_X, y: ys[k] + drop, col: c,
+    let y = ys[k] + drop;
+    if (colY) { y = colY[c]; colY[c] += h + airOf(); }
+    out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
   });
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: ys[rows], rowY: ys, coverCol: cc };
+    PH: colY ? Math.max(...colY) : ys[rows], rowY: ys, coverCol: cc };
 }
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol;
 }
-const BOARD = deal(items, { lead: { kind: "statement", w: COL, h: STATEMENT_H },
-  metaDrop: META_DROP });
+/* ── ON A PHONE THE FIELD IS ONE PAGE, DOWN ─────────────────────────
+   Sixty-one screen-wide columns dragged in two axes was a map, and a
+   phone is not a place to hold a map. The whole corpus is dealt into
+   ONE period — two columns, every row — so there is nothing to the
+   right, the pair fits the glass, and the one axis left is the one a
+   thumb already knows. Rows fit their pictures (the dealt tiers exist
+   to stop one tall stranger setting a row for fifty columns, and
+   there are two), and the air between them is a feed's, not a
+   board's. */
+const BOARD = deal(items, PHONE
+  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, metaDrop: 0,
+      rows: Math.ceil((items.length + 1) / VISIBLE), fitRows: true, stack: true,
+      air: [24, 64] }
+  : { lead: { kind: "statement", w: COL, h: STATEMENT_H }, metaDrop: META_DROP });
 adopt(BOARD);
 
 
@@ -1369,7 +1438,8 @@ let colIdx = 0;
    row stands at the far end, and only what is right of it moves. */
 const spanOf = (c) => c.__span || 1;
 const colsBefore = (u) => { let n = 0; for (const c of ccols) if (c.__after < u) n += spanOf(c); return n; };
-const shiftAt = (u) => colsBefore(u) * MOD_X;
+/* a phone's columns stand over the work, not in the row: nothing steps aside */
+const shiftAt = (u) => PHONE ? 0 : colsBefore(u) * MOD_X;
 const dispOf = (c) => {
   let n = c.__after + 1;
   for (const x of ccols) { if (x === c) break; n += spanOf(x); }
@@ -1407,7 +1477,8 @@ let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
    beginning of the house and there is nothing before it; the
    conversation lives to the RIGHT, past the field, where new things
    go. Rightward the field is as endless as it was. */
-const pageTo = (i) => { colIdx = Math.max(0, i); tgt.x = restX(colIdx); };
+/* one period on a phone, so the only page there is is the first */
+const pageTo = (i) => { colIdx = PHONE ? 0 : Math.max(0, i); tgt.x = restX(colIdx); };
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
    Up and down scrolls. Left and right pages, one column at a time,
@@ -1485,7 +1556,7 @@ field.addEventListener("pointermove", (e) => {
      drag that did both at once meant neither. */
   if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
   if (dragAxis === "y" && dragFromCol) { dragging = false; dragAxis = null; return; }
-  if (dragAxis === "x") tgt.x -= dx;
+  if (dragAxis === "x") { if (!PHONE) tgt.x -= dx; }
   else if (dragAxis === "y") setY(tgt.y - dy);
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
@@ -1497,7 +1568,7 @@ const release = () => {
   const recent = trail.filter((m) => now - m.t < 90);
   const fx = recent.reduce((s, m) => s + m.dx, 0);
   const fy = recent.reduce((s, m) => s + m.dy, 0);
-  if (dragAxis === "x") {
+  if (dragAxis === "x" && !PHONE) {
     let i = Math.round((tgt.x + GAP / 2) / MOD_X);
     if (fx < -30) i += 1;
     if (fx > 30) i -= 1;
@@ -1522,7 +1593,7 @@ let MODE = null;
 const matches = () => true;
 
 /* ── the window ── */
-const MARGIN_X = MOD_X * 0.8, MARGIN_Y = 560;
+const MARGIN_X = PHONE ? 0 : MOD_X * 0.8, MARGIN_Y = 560;
 const live = new Map();
 const arrive = REDUCE()
   ? { observe: (c) => c.classList.add("fd-on"), unobserve: () => {} }
@@ -1980,6 +2051,7 @@ const ccols = [];
 /* bring a column into view by the least move: none if it is on the
    screen, else the row glides until it stands at the near edge */
 const reveal = (c) => {
+  if (PHONE) return;                 /* it is over the glass already */
   if (ccols.indexOf(c) < 0) return;
   const d = dispOf(c), sp = spanOf(c);
   if (d < colIdx) pageTo(d);
@@ -2335,6 +2407,7 @@ const stopReels = (c) => c.querySelectorAll(".crow, .cmarks").forEach((r) => {
    across its neighbour to get there before it folded. Anything with
    an anchor is part of the row while it is in the row. */
 const layoutCols = () => {
+  if (PHONE) return;
   let prev = 0;
   for (const c of colsEl.children) {
     if (c.__after == null) continue;
@@ -2360,7 +2433,14 @@ function insertColumn(c, from, opts) {
      module, the statement. From the rail, which has no place in the
      row, it is whatever stands at the near edge of the view. */
   let at;
-  if (from && ccols.indexOf(from) >= 0) {
+  if (PHONE) {
+    /* one column shows at a time and the newest is on top, so the
+       order is the order things were asked, whatever asked them */
+    c.__after = (from && from.__after != null) ? from.__after : 0; at = ccols.length;
+    /* the sheet stands above the columns, so a room opened from it
+       would open under it: the answer happens on the glass */
+    if (window.toggleSheet) toggleSheet(false);
+  } else if (from && ccols.indexOf(from) >= 0) {
     c.__after = from.__after; at = ccols.indexOf(from) + 1;
   } else {
     let u = opts.at;
@@ -2389,7 +2469,9 @@ function insertColumn(c, from, opts) {
   const open = () => c.classList.remove("arriving");
   requestAnimationFrame(open);
   setTimeout(open, 60);
-  setTimeout(() => c.__line.focus({ preventScroll: true }), 560);
+  /* not on a phone: focus raises the keyboard over the column that
+     just opened, before a word of it is read */
+  if (!PHONE) setTimeout(() => c.__line.focus({ preventScroll: true }), 560);
 }
 function askFrom(from, text, opts) {
   opts = opts || {};
@@ -2946,7 +3028,8 @@ const checkTimer = setInterval(() => {
    inside tick() is a clamp that does not exist while the tab is
    parked, and the value it was meant to hold has already been used
    by the mount. */
-const yMax = () => Math.max(0, PH - innerHeight + COVER_AIR);
+/* a phone's bar is at the bottom, so the last row scrolls up past it */
+const yMax = () => Math.max(0, PH - innerHeight + (PHONE ? NAV_H + 40 : COVER_AIR));
 const setY = (v) => { tgt.y = Math.max(0, Math.min(yMax(), v)); };
 function tick() {
   requestAnimationFrame(tick);
@@ -2972,7 +3055,7 @@ function tick() {
      rail, which is fixed. It holds at rest instead and leaves with
      the plane only upward, or leftward when paging. */
   /* the columns pan with the field in X only, like the rules */
-  colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
+  if (!PHONE) colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   handover();
   swapSides();
   if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
@@ -3243,6 +3326,10 @@ const sheetIn = document.getElementById("cmdIn");
 const nav = document.getElementById("nav");
 if (PHONE) {
   sheetIn.appendChild(document.getElementById("railwrap"));
+  /* the columns layer leaves the field: fixed over the glass, and a
+     fixed box inside the strip would be clipped by it and pressed by
+     the field's own pointer handlers */
+  document.body.appendChild(colsEl);
   const mark = nav.querySelector(".mark");
   const toggleSheet = (on) => {
     const open = on != null ? on : !sheet.hasAttribute("data-on");
