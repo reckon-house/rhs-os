@@ -3654,6 +3654,20 @@ window.ptSwap = (href) => {
      belonged all along. Stamped, so a navigation that never happened
      cannot curtain some unrelated page an hour later. */
   try { sessionStorage.setItem("pt.arrive", String(Date.now())); } catch (e) { /* private mode */ }
+  /* ── THE STACK REDRAWS ITSELF WHILE IT WAITS ──────────────────────
+     A still page under a still curtain reads as a hang. The site's own
+     transition laps its lines while a route commits, and the board
+     never did: it landed them once and held, so the wait looked like
+     a stall rather than a load. Same class, same keyframes, already in
+     the stylesheet — 1.8s, staggered by the delay each line already
+     carries, infinite until this document is replaced.
+
+     ADDED BEFORE THE NAVIGATION, and that is the whole trick: it is a
+     compositor animation, so it keeps running while the browser is
+     busy fetching and parsing the next document, which is exactly the
+     stretch it exists to cover. */
+  const pt = document.getElementById("pt");
+  if (pt) pt.classList.add("pt-wait");
   location.href = href;
   return true;
 };
