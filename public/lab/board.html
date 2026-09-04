@@ -227,6 +227,11 @@
   .ccol .crow.off { display: none; }
   .ccol .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
     border-radius: 10px; background: rgba(0, 0, 0, 0.04); }
+  /* a reeling row's picture box: the still's own geometry, so a row
+     that moves and a row that does not sit on the same line */
+  .ccol .crow .creel { width: 96px; height: 72px; border-radius: 10px;
+    background: rgba(0, 0, 0, 0.04); }
+  .ccol .crow .creel img { width: 100%; height: 100%; border-radius: 0; }
   .ccol .crow b { font-weight: 600; }
   .ccol .crow .g { display: inline; font-weight: 600; }
   .ccol .crow:hover b { text-decoration: underline;
@@ -624,10 +629,29 @@ const mkRnd = (s0) => { let s = s0;
 const seed = parseInt(new URLSearchParams(location.search).get("seed") || "7", 10);
 const rnd = mkRnd(Number.isFinite(seed) ? seed : 7);
 const REDUCE = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-/* the lab's stub, and honest here for the same reason: these thumbs
-   are already a 384px tier, which is the candidate a 128px stamp
-   would have picked anyway */
-const tileSrcSet = () => "";
+/* ── ONE PATH, EVERY RUNG ───────────────────────────────────────────
+   The generator writes a picture at 1536 and again at 768 and 384,
+   named with @<width> before the extension, and records which rungs
+   it wrote. The browser then decodes the file that fits the box
+   rather than the biggest one there is. */
+const srcsetFor = (t) => {
+  if (!t || !t.r || !t.r.length) return null;
+  const parts = t.r.map((r) => encodeURI(t.t.replace(/\.webp$/, "@" + r + ".webp")) + " " + r + "w");
+  parts.push(encodeURI(t.t) + " " + (t.nw || t.w) + "w");
+  return parts.join(", ");
+};
+/* The reel's own hook into it. This was a stub returning nothing, on
+   the reasoning that the thumbs were already a 384px tier — true when
+   it was written and false since they went to 1536, so every 128px
+   stamp in the rail was holding a 1536px bitmap. */
+const byPath = (() => {
+  let m = null;
+  return () => m || (m = Object.fromEntries((window.BOARD_ITEMS || []).map((i) => [i.t, i])));
+})();
+const tileSrcSet = (src) => {
+  const it = byPath()[decodeURI(src || "")];
+  return (it && srcsetFor(it)) || "";
+};
 let alive = true;
 /* The burn's own input hook, from the driver. There it listens on
    whatever is scrolling; here nothing scrolls — the board pans — so
@@ -1824,18 +1848,6 @@ const shelfByText = (text) => {
   return inside ? inside.dataset.tag : null;
 };
 
-/* ── ONE PATH, EVERY RUNG ───────────────────────────────────────────
-   The generator writes a picture at 1536 and again at 768 and 384,
-   named with @<width> before the extension, and records which rungs
-   it actually wrote. The browser then decodes the file that fits the
-   box rather than the biggest one there is, which is the whole point:
-   a 96px row in a list was holding a 1536px bitmap. */
-const srcsetFor = (t) => {
-  if (!t.r || !t.r.length) return null;
-  const parts = t.r.map((r) => encodeURI(t.t.replace(/\.webp$/, "@" + r + ".webp")) + " " + r + "w");
-  parts.push(encodeURI(t.t) + " " + (t.nw || t.w) + "w");
-  return parts.join(", ");
-};
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 function colNode(kind, caption) {
   const c = el("section", "ccol " + kind + " arriving");
@@ -2009,23 +2021,69 @@ const coverOf = (() => {
   (window.BOARD_ITEMS || []).forEach((i) => { if (i.c != null && m[i.g] == null) m[i.g] = i; });
   return m;
 })();
+/* ── ONE ROW IN THREE MOVES ─────────────────────────────────────────
+   The house already owns a reel: the rail's category stamps cut
+   through a shelf's covers with szStage and szStart, lifted from the
+   homepage function for function. A list of studies is the same kind
+   of object, so it uses the same machinery rather than a second one —
+   the rule is where it stands, not how it cuts.
+
+   Every third row, and the first row never: a still you recognise
+   opens the list and the motion starts one down, so no two moving
+   rows are ever adjacent and a column of fourteen carries four or
+   five of them. A row reels only while it is on screen, and only if
+   its study has three pictures to cut between; two frames is a blink,
+   not a reel. Reduced motion gets none of it, which szStart already
+   honours. */
+const reelFrames = (folder) => {
+  const all = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
+  const cv = coverOf[folder];
+  const rest = all.filter((i) => !cv || i.t !== cv.t);
+  return (cv ? [cv, ...rest] : rest).slice(0, 8).map((i) => i.t);
+};
+/* on screen it runs, off screen it stops. The viewport is the root,
+   and a scrolling column clips against it like any other ancestor, so
+   one observer serves every list on the board. */
+const reelIO = new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    const rl = e.target.__rl; if (!rl) return;
+    if (e.isIntersecting) szStart(rl); else szStop(rl);
+  });
+});
 function studyRows(list, into, from) {
   const wrap = el("div", "crows");
-  list.forEach(({ folder, g }) => {
+  list.forEach(({ folder, g }, idx) => {
     const r = el("div", "crow"); r.dataset.folder = folder;
     const cv = coverOf[folder];
-    const im = el("img"); im.src = cv ? encodeURI(cv.t) : ""; im.alt = ""; im.loading = "lazy";
-    /* the row's picture is 96px wide and was holding a 1536px bitmap */
-    if (cv) { const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; } }
+    const frames = reelFrames(folder);
+    if (idx % 3 === 1 && frames.length >= 3 && !REDUCE()) {
+      const box = el("div", "creel sz-stage");
+      r.appendChild(box);
+      const rl = { box, frames, timer: null };
+      szStage(rl);
+      r.__rl = rl;
+      reelIO.observe(r);
+    } else {
+      const im = el("img"); im.src = cv ? encodeURI(cv.t) : ""; im.alt = ""; im.loading = "lazy";
+      /* the row's picture is 96px wide and was holding a 1536px bitmap */
+      if (cv) { const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; } }
+      r.appendChild(im);
+    }
     const t = el("div");
     t.appendChild(el("b", null, g.t + " "));
     t.appendChild(el("span", "g", g.s));
-    r.appendChild(im); r.appendChild(t);
+    r.appendChild(t);
     r.addEventListener("click", () => openStudyColumn(folder, {}, from));
     wrap.appendChild(r);
   });
   into.appendChild(wrap);
 }
+/* a column that folds away takes its reels with it: a timer left
+   running on a detached row is the leak the last pass went looking
+   for and did not find */
+const stopReels = (c) => c.querySelectorAll(".crow").forEach((r) => {
+  if (r.__rl) { szStop(r.__rl); reelIO.unobserve(r); r.__rl = null; }
+});
 /* ── each column on its own module ──────────────────────────────────
    Margins carry the work between columns: a column's left margin is
    the modules between its anchor and the previous column's, so the
@@ -2226,7 +2284,7 @@ function closeColumn(c) {
      it measure from it, so the fold is the only thing that moves them.
      Laid out once more when it actually leaves, which changes nothing
      on screen because by then its width is zero. */
-  c.classList.add("closing");
+  c.classList.add("closing"); stopReels(c);
   setTimeout(() => { c.remove(); layoutCols(); }, 520);
   layoutCols(); reshift(); drawPath(); applyFromColumns();
   if (!ccols.length) nav.classList.remove("threadon");
@@ -2239,7 +2297,8 @@ function closeColumn(c) {
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
   ccols.slice().forEach((c) => {
-    c.classList.add("closing"); setTimeout(() => { c.remove(); layoutCols(); }, 520);
+    c.classList.add("closing"); stopReels(c);
+    setTimeout(() => { c.remove(); layoutCols(); }, 520);
   });
   ccols.length = 0;
   nav.classList.remove("threadon"); reshift(); drawPath();
