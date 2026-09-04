@@ -125,7 +125,9 @@ export function PressingTransition() {
       if (!alive) return;
       await stopWaiting(cover);
       if (!alive) return;
+      let lines = 0;
       cover.querySelectorAll<HTMLElement>(".ptstack").forEach((stack) => {
+        lines = stack.children.length;
         Array.from(stack.children).forEach((line, i) => {
           (line as HTMLElement).style.setProperty(
             "--d",
@@ -133,6 +135,14 @@ export function PressingTransition() {
           );
         });
       });
+      /* the words leave first and the clip waits for them: across a
+         swap the two together read as one blink, and a second longer
+         reads as intended */
+      cover.classList.add("pt-lines-out");
+      await new Promise((r) =>
+        setTimeout(r, ((lines - 1) * STEP_OUT + OUT_TAIL_MS / 1000) * 1000)
+      );
+      if (!alive) return;
       cover.classList.add("pt-3");
       const end = (e: TransitionEvent) => {
         if (e.target !== black || e.propertyName !== "clip-path") return;

@@ -126,9 +126,14 @@ export default function RootLayout({
               "if(!d||!d.t||Date.now()-d.t>15000)return;" +
               "var r=document.createElement('div');r.id='ptArrive';" +
               "r.className='pt pt-run pt-1 pt-2 pt-wait';r.setAttribute('aria-hidden','true');" +
-              "r.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
+              /* the black belongs to the PANEL, which is the thing
+                 that clips away. On the root it survived the lift and
+                 the page only appeared when the element was removed,
+                 which read as the curtain blinking out. */
+              "r.style.cssText='position:fixed;inset:0;z-index:300';" +
               "var N=d.n||0;" +
-              "var panel=function(cls){var p=document.createElement('div');p.className=cls;" +
+              "var panel=function(cls,bg){var p=document.createElement('div');p.className=cls;" +
+              "p.style.cssText='position:absolute;inset:0;background:'+bg;" +
               "var s=document.createElement('div');s.className='ptstack';" +
               "if(d.lh)s.style.setProperty('--ptlh',d.lh);" +
               "if(d.fs)s.style.setProperty('--ptfs',d.fs);" +
@@ -139,7 +144,7 @@ export default function RootLayout({
               "if(d.sub){var b=document.createElement('span');b.className='sub';" +
               "b.textContent='  '+d.sub;l.appendChild(b);}s.appendChild(l);}" +
               "p.appendChild(s);return p;};" +
-              "r.appendChild(panel('ptw'));r.appendChild(panel('ptb'));" +
+              "r.appendChild(panel('ptw','#fff'));r.appendChild(panel('ptb','#000'));" +
               "document.documentElement.appendChild(r);" +
               "document.documentElement.classList.add('pt-arriving');" +
               "}catch(e){}})()",
