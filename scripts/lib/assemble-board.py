@@ -947,7 +947,13 @@ function deal(list, opts) {
      the study's head, so the field opens level. Quotes are text and
      cannot scale; a long one spends its row's air. */
   const rows = opts.rows || Math.max(8, Math.round((innerHeight * 6) / 560));
-  const cols = Math.ceil(sized.length / rows);
+  /* SEATED ACROSS THE PAIR, COUNTED ACROSS THE PAIR. Counting columns
+     the old way — one column per `rows` items — left the last item
+     seated one column past the end, and a column past the end is
+     exactly one period to the left of column 0: the field wraps, so
+     Sally's cover was drawn on top of the statement. */
+  const per = rows * VISIBLE;
+  const cols = VISIBLE * Math.ceil(sized.length / per);
   const rowH = new Array(rows);
   if (opts.fitRows) {
     /* A STUDY'S ROWS FIT THEIR PICTURES. The dealt tiers exist because
@@ -974,8 +980,18 @@ function deal(list, opts) {
   for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
   const out = [], cc = {};
   const metaDrop = opts.metaDrop || 0;
+  /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
+     The board filled a column top to bottom and then moved right; the
+     live site fills a row across and then moves down. Same order,
+     different shape, and it put Ivy Park under the statement where
+     reckon.house has it top right. Seated across the pair of columns
+     the board shows at once — a row, then the next row — the two
+     agree at rest: statement, Ivy Park; Sally, the kitchen; A.R.C.,
+     Nordstrom. On a phone VISIBLE is 1 and this is the old formula
+     exactly. */
   sized.forEach((it, i) => {
-    const c = Math.floor(i / rows), k = i % rows;
+    const pair = Math.floor(i / per), within = i % per;
+    const c = pair * VISIBLE + (within % VISIBLE), k = Math.floor(within / VISIBLE);
     let { w, h } = it;
     /* the first row of every column but the first starts under the
        address line, as the homepage's does */
@@ -1450,6 +1466,16 @@ function mount(t, gx, gy, u, sh) {
     const shot = document.createElement("span");
     shot.className = "shot";
     shot.style.setProperty("--ar", t.w + " / " + (t.h - cap));
+    /* ── THE CROP THE LIVE SITE GIVES THIS PICTURE ──────────────────
+       The stylesheet draws every frame's picture 16% taller than the
+       frame and centres it, and object-fit pays that as a crop top and
+       bottom. Seven covers overrule it in projects.ts with a drift
+       tuned by hand — the Sally laptop among them, which is why the
+       board's laptop sat tight in its frame while the live site's had
+       air around it. Covers only: the number was judged against that
+       one picture, not against the study. */
+    if (t.c != null && GROUPS[t.g] && GROUPS[t.g].dr != null)
+      shot.style.setProperty("--drift", GROUPS[t.g].dr + "%");
     /* what the label rides down by when the frame opens: exactly the
        pixels the 1.32 scale adds to the picture's height */
     card.style.setProperty("--drop",

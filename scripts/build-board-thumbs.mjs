@@ -190,8 +190,17 @@ for (const line of projTs.split("\n")) {
      its authored size, or the seed's roll for its place in the file */
   const authored = line.match(/\bsize:\s*([0-9.]+)/);
   const sz = authored ? parseFloat(authored[1]) : liveShares[projSeen];
+  /* ── THE CROP IS AUTHORED, NOT DERIVED ──────────────────────────
+     The shared stylesheet draws every picture 16% taller than its
+     frame and centres it, so object-fit pays the difference as a crop
+     top and bottom. Seven projects overrule that in projects.ts with
+     `drift: 4`, tuned by hand for pictures that cannot lose the edge —
+     the Sally laptop is one, and it is why the board's laptop sat
+     tight in its frame while the live site's had air around it. There
+     is no rule to infer here: the number is the judgement. */
+  const dr = line.match(/\bdrift:\s*([0-9.]+)/);
   projSeen += 1;
-  groups[slug[1]] = { id: id[1], sz,
+  groups[slug[1]] = { id: id[1], sz, dr: dr ? parseFloat(dr[1]) : null,
     t: title ? title[1] : "", s: category ? category[1] : "",
     /* the ROUTE, kept beside the folder key. Two studies keep their
        images in a folder named differently from their route, and a
@@ -207,6 +216,17 @@ for (const line of projTs.split("\n")) {
     coverOrder++;
   }
 }
+/* ── THE LIVE INDEX'S OWN READING ORDER ─────────────────────────────
+   The board seated its covers in the file's order and the live site
+   does not read that way: it lays the cards into two columns, and the
+   pairing puts the file's second card top right, its first below on
+   the left. So reckon.house opens on Ivy Park and the board opened on
+   the Nordstrom framework. Swapping each adjacent pair is that
+   pairing, exactly — checked against all thirty cards on the live
+   page. The board reads down a column rather than across a row, so
+   what carries over is the SEQUENCE, and it now starts where the live
+   site starts. */
+for (const v of Object.values(coverByStem)) v.c ^= 1;
 /* Three studies keep their images in a folder named differently from
    their route. Measured, not guessed: these are the only mismatches
    between the 30 hrefs and the disk. sizzle's images live outside
