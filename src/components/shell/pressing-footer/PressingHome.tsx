@@ -34,11 +34,17 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { curtainTo } from "@/lib/curtain";
+import { curtain } from "@/lib/curtain";
 import styles from "./PressingHome.module.css";
 
 /** The name that pulses down the curtain, as the wordmark spells it. */
 const HOUSE = "Reckon*House*Staples";
+/** Where the homepage lives. The board is the front page now, and it
+ *  is a static document: no router can reach it, so the way there is
+ *  a hard navigation made under full black, exactly as the board
+ *  reaches a study. `/` still serves the old homepage; when the board
+ *  moves there, this is the one line that changes. */
+const HOME = "/lab/board.html";
 /** Overscroll that commits, in pixels. Two firm pushes, or one long
  *  drag: past the point where it could be the tail of a scroll. */
 const PULL = 260;
@@ -46,6 +52,35 @@ const PULL = 260;
  *  drains after this long without one. One number, both jobs: what
  *  ends a burst is what lets the next one start. */
 const QUIET = 260;
+
+/* ── THE SWAP, UNDER THE BLACK ──────────────────────────────────────
+ * The commit the curtain runs once the black is down. It is the
+ * board's own ptSwap, mirrored: write the note the arriving document
+ * reads before its first paint — the name, and the MEASUREMENTS the
+ * curtain here already worked out against this same viewport, so the
+ * board draws the identical curtain and only has to lift it — then
+ * navigate. The promise never resolves: the black stays down until
+ * this document is gone, and the sequence's own ceiling gives the page
+ * back if the board never arrives. */
+const leave = (): Promise<void> => {
+  const pt = document.getElementById("pt");
+  const stack = pt?.querySelector<HTMLElement>(".ptw .ptstack");
+  const note = {
+    t: Date.now(),
+    title: HOUSE,
+    sub: "",
+    n: stack ? stack.childElementCount : 0,
+    lh: stack ? stack.style.getPropertyValue("--ptlh") : "",
+    fs: stack ? stack.style.getPropertyValue("--ptfs") : "",
+  };
+  try {
+    sessionStorage.setItem("pt.arrive", JSON.stringify(note));
+  } catch {
+    /* private mode: the board arrives without its curtain */
+  }
+  window.location.href = HOME;
+  return new Promise<void>(() => {});
+};
 
 export function PressingHome() {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -58,10 +93,10 @@ export function PressingHome() {
     /* Reduced motion takes the plain navigation, the same call every
        link on the site makes. */
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      window.location.href = "/";
+      window.location.href = HOME;
       return;
     }
-    void curtainTo(HOUSE, "", "/");
+    void curtain(HOUSE, "", leave);
   }, []);
 
   useEffect(() => {

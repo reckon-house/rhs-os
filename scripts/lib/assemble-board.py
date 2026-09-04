@@ -757,36 +757,24 @@ head = r'''<!doctype html>
 
     #field { left: 0; }
     #rules { display: none; }
-    /* the field's page gutter: 10 here and 10 in the module make the
-       live grid's 20 */
-    #strip { left: 10px; right: 10px; }
 
-    /* ── A COLUMN IS THE WHOLE GLASS ──────────────────────────────
-       One module wide is the screen wide here, so a column is not
-       beside the work, it is over it: the layer lives on the body
-       (the phone block moves it there), fixed between the top of the
-       glass and the bar, and the newest column is the one shown. The
-       tile that asked is under it and × returns to it, which is what
-       "in place" means when there is one place. Arriving is a rise
-       rather than a widening: there is no neighbour to grow out from
-       behind. */
-    #cols { position: fixed; left: 0; right: 0; top: 0;
-      bottom: calc(var(--nav) + env(safe-area-inset-bottom, 0px));
-      z-index: 50; display: block; }
-    .ccol { position: absolute; inset: 0; width: auto; height: auto;
-      opacity: 1; translate: 0 0;
-      transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
-    .ccol.arriving, .ccol.closing { width: auto; opacity: 0; translate: 0 24px; }
-    /* the stack: a column with a standing column after it is under
-       it; the moment the top one starts to fold, the one beneath is
-       back */
-    .ccol:has(~ .ccol:not(.closing)) { visibility: hidden; }
+    /* ── A COLUMN IS A PAGE ───────────────────────────────────────
+       One module is half the glass here, so a column spans two: the
+       whole screen, standing in the row right after the field's one
+       period, arriving from the right as the row glides to meet it.
+       The same row as the desktop's, with the same three moves —
+       page sideways between the field and the columns, scroll up and
+       down inside each — and a column grows out from behind the
+       field's edge exactly as it grows out from behind a neighbour.
+       A sheet over the work was tried first, and it read as a modal:
+       the feel of the row was the thing lost. The field's own rule
+       is hidden at this width, so the column's goes with it. */
     .ccol::before { display: none; }
     /* no top padding on the scroller: WebKit measures a sticky top
        from the scroll container's CONTENT box, so padding there is a
        band the pinned head sits below and the column scrolls through.
        The head carries the air instead. */
-    .ccol .cin { width: 100%; height: 100%; padding: 0 20px 110px; }
+    .ccol .cin { padding: 0 20px 110px; }
     .ccol .cpics.wide { column-count: 1; }
     /* the head holds the top of the glass while the column scrolls
        under it: on desktop the × is one of several ways out and can
@@ -809,6 +797,38 @@ head = r'''<!doctype html>
     #nav .meta { display: none; }
   }
 </style>
+<!-- ── ARRIVING UNDER A CURTAIN ──────────────────────────────────────
+     The app's own head script, verbatim. A study's pull home writes
+     the note; this draws that curtain, lines and all, before this
+     document can be seen, and the lift below owns beat 3. Same
+     classes, same keyframes: board-shell.css already carries them. -->
+<script>
+(function(){try{
+  var raw=sessionStorage.getItem('pt.arrive');if(!raw)return;
+  sessionStorage.removeItem('pt.arrive');
+  var d=JSON.parse(raw);
+  if(!d||!d.t||Date.now()-d.t>15000)return;
+  var r=document.createElement('div');r.id='ptArrive';
+  r.className='pt pt-run pt-1 pt-2 pt-wait';r.setAttribute('aria-hidden','true');
+  r.style.cssText='position:fixed;inset:0;z-index:300';
+  var N=d.n||0;
+  var panel=function(cls,bg){var p=document.createElement('div');p.className=cls;
+    p.style.cssText='position:absolute;inset:0;background:'+bg;
+    var s=document.createElement('div');s.className='ptstack';
+    if(d.lh)s.style.setProperty('--ptlh',d.lh);
+    if(d.fs)s.style.setProperty('--ptfs',d.fs);
+    if(!d.sub)s.className='ptstack pt-nosub';
+    for(var i=0;i<N;i++){var l=document.createElement('span');l.className='ptl';
+      l.style.setProperty('--d',(i*0.03).toFixed(3)+'s');
+      l.textContent=d.title||'';
+      if(d.sub){var b=document.createElement('span');b.className='sub';
+        b.textContent='  '+d.sub;l.appendChild(b);}s.appendChild(l);}
+    p.appendChild(s);return p;};
+  r.appendChild(panel('ptw','#fff'));r.appendChild(panel('ptb','#000'));
+  document.documentElement.appendChild(r);
+  document.documentElement.classList.add('pt-arriving');
+}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -1450,8 +1470,7 @@ let colIdx = 0;
    row stands at the far end, and only what is right of it moves. */
 const spanOf = (c) => c.__span || 1;
 const colsBefore = (u) => { let n = 0; for (const c of ccols) if (c.__after < u) n += spanOf(c); return n; };
-/* a phone's columns stand over the work, not in the row: nothing steps aside */
-const shiftAt = (u) => PHONE ? 0 : colsBefore(u) * MOD_X;
+const shiftAt = (u) => colsBefore(u) * MOD_X;
 const dispOf = (c) => {
   let n = c.__after + 1;
   for (const x of ccols) { if (x === c) break; n += spanOf(x); }
@@ -1489,8 +1508,19 @@ let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
    beginning of the house and there is nothing before it; the
    conversation lives to the RIGHT, past the field, where new things
    go. Rightward the field is as endless as it was. */
-/* one period on a phone, so the only page there is is the first */
-const pageTo = (i) => { colIdx = PHONE ? 0 : Math.max(0, i); tgt.x = restX(colIdx); };
+/* ── A PAGE IS A SCREEN ──────────────────────────────────────────
+   One module on desktop; on a phone the two that make one, since the
+   field is one period and every column spans it. A turn lands on
+   whole pages, and on a phone it stops at the last column: the row
+   does not run on past the conversation into nothing. */
+const PAGE = PHONE ? 2 : 1;
+const pageTo = (i) => {
+  if (PHONE) {
+    const last = ccols.reduce((n, c) => n + spanOf(c), 0);
+    i = Math.min(last, Math.round(i / PAGE) * PAGE);
+  }
+  colIdx = Math.max(0, i); tgt.x = restX(colIdx);
+};
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
    Up and down scrolls. Left and right pages, one column at a time,
@@ -1529,7 +1559,7 @@ document.addEventListener("wheel", (e) => {
   else if (wheelAxis === "x" && ay > ax * 3) wheelAxis = "y";
   else if (wheelAxis === "y" && ax > ay * 3) wheelAxis = "x";
   if (wheelAxis === "x") {
-    if (now - hCool > 320 && ax > 12) { pageTo(colIdx + Math.sign(dx)); hCool = now; }
+    if (now - hCool > 320 && ax > 12) { pageTo(colIdx + Math.sign(dx) * PAGE); hCool = now; }
   } else { setY(tgt.y + dy); velY = 0; }
 }, { passive: false });
 
@@ -1568,7 +1598,7 @@ field.addEventListener("pointermove", (e) => {
      drag that did both at once meant neither. */
   if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
   if (dragAxis === "y" && dragFromCol) { dragging = false; dragAxis = null; return; }
-  if (dragAxis === "x") { if (!PHONE) tgt.x -= dx; }
+  if (dragAxis === "x") tgt.x -= dx;
   else if (dragAxis === "y") setY(tgt.y - dy);
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
@@ -1580,10 +1610,10 @@ const release = () => {
   const recent = trail.filter((m) => now - m.t < 90);
   const fx = recent.reduce((s, m) => s + m.dx, 0);
   const fy = recent.reduce((s, m) => s + m.dy, 0);
-  if (dragAxis === "x" && !PHONE) {
-    let i = Math.round((tgt.x + GAP / 2) / MOD_X);
-    if (fx < -30) i += 1;
-    if (fx > 30) i -= 1;
+  if (dragAxis === "x") {
+    let i = Math.round((tgt.x + GAP / 2) / (MOD_X * PAGE)) * PAGE;
+    if (fx < -30) i += PAGE;
+    if (fx > 30) i -= PAGE;
     pageTo(i);
   } else if (dragAxis === "y") velY = -fy * 1.6;
   dragAxis = null;
@@ -1625,6 +1655,9 @@ function remount() {
   const want = new Set();
   const fresh = [];
   for (let i = Math.floor(x0 / PW); i * PW < x1; i++) {
+    /* a phone's field is one period and the columns stand after it:
+       the period that would wrap under them is never dealt */
+    if (PHONE && i !== 0) continue;
     /* j is 0 and only 0: the field runs sideways for ever and DOWN
        ONCE. A page that never ends in either direction has no bottom
        to reach and nothing to have finished reading; the horizontal
@@ -2063,7 +2096,6 @@ const ccols = [];
 /* bring a column into view by the least move: none if it is on the
    screen, else the row glides until it stands at the near edge */
 const reveal = (c) => {
-  if (PHONE) return;                 /* it is over the glass already */
   if (ccols.indexOf(c) < 0) return;
   const d = dispOf(c), sp = spanOf(c);
   if (d < colIdx) pageTo(d);
@@ -2180,7 +2212,7 @@ function colNode(kind, caption) {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
       e.preventDefault();
       const now = performance.now();
-      if (now - hCool > 320 && Math.abs(e.deltaX) > 12) { pageTo(colIdx + Math.sign(e.deltaX)); hCool = now; }
+      if (now - hCool > 320 && Math.abs(e.deltaX) > 12) { pageTo(colIdx + Math.sign(e.deltaX) * PAGE); hCool = now; }
     }
   }, { passive: false });
   return c;
@@ -2419,7 +2451,6 @@ const stopReels = (c) => c.querySelectorAll(".crow, .cmarks").forEach((r) => {
    across its neighbour to get there before it folded. Anything with
    an anchor is part of the row while it is in the row. */
 const layoutCols = () => {
-  if (PHONE) return;
   let prev = 0;
   for (const c of colsEl.children) {
     if (c.__after == null) continue;
@@ -2445,14 +2476,7 @@ function insertColumn(c, from, opts) {
      module, the statement. From the rail, which has no place in the
      row, it is whatever stands at the near edge of the view. */
   let at;
-  if (PHONE) {
-    /* one column shows at a time and the newest is on top, so the
-       order is the order things were asked, whatever asked them */
-    c.__after = (from && from.__after != null) ? from.__after : 0; at = ccols.length;
-    /* the sheet stands above the columns, so a room opened from it
-       would open under it: the answer happens on the glass */
-    if (window.toggleSheet) toggleSheet(false);
-  } else if (from && ccols.indexOf(from) >= 0) {
+  if (from && ccols.indexOf(from) >= 0) {
     c.__after = from.__after; at = ccols.indexOf(from) + 1;
   } else {
     let u = opts.at;
@@ -2461,11 +2485,22 @@ function insertColumn(c, from, opts) {
       if (here.col) return insertColumn(c, here.col, {});
       u = here.u;
     }
+    /* on a phone the field is one period and a column spans both its
+       modules, so it can only stand after the whole of it, whichever
+       tile asked: anchored inside the pair it would split the grid */
+    if (PHONE) u = COLS - 1;
     c.__after = u;
     at = ccols.findIndex((x) => x.__after >= u);
     if (at < 0) at = ccols.length;
   }
   ccols.splice(at, 0, c);
+  if (PHONE) {
+    /* two modules: the screen */
+    c.__span = 2; c.style.setProperty("--span", 2);
+    /* the sheet stands above the row, so a room opened from it would
+       arrive under it: the answer happens on the glass */
+    if (window.toggleSheet) toggleSheet(false);
+  }
   const next = ccols[at + 1];
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   layoutCols();
@@ -2952,7 +2987,9 @@ function closeColumn(c) {
      of it moves that content one module left, so the view follows by
      one; one folding in view, or right of it, just lets the work
      slide back in. */
-  if (d < colIdx) pageTo(colIdx - 1);
+  /* and on a phone the column being read is a page of its own, so
+     folding it pages back to whatever stood before it */
+  if (PHONE ? d <= colIdx : d < colIdx) pageTo(colIdx - PAGE);
 }
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
@@ -3067,7 +3104,7 @@ function tick() {
      rail, which is fixed. It holds at rest instead and leaves with
      the plane only upward, or leftward when paging. */
   /* the columns pan with the field in X only, like the rules */
-  if (!PHONE) colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
+  colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   handover();
   swapSides();
   if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
@@ -3338,10 +3375,6 @@ const sheetIn = document.getElementById("cmdIn");
 const nav = document.getElementById("nav");
 if (PHONE) {
   sheetIn.appendChild(document.getElementById("railwrap"));
-  /* the columns layer leaves the field: fixed over the glass, and a
-     fixed box inside the strip would be clipped by it and pressed by
-     the field's own pointer handlers */
-  document.body.appendChild(colsEl);
   const mark = nav.querySelector(".mark");
   const toggleSheet = (on) => {
     const open = on != null ? on : !sheet.hasAttribute("data-on");
@@ -3488,6 +3521,66 @@ addEventListener("pageshow", () => {
   pt.className = "pt";
   delete pt.dataset.busy;
 });
+/* ── AND THE BOARD ARRIVES THE SAME WAY ─────────────────────────────
+   A study's pull home writes the note and navigates here at full
+   black; the head script has drawn that curtain over this document
+   before it could be seen. The same three moves the app makes on
+   arrival, in the same order: hold the floor so a fast load cannot
+   snap the black open before the eye has registered it closed; let
+   the lap finish at a boundary so no line is caught mid-flight;
+   reverse the delays so the lines leave from the bottom, which is the
+   direction the lifting clip removes them in. playTransition's own
+   ending, on the cover. */
+(() => {
+  const cover = document.getElementById("ptArrive");
+  if (!cover) return;
+  const give = () => {
+    cover.remove();
+    document.documentElement.classList.remove("pt-arriving");
+  };
+  if (REDUCE()) { give(); return; }
+  const beatOn = (cls, el) => new Promise((res) => {
+    let done = false;
+    const end = (e) => { if (done || (e && e.target !== el)) return; done = true;
+      el.removeEventListener("transitionend", end); res(); };
+    el.addEventListener("transitionend", end);
+    cover.classList.add(cls);
+    setTimeout(end, 1400);
+  });
+  const stopWaiting = () => new Promise((res) => {
+    const first = cover.querySelector(".ptw .ptstack .ptl");
+    let done = false;
+    const finish = () => { if (done) return; done = true;
+      if (first) first.removeEventListener("animationiteration", finish);
+      cover.classList.remove("pt-wait"); res(); };
+    if (first) first.addEventListener("animationiteration", finish);
+    setTimeout(finish, 2000);
+  });
+  const painted = () => new Promise((res) => {
+    let done = false;
+    const go = () => { if (done) return; done = true; res(); };
+    requestAnimationFrame(() => requestAnimationFrame(go));
+    setTimeout(go, 900);
+  });
+  (async () => {
+    await new Promise((r) => setTimeout(r, 520));
+    await painted();
+    await stopWaiting();
+    let lines = 0;
+    cover.querySelectorAll(".ptstack").forEach((stack) => {
+      lines = stack.children.length;
+      [...stack.children].forEach((line, i) => {
+        line.style.setProperty("--d", ((lines - 1 - i) * PT_STEP_OUT).toFixed(3) + "s");
+      });
+    });
+    const outMs = ((lines - 1) * PT_STEP_OUT + 0.26) * 1000;
+    await Promise.all([
+      beatOn("pt-3", cover.querySelector(".ptb")),
+      new Promise((r) => setTimeout(r, outMs)),
+    ]);
+    give();
+  })();
+})();
 document.addEventListener("click", (e) => {
   const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;

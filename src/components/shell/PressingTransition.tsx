@@ -37,12 +37,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  registerCurtain,
-  registerNavigator,
-  holdArrivals,
-  releaseArrivals,
-} from "@/lib/curtain";
+import { registerCurtain, holdArrivals, releaseArrivals } from "@/lib/curtain";
 
 /** How far apart the stacked lines arrive, and leave. Arriving is the
  *  flourish; leaving should not hold the page up. */
@@ -481,9 +476,6 @@ export function PressingTransition() {
      navigation. Registered on mount, withdrawn on unmount, and
      curtain() runs the commit bare when nothing is registered. */
   useEffect(() => registerCurtain(play), [play]);
-  /* and the commit a route change needs, so nothing else has to work
-     out when a page has actually arrived */
-  useEffect(() => registerNavigator(goTo), [goTo]);
 
   useEffect(() => {
     const reduce = () =>
