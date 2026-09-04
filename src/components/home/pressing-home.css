@@ -736,16 +736,6 @@
      STARTS rising, and clearing the white then uncovers the live page
      for the length of that beat. Measured at 95% exposed before this
      moved. */
-  /* ── THE WORDS FIRST, THEN THE CURTAIN ────────────────────────────
-     Beat 3 sends the lines and the black together, the lines running
-     just ahead of the lifting edge. Across a document swap that reads
-     as one blink rather than two moves, because the visitor has been
-     watching a still frame for the length of a page load and has no
-     motion to carry them into it. Sequenced instead: the lines leave
-     on their own stagger, and the clip does not start until they are
-     gone. Same values, one after the other. */
-  .pt-lines-out .ptl { opacity: 0; transform: translate3d(0, -10px, 0);
-    transition-duration: 0.22s, 0.24s; }
   .pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
   .pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1);
     clip-path: inset(0 0 100% 0); }

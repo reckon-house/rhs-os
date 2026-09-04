@@ -131,28 +131,20 @@ export function PressingTransition() {
         Array.from(stack.children).forEach((line, i) => {
           (line as HTMLElement).style.setProperty(
             "--d",
-            ((stack.children.length - 1 - i) * STEP_OUT).toFixed(3) + "s"
+            ((lines - 1 - i) * STEP_OUT).toFixed(3) + "s"
           );
         });
       });
-      /* the words leave first and the clip waits for them: across a
-         swap the two together read as one blink, and a second longer
-         reads as intended */
-      cover.classList.add("pt-lines-out");
-      await new Promise((r) =>
-        setTimeout(r, ((lines - 1) * STEP_OUT + OUT_TAIL_MS / 1000) * 1000)
-      );
-      if (!alive) return;
-      cover.classList.add("pt-3");
-      const end = (e: TransitionEvent) => {
-        if (e.target !== black || e.propertyName !== "clip-path") return;
-        black?.removeEventListener("transitionend", end);
-        finish();
-      };
-      black?.addEventListener("transitionend", end);
-      /* a transitionend that never fires must not leave the page under
-         a curtain it cannot see past */
-      window.setTimeout(finish, BEAT_MAX_MS);
+
+      /* Beat 3 is over when BOTH the curtain and the last line are
+         done. Waiting only on the curtain removes the cover while
+         lines are still leaving. play()'s own ending, on the cover. */
+      const outMs = ((lines - 1) * STEP_OUT + 0.26) * 1000;
+      await Promise.all([
+        beat("pt-3", black as Element, cover),
+        new Promise((r) => setTimeout(r, outMs)),
+      ]);
+      finish();
     })();
 
     return () => {
@@ -167,8 +159,8 @@ export function PressingTransition() {
    *  transitionend bubbles, so every stacked line inside reports too —
    *  without the target check the first line to land ends the beat and
    *  the sequence collapses to about a third of its length. */
-  const beat = useCallback((cls: string, el: Element) => {
-    const root = rootRef.current!;
+  const beat = useCallback((cls: string, el: Element, on?: HTMLElement) => {
+    const root = on || rootRef.current!;
     return new Promise<void>((resolve) => {
       let done = false;
       const end = (e?: Event) => {
