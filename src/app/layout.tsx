@@ -103,11 +103,15 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(sessionStorage.getItem('pt.arrive')){" +
+              "try{var n=+sessionStorage.getItem('pt.arrive');" +
+              /* a note older than a moment belonged to a navigation
+                 that never landed; it must not curtain this one */
+              "if(n&&Date.now()-n<15000){" +
               "var d=document.createElement('div');d.id='ptArrive';" +
               "d.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
               "document.documentElement.appendChild(d);" +
-              "document.documentElement.classList.add('pt-arriving');}}catch(e){}",
+              "document.documentElement.classList.add('pt-arriving');}" +
+              "else if(n)sessionStorage.removeItem('pt.arrive');}catch(e){}",
           }}
         />
         {/* Preload the primary body font so the first paint doesn't flash in fallback. */}

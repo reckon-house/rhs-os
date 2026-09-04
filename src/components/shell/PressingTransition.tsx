@@ -92,6 +92,9 @@ export function PressingTransition() {
     try {
       note = sessionStorage.getItem("pt.arrive");
       if (note) sessionStorage.removeItem("pt.arrive");
+      /* stamped by the leaving page: a note left by a navigation that
+         never landed is not this page's curtain */
+      if (note && Date.now() - Number(note) > 15000) note = null;
     } catch {
       note = null;
     }

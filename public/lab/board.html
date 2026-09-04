@@ -3568,11 +3568,26 @@ window.ptSwap = (href) => {
   /* the note the arriving document reads before its first paint: it
      puts a black cover up straight away and lifts it as beat 3, so
      the reveal belongs to the page that arrived, which is where it
-     belonged all along */
-  try { sessionStorage.setItem("pt.arrive", "1"); } catch (e) { /* private mode */ }
+     belonged all along. Stamped, so a navigation that never happened
+     cannot curtain some unrelated page an hour later. */
+  try { sessionStorage.setItem("pt.arrive", String(Date.now())); } catch (e) { /* private mode */ }
   location.href = href;
   return true;
 };
+/* ── COMING BACK, THE BOARD IS AS IT WAS LEFT ──────────────────────
+   Which is under its own curtain: the swap navigates at full black and
+   deliberately never lifts, so the document the back button restores
+   is a black screen with the study's name still repeating down it.
+   Nothing is stalled, it is a page showing the last frame it drew.
+   Clear it on every show — persisted or not, since a restore from
+   cache runs no script at all otherwise — and let go of the busy flag
+   with it, or the next study would never open. */
+addEventListener("pageshow", () => {
+  const pt = document.getElementById("pt");
+  if (!pt) return;
+  pt.className = "pt";
+  delete pt.dataset.busy;
+});
 document.addEventListener("click", (e) => {
   const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;
