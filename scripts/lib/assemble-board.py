@@ -1744,6 +1744,35 @@ const showCol = reveal;
 
 /* the studies the board knows, matched the way the field is dimmed */
 const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
+/* the words that are in every sentence are in every study: asking
+   "and" caught twenty-five of twenty-eight, which is not an answer.
+   Hoisted out of the board's matcher because a study's own summary
+   and abstract are now read by the same rules — one way of deciding
+   what a word is worth, wherever the question lands. */
+/* THE SHORT ONES DO THE MOST DAMAGE. A question keeps its short
+   words because "AI" and "app" are real, and a short word is matched
+   whole rather than as a substring — but "a", "is" and "it" stand
+   whole in nearly every sentence written, so "what did it cost"
+   answered with a sentence about eras and "how much does a rocket
+   cost" answered with one about cabinet doors. Function words are
+   never the thing being asked for. Single letters never are either. */
+const STOPW = new Set(["the", "and", "for", "with", "that", "this", "you", "your",
+  "from", "was", "are", "but", "not", "all", "any", "how", "what", "who", "why",
+  "when", "does", "did", "done", "can", "about", "into", "out", "its", "his", "her",
+  "their", "tell", "more", "some", "just", "them", "they", "have", "has", "had",
+  "were", "an", "as", "at", "be", "been", "being", "by", "do", "if", "in", "is",
+  "it", "of", "on", "or", "so", "to", "up", "we", "me", "my", "us", "am", "he",
+  "she", "him", "there", "here", "then", "than", "also", "very", "much", "many",
+  "most", "would", "should", "could", "will", "shall", "may", "might", "must",
+  "let", "like", "look", "give", "show", "say", "said", "thing", "things"]);
+const askWords = (text) => (text || "").toLowerCase().trim()
+  .split(/[^a-z0-9']+/).filter((w) => w.length > 1 && !STOPW.has(w)).map(stem);
+const escRe = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/* SHORT WORDS MATCH WHOLE OR NOT AT ALL: "ai" sits inside a dozen
+   ordinary words, and as a substring it caught half the board */
+const hasWord = (w, hay) => !!w && (w.length <= 3
+  ? new RegExp("(^|[^a-z0-9])" + escRe(w) + "([^a-z0-9]|$)").test(hay)
+  : hay.includes(w));
 const studiesFor = (text) => {
   const lower = text.toLowerCase().trim();
   /* SHORT WORDS MATCH WHOLE OR NOT AT ALL. Two- and three-letter
@@ -1752,34 +1781,32 @@ const studiesFor = (text) => {
      have matched half the board instead, since "ai" sits inside a
      dozen ordinary words. A word boundary is the honest test for a
      short word and costs nothing for a long one. */
-  /* the words that are in every sentence are in every study: asking
-     "and" caught twenty-five of twenty-eight, which is not an answer */
-  const STOPW = new Set(["the", "and", "for", "with", "that", "this", "you", "your",
-    "from", "was", "are", "but", "not", "all", "any", "how", "what", "who", "why",
-    "when", "does", "did", "can", "about", "into", "out", "its", "his", "her", "their"]);
-  const ws = lower.split(/[^a-z0-9']+/).filter((w) => w && !STOPW.has(w)).map(stem);
-  const esc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const ws = askWords(text);
   return Object.entries(GROUPS).map(([folder, g]) => {
     const hay = (folder + " " + g.t + " " + g.s + " " + g.tags.join(" ") + " " + (g.d || "")).toLowerCase();
     let n = 0;
-    for (const w of ws) {
-      if (!w) continue;
-      const hit = w.length <= 3
-        ? new RegExp("(^|[^a-z0-9])" + esc(w) + "([^a-z0-9]|$)").test(hay)
-        : hay.includes(w);
-      if (hit) n += 1;
-    }
+    for (const w of ws) if (hasWord(w, hay)) n += 1;
     if (lower.length >= 4 && hay.includes(lower)) n += 2;
     return { folder, g, n };
   }).filter((x) => x.n > 0).sort((a, b) => b.n - a.n);
 };
+/* A SHELF NAMED INSIDE A QUESTION IS STILL A SHELF. The match was
+   the whole line and nothing else, so "Interiors" opened the shelf
+   and "do you have anything on interiors" fell through to a keyword
+   search and answered nothing. The names are specific enough that
+   typing one means it: nobody writes "staples" or "app development"
+   in a sentence about something else. */
 const shelfByText = (text) => {
   const q = text.toLowerCase().trim();
-  const r = rrows.find((x) => x.dataset && x.dataset.tag &&
-    (x.querySelector(".rink").textContent.trim().toLowerCase() === q ||
-     x.querySelector(".rink").textContent.trim().toLowerCase().split("/")[0] === q ||
-     x.dataset.tag === q));
-  return r ? r.dataset.tag : null;
+  const names = (x) => {
+    const ink = x.querySelector(".rink").textContent.trim().toLowerCase();
+    return [ink, ink.split("/")[0], x.dataset.tag];
+  };
+  const has = (name) => name && new RegExp("(^|[^a-z0-9])" + escRe(name) + "([^a-z0-9]|$)").test(q);
+  const r = rrows.find((x) => x.dataset && x.dataset.tag && names(x).some((nm) => nm === q));
+  if (r) return r.dataset.tag;
+  const inside = rrows.find((x) => x.dataset && x.dataset.tag && names(x).some(has));
+  return inside ? inside.dataset.tag : null;
 };
 
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -1827,26 +1854,110 @@ function colNode(kind, caption) {
   }, { passive: false });
   return c;
 }
+/* ── WHAT THE HOUSE CAN SAY ABOUT A STUDY ──────────────────────────
+   A field that answers can only answer with what it holds, and that
+   was a title, a category and one line — so "tell me more about this
+   project" was read as a search, caught the word "project" somewhere
+   on the board and offered a stranger. Each study file already
+   carries the two things a reader asks for: the meta block's summary
+   (Built, Scope, Materials, Angle) and the abstract, three paragraphs
+   of the study's own prose. `npm run board` mines both into
+   board-copy.json, fetched the first time a study column opens, so
+   the board's first paint does not carry 30 abstracts it may never
+   show. EVERY WORD THE HOUSE SAYS HERE IS A WORD JEREMY WROTE. */
+let COPY = null, copyReq = null;
+const loadCopy = () => copyReq || (copyReq = fetch("/lab/board-copy.json")
+  .then((r) => r.json()).then((j) => (COPY = j))
+  .catch(() => (COPY = {})));
+/* a sentence ends on a word ending in . ! or ? — unless that word is
+   an initial, or A.R.C. is three sentences */
+const sentences = (p) => {
+  const out = []; let buf = "";
+  p.split(/\s+/).forEach((w) => {
+    buf += (buf ? " " : "") + w;
+    if (/[.!?]["')\]]?$/.test(w) && !/(^|\.)[A-Za-z]\.$/.test(w)) { out.push(buf); buf = ""; }
+  });
+  if (buf) out.push(buf);
+  return out;
+};
+const scoreOf = (hay, ws) => { let n = 0; for (const w of ws) if (hasWord(w, hay)) n += 1; return n; };
+function answerAbout(c, q, hits) {
+  const src = (COPY || {})[c.__folder] || { facts: [], para: [] };
+  const ws = askWords(q);
+  /* MORE IS A MOVE, NOT A SEARCH. "Tell me more", "what else", or a
+     question with no word worth matching, all mean the same thing:
+     the next paragraph of the study's own abstract. Asking again
+     walks on, which is what a conversation does. */
+  if (!ws.length || /\b(more|else|go on|continue|keep going|another|expand)\b/.test(q.toLowerCase())) {
+    const i = c.__para || 0;
+    if (src.para[i]) { c.__para = i + 1; return { line: src.para[i] }; }
+    return { line: src.para.length
+      ? "That is what the board carries. The full study has the rest."
+      : "The board holds no more of this one. The full study does." };
+  }
+  /* THE LABEL IS WORTH MORE THAN THE LINE. "What materials did you
+     use" scored the Angle line above the Materials line, because
+     Angle happens to contain both "materials" and "use" while the
+     Materials line contains neither of those words — it contains the
+     materials. Naming the field is the strongest signal a question
+     carries, so it outweighs anything the values happen to say. */
+  let fact = null;
+  for (const f of src.facts) {
+    const lab = scoreOf(f.k.toLowerCase(), ws), val = scoreOf(f.v.toLowerCase(), ws);
+    const sc = lab * 3 + val;
+    if (sc && (!fact || sc > fact.sc)) fact = { f, sc, lab };
+  }
+  let sent = null;
+  for (const p of src.para) for (const x of sentences(p)) {
+    const sc = scoreOf(x.toLowerCase(), ws);
+    if (sc && (!sent || sc > sent.sc)) sent = { x, sc };
+  }
+  /* the question named a field: answer with that field */
+  if (fact && fact.lab) return { line: fact.f.v };
+  /* otherwise the abstract's own sentence is the more particular
+     answer, and a tie goes to it */
+  if (sent && (!fact || sent.sc >= fact.sc)) return { line: sent.x };
+  if (fact) return { line: fact.f.v };
+  /* WHY IS THE ONE QUESTION THE SUMMARY NAMES OUTRIGHT. Angle is the
+     study's own answer to it and 27 of the 29 carry one, so a why
+     that caught nothing else is answered rather than refused. */
+  if (/\bwhy\b/.test(q.toLowerCase())) {
+    const a = src.facts.find((x) => /angle/i.test(x.k));
+    if (a) return { line: a.v };
+  }
+  /* only then is it a question about something else on the board —
+     and only a study that caught two of the words, since one loose
+     word is how "how much does a rocket cost" found six studies */
+  const strong = hits.filter((h) => h.n >= 2);
+  if (strong.length) return {
+    line: strong.length > 4 ? strong.length + " on the board:" : "Not in this one. On the board:",
+    hits: strong.slice(0, 4) };
+  return { line: "Nothing here answers that. The full study may." };
+}
+
 /* ── A SENTENCE ANSWERS IN PLACE, A THING OPENS A COLUMN ───────────
    The house answering with words is a reply, and a reply belongs in
    the column it was asked in; answering with a study or a long index
    is somewhere to go, and that is a column of its own. Between them
    sit the small catches, four or fewer, which name themselves as
    chips inline rather than spending a whole module on three rows. */
-function sayIn(c, q, hits) {
+async function sayIn(c, q, hits) {
   trailLog.asked.push(q); saveTrail();
+  /* a study answers out of its own copy; the wait is one fetch, once */
+  if (c.__folder) await loadCopy();
+  const said = /reach|contact|email|hire|talk/.test(q.toLowerCase())
+    ? { line: "hello@reckon.house. Or keep asking here." }
+    : c.__folder ? answerAbout(c, q, hits)
+    : { line: !hits.length ? "Nothing caught on the board. The homepage's brain reads deeper."
+        : hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
   const cin = c.querySelector(".cin");
   const before = cin.scrollHeight;
   const turn = el("div", "cturn");
   turn.appendChild(el("div", "cq", q));
-  const line = /reach|contact|email|hire|talk/.test(q.toLowerCase())
-    ? "hello@reckon.house. Or keep asking here."
-    : !hits.length ? "Nothing caught on the board. The homepage's brain reads deeper."
-    : hits.length === 1 ? "One." : hits.length + " of them.";
-  turn.appendChild(el("div", "ca g", line));
-  if (hits.length) {
+  turn.appendChild(el("div", "ca g", said.line));
+  if (said.hits && said.hits.length) {
     const row = el("div", "cchips");
-    hits.forEach(({ folder, g }) => {
+    said.hits.forEach(({ folder, g }) => {
       const b = el("button", "cchip", g.t); b.type = "button";
       b.addEventListener("click", () => openStudyColumn(folder, {}, c));
       row.appendChild(b);
@@ -1951,8 +2062,13 @@ function askFrom(from, text, opts) {
   const tag = shelfByText(t);
   if (tag) return openShelfColumn(tag, from, opts);
   const hits = studiesFor(t);
-  /* asked FROM a column, and small enough to be a reply: it stays */
-  if (from && ccols.indexOf(from) >= 0 && hits.length <= 4) return sayIn(from, t, hits);
+  /* ASKED FROM A COLUMN, IT STAYS IN THE COLUMN. A study always
+     answers in place: it holds its own words, and a vague question
+     inside one should not spend a module on six loose matches. A list
+     or an answer is an index already, so a result too long to name
+     inline still earns an index of its own. */
+  const inCol = from && ccols.indexOf(from) >= 0;
+  if (inCol && (from.__folder || hits.length <= 4)) return sayIn(from, t, hits);
   const c = colNode("answer", t);
   if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
@@ -1978,6 +2094,7 @@ function openStudyColumn(folder, opts, from) {
   opts = opts || {};
   const g = GROUPS[folder]; if (!g) return;
   trailLog.opened.push(folder); saveTrail();
+  loadCopy();   /* its own words, on the way */
   /* ── A STUDY IS NAMED BY ITS CHIP AND LEFT BY ITS NEXT ───────────
      The head used to be a field repeating the study's own title, with
      the house's offer written over it and a reason under that. Two

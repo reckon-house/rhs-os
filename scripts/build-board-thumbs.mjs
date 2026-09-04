@@ -178,6 +178,38 @@ for (const [folder, g] of Object.entries(groups)) {
   if (m) g.d = m[1];
 }
 
+/* ── WHAT THE HOUSE CAN SAY ABOUT A STUDY ───────────────────────────
+   A field that answers questions can only answer with what it has,
+   and until now that was a title, a category and one line. Each study
+   file already carries the two things a reader actually asks for: the
+   meta block's summary, which is Built / Scope / Materials / Angle as
+   label and value, and the abstract, three dense paragraphs of the
+   study's own prose. Mined here so the board quotes Jeremy rather
+   than composing anything, and written to its OWN file, fetched only
+   when a study column opens — the board's first paint should not
+   carry 30 abstracts it may never show. */
+const unquote = (raw) => {
+  try { return JSON.parse('"' + raw + '"'); }
+  catch { return raw.replace(/\\n/g, "\n").replace(/\\"/g, '"').replace(/\\\\/g, "\\"); }
+};
+const COPY = {};
+for (const [folder, g] of Object.entries(groups)) {
+  const file = `src/data/${g.h}-case-study.ts`;
+  if (!existsSync(file)) continue;
+  const src = readFileSync(file, "utf8");
+  const facts = [];
+  const sum = src.match(/\n\s*summary:\s*\[([\s\S]*?)\n\s*\],/);
+  if (sum) {
+    const re = /\{\s*label:\s*"((?:[^"\\]|\\.)*)",\s*value:\s*\n?\s*"((?:[^"\\]|\\.)*)"\s*,?\s*\}/g;
+    let f;
+    while ((f = re.exec(sum[1]))) facts.push({ k: unquote(f[1]), v: unquote(f[2]) });
+  }
+  const ab = src.match(/\n\s*abstract:\s*\n?\s*"((?:[^"\\]|\\.)*)"/);
+  const para = ab ? unquote(ab[1]).split(/\n{2,}/).map((x) => x.trim()).filter(Boolean) : [];
+  if (facts.length || para.length) COPY[folder] = { facts, para };
+}
+writeFileSync("public/lab/board-copy.json", JSON.stringify(COPY));
+
 const railTs = readFileSync("src/data/rail-categories.ts", "utf8");
 const appBlock = railTs.match(/query:\s*"app development"[\s\S]*?ids:\s*\[([^\]]*)\]/);
 const appIds = appBlock
@@ -239,5 +271,8 @@ console.log(
   `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed)` +
   `\n  originals ${MB(before)}MB → thumbs ${MB(after)}MB` +
   `\n  data ${DATA} (${MB(statSync(DATA).size)}MB)` +
-  `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)`
+  `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +
+  `\n  copy public/lab/board-copy.json (${Object.keys(COPY).length} studies, ` +
+  `${Object.values(COPY).reduce((n, c) => n + c.facts.length, 0)} facts, ` +
+  `${Object.values(COPY).reduce((n, c) => n + c.para.length, 0)} paragraphs)`
 );
