@@ -2074,9 +2074,21 @@ function studyRows(list, into, from) {
    the modules between its anchor and the previous column's, so the
    flex row lays every column on its own module, and the widths, which
    are what arrive and fold, push the rest along. */
+/* Over the ROW as it stands, not over the open columns. A column that
+   is folding away has left ccols but is still in the row for another
+   half second, still holding its margin, and laying out only the open
+   ones made every column after it measure from the wrong neighbour.
+   The old answer was to zero the folding column's margin, which put
+   it back where the row would have it — and that meant it flew left
+   across its neighbour to get there before it folded. Anything with
+   an anchor is part of the row while it is in the row. */
 const layoutCols = () => {
   let prev = 0;
-  for (const c of ccols) { c.style.marginLeft = ((c.__after - prev) * MOD_X) + "px"; prev = c.__after; }
+  for (const c of colsEl.children) {
+    if (c.__after == null) continue;
+    c.style.marginLeft = ((c.__after - prev) * MOD_X) + "px";
+    prev = c.__after;
+  }
 };
 /* every mounted tile re-reads how far it stands aside, and the
    transition carries the ones that changed. The window is re-read
@@ -2110,9 +2122,9 @@ function insertColumn(c, from, opts) {
     if (at < 0) at = ccols.length;
   }
   ccols.splice(at, 0, c);
-  layoutCols();
   const next = ccols[at + 1];
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
+  layoutCols();
   nav.classList.add("threadon");
   reshift(); drawPath();
   /* THE AIM IS TAKEN NOW, THE BOX OPENS NEXT FRAME. Only the class
@@ -2253,10 +2265,12 @@ function closeColumn(c) {
   const i = ccols.indexOf(c); if (i < 0) return;
   const d = dispOf(c);
   ccols.splice(i, 1);
-  /* its margin goes with it now, so the columns after it hold their
-     place while its width folds: the fold is what moves them */
-  c.classList.add("closing"); c.style.marginLeft = "0px";
-  setTimeout(() => c.remove(), 520);
+  /* it keeps its margin and folds where it stands; the columns after
+     it measure from it, so the fold is the only thing that moves them.
+     Laid out once more when it actually leaves, which changes nothing
+     on screen because by then its width is zero. */
+  c.classList.add("closing");
+  setTimeout(() => { c.remove(); layoutCols(); }, 520);
   layoutCols(); reshift(); drawPath(); applyFromColumns();
   if (!ccols.length) nav.classList.remove("threadon");
   /* THE VIEW STAYS ON WHAT IT WAS LOOKING AT. A column folding left
@@ -2268,7 +2282,7 @@ function closeColumn(c) {
 window.closeNewest = () => { if (ccols.length) closeColumn(ccols[ccols.length - 1]); };
 function closeAllColumns() {
   ccols.slice().forEach((c) => {
-    c.classList.add("closing"); c.style.marginLeft = "0px"; setTimeout(() => c.remove(), 520);
+    c.classList.add("closing"); setTimeout(() => { c.remove(); layoutCols(); }, 520);
   });
   ccols.length = 0;
   nav.classList.remove("threadon"); reshift(); drawPath();
