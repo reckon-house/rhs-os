@@ -69,3 +69,46 @@ export async function curtain(
 
 /** Whether a curtain is available, for callers choosing their own path. */
 export const curtainReady = () => runner !== null;
+
+/* ── THE ARRIVAL GATE ───────────────────────────────────────────────
+ * A page reached through the curtain is UNDER it while it mounts, so
+ * everything that reveals on arrival — a headline whose observer sees
+ * it in the viewport the moment it exists — plays behind the black and
+ * is finished before anyone sees it. That is the blink.
+ *
+ * While the gate is held, an arrival waits; when the curtain finishes
+ * lifting it is released and they run in the order they asked. Held
+ * only by a document that arrived covered, so nothing else on the site
+ * ever waits on it.
+ */
+/* HELD FROM THE FLAG, NOT FROM AN EFFECT. The head script marks the
+ * document before a single module runs; PressingTransition's effect
+ * runs AFTER the page's own, so a headline observer registered in a
+ * child could win the race and reveal behind the black. Reading the
+ * flag at import closes it: by the time anything can ask, the answer
+ * is already yes.
+ *
+ * And it opens on its own if nothing ever lifts the curtain. A page
+ * that held its arrivals for good would be a page whose headlines
+ * never appear, which is a worse failure than a missing animation. */
+let held =
+  typeof document !== "undefined" &&
+  document.documentElement.classList.contains("pt-arriving");
+const waiting: (() => void)[] = [];
+if (held) setTimeout(() => releaseArrivals(), 5000);
+
+export function holdArrivals(): void {
+  held = true;
+}
+
+export function releaseArrivals(): void {
+  held = false;
+  const go = waiting.splice(0);
+  for (const fn of go) fn();
+}
+
+/** Run now, or as soon as the curtain has finished lifting. */
+export function afterCurtain(fn: () => void): void {
+  if (held) waiting.push(fn);
+  else fn();
+}

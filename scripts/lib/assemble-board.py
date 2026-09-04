@@ -3255,6 +3255,11 @@ function setMode(mode) {
    draws, and the study arrives under it. */
 window.ptSwap = (href) => {
   if (!href) return false;
+  /* the note the arriving document reads before its first paint: it
+     puts a black cover up straight away and lifts it as beat 3, so
+     the reveal belongs to the page that arrived, which is where it
+     belonged all along */
+  try { sessionStorage.setItem("pt.arrive", "1"); } catch (e) { /* private mode */ }
   location.href = href;
   return true;
 };

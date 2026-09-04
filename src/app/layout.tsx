@@ -92,6 +92,24 @@ export default function RootLayout({
             ground. See src/lib/paper-routes.ts, which owns the list
             this and the components both read. */}
         <script dangerouslySetInnerHTML={{ __html: stampScript() }} />
+        {/* ── ARRIVING UNDER A CURTAIN ─────────────────────────────
+            A document reached from outside React — the lab board is a
+            static page, so its link is a real navigation — lands with
+            no curtain to lift, and the study blinks in. The leaving
+            page leaves a note; this paints black before anything of
+            the arriving page can be seen, and PressingTransition
+            lifts it as beat three. Inline and synchronous on purpose:
+            a frame later is a frame of the page showing. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(sessionStorage.getItem('pt.arrive')){" +
+              "var d=document.createElement('div');d.id='ptArrive';" +
+              "d.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
+              "document.documentElement.appendChild(d);" +
+              "document.documentElement.classList.add('pt-arriving');}}catch(e){}",
+          }}
+        />
         {/* Preload the primary body font so the first paint doesn't flash in fallback. */}
         <link
           rel="preload"

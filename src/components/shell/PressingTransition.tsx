@@ -37,7 +37,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { registerCurtain } from "@/lib/curtain";
+import { registerCurtain, holdArrivals, releaseArrivals } from "@/lib/curtain";
 
 /** How far apart the stacked lines arrive, and leave. Arriving is the
  *  flourish; leaving should not hold the page up. */
@@ -52,6 +52,11 @@ const OUT_TAIL_MS = 260;
 const HOLD_MAX_MS = 4000;
 /** Per-beat safety, in case a transitionend never fires (hidden tab). */
 const BEAT_MAX_MS = 1400;
+/** The held beat on an arrival. Shorter than the floor a push gets:
+ *  the black has already been up for the length of a document load, so
+ *  this is only long enough to be seen as a curtain rather than a
+ *  flash before it starts lifting. */
+const ARRIVE_HOLD_MS = 240;
 
 export function PressingTransition() {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -69,6 +74,85 @@ export function PressingTransition() {
       arrived.current = null;
     }
   }, [pathname]);
+
+  /* ── THE PAGE THAT ARRIVED OWNS BEAT 3 ────────────────────────────
+     The site's own links push a route under full black and this
+     component lifts it, all in one document. A link from OUTSIDE React
+     — the lab board is a static page, so its "Full case study" is a
+     real navigation — ends the leaving page at full black and lands
+     here with nothing to lift, so the study blinked in.
+
+     The leaving page leaves a note, the head script paints black
+     before this document can be seen, and this puts the real curtain
+     where that cover is, shut, and lifts it. Arrivals are held while
+     it does, so the study's own headline reveals AFTER the black is
+     gone instead of behind it. */
+  useEffect(() => {
+    let note: string | null = null;
+    try {
+      note = sessionStorage.getItem("pt.arrive");
+      if (note) sessionStorage.removeItem("pt.arrive");
+    } catch {
+      note = null;
+    }
+    const cover = document.getElementById("ptArrive");
+    /* the gate is held by the flag from the first import, so every way
+       out of here has to open it */
+    const give = () => {
+      cover?.remove();
+      document.documentElement.classList.remove("pt-arriving");
+      releaseArrivals();
+    };
+    if (!note) {
+      give();
+      return;
+    }
+    const root = rootRef.current;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!root || reduced) {
+      give();
+      return;
+    }
+
+    let done = false;
+    holdArrivals();
+    busy.current = true;
+    /* placed shut, not shut in front of anyone: one frame with the
+       transitions off, then the cover can go */
+    root.className = "pt pt-run pt-1 pt-2 pt-snap";
+    void root.offsetHeight;
+    root.classList.remove("pt-snap");
+    cover?.remove();
+
+    const black = root.querySelector<HTMLElement>(".ptb");
+    const finish = () => {
+      if (done) return;
+      done = true;
+      root.className = "pt";
+      busy.current = false;
+      document.documentElement.classList.remove("pt-arriving");
+      releaseArrivals();
+    };
+    const lift = window.setTimeout(() => {
+      root.classList.add("pt-3");
+      const end = (e: TransitionEvent) => {
+        if (e.target !== black || e.propertyName !== "clip-path") return;
+        black?.removeEventListener("transitionend", end);
+        finish();
+      };
+      black?.addEventListener("transitionend", end);
+      /* a transitionend that never fires must not leave the page under
+         a curtain it cannot see past */
+      window.setTimeout(finish, BEAT_MAX_MS);
+    }, ARRIVE_HOLD_MS);
+
+    return () => {
+      window.clearTimeout(lift);
+      finish();
+    };
+    /* once, on the document that arrived */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** One beat: add the class, wait for the PANEL's own transition.
    *  transitionend bubbles, so every stacked line inside reports too —

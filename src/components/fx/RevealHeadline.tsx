@@ -37,6 +37,7 @@ import {
   type ReactNode,
 } from "react";
 import { MeltFilter } from "./MeltFilter";
+import { afterCurtain } from "@/lib/curtain";
 import styles from "./reveal.module.css";
 
 const STAG = 6; // ms of lead per character
@@ -171,8 +172,15 @@ export function RevealHeadline({
           if (e.intersectionRatio >= 0.3) {
             if (!revealedRef.current) {
               revealedRef.current = true;
-              h.classList.add(styles.go);
-              melt();
+              /* A page reached through the curtain is under it while
+                 this fires: the headline is in the viewport the moment
+                 it exists, so without the gate it reveals behind the
+                 black and is already settled when the black lifts.
+                 Runs immediately whenever nothing is holding. */
+              afterCurtain(() => {
+                h.classList.add(styles.go);
+                melt();
+              });
             }
             continue;
           }
