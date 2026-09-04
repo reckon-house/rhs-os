@@ -371,7 +371,20 @@ const practice = strs(block(contactTs, "PRACTICE"));
 const credits = [...block(creditsTs, "CREDITS").matchAll(/name:\s*"([^"]+)"/g)].map((m) => m[1]);
 if (method.length < 3 || links.length < 4 || credits.length < 10)
   throw new Error(`board: footer copy came up short (method ${method.length}, links ${links.length}, credits ${credits.length})`);
-COPY.house = { method, links, services, practice, credits };
+/* the booking page's own lede and the slot length, so the column
+   says what /book says; if the JSX moves, the footer's line stands in
+   and the build says so rather than failing */
+const bookTs = readFileSync("src/app/book/page.tsx", "utf8");
+const dataTs = readFileSync("src/data/booking.ts", "utf8");
+const minutes = parseInt((dataTs.match(/SLOT_MINUTES\s*=\s*(\d+)/) || [])[1] || "30", 10);
+const jsxText = (t) => t.replace(/\{"\s*"\}/g, " ").replace(/&rsquo;/g, "\u2019").replace(/\{[^}]*\}/g, String(minutes))
+  .replace(/\s+/g, " ").trim();
+const ledeM = bookTs.match(/<h1[^>]*>\s*([\s\S]*?)<span className="dim">\s*([\s\S]*?)<\/span>/);
+const book = ledeM
+  ? { lede: jsxText(ledeM[1]), dim: jsxText(ledeM[2]), minutes }
+  : { lede: "Have a project in mind?", dim: "", minutes };
+if (!ledeM) console.error("  board: /book lede not found, the footer's line stands in");
+COPY.house = { method, links, services, practice, credits, book };
 writeFileSync("public/lab/board-copy.json", JSON.stringify(COPY));
 
 const railTs = readFileSync("src/data/rail-categories.ts", "utf8");

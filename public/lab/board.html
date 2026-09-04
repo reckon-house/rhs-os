@@ -228,6 +228,36 @@
   .ccol .crow.text:hover b { text-decoration: none; }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
+  /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
+     /book draws the month as a spine and the dates at display size in
+     a column of their own. A module is one column, so the week is a
+     list: a rule opens each day, the date stands in the prose register
+     with its weekday in grey beside it, and the count of open times
+     sits in the caption register on the right. The open day's times
+     are chips under its line, where a study's catches go. */
+  .ccol .cmonth { margin-top: 1.4em; font-size: var(--note); letter-spacing: 0.04em;
+    text-transform: uppercase; color: rgba(0, 0, 0, 0.42); }
+  .ccol.dark .cmonth { color: rgba(255, 255, 255, 0.5); }
+  .ccol .cday { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline;
+    padding: 13px 0 26px; border-top: 1px solid rgba(0, 0, 0, 0.12); }
+  .ccol.dark .cday { border-top-color: rgba(255, 255, 255, 0.28); }
+  .ccol .cday .cnum { font-size: inherit; }
+  .ccol .cday .cnum .g { margin-left: 0.35em; }
+  .ccol .cday .ccount { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.42); }
+  .ccol.dark .cday .ccount { color: rgba(255, 255, 255, 0.5); }
+  .ccol .cday.has { cursor: pointer; }
+  .ccol .cday.shut .cnum { opacity: 0.4; }
+  .ccol .cday .cslots { grid-column: 1 / -1; display: none; flex-wrap: wrap; gap: 6px; margin-top: 0.6em; }
+  .ccol .cday.open .cslots { display: flex; }
+  .ccol .cchip.gone { opacity: 0.35; pointer-events: none; }
+  .ccol.dark .cchip.on { background: #fff; color: #000; }
+  .ccol .cchip.on { background: var(--ink); color: #fff; }
+  /* the claim: two lines and a chip, under the picked time */
+  .ccol .cbook { margin-top: 1.2em; }
+  .ccol .cbook .cline { margin-top: 0.3em; }
+  .ccol .cbook .cchip { margin-top: 0.9em; }
+  .ccol .cways .g { margin: 0 0.3em; }
   .ccol .csect + .crows { margin-top: 0.6em; }
   /* ── A LIST IS A LIST ─────────────────────────────────────────────
      The one-size rule is the INTRO COPY'S: the column's own prose —
@@ -2293,23 +2323,129 @@ async function openHouseColumn(kind, from, opts) {
     h.credits.forEach((name) => textRow(cred, name, ""));
     c.__matter.appendChild(cred);
   } else {
-    h.links.forEach((l) => {
-      const a = el("a", "cchip", l.k); a.href = l.v;
-      if (/^https?:/.test(l.v)) { a.target = "_blank"; a.rel = "noopener"; }
-      c.__head.appendChild(a);
-    });
-    c.__lead.appendChild(el("div", "cnote", "Have a project in mind?"));
-    /* THE FORM IS THE FIELD. Three turns, asked one at a time, in the
-       order the form asks them: the project, then where to write
-       back, then who it is from. Sent to the same door the site's own
-       form uses. */
+    /* ALL IN ONE. /book's own lede, then the field as the message,
+       then the week and the claim, then the ways in as plain links —
+       the room holds the whole of reaching him, and nothing in its
+       head but its name. */
+    const bk = h.book || { lede: "Have a project in mind?", dim: "", minutes: 30 };
+    const d = el("div", "cnote", bk.lede + (bk.dim ? " " : ""));
+    if (bk.dim) d.appendChild(el("span", "g", bk.dim));
+    c.__lead.appendChild(d);
     c.__intake = { step: "body" };
     c.__line.placeholder = "The project:";
+    c.__matter.appendChild(el("div", "cmonth g", "Loading the week"));
+    buildWeek(c, bk.minutes);
     const ways = el("div", "cways");
-    const u = el("u"); const a = el("a", null, "Or hello@reckon.house"); a.href = "mailto:hello@reckon.house";
-    u.appendChild(a); ways.appendChild(u); c.__matter.appendChild(ways);
+    const link = (text, href, ext) => { const u = el("u"); const a = el("a", null, text); a.href = href;
+      if (ext) { a.target = "_blank"; a.rel = "noopener"; } u.appendChild(a); return u; };
+    ways.appendChild(link("Or hello@reckon.house", "mailto:hello@reckon.house"));
+    h.links.filter((l) => /^https?:/.test(l.v)).forEach((l) => {
+      ways.appendChild(el("span", "g", "\u00b7")); ways.appendChild(link(l.k, l.v, true));
+    });
+    c.__matter.appendChild(ways);
   }
   insertColumn(c, from, opts);
+}
+/* ── THE WEEK ───────────────────────────────────────────────────────
+   Read from GET /api/book, the same availability() /book renders from,
+   per request: a week drawn from the rules alone would lie the moment
+   anyone claimed a slot. The first day with an opening stands open;
+   a press on a day moves the drawer; a press on a time is the pick,
+   and the claim's two lines appear under it. Times read in the
+   reader's zone, as /book shows them. */
+async function buildWeek(c, minutes) {
+  const month = c.__matter.querySelector(".cmonth");
+  let data = null;
+  try { const r = await fetch("/api/book", { cache: "no-store" }); if (r.ok) data = await r.json(); } catch (e) { data = null; }
+  if (!c.isConnected && !ccols.includes(c)) return;
+  if (!data || !data.ok || !Array.isArray(data.days) || !data.days.length) {
+    month.textContent = "";
+    month.insertAdjacentElement("afterend", el("div", "cnote g", "Times are down right now. hello@reckon.house works."));
+    return;
+  }
+  const mins = data.minutes || minutes || 30;
+  const mo = new Intl.DateTimeFormat("en-US", { month: "long" });
+  const wd = new Intl.DateTimeFormat("en-US", { weekday: "narrow" });
+  const local = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  const dateOf = (d) => new Date(d + "T12:00:00Z");
+  month.textContent = mo.format(dateOf(data.days[0].date));
+  const wrap = el("div", "cweek");
+  const gone = new Set();
+  let picked = null, claim = null;
+  const rows = data.days.map((day) => {
+    const dt = dateOf(day.date);
+    const openN = day.slots.filter((s2) => s2.open).length;
+    const r = el("div", "cday " + (openN ? "has" : "shut"));
+    const num = el("div", "cnum");
+    num.appendChild(document.createTextNode(String(dt.getUTCDate()).padStart(2, "0")));
+    num.appendChild(el("span", "g", wd.format(dt)));
+    r.appendChild(num);
+    r.appendChild(el("div", "ccount", openN ? openN + " open" : ""));
+    const slots = el("div", "cslots");
+    day.slots.forEach((s2) => {
+      const label = local.format(new Date(s2.at)).replace(" ", "");
+      if (!s2.open) { slots.appendChild(el("span", "cchip gone", label)); return; }
+      const b = el("button", "cchip", label); b.type = "button"; b.dataset.at = s2.at;
+      b.addEventListener("click", (e) => { e.stopPropagation(); pick(s2.at, b); });
+      slots.appendChild(b);
+    });
+    r.appendChild(slots);
+    if (openN) r.addEventListener("click", () => {
+      const was = r.classList.contains("open");
+      rows.forEach((x) => x.classList.remove("open"));
+      if (!was) r.classList.add("open");
+    });
+    wrap.appendChild(r);
+    return r;
+  });
+  const first = rows.find((r) => r.classList.contains("has"));
+  if (first) first.classList.add("open");
+  month.insertAdjacentElement("afterend", wrap);
+  /* the claim: name, email, and the word */
+  const pick = (at, btn) => {
+    picked = at;
+    wrap.querySelectorAll(".cchip.on").forEach((x) => x.classList.remove("on"));
+    btn.classList.add("on");
+    if (!claim) {
+      claim = el("div", "cbook");
+      const nm = el("input", "cline"); nm.type = "text"; nm.placeholder = "Name:"; nm.autocomplete = "name";
+      const em = el("input", "cline"); em.type = "email"; em.placeholder = "Email:"; em.autocomplete = "email";
+      const go = el("button", "cchip", "Book " + mins + " minutes"); go.type = "button";
+      claim.appendChild(nm); claim.appendChild(em); claim.appendChild(go);
+      wrap.insertAdjacentElement("afterend", claim);
+      const send = async () => {
+        const name = nm.value.trim(), email = em.value.trim();
+        if (!picked) return;
+        if (!name) { nm.focus(); return; }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { em.focus(); return; }
+        go.textContent = "Booking";
+        let j = null, status = 0;
+        try {
+          const res = await fetch("/api/book", { method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ at: picked, name, email, note: (c.__intake && c.__intake.body) || undefined }) });
+          status = res.status; j = await res.json();
+        } catch (e) { j = null; }
+        if (j && j.ok) {
+          pushTurn(c, name + ", " + email, "Booked. " + mins + " minutes" + (j.when ? ", " + j.when : "") + ". A confirmation is on its way to your inbox.");
+          claim.remove(); claim = null; picked = null;
+          return;
+        }
+        if (status === 409) {
+          const b = wrap.querySelector('.cchip[data-at="' + picked + '"]');
+          if (b) { b.classList.remove("on"); b.classList.add("gone"); }
+          gone.add(picked); picked = null;
+          go.textContent = "Book " + mins + " minutes";
+          pushTurn(c, "", "That time just went. Pick another.");
+          return;
+        }
+        go.textContent = "Book " + mins + " minutes";
+        pushTurn(c, "", (j && j.why) || "That didn't go through. hello@reckon.house reaches me directly.");
+      };
+      go.addEventListener("click", send);
+      [nm, em].forEach((i) => i.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); send(); } }));
+    }
+    claim.querySelector("input").focus({ preventScroll: true });
+  };
 }
 async function intake(c, text) {
   const it = c.__intake; const t = text.trim(); if (!it || !t) return;

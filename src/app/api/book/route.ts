@@ -27,7 +27,7 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
-import { claimSlot, isOfferable, bookingReady, linkThread } from "@/lib/booking";
+import { availability, claimSlot, isOfferable, bookingReady, linkThread } from "@/lib/booking";
 import { LIMITS, openThread, storeReady } from "@/lib/messages";
 import { notifyBookingConfirmed, notifyNewMessage } from "@/lib/notify";
 import { HOUSE_TZ, SLOT_MINUTES } from "@/data/booking";
@@ -47,6 +47,22 @@ function spoken(iso: string): string {
     timeZone: HOUSE_TZ, hour: "numeric", minute: "2-digit", hour12: true,
   }).format(d).toLowerCase().replace(" ", "");
   return `${day}, ${time} Central`;
+}
+
+/* ── GET /api/book ───────────────────────────────────────────────────
+ * The week, as JSON. /book renders its grid on the server and never
+ * needed this; the board's Connect column is a static page that has to
+ * ask, and a calendar drawn from the rules alone would lie the moment
+ * anyone claimed a slot. Same availability() the page reads, per
+ * request, never cached. `ok` says whether claiming would work at all,
+ * so a caller can say "times are down" rather than draw a week nobody
+ * can book. */
+export async function GET() {
+  const days = await availability();
+  return NextResponse.json(
+    { ok: bookingReady, minutes: SLOT_MINUTES, days },
+    { headers: { "Cache-Control": "no-store" } }
+  );
 }
 
 export async function POST(req: NextRequest) {
