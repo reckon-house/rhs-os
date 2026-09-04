@@ -30,17 +30,21 @@ const FORCE = process.argv.includes("--force");
 const ROOT = "public/case-studies";
 const OUT = "public/lab/board-thumbs";
 const DATA = "public/lab/board-data.js";
-/* 768, not 384. CLAUDE.md's own rule: native width / 2 is the largest
-   honest CSS width, so a 384px file is crisp to about 192 CSS px and
-   soft above it — and a board column is up to 377. Every picture was
-   being drawn at half the resolution it needed, which is what
-   "compressed and crunchy" was. 768 covers a full-width column on a
-   2x screen exactly.
+/* 1280, up from 768. CLAUDE.md's own rule: native width / 2 is the
+   largest honest CSS width, so 768 was crisp to 384 CSS px — which
+   covered a board column when a column was 377. It is not any more.
+   The field's column grows with the window: at 1900px the column is
+   751 and a top-tier frame wants 646 of it, so every picture was
+   stepping down the tiers until it fitted under 384 and landing at
+   43% of its own column. That is why the board read small against the
+   live site, which serves originals and has no such ceiling.
 
-   Quality up with it: 68 is a thumbnail's number and these are not
-   thumbnails any more, they are the work at column size. */
-const W = 768;
-const Q = 78;
+   1280 is crisp to 640 CSS, which covers a top-tier frame out to
+   about a 1900px window. Quality down six to pay for the pixels:
+   the file is 2.8x the area and 78 was generous for a picture that
+   was never going to be seen at full size. */
+const W = 1280;
+const Q = 72;
 
 const IMG_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
@@ -82,16 +86,25 @@ for (const from of walk(ROOT)) {
   before += statSync(from).size;
   try {
     let meta;
+    /* ── THE SIZE RECORDED IS THE FILE THAT SHIPS ─────────────────
+       This wrote the SOURCE's dimensions, so a 6493px original was
+       declared as 6493 while the file served was 768. The board's own
+       "no picture larger than its pixels" rule then had to clamp with
+       a copy of this script's width written into the board, and the
+       moment that width moved the two disagreed and the clamp did
+       nothing. The thumb knows its own size; record that, and the
+       rule needs no constant at all. The ratio is the same either
+       way, which is the only other thing the width is used for. */
     if (!FORCE && existsSync(to)) {
-      meta = await sharp(from).metadata();
+      meta = await sharp(to).metadata();
       skipped += 1;
     } else {
       mkdirSync(join(OUT, slug), { recursive: true });
-      const img = sharp(from, { failOn: "none" });
-      meta = await img.metadata();
-      await img.resize({ width: W, withoutEnlargement: true })
+      const info = await sharp(from, { failOn: "none" })
+        .resize({ width: W, withoutEnlargement: true })
         .webp({ quality: Q })
         .toFile(to);
+      meta = { width: info.width, height: info.height };
       wrote += 1;
     }
     after += statSync(to).size;

@@ -730,7 +730,14 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
    out of the page — and the live site has never had a frame at full
    column width. These top out at 0.86 and reach down to 0.33, which is
    where the negative space between everything comes from. */
-const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+/* THE INDEX'S LADDER, ONE NOTCH UP. The live index runs 0.33 to 0.86
+   of its cell and the board ran the same six, so at a matched window
+   the two deal the same widths — but the board is two columns of a
+   field that keeps going, with air between the rows, and against that
+   the same frame reads smaller than it does in a list. The smallest
+   rung goes and a larger one arrives on top: the same ladder, one
+   notch up, and still nothing at the full width of its column. */
+const IX_TIERS = [0.43, 0.53, 0.64, 0.74, 0.86, 0.92];
 const SHARES = PHONE ? [0.62, 0.74, 0.86] : IX_TIERS;
 /* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
    The tier is 768px wide, or the original if that was smaller, so the
@@ -906,7 +913,11 @@ function deal(list, opts) {
          on the same ladder as everything else; only if even the
          smallest tier would magnify it does it take its honest width
          outright. */
-      const honest = Math.min(768, it.w) / DPR;
+      /* the file's OWN width, not a remembered constant. The 768 that
+         stood here was the generator's width written down twice, so
+         raising the generator to 1280 left every tile still capped at
+         384 CSS and the change did nothing. it.w IS the file. */
+      const honest = it.w / DPR;
       while (COL * share > honest && share > shares[0]) {
         share = shares[shares.indexOf(share) - 1];
       }
@@ -2140,6 +2151,15 @@ function openStudyColumn(folder, opts, from) {
   order.forEach((src, i) => {
     const im = el("img"); im.src = encodeURI(src); im.alt = ""; im.loading = "lazy";
     im.style.animationDelay = Math.min(0.4, i * 0.05) + "s";
+    /* ── NO PICTURE LARGER THAN ITS PIXELS, HERE TOO ────────────────
+       The field's tiles are dealt under this rule and these were not:
+       they took the column's full width, so on a 1900px window a 1280
+       file was drawn at 751 and a 1099 one at 1.38x. CLAUDE.md's own
+       backstop, the one PressingPlate uses — the picture stops at its
+       honest width and takes the air rather than the magnification. */
+    im.addEventListener("load", () => {
+      if (im.naturalWidth) im.style.maxWidth = Math.round(im.naturalWidth / DPR) + "px";
+    }, { once: true });
     pics.appendChild(im);
   });
   insertColumn(c, from, opts);
