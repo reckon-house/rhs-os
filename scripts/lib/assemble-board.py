@@ -258,12 +258,20 @@ head = r'''<!doctype html>
      pictures carry under them in the field. Two registers, prose and
      index, each with one size, one weight, one colour change. */
   .ccol .crows { margin-top: 1em; }
+  /* ── THE RULE BELONGS TO THE ROW UNDER IT ─────────────────────────
+     Eleven pixels of air above and eleven below made the rule read as
+     a divider between two rows, equally the property of both, and a
+     list of fourteen came out as a stack of bands. The rule now opens
+     a row: the picture and the name sit right under it, and the air
+     goes below them, so the eye reads rule-then-thing and the space
+     between one thing and the next is the space. */
   .ccol .crow { display: grid; grid-template-columns: 96px minmax(0, 1fr);
-    column-gap: 14px; align-items: start; padding: 11px 0;
+    column-gap: 14px; align-items: start; padding: 13px 0 84px;
     border-top: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer;
     font-size: var(--note); line-height: 1.35; font-weight: 600;
     letter-spacing: -0.004em; transition: opacity 0.4s ease; }
-  .ccol .crows .crow:first-child { border-top: 0; }
+  /* the first row keeps its rule: it is the row's own line, not a
+     separator that would be spurious at the top of the list */
   /* a narrowed list DROPS what it does not match rather than fading
      it: half-visible rows are the same veil in miniature, and the
      count above already says how many stayed */
