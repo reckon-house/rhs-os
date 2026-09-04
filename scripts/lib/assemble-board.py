@@ -289,21 +289,51 @@ head = r'''<!doctype html>
   .ccol .cmonth { margin-top: 1.4em; font-size: var(--note); letter-spacing: 0.04em;
     text-transform: uppercase; color: rgba(0, 0, 0, 0.42); }
   .ccol.dark .cmonth { color: rgba(255, 255, 255, 0.5); }
+  /* ── /book's OWN MOTION, number for number ─────────────────────────
+     The day under the pointer floods, its hours arrive 90ms behind
+     the flood from ten pixels below, and the count of open times
+     fades as the times themselves appear. Those are book.module.css's
+     values: the 0.5s flood on cubic-bezier(0.2, 0.7, 0.2, 1), the
+     0.56s reveal on the same curve, the 0.55s underline wipe on a
+     time under the hand. On paper the open day floods to ink; in a
+     black room it floods to paper, the same reversal the whole column
+     is built on. A time is a word with a line under it, as there,
+     not a chip: a chip is a place to go, a time is a thing to pick. */
   .ccol .cday { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline;
-    padding: 13px 0 26px; border-top: 1px solid rgba(0, 0, 0, 0.12); }
+    padding: 13px 0 26px; border-top: 1px solid rgba(0, 0, 0, 0.12);
+    transition: background-color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      padding-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      padding-bottom 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .ccol.dark .cday { border-top-color: rgba(255, 255, 255, 0.28); }
-  .ccol .cday .cnum { font-size: inherit; }
-  .ccol .cday .cnum .g { margin-left: 0.35em; }
+  .ccol .cday .cnum { font-size: inherit; font-variant-numeric: tabular-nums; }
+  .ccol .cday .cnum .g { margin-left: 0.35em; transition: color 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .ccol .cday .ccount { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.42); }
+    color: rgba(0, 0, 0, 0.42); transition: opacity 0.3s ease; }
   .ccol.dark .cday .ccount { color: rgba(255, 255, 255, 0.5); }
   .ccol .cday.has { cursor: pointer; }
   .ccol .cday.shut .cnum { opacity: 0.4; }
-  .ccol .cday .cslots { grid-column: 1 / -1; display: none; flex-wrap: wrap; gap: 6px; margin-top: 0.6em; }
-  .ccol .cday.open .cslots { display: flex; }
-  .ccol .cchip.gone { opacity: 0.35; pointer-events: none; }
-  .ccol.dark .cchip.on { background: #fff; color: #000; }
-  .ccol .cchip.on { background: var(--ink); color: #fff; }
+  /* the flood: the row's own box, out to the column's edges */
+  .ccol .cday.open { margin: 0 calc(var(--gapx, 20px) / -2); padding: 22px calc(var(--gapx, 20px) / 2) 26px;
+    border-top-color: transparent; }
+  .ccol.dark .cday.open { background: #fff; color: #000; }
+  .ccol.dark .cday.open .cnum .g { color: rgba(0, 0, 0, 0.42); }
+  .ccol .cday.open .ccount { opacity: 0; }
+  .ccol .cday .cslots { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 0.75em;
+    font-size: var(--note); font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+    visibility: hidden; opacity: 0; transform: translateY(10px); transition: none; height: 0; overflow: hidden; }
+  .ccol .cday.open .cslots { visibility: visible; opacity: 1; transform: none; height: auto; overflow: visible;
+    transition: opacity 0.5s ease 90ms, transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
+  .ccol .ctime { display: inline-block; border: 0; background: none; font: inherit; color: inherit;
+    line-height: 1.4; padding: 0 2px; cursor: pointer;
+    background-image: linear-gradient(currentColor, currentColor), linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+    background-repeat: no-repeat; background-size: 0 1px, 100% 1px;
+    background-position: 0 calc(100% - 0.07em), 0 calc(100% - 0.07em);
+    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (hover: hover) { .ccol .ctime:hover { background-size: 100% 1px, 100% 1px; } }
+  .ccol .ctime.gone { color: rgba(0, 0, 0, 0.3); cursor: default; background-image: none; pointer-events: none; }
+  .ccol .ctime.on, .ccol .ctime.on:hover { background-color: var(--ink); color: #fff; background-image: none; padding: 2px 7px; border-radius: 6px; }
+  @media (prefers-reduced-motion: reduce) { .ccol .cday, .ccol .cday .cslots, .ccol .ccount, .ccol .ctime { transition: none; } }
   /* the claim: two lines and a chip, under the picked time */
   .ccol .cbook { margin-top: 1.2em; }
   .ccol .cbook .cline { margin-top: 0.3em; }
@@ -2306,10 +2336,16 @@ function insertColumn(c, from, opts) {
 function askFrom(from, text, opts) {
   opts = opts || {};
   const t = (text || "").trim(); if (!t) return;
+  /* in Connect, a word for the calendar is the calendar */
+  if (from && from.__house === "connect" && WANTS_TIME.test(t)) {
+    pushTurn(from, t, "Pick a time below.");
+    if (from.__showWeek) from.__showWeek();
+    return;
+  }
   /* inside Connect the field is the form until the form is sent */
   if (from && from.__intake) return intake(from, t);
   /* a way to reach him is a room, not a line */
-  if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()))
+  if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()) || WANTS_TIME.test(t))
     return openHouseColumn("connect", from, opts);
   const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
   if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
@@ -2435,17 +2471,20 @@ async function buildWeek(c, minutes) {
     const slots = el("div", "cslots");
     day.slots.forEach((s2) => {
       const label = local.format(new Date(s2.at)).replace(" ", "");
-      if (!s2.open) { slots.appendChild(el("span", "cchip gone", label)); return; }
-      const b = el("button", "cchip", label); b.type = "button"; b.dataset.at = s2.at;
+      if (!s2.open) { slots.appendChild(el("span", "ctime gone", label)); return; }
+      const b = el("button", "ctime", label); b.type = "button"; b.dataset.at = s2.at;
       b.addEventListener("click", (e) => { e.stopPropagation(); pick(s2.at, b); });
       slots.appendChild(b);
     });
     r.appendChild(slots);
-    if (openN) r.addEventListener("click", () => {
-      const was = r.classList.contains("open");
-      rows.forEach((x) => x.classList.remove("open"));
-      if (!was) r.classList.add("open");
-    });
+    const show = () => { rows.forEach((x) => x.classList.remove("open")); r.classList.add("open"); };
+    if (openN) {
+      /* the hand moves the drawer, and it never closes to nothing:
+         an open day is information, not a flourish */
+      r.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(); });
+      r.addEventListener("click", () => { if (!r.classList.contains("open")) show(); });
+    }
+    r.__show = show;
     wrap.appendChild(r);
     return r;
   });
@@ -2461,6 +2500,9 @@ async function buildWeek(c, minutes) {
       claim = el("div", "cbook");
       const nm = el("input", "cline"); nm.type = "text"; nm.placeholder = "Name:"; nm.autocomplete = "name";
       const em = el("input", "cline"); em.type = "email"; em.placeholder = "Email:"; em.autocomplete = "email";
+      /* the field may already have asked: a name and an address given
+         once are not asked for twice, only shown, still editable */
+      if (c.__contact) { nm.value = c.__contact.name || ""; em.value = c.__contact.email || ""; }
       const go = el("button", "cchip", "Book " + mins + " minutes"); go.type = "button";
       claim.appendChild(nm); claim.appendChild(em); claim.appendChild(go);
       wrap.insertAdjacentElement("afterend", claim);
@@ -2495,7 +2537,14 @@ async function buildWeek(c, minutes) {
       go.addEventListener("click", send);
       [nm, em].forEach((i) => i.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); send(); } }));
     }
-    claim.querySelector("input").focus({ preventScroll: true });
+    const empty = [...claim.querySelectorAll("input")].find((i) => !i.value.trim());
+    (empty || claim.querySelector("button")).focus({ preventScroll: true });
+  };
+  /* the field can point at the week: "let's schedule" opens the
+     first day with a time in it and says so */
+  c.__showWeek = () => {
+    const open = rows.find((r) => r.classList.contains("open")) || first;
+    if (open) { open.__show(); open.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
   };
 }
 async function intake(c, text) {
@@ -2523,15 +2572,21 @@ async function intake(c, text) {
       ok = res.ok;
     } catch (e) { ok = false; }
     const last = c.__talk.querySelector(".cturn:last-child .ca");
-    if (last) last.textContent = ok ? "Sent. I will write back." : "That did not send. hello@reckon.house works.";
+    if (last) last.textContent = ok
+      ? "Sent. I will write back. If you want to talk it through first, pick a time below."
+      : "That did not send. hello@reckon.house works.";
     it.step = ok ? "done" : "body";
-    if (!ok) c.__line.placeholder = "The project:";
+    if (ok) { c.__contact = { name: it.name, email: it.email }; if (c.__showWeek) c.__showWeek(); }
+    else c.__line.placeholder = "The project:";
     return;
   }
   /* after a send the field is a field again */
   c.__intake = null;
   return askFrom(c, t);
 }
+/* a word for the calendar, typed anywhere in the room, is the
+   calendar, not a search: the field points at the week */
+const WANTS_TIME = /\b(schedule|book|booking|calendar|call|meet|meeting|a time|talk it through|when are you free)\b/i;
 /* what the house says about itself, wherever it is asked: a method
    note by its head, the credits by their question */
 function houseLine(q) {
