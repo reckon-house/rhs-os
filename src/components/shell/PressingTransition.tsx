@@ -52,11 +52,7 @@ const OUT_TAIL_MS = 260;
 const HOLD_MAX_MS = 4000;
 /** Per-beat safety, in case a transitionend never fires (hidden tab). */
 const BEAT_MAX_MS = 1400;
-/** The held beat on an arrival. Shorter than the floor a push gets:
- *  the black has already been up for the length of a document load, so
- *  this is only long enough to be seen as a curtain rather than a
- *  flash before it starts lifting. */
-const ARRIVE_HOLD_MS = 240;
+
 
 export function PressingTransition() {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -108,6 +104,7 @@ export function PressingTransition() {
     }
 
     let done = false;
+    let alive = true;
     holdArrivals();
     const black = cover.querySelector<HTMLElement>(".ptb");
     const finish = () => {
@@ -115,7 +112,27 @@ export function PressingTransition() {
       done = true;
       give();
     };
-    const lift = window.setTimeout(() => {
+
+    /* The same three moves the site makes for its own routes, in the
+       same order: hold the floor so a fast arrival cannot snap the
+       black open before the eye has registered it closed; let the lap
+       finish so no line is caught mid-flight; reverse the delays so
+       they leave from the bottom, which is the direction the lifting
+       clip removes them in. */
+    void (async () => {
+      await new Promise((r) => setTimeout(r, HOLD_MIN_MS));
+      await painted();
+      if (!alive) return;
+      await stopWaiting(cover);
+      if (!alive) return;
+      cover.querySelectorAll<HTMLElement>(".ptstack").forEach((stack) => {
+        Array.from(stack.children).forEach((line, i) => {
+          (line as HTMLElement).style.setProperty(
+            "--d",
+            ((stack.children.length - 1 - i) * STEP_OUT).toFixed(3) + "s"
+          );
+        });
+      });
       cover.classList.add("pt-3");
       const end = (e: TransitionEvent) => {
         if (e.target !== black || e.propertyName !== "clip-path") return;
@@ -126,10 +143,10 @@ export function PressingTransition() {
       /* a transitionend that never fires must not leave the page under
          a curtain it cannot see past */
       window.setTimeout(finish, BEAT_MAX_MS);
-    }, ARRIVE_HOLD_MS);
+    })();
 
     return () => {
-      window.clearTimeout(lift);
+      alive = false;
       finish();
     };
     /* once, on the document that arrived */

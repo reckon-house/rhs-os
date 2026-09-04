@@ -106,9 +106,16 @@ export default function RootLayout({
             for them — how many lines fill this screen, the
             line-height that makes them add up, the size that fits the
             longest one — because the page that left had already
-            worked all of that out against the same viewport. The
-            delays are the OUT stagger, bottom-up, since lifting is
-            the only thing this curtain will ever do. */}
+            worked all of that out against the same viewport.
+
+            IT ARRIVES LAPPING. On a fast route the leaving page's
+            wait is over in milliseconds, so nearly all the black
+            anyone actually sees belongs to this document — and drawn
+            settled it read as a held frame rather than a page
+            loading. Same class, same keyframes, and the delays it
+            carries are the IN stagger the lap runs on;
+            PressingTransition reverses them for the lift, exactly
+            where the site's own sequence does. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
@@ -118,7 +125,7 @@ export default function RootLayout({
               "var d=JSON.parse(raw);" +
               "if(!d||!d.t||Date.now()-d.t>15000)return;" +
               "var r=document.createElement('div');r.id='ptArrive';" +
-              "r.className='pt pt-run pt-1 pt-2';r.setAttribute('aria-hidden','true');" +
+              "r.className='pt pt-run pt-1 pt-2 pt-wait';r.setAttribute('aria-hidden','true');" +
               "r.style.cssText='position:fixed;inset:0;z-index:300;background:#000';" +
               "var N=d.n||0;" +
               "var panel=function(cls){var p=document.createElement('div');p.className=cls;" +
@@ -127,7 +134,7 @@ export default function RootLayout({
               "if(d.fs)s.style.setProperty('--ptfs',d.fs);" +
               "if(!d.sub)s.className='ptstack pt-nosub';" +
               "for(var i=0;i<N;i++){var l=document.createElement('span');l.className='ptl';" +
-              "l.style.setProperty('--d',((N-1-i)*0.02).toFixed(3)+'s');" +
+              "l.style.setProperty('--d',(i*0.03).toFixed(3)+'s');" +
               "l.textContent=d.title||'';" +
               "if(d.sub){var b=document.createElement('span');b.className='sub';" +
               "b.textContent='  '+d.sub;l.appendChild(b);}s.appendChild(l);}" +
