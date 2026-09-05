@@ -2186,15 +2186,25 @@ const ccols = [];
 /* a column is a module: the kth open column stands at module k+1,
    after the statement, and is shown with the module before it — the
    statement for the first, the column it was asked from for the rest */
-/* bring a column into view by the least move: none if it is on the
-   screen, else the row glides until it stands at the near edge */
+/* ── ONE READING SLOT ───────────────────────────────────────────────
+   A column is shown in the far slot of the view — the right-hand one
+   of the pair on desktop, the screen on a phone — whatever asked for
+   it and wherever it stands in the row. The row glides by exactly
+   what that takes, one module for a column that opened past the edge
+   and nothing for one that opened beside the reader.
+
+   It used to move by the least amount that put the column on screen,
+   which sounds gentler and was not: a chain of Nexts landed the
+   second study in the right slot, jumped the third to the left one,
+   and the Next chip walked around under the cursor. Seated in one
+   slot, the chip stays put, the study just read slides to the left
+   beside the new one, and pressing Next is a loop: the work comes in
+   from the right, the way the row reads, and keeps coming. A column
+   wider than the view is shown from its own left edge, since there is
+   no move that fits all of it. */
 const reveal = (c) => {
   if (ccols.indexOf(c) < 0) return;
-  const d = dispOf(c), sp = spanOf(c);
-  if (d < colIdx) pageTo(d);
-  /* a column wider than the view is shown from its own left edge:
-     there is no move that fits all of it */
-  else if (d + sp - 1 > colIdx + VISIBLE - 1) pageTo(Math.max(d, d + sp - VISIBLE));
+  pageTo(dispOf(c) + spanOf(c) - VISIBLE);
 };
 const showCol = reveal;
 
