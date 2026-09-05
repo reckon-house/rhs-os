@@ -292,7 +292,10 @@ head = r'''<!doctype html>
      carries its own close, and the choice is kept for the session:
      a visitor who put the questions away is not shown them again in
      the next room. */
-  .ccol .cqs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 0.2em; }
+  .ccol .cqs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 0.2em;
+    /* air before the first row's rule: the chips are the end of the
+       conversation and the rows are the start of the material */
+    margin-bottom: 1.8em; }
   .ccol .cqs .cchip.spent { opacity: 0.4; pointer-events: none; }
   .ccol .cqs .cx { padding: 0 6px; }
   /* ── THE CREDITS ARE A WALL ───────────────────────────────────────
@@ -2794,6 +2797,15 @@ async function openHouseColumn(kind, from, opts) {
       qs.appendChild(x);
       c.__matter.appendChild(qs);
     }
+    /* ── THE ROOM SAYS AT LEAST WHAT ITS DOOR DOES ────────────────────
+       The rail's hover drawer carries three notes — About, News, Stack
+       — and the column carried only the first, as its lede. A preview
+       that says more than the room is backwards. The other two stand
+       here as rows, in the column's own list grammar, between the
+       conversation and the credits: what is new, what he runs on, who
+       with. Same words as the drawer, because the drawer is a preview
+       of this and should match it. */
+    RAIL_NOTES.info.slice(1).forEach(([head, body]) => textRow(c.__matter, head, body));
     c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
     /* the wall: one cell a credit, its mark if it has one, its name if not */
     const grid = el("div", "cgrid");
