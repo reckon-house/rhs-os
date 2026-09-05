@@ -241,31 +241,29 @@
      carries its own close, and the choice is kept for the session:
      a visitor who put the questions away is not shown them again in
      the next room. */
-  .ccol .cqs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 0.2em;
-    /* air before the first row's rule: the chips are the end of the
-       conversation and the rows are the start of the material */
-    margin-bottom: 1.8em; }
-  .ccol .cqs .cchip.spent { opacity: 0.4; pointer-events: none; }
-  .ccol .cqs .cx { padding: 0 6px; }
-  /* ── THE CREDITS ARE A WALL ───────────────────────────────────────
-     Two across, hairlines between, every mark hanging from its cell's
-     left edge the way a caption hangs from its picture. Still. They
-     were a reel first, cut through with the cover reel's own burn,
-     and two logos of different widths on black both showed through
-     it — the mechanism was right for eight photographs that fill a
-     box and wrong for marks that do not. Six ways were tried
-     (credits-variants.html); Jeremy took the grid. A mark is drawn to
-     fit, not to fill, and reversed to white in the black room; the
-     one that is a photograph of a mark stays as it is. A credit with
-     no mark stands as its name, in the furniture register. */
-  .ccol .cgrid { display: grid; grid-template-columns: 1fr 1fr; margin-top: 0.9em;
-    border-top: 1px solid rgba(255, 255, 255, 0.28); }
-  .ccol .ccell { height: 84px; padding: 20px 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.28); }
-  .ccol .ccell:nth-child(odd) { border-right: 1px solid rgba(255, 255, 255, 0.28); }
-  .ccol .cmk { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
-  .ccol .cmk:not([src$="dwr.jpg"]) { filter: invert(1); }
-  .ccol .cword { display: flex; align-items: center; height: 100%; font-size: var(--note);
-    font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+  /* ── A CREDIT IS A ROW, AND ITS MARK IS THE LINE ──────────────────
+     The room went reel, then grid, then back to the list it should
+     have been: the same row grammar as everything else in a column —
+     rule above, the thing tight under it, the air below — with the
+     mark standing where the name would, at the size the name would,
+     hanging from the same left edge. Two earlier tries were both the
+     same mistake, which was giving the marks a box of their own: a
+     reel cut two logos of different widths over each other, and a
+     grid built a wall the room does not otherwise have.
+
+     Heights are the live footer's own, mark for mark. Equal height is
+     not equal optical weight — a wordmark set wide reads heavier than
+     a squarer one at the same cap — and those numbers were tuned
+     against these exact files in PressingCredits.tsx. Reversed to
+     white in the black room; the one that is a photograph of a mark
+     stays as it is. */
+  .ccol .crow.mark { padding-bottom: 40px; }
+  /* `.ccol .crow img` sets the 96x72 cover a study's row shows, and an
+     element beats a class: named through the row, this wins. */
+  .ccol .crow .cmk { display: block; height: var(--mh, 15px); width: auto;
+    max-width: 100%; border-radius: 0; background: none;
+    object-fit: contain; object-position: left center; }
+  .ccol .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -2700,9 +2698,13 @@ const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: []
 /* what a first visitor does not yet know to ask; the answers are the
    footer's method notes and its credits, which houseLine already
    holds */
-const HOUSE_QUESTIONS = ["How does it start?", "What do you take on?", "When is it done?", "Who have you worked with?"];
 /* the live footer's marks, by the credit they stand for. Haven has no
    mark and is spoken, not shown. */
+/* the live footer's per-mark heights, verbatim from PressingCredits.tsx:
+   equal height is not equal optical weight, and these were tuned
+   against these exact files. 15 is the default there and here. */
+const MARK_H = { "Nordstrom": 12, "Rejuvenation": 13, "Visual Comfort": 11,
+  "Floor & Decor": 14, "Design Within Reach": 17 };
 const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg",
   "Ivy Park by Beyonc\u00e9": "/brands/ivy-park.svg", "Neiman Marcus": "/brands/neiman-marcus.svg",
   "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
@@ -2731,42 +2733,29 @@ async function openHouseColumn(kind, from, opts) {
     const d = el("div", "cnote", (cut > 0 ? about.slice(0, cut) : about).trim() + " ");
     if (cut > 0) d.appendChild(el("span", "g", about.slice(cut).trim()));
     c.__lead.appendChild(d);
-    /* the questions, unless they were put away */
-    let off = false;
-    try { off = sessionStorage.getItem("board.qs") === "off"; } catch (e) { off = false; }
-    if (!off) {
-      const qs = el("div", "cqs");
-      HOUSE_QUESTIONS.forEach((q) => {
-        const b = el("button", "cchip", q); b.type = "button";
-        b.addEventListener("click", () => { b.classList.add("spent"); askFrom(c, q); });
-        qs.appendChild(b);
-      });
-      const x = el("button", "cx", "\u00d7"); x.type = "button"; x.title = "Put the questions away";
-      x.addEventListener("click", () => { qs.remove(); try { sessionStorage.setItem("board.qs", "off"); } catch (e) { /* fine */ } });
-      qs.appendChild(x);
-      c.__matter.appendChild(qs);
-    }
-    /* ── THE ROOM SAYS AT LEAST WHAT ITS DOOR DOES ────────────────────
-       The rail's hover drawer carries three notes — About, News, Stack
-       — and the column carried only the first, as its lede. A preview
-       that says more than the room is backwards. The other two stand
-       here as rows, in the column's own list grammar, between the
-       conversation and the credits: what is new, what he runs on, who
-       with. Same words as the drawer, because the drawer is a preview
-       of this and should match it. */
+    /* ── THE ROOM STATES WHAT IT KNOWS ────────────────────────────────
+       It used to offer four question chips and answer them into the
+       talk, which meant the room's own material was three presses
+       away and the rail's hover drawer said more than the room did. A
+       preview that says more than the room is backwards, and a chip
+       that has to be pressed to reveal a sentence is a mechanism
+       around a sentence. So the notes are simply here, in the same
+       row grammar as everything else in a column: how it starts, what
+       he takes on, when it is done, then what is new and what he runs
+       on. The field is still a field; the questions are gone, not
+       their answers. */
+    (h.method || []).forEach((m) => textRow(c.__matter, m.k, m.v));
     RAIL_NOTES.info.slice(1).forEach(([head, body]) => textRow(c.__matter, head, body));
     c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
-    /* the wall: one cell a credit, its mark if it has one, its name if not */
-    const grid = el("div", "cgrid");
+    /* one row a credit, its mark standing where the name would */
     h.credits.forEach((name) => {
-      const cell = el("div", "ccell");
-      if (MARKS[name]) {
-        const img = el("img", "cmk"); img.src = MARKS[name]; img.alt = name; img.decoding = "async";
-        cell.appendChild(img);
-      } else cell.appendChild(el("span", "cword", name));
-      grid.appendChild(cell);
+      const r = textRow(c.__matter, MARKS[name] ? "" : name, "");
+      if (!MARKS[name]) return;
+      r.classList.add("mark");
+      const img = el("img", "cmk"); img.src = MARKS[name]; img.alt = name; img.decoding = "async";
+      if (MARK_H[name]) img.style.setProperty("--mh", MARK_H[name] + "px");
+      r.firstChild.appendChild(img);
     });
-    c.__matter.appendChild(grid);
   } else {
     /* ALL IN ONE. /book's own lede, then the field as the message,
        then the week and the claim, then the ways in as plain links —
