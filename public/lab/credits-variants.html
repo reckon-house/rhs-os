@@ -44,6 +44,9 @@
   .v-lit .run .n.on { color: #fff; }
 
   /* ── C · a grid, still ──────────────────────────────────────────── */
+  /* marks hang from the cell's left edge, the way a caption does */
+  .v-still img.mk { object-position: left center; }
+  .v-still .word { justify-items: start; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.28); }
   .grid .cell { height: 84px; padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,0.28); }
   .grid .cell:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.28); }
