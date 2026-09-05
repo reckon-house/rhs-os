@@ -3391,11 +3391,21 @@ rail = r'''
 
    --hug is MEASURED per row, as on the homepage, because every label
    is a different length and a guessed percentage clips a word. */
+/* ── THE NOTE, AND THE TASTE OF IT ──────────────────────────────────
+   Third in each row is what the DRAWER says; the first two are the
+   room's. They sat together as one line while the drawer was the only
+   place these notes appeared, and then the room grew them and the
+   drawer went on saying the whole thing — a hover repeating a room
+   word for word, which is a preview of nothing. Written here, beside
+   what they are short of, so the two cannot drift apart. */
 const RAIL_NOTES = {
   info: [
-    ["About", "Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work."],
-    ["News", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online."],
-    ["Stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales."],
+    ["About", "Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work.",
+      "Creative technologist. Independent, Texas."],
+    ["News", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online.",
+      "Awwwards Honors, 2026. Faux Reel, an open repo."],
+    ["Stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales.",
+      "Coffee. Music. Ideas. Claude. Beer."],
   ],
   connect: [[null, "hello@reckon.house"]],
 };
@@ -3470,13 +3480,14 @@ const toggleHouse = (kind) => {
    The category drawers hold a reel and a sentence about the shelf. The
    two doors emptied when their chips became doors, and an open drawer
    with nothing in it is a mistake with a hover on it. Info's drawer
-   carries the three notes it always did — the room holds the rest.
+   carries the three notes it always did, in short — the room holds
+   them whole, and a preview that says everything previews nothing.
    Connect's carries the one live fact a visitor wants before opening
    the room: the next open time, read from the same week the column
    reads, in the reader's own zone, the first time the drawer opens. */
 {
   const { h, pad } = mkRow("Info", true);
-  RAIL_NOTES.info.forEach(([c, t]) => sub(pad, c, t));
+  RAIL_NOTES.info.forEach(([c, t, peek]) => sub(pad, c, peek || t));
   h.addEventListener("click", () => toggleHouse("info"));
 }
 {
