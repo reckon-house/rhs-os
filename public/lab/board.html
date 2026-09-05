@@ -2764,9 +2764,38 @@ async function openHouseColumn(kind, from, opts) {
        he takes on, when it is done, then what is new and what he runs
        on. The field is still a field; the questions are gone, not
        their answers. */
+    /* three headed runs, biggest first: the ships stand right under
+       the field, since they are the things to note; the notes on how
+       he works next; the credits last, as they were */
+    const sect = (t) => c.__matter.appendChild(el("div", "cnote g csect", t));
+    sect("Shipped lately.");
+    /* a ship with a study behind it is a shelf row: the study's own
+       picture, the ship as the row's line, and a press opens the
+       study beside this room. One without a study — the honours —
+       is a text row, the same rule and the same air. */
+    NEWS.forEach(([head, body, , folder]) => {
+      if (!folder || !GROUPS[folder]) { textRow(c.__matter, head, body); return; }
+      const r = el("div", "crow"); r.dataset.folder = folder;
+      const cv = coverOf[folder], frames = reelFrames(folder);
+      if (ALWAYS_REEL[folder] && frames.length >= 3 && !REDUCE()) {
+        const box = el("div", "creel sz-stage"); r.appendChild(box);
+        const rl = { box, frames, timer: null }; szStage(rl); r.__rl = rl; reelIO.observe(r);
+      } else if (cv) {
+        const im = el("img"); im.src = encodeURI(cv.t); im.alt = ""; im.loading = "lazy";
+        const ss = srcsetFor(cv); if (ss) { im.srcset = ss; im.sizes = "96px"; }
+        r.appendChild(im);
+      } else r.appendChild(el("div", "creel"));
+      const t = el("div");
+      t.appendChild(el("b", null, head + (body ? " " : "")));
+      if (body) t.appendChild(el("span", "g", body));
+      r.appendChild(t);
+      r.addEventListener("click", () => openStudyColumn(folder, {}, c));
+      c.__matter.appendChild(r);
+    });
+    sect("How I work.");
     (h.method || []).forEach((m) => textRow(c.__matter, m.k, m.v));
-    RAIL_NOTES.info.slice(1).forEach(([head, body]) => textRow(c.__matter, head, body));
-    c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
+    textRow(c.__matter, RAIL_NOTES.info[2][0], RAIL_NOTES.info[2][1]);
+    sect("Worked with, spotted by & featured in.");
     /* one row a credit, its mark standing where the name would */
     h.credits.forEach((name) => {
       const r = textRow(c.__matter, name, "");
@@ -3753,21 +3782,43 @@ async function playTransition(href, title, sub) {
 
    --hug is MEASURED per row, as on the homepage, because every label
    is a different length and a guessed percentage clips a word. */
+/* ── WHAT SHIPPED ───────────────────────────────────────────────────
+   The big things, each three ways: the name the room heads its row
+   with, the room's own line under it, and the one line the drawer
+   says. The lines are the studies' own words — A.R.C.'s, Sally's and
+   Faux Reel's summaries, nothing added — because talking a thing up
+   in this house means saying what it did, not what it was like. The
+   Awwwards line has no body: nothing in the house says what the
+   honours were for, and a line that does not know that is a line
+   made up. */
+const NEWS = [
+  ["Awwwards Honors, 2026", "",
+    "Awwwards Honors, 2026.", null],
+  ["A.R.C. launched on the App Store",
+    "Point the camera at a room and it names what is there, estimates replacement value, and shows the gap against your policy as a dollar amount. Solo, end to end: concept, code, brand, go-to-market.",
+    "A.R.C. is on the App Store.", "arc"],
+  ["Sally OS is rolling out to the enterprise",
+    "Eight apps, an AI strategist with 21 tools, an asset hub and a store-associate site, built from inside the marketing team in about four months. It thinks on its own now: live signals in, proposed campaigns out.",
+    "Sally OS is rolling out to the enterprise.", "sally-os"],
+  ["Faux Reel went out as an open repo",
+    "A sizzle reel with no footage: still photographs run through fourteen transitions in CSS, no video file anywhere. A 4.8KB web component, built in a day with Claude Code.",
+    "Faux Reel is out as an open repo.", "sizzle"],
+];
 /* ── THE NOTE, AND THE TASTE OF IT ──────────────────────────────────
    Third in each row is what the DRAWER says; the first two are the
    room's. They sat together as one line while the drawer was the only
    place these notes appeared, and then the room grew them and the
    drawer went on saying the whole thing — a hover repeating a room
    word for word, which is a preview of nothing. Written here, beside
-   what they are short of, so the two cannot drift apart. */
+   what they are short of, so the two cannot drift apart. News is the
+   ships above, one line each. */
 const RAIL_NOTES = {
   info: [
     ["About", "Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work.",
       "Creative technologist. Independent, Texas."],
-    ["News", "Awwwards Honors, 2026. Faux Reel released as an open repo. 28 case studies online.",
-      "Awwwards Honors, 2026. Faux Reel, an open repo."],
+    ["News", "", NEWS.map((x) => x[2])],
     ["Stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales.",
-      "Coffee. Music. Ideas. Claude. Beer."],
+      "Coffee. Ideas. Claude."],
   ],
   connect: [[null, "hello@reckon.house"]],
 };
@@ -3849,7 +3900,10 @@ const toggleHouse = (kind) => {
    reads, in the reader's own zone, the first time the drawer opens. */
 {
   const { h, pad } = mkRow("Info", true);
-  RAIL_NOTES.info.forEach(([c, t, peek]) => sub(pad, c, peek || t));
+  RAIL_NOTES.info.forEach(([c, t, peek]) => {
+    const lines = Array.isArray(peek) ? peek : [peek || t];
+    lines.forEach((line, i) => sub(pad, i ? null : c, line));
+  });
   h.addEventListener("click", () => toggleHouse("info"));
 }
 {
