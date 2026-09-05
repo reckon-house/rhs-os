@@ -2124,9 +2124,17 @@ const shelfName = (tag) => {
 function predictNext(currentSlug) {
   const askedWords = trailLog.asked.join(" ").toLowerCase()
     .split(/[^a-z0-9]+/).filter((w) => w.length > 3);
+  /* ── NEVER WHAT IS ALREADY STANDING IN THE ROW ───────────────────
+     Two studies that share their tags scored each other highest, so
+     Ivy Park offered Nordstrom and Nordstrom offered Ivy Park, and a
+     reader pressing Next went round in a circle of two with three
+     copies of one study open. The trail's 0.35 for a study opened
+     earlier was never going to beat a shared tag. A column that is
+     open is not a next: it is a now. */
+  const open = new Set(ccols.map((x) => x.__folder).filter(Boolean));
   let best = null;
   for (const slug of ORDER) {
-    if (slug === currentSlug) continue;
+    if (slug === currentSlug || open.has(slug)) continue;
     const g = GROUPS[slug];
     let score = 0;
     const parts = [];
@@ -2157,9 +2165,16 @@ function predictNext(currentSlug) {
     if (!best || score > best.score) best = { slug, score, parts };
   }
   if (!best || best.score <= 0) {
+    /* the house's order, from here, skipping what is already open;
+       nothing at all if every study is standing, which is a row
+       twenty-eight columns wide and its own reward */
     const i = ORDER.indexOf(currentSlug);
-    const slug = ORDER[(i + 1) % ORDER.length] || ORDER[0];
-    return { slug, reason: "next in the house's order" };
+    for (let k = 1; k <= ORDER.length; k++) {
+      const slug = ORDER[(i + k) % ORDER.length];
+      if (slug && slug !== currentSlug && !open.has(slug))
+        return { slug, reason: "next in the house's order" };
+    }
+    return null;
   }
   const top = best.parts.sort((x, y) => y.v - x.v)[0];
   /* "since you opened Sally" is odd to read while you are on Sally;
@@ -2991,6 +3006,13 @@ function openShelfColumn(tag, from, opts) {
 function openStudyColumn(folder, opts, from) {
   opts = opts || {};
   const g = GROUPS[folder]; if (!g) return;
+  /* ── ONE COLUMN PER STUDY ─────────────────────────────────────────
+     A study already standing in the row is shown, not opened again:
+     the conversation it holds stays in one place, and the row never
+     carries three of the same thing. Not logged as an opening,
+     because it is not one. */
+  const standing = ccols.find((x) => x.__folder === folder);
+  if (standing) { reveal(standing); return; }
   trailLog.opened.push(folder); saveTrail();
   loadCopy();   /* its own words, on the way */
   /* ── A STUDY IS NAMED BY ITS CHIP AND LEFT BY ITS NEXT ───────────
