@@ -684,9 +684,16 @@ head = r'''<!doctype html>
     html.rh-cover #nav [data-mark], html.rh-cover #nav [data-meta] {
       opacity: 1; visibility: visible; transform: none; }
   }
-  /* the rail sits under the cover line, where the homepage puts it */
+  /* ── THE RAIL STARTS WHERE EVERYTHING ELSE STARTS ────────────────
+     It sat 16px lower than the field on the homepage's own number,
+     which read as a gap above the first chip once the field's columns
+     were all opening on one line. The band is 46, not 62: it is the
+     masthead's own, the same one TOP0 adds to --cover-air and the
+     same one a conversation column pads its head by, so the rail's
+     first chip, a column's chip and the statement all begin on the
+     one line. */
   @media (min-width: 761px) {
-    #railwrap { top: calc(var(--cover-air, 50px) + 62px); }
+    #railwrap { top: calc(var(--cover-air, 50px) + 46px); }
   }
   /* the room the travelling field takes inside the sentence — the
      homepage's #askSlot, as a class because the statement is dealt
