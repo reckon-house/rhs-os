@@ -3714,12 +3714,21 @@ const hug = () => {
     const full = r.getBoundingClientRect().width;
     if (!full) return;
     const pad = parseFloat(getComputedStyle(head).paddingLeft) || 12;
-    /* a path row carries its own × inside the head, and a chip that
-       stops at its words has to stop past that too — measured, not
-       allowed for, because the glyph's width is the font's business */
+    /* ── FROM THE HEAD'S EDGE TO WHATEVER ENDS LAST ─────────────────
+       A path row carries its own × inside the head, and a chip that
+       stops at its words has to stop past that too. Measured as a
+       DISTANCE from the head's left edge rather than as a sum of
+       widths: adding ink + × + two pads left out the gap the × sits
+       on, so the chip ended four pixels past the glyph and the ×
+       looked jammed against the edge. This way the trailing space is
+       the same pad as the leading one, whatever the parts measure —
+       and the later of the two rights covers a long name that wraps,
+       where the × is not the rightmost thing. */
     const x = r.querySelector(".rx");
-    const want = ink.getBoundingClientRect().width +
-      (x ? x.getBoundingClientRect().width : 0) + pad * 2;
+    const hl = head.getBoundingClientRect().left;
+    const ends = Math.max(ink.getBoundingClientRect().right,
+      x ? x.getBoundingClientRect().right : 0);
+    const want = ends - hl + pad;
     const v = Math.max(0, Math.min(92, ((full - want) / full) * 100));
     r.style.setProperty("--hug", v.toFixed(2) + "%");
   });
