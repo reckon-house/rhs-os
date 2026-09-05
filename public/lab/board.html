@@ -257,12 +257,23 @@
      against these exact files in PressingCredits.tsx. Reversed to
      white in the black room; the one that is a photograph of a mark
      stays as it is. */
-  .ccol .crow.mark { padding-bottom: 40px; }
+  /* the name holds the row's left edge like every other head, and the
+     mark answers it at the right — the two ends of one line, which is
+     what a credit is: who, and their own hand. */
+  /* HALF THE ROW, NOT `auto`. An auto track sizes to the widest mark
+     and every other one then sits at its own width inside it, so the
+     right edges came out eleven different numbers — and a max-width in
+     per cent resolved against that same track, which squeezed each
+     mark against its neighbours. A fixed share ends the circle: every
+     box is the same box, `contain` fits each mark inside it at its own
+     ratio, and they all end on one line. */
+  .ccol .crow.mark { grid-template-columns: minmax(0, 1fr) 50%;
+    column-gap: 20px; align-items: center; padding-bottom: 40px; }
   /* `.ccol .crow img` sets the 96x72 cover a study's row shows, and an
      element beats a class: named through the row, this wins. */
-  .ccol .crow .cmk { display: block; height: var(--mh, 15px); width: auto;
-    max-width: 100%; border-radius: 0; background: none;
-    object-fit: contain; object-position: left center; }
+  .ccol .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
+    border-radius: 0; background: none;
+    object-fit: contain; object-position: right center; }
   .ccol .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
@@ -993,7 +1004,14 @@ document.documentElement.style.setProperty("--modw", MOD_X + "px");
    the column CSS that must land on the same edges as the tiles */
 document.documentElement.style.setProperty("--gapx", GAP + "px");
 let PH = 0; /* the period's height — computed by the row grid below */
-const AIR_MIN = 120, AIR_MAX = 340;
+/* ── THE AIR BETWEEN ONE PICTURE AND THE NEXT ───────────────────────
+   Dealt, so no two gaps are the same, and capped, so none of them is
+   a hole. It used to be 120 to 340 and the gaps came out 155 to 688,
+   because a gap was the dealt air PLUS whatever the row's own height
+   had left over above a short picture — leftover nobody chose. Now a
+   column runs its own y and the gap IS the air, which means the
+   ceiling here is the ceiling on the page. */
+const AIR_MIN = 96, AIR_MAX = 260;
 const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
 /* THE INDEX'S OWN TIERS, verbatim, and the 0.17 anti-repeat with them.
    Mine ran 0.55 to 1.0, so tiles filled their column and the air went
@@ -1162,7 +1180,7 @@ let tiles = [], ROWS = 0, COLS = 0, PW = 0, rowY = [], coverCol = {};
    before the window that reads it exists. */
 const fcols = new Map();
 const colY = new Map();
-let byCol = [];
+let byCol = [], colH = [];
 function deal(list, opts) {
   opts = opts || {};
   const r = opts.rnd || rnd;
@@ -1273,6 +1291,9 @@ function deal(list, opts) {
      (which column) is still the pair's; only the height is the
      column's own. */
   const colY = opts.stack ? new Array(cols).fill(ys[0]) : null;
+  /* where each column's work actually ends, so its scroller stops
+     there rather than at the tallest column's bottom */
+  const colH = new Array(cols).fill(ys[rows]);
   const out = [], cc = {};
   /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
      The board filled a column top to bottom and then moved right; the
@@ -1303,18 +1324,18 @@ function deal(list, opts) {
       }
     }
     let y = ys[k];
-    if (colY) { y = colY[c]; colY[c] += h + airOf(); }
+    if (colY) { y = colY[c]; colY[c] += h + airOf(); colH[c] = y + h; }
     out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
   });
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: colY ? Math.max(...colY) : ys[rows], rowY: ys, coverCol: cc };
+    PH: colY ? Math.max(...colH) : ys[rows], colH, rowY: ys, coverCol: cc };
 }
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
-  rowY = L.rowY; coverCol = L.coverCol;
+  rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || [];
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
@@ -1331,7 +1352,7 @@ const BOARD = deal(items, PHONE
   ? { lead: { kind: "statement", w: COL, h: STATEMENT_H },
       rows: Math.ceil((items.length + 1) / VISIBLE), fitRows: true, stack: true,
       air: [24, 64] }
-  : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
+  : { lead: { kind: "statement", w: COL, h: STATEMENT_H }, stack: true });
 adopt(BOARD);
 
 
@@ -1753,7 +1774,7 @@ function mountCol(u, gx, sh) {
   f.style.cssText = "left:" + gx + "px;width:" + MOD_X + "px;translate:" + sh + "px 0";
   const inn = document.createElement("div");
   inn.className = "fin";
-  inn.style.height = PH + "px";
+  inn.style.height = (colH[u - Math.floor(u / COLS) * COLS] || PH) + "px";
   f.appendChild(inn);
   f.__in = inn;
   plane.appendChild(f);
@@ -2700,11 +2721,12 @@ const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: []
    holds */
 /* the live footer's marks, by the credit they stand for. Haven has no
    mark and is spoken, not shown. */
-/* the live footer's per-mark heights, verbatim from PressingCredits.tsx:
-   equal height is not equal optical weight, and these were tuned
-   against these exact files. 15 is the default there and here. */
-const MARK_H = { "Nordstrom": 12, "Rejuvenation": 13, "Visual Comfort": 11,
-  "Floor & Decor": 14, "Design Within Reach": 17 };
+/* the live footer's per-mark heights — equal height is not equal
+   optical weight, and these were tuned against these exact files —
+   at four thirds, which is the default going 15 to 20. The ratios are
+   the footer's; only the register is the room's. */
+const MARK_H = { "Nordstrom": 16, "Rejuvenation": 17, "Visual Comfort": 15,
+  "Floor & Decor": 19, "Design Within Reach": 22 };
 const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg",
   "Ivy Park by Beyonc\u00e9": "/brands/ivy-park.svg", "Neiman Marcus": "/brands/neiman-marcus.svg",
   "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
@@ -2749,12 +2771,12 @@ async function openHouseColumn(kind, from, opts) {
     c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
     /* one row a credit, its mark standing where the name would */
     h.credits.forEach((name) => {
-      const r = textRow(c.__matter, MARKS[name] ? "" : name, "");
+      const r = textRow(c.__matter, name, "");
       if (!MARKS[name]) return;
       r.classList.add("mark");
       const img = el("img", "cmk"); img.src = MARKS[name]; img.alt = name; img.decoding = "async";
       if (MARK_H[name]) img.style.setProperty("--mh", MARK_H[name] + "px");
-      r.firstChild.appendChild(img);
+      r.appendChild(img);
     });
   } else {
     /* ALL IN ONE. /book's own lede, then the field as the message,
