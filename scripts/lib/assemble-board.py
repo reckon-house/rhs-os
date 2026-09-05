@@ -1173,9 +1173,6 @@ const COVER_AIR = px("--cover-air", 50);
    what a masthead is for. */
 const HEAD_BAND = PHONE ? 0 : 46;
 const TOP0 = PHONE ? 30 : COVER_AIR + HEAD_BAND;
-/* the address stands at the top of the next column, so that column's
-   first frame starts under it: measured on the live page, 61px */
-const META_DROP = PHONE ? 0 : 61;
 const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
@@ -1310,7 +1307,6 @@ function deal(list, opts) {
      column's own. */
   const colY = opts.stack ? new Array(cols).fill(ys[0]) : null;
   const out = [], cc = {};
-  const metaDrop = opts.metaDrop || 0;
   /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
      The board filled a column top to bottom and then moved right; the
      live site fills a row across and then moves down. Same order,
@@ -1324,17 +1320,22 @@ function deal(list, opts) {
     const pair = Math.floor(i / per), within = i % per;
     const c = pair * VISIBLE + (within % VISIBLE), k = Math.floor(within / VISIBLE);
     let { w, h } = it;
-    /* the first row of every column but the first starts under the
-       address line, as the homepage's does */
-    const drop = (k === 0 && c > 0) ? metaDrop : 0;
+    /* ── AND THE FIELD OPENS ON ONE LINE ────────────────────────────
+       Every column but the first used to start 61px lower, under the
+       address line, which is what the live homepage does. It is the
+       right move there, where the address sits in the flow above the
+       work. Here the address is in the cover line, which bottoms at
+       64 with the whole of --cover-air below it, so the drop was
+       clearing something already cleared — and it cost the one thing
+       a row of columns is for, which is a top edge they share. */
     if (it.kind === "img") {
-      const cap = capOf(it), budget = rowH[k] - cap - drop;
+      const cap = capOf(it), budget = rowH[k] - cap;
       if (h - cap > budget) {
         w = Math.max(60, Math.round(w * (budget / (h - cap))));
         h = budget + cap;
       }
     }
-    let y = ys[k] + drop;
+    let y = ys[k];
     if (colY) { y = colY[c]; colY[c] += h + airOf(); }
     out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
       noCap: !!opts.noCaptions });
@@ -1360,10 +1361,10 @@ function adopt(L) {
    there are two), and the air between them is a feed's, not a
    board's. */
 const BOARD = deal(items, PHONE
-  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, metaDrop: 0,
+  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H },
       rows: Math.ceil((items.length + 1) / VISIBLE), fitRows: true, stack: true,
       air: [24, 64] }
-  : { lead: { kind: "statement", w: COL, h: STATEMENT_H }, metaDrop: META_DROP });
+  : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
 adopt(BOARD);
 
 
