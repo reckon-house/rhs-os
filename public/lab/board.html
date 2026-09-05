@@ -549,6 +549,14 @@
      the field itself — the chip went back to grey while half the board
      was still a ghost. Ink, the same flood the open row takes, so the
      rail says which question the field is answering. */
+  /* ── THE CHIPS ARE SET LIKE EVERYTHING ELSE ──────────────────────
+     The homepage's rail runs its labels at 500, the one weight below
+     the board's own: the wordmark, the statement and every tile's
+     caption are 600, so the rail read a shade lighter than the page
+     it commands. In the board's own block rather than the shared
+     stylesheet, because the live homepage's rail is a different
+     object in a different setting and this is not a fix to it. */
+  #railwrap .rhead { font-weight: 600; }
   #rdrawer .rrow.picked { background: var(--ink); color: #fff; }
   #rdrawer .rrow.picked .rslash { color: #fff; }
 
