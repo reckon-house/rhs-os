@@ -110,11 +110,12 @@
      module away. */
   #field {
     position: relative; flex: none; height: 100%;
-    /* none, not pan-y: pan-y lets the browser claim a vertical touch
-       pan, and the browser's pan on an overflow-hidden box moves
-       nothing while our pointer events are cancelled under it — a
-       vertical swipe on a phone did nothing at all */
-    overflow: hidden; touch-action: none;
+    /* pan-y, because there is finally something for the browser to
+       pan: each column is its own scroller. It was `none` while the
+       field was one plane moved by hand, where a claimed vertical pan
+       moved nothing at all and a swipe did nothing on a phone. The
+       horizontal is still ours, through pointer events. */
+    overflow: hidden; touch-action: pan-y;
   }
 
   /* ── A COLUMN ─────────────────────────────────────────────────────
@@ -405,7 +406,26 @@
   #pathwrap .rrow { --hug: 0%; }
   #pathwrap .rhead { white-space: normal; text-align: left; line-height: 1.25; }
   @media (max-width: 760px) { #strip { left: 0; } }
-  #plane { position: absolute; left: 0; top: 0; will-change: transform; }
+  #plane { position: absolute; left: 0; top: 0; bottom: 0; will-change: transform; }
+  /* ── EVERY COLUMN SCROLLS ON ITS OWN ──────────────────────────────
+     A column of the field is a scroll container, the same as an open
+     study column's .cin: the browser owns the wheel under the pointer,
+     the touch pan, the momentum and the rubber band, which is a
+     better version of each than the plane's single y ever had. The
+     plane keeps X — one row, one horizontal axis — and the vertical
+     belongs to whichever column you are over.
+
+     The shift for an anchored column lives here now rather than on
+     each tile, because it is a fact about the column, and it leaves
+     the tile's own translate free. */
+  .fcol { position: absolute; top: 0; bottom: 0;
+    overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+    scrollbar-width: none; touch-action: pan-y;
+    transition: translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
+  .fcol::-webkit-scrollbar { display: none; }
+  /* the column's full run, so the scroller has the height the deal
+     dealt rather than the height of whatever happens to be mounted */
+  .fin { position: relative; width: 100%; }
 
   /* ── the standing rules ────────────────────────────────────────────
      The homepage's own geometry: they begin --cover-air below the top
@@ -429,15 +449,14 @@
      would drop these out of their own absolute placement. Two classes
      and an id, so this wins wherever that rule applies. */
   #plane .tile.ixrow { position: absolute; display: block;
-    /* the push under an opening frame, on the index's own clock; the
-       step aside for a column, on the column's */
-    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-      translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
+    /* the push under an opening frame, on the index's own clock */
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
   /* ...except while a page turn is scrubbing it, where the transform
      IS the position and a transition would lag the pan by 0.62s. The
-     step aside keeps its clock through a turn, since a column can
-     open and the row glide to it in the same moment */
-  #plane.turning .tile.ixrow { transition: translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
+     step aside keeps its own clock through a turn — it is the
+     column's transition now — since a column can open and the row
+     glide to it in the same moment */
+  #plane.turning .tile.ixrow { transition: none; }
   .tile .fd-it { width: 100%; }
   /* ── THE FRAME OPENS INTO ITS COLUMN ──────────────────────────────
      The index hangs every frame from the same right edge, so its grow
@@ -1118,6 +1137,17 @@ const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
    two columns at the bigger tiers. The preview is the field itself,
    not a panel over it. */
 let tiles = [], ROWS = 0, COLS = 0, PW = 0, rowY = [], coverCol = {};
+/* ── THE COLUMNS, AND WHERE EACH WAS LEFT ──────────────────────────
+   A column is mounted whole: the deal gives a column nine tiles, so
+   windowing one vertically would be bookkeeping for nothing. What is
+   worth keeping is the scroll — a column paged away and paged back to
+   should be where it was, not at its top — so the position outlives
+   the element. Declared with the deal's own state, because adopt()
+   fills byCol and adopt() runs the moment the board is dealt, long
+   before the window that reads it exists. */
+const fcols = new Map();
+const colY = new Map();
+let byCol = [];
 function deal(list, opts) {
   opts = opts || {};
   const r = opts.rnd || rnd;
@@ -1266,6 +1296,8 @@ function deal(list, opts) {
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol;
+  byCol = Array.from({ length: COLS }, () => []);
+  for (const t of tiles) byCol[t.col].push(t);
 }
 /* ── ON A PHONE THE FIELD IS ONE PAGE, DOWN ─────────────────────────
    Sixty-one screen-wide columns dragged in two axes was a map, and a
@@ -1481,7 +1513,6 @@ function anchorOfAsk() {
 const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
-let velY = 0;
 let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
 /* THE FIELD DOES NOT WRAP TO THE LEFT. Its first column is the
    beginning of the house and there is nothing before it; the
@@ -1527,8 +1558,7 @@ const pageTo = (i) => {
 let hCool = 0, wheelAxis = null, wheelIdle = 0;
 document.addEventListener("wheel", (e) => {
   if (e.target.closest && e.target.closest(".ccol")) return;   /* the column's own */
-  e.preventDefault();
-  if (dealing) return;
+  if (dealing) { e.preventDefault(); return; }
   const now = performance.now();
   if (now - wheelIdle > 160) wheelAxis = null;   /* a new gesture */
   wheelIdle = now;
@@ -1538,22 +1568,27 @@ document.addEventListener("wheel", (e) => {
   else if (wheelAxis === "x" && ay > ax * 3) wheelAxis = "y";
   else if (wheelAxis === "y" && ax > ay * 3) wheelAxis = "x";
   if (wheelAxis === "x") {
+    e.preventDefault();
     if (now - hCool > 320 && ax > 12) { pageTo(colIdx + Math.sign(dx) * PAGE); hCool = now; }
-  } else { setY(tgt.y + dy); velY = 0; }
+  }
+  /* and DOWN IS NOT OURS ANY MORE. The column under the pointer is a
+     scroller, so the browser routes the wheel to it, keeps its own
+     momentum and stops it at its own end — all of which the plane's
+     single y used to do by hand and worse. Nothing is prevented here;
+     preventing it was what made the field one page. */
 }, { passive: false });
 
-let pxx = 0, pyy = 0, moved = 0, dragAxis = null, dragFromCol = false;
+let pxx = 0, pyy = 0, moved = 0, dragAxis = null;
 const trail = [];
 field.addEventListener("pointerdown", (e) => {
   if (dealing) return;
   dragging = true; moved = 0; dragAxis = null;
-  /* the columns stand inside the field now, so a press in one reaches
-     here too. Sideways from a column still pages the row, since the
-     row is one axis wherever the hand is; up and down in a column is
-     the column's own scroll, and the field lets go of it below */
-  dragFromCol = !!(e.target.closest && e.target.closest(".ccol"));
+  /* the columns stand inside the field, so a press in one reaches here
+     too. Sideways from anywhere pages the row, since the row is one
+     axis wherever the hand is; up and down belongs to whatever box the
+     hand is over, and the field lets go of it below. */
   pxx = e.clientX; pyy = e.clientY;
-  trail.length = 0; velY = 0;
+  trail.length = 0;
   /* NO CAPTURE YET, and that was the whole bug. Capturing on
      pointerdown retargets every later event — pointerup and the click
      with them — to the field, so a click on a tile was delivered to
@@ -1576,9 +1611,10 @@ field.addEventListener("pointermove", (e) => {
      diagonally: the two directions mean two different things and a
      drag that did both at once meant neither. */
   if (!dragAxis && moved > 8) dragAxis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-  if (dragAxis === "y" && dragFromCol) { dragging = false; dragAxis = null; return; }
+  /* a vertical drag is the column's, wherever it started: let go of
+     the pointer and the scroller under it takes over */
+  if (dragAxis === "y") { dragging = false; dragAxis = null; return; }
   if (dragAxis === "x") tgt.x -= dx;
-  else if (dragAxis === "y") setY(tgt.y - dy);
   trail.push({ dx, dy, t: performance.now() });
   if (trail.length > 6) trail.shift();
 });
@@ -1594,7 +1630,7 @@ const release = () => {
     if (fx < -30) i += PAGE;
     if (fx > 30) i -= PAGE;
     pageTo(i);
-  } else if (dragAxis === "y") velY = -fy * 1.6;
+  }
   dragAxis = null;
 };
 field.addEventListener("pointerup", release);
@@ -1629,76 +1665,47 @@ const drifting = [];
 function remount() {
   if (dealing) return;                /* nothing mounts into a field on its way out */
   lastMount = { x: cur.x, y: cur.y };
-  const x0 = cur.x - MARGIN_X, y0 = cur.y - MARGIN_Y;
-  const x1 = cur.x + FIELD_W + MARGIN_X, y1 = cur.y + innerHeight + MARGIN_Y;
+  const x0 = cur.x - MARGIN_X, x1 = cur.x + FIELD_W + MARGIN_X;
   const want = new Set();
   const fresh = [];
+  /* ── WINDOWED SIDEWAYS ONLY ───────────────────────────────────────
+     The field runs sideways for ever and DOWN ONCE. A column comes on
+     as a scroller of the full dealt height — that is what gives it a
+     length to scroll — and fills itself from its own scrollTop, so
+     the vertical window is the COLUMN's and no longer the plane's. */
   for (let i = Math.floor(x0 / PW); i * PW < x1; i++) {
     /* a phone's field is one period and the columns stand after it:
        the period that would wrap under them is never dealt */
     if (PHONE && i !== 0) continue;
-    /* j is 0 and only 0: the field runs sideways for ever and DOWN
-       ONCE. A page that never ends in either direction has no bottom
-       to reach and nothing to have finished reading; the horizontal
-       is the endless axis and the vertical is a page. */
-    for (let j = 0; j < 1; j++) {
-      for (let k = 0; k < tiles.length; k++) {
-        const t = tiles[k];
-        const gx = t.x + i * PW, gy = t.y + j * PH;
-        /* the tile's module as dealt, by column and period, not by x,
-           since a narrow frame sits in from its column's edge and its
-           x alone would lie; and how far it stands aside for the
-           columns anchored before it. The period before the statement
-           sits off the left edge, seen only on an overdrag, and no
-           column is anchored before it, so it never moves. Tested
-           where it is GOING: the translate's transition carries it. */
-        const u = i * COLS + t.col;
-        const sh = shiftAt(u);
-        if (gx + sh + t.w < x0 || gx + sh > x1 || gy + t.h < y0 || gy > y1) continue;
-        const key = k + ":" + i + ":" + j;
-        want.add(key);
-        if (!live.has(key)) {
-          const el = mount(t, gx, gy, u, sh);
-          live.set(key, el);
-          /* a frame arrives by its card; a text tile by itself */
-          fresh.push(el.querySelector(".fd-it") || el);
-        }
-      }
+    for (let c = 0; c < COLS; c++) {
+      /* the module, by column and period, not by x: a narrow frame
+         sits in from its column's edge and its x alone would lie.
+         Tested where it is GOING — the translate's transition carries
+         it. The period before the statement sits off the left edge,
+         seen only on an overdrag, and nothing is anchored before it. */
+      const u = i * COLS + c;
+      const gx = c * MOD_X + i * PW, sh = shiftAt(u);
+      if (gx + sh + MOD_X < x0 || gx + sh > x1) continue;
+      want.add(u);
+      fillCol(fcols.get(u) || mountCol(u, gx, sh), fresh);
     }
   }
-  for (const [key, el] of live) {
-    if (want.has(key)) continue;
-    /* a tile still sliding aside for a column is tested where it is
-       going, and can be out of the window there while still on the
-       screen here: it stays until it has actually left */
-    const r = el.getBoundingClientRect();
-    if (r.right > -MARGIN_X && r.left < innerWidth + MARGIN_X &&
-        r.bottom > -MARGIN_Y && r.top < innerHeight + MARGIN_Y) continue;
-    el.remove(); live.delete(key);
+  for (const [u, f] of fcols) {
+    if (want.has(u)) continue;
+    /* a column still sliding aside for a conversation column is
+       tested where it is going, and can be out of the window there
+       while still on the screen here: it stays until it has left */
+    const r = f.getBoundingClientRect();
+    if (r.right > -MARGIN_X && r.left < innerWidth + MARGIN_X) continue;
+    colY.set(u, f.scrollTop);
+    for (const [key, el] of live) if (el.__u === u) live.delete(key);
+    f.remove(); fcols.delete(u);
   }
   /* the curtain: the homepage's own arrival observer, not a rAF pair.
      An IntersectionObserver fires on its own schedule, so a tile that
      mounts while the tab is throttled still opens when it is looked
      at; the rAF version left every frame shut on a parked page. */
-  if (fresh.length) {
-    /* the in cascades down the page: a lag by where each one sits,
-       which the arrival transition already honours as --lag */
-    fresh.map((c) => ({ c, y: c.getBoundingClientRect().top }))
-      .sort((a, b) => a.y - b.y)
-      .forEach(({ c }, i) => c.style.setProperty("--lag",
-        Math.min(0.36, i * 0.05).toFixed(3) + "s"));
-    if (window.armDrift) armDrift(fresh);
-    /* On a first load the reveal edge IS the arrival, so a tile has
-       to be standing there, opaque, before the edge reaches it: the
-       class is handed over with its fade switched off, and the fade
-       comes back once the field is built. Everything after the first
-       screen arrives the way it always did. */
-    fresh.forEach((c) => {
-      if (!booting) { arrive.observe(c); return; }
-      c.style.transition = "none";
-      c.classList.add("fd-on");
-    });
-  }
+  settle(fresh);
   /* the standing rules: one per gutter the window can see */
   const kids = rulesEl.children;
   let n = 0;
@@ -1718,14 +1725,93 @@ function remount() {
   /* a tile that mounts mid-turn must be on its side before it paints */
   swapSides();
 }
-function mount(t, gx, gy, u, sh) {
+/* a column of the field: its own scroller, at its own module, kept at
+   whatever height the deal dealt and returned to wherever it was left */
+function mountCol(u, gx, sh) {
+  const f = document.createElement("div");
+  f.className = "fcol";
+  f.__u = u; f.__sh = sh; f.__c = u - Math.floor(u / COLS) * COLS; f.__gx = gx;
+  f.style.cssText = "left:" + gx + "px;width:" + MOD_X + "px;translate:" + sh + "px 0";
+  const inn = document.createElement("div");
+  inn.className = "fin";
+  inn.style.height = PH + "px";
+  f.appendChild(inn);
+  f.__in = inn;
+  plane.appendChild(f);
+  fcols.set(u, f);
+  const y = colY.get(u);
+  if (y) f.scrollTop = y;
+  f.addEventListener("scroll", () => {
+    colY.set(u, f.scrollTop);
+    pokeBurn();
+    if (window.placeAsk) placeAsk();
+    /* and the column keeps its own window: a phone deals two columns
+       of two hundred and seventy tiles, so "a column is nine tiles,
+       mount it whole" was a desktop fact and not a rule */
+    if (Math.abs(f.scrollTop - (f.__filled || 0)) > 200) {
+      const fresh = [];
+      fillCol(f, fresh);
+      settle(fresh);
+    }
+  }, { passive: true });
+  return f;
+}
+/* what of a column is worth having in the document: the run its own
+   scroller can see, plus a screen either side */
+function fillCol(f, fresh) {
+  const u = f.__u, gx = f.__gx;
+  const col = byCol[f.__c] || [];
+  const y0 = f.scrollTop - MARGIN_Y, y1 = f.scrollTop + f.clientHeight + MARGIN_Y;
+  f.__filled = f.scrollTop;
+  const want = new Set();
+  for (let k = 0; k < col.length; k++) {
+    const t = col[k];
+    if (t.y + t.h < y0 || t.y > y1) continue;
+    const key = u + ":" + k;
+    want.add(key);
+    if (live.has(key)) continue;
+    const el = mount(t, gx, t.y, u, f);
+    live.set(key, el);
+    /* a frame arrives by its card; a text tile by itself */
+    fresh.push(el.querySelector(".fd-it") || el);
+  }
+  for (const [key, el] of live) {
+    if (el.__u !== u || want.has(key)) continue;
+    el.remove(); live.delete(key);
+  }
+}
+/* what a newly mounted run of tiles needs before it can be looked at */
+function settle(fresh) {
+  if (!fresh.length) return;
+  /* the in cascades down the page: a lag by where each one sits,
+     which the arrival transition already honours as --lag */
+  const seen = fresh.map((c) => ({ c, y: c.getBoundingClientRect().top }))
+    .sort((a, b) => a.y - b.y);
+  seen.forEach(({ c }, i) => c.style.setProperty("--lag",
+    Math.min(0.36, i * 0.05).toFixed(3) + "s"));
+  if (window.armDrift) armDrift(fresh);
+  /* On a first load the reveal edge IS the arrival, so a tile has to
+     be standing there, opaque, before the edge reaches it: the class
+     is handed over with its fade switched off, and the fade comes
+     back once the field is built. Only for what the edge actually
+     crosses — anything below the fold has not been arrived at yet, so
+     it waits for the observer like everything else. */
+  seen.forEach(({ c, y }) => {
+    if (!booting || y > innerHeight) { arrive.observe(c); return; }
+    c.style.transition = "none";
+    c.classList.add("fd-on");
+  });
+}
+function mount(t, gx, gy, u, f) {
   const el = document.createElement("div");
-  el.__u = u; el.__sh = sh;
+  el.__u = u; el.__col = f;
   /* .ixrow, because that is the ancestor the index's own label and
      hover rules are scoped to. Same classes, same stylesheet, same
      0.62s curve — nothing about the card is re-specified here. */
   el.className = "tile ixrow";
-  el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px;translate:" + sh + "px 0";
+  /* left 0: a tile's x IS its column's, and the column is the box it
+     is in now. Only the hug moves it within that. */
+  el.style.cssText = "left:0;top:" + gy + "px;width:" + t.w + "px";
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
   el.__wx = gx;
@@ -1811,7 +1897,7 @@ function mount(t, gx, gy, u, sh) {
     }
     el.appendChild(card);
   }
-  plane.appendChild(el);
+  f.__in.appendChild(el);
   return el;
 }
 
@@ -1838,7 +1924,7 @@ function swapSides() {
     const push = el.__push || 0;
     if (!el.__slack && !push && !el.__hadPush) continue;
     el.__hadPush = push !== 0;
-    const wx = el.__wx + el.__sh;
+    const wx = el.__wx + (el.__col ? el.__col.__sh : 0);
     /* ── AND THE SWING CARRIES INTO THE PEEK ──────────────────────
        Clamped at 1, everything past the second slot hugged RIGHT,
        which is the far side of a module that is four fifths off the
@@ -2462,9 +2548,9 @@ const layoutCols = () => {
    once the slide is over: what slid off is let go, what slid on
    arrives. */
 const reshift = () => {
-  for (const el of live.values()) {
-    const sh = shiftAt(el.__u);
-    if (sh !== el.__sh) { el.__sh = sh; el.style.translate = sh + "px 0"; }
+  for (const [u, f] of fcols) {
+    const sh = shiftAt(u);
+    if (sh !== f.__sh) { f.__sh = sh; f.style.translate = sh + "px 0"; }
   }
   setTimeout(remount, 540);
 };
@@ -3035,8 +3121,17 @@ addEventListener("keydown", (e) => {
   /* one row: the arrows page it, work and conversation alike */
   if (e.key === "ArrowRight") { e.preventDefault(); pageTo(colIdx + 1); }
   if (e.key === "ArrowLeft") { e.preventDefault(); pageTo(colIdx - 1); }
-  if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); setY(tgt.y + innerHeight * 0.8); velY = 0; }
-  if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); setY(tgt.y - innerHeight * 0.8); velY = 0; }
+  /* down and up are a column's now, so they ask the one at the near
+     edge — the column being read. Over a conversation column they are
+     the browser's already. */
+  const step = (d) => {
+    const here = atDisp(colIdx);
+    const f = here.col ? null : fcols.get(here.u);
+    if (!f) return;
+    f.scrollBy({ top: d * innerHeight * 0.8, behavior: REDUCE() ? "auto" : "smooth" });
+  };
+  if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); step(1); }
+  if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); step(-1); }
 });
 
 /* ── THE GUARD ──────────────────────────────────────────────────────
@@ -3081,26 +3176,21 @@ const checkTimer = setInterval(() => {
    parked, and the value it was meant to hold has already been used
    by the mount. */
 /* a phone's bar is at the bottom, so the last row scrolls up past it */
-const yMax = () => Math.max(0, PH - innerHeight + (PHONE ? NAV_H + 40 : COVER_AIR));
-const setY = (v) => { tgt.y = Math.max(0, Math.min(yMax(), v)); };
+/* ── THE PLANE KEEPS X, AND ONLY X ──────────────────────────────────
+   The floor and the ceiling of the one page there was are the
+   browser's now: each column is a scroller with its own ends, its own
+   momentum and its own rubber band. What is left here is the row. */
 function tick() {
   requestAnimationFrame(tick);
   if (document.hidden) return;
-  if (!dragging && Math.abs(velY) > 0.1) { setY(tgt.y + velY); velY *= 0.93; }
-  /* the momentum dies at the ends rather than running into nothing */
-  if (tgt.y <= 0 || tgt.y >= yMax()) velY = 0;
-  setY(tgt.y);
-  /* x eases a touch slower than y follows — the arriving column gets
-     its glide without the scroll feeling detached */
   const turning = Math.abs(tgt.x - cur.x) > 0.5;
   if (turning !== wasTurning) {
     wasTurning = turning;
     plane.classList.toggle("turning", turning);
   }
-  if (turning || Math.abs(tgt.y - cur.y) > 0.5) pokeBurn();
+  if (turning) pokeBurn();
   cur.x += (tgt.x - cur.x) * 0.11;
-  cur.y += (tgt.y - cur.y) * 0.16;
-  plane.style.transform = "translate3d(" + (-cur.x) + "px," + (-cur.y) + "px,0)";
+  plane.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   /* the cover line is page content: it goes where the plane goes —
      but only AWAY. The field wraps, so a scroll upward from the start
      carries the plane down, and a mark riding it dropped into the
@@ -3110,13 +3200,15 @@ function tick() {
   colsEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   handover();
   swapSides();
-  if (turning || Math.abs(tgt.y - cur.y) > 0.5) placeAsk();
+  if (turning) placeAsk();
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
-  if (Math.abs(cur.x - lastMount.x) > 100 || Math.abs(cur.y - lastMount.y) > 100)
-    remount();
+  if (Math.abs(cur.x - lastMount.x) > 100) remount();
+  /* far from the start: a column open, the row moved, or the column
+     being read taken well down its own length */
+  const here = atDisp(colIdx), hf = here.col ? null : fcols.get(here.u);
   const far = ccols.length > 0 || Math.abs(cur.x - START.x) > MOD_X * 1.5 ||
-    Math.abs(cur.y - START.y) > innerHeight * 1.4;
+    (hf ? hf.scrollTop > innerHeight * 1.4 : false);
   if (far !== home.hasAttribute("data-on"))
     far ? home.setAttribute("data-on", "") : home.removeAttribute("data-on");
 }
@@ -3778,7 +3870,9 @@ homeWrap.appendChild(home);
 document.getElementById("railwrap").appendChild(homeWrap);
 homeRow.h.addEventListener("click", () => {
   closeAllColumns();
-  pageTo(0); tgt.y = START.y; velY = 0;
+  pageTo(0);
+  colY.clear();
+  for (const f of fcols.values()) f.scrollTop = 0;
 });
 
 /* ── THE SHEET, the bar's own surface on a phone ────────────────────
@@ -4108,7 +4202,8 @@ function placeAsk() {
   const drop = on ? Math.max(0, sr.top + sr.height / 2 - NAV_H / 2) : 0;
   /* the travel's length is the slot's centre in the space that
      scrolls — the panel's while it is open, the plane's otherwise */
-  const scrolled = cur.y;
+  /* the statement travels with ITS column now, not with the plane */
+  const scrolled = st && st.__col ? st.__col.scrollTop : 0;
   const total = on ? Math.max(1, sr.top + scrolled + sr.height / 2 - NAV_H / 2) : 1;
   const p = Math.min(1, drop / total);
   if (on) askLastCol = { left: sr.left, w: sr.width };
