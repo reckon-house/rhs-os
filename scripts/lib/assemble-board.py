@@ -477,6 +477,14 @@ head = r'''<!doctype html>
      would drop these out of their own absolute placement. Two classes
      and an id, so this wins wherever that rule applies. */
   #plane .tile.ixrow { position: absolute; display: block;
+    /* ── ONE CHANNEL, TWO JOBS ──────────────────────────────────────
+       --sh is how far the tile stands aside for the columns anchored
+       before it; --enter is where it came in from on the first load.
+       They compose here rather than fighting over `translate`, which
+       is the only one of the tile's three transform channels still
+       free: `transform` is the swap's, and the card's belongs to the
+       hover. */
+    translate: calc(var(--sh, 0px) + var(--enter, 0px)) 0;
     /* the push under an opening frame, on the index's own clock; the
        step aside for a column, on the column's */
     transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
@@ -988,6 +996,16 @@ const SHOW = VISIBLE + PEEK;
    VISIBLE+1, or the resting edge lands mid-tile */
 const MOD_X = FIELD_W / SHOW;
 const COL = MOD_X - GAP;
+/* ── THE ENTRANCE ───────────────────────────────────────────────────
+   How far off the right edge the field starts on a first load, and how
+   far apart its columns come in. A field's width puts the near column
+   exactly off the glass, so nothing is ever seen at rest first, and
+   every column travels the same distance — the stagger is the whole
+   difference between them, which is what makes it read as columns
+   rather than as one sheet. */
+const ENTER_X = FIELD_W;
+const ENTER_STEP = 0.11;
+let booting = !REDUCE();
 document.documentElement.style.setProperty("--modw", MOD_X + "px");
 /* the gap the SCRIPT uses (20 on a phone, the token elsewhere), for
    the column CSS that must land on the same edges as the tiles */
@@ -1725,7 +1743,11 @@ function remount() {
       .forEach(({ c }, i) => c.style.setProperty("--lag",
         Math.min(0.36, i * 0.05).toFixed(3) + "s"));
     if (window.armDrift) armDrift(fresh);
-    fresh.forEach((c) => arrive.observe(c));
+    /* A tile parked a field's width off the right edge never
+       intersects, so the observer would hold it at zero opacity for
+       ever and the entrance would carry nothing. The first screen is
+       on screen by definition: hand it the class. */
+    fresh.forEach((c) => booting ? c.classList.add("fd-on") : arrive.observe(c));
   }
   /* the standing rules: one per gutter the window can see */
   const kids = rulesEl.children;
@@ -1753,7 +1775,20 @@ function mount(t, gx, gy, u, sh) {
      hover rules are scoped to. Same classes, same stylesheet, same
      0.62s curve — nothing about the card is re-specified here. */
   el.className = "tile ixrow";
-  el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px;translate:" + sh + "px 0";
+  el.style.cssText = "left:" + gx + "px;top:" + gy + "px;width:" + t.w + "px";
+  el.style.setProperty("--sh", sh + "px");
+  /* ── AND THE FIRST LOAD COMES IN FROM THE RIGHT ─────────────────
+     The board opened as a fade, which says nothing about what kind of
+     page it is. Every column of the field starts a field's width off
+     the right edge and travels into its slot, a beat behind the one
+     before it, so the first thing anyone sees is the work arriving
+     ALONG the axis it lives on. The sentence is exempt: it is there
+     to be read the moment the page is, not to be waited for. */
+  if (booting && t.kind !== "statement") {
+    el.style.setProperty("--enter", ENTER_X + "px");
+    el.style.transition = "translate 0.9s cubic-bezier(0.16, 1, 0.3, 1) " +
+      (t.col * ENTER_STEP).toFixed(2) + "s";
+  }
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
   el.__wx = gx;
@@ -2492,7 +2527,7 @@ const layoutCols = () => {
 const reshift = () => {
   for (const el of live.values()) {
     const sh = shiftAt(el.__u);
-    if (sh !== el.__sh) { el.__sh = sh; el.style.translate = sh + "px 0"; }
+    if (sh !== el.__sh) { el.__sh = sh; el.style.setProperty("--sh", sh + "px"); }
   }
   setTimeout(remount, 540);
 };
@@ -3051,6 +3086,10 @@ function drawPath() {
     r.appendChild(h); wrap.appendChild(r);
   });
   wrap.style.display = ccols.length ? "" : "none";
+  /* AFTER the display, or every row measures zero and keeps the 45%
+     default — which is why these three all stood the same width while
+     every other chip in the rail stopped at its own words. */
+  if (window.__hug) window.__hug();
 }
 /* the keyboard says the same two things: left and right walk the
    columns, up and down move the page a screen at a time */
@@ -3450,11 +3489,17 @@ const hug = () => {
     const full = r.getBoundingClientRect().width;
     if (!full) return;
     const pad = parseFloat(getComputedStyle(head).paddingLeft) || 12;
-    const want = ink.getBoundingClientRect().width + pad * 2;
+    /* a path row carries its own × inside the head, and a chip that
+       stops at its words has to stop past that too — measured, not
+       allowed for, because the glyph's width is the font's business */
+    const x = r.querySelector(".rx");
+    const want = ink.getBoundingClientRect().width +
+      (x ? x.getBoundingClientRect().width : 0) + pad * 2;
     const v = Math.max(0, Math.min(92, ((full - want) / full) * 100));
     r.style.setProperty("--hug", v.toFixed(2) + "%");
   });
 };
+window.__hug = hug;
 hug();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(hug);
 addEventListener("resize", hug, { passive: true });
@@ -3761,39 +3806,36 @@ placeAsk();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAsk);
 requestAnimationFrame(tick);
 
-/* ── THE LEAN ───────────────────────────────────────────────────────
-   The peek says there is another column; this says the row moves. Once,
-   on arrival: the row travels a third of a module right and settles
-   back, so the work slides and the cut column comes further in and
-   goes again. One gesture, self-reversing, and over before anyone has
-   started reading — which is the whole constraint. A page that shifts
-   under someone mid-sentence is the thing the study's return was
-   rewritten to never do, so this cannot be an idle loop and cannot
-   repeat.
+/* ── AND THEN LET GO ────────────────────────────────────────────────
+   The tiles are mounted, parked off the right edge and already opaque.
+   Clearing --enter is the whole entrance: each column travels in on
+   the delay it was given, so they land one after another, left to
+   right, and the row has said what it is before anyone has touched it.
 
-   It writes tgt.x rather than paging, so colIdx never moves and a
-   turn taken during the lean simply wins. Every guard is the same
-   question asked again: has anyone touched it yet. */
-const LEAN = MOD_X * 0.3;
-let leaned = false;
+   The inline transition goes when the travel is over, so the step
+   aside for a column later runs on the stylesheet's own clock rather
+   than on the entrance's slower one. rAF and a timer both, because
+   the frame never comes on a parked tab and a field stranded off the
+   glass is worse than an entrance nobody saw. */
 window.__lean = () => {
-  if (leaned || PHONE || REDUCE()) return;
-  leaned = true;
-  const idle = () => tgt.x === START.x && !ccols.length && !dragging;
-  if (!idle()) return;
-  setTimeout(() => {
-    if (!idle()) return;
-    tgt.x = START.x + LEAN;
+  if (!booting) return;
+  booting = false;
+  let let_go = false;
+  const go = () => {
+    if (let_go) return;
+    let_go = true;
+    for (const el of live.values()) el.style.setProperty("--enter", "0px");
     setTimeout(() => {
-      /* only if it is still ours to put back */
-      if (Math.abs(tgt.x - (START.x + LEAN)) < 1 && !ccols.length && !dragging)
-        tgt.x = START.x;
-    }, 640);
-  }, 420);
+      for (const el of live.values()) el.style.transition = "";
+    }, 1400 + COLS * ENTER_STEP * 0);
+  };
+  requestAnimationFrame(go);
+  setTimeout(go, 80);
 };
-/* under a curtain the lean would play behind black, so the arrival
+/* under a curtain the entrance would play behind black, so the arrival
    lifts it first and calls this; a plain load has nothing to wait for */
-if (!document.getElementById("ptArrive")) setTimeout(window.__lean, 60);
+if (!document.getElementById("ptArrive")) setTimeout(window.__lean, 40);
+else setTimeout(window.__lean, 3000);   /* a curtain that never lifts */
 </script>
 
 </body>
