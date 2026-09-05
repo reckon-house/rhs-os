@@ -1158,7 +1158,6 @@ const COVER_AIR = px("--cover-air", 50);
    what a masthead is for. */
 const HEAD_BAND = PHONE ? 0 : 46;
 const TOP0 = PHONE ? 30 : COVER_AIR + HEAD_BAND;
-const ROW_TIERS = [0.62, 0.85, 1.1, 1.35];
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
    The whole placement is a function of a list, so the field can be
@@ -1185,7 +1184,6 @@ function deal(list, opts) {
   opts = opts || {};
   const r = opts.rnd || rnd;
   const shares = opts.shares || SHARES;
-  const tiers = opts.rowTiers || ROW_TIERS;
   const lead = opts.lead;
   const [airMin, airMax] = opts.air || [AIR_MIN, AIR_MAX];
   const airOf = () => airMin + r() * (airMax - airMin);
@@ -1240,49 +1238,47 @@ function deal(list, opts) {
     sized.push({ ...it, nw: it.w, w, h });
   }
 
-  /* ── THE ROWS ARE DEALT, THE CONTENT FITS THE ROWS ───────────────
-     Row height = max(content) was the trap: one tall portrait
-     anywhere in a row's fifty columns inflated that row for everyone.
-     So the heights are DEALT — tiers off the seed, shared by every
-     column — and a tile taller than its row renders SMALLER rather
-     than pushing fifty columns down. Row zero is the lead's own:
-     nothing in the first row stands taller than the statement, or
-     the study's head, so the field opens level. Quotes are text and
-     cannot scale; a long one spends its row's air. */
+  /* ── EVERY PAIR KEEPS ITS OWN ROWS ───────────────────────────────
+     A row's height is the taller of the two pictures in it, and the
+     row below starts under that, so a tall picture pushes its
+     neighbour's next row down. That coupling is where the field's
+     rhythm comes from: the gap under a short picture exists because
+     something beside it is genuinely tall, which is variation that
+     was chosen rather than left over.
+
+     PER PAIR, and that is the whole trick. Fitting a row to its
+     content globally was tried and was the original trap — one tall
+     portrait anywhere in a row's fifty columns inflated that row for
+     everyone — so the heights were DEALT off the seed instead, and a
+     dealt height has no relation to what stands in it: a 515px row
+     holding two 150px pictures made a 600px hole nobody chose. Rows
+     belong to the PAIR that is on the glass at once. Two columns see
+     each other and no others, so a picture sets the rows for its own
+     pair and for nothing else, and every pair still opens on the same
+     top line. */
   const rows = opts.rows || Math.max(8, Math.round((innerHeight * 6) / 560));
+  const top0 = opts.top != null ? opts.top : TOP0;
   /* SEATED ACROSS THE PAIR, COUNTED ACROSS THE PAIR. Counting columns
      the old way — one column per `rows` items — left the last item
      seated one column past the end, and a column past the end is
      exactly one period to the left of column 0: the field wraps, so
      Sally's cover was drawn on top of the statement. */
   const per = rows * VISIBLE;
-  const cols = VISIBLE * Math.ceil(sized.length / per);
-  const rowH = new Array(rows);
-  if (opts.fitRows) {
-    /* A STUDY'S ROWS FIT THEIR PICTURES. The dealt tiers exist because
-       a row on the board spans fifty columns and one tall stranger
-       must not set it for everyone. A study's field is two columns of
-       one thing, so the trap is gone and the rule can be the plain
-       one: the row is as tall as the taller of its two pictures, and
-       every picture stands at its own full size. */
-    rowH.fill(0);
-    /* the same seat the pass below gives it, across the pair; i % rows
-       was the old column-major seat and sized every row by strangers */
-    sized.forEach((it, i) => { const k = Math.floor((i % per) / VISIBLE);
-      if (it.h > rowH[k]) rowH[k] = it.h; });
-  } else {
-    let prevTier = -1;
-    for (let k = 0; k < rows; k += 1) {
-      if (k === 0) { rowH[0] = lead.h; continue; }
-      let t, guard = 0;
-      do { t = tiers[Math.floor(r() * tiers.length)]; }
-      while (Math.abs(t - prevTier) < 0.2 && guard++ < 12);
-      prevTier = t;
-      rowH[k] = Math.round(COL * t);
+  const pairs = Math.max(1, Math.ceil(sized.length / per));
+  const cols = VISIBLE * pairs;
+  /* one ladder per pair, each rung the taller of that pair's two */
+  const pairYs = [];
+  for (let p = 0; p < pairs; p += 1) {
+    const rh = new Array(rows).fill(0);
+    for (let j = 0; j < per; j += 1) {
+      const it = sized[p * per + j];
+      if (it && it.h > rh[Math.floor(j / VISIBLE)]) rh[Math.floor(j / VISIBLE)] = it.h;
     }
+    const y = [top0];
+    for (let k = 0; k < rows; k += 1) y.push(y[k] + (rh[k] ? rh[k] + airOf() : 0));
+    pairYs.push(y);
   }
-  const ys = [opts.top != null ? opts.top : TOP0];
-  for (let k = 0; k < rows; k += 1) ys.push(ys[k] + rowH[k] + airOf());
+  const ys = pairYs[0];
   /* ── STACKED, NOT ROWED, on a phone ──────────────────────────────
      The live grid is two flex columns, each running its own height,
      so Sally tucks up under Ivy Park rather than waiting for the
@@ -1290,10 +1286,10 @@ function deal(list, opts) {
      level; with two, each column keeps its own running y. The seat
      (which column) is still the pair's; only the height is the
      column's own. */
-  const colY = opts.stack ? new Array(cols).fill(ys[0]) : null;
+  const colY = opts.stack ? new Array(cols).fill(top0) : null;
   /* where each column's work actually ends, so its scroller stops
      there rather than at the tallest column's bottom */
-  const colH = new Array(cols).fill(ys[rows]);
+  const colH = new Array(cols).fill(top0);
   const out = [], cc = {};
   /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
      The board filled a column top to bottom and then moved right; the
@@ -1308,6 +1304,7 @@ function deal(list, opts) {
     const pair = Math.floor(i / per), within = i % per;
     const c = pair * VISIBLE + (within % VISIBLE), k = Math.floor(within / VISIBLE);
     let { w, h } = it;
+    const ysP = colY ? null : pairYs[pair];
     /* ── AND THE FIELD OPENS ON ONE LINE ────────────────────────────
        Every column but the first used to start 61px lower, under the
        address line, which is what the live homepage does. It is the
@@ -1316,22 +1313,16 @@ function deal(list, opts) {
        64 with the whole of --cover-air below it, so the drop was
        clearing something already cleared — and it cost the one thing
        a row of columns is for, which is a top edge they share. */
-    if (it.kind === "img") {
-      const cap = capOf(it), budget = rowH[k] - cap;
-      if (h - cap > budget) {
-        w = Math.max(60, Math.round(w * (budget / (h - cap))));
-        h = budget + cap;
-      }
-    }
-    let y = ys[k];
-    if (colY) { y = colY[c]; colY[c] += h + airOf(); colH[c] = y + h; }
+    let y = ysP ? ysP[k] : 0;
+    if (colY) { y = colY[c]; colY[c] += h + airOf(); }
+    if (y + h > colH[c]) colH[c] = y + h;
     out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
   });
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: colY ? Math.max(...colH) : ys[rows], colH, rowY: ys, coverCol: cc };
+    PH: Math.max(...colH), colH, rowY: ys, coverCol: cc };
 }
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
@@ -1350,9 +1341,8 @@ function adopt(L) {
    board's. */
 const BOARD = deal(items, PHONE
   ? { lead: { kind: "statement", w: COL, h: STATEMENT_H },
-      rows: Math.ceil((items.length + 1) / VISIBLE), fitRows: true, stack: true,
-      air: [24, 64] }
-  : { lead: { kind: "statement", w: COL, h: STATEMENT_H }, stack: true });
+      rows: Math.ceil((items.length + 1) / VISIBLE), stack: true, air: [24, 64] }
+  : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
 adopt(BOARD);
 
 
