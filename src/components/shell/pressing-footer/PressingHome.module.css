@@ -56,16 +56,26 @@
   flex-wrap: wrap;
 }
 
+/* ── THE HOUSE'S OWN SETTING ────────────────────────────────────────
+   The statement's numbers, not a near miss of them: 20/32 at 600, the
+   line at 1.2 and the tracking at -0.05em, which is what every lead
+   on the board is set in. It read at 500 and -0.02 before, close
+   enough to look like an accident rather than a decision.
+
+   And it holds its colour. The line used to brighten as the pull
+   landed, which made it half a gauge; the rule under it is the gauge,
+   and copy on this site does not fade. */
 .line {
   margin: 0;
-  font-size: clamp(21px, 2.4vw, 32px);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  /* It brightens as the pull lands, so the words are part of the
-     gauge and not a caption sitting next to one. */
-  opacity: calc(0.42 + 0.58 * var(--pull));
-  transition: opacity 0.18s linear;
+  max-width: 24em;
+  font-size: clamp(20px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+}
+/* what is said ABOUT the thing, in the second register */
+.dim {
+  color: rgba(0, 0, 0, 0.42);
 }
 
 /* The door. A gesture with no visible alternative is a gesture some
@@ -100,8 +110,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fill,
-  .line {
+  .fill {
     transition: none;
   }
 }
