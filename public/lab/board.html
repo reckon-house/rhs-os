@@ -244,15 +244,25 @@
   .ccol .cqs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 0.2em; }
   .ccol .cqs .cchip.spent { opacity: 0.4; pointer-events: none; }
   .ccol .cqs .cx { padding: 0 6px; }
-  /* ── THE CREDITS ARE A REEL OF THE MARKS ──────────────────────────
-     The live footer's marks, cut through with the house's own reel,
-     the way a shelf's stamp cuts through its covers. A mark is drawn
-     to fit, not to fill, and reversed to white in the black room;
-     the one that is a photograph of a mark stays as it is. */
-  .ccol .cmarks { height: 150px; margin-top: 0.9em; border-top: 1px solid rgba(255, 255, 255, 0.28);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.28); background: #000; }
-  .ccol .cmarks img.sz-fill { object-fit: contain; padding: 44px 60px; }
-  .ccol .cmarks img.sz-fill:not([src$="dwr.jpg"]) { filter: invert(1); }
+  /* ── THE CREDITS ARE A WALL ───────────────────────────────────────
+     Two across, hairlines between, every mark hanging from its cell's
+     left edge the way a caption hangs from its picture. Still. They
+     were a reel first, cut through with the cover reel's own burn,
+     and two logos of different widths on black both showed through
+     it — the mechanism was right for eight photographs that fill a
+     box and wrong for marks that do not. Six ways were tried
+     (credits-variants.html); Jeremy took the grid. A mark is drawn to
+     fit, not to fill, and reversed to white in the black room; the
+     one that is a photograph of a mark stays as it is. A credit with
+     no mark stands as its name, in the furniture register. */
+  .ccol .cgrid { display: grid; grid-template-columns: 1fr 1fr; margin-top: 0.9em;
+    border-top: 1px solid rgba(255, 255, 255, 0.28); }
+  .ccol .ccell { height: 84px; padding: 20px 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.28); }
+  .ccol .ccell:nth-child(odd) { border-right: 1px solid rgba(255, 255, 255, 0.28); }
+  .ccol .cmk { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+  .ccol .cmk:not([src$="dwr.jpg"]) { filter: invert(1); }
+  .ccol .cword { display: flex; align-items: center; height: 100%; font-size: var(--note);
+    font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -2552,7 +2562,7 @@ function studyRows(list, into, from) {
 /* a column that folds away takes its reels with it: a timer left
    running on a detached row is the leak the last pass went looking
    for and did not find */
-const stopReels = (c) => c.querySelectorAll(".crow, .cmarks").forEach((r) => {
+const stopReels = (c) => c.querySelectorAll(".crow").forEach((r) => {
   if (r.__rl) { szStop(r.__rl); reelIO.unobserve(r); r.__rl = null; }
 });
 /* ── each column on its own module ──────────────────────────────────
@@ -2734,14 +2744,17 @@ async function openHouseColumn(kind, from, opts) {
       c.__matter.appendChild(qs);
     }
     c.__matter.appendChild(el("div", "cnote g csect", "Worked with, spotted by & featured in."));
-    const frames = h.credits.map((name) => MARKS[name]).filter(Boolean);
-    if (frames.length >= 2) {
-      const stage = el("div", "cmarks sz-stage");
-      c.__matter.appendChild(stage);
-      const rl = { box: stage, frames, timer: null };
-      szStage(rl); szScrub(rl);
-      stage.__rl = rl; reelIO.observe(stage);
-    }
+    /* the wall: one cell a credit, its mark if it has one, its name if not */
+    const grid = el("div", "cgrid");
+    h.credits.forEach((name) => {
+      const cell = el("div", "ccell");
+      if (MARKS[name]) {
+        const img = el("img", "cmk"); img.src = MARKS[name]; img.alt = name; img.decoding = "async";
+        cell.appendChild(img);
+      } else cell.appendChild(el("span", "cword", name));
+      grid.appendChild(cell);
+    });
+    c.__matter.appendChild(grid);
   } else {
     /* ALL IN ONE. /book's own lede, then the field as the message,
        then the week and the claim, then the ways in as plain links —
