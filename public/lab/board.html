@@ -257,24 +257,27 @@
      against these exact files in PressingCredits.tsx. Reversed to
      white in the black room; the one that is a photograph of a mark
      stays as it is. */
-  /* the name holds the row's left edge like every other head, and the
-     mark answers it at the right — the two ends of one line, which is
-     what a credit is: who, and their own hand. */
-  /* HALF THE ROW, NOT `auto`. An auto track sizes to the widest mark
-     and every other one then sits at its own width inside it, so the
-     right edges came out eleven different numbers — and a max-width in
-     per cent resolved against that same track, which squeezed each
-     mark against its neighbours. A fixed share ends the circle: every
-     box is the same box, `contain` fits each mark inside it at its own
-     ratio, and they all end on one line. */
-  .ccol .crow.mark { grid-template-columns: minmax(0, 1fr) 50%;
-    column-gap: 20px; align-items: center; padding-bottom: 40px; }
+  /* ── THE MARK IS THE LINE ─────────────────────────────────────────
+     A typed name beside it was tried and dropped: at this size a mark
+     reads as its own name, so setting both was saying it twice. The
+     mark holds the row's left edge, where every other head sits. */
+  .ccol .crow.mark { padding-bottom: 40px; }
   /* `.ccol .crow img` sets the 96x72 cover a study's row shows, and an
      element beats a class: named through the row, this wins. */
   .ccol .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
     border-radius: 0; background: none;
-    object-fit: contain; object-position: right center; }
+    object-fit: contain; object-position: left center; }
   .ccol .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
+  /* ── THE ONE THAT IS A PHOTOGRAPH ────────────────────────────────
+     dwr.jpg is a picture OF a mark rather than the mark: an opaque
+     frame, 72% of it a near-black ground with the wordmark in white
+     on top. Flattening it the way the others are flattened turns the
+     whole frame white, which is why it was left alone — and left
+     alone it sat on the black as a dark grey plate. Contrast pushes
+     the ground the rest of the way to black, where the column's own
+     black is, and the wordmark the rest of the way to white. Nothing
+     is added: the picture is crushed to the mark inside it. */
+  .ccol .crow .cmk[src$="dwr.jpg"] { filter: contrast(3); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -2724,7 +2727,7 @@ const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: []
    at four thirds, which is the default going 15 to 20. The ratios are
    the footer's; only the register is the room's. */
 const MARK_H = { "Nordstrom": 16, "Rejuvenation": 17, "Visual Comfort": 15,
-  "Floor & Decor": 19, "Design Within Reach": 22 };
+  "Floor & Decor": 19, "Design Within Reach": 26 };
 const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg",
   "Ivy Park by Beyonc\u00e9": "/brands/ivy-park.svg", "Neiman Marcus": "/brands/neiman-marcus.svg",
   "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
@@ -2798,7 +2801,8 @@ async function openHouseColumn(kind, from, opts) {
     sect("Worked with, spotted by & featured in.");
     /* one row a credit, its mark standing where the name would */
     h.credits.forEach((name) => {
-      const r = textRow(c.__matter, name, "");
+      /* the mark says the name; only a credit without one is typed */
+      const r = textRow(c.__matter, MARKS[name] ? "" : name, "");
       if (!MARKS[name]) return;
       r.classList.add("mark");
       const img = el("img", "cmk"); img.src = MARKS[name]; img.alt = name; img.decoding = "async";

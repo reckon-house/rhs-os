@@ -444,13 +444,18 @@ writeFileSync("public/lab/board-shell.css",
   style[1]);
 
 const MB = (b) => (b / 1048576).toFixed(1);
+const STUDIES = Object.entries(COPY).filter(([k]) => k !== "house").map(([, v]) => v);
 console.log(
   `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed)` +
   `\n  originals ${MB(before)}MB → thumbs ${MB(after)}MB` +
   `\n  data ${DATA} (${MB(statSync(DATA).size)}MB)` +
   `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +
-  `\n  copy public/lab/board-copy.json (${Object.keys(COPY).length} studies, ` +
-  `${Object.values(COPY).reduce((n, c) => n + c.facts.length, 0)} facts, ` +
-  `${Object.values(COPY).filter((c) => c.para).reduce((n, c) => n + c.para.length, 0)} paragraphs, ` +
+  /* the studies only: `house` sits in the same object and has neither
+     facts nor paragraphs, so counting across all of it threw on the
+     summary line — after everything had been written, which is the
+     one place a crash reads as a failed build and is not one */
+  `\n  copy public/lab/board-copy.json (${STUDIES.length} studies, ` +
+  `${STUDIES.reduce((n, c) => n + (c.facts || []).length, 0)} facts, ` +
+  `${STUDIES.reduce((n, c) => n + (c.para || []).length, 0)} paragraphs, ` +
   `house: ${COPY.house.method.length} notes, ${COPY.house.credits.length} credits)`
 );
