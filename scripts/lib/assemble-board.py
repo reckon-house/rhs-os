@@ -3426,11 +3426,11 @@ rail = r'''
    says. The lines are the studies' own words — A.R.C.'s, Sally's and
    Faux Reel's summaries, nothing added — because talking a thing up
    in this house means saying what it did, not what it was like. The
-   Awwwards line has no body: nothing in the house says what the
-   honours were for, and a line that does not know that is a line
-   made up. */
+   Awwwards line says what the honours were for, in his words, and no
+   more: they were for the portfolio, and which version of it is not
+   the reader's business. */
 const NEWS = [
-  ["Awwwards Honors, 2026", "",
+  ["Awwwards Honors, 2026", "For reckon.house, this portfolio.",
     "Awwwards Honors, 2026.", null],
   ["A.R.C. launched on the App Store",
     "Point the camera at a room and it names what is there, estimates replacement value, and shows the gap against your policy as a dollar amount. Solo, end to end: concept, code, brand, go-to-market.",
