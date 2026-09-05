@@ -968,10 +968,26 @@ const FIELD_W = document.getElementById("strip").getBoundingClientRect().width;
 }
 document.documentElement.style.setProperty("--modw", "0px"); /* set once COL is known */
 const GAP = PHONE ? 20 : IXGAP;
+/* ── AND A FIFTH OF THE NEXT ONE ────────────────────────────────────
+   Nothing on the board said it went sideways. The first column a
+   visitor opens arrives from the right, which is a hint, and a second
+   one is a stronger hint, but until then the row looks like a page
+   that happens to be wide. A CUT PICTURE is the one signal everyone
+   reads without being taught: the strip already clips at its own
+   edge, so showing a share of the third module is enough — part of a
+   frame, a caption running off, the standing rule that belongs to a
+   column nobody has reached.
+
+   It costs the two full columns about a tenth of their width, which
+   is the honest price of saying what the page is. VISIBLE stays 2:
+   two columns are still what a page turn moves by and what the
+   seating deals across. Only the module narrows. */
+const PEEK = PHONE ? 0 : 0.2;
+const SHOW = VISIBLE + PEEK;
 /* half gutter, column, gutter, column, half gutter: VISIBLE gaps, not
    VISIBLE+1, or the resting edge lands mid-tile */
-const COL = (FIELD_W - GAP * VISIBLE) / VISIBLE;
-const MOD_X = COL + GAP;
+const MOD_X = FIELD_W / SHOW;
+const COL = MOD_X - GAP;
 document.documentElement.style.setProperty("--modw", MOD_X + "px");
 /* the gap the SCRIPT uses (20 on a phone, the token elsewhere), for
    the column CSS that must land on the same edges as the tiles */
@@ -1851,7 +1867,18 @@ function swapSides() {
     if (!el.__slack && !push && !el.__hadPush) continue;
     el.__hadPush = push !== 0;
     const wx = el.__wx + el.__sh;
-    const t = Math.min(1, Math.max(0, (wx - cur.x - GAP / 2) / MOD_X));
+    /* ── AND THE SWING CARRIES INTO THE PEEK ──────────────────────
+       Clamped at 1, everything past the second slot hugged RIGHT,
+       which is the far side of a module that is four fifths off the
+       glass: the peek would have shown empty gutter. The pattern is
+       a PAIR — left slot, right slot — so it repeats rather than
+       ends, and a ping-pong over two modules is that repeat written
+       down. Slot 0 hugs left, slot 1 right, slot 2 left again, and
+       the scrub between them is continuous, so a tile still crosses
+       its own width as the row turns. */
+    const raw = (wx - cur.x - GAP / 2) / MOD_X;
+    const m = ((raw % 2) + 2) % 2;
+    const t = m > 1 ? 2 - m : m;
     el.style.transform = "translate3d(" +
       (t * (el.__slack || 0)).toFixed(1) + "px," + push.toFixed(1) + "px,0)";
     const right = t > 0.5;
@@ -3541,6 +3568,8 @@ addEventListener("pageshow", () => {
   const give = () => {
     cover.remove();
     document.documentElement.classList.remove("pt-arriving");
+    /* the black is off: now the row can show what it does */
+    if (window.__lean) window.__lean();
   };
   if (REDUCE()) { give(); return; }
   const beatOn = (cls, el) => new Promise((res) => {
@@ -3731,6 +3760,40 @@ remount();
 placeAsk();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAsk);
 requestAnimationFrame(tick);
+
+/* ── THE LEAN ───────────────────────────────────────────────────────
+   The peek says there is another column; this says the row moves. Once,
+   on arrival: the row travels a third of a module right and settles
+   back, so the work slides and the cut column comes further in and
+   goes again. One gesture, self-reversing, and over before anyone has
+   started reading — which is the whole constraint. A page that shifts
+   under someone mid-sentence is the thing the study's return was
+   rewritten to never do, so this cannot be an idle loop and cannot
+   repeat.
+
+   It writes tgt.x rather than paging, so colIdx never moves and a
+   turn taken during the lean simply wins. Every guard is the same
+   question asked again: has anyone touched it yet. */
+const LEAN = MOD_X * 0.3;
+let leaned = false;
+window.__lean = () => {
+  if (leaned || PHONE || REDUCE()) return;
+  leaned = true;
+  const idle = () => tgt.x === START.x && !ccols.length && !dragging;
+  if (!idle()) return;
+  setTimeout(() => {
+    if (!idle()) return;
+    tgt.x = START.x + LEAN;
+    setTimeout(() => {
+      /* only if it is still ours to put back */
+      if (Math.abs(tgt.x - (START.x + LEAN)) < 1 && !ccols.length && !dragging)
+        tgt.x = START.x;
+    }, 640);
+  }, 420);
+};
+/* under a curtain the lean would play behind black, so the arrival
+   lifts it first and calls this; a plain load has nothing to wait for */
+if (!document.getElementById("ptArrive")) setTimeout(window.__lean, 60);
 </script>
 
 </body>
