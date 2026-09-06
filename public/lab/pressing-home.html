@@ -5520,17 +5520,20 @@ function buildMagazine() {
     { fx: "curtain", img: 5 % n, ms: 720 },
     { fx: "cut", img: 6 % n, ms: 640 },
   ];
+  /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
+     lab's stub here and the optimizer's ladder in the app, so this
+     costs nothing on this page and saves megabytes on the real one —
+     the browser picks a ~384px candidate for a 128px box at DPR 3
+     instead of the original file. */
+  const szLoad = (im, src) => {
+    im.src = src;
+    const ss = tileSrcSet(src);
+    if (ss) { im.srcset = ss; im.sizes = "128px"; }
+  };
   const szImg = (src, cls) => {
     const im = document.createElement("img");
     im.className = cls;
-    im.src = src;
-    /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
-       lab's stub here and the optimizer's ladder in the app, so this
-       line costs nothing on this page and saves megabytes on the real
-       one — the browser picks a ~384px candidate for a 128px box at
-       DPR 3 instead of the original file. */
-    const ss = tileSrcSet(src);
-    if (ss) { im.srcset = ss; im.sizes = "128px"; }
+    if (src) szLoad(im, src);
     im.alt = "";
     im.decoding = "async";
     return im;
@@ -5616,8 +5619,14 @@ function buildMagazine() {
      they are the grid's own urls, so an open fetch is a cache hit. */
   const szStage = (rl) => {
     rl.box.innerHTML = "";
-    rl.stills = rl.frames.map((src) => {
-      const im = szImg(src, "sz-fill");
+    rl.stills = rl.frames.map((src, k) => {
+      /* ONLY THE RESTING FRAME IS FETCHED NOW. The other seven come
+         when the reel first runs (szStart), so a stage that never
+         plays — a closed drawer, a row that stays off screen — costs
+         one file and not eight. Thirty-five of them were loading at
+         boot behind drawers nobody had opened. */
+      const im = szImg(k ? null : src, "sz-fill");
+      if (k) im.dataset.src = src;
       im.loading = "lazy";
       im.style.opacity = 0;
       rl.box.appendChild(im);
@@ -5715,6 +5724,10 @@ function buildMagazine() {
   };
   const szStart = (rl) => {
     if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
+    rl.stills.forEach((im) => {
+      if (!im.dataset.src) return;
+      const src = im.dataset.src; delete im.dataset.src; szLoad(im, src);
+    });
     const step = () => {
       if (document.hidden) { rl.timer = setTimeout(step, 400); return; }
       const seq = szSeq(rl.frames.length);

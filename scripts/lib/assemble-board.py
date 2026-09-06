@@ -1819,6 +1819,18 @@ function remount() {
 }
 /* a column of the field: its own scroller, at its own module, kept at
    whatever height the deal dealt and returned to wherever it was left */
+/* ── ON A PHONE THE PAIR SCROLLS AS ONE ─────────────────────────────
+   Two columns fill the glass and a thumb lands on either, so a column
+   scrolling on its own read as half the page failing to move: the
+   halves drifted apart, and a swipe down the middle moved whichever
+   one the finger happened to be over. The column under the last
+   press DRIVES; the other follows its scrollTop. Only the driver ever
+   writes, because the follower's own scroll event arrives a frame
+   late, and letting it write back would drag the driver to where the
+   follower was, mid-flick. Both stand at the taller height so they
+   reach the end together. Desktop keeps every column its own
+   scroller, which is what it asked for. */
+let driver = null;
 function mountCol(u, gx, sh) {
   const f = document.createElement("div");
   f.className = "fcol";
@@ -1826,15 +1838,22 @@ function mountCol(u, gx, sh) {
   f.style.cssText = "left:" + gx + "px;width:" + MOD_X + "px;translate:" + sh + "px 0";
   const inn = document.createElement("div");
   inn.className = "fin";
-  inn.style.height = (colH[u - Math.floor(u / COLS) * COLS] || PH) + "px";
+  inn.style.height = (PHONE ? PH : (colH[u - Math.floor(u / COLS) * COLS] || PH)) + "px";
   f.appendChild(inn);
   f.__in = inn;
   plane.appendChild(f);
   fcols.set(u, f);
   const y = colY.get(u);
   if (y) f.scrollTop = y;
+  if (PHONE) f.addEventListener("pointerdown", () => { driver = f; }, { passive: true });
   f.addEventListener("scroll", () => {
     colY.set(u, f.scrollTop);
+    if (PHONE) {
+      if (!driver) driver = f;
+      if (driver === f) fcols.forEach((g) => {
+        if (g !== f && Math.abs(g.scrollTop - f.scrollTop) > 1) g.scrollTop = f.scrollTop;
+      });
+    }
     pokeBurn();
     if (window.placeAsk) placeAsk();
     /* and the column keeps its own window: a phone deals two columns
@@ -3838,9 +3857,26 @@ const sheetIn = document.getElementById("cmdIn");
 const nav = document.getElementById("nav");
 if (PHONE) {
   sheetIn.appendChild(document.getElementById("railwrap"));
+  /* ── NOTHING IN A CLOSED SHEET LOADS ──────────────────────────────
+     The drawers carry a stamp per category and a picture per study,
+     thirty-six files, and a lazy image inside a box the sheet has
+     folded to nothing still counts as near the screen to the loader:
+     half a megabyte fetched at boot for a sheet nobody had opened.
+     The sources come off here, in the same task that wrote them and
+     before the loader has looked, and go back on the first time the
+     sheet rises. */
+  const shelved = [...sheetIn.querySelectorAll("img")].map((i) => {
+    const s = { i, src: i.getAttribute("src"), srcset: i.getAttribute("srcset") };
+    i.removeAttribute("srcset"); i.removeAttribute("src");
+    return s;
+  });
   const mark = nav.querySelector(".mark");
   const toggleSheet = (on) => {
     const open = on != null ? on : !sheet.hasAttribute("data-on");
+    if (open && shelved.length) shelved.splice(0).forEach(({ i, src, srcset }) => {
+      if (srcset) i.setAttribute("srcset", srcset);
+      if (src) i.setAttribute("src", src);
+    });
     sheet.toggleAttribute("data-on", open);
     nav.classList.toggle("cmdopen", open);
     /* hugs can only be measured once the rows have width, and a
