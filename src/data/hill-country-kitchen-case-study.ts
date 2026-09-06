@@ -107,7 +107,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Fewer materials and the room hangs together on its own, the same way fewer rules make a cleaner design system. With only four, each one has to do more of the work, and what you end up noticing is where they meet: oak against green, marble between the two, brass on all of it.",
+        "With only four materials, each one does more of the work, and what you notice is where they meet: oak against green, marble between the two, brass on all of it.",
       group: { name: "materials" },
     },
     {
@@ -306,7 +306,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Open shelves on the working end keep plates and bowls within reach of the dishwasher. A firewood cubby at the base ties the kitchen to the rest of the property.",
+        "Open shelves on the working end keep plates and bowls within reach of the dishwasher. A firewood cubby at the base.",
     },
     {
       id: "island-columns",
@@ -320,7 +320,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "Where It Sits",
           content:
-            "Centered, with space to walk on all four sides, and the first thing you see from the entry. Eight feet of usable counter, with the open shelving facing the dining side.\n\nEvery sight line in the kitchen crosses it. From the range you look over it to the windows; from the dining table you look through it to the backsplash. The oak breaks up all that green and marble around the perimeter and gives your eye somewhere warm to land.",
+            "Centered, with space to walk on all four sides, and the first thing you see from the entry. Eight feet of usable counter, with the open shelving facing the dining side.\n\nEvery sight line in the kitchen crosses it. From the range you look over it to the windows; from the dining table you look through it to the backsplash. The oak breaks up the green and marble around the perimeter.",
         },
         {
           title: "On Legs",
@@ -463,7 +463,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "Sage green on the vertical planes, marble on the horizontal ones, oak in the middle, brass on the hardware. The island handles prep, serving, and seating at the same time, and the dining table sits close enough to stay in the conversation and far enough off to feel like its own place.",
+        "Sage green on the vertical planes, marble on the horizontal ones, oak in the middle, brass on the hardware. The island handles prep, serving, and seating at the same time, and the dining table sits close enough to stay in the conversation and far enough off to be its own place.",
     },
   ],
 };
