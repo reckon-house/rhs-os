@@ -199,7 +199,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Merchandising could lay out a new season without touching the templates underneath: swap the photography, swap the copy, publish. The type hierarchy did not move, which is what kept the site from sliding toward a catalog as the store grew.",
+        "Merchandising could lay out a new season without touching the templates underneath: swap the photography, swap the copy, publish. The type hierarchy did not move.",
     },
 
     // ── PDP screen — climbs the crossing above it.
@@ -286,7 +286,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Feature headlines",
           description:
-            "The heaviest upright weight, for designer launches and feature headlines. Next to the wordmark, this is as loud as the site gets.",
+            "The heaviest upright weight, for designer launches and feature headlines. The heaviest weight after the wordmark.",
           family: "'Avenir Next', 'Helvetica Neue', sans-serif",
           weight: 800,
         },
@@ -370,7 +370,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       stack: ["Photoshop", "Illustrator", "Sketch", "InVision"],
       links: [],
       content:
-        "Strategy, brand, architecture and content, all working from the same edit as the floor. The type kept the voice steady while everything under it changed every week.",
+        "Strategy, brand, architecture and content, all working from the same edit as the floor. The type stayed fixed while everything under it changed every week.",
     },
   ],
 };
