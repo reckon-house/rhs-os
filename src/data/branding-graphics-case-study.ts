@@ -125,7 +125,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Each of these started with a blank page and a deadline, and no plan for where it would end up.",
+        "Some were personal, some had a deadline, and none had a brief.",
     },
 
     // ── ABC 123 typography poster — single, padded.
