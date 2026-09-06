@@ -106,7 +106,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Ivy Park was staking out a spot between luxury fashion and athletic performance, and there was no obvious reference for it. The design had to sit in that gap and feel like it belonged there.",
+        "Ivy Park was staking out a spot between luxury fashion and athletic performance, and there was no obvious reference for it. The design had to sit in that gap.",
       group: { name: "brief" },
     },
     {
@@ -215,7 +215,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Polygon",
           content:
-            "A hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.\n\nOn scroll it rotated slowly, which gave the flat photography some depth. Under the hood it was one CSS transform.",
+            "A hexagonal frame, sometimes cropped tight to a jawline, sometimes open wide enough for a full figure.\n\nOn scroll it rotated slowly, which gave the flat photography some depth. It was one CSS transform.",
         },
         {
           title: "Typography at Volume",
@@ -476,7 +476,7 @@ export const ivyParkCaseStudy: CaseStudy = {
       stack: ["Nordstrom CMS", "Custom Components", "HTML/CSS/JS"],
       links: [],
       content:
-        "The creative direction, typography, layout, motion, copy and rollout all happened in a Nordstrom office, with a small team and a hard deadline. The brief was open enough to allow real decisions and tight enough on time to require them.\n\nAfter launch, Beyoncé sent the team a personal thank-you video. That part stays off social.",
+        "The creative direction, typography, layout, motion, copy and rollout all happened in a Nordstrom office, with a small team and a hard deadline. The brief was open, and the deadline was six weeks.\n\nAfter launch, Beyoncé sent the team a personal thank-you video. That part stays off social.",
     },
   ],
 };
