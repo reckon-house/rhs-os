@@ -312,7 +312,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       stack: ["Adobe Illustrator", "Adobe Photoshop"],
       links: [],
       content:
-        "Mid-century earth tones, warm enough to feel organic. Everything was drawn to go big or small, so the same identity sits on a billboard and on a candle label.\n\nThe hard decisions were made once, up front, and every piece after that could stay simple.",
+        "Mid-century earth tones. Everything was drawn to go big or small, so the same identity sits on a billboard and on a candle label.\n\nThe name, the mark and the tree were decided once, up front, and every piece after that used them as they were.",
     },
   ],
 };
