@@ -7,7 +7,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
   title: "Nordstrom Personalization System",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Personalized homepage content for Nordstrom, built on three tile shapes. | Pages for millions of people that still feel like they were made for one.",
+    "Personalized homepage content for Nordstrom, built on three tile shapes. | They resize for every breakpoint, so one picture works many ways and the pages don't look machine-made.",
   field: "Design Systems\nArt Direction\nProduct Photography Direction\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2015",
@@ -50,7 +50,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nPersonalization\nSystem",
       subtitle:
-        "Personalized homepage content for Nordstrom, built on three tile shapes. | Pages for millions of people that still feel like they were made for one.",
+        "Personalized homepage content for Nordstrom, built on three tile shapes. | They resize for every breakpoint, so one picture works many ways and the pages don't look machine-made.",
       field: "Design Systems  Art Direction  Product Photography Direction",
       author: "Jeremy Prasatik",
       published: "2015",

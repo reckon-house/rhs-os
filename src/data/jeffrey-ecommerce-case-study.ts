@@ -7,7 +7,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
   title: "Jeffrey New York",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. | A gallery of a shop, translated to a screen without flattening it into a catalog.",
+    "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. | The store was closer to a gallery than a shop, so the site changes with the season and runs a story ahead of every sale.",
   field: "Digital Strategy\nBrand System\nEcommerce Design\nUX Architecture",
   author: "Jeremy Prasatik",
   published: "2015",
@@ -37,7 +37,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       },
       title: "Jeffrey\nNew York",
       subtitle:
-        "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. | A gallery of a shop, translated to a screen without flattening it into a catalog.",
+        "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. | The store was closer to a gallery than a shop, so the site changes with the season and runs a story ahead of every sale.",
       field: "Digital Strategy  Brand System  Ecommerce Design  UX Architecture",
       author: "Jeremy Prasatik",
       published: "2015",

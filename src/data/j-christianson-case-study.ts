@@ -7,7 +7,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
   title: "J. Christianson",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike.",
+    "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | A four-circle mark that changes color by where it goes, and one tree drawing in four colorways for the whole line.",
   field: "Brand Development\nNaming\nLogo Design\nGraphic Design",
   author: "Jeremy Prasatik",
   published: "2019",
@@ -50,7 +50,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       },
       title: "J. Christianson",
       subtitle:
-        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike.",
+        "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. | A four-circle mark that changes color by where it goes, and one tree drawing in four colorways for the whole line.",
       field: "Brand Development  Naming  Logo Design  Graphic Design",
       author: "Jeremy Prasatik",
       published: "2019",

@@ -7,7 +7,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
   title: "Nordstrom Content Framework",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | It gave the homepage, email, and landing pages one way of sorting a lot of everything.",
+    "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | Four buckets sort the homepage, email, and landing pages the way a magazine sorts its sections.",
   field: "Content Strategy\nBrand Design\nNaming\nEcommerce Design",
   author: "Jeremy Prasatik",
   published: "2016",
@@ -35,7 +35,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       },
       title: "Nordstrom\nContent Framework",
       subtitle:
-        "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | It gave the homepage, email, and landing pages one way of sorting a lot of everything.",
+        "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. | Four buckets sort the homepage, email, and landing pages the way a magazine sorts its sections.",
       field: "Content Strategy  Brand Design  Naming",
       author: "Jeremy Prasatik",
       published: "2016",

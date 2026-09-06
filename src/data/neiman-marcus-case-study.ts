@@ -7,7 +7,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
   title: "Neiman Marcus InSite",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Neiman Marcus's digital editorial hub, InSite. | Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
+    "Neiman Marcus's digital editorial hub, InSite. | Layouts, runway typography, and studio-shot photography, built to feel like a magazine and sell like a store.",
   field: "Editorial Design\nArt Direction\nTypography",
   author: "Jeremy Prasatik",
   published: "2012",
@@ -51,7 +51,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       },
       title: "Neiman Marcus\nInSite",
       subtitle:
-        "Neiman Marcus's digital editorial hub, InSite. | Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
+        "Neiman Marcus's digital editorial hub, InSite. | Layouts, runway typography, and studio-shot photography, built to feel like a magazine and sell like a store.",
       field: "Editorial Design  Art Direction  Typography",
       author: "Jeremy Prasatik",
       published: "2012",
