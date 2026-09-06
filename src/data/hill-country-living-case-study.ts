@@ -274,9 +274,9 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       label: "SECTION 04: MATERIALS & FINISHES",
       title: "The materials,\nchosen for how they age.",
       introText:
-        "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. None of it is trendy and all of it can take a scuff.",
+        "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. All of it can take a scuff.",
       philosophyText:
-        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed reads soft from across the room and structured up close. Brass goes dark on its own schedule.",
+        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed reads soft from across the room and structured up close. Brass goes dark over time.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
         { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams" },
