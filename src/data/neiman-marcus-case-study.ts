@@ -218,7 +218,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The pixelation was on purpose. InSite lived on a screen, and this was the one treatment that stopped pretending it was print.",
+        "The pixelation was on purpose. InSite lived on a screen, not in print.",
     },
 
     // Color story triples
@@ -468,7 +468,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
       links: [],
       content:
-        "The templates carried it. Ways-to-wear ran on a fixed grid, designer spotlights on open typography, trend pieces on color as the environment. That was loose enough for a dozen moods and tight enough that every story looked like it came from the same room.",
+        "The templates carried it. Ways-to-wear ran on a fixed grid, designer spotlights on open typography, trend pieces on color as the environment. Three templates, dozens of stories, one look across all of them.",
     },
   ],
 };
