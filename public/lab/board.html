@@ -2398,6 +2398,14 @@ const scoreOf = (hay, ws) => { let n = 0; for (const w of ws) if (hasWord(w, hay
 function answerAbout(c, q, hits) {
   const src = (COPY || {})[c.__folder] || { facts: [], para: [] };
   const ws = askWords(q);
+  /* WHY IS THE ONE QUESTION THE SUMMARY NAMES OUTRIGHT. Angle is the
+     study's own answer to it and 27 of the 29 carry one. Asked FIRST,
+     because a bare "why" has no word worth matching and was falling
+     into the walker below as if it were "more". */
+  if (/\bwhy\b/.test(q.toLowerCase())) {
+    const a = src.facts.find((x) => /angle/i.test(x.k));
+    if (a) return { line: a.v };
+  }
   /* MORE IS A MOVE, NOT A SEARCH. "Tell me more", "what else", or a
      question with no word worth matching, all mean the same thing:
      the next paragraph of the study's own abstract. Asking again
@@ -2432,13 +2440,6 @@ function answerAbout(c, q, hits) {
      answer, and a tie goes to it */
   if (sent && (!fact || sent.sc >= fact.sc)) return { line: sent.x };
   if (fact) return { line: fact.f.v };
-  /* WHY IS THE ONE QUESTION THE SUMMARY NAMES OUTRIGHT. Angle is the
-     study's own answer to it and 27 of the 29 carry one, so a why
-     that caught nothing else is answered rather than refused. */
-  if (/\bwhy\b/.test(q.toLowerCase())) {
-    const a = src.facts.find((x) => /angle/i.test(x.k));
-    if (a) return { line: a.v };
-  }
   /* only then is it a question about something else on the board —
      and only a study that caught two of the words, since one loose
      word is how "how much does a rocket cost" found six studies */
@@ -2446,8 +2447,12 @@ function answerAbout(c, q, hits) {
   if (strong.length) return {
     line: strong.length > 4 ? strong.length + " on the board:" : "Not in this one. On the board:",
     hits: strong.slice(0, 4) };
-  const hl = houseLine(q);
-  if (hl) return { line: hl };
+  /* AND THEN IT SAYS SO. The house's method notes used to stand in
+     here as a last resort, and "what did it cost" came back as "The
+     brand, the thing people use, and the back of house..." — the
+     note under "What I take on", matched on the word "what". An answer
+     about a different subject is worse than none, because it reads as
+     an answer. The notes are the house rooms' to give. */
   return { line: "Nothing here answers that. The full study may." };
 }
 
