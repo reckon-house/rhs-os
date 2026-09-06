@@ -278,7 +278,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
           name: "Vintage Wool",
           role: "Rug runner",
           description:
-            "An indigo-gray runner, found vintage, with the kind of soft pattern that only comes from age. It leaves most of the oak showing.",
+            "An indigo-gray runner, found vintage and faded soft. It leaves most of the oak showing.",
           family: "'Avenir Next', system-ui, sans-serif",
           weight: 400,
         },
@@ -323,7 +323,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "A two-story foyer sized around the light through its front doors and furnished with found pieces. It introduces the house before anyone says hello.",
+        "A two-story foyer sized around the light through its front doors and furnished with found pieces.",
     },
   ],
 };
