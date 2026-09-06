@@ -7,7 +7,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
   title: "Branding, Print & Apparel",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one in whatever style it needed, none of them in mine.",
+    "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one has its own look, made to fit that client.",
   field: "Graphic Design\nAlbum Art\nPoster Design\nLogo Design\nPhoto Compositing",
   author: "Jeremy Prasatik",
   published: "2008 — 2018",
@@ -51,7 +51,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       },
       title: "Branding,\nPrint &\nApparel",
       subtitle:
-        "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one in whatever style it needed, none of them in mine.",
+        "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. | Each one has its own look, made to fit that client.",
       field: "Graphic Design  Album Art  Poster Design  Logo Design  Photo Compositing",
       author: "Jeremy Prasatik",
       published: "2008 — 2018",

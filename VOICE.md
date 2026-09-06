@@ -101,6 +101,28 @@ and moves on.
 Plain words for sophisticated ideas. He never reaches for a bigger word
 than the thing needs.
 
+### The grey half, in his words
+
+The study leads are two sentences: what it is in ink, then a second
+half in grey. On "Each one in whatever style it needed, none of them
+in mine.", the day he read it in a column (5 Sept 2026):
+
+- "this answer feels like AI still. I am wondering how we get to plain
+  english more?"
+- "we dont ever need any of the '..., none of them in mine.' type of
+  comment. just state what the projects are and why the decisions were
+  made, ya know? it doesnt need anything more than that."
+
+His own plain version of the same line: "Each project has a unique and
+specific look and feel for that particular client." What shipped, one
+notch plainer: "Each one has its own look, made to fit that client."
+
+The rule that falls out of it: the grey half says what the thing is
+or why it was decided, and stops. A turn of phrase at the end of a
+sentence, the little flourish that makes it quotable, is the tell.
+"…none of them in mine." "…a room that feels found." "…made for one."
+Those are the writer performing; he wants the fact.
+
 ### Lines he wrote or chose for the site itself
 
 - "I'm Jeremy Prasatik. I make things across brand, product, and place. Apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Here are some of those things." (the homepage lede, his rewrite of three earlier versions; "make things" is his verb, and the last line points at the page instead of adding a claim)

@@ -144,6 +144,7 @@ These apply to every case study, every time. Non-negotiable.
 5. One idea per sentence. Short sentences, long thought.
 6. Lead with verbs. Action before description. "Built a modular grid system" not "A modular grid system was built."
 7. Cut any sentence that doesn't add information. If it just restates what the sentence before it said, delete it.
+8. No rhetorical tails. The second half of a lead, the grey half, states what the thing is or why it was decided, and stops. A flourish at the end of a sentence that makes it quotable ("…, none of them in mine", "…a room that feels found", "…made for one") is the writer performing. Jeremy's words: "just state what the projects are and why the decisions were made. it doesnt need anything more than that." (VOICE.md, "The grey half".)
 
 **Banned phrases:** "crafting meaningful experiences," "creative soul," "listener, thinker, problem-solver," "journey," "passion," "tapestry," "leveraging," "elevating," "disrupting," "innovative," "cutting-edge," "best-in-class," stacked triple adjectives, "seamless/seamlessly," "robust," "the result was..." (just start with what happened), "surfaces" as a verb (use "shows up," "flags," "finds," "catches," "reveals")
 
