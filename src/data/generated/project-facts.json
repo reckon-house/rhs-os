@@ -171,7 +171,7 @@
      {
       "facet": "colour",
       "term": "cream",
-      "n": 11,
+      "n": 13,
       "cites": [
        {
         "section": "meta",
@@ -2042,7 +2042,7 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 12,
+      "n": 11,
       "cites": [
        {
         "section": "meta",
@@ -4107,20 +4107,6 @@
         "section": "marks-materials",
         "field": "colors.2.name",
         "quote": "Stone"
-       }
-      ]
-     }
-    ],
-    "furniture": [
-     {
-      "facet": "furniture",
-      "term": "shelf",
-      "n": 1,
-      "cites": [
-       {
-        "section": "home-footnote",
-        "field": "content",
-        "quote": "The personalization is a shelf, and the catalog is still right there under it."
        }
       ]
      }
@@ -7899,7 +7885,7 @@
        {
         "section": "objects-footnote",
         "field": "content",
-        "quote": "The styling is personal because it is somebody's stuff: the denim jacket on the valet stand, the vintage rug fraying at one edge,…"
+        "quote": "The objects are the owners' own: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning…"
        },
        {
         "section": "image",
@@ -8280,7 +8266,7 @@
        {
         "section": "objects-footnote",
         "field": "content",
-        "quote": "…ebody's stuff: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning toward the window."
+        "quote": "…e owners' own: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning toward the window."
        },
        {
         "section": "image",
@@ -8590,7 +8576,7 @@
      {
       "facet": "room",
       "term": "kitchen",
-      "n": 58,
+      "n": 57,
       "cites": [
        {
         "section": "meta",
@@ -11041,28 +11027,6 @@
      },
      {
       "facet": "style",
-      "term": "vintage",
-      "n": 5,
-      "cites": [
-       {
-        "section": "marks-materials",
-        "field": "philosophyText",
-        "quote": "Greatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg",
-        "quote": "No horizon and no vanishing point, stacked horizontal bands with the tree entering from the right edge and cropped."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg",
-        "quote": "Landscape format, the tree vertical and centred against three cropped circles pinned at the corners."
-       }
-      ]
-     },
-     {
-      "facet": "style",
       "term": "western",
       "n": 4,
       "cites": [
@@ -11082,6 +11046,29 @@
         "quote": "Low vantage looking up, the figure cropped at the crown and at both shoulders, filling centre and right."
        }
       ]
+     },
+     {
+      "facet": "style",
+      "term": "vintage",
+      "n": 4,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg",
+        "quote": "No horizon and no vanishing point, stacked horizontal bands with the tree entering from the right edge and cropped."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-oak/hill-country-oakworks-mid-century-tree-silhouette-poster-teal-orange-red-circles.jpg",
+        "quote": "Landscape format, the tree vertical and centred against three cropped circles pinned at the corners."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/hill-country-oak/hill-country-oakworks-iphone-mockup-poster-tree-color-blocks-held-against-sky.jpg",
+        "quote": "Eye-level vantage, the phone held vertical just right of centre and occupying about a third of the frame, background falling to blur on both sides."
+       }
+      ],
+      "observed": true
      }
     ],
     "colour": [
@@ -11652,7 +11639,7 @@
        {
         "section": "closing",
         "field": "content",
-        "quote": "Mid-century earth tones, warm enough to feel organic."
+        "quote": "Mid-century earth tones."
        },
        {
         "section": "image",
