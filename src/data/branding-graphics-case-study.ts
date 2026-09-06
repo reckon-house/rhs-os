@@ -267,7 +267,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Folk, pop, ambient and a DJ, and nothing carries over from one sleeve to the next. That was the requirement.",
+        "Folk, pop, ambient and a DJ, so nothing carries over from one sleeve to the next.",
     },
     {
       id: "covers-footnote",
@@ -319,7 +319,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Bokeh's Fall. The photograph was shot on film, and the window is what happened when it got blown up to street size. The original is below.",
+        "Bokeh's Fall. A 4x6 of defocused lights, orange and pink on black, with type set over it for the window. The original is below.",
     },
 
     // ── Bokeh's Fall storefront — the zoom. The section's copy is about a

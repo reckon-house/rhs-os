@@ -66,7 +66,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
         { label: "Angle", value: "Six shapes, no color, and the only decisions left were placement and scale." },
       ],
       abstract:
-        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set, and they land in three different places.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
+        "Personal work. The question was how much range a small set of patterns could produce once color, photography and gradients were off the table. What was left was black ink, white paper, and six repeating shapes.\n\nDots at two scales, lines in three directions, and a diamond grid, each one drawn as a positive and a negative, twelve tiles in all. They fill the letterforms, spill outside them, and sit behind them as backgrounds. Three lithographs came out of that set.\n\nWith no color to lean on, tone comes from spacing. A packed fill reads dark and an open one reads light, and the biggest shape on the sheet is where the eye goes first. The amount of paper left around a letter sets the mood of the whole print.",
     },
 
         // ── HERO ──
@@ -86,15 +86,15 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       // Jeremy, 2026-08-15: "defining the box i was going to work within
       // was the 'work'". His sentence, spelling fixed, nothing else.
       // The count it replaced was already on the cover and on the mark.
-      title: "Defining the box",
+      title: "The rules were set",
       // The study's one crossing, in the BRIEF form (pin + crossing) rather
       // than standalone: this header carries the method columns, and
       // PRESSING.md §7 reserves the standalone crossing for headers whose
       // copy is short. Headline crosses, then pins while the vocabulary
       // travels past it.
       pressing: {
-        mark: { n: "02", name: "The Box" },
-        heldLine: "was the work.",
+        mark: { n: "02", name: "The Rules" },
+        heldLine: "before the first print.",
         choreo: { pin: true, crossing: true },
       },
       group: { name: "rules", bg: "#141414", radius: 75, padding: "60px" },

@@ -53,7 +53,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
         { label: "Angle", value: "Every collection shares cream as its ground, so a plate from one can sit on the table with a plate from another." },
       ],
       abstract:
-        "Amber Shockey & Co. is a tableware startup. Each of its collections has a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting, and every new collection has to sit next to the ones before it.\n\nThree collections are here: blue florals, black linework, red dragons. Each one sets something structured against something organic, and each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with.\n\nPattern design, product design, and colorway development were done together, as one piece of work.",
+        "Amber Shockey & Co. is a tableware startup. Each of its collections has a hero pattern, a secondary, and an accent, made to layer from a single dish up to a full setting, and every new collection has to sit next to the ones before it.\n\nThree collections are here: blue florals, black linework, red dragons. Each one sets something structured against something organic, and each runs in several colorways, so the same set can go minimal or maximal depending on what it's paired with.\n\nPattern design, product design, and colorway development were done together.",
     },
 
     // ── HERO CAROUSEL ──

@@ -172,7 +172,7 @@ export const arcCaseStudy: CaseStudy = {
         { label: "Angle", value: "People skip home inventory because the work is miserable. Take the typing out and the rest is straightforward." },
       ],
       abstract:
-        "Home inventory is an old problem, and none of the tools for it have solved it well. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up, and the existing apps have not changed that. They are spreadsheets with better packaging, asking people to do the same manual work they were already avoiding. About 60% of homeowners are underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. You point it at a room, photo or video, and it identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and the model reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. Python backend, Streamlit frontend, OpenAI Vision API and Perceptron Mk1 for recognition, deployed on Vercel with Supabase for the data. Concept to live product in ten weeks.",
+        "Home inventory is an old problem. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up. The apps for it ask you to type every item in by hand, and about 60% of homeowners are still underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. You point it at a room, photo or video, and it identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and the model reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. Python backend, Streamlit frontend, OpenAI Vision API and Perceptron Mk1 for recognition, deployed on Vercel with Supabase for the data. Concept to live product in ten weeks.",
       pressing: { mark: { n: "02", name: "Statement" } },
     },
 
@@ -550,7 +550,7 @@ export const arcCaseStudy: CaseStudy = {
       id: "financial-note",
       type: "text",
       size: "xl",
-      content: "This is the part that makes A.R.C. more than inventory software.",
+      content: "The gap between the two shows as a dollar amount.",
     },
     {
       id: "financial-footnote",
@@ -828,10 +828,10 @@ export const arcCaseStudy: CaseStudy = {
       type: "text",
       size: "xl",
       content:
-        /* Was "matters - because financially". A hyphen standing in for
-           a dash is still a dash, and the rule covers all three. The
-           clause it was joining takes a comma. */
-        "The interface treats your stuff like it matters, because financially it does.",
+        /* The Dashboard card used to say this in the detail altitude
+           under a hook that only commented ("treats your stuff like it
+           matters"). One fact, one home: the fact is the hook. */
+        "Every screen puts the money first: what you own, what it is worth, and whether it is covered.",
     },
     {
       id: "product-footnote",
@@ -851,7 +851,7 @@ export const arcCaseStudy: CaseStudy = {
           image: `${IMG}/arc-main-thumb.jpg`,
           title: "Dashboard View",
           description:
-            "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status, and recent activity. The hierarchy puts the money first: what you own, what it is worth, and whether you are covered.",
+            "The home screen is the overview: total items, total estimated value, the category breakdown, coverage status, and recent activity.",
         },
         {
           image: `${IMG}/arc-room-thumb.jpg`,
