@@ -101,7 +101,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Photography came first. The old pictures looked like a 2010 catalog, and no layout was going to fix that.",
+        "Photography came first, because the old pictures dated the site and no layout was going to fix that.",
     },
 
     // Hero-carousel — cycles through the photography library so the section
@@ -172,7 +172,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The shoppable video comes after, with the products from each look a tab away. Nothing on the page takes over. The personalization is a shelf, and the catalog is still right there under it.",
+        "The shoppable video comes after, with the products from each look a tab away, and the catalog is still right there under it.",
     },
 
     // Three desktop captures used to stack here as three plain plates.
