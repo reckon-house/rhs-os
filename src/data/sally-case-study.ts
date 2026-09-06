@@ -338,7 +338,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Brand Brain ingests and indexes the whole corpus, market research included, and when a strategist asks a question the answer draws on the kind of context a new hire spends months picking up.",
+        "Brand Brain ingests and indexes the whole corpus, market research included.",
       group: { name: "brand-brain" },
     },
     {
@@ -348,7 +348,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Claude: Long-Form Writing",
           content:
-            "The long documents come from Claude, the strategy memos and competitive analyses. It takes in the whole context (brand guidelines, performance history, competitive data) and writes something that reads like it came from someone who has worked on the brand for years.\n\nThat matters because these documents go to leadership. Output that needs heavy editing is worse than none.",
+            "The long documents come from Claude, the strategy memos and competitive analyses. It takes in the whole context (brand guidelines, performance history, competitive data) and writes the document.\n\nThese documents go to leadership, so they have to ship without heavy editing.",
         },
         {
           title: "Gemini: The Visual Layer",
@@ -521,7 +521,7 @@ export const sallyCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The Approve button is the whole point. It does not save a suggestion somewhere; it writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
+        "Approve writes real production requests into the same queue the humans use, one per channel, so a play the team likes becomes work in one click. Pass dismisses it with a reason and Jim learns from that too. A second model, given fresh context, critiques every play before a person sees it, and its verdict rides along with the proposal so a human decides. The first live scan proposed a competitive intercept, a seasonal demand play built on real search volume, and a play built around a customer's own words.",
     },
     {
       id: "thinks-editorial",
@@ -580,7 +580,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "AI Studio Photography",
           content:
-            "Two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThat is a studio rental, a lighting setup, and a photographer replaced by one button. The team uses it for product pages and social.",
+            "Two passes through OpenAI's GPT-Image-2. The first strips the background to pure white and leaves the product alone. The second lights it like a studio shot, working from a reference photograph: white cyclorama sweep with a warm-to-cool gradient, directional key light with specular highlights, fill, rim, contact shadow.\n\nThe team uses it for product pages and social.",
         },
         {
           title: "Search Architecture",
@@ -802,7 +802,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Inside the Team",
           content:
-            "I use these workflows every day, so there was no requirements document to write and nobody to translate it. When something was slow I could see it and change it, and the time between spotting a problem and shipping the fix went from months to days.\n\nThe saving everyone expects is cost, but the bigger one is context: there is no spec to drift when the person who needs the tool is the one building it.",
+            "I use these workflows every day, so there was no requirements document to write and nobody to translate it. When something was slow I could see it and change it, and the time between spotting a problem and shipping the fix went from months to days.\n\nThe saving is context as much as cost: there is no spec to drift when the person who needs the tool is the one building it.",
         },
         {
           title: "AI as Engineering Partner",
@@ -840,7 +840,7 @@ export const sallyCaseStudy: CaseStudy = {
       ],
       links: [],
       content:
-        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 2,000+ stores.\n\nThe marketing team ships thousands of assets a month through it. It runs every day, and it has started running some of itself. Nobody filed a procurement request or sat through a vendor demo to get it, and the people at Sally have a name for it now: the marketing and ecommerce brain.",
+        "Everything shares data, context, and a design language. A signal the scanner catches in the morning can be a proposed campaign by the afternoon and a production request by the end of the day, with the same brand voice and the same product data at every step, out to 2,000+ stores.\n\nThe marketing team ships thousands of assets a month through it, and the people at Sally have a name for it: the marketing and ecommerce brain.",
     },
   ],
 };
