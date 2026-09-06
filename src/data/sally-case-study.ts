@@ -72,13 +72,13 @@ export const sallyCaseStudy: CaseStudy = {
         { label: "Built", value: "A portal with eight apps, an AI strategist with 21 tools, an asset hub, a store-associate site, a Figma plugin, and a scoreboard. Six deployed applications, still growing" },
         { label: "Scope", value: "Design and full-stack, brand to backend, in about four months, from inside the marketing team" },
         { label: "Stack", value: "Python and vanilla JS on Railway, Next.js apps on Vercel, Supabase with pgvector, five AI providers routed per task" },
-        { label: "Angle", value: "It thinks on its own now. Live signals in, proposed campaigns out, and Approve creates real work." },
+        { label: "Angle", value: "It reads live signals and proposes campaigns on its own now, and Approve turns a proposal into real work." },
       ],
       title: "Sally Beauty\nMarketing OS",
       subtitle:
         "Sally Beauty's marketing and ecommerce brain, which I actively design, build, and maintain from inside the team. | It knows the brand, reads the market, the customers, and the results, and it has started proposing campaigns on its own.",
       abstract:
-        "Retail marketing runs on cycles - seasonal plans, promotional calendars, campaign briefs, asset production, store execution. The cadence is relentless and the volume is high. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that kind of output breaks when the infrastructure underneath it is stitched together from tools that don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle. One loop, signal to shelf and back again.\n\nFour months in, it is six deployed applications with a shared brain, and the loop has started closing itself: the system now reads the market and the customers on its own and proposes the campaigns.",
+        "Retail marketing runs on cycles: seasonal plans, promotional calendars, campaign briefs, asset production, store execution. Sally ships thousands of assets per month across digital, email, social, and physical stores, and that output breaks when the tools underneath it don't share context.\n\nI rebuilt each piece with AI and connected them into a single pipeline. Competitive intelligence feeds strategy, strategy produces briefs, briefs connect to assets, assets flow to stores, and purchase data feeds back into the next cycle.\n\nFour months in, it is six deployed applications with a shared brain, and the system now reads the market and the customers on its own and proposes the campaigns.",
     },
 
         // ── HERO ──
@@ -329,7 +329,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how it thinks before it responds. It knows the brand as well as the team does, which is what separates it from a chatbot.",
+        "An AI system trained on Sally's complete brand architecture: voice guidelines, visual standards, competitive positioning, campaign history, performance data, and a rule set that shapes how it thinks before it responds.",
       group: { name: "brand-brain" },
     },
     {
@@ -785,7 +785,7 @@ export const sallyCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The tools exist now for one person to ship what used to take a department. Six applications, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
+        "Six applications built by one person in four months, in daily use, and Sally's IT team is now moving them onto the company's own cloud.",
     },
     {
       id: "closing-footnote",

@@ -64,7 +64,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
         { label: "Built", value: "Three tile shapes, square, hero, and vertical, that resize for every breakpoint." },
         { label: "Scope", value: "Design systems, art direction, product photography direction." },
         { label: "Tools", value: "Nordstrom CMS, editorial templates, asset library. One picture, used many ways." },
-        { label: "Angle", value: "Strict rules, loose output." },
+        { label: "Angle", value: "Three tile shapes with strict rules, so millions of pages come out different from each other." },
       ],
       abstract:
         "Nordstrom needed personalized content for millions of customers, and it couldn't look like a machine had made it.\n\nBuilt the layouts on three tile shapes, square, hero, and vertical, each one able to resize and restack across phone and desktop while the pages kept one look. The rules were strict enough to run at that scale, and the pages still came out different from each other.\n\nThe product photography followed the same rules. Deliberate contrast, precise angles, no styling props, so each image worked on its own as a story hero or stacked into a grid as ecomm.",

@@ -153,7 +153,7 @@ const METHOD: { head: string; body: string }[] = [
     head: "What I take on",
     body:
       "The brand, the thing people use, and the back of house that keeps it " +
-      "running. Not just a handoff, and not just a tool.",
+      "running.",
   },
   {
     head: "When it's done",

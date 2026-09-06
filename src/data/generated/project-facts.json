@@ -435,7 +435,7 @@
     },
     {
      "label": "Angle",
-     "value": "People skip home inventory because the work is miserable. Take the typing out and the rest is straightforward."
+     "value": "People skip home inventory because every app makes them type each item in by hand. A.R.C. works from the camera instead."
     }
    ],
    "disciplines": [
@@ -2052,7 +2052,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "What was left was black ink, white paper, and six repeating shapes simple enough for a child to draw."
+        "quote": "What was left was black ink, white paper, and six repeating shapes."
        },
        {
         "section": "image",
@@ -2294,7 +2294,7 @@
   {
    "slug": "branding-graphics",
    "title": "Branding, Print & Apparel",
-   "subtitle": "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. Each one in whatever style it needed, none of them in mine.",
+   "subtitle": "Album covers, gig posters, prints, and logos, made over about ten years for a lot of different people. Each one has its own look, made to fit that client.",
    "category": "Creative",
    "href": "/case-studies/branding-graphics",
    "year": "2008 — 2018",
@@ -2313,7 +2313,7 @@
     },
     {
      "label": "Angle",
-     "value": "Each mark sounds like the client it was drawn for, and no two of them look related."
+     "value": "Each piece was made to fit its client, a fashion collective, a DJ, a lifestyle brand, so no two share a look."
     }
    ],
    "disciplines": [
@@ -2920,7 +2920,7 @@
        {
         "section": "marks-subhead",
         "field": "content",
-        "quote": "Leather takes pressure and denim takes thread."
+        "quote": "Pressed into leather and stitched into denim, the same mark has to read both ways."
        }
       ]
      },
@@ -2932,7 +2932,7 @@
        {
         "section": "marks-subhead",
         "field": "content",
-        "quote": "Leather takes pressure and denim takes thread."
+        "quote": "Pressed into leather and stitched into denim, the same mark has to read both ways."
        }
       ]
      },
@@ -2986,7 +2986,7 @@
     },
     {
      "label": "Angle",
-     "value": "Rebuilt so the trees are the point, and furnished so they stay that way."
+     "value": "Rebuilt around the tree line, with 16-foot glass doors on the main wall and furniture kept plain so it doesn't compete with the view."
     }
    ],
    "disciplines": [
@@ -3052,7 +3052,7 @@
      {
       "facet": "material",
       "term": "glass",
-      "n": 22,
+      "n": 23,
       "cites": [
        {
         "section": "meta",
@@ -4155,7 +4155,7 @@
   {
    "slug": "dsc",
    "title": "Dallas Sport Collective",
-   "subtitle": "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. A gym with a schedule you can talk to.",
+   "subtitle": "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. The AI only ever asks. One engine makes every booking.",
    "category": "Digital",
    "href": "/case-studies/dsc",
    "year": "2025",
@@ -4174,7 +4174,7 @@
     },
     {
      "label": "Angle",
-     "value": "Enterprise plumbing at gym scale. The AI only ever asks, and one deterministic engine makes every booking."
+     "value": "The AI only ever asks, and one deterministic engine makes every booking, however it comes in."
     }
    ],
    "disciplines": [
@@ -4374,6 +4374,18 @@
        }
       ],
       "observed": true
+     },
+     {
+      "facet": "furniture",
+      "term": "door",
+      "n": 1,
+      "cites": [
+       {
+        "section": "signup-header",
+        "field": "label",
+        "quote": "SECTION 02: THE FRONT DOOR"
+       }
+      ]
      },
      {
       "facet": "furniture",
@@ -5800,7 +5812,7 @@
   {
    "slug": "fairview-suite",
    "title": "The Fairview: Primary Suite",
-   "subtitle": "The Fairview suite, bedroom and bath, 600 square feet. Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood.",
+   "subtitle": "The Fairview suite, bedroom and bath, 600 square feet. Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub.",
    "category": "Interiors",
    "href": "/case-studies/fairview-suite",
    "year": "2022",
@@ -5819,7 +5831,7 @@
     },
     {
      "label": "Angle",
-     "value": "Dark and warm in the bedroom, and the bath keeps it going."
+     "value": "Dark and warm in the bedroom, and the same palette through the bath."
     }
    ],
    "disciplines": [
@@ -5894,7 +5906,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
        },
        {
         "section": "image",
@@ -6321,7 +6333,7 @@
      {
       "facet": "room",
       "term": "bedroom",
-      "n": 24,
+      "n": 23,
       "cites": [
        {
         "section": "meta",
@@ -6372,7 +6384,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
        },
        {
         "section": "meta",
@@ -6418,7 +6430,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub, all of it committed to one mood."
+        "quote": "| Charcoal violet walls, crystal chandeliers, a hammered copper clawfoot tub."
        },
        {
         "section": "image",
@@ -6750,7 +6762,7 @@
     },
     {
      "label": "Angle",
-     "value": "Some of the pairings looked risky on paper, and none of them do in the room."
+     "value": "Everything was picked at once on one moodboard, so the stone, wood and metal were already proven next to each other."
     }
    ],
    "disciplines": [
@@ -6814,7 +6826,7 @@
      {
       "facet": "material",
       "term": "wood",
-      "n": 17,
+      "n": 18,
       "cites": [
        {
         "section": "meta",
@@ -6946,17 +6958,17 @@
      {
       "facet": "material",
       "term": "stone",
-      "n": 4,
+      "n": 5,
       "cites": [
        {
         "section": "meta",
-        "field": "abstract",
-        "quote": "The focus was hard surfaces, and the three rooms show how tile and stone anchor everything else."
+        "field": "summary.3.value",
+        "quote": "Everything was picked at once on one moodboard, so the stone, wood and metal were already proven next to each other."
        },
        {
-        "section": "confidence-subhead",
-        "field": "content",
-        "quote": "If a stone and a wood and a metal work next to each other there, they work in the room."
+        "section": "meta",
+        "field": "abstract",
+        "quote": "The focus was hard surfaces, the tile and stone the rest of each room was built around."
        },
        {
         "section": "image",
@@ -6991,13 +7003,8 @@
      {
       "facet": "material",
       "term": "paper",
-      "n": 2,
+      "n": 1,
       "cites": [
-       {
-        "section": "meta",
-        "field": "summary.3.value",
-        "quote": "Some of the pairings looked risky on paper, and none of them do in the room."
-       },
        {
         "section": "confidence-footnote",
         "field": "content",
@@ -7559,7 +7566,7 @@
   {
    "slug": "hill-country-bath",
    "title": "Hill Country Primary Bath",
-   "subtitle": "The primary bath in the same Hill Country house as the kitchen, 400 square feet. Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found.",
+   "subtitle": "The primary bath in the same Hill Country house as the kitchen, 400 square feet. Three marbles, two vanities, one freestanding tub under a wood plank ceiling.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-bath",
    "year": "2023",
@@ -7692,7 +7699,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
+        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
        },
        {
         "section": "image",
@@ -8206,7 +8213,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling, and a room that feels found."
+        "quote": "| Three marbles, two vanities, one freestanding tub under a wood plank ceiling."
        },
        {
         "section": "image",
@@ -8503,7 +8510,7 @@
        {
         "section": "meta",
         "field": "abstract",
-        "quote": "Dried florals, an olive tree, layered vintage rugs, and every object in it placed so it feels like somebody's room."
+        "quote": "Dried florals, an olive tree, and layered vintage rugs."
        },
        {
         "section": "vanity-footnote",
@@ -8540,7 +8547,7 @@
   {
    "slug": "hill-country-kitchen",
    "title": "Hill Country Kitchen",
-   "subtitle": "A kitchen in the Texas Hill Country, built from four materials. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, warm, inviting, and lived in.",
+   "subtitle": "A kitchen in the Texas Hill Country, built from four materials. Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, so it reads as lived in.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-kitchen",
    "year": "2023",
@@ -9575,7 +9582,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "New and vintage together, warm, inviting, and lived in."
+        "quote": "New and vintage together, so it reads as lived in."
        },
        {
         "section": "cabinet-pair",
@@ -9621,7 +9628,7 @@
   {
    "slug": "hill-country-living",
    "title": "Hill Country Residence: Livingroom.",
-   "subtitle": "The living room at the center of the Hill Country house. A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose.",
+   "subtitle": "The living room at the center of the Hill Country house. A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time.",
    "category": "Interiors",
    "href": "/case-studies/hill-country-living",
    "year": "2023",
@@ -9640,7 +9647,7 @@
     },
     {
      "label": "Angle",
-     "value": "Everything picked for how it will wear, then left alone to do it."
+     "value": "Everything picked for how it will wear, and none of it bought as a set."
     }
    ],
    "disciplines": [
@@ -9734,7 +9741,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time."
        },
        {
         "section": "image",
@@ -10617,7 +10624,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time."
        },
        {
         "section": "meta",
@@ -10639,7 +10646,7 @@
        {
         "section": "meta",
         "field": "subtitle",
-        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, put together slowly and on purpose."
+        "quote": "| A limestone fireplace wall, reclaimed pine, mid-century furniture with Western details, collected over time."
        },
        {
         "section": "meta",
@@ -11366,7 +11373,7 @@
   {
    "slug": "j-christianson",
    "title": "J. Christianson",
-   "subtitle": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike.",
+   "subtitle": "A brand identity for J. Christianson, a fashion and home goods label, built from the name outward. A four-circle mark that changes color by where it goes, and one tree drawing in four colorways for the whole line.",
    "category": "Creative",
    "href": "/case-studies/j-christianson",
    "year": "2019",
@@ -11512,84 +11519,6 @@
       "observed": true
      }
     ],
-    "style": [
-     {
-      "facet": "style",
-      "term": "mid century",
-      "n": 7,
-      "cites": [
-       {
-        "section": "meta",
-        "field": "subtitle",
-        "quote": "| Mid-century warmth that stops short of nostalgia, on a storefront sign and a clothing tag alike."
-       },
-       {
-        "section": "closing",
-        "field": "content",
-        "quote": "Mid-century earth tones, warm enough to feel organic."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-billboard-mockup-brand-pattern.jpg",
-        "quote": "Eye-level frontal vantage, the billboard centred and near-symmetrical across the upper two thirds."
-       }
-      ]
-     },
-     {
-      "facet": "style",
-      "term": "vintage",
-      "n": 4,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
-        "quote": "Straight-on street-level vantage with the square poster set left of centre, the bench directly beneath it and the black lamppost closing the right edge."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-breakout.jpg",
-        "quote": "Flat frontal artwork, near-symmetrical about the dark centre stripe, a tall vertical band dominating while the tree breaks past its left and right edges."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-tagline.jpg",
-        "quote": "Flat frontal artwork in a tall narrow format, symmetrical about the brown centre stripe, the band running full height with a single horizontal interruption near the top."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "modern",
-      "n": 2,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-storefront-sign-dot-grid-brown.jpg",
-        "quote": "Eye-level frontal, facade parallel to the picture plane, the figure crossing the lower left."
-       },
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles.jpg",
-        "quote": "Straight-on, panel centred and slightly above eye level, foliage framing it on both sides."
-       }
-      ],
-      "observed": true
-     },
-     {
-      "facet": "style",
-      "term": "traditional",
-      "n": 1,
-      "cites": [
-       {
-        "section": "image",
-        "field": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
-        "quote": "Straight-on street-level vantage with the square poster set left of centre, the bench directly beneath it and the black lamppost closing the right edge."
-       }
-      ],
-      "observed": true
-     }
-    ],
     "material": [
      {
       "facet": "material",
@@ -11713,13 +11642,91 @@
       ],
       "observed": true
      }
+    ],
+    "style": [
+     {
+      "facet": "style",
+      "term": "mid century",
+      "n": 6,
+      "cites": [
+       {
+        "section": "closing",
+        "field": "content",
+        "quote": "Mid-century earth tones, warm enough to feel organic."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-billboard-mockup-brand-pattern.jpg",
+        "quote": "Eye-level frontal vantage, the billboard centred and near-symmetrical across the upper two thirds."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-brand-pattern-logo-four-colors.jpg",
+        "quote": "Flat-on, four-fold rotational symmetry, corner circles dominating the square."
+       }
+      ]
+     },
+     {
+      "facet": "style",
+      "term": "vintage",
+      "n": 4,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
+        "quote": "Straight-on street-level vantage with the square poster set left of centre, the bench directly beneath it and the black lamppost closing the right edge."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-breakout.jpg",
+        "quote": "Flat frontal artwork, near-symmetrical about the dark centre stripe, a tall vertical band dominating while the tree breaks past its left and right edges."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-tree-stripe-graphic-tagline.jpg",
+        "quote": "Flat frontal artwork in a tall narrow format, symmetrical about the brown centre stripe, the band running full height with a single horizontal interruption near the top."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "modern",
+      "n": 2,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-storefront-sign-dot-grid-brown.jpg",
+        "quote": "Eye-level frontal, facade parallel to the picture plane, the figure crossing the lower left."
+       },
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles.jpg",
+        "quote": "Straight-on, panel centred and slightly above eye level, foliage framing it on both sides."
+       }
+      ],
+      "observed": true
+     },
+     {
+      "facet": "style",
+      "term": "traditional",
+      "n": 1,
+      "cites": [
+       {
+        "section": "image",
+        "field": "/case-studies/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.jpg",
+        "quote": "Straight-on street-level vantage with the square poster set left of centre, the bench directly beneath it and the black lamppost closing the right edge."
+       }
+      ],
+      "observed": true
+     }
     ]
    }
   },
   {
    "slug": "jeffrey-ecommerce",
    "title": "Jeffrey New York",
-   "subtitle": "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. A gallery of a shop, translated to a screen without flattening it into a catalog.",
+   "subtitle": "Jeffrey New York's first online store, built from zero: the brand, the site, and the way it told stories. The store was closer to a gallery than a shop, so the site changes with the season and runs a story ahead of every sale.",
    "category": "Digital",
    "href": "/case-studies/jeffrey-ecommerce",
    "year": "2015",
@@ -12041,7 +12048,7 @@
      {
       "facet": "client",
       "term": "Valentino",
-      "n": 8,
+      "n": 9,
       "cites": [
        {
         "section": "meta",
@@ -12502,7 +12509,7 @@
   {
    "slug": "neiman-marcus",
    "title": "Neiman Marcus InSite",
-   "subtitle": "Neiman Marcus's digital editorial hub, InSite. Magazine layouts, runway typography, and studio-shot photography, all in service of the sale.",
+   "subtitle": "Neiman Marcus's digital editorial hub, InSite. Layouts, runway typography, and studio-shot photography, built to feel like a magazine and sell like a store.",
    "category": "Creative",
    "href": "/case-studies/neiman-marcus",
    "year": "2012",
@@ -13046,7 +13053,7 @@
   {
    "slug": "nordstrom-framework",
    "title": "Nordstrom Content Framework",
-   "subtitle": "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. It gave the homepage, email, and landing pages one way of sorting a lot of everything.",
+   "subtitle": "A content framework for Nordstrom.com, built from scratch: names, icons, custom lockups, and a place for everything. Four buckets sort the homepage, email, and landing pages the way a magazine sorts its sections.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-framework",
    "year": "2016",
@@ -13244,7 +13251,7 @@
   {
    "slug": "nordstrom-personalization",
    "title": "Nordstrom Personalization System",
-   "subtitle": "Personalized homepage content for Nordstrom, built on three tile shapes. Pages for millions of people that still feel like they were made for one.",
+   "subtitle": "Personalized homepage content for Nordstrom, built on three tile shapes. They resize for every breakpoint, so one picture works many ways and the pages don't look machine-made.",
    "category": "Digital",
    "href": "/case-studies/nordstrom-personalization",
    "year": "2015",
@@ -13263,7 +13270,7 @@
     },
     {
      "label": "Angle",
-     "value": "Strict rules, loose output."
+     "value": "Three tile shapes with strict rules, so millions of pages come out different from each other."
     }
    ],
    "disciplines": [
@@ -13325,7 +13332,7 @@
      {
       "facet": "material",
       "term": "tile",
-      "n": 5,
+      "n": 6,
       "cites": [
        {
         "section": "meta",
@@ -13846,7 +13853,7 @@
     },
     {
      "label": "Angle",
-     "value": "It thinks on its own now. Live signals in, proposed campaigns out, and Approve creates real work."
+     "value": "It reads live signals and proposes campaigns on its own now, and Approve turns a proposal into real work."
     }
    ],
    "disciplines": [
@@ -14490,6 +14497,20 @@
         "section": "bio-pair",
         "field": "left.src",
         "quote": "sally beauty hair color campaign influencer bio"
+       }
+      ]
+     }
+    ],
+    "furniture": [
+     {
+      "facet": "furniture",
+      "term": "shelf",
+      "n": 1,
+      "cites": [
+       {
+        "section": "meta",
+        "field": "abstract",
+        "quote": "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on…"
        }
       ]
      }

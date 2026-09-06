@@ -67,7 +67,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
         { label: "Angle", value: "The valet stand came from an antique shop and the painting is older than the house, so the room looked lived in the day it was finished." },
       ],
       abstract:
-        "Two rooms from the kitchen, and softer than it. The kitchen runs dark sage, raw oak, and unlacquered brass; the bath goes lighter on the sage, swaps the brass for polished nickel, and uses three marbles where the kitchen used one.\n\nCounters in a warm-veined Calacatta, shower walls in a cooler, grayer slab stacked vertically, floor in hex marble mosaic. The three were picked to go together, which keeps 400 square feet of hard surface from looking like a showroom.\n\nWood plank ceiling, globe sconces at both vanities, wall-mounted cross-handle faucets, and a freestanding tub under the window with a view out to the property. Dried florals, an olive tree, layered vintage rugs, and every object in it placed so it feels like somebody's room.",
+        "Two rooms from the kitchen, and softer than it. The kitchen runs dark sage, raw oak, and unlacquered brass; the bath goes lighter on the sage, swaps the brass for polished nickel, and uses three marbles where the kitchen used one.\n\nCounters in a warm-veined Calacatta, shower walls in a cooler, grayer slab stacked vertically, floor in hex marble mosaic. The three were picked to go together, which keeps 400 square feet of hard surface from looking like a showroom.\n\nWood plank ceiling, globe sconces at both vanities, wall-mounted cross-handle faucets, and a freestanding tub under the window with a view out to the property. Dried florals, an olive tree, and layered vintage rugs.",
     },
 
         // ── HERO ──

@@ -69,7 +69,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         { label: "Angle", value: "One borrowed icon, two tiers, any brand's photography." },
       ],
       abstract:
-        "The brief was emerging brand awareness, a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time. The solve: borrow the heart icon from Instagram and let it carry the campaign.\n\nOne mark, two voices. \"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising and \"Loved by Nordstrom\" on the hero slots. Same icon, same typography, and merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template used whatever photography a brand had already licensed, and the campaign ran long because there was nothing in it to get tired of.",
+        "The brief was emerging brand awareness, a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time. The answer was to borrow the heart icon from Instagram and build the campaign on it.\n\n\"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising and \"Loved by Nordstrom\" on the hero slots. Same icon, same typography, and merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template used whatever photography a brand had already licensed.",
     },
 
         // ── HERO ──

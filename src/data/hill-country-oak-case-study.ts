@@ -290,10 +290,10 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "None of it pretends",
+      title: "Sized for a billboard",
       pressing: {
         mark: { n: "04", name: "Texas, Printed" },
-        heldLine: "to be old.",
+        heldLine: "and for a phone.",
       },
     },
     // No subhead here on purpose. The one it had re-told section 03

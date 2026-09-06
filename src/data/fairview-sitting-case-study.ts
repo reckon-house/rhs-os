@@ -52,7 +52,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
         { label: "Angle", value: "Four velvet swivels facing a stone fireplace, and no television anywhere in the room." },
       ],
       abstract:
-        "A ledgestone fireplace wall runs floor to ceiling, and four charcoal velvet swivel chairs sit close enough to catch the firelight. The coffee table and the bar cabinet are antiqued brass, and there are black box beams overhead.\n\nThe palette is four materials: stone, velvet, brass, and warm oak, and no accent colors.\n\nThere is no television. The chairs face the fire and each other, and the round bar cabinet in the corner has whatever the evening needs. It reads as a formal room, a little glam, and it is comfortable to sit in.",
+        "A ledgestone fireplace wall runs floor to ceiling, and four charcoal velvet swivel chairs sit close enough to catch the firelight. The coffee table and the bar cabinet are antiqued brass, and there are black box beams overhead.\n\nThe palette is four materials: stone, velvet, brass, and warm oak, and no accent colors.\n\nThere is no television. The chairs face the fire and each other, and the round bar cabinet is in the corner. Formal, a little glam, and comfortable to sit in.",
     },
 
         // ── HERO ──

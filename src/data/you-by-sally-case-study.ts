@@ -53,7 +53,7 @@ export const youBySallyCaseStudy: CaseStudy = {
         { label: "Angle", value: "Casting first, and the portraits led everything after it. Then swatches big enough to pick a shade from." },
       ],
       abstract:
-        "Hair color usually sits under fluorescent lights next to the toothpaste, and the brief was to make it feel like something you'd choose on purpose.\n\nIt started with the cast, real people instead of models, and the rest of the campaign came off those portraits.\n\nThe swatches came next. The tiny chips became oversized color blocks on clean grids that ran on mobile, desktop and in-store signage. Avenir Next in three weights, and pink and cyan for the color.",
+        "Hair color usually sits on a drugstore shelf under fluorescent lights, and the brief was to make it something you would choose on purpose.\n\nIt started with the cast, real people instead of models, and the rest of the campaign came off those portraits.\n\nThe swatches came next. The tiny chips became oversized color blocks on clean grids that ran on mobile, desktop and in-store signage. Avenir Next in three weights, and pink and cyan for the color.",
     },
 
         // ── HERO ──

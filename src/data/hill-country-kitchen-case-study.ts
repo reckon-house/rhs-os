@@ -68,7 +68,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         { label: "Angle", value: "Pick four materials up front and use nothing else, so pieces from different eras can share a room." },
       ],
       abstract:
-        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. None of it comes from the same era. It reads as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
+        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. It reads as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
     },
 
         // ── HERO ──
@@ -448,7 +448,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Cooking turns into gathering turns into working.",
+        "Cooking, then gathering, then working, in the same room over a day.",
     },
     {
       id: "closing",

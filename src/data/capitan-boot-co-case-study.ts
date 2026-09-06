@@ -83,7 +83,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A primary logo, secondary badges, typographic lockups, and a set of illustrations. Leather takes pressure and denim takes thread.",
+        "Pressed into leather and stitched into denim, the same mark has to read both ways.",
     },
     {
       id: "marks-footnote",
@@ -313,7 +313,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Marks, type, apparel graphics, and the campaign photography, from the first sketch to the last frame.",
+        "Marks, type, apparel graphics, and the campaign photography.",
     },
     {
       id: "closing",

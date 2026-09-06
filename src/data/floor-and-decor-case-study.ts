@@ -53,10 +53,10 @@ export const floorAndDecorCaseStudy: CaseStudy = {
         { label: "Built", value: "Designer of the Quarter, Summer 2023. Hard surface selections across three residential bathrooms. Catalog, website, video interview" },
         { label: "Scope", value: "Interior design, material selection, finish coordination" },
         { label: "Materials", value: "Marble, dolomite, white oak, classic tile" },
-        { label: "Angle", value: "Some of the pairings looked risky on paper, and none of them do in the room." },
+        { label: "Angle", value: "Everything was picked at once on one moodboard, so the stone, wood and metal were already proven next to each other." },
       ],
       abstract:
-        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter, for the hard surface selections in three residential bathrooms. Marble, dolomite, white oak and classic tile were the kit every project pulled from, and each one used it differently.\n\nOne is urban southwest, with exposed brick and a matte black soaking tub. One is modern farmhouse, with shiplap, brass fixtures and patterned floor tile. The third is quiet glam, veined marble running floor to ceiling. Each room stands on its own, and the materials under all three are the same.\n\nThe focus was hard surfaces, and the three rooms show how tile and stone anchor everything else. Get the floors and the walls right and the rest of the room follows.",
+        "In Summer 2023 Floor & Decor named the studio Designer of the Quarter, for the hard surface selections in three residential bathrooms. Marble, dolomite, white oak and classic tile were the kit every project pulled from, and each one used it differently.\n\nOne is urban southwest, with exposed brick and a matte black soaking tub. One is modern farmhouse, with shiplap, brass fixtures and patterned floor tile. The third is quiet glam, veined marble running floor to ceiling. Each room stands on its own, and the materials under all three are the same.\n\nThe focus was hard surfaces, the tile and stone the rest of each room was built around.",
     },
 
         // ── HERO ──
@@ -93,7 +93,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The proportions, the fixtures and the finishes change hard.",
+        "The proportions, the fixtures and the finishes are what differ.",
     },
     // Footnote cut here (Aug 2026 copy pass): it said the subtitle again,
     // one kit, three rooms, and the subhead above already carries the part

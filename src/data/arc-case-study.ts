@@ -169,7 +169,7 @@ export const arcCaseStudy: CaseStudy = {
         { label: "Built", value: "Camera-scan home inventory app. Vision recognition, value estimation, insurance gap analysis." },
         { label: "Scope", value: "Solo, end to end. Concept, code, brand, go-to-market." },
         { label: "Stack", value: "Python, Streamlit, OpenAI Vision, Perceptron Mk1, Supabase, Vercel, Claude Code." },
-        { label: "Angle", value: "People skip home inventory because the work is miserable. Take the typing out and the rest is straightforward." },
+        { label: "Angle", value: "People skip home inventory because every app makes them type each item in by hand. A.R.C. works from the camera instead." },
       ],
       abstract:
         "Home inventory is an old problem. The average American household holds around 300,000 items, with a combined insurable value most homeowners have never added up. The apps for it ask you to type every item in by hand, and about 60% of homeowners are still underinsured because they have never cataloged what they own.\n\nA.R.C. works from the camera. You point it at a room, photo or video, and it identifies what is there, estimates replacement value, and categorizes everything in the same pass. Video scanning runs on Perceptron's Mk1 model: sweep a room and the model reasons across the footage in real time. Then A.R.C. compares what you have documented against your policy limit and shows the gap as a dollar amount.\n\nI built A.R.C. end to end: concept, code, brand, go-to-market. Python backend, Streamlit frontend, OpenAI Vision API and Perceptron Mk1 for recognition, deployed on Vercel with Supabase for the data. Concept to live product in ten weeks.",

@@ -49,7 +49,7 @@ export const chaletCaseStudy: CaseStudy = {
         { label: "Built", value: "1968 PNW chalet rebuilt to the studs. Exterior, interior, furnishings" },
         { label: "Scope", value: "Interior design, exterior direction, finish selection, furniture and fixture sourcing" },
         { label: "Materials", value: "Reclaimed PNW pine, painted stone, warm gray siding, 16-foot glass doors, walnut, Malm fireplace, sputnik chandelier" },
-        { label: "Angle", value: "Rebuilt so the trees are the point, and furnished so they stay that way." },
+        { label: "Angle", value: "Rebuilt around the tree line, with 16-foot glass doors on the main wall and furniture kept plain so it doesn't compete with the view." },
       ],
       abstract:
         "A 1968 Pacific Northwest chalet that hadn't been rethought since the '90s. Blue carpet, dated railings, an exterior that disappeared on cloudy days. The structure was sound. Everything else needed to go.\n\nTook it down to the studs. Exterior repainted warm gray with white railings. New lighting on the patio and stairs at night. Reclaimed PNW pine in mixed plank widths across the main level, a Malm fireplace, a sputnik chandelier overhead, and 16-foot sliding glass doors on the main wall, so the tree canopy is what you look at from every seat in the room.\n\nFurniture kept simple on purpose so it doesn't compete with what's outside the glass: tufted gray sofa, woven bench, walnut dining set, a leaning ladder shelf against painted stone. The original footprint gained over 400 square feet.",

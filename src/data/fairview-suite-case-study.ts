@@ -64,10 +64,10 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
         { label: "Built", value: "600 sq ft primary suite and ensuite, vaulted to fourteen feet" },
         { label: "Scope", value: "Interior design, finish selection, fixture sourcing, furniture curation" },
         { label: "Materials", value: "Charcoal violet walls, velvet, bouclé, brass, hammered copper tub, charcoal hex tile" },
-        { label: "Angle", value: "Dark and warm in the bedroom, and the bath keeps it going." },
+        { label: "Angle", value: "Dark and warm in the bedroom, and the same palette through the bath." },
       ],
       abstract:
-        "The suite commits to one mood and follows it through every surface. Charcoal violet on every wall, a vaulted ceiling with exposed wood beams, and floor-to-ceiling steel-framed windows looking out onto the property's tree canopy.\n\nThe palette is dark and warm. A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone fireplace on the far wall. The layers work together because the tonal range stays narrow: blues, grays, warm metals.\n\nThe ensuite continues through double doors, with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub under a crystal chandelier, and brass fixtures throughout. It picks up where the bedroom leaves off.",
+        "The suite is one mood on every surface. Charcoal violet on every wall, a vaulted ceiling with exposed wood beams, and floor-to-ceiling steel-framed windows looking out onto the property's tree canopy.\n\nThe palette is dark and warm. A velvet headboard, a linen sofa, a bouclé ottoman, faux fur throws, brass at every furniture base and fixture, and a cast stone fireplace on the far wall. The layers work together because the tonal range stays narrow: blues, grays, warm metals.\n\nThe ensuite continues through double doors, with charcoal hexagon tile floor to ceiling, a hammered copper clawfoot tub under a crystal chandelier, and brass fixtures throughout.",
     },
 
         // ── HERO ──
@@ -151,7 +151,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "It leans glamorous and it is still a room you can live in.",
+        "Glamorous, and still a room you can live in.",
     },
     {
       id: "furniture-footnote",

@@ -67,7 +67,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
         { label: "Built", value: "Four album covers, posters, prints, logos, a storefront window" },
         { label: "Scope", value: "Graphic design, album art, poster and logo design, photo compositing" },
         { label: "Tools", value: "Photoshop, Illustrator, InDesign, film camera, hand-rendering" },
-        { label: "Angle", value: "Each mark sounds like the client it was drawn for, and no two of them look related." },
+        { label: "Angle", value: "Each piece was made to fit its client, a fashion collective, a DJ, a lifestyle brand, so no two share a look." },
       ],
       abstract:
         "Album covers, posters, art prints, logos, and one storefront window, made over about ten years for musicians, friends, and a handful of brands.\n\nFour album covers, each for a different act. Posters and prints, from a typography exercise to double-exposed landscapes. Five logos for five clients. And one 4x6 film photograph blown up to fill a storefront window.\n\nPhotoshop, Illustrator, and InDesign for most of it, a film camera for the photography, and hand-drawn type where a piece called for it.",
@@ -362,10 +362,10 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       id: "marks-header",
       type: "section-header",
       label: "SECTION 05: MARKS",
-      title: "Five logos, none of them",
+      title: "Five logos, each drawn",
       pressing: {
         mark: { n: "05", name: "Five Logos" },
-        heldLine: "drawn the same way.",
+        heldLine: "for a different kind of client.",
         choreo: { pin: true },
       },
     },

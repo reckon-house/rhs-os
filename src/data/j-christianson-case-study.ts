@@ -101,7 +101,7 @@ export const jChristiansonCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "A white silhouette over the brand's stripe pattern, running onto the bare page, which makes the whole thing feel drawn by hand.",
+        "A white silhouette over the brand's stripe pattern.",
       group: { name: "tree" },
     },
     {

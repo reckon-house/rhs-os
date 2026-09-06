@@ -64,10 +64,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         { label: "Built", value: "Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen." },
         { label: "Scope", value: "Interior design, furniture curation, art selection, fixture sourcing." },
         { label: "Materials", value: "Limestone, reclaimed 1950s pine, cognac leather, charcoal tweed, antiqued brass." },
-        { label: "Angle", value: "Everything picked for how it will wear, then left alone to do it." },
+        { label: "Angle", value: "Everything picked for how it will wear, and none of it bought as a set." },
       ],
       abstract:
-        "Open to the kitchen, with a floor-to-ceiling limestone fireplace wall as the main event. Reclaimed 1950s pine on the floor, exposed beams overhead, brass fixtures.\n\nThe furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Navajo-style throw. Every piece was chosen for how it will age, and none of it came as a set.\n\nOn the stone wall, an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames. Family heirlooms sit next to new finds, and there is a sheepskin under the bench that gets moved around.",
+        "Open to the kitchen, with a floor-to-ceiling limestone fireplace wall. Reclaimed 1950s pine on the floor, exposed beams overhead, brass fixtures.\n\nThe furniture is mid-century in shape with textiles that lean Western: a cognac leather sofa on a wood frame, tweed armchairs, a Navajo-style throw. Every piece was chosen for how it will age, and none of it came as a set.\n\nOn the stone wall, an original painting by Dwight D. Eisenhower hangs with landscape pieces in gilded frames. Family heirlooms sit next to new finds, and there is a sheepskin under the bench that gets moved around.",
     },
 
         // ── HERO ──
@@ -304,10 +304,10 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 05: CLOSING",
-      title: "Nothing in the room is precious",
+      title: "Everything in the room",
       pressing: {
         mark: { n: "04", name: "Ten Years" },
-        heldLine: "and nothing is protected.",
+        heldLine: "gets used.",
       },
     },
     {

@@ -67,7 +67,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       id: "light-header",
       type: "section-header",
       label: "SECTION 02: LIGHT",
-      title: "The room is tall",
+      title: "The doors run floor to ceiling,",
       // This study's one crossing, on its opening argument. Its sibling
       // (fairview-sitting) crosses its SECOND header instead — two rooms
       // in one house should not choreograph identically.
@@ -76,7 +76,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       // loud in the data names the holder the rug plate below climbs.
       pressing: {
         mark: { n: "02", name: "Morning Sun" },
-        heldLine: "because the doors are tall.",
+        heldLine: "two stories of them.",
         choreo: { pin: true, crossing: true },
       },
     },
@@ -174,7 +174,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The rug, the bench, the two pieces of art. The palm is the one thing in the room that's alive.",
+        "The rug, the bench and the two pieces of art, all found.",
     },
     {
       id: "pieces-footnote",
@@ -314,7 +314,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "After that it's the rug, the chandelier, and whatever the light is doing.",
+        "After that, the rug, the chandelier, and the light through the doors.",
     },
     {
       id: "closing",

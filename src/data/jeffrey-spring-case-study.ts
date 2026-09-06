@@ -51,7 +51,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         { label: "Angle", value: "Monstera and palm fronds cropped big enough to read as architecture, so a white studio could pass for somewhere far away." },
       ],
       abstract:
-        "Jeffrey needed a spring campaign that felt like it had gone somewhere, on a budget that stayed home. Everything about it came out of that.\n\nIt was shot in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery, and color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type followed the same idea, condensed, stretched and layered for rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. The whole thing was one kit that ran on email, the homepage and social.",
+        "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nIt was shot in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery, and color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type followed the same idea, condensed, stretched and layered for rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. The whole thing was one kit that ran on email, the homepage and social.",
     },
 
         // ── HERO ──
@@ -147,7 +147,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "That was the whole template, for all three.",
+        "JW Anderson, Valentino and Simone Rocha, on the one template.",
     },
     {
       id: "stories-footnote",

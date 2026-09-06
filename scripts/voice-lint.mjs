@@ -20,7 +20,9 @@
    Prose is every string literal of forty characters or more in
    src/data/*-case-study.ts that is not a path, which is a proxy too,
    and a good one: paths are short and have slashes, copy is long and
-   has none. */
+   has none. The volume is exFAT, so every file has an AppleDouble
+   twin (._name) beside it; those are binary and are skipped, or the
+   count doubles and the flags fill with fragments of resource fork. */
 import { readFileSync, readdirSync } from "node:fs";
 import { join, basename } from "node:path";
 
@@ -43,7 +45,7 @@ const TELLS = [
 ];
 
 /* ── the prose ────────────────────────────────────────────────────── */
-const files = readdirSync(DIR).filter((f) => f.endsWith("-case-study.ts"))
+const files = readdirSync(DIR).filter((f) => f.endsWith("-case-study.ts") && !f.startsWith("._"))
   .filter((f) => !only || f.includes(only));
 const literal = /"((?:[^"\\]|\\.){40,})"|'((?:[^'\\]|\\.){40,})'|`((?:[^`\\]|\\.){40,})`/g;
 const isProse = (s) => !/[\/]/.test(s) && !/^https?:/.test(s) && !/\.(jpg|jpeg|png|webp|avif|svg|mp4)/i.test(s) && /\s/.test(s);

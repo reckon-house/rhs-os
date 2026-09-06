@@ -89,10 +89,10 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "blue-header",
       type: "section-header",
       label: "SECTION 02: BLUE FLORALS",
-      title: "A stack of these plates",
+      title: "The most pattern-on-pattern",
       pressing: {
         mark: { n: "02", name: "Peonies and" },
-        heldLine: "reads as a still life.",
+        heldLine: "of the three.",
         // Pinned: the headline holds while the pattern-on-pattern copy
         // travels past it. This is the collection that layers, so the
         // brief that introduces it should behave like the print does.
@@ -104,7 +104,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "The most pattern-on-pattern of the three, blue peonies over a geometric grid. One plate on its own still works.",
+        "Blue peonies over a geometric grid. One plate on its own still works.",
     },
     {
       id: "blue-footnote",
@@ -177,7 +177,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       id: "black-header",
       type: "section-header",
       label: "SECTION 03: BLACK LINEWORK",
-      title: "The simplest of the three",
+      title: "The simplest of the three,",
       // The study's one crossing. The reductive collection is the argument
       // the other two lean on — it sits under everything without competing —
       // so the gesture lands on the middle beat rather than an outer one.
@@ -187,7 +187,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       // the audit reads.
       pressing: {
         mark: { n: "03", name: "Linework" },
-        heldLine: "reads as the most modern.",
+        heldLine: "the only one without florals.",
         choreo: { pin: true, crossing: true },
       },
     },

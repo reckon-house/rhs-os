@@ -193,7 +193,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "None of them reads as a detail pulled out of another. Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
+        "Social got tight crops, email got the headers, the stores got the color fields at full strength, and the editorial spreads gave the double exposures room to run wide.",
     },
     {
       id: "deploy-footnote",
@@ -327,10 +327,10 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       id: "closing-header",
       type: "section-header",
       label: "SECTION 06: CLOSING",
-      title: "Glamour Shots,",
+      title: "One day in the studio,",
       pressing: {
         mark: { n: "09", name: "Closing" },
-        heldLine: "taken seriously.",
+        heldLine: "a season on every channel.",
       },
     },
     {
