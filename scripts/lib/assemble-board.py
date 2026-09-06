@@ -2481,6 +2481,13 @@ function colNode(kind, caption) {
     if (e.key === "Enter") {
       e.preventDefault();
       const t = line.value.trim(); line.value = ""; narrowColumn(c, "");
+      /* ON A PHONE THE KEYBOARD GOES WHEN THE QUESTION DOES. Safari
+         keeps a focused field's caret where it was, so when the answer
+         grew the column above the field it scrolled the column by that
+         much again, and the question's first line went under the
+         sticky head. Blurred first, there is no caret to keep, and the
+         answer is read with the whole glass rather than half of it. */
+      if (PHONE) line.blur();
       if (t) askFrom(c, t);
     }
     if (e.key === "Escape") { line.value = ""; narrowColumn(c, ""); line.blur(); }
@@ -2632,6 +2639,27 @@ function pushTurn(c, q, line, hits, door) {
     turn.appendChild(row);
   }
   c.__talk.appendChild(turn);
+  if (PHONE) {
+    /* ON A PHONE THE QUESTION LEADS. The scroller is smooth
+       (scroll-behavior), so a scrollTop write animates and a second
+       one a frame later lands somewhere else; the head is sticky, so
+       "keep the field still" put the question's first line under it.
+       The column is set instantly so the new turn sits just under the
+       head: once the turn has laid out, and once more after Safari has
+       had its say, since a keyboard closing re-scrolls the scroller
+       its field was in. */
+    const head = c.querySelector(".chead");
+    const seat = () => {
+      const hh = head ? head.offsetHeight : 0;
+      const y = turn.getBoundingClientRect().top - cin.getBoundingClientRect().top + cin.scrollTop;
+      cin.style.scrollBehavior = "auto";
+      cin.scrollTop = Math.max(0, y - hh - 6);
+      cin.style.scrollBehavior = "";
+    };
+    requestAnimationFrame(seat);
+    setTimeout(seat, 450);
+    return;
+  }
   /* by exactly what it added, so the field does not move */
   cin.scrollTop += cin.scrollHeight - before;
 }
@@ -3259,7 +3287,6 @@ function houseLine(q) {
   return best ? best.m.v : null;
 }
 function openShelfColumn(tag, from, opts) {
-  if (window.dbg) dbg("openShelf " + tag);
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
   c.__mode = tag;
@@ -3849,7 +3876,6 @@ FILTERS.forEach(([label, tag, desc]) => {
        phone the room the old strip never had, so the drawers, the
        reels and the two-step run the same on both surfaces. Filtering
        closes the sheet: the answer happens on the glass behind it. */
-    if (window.dbg) dbg("head " + tag + " open=" + r.classList.contains("open") + " MODE=" + MODE);
     if (r.classList.contains("open")) {
       ask();
       if (PHONE && window.toggleSheet) toggleSheet(false);
@@ -3992,7 +4018,6 @@ addEventListener("resize", hug, { passive: true });
 drawer.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") closeRows(); });
 
 function setMode(mode) {
-  if (window.dbg) dbg("setMode " + mode + " had=" + !!ccols.find((c) => c.__mode === mode) + " askFrom=" + !!window.askFrom);
   MODE = mode;
   if (mode && typeof trailLog !== "undefined") { trailLog.modes.push(mode); saveTrail(); }
   /* a shelf is a line: it opens as a list column too, like the
