@@ -2352,7 +2352,28 @@ const studiesFor = (text) => {
     let n = 0;
     for (const w of ws) if (hasWord(w, hay)) n += 1;
     if (lower.length >= 4 && hay.includes(lower)) n += 2;
-    return { folder, g, n };
+    /* ── AND THE FACTS ────────────────────────────────────────────
+       The mined summaries — Stack, Materials, Tools, Scope, Built —
+       sat in board-copy.json unsearched, so "anything in limestone"
+       or "built with Claude Code" found nothing though three studies
+       say so in their own words. Each is scored on its facts too, and
+       the fact that caught the most words rides with the hit, so a
+       list can say under each study WHY it is there. Facts are worth
+       a little more than a description: they are the study's own
+       ledger, not a blurb. */
+    let line = null;
+    const src = COPY && COPY[folder];
+    if (src && src.facts) {
+      let best = 0;
+      for (const f of src.facts) {
+        const fh = (f.k + " " + f.v).toLowerCase();
+        let m = 0;
+        for (const w of ws) if (hasWord(w, fh)) m += 1;
+        if (m > best) { best = m; line = f.k + ": " + f.v; }
+      }
+      n += best * 1.5;
+    }
+    return { folder, g, n, line };
   }).filter((x) => x.n > 0).sort((a, b) => b.n - a.n);
 };
 /* A SHELF NAMED INSIDE A QUESTION IS STILL A SHELF. The match was
@@ -2616,7 +2637,7 @@ const reelIO = new IntersectionObserver((es) => {
 });
 function studyRows(list, into, from) {
   const wrap = el("div", "crows");
-  list.forEach(({ folder, g }, idx) => {
+  list.forEach(({ folder, g, line }, idx) => {
     const r = el("div", "crow"); r.dataset.folder = folder;
     const cv = coverOf[folder];
     const frames = reelFrames(folder);
@@ -2641,7 +2662,9 @@ function studyRows(list, into, from) {
     }
     const t = el("div");
     t.appendChild(el("b", null, g.t + " "));
-    t.appendChild(el("span", "g", g.s));
+    /* the fact that caught the question, when there is one, in the
+       category's place: what the row is doing here */
+    t.appendChild(el("span", "g", line || g.s));
     r.appendChild(t);
     r.addEventListener("click", () => openStudyColumn(folder, {}, from));
     wrap.appendChild(r);
@@ -2737,20 +2760,51 @@ function insertColumn(c, from, opts) {
      just opened, before a word of it is read */
   if (!PHONE) setTimeout(() => c.__line.focus({ preventScroll: true }), 560);
 }
+/* ── THE DAY IN THE ASK ─────────────────────────────────────────────
+   "book something thursday" names a day, so the week opens on it
+   rather than on the first day with a time. Weekdays, today and
+   tomorrow; nothing cleverer, because the week the room shows is
+   five days long and a date past it is a conversation. */
+const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const dayOf = (text) => {
+  const low = text.toLowerCase();
+  const m = low.match(/\b(sun|mon|tue|wed|thu|fri|sat)[a-z]*\b/);
+  if (m) return { weekday: DAYS.findIndex((d) => d.startsWith(m[1])) };
+  if (/\btomorrow\b/.test(low)) return { offset: 1 };
+  if (/\btoday\b/.test(low)) return { offset: 0 };
+  return null;
+};
+let WANT_DAY = null;
+const showDay = (col, want) => {
+  if (!col || !want) return false;
+  const rows = [...col.querySelectorAll(".cday")].filter((r) => r.dataset.date);
+  const hit = rows.find((r) => {
+    const d = new Date(r.dataset.date + "T12:00:00Z");
+    if (want.weekday != null) return d.getUTCDay() === want.weekday;
+    const t = new Date(); t.setDate(t.getDate() + want.offset);
+    return r.dataset.date === t.toISOString().slice(0, 10);
+  });
+  if (!hit || !hit.__show) return false;
+  hit.__show(); hit.scrollIntoView({ block: "center", behavior: REDUCE() ? "auto" : "smooth" });
+  return true;
+};
 function askFrom(from, text, opts) {
   opts = opts || {};
   const t = (text || "").trim(); if (!t) return;
   /* in Connect, a word for the calendar is the calendar */
   if (from && from.__house === "connect" && WANTS_TIME.test(t)) {
-    pushTurn(from, t, "Pick a time below.");
-    if (from.__showWeek) from.__showWeek();
+    const want = dayOf(t);
+    pushTurn(from, t, want ? "Below." : "Pick a time below.");
+    if (!showDay(from, want) && from.__showWeek) from.__showWeek();
     return;
   }
   /* inside Connect the field is the form until the form is sent */
   if (from && from.__intake) return intake(from, t);
   /* a way to reach him is a room, not a line */
-  if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()) || WANTS_TIME.test(t))
+  if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()) || WANTS_TIME.test(t)) {
+    WANT_DAY = WANTS_TIME.test(t) ? dayOf(t) : null;
     return openHouseColumn("connect", from, opts);
+  }
   /* ── A LINE CAN BE AN INSTRUCTION ─────────────────────────────────
      The field answers questions, and it also does things, because the
      things it can do are the things a reader would otherwise reach
@@ -2776,7 +2830,28 @@ function askFrom(from, text, opts) {
   }
   if (inCol0 && /^(close|close this|close it|done|dismiss)$/.test(low)) { closeColumn(from); return; }
   if (/^(back|go back|back to start|start over|start again|home|reset)$/.test(low)) { closeAllColumns(); return; }
-  const verb = low.match(/^(?:open|show|show me|go to|take me to|pull up|load|see|look at|view)\s+(?:the\s+|me\s+)?(.+)$/);
+  /* a shelf is the filter: "only interiors" opens it, "everything"
+     folds every shelf away */
+  if (/^(everything|all work|all of it|show everything|clear filter|no filter)$/.test(low)) { setMode(null); return; }
+  /* KIN. "more like this" inside a study is a shelf of what shares
+     its tags — the same scoring Next uses, shown as a list rather than
+     one pick, and never what is already standing in the row. */
+  if (inCol0 && from.__folder && /^(more like this|similar|anything similar|like this one|what else is like this|others like this)$/.test(low)) {
+    const g = GROUPS[from.__folder];
+    const open = new Set(ccols.map((x) => x.__folder));
+    const kin = Object.entries(GROUPS)
+      .filter(([f]) => f !== from.__folder && !open.has(f))
+      .map(([f, x]) => ({ folder: f, g: x, n: x.tags.filter((tg) => g.tags.includes(tg)).length }))
+      .filter((h) => h.n > 0).sort((a, b) => b.n - a.n).slice(0, 8);
+    if (kin.length) {
+      const c = colNode("answer", "Like " + g.t);
+      c.__lead.appendChild(el("div", "cnote g", kin.length + (kin.length === 1 ? " study shares its shelf." : " studies share its shelf.")));
+      studyRows(kin, c.__matter, c);
+      insertColumn(c, from, opts);
+      return;
+    }
+  }
+  const verb = low.match(/^(?:open|show|show me|go to|take me to|pull up|load|see|look at|view|only|just|filter to|filter by|show only|show just)\s+(?:the\s+|me\s+)?(.+)$/);
   if (verb) {
     const name = verb[1].trim();
     if (/^(info|about|about you)$/.test(name)) return openHouseColumn("info", from, opts);
@@ -2803,6 +2878,9 @@ function askFrom(from, text, opts) {
   if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
   const tag = shelfByText(t);
   if (tag) return openShelfColumn(tag, from, opts);
+  /* the facts are searched too, and they arrive by one fetch: the
+     first question from the bar waits for it, once */
+  if (!COPY && !opts.copied) { loadCopy().then(() => askFrom(from, text, { ...opts, copied: true })); return; }
   const hits = studiesFor(t);
   /* ASKED FROM A COLUMN, IT STAYS IN THE COLUMN. A study always
      answers in place: it holds its own words, and a vague question
@@ -2999,11 +3077,15 @@ async function buildWeek(c, minutes) {
       r.addEventListener("click", () => { if (!r.classList.contains("open")) show(); });
     }
     r.__show = show;
+    r.dataset.date = day.date;
     wrap.appendChild(r);
     return r;
   });
   const first = rows.find((r) => r.classList.contains("has"));
   if (first) first.classList.add("open");
+  /* the day the ask named, if the week has it */
+  const want = WANT_DAY; WANT_DAY = null;
+  if (want) setTimeout(() => showDay(c, want), 60);
   month.insertAdjacentElement("afterend", wrap);
   /* the claim: name, email, and the word */
   const pick = (at, btn) => {
@@ -3312,7 +3394,34 @@ function closeAllColumns() {
    next in it, and the head of a study now says the same thing in the
    place the eye already is. One offer, not two. */
 /* the path, as rows of the rail's own kind */
+/* ── THE ROW IS THE ADDRESS ─────────────────────────────────────────
+   Whatever stands in the row is written into the URL as ?open=, and a
+   URL with ?open= stands the row back up on load, in order. So a
+   view with two studies beside the field is a link: send it and the
+   other person sees what you saw. Answer columns are not written,
+   since they are the record of a question and the question is not in
+   the address. Studies by folder, rooms as house:, shelves as shelf:. */
+const rowId = (c) => c.__folder ? c.__folder : c.__house ? "house:" + c.__house : c.__mode ? "shelf:" + c.__mode : null;
+const writeRow = () => {
+  try {
+    const ids = ccols.map(rowId).filter(Boolean);
+    const u = new URL(location.href);
+    if (ids.length) u.searchParams.set("open", ids.join(",")); else u.searchParams.delete("open");
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+  } catch (e) { /* a file:// board has no address to write */ }
+};
+async function standRow() {
+  let ids = [];
+  try { ids = (new URL(location.href).searchParams.get("open") || "").split(",").filter(Boolean); } catch (e) { return; }
+  for (const id of ids) {
+    if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, {});
+    else if (id.startsWith("shelf:")) openShelfColumn(id.slice(6), null, {});
+    else if (GROUPS[id]) openStudyColumn(id, {});
+    await new Promise((r) => setTimeout(r, 120));
+  }
+}
 function drawPath() {
+  writeRow();
   let wrap = document.getElementById("pathwrap");
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
@@ -4148,6 +4257,8 @@ window.__lean = () => {
    lifts it first and calls this; a plain load has nothing to wait for */
 if (!document.getElementById("ptArrive")) setTimeout(window.__lean, 40);
 else setTimeout(window.__lean, 3000);   /* a curtain that never lifts */
+/* and a link that names a row stands it up, once the field is there */
+setTimeout(standRow, 400);
 </script>
 
 </body>
