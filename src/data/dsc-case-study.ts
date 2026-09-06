@@ -419,7 +419,7 @@ export const dscCaseStudy: CaseStudy = {
           name: "Avenir Next Heavy",
           role: "Wordmark & headlines",
           description:
-            "The heaviest weight, at poster scale for the DALLAS SPORT COLLECTIVE wordmark and the section heads. As loud as the brand gets.",
+            "The heaviest weight, at poster scale for the DALLAS SPORT COLLECTIVE wordmark and the section heads.",
           family: "'Avenir Next', 'Avenir', 'Helvetica Neue', sans-serif",
           weight: 800,
           sampleText: "DALLAS SPORT",
@@ -500,7 +500,7 @@ export const dscCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The same protocol works at any size of business, which might be the most useful thing about it.",
+        "The same protocol works at any size of business.",
     },
     {
       id: "closing",
