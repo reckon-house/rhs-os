@@ -332,7 +332,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       introText:
         "Each collection gets one hero shape and one color, and cream runs under all of them.",
       philosophyText:
-        "A buyer can start with one accent dish in cobalt and end up with a full red-dragons setting two seasons later, and nothing in the second buy fights anything in the first.",
+        "A buyer can start with one accent dish in cobalt and add a full red-dragons setting two seasons later, and the two sit together because both run on cream.",
       colors: [
         { name: "Cobalt", hex: "#1F4D78", description: "Blue florals" },
         { name: "Blush", hex: "#D87A82", description: "Pink geometry" },
@@ -394,7 +394,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Pattern, product, and colorway, designed together.",
+        "Three collections so far.",
     },
     {
       id: "closing",
@@ -403,7 +403,7 @@ export const amberShockeyCoCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "Three collections so far, and each one was drawn to sit next to the last.",
+        "The next one has to sit next to these, on cream.",
     },
   ],
 };
