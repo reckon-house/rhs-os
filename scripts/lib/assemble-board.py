@@ -816,6 +816,10 @@ head = r'''<!doctype html>
     #cmdIn #railwrap { position: static; width: auto; height: auto;
       padding: 0; display: flex; flex-direction: column; }
     #cmdIn #homewrap { margin-top: 14px; }
+    /* the way back is hidden by opacity so the desktop rail can fade
+       it in; in the sheet a hidden row is a blank band under the last
+       chip, forty-nine pixels of nothing, so here it leaves the flow */
+    #cmdIn #homewrap:not(:has(#home[data-on])) { display: none; }
 
     #field { left: 0; }
     #rules { display: none; }
@@ -890,6 +894,38 @@ head = r'''<!doctype html>
   document.documentElement.appendChild(r);
   document.documentElement.classList.add('pt-arriving');
 }catch(e){}})();
+</script>
+<script>
+/* ── A DEBUG STRIP FOR A PHONE ───────────────────────────────────────
+   ?debug=1 paints every error and the target of every press into a
+   strip along the top of the glass, because Safari on a phone has no
+   console you can reach from a session like this one. Off by default
+   and nothing runs without the flag. */
+if (/[?&]debug\b/.test(location.search)) (function () {
+  var box = document.createElement("pre");
+  box.id = "dbg";
+  box.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:9999;max-height:34vh;overflow:auto;margin:0;padding:6px 8px;font:11px/1.35 ui-monospace,Menlo,monospace;background:rgba(255,240,0,0.92);color:#000;white-space:pre-wrap;pointer-events:none";
+  var log = function (t) { box.textContent = (t + "\n" + box.textContent).slice(0, 4000); };
+  document.addEventListener("DOMContentLoaded", function () { document.body.appendChild(box); });
+  addEventListener("error", function (e) { log("ERR " + e.message + " @" + String(e.filename || "").split("/").pop() + ":" + e.lineno); });
+  addEventListener("unhandledrejection", function (e) { log("REJ " + (e.reason && (e.reason.stack || e.reason.message) || e.reason)); });
+  var name = function (t) { return t && t.tagName ? t.tagName.toLowerCase() + (t.id ? "#" + t.id : "") + (typeof t.className === "string" && t.className ? "." + t.className.trim().split(/\s+/).join(".") : "") : String(t); };
+  ["pointerdown", "pointerup", "click"].forEach(function (k) {
+    addEventListener(k, function (e) {
+      var at = document.elementFromPoint(e.clientX, e.clientY);
+      log(k + " " + name(e.target) + " " + Math.round(e.clientX) + "," + Math.round(e.clientY) + (e.defaultPrevented ? " PREVENTED" : "") + (at !== e.target ? " | under: " + name(at) : ""));
+      /* the rail's rows, when a press lands beside them rather than on them */
+      if (k === "pointerdown" && /rdrawer|cmdIn|railwrap/.test(name(e.target))) {
+        var rows = document.querySelectorAll("#rdrawer .rrow");
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i].getBoundingClientRect(), cs = getComputedStyle(rows[i]);
+          log("  row" + i + " " + rows[i].textContent.trim().slice(0, 12) + " y" + Math.round(r.top) + " h" + Math.round(r.height) + " w" + Math.round(r.width) + " clip:" + cs.clipPath.replace(/\s+/g, "") + " pe:" + cs.pointerEvents + (rows[i].classList.contains("open") ? " OPEN" : ""));
+        }
+      }
+    }, true);
+  });
+  window.dbg = log;
+})();
 </script>
 </head>
 <body>
@@ -3223,6 +3259,7 @@ function houseLine(q) {
   return best ? best.m.v : null;
 }
 function openShelfColumn(tag, from, opts) {
+  if (window.dbg) dbg("openShelf " + tag);
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
   c.__mode = tag;
@@ -3812,6 +3849,7 @@ FILTERS.forEach(([label, tag, desc]) => {
        phone the room the old strip never had, so the drawers, the
        reels and the two-step run the same on both surfaces. Filtering
        closes the sheet: the answer happens on the glass behind it. */
+    if (window.dbg) dbg("head " + tag + " open=" + r.classList.contains("open") + " MODE=" + MODE);
     if (r.classList.contains("open")) {
       ask();
       if (PHONE && window.toggleSheet) toggleSheet(false);
@@ -3945,9 +3983,16 @@ window.__hug = hug;
 hug();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(hug);
 addEventListener("resize", hug, { passive: true });
-drawer.addEventListener("pointerleave", closeRows);
+/* A MOUSE LEAVING closes the drawers. A finger lifting is also a
+   pointer leaving, in Safari and Chrome both: pointerup, then
+   pointerleave, THEN click, so on a phone the second tap on an open
+   row found it closed and opened it again, and nothing ever
+   filtered. The hover-open above already asks the pointer's kind;
+   the hover-close has to ask the same. */
+drawer.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") closeRows(); });
 
 function setMode(mode) {
+  if (window.dbg) dbg("setMode " + mode + " had=" + !!ccols.find((c) => c.__mode === mode) + " askFrom=" + !!window.askFrom);
   MODE = mode;
   if (mode && typeof trailLog !== "undefined") { trailLog.modes.push(mode); saveTrail(); }
   /* a shelf is a line: it opens as a list column too, like the
