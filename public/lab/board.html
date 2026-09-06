@@ -4689,6 +4689,15 @@ window.__b = { cur, tgt, START, pageTo, placeAsk, askFrom, openStudyColumn, clos
   get COLS() { return COLS; }, get PW() { return PW; }, get PH() { return PH; },
   get MODE() { return MODE; } };
 addEventListener("resize", () => { remount(); placeAsk(); }, { passive: true });
+/* ── A ROTATION IS A NEW PAGE ───────────────────────────────────────
+   PHONE is read once and everything after it is built on the answer:
+   the module, the gap, the sheet, where the rail lives. A phone turned
+   sideways is 852 wide, which is the desktop's board by the
+   stylesheet's rule and still the phone's by the script's, two layouts
+   on one glass, with the rail inside a sheet the desktop never shows.
+   The open row is in the address, so the board reloads into the layout
+   the width now asks for and reopens what was open. */
+matchMedia("(max-width: 760px)").addEventListener("change", () => location.reload());
 remount();
 placeAsk();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeAsk);
