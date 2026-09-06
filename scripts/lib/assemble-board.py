@@ -2504,7 +2504,9 @@ function answerAbout(c, q, hits) {
      note under "What I take on", matched on the word "what". An answer
      about a different subject is worse than none, because it reads as
      an answer. The notes are the house rooms' to give. */
-  return { line: "Nothing here answers that. The full study may." };
+  /* and the dead end is a door: cost, timing, availability are exactly
+     the questions that belong in a conversation with him */
+  return { line: "Nothing here answers that. The full study may.", door: "connect" };
 }
 
 /* ── A SENTENCE ANSWERS IN PLACE, A THING OPENS A COLUMN ───────────
@@ -2526,23 +2528,31 @@ async function sayIn(c, q, hits) {
     ? { line: "hello@reckon.house. Or keep asking here." }
     : c.__folder ? answerAbout(c, q, hits)
     : hl ? { line: hl }
-    : { line: !hits.length ? (houseLine(q) || "Nothing caught on the board. The homepage's brain reads deeper.")
-        : hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
-  pushTurn(c, q, said.line, said.hits);
+    : !hits.length ? (houseLine(q) ? { line: houseLine(q) }
+        : { line: "Nothing caught on the board.", door: "connect" })
+    : { line: hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
+  pushTurn(c, q, said.line, said.hits, said.door);
 }
-function pushTurn(c, q, line, hits) {
+function pushTurn(c, q, line, hits, door) {
   const cin = c.querySelector(".cin");
   const before = cin.scrollHeight;
   const turn = el("div", "cturn");
   turn.appendChild(el("div", "cq", q));
   turn.appendChild(el("div", "ca g", line));
-  if (hits && hits.length) {
+  if ((hits && hits.length) || door) {
     const row = el("div", "cchips");
-    hits.forEach(({ folder, g }) => {
+    (hits || []).forEach(({ folder, g }) => {
       const b = el("button", "cchip", g.t); b.type = "button";
       b.addEventListener("click", () => openStudyColumn(folder, {}, c));
       row.appendChild(b);
     });
+    /* a question the board cannot answer is one for him: the chip
+       opens Connect beside this column, the same room the rail opens */
+    if (door === "connect") {
+      const b = el("button", "cchip", "Ask me directly"); b.type = "button";
+      b.addEventListener("click", () => openHouseColumn("connect", c));
+      row.appendChild(b);
+    }
     turn.appendChild(row);
   }
   c.__talk.appendChild(turn);
@@ -2741,6 +2751,54 @@ function askFrom(from, text, opts) {
   /* a way to reach him is a room, not a line */
   if (/\b(reach|contact|hire|talk|get in touch|email you|work with you)\b/.test(t.toLowerCase()) || WANTS_TIME.test(t))
     return openHouseColumn("connect", from, opts);
+  /* ── A LINE CAN BE AN INSTRUCTION ─────────────────────────────────
+     The field answers questions, and it also does things, because the
+     things it can do are the things a reader would otherwise reach
+     for: the study this column is a preview of, the next one, this
+     column's ×, the start. Named plainly and matched plainly. "Open"
+     and "show me" with a name resolve the way a typed title does,
+     through the same matchers, and only act when the name is not
+     ambiguous — an ambiguous one falls through and is answered as a
+     question, which lists the candidates as chips. */
+  const low = t.toLowerCase().replace(/[.!?]+$/, "").trim();
+  const inCol0 = from && ccols.indexOf(from) >= 0;
+  if (inCol0 && from.__folder) {
+    /* the full study: the same link the column already carries, so
+       the curtain and the label are exactly the link's */
+    if (/\b(full|whole|entire)\b.*\b(study|case)\b|\bcase study\b|^(open|read|load|show)( me)? (the |it )?(study|case)$/.test(low)) {
+      const a = from.querySelector(".cmatter a[href^='/case-studies/']");
+      if (a) { a.click(); return; }
+    }
+    if (/^(next|next one|the next one|next please|what's next|whats next)$/.test(low)) {
+      const nb = from.querySelector(".cnext");
+      if (nb) { nb.click(); return; }
+    }
+  }
+  if (inCol0 && /^(close|close this|close it|done|dismiss)$/.test(low)) { closeColumn(from); return; }
+  if (/^(back|go back|back to start|start over|start again|home|reset)$/.test(low)) { closeAllColumns(); return; }
+  const verb = low.match(/^(?:open|show|show me|go to|take me to|pull up|load|see|look at|view)\s+(?:the\s+|me\s+)?(.+)$/);
+  if (verb) {
+    const name = verb[1].trim();
+    if (/^(info|about|about you)$/.test(name)) return openHouseColumn("info", from, opts);
+    if (/^(connect|contact|calendar|booking)$/.test(name)) return openHouseColumn("connect", from, opts);
+    const byT = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === name);
+    if (byT) return openStudyColumn(byT[0], { at: opts.at }, from);
+    const tg = shelfByText(name);
+    if (tg) return openShelfColumn(tg, from, opts);
+    const hs = studiesFor(name);
+    /* THE NAME IN THE NAME WINS. "open the kitchen" tied Hill Country
+       kitchen with Hill Country bath, whose description mentions the
+       kitchen, and "sally os" tied Sally OS with You By Sally; the
+       matcher scores a description the same as a title, which is
+       right for a question and wrong for an instruction. A study that
+       carries the words in its own folder or title is the one meant,
+       hyphens and case aside. */
+    const norm = (x) => x.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    const named = hs.filter((h) => norm(h.folder + " " + h.g.t).includes(norm(name)));
+    if (named.length === 1) return openStudyColumn(named[0].folder, { at: opts.at }, from);
+    if (hs.length === 1 || (hs.length > 1 && hs[0].n >= 2 && hs[0].n > hs[1].n))
+      return openStudyColumn(hs[0].folder, { at: opts.at }, from);
+  }
   const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
   if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
   const tag = shelfByText(t);
