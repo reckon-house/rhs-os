@@ -172,7 +172,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "No props or stand-ins, and nothing styled beyond what was already out there. The same person drew the marks and shot the pictures.",
+        "The same person drew the marks and shot the pictures.",
     },
 
     // ── Inline hero: Golden grassland with framed Western Original inset.
@@ -285,7 +285,7 @@ export const capitanBootCoCaseStudy: CaseStudy = {
           name: "Times New Roman",
           role: "Body & legal",
           description:
-            "Default serif for fine print, certifications, and copy that runs long. The least precious font of the bunch.",
+            "Default serif for fine print, certifications, and copy that runs long.",
           family: "'Times New Roman', Times, serif",
           weight: 400,
         },
