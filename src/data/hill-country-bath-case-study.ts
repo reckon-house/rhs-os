@@ -191,7 +191,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Three stones had to look like relatives, near each other but not the same, with enough distance that the room didn't go flat and not so much that the changes jarred. The counter marble runs warm with gold and brown veining, the shower walls go cooler with gray movement, and the hex floor splits the difference. The bench in the shower is cut from the same slab as the walls and bookmatched at the corner.",
+        "Three stones had to be close without matching: enough distance that the room didn't go flat, and not so much that the changes jarred. The counter marble runs warm with gold and brown veining, the shower walls go cooler with gray movement, and the hex floor splits the difference. The bench in the shower is cut from the same slab as the walls and bookmatched at the corner.",
     },
 
     // ── GROUPING 2: Shower + his side — cooler tones, details ──
@@ -268,7 +268,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The styling is personal because it is somebody's stuff: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning toward the window. None of it got straightened up for the pictures.",
+        "The objects are the owners' own: the denim jacket on the valet stand, the vintage rug fraying at one edge, the olive tree leaning toward the window. None of it got straightened up for the pictures.",
     },
 
     // ── CLOSING ──
