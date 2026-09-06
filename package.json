@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "voice": "node --no-warnings scripts/voice-lint.mjs",
     "dev": "next dev",
     "build": "npm run port:home:check && npm run dims:check && npm run rail:check && next build",
     "start": "next start",
