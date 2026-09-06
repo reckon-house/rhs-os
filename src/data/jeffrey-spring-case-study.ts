@@ -362,7 +362,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
       stack: ["Photoshop", "InDesign", "Studio photography"],
       links: [],
       content:
-        "That was the whole season, and nobody had to leave the studio to make it.",
+        "That was the whole season, shot in the studio.",
     },
   ],
 };
