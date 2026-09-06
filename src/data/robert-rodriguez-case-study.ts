@@ -138,7 +138,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The Reference.",
           content:
-            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan going somewhere off camera. The look of a whole decade of mall glam, before fashion decided it was embarrassing.\n\nThe brief was to take that energy seriously, the confidence, the color, the full unironic glamour, and rebuild it with contemporary craft.",
+            "Mall portrait studios. Glamour Shots. The oversaturated close-up with a soft-focus background and a fan going somewhere off camera. The look of a whole decade of mall glam.\n\nThe brief was to take that energy seriously, the confidence, the color, the full unironic glamour, and rebuild it with contemporary craft.",
         },
         {
           title: "The Technique.",
@@ -278,7 +278,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "The palette is coral, orange, and pink. As flat blocks they clash, and with smooth transitions between them they work, the way a sunset moves through those same colors.",
+        "The palette is coral, orange, and pink. As flat blocks they clash; with smooth transitions between them they work.",
       group: { name: "brand" },
     },
 
@@ -340,7 +340,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
       stack: ["Adobe Photoshop", "Adobe Illustrator", "Capture One"],
       links: [{ label: "Neiman Marcus", url: "https://www.neimanmarcus.com" }],
       content:
-        "The whole campaign is four photographs from one day, layered over each other and set on gradients, and it never looked thin.",
+        "The whole campaign is four photographs from one day, layered over each other and set on gradients.",
     },
   ],
 };
