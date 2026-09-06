@@ -2842,7 +2842,7 @@ function askFrom(from, text, opts) {
   if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
   if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
-  else if (!hits.length) note.textContent = "Nothing caught on the board. The homepage's brain reads deeper.";
+  else if (!hits.length) note.textContent = "Nothing caught on the board. Ask me directly: hello@reckon.house.";
   else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
   c.__lead.appendChild(note);
   if (hits.length) studyRows(hits, c.__matter, c);
@@ -4001,9 +4001,9 @@ const RAIL_NOTES = {
 const FILTERS = [
   ["Digital Experiences", "digital", "Sites, stores and platforms, designed and shipped."],
   ["App Development", "app", "Native tools and AI products, built end to end."],
-  ["Campaign/Creative", "creative", "Art direction and campaigns for retail's big names."],
+  ["Campaign/Creative", "creative", "Art direction and campaigns for national retailers."],
   ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
-  ["Staples", "staples", "Saved pictures and kept lines. None of it mine."],
+  ["Staples", "staples", "Pictures and lines saved from other people's work."],
 ];
 
 const drawer = document.getElementById("rdrawer");
