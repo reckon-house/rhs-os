@@ -246,7 +246,7 @@ export const nordstromFrameworkCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Before any of it reached a customer, the framework was already working inside the building. Planning meetings used the bucket names. Content calendars mapped stories to buckets at the brief stage, and campaigns that used to be one-offs got planned as part of a category.",
+        "Planning meetings used the bucket names before any of it reached a customer. Content calendars mapped stories to buckets at the brief stage, and campaigns that used to be one-offs got planned as part of a category.",
     },
 
     // Tall application hero
