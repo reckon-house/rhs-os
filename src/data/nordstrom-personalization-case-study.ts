@@ -109,7 +109,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Editorial stories, brand modules, and merchandised picks all came through the same three tiles, and any combination of them came out looking designed.",
+        "Editorial stories, brand modules, and merchandised picks all came through the same three tiles.",
     },
 
     // ── Tile collage — the system as raw composition
