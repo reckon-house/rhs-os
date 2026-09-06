@@ -233,7 +233,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       introText:
         "The palette had to say Texas without red, white, and blue, so it comes from the landscape at last light.",
       philosophyText:
-        "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette. Orange and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type.\n\nGreatdome does the vintage part, on the headlines and the posters, so Avenir Next can just do its job everywhere else.",
+        "Burnt orange, mustard yellow, brick, teal sky, cream paper, charcoal silhouette. Orange and mustard do the color blocks and the wordmark, cream is the paper, and the charcoal is every silhouette and most of the type.\n\nGreatdome is on the headlines and the posters, and Avenir Next is everything else.",
       colors: [
         { name: "Cream", hex: "#ECE2C5", description: "Paper, ground" },
         { name: "Mustard", hex: "#ECC265", description: "Wordmark, accents" },
@@ -305,7 +305,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
       stack: ["Illustrator", "Photoshop", "InDesign"],
       links: [],
       content:
-        "There's a distressed texture over everything, and that's the only nod to age. The rest is flat color, a tree, and plain type.",
+        "There's a distressed texture over everything. The rest is flat color, a tree, and plain type.",
     },
   ],
 };
