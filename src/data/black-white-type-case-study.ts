@@ -483,7 +483,7 @@ export const blackWhiteTypeCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "What changes is where each pattern lands, how large it runs, and how much paper is left around it. That turned out to be enough for three prints that don't look like they came from the same set.",
+        "That was enough for three prints that don't look like they came from the same set.",
       group: { name: "system" },
     },
     {
