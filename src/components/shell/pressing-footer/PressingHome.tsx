@@ -45,12 +45,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import styles from "./PressingHome.module.css";
 
-/** Where the homepage lives. The board is the front page now, and it
- *  is a static document: no router can reach it, so the way there is
- *  a hard navigation made under full black, exactly as the board
- *  reaches a study. `/` still serves the old homepage; when the board
- *  moves there, this is the one line that changes. */
-const HOME = "/lab/board.html";
+/** Where the homepage lives. The board is the front page, at / by a
+ *  rewrite (next.config.ts) since 7 Sept 2026, and it is a static
+ *  document: no router can reach it, so the way there is a hard
+ *  navigation made under full black, exactly as the board reaches a
+ *  study. This was /lab/board.html while the board waited its turn. */
+const HOME = "/";
 /** Overscroll that commits, in pixels. Far enough to be a decision,
  *  short enough to be one gesture. */
 const PULL = 220;
