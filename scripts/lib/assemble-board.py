@@ -584,6 +584,13 @@ head = r'''<!doctype html>
     position: absolute; left: 0; right: 0;
     top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: 0;
     pointer-events: none; will-change: transform;
+    /* ABOVE THE WORK, UNDER THE COLUMNS. The plane is a later sibling,
+       so a picture painted over every rule it passed: the grid read as
+       something the work slid on top of, and the gauge as a black bar
+       the pictures crossed. The rules are the field's architecture;
+       the work moves behind them. A study column (#cols, 4) still
+       covers them, which is why it draws its own gauge. */
+    z-index: 2;
   }
   #rules i { position: absolute; top: 0; bottom: 0; width: 1px;
     background: rgba(0, 0, 0, 0.13); }
@@ -609,7 +616,20 @@ head = r'''<!doctype html>
   .ccol .rg { position: absolute; left: -0.5px; width: 2px; border-radius: 1px; z-index: 3;
     background: var(--ink, #000); display: none; pointer-events: none; }
   .ccol .rg.on { display: block; }
+  /* ── A FOLD TAKES ITS INK WITH IT ─────────────────────────────────
+     Closing a column shifts everything right of it by one module, and
+     the gauges held still through the half second that takes: an ink
+     bar standing over moving work, which reads as the work sliding
+     rather than the section closing. The ink goes while the row moves
+     and comes back where it belongs when the row settles. */
+  .rg { transition: opacity 0.18s ease; }
+  #field.folding .rg { opacity: 0; }
   .ccol.dark .rg { background: #fff; }
+  /* A TILE THAT CUTS. The frame draws its picture 16% taller and
+     centres it, which is the board's crop and right for a still; a
+     reel's fills are the stage's own and must lie flat in it, or each
+     beat's layer would sit a few percent off the still under it. */
+  .fd-it .shot .sz-stage .sz-fill { height: 100%; transform: none; }
   #more { position: absolute; right: 20px; top: 16px; z-index: 3; display: none;
     pointer-events: none; white-space: nowrap;
     font-size: var(--note, 12px); font-weight: 500; letter-spacing: 0.04em;
@@ -2018,7 +2038,10 @@ function remount() {
     const r = f.getBoundingClientRect();
     if (r.right > -MARGIN_X && r.left < innerWidth + MARGIN_X) continue;
     colY.set(u, f.scrollTop);
-    for (const [key, el] of live) if (el.__u === u) live.delete(key);
+    /* a whole column leaving takes its tiles' reels with it: the
+       element goes with the column, and a timer on a detached stage
+       would cut frames nobody can see for as long as the page lives */
+    for (const [key, el] of live) if (el.__u === u) { dropReel(el); live.delete(key); }
     f.remove(); fcols.delete(u);
   }
   /* the curtain: the homepage's own arrival observer, not a rAF pair.
@@ -2187,8 +2210,14 @@ function fillCol(f, fresh) {
   }
   for (const [key, el] of live) {
     if (el.__u !== u || want.has(key)) continue;
+    dropReel(el);
     el.remove(); live.delete(key);
   }
+}
+/* a tile's reel, stopped and forgotten (see TILE_REEL) */
+function dropReel(el) {
+  if (!el.__rl) return;
+  szStop(el.__rl); reelIO.unobserve(el); el.__rl = null;
 }
 /* what a newly mounted run of tiles needs before it can be looked at */
 function settle(fresh) {
@@ -2275,19 +2304,35 @@ function mount(t, gx, gy, u, f) {
       Math.round((1.32 - 1) * (t.h - cap)) + "px");
     const plate = document.createElement("span");
     plate.className = "plate";
-    const img = document.createElement("img");
-    img.src = encodeURI(t.t);
-    const ss = srcsetFor(t);
-    if (ss) {
-      img.srcset = ss;
-      /* the box it is drawn in, times the 1.32 the hover grows it to,
-         so opening a frame does not magnify a bitmap chosen for the
-         closed one */
-      img.sizes = Math.ceil(t.w * 1.32) + "px";
+    /* the plate IS the stage for the two studies that cut (TILE_REEL):
+       same box, same crop, the frames cutting inside it. Only a
+       study's own cover, so the reel stands where its picture would,
+       once a period rather than on every tile it owns. */
+    const cut = t.c != null && TILE_REEL[t.g] && !REDUCE() ? TILE_REEL[t.g] : null;
+    if (cut) {
+      plate.classList.add("sz-stage");
+      const rl = { box: plate, frames: cut.frames, timer: null };
+      szStage(rl);
+      rl.at = cut.at;          /* after the stage, which seats it at 0 */
+      el.__rl = rl;
+      /* on screen it runs, off screen it stops: the same observer the
+         shelf rows and the room's news use */
+      reelIO.observe(el);
+    } else {
+      const img = document.createElement("img");
+      img.src = encodeURI(t.t);
+      const ss = srcsetFor(t);
+      if (ss) {
+        img.srcset = ss;
+        /* the box it is drawn in, times the 1.32 the hover grows it to,
+           so opening a frame does not magnify a bitmap chosen for the
+           closed one */
+        img.sizes = Math.ceil(t.w * 1.32) + "px";
+      }
+      img.alt = "";
+      img.decoding = "async";
+      plate.appendChild(img);
     }
-    img.alt = "";
-    img.decoding = "async";
-    plate.appendChild(img);
     shot.appendChild(plate);
     card.appendChild(shot);
     if (g && !t.noCap) {
@@ -2996,6 +3041,39 @@ const coverOf = (() => {
    board that has to move, so it cuts through the house's own pulls —
    which is not a stand-in for the product, it is the product's job. */
 const ALWAYS_REEL = { sizzle: "inspiration" };
+/* ── AND TWO TILES CUT IN THE FIELD ──────────────────────────────
+   The homepage this board replaced ran a sizzle-reel in exactly two
+   cards of its index (the REELS map in lab/pressing-home.html): Faux
+   Reel, because the study is a tool that cuts stills fast enough to
+   read as motion and a still picture of it says nothing; and Cosmo
+   Prof, whose photography direction was shot as a set and reads as
+   one. The board dealt them as stills and both went quiet.
+
+   THE FRAMES ARE THAT MAP'S, not the board's own. Cosmo Prof's tiles
+   here are mostly website screenshots, so a reel off them would cut
+   through browser chrome; the five it names are the photography, and
+   the quad composition is left out on purpose, being a contact sheet
+   of four of the other five. Faux Reel cuts through the house's own
+   covers rather than whatever the field dealt next to it.
+
+   The beats are the house's (szSeq), not the old page's hand-cut
+   sequence: one machinery, and the rail and the shelf rows already
+   cut this way. */
+/* `at` is the old map's offset, and it is not decoration: both tiles
+   can stand on one screen, and two stages that start together blink
+   their cream beat together, which reads as two holes in the page
+   rather than two reels. Three beats apart, they cut against each
+   other. */
+const TR = "/images/thumbnails";
+const TILE_REEL = {
+  sizzle: { at: 0, frames: [
+    TR + "/ivyPark.jpg", TR + "/arc.jpg", TR + "/nordstromPersonal.jpg",
+    TR + "/dsc.jpg", TR + "/nordstromBeauty.jpg"] },
+  "cosmo-prof": { at: 3, frames: [
+    TR + "/cosmo-reel/masque.jpg", TR + "/cosmo-reel/tubes.jpg",
+    TR + "/cosmo-reel/brushes.jpg", TR + "/cosmo-reel/lineup.jpg",
+    TR + "/cosmo-reel/mask.jpg"] },
+};
 const reelFrames = (folder) => {
   const all = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
   const cv = coverOf[folder];
@@ -3082,11 +3160,16 @@ const layoutCols = () => {
    transition carries the ones that changed. The window is re-read
    once the slide is over: what slid off is let go, what slid on
    arrives. */
+let foldT = null;
 const reshift = () => {
   for (const [u, f] of fcols) {
     const sh = shiftAt(u);
     if (sh !== f.__sh) { f.__sh = sh; f.style.translate = sh + "px 0"; }
   }
+  /* the gauges, while the row moves (see the rules' CSS) */
+  field.classList.add("folding");
+  clearTimeout(foldT);
+  foldT = setTimeout(() => field.classList.remove("folding"), 560);
   setTimeout(remount, 540);
 };
 function insertColumn(c, from, opts) {
