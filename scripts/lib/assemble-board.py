@@ -740,13 +740,16 @@ head = r'''<!doctype html>
      so: Reckon*House Interiors while Interiors stands, Reckon*House
      Digital / Interiors with two open, in the order they stand in the
      row, and Reckon*House again when they fold. Each name is a door:
-     press it and the row walks to that shelf. The lines are all in
-     the second register, half strength as opacity rather than a colour
-     so it holds on the cover's dark ground and the bar's paper alike,
-     and a weight under the mark; the one in view is the bold one. */
-  .fam { opacity: 0.5; font-weight: 500; }
+     press it and the row walks to that shelf.
+
+     TWO WEIGHTS, NOT THREE. The lines are all in the second register,
+     half strength as opacity rather than a colour so it holds on the
+     cover's dark ground and the bar's paper alike. The one in view is
+     the mark's own weight and the rest are the asterisk's, so the bar
+     carries 600 and 400 and nothing else. */
+  .fam { opacity: 0.5; font-weight: 400; }
   .fam .famgo { cursor: pointer; }
-  .fam .famgo.on { font-weight: 700; }
+  .fam .famgo.on { font-weight: 600; }
   @media (hover: hover) { .fam .famgo:hover { text-decoration: underline; text-underline-offset: 3px; } }
   .fam .famgo:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
   /* the question is a button wearing the sentence's own clothes (phone) */
