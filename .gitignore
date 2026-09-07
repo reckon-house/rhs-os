@@ -63,7 +63,6 @@ public/lab/_review/
 # The board's generated thumbnail tier: 541 files, 28MB, rebuilt by
 # `npm run board` from the originals that ARE tracked. A derived
 # artifact the size of a small repo has no business in git history.
-public/lab/board-thumbs/
 bench/
 
 # Columns, packed from the live sources by npm run columns:pack

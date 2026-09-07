@@ -18,6 +18,27 @@ import io, sys
 
 lab = io.open("public/lab/pressing-home.html", encoding="utf-8").read().split("\n")
 
+# ── the plain index ─────────────────────────────────────────────────
+# Every study the board deals, as a link a fetcher can follow, from
+# the same data file the board reads. Written into the body ahead of
+# the script (see {INDEX} in the markup).
+import json as _json, re as _re
+_data = io.open("public/lab/board-data.js", encoding="utf-8").read()
+_m = _re.search(r"window\.BOARD_GROUPS = (\{.*?\});", _data, _re.S)
+_groups = _json.loads(_m.group(1)) if _m else {}
+def _esc(t): return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+_rows = "".join(
+    '<li><a href="/case-studies/%s">%s</a> <span>%s</span></li>' % (_esc(g.get("h", k)), _esc(g.get("t", k)), _esc(g.get("s", "")))
+    for k, g in _groups.items() if g.get("t"))
+INDEX = ('<aside id="index" aria-label="Every study">'
+         '<p>Reckon House. Jeremy Prasatik makes things across brand, product, and place: apps and ecommerce, '
+         'campaigns and brand systems, photography and art direction, custom interiors, AI tools. '
+         'Every study, in its own words, at the links below; ask the site anything about them.</p>'
+         '<ul>' + _rows + '</ul>'
+         '<p><a href="/daybook">The daybook</a> · <a href="/book">Book 30 minutes</a> · <a href="mailto:hello@reckon.house">hello@reckon.house</a></p>'
+         '</aside>\n'
+         '<noscript><div style="padding:40px;font:16px/1.5 sans-serif">' + '<ul>' + _rows + '</ul></div></noscript>')
+
 def block(first_pred, last_pred, what):
     try:
         a = next(i for i, l in enumerate(lab) if first_pred(l))
@@ -54,7 +75,47 @@ head = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>The board · lab</title>
+<title>Reckon House · Design & Build</title>
+<!-- THE HEAD IS THE SITE'S. This page stands at reckon.house/ by a
+     rewrite in next.config.ts, so it carries the same title, card and
+     description as the app's layout (src/app/layout.tsx), the same
+     icons the app serves, and the analytics the app loads. -->
+<meta name="description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<link rel="canonical" href="https://reckon.house/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Reckon House">
+<meta property="og:url" content="https://reckon.house/">
+<meta property="og:title" content="Reckon House · Design & Build">
+<meta property="og:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<meta property="og:image" content="https://reckon.house/og-home-clean.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Reckon House. Work by Jeremy Prasatik: the Robert Rodriguez campaign, the Ivy Park launch, and the A.R.C. app.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reckon House · Design & Build">
+<meta name="twitter:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<meta name="twitter:image" content="https://reckon.house/og-home-clean.jpg">
+<link rel="icon" href="/icon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon.png">
+<meta name="theme-color" content="#ffffff">
+<script defer src="/_vercel/insights/script.js"></script>
+<style>
+  /* ── THE FACE IS HOSTED, NOT ASSUMED ───────────────────────────────
+     The lab ran on Macs, where Avenir Next is a system font, so no
+     @font-face was ever needed here. Live, a visitor on Windows or
+     Android has no such font and would get Helvetica. The same faces
+     the app hosts (src/app/globals.css), from the same files. */
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: local('Avenir Next Italic'), local('AvenirNext-Italic'); font-weight: 400; font-display: swap; font-style: italic; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-BoldItalic.woff2') format('woff2'); font-weight: 700; font-display: swap; font-style: italic; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Heavy.woff') format('woff'); font-weight: 800; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-HeavyItalic.woff') format('woff'); font-weight: 800; font-display: swap; font-style: italic; }
+  /* the index below the fold of the script: present for a fetcher, off the glass for a reader */
+  #index { position: absolute; left: -10000px; top: 0; width: 1px; height: 1px; overflow: hidden; }
+</style>
 <!--
   ── THE BOARD: the homepage, opened in every direction ──────────────
   The spec for the homepage's content region growing two axes. The
@@ -92,8 +153,8 @@ head = r'''<!doctype html>
   - Periodic in both axes; ?seed=N re-deals.
   - 384px webp thumbs. NEVER the plates: 388MB there, 7.8MB here.
 -->
-<link rel="stylesheet" href="board-shell.css">
-<script src="board-data.js"></script>
+<link rel="stylesheet" href="/lab/board-shell.css">
+<script src="/lab/board-data.js"></script>
 <style>
   /* ── what the board adds to the homepage's own stylesheet ──────────
      Only geometry. Every treatment above this line is the lab's. */
@@ -1036,6 +1097,10 @@ if (/[?&]debug\b/.test(location.search)) (function () {
 </script>
 </head>
 <body>
+<!-- THE PLAIN INDEX. The board is drawn by script; a fetcher that runs
+     none sees an empty page. This is the page's words and its doors,
+     off the glass for a reader and present for everything else. -->
+{INDEX}
 
 <nav id="nav">
   <div id="navBurn" data-burn aria-hidden="true"></div>
@@ -4686,6 +4751,7 @@ setTimeout(standRow, 400);
 '''
 
 out = head + sz + "\n" + burn + "\n" + pt + "\n" + rail
+out = out.replace("{INDEX}", INDEX, 1)   # the plain index, into the body
 io.open("public/lab/board.html", "w", encoding="utf-8").write(out)
 print("board: public/lab/board.html — %d lines (reel %d, burn %d, lifted from the lab)"
       % (len(out.split("\n")), len(sz.split("\n")), len(burn.split("\n"))))

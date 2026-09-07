@@ -6,7 +6,9 @@
 The builder walks `public/case-studies/<slug>/`, writes a 1536px webp
 (quality 72) plus 768 and 384 rungs, records the thumb's own size, and
 writes `board-data.js` and `board-copy.json`. `--force` re-encodes
-everything. Rule from CLAUDE.md that the deal enforces: native width
+everything. The thumbs are committed, so a re-deal is a commit; stale
+files for pictures that left the data are deleted by hand or by the
+sweep. Rule from CLAUDE.md that the deal enforces: native width
 ÷ DPR is the largest honest CSS width, so a small file lands small.
 
 ## The sweep

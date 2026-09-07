@@ -42,7 +42,8 @@ credits. `house` carries the rooms' copy and the /book lede.
 ### Thumbs
 
 `public/lab/board-thumbs/<group>/<stem>.webp` with `@384` and `@768`
-rungs. Generated, gitignored, ~1,300 files. The builder flattens any
+rungs. Generated and committed (1,284 files, 74 MB on 7 Sept 2026; `npm run
+board` regenerates and the diff is committed). The builder flattens any
 source with a transparent pixel onto `#EDE7E2`.
 
 ### The Ask's index

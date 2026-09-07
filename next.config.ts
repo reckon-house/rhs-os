@@ -9,9 +9,23 @@ const isDev = process.env.NODE_ENV === "development";
 const LONG_CACHE = "public, max-age=31536000, immutable";
 
 const nextConfig: NextConfig = {
+  /* ── THE BOARD IS THE HOMEPAGE ────────────────────────────────────
+     public/lab/board.html, assembled by scripts/lib/assemble-board.py,
+     stands at / by rewrite. beforeFiles, so it wins over app/page.tsx
+     (the earlier home, which the case-study footers still render).
+     The query string rides along: ?open= and ?at= are the board's own
+     address. The page carries the site's head itself, since a static
+     file gets nothing from the app's layout. */
+  async rewrites() {
+    return { beforeFiles: [{ source: "/", destination: "/lab/board.html" }] };
+  },
   async headers() {
     return [
       { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
+      /* the board's thumbs keep their names when re-encoded, so a day,
+         not a year: a re-dealt picture reaches a returning visitor by
+         tomorrow */
+      { source: "/lab/board-thumbs/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=86400" }] },
       { source: "/case-studies/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
       { source: "/nav/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },
       { source: "/masks/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },

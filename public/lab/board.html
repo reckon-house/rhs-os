@@ -3,7 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>The board · lab</title>
+<title>Reckon House · Design & Build</title>
+<!-- THE HEAD IS THE SITE'S. This page stands at reckon.house/ by a
+     rewrite in next.config.ts, so it carries the same title, card and
+     description as the app's layout (src/app/layout.tsx), the same
+     icons the app serves, and the analytics the app loads. -->
+<meta name="description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<link rel="canonical" href="https://reckon.house/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Reckon House">
+<meta property="og:url" content="https://reckon.house/">
+<meta property="og:title" content="Reckon House · Design & Build">
+<meta property="og:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<meta property="og:image" content="https://reckon.house/og-home-clean.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Reckon House. Work by Jeremy Prasatik: the Robert Rodriguez campaign, the Ivy Park launch, and the A.R.C. app.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reckon House · Design & Build">
+<meta name="twitter:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
+<meta name="twitter:image" content="https://reckon.house/og-home-clean.jpg">
+<link rel="icon" href="/icon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-icon.png">
+<meta name="theme-color" content="#ffffff">
+<script defer src="/_vercel/insights/script.js"></script>
+<style>
+  /* ── THE FACE IS HOSTED, NOT ASSUMED ───────────────────────────────
+     The lab ran on Macs, where Avenir Next is a system font, so no
+     @font-face was ever needed here. Live, a visitor on Windows or
+     Android has no such font and would get Helvetica. The same faces
+     the app hosts (src/app/globals.css), from the same files. */
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: local('Avenir Next Italic'), local('AvenirNext-Italic'); font-weight: 400; font-display: swap; font-style: italic; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-BoldItalic.woff2') format('woff2'); font-weight: 700; font-display: swap; font-style: italic; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Heavy.woff') format('woff'); font-weight: 800; font-display: swap; font-style: normal; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-HeavyItalic.woff') format('woff'); font-weight: 800; font-display: swap; font-style: italic; }
+  /* the index below the fold of the script: present for a fetcher, off the glass for a reader */
+  #index { position: absolute; left: -10000px; top: 0; width: 1px; height: 1px; overflow: hidden; }
+</style>
 <!--
   ── THE BOARD: the homepage, opened in every direction ──────────────
   The spec for the homepage's content region growing two axes. The
@@ -41,8 +81,8 @@
   - Periodic in both axes; ?seed=N re-deals.
   - 384px webp thumbs. NEVER the plates: 388MB there, 7.8MB here.
 -->
-<link rel="stylesheet" href="board-shell.css">
-<script src="board-data.js"></script>
+<link rel="stylesheet" href="/lab/board-shell.css">
+<script src="/lab/board-data.js"></script>
 <style>
   /* ── what the board adds to the homepage's own stylesheet ──────────
      Only geometry. Every treatment above this line is the lab's. */
@@ -985,6 +1025,11 @@ if (/[?&]debug\b/.test(location.search)) (function () {
 </script>
 </head>
 <body>
+<!-- THE PLAIN INDEX. The board is drawn by script; a fetcher that runs
+     none sees an empty page. This is the page's words and its doors,
+     off the glass for a reader and present for everything else. -->
+<aside id="index" aria-label="Every study"><p>Reckon House. Jeremy Prasatik makes things across brand, product, and place: apps and ecommerce, campaigns and brand systems, photography and art direction, custom interiors, AI tools. Every study, in its own words, at the links below; ask the site anything about them.</p><ul><li><a href="/case-studies/ivy-park">Ivy Park by Beyoncé</a> <span>Digital design, brand launch</span></li><li><a href="/case-studies/arc">A.R.C. - AI Home Inventory</a> <span>App &amp; brand development</span></li><li><a href="/case-studies/hill-country-kitchen">Hill Country home</a> <span>Interior design, kitchen</span></li><li><a href="/case-studies/robert-rodriguez">Robert Rodriguez x Neiman’s</a> <span>Creative direction, design</span></li><li><a href="/case-studies/nordstrom-personalization">Nordstrom personalization</a> <span>Design system, direction</span></li><li><a href="/case-studies/dsc">Dallas Sport Collective</a> <span>Website, custom app</span></li><li><a href="/case-studies/capitan-boot-co">Capitan Boot Co.</a> <span>Branding, design</span></li><li><a href="/case-studies/sizzle">Faux Reel</a> <span>Product design, motion</span></li><li><a href="/case-studies/nordstrom-framework">Nordstrom framework</a> <span>Content direction, design</span></li><li><a href="/case-studies/hill-country-bath">Hill Country home</a> <span>Interior design, primary bath</span></li><li><a href="/case-studies/nordstrom-beauty">Nordstrom beauty</a> <span>Digital design, personalized</span></li><li><a href="/case-studies/hill-country-oak">Hill Country Oakworks</a> <span>Campaign direction, branding</span></li><li><a href="/case-studies/cosmo-prof">Cosmo Prof</a> <span>Digital design, creative direction</span></li><li><a href="/case-studies/jeffrey-ecommerce">Jeffrey NYC</a> <span>Ecommerce, web design</span></li><li><a href="/case-studies/black-white-type">Black &amp; white type</a> <span>Custom typography, patterns</span></li><li><a href="/case-studies/hill-country-living">Hill Country home</a> <span>Interior design, living room</span></li><li><a href="/case-studies/j-christianson">J. Christianson</a> <span>Brand development, design</span></li><li><a href="/case-studies/amber-shockey-co">Amber Shockey &amp; Co.</a> <span>Tableware design, branding</span></li><li><a href="/case-studies/you-by-sally">You By Sally</a> <span>Brand campaign</span></li><li><a href="/case-studies/fairview-sitting">The Fairview</a> <span>Interior design, sitting room</span></li><li><a href="/case-studies/floor-and-decor">Floor &amp; Decor</a> <span>Interiors feature</span></li><li><a href="/case-studies/fairview-entry">The Fairview</a> <span>Interior Design, foyer</span></li><li><a href="/case-studies/jeffrey-spring">Jeffrey Spring Campaign</a> <span>Creative direction, design</span></li><li><a href="/case-studies/loved-by-nordstrom">Loved by Nordstrom</a> <span>Brand campaign, design</span></li><li><a href="/case-studies/chalet">Mountain View</a> <span>Interior design, remodel</span></li><li><a href="/case-studies/neiman-marcus">Neiman Marcus</a> <span>Editorial direction, design</span></li><li><a href="/case-studies/branding-graphics">Various design</a> <span>Branding, art, apparel</span></li><li><a href="/case-studies/big-bend">West Texas</a> <span>Landscape photography</span></li><li><a href="/case-studies/sally">Sally Marketing OS</a> <span>Product design, engineering</span></li><li><a href="/case-studies/fairview-suite">The Fairview Suite</a> <span>Interior design, bedroom</span></li></ul><p><a href="/daybook">The daybook</a> · <a href="/book">Book 30 minutes</a> · <a href="mailto:hello@reckon.house">hello@reckon.house</a></p></aside>
+<noscript><div style="padding:40px;font:16px/1.5 sans-serif"><ul><li><a href="/case-studies/ivy-park">Ivy Park by Beyoncé</a> <span>Digital design, brand launch</span></li><li><a href="/case-studies/arc">A.R.C. - AI Home Inventory</a> <span>App &amp; brand development</span></li><li><a href="/case-studies/hill-country-kitchen">Hill Country home</a> <span>Interior design, kitchen</span></li><li><a href="/case-studies/robert-rodriguez">Robert Rodriguez x Neiman’s</a> <span>Creative direction, design</span></li><li><a href="/case-studies/nordstrom-personalization">Nordstrom personalization</a> <span>Design system, direction</span></li><li><a href="/case-studies/dsc">Dallas Sport Collective</a> <span>Website, custom app</span></li><li><a href="/case-studies/capitan-boot-co">Capitan Boot Co.</a> <span>Branding, design</span></li><li><a href="/case-studies/sizzle">Faux Reel</a> <span>Product design, motion</span></li><li><a href="/case-studies/nordstrom-framework">Nordstrom framework</a> <span>Content direction, design</span></li><li><a href="/case-studies/hill-country-bath">Hill Country home</a> <span>Interior design, primary bath</span></li><li><a href="/case-studies/nordstrom-beauty">Nordstrom beauty</a> <span>Digital design, personalized</span></li><li><a href="/case-studies/hill-country-oak">Hill Country Oakworks</a> <span>Campaign direction, branding</span></li><li><a href="/case-studies/cosmo-prof">Cosmo Prof</a> <span>Digital design, creative direction</span></li><li><a href="/case-studies/jeffrey-ecommerce">Jeffrey NYC</a> <span>Ecommerce, web design</span></li><li><a href="/case-studies/black-white-type">Black &amp; white type</a> <span>Custom typography, patterns</span></li><li><a href="/case-studies/hill-country-living">Hill Country home</a> <span>Interior design, living room</span></li><li><a href="/case-studies/j-christianson">J. Christianson</a> <span>Brand development, design</span></li><li><a href="/case-studies/amber-shockey-co">Amber Shockey &amp; Co.</a> <span>Tableware design, branding</span></li><li><a href="/case-studies/you-by-sally">You By Sally</a> <span>Brand campaign</span></li><li><a href="/case-studies/fairview-sitting">The Fairview</a> <span>Interior design, sitting room</span></li><li><a href="/case-studies/floor-and-decor">Floor &amp; Decor</a> <span>Interiors feature</span></li><li><a href="/case-studies/fairview-entry">The Fairview</a> <span>Interior Design, foyer</span></li><li><a href="/case-studies/jeffrey-spring">Jeffrey Spring Campaign</a> <span>Creative direction, design</span></li><li><a href="/case-studies/loved-by-nordstrom">Loved by Nordstrom</a> <span>Brand campaign, design</span></li><li><a href="/case-studies/chalet">Mountain View</a> <span>Interior design, remodel</span></li><li><a href="/case-studies/neiman-marcus">Neiman Marcus</a> <span>Editorial direction, design</span></li><li><a href="/case-studies/branding-graphics">Various design</a> <span>Branding, art, apparel</span></li><li><a href="/case-studies/big-bend">West Texas</a> <span>Landscape photography</span></li><li><a href="/case-studies/sally">Sally Marketing OS</a> <span>Product design, engineering</span></li><li><a href="/case-studies/fairview-suite">The Fairview Suite</a> <span>Interior design, bedroom</span></li></ul></div></noscript>
 
 <nav id="nav">
   <div id="navBurn" data-burn aria-hidden="true"></div>
