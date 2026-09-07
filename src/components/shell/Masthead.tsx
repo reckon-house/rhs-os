@@ -2,16 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import styles from "./Masthead.module.css";
-import "./ask-field.css";
 
 /* ------------------------------------------------------------------ */
 /*  Masthead                                                           */
 /*                                                                     */
 /*  The Pressing C top bar, ported from public/lab/swiss-spread.html:  */
-/*    • 54px sticky bar — wordmark left, section links center, mailto  */
-/*      right. Full-bleed past main's gutters via hero-breakout math.  */
+/*    • 54px sticky bar — the wordmark, alone, left. Full-bleed past   */
+/*      main's gutters via hero-breakout math.                         */
 /*    • The burn pill: a backdrop-filter lens behind the type, driven  */
 /*      by a heat value that climbs while the page scrolls and decays  */
 /*      in three stages after it stops. Invisible over flat cream;     */
@@ -165,37 +164,18 @@ export function Masthead() {
     };
   }, [pathname]);
 
-  const isHome = pathname === "/";
+/* ── THE BAR IS THE MARK ────────────────────────────────────────
+     It carried a question field and the address, and both belonged to
+     an older shape of the site. The field was a door dressed as a
+     chat: it answered nothing here, it pushed the question to `/`,
+     and since the board took `/` nothing there reads a `?q=`. The
+     address left the homepage when the board's cover line took its
+     slot, so a study was the last place still printing it; Connect
+     holds it, on every page, with the rest of how to reach him.
 
-  /* Off the homepage the field has no driver behind it, so the bar
-     answers for itself: a question typed here is carried home, where
-     the brain lives. On the homepage every handler is undefined and
-     the driver owns the element outright — two sets of listeners on
-     one input would each fight the other's idea of what a keystroke
-     means. */
-  const router = useRouter();
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [hasText, setHasText] = useState(false);
-  const onInput = () => setHasText(Boolean(inputRef.current?.value.trim()));
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Escape") {
-      e.currentTarget.value = "";
-      setHasText(false);
-      e.currentTarget.blur();
-      return;
-    }
-    if (e.key !== "Enter") return;
-    e.preventDefault();
-    const q = e.currentTarget.value.trim();
-    e.currentTarget.blur();
-    router.push(q ? `/?q=${encodeURIComponent(q)}` : "/");
-  };
-  const onClear = () => {
-    if (inputRef.current) inputRef.current.value = "";
-    setHasText(false);
-    inputRef.current?.focus();
-  };
-
+     What is left is the mark, which is the door to the board, and the
+     board is where the asking happens: its field is the page. The
+     study's own way on is at its foot, a push past the end. */
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
@@ -260,47 +240,6 @@ export function Masthead() {
         >
           Reckon<i>*</i>House
         </Link>
-        {/* ONE BAR. The field is here on every route, not just the
-            homepage, because it is the way into the work now: the
-            homepage is the index and this is its door. On the homepage
-            the driver takes the field over and it travels down into the
-            cover; everywhere else it stays in its seat at bar size, and
-            asking carries the question home to be answered.
-
-            The centre links are gone with it. Work was the homepage,
-            which the wordmark already reaches, and Info and Staples
-            moved to the footer, which is on every page and has room to
-            name them properly. */}
-        <div className={`ask${hasText ? " has-text" : ""}`}>
-          <input
-            id="query"
-            ref={inputRef}
-            type="text"
-            placeholder="Ask the house."
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-            aria-label="Ask the house"
-            onInput={isHome ? undefined : onInput}
-            onKeyDown={isHome ? undefined : onKeyDown}
-          />
-          <button
-            type="button"
-            className="clear"
-            id="clearQ"
-            aria-label="Clear"
-            onClick={isHome ? undefined : onClear}
-          >
-            &times;
-          </button>
-        </div>
-        {/* data-meta is a stable hook for the same reason data-mark is:
-            the homepage hides both ends of the bar while its cover
-            holds them, and a CSS-module class name is hashed at build
-            time, so no other file can name it. */}
-        <a data-meta className={styles.meta} href="mailto:hello@reckon.house">
-          hello@reckon.house
-        </a>
       </nav>
     </>
   );
