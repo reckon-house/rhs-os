@@ -55,7 +55,7 @@ for (const f of files) {
       if (seen.has(sent)) continue;
       seen.add(sent);
       total += 1;
-      const why = TELLS.filter((t) => t.re.test(sent)).map((t) => t.key);
+      const why = TELLS.filter((t) => !t.scope && t.re.test(sent)).map((t) => t.key);
       if (why.length) { flagged += 1; hits.push({ sent, why }); }
     }
   }

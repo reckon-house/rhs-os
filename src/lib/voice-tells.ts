@@ -9,7 +9,11 @@
    half"): state what it is or why it was decided, and stop.
 
    A flag is a sentence to READ, or, in the route, to ask for again. */
-export type Tell = { key: string; re: RegExp; label: string };
+/* scope "answer": a shape the studies may carry and an answer may not.
+   The studies date themselves where a date belongs to the subject;
+   the Ask must never date the work, and must never describe what it
+   was given. The lint skips these; the route reads them. */
+export type Tell = { key: string; re: RegExp; label: string; scope?: "answer" };
 
 export const TELLS: Tell[] = [
   { key: "tail", label: "a flourish closes the sentence",
@@ -36,6 +40,9 @@ export const TELLS: Tell[] = [
   { key: "reads-as", label: "an appraisal in place of the thing", re: /\b(?:reads? as|comes? across as|feels? like it)\b/i },
   { key: "never-tail", label: "'and it never...' closing the sentence", re: /,\s*and (?:it|they|nothing) never \w+[^.]*[.!?]$/i },
   { key: "first-last", label: "'from the first X to the last Y'", re: /\bfrom the first \w+ to the last \w+/i },
+  { key: "year", label: "a year on the work", scope: "answer", re: /\b20[0-3]\d\b/ },
+  { key: "narrates", label: "describing what you were given instead of answering", scope: "answer",
+    re: /\b(?:on file|the facts|the records|the index|nothing matched|I (?:don't|do not) have|not (?:in|on) (?:the|my) (?:facts|records|data))\b/i },
 ];
 
 /* prose into sentences; the source files carry literal \n, the model
@@ -43,7 +50,8 @@ export const TELLS: Tell[] = [
 export const sentencesOf = (s: string): string[] =>
   s.replace(/\\n|\n/g, " ").split(/(?<=[.!?])\s+(?=[A-Z“"'])/).map((x) => x.trim()).filter((x) => x.length > 12);
 
-export const tellsIn = (sentence: string): Tell[] => TELLS.filter((t) => t.re.test(sentence));
+export const tellsIn = (sentence: string, scope: "answer" | "copy" = "answer"): Tell[] =>
+  TELLS.filter((t) => (scope === "answer" || !t.scope) && t.re.test(sentence));
 
 /* every sentence that trips, with what it tripped */
 export const flag = (text: string): { sentence: string; why: Tell[] }[] =>

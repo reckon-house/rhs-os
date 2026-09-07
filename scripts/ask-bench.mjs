@@ -28,7 +28,8 @@ const OUT = "bench"; mkdirSync(OUT, { recursive: true });
 
 const index = JSON.parse(readFileSync("src/data/generated/project-facts.json", "utf8"));
 const projects = index.projects.map((p) => ({ href: p.href, slug: p.href.split("/").pop(), title: p.title }));
-const words = (s) => s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 2);
+/* "A.R.C." is one word to a visitor and three letters to a splitter */
+const words = (s) => s.toLowerCase().replace(/\.(?=\w)/g, "").replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 2);
 const hrefsFor = (q) => {
   const qw = new Set(words(q));
   return projects.filter((p) => words(p.slug + " " + p.title).some((w) => w.length > 3 && qw.has(w))).slice(0, 3).map((p) => p.href);
