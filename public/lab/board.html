@@ -490,6 +490,14 @@
   #rules i .rg { position: absolute; left: -0.5px; width: 2px; border-radius: 1px;
     background: var(--ink, #000); display: none; }
   #rules i .rg.on { display: block; }
+  /* a study column stands on the standing rule, and its paper covered
+     the gauge there to a sliver; the column draws the gauge on its own
+     edge instead, for whatever is being read to its left (dressRules).
+     Above its head, which is sticky paper on a phone. */
+  .ccol .rg { position: absolute; left: -0.5px; width: 2px; border-radius: 1px; z-index: 3;
+    background: var(--ink, #000); display: none; pointer-events: none; }
+  .ccol .rg.on { display: block; }
+  .ccol.dark .rg { background: #fff; }
   #more { position: absolute; right: 20px; top: 16px; z-index: 3; display: none;
     pointer-events: none; white-space: nowrap;
     font-size: var(--note, 12px); font-weight: 500; letter-spacing: 0.04em;
@@ -1937,24 +1945,40 @@ let metaEl = null, moreEl = null;
 function dressRules() {
   if (!COLS) return;
   const numOf = (r) => (r.u != null && r.u >= 0) ? ((r.u % COLS) + COLS) % COLS + 1 : 0;
-  const kids = rulesEl.children;
-  for (let k = 0; k < kids.length; k++) {
-    const el = kids[k], d = el.__d, rg = el.firstChild;
-    if (d == null || !rg) continue;
-    /* the column this rule closes, while it is being read */
-    const L = (d - 1 >= colIdx && d - 1 < colIdx + VISIBLE) ? atDisp(d - 1) : {};
-    const f = L.u != null ? fcols.get(L.u) : null;
-    if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.className = "rg"; continue; }
-    /* the track runs from the line the columns begin on, under the
-       head band, so the ink never crosses the count */
-    const band = PHONE ? TOP0 : HEAD_BAND - BURN_FOOT;
-    const H = el.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
+  /* what scrolls at a place in the row while it is on the glass: a
+     column of the field, or a study column's own scroller */
+  const scrollerAt = (k) => {
+    if (k < colIdx || k >= colIdx + VISIBLE) return null;
+    const r = atDisp(k);
+    return r.u != null ? (fcols.get(r.u) || null) : (r.col ? r.col.__cin : null);
+  };
+  /* the track runs from the line the columns begin on, under the head
+     band, so the ink never crosses the count; a study column's box
+     begins at the top of the glass, so its ink is offset by where the
+     rules layer begins */
+  const band = PHONE ? TOP0 : HEAD_BAND - BURN_FOOT;
+  const RT = PHONE ? 0 : COVER_AIR + BURN_FOOT;
+  const draw = (rg, f, off) => {
+    if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.classList.remove("on"); return; }
+    const H = rulesEl.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
     /* clamped: a rubber band takes scrollTop past both ends, and the
        ink stays on its track rather than following it under the burn */
     const at = Math.min(1, Math.max(0, f.scrollTop / (f.scrollHeight - f.clientHeight)));
-    rg.className = "rg on";
-    rg.style.top = (band + at * (H - seg)) + "px";
+    rg.classList.add("on");
+    rg.style.top = (off + band + at * (H - seg)) + "px";
     rg.style.height = seg + "px";
+  };
+  const kids = rulesEl.children;
+  for (let k = 0; k < kids.length; k++) {
+    const it = kids[k], d = it.__d, rg = it.firstChild;
+    if (d == null || !rg) continue;
+    /* a study column stands on this rule and draws its own edge */
+    if (atDisp(d).col) { rg.classList.remove("on"); continue; }
+    draw(rg, scrollerAt(d - 1), 0);
+  }
+  for (const c of ccols) {
+    if (!c.__rg) { c.__rg = document.createElement("span"); c.__rg.className = "rg"; c.appendChild(c.__rg); }
+    draw(c.__rg, scrollerAt(dispOf(c) - 1), RT);
   }
   /* the count past the edge: the last of the field on the glass, or
      failing that the first past it, which then counts itself */
@@ -2574,6 +2598,9 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 function colNode(kind, caption) {
   const c = el("section", "ccol " + kind + " arriving");
   const cin = el("div", "cin");
+  c.__cin = cin;
+  /* the column's depth rides the rule that closes it, like a field column's */
+  cin.addEventListener("scroll", () => dressRules(), { passive: true });
   /* the head is the rail's row for this column, moved inside it: the
      chip that names it, carrying its own close */
   const head = el("div", "chead");
@@ -4886,6 +4913,10 @@ function placeAsk() {
   const fieldL = field.getBoundingClientRect().left;
   /* the slot the field rides: the open column's lede while the
      history is unfolded, else the statement standing in the plane */
+  /* the statement is the first tile of the first column: live keys
+     are u:k since the columns became their own scrollers (4 Sept), and
+     the three-part key that stood here from before that found nothing,
+     so the field stayed parked in the bar and never took the slot */
   const st = live.get("0:0:0");
   const slot = st ? st.querySelector(".askslot") : null;
   const sr = slot ? slot.getBoundingClientRect() : null;
