@@ -1102,6 +1102,9 @@ if (/[?&]debug\b/.test(location.search)) (function () {
 const mkRnd = (s0) => { let s = s0;
   return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; };
 const seed = parseInt(new URLSearchParams(location.search).get("seed") || "7", 10);
+/* the page the address names (?at=), read now, before the row stands
+   and starts writing its own; applied once it has (standRow) */
+const AT = new URLSearchParams(location.search).get("at") || "";
 const rnd = mkRnd(Number.isFinite(seed) ? seed : 7);
 const REDUCE = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 /* ── ONE PATH, EVERY RUNG ───────────────────────────────────────────
@@ -1784,6 +1787,7 @@ const pageTo = (i) => {
      guarded, since the row is paged before the columns exist */
   if (window.__askReady) markFamily();
   dressRules();
+  writeRow();
 };
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
@@ -3728,25 +3732,45 @@ function closeAllColumns() {
    view with two studies beside the field is a link: send it and the
    other person sees what you saw. Answer columns are not written,
    since they are the record of a question and the question is not in
-   the address. Studies by folder, rooms as house:, shelves as shelf:. */
-const rowId = (c) => c.__folder ? c.__folder : c.__house ? "house:" + c.__house : c.__mode ? "shelf:" + c.__mode : null;
-const writeRow = () => {
+   the address. Studies by folder, rooms as house:, shelves as shelf:.
+
+   AND THE PAGE IS TOO. Each column carries where it stands, @ the
+   module it is anchored after, so it stands back up in the same
+   place and not at the start; and ?at= names the page: the column at
+   the near edge by its id, or the field's module by its number, the
+   one a visitor is at when they read +36 →. Column 43 of 79 is a
+   link now. The start writes nothing, so the plain address stays the
+   plain address. Function declarations, since pageTo writes the
+   address and stands above this in the file. */
+function baseId(c) { return c.__folder ? c.__folder : c.__house ? "house:" + c.__house : c.__mode ? "shelf:" + c.__mode : null; }
+function rowId(c) { const id = baseId(c); return id && c.__after ? id + "@" + c.__after : id; }
+function writeRow() {
   try {
     const ids = ccols.map(rowId).filter(Boolean);
     const u = new URL(location.href);
     if (ids.length) u.searchParams.set("open", ids.join(",")); else u.searchParams.delete("open");
+    const here = atDisp(colIdx);
+    const at = here.col ? baseId(here.col) : (here.u > 0 ? String(here.u + 1) : null);
+    if (at) u.searchParams.set("at", at); else u.searchParams.delete("at");
     history.replaceState(history.state, "", u.pathname + u.search + u.hash);
   } catch (e) { /* a file:// board has no address to write */ }
-};
+}
 async function standRow() {
   let ids = [];
-  try { ids = (new URL(location.href).searchParams.get("open") || "").split(",").filter(Boolean); } catch (e) { return; }
-  for (const id of ids) {
-    if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, {});
-    else if (id.startsWith("shelf:")) openShelfColumn(id.slice(6), null, {});
-    else if (GROUPS[id]) openStudyColumn(id, {});
+  try { ids = (new URL(location.href).searchParams.get("open") || "").split(",").filter(Boolean); } catch (e) { ids = []; }
+  for (const full of ids) {
+    const [id, after] = full.split("@");
+    const opts = after && /^\d+$/.test(after) ? { at: parseInt(after, 10) } : {};
+    if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, opts);
+    else if (id.startsWith("shelf:")) openShelfColumn(id.slice(6), null, opts);
+    else if (GROUPS[id]) openStudyColumn(id, opts);
     await new Promise((r) => setTimeout(r, 120));
   }
+  /* and the page the address named, once the row stands */
+  if (!AT) return;
+  const col = ccols.find((c) => baseId(c) === AT);
+  if (col) pageTo(dispOf(col));
+  else if (/^\d+$/.test(AT)) pageTo(dispU(parseInt(AT, 10) - 1));
 }
 /* ── THE MARK NAMES THE LINE ────────────────────────────────────────
    The nearest open shelf, walking from the newest column, the same
