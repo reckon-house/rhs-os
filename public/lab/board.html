@@ -767,14 +767,22 @@
     #cmdSheet { display: grid; }
     /* THE WORDMARK IS THE HANDLE. On a phone the mark stops being a
        link out and becomes the sheet's toggle — the brand is the
-       button. A drawn caret beside it says so. */
-    #cmdChev { display: inline-block; width: 8px; height: 8px;
-      margin-left: 8px; vertical-align: 1px;
-      border-right: 1.5px solid var(--ink);
-      border-bottom: 1.5px solid var(--ink);
-      transform: rotate(-135deg);
-      transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
-    #nav.cmdopen #cmdChev { transform: rotate(45deg); }
+       button. The rail's own slash beside it says so, the glyph that
+       already opens Info and Connect; while the sheet is up a second
+       stroke crosses it into an ×. Two 12px bars, currentColor so they
+       go white with the mark over a dark cover, turning on the
+       drawer's own curve. It was a chevron, a shape from nowhere on
+       the site and on the glass the whole time (lab/handle-variants). */
+    #cmdChev { position: relative; display: inline-block; width: 12px; height: 12px;
+      margin-left: 9px; vertical-align: -1px; }
+    #cmdChev b { position: absolute; left: 0; top: 50%; width: 12px; height: 1.5px;
+      margin-top: -0.75px; background: currentColor; border-radius: 1px;
+      transform-origin: 50% 50%;
+      transition: transform 0.36s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.25s ease; }
+    #cmdChev b:nth-child(1) { transform: rotate(-70deg); }
+    #cmdChev b:nth-child(2) { transform: rotate(-70deg); opacity: 0; }
+    #nav.cmdopen #cmdChev b:nth-child(1) { transform: rotate(-45deg); }
+    #nav.cmdopen #cmdChev b:nth-child(2) { transform: rotate(45deg); opacity: 1; }
 
     /* the rail, re-homed into the sheet: back to the desktop drawer
        anatomy — column, hugs, bodies, reels — because the sheet gives
@@ -915,7 +923,7 @@ if (/[?&]debug\b/.test(location.search)) (function () {
       aria-label="Ask the house" />
   </div>
 
-  <a data-mark href="/" class="mark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span><span id="cmdChev" aria-hidden="true"></span></a>
+  <a data-mark href="/" class="mark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span><span id="cmdChev" aria-hidden="true"><b></b><b></b></span></a>
   <a class="meta" data-meta href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
 
