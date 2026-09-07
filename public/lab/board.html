@@ -804,7 +804,9 @@
     #cmdIn #homewrap:not(:has(#home[data-on])) { display: none; }
 
     #field { left: 0; }
-    #rules { display: none; }
+    /* the rules stand here too now that there is a sideways to draw;
+       from the top, since the phone has no cover line above the field */
+    #rules { top: 0; }
 
     /* ── A COLUMN IS A PAGE ───────────────────────────────────────
        One module is half the glass here, so a column spans two: the
@@ -1089,7 +1091,11 @@ const GAP = PHONE ? 20 : IXGAP;
    is the honest price of saying what the page is. VISIBLE stays 2:
    two columns are still what a page turn moves by and what the
    seating deals across. Only the module narrows. */
-const PEEK = PHONE ? 0 : 0.2;
+/* And on a phone. The phone dealt its whole corpus into one pair and
+   ran seventy-eight screens deep with nothing to the right; the fifth
+   of a third module is what says there IS a right, and once there is,
+   the corpus can run sideways in pairs of two screens instead. */
+const PEEK = 0.2;
 const SHOW = VISIBLE + PEEK;
 /* half gutter, column, gutter, column, half gutter: VISIBLE gaps, not
    VISIBLE+1, or the resting edge lands mid-tile */
@@ -1437,18 +1443,22 @@ function adopt(L) {
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
-/* ── ON A PHONE THE FIELD IS ONE PAGE, DOWN ─────────────────────────
-   Sixty-one screen-wide columns dragged in two axes was a map, and a
-   phone is not a place to hold a map. The whole corpus is dealt into
-   ONE period — two columns, every row — so there is nothing to the
-   right, the pair fits the glass, and the one axis left is the one a
-   thumb already knows. Rows fit their pictures (the dealt tiers exist
-   to stop one tall stranger setting a row for fifty columns, and
-   there are two), and the air between them is a feed's, not a
-   board's. */
+/* ── A PHONE IS DEALT LIKE THE DESKTOP, IN PAIRS ────────────────────
+   It was dealt into ONE period, two columns every row, so there was
+   nothing to the right and the one axis left was the thumb's. That
+   made each column 66,000px: seventy-eight screens of well. Dealt in
+   the desktop's pairs it is thirty-odd of them, nine tiles a column,
+   two screens deep, with a fifth of the next pair showing at the edge
+   to say so, and the pair still scrolls as one (mountCol).
+
+   STACKED WITHIN THE PAIR, not fitted to rows. The statement is 330px
+   tall in a 158px column, and a row fitted to it left a hole that
+   deep under whatever stood beside it; the desktop's statement is
+   half that in a column twice as wide, which is why fitted rows cost
+   it nothing. Each column runs its own height here, as the phone did
+   before, and the air is a feed's, not a board's. */
 const BOARD = deal(items, PHONE
-  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H },
-      rows: Math.ceil((items.length + 1) / VISIBLE), stack: true, air: [24, 64] }
+  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, stack: true, air: [24, 64] }
   : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
 adopt(BOARD);
 
@@ -1658,14 +1668,14 @@ let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
 /* ── A PAGE IS A SCREEN ──────────────────────────────────────────
    One module on desktop; on a phone the two that make one, since the
    field is one period and every column spans it. A turn lands on
-   whole pages, and on a phone it stops at the last column: the row
-   does not run on past the conversation into nothing. */
+   whole pages. */
 const PAGE = PHONE ? 2 : 1;
 const pageTo = (i) => {
-  if (PHONE) {
-    const last = ccols.reduce((n, c) => n + spanOf(c), 0);
-    i = Math.min(last, Math.round(i / PAGE) * PAGE);
-  }
+  /* a phone turns whole pages: two modules, the pair. It used to stop
+     at the last open column, because the field was one period and
+     nothing stood past it; the field runs on now, as the desktop's
+     does, and so does the row. */
+  if (PHONE) i = Math.round(i / PAGE) * PAGE;
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
@@ -1790,7 +1800,7 @@ let MODE = null;
 const matches = () => true;
 
 /* ── the window ── */
-const MARGIN_X = PHONE ? 0 : MOD_X * 0.8, MARGIN_Y = 560;
+const MARGIN_X = MOD_X * 0.8, MARGIN_Y = 560;
 const live = new Map();
 const arrive = REDUCE()
   ? { observe: (c) => c.classList.add("fd-on"), unobserve: () => {} }
@@ -1814,9 +1824,6 @@ function remount() {
      length to scroll — and fills itself from its own scrollTop, so
      the vertical window is the COLUMN's and no longer the plane's. */
   for (let i = Math.floor(x0 / PW); i * PW < x1; i++) {
-    /* a phone's field is one period and the columns stand after it:
-       the period that would wrap under them is never dealt */
-    if (PHONE && i !== 0) continue;
     for (let c = 0; c < COLS; c++) {
       /* the module, by column and period, not by x: a narrow frame
          sits in from its column's edge and its x alone would lie.
@@ -2821,10 +2828,11 @@ function insertColumn(c, from, opts) {
       if (here.col) return insertColumn(c, here.col, {});
       u = here.u;
     }
-    /* on a phone the field is one period and a column spans both its
-       modules, so it can only stand after the whole of it, whichever
-       tile asked: anchored inside the pair it would split the grid */
-    if (PHONE) u = COLS - 1;
+    /* on a phone a column spans both modules of a pair, so it stands
+       after the PAIR that asked and never inside it: anchored between
+       a pair's two columns it would split the grid. u | 1 is the right
+       column of whichever pair u is in, in any period. */
+    if (PHONE) u = u | 1;
     c.__after = u;
     at = ccols.findIndex((x) => x.__after >= u);
     if (at < 0) at = ccols.length;
