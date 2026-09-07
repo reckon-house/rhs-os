@@ -812,11 +812,16 @@ head = r'''<!doctype html>
        the site's whole face down where the thumb is. The safe-area
        pad grows the box, and the grid centres in the content box, so
        the row itself stays on the bar's own 54px line. */
+    /* NO RULE UNDER IT EITHER. The bar's line and the sheet's were
+       one rule that split in two when the menu opened; the sheet's
+       went first and this one follows. The work stops where the bar
+       starts, which is the edge, and the sheet rises off paper onto
+       paper — the whole face is one white surface with the type and
+       the pictures doing the dividing. */
     #nav { top: auto; bottom: 0;
       height: calc(var(--nav) + env(safe-area-inset-bottom, 0px));
       padding-bottom: env(safe-area-inset-bottom, 0px);
-      background: var(--paper, #fff);
-      border-top: 1px solid rgba(0, 0, 0, 0.08); }
+      background: var(--paper, #fff); }
     /* the pull-to-ask rides the top edge; the bar no longer does */
     #cmdSheet { display: grid; }
     /* THE WORDMARK IS THE HANDLE. On a phone the mark stops being a
