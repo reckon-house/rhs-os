@@ -52,6 +52,9 @@ export interface Project {
   tools?: string[];
   stats?: { value: string; label: string }[];
   facets?: Record<string, { term: string; n: number; observed?: boolean }[]>;
+  /* the study in its own words, mined by build-facts: abstract, heads,
+     subheads, body, columns, closing; up to 7,000 characters */
+  text?: string;
 }
 
 /* A photographed frame and what was seen in it. The client picks these;
@@ -339,7 +342,15 @@ export function contextFor(
     .map((h) => BY_HREF.get(h))
     .filter((p): p is Project => Boolean(p));
 
-  const blocks = picked.map((p) => {
+  /* THE STUDY'S OWN WORDS RIDE WITH THE FIRST THREE. A question about
+     a study is answered from its text, which is how "why green" gets
+     the kitchen's sentence about green and "how long" gets the
+     abstract's ten weeks. Three, because a broad question can arrive
+     with eight hrefs and eight studies of prose is fourteen thousand
+     uncached tokens for a one-line answer; the rest keep their
+     summary lines, which the shelf already carries. */
+  const WITH_TEXT = 3;
+  const blocks = picked.map((p, i) => {
     /* Observed facts are labelled where they appear, not stripped. The
        model is told in the rules what SEEN IN licenses it to say, and
        an observation is genuinely useful — it is often the only reason
@@ -358,6 +369,7 @@ export function contextFor(
       p.tools?.length && `Tools: ${p.tools.join(", ")}`,
       ...(p.stats ?? []).map((s) => `Stat: ${s.label} = ${s.value}`),
       observed.length && `SEEN IN the photographs: ${observed.join(", ")}`,
+      i < WITH_TEXT && p.text && `The study, in its own words:\n${p.text}`,
     ].filter(Boolean).join("\n");
   });
 

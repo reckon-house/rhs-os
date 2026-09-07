@@ -2638,7 +2638,15 @@ async function sayIn(c, q, hits) {
     : !hits.length ? (houseLine(q) ? { line: houseLine(q) }
         : { line: "Nothing caught on the board.", door: "connect" })
     : { line: hits.length === 1 ? "One." : hits.length + " of them.", hits: hits.slice(0, 4) };
-  pushTurn(c, q, said.line, said.hits, said.door);
+  const turn = pushTurn(c, q, said.line, said.hits, said.door);
+  const reach = /reach|contact|email|hire|talk/.test(q.toLowerCase());
+  if (askable(q) && !reach && turn) {
+    const hrefs = c.__folder ? [hrefOf(c.__folder)] : (hits || []).slice(0, 3).map((h) => hrefOf(h.folder));
+    askHouse(q, hrefs, (answer) => {
+      const ca = turn.querySelector(".ca");
+      if (ca && turn.isConnected) ca.textContent = answer;
+    });
+  }
 }
 function pushTurn(c, q, line, hits, door) {
   const cin = c.querySelector(".cin");
@@ -2682,10 +2690,32 @@ function pushTurn(c, q, line, hits, door) {
     };
     requestAnimationFrame(seat);
     setTimeout(seat, 450);
-    return;
+    return turn;
   }
   /* by exactly what it added, so the field does not move */
   cin.scrollTop += cin.scrollHeight - before;
+  return turn;
+}
+/* ── THE HOUSE'S BRAIN, FROM THE BOARD ──────────────────────────────
+   The board's own answers are the study's copy, matched by hand: a
+   "why" is the Angle, whatever the rest of the question said, so "why
+   green for the cabinets" got the four-materials line. A real
+   question goes to /api/ask now, the site's model with the study's
+   whole text in hand, and its answer lands in the turn when it comes.
+   The board's line stands in until then and stays if the route is
+   down or throttled, so a visitor is never left with a blank. A
+   question is real when it has three words or opens with a why, a
+   how, a what; a bare word is still a search. */
+const askable = (q) => q.trim().split(/\s+/).length >= 3 || /^(why|how|what|which|when|who|where)\b/i.test(q.trim());
+const hrefOf = (folder) => "/case-studies/" + ((GROUPS[folder] && GROUPS[folder].h) || folder);
+async function askHouse(q, hrefs, land) {
+  try {
+    const r = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ q, hrefs }) });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j && j.answer) land(j.answer);
+  } catch (e) { /* the board's own line stands */ }
 }
 function narrowColumn(c, text) {
   const rows = c.__body.querySelectorAll(".crow");
@@ -2950,6 +2980,28 @@ function askFrom(from, text, opts) {
       return;
     }
   }
+  /* ── ALL OF A LINE AT ONCE ────────────────────────────────────────
+     "open all the interiors" is eight columns, not a list: every
+     study on that shelf standing in the row in the shelf's order,
+     each after the last, and the row turned to the first so the
+     reader walks them. A study already open keeps its place. */
+  const all = low.match(/^(?:open|show(?: me)?|pull up|load)\s+(?:all|every|each)\s+(?:of\s+)?(?:the\s+)?(.+?)(?:\s+(?:projects?|studies|work|ones?))?$/);
+  if (all) {
+    const tg = shelfByText(all[1]);
+    if (tg) {
+      const line = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tg)).map(([f]) => f);
+      let prev = from, first = null;
+      for (const f of line) {
+        openStudyColumn(f, {}, prev);
+        const c = ccols.find((x) => x.__folder === f);
+        if (!c) continue;
+        if (!first) first = c;
+        prev = c;
+      }
+      if (first) reveal(first);
+      return;
+    }
+  }
   const verb = low.match(/^(?:open|show|show me|go to|take me to|pull up|load|see|look at|view|only|just|filter to|filter by|show only|show just)\s+(?:the\s+|me\s+)?(.+)$/);
   if (verb) {
     const name = verb[1].trim();
@@ -2997,6 +3049,9 @@ function askFrom(from, text, opts) {
   c.__lead.appendChild(note);
   if (hits.length) studyRows(hits, c.__matter, c);
   insertColumn(c, from, opts);
+  if (askable(t) && hits.length) {
+    askHouse(t, hits.slice(0, 3).map((h) => hrefOf(h.folder)), (answer) => { if (c.isConnected) note.textContent = answer; });
+  }
 }
 window.askFrom = askFrom;
 /* ── THE HOUSE'S TWO ROOMS ──────────────────────────────────────────

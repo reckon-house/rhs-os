@@ -255,6 +255,34 @@ for (const file of studyFiles()) {
     }
   }
 
+  /* ── THE STUDY IN ITS OWN WORDS ──────────────────────────────────
+     Everything the reader reads, in order: the abstract, the heads
+     and their held lines, subheads, body, columns, cards, the closing.
+     Not labels, alts, captions or instructions, which are chrome. The
+     Ask sends this for a study a question is about, so the model
+     answers "why green" from the kitchen's own sentence about green
+     rather than from four summary lines, and "how long" from the
+     abstract's ten weeks. Capped: a study is a few thousand words and
+     a question is about one of them. */
+  const PROSE = new Set(["heldLine", "content", "text", "description", "introText", "philosophyText", "subcopy", "footText", "note"]);
+  const TITLED = new Set(["section-header", "three-column-text", "two-column-text", "feature-cards", "closing"]);
+  const SKIP = new Set(["reel", "image", "images", "src", "captions", "links", "stack", "services"]);
+  const prose = [];
+  const walk = (node, titled) => {
+    if (!node || typeof node !== "object") return;
+    if (Array.isArray(node)) { node.forEach((n) => walk(n, titled)); return; }
+    for (const [k, v] of Object.entries(node)) {
+      if (typeof v === "string") { if (PROSE.has(k) || (k === "title" && titled)) prose.push(v); }
+      else if (v && typeof v === "object" && !SKIP.has(k)) walk(v, titled);
+    }
+  };
+  for (const s of cs.sections) {
+    if (s.type === "meta") { const a = s.abstract; if (Array.isArray(a)) prose.push(...a); else if (a) prose.push(a); continue; }
+    if (["hero", "image", "dual-image", "triple-image", "live-app", "app-showcase"].includes(s.type)) continue;
+    walk(s, TITLED.has(s.type));
+  }
+  const text = prose.join("\n").replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim().slice(0, 7000);
+
   const facts = mine(evidence, coverage);
   for (const f of facts) {
     coverage.facet[f.facet] = (coverage.facet[f.facet] || 0) + 1;
@@ -281,6 +309,7 @@ for (const file of studyFiles()) {
     keywords,
     stats,
     facets,
+    text,
   });
 }
 
