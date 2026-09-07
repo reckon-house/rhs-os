@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   title: {
     // Homepage title leads with the brand so branded ("reckon house") queries
     // surface it; child pages append the wordmark via the template below.
-    default: "Reckon House · Design & Engineering",
+    default: "Reckon House · Design & Build",
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -52,8 +52,9 @@ export const metadata: Metadata = {
     /* THE UNFURL CAPTION, AND ONLY THAT. Three lines already carry the
        name in a shared link — the card prints "Reckon House", the site
        name and the domain both sit under it — so the caption spending
-       itself on "Design & Engineering by Jeremy Prasatik" said the same
-       thing a fourth time. Two words instead, naming the work.
+       itself on the name again said the same thing a fourth time.
+       Two words instead, naming the work.  The <title> says the same
+       two now: Design & Build is what he calls it.
        The document <title> above is a different job: it is what a search
        result and a browser tab show, where the brand has to be in the
        string to be found, so it keeps its wordmark. */

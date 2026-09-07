@@ -4002,6 +4002,10 @@ homeRow.h.addEventListener("click", () => {
   pageTo(0);
   colY.clear();
   for (const f of fcols.values()) f.scrollTop = 0;
+  /* and the sheet goes with it, the way a filter's does: the row
+     returning to the start is the answer, and it happens on the glass
+     the sheet is covering */
+  if (PHONE && window.toggleSheet) toggleSheet(false);
 });
 
 /* ── THE SHEET, the bar's own surface on a phone ────────────────────
