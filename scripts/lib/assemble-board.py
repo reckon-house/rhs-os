@@ -715,7 +715,10 @@ head = r'''<!doctype html>
     top: var(--cover-air, 50px); left: var(--gut); right: var(--gut);
     display: flex; justify-content: space-between; align-items: flex-start;
     pointer-events: none; }
-  #coverline a { pointer-events: auto; }
+  /* the address was the line's one press; the open shelves' names in
+     the mark are doors too, and reveal pages their column onto the
+     glass, into the second place, as the phone's mark already does */
+  #coverline a, #coverline .famgo { pointer-events: auto; }
   /* ── THE LINE REVERSES BY THE SIDE, NOT BY THE BAR ────────────────
      The homepage flips its whole masthead to paper over a declared
      dark zone. A black column is one module wide, so the address can
