@@ -65,7 +65,7 @@ const IMG = "/case-studies/inspiration";
 
 export const railCategories: RailCategory[] = [
   {
-    label: "Digital Experiences",
+    label: "Sites",
     query: "digital",
     glyph: "",
     note: "Sites, stores and platforms, designed and shipped.",
@@ -83,17 +83,17 @@ export const railCategories: RailCategory[] = [
     ],
   },
   {
-    label: "App Development",
+    label: "Apps",
     query: "app development",
     glyph: "",
     note: "Native tools and AI products, built end to end.",
     ids: ["sallyOS", "arc", "dsc", "sizzle"],
   },
   {
-    label: "Campaign/Creative",
+    label: "Campaigns",
     query: "campaign",
     glyph: "",
-    note: "Art direction and campaigns for retail's big names.",
+    note: "Art direction and campaigns for national retailers.",
     ids: [
       "robertRod",
       "ivyPark",

@@ -4,7 +4,7 @@ import { DaybookLedger } from "./DaybookLedger";
 export const metadata: Metadata = {
   title: "Daybook",
   description:
-    "What Reckon House Staples built, dated. Case studies, product work, and notes from the practice of Jeremy Prasatik.",
+    "What Reckon House built, dated. Case studies, product work, and notes from the practice of Jeremy Prasatik.",
 };
 
 /* ── /daybook ───────────────────────────────────────────────────────

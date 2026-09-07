@@ -735,6 +735,13 @@ head = r'''<!doctype html>
     height: 1.12em; vertical-align: middle; }
   /* the house's line in the parked field, at the bar's own size */
 
+  /* ── THE HOUSE'S LINES ────────────────────────────────────────────
+     A shelf open in the row is a line of the house, and the mark says
+     so: Reckon*House Interiors while Interiors stands, Reckon*House
+     again when it folds. The second register, at half strength rather
+     than a colour, so it reads on the cover's dark ground and the bar's
+     paper alike. */
+  .fam { opacity: 0.5; }
   /* the question is a button wearing the sentence's own clothes (phone) */
   .askgo { border: 0; background: none; padding: 0; margin: 0;
     font: inherit; color: inherit; letter-spacing: inherit;
@@ -938,7 +945,7 @@ if (/[?&]debug\b/.test(location.search)) (function () {
       aria-label="Ask the house" />
   </div>
 
-  <a data-mark href="/" class="mark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples<span id="cmdChev" aria-hidden="true"></span></a>
+  <a data-mark href="/" class="mark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span><span id="cmdChev" aria-hidden="true"></span></a>
   <a class="meta" data-meta href="mailto:hello@reckon.house">hello@reckon.house</a>
 </nav>
 
@@ -949,7 +956,7 @@ if (/[?&]debug\b/.test(location.search)) (function () {
      homepage's handover, lifted whole. It rides the plane by
      transform, so it pages away with the first column too. -->
 <div id="coverline" class="cover">
-  <span class="covermark" aria-label="Reckon House Staples">Reckon<i>*</i>House<i>*</i>Staples</span>
+  <span class="covermark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span></span>
   <span class="covermeta"><a href="mailto:hello@reckon.house">hello@reckon.house</a></span>
 </div>
 
@@ -2441,7 +2448,8 @@ const shelfByText = (text) => {
   const q = text.toLowerCase().trim();
   const names = (x) => {
     const ink = x.querySelector(".rink").textContent.trim().toLowerCase();
-    return [ink, ink.split("/")[0], x.dataset.tag];
+    /* the lines are one-word plurals, and a question says "campaign" */
+    return [ink, ink.split("/")[0], x.dataset.tag, ink.replace(/s$/, "")];
   };
   const has = (name) => name && new RegExp("(^|[^a-z0-9])" + escRe(name) + "([^a-z0-9]|$)").test(q);
   const r = rrows.find((x) => x.dataset && x.dataset.tag && names(x).some((nm) => nm === q));
@@ -3503,8 +3511,20 @@ async function standRow() {
     await new Promise((r) => setTimeout(r, 120));
   }
 }
+/* ── THE MARK NAMES THE LINE ────────────────────────────────────────
+   The nearest open shelf, walking from the newest column, the same
+   walk applyFromColumns makes for the rail's chip; nothing open, and
+   the mark is the house alone. Rooms are not lines: Info and Connect
+   leave it. */
+function markFamily() {
+  let tag = null;
+  for (let i = ccols.length - 1; i >= 0; i -= 1) if (ccols[i].__mode) { tag = ccols[i].__mode; break; }
+  const name = tag ? shelfName(tag) : "";
+  document.querySelectorAll(".fam").forEach((f) => { f.textContent = name ? " " + name : ""; });
+}
 function drawPath() {
   writeRow();
+  markFamily();
   let wrap = document.getElementById("pathwrap");
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
@@ -3720,9 +3740,9 @@ const RAIL_NOTES = {
   connect: [[null, "hello@reckon.house"]],
 };
 const FILTERS = [
-  ["Digital Experiences", "digital", "Sites, stores and platforms, designed and shipped."],
-  ["App Development", "app", "Native tools and AI products, built end to end."],
-  ["Campaign/Creative", "creative", "Art direction and campaigns for national retailers."],
+  ["Sites", "digital", "Sites, stores and platforms, designed and shipped."],
+  ["Apps", "app", "Native tools and AI products, built end to end."],
+  ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
   ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
   ["Staples", "staples", "Pictures and lines saved from other people's work."],
 ];

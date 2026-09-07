@@ -256,9 +256,9 @@ export function Masthead() {
           href="/"
           data-mark
           className={styles.mark}
-          aria-label="Reckon House Staples"
+          aria-label="Reckon House"
         >
-          Reckon<i>*</i>House<i>*</i>Staples
+          Reckon<i>*</i>House
         </Link>
         {/* ONE BAR. The field is here on every route, not just the
             homepage, because it is the way into the work now: the

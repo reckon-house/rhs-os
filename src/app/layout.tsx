@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   title: {
     // Homepage title leads with the brand so branded ("reckon house") queries
     // surface it; child pages append the wordmark via the template below.
-    default: "Reckon House Staples · Design & Engineering",
+    default: "Reckon House · Design & Engineering",
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     // Clean business name for the site-name shown in Google + social unfurls
     // (the "·" wordmark stays the title-template suffix for child pages).
-    siteName: "Reckon House Staples",
+    siteName: "Reckon House",
     url: SITE_URL,
     /* THE UNFURL CAPTION, AND ONLY THAT. Three lines already carry the
        name in a shared link — the card prints "Reckon House", the site
