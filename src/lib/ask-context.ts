@@ -331,6 +331,11 @@ export function throttleState() {
    citation pointing at the wrong sentence. */
 const RECENCY = /\b(working on|work on|lately|recently|latest|newest|these days|right now|currently|what'?s new|new lately|up to|been building|been working|this week|last week|daybook|shipped)\b/i;
 
+/* how many of the picked studies send their own prose with a question:
+   the first is the one the question is about, the others cost tail
+   tokens at full price. ASK_WITH_TEXT overrides for the bench. */
+export const WITH_TEXT: number = Number(process.env.ASK_WITH_TEXT) || 3;
+const WITH_TEXT_N = WITH_TEXT;
 export function contextFor(
   hrefs: string[],
   frames: string[],
@@ -349,7 +354,7 @@ export function contextFor(
      with eight hrefs and eight studies of prose is fourteen thousand
      uncached tokens for a one-line answer; the rest keep their
      summary lines, which the shelf already carries. */
-  const WITH_TEXT = 3;
+  const WITH_TEXT = WITH_TEXT_N;
   const blocks = picked.map((p, i) => {
     /* Observed facts are labelled where they appear, not stripped. The
        model is told in the rules what SEEN IN licenses it to say, and

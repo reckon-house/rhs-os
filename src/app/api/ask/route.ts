@@ -43,7 +43,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import {
-  SYSTEM, SHELF, DAYBOOK_TEXT, contextFor, throttled, throttleState, KNOWN_TERMS,
+  SYSTEM, SHELF, DAYBOOK_TEXT, contextFor, throttled, throttleState, KNOWN_TERMS, WITH_TEXT,
   MAX_Q, type AskBody,
 } from "@/lib/ask-context";
 import { flag } from "@/lib/voice-tells";
@@ -72,9 +72,21 @@ export const runtime = "nodejs";
    still true of any model, so read the log line at the foot of this
    file after a prompt change rather than counting characters.
 
-   Effort is not set. It was not part of the bench, so nothing measured
-   says what it would do here. ASK_MODEL still overrides the default. */
+   ASK_MODEL still overrides the default. */
 const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
+/* EFFORT LOW, on the same bench, 7 Sept 2026. Sonnet 5 thinks
+   adaptively unless told how hard, and the thinking is billed as
+   output; an answer here is two sentences of fact. Twelve whys each
+   way: default effort 0 flagged of 33 sentences, 159 output tokens an
+   answer, 3,616ms; low 0 of 32, 132 tokens, 3,191ms. The answers read
+   the same, and low held the first person on two answers where the
+   default wrote "Jeremy built it". ASK_EFFORT overrides. The number
+   of studies whose prose rides with a question (ASK_WITH_TEXT, in
+   ask-context) was benched the same day and changed nothing on this
+   set, because a why names one study; it stays at three. */
+type Effort = NonNullable<NonNullable<Anthropic.MessageCreateParams["output_config"]>["effort"]>;
+const EFFORT = (process.env.ASK_EFFORT || "low") as Effort;
+const OUTPUT = { output_config: { effort: EFFORT } };
 /* The voice contract, the shelf and the facts builder live in
    @/lib/ask-context. They were extracted so a comparison bench could
    hand several models byte-identical input; that bench is gone, but a
@@ -109,16 +121,23 @@ const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
    Pointing ASK_MODEL back at Haiku puts its 4,096 floor back in play;
    read the number again first.
 
-   The price difference is real but not the argument: at this shape
-   (~46 input tokens per output token, so the bill is essentially an
-   input bill) the gap between the two models is tens of dollars a month
-   at portfolio traffic.
+   WHAT AN ANSWER COSTS, at the 7 Sept 2026 prices (Sonnet 5: $2 in,
+   $2.50 to write the cache for five minutes, $0.20 to read it, $10
+   out). Warm: the read, 11,270 tokens, $0.0023; the tail, about 1,700
+   uncached tokens of the picked studies' facts and prose, $0.0034;
+   the answer, about 130 tokens at effort low, $0.0013; about $0.007.
+   Cold, the write instead of the read: about $0.033. Haiku is half
+   that. The tail is the biggest line, and it is the picked study's
+   own prose, which is what the answers are made of. The throttle is
+   the cost control: 15 a minute and 60 a day per address, 2,000 a
+   day in all, so the worst day is about $15.
 
-   TTL is the default 5 minutes, which is the wrong fit if most visitors
-   ask exactly one question — a write costs 1.25x and only pays back
-   from the second request against the same prefix, so a single-question
-   visit costs MORE cached than uncached. Revisit with real traffic:
-   `ttl: "1h"` writes at 2x but stays warm between visitors. */
+   TTL is the default 5 minutes, and that is the right fit. A read
+   refreshes the timer at no cost, so a visitor firing questions keeps
+   the cache warm themselves and pays one write; the hour costs 2x to
+   write and only pays for visitors arriving 5 to 60 minutes apart,
+   which at portfolio traffic is the rare case. A keep-alive would
+   cost more in reads than the cold writes it saves. */
 const PREFIX: Anthropic.TextBlockParam[] = [
   { type: "text", text: SYSTEM },
   {
@@ -209,6 +228,7 @@ export async function POST(req: NextRequest) {
          allowance before emitting text. Haiku does not do this, but the
          ceiling costs nothing when unused and the failure is silent. */
       max_tokens: 500,
+      ...OUTPUT,
       system: PREFIX,
       messages: [{ role: "user", content: ask }],
     });
@@ -236,6 +256,7 @@ export async function POST(req: NextRequest) {
         const again = await client.messages.create({
           model: MODEL,
           max_tokens: 500,
+          ...OUTPUT,
           system: PREFIX,
           messages: [
             { role: "user", content: ask },
@@ -268,7 +289,8 @@ export async function POST(req: NextRequest) {
     const u = res.usage;
     console.log(
       `[ask] ${MODEL} in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} ` +
-      `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens} voice=${voice}`
+      `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens} voice=${voice}` +
+      ` effort=${EFFORT} text=${WITH_TEXT}`
     );
     return NextResponse.json({ answer, used, model: MODEL });
   } catch {
