@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The phone bar · seven ways</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── seven phones in a row, one bar each ───────────────────────────
+     The board's phone bar as it ships (A), and six answers to two
+     questions Jeremy asked of it: does the bar need a line, and does
+     the handle need an arrow that is on the glass the whole time. The
+     chips are the board's own and do not change. Each phone is live:
+     press the bar and the sheet rises on the drawer's 0.56s curve;
+     scroll the feed and the pictures pass under the bar, which is the
+     case a line or a burn exists for. Sizes are the board's: a 54px
+     bar, 13px chips at 12px radius, the field at 17/0.04em. */
+  body { background: #e9e6e2; }
+  .strip { display: flex; gap: 36px; padding: 44px 50px 60px; overflow-x: auto; align-items: flex-start; }
+  .head { padding: 40px 50px 0; display: flex; gap: 24px; align-items: baseline; }
+  .head h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .head button { border: 0; background: none; padding: 0; font-size: var(--note); letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--grey); cursor: pointer; }
+  .head button:hover { color: var(--ink); }
+  .v { flex: none; width: 340px; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 0 14px 2px; text-transform: uppercase; line-height: 1.5; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+
+  /* the glass */
+  .phone { position: relative; width: 340px; height: 640px; overflow: hidden; background: var(--paper);
+    border-radius: 18px; border: 1px solid rgba(0, 0, 0, 0.14); }
+  .feed { position: absolute; inset: 0; overflow-y: auto; padding: 24px 12px 90px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 26px 10px; align-content: start; }
+  .feed::-webkit-scrollbar { display: none; }
+  .tile img { display: block; width: 100%; border-radius: 12px; }
+  .tile b { display: block; font-size: 12px; font-weight: 600; margin-top: 8px; line-height: 1.3; letter-spacing: -0.004em; }
+  .tile b span { color: var(--grey); }
+  .stmt { grid-column: 1 / -1; font-size: 22px; font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; margin: 0 0 6px; }
+  .stmt span { color: var(--grey); text-decoration: underline; text-decoration-color: rgba(0,0,0,0.22); text-underline-offset: 4px; }
+
+  /* ── the bar, the board's phone bar ─────────────────────────────── */
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: var(--nav); z-index: 3;
+    background: var(--paper); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+    gap: 16px; align-items: center; padding: 0 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .bar .ask { font-size: 17px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .bar .mark { justify-self: end; white-space: nowrap; font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+    display: inline-flex; align-items: center; }
+  .bar .mark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
+  /* the chevron as it ships: an 8px box, two borders, turned */
+  .chev { display: inline-block; width: 8px; height: 8px; margin-left: 8px; vertical-align: 1px;
+    border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(-135deg);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .phone[data-on] .chev { transform: rotate(45deg); }
+
+  /* ── the sheet, the board's #cmdSheet ───────────────────────────── */
+  .sheet { position: absolute; left: 0; right: 0; bottom: var(--nav); z-index: 2; display: grid;
+    grid-template-rows: 0fr; transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    background: var(--paper); }
+  .phone[data-on] .sheet { grid-template-rows: 1fr; }
+  .sheet > div { overflow: hidden; min-height: 0; }
+  .sheet .in { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .chip { align-self: flex-start; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+    padding: 8px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.045); }
+  .chip.line { }
+  .gap { height: 18px; }
+
+  /* ── A · now ─────────────────────────────────────────────────────── */
+  .v-now .bar { border-top: 1px solid rgba(0, 0, 0, 0.08); }
+  .v-now .sheet { border-top: 1px solid rgba(0, 0, 0, 0.13); }
+
+  /* ── B · one line, and it rides up ──────────────────────────────── */
+  .v-one .sheet { border-top: 1px solid rgba(0, 0, 0, 0.13); }
+
+  /* ── C · no line ────────────────────────────────────────────────── */
+  /* nothing: paper on paper, and the pictures stop where the bar starts */
+
+  /* ── D · the burn is the bar ────────────────────────────────────── */
+  .v-burn .bar { background: transparent; }
+  .v-burn .bar::before { content: ""; position: absolute; left: 12px; right: 12px; top: 5px; bottom: 5px;
+    border-radius: 999px; z-index: -1; pointer-events: none;
+    background: rgba(243, 240, 237, 0.05);
+    -webkit-backdrop-filter: blur(0.6px) saturate(1.7) contrast(1.4); backdrop-filter: blur(0.6px) saturate(1.7) contrast(1.4); }
+  /* the words stay legible over anything: paper behind the text only */
+  .v-burn .bar .ask, .v-burn .bar .mark { position: relative; }
+  .v-burn .bar .ask::before, .v-burn .bar .mark::before { content: ""; position: absolute; inset: -4px -8px; z-index: -1;
+    background: var(--paper); border-radius: 999px; }
+
+  /* ── E · a grabber, not an arrow ────────────────────────────────── */
+  .v-grab .chev { display: none; }
+  .v-grab .sheet::before { content: ""; position: absolute; left: 50%; top: -12px; width: 36px; height: 4px; margin-left: -18px;
+    border-radius: 2px; background: rgba(0, 0, 0, 0.18); z-index: 4; }
+  .v-grab .bar { padding-top: 6px; }
+
+  /* ── F · the mark is the handle, and says so when it is open ────── */
+  .v-mark .chev { display: none; }
+  .v-mark .bar .mark { padding: 6px 10px; margin-right: -10px; border-radius: 10px;
+    transition: background-color 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .v-mark .phone[data-on] .bar .mark { background: var(--ink); color: #fff; }
+
+  /* ── G · the asterisk turns ─────────────────────────────────────── */
+  .v-star .chev { display: none; }
+  .v-star .bar .mark i { display: inline-block; transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), font-weight 0.2s ease; }
+  .v-star .phone[data-on] .bar .mark i { transform: rotate(90deg); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="head"><h1>The phone bar, seven ways</h1><button id="openAll">Open all</button><button id="closeAll">Close all</button><span style="font-size:12px;color:var(--grey);letter-spacing:.04em">Press a bar. Scroll a feed.</span></div>
+<div class="strip" id="strip"></div>
+<script>
+const VARIANTS = [
+  ["A", "v-now", "now", "a line on the bar and a line on the sheet, so they split when it opens; the chevron turns"],
+  ["B", "v-one", "one line", "the bar's own line goes; the sheet's rides up with it, so there is one line in both states"],
+  ["C", "v-none", "no line", "paper on paper; the pictures end where the bar begins, and that edge is the line"],
+  ["D", "v-burn", "the burn", "no line; the masthead's pill sits behind the bar and goes off over the pictures, invisible over paper"],
+  ["E", "v-grab", "a grabber", "no arrow, no line; the phone's own sheet handle at the seam, riding up with the sheet"],
+  ["F", "v-mark", "the mark is the handle", "no arrow, no line; open, the mark goes to ink like a picked chip"],
+  ["G", "v-star", "the asterisk turns", "no arrow, no line; the mark's own device turns a quarter and goes bold while the sheet is up"],
+];
+const TILES = [
+  ["rhs-ivy-park-beyonce-digital-brand-launch", "Ivy Park by Beyoncé", "Digital design, brand launch"],
+  ["rhs-interior-design-kitchen-modern-meets-vintage", "Hill Country home", "Interior design, kitchen"],
+  ["rhs-sally-os-asset-hub-laptop", "Sally Marketing OS", "Product design, engineering"],
+  ["rhs-nordstrom-personalization-laptop", "Nordstrom personalization", "Design system, direction"],
+  ["rhs-arc-app-project-select-phone", "A.R.C.", "App & brand development"],
+  ["rhs-robert-rodriguez-storefront-window", "Robert Rodriguez x Neiman's", "Creative direction, design"],
+  ["rhs-dallas-sport-collective-laptop-stool", "Dallas Sport Collective", "Website, custom app"],
+  ["rhs-nordstrom-framework-on-our-list", "Nordstrom framework", "Content direction, design"],
+  ["rhs-capitan-boot-co-branding", "Capitan Boot Co.", "Branding, design"],
+  ["rhs-nordstrom-beauty-hub-laptop", "Nordstrom beauty", "Digital design, personalized"],
+];
+const CHIPS = ["/ Info", "/ Connect", null, "Digital", "Apps", "Campaigns", "Interiors", "Staples"];
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const strip = document.getElementById("strip");
+VARIANTS.forEach(([k, cls, name, what]) => {
+  const v = el("div", "v " + cls);
+  const tag = el("div", "tag"); tag.appendChild(el("b", null, k)); tag.appendChild(document.createTextNode(name + " · " + what));
+  v.appendChild(tag);
+  const ph = el("div", "phone");
+  const feed = el("div", "feed");
+  const st = el("p", "stmt"); st.appendChild(document.createTextNode("I'm Jeremy Prasatik. I make things across brand, product, and place. "));
+  st.appendChild(el("span", null, "Apps and ecommerce")); st.appendChild(document.createTextNode(", campaigns, interiors."));
+  feed.appendChild(st);
+  TILES.forEach(([f, t, s]) => {
+    const tile = el("div", "tile"); const im = el("img"); im.src = "/lab/board-thumbs/hp/" + f + "@384.webp"; im.alt = "";
+    im.loading = "lazy"; tile.appendChild(im);
+    const b = el("b", null, t + " "); b.appendChild(el("span", null, s)); tile.appendChild(b); feed.appendChild(tile);
+  });
+  ph.appendChild(feed);
+  const sheet = el("div", "sheet"); const box = el("div"); const inn = el("div", "in");
+  CHIPS.forEach((c) => inn.appendChild(c ? el("div", "chip", c) : el("div", "gap")));
+  box.appendChild(inn); sheet.appendChild(box); ph.appendChild(sheet);
+  const bar = el("div", "bar"); bar.appendChild(el("div", "ask", "“Kitchen design”"));
+  const mark = el("div", "mark"); mark.appendChild(document.createTextNode("Reckon")); mark.appendChild(el("i", null, "*"));
+  mark.appendChild(document.createTextNode("House")); mark.appendChild(el("span", "chev")); bar.appendChild(mark);
+  bar.addEventListener("click", () => ph.toggleAttribute("data-on"));
+  ph.appendChild(bar);
+  v.appendChild(ph); strip.appendChild(v);
+});
+document.getElementById("openAll").addEventListener("click", () => document.querySelectorAll(".phone").forEach((p) => p.setAttribute("data-on", "")));
+document.getElementById("closeAll").addEventListener("click", () => document.querySelectorAll(".phone").forEach((p) => p.removeAttribute("data-on")));
+</script>
+</body>
+</html>
