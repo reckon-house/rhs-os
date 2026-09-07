@@ -466,6 +466,26 @@
   }
   #rules i { position: absolute; top: 0; bottom: 0; width: 1px;
     background: rgba(0, 0, 0, 0.13); }
+  /* ── WHERE YOU ARE, ON THE RULE ────────────────────────────────────
+     The field goes two ways and nothing said how far either went: the
+     peek says there is a right, not that there are 79. A rule opens a
+     column, so on a phone it carries that column's number at its head
+     in the caption's register (3 OF 79; the peek's, 4 OF 79 →, names
+     what is next), and the rule closing a column being read carries
+     the column's depth as an ink segment: the gutter is the gauge. On
+     desktop the numbers stand in the cover line instead, in the slot
+     the address held. Nothing floats over the work; the head band and
+     the rule are the two places the field keeps clear.
+     lab/axis-variants.html, E. */
+  #rules i .rn { position: absolute; top: 16px; display: none; white-space: nowrap;
+    font-style: normal; font-size: var(--note, 12px); font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.2;
+    color: rgba(0, 0, 0, 0.42); }
+  /* the peek shows a fifth of a module, so its label stacks: 4 OF / 79 → */
+  #rules i .rn.peek { white-space: normal; width: 46px; }
+  #rules i .rg { position: absolute; left: -0.5px; width: 2px; border-radius: 1px;
+    background: var(--ink, #000); display: none; }
+  #rules i .rg.on { display: block; }
 
   /* the tiles ARE .fd-it cards — frame, radius, curtain, drift and
      caption all come from the stylesheet above */
@@ -648,7 +668,7 @@
      passing there. */
   .covermark, .covermeta a { transition: color 0.28s ease; }
   .covermark.rev { color: var(--masthead-paper, #fff); }
-  .covermeta.rev a { color: rgba(255, 255, 255, 0.5); }
+  .covermeta.rev, .covermeta.rev a { color: rgba(255, 255, 255, 0.5); }
   html.rh-home body.coverbar #nav [data-burn].rev, #navBurn.rev { opacity: 0; }
   @media (min-width: 761px) {
     /* the bar keeps only the field and the ×; its own name and address
@@ -806,7 +826,8 @@
     #field { left: 0; }
     /* the rules stand here too now that there is a sideways to draw;
        from the top, since the phone has no cover line above the field */
-    #rules { top: 0; }
+    #rules { top: 0; bottom: calc(var(--nav, 54px) + env(safe-area-inset-bottom, 0px)); }
+    #rules i .rn { display: block; }
 
     /* ── A COLUMN IS A PAGE ─────────────────────────────
        A module is the glass less the peek here, so a column takes the
@@ -966,7 +987,9 @@ if (/[?&]debug\b/.test(location.search)) (function () {
      transform, so it pages away with the first column too. -->
 <div id="coverline" class="cover">
   <span class="covermark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span></span>
-  <span class="covermeta"><a href="mailto:hello@reckon.house">hello@reckon.house</a></span>
+  <!-- the address left this slot for Connect; the columns on the glass
+       stand here now, written by dressRules -->
+  <span class="covermeta" aria-live="off"></span>
 </div>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
@@ -1277,7 +1300,9 @@ const COVER_AIR = px("--cover-air", 50);
    below it, and everything passes under it on the way up, which is
    what a masthead is for. */
 const HEAD_BAND = PHONE ? 0 : 46;
-const TOP0 = PHONE ? 30 : COVER_AIR + HEAD_BAND;
+/* a phone's band was 30; the column's number stands in it now, at 16,
+   and the peek's stacks to two lines, so the first tile begins at 48 */
+const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
    The whole placement is a function of a list, so the field can be
@@ -1684,6 +1709,7 @@ const pageTo = (i) => {
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
   if (window.__askReady) markFamily();
+  dressRules();
 };
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
@@ -1864,7 +1890,13 @@ function remount() {
     const rx = c * MOD_X - GAP / 2;
     if (rx < x0 - 2 || rx > x1 + 2) continue;
     let el = kids[n];
-    if (!el) { el = document.createElement("i"); rulesEl.appendChild(el); }
+    if (!el) {
+      el = document.createElement("i");
+      el.innerHTML = '<span class="rn"></span><span class="rg"></span>';
+      el.firstChild.style.left = (GAP / 2) + "px";   /* the column's own edge */
+      rulesEl.appendChild(el);
+    }
+    el.__d = c;
     el.style.left = rx + "px";
     /* the rule at a period's own left edge stands between the rail
        and the field; every other one stands between two columns of
@@ -1873,8 +1905,54 @@ function remount() {
     n += 1;
   }
   while (kids.length > n) rulesEl.removeChild(kids[kids.length - 1]);
+  dressRules();
   /* a tile that mounts mid-turn must be on its side before it paints */
   swapSides();
+}
+/* ── WHERE YOU ARE ─────────────────────────────────────────────────
+   What each standing rule says (see the rules' CSS): the number of
+   the column it opens, and the depth of the column it closes while
+   that column is on the glass. The desktop's cover line takes the
+   numbers of the pair on the glass, 3–4 of 79, a study column
+   skipped since it is not one of the 79. Redrawn when the rules are,
+   when the row pages, when the columns change and when a column
+   scrolls; a handful of rules each time. */
+let metaEl = null;
+function dressRules() {
+  if (!COLS) return;
+  const numOf = (r) => (r.u != null && r.u >= 0) ? ((r.u % COLS) + COLS) % COLS + 1 : 0;
+  const kids = rulesEl.children;
+  for (let k = 0; k < kids.length; k++) {
+    const el = kids[k], d = el.__d, rn = el.firstChild, rg = el.lastChild;
+    if (d == null || !rn) continue;
+    const n = numOf(atDisp(d)), peek = d === colIdx + VISIBLE;
+    const t = n ? n + " of " + COLS + (peek ? " \u2192" : "") : "";
+    if (rn.textContent !== t) rn.textContent = t;
+    rn.classList.toggle("peek", peek);
+    /* the column this rule closes, while it is being read */
+    const L = (d - 1 >= colIdx && d - 1 < colIdx + VISIBLE) ? atDisp(d - 1) : {};
+    const f = L.u != null ? fcols.get(L.u) : null;
+    if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.className = "rg"; continue; }
+    /* the track runs from the line the columns begin on, under the
+       head band, so the ink never crosses the cover line's counter */
+    const band = PHONE ? TOP0 : HEAD_BAND;
+    const H = el.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
+    rg.className = "rg on";
+    rg.style.top = (band + f.scrollTop / (f.scrollHeight - f.clientHeight) * (H - seg)) + "px";
+    rg.style.height = seg + "px";
+  }
+  /* the desktop's line: the pair on the glass, in the address's slot */
+  metaEl = metaEl || document.querySelector("#coverline .covermeta");
+  if (metaEl) {
+    const ns = [];
+    for (let d = colIdx; d < colIdx + VISIBLE; d++) { const n = numOf(atDisp(d)); if (n) ns.push(n); }
+    const t = ns.length ? (ns.length > 1 ? ns[0] + "\u2013" + ns[ns.length - 1] : ns[0]) + " of " + COLS : "";
+    if (metaEl.textContent !== t) {
+      metaEl.textContent = t;
+      /* the burn reads the slot's middle, and the text just changed width */
+      if (window.__measureLine) window.__measureLine();
+    }
+  }
 }
 /* a column of the field: its own scroller, at its own module, kept at
    whatever height the deal dealt and returned to wherever it was left */
@@ -1907,6 +1985,7 @@ function mountCol(u, gx, sh) {
   if (PHONE) f.addEventListener("pointerdown", () => { driver = f; }, { passive: true });
   f.addEventListener("scroll", () => {
     colY.set(u, f.scrollTop);
+    dressRules();
     if (PHONE) {
       if (!driver) driver = f;
       if (driver === f) fcols.forEach((g) => {
@@ -3602,6 +3681,7 @@ function markFamily() {
 function drawPath() {
   writeRow();
   markFamily();
+  dressRules();
   let wrap = document.getElementById("pathwrap");
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
@@ -4746,6 +4826,7 @@ const measureLine = () => {
     fieldL: field.getBoundingClientRect().left };
 };
 measureLine();
+window.__measureLine = measureLine;
 addEventListener("resize", measureLine, { passive: true });
 /* every frame, and only arithmetic: where each black column stands on
    the screen is its place in the row minus the pan */
