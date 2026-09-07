@@ -687,10 +687,17 @@
   /* ── THE HOUSE'S LINES ────────────────────────────────────────────
      A shelf open in the row is a line of the house, and the mark says
      so: Reckon*House Interiors while Interiors stands, Reckon*House
-     again when it folds. The second register, at half strength rather
-     than a colour, so it reads on the cover's dark ground and the bar's
-     paper alike. */
-  .fam { opacity: 0.5; }
+     Digital / Interiors with two open, in the order they stand in the
+     row, and Reckon*House again when they fold. Each name is a door:
+     press it and the row walks to that shelf. The one in view reads
+     at full strength and the rest at half, as opacity rather than a
+     colour, so it holds on the cover's dark ground and the bar's paper
+     alike. */
+  .fam .famsep, .fam .famgo { opacity: 0.5; }
+  .fam .famgo { cursor: pointer; }
+  .fam .famgo.on { opacity: 1; }
+  @media (hover: hover) { .fam .famgo:hover { opacity: 1; } }
+  .fam .famgo:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
   /* the question is a button wearing the sentence's own clothes (phone) */
   .askgo { border: 0; background: none; padding: 0; margin: 0;
     font: inherit; color: inherit; letter-spacing: inherit;
@@ -812,10 +819,14 @@
        desktop it parks on a measured column and the bar is wide; on
        a phone there is one line and it is shared. The address goes;
        it is the first line of Connect. */
-    #nav { grid-template-columns: minmax(0, 1fr) auto; gap: 16px;
+    #nav { grid-template-columns: minmax(0, 1fr) minmax(0, max-content); gap: 16px;
       padding-left: 20px; padding-right: 20px; }
     #nav .ask { position: static; transform: none; width: auto; min-width: 0; }
-    #nav .mark { justify-self: end; white-space: nowrap; }
+    /* the mark carries the open lines, so it can take the whole bar
+       from the field (hidden while a thread is on anyway) and ellipse
+       past that, rather than push the grid off the glass */
+    #nav .mark { justify-self: end; white-space: nowrap; min-width: 0; max-width: 100%;
+      overflow: hidden; text-overflow: ellipsis; }
     #nav .meta { display: none; }
   }
 </style>
@@ -1614,6 +1625,9 @@ const pageTo = (i) => {
     i = Math.min(last, Math.round(i / PAGE) * PAGE);
   }
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
+  /* the mark's lines light the one in view, so a page turn redraws them;
+     guarded, since the row is paged before the columns exist */
+  if (window.__askReady) markFamily();
 };
 
 /* ── TWO AXES, EACH WITH ONE MEANING ────────────────────────────────
@@ -3466,10 +3480,24 @@ async function standRow() {
    the mark is the house alone. Rooms are not lines: Info and Connect
    leave it. */
 function markFamily() {
-  let tag = null;
-  for (let i = ccols.length - 1; i >= 0; i -= 1) if (ccols[i].__mode) { tag = ccols[i].__mode; break; }
-  const name = tag ? shelfName(tag) : "";
-  document.querySelectorAll(".fam").forEach((f) => { f.textContent = name ? " " + name : ""; });
+  const shelves = ccols.filter((c) => c.__mode);
+  /* in view: the column's modules overlap the pages on the glass */
+  const here = (c) => { const d = dispOf(c); return d < colIdx + VISIBLE && d + spanOf(c) > colIdx; };
+  document.querySelectorAll(".fam").forEach((f) => {
+    f.textContent = "";
+    shelves.forEach((c, i) => {
+      f.appendChild(i ? el("span", "famsep", " / ") : document.createTextNode(" "));
+      const b = el("span", "famgo" + (here(c) ? " on" : ""), shelfName(c.__mode));
+      b.setAttribute("role", "button"); b.tabIndex = 0;
+      /* a name is a door to its shelf, not the mark's own press: on a
+         phone the mark is the sheet's handle, on desktop it is a link
+         home, and neither should hear this */
+      const go = (e) => { e.preventDefault(); e.stopPropagation(); reveal(c); };
+      b.addEventListener("click", go);
+      b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") go(e); });
+      f.appendChild(b);
+    });
+  });
 }
 function drawPath() {
   writeRow();
@@ -4115,7 +4143,7 @@ const RAIL_NOTES = {
   connect: [[null, "hello@reckon.house"]],
 };
 const FILTERS = [
-  ["Sites", "digital", "Sites, stores and platforms, designed and shipped."],
+  ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
   ["Apps", "app", "Native tools and AI products, built end to end."],
   ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
   ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],

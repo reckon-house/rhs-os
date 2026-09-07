@@ -65,7 +65,7 @@ const IMG = "/case-studies/inspiration";
 
 export const railCategories: RailCategory[] = [
   {
-    label: "Sites",
+    label: "Digital",
     query: "digital",
     glyph: "",
     note: "Sites, stores and platforms, designed and shipped.",
