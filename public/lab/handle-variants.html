@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The handle · nine ways</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── nine phones, one handle each ──────────────────────────────────
+     The second question from bar-variants.html on its own: what sits
+     beside the mark to say the bar opens. The chevron as it ships (A),
+     then glyphs that fold into an × the way a menu's do, glyphs that
+     LIE DOWN, which is what the sheet does to the row (the columns
+     become a list), and one that is a word. No line under any of them;
+     the line is the other page's question, and every handle here
+     combines with B, C or D there. Everything is 12px on a 54px bar,
+     turning on the drawer's own curve. */
+  body { background: #e9e6e2; }
+  .strip { display: flex; gap: 36px; padding: 44px 50px 60px; overflow-x: auto; align-items: flex-start; }
+  .head { padding: 40px 50px 0; display: flex; gap: 24px; align-items: baseline; }
+  .head h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .head button { border: 0; background: none; padding: 0; font-size: var(--note); letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--grey); cursor: pointer; }
+  .head button:hover { color: var(--ink); }
+  .v { flex: none; width: 340px; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 0 14px 2px; text-transform: uppercase; line-height: 1.5; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+
+  .phone { position: relative; width: 340px; height: 640px; overflow: hidden; background: var(--paper);
+    border-radius: 18px; border: 1px solid rgba(0, 0, 0, 0.14); }
+  .feed { position: absolute; inset: 0; overflow-y: auto; padding: 24px 12px 90px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 26px 10px; align-content: start; }
+  .feed::-webkit-scrollbar { display: none; }
+  .tile img { display: block; width: 100%; border-radius: 12px; }
+  .tile b { display: block; font-size: 12px; font-weight: 600; margin-top: 8px; line-height: 1.3; letter-spacing: -0.004em; }
+  .tile b span { color: var(--grey); }
+  .stmt { grid-column: 1 / -1; font-size: 22px; font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; margin: 0 0 6px; }
+  .stmt span { color: var(--grey); text-decoration: underline; text-decoration-color: rgba(0,0,0,0.22); text-underline-offset: 4px; }
+
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: var(--nav); z-index: 3;
+    background: var(--paper); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+    gap: 16px; align-items: center; padding: 0 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .bar .ask { font-size: 17px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .bar .mark { justify-self: end; white-space: nowrap; font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+    display: inline-flex; align-items: center; }
+  .bar .mark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
+
+  .sheet { position: absolute; left: 0; right: 0; bottom: var(--nav); z-index: 2; display: grid;
+    grid-template-rows: 0fr; transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    background: var(--paper); }
+  .phone[data-on] .sheet { grid-template-rows: 1fr; }
+  .sheet > div { overflow: hidden; min-height: 0; }
+  .sheet .in { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .chip { align-self: flex-start; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+    padding: 8px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.045); }
+  .gap { height: 18px; }
+
+  /* ── the handle: a 12px box after the mark, drawn from two or three bars ── */
+  .h { position: relative; display: inline-block; width: 12px; height: 12px; margin-left: 9px; flex: none; }
+  .h b { position: absolute; left: 0; top: 50%; width: 12px; height: 1.5px; margin-top: -0.75px; background: var(--ink);
+    border-radius: 1px; transform-origin: 50% 50%;
+    transition: transform 0.36s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.25s ease; }
+  .curve { transition: transform 0.36s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  /* A · now: the chevron as it ships */
+  .chev { display: inline-block; width: 8px; height: 8px; margin-left: 8px; vertical-align: 1px;
+    border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(-135deg);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .phone[data-on] .chev { transform: rotate(45deg); }
+
+  /* B · three lines, folding to an × */
+  .v-three .h b:nth-child(1) { transform: translateY(-4px); }
+  .v-three .h b:nth-child(3) { transform: translateY(4px); }
+  .v-three .phone[data-on] .h b:nth-child(1) { transform: rotate(45deg); }
+  .v-three .phone[data-on] .h b:nth-child(2) { opacity: 0; transform: scaleX(0.2); }
+  .v-three .phone[data-on] .h b:nth-child(3) { transform: rotate(-45deg); }
+
+  /* C · two lines, folding to an × */
+  .v-two .h b:nth-child(1) { transform: translateY(-2.5px); }
+  .v-two .h b:nth-child(2) { transform: translateY(2.5px); }
+  .v-two .phone[data-on] .h b:nth-child(1) { transform: rotate(45deg); }
+  .v-two .phone[data-on] .h b:nth-child(2) { transform: rotate(-45deg); }
+
+  /* D · three columns, lying down into a list */
+  .v-cols .h { transform: rotate(90deg); }
+  .v-cols .h b:nth-child(1) { transform: translateY(-4px); }
+  .v-cols .h b:nth-child(3) { transform: translateY(4px); }
+  .v-cols .phone[data-on] .h { transform: rotate(0deg); }
+
+  /* E · two columns, the phone's own pair, lying down */
+  .v-pair .h { transform: rotate(90deg); }
+  .v-pair .h b:nth-child(1) { transform: translateY(-2.5px); }
+  .v-pair .h b:nth-child(2) { transform: translateY(2.5px); }
+  .v-pair .phone[data-on] .h { transform: rotate(0deg); }
+
+  /* F · three dots standing, lying down */
+  .v-dots .h { transform: rotate(90deg); }
+  .v-dots .h b { width: 2.5px; height: 2.5px; left: 4.75px; margin-top: -1.25px; border-radius: 50%; }
+  .v-dots .h b:nth-child(1) { transform: translateY(-4.5px); }
+  .v-dots .h b:nth-child(3) { transform: translateY(4.5px); }
+  .v-dots .phone[data-on] .h { transform: rotate(0deg); }
+
+  /* G · the slash, the rail's own glyph, crossing into an × */
+  .v-slash .h b:nth-child(1) { transform: rotate(70deg); }
+  .v-slash .h b:nth-child(2) { transform: rotate(70deg); opacity: 0; }
+  .v-slash .phone[data-on] .h b:nth-child(1) { transform: rotate(45deg); }
+  .v-slash .phone[data-on] .h b:nth-child(2) { transform: rotate(-45deg); opacity: 1; }
+
+  /* H · a plus, turning to an × */
+  .v-plus .h b:nth-child(2) { transform: rotate(90deg); }
+  .v-plus .phone[data-on] .h { transform: rotate(45deg); }
+
+  /* I · a word, in the label register */
+  .v-word .h { width: auto; height: auto; margin-left: 12px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--grey); }
+  .v-word .h b { position: static; width: auto; height: auto; margin: 0; background: none; font-weight: inherit; display: inline; }
+  .v-word .h b:nth-child(2) { display: none; }
+  .v-word .phone[data-on] .h b:nth-child(1) { display: none; }
+  .v-word .phone[data-on] .h b:nth-child(2) { display: inline; }
+</style>
+</head>
+<body>
+<div class="head"><h1>The handle, nine ways</h1><button id="openAll">Open all</button><button id="closeAll">Close all</button><span style="font-size:12px;color:var(--grey);letter-spacing:.04em">Press a bar. No line under any of them.</span></div>
+<div class="strip" id="strip"></div>
+<script>
+const VARIANTS = [
+  ["A", "v-now", "now", "the chevron, turning", 0],
+  ["B", "v-three", "three lines", "the small hamburger, 12px; folds to an × when the sheet is up", 3],
+  ["C", "v-two", "two lines", "the same with the middle gone; the two fold to an ×", 2],
+  ["D", "v-cols", "three columns", "the board's own shape, standing; they lie down into a list when the sheet is up, which is what the sheet does to the row", 3],
+  ["E", "v-pair", "two columns", "the phone's own pair, standing; lie down to two lines", 2],
+  ["F", "v-dots", "three dots standing", "a kebab that lies down into an ellipsis", 3],
+  ["G", "v-slash", "the slash", "the rail's own glyph (/ Info, / Connect); a second stroke crosses it into an ×", 2],
+  ["H", "v-plus", "a plus", "turns a quarter into an ×", 2],
+  ["I", "v-word", "a word", "Menu, in the label register; reads Close while the sheet is up", 2],
+];
+const TILES = [
+  ["rhs-ivy-park-beyonce-digital-brand-launch", "Ivy Park by Beyoncé", "Digital design, brand launch"],
+  ["rhs-interior-design-kitchen-modern-meets-vintage", "Hill Country home", "Interior design, kitchen"],
+  ["rhs-sally-os-asset-hub-laptop", "Sally Marketing OS", "Product design, engineering"],
+  ["rhs-nordstrom-personalization-laptop", "Nordstrom personalization", "Design system, direction"],
+  ["rhs-arc-app-project-select-phone", "A.R.C.", "App & brand development"],
+  ["rhs-robert-rodriguez-storefront-window", "Robert Rodriguez x Neiman's", "Creative direction, design"],
+  ["rhs-dallas-sport-collective-laptop-stool", "Dallas Sport Collective", "Website, custom app"],
+  ["rhs-nordstrom-framework-on-our-list", "Nordstrom framework", "Content direction, design"],
+];
+const CHIPS = ["/ Info", "/ Connect", null, "Digital", "Apps", "Campaigns", "Interiors", "Staples"];
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const strip = document.getElementById("strip");
+VARIANTS.forEach(([k, cls, name, what, bars]) => {
+  const v = el("div", "v " + cls);
+  const tag = el("div", "tag"); tag.appendChild(el("b", null, k)); tag.appendChild(document.createTextNode(name + " · " + what));
+  v.appendChild(tag);
+  const ph = el("div", "phone");
+  const feed = el("div", "feed");
+  const st = el("p", "stmt"); st.appendChild(document.createTextNode("I'm Jeremy Prasatik. I make things across brand, product, and place. "));
+  st.appendChild(el("span", null, "Apps and ecommerce")); st.appendChild(document.createTextNode(", campaigns, interiors."));
+  feed.appendChild(st);
+  TILES.forEach(([f, t, s]) => {
+    const tile = el("div", "tile"); const im = el("img"); im.src = "/lab/board-thumbs/hp/" + f + "@384.webp"; im.alt = "";
+    im.loading = "lazy"; tile.appendChild(im);
+    const b = el("b", null, t + " "); b.appendChild(el("span", null, s)); tile.appendChild(b); feed.appendChild(tile);
+  });
+  ph.appendChild(feed);
+  const sheet = el("div", "sheet"); const box = el("div"); const inn = el("div", "in");
+  CHIPS.forEach((c) => inn.appendChild(c ? el("div", "chip", c) : el("div", "gap")));
+  box.appendChild(inn); sheet.appendChild(box); ph.appendChild(sheet);
+  const bar = el("div", "bar"); bar.appendChild(el("div", "ask", "“Kitchen design”"));
+  const mark = el("div", "mark"); mark.appendChild(document.createTextNode("Reckon")); mark.appendChild(el("i", null, "*"));
+  mark.appendChild(document.createTextNode("House"));
+  if (cls === "v-now") mark.appendChild(el("span", "chev"));
+  else {
+    const h = el("span", "h");
+    if (cls === "v-word") { h.appendChild(el("b", null, "Menu")); h.appendChild(el("b", null, "Close")); }
+    else for (let i = 0; i < bars; i += 1) h.appendChild(el("b"));
+    mark.appendChild(h);
+  }
+  bar.appendChild(mark);
+  bar.addEventListener("click", () => ph.toggleAttribute("data-on"));
+  ph.appendChild(bar);
+  v.appendChild(ph); strip.appendChild(v);
+});
+document.getElementById("openAll").addEventListener("click", () => document.querySelectorAll(".phone").forEach((p) => p.setAttribute("data-on", "")));
+document.getElementById("closeAll").addEventListener("click", () => document.querySelectorAll(".phone").forEach((p) => p.removeAttribute("data-on")));
+</script>
+</body>
+</html>
