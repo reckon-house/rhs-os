@@ -740,8 +740,11 @@
     display: none;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* NO RULE AT THE TOP OF IT. The sheet had one and the bar has its
+       own, so opening the sheet split one line into two with the menu
+       between them. The bar keeps its line, the sheet rises white off
+       the work, and there is one rule on the glass in either state. */
     background: var(--paper, #fff);
-    border-top: 1px solid rgba(0, 0, 0, 0.13);
   }
   #cmdSheet[data-on] { grid-template-rows: 1fr; }
   #cmdSheet > div { overflow: hidden; min-height: 0; }
