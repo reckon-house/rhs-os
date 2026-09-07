@@ -29,27 +29,17 @@ import { join, basename } from "node:path";
 const DIR = "src/data";
 const only = process.argv.slice(2).find((a) => !a.startsWith("-"));
 
-/* ── the tells ────────────────────────────────────────────────────── */
-const TELLS = [
-  ["tail", /,\s*(?:none of (?:them|it) [^.]*|all of it [^.]*|on purpose|alike|for one|at once|and nothing (?:more|else)|and (?:then )?some|no less|and stays that way|and that is (?:that|all)|nothing else)[.!?]$/i,
-    "a flourish closes the sentence"],
-  ["feels", /\b(?:that|which) feels? \w+[.!?]$/i, "'that feels X' at the end"],
-  ["not-not", /\bnot\b[^.]*?,\s*(?:and\s+)?not\b|^Not [^.]*\. Not /i, "balanced 'not X, not Y'"],
-  ["is-the", /\bthe (\w+) is the \1\b|\bthe (\w+) (?:is|was) the (?!same|only|first|last|one)\w+\b[^.]*[.!?]$/i, "'the noun is the noun'"],
-  ["triplet-close", /,\s*\w+,\s*(?:and\s+)?\w+[.!?]$/, "a triplet closes the sentence"],
-  ["stack", /\b(?:\w+ly )?\w+, \w+, and \w+ (?:\w+)[.!?]$/, "stacked adjectives"],
-  ["banned", /\b(?:seamless(?:ly)?|robust|innovative|cutting-edge|best-in-class|leverag(?:e|es|ed|ing)|elevat(?:e|es|ed|ing)|disrupt(?:s|ed|ing|ive)|journey|passion(?:ate)?|tapestry|craft(?:ed|ing)\s+(?:meaningful|experiences)|the result was)\b/i, "a banned word"],
-  ["surfaces-verb", /\b(?:it|this|that|which) surfaces\b/i, "'surfaces' as a verb"],
-  ["dash", /—/, "an em dash"],
-  ["quotable", /^[A-Z][^,.]{3,40}\. [A-Z][^,.]{3,40}\. [A-Z][^,.]{3,40}\.$/, "three short sentences in a row, the pull-quote rhythm"],
-];
+/* ── the tells ────────────────────────────────────────────────────
+   One list, shared with the Ask route (src/lib/voice-tells.ts), which
+   runs the same shapes over the model's answers. Node strips the types
+   on import, so the .ts is read as it stands. */
+import { TELLS, sentencesOf as sentences } from "../src/lib/voice-tells.ts";
 
 /* ── the prose ────────────────────────────────────────────────────── */
 const files = readdirSync(DIR).filter((f) => f.endsWith("-case-study.ts") && !f.startsWith("._"))
   .filter((f) => !only || f.includes(only));
 const literal = /"((?:[^"\\]|\\.){40,})"|'((?:[^'\\]|\\.){40,})'|`((?:[^`\\]|\\.){40,})`/g;
 const isProse = (s) => !/[\/]/.test(s) && !/^https?:/.test(s) && !/\.(jpg|jpeg|png|webp|avif|svg|mp4)/i.test(s) && /\s/.test(s);
-const sentences = (s) => s.replace(/\\n/g, " ").split(/(?<=[.!?])\s+(?=[A-Z“"'])/).map((x) => x.trim()).filter((x) => x.length > 12);
 
 let total = 0, flagged = 0;
 const report = [];
@@ -65,7 +55,7 @@ for (const f of files) {
       if (seen.has(sent)) continue;
       seen.add(sent);
       total += 1;
-      const why = TELLS.filter(([, re]) => re.test(sent)).map(([k, , label]) => k);
+      const why = TELLS.filter((t) => t.re.test(sent)).map((t) => t.key);
       if (why.length) { flagged += 1; hits.push({ sent, why }); }
     }
   }

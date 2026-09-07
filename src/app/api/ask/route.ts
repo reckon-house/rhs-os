@@ -46,6 +46,7 @@ import {
   SYSTEM, SHELF, DAYBOOK_TEXT, contextFor, throttled, throttleState, KNOWN_TERMS,
   MAX_Q, type AskBody,
 } from "@/lib/ask-context";
+import { flag } from "@/lib/voice-tells";
 
 export const runtime = "nodejs";
 
@@ -189,6 +190,12 @@ export async function POST(req: NextRequest) {
 
   try {
     const client = new Anthropic();
+    const ask =
+      `FACTS:\n${text}` +
+      (trail.length ? `\n\nTRAIL (lingered on this visit): ${trail.join(", ")}` : "") +
+      `\n\nVISITOR'S QUESTION: ${q}`;
+    const textOf = (r: Anthropic.Message) =>
+      r.content.filter((b): b is Anthropic.TextBlock => b.type === "text").map((b) => b.text).join("").trim();
     const res = await client.messages.create({
       model: MODEL,
       /* 500 not 300: the bench caught a model spending the whole
@@ -196,23 +203,55 @@ export async function POST(req: NextRequest) {
          ceiling costs nothing when unused and the failure is silent. */
       max_tokens: 500,
       system: PREFIX,
-      messages: [
-        {
-          role: "user",
-          content:
-            `FACTS:\n${text}` +
-            (trail.length ? `\n\nTRAIL (lingered on this visit): ${trail.join(", ")}` : "") +
-            `\n\nVISITOR'S QUESTION: ${q}`,
-        },
-      ],
+      messages: [{ role: "user", content: ask }],
     });
-    const answer = res.content
-      .filter((b): b is Anthropic.TextBlock => b.type === "text")
-      .map((b) => b.text)
-      .join("")
-      .trim();
+    let answer = textOf(res);
     if (!answer) {
       return NextResponse.json({ error: "empty answer" }, { status: 502 });
+    }
+    /* ── THE VOICE, CHECKED ON THE WAY OUT ──────────────────────────
+       The same shapes the copy lint reads over the studies, read over
+       the answer: a tail, a not-not, "the noun is the noun", a dash.
+       A sentence that trips gets ONE more pass, with the sentence
+       quoted and its shape named, on the same cached prefix, so the
+       second call is billed at the delta. If the second answer still
+       trips, the flagged sentences come out and the rest stands; if
+       nothing would be left, the first answer stands as it was. The
+       prompt carries the rule and ten specimens of it; this is the
+       net under the prompt, and it is expected to catch little. */
+    let hits = flag(answer);
+    let voice = hits.length ? "flagged" : "clean";
+    if (hits.length) {
+      const note = hits
+        .map((h) => `"${h.sentence}" (${h.why.map((w) => w.label).join("; ")})`)
+        .join("\n");
+      try {
+        const again = await client.messages.create({
+          model: MODEL,
+          max_tokens: 500,
+          system: PREFIX,
+          messages: [
+            { role: "user", content: ask },
+            { role: "assistant", content: answer },
+            {
+              role: "user",
+              content:
+                `These sentences have a shape the site does not use:\n${note}\n` +
+                `Write the whole answer again with each of them stated as a fact or left out. ` +
+                `Same facts, same length or shorter, nothing added. Return only the answer.`,
+            },
+          ],
+        });
+        const second = textOf(again);
+        if (second) {
+          const h2 = flag(second);
+          if (h2.length < hits.length) { answer = second; hits = h2; voice = "retried"; }
+        }
+      } catch { /* the first answer stands */ }
+      if (hits.length) {
+        const cut = hits.reduce((a, h) => a.replace(h.sentence, ""), answer).replace(/\s{2,}/g, " ").trim();
+        if (cut) { answer = cut; voice = "trimmed"; }
+      }
     }
     /* Cache health, logged rather than assumed. A prefix below the
        model's minimum is not cached and nothing errors, so the only way
@@ -222,7 +261,7 @@ export async function POST(req: NextRequest) {
     const u = res.usage;
     console.log(
       `[ask] ${MODEL} in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} ` +
-      `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens}`
+      `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens} voice=${voice}`
     );
     return NextResponse.json({ answer, used, model: MODEL });
   } catch {

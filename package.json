@@ -27,7 +27,8 @@
     "inbox": "node --env-file=.env.local --experimental-strip-types scripts/inbox.mjs",
     "tells": "node scripts/tells.mjs",
     "daybook:gap": "node --no-warnings scripts/daybook-gap.mjs",
-    "reels": "node --experimental-strip-types scripts/build-reel-thumbs.mjs"
+    "reels": "node --experimental-strip-types scripts/build-reel-thumbs.mjs",
+    "ask:bench": "node --no-warnings scripts/ask-bench.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",

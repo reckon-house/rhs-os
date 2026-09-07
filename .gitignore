@@ -64,3 +64,4 @@ public/lab/_review/
 # `npm run board` from the originals that ARE tracked. A derived
 # artifact the size of a small repo has no business in git history.
 public/lab/board-thumbs/
+bench/
