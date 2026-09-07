@@ -689,14 +689,14 @@
      so: Reckon*House Interiors while Interiors stands, Reckon*House
      Digital / Interiors with two open, in the order they stand in the
      row, and Reckon*House again when they fold. Each name is a door:
-     press it and the row walks to that shelf. The one in view reads
-     at full strength and the rest at half, as opacity rather than a
-     colour, so it holds on the cover's dark ground and the bar's paper
-     alike. */
-  .fam .famsep, .fam .famgo { opacity: 0.5; }
+     press it and the row walks to that shelf. The lines are all in
+     the second register, half strength as opacity rather than a colour
+     so it holds on the cover's dark ground and the bar's paper alike,
+     and a weight under the mark; the one in view is the bold one. */
+  .fam { opacity: 0.5; font-weight: 500; }
   .fam .famgo { cursor: pointer; }
-  .fam .famgo.on { opacity: 1; }
-  @media (hover: hover) { .fam .famgo:hover { opacity: 1; } }
+  .fam .famgo.on { font-weight: 700; }
+  @media (hover: hover) { .fam .famgo:hover { text-decoration: underline; text-underline-offset: 3px; } }
   .fam .famgo:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
   /* the question is a button wearing the sentence's own clothes (phone) */
   .askgo { border: 0; background: none; padding: 0; margin: 0;

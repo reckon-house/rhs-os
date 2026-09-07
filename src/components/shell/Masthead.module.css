@@ -111,12 +111,15 @@
   letter-spacing: -0.01em;
 }
 
-/* THE ASTERISKS ARE THE NAME, not punctuation between three words.
-   Upright and the same weight as the letters, so nothing reads as a
-   lighter joint. <i> only because it is the shortest element there is;
-   everything it would normally do is turned off here. */
+/* THE ASTERISK IS THE MARK BETWEEN THE TWO WORDS. Upright, and a
+   weight under the letters (400 against the mark's 600), so the name
+   reads as Reckon and House with a mark between them rather than one
+   bold run; it sat at the letters' weight while the name had three
+   words and two joints. <i> only because it is the shortest element
+   there is; everything it would normally do is turned off here. */
 .mark i {
   font-style: normal;
+  font-weight: 400;
   margin: 0 -0.01em;
 }
 

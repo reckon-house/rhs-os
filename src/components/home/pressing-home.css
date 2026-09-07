@@ -255,7 +255,7 @@
      lighter joint. The tag is <i> only because it is the shortest
      element there is; every visual thing it would normally do is
      turned off here. */
-  .covermark i { font-style: normal; margin: 0 -0.01em; }
+  .covermark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
   .covercols { display: grid; grid-template-columns: 1fr 1fr;
     column-gap: var(--ixgap); align-items: start;
     /* THE RULES REACH THE INDEX'S. Without this the three verticals
