@@ -831,6 +831,22 @@
     .ccol .chead { position: sticky; top: 0; z-index: 2;
       margin: 0 -20px 0; padding: 28px 20px 14px;
       background: var(--paper, #fff); }
+    /* ── ONE LINE, AND THE NAME GIVES WAY ─────────────────────────
+       The two chips wrapped, and a head of two rows took 118px of an
+       852px glass before a word of the column was read. They sit on
+       one line here: what is open gives up its end to an ellipsis
+       (the reader just pressed it, and the × stays whole beside it),
+       and what is NEXT keeps every letter, because that one names
+       something not yet seen. It is not a scroller — with two chips
+       and 47px over the measure, a swipe would move almost nothing
+       and would fight the row, which pages on the same drag. */
+    .ccol .chead { flex-wrap: nowrap; align-items: flex-start; }
+    .ccol .chead .cchip { min-width: 0; }
+    .ccol .chead .cchip:first-child { flex: 0 1 auto; }
+    .ccol .chead .cchip:first-child > span { overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .ccol .chead .cx { flex: none; }
+    .ccol .chead .cnext { flex: none; }
     .ccol.dark .chead { background: #000; }
 
     /* ── THE BAR: the field, then the handle ──────────────────────
