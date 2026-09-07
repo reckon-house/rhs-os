@@ -19,6 +19,11 @@ const args = process.argv.slice(2);
 const arg = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const BASE = arg("--base", "http://localhost:3000");
 const TAG = arg("--tag", new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-"));
+/* the route throttles per IP, 15 a minute and 60 a day, and reads the
+   IP from x-forwarded-for; locally that header is ours to set, so a
+   run takes a fresh bucket and paces itself under the burst */
+const IP = arg("--ip", "10.0.0." + (Math.floor(Math.random() * 200) + 20));
+const PACE = Number(arg("--pace", "4200"));
 const OUT = "bench"; mkdirSync(OUT, { recursive: true });
 
 const index = JSON.parse(readFileSync("src/data/generated/project-facts.json", "utf8"));
@@ -47,7 +52,7 @@ for (const q of QUESTIONS) {
   const t0 = Date.now();
   let answer = "", error = null;
   try {
-    const r = await fetch(BASE + "/api/ask", { method: "POST", headers: { "content-type": "application/json" },
+    const r = await fetch(BASE + "/api/ask", { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": IP },
       body: JSON.stringify({ q, hrefs }) });
     const j = await r.json();
     if (!r.ok) error = j.error || r.status; else answer = j.answer || "";
@@ -57,6 +62,7 @@ for (const q of QUESTIONS) {
   sentences += n; flagged += hits.length;
   out.push({ q, hrefs, answer, error, ms: Date.now() - t0, flags: hits.map((h) => ({ sentence: h.sentence, why: h.why.map((w) => w.key) })) });
   process.stdout.write((hits.length ? "!" : error ? "x" : ".") );
+  await new Promise((res) => setTimeout(res, PACE));
 }
 console.log();
 const file = `${OUT}/${TAG}.json`;
