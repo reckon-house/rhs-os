@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Where you are · seven ways</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── seven phones, one question ────────────────────────────────────
+     The board goes two ways and a visitor who scrolls down never
+     learns there is a sideways, so a key project is a page to the
+     right they never turn to. The peek and the rules say "there is a
+     right"; none of it says how far, or where you are. Each phone here
+     carries one way of saying it, live: scroll the feed for y, press
+     the arrows over the phone for x. The numbers are the phone
+     board's: 79 columns of seven tiles, one column and a fifth of the
+     next on the glass. */
+  body { background: #e9e6e2; }
+  .strip { display: flex; gap: 36px; padding: 44px 50px 60px; overflow-x: auto; align-items: flex-start; }
+  .head { padding: 40px 50px 0; display: flex; gap: 24px; align-items: baseline; }
+  .head h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .head span { font-size: 12px; color: var(--grey); letter-spacing: .04em; }
+  .v { flex: none; width: 340px; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 0 14px 2px; text-transform: uppercase; line-height: 1.5; min-height: 54px; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+  .v .pager { display: flex; gap: 10px; margin: 0 0 10px 2px; }
+  .v .pager button { border: 0; background: rgba(0,0,0,0.06); border-radius: 10px; padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+  .v .pager i { font-style: normal; font-size: 12px; color: var(--grey); align-self: center; letter-spacing: .04em; }
+
+  .phone { position: relative; width: 340px; height: 640px; overflow: hidden; background: var(--paper);
+    border-radius: 18px; border: 1px solid rgba(0, 0, 0, 0.14); }
+  .feed { position: absolute; left: 0; top: 0; bottom: 0; width: 283px; overflow-y: auto; padding: 24px 12px 90px; }
+  .feed::-webkit-scrollbar { display: none; }
+  .peek { position: absolute; left: 293px; top: 0; bottom: 0; right: 0; overflow: hidden; padding: 24px 0 90px 0; }
+  .rule { position: absolute; left: 288px; top: 0; bottom: 54px; width: 1px; background: rgba(0,0,0,0.13); }
+  .tile { margin-bottom: 64px; }
+  .tile img { display: block; width: 100%; border-radius: 12px; }
+  .peek .tile img { width: 260px; }
+  .tile b { display: block; font-size: 12px; font-weight: 600; margin-top: 8px; line-height: 1.3; letter-spacing: -0.004em; }
+  .tile b span { color: var(--grey); }
+  .stmt { font-size: 22px; font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; margin: 0 0 40px; }
+  .stmt span { color: var(--grey); text-decoration: underline; text-decoration-color: rgba(0,0,0,0.22); text-underline-offset: 4px; }
+
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: var(--nav); z-index: 3;
+    background: var(--paper); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+    gap: 16px; align-items: center; padding: 0 20px; }
+  .bar .ask { font-size: 17px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar .mark { justify-self: end; white-space: nowrap; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 9px; }
+  .bar .mark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
+  .bar .slash { display: inline-block; width: 12px; height: 12px; position: relative; }
+  .bar .slash::before { content: ""; position: absolute; left: 0; top: 50%; width: 12px; height: 1.5px; margin-top: -0.75px; background: var(--ink); border-radius: 1px; transform: rotate(-70deg); }
+
+  /* the label register every indicator is set in */
+  .lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--grey); }
+
+  /* anything that sits over the work gets a paper ground; on the real
+     board the tiles have air between them but not at a fixed height, so
+     an overlay either lives in the chrome or carries its own paper */
+  .pad { background: var(--paper); box-shadow: 0 0 0 6px var(--paper); border-radius: 2px; }
+
+  /* ── A · the readout: the bar gets a second line ───────────────── */
+  .v-read .bar { height: 74px; align-content: end; row-gap: 5px; padding-bottom: 13px; }
+  .v-read .readout { grid-column: 1 / -1; display: flex; gap: 12px; }
+  .v-read .readout b { font-weight: 600; color: var(--ink); }
+
+  /* ── B · two rails, shown while moving ─────────────────────────── */
+  .v-rails .rx { position: absolute; left: 20px; right: 20px; bottom: 54px; height: 1px; background: rgba(0,0,0,0.12); z-index: 4;
+    opacity: 0; transition: opacity 0.35s ease; }
+  .v-rails .rx i { position: absolute; top: -1px; height: 3px; background: var(--ink); border-radius: 2px; transition: left 0.3s cubic-bezier(0.2,0.7,0.2,1); }
+  .v-rails .ry { position: absolute; top: 20px; bottom: 74px; right: 6px; width: 1px; background: rgba(0,0,0,0.12); z-index: 4;
+    opacity: 0; transition: opacity 0.35s ease; }
+  .v-rails .ry i { position: absolute; left: -1px; width: 3px; background: var(--ink); border-radius: 2px; }
+  .v-rails.moving .rx, .v-rails.moving .ry { opacity: 1; }
+
+  /* ── C · the axis in the corner ────────────────────────────────── */
+  .v-axis .axis { position: absolute; left: 24px; bottom: 72px; width: 44px; height: 44px; z-index: 4; }
+  .v-axis .axis .h { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgba(0,0,0,0.25); }
+  .v-axis .axis .w { position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,0.25); }
+  .v-axis .axis .dx { position: absolute; bottom: -2.5px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--ink); transition: left 0.3s cubic-bezier(0.2,0.7,0.2,1); }
+  .v-axis .axis .dy { position: absolute; left: -2.5px; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--ink); }
+
+  /* ── D · counts at the edges, where the rest is ───────────────── */
+  .v-edge .ex { position: absolute; right: 12px; top: 26px; z-index: 4; white-space: nowrap; }
+  .v-edge .ey { position: absolute; left: 24px; bottom: 66px; z-index: 4; }
+  .v-edge .peek, .v-gauge .peek { padding-top: 52px; }
+  .v-edge .lbl b { color: var(--ink); font-weight: 600; }
+
+  /* ── E · the gutter rule is the gauge ─────────────────────────── */
+  .v-gauge .rule { background: rgba(0,0,0,0.13); }
+  .v-gauge .rule i { position: absolute; left: -0.5px; width: 2px; background: var(--ink); border-radius: 1px; }
+  .v-gauge .colno { position: absolute; left: 300px; top: 26px; z-index: 4; }
+  .v-gauge .colno b { color: var(--ink); font-weight: 600; }
+
+  /* ── F · coordinates in the mark ───────────────────────────────── */
+  .v-mark .coord { font-weight: 400; opacity: 0.5; margin-left: 2px; }
+  .v-mark .coord b { font-weight: 600; opacity: 1; }
+
+  /* ── G · a map of the whole board ──────────────────────────────── */
+  .v-map .map { position: absolute; left: 20px; bottom: 64px; z-index: 4; display: grid; grid-template-columns: repeat(79, 3px); gap: 1px; }
+  .v-map .map i { width: 3px; height: 3px; background: rgba(0,0,0,0.14); }
+  .v-map .map i.on { background: var(--ink); height: 7px; margin-top: -4px; }
+  .v-map .mapy { position: absolute; left: 279px; bottom: 76px; z-index: 4; display: grid; grid-template-rows: repeat(7, 3px); gap: 2px; }
+  .v-map .mapy i { width: 3px; height: 3px; background: rgba(0,0,0,0.14); }
+  .v-map .mapy i.on { background: var(--ink); }
+</style>
+</head>
+<body>
+<div class="head"><h1>Where you are, seven ways</h1><span>Scroll a feed for y. Press ← → over a phone for x. 79 columns of 7.</span></div>
+<div class="strip" id="strip"></div>
+<script>
+const X_TOTAL = 79, Y_TOTAL = 7;
+const VARIANTS = [
+  ["A", "v-read", "the readout", "the bar gets a second line in the label register: column of 79, tile of 7"],
+  ["B", "v-rails", "two rails", "a hairline along the bottom for the row and one down the right for the column, each with an ink segment; they show while you move and go when you stop"],
+  ["C", "v-axis", "the axis", "an L in the corner, a dot on each arm; where the dots sit is where you are on the board"],
+  ["D", "v-edge", "counts at the edges", "what is past each edge, where it is: +76 at the right, +4 at the bottom; gone when nothing is"],
+  ["E", "v-gauge", "the rule is the gauge", "the gutter rule between columns carries the column's depth as an ink segment, and the peek's head carries the next column's number"],
+  ["F", "v-mark", "coordinates in the mark", "Reckon*House 3·2, the house's own grid reference, beside the name"],
+  ["G", "v-map", "a map", "seventy-nine dots for the row and seven for the column, the ones you are on lit; the whole board at a glance"],
+];
+const TILES = [
+  ["rhs-ivy-park-beyonce-digital-brand-launch", "Ivy Park by Beyoncé", "Digital design, brand launch"],
+  ["rhs-interior-design-kitchen-modern-meets-vintage", "Hill Country home", "Interior design, kitchen"],
+  ["rhs-sally-os-asset-hub-laptop", "Sally Marketing OS", "Product design, engineering"],
+  ["rhs-nordstrom-personalization-laptop", "Nordstrom personalization", "Design system, direction"],
+  ["rhs-arc-app-project-select-phone", "A.R.C.", "App & brand development"],
+  ["rhs-robert-rodriguez-storefront-window", "Robert Rodriguez x Neiman's", "Creative direction, design"],
+];
+const PEEK = [
+  ["rhs-dallas-sport-collective-laptop-stool", "Dallas Sport Collective", "Website, custom app"],
+  ["rhs-nordstrom-framework-on-our-list", "Nordstrom framework", "Content direction, design"],
+  ["rhs-capitan-boot-co-branding", "Capitan Boot Co.", "Branding, design"],
+];
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const tile = ([f, t, s], cls) => { const d = el("div", "tile"); const im = el("img"); im.src = "/lab/board-thumbs/hp/" + f + "@384.webp"; im.alt = ""; d.appendChild(im); const b = el("b", null, t + " "); b.appendChild(el("span", null, s)); d.appendChild(b); return d; };
+const strip = document.getElementById("strip");
+
+VARIANTS.forEach(([k, cls, name, what]) => {
+  const v = el("div", "v " + cls);
+  const tag = el("div", "tag"); tag.appendChild(el("b", null, k)); tag.appendChild(document.createTextNode(name + " · " + what)); v.appendChild(tag);
+  const pager = el("div", "pager"); const prev = el("button", null, "←"); const next = el("button", null, "→"); const where = el("i", null, "");
+  pager.appendChild(prev); pager.appendChild(next); pager.appendChild(where); v.appendChild(pager);
+  const ph = el("div", "phone");
+  const feed = el("div", "feed");
+  const st = el("p", "stmt"); st.appendChild(document.createTextNode("I'm Jeremy Prasatik. I make things across brand, product, and place. "));
+  st.appendChild(el("span", null, "Apps and ecommerce")); st.appendChild(document.createTextNode(", campaigns, interiors."));
+  feed.appendChild(st); TILES.forEach((t) => feed.appendChild(tile(t)));
+  ph.appendChild(feed);
+  const rule = el("div", "rule"); ph.appendChild(rule);
+  const peek = el("div", "peek"); PEEK.forEach((t) => peek.appendChild(tile(t))); ph.appendChild(peek);
+  const bar = el("div", "bar"); bar.appendChild(el("div", "ask", "“Kitchen design”"));
+  const mark = el("div", "mark"); const nm = el("span"); nm.appendChild(document.createTextNode("Reckon")); nm.appendChild(el("i", null, "*")); nm.appendChild(document.createTextNode("House")); mark.appendChild(nm);
+  const coord = el("span", "coord"); mark.appendChild(coord); mark.appendChild(el("span", "slash")); bar.appendChild(mark);
+  ph.appendChild(bar);
+  v.appendChild(ph); strip.appendChild(v);
+
+  /* the state every indicator reads: x, y (1-based), and the fractions */
+  let x = 1;
+  const state = () => {
+    const max = feed.scrollHeight - feed.clientHeight;
+    const fy = max > 0 ? feed.scrollTop / max : 0;
+    const y = Math.min(Y_TOTAL, 1 + Math.floor(fy * (Y_TOTAL - 0.001)));
+    return { x, y, fx: (x - 1) / (X_TOTAL - 1), fy };
+  };
+
+  /* ── the indicators, one builder per variant ── */
+  let render = () => {};
+  if (cls === "v-read") {
+    const r = el("div", "readout lbl"); const cx = el("span"); const cy = el("span"); r.appendChild(cx); r.appendChild(cy); bar.insertBefore(r, bar.firstChild);
+    render = ({ x, y }) => { cx.innerHTML = "column <b>" + x + "</b> of " + X_TOTAL; cy.innerHTML = "tile <b>" + y + "</b> of " + Y_TOTAL; };
+  }
+  if (cls === "v-rails") {
+    const rx = el("div", "rx"); const tx = el("i"); rx.appendChild(tx); ph.appendChild(rx);
+    const ry = el("div", "ry"); const ty = el("i"); ry.appendChild(ty); ph.appendChild(ry);
+    let hide = null;
+    render = ({ fx, fy }) => {
+      const w = rx.clientWidth, seg = Math.max(18, w * (1.2 / X_TOTAL)); tx.style.width = seg + "px"; tx.style.left = (fx * (w - seg)) + "px";
+      const h = ry.clientHeight, sy = Math.max(18, h * (feed.clientHeight / feed.scrollHeight)); ty.style.height = sy + "px"; ty.style.top = (fy * (h - sy)) + "px";
+      v.classList.add("moving"); clearTimeout(hide); hide = setTimeout(() => v.classList.remove("moving"), 900);
+    };
+  }
+  if (cls === "v-axis") {
+    const a = el("div", "axis pad"); a.appendChild(el("div", "h")); a.appendChild(el("div", "w")); const dx = el("i", "dx"); const dy = el("i", "dy"); a.appendChild(dx); a.appendChild(dy); ph.appendChild(a);
+    render = ({ fx, fy }) => { dx.style.left = (fx * 44) + "px"; dy.style.top = (fy * 44) + "px"; };
+  }
+  if (cls === "v-edge") {
+    const ex = el("div", "ex lbl"); const ey = el("div", "ey lbl pad"); ph.appendChild(ex); ph.appendChild(ey);
+    render = ({ x, y }) => { const rx = X_TOTAL - x, ry = Y_TOTAL - y; ex.innerHTML = rx ? "<b>+" + rx + "</b> →" : ""; ey.innerHTML = ry ? "<b>+" + ry + "</b> ↓" : ""; };
+  }
+  if (cls === "v-gauge") {
+    const seg = el("i"); rule.appendChild(seg); const cn = el("div", "colno lbl"); ph.appendChild(cn);
+    render = ({ x, fy }) => { const h = rule.clientHeight, s = Math.max(24, h * (feed.clientHeight / feed.scrollHeight)); seg.style.height = s + "px"; seg.style.top = (fy * (h - s)) + "px"; cn.innerHTML = "<b>" + (x + 1) + "</b> of " + X_TOTAL + " →"; };
+  }
+  if (cls === "v-mark") {
+    render = ({ x, y }) => { coord.innerHTML = "<b>" + x + "</b>·<b>" + y + "</b>"; };
+  }
+  if (cls === "v-map") {
+    const m = el("div", "map pad"); const dots = []; for (let i = 0; i < X_TOTAL; i++) { const d = el("i"); m.appendChild(d); dots.push(d); } ph.appendChild(m);
+    const my = el("div", "mapy pad"); const ydots = []; for (let i = 0; i < Y_TOTAL; i++) { const d = el("i"); my.appendChild(d); ydots.push(d); } ph.appendChild(my);
+    render = ({ x, y }) => { dots.forEach((d, i) => d.classList.toggle("on", i === x - 1)); ydots.forEach((d, i) => d.classList.toggle("on", i === y - 1)); };
+  }
+
+  const paint = () => { const s = state(); where.textContent = "col " + s.x + " · tile " + s.y; render(s); };
+  feed.addEventListener("scroll", paint, { passive: true });
+  prev.addEventListener("click", () => { x = Math.max(1, x - 1); paint(); });
+  next.addEventListener("click", () => { x = Math.min(X_TOTAL, x + 1); paint(); });
+  setTimeout(paint, 60);
+});
+</script>
+</body>
+</html>
