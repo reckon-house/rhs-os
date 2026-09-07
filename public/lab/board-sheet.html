@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The board, laid out</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── every tile the board deals, on one sheet ─────────────────────
+     For the sweep: the board deals every file a study holds, and some
+     of them only work inside the study. Each tile shows what the audit
+     measured (native size, transparent pixels, a tall or wide ratio)
+     and a press marks it to leave the field. The marks are kept in
+     this browser and copied out as lines for scripts/lib/board-skip.txt,
+     which the thumb builder reads. */
+  body { background: #f3f1ee; padding: 0 0 80px; }
+  .bar { position: sticky; top: 0; z-index: 5; background: #f3f1ee; border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex; gap: 18px; align-items: center; padding: 14px 28px; flex-wrap: wrap; }
+  .bar h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .bar .n { font-size: 12px; color: var(--grey); letter-spacing: 0.04em; }
+  .bar button, .bar label { font: inherit; font-size: 12px; letter-spacing: 0.02em; border: 0; background: rgba(0,0,0,0.06);
+    border-radius: 10px; padding: 6px 12px; cursor: pointer; color: var(--ink); }
+  .bar button.on { background: var(--ink); color: #fff; }
+  .bar .sp { flex: 1; }
+  .g { padding: 26px 28px 6px; }
+  .g h2 { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; }
+  .g h2 span { font-size: 12px; font-weight: 400; color: var(--grey); letter-spacing: 0.04em; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; }
+  figure { margin: 0; width: 150px; cursor: pointer; position: relative; border-radius: 8px; padding: 6px; background: #fff;
+    border: 1px solid rgba(0,0,0,0.08); transition: opacity 0.2s ease, box-shadow 0.2s ease; }
+  figure img { display: block; width: 100%; height: 110px; object-fit: contain; background:
+    repeating-conic-gradient(rgba(0,0,0,0.06) 0 25%, transparent 0 50%) 0 0 / 14px 14px; border-radius: 4px; }
+  figure.opaque img { background: #ece9e4; }
+  figcaption { font-size: 10px; line-height: 1.35; color: var(--grey); margin-top: 6px; word-break: break-all; letter-spacing: 0.01em; }
+  figcaption b { display: block; color: var(--ink); font-weight: 500; }
+  .badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .badge { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.07); color: var(--ink); }
+  .badge.alpha { background: #ffe9c7; } .badge.tiny { background: #ffd6d6; } .badge.tall, .badge.wide { background: #dcecff; }
+  figure.skip { opacity: 0.38; box-shadow: inset 0 0 0 2px var(--ink); }
+  figure.skip::after { content: "×"; position: absolute; right: 8px; top: 4px; font-size: 22px; line-height: 1; color: var(--ink); }
+  body.only-flagged figure:not(.flagged):not(.skip) { display: none; }
+  body.only-skip figure:not(.skip) { display: none; }
+  body.only-flagged .g.empty, body.only-skip .g.empty { display: none; }
+  textarea { position: fixed; left: -9999px; top: 0; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>The board, laid out</h1>
+  <span class="n" id="count"></span>
+  <span class="sp"></span>
+  <button id="fAll" class="on">All</button>
+  <button id="fFlag">Flagged</button>
+  <button id="fSkip">Marked</button>
+  <button id="copy">Copy list</button>
+  <button id="clear">Clear marks</button>
+</div>
+<div id="sheet"></div>
+<textarea id="ta" aria-hidden="true"></textarea>
+<script src="/lab/board-data.js"></script>
+<script>
+const KEY = "board-skip";
+const load = () => { try { return new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) { return new Set(); } };
+const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify([...s])); } catch (e) {} };
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+
+fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
+  const marks = load();
+  /* the skip list as it stands in the repo seeds the marks once */
+  if (!localStorage.getItem(KEY)) { (audit.skip || []).forEach((k) => marks.add(k)); save(marks); }
+  const items = window.BOARD_ITEMS || [];
+  const groups = new Map();
+  for (const it of items) { if (!groups.has(it.g)) groups.set(it.g, []); groups.get(it.g).push(it); }
+  const sheet = document.getElementById("sheet");
+  const figs = [];
+  for (const [g, list] of groups) {
+    const sec = el("section", "g");
+    const h = el("h2", null, g); h.appendChild(el("span", null, list.length + " tiles")); sec.appendChild(h);
+    const row = el("div", "row");
+    for (const it of list) {
+      const a = audit.tiles[it.t] || { src: it.t.replace(/^\/lab\/board-thumbs\//, ""), w: it.w, h: it.h, flags: [] };
+      const f = el("figure", a.clear ? "" : "opaque");
+      f.dataset.key = a.src;
+      if (a.flags.length) f.classList.add("flagged");
+      if (marks.has(a.src)) f.classList.add("skip");
+      const im = el("img"); im.loading = "lazy"; im.alt = "";
+      im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
+      f.appendChild(im);
+      const cap = el("figcaption");
+      cap.appendChild(el("b", null, a.src.split("/").pop().replace(/\.[^.]+$/, "").replace(new RegExp("^" + g + "-"), "")));
+      cap.appendChild(document.createTextNode(a.w + " × " + a.h));
+      const bd = el("div", "badges");
+      a.flags.forEach((fl) => bd.appendChild(el("span", "badge " + fl, fl === "alpha" ? "clear" : fl)));
+      cap.appendChild(bd);
+      f.appendChild(cap);
+      f.addEventListener("click", () => { f.classList.toggle("skip"); if (f.classList.contains("skip")) marks.add(a.src); else marks.delete(a.src); save(marks); count(); });
+      row.appendChild(f); figs.push(f);
+    }
+    sec.appendChild(row); sheet.appendChild(sec);
+  }
+  const count = () => {
+    const n = figs.length, k = figs.filter((f) => f.classList.contains("skip")).length, fl = figs.filter((f) => f.classList.contains("flagged")).length;
+    document.getElementById("count").textContent = n + " tiles · " + fl + " flagged · " + k + " marked to leave";
+    document.querySelectorAll(".g").forEach((sec) => {
+      const vis = [...sec.querySelectorAll("figure")].some((f) => getComputedStyle(f).display !== "none");
+      sec.classList.toggle("empty", !vis);
+    });
+  };
+  const mode = (m) => {
+    document.body.classList.toggle("only-flagged", m === "flag");
+    document.body.classList.toggle("only-skip", m === "skip");
+    ["fAll", "fFlag", "fSkip"].forEach((id, i) => document.getElementById(id).classList.toggle("on", ["all", "flag", "skip"][i] === m));
+    count();
+  };
+  document.getElementById("fAll").addEventListener("click", () => mode("all"));
+  document.getElementById("fFlag").addEventListener("click", () => mode("flag"));
+  document.getElementById("fSkip").addEventListener("click", () => mode("skip"));
+  document.getElementById("clear").addEventListener("click", () => { marks.clear(); save(marks); figs.forEach((f) => f.classList.remove("skip")); count(); });
+  document.getElementById("copy").addEventListener("click", async () => {
+    const lines = [...marks].sort().join("\n");
+    try { await navigator.clipboard.writeText(lines); } catch (e) { const ta = document.getElementById("ta"); ta.value = lines; ta.select(); document.execCommand("copy"); }
+    const b = document.getElementById("copy"); b.textContent = "Copied " + marks.size; setTimeout(() => { b.textContent = "Copy list"; }, 1400);
+  });
+  count();
+});
+</script>
+</body>
+</html>

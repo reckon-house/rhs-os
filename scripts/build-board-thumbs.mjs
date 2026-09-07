@@ -89,11 +89,44 @@ function* walk(root) {
 }
 
 const items = [];
-let wrote = 0, skipped = 0, failed = 0;
+let wrote = 0, skipped = 0, failed = 0, left = 0;
 let before = 0, after = 0;
+
+/* ── NOT EVERY PICTURE IS DEALT ──────────────────────────────────────
+   A file that works inside a study does not always work alone on the
+   board: a crop cut for a plate, a PNG that needed its container's
+   colour, a screenshot a quarter the size of its column. Those are
+   named in scripts/lib/board-skip.txt, one <slug>/<file> a line,
+   marked by eye on lab/board-sheet.html. They stay in their study;
+   they leave the field. */
+const SKIP_FILE = "scripts/lib/board-skip.txt";
+const SKIP = new Set(existsSync(SKIP_FILE)
+  ? readFileSync(SKIP_FILE, "utf8").split("\n").map((l) => l.replace(/\s+#.*$/, "").trim()).filter((l) => l && !l.startsWith("#"))
+  : []);
+
+/* ── A PICTURE THAT SHOWED THE PAPER THROUGH GETS ITS PLATE ──────────
+   A PNG cut out on transparency is shown in its study on a container
+   of the study's own colour; alone on the board it showed the tile's
+   grey through, which read as the picture failing to fill its box.
+   The thumb is flattened onto that colour, so the board sees what the
+   study shows. Judged on the pixels, not the channel: a PNG can carry
+   alpha and be opaque everywhere. */
+const PLATE = "#EDE7E2";
+async function opener(from) {
+  const meta = await sharp(from, { failOn: "none" }).metadata();
+  let clear = false;
+  if (meta.hasAlpha) {
+    const st = await sharp(from, { failOn: "none" }).stats();
+    const a = st.channels[st.channels.length - 1];
+    clear = !!a && a.min < 250;
+  }
+  return () => { const s = sharp(from, { failOn: "none" }); return clear ? s.flatten({ background: PLATE }) : s; };
+}
 
 for (const from of walk(ROOT)) {
   const rel = from.slice(ROOT.length + 1); // "<slug>/<file>"
+  if (SKIP.has(rel)) { left += 1; continue; }
+  const open = await opener(from);
   const slug = rel.split("/")[0];
   const stem = rel.slice(slug.length + 1).replace(/\.[^.]+$/, "");
   const to = join(OUT, slug, stem + ".webp");
@@ -115,7 +148,7 @@ for (const from of walk(ROOT)) {
       skipped += 1;
     } else {
       mkdirSync(join(OUT, slug), { recursive: true });
-      const info = await sharp(from, { failOn: "none" })
+      const info = await open()
         .resize({ width: W, withoutEnlargement: true })
         .webp({ quality: Q })
         .toFile(to);
@@ -131,7 +164,7 @@ for (const from of walk(ROOT)) {
       if (meta.width <= r) continue;
       const small = to.replace(/\.webp$/, "@" + r + ".webp");
       if (FORCE || !existsSync(small)) {
-        await sharp(from, { failOn: "none" })
+        await open()
           .resize({ width: r, withoutEnlargement: true })
           .webp({ quality: Q })
           .toFile(small);
@@ -446,7 +479,7 @@ writeFileSync("public/lab/board-shell.css",
 const MB = (b) => (b / 1048576).toFixed(1);
 const STUDIES = Object.entries(COPY).filter(([k]) => k !== "house").map(([, v]) => v);
 console.log(
-  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed)` +
+  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed, ${left} left out by the skip list)` +
   `\n  originals ${MB(before)}MB → thumbs ${MB(after)}MB` +
   `\n  data ${DATA} (${MB(statSync(DATA).size)}MB)` +
   `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +

@@ -1,0 +1,132 @@
+# ── Pictures the board does not deal ────────────────────────────────
+# One per line, as <study folder>/<file>, exactly as it sits under
+# public/case-studies. A file listed here stays in its study and out of
+# the field: a crop cut for a plate, a PNG that needs its container's
+# colour, a screenshot too small for a column. Marked by eye on
+# lab/board-sheet.html (Copy list), read by scripts/build-board-thumbs.mjs;
+# `npm run board` re-deals without them. Lines starting with # are notes.
+
+# arc
+arc/arc-dashboard-screen-hero.png   # tall, 2.25:1, cropped by the tile
+arc/arc-five-screen-app-showcase.png   # wide, 2.67:1
+arc/arc-main-thumb.jpg   # under 600px
+arc/arc-pipeline-ai-categorization-step.jpg   # under 600px
+arc/arc-pipeline-cloud-sync-step.jpg   # under 600px
+arc/arc-pipeline-photo-capture-step.jpg   # under 600px
+arc/arc-report-thumb.jpg   # under 600px
+arc/arc-reports-thumb.jpg   # under 600px
+arc/arc-room-thumb.jpg   # under 600px
+arc/arc-system-architecture-detail.jpg   # under 600px
+arc/arc-system-architecture-network.jpg   # under 600px
+arc/arc-system-architecture-overview.jpg   # under 600px
+arc/arc-ui-category-insights-top-values.jpg   # a card cut from a screen
+arc/arc-ui-document-ai-scan-upload.jpg   # a card cut from a screen
+arc/arc-ui-most-valuable-items-card.jpg   # a card cut from a screen
+arc/arc-ui-pro-tip-carousel.jpg   # wide, 3.34:1
+arc/arc-ui-quick-stats.jpg   # a card cut from a screen
+
+# black-white-type
+black-white-type/pattern-swatch-halftone-dots-black-on-white.jpg   # wide, 3.53:1
+black-white-type/pattern-swatch-horizontal-grouped-lines.jpg   # wide, 3.56:1
+black-white-type/pattern-swatch-thick-horizontal-stripes.jpg   # wide, 3.40:1
+
+# branding-graphics
+branding-graphics/branding-graphics-logo-dj-mia-halftone-dots.jpg   # a bare logo
+branding-graphics/branding-graphics-logo-hey-sd-stellar-jay-bird.jpg   # under 600px
+branding-graphics/branding-graphics-logo-j-christianson-four-circle-mark.jpg   # wide, 2.43:1
+branding-graphics/branding-graphics-logo-okina-orbit-wordmark.jpg   # a bare logo
+branding-graphics/various-graphics.jpg   # a collage of thumbnails, 728px
+
+# capitan-boot-co
+capitan-boot-co/capitan-boot-co-branding-western-logo-desert-cactus-rock-formation-vintage-outdoors-landscape-design.png   # a logo strip
+
+# categories
+categories/category-creative-capitan-boot-co-desert-branding.jpg   # the rail's own crops, not a study
+categories/category-creative-ivy-park-roller-skating-editorial.jpg   # the rail's own crops, not a study
+categories/category-digital-arc-app-smartphone-lifestyle.jpg   # the rail's own crops, not a study
+categories/category-digital-sally-os-platform-dashboard.jpg   # the rail's own crops, not a study
+categories/category-interiors-hill-country-kitchen-island-marble.jpg   # the rail's own crops, not a study
+categories/category-interiors-primary-bath-vanity-marble-sconces.jpg   # the rail's own crops, not a study
+
+# cosmo-prof
+cosmo-prof/cosmo-prof-ui-website-homepage-mobile.png   # tall, 2.33:1, cropped by the tile
+cosmo-prof/cosmo-prof-ui-website-homepage-mobile2.png   # tall, 2.33:1, cropped by the tile
+
+# dsc
+dsc/dsc-app-trio-owner-chat.jpg   # a chat cut mid-way
+dsc/dsc-athlete-app-connect-mcp-server.jpg   # a chat cut mid-way
+dsc/dsc-claude-mcp-chat-booking-request.jpg   # a chat cut mid-way
+dsc/dsc-claude-mcp-chat-trainer-availability.jpg   # a chat cut mid-way
+dsc/dsc-claude-mcp-chat-trainers.jpg   # a chat cut mid-way
+dsc/dsc-claude-oauth-consent-screen.jpg   # a consent screen
+dsc/dsc-owner-console-athlete-roster.jpg   # a console cut mid-way
+dsc/dsc-owner-console-batch-scheduling-chat.jpg   # a console cut mid-way
+dsc/dsc-owner-console-calendar-week-view.jpg   # a console cut mid-way
+dsc/dsc-owner-console-home-booking-requests.jpg   # a console cut mid-way
+
+# inspiration
+inspiration/5c08f1591729fa6d1ada2d377448d215.jpg   # under 600px
+inspiration/bw-bluesman-fedora-cigar-vest-doorway.jpg   # under 600px
+inspiration/bw-dead-weather-keyboards-live-leather.jpg   # under 600px
+inspiration/bw-lightnin-hopkins-suit-motorcycle.jpg   # under 600px
+inspiration/bw-miles-davis-tweed-suit-cigarette.jpg   # under 600px
+inspiration/bw-musician-studio-mic-acoustic-guitar.jpg   # under 600px
+inspiration/bw-portrait-aviators-leather-jacket-beach.jpg   # under 600px
+inspiration/bw-southern-rock-singer-stage-spotlight.jpg   # under 600px
+inspiration/bw-wes-anderson-tweed-suit-leather-armchair.avif   # under 600px
+inspiration/dead-weather-band-portrait-ornate-room.jpg   # under 600px
+inspiration/sepia-three-cowboys-walking-dirt-road.jpg   # under 600px
+inspiration/swiss-typographic-grid-flag-signal-poster.jpeg   # under 600px
+inspiration/wes-anderson-budapest-doorway-frame.jpeg   # under 600px
+
+# ivy-park
+ivy-park/ivy-park-editorial-beanie-portrait-dancer.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-experience-confidence-strength-inclusivity.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-experience-courage-power-polygon-frames.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-experience-page-hero-product-grid.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-product-detail-leggings-choice-system.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-shop-the-look-editorial-grid.jpg   # tall, 2.33:1, cropped by the tile
+ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg   # a page capture, 1.84:1, cropped by the tile
+
+# jeffrey-ecommerce
+jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp   # wide, 3.23:1
+jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg   # a product page, cut
+
+# jeffrey-shoes
+jeffrey-shoes/jeffrey-saint-laurent-vetements-woman-model-gray-black-pink-white-logo-text-pattern-mobile-phone-screen-digital-campaign.png   # a phone screen on transparency, cut
+jeffrey-shoes/jeffrey-saint-laurent-vetements-woman-model-luxury-designer-shoes-heels-sandals-boots-white-studio-backdrop-lookbook.png   # tall, 2.54:1, cropped by the tile
+jeffrey-shoes/jeffrey-saint-laurent-vetements-women-luxury-designer-shoes-heels-sandals-boots-black-white-nude-beige-mobile-lookbook-campaign.png   # tall, 2.51:1, cropped by the tile
+
+# jeffrey-spring
+jeffrey-spring/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png   # under 600px
+jeffrey-spring/jeffrey-spring-campaign-mobile-simone-rocha-in-season-bold-shop-now.png   # tall, 2.34:1, cropped by the tile
+
+# loved-by-nordstrom
+loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-helmut-lang-beige-jacket-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-rag-and-bone-leather-jacket-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-rag-and-bone-red-jersey-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-colorblock-bag-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-saddle-bag-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-liked-by-tibi-printed-dress-tile.jpg   # eight 500px cards
+
+# nordstrom-beauty
+nordstrom-beauty/nordstrom-beauty-glow-story-mobile-editorial.png   # tall, 1.98:1, cropped by the tile
+nordstrom-beauty/nordstrom-beauty-glow-story-mobile-products.png   # tall, 1.98:1, cropped by the tile
+nordstrom-beauty/nordstrom-beauty-product-drawer-mobile.png   # tall, 1.98:1, cropped by the tile
+nordstrom-beauty/nordstrom-beauty-serums-story-mobile.png   # tall, 1.98:1, cropped by the tile
+
+# nordstrom-personalization
+nordstrom-personalization/nordstrom-personalization-product-orange-nylon-backpack.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-product-pink-chevron-block-heels.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-product-red-leather-pashli-handbag.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-product-saint-laurent-black-moto-jacket.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-product-saint-laurent-varsity-jacket-black.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-product-white-leather-slingback-heels.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-system-design-mobile-app-interface-fashion-lookbook-handbag-blazer-white-background-product-display.jpg   # catalog cutouts on white
+
+# you-by-sally
+you-by-sally/sally-beauty-hair-color-campaign-influencer-bio.png   # tall, 2.33:1, cropped by the tile
+you-by-sally/sally-beauty-hair-color-campaign-influencer-bio2.png   # tall, 2.33:1, cropped by the tile
+you-by-sally/screen1.png   # tall, 2.07:1, cropped by the tile

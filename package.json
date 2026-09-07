@@ -10,6 +10,7 @@
     "lint": "eslint",
     "board": "node --no-warnings scripts/build-board-thumbs.mjs && npm run board:page",
     "board:page": "python3 scripts/lib/assemble-board.py",
+    "board:audit": "node --no-warnings scripts/board-audit.mjs",
     "facts": "node --no-warnings scripts/build-facts.mjs",
     "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
     "port:home": "node scripts/port-home.mjs",
