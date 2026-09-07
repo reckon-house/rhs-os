@@ -20,6 +20,7 @@ that folder to the other repo and read the docs in order.
 | What is welded to the house, and how to unweld it | | 05 |
 | The Sally demo, in order | | 06 |
 | Agents: MCP, discovery, the read API | | 07 |
+| The landscape, researched 7 Sept 2026 | | 00 |
 
 ## The one idea
 
@@ -32,6 +33,7 @@ only what is right of it moves. The address carries the whole row.
 
 ## Reading order
 
+0. `docs/00-landscape.md`, what the market shipped and what it changes, researched 7 Sept 2026.
 1. `docs/01-engine.md`, so the row model is in your head before any code.
 2. `docs/02-data-contract.md`, the shapes the engine reads and the ones the demo adds.
 3. `docs/05-unwelding.md`, the list of what to make config before the second site.

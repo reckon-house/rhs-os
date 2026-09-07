@@ -1,0 +1,77 @@
+# 00 · The landscape, 7 September 2026
+
+Four research threads, run on 7 Sept 2026 over public sources, folded
+into one brief: what has shipped in agentic commerce, what is being
+written about websites in the AI era, what beauty retail is doing, and
+how stores are being made callable. Dates and links are the sources'.
+Items marked unverified rest on a single secondary source.
+
+## 1. What shipped
+
+- **29 Sep 2025.** OpenAI and Stripe ship Instant Checkout in ChatGPT and publish the Agentic Commerce Protocol (ACP, Apache 2.0). https://stripe.com/newsroom/news/stripe-openai-instant-checkout
+- **6 Mar 2026.** OpenAI retires in-chat checkout six months later. Buying moves to merchant-owned apps inside ChatGPT (Target, Instacart, DoorDash, Walmart's Sparky) or a click-out. Walmart's in-chat conversion was a third of click-out (Daniel Danker, via WIRED). ACP continues for discovery; the 2026-04-17 release adds cart, feed, orders, auth and MCP, with Stripe, OpenAI and Meta as authors. https://www.digitalcommerce360.com/2026/03/06/openai-shifts-checkout-plans-agentic-commerce-strategy/ · https://docs.stripe.com/agentic-commerce/acp
+- **8 Jan 2026.** Microsoft Copilot Checkout via PayPal, Stripe and Shopify; Shopify merchants auto-enrolled after an opt-out window. https://newsroom.paypal-corp.com/2026-01-08-PayPal-Powers-Microsofts-Launch-of-Copilot-Checkout
+- **11 Jan 2026.** Google and Shopify publish the Universal Commerce Protocol (UCP) with Etsy, Wayfair, Target, Walmart and 20+ endorsers including Visa, Mastercard and Stripe. A manifest at `/.well-known/ucp`, capabilities over REST, MCP or A2A, Google Pay as a handler, AP2 for payments. UCP checkout live in AI Mode and Gemini from 11 Feb; Universal Cart in the US from 19 May with Nike, Sephora, Target, Ulta, Walmart, Wayfair, Fenty, Steve Madden. https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/ · https://searchengineland.com/google-expands-universal-commerce-protocol-and-launches-new-agentic-shopping-tools-478113
+- **24 Mar 2026.** Shopify Agentic Storefronts on by default: one catalog syndicated to ChatGPT, Copilot, AI Mode, Gemini, later Meta. Every store exposes public MCP endpoints, `/api/mcp` and `/api/ucp/mcp` (search_catalog, lookup_catalog, get_product, carts). From 17 Jun a cross-merchant catalog at catalog.shopify.com and an Agentic Plan for non-Shopify brands. https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts · https://shopify.dev/docs/apps/build/storefront-mcp/servers/storefront
+- **25 Nov 2025.** Perplexity Instant Buy with PayPal; merchants stay merchant of record; Shopify catalogs sync (2 Apr 2026). https://newsroom.paypal-corp.com/2025-11-PayPal-and-Perplexity-Launch-Instant-Buy
+- **11 Mar 2026.** Amazon Shop Direct takes third-party feeds; Buy for Me in beta since Apr 2025. 13 May: Rufus becomes Alexa for Shopping. Rufus: 300M+ customers, "nearly $12 billion" incremental annualised sales. https://www.aboutamazon.com/news/retail/amazon-shop-direct-external-stores · https://www.aboutamazon.com/news/company-news/amazon-earnings-q4-2025-report
+- **Card rails.** Mastercard Agent Pay (US issuers Nov 2025); Visa Intelligent Commerce, Trusted Agent Protocol and an Agentic Directory (Dec 2025 to Jun 2026); Stripe Shared Payment Tokens (3 Mar 2026); Klarna's Agentic Product Protocol, 100M products (15 Dec 2025). https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21961.html
+- **28 Apr 2026.** AP2 v0.2 adds Human Not Present payments; Google donates AP2 to the FIDO Alliance. https://blog.google/products-and-platforms/platforms/google-pay/agent-payments-protocol-fido-alliance/
+- **2 Sep 2026.** Anthropic open-sources commerce-agents (Apache-2.0): a shopping agent that searches, compares, carts and hands off to the host's checkout. It consumes MCP servers and ships none. https://github.com/anthropics/commerce-agents
+- **28 Jul 2026.** MCP spec goes stateless, adds `server/discover`, requires `ttlMs` on list results; MCP Apps (UI inside Claude and ChatGPT) since 26 Jan. https://modelcontextprotocol.io/specification/2026-07-28/changelog
+- **Directories.** ChatGPT apps became plugins (Jul 2026): a skill plus an MCP server plus optional UI, listed with a challenge token at `/.well-known/openai-apps-challenge`, hint annotations on every tool, test prompts and a privacy policy; checkout plugins are approved partners only. Claude's Software Directory Policy (15 Apr 2026): prove you own the API and domain, OAuth 2.0 for authenticated servers, annotations, a privacy policy, a test account and three prompts, and no software that executes financial transactions. Gemini: a curated Connected Apps list, and Gemini Spark (30 Jun) lets AI Ultra subscribers paste a custom MCP URL; no public submission path found. https://developers.openai.com/plugins/deploy/submission · https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy · https://9to5google.com/2026/06/30/gemini-spark-apps-more/
+- **Edge.** Cloudflare classes AI traffic as Search, Agent or Training (1 Jul 2026); from 15 Sep new domains block Training and Agent on ad-bearing pages by default; Pay per crawl is HTTP 402 with a price; Web Bot Auth (RFC 9421, Ed25519) is an IETF working-group draft (Aug 2026). Its Agent Readiness Score (17 Apr 2026) checks robots.txt, sitemap, Link headers, `Accept: text/markdown`, Content Signals, the Web Bot Auth key directory, `/.well-known/api-catalog`, `/.well-known/mcp/server-card.json`, `/.well-known/agent-skills/index.json` and OAuth discovery; llms.txt is optional. https://developers.cloudflare.com/changelog/post/2026-07-01-ai-traffic-options/ · https://blog.cloudflare.com/agent-readiness/
+- **Other platforms.** commercetools Commerce MCP (MIT); BigCommerce MCP to all stores (28 Apr 2026); Adobe Commerce MCP "coming soon" (17 Jun); Salesforce B2C shopper tools in pilot; Dynamics 365 Commerce MCP preview (29 Jun). https://github.com/commercetools/commerce-mcp
+
+No single retailer's own MCP server was verified; what exists is platform-level.
+
+## 2. The numbers people cite
+
+- AI referrals to US retail sites: +62% YoY in July 2026, +1,219% since Oct 2024; they convert 60% higher and bring 53% more revenue per visit (Adobe, 1T+ visits). LLM readability of retail pages: apparel 76%, cosmetics 68%, furniture and home 64%. https://www.digitalcommerce360.com/2026/08/19/adobe-ai-referral-traffic-data-july-2026/
+- AI referrals are still a low single-digit share of most sites' traffic, +117% YoY; beauty +312%, fashion +278%; ChatGPT sends over 80% of it (Similarweb, 3 Sep 2026). https://aisearch.similarweb.com/blog/ai-referral-traffic-by-industry/
+- Forecasts: McKinsey with ICSC, up to $1T of US retail agentic by 2030, $3-5T globally; Bain, $300-500B US, 15-25% of online retail, spec-driven purchases first. https://www.bain.com/insights/2030-forecast-how-agentic-ai-will-reshape-us-retail-snap-chart/
+- Gartner's 2024 call that search volume drops 25% by 2026: Google still holds over 90% share; the shift is in how people search. https://www.gartner.com/en/newsroom/press-releases/2024-02-19-gartner-predicts-search-engine-volume-will-drop-25-percent-by-2026-due-to-ai-chatbots-and-other-virtual-agents
+- Agent traffic +7,851% YoY (HUMAN Security); bots 57.5% of requests in June (Cloudflare); 70% of Stripe's API data commands come from agents (Fortune, 23 Jul 2026). Crawl-to-refer ratios, Dec 2025: Anthropic up to 500,000:1, OpenAI 3,700:1, Perplexity under 200:1, Google about 3:1. https://fortune.com/2026/07/23/dead-internet-theory-bots-agents-majority-web-traffic/ · https://blog.cloudflare.com/radar-2025-year-in-review/
+- llms.txt: 8.7% of the top 1,000 sites publish one (ecommerce 6.9%); across 137,210 domains, 97% of the files got zero requests in May (Ahrefs); Google says it is not needed. https://ahrefs.com/blog/llmstxt-study/
+- Google's Generative UI study (18 Nov 2025): raters preferred human-expert sites first, generated UI a close second. https://research.google/blog/generative-ui-a-rich-custom-visual-interactive-user-experience-for-any-prompt/
+
+## 3. Five ideas that recur
+
+1. Discovery is moving into the assistants; the transaction is moving back to the merchant. OpenAI's retreat, Walmart's and Sephora's own apps, Shopify's default click-out, Forrester's "humans decide at checkout" (28 May 2026). https://www.forrester.com/blogs/the-state-of-agentic-commerce-in-mid-2026/
+2. AI traffic is small in share and better in quality.
+3. Machine-readable product data is the baseline: feeds, schema.org on the page, plain HTML an agent can parse. llms.txt is not it.
+4. The website splits into a human page and an agent interface with one source of truth; Joost de Valk: the site becomes "the verified, machine-readable home base", one source with many renderings, and should also be an MCP server. https://joost.blog/future-of-the-website/
+5. Agents are manipulable and unstable, so brands want control of catalog, checkout and identity. One polluted page fools 12 LLMs up to 27% of the time, three fakes in the top results 73.8% (Luo and Chen, 25 Jun 2026); strong position bias and demand concentrating on a few "modal" products, reshuffled by model updates (Allouah et al., Web Conf 2026); 84% of shoppers trust reviews, 86% are wary of AI recommendations, 93% double-check them (Omnisend, Jan 2026). https://techxplore.com/news/2026-06-fake-web-page-ai-bots.html · https://arxiv.org/abs/2508.02630
+
+## 4. Beauty
+
+- Sephora: an app in ChatGPT (24 Mar, US pilot, Beauty Insider linked) and agentic checkout with routine building in AI Mode and Gemini (3 Jun); over 20% of AI Beauty Chat users buy the same day. https://newsroom.sephora.com/sephora-app-in-chatgpt-brings-a-new-personalized-beauty-experience/
+- Ulta: Ulta AI on ulta.com over 46M member profiles, plus Gemini checkout (22 Apr); by the Q2 call (27 Aug) multi-SKU Gemini purchases were live and product content had been enriched for ChatGPT; the app is over 60% of online sales. https://www.ulta.com/investor/news-events/press-releases/detail/226/ulta-beauty-and-google-introduce-gemini-enabled-shopping
+- Sally Beauty, public record: AI mentioned only as personalisation and the BSG stylist app across the FY26 calls; ColorView try-on dates to 2019. Q3 (10 Aug): e-commerce $110M, 12% of sales, Sally US/Canada e-commerce +28%, BOPIS the majority of app orders, Licensed Colorist OnDemand at 5,200 consults a week with those customers spending 80% more; TikTok Shop launched 10 Mar with 1,000+ products; marketplaces bring "up to three-quarters" new customers. No agent presence found. https://www.fool.com/earnings/call-transcripts/2026/08/10/sally-beauty-sbh-q3-2026-earnings-call-transcript/
+- L'Oréal and OpenAI (17 Jun): Maybelline try-on inside ChatGPT, Lancôme and Kérastase discovery pilot; Beauty Genius on WhatsApp. Estée Lauder: Jo Malone scent advisor on Gemini, Scent Scanner on Pinterest. Walmart's Sparky: AOV +35%. Target: AI traffic +2,000% in Q1.
+- Bazaarvoice: syndication into TikTok Shop (24 Mar); an Authentic Discovery API (2 Apr) citing research that agents are 20-40% less likely to pick products with missing data; an AI Visibility package (1 Sep) with clients at a median +40% AI-referred traffic. https://www.globenewswire.com/news-release/2026/04/02/3267381/19098/en/bazaarvoice-launches-authentic-discovery-api-to-ensure-brand-and-retailer-reviews-are-visible-to-ai-search-and-shopping-agents.html
+- TikTok Shop is the fourth-largest US health-and-beauty e-retailer, $4.4B+, +108%; Q2 2026 US beauty GMV $662M, haircare 17% of it. https://www.emarketer.com/content/tiktok-shop-reshapes-us-beauty-ecommerce-landscape
+- Shoppers: 43% used an AI assistant to research a purchase in 90 days and 86% verify elsewhere; 42% cap unchecked AI-led spend under $25 (Product.ai, n=1,463); 38% use AI while shopping beauty (Criteo, n=4,595); about 7 in 10 beauty shoppers feel more confident after reading Reddit; women trust AI most for picks (50%) and routines (34%) (Haut.AI, n=1,238). https://www.prnewswire.com/news-releases/43-of-us-online-shoppers-are-using-ai-to-shop-but-they-still-trust-humans-more-302807149.html
+
+Three behaviours to design for: they verify before buying, so reviews sit beside the product; they ask in their own words and want a routine back, so complete-the-look is the routine; they finish on the retailer, so the hand-off carries pickup and rewards.
+
+## 5. What an agent-ready store exposes, by consensus
+
+1. A structured feed with live price and stock: ACP's nine required fields (item_id, title, description, url, brand, seller_name, image_url, availability, price; JSONL/CSV/TSV, refresh accepted every 15 minutes), or Merchant Center with the `native_commerce` attribute. https://developers.openai.com/commerce/specs/file-upload/products
+2. schema.org Product, Offer, AggregateRating and Review on the page, matching the feed and the visible text. Google says no other file is needed. https://developers.google.com/search/docs/appearance/ai-features
+3. robots.txt allowing the Agent-class fetchers you want, Content Signals, a sitemap.
+4. A stateless Streamable HTTP MCP endpoint: read tools public, cart writes idempotent, the cart returning a checkout URL. Shopify's tool names (search_catalog, get_product, get_cart, update_cart) are the vocabulary agents already know.
+5. Discovery manifests: `/.well-known/ucp`, `/.well-known/mcp/server-card.json`, OAuth metadata.
+6. Deterministic, annotated tool lists with `ttlMs`.
+7. Checkout on the merchant's own stack; OAuth only for loyalty or personalisation.
+8. Web Bot Auth verification at the edge. No platform publishes per-agent rate limits.
+9. llms.txt and agents.md: optional.
+
+## 6. What it changes for Columns
+
+- **The position.** Every platform landed on "discover in the agent, buy on the merchant's surface". A row of columns you can talk to is the surface an agent hands off to, not a rival chat. The pitch is the page an agent lands on, and the address (`?open=`, `?at=`, `?cart=`) is the hand-off.
+- **The data deliverable is fixed by the market.** Feed, schema on plain HTML twins of each column, the UCP manifest, an MCP endpoint with Shopify's vocabulary, a server card, bot auth at the edge. 07-agents.md is revised to this list; llms.txt drops to optional.
+- **Reviews are the trust layer and the attack surface.** Beside the product, with provenance: verified purchase, date, count, source. Bazaarvoice's Authentic Discovery API is the licensed route; a product with missing data is 20-40% less likely to be picked.
+- **Checkout never in the chat.** build_cart returns a checkout URL; Claude's directory bans payment-executing software anyway. The demo ends at the cart with pickup and rewards visible, which is where Sally's own numbers say conversion holds.
+- **Distribution is one server, three doors.** Claude's directory and ChatGPT's plugins have listing rules we can meet; Gemini has no public path, only a pasted URL. Anthropic's commerce-agents is a ready consumer to test the server against before any listing.
+- **The Sally angle.** Sephora and Ulta are already inside Google's checkout; Sally has no agent presence and deep hair-colour credibility (LCOD, owned brands). The demo opens on a hair-colour question typed the way a Sally customer says it, shows the reviews beside the product in the first frame, and closes on the hand-off.

@@ -6,6 +6,20 @@ the thing, ending at a curated cart. Built in the sally-portal repo on
 Sally's data, behind the portal's login. Patterns travel out; data,
 voice and IP stay in Sally's repo, as with the sizzle reel port.
 
+## What the research says (00-landscape §4 and §6)
+
+Sephora and Ulta are already inside Google's agentic checkout and
+have their own assistants; Sally's public record has no agent
+presence, e-commerce at 12% of sales growing 28%, BOPIS as most app
+orders, Licensed Colorist OnDemand at 5,200 consults a week with those
+customers spending 80% more, and a TikTok Shop since March. Beauty
+shoppers verify before buying, ask in their own words and want a
+routine back, and finish on the retailer. So the demo opens on a
+hair-colour question typed the way a Sally customer says it (colour is
+where Sally has depth and where the peers' agent flows are thin),
+shows reviews beside the product in the first frame, and closes with
+the cart handing to sallybeauty.com with pickup and rewards visible.
+
 ## The thin slice, first
 
 One funnel end to end, real data, nothing else:
@@ -16,6 +30,7 @@ One funnel end to end, real data, nothing else:
 4. A complete-the-look column: `goesWith` from the embeddings (`search_skus_by_look`), three items.
 5. The cart column: the items, a total, and one link out to sallybeauty.com. No checkout.
 6. The Ask: "what's the best toner for brassy blonde" answered by Jim, and the columns opening under it.
+7. The agent layer, thin: a feed of the demo's products, JSON-LD on the plain twin of each column, and the five-tool MCP server pointed at the same data, tested against Anthropic's commerce-agents. The demo is then both the page a shopper sees and the page an agent lands on.
 
 Everything in the package is exercised once. Then widen.
 
