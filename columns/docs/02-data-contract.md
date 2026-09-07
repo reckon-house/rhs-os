@@ -74,6 +74,8 @@ copy:  { <group>: { facts, paragraphs, reviews: [{ text, by, rating, src }], pos
 cart:  { items: [{ sku, variant, qty }], total }   one column that never leaves the row; rides ?cart=
 ```
 
+who:   { persona: "id", user?: "id" }          the Ask's third input; held in memory on the board, resolved by Jim
+
 Rules that travel with the shapes:
 
 - `src.licence` is required on every review, post and pull. The route already keeps Jeremy's frames apart from other people's pulls because the rights differ; evidence is the same problem. The engine shows what it is allowed to and says whose it is.

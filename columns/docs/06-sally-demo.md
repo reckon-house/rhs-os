@@ -58,6 +58,30 @@ sources with someone who can sign for them.
 - Look matching: the embeddings, not a language model.
 - Images: none generated in the demo; packshots and lifestyle only.
 
+## Jim is the brain
+
+Noted 7 Sept 2026, so it is not lost. Jim (the portal's routing and
+knowledge) already holds Sally's persona data. The loop the demo
+should be built to close:
+
+1. The persona: what Jim knows about the kind of shopper (the
+   portal's personas, the market, industry and trend signals it
+   already gathers per persona).
+2. The user: what a specific shopper does and says on the row, the
+   questions, the columns opened, the cart, and, with consent and an
+   identity link, their history and rewards.
+3. Back to the user: recommendations shaped by the persona's trends
+   and the person's own behaviour, in the same columns: what to open
+   next, the complete-the-look, the reviews to surface first.
+
+So the Ask's request grows a third input, `{ q, hrefs, who }`, where
+`who` is a persona id and, once linked, a user id, and Jim answers
+with both in hand. The board carries `who` in memory only; the data
+never leaves Sally's repo. The peers lean the same way (Ulta over 46M
+profiles, Sephora's Beauty Insider link in ChatGPT), and the research
+draws the boundary: identity linking by OAuth, for personalisation
+and loyalty only, never for payment.
+
 ## Order and rough size
 
 Config out of the assembler (05 §1), half a day. Adapter over Supabase
