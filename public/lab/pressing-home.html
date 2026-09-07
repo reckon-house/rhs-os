@@ -181,7 +181,10 @@
     letter-spacing: inherit; padding: 4px 0; border-radius: 0;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease, color 0.28s ease; }
-  #nav:hover #query { border-bottom-color: rgba(0, 0, 0, 0.22); }
+  /* HOVER, WHERE THERE IS ONE. iOS holds :hover on whatever was
+     tapped last, so on a phone this rule painted a rule under the
+     field and left it there. */
+  @media (hover: hover) { #nav:hover #query { border-bottom-color: rgba(0, 0, 0, 0.22); } }
   #query:focus { border-bottom-color: var(--masthead-ink); }
   #query::placeholder { color: rgba(0, 0, 0, 0.42); opacity: 1;
     transition: opacity 0.3s ease; }
@@ -225,7 +228,7 @@
   #nav.rev { --rule-ink: var(--masthead-paper);
     --rule-rest: rgba(255, 255, 255, 0.32); }
   #nav.rev #query::placeholder { color: rgba(255, 255, 255, 0.6); }
-  #nav.rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); }
+  @media (hover: hover) { #nav.rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); } }
 
   /* ── the cover: the question, and what the question is for ───────
      Term left, definition right. The left column is the way in — the

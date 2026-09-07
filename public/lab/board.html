@@ -825,6 +825,13 @@
     #nav { grid-template-columns: minmax(0, 1fr) minmax(0, max-content); gap: 16px;
       padding-left: 20px; padding-right: 20px; }
     #nav .ask { position: static; transform: none; width: auto; min-width: 0; }
+    /* ── NO RULE UNDER THE FIELD ──────────────────────────────────
+       On desktop the line under the field is what says the words are
+       a field rather than a label, and it arrives on hover. A phone
+       has no hover and the placeholder types itself, which says the
+       same thing and says it without drawing a line the width of the
+       glass. The caret and the keyboard carry the focused state. */
+    #nav #query, #nav #query:focus { border-bottom-color: transparent; }
     /* the mark carries the open lines, so it can take the whole bar
        from the field (hidden while a thread is on anyway) and ellipse
        past that, rather than push the grid off the glass */
