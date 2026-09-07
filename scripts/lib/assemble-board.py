@@ -517,26 +517,25 @@ head = r'''<!doctype html>
   }
   #rules i { position: absolute; top: 0; bottom: 0; width: 1px;
     background: rgba(0, 0, 0, 0.13); }
-  /* ── WHERE YOU ARE, ON THE RULE ────────────────────────────────────
+  /* ── WHERE YOU ARE ─────────────────────────────────────────────────
      The field goes two ways and nothing said how far either went: the
-     peek says there is a right, not that there are 79. A rule opens a
-     column, so on a phone it carries that column's number at its head
-     in the caption's register (3 OF 79; the peek's, 4 OF 79 →, names
-     what is next), and the rule closing a column being read carries
-     the column's depth as an ink segment: the gutter is the gauge. On
-     desktop the numbers stand in the cover line instead, in the slot
-     the address held. Nothing floats over the work; the head band and
-     the rule are the two places the field keeps clear.
-     lab/axis-variants.html, E. */
-  #rules i .rn { position: absolute; top: 16px; display: none; white-space: nowrap;
-    font-style: normal; font-size: var(--note, 12px); font-weight: 500;
-    letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.2;
-    color: rgba(0, 0, 0, 0.42); }
-  /* the peek shows a fifth of a module, so its label stacks: 4 OF / 79 → */
-  #rules i .rn.peek { white-space: normal; width: 46px; }
+     peek says there is a right, not that there are 79. Two marks now.
+     The rule closing a column being read carries that column's depth
+     as an ink segment, the gutter being the gauge; and one count at
+     the top right says what is past the edge, +78 →, one fewer each
+     page and gone at the last column. On desktop the count stands in
+     the cover line, in the slot the address held; on a phone, whose
+     cover line is folded away, it stands in the head band over the
+     peek. Nothing floats over the work: the head band and the rule
+     are the two places the field keeps clear. lab/axis-variants.html,
+     D for the count and E for the gauge. */
   #rules i .rg { position: absolute; left: -0.5px; width: 2px; border-radius: 1px;
     background: var(--ink, #000); display: none; }
   #rules i .rg.on { display: block; }
+  #more { position: absolute; right: 20px; top: 16px; z-index: 3; display: none;
+    pointer-events: none; white-space: nowrap;
+    font-size: var(--note, 12px); font-weight: 500; letter-spacing: 0.04em;
+    text-transform: uppercase; line-height: 1.2; color: rgba(0, 0, 0, 0.42); }
 
   /* the tiles ARE .fd-it cards — frame, radius, curtain, drift and
      caption all come from the stylesheet above */
@@ -878,7 +877,7 @@ head = r'''<!doctype html>
     /* the rules stand here too now that there is a sideways to draw;
        from the top, since the phone has no cover line above the field */
     #rules { top: 0; bottom: calc(var(--nav, 54px) + env(safe-area-inset-bottom, 0px)); }
-    #rules i .rn { display: block; }
+    #more { display: block; }
 
     /* ── A COLUMN IS A PAGE ─────────────────────────────
        A module is the glass less the peek here, so a column takes the
@@ -1071,6 +1070,7 @@ if (/[?&]debug\b/.test(location.search)) (function () {
 <div id="strip"><div id="stripIn">
   <div id="field">
     <div id="rules"></div>
+    <span id="more" aria-live="off"></span>
     <div id="plane"></div>
     <div id="cols"></div>
   </div>
@@ -1351,8 +1351,8 @@ const COVER_AIR = px("--cover-air", 50);
    below it, and everything passes under it on the way up, which is
    what a masthead is for. */
 const HEAD_BAND = PHONE ? 0 : 46;
-/* a phone's band was 30; the column's number stands in it now, at 16,
-   and the peek's stacks to two lines, so the first tile begins at 48 */
+/* a phone's band was 30; the count past the edge stands in it now, at
+   16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
@@ -1943,8 +1943,7 @@ function remount() {
     let el = kids[n];
     if (!el) {
       el = document.createElement("i");
-      el.innerHTML = '<span class="rn"></span><span class="rg"></span>';
-      el.firstChild.style.left = (GAP / 2) + "px";   /* the column's own edge */
+      el.innerHTML = '<span class="rg"></span>';
       rulesEl.appendChild(el);
     }
     el.__d = c;
@@ -1961,48 +1960,48 @@ function remount() {
   swapSides();
 }
 /* ── WHERE YOU ARE ─────────────────────────────────────────────────
-   What each standing rule says (see the rules' CSS): the number of
-   the column it opens, and the depth of the column it closes while
-   that column is on the glass. The desktop's cover line takes the
-   numbers of the pair on the glass, 3–4 of 79, a study column
-   skipped since it is not one of the 79. Redrawn when the rules are,
-   when the row pages, when the columns change and when a column
-   scrolls; a handful of rules each time. */
-let metaEl = null;
+   What the glass says (see the rules' CSS): on the rule closing each
+   column on the glass, that column's depth; at the top right, how
+   many columns stand past the edge, counted from the last of the 79
+   on the glass, so a phone at column 1 reads +78 → and the desktop's
+   pair at 1–2 reads +60 →. A study column is not one of the 79 and is
+   skipped; with none of the field on the glass the count starts at
+   the first module to the right. Redrawn when the rules are, when the
+   row pages, when the columns change and when a column scrolls; a
+   handful of rules each time. */
+let metaEl = null, moreEl = null;
 function dressRules() {
   if (!COLS) return;
   const numOf = (r) => (r.u != null && r.u >= 0) ? ((r.u % COLS) + COLS) % COLS + 1 : 0;
   const kids = rulesEl.children;
   for (let k = 0; k < kids.length; k++) {
-    const el = kids[k], d = el.__d, rn = el.firstChild, rg = el.lastChild;
-    if (d == null || !rn) continue;
-    const n = numOf(atDisp(d)), peek = d === colIdx + VISIBLE;
-    const t = n ? n + " of " + COLS + (peek ? " \u2192" : "") : "";
-    if (rn.textContent !== t) rn.textContent = t;
-    rn.classList.toggle("peek", peek);
+    const el = kids[k], d = el.__d, rg = el.firstChild;
+    if (d == null || !rg) continue;
     /* the column this rule closes, while it is being read */
     const L = (d - 1 >= colIdx && d - 1 < colIdx + VISIBLE) ? atDisp(d - 1) : {};
     const f = L.u != null ? fcols.get(L.u) : null;
     if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.className = "rg"; continue; }
     /* the track runs from the line the columns begin on, under the
-       head band, so the ink never crosses the cover line's counter */
+       head band, so the ink never crosses the count */
     const band = PHONE ? TOP0 : HEAD_BAND;
     const H = el.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
     rg.className = "rg on";
     rg.style.top = (band + f.scrollTop / (f.scrollHeight - f.clientHeight) * (H - seg)) + "px";
     rg.style.height = seg + "px";
   }
-  /* the desktop's line: the pair on the glass, in the address's slot */
+  /* the count past the edge: the last of the field on the glass, or
+     failing that the first past it, which then counts itself */
+  let past = 0;
+  for (let d = colIdx + VISIBLE - 1; d >= colIdx; d--) { const n = numOf(atDisp(d)); if (n) { past = COLS - n; break; } }
+  if (!past) for (let d = colIdx + VISIBLE; d < colIdx + VISIBLE + 4; d++) { const n = numOf(atDisp(d)); if (n) { past = COLS - n + 1; break; } }
+  const t = past > 0 ? "+" + past + " \u2192" : "";
+  moreEl = moreEl || document.getElementById("more");
+  if (moreEl && moreEl.textContent !== t) moreEl.textContent = t;
   metaEl = metaEl || document.querySelector("#coverline .covermeta");
-  if (metaEl) {
-    const ns = [];
-    for (let d = colIdx; d < colIdx + VISIBLE; d++) { const n = numOf(atDisp(d)); if (n) ns.push(n); }
-    const t = ns.length ? (ns.length > 1 ? ns[0] + "\u2013" + ns[ns.length - 1] : ns[0]) + " of " + COLS : "";
-    if (metaEl.textContent !== t) {
-      metaEl.textContent = t;
-      /* the burn reads the slot's middle, and the text just changed width */
-      if (window.__measureLine) window.__measureLine();
-    }
+  if (metaEl && metaEl.textContent !== t) {
+    metaEl.textContent = t;
+    /* the burn reads the slot's middle, and the text just changed width */
+    if (window.__measureLine) window.__measureLine();
   }
 }
 /* a column of the field: its own scroller, at its own module, kept at
