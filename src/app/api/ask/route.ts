@@ -50,26 +50,31 @@ import { flag } from "@/lib/voice-tells";
 
 export const runtime = "nodejs";
 
-/* HAIKU, chosen on measurement rather than tier. Benched against Sonnet 5
-   and Grok 4.6 on this exact workload, averaged over the same questions:
-   1,626ms against Sonnet's 2,789 and Grok's 13,000 to 32,000, at $0.00084
-   an answer against $0.00275 and $0.0088. It also answered better as often
-   as not, which was the surprise.
+/* SONNET 5, chosen on what it does with the study's own words. The
+   bench (scripts/ask-bench.mjs --set why: twelve whys, each sent with
+   its study's href so the route reads that study's prose) ran both
+   models on 6 Sept 2026 with the grey-half rules in the prompt. Sonnet:
+   0 flagged sentences of 36. Haiku: 0 of 29. The tells were even; the
+   difference was in the facts. Asked why A.R.C. was built, Haiku
+   invented a reason. Sonnet answered from the study's sentence, on
+   that question and on the others that had a sentence to answer from.
 
-   THE ONE THING TO WATCH is the cache floor. Haiku's minimum cacheable
-   prefix is 4,096 tokens. This one is 6,907, read off the tokenizer via
-   the log line at the foot of this file on 29 Aug 2026, so the margin
-   is about 69%. The estimate that stood here before said 4,719 and a
-   15% margin; it was counted rather than measured, and it was wrong in
-   the reassuring direction, which is the direction that matters when
-   the failure is silent. Caching below the minimum does not error. The
-   sole symptom is cache_read_input_tokens sitting at zero. If projects
-   are ever removed from the shelf, read that number again before
-   assuming the bill is fine, and write down what it actually said.
+   Haiku held this line first, chosen on an earlier bench: 1,626ms an
+   answer against Sonnet's 2,789 on the older prompt, and cheaper by
+   the ratio the note on PREFIX below still carries. The shape holds:
+   on the why set Haiku averaged 2,463ms an answer and Sonnet 3,080.
 
-   Effort is not set here on purpose. Haiku 4.5 rejects
-   output_config.effort with a 400 rather than ignoring it. */
-const MODEL = process.env.ASK_MODEL || "claude-haiku-4-5";
+   THE CACHE FLOOR is no longer the thing to watch. Sonnet's minimum
+   cacheable prefix is 1,024 tokens and this one wrote 11,270 on
+   6 Sept 2026. Haiku's floor was 4,096, and the note that stood here
+   watched it because caching below the minimum does not error; the
+   sole symptom is cache_read_input_tokens sitting at zero. That is
+   still true of any model, so read the log line at the foot of this
+   file after a prompt change rather than counting characters.
+
+   Effort is not set. It was not part of the bench, so nothing measured
+   says what it would do here. ASK_MODEL still overrides the default. */
+const MODEL = process.env.ASK_MODEL || "claude-sonnet-5";
 /* The voice contract, the shelf and the facts builder live in
    @/lib/ask-context. They were extracted so a comparison bench could
    hand several models byte-identical input; that bench is gone, but a
@@ -84,28 +89,30 @@ const MODEL = process.env.ASK_MODEL || "claude-haiku-4-5";
    than the model's minimum is not cached and no error says so — the
    only symptom is cache_read_input_tokens staying at zero.
 
-   MEASURED ON THE TOKENIZER, 29 Aug 2026: the prefix is 6,907 tokens.
-   Not estimated. That is the number Haiku itself reported, read off
-   cache_creation_input_tokens in production, and it is the only kind
-   of reading worth writing down here.
+   MEASURED ON THE TOKENIZER, 6 Sept 2026: the prefix is 11,270 tokens.
+   Not estimated. That is the number Sonnet itself reported, read off
+   cache_creation_input_tokens on the dev server once the two-sentence
+   rule was in, and it is the only kind of reading worth writing down
+   here. It was 6,907 on 29 Aug 2026, before the grey-half block and
+   its ten specimens went in.
 
-   THAT NUMBER IS THE THING TO WATCH. Haiku's minimum cacheable prefix
-   is 4,096, so the margin is about 69%. Drop a project, trim subtitles
-   or shrink the facet lists and the prefix falls toward the floor,
-   caching switches off, and nothing on the page changes to say so.
+   THAT NUMBER IS THE THING TO WATCH. Sonnet 5's minimum cacheable
+   prefix is 1,024, so the margin is about ten times. Drop a project,
+   trim subtitles or shrink the facet lists and the prefix falls toward
+   the floor, caching switches off, and nothing on the page changes to
+   say so.
    Read the log line at the foot of this file rather than counting
    characters: two earlier estimates in this comment were made that way
    and both landed under the truth, which is the direction that hides
    the problem.
 
-   Sonnet 5's minimum is 1,024, so if the shelf ever does shrink past
-   Haiku's floor, pointing ASK_MODEL back at Sonnet is the escape
-   hatch.
+   Pointing ASK_MODEL back at Haiku puts its 4,096 floor back in play;
+   read the number again first.
 
    The price difference is real but not the argument: at this shape
    (~46 input tokens per output token, so the bill is essentially an
    input bill) the gap between the two models is tens of dollars a month
-   at portfolio traffic. Not worth a silent-failure mode.
+   at portfolio traffic.
 
    TTL is the default 5 minutes, which is the wrong fit if most visitors
    ask exactly one question — a write costs 1.25x and only pays back
@@ -122,8 +129,8 @@ const PREFIX: Anthropic.TextBlockParam[] = [
      end of it. The shelf says what the work is and this says what
      happened lately; both are identical on every request, so both cache
      and only the question and its facts are billed at full rate. It
-     also pushes the prefix further above Haiku's 4,096-token minimum,
-     which the note on MODEL above has been watching. */
+     also pushes the prefix further above the cache floor, which the
+     note on MODEL above has been watching. */
   {
     type: "text",
     text: DAYBOOK_TEXT,

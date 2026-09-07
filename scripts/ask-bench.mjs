@@ -46,10 +46,27 @@ const QUESTIONS = [
   "what's the Robert Rodriguez campaign", "kitchen design", "marble surfaces", "how do you work",
 ];
 
+/* a second set, twelve whys with the study named, for comparing models
+   on the answers that need the study's own words */
+const WHY = [
+  ["why did you choose green for the cabinets", "/case-studies/hill-country-kitchen"],
+  ["why is the island raw oak", "/case-studies/hill-country-kitchen"],
+  ["why three marbles in the bath", "/case-studies/hill-country-bath"],
+  ["why did you shoot the Jeffrey spring campaign in the studio", "/case-studies/jeffrey-spring"],
+  ["why the Instagram heart for Loved by Nordstrom", "/case-studies/loved-by-nordstrom"],
+  ["how long did A.R.C. take and why", "/case-studies/arc"],
+  ["why four buckets for the Nordstrom framework", "/case-studies/nordstrom-framework"],
+  ["why is there no television in the Fairview sitting room", "/case-studies/fairview-sitting"],
+  ["why did you build Faux Reel", "/case-studies/sizzle"],
+  ["why build Sally's asset hub from scratch", "/case-studies/sally"],
+  ["why does the AI only ever ask in the gym's booking", "/case-studies/dsc"],
+  ["why mall glam for Robert Rodriguez", "/case-studies/robert-rodriguez"],
+];
+const SET = arg("--set", "all");
+const LIST = SET === "why" ? WHY.map(([q, h]) => ({ q, hrefs: [h] })) : QUESTIONS.map((q) => ({ q, hrefs: hrefsFor(q) }));
 const out = [];
 let flagged = 0, sentences = 0;
-for (const q of QUESTIONS) {
-  const hrefs = hrefsFor(q);
+for (const { q, hrefs } of LIST) {
   const t0 = Date.now();
   let answer = "", error = null;
   try {
