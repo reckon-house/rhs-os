@@ -208,9 +208,12 @@ export function Masthead() {
   const lines = study ? LINES.filter(([, tag]) => onLine(study, tag)) : [];
   const shelf = lines[0]?.[1];
   const family = shelf ? projects.filter((p) => onLine(p, shelf)) : [];
-  const next = study && family.length > 1
+  /* the next one along the shelf, wrapping; a study with no page of
+     its own is not an offer */
+  const nextOnLine = study && family.length > 1
     ? family[(family.indexOf(study) + 1) % family.length]
     : null;
+  const next = nextOnLine?.href ? nextOnLine : null;
 
   return (
     <>
@@ -297,9 +300,13 @@ export function Masthead() {
             board picks its next off the visit's trail; a page has no
             trail, so the shelf's own order stands in. */}
         {next && (
-          <a className={styles.next} href={next.href}>
-            <span className={styles.g}>Next</span> {next.title}
-          </a>
+          /* a Link, unlike the lines beside the mark: this one stays
+             inside the app, where the router keeps the scroller and
+             the route's own transition. Those go to the board, which
+             is a static document. */
+          <Link className={styles.next} href={next.href!}>
+            <span className={styles.g}>Next:</span> {next.title}
+          </Link>
         )}
       </nav>
     </>

@@ -167,16 +167,46 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* THE CHIP, AS THE BOARD SETS IT. Values copied from .cchip in
+   scripts/lib/assemble-board.py rather than re-judged: 13px at 500,
+   -0.01em, a 12px radius on 4.5% ink, 8 by 12 of padding, and the
+   label grey beside the name. The board's column head offers its next
+   in exactly this object, so the bar offering the same thing in a
+   different one was two languages for one idea. The grey is an
+   opacity, not a colour, so the dark-zone reversal carries it. */
 .next {
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
   white-space: nowrap;
-  font-weight: 600;
+  border-radius: 12px;
+  padding: 8px 12px;
+  /* the chip's GROUND stands on the gutter, as the rail's pills do,
+     rather than its type: a pill hung half into the margin reads as
+     something falling off the edge */
+  background: rgba(0, 0, 0, 0.045);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  transition: background-color 0.3s ease;
+}
+/* the bar fades its links on hover; a chip answers with its ground,
+   which is the board's own gesture for the same object */
+.nav a.next:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.09);
 }
 .next .g {
-  font-weight: 400;
   opacity: 0.5;
-  margin-right: 0.42em;
+}
+.nav.rev .next {
+  background: rgba(255, 255, 255, 0.1);
+}
+.nav.rev a.next:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* THE NAMES GO WHEN THE BAR IS TIGHT. Below 900 the study's title and
