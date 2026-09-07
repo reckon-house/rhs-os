@@ -196,7 +196,7 @@ head = r'''<!doctype html>
      Off the border and into the box, it also stops eating the pixel
      that held the column's text one out from its module's edge. */
   .ccol::before { content: ""; position: absolute; left: 0; width: 1px;
-    top: var(--cover-air, 50px); bottom: 0;
+    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: 0;
     background: rgba(0, 0, 0, 0.12); }
   /* ── A COLUMN GROWS OUT FROM BEHIND ITS NEIGHBOUR ─────────────────
      Arriving is the exact inverse of folding: the box opens from zero
@@ -510,9 +510,18 @@ head = r'''<!doctype html>
      panned in X; both layers take a transform in the same frame, so
      they are composited together and cannot drift apart the way a
      painted background did. */
+  /* ── NOTHING STATIC STANDS UNDER THE BURN ─────────────────────────
+     The burn band is 35px tall from 9px above the cover line, so it
+     ends 26px below it. The rules used to open at the cover line and
+     pass under the band, and the burn, a displacement filter, bent
+     each one for good at its top and shivered it whenever a column
+     was pulled and the burn poked. They open at the band's foot now,
+     and so does a study column's own rule; the tiles still pass under
+     it, which is what the effect is for. */
+  :root { --burn-foot: 26px; }
   #rules {
     position: absolute; left: 0; right: 0;
-    top: var(--cover-air, 50px); bottom: 0;
+    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: 0;
     pointer-events: none; will-change: transform;
   }
   #rules i { position: absolute; top: 0; bottom: 0; width: 1px;
@@ -1351,6 +1360,9 @@ const COVER_AIR = px("--cover-air", 50);
    below it, and everything passes under it on the way up, which is
    what a masthead is for. */
 const HEAD_BAND = PHONE ? 0 : 46;
+/* the rules open at the burn band's foot, not the cover line (see
+   the rules' CSS); the phone has no cover line and opens them at 0 */
+const BURN_FOOT = PHONE ? 0 : px("--burn-foot", 26);
 /* a phone's band was 30; the count past the edge stands in it now, at
    16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
@@ -1983,10 +1995,13 @@ function dressRules() {
     if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.className = "rg"; continue; }
     /* the track runs from the line the columns begin on, under the
        head band, so the ink never crosses the count */
-    const band = PHONE ? TOP0 : HEAD_BAND;
+    const band = PHONE ? TOP0 : HEAD_BAND - BURN_FOOT;
     const H = el.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
+    /* clamped: a rubber band takes scrollTop past both ends, and the
+       ink stays on its track rather than following it under the burn */
+    const at = Math.min(1, Math.max(0, f.scrollTop / (f.scrollHeight - f.clientHeight)));
     rg.className = "rg on";
-    rg.style.top = (band + f.scrollTop / (f.scrollHeight - f.clientHeight) * (H - seg)) + "px";
+    rg.style.top = (band + at * (H - seg)) + "px";
     rg.style.height = seg + "px";
   }
   /* the count past the edge: the last of the field on the glass, or
