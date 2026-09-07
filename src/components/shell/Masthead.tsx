@@ -3,7 +3,33 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { projects, type Project } from "@/data/projects";
+import { railCategories } from "@/data/rail-categories";
 import styles from "./Masthead.module.css";
+
+/* ── THE MARK NAMES THE LINE, HERE TOO ────────────────────────────
+   The board's mark lists the shelves standing open beside it —
+   "Reckon*House Interiors / Campaigns", the one in view in the heavier
+   weight, each name a door. A study is one shelf's contents held open,
+   so the bar says the same thing in the same grammar: the lines this
+   study sits on, then the study.
+
+   THE LINES ARE THE BOARD'S FIVE, and membership is read the way the
+   board reads it: four of them off the study's own tags, and Apps off
+   the list in rail-categories, which is the one shelf the corpus
+   cannot separate by tag alone. Each is a door back to the board with
+   that shelf standing open, which is what ?open=shelf: does. */
+const LINES: [string, string][] = [
+  ["Digital", "digital"],
+  ["Apps", "app"],
+  ["Campaigns", "creative"],
+  ["Interiors", "interiors"],
+];
+const APP_IDS = new Set(
+  railCategories.find((c) => c.query === "app development")?.ids ?? []
+);
+const onLine = (p: Project, tag: string) =>
+  tag === "app" ? APP_IDS.has(p.id) : (p.tags as string[]).includes(tag);
 
 /* ------------------------------------------------------------------ */
 /*  Masthead                                                           */
@@ -176,6 +202,16 @@ export function Masthead() {
      What is left is the mark, which is the door to the board, and the
      board is where the asking happens: its field is the page. The
      study's own way on is at its foot, a push past the end. */
+  const study = pathname?.startsWith("/case-studies/")
+    ? projects.find((p) => p.href === pathname) ?? null
+    : null;
+  const lines = study ? LINES.filter(([, tag]) => onLine(study, tag)) : [];
+  const shelf = lines[0]?.[1];
+  const family = shelf ? projects.filter((p) => onLine(p, shelf)) : [];
+  const next = study && family.length > 1
+    ? family[(family.indexOf(study) + 1) % family.length]
+    : null;
+
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind
@@ -214,8 +250,8 @@ export function Masthead() {
            reach this bar — the question field travels into it — and a
            hashed class name is not something another file can name. */
         id="nav"
-        className={[styles.nav, overDark && styles.rev, overDark && "is-rev",
-          styles.home].filter(Boolean).join(" ")}
+        className={[styles.nav, overDark && styles.rev, overDark && "is-rev"]
+          .filter(Boolean).join(" ")}
       >
         <div ref={burnRef} data-burn className={styles.burn} aria-hidden="true" />
         {/* data-mark is a stable hook for the same reason id="nav" is:
@@ -232,14 +268,39 @@ export function Masthead() {
 
             aria-label because a screen reader says the glyph out loud.
             The name is three words to anyone listening. */}
-        <Link
-          href="/"
-          data-mark
-          className={styles.mark}
-          aria-label="Reckon House"
-        >
-          Reckon<i>*</i>House
-        </Link>
+        <span className={styles.lockup}>
+          <Link
+            href="/"
+            data-mark
+            className={styles.mark}
+            aria-label="Reckon House"
+          >
+            Reckon<i>*</i>House
+          </Link>
+          {study && (
+            <span className={styles.fam}>
+              {lines.map(([label, tag]) => (
+                /* a plain anchor, not a Link: the board is a static
+                   document and the row it stands up is read from the
+                   address, so this is a page load by design */
+                <a key={tag} href={`/?open=shelf:${tag}`}>
+                  {label}
+                </a>
+              ))}
+              <span className={styles.here}>{study.title}</span>
+            </span>
+          )}
+        </span>
+        {/* WHERE THE HOUSE WOULD GO NEXT, which is what the board's own
+            study column offers in its head: the next study on this
+            one's first line, wrapping at the end of the shelf. The
+            board picks its next off the visit's trail; a page has no
+            trail, so the shelf's own order stands in. */}
+        {next && (
+          <a className={styles.next} href={next.href}>
+            <span className={styles.g}>Next</span> {next.title}
+          </a>
+        )}
       </nav>
     </>
   );
