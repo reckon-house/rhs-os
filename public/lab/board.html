@@ -808,10 +808,11 @@
        from the top, since the phone has no cover line above the field */
     #rules { top: 0; }
 
-    /* ── A COLUMN IS A PAGE ───────────────────────────────────────
-       One module is half the glass here, so a column spans two: the
-       whole screen, standing in the row right after the field's one
-       period, arriving from the right as the row glides to meet it.
+    /* ── A COLUMN IS A PAGE ─────────────────────────────
+       A module is the glass less the peek here, so a column takes the
+       screen and leaves a fifth of what stands next showing, arriving
+       from the right as the row glides to meet it, right after the
+       column that asked.
        The same row as the desktop's, with the same three moves —
        page sideways between the field and the columns, scroll up and
        down inside each — and a column grows out from behind the
@@ -936,6 +937,10 @@ if (/[?&]debug\b/.test(location.search)) (function () {
     }, true);
   });
   window.dbg = log;
+  /* what the row holds a moment after boot, and where it stands */
+  [2500, 6000].forEach(function (ms) { setTimeout(function () {
+    try { log("boot+" + ms + " " + location.search + " cols=" + ccols.map(function (c) { return c.__caption; }).join("|") + " colIdx=" + colIdx + " x=" + Math.round(cur.x)); } catch (e) { log("boot probe: " + e.message); }
+  }, ms); });
 })();
 </script>
 </head>
@@ -1058,13 +1063,15 @@ const IXGAP = (() => {
   const w = m.getBoundingClientRect().width; m.remove();
   return w || 40;
 })();
-/* ── A PHONE IS TWO-UP AS WELL ──────────────────────────────────────
-   The live site's phone grid is the desktop pair at half the width:
-   the statement in the left column, Ivy Park top right, the same
-   seating. So the pair stands, and what a phone changes is the
-   period — one, all the way down — and the shares, which fill the
-   column the way the live frames do. */
-const VISIBLE = 2;
+/* ── A PHONE IS ONE-UP, WITH A PEEK ──────────────────────────────
+   It was the desktop pair at half the width, two 158px columns and a
+   fifth of a third. One column and a fifth of the next now: the tile
+   is 307px, the width the glass was made for, and the peek does the
+   same work it does on the desktop, one module over. A page turn
+   moves one column, an open column takes one module and leaves the
+   fifth as the peek of what stands next, which is the desktop's own
+   proportion (one of 2.2 there, one of 1.2 here). */
+const VISIBLE = PHONE ? 1 : 2;
 /* MEASURED, not derived from innerWidth. The field's left edge is set
    in CSS from --gut, --ix-note-w and --ixgap, and re-deriving it here
    put the column 2.5px out: innerWidth reported 1065 while the field's
@@ -1451,14 +1458,12 @@ function adopt(L) {
    two screens deep, with a fifth of the next pair showing at the edge
    to say so, and the pair still scrolls as one (mountCol).
 
-   STACKED WITHIN THE PAIR, not fitted to rows. The statement is 330px
-   tall in a 158px column, and a row fitted to it left a hole that
-   deep under whatever stood beside it; the desktop's statement is
-   half that in a column twice as wide, which is why fitted rows cost
-   it nothing. Each column runs its own height here, as the phone did
-   before, and the air is a feed's, not a board's. */
+   ONE COLUMN A PAGE, seven tiles deep, each its own running height
+   (there is no pair to fit rows across), with more air between the
+   pictures than a feed gives them: 48 to 120px, a little under the
+   board's own 96 to 260 for tiles a little under the board's width. */
 const BOARD = deal(items, PHONE
-  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, stack: true, air: [24, 64] }
+  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, rows: 7, stack: true, air: [48, 120] }
   : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
 adopt(BOARD);
 
@@ -1665,17 +1670,16 @@ let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
    beginning of the house and there is nothing before it; the
    conversation lives to the RIGHT, past the field, where new things
    go. Rightward the field is as endless as it was. */
-/* ── A PAGE IS A SCREEN ──────────────────────────────────────────
-   One module on desktop; on a phone the two that make one, since the
-   field is one period and every column spans it. A turn lands on
-   whole pages. */
-const PAGE = PHONE ? 2 : 1;
+/* ── A PAGE IS A MODULE ──────────────────────────────────────────
+   One module everywhere now. A phone's module is the glass less the
+   peek, so a turn moves one column there as it does on the desktop;
+   it moved two while the phone was dealt in pairs. */
+const PAGE = 1;
 const pageTo = (i) => {
-  /* a phone turns whole pages: two modules, the pair. It used to stop
-     at the last open column, because the field was one period and
-     nothing stood past it; the field runs on now, as the desktop's
-     does, and so does the row. */
-  if (PHONE) i = Math.round(i / PAGE) * PAGE;
+  /* whole modules. The phone used to stop at the last open column,
+     because the field was one period and nothing stood past it; the
+     field runs on now, as the desktop's does, and so does the row. */
+  i = Math.round(i / PAGE) * PAGE;
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
@@ -2828,23 +2832,14 @@ function insertColumn(c, from, opts) {
       if (here.col) return insertColumn(c, here.col, {});
       u = here.u;
     }
-    /* on a phone a column spans both modules of a pair, so it stands
-       after the PAIR that asked and never inside it: anchored between
-       a pair's two columns it would split the grid. u | 1 is the right
-       column of whichever pair u is in, in any period. */
-    if (PHONE) u = u | 1;
     c.__after = u;
     at = ccols.findIndex((x) => x.__after >= u);
     if (at < 0) at = ccols.length;
   }
   ccols.splice(at, 0, c);
-  if (PHONE) {
-    /* two modules: the screen */
-    c.__span = 2; c.style.setProperty("--span", 2);
-    /* the sheet stands above the row, so a room opened from it would
-       arrive under it: the answer happens on the glass */
-    if (window.toggleSheet) toggleSheet(false);
-  }
+  /* on a phone the sheet stands above the row, so a room opened from
+     it would arrive under it: the answer happens on the glass */
+  if (PHONE && window.toggleSheet) toggleSheet(false);
   const next = ccols[at + 1];
   if (next) colsEl.insertBefore(c, next); else colsEl.appendChild(c);
   layoutCols();
