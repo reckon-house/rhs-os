@@ -111,6 +111,8 @@
      raised, and #nav .ask would out-specify the .ask rule below */
   /* the logotype closes up where the navigation stays tracked — the
      shipped pair is .mark in Masthead.module.css and .covermark below */
+  /* the asterisks sit a weight under the words, so the name reads
+     as two words with a mark between them rather than one bold run */
   /* #nav a:hover fades every link in the bar to 0.45, which is the
      wordmark's cue and not this one's. The address answers with the
      rule instead — see ONE WAY THROUGH — so it holds its tone and only
@@ -137,6 +139,10 @@
      where a transition would drag behind the page */
   .ask.settling { transition: transform 0.45s cubic-bezier(0.2, 0.55, 0.2, 1),
     width 0.45s cubic-bezier(0.2, 0.55, 0.2, 1), font-size 0.45s ease; }
+  /* HOVER, WHERE THERE IS ONE. iOS holds :hover on whatever was
+     tapped last, so on a phone this rule painted a rule under the
+     field and left it there. */
+  @media (hover: hover) { #nav:hover #query { border-bottom-color: rgba(0, 0, 0, 0.22); } }
   /* at display size it wears a real rule; in the bar it goes back to
      the module's bare centre slot */
   .ask.big #query { border-bottom-width: 2px;
@@ -166,6 +172,7 @@
      the ground under it changes. Custom properties rather than a
      second copy of the rule: they inherit from #nav to the link, so
      the shared declaration below reads whichever pair is in force. */
+  @media (hover: hover) { #nav.is-rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); } }
 
   /* ── the cover: the question, and what the question is for ───────
      Term left, definition right. The left column is the way in — the

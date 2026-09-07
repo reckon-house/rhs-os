@@ -114,9 +114,9 @@ const NOTES = [
  * through, and check-rail still reads it across both surfaces.
  */
 const FILTERS = [
-  ["Digital Experiences", "digital", "", "Sites, stores and platforms, designed and shipped."],
-  ["App Development", "app development", "", "Native tools and AI products, built end to end."],
-  ["Campaign/Creative", "campaign", "", "Art direction and campaigns for retail's big names."],
+  ["Digital", "digital", "", "Sites, stores and platforms, designed and shipped."],
+  ["Apps", "app development", "", "Native tools and AI products, built end to end."],
+  ["Campaigns", "campaign", "", "Art direction and campaigns for national retailers."],
   ["Interiors", "interiors", "", "Rooms designed like products, down to the hardware."],
   /* THE FIFTH ROW IS NOT A SHELF OF WORK. The four above deal case
      studies; this one deals the board — other people's pictures, kept
@@ -2694,17 +2694,20 @@ function buildMagazine() {
     { fx: "curtain", img: 5 % n, ms: 720 },
     { fx: "cut", img: 6 % n, ms: 640 },
   ];
+  /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
+     lab's stub here and the optimizer's ladder in the app, so this
+     costs nothing on this page and saves megabytes on the real one —
+     the browser picks a ~384px candidate for a 128px box at DPR 3
+     instead of the original file. */
+  const szLoad = (im, src) => {
+    im.src = src;
+    const ss = tileSrcSet(src);
+    if (ss) { im.srcset = ss; im.sizes = "128px"; }
+  };
   const szImg = (src, cls) => {
     const im = document.createElement("img");
     im.className = cls;
-    im.src = src;
-    /* A 128px stamp must not fetch a 2560px plate. tileSrcSet is the
-       lab's stub here and the optimizer's ladder in the app, so this
-       line costs nothing on this page and saves megabytes on the real
-       one — the browser picks a ~384px candidate for a 128px box at
-       DPR 3 instead of the original file. */
-    const ss = tileSrcSet(src);
-    if (ss) { im.srcset = ss; im.sizes = "128px"; }
+    if (src) szLoad(im, src);
     im.alt = "";
     im.decoding = "async";
     return im;
@@ -2790,8 +2793,14 @@ function buildMagazine() {
      they are the grid's own urls, so an open fetch is a cache hit. */
   const szStage = (rl) => {
     rl.box.innerHTML = "";
-    rl.stills = rl.frames.map((src) => {
-      const im = szImg(src, "sz-fill");
+    rl.stills = rl.frames.map((src, k) => {
+      /* ONLY THE RESTING FRAME IS FETCHED NOW. The other seven come
+         when the reel first runs (szStart), so a stage that never
+         plays — a closed drawer, a row that stays off screen — costs
+         one file and not eight. Thirty-five of them were loading at
+         boot behind drawers nobody had opened. */
+      const im = szImg(k ? null : src, "sz-fill");
+      if (k) im.dataset.src = src;
       im.loading = "lazy";
       im.style.opacity = 0;
       rl.box.appendChild(im);
@@ -2889,6 +2898,10 @@ function buildMagazine() {
   };
   const szStart = (rl) => {
     if (rl.timer || rl.frames.length < 2 || REDUCE()) return;
+    rl.stills.forEach((im) => {
+      if (!im.dataset.src) return;
+      const src = im.dataset.src; delete im.dataset.src; szLoad(im, src);
+    });
     const step = () => {
       if (document.hidden) { rl.timer = setTimeout(step, 400); return; }
       const seq = szSeq(rl.frames.length);
@@ -5297,9 +5310,46 @@ async function playTransition(href, title, sub) {
   probe.className = "ptl";
   probe.style.cssText = "position:absolute;visibility:hidden;opacity:1";
   probe.textContent = title || "—";
+  /* the probe carries the SUB too, because the line that has to fit is
+     the whole line: measuring the title alone said a name fitted while
+     the category beside it ran off the edge */
+  if (sub) {
+    const t = document.createElement("span");
+    t.className = "sub";
+    t.textContent = "  " + sub;
+    probe.appendChild(t);
+  }
   stacks[0].appendChild(probe);
   const lineH = probe.getBoundingClientRect().height || 44;
+  /* ── AND THE SIZE IS MEASURED, not just the count ──────────────────
+     nowrap is what makes each repeat one line, so a line too wide for
+     the screen does not wrap, it is cut — which on a phone is every
+     long name: "Nordstrom framework Content direction, design system"
+     runs well past 375px of glass at the clamp's 20px floor. So the
+     type is scaled to the longest line rather than trusted to a clamp
+     that cannot know how long a project's name is. Down only: a short
+     name keeps the size the stylesheet asked for. Against the stack's
+     CONTENT box, since clientWidth includes the gutter it carries.
+     Below a floor the CATEGORY goes instead: the name is the thing the
+     reader needs and the category is the part that can be spared. 14,
+     the shipped component's number. The same block as
+     PressingTransition's, lifted here so the board inherits it. */
+  const sc = getComputedStyle(stacks[0]);
+  const stackW = Math.max(1, (stacks[0].clientWidth || innerWidth) -
+    (parseFloat(sc.paddingLeft) || 0) - (parseFloat(sc.paddingRight) || 0));
+  const lineW = probe.scrollWidth;
+  const cssSize = parseFloat(getComputedStyle(probe).fontSize) || 20;
   probe.remove();
+  const PT_MIN = 14;
+  let size = cssSize, dropSub = false;
+  if (lineW > stackW && stackW > 0) {
+    size = cssSize * (stackW / lineW);
+    if (size < PT_MIN) { size = cssSize; dropSub = true; }
+  }
+  stacks.forEach((el) => {
+    el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+    el.classList.toggle("pt-nosub", dropSub);
+  });
   /* fill the inset box exactly: round to a whole number of lines, then
      hand back the line-height that makes them add up to it */
   const gut = parseFloat(getComputedStyle(document.documentElement)
@@ -5324,6 +5374,21 @@ async function playTransition(href, title, sub) {
       el.appendChild(line);
     });
   }
+  /* ── AND THEN CHECK THE REAL ONE ─────────────────────────────────
+     Everything above is a prediction made from a probe. This is the
+     correction, measured on the line that actually rendered: if it
+     still overruns, shrink by exactly the ratio it overran by. One
+     layout read, and it holds for names nobody has written yet. */
+  const real = stacks[0].querySelector(".ptl");
+  if (real && real.scrollWidth > stackW + 1) {
+    const corrected = size * (stackW / real.scrollWidth);
+    if (corrected >= PT_MIN) size = corrected;
+    else { size = cssSize; dropSub = true; }
+    stacks.forEach((el) => {
+      el.style.setProperty("--ptfs", size.toFixed(2) + "px");
+      el.classList.toggle("pt-nosub", dropSub);
+    });
+  }
   const white = PT.querySelector(".ptw");
   const black = PT.querySelector(".ptb");
   PT.classList.add("pt-run");
@@ -5335,7 +5400,16 @@ async function playTransition(href, title, sub) {
   void PT.offsetHeight;
   await ptBeat("pt-1", white);          /* white falls */
   await ptBeat("pt-2", black);          /* black rises over it */
-  /* ── in the app, the document swap goes HERE, under full black ── */
+  /* ── in the app, the document swap goes HERE, under full black ──
+     and now it can be. ptSwap is that seam, made executable: called
+     at full black, and if it returns truthy the sequence STOPS —
+     whatever arrives owns beat 3. Unset here, so the lab still plays
+     the whole thing in one go, which is what it is for. The board
+     sets it to a hard navigation: it is a static page with no router,
+     so lifting the curtain before the browser has even started the
+     next document showed the homepage again for a beat and then blinked
+     the study in. */
+  if (window.ptSwap && await window.ptSwap(href)) return;
   /* reverse every line's delay before the last beat: they leave from
      the bottom, which is the direction the lifting clip already
      removes them in */
