@@ -65,3 +65,6 @@ public/lab/_review/
 # artifact the size of a small repo has no business in git history.
 public/lab/board-thumbs/
 bench/
+
+# Columns, packed from the live sources by npm run columns:pack
+columns/package/

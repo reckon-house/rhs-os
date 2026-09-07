@@ -11,6 +11,7 @@
     "board": "node --no-warnings scripts/build-board-thumbs.mjs && npm run board:page",
     "board:page": "python3 scripts/lib/assemble-board.py",
     "board:audit": "node --no-warnings scripts/board-audit.mjs",
+    "columns:pack": "node --no-warnings scripts/pack-columns.mjs",
     "facts": "node --no-warnings scripts/build-facts.mjs",
     "facts:report": "node --no-warnings scripts/build-facts.mjs --report",
     "port:home": "node scripts/port-home.mjs",
