@@ -468,7 +468,7 @@ export const neimanMarcusCaseStudy: CaseStudy = {
       stack: ["Adobe InDesign", "Adobe Photoshop", "Adobe Illustrator"],
       links: [],
       content:
-        "The templates carried it. Ways-to-wear ran on a fixed grid, designer spotlights on open typography, trend pieces on color as the environment. Three templates, dozens of stories, one look across all of them.",
+        "The templates carried it. Ways-to-wear ran on a fixed grid, designer spotlights on open typography, trend pieces on color as the environment. Three templates carried dozens of stories, and all of them looked like InSite.",
     },
   ],
 };
