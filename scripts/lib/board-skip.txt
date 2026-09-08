@@ -7,6 +7,17 @@
 # `npm run board` re-deals without them. Lines starting with # are notes.
 
 # arc
+
+# amber-shockey-co
+amber-shockey-co/amber-shockey-co-black-linework-diamond-cross-pattern-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-black-linework-halftone-dot-circle-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-geometric-diamond-blue-construction-grid-system-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-geometric-diamond-blue-cream-accent-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-geometric-linework-circle-blue-cream-pattern-hero-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-red-dragons-burgundy-dragon-mandala-hero-mark.jpg   # marked by eye, 8 Sept 2026
+amber-shockey-co/amber-shockey-co-red-dragons-burgundy-floral-diamond-secondary-mark.jpg   # marked by eye, 8 Sept 2026
+
+# arc
 arc/arc-dashboard-screen-hero.png   # tall, 2.25:1, cropped by the tile
 arc/arc-five-screen-app-showcase.png   # wide, 2.67:1
 arc/arc-main-thumb.jpg   # under 600px
@@ -24,11 +35,27 @@ arc/arc-ui-document-ai-scan-upload.jpg   # a card cut from a screen
 arc/arc-ui-most-valuable-items-card.jpg   # a card cut from a screen
 arc/arc-ui-pro-tip-carousel.jpg   # wide, 3.34:1
 arc/arc-ui-quick-stats.jpg   # a card cut from a screen
+arc/arc-room-scanning-interface.jpg   # marked by eye, 8 Sept 2026
+arc/arc-ui-nav-grid-account-summary.jpg   # marked by eye, 8 Sept 2026
+arc/arc-ui-report-configuration-pdf.jpg   # marked by eye, 8 Sept 2026
+arc/chromatic-brand-circle.png   # marked by eye, 8 Sept 2026
+
+# big-bend
+big-bend/elena_grid.jpg   # marked by eye, 8 Sept 2026
+big-bend/grid_plant.jpg   # marked by eye, 8 Sept 2026
+big-bend/hero.jpg   # marked by eye, 8 Sept 2026
+big-bend/prada.jpg   # marked by eye, 8 Sept 2026
+big-bend/prada_crop.jpg   # marked by eye, 8 Sept 2026
 
 # black-white-type
 black-white-type/pattern-swatch-halftone-dots-black-on-white.jpg   # wide, 3.53:1
 black-white-type/pattern-swatch-horizontal-grouped-lines.jpg   # wide, 3.56:1
 black-white-type/pattern-swatch-thick-horizontal-stripes.jpg   # wide, 3.40:1
+black-white-type/pattern-swatch-dense-dots-white-on-black.jpg   # marked by eye, 8 Sept 2026
+black-white-type/pattern-swatch-diagonal-stripes-white-on-black.jpg   # marked by eye, 8 Sept 2026
+black-white-type/pattern-swatch-sparse-dots-white-on-black.jpg   # marked by eye, 8 Sept 2026
+black-white-type/pattern-swatch-vertical-hairlines.jpg   # marked by eye, 8 Sept 2026
+black-white-type/typography-patterns-the-fancy-poster-wood-surface-lifestyle.jpg   # marked by eye, 8 Sept 2026
 
 # branding-graphics
 branding-graphics/branding-graphics-logo-dj-mia-halftone-dots.jpg   # a bare logo
@@ -36,9 +63,15 @@ branding-graphics/branding-graphics-logo-hey-sd-stellar-jay-bird.jpg   # under 6
 branding-graphics/branding-graphics-logo-j-christianson-four-circle-mark.jpg   # wide, 2.43:1
 branding-graphics/branding-graphics-logo-okina-orbit-wordmark.jpg   # a bare logo
 branding-graphics/various-graphics.jpg   # a collage of thumbnails, 728px
+branding-graphics/branding-graphics-bokeh-lights-source-photograph.jpg   # marked by eye, 8 Sept 2026
+branding-graphics/branding-graphics-logo-spear-collective-art-nouveau-vines.jpg   # marked by eye, 8 Sept 2026
+branding-graphics/branding-graphics-tree-print-color-variations-blush-wall.jpg   # marked by eye, 8 Sept 2026
 
 # capitan-boot-co
 capitan-boot-co/capitan-boot-co-branding-western-logo-desert-cactus-rock-formation-vintage-outdoors-landscape-design.png   # a logo strip
+capitan-boot-co/buffalo-logo.png   # marked by eye, 8 Sept 2026
+capitan-boot-co/capitan-boot-co-branding-system-color-palette-logo-northwest-regular-oldman-regular-typography-font-samples-beige-brown-neutral-tones.jpg   # marked by eye, 8 Sept 2026
+capitan-boot-co/capitan-boot-co-branding-system-color-palette-logo-western-original-bull-skull-horns-arrows-dark-green-beige-geometric-grid-design.jpg   # marked by eye, 8 Sept 2026
 
 # categories
 categories/category-creative-capitan-boot-co-desert-branding.jpg   # the rail's own crops, not a study
@@ -48,9 +81,18 @@ categories/category-digital-sally-os-platform-dashboard.jpg   # the rail's own c
 categories/category-interiors-hill-country-kitchen-island-marble.jpg   # the rail's own crops, not a study
 categories/category-interiors-primary-bath-vanity-marble-sconces.jpg   # the rail's own crops, not a study
 
+# chalet
+chalet/chalet-exterior-front-warm-gray-white-railings-pacific-northwest.jpg   # marked by eye, 8 Sept 2026
+chalet/chalet-exterior-side-back-deck-white-stairs-stone-patio.jpg   # marked by eye, 8 Sept 2026
+chalet/chalet-exterior-side-string-lights-stone-patio-white-stair-railings.jpg   # marked by eye, 8 Sept 2026
+chalet/chalet-kitchen-white-shaker-cabinets-subway-tile-exposed-wood-beam-column.jpg   # marked by eye, 8 Sept 2026
+chalet/chalet-living-detail-stag-pillow-tufted-sofa-walnut-ladder-shelf-painted-stone.jpg   # marked by eye, 8 Sept 2026
+chalet/chalet-living-room-a-frame-skylight-tufted-sofa-walnut-coffee-table-leather-sling.jpg   # marked by eye, 8 Sept 2026
+
 # cosmo-prof
 cosmo-prof/cosmo-prof-ui-website-homepage-mobile.png   # tall, 2.33:1, cropped by the tile
 cosmo-prof/cosmo-prof-ui-website-homepage-mobile2.png   # tall, 2.33:1, cropped by the tile
+cosmo-prof/cosmo-prof-ui-website-for-the-pros-shoppable-video-product-tabs.png   # marked by eye, 8 Sept 2026
 
 # dsc
 dsc/dsc-app-trio-owner-chat.jpg   # a chat cut mid-way
@@ -63,6 +105,57 @@ dsc/dsc-owner-console-athlete-roster.jpg   # a console cut mid-way
 dsc/dsc-owner-console-batch-scheduling-chat.jpg   # a console cut mid-way
 dsc/dsc-owner-console-calendar-week-view.jpg   # a console cut mid-way
 dsc/dsc-owner-console-home-booking-requests.jpg   # a console cut mid-way
+dsc/dsc-app-owner-trainers.jpg   # marked by eye, 8 Sept 2026
+dsc/dsc-athlete-app-programs-services.jpg   # marked by eye, 8 Sept 2026
+dsc/dsc-athlete-app-trainer-bio-profile.jpg   # marked by eye, 8 Sept 2026
+dsc/dsc-marketing-site-facilities-equipment.jpg   # marked by eye, 8 Sept 2026
+dsc/dsc-marketing-site-laptop-stool-hero.jpg   # marked by eye, 8 Sept 2026
+dsc/dsc-marketing-site-recovery-section.jpg   # marked by eye, 8 Sept 2026
+
+# fairview-bedroom
+fairview-bedroom/fairview-suite-bedroom-chandelier-fireplace-slippers.jpg   # marked by eye, 8 Sept 2026
+fairview-bedroom/fairview-suite-detail-bath-chandelier-hex-tile.jpg   # marked by eye, 8 Sept 2026
+fairview-bedroom/fairview-suite-detail-marble-side-table-brass.jpg   # marked by eye, 8 Sept 2026
+fairview-bedroom/fairview-suite-detail-throw-chair-windows.jpg   # marked by eye, 8 Sept 2026
+
+# fairview-entry
+fairview-entry/4.avif   # marked by eye, 8 Sept 2026
+fairview-entry/6.webp   # marked by eye, 8 Sept 2026
+fairview-entry/hero1.avif   # marked by eye, 8 Sept 2026
+
+# fairview-sitting
+fairview-sitting/fairview-sitting-brass-wood-coffee-table-velvet-swivel-fireplace-detail.jpg   # marked by eye, 8 Sept 2026
+fairview-sitting/fairview-sitting-mantel-mirror-stone-fireplace-symmetry-detail.jpg   # marked by eye, 8 Sept 2026
+fairview-sitting/fairview-sitting-pampas-grass-vase-blue-brick-window-velvet-detail.jpg   # marked by eye, 8 Sept 2026
+fairview-sitting/fairview-sitting-stone-wall-wood-mantel-mirror-brass-candlesticks-leather-tumbler-detail.jpg   # marked by eye, 8 Sept 2026
+fairview-sitting/fairview-sitting-velvet-swivels-rear-view-bar-cabinet-art-conversation-grouping.jpg   # marked by eye, 8 Sept 2026
+
+# floor-and-decor
+floor-and-decor/urban-southwest-primary-bath-exposed-brick-matte-black-soaking-tub.jpg   # marked by eye, 8 Sept 2026
+
+# hill-country-bath
+hill-country-bath/hill-country-bath-shower-niche-hex-tile-bench.jpg   # marked by eye, 8 Sept 2026
+hill-country-bath/hill-country-bath-shower-rain-head-marble-tile.jpg   # marked by eye, 8 Sept 2026
+hill-country-bath/hill-country-bath-vanity-marble-globe-sconces-sage.jpg   # marked by eye, 8 Sept 2026
+
+# hill-country-kitchen
+hill-country-kitchen/hill-country-kitchen-brass-cremone-bolt-closeup.jpg   # marked by eye, 8 Sept 2026
+hill-country-kitchen/hill-country-kitchen-dining-chair-leather-detail.jpg   # marked by eye, 8 Sept 2026
+hill-country-kitchen/hill-country-kitchen-dining-table-leg-rug-detail.jpg   # marked by eye, 8 Sept 2026
+
+# hill-country-living
+hill-country-living/hill-country-living-cognac-sofa-pampas-wood-bowl-kitchen-background-detail.jpg   # marked by eye, 8 Sept 2026
+hill-country-living/hill-country-living-leather-oval-mirror-wood-console-crystal-lamp-entry-vignette.jpg   # marked by eye, 8 Sept 2026
+hill-country-living/hill-country-living-tweed-armchairs-window-vintage-rug-leather-stool-conversation-area.jpg   # marked by eye, 8 Sept 2026
+
+# hill-country-oak
+hill-country-oak/hill-country-oakworks-3d-layered-wordmark-typography-cream-yellow-orange.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-billboard-winter-trees-hero.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-cowboy-hat-man-branded-shirt-portrait.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-mid-century-landscape-teal-sky-orange-foreground-tree-silhouette.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-tree-silhouette-orange-sun-mid-century-composition.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-typography-oak-barrels-master-craft-heritage-whiskey-orange-cream-tagline.jpg   # marked by eye, 8 Sept 2026
+hill-country-oak/hill-country-oakworks-wordmark-yellow-on-orange-color-block.jpg   # marked by eye, 8 Sept 2026
 
 # inspiration
 inspiration/5c08f1591729fa6d1ada2d377448d215.jpg   # under 600px
@@ -88,9 +181,18 @@ ivy-park/ivy-park-product-detail-leggings-choice-system.jpg   # tall, 2.33:1, cr
 ivy-park/ivy-park-shop-the-look-editorial-grid.jpg   # tall, 2.33:1, cropped by the tile
 ivy-park/ivy-park-scrolling-experience-polygon-typography.jpg   # a page capture, 1.84:1, cropped by the tile
 
+# j-christianson
+j-christianson/j-christianson-dot-grid-pattern-brown-accents.jpg   # marked by eye, 8 Sept 2026
+j-christianson/j-christianson-dot-grid-pattern-olive-accents.jpg   # marked by eye, 8 Sept 2026
+j-christianson/j-christianson-four-seasonal-tree-circles-flat.jpg   # marked by eye, 8 Sept 2026
+j-christianson/j-christianson-tree-stripe-graphic-breakout.jpg   # marked by eye, 8 Sept 2026
+
 # jeffrey-ecommerce
 jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp   # wide, 3.23:1
 jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg   # a product page, cut
+jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg   # marked by eye, 8 Sept 2026
+jeffrey-ecommerce/jeffrey-new-york-system-spread-homepage-designer-product-templates.png   # marked by eye, 8 Sept 2026
+jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup.jpg   # marked by eye, 8 Sept 2026
 
 # jeffrey-shoes
 jeffrey-shoes/jeffrey-saint-laurent-vetements-woman-model-gray-black-pink-white-logo-text-pattern-mobile-phone-screen-digital-campaign.png   # a phone screen on transparency, cut
@@ -100,6 +202,9 @@ jeffrey-shoes/jeffrey-saint-laurent-vetements-women-luxury-designer-shoes-heels-
 # jeffrey-spring
 jeffrey-spring/jeffrey-spring-campaign-mobile-jw-anderson-in-season-bold-shop-now.png   # under 600px
 jeffrey-spring/jeffrey-spring-campaign-mobile-simone-rocha-in-season-bold-shop-now.png   # tall, 2.34:1, cropped by the tile
+jeffrey-spring/jeffrey-spring-campaign-desktop-homepage-simone-rocha-in-season-bold.png   # marked by eye, 8 Sept 2026
+jeffrey-spring/jeffrey-spring-campaign-desktop-homepage-valentino-pink-lace-dress-in-season-bold.png   # marked by eye, 8 Sept 2026
+jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero.jpg   # marked by eye, 8 Sept 2026
 
 # loved-by-nordstrom
 loved-by-nordstrom/loved-by-nordstrom-liked-by-frame-denim-tile.jpg   # eight 500px cards
@@ -110,6 +215,20 @@ loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-colorblock-bag-tile.
 loved-by-nordstrom/loved-by-nordstrom-liked-by-see-by-chloe-saddle-bag-tile.jpg   # eight 500px cards
 loved-by-nordstrom/loved-by-nordstrom-liked-by-the-great-sweatshirt-tile.jpg   # eight 500px cards
 loved-by-nordstrom/loved-by-nordstrom-liked-by-tibi-printed-dress-tile.jpg   # eight 500px cards
+loved-by-nordstrom/loved-by-nordstrom-ipad-tibi-tiles-held.jpg   # marked by eye, 8 Sept 2026
+
+# neiman-marcus
+neiman-marcus/neiman-marcus-insite-color-story-coral.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-color-story-hot-pink.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-color-story-yellow.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-designer-spotlight-derek-lam.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-designer-spotlight-helmut-lang.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-designer-spotlight-kelly-wearstler.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-designer-spotlight-theyskens-theory.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-ways-to-wear-black-dress-denim.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-ways-to-wear-black-dress-ikat.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/neiman-marcus-insite-ways-to-wear-silk-blouse-denim.jpg   # marked by eye, 8 Sept 2026
+neiman-marcus/rhs-campaign-design-neiman-marcus-editorial-design.jpg   # marked by eye, 8 Sept 2026
 
 # nordstrom-beauty
 nordstrom-beauty/nordstrom-beauty-glow-story-mobile-editorial.png   # tall, 1.98:1, cropped by the tile
@@ -125,6 +244,17 @@ nordstrom-personalization/nordstrom-personalization-product-saint-laurent-black-
 nordstrom-personalization/nordstrom-personalization-product-saint-laurent-varsity-jacket-black.jpg   # catalog cutouts on white
 nordstrom-personalization/nordstrom-personalization-product-white-leather-slingback-heels.jpg   # catalog cutouts on white
 nordstrom-personalization/nordstrom-personalization-system-design-mobile-app-interface-fashion-lookbook-handbag-blazer-white-background-product-display.jpg   # catalog cutouts on white
+nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero.jpg   # marked by eye, 8 Sept 2026
+
+# robert-rodriguez
+robert-rodriguez/robert-rodriguez-logo-typography-color-palette-orange-pink-gradient-archer-hairline-book-font-design-branding.jpg   # marked by eye, 8 Sept 2026
+
+# sally-os
+sally-os/sally-os-brief-builder-dual-view.png   # marked by eye, 8 Sept 2026
+sally-os/sally-os-model-chat-interface.png   # marked by eye, 8 Sept 2026
+sally-os/sally-os-model-chat-response.png   # marked by eye, 8 Sept 2026
+sally-os/sally-os-model-detail-dual-view.png   # marked by eye, 8 Sept 2026
+sally-os/sally-os-model-selection-dual-view.png   # marked by eye, 8 Sept 2026
 
 # you-by-sally
 you-by-sally/sally-beauty-hair-color-campaign-influencer-bio.png   # tall, 2.33:1, cropped by the tile
