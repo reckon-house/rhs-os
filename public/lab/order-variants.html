@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The order · two ways</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── the board dealt in runs, with its labels in two clothes ───────
+     Today the thirty covers lead in site order and the other 420
+     tiles (329 study pictures, 91 pulls) are one shuffle, so the
+     work and the inspirations mix from about column 3. Here the same
+     corpus is dealt in runs: the statement and the first six covers,
+     then Digital, Apps, Campaigns and Interiors (each study on its
+     narrower line, dealt in rounds of a cover and three pictures), and
+     Staples last with the quotes moved into it. A carries the label
+     as a head tile in the statement's clothes; B carries it as a tab
+     on the standing rule and keeps the head tile for the Staples
+     threshold only. The phone uses the head tile either way: its rule
+     is at the edge of the glass, not beside the first picture. */
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; }
+  body { background: #e9e6e2; padding-bottom: 80px; }
+  .head { padding: 40px 50px 0; max-width: 1040px; }
+  .head h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 12px; font-weight: 600; }
+  .head p { font-size: 13px; color: var(--grey); margin: 0 0 6px; line-height: 1.5; }
+  .head p b { color: var(--ink); font-weight: 600; }
+  .ctl { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; padding: 18px 50px 0; font-size: 12px; color: var(--grey); letter-spacing: .04em; text-transform: uppercase; }
+  .ctl .seg { display: inline-flex; gap: 4px; margin-left: 10px; text-transform: none; letter-spacing: 0; }
+  .ctl button { border: 0; background: rgba(0,0,0,0.06); border-radius: 10px; padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; color: var(--ink); }
+  .ctl button.on { background: var(--ink); color: #fff; }
+
+  .v { margin: 36px 0 0; }
+  .v .tag { font-size: var(--note); letter-spacing: 0.04em; color: var(--grey); margin: 0 50px 14px; text-transform: uppercase; line-height: 1.5; }
+  .v .tag b { color: var(--ink); font-weight: 600; margin-right: 8px; }
+  .board { margin: 0 50px; background: var(--paper); border-radius: 18px; border: 1px solid rgba(0, 0, 0, 0.14); overflow: hidden; }
+  .cover { height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; font-size: 13px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .cover .mark { font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+  .cover .mark i { font-style: normal; font-weight: 400; }
+  .cover .fam { color: var(--grey); font-weight: 400; margin-left: 12px; }
+  .cover .fam span + span::before { content: "/"; margin: 0 8px; color: var(--faint); }
+  .cover .fam span.on { color: var(--ink); font-weight: 600; }
+  .cover .count { font-weight: 500; letter-spacing: .02em; font-variant-numeric: tabular-nums; min-width: 60px; text-align: right; }
+  .strip { overflow: auto; max-height: 82vh; position: relative; }
+  .strip::-webkit-scrollbar { height: 10px; width: 10px; }
+  .strip::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 5px; }
+  .cols { position: relative; }
+  .col { position: absolute; top: 0; }
+  /* the standing rule, in the middle of the gutter to the left */
+  .col::before { content: ""; position: absolute; left: -20px; top: 0; bottom: 0; width: 1px; background: rgba(0, 0, 0, 0.12); }
+  .t { position: absolute; left: 0; }
+  .t.img .shot { display: block; width: 100%; overflow: hidden; border-radius: 16px; background: #f0eeeb; }
+  .t.img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .t.img .lbl { display: block; padding-top: 10px; font-size: 12px; line-height: 1.35; font-weight: 600; letter-spacing: -0.004em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .t.img .lbl .sub { opacity: 0.42; font-weight: 600; }
+  .t.statement, .t.head { font-size: 32px; font-weight: 600; line-height: 1.2; letter-spacing: -0.05em; }
+  .t .q { color: rgba(0, 0, 0, 0.42); }
+  .t u { text-decoration-color: rgba(0, 0, 0, 0.22); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .t .way { display: block; margin-top: 18px; }
+  .chip { display: inline-flex; align-items: baseline; background: rgba(0, 0, 0, 0.045); border-radius: 12px; padding: 8px 12px; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45; white-space: nowrap; }
+  .t.quote { font-size: 17px; line-height: 1.42; font-weight: 500; letter-spacing: -0.01em; white-space: pre-line; }
+  .t.quote .att { display: block; padding-top: 10px; font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase; opacity: 0.45; white-space: normal; }
+  /* the tab: the chip, sat on the rule beside the run's first tile */
+  .tab { position: absolute; left: -20px; transform: translateX(-50%); z-index: 2; background: #f2f2f2; }
+
+  /* ── the phone: one column a page, seven deep, a fifth of the next ── */
+  .phones { display: flex; gap: 36px; padding: 0 50px; overflow-x: auto; align-items: flex-start; }
+  .ph { flex: none; width: 340px; }
+  .ph .tag { margin: 0 0 10px 2px; }
+  .phone { position: relative; width: 340px; height: 640px; overflow: hidden; background: var(--paper); border-radius: 18px; border: 1px solid rgba(0, 0, 0, 0.14); }
+  .feed { position: absolute; left: 0; top: 0; bottom: 0; width: 283px; overflow-y: auto; padding: 0 12px; }
+  .feed::-webkit-scrollbar { display: none; }
+  .peek { position: absolute; left: 293px; top: 0; bottom: 0; right: 0; overflow: hidden; }
+  .peek .pg { width: 259px; }
+  .pg { position: relative; width: 259px; }
+  .prule { position: absolute; left: 288px; top: 0; bottom: 0; width: 1px; background: rgba(0, 0, 0, 0.13); }
+  .p .t.statement, .p .t.head { font-size: 22px; }
+  .p .t.img .shot { border-radius: 12px; }
+  .p .t .way { margin-top: 14px; }
+
+  /* the measurer stands off the page in the same clothes */
+  #meas { position: absolute; left: -9999px; top: 0; }
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>The order · two ways</h1>
+  <p><b>Runs.</b> Statement and the first six covers in site order (Ivy Park, Sally OS, Hill Country Kitchen, A.R.C., Nordstrom Personalization, Robert Rodriguez), then Digital, Apps, Campaigns, Interiors, then Staples with the three quotes moved into it. A study lives on its narrower line, so Digital holds the four e-commerce studies (27 tiles), Apps four (46), Campaigns fourteen (176), Interiors eight (89). Inside a run each study puts down its cover and up to three pictures, then the next study; when every study has had a turn, round again with what is left. The seed re-deals only inside a run.</p>
+  <p><b>A</b> labels each run with a head tile in the statement's clothes. <b>B</b> labels the four lines with a tab on the standing rule and keeps the head tile for the Staples threshold. The cover line's family lights the run under the left edge; the count is the columns past the right edge. Placeholder copy on the Staples tile.</p>
+</div>
+<div class="ctl">
+  <span>Zoom <span class="seg" id="zoom"><button data-z="0.125">⅛</button><button data-z="0.25" class="on">¼</button><button data-z="0.5">½</button><button data-z="1">1:1</button></span></span>
+  <span>Runs start <span class="seg" id="fresh"><button data-f="0" class="on">where they fall</button><button data-f="1">on a fresh pair</button></span></span>
+  <span id="stat"></span>
+</div>
+
+<div class="v" id="vA"><p class="tag"><b>A</b>Head tiles</p><div class="board"><div class="cover"></div><div class="strip"><div class="cols"></div></div></div></div>
+<div class="v" id="vB"><p class="tag"><b>B</b>Rule tabs, head tile at the Staples threshold</p><div class="board"><div class="cover"></div><div class="strip"><div class="cols"></div></div></div></div>
+<div class="v" id="vC"><p class="tag"><b>Phone</b>The pages where each run begins, head tiles either way</p><div class="phones p"></div></div>
+<div id="meas"></div>
+
+<script src="/lab/board-data.js"></script>
+<script>
+const ITEMS = window.BOARD_ITEMS || [], GROUPS = window.BOARD_GROUPS || {};
+const FILTERS = [
+  ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
+  ["Apps", "app", "Native tools and AI products, built end to end."],
+  ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
+  ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
+];
+const NAMES = { open: "", digital: "Digital", app: "Apps", creative: "Campaigns", interiors: "Interiors", staples: "Staples" };
+const QUOTES = [
+  { text: "Came up on a tornado, sunlight in the sky\nI went around all day with the moon sticking in my eye", att: "Don Van Vliet, Captain Beefheart" },
+  { text: "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", att: "Jack White" },
+  { text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", att: "Cormac McCarthy" },
+];
+const STATEMENT = "I'm Jeremy Prasatik. I make things across <u>brand</u>, <u>product</u>, and <u>place</u>. " +
+  "<span class=\"q\"><u>Apps</u> and <u>ecommerce</u>, <u>campaigns</u> and <u>brand systems</u>, <u>photography and art direction</u>, <u>custom interiors</u>, <u>AI tools</u>.</span> " +
+  "Or just ask me:<br><span class=\"q\"><u>“Marble surfaces”</u></span>";
+const STAPLES_COPY = "The work ends at this rule. <span class=\"q\">What follows is Staples: 91 pictures and three lines pulled from other people’s work, kept for reference.</span>";
+
+const COL = 540, GAP = 40, MOD = COL + GAP, GUT = 50, ROWS = 9, TOP0 = 28, CAP_H = 30;
+const PCOL = 259, PROWS = 7, PTOP = 24;
+const IX = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+const mkRnd = (s0) => { let s = s0; return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; };
+const SEED = parseInt(new URLSearchParams(location.search).get("seed") || "7", 10) || 7;
+const homeOf = (g) => g.tags.includes("app") ? "app" : g.tags.includes("creative") ? "creative" : g.tags.includes("interiors") ? "interiors" : "digital";
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const rung = (it, w) => { const r = it.r || []; const want = w <= 384 && r.includes(384) ? 384 : r.includes(768) ? 768 : 0; return encodeURI(want ? it.t.replace(/\.webp$/, "@" + want + ".webp") : it.t); };
+
+/* ── the deal: the same corpus, in runs ─────────────────────────── */
+function plan(variant) {
+  const rnd = mkRnd(SEED);
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const img = (it) => ({ kind: "img", it });
+  const covers = ITEMS.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
+  const opener = covers.slice(0, 6);
+  const inOpener = new Set(opener.map((i) => i.g));
+  const runs = [{ tag: "open", tiles: [{ kind: "statement" }, ...opener.map(img)] }];
+  for (const [label, tag, desc] of FILTERS) {
+    const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+    const pool = new Map(studies.map((k) => {
+      const pics = ITEMS.filter((i) => i.g === k);
+      const cover = pics.find((i) => i.c != null);
+      const rest = shuffle(pics.filter((i) => i.c == null));
+      return [k, cover && !inOpener.has(k) ? [cover, ...rest] : rest];
+    }));
+    const tiles = [];
+    if (variant === "A") tiles.push({ kind: "head", html: label + ". <span class=\"q\">" + desc + "</span>", way: studies.length + " studies →" });
+    let order = shuffle(studies.slice());
+    while ([...pool.values()].some((p) => p.length)) {
+      for (const k of order) tiles.push(...pool.get(k).splice(0, 4).map(img));
+      order = shuffle(order);
+    }
+    runs.push({ tag, tiles, tab: variant === "B" ? label + " · " + studies.length + " studies" : null });
+  }
+  const pulls = shuffle(ITEMS.filter((i) => i.g === "inspiration"));
+  const tiles = [{ kind: "head", html: STAPLES_COPY, way: "See all " + pulls.length + " →" }];
+  pulls.forEach((p, i) => { if (i && i % 34 === 0) tiles.push({ kind: "quote", ...QUOTES[i / 34 - 1] }); tiles.push(img(p)); });
+  runs.push({ tag: "staples", tiles, tab: variant === "B" ? "Staples · " + pulls.length : null });
+  return runs;
+}
+
+/* ── sizes: the board's own ladder, and text measured in its clothes ── */
+const meas = document.getElementById("meas");
+function measure(kind, html, w, phone) {
+  const box = el("div", phone ? "p" : ""); const d = el("div", "t " + kind); d.style.width = w + "px";
+  d.innerHTML = html; box.appendChild(d); meas.appendChild(box);
+  const h = d.offsetHeight; box.remove(); return h;
+}
+function htmlOf(t) {
+  if (t.kind === "statement") return STATEMENT;
+  if (t.kind === "head") return t.html + "<span class=\"way\"><span class=\"chip\">" + t.way + "</span></span>";
+  if (t.kind === "quote") return "“" + t.text + "”<span class=\"att\">· " + t.att + "</span>";
+  return "";
+}
+function size(t, col, rnd, prev, phone) {
+  if (t.kind === "img") {
+    const it = t.it; let share = 1;
+    if (!phone) {
+      if (it.c != null && GROUPS[it.g] && GROUPS[it.g].sz) share = GROUPS[it.g].sz;
+      else { share = IX[Math.floor(rnd() * IX.length)]; if (share === prev.share && rnd() > 0.17) share = IX[Math.floor(rnd() * IX.length)]; }
+    }
+    prev.share = share;
+    const w = phone ? col : Math.min(Math.round(col * share), Math.round(it.w / 2));
+    let h = Math.round(w * it.h / it.w); if (h > col * 1.6) h = Math.round(col * 1.6);
+    const cap = GROUPS[it.g] ? CAP_H : 0;
+    return { w, h: h + cap, ih: h };
+  }
+  const w = t.kind === "quote" && !phone ? Math.round(col * 0.64) : col;
+  return { w, h: measure(t.kind, htmlOf(t), w, phone) };
+}
+
+/* ── seating: across the pair on a desk, one column a page on a phone ── */
+function seatDesk(runs, fresh) {
+  const rnd = mkRnd(SEED + 1), prev = {};
+  const cols = []; let pair = -1, i = 0;
+  const colAt = (c) => cols[c] || (cols[c] = { tiles: [], tabs: [] });
+  for (const run of runs) {
+    if (fresh && i > 0) { pair += 1; i = 0; }
+    if (pair < 0) pair = 0;
+    run.tiles.forEach((t, k) => {
+      if (i >= ROWS * 2) { pair += 1; i = 0; }
+      const c = pair * 2 + (i % 2), row = Math.floor(i / 2);
+      const col = colAt(c); if (col.run == null) col.run = run.tag;
+      const s = size(t, COL, rnd, prev, false);
+      col.tiles.push({ t, s, row, pair });
+      if (k === 0 && run.tab) col.tabs.push({ row, text: run.tab });
+      i += 1;
+    });
+  }
+  /* rows belong to the pair: a row is as tall as the taller of its two */
+  const pairs = Math.ceil(cols.length / 2);
+  for (let p = 0; p < pairs; p += 1) {
+    const a = cols[p * 2] || { tiles: [], tabs: [] }, b = cols[p * 2 + 1] || { tiles: [], tabs: [] };
+    const rh = new Array(ROWS).fill(0);
+    for (const x of a.tiles.concat(b.tiles)) if (x.s.h > rh[x.row]) rh[x.row] = x.s.h;
+    const y = [TOP0];
+    for (let k = 0; k < ROWS; k += 1) y.push(y[k] + (rh[k] ? rh[k] + 96 + rnd() * 164 : 0));
+    for (const col of [a, b]) {
+      col.h = TOP0;
+      for (const x of col.tiles) { x.y = y[x.row]; if (x.y + x.s.h > col.h) col.h = x.y + x.s.h; }
+      for (const tb of col.tabs) tb.y = y[tb.row];
+    }
+  }
+  return cols;
+}
+function seatPhone(runs, fresh) {
+  const rnd = mkRnd(SEED + 2), prev = {};
+  const pages = []; let pg = null;
+  const open = () => { pg = { tiles: [], h: PTOP, run: null }; pages.push(pg); };
+  for (const run of runs) {
+    if (fresh && pg && pg.tiles.length) pg = null;
+    for (const t of run.tiles) {
+      if (!pg || pg.tiles.length >= PROWS) open();
+      if (pg.run == null) pg.run = run.tag;
+      const s = size(t, PCOL, rnd, prev, true);
+      pg.tiles.push({ t, s, y: pg.h });
+      pg.h += s.h + 48 + rnd() * 72;
+    }
+  }
+  return pages;
+}
+
+/* ── the tiles themselves ── */
+function tileEl(x) {
+  const t = x.t, s = x.s;
+  const d = el("div", "t " + t.kind);
+  d.style.cssText = "top:" + x.y + "px;width:" + s.w + "px;height:" + s.h + "px";
+  if (t.kind === "img") {
+    const shot = el("span", "shot"); shot.style.height = s.ih + "px";
+    const im = new Image(); im.loading = "lazy"; im.decoding = "async"; im.alt = ""; im.src = rung(t.it, s.w);
+    shot.appendChild(im); d.appendChild(shot);
+    const g = GROUPS[t.it.g];
+    if (g) { const l = el("span", "lbl", g.t + " "); l.appendChild(el("span", "sub", g.s)); d.appendChild(l); }
+  } else d.innerHTML = htmlOf(t);
+  return d;
+}
+
+/* ── the two desks ── */
+let Z = 0.25, FRESH = false;
+const desks = [];
+function buildDesk(id, variant) {
+  const v = document.getElementById(id);
+  const cover = v.querySelector(".cover"), strip = v.querySelector(".strip"), wrap = v.querySelector(".cols");
+  const cols = seatDesk(plan(variant), FRESH);
+  const H = Math.max(...cols.map((c) => c.h || 0)) + 80;
+  wrap.innerHTML = ""; wrap.style.zoom = Z;
+  wrap.style.width = (GUT + cols.length * MOD) + "px"; wrap.style.height = H + "px";
+  cols.forEach((col, c) => {
+    const cd = el("div", "col"); cd.style.cssText = "left:" + (GUT + c * MOD) + "px;width:" + COL + "px;height:" + H + "px"; cd.dataset.run = col.run || "";
+    for (const x of col.tiles) cd.appendChild(tileEl(x));
+    for (const tb of col.tabs) { const s = el("span", "chip tab", tb.text); s.style.top = tb.y + "px"; cd.appendChild(s); }
+    wrap.appendChild(cd);
+  });
+  cover.innerHTML = "";
+  const left = el("span"); const mark = el("span", "mark"); mark.innerHTML = "Reckon<i>*</i>House"; left.appendChild(mark);
+  const fam = el("span", "fam"); for (const k of ["digital", "app", "creative", "interiors", "staples"]) { const s = el("span", null, NAMES[k]); s.dataset.run = k; fam.appendChild(s); }
+  left.appendChild(fam); cover.appendChild(left);
+  const count = el("span", "count"); cover.appendChild(count);
+  const read = () => {
+    const mod = MOD * Z, at = Math.floor((strip.scrollLeft + 1) / mod), vis = Math.max(1, Math.floor(strip.clientWidth / mod));
+    const run = (cols[Math.min(at, cols.length - 1)] || {}).run || "";
+    for (const s of fam.children) s.classList.toggle("on", s.dataset.run === run);
+    const past = cols.length - at - vis; count.textContent = past > 0 ? "+" + past + " →" : "";
+  };
+  strip.onscroll = read; read();
+  return { cols };
+}
+function buildPhones() {
+  const box = document.querySelector("#vC .phones"); box.innerHTML = "";
+  const pages = seatPhone(plan("A"), FRESH);
+  const starts = []; let last = null;
+  pages.forEach((p, i) => { if (p.run !== last) { starts.push(i); last = p.run; } });
+  const pageEl = (p) => { const d = el("div", "pg"); d.style.height = (p.h + 60) + "px"; for (const x of p.tiles) d.appendChild(tileEl(x)); return d; };
+  for (const i of starts) {
+    const p = pages[i], ph = el("div", "ph");
+    const tag = el("p", "tag"); tag.innerHTML = "<b>p." + (i + 1) + " of " + pages.length + "</b>" + (p.run === "open" ? "Opener" : NAMES[p.run] + " begins");
+    const phone = el("div", "phone"); const feed = el("div", "feed"); feed.appendChild(pageEl(p)); phone.appendChild(feed);
+    const peek = el("div", "peek"); if (pages[i + 1]) peek.appendChild(pageEl(pages[i + 1])); phone.appendChild(peek);
+    phone.appendChild(el("span", "prule"));
+    ph.appendChild(tag); ph.appendChild(phone); box.appendChild(ph);
+  }
+  return pages.length;
+}
+function build() {
+  const a = buildDesk("vA", "A"), b = buildDesk("vB", "B"), n = buildPhones();
+  document.getElementById("stat").textContent = "A " + a.cols.length + " columns · B " + b.cols.length + " columns · phone " + n + " pages";
+}
+document.getElementById("zoom").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; Z = parseFloat(b.dataset.z); for (const x of b.parentNode.children) x.classList.toggle("on", x === b); build(); });
+document.getElementById("fresh").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; FRESH = b.dataset.f === "1"; for (const x of b.parentNode.children) x.classList.toggle("on", x === b); build(); });
+document.fonts.ready.then(build);
+</script>
+</body>
+</html>

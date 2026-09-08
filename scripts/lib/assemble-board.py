@@ -709,6 +709,15 @@ head = r'''<!doctype html>
      the field stays: that boundary is still true. */
   #rules i { transition: transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .tile.statement .q { color: rgba(0, 0, 0, 0.42); }
+  /* a run's head: the line's name in the statement's own type, its
+     sentence in the statement's grey, and the chip the columns wear */
+  .tile.statement.head .way { display: block; margin-top: 18px; }
+  .tile.statement.head .lchip { display: inline-flex; align-items: baseline;
+    background: rgba(0, 0, 0, 0.045); border: 0; border-radius: 12px;
+    padding: 8px 12px; margin: 0; color: inherit; font: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+    cursor: pointer; white-space: nowrap; transition: background-color 0.3s ease; }
+  @media (hover: hover) { .tile.statement.head .lchip:hover { background: rgba(0, 0, 0, 0.08); } }
   .tile.statement .term { cursor: pointer; }
   .tile.statement .term:hover { text-decoration-color: var(--ink); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
@@ -1346,21 +1355,89 @@ const QUOTES = [
   { text: "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", att: "Jack White" },
   { text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", att: "Cormac McCarthy" },
 ];
-/* ── PORTFOLIO FIRST ────────────────────────────────────────────────
-   The thirty covers the live homepage deals lead the field, in the
-   homepage's own order and never shuffled — a visitor's first screens
-   are the portfolio, and the archive begins where the covers run out.
-   Only the rest takes the seed. */
+/* the rail's lines, in the rail's order — read here to deal the field
+   and again below to build the drawer */
+const FILTERS = [
+  ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
+  ["Apps", "app", "Native tools and AI products, built end to end."],
+  ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
+  ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
+  ["Staples", "staples", "Pictures and lines saved from other people's work."],
+];
+
+/* ── THE FIELD IS DEALT IN RUNS ─────────────────────────────────────
+   The thirty covers led in site order and everything after them was
+   one shuffle, 329 study pictures and 91 pulls together, so from the
+   third column the work and the inspirations mixed, and a visitor
+   deciding whether to hire the house met a film still between two
+   Nordstrom screens. The field is dealt in runs now, in the rail's
+   own order. The statement and the first six covers open it — two
+   campaigns, two apps, a store, a room, which is the site's order
+   doing the mixing. Then each line in turn, and Staples last, with
+   the quotes moved into it, where the Staples shelf already weaves
+   them. Each run opens on a fresh pair (deal) under a head: a tile in
+   the statement's clothes that names the line and opens its shelf.
+
+   A STUDY LIVES ON ITS NARROWER LINE. Six studies carry two tags and
+   digital is always the broad one, so A.R.C., DSC, Sizzle and Sally
+   OS are dealt with Apps, Ivy Park and Nordstrom Framework with
+   Campaigns, and Digital holds the four stores. A picture is dealt
+   once.
+
+   INSIDE A RUN, ROUNDS. Each study puts down its cover and up to
+   three pictures, then the next study takes a turn; when every study
+   has had one, round again with what is left. Campaigns' first round
+   is fourteen studies in fifty-six tiles, and nobody meets Neiman
+   Marcus's twenty-seven pictures in a row. The seed still deals —
+   the order of studies in a round, which pictures go first, the
+   pulls — but only inside a run. The opener never moves. */
+const OPENER = 6;
+const homeOf = (g) => g.tags.includes("app") ? "app"
+  : g.tags.includes("creative") ? "creative"
+  : g.tags.includes("interiors") ? "interiors" : "digital";
+const shuffle = (a) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
 const all = (window.BOARD_ITEMS || []).slice();
 const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
-const rest = all.filter((i) => i.c == null);
-for (let i = rest.length - 1; i > 0; i--) {
-  const j = Math.floor(rnd() * (i + 1));
-  [rest[i], rest[j]] = [rest[j], rest[i]];
-}
-const items = covers.concat(rest).map((it) => ({ kind: "img", ...it }));
-QUOTES.forEach((q, k) => {
-  items.splice(Math.min(items.length, 45 + k * 190), 0, { kind: "quote", ...q });
+const opener = covers.slice(0, OPENER);
+const inOpener = new Set(opener.map((i) => i.g));
+const img = (it, run) => ({ kind: "img", run, ...it });
+const items = opener.map((it) => img(it, "open"));
+FILTERS.forEach(([label, tag, desc]) => {
+  if (tag === "staples") return;
+  const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+  const pool = new Map(studies.map((k) => {
+    const pics = all.filter((i) => i.g === k);
+    const cover = pics.find((i) => i.c != null);
+    const rest = shuffle(pics.filter((i) => i.c == null));
+    return [k, cover && !inOpener.has(k) ? [cover, ...rest] : rest];
+  }));
+  items.push({ kind: "head", run: tag, first: true, tag,
+    html: label + ". <span class=\"q\">" + desc + "</span>",
+    way: studies.length + " studies \u2192" });
+  let order = shuffle(studies.slice());
+  while ([...pool.values()].some((p) => p.length)) {
+    for (const k of order) for (const it of pool.get(k).splice(0, 4)) items.push(img(it, tag));
+    order = shuffle(order);
+  }
+});
+/* the threshold: the last thing that is work, then the copy that says
+   so, then the pulls with the lines spaced through them */
+const pulls = shuffle(all.filter((i) => i.g === "inspiration"));
+const EVERY = Math.floor(pulls.length / (QUOTES.length + 1)) || 1;
+items.push({ kind: "head", run: "staples", first: true, tag: "staples",
+  html: "The work ends at this rule. <span class=\"q\">What follows is Staples: " +
+    pulls.length + " pictures and " + (["one", "two", "three", "four"][QUOTES.length - 1] || QUOTES.length) +
+    " lines pulled from other people\u2019s work, kept for reference.</span>",
+  way: "See all " + pulls.length + " \u2192" });
+pulls.forEach((p, i) => {
+  if (i && i % EVERY === 0 && QUOTES[i / EVERY - 1]) items.push({ kind: "quote", run: "staples", ...QUOTES[i / EVERY - 1] });
+  items.push(img(p, "staples"));
 });
 
 /* ── the two text shapes, measured once — text has no declared ratio ── */
@@ -1373,6 +1450,21 @@ document.body.appendChild(meas);
 const quoteH = (q) => {
   meas.textContent = "“" + q.text + "”";
   return meas.getBoundingClientRect().height + 28;
+};
+/* a run's head: the line's name and its sentence in the statement's
+   type, and a chip that opens the shelf. Measured in its own clothes,
+   as the statement is, since text has no declared ratio */
+const headHTML = (t) => t.html +
+  "<span class=\"way\"><button type=\"button\" class=\"lchip\">" + t.way + "</button></span>";
+const headH = (t) => {
+  const m = document.createElement("div");
+  m.className = "tile statement head";
+  m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
+  m.innerHTML = headHTML(t);
+  document.body.appendChild(m);
+  const h = m.getBoundingClientRect().height;
+  m.remove();
+  return h;
 };
 
 /* ── ONE FIELD, THREE FACES ─────────────────────────────────────────
@@ -1502,6 +1594,7 @@ function deal(list, opts) {
   for (const it of list) {
     let w = COL, h;
     if (it.kind === "quote") h = quoteH(it);
+    else if (it.kind === "head") h = headH(it);
     else {
       let share, guard = 0;
       do { share = shares[Math.floor(r() * shares.length)]; }
@@ -1571,14 +1664,41 @@ function deal(list, opts) {
      exactly one period to the left of column 0: the field wraps, so
      Sally's cover was drawn on top of the statement. */
   const per = rows * VISIBLE;
-  const pairs = Math.max(1, Math.ceil(sized.length / per));
+  /* ── A RUN OPENS ON A FRESH PAIR ─────────────────────────────────
+     A tile marked `first` heads a run, and a run does not begin in
+     the middle of a pair the way a shuffle would have it: the seat
+     skips to the next pair, the pair before ends short, and the head
+     stands at the top of its own column. On a phone a pair is one
+     column, so a run opens on a fresh page. Seats are counted here
+     and the pair's rows are read off the seats, since an item's index
+     no longer says where it sits. */
+  const seats = []; let s = 0, runStart = 0;
+  /* NO COLUMN STANDS EMPTY. A run whose count comes to one more than
+     a whole number of pairs would seat its last tile alone at the top
+     of a fresh pair, and the pair's other column would stand bare
+     with a rule beside it and nothing in it — Apps and Interiors both
+     did, at one window height. The tile before it comes along, and
+     the two sit side by side at the top of the run's last pair. */
+  const closeRun = () => {
+    if (VISIBLE < 2 || s - runStart <= per) return;
+    const lastPair = Math.floor((s - 1) / per) * per;
+    if (s - lastPair === 1) { seats[seats.length - 2] = s; s += 1; }
+  };
+  sized.forEach((it) => {
+    if (it.first) { closeRun(); if (s % per) s += per - (s % per); runStart = s; }
+    seats.push(s); s += 1;
+  });
+  closeRun();
+  const bySeat = new Array(s);
+  sized.forEach((it, i) => { bySeat[seats[i]] = it; });
+  const pairs = Math.max(1, Math.ceil(s / per));
   const cols = VISIBLE * pairs;
   /* one ladder per pair, each rung the taller of that pair's two */
   const pairYs = [];
   for (let p = 0; p < pairs; p += 1) {
     const rh = new Array(rows).fill(0);
     for (let j = 0; j < per; j += 1) {
-      const it = sized[p * per + j];
+      const it = bySeat[p * per + j];
       if (it && it.h > rh[Math.floor(j / VISIBLE)]) rh[Math.floor(j / VISIBLE)] = it.h;
     }
     const y = [top0];
@@ -1597,6 +1717,9 @@ function deal(list, opts) {
   /* where each column's work actually ends, so its scroller stops
      there rather than at the tallest column's bottom */
   const colH = new Array(cols).fill(top0);
+  /* the run each column belongs to, read off its first tile: the
+     mark's family names it (markFamily) */
+  const colRun = new Array(cols).fill(null);
   const out = [], cc = {};
   /* ── SEATED THE WAY THE LIVE INDEX READS ────────────────────────
      The board filled a column top to bottom and then moved right; the
@@ -1608,8 +1731,10 @@ function deal(list, opts) {
      Nordstrom. A phone is the same pair at half the width, so the
      same seating: one period, read downward. */
   sized.forEach((it, i) => {
-    const pair = Math.floor(i / per), within = i % per;
+    const q = seats[i];
+    const pair = Math.floor(q / per), within = q % per;
     const c = pair * VISIBLE + (within % VISIBLE), k = Math.floor(within / VISIBLE);
+    if (colRun[c] == null && it.run) colRun[c] = it.run;
     let { w, h } = it;
     const ysP = colY ? null : pairYs[pair];
     /* ── AND THE FIELD OPENS ON ONE LINE ────────────────────────────
@@ -1629,11 +1754,12 @@ function deal(list, opts) {
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
   });
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: Math.max(...colH), colH, rowY: ys, coverCol: cc };
+    PH: Math.max(...colH), colH, rowY: ys, coverCol: cc, colRun };
 }
+let colRun = [], famRun = null;
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
-  rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || [];
+  rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
@@ -1650,8 +1776,8 @@ function adopt(L) {
    pictures than a feed gives them: 48 to 120px, a little under the
    board's own 96 to 260 for tiles a little under the board's width. */
 const BOARD = deal(items, PHONE
-  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H }, rows: 7, stack: true, air: [48, 120] }
-  : { lead: { kind: "statement", w: COL, h: STATEMENT_H } });
+  ? { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" }, rows: 7, stack: true, air: [48, 120] }
+  : { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" } });
 adopt(BOARD);
 
 
@@ -1691,6 +1817,7 @@ let textDim = null;
 let dealing = false;
 const wordsOf = (t) => {
   if (t.kind === "quote") return (t.text + " " + t.att).toLowerCase();
+  if (t.kind === "head") return "";
   const g = GROUPS[t.g];
   return (t.g + " " + (g ? g.t + " " + g.s + " " + g.tags.join(" ") : ""))
     .toLowerCase();
@@ -1842,7 +1969,7 @@ const atDisp = (d) => {
    the bar with none on screen, whatever stands at the near edge */
 function anchorOfAsk() {
   const L = field.getBoundingClientRect().left;
-  for (const el of document.querySelectorAll("#plane .tile.statement")) {
+  for (const el of document.querySelectorAll("#plane .tile.statement:not(.head)")) {
     const r = el.getBoundingClientRect();
     if (r.right > L && r.left < innerWidth && el.__u != null) return el.__u;
   }
@@ -1853,6 +1980,9 @@ const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
 let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
+/* a flow in progress (flowX): the page it began on, how far it has
+   run, and the timer that lands it */
+let flowFrom = null, flowRun = 0, flowLand = 0;
 /* THE FIELD DOES NOT WRAP TO THE LEFT. Its first column is the
    beginning of the house and there is nothing before it; the
    conversation lives to the RIGHT, past the field, where new things
@@ -1867,6 +1997,8 @@ const pageTo = (i) => {
      because the field was one period and nothing stood past it; the
      field runs on now, as the desktop's does, and so does the row. */
   i = Math.round(i / PAGE) * PAGE;
+  /* a page turn is a landing: any flow still waiting to land is done */
+  clearTimeout(flowLand); flowFrom = null;
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
@@ -1898,7 +2030,32 @@ const pageTo = (i) => {
    the hand had changed its mind, and a vertical intent in that tail
    moved nothing. A delta on the other axis three times the size of
    the locked one is a new intent, and takes the axis at once. */
-let hCool = 0, wheelAxis = null, wheelIdle = 0;
+/* ── SIDEWAYS FLOWS, AND LANDS ON A COLUMN ─────────────────────────
+   A horizontal wheel turned one page a gesture, at most one every
+   320ms, so a hand that wanted to cross ten columns turned them one
+   by one and felt every stop. The row follows the hand now, delta for
+   delta, with the trackpad's own momentum carried through — the
+   plane's lerp (tick) is the only smoothing — and when the stream
+   goes quiet it lands: on the nearest column, or one along in the
+   direction of travel when the gesture was real but short, which is
+   what a mouse wheel's single notch is. Arrow keys still walk one at
+   a time; a finger's flick is the drag's, below. */
+let wheelAxis = null, wheelIdle = 0;
+const flowX = (dx) => {
+  if (flowFrom == null) { flowFrom = colIdx; flowRun = 0; }
+  flowRun += dx;
+  /* the field does not wrap to the left: a little give past the start,
+     as an overdrag has, and the landing brings it back */
+  tgt.x = Math.max(restX(0) - MOD_X * 0.3, tgt.x + dx);
+  clearTimeout(flowLand);
+  flowLand = setTimeout(landX, 110);
+};
+const landX = () => {
+  const from = flowFrom; flowFrom = null;
+  let i = Math.round((tgt.x + GAP / 2) / MOD_X);
+  if (i === from && Math.abs(flowRun) > 24) i = from + Math.sign(flowRun);
+  pageTo(i);
+};
 document.addEventListener("wheel", (e) => {
   if (e.target.closest && e.target.closest(".ccol")) return;   /* the column's own */
   if (dealing) { e.preventDefault(); return; }
@@ -1912,7 +2069,7 @@ document.addEventListener("wheel", (e) => {
   else if (wheelAxis === "y" && ax > ay * 3) wheelAxis = "x";
   if (wheelAxis === "x") {
     e.preventDefault();
-    if (now - hCool > 320 && ax > 12) { pageTo(colIdx + Math.sign(dx) * PAGE); hCool = now; }
+    flowX(dx);
   }
   /* and DOWN IS NOT OURS ANY MORE. The column under the pointer is a
      scroller, so the browser routes the wheel to it, keeps its own
@@ -2259,9 +2416,16 @@ function mount(t, gx, gy, u, f) {
     el.classList.add("statement");
     el.innerHTML = STATEMENT_HTML;
   } else if (t.kind === "head") {
-    /* a study's head, in the statement's clothes and its slot */
+    /* a run's head, in the statement's clothes and its slot; the chip
+       is a door to the line's shelf, and a press on it is the chip's,
+       not the field's */
     el.classList.add("statement", "head");
-    el.innerHTML = t.html;
+    el.innerHTML = headHTML(t);
+    const chip = el.querySelector(".lchip");
+    if (chip) chip.addEventListener("click", (e) => {
+      e.preventDefault(); e.stopPropagation();
+      setMode(t.tag);
+    });
   } else if (t.kind === "spacer") {
     /* the held head's room: the head itself is fixed over this */
     el.classList.add("spacer");
@@ -2804,12 +2968,12 @@ function colNode(kind, caption) {
     }
     if (e.key === "Escape") { line.value = ""; narrowColumn(c, ""); line.blur(); }
   });
-  /* a horizontal wheel over a column walks the strip; vertical scrolls the column */
+  /* a horizontal wheel over a column flows the row, as it does anywhere
+     (flowX); vertical scrolls the column */
   c.addEventListener("wheel", (e) => {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
       e.preventDefault();
-      const now = performance.now();
-      if (now - hCool > 320 && Math.abs(e.deltaX) > 12) { pageTo(colIdx + Math.sign(e.deltaX) * PAGE); hCool = now; }
+      if (!dealing) flowX(e.deltaX);
     }
   }, { passive: false });
   return c;
@@ -3925,14 +4089,42 @@ async function standRow() {
    walk applyFromColumns makes for the rail's chip; nothing open, and
    the mark is the house alone. Rooms are not lines: Info and Connect
    leave it. */
-function markFamily() {
+/* the run whose column stands at display index d, or the first field
+   column on the glass from there */
+function runAt(d) {
+  d = Math.max(0, d);
+  for (let k = d; k < d + VISIBLE; k++) {
+    const r = atDisp(k);
+    if (r.u != null) return colRun[((r.u % COLS) + COLS) % COLS] || null;
+  }
+  return null;
+}
+function markFamily(at) {
   const shelves = ccols.filter((c) => c.__mode);
   /* in view: the column's modules overlap the pages on the glass */
   const here = (c) => { const d = dispOf(c); return d < colIdx + VISIBLE && d + spanOf(c) > colIdx; };
+  /* ── THE MARK NAMES THE RUN ───────────────────────────────────────
+     The field is dealt in runs (see the corpus), and the run under
+     the near edge is a line, so the mark reads the way a study's bar
+     does: Reckon*House / Campaigns. It changes as the row moves
+     (tick) and lands with it. A shelf already open for that line
+     stands in for it, since one word twice is a stutter. */
+  const run = runAt(at != null ? at : colIdx);
+  famRun = run;
+  const line = run && run !== "open" && !shelves.some((c) => c.__mode === run) ? run : null;
   document.querySelectorAll(".fam").forEach((f) => {
     f.textContent = "";
+    if (line) {
+      f.appendChild(document.createTextNode(" "));
+      const b = el("span", "famgo run on", shelfName(line));
+      b.setAttribute("role", "button"); b.tabIndex = 0;
+      const go = (e) => { e.preventDefault(); e.stopPropagation(); setMode(line); };
+      b.addEventListener("click", go);
+      b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") go(e); });
+      f.appendChild(b);
+    }
     shelves.forEach((c, i) => {
-      f.appendChild(i ? el("span", "famsep", " / ") : document.createTextNode(" "));
+      f.appendChild((i || line) ? el("span", "famsep", " / ") : document.createTextNode(" "));
       const b = el("span", "famgo" + (here(c) ? " on" : ""), shelfName(c.__mode));
       b.setAttribute("role", "button"); b.tabIndex = 0;
       /* a name is a door to its shelf, not the mark's own press: on a
@@ -4046,7 +4238,11 @@ function tick() {
     plane.classList.toggle("turning", turning);
   }
   if (turning) pokeBurn();
-  cur.x += (tgt.x - cur.x) * 0.11;
+  /* the plane trails its target by a lerp: 0.11 is the landing's ease,
+     and while a flow is running (flowX) the follow tightens so the row
+     stays under the hand — at 0.11 a fast trackpad ran a whole module
+     ahead of the plane, which read as the field not listening */
+  cur.x += (tgt.x - cur.x) * (flowFrom != null ? 0.25 : 0.11);
   plane.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   /* the cover line is page content: it goes where the plane goes —
      but only AWAY. The field wraps, so a scroll upward from the start
@@ -4058,6 +4254,13 @@ function tick() {
   handover();
   swapSides();
   if (turning) placeAsk();
+  /* the mark's line follows the glass while the row is in motion, not
+     only when it lands: a flow through three runs names each one as
+     it passes */
+  if (turning && window.__askReady) {
+    const run = runAt(Math.round((cur.x + GAP / 2) / MOD_X));
+    if (run !== famRun) markFamily(Math.max(0, Math.round((cur.x + GAP / 2) / MOD_X)));
+  }
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   if (Math.abs(cur.x - lastMount.x) > 100) remount();
@@ -4163,13 +4366,6 @@ const RAIL_NOTES = {
   ],
   connect: [[null, "hello@reckon.house"]],
 };
-const FILTERS = [
-  ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
-  ["Apps", "app", "Native tools and AI products, built end to end."],
-  ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
-  ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
-  ["Staples", "staples", "Pictures and lines saved from other people's work."],
-];
 
 const drawer = document.getElementById("rdrawer");
 const rrows = [];
