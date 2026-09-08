@@ -1355,14 +1355,13 @@ FILTERS.forEach(([label, tag, desc]) => {
     order = shuffle(order);
   }
 });
-/* the threshold: the last thing that is work, then the copy that says
-   so, then the pulls with the lines spaced through them */
+/* the threshold: the last thing that is work, then his own sentence
+   for what follows (his words, 8 Sept 2026: "something simple"), then
+   the pulls with the lines spaced through them */
 const pulls = shuffle(all.filter((i) => i.g === "inspiration"));
 const EVERY = Math.floor(pulls.length / (QUOTES.length + 1)) || 1;
 items.push({ kind: "head", run: "staples", first: true, tag: "staples",
-  html: "The work ends at this rule. <span class=\"q\">What follows is Staples: " +
-    pulls.length + " pictures and " + (["one", "two", "three", "four"][QUOTES.length - 1] || QUOTES.length) +
-    " lines pulled from other people\u2019s work, kept for reference.</span>",
+  html: "Staples are the people, music, places, and things that inspire me.",
   way: "See all " + pulls.length + " \u2192" });
 pulls.forEach((p, i) => {
   if (i && i % EVERY === 0 && QUOTES[i / EVERY - 1]) items.push({ kind: "quote", run: "staples", ...QUOTES[i / EVERY - 1] });
