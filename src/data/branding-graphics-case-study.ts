@@ -125,7 +125,7 @@ export const brandingGraphicsCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Some were personal, some had a deadline, and none had a brief.",
+        "Some were personal and some had a deadline. None of them came with a brief.",
     },
 
     // ── ABC 123 typography poster — single, padded.
