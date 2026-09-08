@@ -276,7 +276,7 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
       introText:
         "Limestone, pine, cognac leather, charcoal tweed, antiqued brass. All of it can take a scuff.",
       philosophyText:
-        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed reads soft from across the room and structured up close. Brass goes dark over time.",
+        "Color comes from the materials themselves, with no accents and nothing painted for effect. Limestone takes light without bouncing it back. Pine is warm underfoot, and cognac leather darkens with use. Tweed looks soft from across the room and structured up close. Brass goes dark over time.",
       colors: [
         { name: "Limestone Cream", hex: "#E5DDC9", description: "Fireplace wall, paint" },
         { name: "Reclaimed Pine", hex: "#9B6F47", description: "Floors, beams" },
@@ -309,13 +309,6 @@ export const hillCountryLivingCaseStudy: CaseStudy = {
         mark: { n: "04", name: "Ten Years" },
         heldLine: "gets used.",
       },
-    },
-    {
-      id: "closing-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "It was meant to take ten years of family.",
     },
     {
       id: "closing",
