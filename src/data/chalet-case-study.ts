@@ -337,7 +337,7 @@ export const chaletCaseStudy: CaseStudy = {
       stack: ["AutoCAD", "SketchUp", "Adobe Creative Suite"],
       links: [],
       content:
-        "A 1968 chalet, down to the studs and back up. Cabin on the outside, mid-century on the inside, and 16 feet of glass in between.",
+        "A 1968 chalet taken down to the studs and rebuilt, over 400 square feet larger than it started.",
     },
   ],
 };
