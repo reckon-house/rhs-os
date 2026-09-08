@@ -2416,18 +2416,18 @@ function dressRules() {
 }
 /* a column of the field: its own scroller, at its own module, kept at
    whatever height the deal dealt and returned to wherever it was left */
-/* ── ON A PHONE THE PAIR SCROLLS AS ONE ─────────────────────────────
-   Two columns fill the glass and a thumb lands on either, so a column
-   scrolling on its own read as half the page failing to move: the
-   halves drifted apart, and a swipe down the middle moved whichever
-   one the finger happened to be over. The column under the last
-   press DRIVES; the other follows its scrollTop. Only the driver ever
-   writes, because the follower's own scroll event arrives a frame
-   late, and letting it write back would drag the driver to where the
-   follower was, mid-flick. Both stand at the taller height so they
-   reach the end together. Desktop keeps every column its own
-   scroller, which is what it asked for. */
-let driver = null;
+/* ── AND ON A PHONE TOO ─────────────────────────────────────────────
+   A phone dealt the desktop's PAIR at half width for two days, two
+   columns on the glass at once, and a column scrolling on its own
+   read as half the page failing to move — so the column under the
+   last press drove and every other one was dragged to its scrollTop.
+   The phone has been ONE column and a fifth of the next since (deal),
+   and that sync outlived the pair it was written for: every column in
+   the field shared one scroll position, so the whole board moved
+   together and a column could never be read on its own. Each column
+   scrolls itself here as it does on the desktop, and stands at its
+   own dealt height rather than the tallest, so a short one stops
+   where its work stops. */
 function mountCol(u, gx, sh) {
   const f = document.createElement("div");
   f.className = "fcol";
@@ -2435,23 +2435,16 @@ function mountCol(u, gx, sh) {
   f.style.cssText = "left:" + gx + "px;width:" + MOD_X + "px;translate:" + sh + "px 0";
   const inn = document.createElement("div");
   inn.className = "fin";
-  inn.style.height = (PHONE ? PH : (colH[u - Math.floor(u / COLS) * COLS] || PH)) + "px";
+  inn.style.height = (colH[u - Math.floor(u / COLS) * COLS] || PH) + "px";
   f.appendChild(inn);
   f.__in = inn;
   plane.appendChild(f);
   fcols.set(u, f);
   const y = colY.get(u);
   if (y) f.scrollTop = y;
-  if (PHONE) f.addEventListener("pointerdown", () => { driver = f; }, { passive: true });
   f.addEventListener("scroll", () => {
     colY.set(u, f.scrollTop);
     dressRules();
-    if (PHONE) {
-      if (!driver) driver = f;
-      if (driver === f) fcols.forEach((g) => {
-        if (g !== f && Math.abs(g.scrollTop - f.scrollTop) > 1) g.scrollTop = f.scrollTop;
-      });
-    }
     pokeBurn();
     if (window.placeAsk) placeAsk();
     /* and the column keeps its own window: a phone deals two columns
