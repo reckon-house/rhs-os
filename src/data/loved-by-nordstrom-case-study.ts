@@ -7,7 +7,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
   title: "Loved by Nordstrom",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and twelve months built on top of it.",
+    "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and a year of tiles built on it.",
   field: "Creative Direction\nCampaign Design\nDesign Systems",
   author: "Jeremy Prasatik",
   published: "2017",
@@ -52,7 +52,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       },
       title: "Loved by\nNordstrom",
       subtitle:
-        "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and twelve months built on top of it.",
+        "A year of emerging-brand merchandising for Nordstrom, in stores and online. | One heart icon borrowed from Instagram, and a year of tiles built on it.",
       field: "Creative Direction  Campaign Design  Design Systems",
       author: "Jeremy Prasatik",
       published: "2017",
@@ -66,7 +66,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
         { label: "Built", value: "A year-long campaign on one tile template, across social, email, in-store signage, and web" },
         { label: "Scope", value: "Creative direction, campaign design, design systems" },
         { label: "Tools", value: "Art direction, photography licensing, editorial systems" },
-        { label: "Angle", value: "One borrowed icon, two tiers, any brand's photography." },
+        { label: "Angle", value: "One borrowed icon and two tiers, and any brand's photography fit the tile." },
       ],
       abstract:
         "The brief was emerging brand awareness, a Nordstrom mandate to lift smaller designer labels on the department store floor and the digital storefront at the same time. The answer was to borrow the heart icon from Instagram and build the campaign on it.\n\n\"Liked by Nordstrom\" sat on the smaller tiles for day-to-day merchandising and \"Loved by Nordstrom\" on the hero slots. Same icon, same typography, and merchandising had a dial they could turn without touching the design.\n\nTwelve months across social feeds, email sends, in-store signage, and web landing pages. The template used whatever photography a brand had already licensed.",
@@ -358,7 +358,7 @@ export const lovedByNordstromCaseStudy: CaseStudy = {
       stack: ["Art Direction", "Photography Licensing", "Editorial Systems"],
       links: [],
       content:
-        "The whole campaign came out of a five-minute idea.",
+        "It ran for a year in the stores, on the site and on Instagram.",
     },
   ],
 };
