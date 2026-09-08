@@ -291,13 +291,6 @@ export const nordstromBeautyCaseStudy: CaseStudy = {
       },
     },
     {
-      id: "closing-text",
-      type: "text",
-      size: "subhead",
-      content:
-        "Three templates, a try-on tool and a drawer.",
-    },
-    {
       id: "closing",
       type: "closing",
       services: [
