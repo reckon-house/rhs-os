@@ -121,7 +121,7 @@ export const ivyParkCaseStudy: CaseStudy = {
         {
           title: "The Freedom",
           content:
-            "The portraits came editorial in tone, with range across body types and ethnicities. Everything around them was open territory.\n\nSo the type went larger than expected, motion lived in every scroll position, and the photography kept room to breathe.",
+            "The portraits came editorial in tone, with range across body types and ethnicities. Everything around them was open territory.\n\nSo the type went larger than expected, motion lived in every scroll position, and the photography got space around it.",
         },
         {
           title: "The Scope",
