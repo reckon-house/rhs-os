@@ -7,7 +7,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
   title: "Floor & Decor Feature",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike.",
+    "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak and classic tile, used three different ways.",
   field: "Interior Design\nMaterial Selection\nFinish Coordination",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -43,7 +43,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       },
       title: "Floor & Decor\nFeature",
       subtitle:
-        "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak, classic tile, and three rooms that look nothing alike.",
+        "Floor & Decor named the studio Designer of the Quarter for three bathrooms that share one material kit. | Marble, dolomite, white oak and classic tile, used three different ways.",
       field: "Interior Design  Material Selection  Finish Coordination",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -78,13 +78,13 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       id: "directions-header",
       type: "section-header",
       label: "SECTION 02: THE PROJECTS",
-      title: "The materials hardly change",
+      title: "The same four materials",
       // Pins so "Three Directions." holds while the subhead and footnote
       // travel up beside it. Nothing climbs this brief — the hold is for
       // the copy, which is where the three projects get named.
       pressing: {
         mark: { n: "02", name: "Three Bathrooms" },
-        heldLine: "from one room to the next.",
+        heldLine: "in all three rooms.",
         choreo: { pin: true },
       },
     },
@@ -156,7 +156,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "If a stone and a wood and a metal work next to each other there, they work in the room.",
+        "The stone, the wood and the metals were chosen together, before any of the rooms was drawn.",
     },
     {
       id: "confidence-footnote",
@@ -218,7 +218,7 @@ export const floorAndDecorCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor. Of the three rooms this one is the furthest from the brick and matte black. Same marble, brought down to one slab and one accent metal.",
+        "Large-format veined marble runs the full height of the walls, a brass urchin pendant breaks up all that height, and a star tile grounds the floor. Of the three rooms this one is the furthest from the brick and matte black. It uses the same marble as the other two, as one slab, with brass as the only metal.",
     },
 
     // ── Modern Farmhouse details — second 2-up
