@@ -7,7 +7,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
   title: "Hill Country Primary Bath",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The primary bath in the same Hill Country house as the kitchen, 400 square feet. | Three marbles, two vanities, one freestanding tub under a wood plank ceiling.",
+    "The primary bath in the same Hill Country house as the kitchen, 400 square feet. | Three marbles, two vanities and a freestanding tub, under a wood plank ceiling.",
   field: "Interior Design\nBathroom Design\nFixture Sourcing",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -49,7 +49,7 @@ export const hillCountryBathCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nPrimary Bath",
       subtitle:
-        "The primary bath in the same Hill Country house as the kitchen, 400 square feet. | Three marbles, two vanities, one freestanding tub under a wood plank ceiling.",
+        "The primary bath in the same Hill Country house as the kitchen, 400 square feet. | Three marbles, two vanities and a freestanding tub, under a wood plank ceiling.",
       field: "Interior Design  Bathroom Design  Fixture Sourcing",
       author: "Jeremy Prasatik",
       published: "2023",
