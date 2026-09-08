@@ -53,7 +53,7 @@ export const hillCountryOakCaseStudy: CaseStudy = {
         { label: "Angle", value: "Mid-century travel-poster color, an oak silhouette, and one graphic idea sized from a billboard down to a phone." },
       ],
       abstract:
-        "Hill Country Oakworks makes whiskey barrels from Texas oak. The campaign had to work on a roadside billboard and on a phone screen, and read as heritage at both sizes.\n\nIt pulls from mid-century poster design: warm color blocking, an oak silhouette, geometric shapes that echo the barrel. The type is plain and utilitarian, with a distressed texture over the whole thing.\n\nThe same idea runs on billboards, print, and digital, sized for each.",
+        "Hill Country Oakworks makes whiskey barrels from Texas oak. The campaign had to work on a roadside billboard and on a phone screen, and look like a heritage brand at both sizes.\n\nIt pulls from mid-century poster design: warm color blocking, an oak silhouette, geometric shapes that echo the barrel. The type is plain and utilitarian, with a distressed texture over the whole thing.\n\nThe same idea runs on billboards, print, and digital, sized for each.",
     },
 
         // ── HERO ──
