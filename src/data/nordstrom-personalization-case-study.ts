@@ -277,7 +277,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "White seamless, no props, one shadow throughout. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
+        "White seamless paper, no props, one shadow throughout. The same shoe could run in a Saturday editorial story and a Sunday inventory clear-out and look planned in both places.",
     },
     {
       id: "products-footnote",
@@ -285,7 +285,7 @@ export const nordstromPersonalizationCaseStudy: CaseStudy = {
       size: "base",
       fullWidth: true,
       content:
-        "Consistent eye level, deliberate contrast, precise angles. With no styling to look at, the merchandise read first.",
+        "Consistent eye level, deliberate contrast, precise angles. With no styling to look at, the merchandise came first.",
     },
 
     // ── Product row 1 (3 — warm/playful)
