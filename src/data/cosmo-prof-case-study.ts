@@ -266,7 +266,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
     introText:
         "The colors stay back so the photography leads. Jost runs from the header lockup down to the price line under a product.",
       philosophyText:
-        "The people buying here are professionals, so the brand had to feel premium and never get precious about it. Soft neutrals bring the warmth, and sharp black gives it structure.\n\nJost does all of it. ExtraBold for the wordmark and the category nav, Medium for module headlines, Regular for catalog copy, Light for captions and price lines. One family keeps the site from splitting into a dozen voices.",
+        "The people buying here are professionals, so the brand had to feel premium and never get precious about it. Soft neutrals bring the warmth, and sharp black gives it structure.\n\nJost does all of it. ExtraBold for the wordmark and the category nav, Medium for module headlines, Regular for catalog copy, Light for captions and price lines.",
       colors: [
         { name: "Cream", hex: "#F8F6F2", description: "Paper, cards" },
         { name: "Blush", hex: "#F4D9DC", description: "Hero accent" },
@@ -340,7 +340,7 @@ export const cosmoProfCaseStudy: CaseStudy = {
       stack: ["Figma", "Sketch", "Photoshop"],
       links: [],
       content:
-        "After that a promotion, a brand campaign or an education module dropped into the same slots and read as one site.",
+        "After that a promotion, a brand campaign or an education module dropped into the same slots and looked like one site.",
     },
   ],
 };
