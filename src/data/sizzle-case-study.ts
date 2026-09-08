@@ -31,7 +31,7 @@ export const sizzleCaseStudy: CaseStudy = {
   title: "Faux Reel",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to read as motion.",
+    "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to look like motion.",
   field: "Product\nMotion",
   author: "Jeremy Prasatik",
   published: "2026",
@@ -49,7 +49,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "meta",
       title: "Faux\nReel",
       subtitle:
-        "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to read as motion.",
+        "A tool that turns still photographs into a sizzle reel. | No video in it, just stills cut fast enough to look like motion.",
       reel: {
         caption: "Live · 7 frames · 2026",
         colors: ["#0AA7CA", "#181B17", "#776549", "#F5EAE7", "#8A8784"],
@@ -136,7 +136,7 @@ export const sizzleCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "When the reel blinks a color frame or the lens pinches shut, that is the cover. Every cut has to land on a new image, or the blink reads as a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
+        "When the reel blinks a color frame or the lens pinches shut, that is the cover. Every cut has to land on a new image, or the blink looks like a glitch. Titles cut in hard, no fade, and each frame sits for a beat before the next one.",
     },
     {
       id: "file-stats",
