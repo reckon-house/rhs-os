@@ -5,7 +5,7 @@ export const dscCaseStudy: CaseStudy = {
   title: "Dallas Sport Collective",
   category: { label: "Digital", href: "/category/digital" },
   subtitle:
-    "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | The AI only ever asks. One engine makes every booking.",
+    "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | An athlete can book from whichever AI they already use, and the owner approves with a tap.",
   field: "AI Scheduling\nMCP Integration\nBrand & Web",
   author: "Jeremy Prasatik",
   published: "2025",
@@ -67,7 +67,7 @@ export const dscCaseStudy: CaseStudy = {
       ],
       title: "Dallas Sport\nCollective",
       subtitle:
-        "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | The AI only ever asks. One engine makes every booking.",
+        "A marketing site, booking platform, and MCP server for Dallas Sport Collective, a six-trainer gym in North Texas. | An athlete can book from whichever AI they already use, and the owner approves with a tap.",
       abstract:
         "Dallas Sport Collective grew from a handful of athletes to more than a hundred, and the schedule underneath it all was a pile of texts, handwritten notes, emails, and a Google Sheet nobody fully trusted. The founder needed two things at once: a brand that matched where the gym was headed, and a back office that could keep up. Six trainers, eleven programs from NFL Combine prep to prenatal fitness, open seven days a week, out of Celina and McKinney, Texas, with a Frisco headquarters on the way.\n\nI worked with DSC to design and build a marketing site: black and white, big condensed type, photography of actual members training. A scheduling platform with two faces: an athlete app for booking sessions and an owner console for saying a week of scheduling out loud and approving each request with one tap. And the part I find the most fun: an MCP server with eleven tools, so athletes can paste one URL into the AI they already use, Claude, ChatGPT or Gemini, and ask it what's on their schedule, which trainer fits a goal, or to book Friday at 10am.\n\nEvery booking, whether spoken out loud, requested by an athlete's connected AI, or made with a tap on the calendar, flows through one deterministic engine that checks trainer availability, double-bookings, floor capacity, allowed durations, and cancellation rules. The AI only ever asks. Next.js on Vercel, OAuth 2.0 consent with short-lived tokens, live at two locations.",
     },
@@ -493,14 +493,6 @@ export const dscCaseStudy: CaseStudy = {
       size: "xl",
       content:
         "Texts and notes and a spreadsheet.",
-    },
-    {
-      id: "closing-footnote",
-      type: "text",
-      size: "base",
-      fullWidth: true,
-      content:
-        "The same protocol works at any size of business.",
     },
     {
       id: "closing",
