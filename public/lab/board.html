@@ -1979,10 +1979,20 @@ const flowX = (dx) => {
   clearTimeout(flowLand);
   flowLand = setTimeout(landX, 110);
 };
+/* ── AND NEVER BACKWARDS ─────────────────────────────────────────
+   The nearest column was the wrong landing: a row that had carried a
+   column's edge past the glass would turn round and bring it back,
+   and the turn read as a stumble. The landing is the next column in
+   the direction of travel — a column gone past to the left is gone,
+   and the one after it settles in — with a hand's width of tolerance
+   at the edge itself, so a stop right on a column is that column.
+   Only a movement too small to be meant (24px) goes back where it
+   started. */
 const landX = () => {
-  const from = flowFrom; flowFrom = null;
-  let i = Math.round((tgt.x + GAP / 2) / MOD_X);
-  if (i === from && Math.abs(flowRun) > 24) i = from + Math.sign(flowRun);
+  flowFrom = null;
+  const x = (tgt.x + GAP / 2) / MOD_X;
+  const i = Math.abs(flowRun) <= 24 ? Math.round(x)
+    : flowRun > 0 ? Math.ceil(x - 0.04) : Math.floor(x + 0.04);
   pageTo(i);
 };
 document.addEventListener("wheel", (e) => {
@@ -4158,20 +4168,37 @@ const checkTimer = setInterval(() => {
    The floor and the ceiling of the one page there was are the
    browser's now: each column is a scroller with its own ends, its own
    momentum and its own rubber band. What is left here is the row. */
+let vx = 0, tickT = 0;
 function tick() {
   requestAnimationFrame(tick);
-  if (document.hidden) return;
-  const turning = Math.abs(tgt.x - cur.x) > 0.5;
+  if (document.hidden) { tickT = 0; return; }
+  /* time in 60fps frames, so the spring runs the same on a 120Hz
+     glass; capped so a stalled tab does not leap when it wakes */
+  const now = performance.now();
+  const dt = tickT ? Math.min(2, (now - tickT) / (1000 / 60)) : 1;
+  tickT = now;
+  const turning = Math.abs(tgt.x - cur.x) > 0.5 || Math.abs(vx) > 0.05;
   if (turning !== wasTurning) {
     wasTurning = turning;
     plane.classList.toggle("turning", turning);
   }
   if (turning) pokeBurn();
-  /* the plane trails its target by a lerp: 0.11 is the landing's ease,
-     and while a flow is running (flowX) the follow tightens so the row
-     stays under the hand — at 0.11 a fast trackpad ran a whole module
-     ahead of the plane, which read as the field not listening */
-  cur.x += (tgt.x - cur.x) * (flowFrom != null ? 0.25 : 0.11);
+  /* ── THE ROW IS ON A SPRING ─────────────────────────────────────
+     It followed its target by a lerp, which has no memory of speed:
+     the moment a flow landed, the target jumped to a column and the
+     plane's velocity collapsed to a fraction of the gap in one frame,
+     which was the jolt. A critically damped spring carries velocity
+     through the landing and spends it on the way in, so the row
+     glides the last of the distance and eases onto the column. Stiff
+     while a hand is on it (a flow or a drag), so the row stays under
+     the hand; soft once let go, so the landing is the glide. ω is per
+     60fps frame: 0.45 tracks a fast trackpad about a third of a
+     module behind, 0.15 lands in about 700ms from rest. */
+  const stiff = flowFrom != null || (dragging && dragAxis === "x");
+  const w = stiff ? 0.45 : 0.15;
+  vx += (w * w * (tgt.x - cur.x) - 2 * w * vx) * dt;
+  cur.x += vx * dt;
+  if (!turning) { cur.x = tgt.x; vx = 0; }
   plane.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
   /* the cover line is page content: it goes where the plane goes —
      but only AWAY. The field wraps, so a scroll upward from the start
