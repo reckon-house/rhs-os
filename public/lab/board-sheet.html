@@ -12,7 +12,18 @@
      measured (native size, transparent pixels, a tall or wide ratio)
      and a press marks it to leave the field. The marks are kept in
      this browser and copied out as lines for scripts/lib/board-skip.txt,
-     which the thumb builder reads. */
+     which the thumb builder reads.
+
+     THE SECOND PASS is by kind, not by measurement: a bare app screen
+     with no context, a wordmark or a logo cut from its system, a
+     swatch or a pattern field, an illustration lifted from its brand
+     — each right in its study and mute on
+     the board. The file names say most of it, so a tile whose name
+     reads that way is SUGGESTED (a dashed edge and a kind), Suggested
+     shows only those, "Mark suggested" marks them all in one press,
+     and the eye then unmarks the keepers and marks what the names
+     missed. "Copy new" copies only what the repo's list does not
+     already hold. */
   body { background: #f3f1ee; padding: 0 0 80px; }
   .bar { position: sticky; top: 0; z-index: 5; background: #f3f1ee; border-bottom: 1px solid rgba(0,0,0,0.1);
     display: flex; gap: 18px; align-items: center; padding: 14px 28px; flex-wrap: wrap; }
@@ -36,11 +47,14 @@
   .badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
   .badge { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.07); color: var(--ink); }
   .badge.alpha { background: #ffe9c7; } .badge.tiny { background: #ffd6d6; } .badge.tall, .badge.wide { background: #dcecff; }
+  figure.sug { border: 1px dashed rgba(0,0,0,0.45); }
+  .badge.ui { background: #e6e0ff; } .badge.type { background: #e0f2e9; } .badge.swatch { background: #fbe4c8; } .badge.art { background: #f6e0ee; }
   figure.skip { opacity: 0.38; box-shadow: inset 0 0 0 2px var(--ink); }
   figure.skip::after { content: "×"; position: absolute; right: 8px; top: 4px; font-size: 22px; line-height: 1; color: var(--ink); }
   body.only-flagged figure:not(.flagged):not(.skip) { display: none; }
   body.only-skip figure:not(.skip) { display: none; }
-  body.only-flagged .g.empty, body.only-skip .g.empty { display: none; }
+  body.only-sug figure:not(.sug) { display: none; }
+  body.only-flagged .g.empty, body.only-skip .g.empty, body.only-sug .g.empty { display: none; }
   textarea { position: fixed; left: -9999px; top: 0; }
 </style>
 </head>
@@ -52,7 +66,10 @@
   <button id="fAll" class="on">All</button>
   <button id="fFlag">Flagged</button>
   <button id="fSkip">Marked</button>
+  <button id="fSug">Suggested</button>
+  <button id="markSug">Mark suggested</button>
   <button id="copy">Copy list</button>
+  <button id="copyNew">Copy new</button>
   <button id="clear">Clear marks</button>
 </div>
 <div id="sheet"></div>
@@ -63,6 +80,15 @@ const KEY = "board-skip";
 const load = () => { try { return new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) { return new Set(); } };
 const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify([...s])); } catch (e) {} };
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+/* what a file name says a picture is; a study's own pictures only, not
+   its cover and not the pulls */
+const KINDS = [
+  ["ui", /(^|-)ui-|screen|dashboard|configur|settings|modal|console|report|checkout|cart|login|onboarding|interface|menu|mobile-|wireframe|template/i],
+  ["type", /wordmark|logo|(^|-)mark(s)?(\.|-|$)|lettering|typograph|glyph|monogram|letterform|type-spec|font/i],
+  ["swatch", /swatch|pattern|palette|colou?r-|texture|halftone|stripe|grid-system|construction|specimen/i],
+  ["art", /illustration|silhouette|icon|badge|sticker|emblem|crest|poster|mid-century/i],
+];
+const kindOf = (name) => { for (const [k, re] of KINDS) if (re.test(name)) return k; return null; };
 
 fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
   const marks = load();
@@ -82,6 +108,8 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
       const f = el("figure", a.clear ? "" : "opaque");
       f.dataset.key = a.src;
       if (a.flags.length) f.classList.add("flagged");
+      const kind = (it.g !== "inspiration" && it.c == null) ? kindOf(a.src.split("/").pop()) : null;
+      if (kind) { f.classList.add("sug"); f.dataset.kind = kind; }
       if (marks.has(a.src)) f.classList.add("skip");
       const im = el("img"); im.loading = "lazy"; im.alt = "";
       im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
@@ -91,6 +119,7 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
       cap.appendChild(document.createTextNode(a.w + " × " + a.h));
       const bd = el("div", "badges");
       a.flags.forEach((fl) => bd.appendChild(el("span", "badge " + fl, fl === "alpha" ? "clear" : fl)));
+      if (kind) bd.appendChild(el("span", "badge " + kind, kind));
       cap.appendChild(bd);
       f.appendChild(cap);
       f.addEventListener("click", () => { f.classList.toggle("skip"); if (f.classList.contains("skip")) marks.add(a.src); else marks.delete(a.src); save(marks); count(); });
@@ -100,7 +129,9 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
   }
   const count = () => {
     const n = figs.length, k = figs.filter((f) => f.classList.contains("skip")).length, fl = figs.filter((f) => f.classList.contains("flagged")).length;
-    document.getElementById("count").textContent = n + " tiles · " + fl + " flagged · " + k + " marked to leave";
+    const sg = figs.filter((f) => f.classList.contains("sug")).length;
+    const fresh = [...marks].filter((m) => !(audit.skip || []).includes(m)).length;
+    document.getElementById("count").textContent = n + " tiles · " + fl + " flagged · " + sg + " suggested · " + k + " marked to leave (" + fresh + " new)";
     document.querySelectorAll(".g").forEach((sec) => {
       const vis = [...sec.querySelectorAll("figure")].some((f) => getComputedStyle(f).display !== "none");
       sec.classList.toggle("empty", !vis);
@@ -109,12 +140,26 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
   const mode = (m) => {
     document.body.classList.toggle("only-flagged", m === "flag");
     document.body.classList.toggle("only-skip", m === "skip");
-    ["fAll", "fFlag", "fSkip"].forEach((id, i) => document.getElementById(id).classList.toggle("on", ["all", "flag", "skip"][i] === m));
+    document.body.classList.toggle("only-sug", m === "sug");
+    ["fAll", "fFlag", "fSkip", "fSug"].forEach((id, i) => document.getElementById(id).classList.toggle("on", ["all", "flag", "skip", "sug"][i] === m));
     count();
   };
   document.getElementById("fAll").addEventListener("click", () => mode("all"));
   document.getElementById("fFlag").addEventListener("click", () => mode("flag"));
   document.getElementById("fSkip").addEventListener("click", () => mode("skip"));
+  document.getElementById("fSug").addEventListener("click", () => mode("sug"));
+  document.getElementById("markSug").addEventListener("click", () => {
+    figs.filter((f) => f.classList.contains("sug")).forEach((f) => { f.classList.add("skip"); marks.add(f.dataset.key); });
+    save(marks); count();
+  });
+  const copyOut = async (lines, b, label) => {
+    try { await navigator.clipboard.writeText(lines); } catch (e) { const ta = document.getElementById("ta"); ta.value = lines; ta.select(); document.execCommand("copy"); }
+    b.textContent = "Copied " + (lines ? lines.split("\n").length : 0); setTimeout(() => { b.textContent = label; }, 1400);
+  };
+  document.getElementById("copyNew").addEventListener("click", (e) => {
+    const fresh = [...marks].filter((m) => !(audit.skip || []).includes(m)).sort();
+    copyOut(fresh.join("\n"), e.currentTarget, "Copy new");
+  });
   document.getElementById("clear").addEventListener("click", () => { marks.clear(); save(marks); figs.forEach((f) => f.classList.remove("skip")); count(); });
   document.getElementById("copy").addEventListener("click", async () => {
     const lines = [...marks].sort().join("\n");
