@@ -2013,8 +2013,12 @@ const pageTo = (i) => {
      overshoot when ω sits between v/D and 2v/D; 1.4 v/D is the middle
      of that, clamped so a start from rest still eases in (0.15) and
      a short fast stop never goes stiffer than a hand on it (0.45). */
-  const D = Math.abs(tgt.x - cur.x);
-  landW = D > 1 ? Math.min(0.45, Math.max(0.15, 1.4 * Math.abs(vx) / D)) : 0.15;
+  const D = Math.abs(tgt.x - cur.x), moving = Math.abs(vx) > 5;
+  /* the floor: a row still moving may go as soft as 0.1, so the glide
+     is all deceleration and no push; a row at rest (an arrow, a chip,
+     a hand that stopped before it lifted) starts at 0.2, brisk enough
+     that the ease reads as the landing and not as a wait */
+  landW = D > 1 ? Math.min(0.45, Math.max(moving ? 0.1 : 0.2, 1.4 * Math.abs(vx) / D)) : 0.2;
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
   if (window.__askReady) markFamily();
@@ -2071,7 +2075,10 @@ let wheelAxis = null, wheelIdle = 0;
    back on. A mouse notch is one event and gets no throw. ?flow=V0,K,TOL
    overrides the three numbers, for tuning by hand. */
 let flowT = 0, flowN = 0, flowLast = 0, flowDown = 0, flowPeak = 0, flowCoast = false;
-const flowRing = [];   /* the last four deltas: at a lift they were the tail's, not the hand's */
+/* the shrinking run: the delta it is measured against (the hand's
+   last real push) and the distance it has covered since, which at a
+   lift was the tail's, not the hand's */
+let flowRun0 = 0, flowRunSum = 0;
 const FLOW = (() => {
   const q = (new URLSearchParams(location.search).get("flow") || "").split(",").map(Number);
   return { V0: q[0] || 40, K: q[1] || 5, TOL: q[2] || 0.25 };
@@ -2080,26 +2087,47 @@ const flowX = (dx) => {
   const now = performance.now();
   let gap = now - flowT; flowT = now;
   if (gap > 160) { flowFrom = null; flowCoast = false; gap = 16.7; }   /* a new gesture */
-  const a = Math.abs(dx);
+  const a = Math.abs(dx), v = a / Math.max(4, Math.min(50, gap)) * 16.7;
   if (flowCoast) {
-    if (a > flowLast * 1.25 && a > 3) flowCoast = false;
+    /* the hand back on is a real jump, not a tail's wobble: 2 to 3 is
+       fifty percent and nothing; 8 to 14 is a push */
+    if (a > flowLast * 1.25 && a > flowLast + 4 && a > 6) flowCoast = false;
     else { flowLast = a; return; }
   }
-  if (flowFrom == null) { flowFrom = colIdx; flowRun = 0; flowN = 0; flowLast = 0; flowDown = 0; flowPeak = 0; flowRing.length = 0; }
+  if (flowFrom == null) {
+    flowFrom = colIdx; flowRun = 0; flowN = 0; flowLast = 0; flowDown = 0; flowPeak = 0;
+    flowRun0 = 0; flowRunSum = 0;
+  }
   flowN += 1; flowRun += dx;
-  flowRing.push(dx); if (flowRing.length > 4) flowRing.shift();
   /* speed per 60fps frame, whatever the event cadence */
-  flowPeak = Math.max(flowPeak, a / Math.max(4, Math.min(50, gap)) * 16.7);
-  flowDown = a < flowLast ? flowDown + 1 : 0; flowLast = a;
+  flowPeak = Math.max(flowPeak, v);
+  /* ── THE TAIL IS NOT A STAIRCASE ─────────────────────────────────
+     Four strictly shrinking deltas was the lift, and a real tail is
+     quantised: 9, 9, 8, 8, 7, with a wobble, and an equal pair reset
+     the count every time, so the lift went unseen, the row followed
+     the whole tail to a stop halfway into a column and only then
+     eased from rest — the pause. A run is measured against the push
+     it fell from, not the delta before: anything under 90% of that
+     push is in the run, so equal pairs and a wobble stay in it, while
+     a steady hand's equal deltas are a plateau and not a run at all
+     (they reset the push). It is a lift when it has fallen to 78% of
+     the push over four or more events; or, sooner, when the speed is
+     down to a third of the gesture's peak and still falling, which
+     catches a tail whatever its shape. Six events first, so a mouse
+     notch or a short burst lands on the idle clock instead. */
+  if (flowN > 1 && a < flowRun0 * 0.9) { flowDown += 1; flowRunSum += dx; }
+  else { flowDown = 0; flowRun0 = a; flowRunSum = 0; }
+  flowLast = a;
   /* the field does not wrap to the left: a little give past the start,
      as an overdrag has, and the landing brings it back */
   tgt.x = Math.max(restX(0) - MOD_X * 0.3, tgt.x + dx);
   clearTimeout(flowLand);
-  /* the four shrinking deltas that named the lift came after it:
-     the landing is read from where the hand was, not where the tail
-     has since carried the target */
-  if (flowDown >= 4 && flowN >= 6) { flowCoast = true; landX(flowRing.reduce((a, d) => a + d, 0)); return; }
-  flowLand = setTimeout(() => landX(0), 110);
+  const lifted = flowN >= 6 && ((flowDown >= 4 && a <= flowRun0 * 0.78)
+    || (flowDown >= 2 && v < flowPeak * 0.35));
+  if (lifted) { flowCoast = true; landX(Math.max(-MOD_X, Math.min(MOD_X, flowRunSum))); return; }
+  /* a stream with no tail — the fingers stopped before they lifted —
+     lands on the idle clock, kept short so the row is not seen waiting */
+  flowLand = setTimeout(() => landX(0), 70);
 };
 /* ── AND NEVER BACKWARDS ─────────────────────────────────────────
    The nearest column was the wrong landing: a row that had carried a
@@ -2114,10 +2142,25 @@ const landX = (lift) => {
   else {
     const push = flowN >= 3 ? Math.max(0, flowPeak - FLOW.V0) * FLOW.K / MOD_X : 0;
     i = flowRun > 0 ? Math.ceil(x + push - FLOW.TOL) : Math.floor(x - push + FLOW.TOL);
+    /* and not behind the row itself by more than a little: the rewind
+       reads the hand, and a long tail can put the hand's lift behind
+       where the row now is. A little, because the row trails the hand
+       and can be a few px past an edge the hand was well within — a
+       generous single swipe landed on the column after for a 23px
+       overlap, which is not the price of 23px */
+    const here = (cur.x + GAP / 2) / MOD_X;
+    i = flowRun > 0 ? Math.max(i, Math.ceil(here - 0.15)) : Math.min(i, Math.floor(here + 0.15));
+    /* and a movement that was meant is at least one column: a mouse
+       notch is 100px, which is under the tolerance on a wide module */
+    if (i === flowFrom) i += Math.sign(flowRun);
     /* too fast to stop at that column even at the stiffest the spring
-       goes: the one after, rather than blowing through and coming back */
+       goes: the one after, rather than blowing through and coming
+       back. Twice the limit and more before it counts: a critically
+       damped row overshoots by (B/ω)·e^(−1−ωD/B) with B = v − ωD,
+       which is under a pixel at 1.2ωD and about a dozen at 2.2ωD, and
+       a whole column is not the price of a dozen pixels */
     const D = restX(Math.max(0, i)) - cur.x;
-    if (Math.sign(D) === Math.sign(flowRun) && Math.abs(vx) > 0.45 * Math.abs(D)) i += Math.sign(flowRun);
+    if (Math.sign(D) === Math.sign(flowRun) && Math.abs(vx) > 0.45 * 2.2 * Math.abs(D)) i += Math.sign(flowRun);
   }
   pageTo(i);
 };

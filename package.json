@@ -30,7 +30,8 @@
     "tells": "node scripts/tells.mjs",
     "daybook:gap": "node --no-warnings scripts/daybook-gap.mjs",
     "reels": "node --experimental-strip-types scripts/build-reel-thumbs.mjs",
-    "ask:bench": "node --no-warnings scripts/ask-bench.mjs"
+    "ask:bench": "node --no-warnings scripts/ask-bench.mjs",
+    "flow:sim": "node scripts/flow-sim.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
