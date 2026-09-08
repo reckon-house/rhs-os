@@ -7,7 +7,7 @@ export const youBySallyCaseStudy: CaseStudy = {
   title: "You By Sally",
   category: { label: "Creative", href: "/category/creative" },
   subtitle:
-    "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and a look that holds from an influencer's bio page to a retail sign.",
+    "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and one grid from a bio page to a retail sign.",
   field: "Campaign Direction\nBrand System\nDigital Design\nRetail Signage",
   author: "Jeremy Prasatik",
   published: "2021",
@@ -40,7 +40,7 @@ export const youBySallyCaseStudy: CaseStudy = {
       },
       title: "You By\nSally",
       subtitle:
-        "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and a look that holds from an influencer's bio page to a retail sign.",
+        "A brand campaign for You by Sally, Sally Beauty's hair color line. | Real people instead of models, oversized swatches, and one grid from a bio page to a retail sign.",
       field: "Campaign Direction  Brand System  Digital Design  Retail Signage",
       author: "Jeremy Prasatik",
       published: "2021",
@@ -238,9 +238,9 @@ export const youBySallyCaseStudy: CaseStudy = {
       label: "SECTION 04: MARKS & MATERIALS",
       title: "Hot pink, cyan, black.\nAvenir Next in three weights.",
       introText:
-        "Pink for the personality, cyan for the contrast, and black under both so the two loud colors never turn into noise.",
+        "Pink for the personality, cyan for the contrast, and black under both so the two loud colors don't fight.",
       philosophyText:
-        "The pink and the cyan stay the same on every surface, and that is what makes a phone screen and a store sign read as the same brand.\n\nOne type family. Avenir Next Heavy for the wordmark, Demi Bold for the shade names and the SHOP NOW callouts, Medium for everything else. Three weights of one family gave the layouts all the contrast they needed.",
+        "The pink and the cyan stay the same on every surface, so a phone screen and a store sign look like the same brand.\n\nOne type family. Avenir Next Heavy for the wordmark, Demi Bold for the shade names and the SHOP NOW callouts, Medium for everything else. Three weights of one family gave the layouts all the contrast they needed.",
       colors: [
         { name: "Hot Pink", hex: "#E91E63", description: "Primary, personality" },
         { name: "Cyan", hex: "#00B8D4", description: "Contrast, accent" },
