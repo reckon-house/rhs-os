@@ -148,7 +148,7 @@ export const robertRodriguezCaseStudy: CaseStudy = {
         {
           title: "The System.",
           content:
-            "Four photographs, a typeface family, and a color field. Every piece in the campaign is some mix of those three, and each combination reads a little differently from the last.",
+            "Four photographs, a typeface family, and a color field. Every piece in the campaign is some mix of those three, and each combination looks a little different from the last.",
         },
       ],
     },
