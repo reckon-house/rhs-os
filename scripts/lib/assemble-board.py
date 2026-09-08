@@ -2079,6 +2079,10 @@ let flowT = 0, flowN = 0, flowLast = 0, flowDown = 0, flowPeak = 0, flowCoast = 
    last real push) and the distance it has covered since, which at a
    lift was the tail's, not the hand's */
 let flowRun0 = 0, flowRunSum = 0;
+/* the last 80ms of deltas, for a speed that is the hand's and not the
+   delivery's: the OS bunches wheel events, and a 30px delta arriving
+   4ms after the last read as 125px a frame */
+const flowHist = [];
 const FLOW = (() => {
   const q = (new URLSearchParams(location.search).get("flow") || "").split(",").map(Number);
   return { V0: q[0] || 40, K: q[1] || 5, TOL: q[2] || 0.25 };
@@ -2087,7 +2091,7 @@ const flowX = (dx) => {
   const now = performance.now();
   let gap = now - flowT; flowT = now;
   if (gap > 160) { flowFrom = null; flowCoast = false; gap = 16.7; }   /* a new gesture */
-  const a = Math.abs(dx), v = a / Math.max(4, Math.min(50, gap)) * 16.7;
+  const a = Math.abs(dx);
   if (flowCoast) {
     /* the hand back on is a real jump, not a tail's wobble: 2 to 3 is
        fifty percent and nothing; 8 to 14 is a push */
@@ -2096,10 +2100,14 @@ const flowX = (dx) => {
   }
   if (flowFrom == null) {
     flowFrom = colIdx; flowRun = 0; flowN = 0; flowLast = 0; flowDown = 0; flowPeak = 0;
-    flowRun0 = 0; flowRunSum = 0;
+    flowRun0 = 0; flowRunSum = 0; flowHist.length = 0;
   }
   flowN += 1; flowRun += dx;
-  /* speed per 60fps frame, whatever the event cadence */
+  /* speed per 60fps frame over the last 80ms, whatever the cadence and
+     however the events were bunched; never read off less than 50ms */
+  flowHist.push({ t: now, a });
+  while (now - flowHist[0].t > 80) flowHist.shift();
+  const v = flowHist.reduce((sum, e) => sum + e.a, 0) / Math.max(50, now - flowHist[0].t) * 16.7;
   flowPeak = Math.max(flowPeak, v);
   /* ── THE TAIL IS NOT A STAIRCASE ─────────────────────────────────
      Four strictly shrinking deltas was the lift, and a real tail is
@@ -2140,7 +2148,11 @@ const landX = (lift) => {
   let i;
   if (Math.abs(flowRun) <= 24) i = Math.round(x);
   else {
-    const push = flowN >= 3 ? Math.max(0, flowPeak - FLOW.V0) * FLOW.K / MOD_X : 0;
+    /* the throw: speed above V0 for K frames — scaled by how far the
+       hand itself went, since a subtle flick is quick but short and
+       a swipe meant to travel is long. A short stroke keeps 40% */
+    const reach = Math.min(1, Math.abs(flowRun - (lift || 0)) / MOD_X);
+    const push = flowN >= 3 ? Math.max(0, flowPeak - FLOW.V0) * FLOW.K * (0.4 + 0.6 * reach) / MOD_X : 0;
     i = flowRun > 0 ? Math.ceil(x + push - FLOW.TOL) : Math.floor(x - push + FLOW.TOL);
     /* and not behind the row itself by more than a little: the rewind
        reads the hand, and a long tail can put the hand's lift behind

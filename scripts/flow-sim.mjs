@@ -53,19 +53,26 @@ const pageTo = (i) => {
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
 ${fit}};
 ${flow}
+let acc = 0;
 function frame() {
-  now += 16.7;
-  for (const t of timers.filter((t) => t.at <= now)) { timers.splice(timers.indexOf(t), 1); t.fn(); }
   const dt = 1;
   const turning = Math.abs(tgt.x - cur.x) > 0.5 || Math.abs(vx) > 0.05;
 ${spring}  if (!turning) { cur.x = tgt.x; vx = 0; }
 }
-return { frame, flowX, get colIdx() { return colIdx; }, cur, get now() { return now; }, get coast() { return flowCoast; }, FLOW };
+/* time passes: due timers fire, and a frame is drawn for every 16.7ms */
+function step(ms) {
+  now += ms; acc += ms;
+  for (const t of timers.filter((t) => t.at <= now)) { timers.splice(timers.indexOf(t), 1); t.fn(); }
+  while (acc >= 16.7) { acc -= 16.7; frame(); }
+}
+return { step, flowX, get colIdx() { return colIdx; }, cur, get now() { return now; }, get coast() { return flowCoast; }, FLOW };
 `;
 
 const safariTail = (v0, n) => { const t = []; for (let i = 0; i < n; i++) t.push(Math.max(1, Math.round(v0 * Math.pow(0.9, i) + ((i % 3) === 1 ? 1 : 0)))); return t; };
 const pairedTail = (v0, n) => { const t = []; for (let i = 0; i < n; i++) { const d = Math.round(v0 * Math.pow(0.96, i) / 2); t.push(d, d); } return t.slice(0, n); };
 const GESTURES = [
+  ["subtle flick, bunched", [40, 90, 70], safariTail(30, 25), 4],
+  ["short fast flick", [50, 120, 90], safariTail(40, 25)],
   ["gentle flick", [8, 14, 22, 30, 32, 30], safariTail(16, 25)],
   ["generous swipe, 444px", Array(12).fill(37), safariTail(20, 25)],
   ["long swipe, 518px", Array(14).fill(37), safariTail(20, 25)],
@@ -86,12 +93,12 @@ const GESTURES = [
 for (const MOD_X of widths) {
   const B = new Function("MOD_X", harness(MOD_X))(MOD_X);
   console.log(`module ${MOD_X}px  V0 ${B.FLOW.V0}  K ${B.FLOW.K}  TOL ${B.FLOW.TOL}`);
-  for (const [name, direct, tail] of GESTURES) {
+  for (const [name, direct, tail, gapMs] of GESTURES) {
     const from = B.colIdx, S = [];
-    const play = (list) => { for (const d of list) { B.flowX(d); B.frame(); S.push([B.now, B.cur.x]); } };
-    play(direct); const liftAt = B.now; let caught = null;
-    for (const d of tail) { B.flowX(d); if (B.coast && caught == null) caught = Math.round(B.now - liftAt); B.frame(); S.push([B.now, B.cur.x]); }
-    for (let t = 0; t < 1500; t += 16.7) { B.frame(); S.push([B.now, B.cur.x]); }
+    const play = (list, gap) => { for (const d of list) { B.flowX(d); B.step(gap); S.push([B.now, B.cur.x]); } };
+    play(direct, gapMs || 16.7); if (gapMs && gapMs < 16.7) B.step(16.7); const liftAt = B.now; let caught = null;
+    for (const d of tail) { B.flowX(d); if (B.coast && caught == null) caught = Math.round(B.now - liftAt); B.step(16.7); S.push([B.now, B.cur.x]); }
+    for (let t = 0; t < 1500; t += 16.7) { B.step(16.7); S.push([B.now, B.cur.x]); }
     const v = []; for (let i = 1; i < S.length; i++) v.push([S[i][0] - liftAt, (S[i][1] - S[i - 1][1]) / ((S[i][0] - S[i - 1][0]) / 16.7)]);
     const after = v.filter((x) => x[0] > 0);
     const settled = after.find((x) => Math.abs(x[1]) < 0.3 && x[0] > 100);
@@ -106,7 +113,7 @@ for (const MOD_X of widths) {
     const vel = before.filter((_, i) => i % 4 === 0).map((x) => Math.round(x[1])).slice(0, 10);
     const flag = (back ? "  BACKWARDS" : "") + (dip ? "  DIP +" + dip : "");
     console.log(`  ${name.padEnd(26)} ${String(B.colIdx - from).padStart(2)} col  lift ${String(caught == null ? "idle" : caught + "ms").padStart(5)}  settled ${String(settled ? Math.round(settled[0]) : "-").padStart(4)}ms  v ${vel.join(" ")}${flag}`);
-    for (let t = 0; t < 400; t += 16.7) B.frame();
+    B.step(400);
   }
   console.log("");
 }
