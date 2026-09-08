@@ -7,7 +7,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
   title: "Hill Country Kitchen",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, so it reads as lived in.",
+    "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, in the same four finishes.",
   field: "Interior Design\nKitchen Design\nMaterial Specification",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -50,7 +50,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
       },
       title: "Hill Country\nKitchen",
       subtitle:
-        "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, so it reads as lived in.",
+        "A kitchen in the Texas Hill Country, built from four materials. | Sage green cabinetry, raw white oak, veined marble, unlacquered brass. New and vintage together, in the same four finishes.",
       field: "Interior Design  Kitchen Design  Material Specification",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -68,7 +68,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         { label: "Angle", value: "Pick four materials up front and use nothing else, so pieces from different eras can share a room." },
       ],
       abstract:
-        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. It reads as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
+        "Four materials, picked before the first cabinet was drawn and used on every surface. Sage green on most of what you see, raw white oak for the warmth, Calacatta marble on the counters and the backsplash, unlacquered brass on the pulls, the knobs, and the faucet. Between them they cover every cabinet face, countertop, and piece of hardware in the room.\n\nThe mix of periods is on purpose. Shaker cabinet doors come out of traditional American kitchens, the steel-frame windows and open shelving are contemporary, the cremone bolts and schoolhouse pendants are European antique, and a turned-leg dining table sits with leather safari chairs. It works as one room because all of it is in the same four finishes.\n\nThe kitchen is the hub of the house, used for cooking, gathering, and working in about equal measure. The island sits in the middle with open shelving at one end, seating at the other, and marble running the full length. Every decision came back to how a family uses a kitchen day to day.",
     },
 
         // ── HERO ──
@@ -325,7 +325,7 @@ export const hillCountryKitchenCaseStudy: CaseStudy = {
         {
           title: "On Legs",
           content:
-            "The island has legs, visible ones, with open shelving between them, and that is what makes it read as furniture instead of a built-in. The cabinets around the walls are architecture and the island is a table.\n\nPeople treat furniture differently. Guests lean on it, sit around it, set things down on it without asking. A solid-panel island with a granite overhang would keep them at arm's length.",
+            "The island has legs, visible ones, with open shelving between them, and that is why it looks like furniture instead of a built-in. The cabinets around the walls are architecture and the island is a table.\n\nPeople treat furniture differently. Guests lean on it, sit around it, set things down on it without asking. A solid-panel island with a granite overhang would keep them at arm's length.",
         },
       ],
     },
