@@ -1912,6 +1912,9 @@ let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
 /* a flow in progress (flowX): the page it began on, how far it has
    run, and the timer that lands it */
 let flowFrom = null, flowRun = 0, flowLand = 0;
+/* the row's velocity on its spring (tick), the frame clock, and the
+   stiffness the current landing was fitted with (pageTo) */
+let vx = 0, tickT = 0, landW = 0.15;
 /* THE FIELD DOES NOT WRAP TO THE LEFT. Its first column is the
    beginning of the house and there is nothing before it; the
    conversation lives to the RIGHT, past the field, where new things
@@ -1929,6 +1932,18 @@ const pageTo = (i) => {
   /* a page turn is a landing: any flow still waiting to land is done */
   clearTimeout(flowLand); flowFrom = null;
   colIdx = Math.max(0, i); tgt.x = restX(colIdx);
+  /* ── ONE DECELERATION, NOT A BRAKE AND A CRAWL ───────────────────
+     The landing spring had one stiffness, and a fast row met it as a
+     wall: the damping bled the speed off in a few frames, then the
+     soft pull crawled the rest, and the seam between the two read as
+     a pause halfway into the column. The stiffness is fitted per
+     landing now, to the speed the row has and the distance it has
+     left. A critically damped spring approaches without a dip or an
+     overshoot when ω sits between v/D and 2v/D; 1.4 v/D is the middle
+     of that, clamped so a start from rest still eases in (0.15) and
+     a short fast stop never goes stiffer than a hand on it (0.45). */
+  const D = Math.abs(tgt.x - cur.x);
+  landW = D > 1 ? Math.min(0.45, Math.max(0.15, 1.4 * Math.abs(vx) / D)) : 0.15;
   /* the mark's lines light the one in view, so a page turn redraws them;
      guarded, since the row is paged before the columns exist */
   if (window.__askReady) markFamily();
@@ -2028,6 +2043,10 @@ const landX = (lift) => {
   else {
     const push = flowN >= 3 ? Math.max(0, flowPeak - FLOW.V0) * FLOW.K / MOD_X : 0;
     i = flowRun > 0 ? Math.ceil(x + push - FLOW.TOL) : Math.floor(x - push + FLOW.TOL);
+    /* too fast to stop at that column even at the stiffest the spring
+       goes: the one after, rather than blowing through and coming back */
+    const D = restX(Math.max(0, i)) - cur.x;
+    if (Math.sign(D) === Math.sign(flowRun) && Math.abs(vx) > 0.45 * Math.abs(D)) i += Math.sign(flowRun);
   }
   pageTo(i);
 };
@@ -4204,7 +4223,6 @@ const checkTimer = setInterval(() => {
    The floor and the ceiling of the one page there was are the
    browser's now: each column is a scroller with its own ends, its own
    momentum and its own rubber band. What is left here is the row. */
-let vx = 0, tickT = 0;
 function tick() {
   requestAnimationFrame(tick);
   if (document.hidden) { tickT = 0; return; }
@@ -4231,7 +4249,7 @@ function tick() {
      60fps frame: 0.45 tracks a fast trackpad about a third of a
      module behind, 0.15 lands in about 700ms from rest. */
   const stiff = flowFrom != null || (dragging && dragAxis === "x");
-  const w = stiff ? 0.45 : 0.15;
+  const w = stiff ? 0.45 : landW;
   vx += (w * w * (tgt.x - cur.x) - 2 * w * vx) * dt;
   cur.x += vx * dt;
   if (!turning) { cur.x = tgt.x; vx = 0; }
