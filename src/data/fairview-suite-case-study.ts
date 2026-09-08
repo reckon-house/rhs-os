@@ -199,7 +199,7 @@ export const fairviewSuiteCaseStudy: CaseStudy = {
     {
       id: "headline-mood",
       type: "editorial-headline",
-      text: "Three decades of furniture\non one floor",
+      text: "Through the double doors,\nthe same palette in the bath",
     },
 
     // ── ENSUITE HERO ──
