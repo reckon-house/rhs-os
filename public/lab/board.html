@@ -1970,29 +1970,65 @@ const pageTo = (i) => {
    what a mouse wheel's single notch is. Arrow keys still walk one at
    a time; a finger's flick is the drag's, below. */
 let wheelAxis = null, wheelIdle = 0;
+/* ── THE HAND LIFTS, AND THAT IS THE LANDING ────────────────────────
+   A trackpad keeps sending deltas after the fingers lift — the
+   inertia is the system's, decaying over half a second or more — and
+   a row that followed all of it carried a one-column swipe past the
+   next edge, so "the next column along" read as two. The stream has
+   no flag for the lift, but it has a shape: the direct phase wanders,
+   the tail only shrinks. Four shrinking deltas in a row is the hand
+   off, and the row lands there, from where the hand left it and how
+   fast: the next column along, plus a throw for a hard flick (peak
+   speed above V0, K frames of it), with a quarter-module of tolerance
+   past an edge so a generous single swipe is still one. The rest of
+   the tail is let go, unless a delta grows again, which is the hand
+   back on. A mouse notch is one event and gets no throw. ?flow=V0,K,TOL
+   overrides the three numbers, for tuning by hand. */
+let flowT = 0, flowN = 0, flowLast = 0, flowDown = 0, flowPeak = 0, flowCoast = false;
+const flowRing = [];   /* the last four deltas: at a lift they were the tail's, not the hand's */
+const FLOW = (() => {
+  const q = (new URLSearchParams(location.search).get("flow") || "").split(",").map(Number);
+  return { V0: q[0] || 40, K: q[1] || 5, TOL: q[2] || 0.25 };
+})();
 const flowX = (dx) => {
-  if (flowFrom == null) { flowFrom = colIdx; flowRun = 0; }
-  flowRun += dx;
+  const now = performance.now();
+  let gap = now - flowT; flowT = now;
+  if (gap > 160) { flowFrom = null; flowCoast = false; gap = 16.7; }   /* a new gesture */
+  const a = Math.abs(dx);
+  if (flowCoast) {
+    if (a > flowLast * 1.25 && a > 3) flowCoast = false;
+    else { flowLast = a; return; }
+  }
+  if (flowFrom == null) { flowFrom = colIdx; flowRun = 0; flowN = 0; flowLast = 0; flowDown = 0; flowPeak = 0; flowRing.length = 0; }
+  flowN += 1; flowRun += dx;
+  flowRing.push(dx); if (flowRing.length > 4) flowRing.shift();
+  /* speed per 60fps frame, whatever the event cadence */
+  flowPeak = Math.max(flowPeak, a / Math.max(4, Math.min(50, gap)) * 16.7);
+  flowDown = a < flowLast ? flowDown + 1 : 0; flowLast = a;
   /* the field does not wrap to the left: a little give past the start,
      as an overdrag has, and the landing brings it back */
   tgt.x = Math.max(restX(0) - MOD_X * 0.3, tgt.x + dx);
   clearTimeout(flowLand);
-  flowLand = setTimeout(landX, 110);
+  /* the four shrinking deltas that named the lift came after it:
+     the landing is read from where the hand was, not where the tail
+     has since carried the target */
+  if (flowDown >= 4 && flowN >= 6) { flowCoast = true; landX(flowRing.reduce((a, d) => a + d, 0)); return; }
+  flowLand = setTimeout(() => landX(0), 110);
 };
 /* ── AND NEVER BACKWARDS ─────────────────────────────────────────
    The nearest column was the wrong landing: a row that had carried a
    column's edge past the glass would turn round and bring it back,
    and the turn read as a stumble. The landing is the next column in
-   the direction of travel — a column gone past to the left is gone,
-   and the one after it settles in — with a hand's width of tolerance
-   at the edge itself, so a stop right on a column is that column.
-   Only a movement too small to be meant (24px) goes back where it
-   started. */
-const landX = () => {
-  flowFrom = null;
-  const x = (tgt.x + GAP / 2) / MOD_X;
-  const i = Math.abs(flowRun) <= 24 ? Math.round(x)
-    : flowRun > 0 ? Math.ceil(x - 0.04) : Math.floor(x + 0.04);
+   the direction of travel, thrown further by a hard flick. Only a
+   movement too small to be meant (24px) goes back where it started. */
+const landX = (lift) => {
+  const x = (tgt.x - (lift || 0) + GAP / 2) / MOD_X;
+  let i;
+  if (Math.abs(flowRun) <= 24) i = Math.round(x);
+  else {
+    const push = flowN >= 3 ? Math.max(0, flowPeak - FLOW.V0) * FLOW.K / MOD_X : 0;
+    i = flowRun > 0 ? Math.ceil(x + push - FLOW.TOL) : Math.floor(x - push + FLOW.TOL);
+  }
   pageTo(i);
 };
 document.addEventListener("wheel", (e) => {
