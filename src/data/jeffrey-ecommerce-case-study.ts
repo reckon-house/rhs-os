@@ -264,7 +264,7 @@ export const jeffreyEcommerceCaseStudy: CaseStudy = {
       introText:
         "The wordmark, Avenir Next Heavy Italic set wide, worked as a graphic mark before it read as a name. Everything else stayed out of the photography's way.",
       philosophyText:
-        "The palette is narrow on purpose. Charcoal for the type, cream as the ground so the photography reads, a soft gray for captions and meta, and one yellow accent pulled straight from the wordmark for the editorial moments. There is no second accent. The merchandise brings whatever color it needs.\n\nThe type is one family. Avenir Next Heavy for the wordmark and feature headlines, Demi Bold for subheads and calls to action, Medium for everything else. The weights do the hierarchy on their own, so there is no second typeface.",
+        "The palette is narrow on purpose. Charcoal for the type, cream as the ground so the photography comes first, a soft gray for captions and meta, and one yellow accent pulled straight from the wordmark for the editorial moments. There is no second accent. The merchandise brings whatever color it needs.\n\nThe type is one family. Avenir Next Heavy for the wordmark and feature headlines, Demi Bold for subheads and calls to action, Medium for everything else. The weights do the hierarchy on their own, so there is no second typeface.",
       colors: [
         { name: "Charcoal", hex: "#1A1A1A", description: "Type, structure" },
         { name: "Cream", hex: "#F5F2ED", description: "Paper, ground" },
