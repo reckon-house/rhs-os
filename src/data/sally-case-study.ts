@@ -220,7 +220,7 @@ export const sallyCaseStudy: CaseStudy = {
         {
           title: "Gemini 2.5 Pro: The Librarian",
           content:
-            "Gemini reads Sally's internal knowledge base on the first message, so every conversation opens with the brand guidelines, campaign history, product catalogs, regional variations, and performance data already loaded, before anyone has typed a word.\n\nIts million-token context window is what makes that possible. The whole institutional memory of the marketing team fits in a session, and nobody has to hunt through a shared drive or ask a colleague for the file.",
+            "Gemini reads Sally's internal knowledge base on the first message, so every conversation opens with the brand guidelines, campaign history, product catalogs, regional variations, and performance data already loaded, before anyone has typed a word.\n\nThat takes a million-token context window, which Gemini has. The whole institutional memory of the marketing team fits in a session, and nobody has to hunt through a shared drive or ask a colleague for the file.",
         },
         {
           title: "Perplexity Sonar Pro: The Researcher",
