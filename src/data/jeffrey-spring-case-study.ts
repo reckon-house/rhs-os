@@ -48,7 +48,7 @@ export const jeffreySpringCaseStudy: CaseStudy = {
         { label: "Built", value: "Spring campaign for email, homepage and social. Three dress stories: JW Anderson, Valentino, Simone Rocha" },
         { label: "Scope", value: "Art direction, campaign design, email and web templates" },
         { label: "Tools", value: "Photoshop, InDesign, studio photography. Color floods, extreme crops" },
-        { label: "Angle", value: "Monstera and palm fronds cropped big enough to read as architecture, so a white studio could pass for somewhere far away." },
+        { label: "Angle", value: "Monstera and palm fronds cropped big enough to pass for architecture, so a white studio could pass for somewhere far away." },
       ],
       abstract:
         "Jeffrey needed a spring campaign that looked like it had been shot on location, on a studio budget.\n\nIt was shot in the studio, start to finish. Monstera leaves and palm fronds were cropped big and used as graphic elements, more like architecture than greenery, and color floods and extreme crops made the compositions feel bigger than the room they were shot in.\n\nThe type followed the same idea, condensed, stretched and layered for rhythm across three dress stories: JW Anderson, Valentino, Simone Rocha. The whole thing was one kit that ran on email, the homepage and social.",
