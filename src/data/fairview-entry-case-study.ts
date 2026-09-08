@@ -7,7 +7,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
   title: "The Fairview: Entry.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light.",
+    "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, and a vintage rug on white oak.",
   field: "Interior Design\nFurniture Curation\nFinish Selection",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -35,7 +35,7 @@ export const fairviewEntryCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nEntry.",
       subtitle:
-        "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, a vintage rug on white oak, all of it sized for the light.",
+        "The Fairview entry, two stories tall. | Floor-to-ceiling French doors, a brass and alabaster chandelier, and a vintage rug on white oak.",
       field: "Interior Design  Furniture Curation  Finish Selection",
       author: "Jeremy Prasatik",
       published: "2023",
