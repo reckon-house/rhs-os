@@ -7,7 +7,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
   title: "The Fairview: Sitting Room.",
   category: { label: "Interiors", href: "/category/interiors" },
   subtitle:
-    "The Fairview sitting room. | Stacked stone, velvet swivels, antiqued brass, and a room built for conversation, a drink, and a fire.",
+    "The Fairview sitting room. | Stacked stone, charcoal velvet, antiqued brass and warm oak, with the chairs facing the fire.",
   field: "Interior Design\nFurniture Curation\nFinish Selection",
   author: "Jeremy Prasatik",
   published: "2023",
@@ -39,7 +39,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       },
       title: "The Fairview\nSitting Room.",
       subtitle:
-        "The Fairview sitting room. | Stacked stone, velvet swivels, antiqued brass, and a room built for conversation, a drink, and a fire.",
+        "The Fairview sitting room. | Stacked stone, charcoal velvet, antiqued brass and warm oak, with the chairs facing the fire.",
       field: "Interior Design  Furniture Curation  Finish Selection",
       author: "Jeremy Prasatik",
       published: "2023",
@@ -174,7 +174,7 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       type: "text",
       size: "subhead",
       content:
-        "Close enough to feel it either way.",
+        "They sit close enough to feel the fire whichever way they face.",
     },
     {
       id: "conversation-footnote",
@@ -305,20 +305,13 @@ export const fairviewSittingCaseStudy: CaseStudy = {
       },
     },
     {
-      id: "closing-subhead",
-      type: "text",
-      size: "subhead",
-      content:
-        "Four materials, four chairs, and one fire.",
-    },
-    {
       id: "closing",
       type: "closing",
       services: ["Interior Design", "Furniture Curation", "Finish Selection"],
       stack: ["AutoCAD", "SketchUp", "Material specification"],
       links: [],
       content:
-        "The stone wall and the sheen on the velvet are the two showy things in it. Everything else sits back.",
+        "The stone wall and the sheen on the velvet are the two showy things in the room, and everything else sits back.",
     },
   ],
 };
