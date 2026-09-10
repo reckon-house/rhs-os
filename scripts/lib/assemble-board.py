@@ -1798,13 +1798,33 @@ function deal(list, opts) {
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
   });
+  /* ── ROOM AT THE BOTTOM FOR A PICTURE TO OPEN ────────────────────
+     A frame grows to the column's full width on hover (armHover), and
+     a transform costs no layout, so the last picture in a column had
+     nothing under it to grow into and the scroller cut it off at the
+     column's end. Each column carries the tail ITS OWN pictures need:
+     the furthest any of them would paint past the end, once opened.
+     A column of wide frames barely grows and gets the floor; one
+     ending on a narrow frame gets the room that frame will take. No
+     hover on a phone, so there it is the floor alone, which a column
+     wants anyway — ending flush on the last picture is tight. */
+  const floor = opts.stack ? 48 : 96;
+  const colTail = new Array(cols).fill(floor);
+  if (!PHONE) for (const t of out) {
+    if (t.kind !== "img") continue;
+    const shot = t.h - capOf(t);
+    const bottom = t.y + shot * Math.max(1.04, COL / t.w) + (t.h - shot);
+    const need = bottom + floor - colH[t.col];
+    if (need > colTail[t.col]) colTail[t.col] = need;
+  }
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: Math.max(...colH), colH, rowY: ys, coverCol: cc, colRun };
+    PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun };
 }
-let colRun = [], famRun = null;
+let colRun = [], colTail = [], famRun = null;
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
+  colTail = L.colTail || [];
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
@@ -2494,7 +2514,8 @@ function mountCol(u, gx, sh) {
   f.style.cssText = "left:" + gx + "px;width:" + MOD_X + "px;translate:" + sh + "px 0";
   const inn = document.createElement("div");
   inn.className = "fin";
-  inn.style.height = (colH[u - Math.floor(u / COLS) * COLS] || PH) + "px";
+  const c0 = u - Math.floor(u / COLS) * COLS;
+  inn.style.height = ((colH[c0] || PH) + (colTail[c0] || 0)) + "px";
   f.appendChild(inn);
   f.__in = inn;
   plane.appendChild(f);
@@ -2569,7 +2590,7 @@ function mountLines(head, u, f) {
 /* a column stands as tall as the deal dealt it, or as tall as the
    list it is holding open */
 function fitCol(f) {
-  const dealt = colH[f.__c] || PH;
+  const dealt = (colH[f.__c] || PH) + (colTail[f.__c] || 0);
   const h = f.__lines
     ? f.__lines.offsetTop + f.__lines.offsetHeight + 140
     : dealt;
