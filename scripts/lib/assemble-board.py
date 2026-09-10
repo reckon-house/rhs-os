@@ -1411,6 +1411,14 @@ const items = opener.map((it) => img(it, "open"));
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
   const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+  /* ── THE HEAD COUNTS THE LINE, NOT THE RUN ───────────────────────
+     The run holds the studies whose NARROWEST tag is this line, so
+     Digital's run is the four stores and the other six digital
+     studies are dealt with Apps and Campaigns. The chip opens the
+     shelf, and the shelf lists every study tagged digital, which is
+     ten — so a chip that said four was counting one thing and opening
+     another. It counts what it opens. */
+  const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
   const pool = new Map(studies.map((k) => {
     const pics = all.filter((i) => i.g === k);
     const cover = pics.find((i) => i.c != null);
@@ -1419,7 +1427,7 @@ FILTERS.forEach(([label, tag, desc]) => {
   }));
   items.push({ kind: "head", run: tag, first: true, tag,
     html: label + ". <span class=\"q\">" + desc + "</span>",
-    way: studies.length + " studies \u2192" });
+    way: shelf + " studies \u2192" });
   let order = shuffle(studies.slice());
   while ([...pool.values()].some((p) => p.length)) {
     for (const k of order) for (const it of pool.get(k).splice(0, 4)) items.push(img(it, tag));
