@@ -19,6 +19,28 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return { beforeFiles: [{ source: "/", destination: "/lab/board.html" }] };
   },
+  /* ── THE CATEGORY PAGES ARE THE BOARD'S SHELVES NOW ─────────────
+     /category/digital and its two siblings were the old site's
+     landing pages for a line. Nothing on the site has linked to them
+     since the board arrived: the rail, the run heads and the study
+     bars all open a shelf on the board instead. They stayed reachable
+     by URL and in the sitemap, so search still sent people to a
+     staler version of the site standing beside the live one.
+
+     A permanent redirect, rather than a delete, because the three
+     have been indexed for months and an inbound link should land on
+     the thing itself. ?open=shelf: is the board's own address for a
+     line, and any tag works, so /category/branding answers too even
+     though that page never existed. */
+  async redirects() {
+    return [
+      {
+        source: "/category/:tag",
+        destination: "/?open=shelf::tag",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: LONG_CACHE }] },

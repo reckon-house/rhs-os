@@ -34,24 +34,23 @@ export default function NotFound() {
           Back to the work
         </Link>
         <span className="text-foreground/30">/</span>
-        <Link
-          href="/category/digital"
-          className="underline underline-offset-4 transition-colors hover:text-foreground/60"
-        >
-          Digital
-        </Link>
-        <Link
-          href="/category/creative"
-          className="underline underline-offset-4 transition-colors hover:text-foreground/60"
-        >
-          Creative
-        </Link>
-        <Link
-          href="/category/interiors"
-          className="underline underline-offset-4 transition-colors hover:text-foreground/60"
-        >
-          Interiors
-        </Link>
+        {/* the board's own lines, each opening its shelf where the
+            work is, rather than the old category pages */}
+        {([
+          ["Digital", "digital"],
+          ["Apps", "app"],
+          ["Campaigns", "creative"],
+          ["Branding", "branding"],
+          ["Interiors", "interiors"],
+        ] as const).map(([label, tag]) => (
+          <Link
+            key={tag}
+            href={`/?open=shelf:${tag}`}
+            className="underline underline-offset-4 transition-colors hover:text-foreground/60"
+          >
+            {label}
+          </Link>
+        ))}
       </div>
     </main>
   );

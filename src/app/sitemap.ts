@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
-import { projects, type Tag } from "@/data/projects";
+import { projects } from "@/data/projects";
 import { SITE_URL } from "@/lib/site";
 
-const TAGS: Tag[] = ["digital", "creative", "interiors"];
 
 // Served at /sitemap.xml. Built from the projects list so new case studies
 // show up automatically. No manual upkeep.
@@ -15,12 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/inspiration`, lastModified, changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  const categoryRoutes: MetadataRoute.Sitemap = TAGS.map((tag) => ({
-    url: `${SITE_URL}/category/${tag}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
 
   // A few projects point at the same case study, so dedupe by href.
   const caseStudyHrefs = Array.from(
@@ -39,5 +32,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...caseStudyRoutes];
+  return [...staticRoutes, ...caseStudyRoutes];
 }
