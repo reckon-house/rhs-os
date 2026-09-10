@@ -15,7 +15,7 @@ import styles from "./Masthead.module.css";
    study sits on, then the study.
 
    THE LINES ARE THE BOARD'S FIVE, and membership is read the way the
-   board reads it: four of them off the study's own tags, and Apps off
+   board reads it: five of them off the study's own tags, and Apps off
    the list in rail-categories, which is the one shelf the corpus
    cannot separate by tag alone. Each is a door back to the board with
    that shelf standing open, which is what ?open=shelf: does. */
@@ -23,6 +23,7 @@ const LINES: [string, string][] = [
   ["Digital", "digital"],
   ["Apps", "app"],
   ["Campaigns", "creative"],
+  ["Branding", "branding"],
   ["Interiors", "interiors"],
 ];
 const APP_IDS = new Set(

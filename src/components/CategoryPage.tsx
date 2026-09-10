@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Tag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
+import { type CategoryTag, type Project, type CategoryHero, categoryInfo, getProjectsByTag, getProjectById, getOtherTags } from "@/data/projects";
 import { SwipeRow } from "@/components/case-study/SwipeRow";
 import { ScrambleOnView } from "@/components/fx/ScrambleText";
 import { Thumb } from "@/components/Thumb";
@@ -52,8 +52,8 @@ function ThumbRow({ items, startIndex = 0 }: { items: Project[]; startIndex?: nu
 }
 
 /* ── Category section label ── */
-function CategoryLabel({ tag }: { tag: Tag }) {
-  const labels: Record<Tag, string> = {
+function CategoryLabel({ tag }: { tag: CategoryTag }) {
+  const labels: Record<CategoryTag, string> = {
     digital: "More digital",
     creative: "More creative",
     interiors: "More interiors",
@@ -66,7 +66,7 @@ function CategoryLabel({ tag }: { tag: Tag }) {
 }
 
 /* ── Main category page ── */
-export function CategoryPage({ tag }: { tag: Tag }) {
+export function CategoryPage({ tag }: { tag: CategoryTag }) {
   const info = categoryInfo[tag];
   const heroes = info.heroes;
   const heroIds = new Set(heroes.map((h) => h.projectId));

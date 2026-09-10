@@ -1,4 +1,9 @@
-export type Tag = "digital" | "creative" | "interiors";
+/* The lines a study can sit on. "branding" was carved out of
+   "creative" in Sept 2026: campaigns run and end, a mark gets stamped
+   into leather and worn for years, and a list holding both read as one
+   thing. Apps is not here — it is the one shelf the corpus cannot
+   separate by tag, so it is written down in rail-categories.ts. */
+export type Tag = "digital" | "creative" | "branding" | "interiors";
 
 export interface Project {
   id: string;
@@ -54,18 +59,18 @@ export const projects: Project[] = [
   { id: "robertRod", title: "Robert Rodriguez x Neiman’s", category: "Creative direction, design", image: `${HP}/rhs-robert-rodriguez-storefront-window.jpg`, href: "/case-studies/robert-rodriguez", tags: ["creative"], featured: true, keywords: "neiman marcus robert rodriguez woman cream polka dot dress pink blazer orange yellow backdrop storefront window display campaign", drift: 4 },
   { id: "nordstromPersonal", title: "Nordstrom personalization", category: "Design system, direction", image: `${HP}/rhs-nordstrom-personalization-laptop.jpg`, href: "/case-studies/nordstrom-personalization", tags: ["digital"], keywords: "the personalized nordstrom homepage open on a laptop", size: 0.86, drift: 4 },
   { id: "dsc", title: "Dallas Sport Collective", category: "Website, custom app", image: `${HP}/rhs-dallas-sport-collective-laptop-stool.jpg`, href: "/case-studies/dsc", tags: ["digital"], keywords: "dsc marketing site laptop hero", drift: 4 },
-  { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg?v=3`, href: "/case-studies/capitan-boot-co", tags: ["creative"], keywords: "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign" },
+  { id: "capitanBoot", title: "Capitan Boot Co.", category: "Branding, design", image: `${HP}/rhs-capitan-boot-co-branding.jpg?v=3`, href: "/case-studies/capitan-boot-co", tags: ["branding"], keywords: "capitan boot co western original desert landscape cattle skull logo prickly pear cactus agave plants arid mountains branding campaign" },
   { id: "sizzle", title: "Faux Reel", category: "Product design, motion", image: "/images/thumbnails/sizzle.jpg", ogImage: "/og-faux-reel.jpg", href: "/case-studies/sizzle", tags: ["digital"], keywords: "sizzle" },
   { id: "nordstromFramework", title: "Nordstrom framework", category: "Content direction, design", image: `${HP}/rhs-nordstrom-framework-on-our-list.jpg`, href: "/case-studies/nordstrom-framework", tags: ["digital", "creative"], keywords: "hero1", size: 0.53 },
   { id: "hillBath", title: "Hill Country home", category: "Interior design, primary bath", image: `${HP}/rhs-interior-design-hill-country-primary-bath.jpg?v=3`, href: "/case-studies/hill-country-bath", tags: ["interiors"], keywords: "hill country bath vanity marble globe sconces sage", size: 0.86 },
   { id: "nordstromBeauty", title: "Nordstrom beauty", category: "Digital design, personalized", image: `${HP}/rhs-nordstrom-beauty-hub-laptop.jpg`, href: "/case-studies/nordstrom-beauty", tags: ["digital"], keywords: "nordstrom beauty hub laptop homepage mockup", size: 0.43 },
-  { id: "oakworks", title: "Hill Country Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-country-oakworks-billboard.jpg`, href: "/case-studies/hill-country-oak", tags: ["creative"], keywords: "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft" },
+  { id: "oakworks", title: "Hill Country Oakworks", category: "Campaign direction, branding", image: `${HP}/rhs-hill-country-oakworks-billboard.jpg`, href: "/case-studies/hill-country-oak", tags: ["branding"], keywords: "hill country oakworks outdoor banner whiskey barrels colorful background tree texas born oakcraft" },
   { id: "cosmoProf", title: "Cosmo Prof", category: "Digital design, creative direction", image: `${HP}/rhs-cosmo-prof-website-design-digital-rebrand.jpg?v=3`, href: "/case-studies/cosmo-prof", tags: ["digital"], keywords: "cosmo prof photography direction hair color brushes product detail quad composition" },
   { id: "jeffreyNyc", title: "Jeffrey NYC", category: "Ecommerce, web design", image: `${HP}/rhs-jeffrey-ecommerce-laptop.jpg`, href: "/case-studies/jeffrey-ecommerce", tags: ["digital"], keywords: "the jeffrey homepage open on a laptop, saint laurent spring summer shoes", drift: 4 },
-  { id: "bwType", title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg?v=3`, href: "/case-studies/black-white-type", tags: ["creative"], keywords: "typography patterns the fancy poster wood surface lifestyle" },
+  { id: "bwType", title: "Black & white type", category: "Custom typography, patterns", image: `${HP}/rhs-campaign-design-typography-black-white-custom-patterns.jpg?v=3`, href: "/case-studies/black-white-type", tags: ["branding"], keywords: "typography patterns the fancy poster wood surface lifestyle" },
   { id: "hillLiving", title: "Hill Country home", category: "Interior design, living room", image: `${HP}/rhs-interior-design-livingroom-interior.jpg?v=3`, href: "/case-studies/hill-country-living", tags: ["interiors"], keywords: "hill country living cognac leather sofa tweed armchairs limestone fireplace pendant chandelier wide", size: 0.74 },
-  { id: "jChristianson", title: "J. Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg?v=3`, href: "/case-studies/j-christianson", tags: ["creative"], keywords: "j christianson storefront tree stripe window mockup" },
-  { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-blue-plate.jpg`, href: "/case-studies/amber-shockey-co", tags: ["creative"], keywords: "amber shockey co blue florals peony wallpaper pattern field" },
+  { id: "jChristianson", title: "J. Christianson", category: "Brand development, design", image: `${HP}/rhs-campaign-design-j-christianson-branding.jpg?v=3`, href: "/case-studies/j-christianson", tags: ["branding"], keywords: "j christianson storefront tree stripe window mockup" },
+  { id: "amberShockey", title: "Amber Shockey & Co.", category: "Tableware design, branding", image: `${HP}/rhs-campaign-design-amber-shockey-blue-plate.jpg`, href: "/case-studies/amber-shockey-co", tags: ["branding"], keywords: "amber shockey co blue florals peony wallpaper pattern field" },
   { id: "sallyBeauty", title: "You By Sally", category: "Brand campaign", image: `${HP}/rhs-you-by-sally-street-display.jpg`, href: "/case-studies/you-by-sally", tags: ["creative"], keywords: "hero", drift: 4 },
   { id: "fairviewSitting", title: "The Fairview", category: "Interior design, sitting room", image: `${HP}/rhs-interior-design-formal-modern-transitional-1.jpg?v=3`, href: "/case-studies/fairview-sitting", tags: ["interiors"], keywords: "fairview sitting stacked stone fireplace charcoal velvet swivels brass coffee table" },
   { id: "floorDecor", title: "Floor & Decor", category: "Interiors feature", image: `${HP}/rhs-interior-design-master-bath-urban-farmhouse.jpg?v=3`, href: "/case-studies/floor-and-decor", tags: ["interiors"], keywords: "urban southwest primary bath exposed brick matte black soaking tub" },
@@ -75,7 +80,7 @@ export const projects: Project[] = [
   { id: "lovedByNordstrom", title: "Loved by Nordstrom", category: "Brand campaign, design", image: `${HP}/rhs-loved-by-nordstrom-ipad.jpg`, href: "/case-studies/loved-by-nordstrom", tags: ["creative"], keywords: "loved by nordstrom gallery wall campaign tiles tibi center", size: 0.4 },
   { id: "mountainView", title: "Mountain View", category: "Interior design, remodel", image: `${HP}/rhs-interior-design-cabin-mid-century.jpg?v=3`, href: "/case-studies/chalet", tags: ["interiors"], keywords: "chalet living room a frame glass doors malm fireplace sputnik chandelier" },
   { id: "neimanMarcus", title: "Neiman Marcus", category: "Editorial direction, design", image: `${HP}/rhs-neiman-marcus-editorial-design-fashion-spreads.jpg`, href: "/case-studies/neiman-marcus", tags: ["creative"], keywords: "neiman marcus editorial fashion magazine spreads the rocker rainbow rose flora maxi derek lam glam rock" },
-  { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["creative"], keywords: "branding graphics prints florals hot air balloon letterform fashion illustration apparel" },
+  { id: "variousDesign", title: "Various design", category: "Branding, art, apparel", image: `${HP}/rhs-various-design-branding-graphics-prints-apparel.jpg`, href: "/case-studies/branding-graphics", tags: ["branding"], keywords: "branding graphics prints florals hot air balloon letterform fashion illustration apparel" },
   { id: "bigBend", title: "West Texas", category: "Landscape photography", image: "/case-studies/big-bend/hero.jpg", href: "/case-studies/big-bend", tags: ["creative"], keywords: "chisos peak cactus" },
 ];
 
@@ -106,7 +111,16 @@ export interface CategoryMeta {
   classification: string;
 }
 
-export const categoryInfo: Record<Tag, { headline: string; body: string; meta: CategoryMeta; heroes: [CategoryHero, CategoryHero]; expertise: ExpertiseSection }> = {
+/* ── THE LINES WITH A LANDING PAGE OF THEIR OWN ─────────────────────
+   Three of them, and that is the fact rather than a gap: /category/
+   routes exactly these (validTags in the route), and each one is
+   authored copy — a headline, a body, two heroes with blurbs and a
+   practice section. A new line joins Tag without one, and asking for
+   its page 404s until the copy exists. Keyed by this rather than by
+   Tag so adding a line does not demand a page be invented for it. */
+export type CategoryTag = Extract<Tag, "digital" | "creative" | "interiors">;
+
+export const categoryInfo: Record<CategoryTag, { headline: string; body: string; meta: CategoryMeta; heroes: [CategoryHero, CategoryHero]; expertise: ExpertiseSection }> = {
   digital: {
     headline: "Digital experiences,\necommerce and apps.",
     body: "The projects in this section are apps, ecommerce platforms, and AI tools.\n\nSome of them I designed and built end to end, the screens and the code both. The others were design and direction roles inside retail teams.",
@@ -232,6 +246,8 @@ export function getFeaturedByTag(tag: Tag): Project[] {
   return projects.filter((p) => p.tags.includes(tag) && p.featured);
 }
 
-export function getOtherTags(tag: Tag): Tag[] {
-  return (["digital", "creative", "interiors"] as Tag[]).filter((t) => t !== tag);
+export function getOtherTags(tag: CategoryTag): CategoryTag[] {
+  /* the lines with a page of their own, which is what a category page
+     can send a visitor to */
+  return (["digital", "creative", "interiors"] as CategoryTag[]).filter((t) => t !== tag);
 }

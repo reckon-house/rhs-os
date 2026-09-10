@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CategoryPage } from "@/components/CategoryPage";
-import { categoryInfo, type Tag } from "@/data/projects";
+import { categoryInfo, type CategoryTag } from "@/data/projects";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
 import { collectionPageJsonLd } from "@/lib/structured-data";
@@ -27,7 +27,7 @@ export async function generateMetadata({
   const { tag } = await params;
   if (!validTags.includes(tag)) return {};
 
-  const info = categoryInfo[tag as Tag];
+  const info = categoryInfo[tag as CategoryTag];
   const title = info.headline.replace(/\s+/g, " ").replace(/\.$/, "").trim();
   const description = metaDescription(info.body);
   const url = `${SITE_URL}/category/${tag}`;
@@ -63,8 +63,8 @@ export default async function Page({ params }: { params: Promise<{ tag: string }
 
   return (
     <>
-      <JsonLd data={collectionPageJsonLd(tag as Tag)} />
-      <CategoryPage tag={tag as Tag} />
+      <JsonLd data={collectionPageJsonLd(tag as CategoryTag)} />
+      <CategoryPage tag={tag as CategoryTag} />
     </>
   );
 }

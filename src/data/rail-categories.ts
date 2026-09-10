@@ -97,10 +97,30 @@ export const railCategories: RailCategory[] = [
     ids: [
       "robertRod",
       "ivyPark",
-      "oakworks",
       "sallyBeauty",
       "jeffreyCampaign",
       "lovedByNordstrom",
+    ],
+  },
+  {
+    /* ── THE SIXTH ROW, AND WHY IT IS NOT CAMPAIGNS ────────────────
+       Campaigns held both for a long time: the work made FOR a season
+       and the work a company is made OF. They read alike in a list —
+       every one of them says "branding" somewhere in its line — and
+       they are not the same job. A campaign runs and ends; a mark
+       gets stamped into leather and worn for years. Six studies moved
+       here off `creative`, so a name appears on one list, not both. */
+    label: "Branding",
+    query: "branding",
+    glyph: "",
+    note: "Marks, type and patterns, on packaging, print and apparel.",
+    ids: [
+      "capitanBoot",
+      "oakworks",
+      "jChristianson",
+      "amberShockey",
+      "bwType",
+      "variousDesign",
     ],
   },
   {

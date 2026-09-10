@@ -1,5 +1,5 @@
 import { SITE_URL, plainStatement } from "@/lib/site";
-import { categoryInfo, getProjectsByTag, type Tag } from "@/data/projects";
+import { categoryInfo, getProjectsByTag, type CategoryTag } from "@/data/projects";
 import type { CaseStudy } from "@/lib/types";
 
 /**
@@ -130,7 +130,7 @@ function firstSentence(text: string): string {
 }
 
 /** Category page as a CollectionPage with an ItemList of its case studies. */
-export function collectionPageJsonLd(tag: Tag) {
+export function collectionPageJsonLd(tag: CategoryTag) {
   const url = `${SITE_URL}/category/${tag}`;
   const name = tag.charAt(0).toUpperCase() + tag.slice(1);
 
