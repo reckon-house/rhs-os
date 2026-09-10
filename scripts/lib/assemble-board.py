@@ -1609,11 +1609,26 @@ const shuffle = (a) => {
    The deal never sees one. openStudyColumn reads BOARD_ITEMS itself
    and shows every picture its study has, which is what makes a
    preview fuller than the board. */
-/* where the order file puts a picture, if it names it at all */
-const PLACE = new Map();
+/* ── WHERE THE ORDER FILE PUTS A PICTURE, AND WHERE ELSE ────────────
+   A picture is dealt once, at the first run that names it. Naming it
+   again in another run deals a SECOND COPY there, which is the only
+   way a study can lead a line whose pictures are all spoken for: Sally
+   Marketing OS has one picture on the board, its cover, and the cover
+   is in the opener, so Apps had nothing of it to show. The cover
+   stands in both now, named under "# open" and again at the top of
+   "# app".
+
+   Deliberate, not a slip: a key in two run sections says so twice. A
+   copy is its own object, so the two tiles mount and drop apart. */
+const PLACE = new Map(), AGAIN = new Map();
 for (const [run, keys] of Object.entries(RUN_ORDER)) {
   if (run === "off") continue;
-  for (const key of keys) if (!PLACE.has(key)) PLACE.set(key, run);
+  for (const key of keys) {
+    if (!PLACE.has(key)) { PLACE.set(key, run); continue; }
+    if (PLACE.get(key) === run) continue;
+    if (!AGAIN.has(key)) AGAIN.set(key, []);
+    if (!AGAIN.get(key).includes(run)) AGAIN.get(key).push(run);
+  }
 }
 /* ── ON THE FIELD, OR OFF IT ────────────────────────────────────────
    The sweep sheet cuts a picture (board-skip.txt); a cut plate is
@@ -1662,8 +1677,13 @@ FILTERS.forEach(([label, tag, desc]) => {
   /* the deal's own order: studies by seat, each cover before its
      pictures, pictures in the data file's order. The order file's
      names lead, and setOrder keeps this behind them. */
-  const run = all.filter((i) => placeOf(i) === tag)
-    .sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
+  const run = all.filter((i) => placeOf(i) === tag);
+  /* and any picture this run asks for that is dealt somewhere else */
+  for (const i of all) {
+    const more = AGAIN.get(keyOf(i));
+    if (more && more.includes(tag)) run.push({ ...i });
+  }
+  run.sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
   for (const it of setOrder(tag, run)) items.push(img(it, tag));
 });
 /* the threshold: the last thing that is work, then his own sentence

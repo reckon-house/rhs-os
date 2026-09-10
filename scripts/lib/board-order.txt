@@ -18,6 +18,14 @@
 # scripts/lib/assemble-board.py; `npm run board:page` re-deals with it,
 # no thumbs needed. Lines starting with # are notes.
 
+# open   (The opener)
+hp/rhs-ivy-park-beyonce-digital-brand-launch
+hp/rhs-sally-os-asset-hub-laptop
+hp/rhs-interior-design-kitchen-modern-meets-vintage
+hp/rhs-arc-app-project-select-phone
+hp/rhs-nordstrom-personalization-laptop
+hp/rhs-robert-rodriguez-storefront-window
+
 # digital   (Digital)
 ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
 ivy-park/ivy-park-nordstrom-mobile-experience-mockup
@@ -35,6 +43,7 @@ neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup
 neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup
 
 # app   (Apps)
+hp/rhs-sally-os-asset-hub-laptop   # its second standing: dealt in the opener, leads here
 arc/arc-app-kitchen-project-selection-lifestyle
 hp/rhs-dallas-sport-collective-laptop-stool
 dsc/dsc-owner-calendar-phone-hero
