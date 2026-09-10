@@ -797,8 +797,16 @@ head = r'''<!doctype html>
      parallax. Here the picture is not the tile, it is the thing the
      rings turn around, so this has to outrank that — hence the plate
      in the selector rather than `.sp-st img` alone. */
+  /* max-width 100%, which is what makes the piece the piece. In the
+     study the picture is capped to the box's width by the global
+     `img { max-width: 100% }`, so with height 100% and contain it
+     letterboxes INSIDE the box: 800x702 visible in an 825x956 box,
+     against rings that sweep 1161. The portrait is the small thing
+     and the rings orbit well outside it. Uncapped, the picture grows
+     past them and they read as a scribble over a face. */
   .plate.sp .sp-st img { display: block; height: 100%; width: auto;
-    max-width: none; object-fit: contain; flex: none; }
+    max-width: 100%; object-fit: contain; flex: none;
+    position: relative; z-index: 1; }
   .sp-rg { position: absolute; inset: 0; margin: auto;
     width: var(--sp-r, 92%); height: var(--sp-r, 92%);
     transform-origin: center center; pointer-events: none;
@@ -3786,6 +3794,10 @@ function spinStage(plate, t, cfg, cap) {
   if (ss) { img.srcset = ss; img.sizes = Math.ceil(t.w) + "px"; }
   img.alt = ""; img.decoding = "async";
   st.appendChild(img);
+  /* the rings are appended after the picture and sit UNDER it: the
+     portrait keeps its transparent field (KEEP_ALPHA in
+     build-board-thumbs) so they show through everywhere the octagon
+     is not, and nothing crosses her face. */
   const rng = spinRand(cfg.seed), rings = [], rot = [], spd = [];
   for (let i = 0; i < cfg.count; i += 1) {
     const g = document.createElementNS("http://www.w3.org/2000/svg", "svg");

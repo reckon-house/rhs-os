@@ -173,10 +173,21 @@ const keepForPreview = (rel) => {
    study shows. Judged on the pixels, not the channel: a PNG can carry
    alpha and be opaque everywhere. */
 const PLATE = "#EDE7E2";
-async function opener(from) {
+/* ── EXCEPT WHERE THE BOARD DRAWS AROUND IT ─────────────────────────
+   One picture is not shown alone: Ivy Park's polygon portrait is the
+   still at the middle of a piece the board draws (TILE_SPIN in
+   assemble-board.py), and the rings turn BEHIND it. Flattened, its
+   transparent field becomes a cream rectangle and hides them. It keeps
+   its alpha and composes on the plate, which is this same colour.
+   Named here rather than inferred: this is a fact about how one
+   picture is used, not about its pixels. */
+const KEEP_ALPHA = new Set([
+  "ivy-park/ivy-park-polygon-portrait-frame-logo.webp",
+]);
+async function opener(from, rel) {
   const meta = await sharp(from, { failOn: "none" }).metadata();
   let clear = false;
-  if (meta.hasAlpha) {
+  if (meta.hasAlpha && !KEEP_ALPHA.has(rel)) {
     const st = await sharp(from, { failOn: "none" }).stats();
     const a = st.channels[st.channels.length - 1];
     clear = !!a && a.min < 250;
@@ -209,7 +220,7 @@ for (const from of walk(ROOT)) {
   const cut = SKIP.has(rel) || rel.split("/").length > 2;
   if (cut && !named && !keepForPreview(rel)) { left += 1; continue; }
   if (cut && !named) preview += 1;
-  const open = await opener(from);
+  const open = await opener(from, rel);
   const slug = rel.split("/")[0];
   const stem = rel.slice(slug.length + 1).replace(/\.[^.]+$/, "");
   const to = join(OUT, slug, stem + ".webp");
