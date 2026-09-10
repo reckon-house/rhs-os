@@ -1469,7 +1469,7 @@ const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
 const TILE_SPIN = {
   "ivy-park/ivy-park-polygon-portrait-frame-logo": {
     count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
-    share: 0.86,
+    share: 1,
     /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
        Board thumbs are served with a day's cache, and this one's
        MEANING changed rather than its framing: it used to be flattened
@@ -1858,7 +1858,12 @@ function deal(list, opts) {
          384 CSS and the change did nothing. it.w IS the file. */
       const honest = it.w / DPR;
       while (COL * share > honest && share > shares[0]) {
-        share = shares[shares.indexOf(share) - 1];
+        /* a share off the ladder (a piece given the whole column) has
+           no rung to step down FROM, so it steps onto the top one and
+           walks from there. indexOf would be -1 and the next line
+           would read shares[-2]. */
+        const i = shares.indexOf(share);
+        share = i > 0 ? shares[i - 1] : shares[shares.length - 1];
       }
       prevShare = share;
       w = Math.min(Math.round(COL * share), Math.round(honest));
