@@ -99,7 +99,7 @@ export const railCategories: RailCategory[] = [
     label: "Campaigns",
     query: "campaign",
     glyph: "",
-    note: "Art direction and campaigns for national retailers.",
+    note: "Creative direction and execution for international brands.",
     ids: [
       "robertRod",
       "ivyPark",

@@ -1429,7 +1429,7 @@ const QUOTES = [
 const FILTERS = [
   ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
   ["Apps", "app", "Native tools and AI products, built end to end."],
-  ["Campaigns", "creative", "Art direction and campaigns for national retailers."],
+  ["Campaigns", "creative", "Creative direction and execution for international brands."],
   ["Branding", "branding", "Marks, type and patterns, on packaging, print and apparel."],
   ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
   ["Staples", "staples", "Pictures and lines saved from other people's work."],
