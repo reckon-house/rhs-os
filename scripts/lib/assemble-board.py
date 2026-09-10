@@ -779,6 +779,30 @@ head = r'''<!doctype html>
   @media (prefers-reduced-motion: reduce) {
     .tile.lines .crow { opacity: 1; transform: none; transition: none; }
   }
+  /* ── THE RINGS (TILE_SPIN) ─────────────────────────────────────
+     The plate carries the study's composition instead of a picture.
+     Centred with inset + margin:auto rather than a transform, because
+     the plate parallax writes transform to a tile's img every frame
+     and would overwrite one. The stage's ratio is the study's box,
+     801:928, so the rings keep their proportion whatever the tile. */
+  .plate.sp { position: relative; background: #EDE7E2; }
+  .sp-st { position: absolute; inset: 0; margin: auto;
+    width: var(--sp-w, 64%); height: var(--sp-h, 74%);
+    display: flex; align-items: center; justify-content: center;
+    /* the picture is wider than the study's box and hangs out of it,
+       exactly as it does in the study; the tile is what clips */
+    overflow: visible; }
+  /* the shell dresses a tile's picture to FILL it: `.fd-it .shot img`
+     sets width 100%, object-fit cover and a 16% drift for the plate
+     parallax. Here the picture is not the tile, it is the thing the
+     rings turn around, so this has to outrank that — hence the plate
+     in the selector rather than `.sp-st img` alone. */
+  .plate.sp .sp-st img { display: block; height: 100%; width: auto;
+    max-width: none; object-fit: contain; flex: none; }
+  .sp-rg { position: absolute; inset: 0; margin: auto;
+    width: var(--sp-r, 92%); height: var(--sp-r, 92%);
+    transform-origin: center center; pointer-events: none;
+    color: #141414; overflow: visible; }
   .tile.lines .crows { margin-top: 0; }
   .lines .crow { padding-bottom: 44px; }
   .tile.statement.head .lchip { display: inline-flex; align-items: baseline;
@@ -2784,8 +2808,10 @@ function openLine(tag) {
   if (window.__askReady) markFamily();
   rrows.forEach((r) => { if (r.dataset.tag) r.classList.toggle("picked", r.dataset.tag === lineOpen); });
 }
-/* a tile's reel, stopped and forgotten (see TILE_REEL) */
+/* whatever was alive in a tile, stopped and forgotten: its reel
+   (TILE_REEL) or its rings (TILE_SPIN) */
 function dropReel(el) {
+  if (el.__sp) { spinning.delete(el.__sp); spinIO.unobserve(el); el.__sp = null; }
   if (!el.__rl) return;
   szStop(el.__rl); reelIO.unobserve(el); el.__rl = null;
 }
@@ -2888,7 +2914,13 @@ function mount(t, gx, gy, u, f) {
        study's own cover, so the reel stands where its picture would,
        once a period rather than on every tile it owns. */
     const cut = t.c != null && TILE_REEL[t.g] && !REDUCE() ? TILE_REEL[t.g] : null;
-    if (cut) {
+    const spin = !cut && TILE_SPIN[keyOf(t)] ? TILE_SPIN[keyOf(t)] : null;
+    if (spin) {
+      const sp = spinStage(plate, t, spin, cap);
+      /* still under reduced motion: the rings are the composition, the
+         turning is the flourish */
+      if (!REDUCE()) { el.__sp = sp; spinIO.observe(el); }
+    } else if (cut) {
       plate.classList.add("sz-stage");
       const rl = { box: plate, frames: cut.frames, timer: null };
       szStage(rl);
@@ -3684,6 +3716,108 @@ const TILE_REEL = {
     TR + "/cosmo-reel/brushes.jpg", TR + "/cosmo-reel/lineup.jpg",
     TR + "/cosmo-reel/mask.jpg"] },
 };
+/* ── A TILE THAT IS THE PIECE, NOT A PICTURE OF IT ─────────────────
+   Ivy Park's polygon portrait is a still of something that moves: in
+   the study (HexPolygon.tsx) seven hairline octagons turn around it at
+   their own speeds, which is the brand's one device. A tile that shows
+   the still shows the shape and not the device.
+
+   So the board draws it, from the same numbers the study uses: the
+   path, seven rings, 0.92 of the box, the seeded speeds. The stroke is
+   non-scaling, which is what makes it portable — 0.7 in an 801-unit
+   viewBox is 0.72 CSS pixels in the study's 825px box, and 0.7 device
+   pixels in a 300px tile, so the hairline is the same hairline at both
+   sizes rather than a quarter of one.
+
+   The composition is the study's, scaled to fit a tile: the stage is
+   0.74 of the plate's height at the study's 801:928, the picture is
+   the stage's full height, and the rings sweep to 1.53 of their own
+   width — 237px in a 300px tile, inside it. The ring-to-picture ratio
+   comes out at 1.07, which is the study's.
+
+   Keyed by picture, not by study: this is one photograph's device. */
+const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
+  + "234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
+const TILE_SPIN = {
+  "ivy-park/ivy-park-polygon-portrait-frame-logo": {
+    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74 },
+};
+/* the study's own seeded random, so the seven speeds are the seven
+   speeds and the rings sit where they sit */
+const spinRand = (seed) => { let s = seed;
+  return () => { s = (s * 16807) % 2147483647; return s / 2147483647; }; };
+/* every ring on the glass, ticked together; nothing turns while the
+   tab is hidden or the tile is off screen */
+const spinning = new Set();
+const spinIO = new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    const sp = e.target.__sp; if (!sp) return;
+    if (e.isIntersecting) spinning.add(sp); else spinning.delete(sp);
+  });
+});
+(function spinTick() {
+  requestAnimationFrame(spinTick);
+  if (document.hidden || !spinning.size) return;
+  spinning.forEach((sp) => {
+    for (let i = 0; i < sp.rings.length; i += 1) {
+      sp.rot[i] += sp.spd[i] * 0.016;
+      sp.rings[i].style.transform = "rotate(" + sp.rot[i].toFixed(2) + "deg)";
+    }
+  });
+})();
+/* the picture, and the rings around it */
+/* ── HOW BIG THE PIECE IS IN A TILE ────────────────────────────────
+   A ring is the study's box at `scale`, and turning it sweeps a circle
+   the width of its own diagonal: sqrt(801² + 928²) / 801 = 1.531 of
+   its width. So the whole piece needs a square of
+
+       scale × 1.531 × boxW
+
+   and a tile is not square. Fit that square inside the plate's shorter
+   side and work back: this is why the number is computed rather than
+   written down as a percentage that happens to suit one tile. */
+const SPIN_DIAG = Math.sqrt(801 * 801 + 928 * 928) / 801;
+function spinStage(plate, t, cfg, cap) {
+  plate.classList.add("sp");
+  const st = el("span", "sp-st");
+  const img = document.createElement("img");
+  img.src = encodeURI(t.t);
+  const ss = srcsetFor(t);
+  if (ss) { img.srcset = ss; img.sizes = Math.ceil(t.w) + "px"; }
+  img.alt = ""; img.decoding = "async";
+  st.appendChild(img);
+  const rng = spinRand(cfg.seed), rings = [], rot = [], spd = [];
+  for (let i = 0; i < cfg.count; i += 1) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    g.setAttribute("viewBox", "0 0 801 928");
+    g.setAttribute("fill", "none");
+    g.setAttribute("aria-hidden", "true");
+    g.className.baseVal = "sp-rg";
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", SPIN_PATH);
+    p.setAttribute("stroke", "currentColor");
+    p.setAttribute("stroke-width", "0.7");
+    p.setAttribute("vector-effect", "non-scaling-stroke");
+    p.setAttribute("fill", "none");
+    g.appendChild(p); st.appendChild(g); rings.push(g);
+    const dir = i % 2 === 0 ? 1 : -1;
+    spd.push(cfg.base * (1 + (rng() * cfg.vary - cfg.vary / 2)) * dir * (0.5 + i * 0.15));
+    rot.push((360 / cfg.count) * i + rng() * 15);
+  }
+  const pw = t.w, ph = Math.max(1, t.h - cap);
+  /* the ring box, the biggest whose swept circle clears the plate */
+  const boxW = Math.min(pw, ph) / (cfg.scale * SPIN_DIAG);
+  const boxH = boxW * 928 / 801;
+  /* both sides, not a ratio: the box is absolutely placed and its
+     picture is wider than it is, so `aspect-ratio` with an auto width
+     loses to shrink-to-fit and the box comes out the picture's shape */
+  st.style.setProperty("--sp-w", (Math.min(1, boxW / pw) * 100).toFixed(2) + "%");
+  st.style.setProperty("--sp-h", (Math.min(1, boxH / ph) * 100).toFixed(2) + "%");
+  st.style.setProperty("--sp-r", (cfg.scale * 100).toFixed(1) + "%");
+  rings.forEach((g, i) => { g.style.transform = "rotate(" + rot[i].toFixed(2) + "deg)"; });
+  plate.appendChild(st);
+  return { rings, rot, spd };
+}
 const reelFrames = (folder) => {
   const all = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
   const cv = coverOf[folder];
