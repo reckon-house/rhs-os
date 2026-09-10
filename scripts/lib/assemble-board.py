@@ -344,8 +344,8 @@ head = r'''<!doctype html>
   .ccol.dark .cways u:hover { text-decoration-color: #fff; }
   /* a row with a line where the picture would be: the method notes,
      the credits. The list's own rule and air, no thumbnail column. */
-  .ccol .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
-  .ccol .crow.text:hover b { text-decoration: none; }
+  .ccol .crow, .lines .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
+  .ccol .crow, .lines .crow.text:hover b { text-decoration: none; }
   /* ── THE ROOM OFFERS ITS QUESTIONS ────────────────────────────────
      The three method notes are answers, so Info offers the questions
      as chips under the field; a press asks it the way typing would,
@@ -373,13 +373,13 @@ head = r'''<!doctype html>
      A typed name beside it was tried and dropped: at this size a mark
      reads as its own name, so setting both was saying it twice. The
      mark holds the row's left edge, where every other head sits. */
-  .ccol .crow.mark { padding-bottom: 40px; }
-  /* `.ccol .crow img` sets the 96x72 cover a study's row shows, and an
+  .ccol .crow, .lines .crow.mark { padding-bottom: 40px; }
+  /* `.ccol .crow, .lines .crow img` sets the 96x72 cover a study's row shows, and an
      element beats a class: named through the row, this wins. */
-  .ccol .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
+  .ccol .crow, .lines .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
     border-radius: 0; background: none;
     object-fit: contain; object-position: left center; }
-  .ccol .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
+  .ccol .crow, .lines .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
   /* ── THE ONE THAT IS A PHOTOGRAPH ────────────────────────────────
      dwr.jpg is a picture OF a mark rather than the mark: an opaque
      frame, 72% of it a near-black ground with the wordmark in white
@@ -389,7 +389,7 @@ head = r'''<!doctype html>
      the ground the rest of the way to black, where the column's own
      black is, and the wordmark the rest of the way to white. Nothing
      is added: the picture is crushed to the mark inside it. */
-  .ccol .crow .cmk[src$="dwr.jpg"] { filter: contrast(3); }
+  .ccol .crow, .lines .crow .cmk[src$="dwr.jpg"] { filter: contrast(3); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -465,7 +465,7 @@ head = r'''<!doctype html>
      the category in grey at --note, which is the same pair the
      pictures carry under them in the field. Two registers, prose and
      index, each with one size, one weight, one colour change. */
-  .ccol .crows { margin-top: 1em; }
+  .ccol .crows, .lines .crows { margin-top: 1em; }
   /* ── THE RULE BELONGS TO THE ROW UNDER IT ─────────────────────────
      Eleven pixels of air above and eleven below made the rule read as
      a divider between two rows, equally the property of both, and a
@@ -473,7 +473,7 @@ head = r'''<!doctype html>
      a row: the picture and the name sit right under it, and the air
      goes below them, so the eye reads rule-then-thing and the space
      between one thing and the next is the space. */
-  .ccol .crow { display: grid; grid-template-columns: 96px minmax(0, 1fr);
+  .ccol .crow, .lines .crow { display: grid; grid-template-columns: 96px minmax(0, 1fr);
     column-gap: 14px; align-items: start; padding: 13px 0 84px;
     border-top: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer;
     font-size: var(--note); line-height: 1.35; font-weight: 600;
@@ -483,21 +483,21 @@ head = r'''<!doctype html>
   /* a narrowed list DROPS what it does not match rather than fading
      it: half-visible rows are the same veil in miniature, and the
      count above already says how many stayed */
-  .ccol .crow.off { display: none; }
-  .ccol .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
+  .ccol .crow, .lines .crow.off { display: none; }
+  .ccol .crow, .lines .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
     border-radius: 10px; background: rgba(0, 0, 0, 0.04); }
   /* a reeling row's picture box: the still's own geometry, so a row
      that moves and a row that does not sit on the same line */
-  .ccol .crow .creel { width: 96px; height: 72px; border-radius: 10px;
+  .ccol .crow, .lines .crow .creel { width: 96px; height: 72px; border-radius: 10px;
     background: rgba(0, 0, 0, 0.04); }
-  .ccol .crow .creel img { width: 100%; height: 100%; border-radius: 0; }
-  .ccol .crow b { font-weight: 600; }
-  .ccol .crow .g { display: inline; font-weight: 600; }
-  .ccol .crow:hover b { text-decoration: underline;
+  .ccol .crow, .lines .crow .creel img { width: 100%; height: 100%; border-radius: 0; }
+  .ccol .crow, .lines .crow b { font-weight: 600; }
+  .ccol .crow, .lines .crow .g { display: inline; font-weight: 600; }
+  .ccol .crow, .lines .crow:hover b { text-decoration: underline;
     text-decoration-color: rgba(0, 0, 0, 0.22);
     text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .ccol .cways { margin-top: 0.6em; }
-  .ccol .cways u, .ccol .crow:hover b { text-decoration: underline;
+  .ccol .cways u, .ccol .crow, .lines .crow:hover b { text-decoration: underline;
     text-decoration-color: rgba(0, 0, 0, 0.22);
     text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em; }
   .ccol .cways u { cursor: pointer; margin-right: 0.4em; transition: text-decoration-color 0.3s ease; }
@@ -712,6 +712,14 @@ head = r'''<!doctype html>
   /* a run's head: the line's name in the statement's own type, its
      sentence in the statement's grey, and the chip the columns wear */
   .tile.statement.head .way { display: block; margin-top: 18px; }
+  /* the list under an open headline: the tile's own arrival, and the
+     rail's rows at the field's measure */
+  .tile.lines { position: absolute; display: block; opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease var(--lag, 0s),
+      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  .tile.lines.fd-on { opacity: 1; transform: none; }
+  .tile.lines .crows { margin-top: 0; }
+  .lines .crow { padding-bottom: 44px; }
   .tile.statement.head .lchip { display: inline-flex; align-items: baseline;
     background: rgba(0, 0, 0, 0.045); border: 0; border-radius: 12px;
     padding: 8px 12px; margin: 0; color: inherit; font: inherit;
@@ -1461,8 +1469,9 @@ const quoteH = (q) => {
 /* a run's head: the line's name and its sentence in the statement's
    type, and a chip that opens the shelf. Measured in its own clothes,
    as the statement is, since text has no declared ratio */
-const headHTML = (t) => t.html +
-  "<span class=\"way\"><button type=\"button\" class=\"lchip\">" + t.way + "</button></span>";
+const headHTML = (t, open) => t.html +
+  "<span class=\"way\"><button type=\"button\" class=\"lchip\">"
+  + (open ? t.way.replace(/\u2192$/, "\u00d7") : t.way) + "</button></span>";
 const headH = (t) => {
   const m = document.createElement("div");
   m.className = "tile statement head";
@@ -1986,6 +1995,19 @@ function anchorOfAsk() {
 const restX = (i) => i * MOD_X - GAP / 2;
 const START = { x: restX(0), y: 0 };
 const cur = { ...START }, tgt = { ...START };
+/* ── A LINE'S HEAD IS ITS LIST ──────────────────────────────────────
+   The rail's Digital and the field's Digital head were two doors to
+   one room: press the rail and a column arrived saying "Digital" and
+   "10 studies" beside a head tile already saying Digital and the line
+   it stands for, the same word twice in two voices. The head is the
+   only door now. Press its chip and the pictures in ITS column leave
+   by the curtain they arrived through, the ten studies come in under
+   the headline, and the headline never moves. Press again and the
+   pictures come back. The rail presses the same button from across
+   the board: it travels to the head first, so the list always opens
+   where its sentence is. Staples keeps a column of its own, because
+   it is not a list of studies. */
+let lineOpen = null;
 let dragging = false, lastMount = { x: 1e9, y: 1e9 }, wasTurning = false;
 /* a flow in progress (flowX): the page it began on, how far it has
    run, and the timer that lands it */
@@ -2471,11 +2493,15 @@ function mountCol(u, gx, sh) {
 function fillCol(f, fresh) {
   const u = f.__u, gx = f.__gx;
   const col = byCol[f.__c] || [];
+  /* the head standing open in this column, if the open line's is */
+  const head = lineOpen ? col.find((t) => t.kind === "head" && t.tag === lineOpen) : null;
   const y0 = f.scrollTop - MARGIN_Y, y1 = f.scrollTop + f.clientHeight + MARGIN_Y;
   f.__filled = f.scrollTop;
   const want = new Set();
   for (let k = 0; k < col.length; k++) {
     const t = col[k];
+    /* an open head's column is the headline and the list, nothing else */
+    if (head && t !== head) continue;
     if (t.y + t.h < y0 || t.y > y1) continue;
     const key = u + ":" + k;
     want.add(key);
@@ -2490,6 +2516,77 @@ function fillCol(f, fresh) {
     dropReel(el);
     el.remove(); live.delete(key);
   }
+  if (head && !f.__lines) { f.__lines = mountLines(head, u, f); fresh.push(f.__lines); }
+  else if (!head && f.__lines) { stopReels(f.__lines); f.__lines.remove(); f.__lines = null; }
+  fitCol(f);
+}
+/* the studies on a line, under its headline, in the rail's own rows */
+function mountLines(head, u, f) {
+  const box = document.createElement("div");
+  box.className = "tile lines";
+  box.style.cssText = "left:0;top:" + Math.round(head.y + head.h + 36) + "px;width:" + COL + "px";
+  box.__u = u;
+  const hits = Object.entries(GROUPS)
+    .filter(([, g]) => g.tags.includes(head.tag))
+    .map(([folder, g]) => ({ folder, g }));
+  studyRows(hits, box, null);
+  f.__in.appendChild(box);
+  return box;
+}
+/* a column stands as tall as the deal dealt it, or as tall as the
+   list it is holding open */
+function fitCol(f) {
+  const dealt = colH[f.__c] || PH;
+  const h = f.__lines
+    ? f.__lines.offsetTop + f.__lines.offsetHeight + 140
+    : dealt;
+  if (Math.abs(parseFloat(f.__in.style.height) - h) > 1) f.__in.style.height = h + "px";
+}
+/* ── THE PICTURES LEAVE, THE LIST ARRIVES, THE HEADLINE STAYS ───────
+   Everything in the column but the head is swept out through the
+   stylesheet's own curtain, and only once it has gone does the column
+   fill again — with the list, or with the pictures coming back. */
+function openLine(tag) {
+  const head = tiles.find((t) => t.kind === "head" && t.tag === tag);
+  if (!head || dealing) return;
+  const was = lineOpen;
+  lineOpen = was === tag ? null : tag;
+  const cols = new Set([head.col]);
+  if (was && was !== tag) {
+    const old = tiles.find((t) => t.kind === "head" && t.tag === was);
+    if (old) cols.add(old.col);
+  }
+  const going = [];
+  for (const [, el] of live) {
+    if (!cols.has(el.__col.__c) || el.classList.contains("head")) continue;
+    el.classList.add("fd-out"); going.push(el);
+  }
+  const fill = () => {
+    for (const el of going) { dropReel(el); el.remove(); }
+    for (const [key, el] of live) if (going.includes(el)) live.delete(key);
+    const fresh = [];
+    for (const f of fcols.values()) {
+      if (!cols.has(f.__c)) continue;
+      if (f.__lines && (!lineOpen || f.__c !== head.col)) { stopReels(f.__lines); f.__lines.remove(); f.__lines = null; }
+      fillCol(f, fresh);
+    }
+    settle(fresh);
+    dressRules();
+  };
+  /* the headline stays put, so its own chip is redressed in place
+     rather than arriving again with the rest of the column */
+  for (const [, el] of live) {
+    if (!el.classList.contains("head") || !el.__t) continue;
+    const mine = el.__t.tag === tag ? lineOpen === tag : lineOpen === el.__t.tag;
+    el.classList.toggle("open", mine);
+    const chip = el.querySelector(".lchip");
+    if (chip) chip.textContent = mine ? el.__t.way.replace(/\u2192$/, "\u00d7") : el.__t.way;
+  }
+  if (going.length && !REDUCE()) setTimeout(fill, 420); else fill();
+  if (lineOpen) pageTo(dispU(head.col));
+  writeRow();
+  if (window.__askReady) markFamily();
+  rrows.forEach((r) => { if (r.dataset.tag) r.classList.toggle("picked", r.dataset.tag === lineOpen); });
 }
 /* a tile's reel, stopped and forgotten (see TILE_REEL) */
 function dropReel(el) {
@@ -2520,7 +2617,7 @@ function settle(fresh) {
 }
 function mount(t, gx, gy, u, f) {
   const el = document.createElement("div");
-  el.__u = u; el.__col = f;
+  el.__u = u; el.__col = f; el.__t = t;
   /* .ixrow, because that is the ancestor the index's own label and
      hover rules are scoped to. Same classes, same stylesheet, same
      0.62s curve — nothing about the card is re-specified here. */
@@ -2540,11 +2637,13 @@ function mount(t, gx, gy, u, f) {
        is a door to the line's shelf, and a press on it is the chip's,
        not the field's */
     el.classList.add("statement", "head");
-    el.innerHTML = headHTML(t);
+    el.innerHTML = headHTML(t, lineOpen === t.tag);
+    if (lineOpen === t.tag) el.classList.add("open");
     const chip = el.querySelector(".lchip");
     if (chip) chip.addEventListener("click", (e) => {
       e.preventDefault(); e.stopPropagation();
-      setMode(t.tag);
+      /* Staples is not a list of studies, so it keeps its own column */
+      if (t.tag === "staples") setMode("staples"); else openLine(t.tag);
     });
   } else if (t.kind === "spacer") {
     /* the held head's room: the head itself is fixed over this */
@@ -4179,6 +4278,7 @@ function rowId(c) { const id = baseId(c); return id && c.__after ? id + "@" + c.
 function writeRow() {
   try {
     const ids = ccols.map(rowId).filter(Boolean);
+    if (lineOpen) ids.unshift("shelf:" + lineOpen);
     const u = new URL(location.href);
     if (ids.length) u.searchParams.set("open", ids.join(",")); else u.searchParams.delete("open");
     const here = atDisp(colIdx);
@@ -4194,7 +4294,10 @@ async function standRow() {
     const [id, after] = full.split("@");
     const opts = after && /^\d+$/.test(after) ? { at: parseInt(after, 10) } : {};
     if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, opts);
-    else if (id.startsWith("shelf:")) openShelfColumn(id.slice(6), null, opts);
+    else if (id.startsWith("shelf:")) {
+      const tag = id.slice(6);
+      if (tag === "staples") openShelfColumn(tag, null, opts); else openLine(tag);
+    }
     else if (GROUPS[id]) openStudyColumn(id, opts);
     await new Promise((r) => setTimeout(r, 120));
   }
@@ -4804,8 +4907,14 @@ function setMode(mode) {
      filters on the left, and the field dims to it behind. Picking the
      same shelf again folds that column away rather than leaving one
      open with the filter off. */
+  if (!mode) {
+    ccols.filter((c) => c.__mode).forEach(closeColumn);
+    if (lineOpen) openLine(lineOpen);
+    return;
+  }
+  /* a line's door is its head, wherever the press came from */
+  if (mode !== "staples") { openLine(mode); return; }
   const had = ccols.find((c) => c.__mode === mode);
-  if (!mode) { ccols.filter((c) => c.__mode).forEach(closeColumn); return; }
   if (had) { closeColumn(had); return; }
   if (window.askFrom) openShelfColumn(mode, null);
   rrows.forEach((r) => {
