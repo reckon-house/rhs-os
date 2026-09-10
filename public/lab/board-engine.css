@@ -1,0 +1,1265 @@
+/* board-engine.css — the shell rules the Columns engine stands on.
+   Computed by scripts/board-engine-css.mjs from the engine's own class
+   vocabulary against board-shell.css: 212 of 359 rules.
+   Class names are still the homepage's; a prefix is the next step.
+   Tokens this sheet reads but does not define, for a house to supply:
+     --gp
+     --lbl-size
+     --lead-drop
+     --lead-room
+     --ptfs
+     --ptlh
+     --rail-lift
+     --rail-pin
+     --rule-w
+     --share
+   Faces it names, for a house to host or replace:
+     var(--sans)
+     inherit
+     "Avenir Next", "Helvetica Neue", Helveti
+*/
+
+:root {
+    --paper: #FFFFFF;
+    --ink: #000000;
+    /* The small-type tokens scale with the viewport the way the
+       statement does, rather than sitting at one fixed px. The captions
+       under the thumbnails and the whole left rail read these, so the
+       secondary type shrinks on a narrow screen instead of staying
+       laptop-sized next to copy that has already come down. Max holds at
+       the old fixed value, so desktop is unchanged; the floor is the
+       mobile size. --lbl barely travels on purpose — a 10px label has
+       nowhere to shrink to and stay legible. */
+    --lbl: clamp(9px, 0.75vw, 10px);
+    --lbl-track: 0.04em;
+    --lbl-weight: 500;
+    /* ONE SMALL SIZE, not a ramp. 12 was already this token's floor,
+       so a 16px ceiling only ever showed up on wide screens; holding
+       it at 12 makes the secondary type the same everywhere and lets
+       weight and colour do the hierarchy on their own. */
+    --note: 12px;
+    --cap: clamp(10px, 0.82vw, 11px);
+    /* --pp-r in globals.css, which is what PressingIndex reads through
+       --ix-r. One radius for every framed asset on the site. */
+    --r: 16px;
+    --gap: 6px;
+    --nav: 54px;
+    --gut: 50px;
+    /* The column gap, at the root so anything can reason about the
+       grid — the answer's spoken line sits outside .ixbody and still
+       has to land on the same column the statement does. The daybook
+       overrides it on its own .ixbody for its wider alley. */
+    --ixgap: clamp(24px, 3.4vw, 56px);
+    /* THE RAIL PAYS FOR THE WIDER MARGINS. Going from a 40px gutter to
+       50 costs the content 20px, so the note column gives up the same
+       20 and the two image columns keep the width they had. It was
+       never declared before, only ever the 200px fallback. */
+    --ix-note-w: 180px;
+  --stratum-air: clamp(56px, 9dvh, 120px);
+    --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+* { box-sizing: border-box; margin: 0; }
+
+html { background: var(--paper); scroll-behavior: smooth; }
+
+html.rh-home [data-film-ground] { display: none; }
+
+body { font-family: var(--sans); color: var(--ink);
+    -webkit-font-smoothing: antialiased; }
+
+a { color: inherit; }
+
+button { font-family: inherit; }
+
+#nav { --nav-size: 16px; --nav-gutter: 40px; --nav-overhang: 18px;
+    --masthead-ink: #000000; --masthead-paper: #FFFFFF;
+    position: sticky; top: 0; z-index: 60; height: var(--nav);
+    display: grid; align-items: center;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px; padding: 0 var(--nav-gutter);
+    font-family: var(--sans); font-size: var(--nav-size);
+    letter-spacing: 0.04em; font-weight: 500;
+    -webkit-font-smoothing: antialiased; color: var(--masthead-ink); }
+
+#navBurn { position: absolute; pointer-events: none; z-index: 0;
+    left: calc(var(--nav-gutter) - var(--nav-overhang));
+    right: calc(var(--nav-gutter) - var(--nav-overhang));
+    top: 5px; bottom: 5px; border-radius: 999px;
+    backdrop-filter: url(#mastheadMelt) blur(0px) saturate(1) contrast(1);
+    -webkit-backdrop-filter: blur(0px) saturate(1) contrast(1);
+    background: rgba(243, 240, 237, 0.05); }
+
+#nav .mark, #nav .meta { position: relative; z-index: 1; }
+
+#nav .mark { font-weight: 600; letter-spacing: -0.01em; }
+
+#nav .mark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
+
+#nav a { color: inherit; text-decoration: none; }
+
+#nav a:hover { opacity: 0.45; }
+
+#nav .mark { grid-column: 2; justify-self: center; white-space: nowrap; }
+
+#nav a.meta { grid-column: 3; justify-self: end; white-space: nowrap;
+    color: rgba(0, 0, 0, 0.42); }
+
+#nav a.meta:hover { opacity: 1; }
+
+#nav .ask { position: absolute; left: var(--ask-left, var(--nav-gutter)); z-index: 1;
+    top: 50%; transform: translateY(-50%) translateY(var(--ask-drop, 0px));
+    width: var(--ask-w, 420px); display: flex; align-items: center; gap: 8px;
+    font-family: inherit; font-size: var(--ask-fs, 16px);
+    font-weight: var(--ask-fw, 500); letter-spacing: var(--ask-ls, 0.04em);
+    line-height: 1.04; }
+
+.ask.settling { transition: transform 0.45s cubic-bezier(0.2, 0.55, 0.2, 1),
+    width 0.45s cubic-bezier(0.2, 0.55, 0.2, 1), font-size 0.45s ease; }
+
+#query { flex: 1 1 auto; min-width: 0; border: 0; outline: 0;
+    background: transparent; color: inherit; font: inherit;
+    letter-spacing: inherit; padding: 4px 0; border-radius: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.28s ease; }
+
+@media (hover: hover) { #nav:hover #query { border-bottom-color: rgba(0, 0, 0, 0.22); } }
+
+#query:focus { border-bottom-color: var(--masthead-ink); }
+
+#query::placeholder { color: rgba(0, 0, 0, 0.42); opacity: 1;
+    transition: opacity 0.3s ease; }
+
+.ask.big #query { border-bottom-width: 2px;
+    border-bottom-color: rgba(0, 0, 0, 0.14); padding-bottom: 10px; }
+
+.ask.big #query::placeholder { color: var(--masthead-ink);
+    transition: color 0.25s ease; }
+
+.ask.big #query:focus::placeholder { color: rgba(0, 0, 0, 0.3); }
+
+#nav.rev .ask.big #query:focus::placeholder { color: rgba(255, 255, 255, 0.42); }
+
+#nav .mark, #nav #query { transition: color 0.28s ease; }
+
+#nav.rev { color: var(--masthead-paper); }
+
+#nav.rev a.meta { color: rgba(255, 255, 255, 0.5); }
+
+#nav.rev { --rule-ink: var(--masthead-paper);
+    --rule-rest: rgba(255, 255, 255, 0.32); }
+
+#nav.rev #query::placeholder { color: rgba(255, 255, 255, 0.6); }
+
+@media (hover: hover) { #nav.rev:hover #query { border-bottom-color: rgba(255, 255, 255, 0.35); } }
+
+.cover { --cover-air: 50px;
+    margin-top: calc(var(--cover-air) - var(--nav));
+    padding: 0 0 clamp(30px, 4dvh, 56px);
+    position: relative; }
+
+.cover .ixbody { align-items: start; }
+
+.cover { --nav-size: 12px;
+    --stmt-fs: clamp(21px, 2.4vw, 32px);
+    --cap-align: calc(0.2031 * var(--stmt-fs)
+      - 0.0417 * var(--nav-size, 12px)); }
+
+.covermark, .covermeta { padding-top: var(--cap-align); }
+
+.covermark { font-size: var(--nav-size, 12px); font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.04; white-space: nowrap; }
+
+.covermark i { font-style: normal; font-weight: 400; margin: 0 -0.01em; }
+
+.covermeta { justify-self: end; text-align: right;
+    font-size: var(--nav-size, 16px); font-weight: 500;
+    letter-spacing: 0.04em; line-height: 1.04;
+    color: rgba(0, 0, 0, 0.42); }
+
+.covermeta a { text-decoration: none; transition: color 0.2s ease; }
+
+.covermeta a:hover { color: var(--ink); }
+
+html.rh-cover #nav [data-mark],
+  html.rh-cover #nav [data-meta] {
+    opacity: 0; visibility: hidden;
+    transform: translateY(-14px);
+    transition: opacity 0.2s ease,
+      transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0.32s; }
+
+html.rh-cover body.headgone #nav [data-mark],
+  html.rh-cover body.headgone #nav [data-meta] {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.22s ease,
+      transform 0.34s cubic-bezier(0.2, 0.9, 0.25, 1),
+      visibility 0s linear 0s; }
+
+html.rh-cover body.headgone #nav [data-meta] {
+    transition-delay: 0.05s, 0.05s, 0s; }
+
+@media (prefers-reduced-motion: reduce) {
+    html.rh-cover #nav [data-mark],
+    html.rh-cover #nav [data-meta] { transition: none; transform: none; }
+  }
+
+@media (min-width: 861px) {
+    #stIndex .ixnotes { margin-top: calc(-1 * var(--rail-lift, 0px)); }
+
+  }
+
+html.rh-home #nav [data-burn] { transition: opacity 0.25s ease; }
+
+html.rh-home body.coverbar #nav [data-burn] { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-burn] { transition: none; }
+  }
+
+html.rh-home #nav { --nav-gutter: var(--gut); }
+
+html.rh-home #nav [data-mark] { transition: opacity 0.3s ease; }
+
+html.rh-home #nav [data-meta] {
+    transition: opacity 0.3s ease, color 0.28s ease,
+      background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+    html.rh-home #nav [data-mark], html.rh-home #nav [data-meta] {
+      transition: none; }
+  }
+
+body.asked .cover { display: none; }
+
+.coverR .statement { font-size: var(--stmt-fs, clamp(21px, 2.4vw, 32px));
+    line-height: 1.18; letter-spacing: -0.05em; font-weight: 600;
+    max-width: 21em; }
+
+.ask.big #query { border-bottom: 0; padding-bottom: 0; }
+
+.ask.big #query:focus {
+    text-decoration-color: var(--rule-ink, #000); }
+
+.statement { font-size: clamp(20px, 2.4vw, 32px); line-height: 1.2;
+    letter-spacing: -0.05em; font-weight: 600; max-width: 30em; }
+
+.statement .dim { color: rgba(0, 0, 0, 0.42); }
+
+.stratum .statement { padding: 0 var(--gut) clamp(26px, 4dvh, 48px); }
+
+.fd-it { position: relative; display: block; width: var(--w, 100%);
+    text-decoration: none; }
+
+.fd-it.insetR { align-self: flex-end; }
+
+.fd-it .shot { display: block; width: 100%; aspect-ratio: var(--ar, 1);
+    overflow: hidden; border-radius: var(--r); background: none; }
+
+.fd-it .shot img { display: block; width: 100%;
+    height: calc(100% + var(--drift, 16%)); object-fit: cover;
+    /* the rest position is the MIDDLE of the slack, not the top: a
+       frame the driver has not reached yet — or will never reach,
+       under reduced motion — is still a centred crop rather than one
+       that has quietly lost its bottom sixth. */
+    transform: translate3d(0, calc(var(--drift, 16%) / -2), 0); }
+
+.pt { position: fixed; inset: 0; z-index: 200; pointer-events: none;
+    visibility: hidden;
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+
+.pt.pt-run { visibility: visible; pointer-events: auto; }
+
+.ptw, .ptb { position: absolute; inset: 0; }
+
+.ptw, .ptb { overflow: hidden; }
+
+.ptstack { position: absolute; inset: 0; padding: var(--gut);
+    display: flex; flex-direction: column; justify-content: center; }
+
+.ptl { display: block; white-space: nowrap;
+    font-size: var(--ptfs, clamp(20px, 2.6vw, 38px)); font-weight: 600;
+    line-height: var(--ptlh, 1.18); letter-spacing: -0.05em;
+    -webkit-font-smoothing: antialiased;
+    opacity: 0; transform: translate3d(0, 14px, 0);
+    transition: opacity 0.3s ease,
+      transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--d, 0s); }
+
+.pt-run .ptl { will-change: transform, opacity; }
+
+.ptb .ptl { -webkit-text-stroke: 0.36px currentColor; }
+
+.pt-1 .ptl { opacity: 1; transform: translate3d(0, 0, 0); }
+
+@keyframes ptwait {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0); }
+    22%  { opacity: 0; transform: translate3d(0, -12px, 0); }
+    23%  { opacity: 0; transform: translate3d(0, 14px, 0); }
+    45%  { opacity: 1; transform: translate3d(0, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+.pt-wait .ptl { animation: ptwait 1.8s var(--d, 0s) infinite both;
+    /* the entry transition would fight the keyframes for the same two
+       properties, and the keyframes are the ones in charge here */
+    transition: none; }
+
+.pt-3 .ptl { opacity: 0; transform: translate3d(0, -10px, 0);
+    transition-duration: 0.22s, 0.24s; }
+
+.ptw .ptl { color: var(--ink); }
+
+.ptw .ptl .sub { color: rgba(0, 0, 0, 0.42); }
+
+.ptstack.pt-nosub .ptl .sub { display: none; }
+
+.ptb .ptl { color: var(--paper); }
+
+.ptb .ptl .sub { color: rgba(255, 255, 255, 0.48); }
+
+.ptw { background: var(--paper); clip-path: inset(0 0 100% 0); }
+
+.ptb { background: var(--ink); clip-path: inset(100% 0 0 0); }
+
+.pt-run .ptw { transition: clip-path 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+
+.pt-run .ptb { transition: clip-path 0.52s cubic-bezier(0.33, 0.28, 0.12, 1); }
+
+.pt-1 .ptw { clip-path: inset(0 0 0 0); }
+
+.pt-2 .ptb { clip-path: inset(0 0 0 0); }
+
+.pt-3 .ptw { transition: none; clip-path: inset(0 0 100% 0); }
+
+.pt-3 .ptb { transition: clip-path 0.68s cubic-bezier(0.33, 0.28, 0.12, 1);
+    clip-path: inset(0 0 100% 0); }
+
+.ixnotes { position: sticky;
+    top: var(--rail-pin, calc(var(--nav) + var(--stratum-air)));
+    align-self: start;
+    display: flex; flex-direction: column;
+    /* Measured against the WINDOW, not the page width, because pinning
+       changed what constrains this column. It used to float and could
+       be any height; now it holds at the top, and a pinned column
+       taller than the viewport cannot pin — the bottom simply never
+       arrives. At 7.5vw the five blocks ran 915px against a 900px
+       window and the filter was being cut off.
+       vh is the honest unit here: 40px is the ceiling and it holds
+       from roughly 910px of window upward, so this reads as a flat 40
+       on any normal screen. Below that it shrinks rather than pushing
+       the last block off the bottom, which is the one thing a pinned
+       column must never do.
+
+       40 rather than 60. At 12px the blocks are small and the air
+       between them was reading as three blank lines, which separates
+       them further than they are actually separate: they are five
+       notes on one card, not five cards. Two lines of air still
+       breaks them apart and stops the column looking like a list of
+       unrelated fragments.
+
+       It buys headroom as well, which is the constraint above. Five
+       blocks came to 506px at the old ceiling and come to 426px at
+       this one, so the height at which the rail stops being able to
+       pin moves down by 80px. */
+    --rail-gap: clamp(24px, 4.4vh, 40px);
+    gap: var(--rail-gap); }
+
+.ixnotes .blk { font-size: var(--note); line-height: 1.45;
+    color: rgba(0, 0, 0, 0.78); }
+
+.ixnotes .blk .tag { display: block; font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    opacity: 0.5; padding-bottom: 7px; }
+
+.ixnotes .blk .blkgo { display: block; width: fit-content;
+    margin-top: 10px; color: inherit; }
+
+.ixnotes .blk .rl { display: block; padding-top: 4px; }
+
+.ixnotes .blk .rk { color: rgba(0, 0, 0, 0.45); }
+
+.ixnotes .filt button, .ixnotes .filt a {
+    display: block; width: fit-content; text-align: left;
+    background-color: transparent; border: 0; padding: 0;
+    margin: 0 0 7px; cursor: pointer;
+    font: inherit; font-size: var(--note); line-height: 1.45;
+    color: rgba(0, 0, 0, 0.78); }
+
+.ixnotes .rdrawer .rrow {
+    background: rgba(0, 0, 0, 0.045);
+    /* 12px, not 16. The chip's own height came down with its padding
+       and a radius held at 16 turned a 35px row into a lozenge — the
+       corner has to fall with the box or the shape changes meaning. */
+    clip-path: inset(0 var(--hug, 45%) 0 0 round 12px);
+    transition: clip-path 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+.ixnotes .rdrawer .rrow.open {
+    clip-path: inset(0 0 0 0 round 0px);
+    background: var(--ink); color: #fff; }
+
+.ixnotes .rdrawer .rhead { display: block; width: 100%;
+    text-align: left; background: none; border: 0;
+    /* 14/16, not the lab card's 15/20. The variants page gave the rail
+       236px to play with; the real note column is 180 (--ix-note-w),
+       and at 15px with 20px of side padding the two longest labels —
+       Digital Experiences and Campaign/Creative — needed exactly 180,
+       so they filled the column edge to edge and stopped reading as
+       chips at all. Measured, not guessed: their ink is 140px, and
+       140 + 40 is the whole column.
+
+       This is the one value that had to move on the way in, and it
+       moved because the column is narrower, which is a real material
+       difference rather than a preference.
+
+       PADDING 8/12, DOWN FROM 12/15. At 12 the chip stood 43px around
+       an 19px word and read as a bubble rather than a label — the grey
+       was the loudest thing in the column. 35px is the same chip with
+       the air taken out of it. The side value carries twice into the
+       measured hug, so the resting width came in 6px with it. */
+    padding: 8px 12px; margin: 0; cursor: pointer; font: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: -0.01em;
+    line-height: 1.45; color: inherit; }
+
+.ixnotes .rdrawer .rhead:focus-visible {
+    outline: 1px solid currentColor; outline-offset: -3px; }
+
+.ixnotes .rdrawer .rink { display: inline-block; }
+
+.ixnotes .rdrawer .rglyph { display: inline-block; width: 13px;
+    height: 13px; margin-right: 5px; vertical-align: -2px;
+    line-height: 1; }
+
+.ixnotes .rdrawer .rslash { color: var(--ink);
+    transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+.ixnotes .rdrawer .rrow.open .rslash { color: #fff; }
+
+.ixnotes .rdrawer .rbody { display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+.ixnotes .rdrawer .rrow.open .rbody { grid-template-rows: 1fr; }
+
+.ixnotes .rdrawer .rbody > div { overflow: hidden; min-height: 0; }
+
+.ixnotes .rdrawer .rpad { padding: 64px 16px 18px;
+    opacity: 0; transform: translateY(10px); transition: none; }
+
+.ixnotes .rdrawer .rpad.rcat { padding-bottom: 20px; }
+
+.ixnotes .rdrawer .rrow.open .rpad { opacity: 1; transform: none;
+    transition: opacity 0.5s ease 90ms,
+      transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 90ms; }
+
+.ixnotes .rdrawer .rsub { font-size: var(--lbl);
+    font-weight: var(--lbl-weight); letter-spacing: var(--lbl-track);
+    text-transform: uppercase; opacity: 0.6; margin: 12px 0 5px; }
+
+.ixnotes .rdrawer .rsub:first-child { margin-top: 0; }
+
+.ixnotes .rdrawer .rtxt { font-size: var(--note); line-height: 1.5; }
+
+.ixnotes .rdrawer .rgo { display: inline-block; margin-top: 8px;
+    color: inherit; font-size: var(--note);
+    text-decoration: underline; text-underline-offset: 3px; }
+
+.rmail { color: inherit;
+    text-decoration: underline; text-underline-offset: 3px; }
+
+.ixnotes .rdrawer { display: flex; flex-direction: column; gap: 10px; }
+
+.ixnotes .rdrawer .rgap { height: 8px; }
+
+.ixnotes .rdrawer .rreel { width: 128px; height: 96px;
+    border-radius: 10px; overflow: hidden;
+    /* held and dragged sideways to scrub; vertical stays the page's,
+       and pinch-zoom is named so two fingers still zoom */
+    touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none;
+    -webkit-touch-callout: none; }
+
+.ixnotes .rdrawer .rdesc { font-size: 11px; line-height: 1.5;
+    opacity: 0.75; margin-top: 12px; max-width: 24ch; }
+
+.sz-stage {position:relative;overflow:hidden;background:#0E0E0E;display:block;container-type:inline-size}
+
+.sz-fill {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+@keyframes szShutter {from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(0 0 0 0)}}
+
+@keyframes szFade {from{opacity:0}to{opacity:1}}
+
+@keyframes szCut {from{opacity:0}to{opacity:1}}
+
+@keyframes szCurtain {from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+@keyframes szPinchT {0%{transform:translateY(-102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(-102%)}}
+
+@keyframes szPinchB {0%{transform:translateY(102%)}45%{transform:translateY(0)}55%{transform:translateY(0)}100%{transform:translateY(102%)}}
+
+@keyframes szPinchSwap {0%{opacity:0}49%{opacity:0}50%{opacity:1}100%{opacity:1}}
+
+@keyframes szSlat {from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+
+@keyframes szBurnImg {0%{opacity:0;transform:scale(1.02);filter:brightness(1.5) saturate(2.6) contrast(1.5)}22%{opacity:1;transform:scale(1.015);filter:brightness(1.35) saturate(2.2) contrast(1.4)}100%{opacity:1;transform:scale(1);filter:brightness(1) saturate(1) contrast(1)}}
+
+@keyframes szBurnPop {0%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}18%{opacity:1;-webkit-backdrop-filter:blur(4px) saturate(4.5) contrast(2.2);backdrop-filter:blur(4px) saturate(4.5) contrast(2.2)}100%{opacity:0;-webkit-backdrop-filter:blur(0px) saturate(1) contrast(1);backdrop-filter:blur(0px) saturate(1) contrast(1)}}
+
+@keyframes szBurnWash {0%{opacity:0}16%{opacity:.95}40%{opacity:.3}100%{opacity:0}}
+
+@media (prefers-reduced-motion: reduce) {
+    .ixnotes .rdrawer .rrow, .ixnotes .rdrawer .rbody,
+    .ixnotes .rdrawer .rglyph, .ixnotes .rdrawer .rpad {
+      transition: none; }
+  }
+
+.ixrow.ixlead { grid-template-columns: 1fr; margin-bottom: 0; }
+
+.ixlead + .ixrow { padding-top: var(--lead-room, 0px); }
+
+@media (min-width: 861px) {
+    .ixrow .cell.colL { grid-column: 1; }
+    .ixrow .cell.colR { grid-column: 2; }
+    .ixrow.ixlead .cell { grid-column: 1; }
+  }
+
+.ixrow .cell.colL { justify-content: flex-start; }
+
+.ixrow .cell.colL .fd-it { transform-origin: left center; }
+
+.ixrow .cell.colL .fd-it .shot { transform-origin: left top; }
+
+.ixrow .cell.colR { justify-content: flex-end; }
+
+.ixrow .cell.colR .fd-it { transform-origin: right center; }
+
+.ixrow .cell.colR .fd-it .shot { transform-origin: right top; }
+
+.ixrow .cell.colR .fd-it .lbl { text-align: right; }
+
+.ixrow { --ixgap: clamp(24px, 3.4vw, 56px);
+    display: grid; align-items: start;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--ixgap);
+    /* THE ANSWER'S GAP, not the index's. The answer still deals an
+       .ixrule into every row, so this is the space above it there. The
+       index stopped emitting one, which leaves each index row a single
+       grid track with nothing for a row-gap to fall between — measured
+       on production: rows are 801px of cell and 801px tall. So this
+       value is live on the answer and inert on the index, and the note
+       below is the whole interval on the page you actually scroll. */
+    row-gap: clamp(56px, 6.6vw, 108px);
+    /* THE INTERVAL BETWEEN PAIRS, and on the index it is the ENTIRE
+       interval. Measured from the taller frame in a row to the top of
+       the next pair, so a row that leaves negative space beside a short
+       frame still hands over on the same beat.
+
+       DOUBLED, Aug 2026: 100px to 200px at the cap, the floor and the
+       vw term with it, so the interval opens at every width rather
+       than only on a wide screen. The index reads as a gallery hang
+       rather than a feed, and the frames needed the wall.
+
+       Only ever desktop: below 860 the rows dissolve to
+       display:contents and the container's own rhythm takes over, so
+       a phone keeps its tighter beat without an override. */
+    margin-bottom: clamp(128px, 14vw, 200px); }
+
+.ixrow:last-child { margin-bottom: 0; }
+
+.ixrow .cell { display: flex; justify-content: flex-end; }
+
+.ixrow:last-child .ixrule { display: none; }
+
+.ansboard .fd-it { width: 100%; }
+
+.ixrow .fd-it { width: calc(var(--share, 0.7) * 100%);
+    transform-origin: right center;
+    transition: opacity 0.8s ease,
+      transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.ixrow .fd-it, .ixrow .fd-it.fd-on { transform: none; }
+
+.ixrow .fd-it .shot { aspect-ratio: var(--ar, 1); }
+
+.ixrow .fd-it .cap { display: none; }
+
+.ixrow .fd-it .lbl { display: block; padding-top: 10px;
+    font-size: var(--note); line-height: 1.35; font-weight: 600;
+    letter-spacing: -0.004em; text-align: left; }
+
+.ixrow .fd-it, .ixrow .fd-it .shot, .ixrow .fd-it .lbl {
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.ixrow .fd-it .shot { transform-origin: right top; }
+
+@media (hover: hover) and (min-width: 761px) {
+    /* the ceiling; each frame takes as much of it as it has room for */
+    .ixbody { --ix-grow-max: 1.32; }
+    .ixrow .fd-it .shot {
+      transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* THE PAGE MAKES ROOM. The frame opens with a transform, and a
+       transform costs no layout, so the index used to sit still and get
+       covered. --drop is exactly what the transform added in pixels —
+       the same number the label rides down — so giving the card that
+       much real bottom margin lets normal flow carry every row below it
+       out of the way. The frame can then reach the column from any row
+       instead of stopping wherever its own band ran out.
+
+       On the same clock as the scale, so the picture opening and the
+       page opening under it are one movement. */
+    .ixrow .fd-it {
+      transition: opacity 0.8s ease,
+        transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-bottom 0.62s cubic-bezier(0.16, 1, 0.3, 1); }
+    .ixrow .fd-it:hover { z-index: 2; margin-bottom: var(--drop, 0px); }
+    .ixrow .fd-it:hover .shot { transform: scale(var(--ix-grow, 1.32));
+      /* squares off as it opens: a rounded frame reads as an object on
+         the page, losing the corner turns it into the picture itself */
+      border-radius: 0; }
+    /* The name swings to the right edge as the frame opens — the same
+       edge every frame in the index is hung from.
+
+       It SLIDES rather than re-aligns. text-align cannot be
+       transitioned, so switching it on hover snapped the type across
+       in a single frame. The driver measures how far the text
+       actually is from the right edge and translates it there, on the
+       same transform and the same clock as the drop — so the label
+       makes one diagonal move rather than two unrelated ones. */
+    .ixrow .fd-it:hover .lbl {
+      transform: translate(var(--slide, 0px), var(--drop, 0px)); }
+    /* The lead frame's room, since it cannot make its own: the first
+       pair takes the drop as real margin and the whole index follows
+       it down, on the same clock as the picture opening. */
+    /* ONE PROPERTY, NO CALC, and that is not tidiness. This was
+       `calc(var(--lead-room, 0px) + var(--lead-drop, 0px))` and it
+       computed to ZERO on production, with --lead-room inheriting a
+       perfectly good 120.4px. A custom property that has been declared
+       and then emptied is VALID AND EMPTY, not invalid — so var() does
+       not reach for its fallback, it substitutes nothing, the calc
+       becomes `calc(120.4px + )`, and an invalid calc takes the whole
+       declaration down to the property's initial value. The hover
+       push wrote --lead-drop and the standing interval disappeared
+       with it.
+
+       So the driver adds the two itself and writes one number. There
+       is nothing here for a second property to poison.
+
+       The transition is all this rule does now. Padding, not margin,
+       for the reason the standing rule gives — which also means the
+       hover push had never worked, and the lead frame has been growing
+       over the pair below it since it was written. */
+    /* NO STANDING TRANSITION HERE, and that is the fix rather than a
+       simplification. Declared on the rule, it applied to the room the
+       fit() pass writes on first paint — so the interval under the lead
+       frame ANIMATED IN from zero over 0.62s on every load, which is a
+       layout constant behaving like a gesture. It also hid itself:
+       getComputedStyle reports the animating value, so every
+       measurement of this row read 0px while the transition was still
+       running, and in a throttled tab it never finished at all.
+
+       The hover push arms the transition inline for the length of the
+       push and the driver takes it off again. See the lead branch in
+       the pointer handler. */
+  }
+
+@media (max-width: 860px) {
+    /* no room for a floating column: the notes run first, then the
+       rows go one frame wide */
+    .ixbody { display: block; }
+    .ixnotes { position: static; width: auto; left: auto;
+      padding-bottom: clamp(40px, 9vw, 64px); }
+    /* Tighter down here: the rail's 60px is the air a pinned column
+       beside the work can afford, and inside a fold on a phone it just
+       makes the open state long. One override, and the body reads it
+       through the same property. */
+    .ixnotes { --rail-gap: clamp(22px, 5.5vw, 34px); }
+    /* The air under the rule is the FIRST BLOCK'S, not the body's.
+       min-height: 0 lets a grid item shrink past its content and not
+       past its own padding, so 22px of padding on the body was a floor
+       the closed row could never get under: the fold shut to 22 rather
+       than to nothing. As the block's padding it is content, and the
+       slot's clip reaches it. */
+    .railbody > .blk:first-child { padding-top: var(--rail-gap); }
+    /* 0fr to 1fr, which is the one height animation that does not need
+       a measured pixel value: the track resolves to the content's own
+       height at 1fr and collapses at 0. min-height 0 on the child is
+       load bearing, since a grid item refuses to shrink below its
+       content without it and the row would never close. */
+    .railslot { display: grid; grid-template-rows: 0fr;
+      /* The clip belongs to the SLOT. On the child it hid the child's
+         CONTENT while the child's own padding still took height, so a
+         closed fold left 22px of dead space under the rule. */
+      overflow: hidden;
+      transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .railslot.on { grid-template-rows: 1fr; }
+    .railslot > .railbody { min-height: 0; }
+    @media (prefers-reduced-motion: reduce) {
+      .railslot { transition: none; }
+    }
+    .railfold > summary {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; cursor: pointer; list-style: none;
+      font-size: var(--note); line-height: 1.45;
+      padding-bottom: clamp(14px, 3.5vw, 20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.13); }
+    .railfold > summary::-webkit-details-marker { display: none; }
+    /* The marker is authored so it can rotate: the UA triangle cannot
+       be transitioned and sits on the wrong side of the line. */
+    .railfold > summary::after {
+      content: "";
+      width: 8px; height: 8px; flex: none;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+      opacity: 0.55; }
+    .railfold[open] > summary::after {
+      transform: translateY(2px) rotate(-135deg); }
+    .railfold > summary:focus-visible { outline: 1px solid var(--ink);
+      outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .railfold > summary::after { transition: none; }
+    }
+    .ixrow { grid-template-columns: 1fr; row-gap: clamp(30px, 7vw, 48px); }
+    /* The columns dissolve and their frames become the container's own
+       children, ordered by the deal index each carries — so one track
+       reads 0,1,2,3 rather than the whole left column then the whole
+       right. */
+    /* ── THE PHONE'S OWN RHYTHM ──────────────────────────────────
+       Thirty frames at one width is a stack, and a stack has no
+       shape: every project arrives at the same size, so nothing is
+       emphasised and scrolling it is a chore rather than a read.
+
+       Six tracks, and a cell takes a span. The cycle is seven cells:
+
+         hero        (6)     one full-width frame
+         pair        (3 + 3) an even split
+         hero        (6)
+         hero        (6)
+         pair        (2 + 4) a third against two thirds
+
+       The two halves of a pair are NOT the same height and are not
+       meant to be: every card carries its own --ar off the index, and
+       the ratios in here run from a 3:2 landscape to a 3:4 portrait.
+       That difference is the whole reason a pair is worth having,
+       which is what the Big Bend spread already does on desktop.
+
+       The span classes come from the dealer, not from nth-child. The
+       phone dissolves .ixrow with display:contents, which takes the
+       box out of layout and leaves it in the DOM, so a positional
+       selector counts inside a two-cell row and never sees a seventh
+       child. Only the deal knows a frame's flat place. */
+    .ixrows.ixcols { display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      align-items: start;
+      /* ONE VALUE, TWO READERS. The grid sets the gutter and the pair's
+         standing rule centres itself in it, so a variable rather than
+         the number twice: change it here and the line follows. Widened
+         from clamp(10px, 3vw, 18px) now that a rule stands in the gap —
+         the old note said a wider gutter would break a pair apart, and
+         it was right while nothing divided them. A divider wants air on
+         both sides or it reads as touching the pictures. */
+      --ixcolgap: clamp(18px, 5vw, 30px);
+      column-gap: var(--ixcolgap);
+      /* DOUBLED. The rule between two frames had about 50px of air
+         around it, which on a phone reads as a list with dividers
+         rather than as work with room. The column gap is untouched:
+         that one holds a pair together and widening it would break
+         the pair apart. */
+      /* AND HALF AGAIN, the owner's call. The doubling above was
+         measured against a layout where every row carried a rule under
+         it; with the pairs' rules now standing between them instead,
+         the horizontal air is the only thing separating one row of
+         work from the next and it was doing two jobs at the old
+         value. */
+      /* AND DOWN AGAIN, because the layout under it changed twice. The
+         90-to-144 was measured against a deal with full-width frames
+         in it, where the air had to separate one big picture from the
+         next. Every tile is half now and most are shorter than they
+         were, so the same interval left a phone scrolling through more
+         gap than work. Owner's call if this wants to go back up. */
+      row-gap: clamp(52px, 12vw, 88px); }
+    .ixrows.ixcols .cell { grid-column: span 6; }
+    .ixrows.ixcols .cell.mHalf { grid-column: span 3; }
+    /* mThird and mTwoThirds are not dealt — see rhythmClasses, which
+       deals halves and nothing else. The spans stay declared: they cost
+       nothing, and a varied pair is the kind of thing that comes back. */
+    .ixrows.ixcols .cell.mThird { grid-column: span 2; }
+    .ixrows.ixcols .cell.mTwoThirds { grid-column: span 4; }
+    /* ── THE DEALT SHAPES ─────────────────────────────────────────────
+       Two overrides of the frame's declared ratio, on the phone only
+       and on a cycle — see M_HEIGHTS. They crop, which is the trade:
+       at 155px these are thumbnails, and a thumbnail grid where every
+       tile is the same landscape reads as a table of contents. The
+       majority of tiles keep their own ratio, so this is the accent.
+
+       On .shot, which is the box that holds the row height. The image
+       inside is already object-fit: cover at any shape, and the plate
+       that bleeds on scroll takes its height from this box, so both
+       follow without knowing. */
+    .ixrows.ixcols .cell.mTall .shot { aspect-ratio: 3 / 4; }
+    .ixrows.ixcols .cell.mSquare .shot { aspect-ratio: 1 / 1; }
+    .ixrow, .ixlead { display: contents; }
+    /* ── THE COPY IS A COLUMN, NOT A HEADER ───────────────────────────
+       The statement and the filters used to run full width above the
+       work, so a phone opened on a screen of words with the first
+       picture below the fold. They are grid items now — the driver
+       moves both into this grid on a phone, see placeCopy — which puts
+       them in the left half with the work climbing the right from the
+       very top.
+
+       dense is what makes that work. The statement is placed first and
+       spans two rows, so the packer has a two-row hole beside it;
+       without dense the tiles would queue after the filters and leave
+       that hole empty, which is the layout this replaces. Every tile
+       is the same span, so dense reorders nothing: it fills the holes
+       in dealing order. */
+    .ixrows.ixcols { grid-auto-flow: row dense; }
+    .ixrows.ixcols > .ixcopy {
+      grid-column: 1 / span 3; grid-row: span 2;
+      align-self: start; min-width: 0; }
+    .ixrows.ixcols .ixcopy > .coverR {
+      padding-top: 0; width: auto; }
+    /* The filters follow the sentence directly. The interval is the
+       air between two things that belong together, not the grid's own
+       row gap, which separates unrelated work. */
+    .ixrows.ixcols .ixcopy > .ixnotes { padding-top: 30px; }
+    /* THE MEASURE HALVED, SO THE TYPE COMES DOWN. This is set at the
+       cover's own size, which was right when the statement ran the
+       full width of a phone; in a 155px column it gave three words a
+       line and pushed the question off the right edge. 17px is about
+       twenty characters here, which is a column rather than a stack of
+       fragments. */
+    .ixrows.ixcols .ixcopy .statement { font-size: clamp(15px, 4.5vw, 18px); }
+    /* And the question fills the column rather than 9.5 of its own
+       ems, which at this size overflowed it. */
+    .ixrows.ixcols .ixcopy #askSlot { width: 100%; }
+
+    .ixlead { position: static; }
+    .ixrow .cell { justify-content: stretch; }
+    .ixrow .fd-it { width: 100%; }
+    /* ── NO HORIZONTAL RULES ─────────────────────────────────────────
+       Every cell drew one above itself, which turned the index into a
+       ruled list: a line, a picture, a line, a picture. With the row
+       interval half again as wide and the pairs divided by a standing
+       rule of their own, the air is doing the separating and the lines
+       were only repeating it. Owner's call, and the same instinct as
+       the four category marks that came out of the rail.
+
+       The PADDING stays. It was never the rule's — it is the air above
+       each frame, and it is what the interval is measured from. */
+    .ixrows.ixcols .cell { padding-top: clamp(40px, 10vw, 68px); }
+    .ixrows.ixcols .cell.first { padding-top: 0; }
+    /* THE ANSWER'S ROW RULE IS NOT A GRID ITEM. buildAnswer appends an
+       .ixrule to every row for the wide layout's divider, and the row
+       is display:contents here — so that div became a cell in the six
+       column grid, 329px wide, sitting between a pair and shoving its
+       two halves onto separate rows. The halves were correctly span 3
+       and correctly marked pairL/pairR; something invisible was simply
+       standing between them.
+
+       display:none rather than a zero border, because the box is the
+       problem and not the line. The line itself went earlier. */
+    .ixrows.ixcols .ixrule { display: none; }
+
+    /* ── THE FRAME OPENS AS YOU COME DOWN THE PAGE ────────────────────
+       Each picture arrives inset by the page gutter and rounded, and
+       widens to the full glass with its corners squaring off as it
+       climbs. A pair opens the same way and meets in the middle: the
+       left frame takes the left gutter and half the column gap, the
+       right one mirrors it, so the two edges land against each other
+       with nothing between them.
+
+       THE LAYOUT NEVER MOVES. .shot keeps its rest width and its
+       declared ratio, so it holds the row height and the caption under
+       it stays exactly where it was — which is the point, because a
+       caption that slid while its picture opened would read as the page
+       reflowing rather than as a frame opening. What actually grows is
+       the plate INSIDE the frame, taken out of flow and pushed past
+       both edges. Nothing in the grid is re-measured; the driver writes
+       one custom property per tile.
+
+       The plate was already there, holding the arrival curtain and the
+       settle from 1.25. It gains the clip and the radius that .shot
+       used to own — same box, same result — and .shot gives up its
+       overflow so the plate has somewhere to go. clip-path stays the
+       curtain's; the corners are border-radius, so the two never
+       collide over one property. */
+    .ixrows.ixcols .fd-it .shot {
+      position: relative;
+      overflow: visible;
+      border-radius: 0;
+    }
+    .ixrows.ixcols .fd-it .shot > * {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      /* !important, and it is armReels that makes it necessary: the
+         reel writes width:100%;height:100% as an INLINE style, which
+         beats any stylesheet, so a reel tile took left:-20px and then
+         sized itself to the frame anyway. It bled off the left edge and
+         stayed 40px short of the right one — the one tile in forty that
+         opened crooked. The inline pair has to stay for the wide
+         layout, where nothing sets the box but the reel itself. */
+      width: auto !important;
+      /* AND THE RATIO, for the same reason and the same offender. The
+         reel element carries aspect-ratio: 16/9, and a box with a ratio
+         and a fixed height DERIVES its width from them — so left and
+         right were computed, ignored, and the two reel tiles in ten
+         opened 61 and 121px wide instead of 40 and 30. Measured with
+         offsetWidth: the rects had said the plain tiles were wrong too,
+         because a rect carries every ancestor transform and the
+         arrival's scale was still running. */
+      aspect-ratio: auto !important;
+      left: calc(-1 * var(--bl, 0px) * var(--gp, 0));
+      right: calc(-1 * var(--br, 0px) * var(--gp, 0));
+      overflow: hidden;
+      border-radius: calc(var(--r) * (1 - var(--gp, 0)));
+    }
+    /* HOW FAR EACH SIDE HAS TO TRAVEL, declared here because only the
+       stylesheet knows the gutter and the gap. A full-width frame owes
+       the page gutter on both sides. A half owes the gutter outward and
+       half the column gap inward, so the pair closes on the centre line
+       rather than one of them crossing it. */
+    .ixrows.ixcols .cell .fd-it { --bl: var(--gut); --br: var(--gut); }
+    .ixrows.ixcols .cell.mHalf.pairL .fd-it {
+      --bl: var(--gut);
+      --br: calc(var(--ixcolgap) / 2);
+    }
+    .ixrows.ixcols .cell.mHalf.pairR .fd-it {
+      --bl: calc(var(--ixcolgap) / 2);
+      --br: var(--gut);
+    }
+    /* An unpaired half sits alone in its row and has no middle to meet,
+       so it opens outward only. */
+    .ixrows.ixcols .cell.mHalf:not(.pairL):not(.pairR) .fd-it {
+      --bl: var(--gut);
+      --br: var(--gut);
+    }
+    /* Reduced motion keeps every frame at its rest inset, rounded. The
+       driver never writes --gp, and the fallback of 0 is the whole
+       stand-down. */
+    /* NO RULE HERE AT ALL. This drew a spine down the index at 50%,
+       broken around the full-width frames by paper bands. It replaced
+       eight per-pair segments, which replaced a horizontal rule under
+       every cell. Three treatments of the same line, and the owner's
+       call on the third was the same as on the first two: the air is
+       doing the separating and the line was repeating it.
+
+       The pairL / pairR classes stay on the cells. They cost nothing,
+       they are the only place that knows which frames share a row, and
+       that knowledge is what any future treatment of the gutter would
+       need. Nothing reads them today. */
+
+    /* The board keeps packing on a phone, at two columns rather than
+       one: three tiles across a 329px column is a contact sheet nobody
+       can read, and one is a hundred and seven full-width pictures to
+       scroll past. Both numbers are staples.module.css's own phone
+       values, so the board reads the same on a phone as it does on the
+       page it came from. */
+    .ixrows.ansboard { columns: 2; column-gap: 14px; }
+    .ansboard .btile { margin-bottom: 14px; }
+    /* One column and no note rail, so there are no gutters left for a
+       vertical to stand in. The row rule comes back to do the work. */
+    .ixrows::before, .ixrows::after { display: none; }
+    .ixrules { display: none; }
+    .ixrows { background-image: none; }
+    /* The row rule goes with them. It is the ANSWER's divider rather
+       than the index's, and on a phone the two share this block. */
+    .ixrule { border-top: 0; }
+    /* THE COVER'S FIRST LINE IS NAME AND ADDRESS, and it used to be
+       three stacked things: the wordmark, the statement, then the
+       address at the very bottom, 284px down and 260 below the name it
+       belongs beside. On a wide screen those are two ends of one row
+       and it read that way; stacked, the address just became the last
+       thing before the work.
+
+       They fit. The name measures 120 and the address 102 in a 329
+       column, so putting them on one line costs nothing and leaves 107
+       between them.
+
+       display: contents on .covercols so the statement and the address
+       become children of this grid and can be placed independently:
+       the address belongs on row one with the name, the statement on
+       row two under both. */
+    .cover .ixbody { display: grid;
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+      align-items: baseline;
+      column-gap: 12px; }
+    .cover .covercols { display: contents; }
+    .cover .covermark { grid-column: 1; grid-row: 1; }
+    .cover .covermeta { grid-column: 2; grid-row: 1;
+      justify-self: end; text-align: right; }
+    .cover .coverR { grid-column: 1 / -1; grid-row: 2; }
+    /* Less air on a phone, where the fold is the scarce thing. */
+    .cover { --cover-air: 24px; }
+    /* .ixbody carries the gutter down here, so the head must not add
+       a second one. It used to sit outside and needed its own. */
+    /* ONE COLUMN ON A PHONE, and the lead falls back into the flow
+       where its DOM position puts it: under the receipts and above the
+       rows, which is the reading order it already had. */
+    .anshead { padding-left: 0; }
+    /* .answer prefixed, and the note below says why: a media query
+       adds no specificity and the head's two-column rule is written
+       further down this stylesheet, so a bare .anshead here loses on
+       source order. It lost exactly that way first time out — the
+       prose, the receipts and the back link were squeezed into 152px
+       with the lead frame beside them on a 375 screen. */
+    .answer .anshead {
+      grid-template-columns: minmax(0, 1fr); }
+    .answer .anshead > .anslead { grid-column: 1; grid-row: auto;
+      padding-top: 26px; }
+    /* TWO CLASSES, because one loses. A media query adds no
+       specificity, and the desktop .ansprose cap is written further
+       down this stylesheet, so a bare .ansprose here has never won:
+       the answer's line has been capped at half a phone's width since
+       the cap was added, which on a 375 screen is 152px of measure.
+       The .anshead rule above had the same fault and the same effect,
+       an answer indented by a rail that is not on screen; it agrees by
+       accident now that the head sits in the grid and its desktop
+       padding is 0. This one is made to win outright. */
+    .answer .ansprose { max-width: none; }
+    /* The air moves from under the NAME to above the STATEMENT: the
+       name now has the address beside it, and padding under one half
+       of a row would push only that half down. */
+    .covermark { display: block; padding-bottom: 0; }
+    .cover .coverR { padding-top: clamp(22px, 5vw, 40px); }
+  }
+
+.workrows .fd-it.hero { grid-column: 1 / -1; }
+
+.workrows .fd-it.pNarrow { grid-column: 1 / span 5; }
+
+.workrows .fd-it.pWide { grid-column: 6 / span 7; }
+
+.workrows .fd-it.pWideL { grid-column: 1 / span 7; }
+
+.workrows .fd-it.pNarrowR { grid-column: 8 / span 5; }
+
+.workrows .fd-it.hero .shot { aspect-ratio: 2 / 1; }
+
+.workrows .fd-it.pWide .shot,
+  .workrows .fd-it.pWideL .shot { aspect-ratio: 4 / 3; }
+
+.workrows .fd-it.pNarrow .shot,
+  .workrows .fd-it.pNarrowR .shot,
+  .workrows > .cell .shot { aspect-ratio: 5 / 4; }
+
+.workrows .fd-it.hero .shot img { --drift: 20%; }
+
+.workrows .fd-note .full .att { display: block; margin-top: 12px;
+    font-size: var(--cap); opacity: 0.5; }
+
+.workrows .fd-it .cap { display: none; }
+
+@media (max-width: 860px) {
+    .workrows { row-gap: clamp(38px, 9vw, 72px); }
+    /* one column: every block is simply the width of the page */
+    .workrows .fd-it.hero, .workrows .fd-it.pNarrow, .workrows .fd-it.pWide,
+    .workrows .fd-it.pWideL, .workrows .fd-it.pNarrowR, .workrows > .cell,
+    .workrows .fd-note.noteL, .workrows .fd-note.noteR { grid-column: 1 / span 8; }
+    .workrows .fd-it.hero .shot { aspect-ratio: 3 / 2; }
+  }
+
+.fd-it .lbl { display: none; }
+
+.workrows .fd-it .lbl { display: block;
+    box-sizing: border-box; padding-top: 12px;
+    font-size: var(--lbl-size, var(--note)); font-weight: 600;
+    line-height: 1.35; letter-spacing: -0.004em; }
+
+.fd-it .lbl .sub { opacity: 0.42; }
+
+.fd-it .cap { position: absolute; left: 10px; bottom: 8px; right: 10px;
+    font-size: var(--cap); font-weight: 400; line-height: 1.5;
+    color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.55);
+    opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+
+@media (hover: hover) { .fd-it:hover .cap { opacity: 1; } }
+
+.fd-note.open { aspect-ratio: auto; align-items: flex-start; }
+
+.fd-note.open .word { display: none; }
+
+.fd-note.open .full { display: block; font-size: var(--note);
+    font-weight: 400; line-height: 1.6; letter-spacing: 0;
+    color: rgba(255,255,255,0.82); padding-top: 26px; white-space: pre-line; }
+
+.fd-note.open .full .att { display: block; margin-top: 12px;
+    font-size: var(--cap); opacity: 0.55; }
+
+.fd-note.plain.open .word { display: block; font-size: var(--note);
+    font-weight: 700; letter-spacing: 0; padding-bottom: 4px; }
+
+.fd-it .plate { display: block; width: 100%; height: 100%; }
+
+.fd-it .shot > * {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.25); transform-origin: center;
+    transition: clip-path 1.4s cubic-bezier(0.33, 0.28, 0.12, 1),
+      transform 1.4s cubic-bezier(0.33, 0.28, 0.12, 1);
+    /* A row's two frames do not arrive together. The second waits, so
+       the row reads left to right as one gesture with two beats rather
+       than as a pair of shutters dropping at once. The wait is set on
+       the card by the dealer, not here, because only the dealer knows
+       which of the two a frame is. */
+    transition-delay: var(--lag, 0s); }
+
+.fd-on .shot > * { clip-path: inset(0 0 0 0); transform: none; }
+
+.fd-out .shot > * {
+    clip-path: inset(100% 0 0 0);
+    transform: scale(1.06);
+    transition: clip-path 0.4s cubic-bezier(0.5, 0, 0.75, 0),
+      transform 0.4s cubic-bezier(0.5, 0, 0.75, 0);
+    transition-delay: var(--lag, 0s); }
+
+.fd-note.fd-out { opacity: 0;
+    transition: opacity 0.28s ease var(--lag, 0s); }
+
+@media (prefers-reduced-motion: reduce) {
+    .fd-out .shot > *, .fd-note.fd-out { transition: none; }
+  }
+
+.fd-note.fd-on { opacity: 1; transform: none; }
+
+.fd-quote.fd-on { opacity: 1; transform: none; }
+
+.fd-quote.fd-out { opacity: 0;
+    transition: opacity 0.28s ease var(--lag, 0s); }
+
+@media (prefers-reduced-motion: reduce) {
+    .fd-quote, .fd-quote.fd-out { transition: none; }
+  }
+
+.fd-it { opacity: 1; }
+
+.answer .ixnotes { grid-column: 1; grid-row: 1 / -1; }
+
+.statement .q, .ansprose .q { color: rgba(0, 0, 0, 0.42); }
+
+.ansstats .asl.on { opacity: 1; transform: none; }
+
+.statement .term { display: inline; color: inherit; cursor: pointer; }
+
+.statement .term,
+  .ixnotes .blk .blkgo,
+  .ixnotes .filt button,
+  .ixnotes .filt a,
+  #nav a.meta {
+    text-decoration: underline;
+    text-decoration-color: var(--rule-rest, rgba(0, 0, 0, 0.22));
+    text-decoration-thickness: max(1px, 0.05em);
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+    background-image: none;
+    /* colour rides along for the masthead, which fades its own tone
+       across a dark zone's edge. */
+    transition: text-decoration-color 0.3s ease, color 0.28s ease; }
+
+.ask.big #query {
+    text-decoration: underline;
+    text-decoration-color: var(--rule-rest, rgba(0, 0, 0, 0.22));
+    text-decoration-thickness: max(1px, 0.05em);
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: auto;
+    background-image: none;
+    transition: text-decoration-color 0.3s ease, color 0.28s ease; }
+
+@media (hover: hover) {
+    .statement .term:hover,
+    .ixnotes .blk .blkgo:hover,
+    .ixnotes .filt button:hover,
+    .ixnotes .filt a:hover,
+    #nav a.meta:hover {
+      text-decoration-color: var(--rule-ink, #000); }
+    .ask.big #query:hover {
+      text-decoration-color: var(--rule-ink, #000); }
+  }
+
+.statement .term:focus-visible,
+  .ixnotes .blk .blkgo:focus-visible,
+  .ixnotes .filt button:focus-visible,
+  .ixnotes .filt a:focus-visible,
+  #nav a.meta:focus-visible {
+    outline: 1px solid var(--ink); outline-offset: 3px;
+    background-size: var(--rule-w, 100%) 1px, var(--rule-w, 100%) 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .statement .term,
+    .ask.big #query,
+    .ixnotes .blk .blkgo,
+    .ixnotes .filt button,
+    .ixnotes .filt a,
+    #nav a.meta { transition: none; }
+  }
+
+#ansSay.typing::after { content: ""; display: inline-block;
+    width: 0.45ch; height: 0.92em; margin-left: 4px;
+    background: currentColor; vertical-align: -0.1em;
+    animation: sayblink 0.9s steps(2, start) infinite; }
+
+@keyframes sayblink { 50% { opacity: 0; } }
+
+.ask::after { content: ""; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1px; background: currentColor; opacity: 0; }
+
+body.working .ask::after { opacity: 0.7;
+    animation: askscan 0.8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite; }
+
+@keyframes askscan {
+    0% { left: 0; width: 0; }
+    52% { left: 0; width: 100%; }
+    100% { left: 100%; width: 0; }
+  }
+
+.answer .ixnotes { opacity: 0; transition: opacity 0.4s ease; }
+
+.answer .ixnotes.on { opacity: 1; }
+
+.ansmeta .working .rl.on { opacity: 1; transform: none; }
+
+.ixrow .fd-it.k-pull .lbl { font-weight: 400; font-size: var(--cap);
+    opacity: 0.55; }
+
+.foot .dim { opacity: 0.45; }
+
+@media (max-width: 760px) {
+    :root { --nav: 48px; --gut: 20px; }
+    #nav { --nav-size: 11px; --nav-gutter: 16px; --nav-overhang: 10px;
+      grid-template-columns: 1fr auto; gap: 10px; letter-spacing: 0.02em;
+      /* RESET, not merely "not set". The comment above says this bar
+         wants no overflow context, and the homepage duly never added
+         one — but Masthead.module.css sets overflow-x: auto on phones
+         as its own safety net, and a sheet that stays silent inherits
+         it. overflow-x on one axis computes overflow-y to auto too, so
+         the bar became a clip, and the field it lends to the cover is
+         translated ~318px below the bar: outside the clip, invisible
+         on every phone. The id outranks the module's class. */
+      overflow: visible; }
+    /* 390pt cannot centre a wordmark AND seat a field beside it, so
+       the wordmark takes the right end (the mailto's slot, which is
+       hidden here anyway) and the field keeps the left gutter — the
+       travel stays a straight vertical drop on a phone too. */
+    #nav .mark { grid-column: 2; justify-self: end; }
+    #nav .meta { display: none; }
+    /* the shead and the feeds read --gut, which halves above, so the
+       only thing left to restate here is the footer's margin */
+    .foot { margin-left: var(--gut); margin-right: var(--gut); }
+  }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fd-it .shot > * { clip-path: none !important;
+      transform: none !important; transition: none !important; }
+    .fd-it, .fd-note { opacity: 1 !important; transform: none !important;
+      transition: none !important; }
+    #query { transition: none; }
+    /* the travel itself is scroll position, not animation, so it stays;
+       the glide when an answer opens is animation, so it goes */
+    .ask.settling { transition: none; }
+  }

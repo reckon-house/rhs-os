@@ -207,9 +207,15 @@ Two things are still the house's and not yet in the file:
 
 - `board-shell.css`, the homepage's own stylesheet the board wears.
   Every class the engine invents is in the homepage's namespace, and
-  `.answer` already collided once. The engine's own rules need their
-  own sheet and their own prefix before a second house can wear
-  anything else.
+  `.answer` already collided once. `npm run board:css` now computes
+  the rules the engine actually stands on, from its own class and id
+  vocabulary against the shell, and writes them to
+  `public/lab/board-engine.css`: 212 of the shell's 359 rules, with
+  the font faces left out and the ten tokens a house must supply
+  listed at the top (`--sans` among the faces). The names are still
+  the homepage's; a prefix is the next step, and reckon.house still
+  wears the whole shell until then. The assembler also lifts the reel,
+  the burn and the rail from `public/lab/pressing-home.html` verbatim.
 - The footer copy the Info and Connect rooms read (`board-copy.json`'s
   `house`: method, links, credits, book), which the thumb builder
   lifts from the app's own components. It is data already; it is not

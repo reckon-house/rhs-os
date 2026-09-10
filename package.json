@@ -33,7 +33,8 @@
     "ask:bench": "node --no-warnings scripts/ask-bench.mjs",
     "flow:sim": "node scripts/flow-sim.mjs",
     "board:roles": "node --no-warnings scripts/board-roles.mjs",
-    "lines:sync": "node --no-warnings scripts/board-lines-sync.mjs"
+    "lines:sync": "node --no-warnings scripts/board-lines-sync.mjs",
+    "board:css": "node --no-warnings scripts/board-engine-css.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",
