@@ -1340,6 +1340,10 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
 const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
 /* a phone's column is 157px: every frame fills it, as the live grid's do */
 const SHARES = PHONE ? [1] : IX_TIERS;
+/* how many tiles a column carries before a run takes another pair.
+   The board scrolls sideways by design, so a short column read
+   sideways beats a tall one read down. */
+const TALL_DEFAULT = 5;
 
 /* ── A TILE THAT IS THE PIECE, NOT A PICTURE OF IT ─────────────────
    Ivy Park's polygon portrait is a still of something that moves: in
@@ -1834,18 +1838,47 @@ function deal(list, opts) {
     const lastPair = Math.floor((s - 1) / per) * per;
     if (s - lastPair === 1) { seats[seats.length - 2] = s; s += 1; }
   };
+  /* ── A RUN IS SPREAD, NOT POURED ────────────────────────────────
+     Seating filled each pair to `rows` before starting the next, so a
+     run came out full, full, remainder: Campaigns was eight, eight and
+     two at one window height, and the eights were a long way down. A
+     run holds the same tiles however they are dealt, so the choice is
+     only where the scrolling goes, and the board's own direction is
+     sideways.
+
+     Each run picks the rows it uses: enough pairs for TALL tiles a
+     column, then the rows divided back over those pairs so the last
+     one is not a stub. Twenty-one seats at TALL=5 is three pairs of
+     four rows rather than two of five and a tail of one. The rows a
+     pair does not use cost nothing — the ladder skips a row with no
+     tile in it — so a shorter run simply makes a shorter column. */
+  /* a phone keeps its own count: there a column IS the page, so five
+     to a column is twice the swiping rather than half the scrolling.
+     The spreading still applies, which is what stops a run ending on a
+     page with one tile on it. */
+  const TALL = PHONE ? rows : Math.min(rows, opts.tall || TALL_DEFAULT);
+  const takes = (it) => (it.kind === "head" && VISIBLE > 1) ? VISIBLE : 1;
+  const runs = [];
   sized.forEach((it) => {
-    if (it.first) { closeRun(); if (s % per) s += per - (s % per); runStart = s; }
-    seats.push(s); s += 1;
-    /* ── A HEAD TAKES THE ROW ITSELF ───────────────────────────────
-       Rows belong to the pair, so a picture sat beside the headline
-       and set the row's height: a 139px head next to a 392px frame
-       opened every run on four hundred and seventy-five pixels of
-       nothing. The head takes both seats now, so the row is the
-       headline's own height and both columns start their pictures
-       under it. A phone runs each column's own y and never had the
-       problem, so it keeps its single seat. */
-    if (it.kind === "head" && VISIBLE > 1) s += VISIBLE - 1;
+    if (it.first || !runs.length) runs.push([]);
+    runs[runs.length - 1].push(it);
+  });
+  runs.forEach((run) => {
+    let need = 0;
+    run.forEach((it) => { need += takes(it); });
+    closeRun();
+    if (s % per) s += per - (s % per);
+    runStart = s;
+    const pairs = Math.max(1, Math.ceil(need / (TALL * VISIBLE)));
+    /* the rows actually used, so the tiles land level across the pairs
+       rather than filling the first and starving the last */
+    const use = Math.max(1, Math.min(rows, Math.ceil(need / (pairs * VISIBLE))));
+    let inPair = 0;
+    run.forEach((it) => {
+      const take = takes(it);
+      if (inPair && inPair + take > use * VISIBLE) { s += per - inPair; inPair = 0; }
+      seats.push(s); s += take; inPair += take;
+    });
   });
   closeRun();
   const bySeat = new Array(s);
