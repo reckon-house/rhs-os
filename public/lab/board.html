@@ -272,8 +272,8 @@
   .ccol.dark .cways u:hover { text-decoration-color: #fff; }
   /* a row with a line where the picture would be: the method notes,
      the credits. The list's own rule and air, no thumbnail column. */
-  .ccol .crow, .lines .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
-  .ccol .crow, .lines .crow.text:hover b { text-decoration: none; }
+  .ccol .crow.text, .lines .crow.text { grid-template-columns: minmax(0, 1fr); cursor: default; }
+  .ccol .crow.text:hover b, .lines .crow.text:hover b { text-decoration: none; }
   /* ── THE ROOM OFFERS ITS QUESTIONS ────────────────────────────────
      The three method notes are answers, so Info offers the questions
      as chips under the field; a press asks it the way typing would,
@@ -301,13 +301,13 @@
      A typed name beside it was tried and dropped: at this size a mark
      reads as its own name, so setting both was saying it twice. The
      mark holds the row's left edge, where every other head sits. */
-  .ccol .crow, .lines .crow.mark { padding-bottom: 40px; }
-  /* `.ccol .crow, .lines .crow img` sets the 96x72 cover a study's row shows, and an
+  .ccol .crow.mark, .lines .crow.mark { padding-bottom: 40px; }
+  /* `.ccol .crow img` sets the 96x72 cover a study's row shows, and an
      element beats a class: named through the row, this wins. */
-  .ccol .crow, .lines .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
+  .ccol .crow .cmk, .lines .crow .cmk { display: block; height: var(--mh, 20px); width: 100%;
     border-radius: 0; background: none;
     object-fit: contain; object-position: left center; }
-  .ccol .crow, .lines .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
+  .ccol .crow .cmk:not([src$="dwr.jpg"]), .lines .crow .cmk:not([src$="dwr.jpg"]) { filter: brightness(0) invert(1); }
   /* ── THE ONE THAT IS A PHOTOGRAPH ────────────────────────────────
      dwr.jpg is a picture OF a mark rather than the mark: an opaque
      frame, 72% of it a near-black ground with the wordmark in white
@@ -317,7 +317,7 @@
      the ground the rest of the way to black, where the column's own
      black is, and the wordmark the rest of the way to white. Nothing
      is added: the picture is crushed to the mark inside it. */
-  .ccol .crow, .lines .crow .cmk[src$="dwr.jpg"] { filter: contrast(3); }
+  .ccol .crow .cmk[src$="dwr.jpg"], .lines .crow .cmk[src$="dwr.jpg"] { filter: contrast(3); }
   /* a heading inside the material, in the prose register */
   .ccol .csect { margin-top: 2.2em; margin-bottom: 0.2em; }
   /* ── THE WEEK, IN THE ROW'S ANATOMY ───────────────────────────────
@@ -411,21 +411,21 @@
   /* a narrowed list DROPS what it does not match rather than fading
      it: half-visible rows are the same veil in miniature, and the
      count above already says how many stayed */
-  .ccol .crow, .lines .crow.off { display: none; }
-  .ccol .crow, .lines .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
+  .ccol .crow.off, .lines .crow.off { display: none; }
+  .ccol .crow img, .lines .crow img { display: block; width: 96px; height: 72px; object-fit: cover;
     border-radius: 10px; background: rgba(0, 0, 0, 0.04); }
   /* a reeling row's picture box: the still's own geometry, so a row
      that moves and a row that does not sit on the same line */
-  .ccol .crow, .lines .crow .creel { width: 96px; height: 72px; border-radius: 10px;
+  .ccol .crow .creel, .lines .crow .creel { width: 96px; height: 72px; border-radius: 10px;
     background: rgba(0, 0, 0, 0.04); }
-  .ccol .crow, .lines .crow .creel img { width: 100%; height: 100%; border-radius: 0; }
-  .ccol .crow, .lines .crow b { font-weight: 600; }
-  .ccol .crow, .lines .crow .g { display: inline; font-weight: 600; }
-  .ccol .crow, .lines .crow:hover b { text-decoration: underline;
+  .ccol .crow .creel img, .lines .crow .creel img { width: 100%; height: 100%; border-radius: 0; }
+  .ccol .crow b, .lines .crow b { font-weight: 600; }
+  .ccol .crow .g, .lines .crow .g { display: inline; font-weight: 600; }
+  .ccol .crow:hover b, .lines .crow:hover b { text-decoration: underline;
     text-decoration-color: rgba(0, 0, 0, 0.22);
     text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .ccol .cways { margin-top: 0.6em; }
-  .ccol .cways u, .ccol .crow, .lines .crow:hover b { text-decoration: underline;
+  .ccol .cways u, .ccol .crow:hover b, .lines .crow:hover b { text-decoration: underline;
     text-decoration-color: rgba(0, 0, 0, 0.22);
     text-decoration-thickness: max(1px, 0.05em); text-underline-offset: 0.15em; }
   .ccol .cways u { cursor: pointer; margin-right: 0.4em; transition: text-decoration-color 0.3s ease; }
