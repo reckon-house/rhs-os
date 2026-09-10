@@ -3648,7 +3648,7 @@ function askFrom(from, text, opts) {
     const byT = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === name);
     if (byT) return openStudyColumn(byT[0], { at: opts.at }, from);
     const tg = shelfByText(name);
-    if (tg) return openShelfColumn(tg, from, opts);
+    if (tg) return openTag(tg, from, opts);
     const hs = studiesFor(name);
     /* THE NAME IN THE NAME WINS. "open the kitchen" tied Hill Country
        kitchen with Hill Country bath, whose description mentions the
@@ -3666,7 +3666,7 @@ function askFrom(from, text, opts) {
   const byTitle = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === t.toLowerCase());
   if (byTitle) return openStudyColumn(byTitle[0], { at: opts.at }, from);
   const tag = shelfByText(t);
-  if (tag) return openShelfColumn(tag, from, opts);
+  if (tag) return openTag(tag, from, opts);
   /* the facts are searched too, and they arrive by one fetch: the
      first question from the bar waits for it, once */
   if (!COPY && !opts.copied) { loadCopy().then(() => askFrom(from, text, { ...opts, copied: true })); return; }
@@ -3995,13 +3995,20 @@ function houseLine(q) {
   }
   return best ? best.m.v : null;
 }
+/* a line opens under its own headline and Staples opens a column:
+   one handle, so the rail, the head's chip, a typed question and the
+   address all reach the same room */
+function openTag(tag, from, opts) {
+  if (tag === "staples") return openShelfColumn(tag, from, opts);
+  return openLine(tag);
+}
 function openShelfColumn(tag, from, opts) {
   const hits = Object.entries(GROUPS).filter(([, g]) => g.tags.includes(tag)).map(([folder, g]) => ({ folder, g }));
   const c = colNode("list", shelfName(tag));
   c.__mode = tag;
-  c.__lead.appendChild(el("div", "cnote g", tag === "staples"
-    ? "Staples are the pulls and the kept lines, not studies."
-    : hits.length + (hits.length === 1 ? " study." : " studies.")));
+  /* no note: the head tile in the field says what Staples is, in his
+     own sentence, and the column arriving with a greyer version of it
+     was the same doubling the lines had (openLine) */
   /* ── THE SHELF THAT HOLDS NO STUDIES ──────────────────────────────
      Every other shelf is a list of studies; Staples is the one that
      is not, and asking GROUPS for studies tagged "staples" is asking
@@ -4225,7 +4232,7 @@ async function standRow() {
     if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, opts);
     else if (id.startsWith("shelf:")) {
       const tag = id.slice(6);
-      if (tag === "staples") openShelfColumn(tag, null, opts); else openLine(tag);
+      openTag(tag, null, opts);
     }
     else if (GROUPS[id]) openStudyColumn(id, opts);
     await new Promise((r) => setTimeout(r, 120));
