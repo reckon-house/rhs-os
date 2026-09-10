@@ -156,35 +156,35 @@ export const categoryInfo: Record<CategoryTag, { headline: string; body: string;
     },
   },
   creative: {
-    headline: "Creative direction,\ncampaigns and brand.",
-    body: "The projects in this section are campaigns, brand identities, and design for physical objects like tableware, apparel, and prints.\n\nMost of it was client work. The typography and pattern studies are personal projects.",
+    headline: "Creative direction,\ncampaigns and editorial.",
+    body: "The projects in this section are campaigns and editorial systems, most of them for national retailers.\n\nMost of it was client work. The West Texas photographs are from a family trip.",
     meta: {
-      field: "Brand Identity  Campaign Direction  Surface Design",
+      field: "Campaign Direction  Art Direction  Editorial Design",
       activeSince: "2002",
       status: "Making",
-      classification: "Logo Systems  Art Direction  Photography  Pattern Design  Editorial",
+      classification: "Art Direction  Photography  Editorial Systems  Content Design  Retail Campaigns",
     },
     heroes: [
       { image: `${CAT_IMG}/category-creative-ivy-park-roller-skating-editorial.jpg`, projectId: "ivyPark", blurb: "Creative direction and design for the US launch of Beyoncé's activewear brand, exclusive to Nordstrom." },
-      { image: `${CAT_IMG}/category-creative-capitan-boot-co-desert-branding.jpg`, projectId: "capitanBoot", blurb: "Brand identity, apparel graphics, and campaign photography for a western boot company." },
+      { image: `${CAT_IMG}/category-creative-robert-rodriguez-storefront-window.jpg`, projectId: "robertRod", blurb: "A spring campaign for Neiman Marcus, built from four photographs shot in one day and run across storefront windows, editorial, social and email." },
     ],
     expertise: {
       label: "SECTION 02: PRACTICE",
-      title: "Identity, campaigns,\nand physical objects",
+      title: "Campaigns, editorial\nand photography",
       subhead: "Some of these projects ran from the first positioning work through the final production files. Others were specific pieces inside a larger effort.",
       footnote: "The tools are Illustrator, Photoshop, InDesign, and a camera.",
       columns: [
-        {
-          title: "Brand Identity",
-          content: "Brand identity work covers naming, logo systems, typography, and the graphic rules that keep them consistent across print, apparel, and product.\n\nCapitan Boot Co. is the most complete build: a primary logo, secondary badges, typographic lockups, and apparel graphics, all designed to hold up when stamped into leather, with campaign photography shot on location in West Texas. J. Christianson is a naming and identity system that works across the client's hospitality and retail businesses.",
-        },
         {
           title: "Campaigns & Art Direction",
           content: "Campaign work runs from concept and art direction through the final production files, sized for every format a retailer owns.\n\nThe Robert Rodriguez campaign for Neiman Marcus came out of a single day of shooting, and the four frames from that day ran across storefront windows, editorial, social, and email. Ivy Park went from brief to live in six weeks, and because Nordstrom held the only US partnership, the website carried the launch. You By Sally was a repositioning campaign for Sally Beauty's own product brand.",
         },
         {
-          title: "Surface & Object Design",
-          content: "Surface and object design covers physical goods: tableware, textiles, ceramics, and prints.\n\nThe Amber Shockey & Co. project is a tableware line, with the patterns and the branding designed together. The pattern systems are drawn to work on both textile and ceramic, and the typography studies are personal work, printed as lithographs.",
+          title: "Editorial Systems",
+          content: "Editorial work is the template a retailer publishes into, and the rules that keep dozens of stories reading as one place.\n\nInSite was Neiman Marcus's editorial hub: designer spotlights, seasonal color stories and ways-to-wear features, all of them running on three templates. The Nordstrom content framework sorted a store's worth of stories into four named buckets, each with its own icon and a typographic mark set in its own typeface. Loved by Nordstrom ran a year of emerging-brand merchandising on one tile in two tiers, built on the heart icon borrowed from Instagram.",
+        },
+        {
+          title: "Photography",
+          content: "One studio day gave the Robert Rodriguez campaign its four photographs, and every piece in it is those four layered over each other on painted gradients.\n\nJeffrey Spring was shot in the studio too, with monstera leaves and palm fronds cropped big enough to stand in for a location the budget did not cover. The West Texas pictures are personal, from a family trip through Big Bend and the desert around Marfa, and they later became the backdrops for the Capitan Boot Co. campaign.",
         },
       ],
     },
