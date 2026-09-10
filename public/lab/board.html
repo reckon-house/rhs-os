@@ -1340,6 +1340,45 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
 const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
 /* a phone's column is 157px: every frame fills it, as the live grid's do */
 const SHARES = PHONE ? [1] : IX_TIERS;
+
+/* ── A TILE THAT IS THE PIECE, NOT A PICTURE OF IT ─────────────────
+   Ivy Park's polygon portrait is a still of something that moves: in
+   the study (HexPolygon.tsx) seven hairline octagons turn around it at
+   their own speeds, which is the brand's one device. A tile that shows
+   the still shows the shape and not the device.
+
+   So the board draws it, from the same numbers the study uses: the
+   path, seven rings, 0.92 of the box, the seeded speeds. The stroke is
+   non-scaling, which is what makes it portable — 0.7 in an 801-unit
+   viewBox is 0.72 CSS pixels in the study's 825px box, and 0.7 device
+   pixels in a 300px tile, so the hairline is the same hairline at both
+   sizes rather than a quarter of one.
+
+   The composition is the study's, scaled to fit a tile: the stage is
+   0.74 of the plate's height at the study's 801:928, the picture is
+   the stage's full height, and the rings sweep to 1.53 of their own
+   width — 237px in a 300px tile, inside it. The ring-to-picture ratio
+   comes out at 1.07, which is the study's.
+
+   Keyed by picture, not by study: this is one photograph's device. */
+const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
+  + "234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
+const TILE_SPIN = {
+  "ivy-park/ivy-park-polygon-portrait-frame-logo": {
+    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
+    share: 0.86,
+    /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
+       Board thumbs are served with a day's cache, and this one's
+       MEANING changed rather than its framing: it used to be flattened
+       onto cream and is now transparent, because the rings turn behind
+       it. A visitor holding yesterday's copy would get a cream
+       rectangle on a white page, which reads as broken rather than
+       stale. The query is part of the URL the browser caches under, so
+       asking for `a1` is asking for the transparent one. Bump it if
+       the file's meaning changes again; a re-crop does not need it. */
+    v: "a1" },
+};
+
 /* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
    The tier is 768px wide, or the original if that was smaller, so the
    largest honest CSS width is that divided by the screen's own pixel
@@ -1697,6 +1736,12 @@ function deal(list, opts) {
          either way, so the anti-repeat sees what actually landed. */
       const own = !PHONE && it.c != null && GROUPS[it.g] && GROUPS[it.g].sz;
       if (own) share = own;
+      /* a piece the board DRAWS stands at the rung it was given: it is
+         a composition rather than a photograph, and the rings only
+         read at size (TILE_SPIN). The honest-width step below still
+         applies, so a wide screen can walk it back down a rung. */
+      const drawn = !PHONE && TILE_SPIN[keyOf(it)] && TILE_SPIN[keyOf(it)].share;
+      if (drawn) share = drawn;
       /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ───────────────────
          CLAUDE.md's rule, applied where it bites: native width / DPR
          is the largest honest CSS width. It steps DOWN THE TIERS
@@ -3625,42 +3670,6 @@ const TILE_REEL = {
     TR + "/cosmo-reel/masque.jpg", TR + "/cosmo-reel/tubes.jpg",
     TR + "/cosmo-reel/brushes.jpg", TR + "/cosmo-reel/lineup.jpg",
     TR + "/cosmo-reel/mask.jpg"] },
-};
-/* ── A TILE THAT IS THE PIECE, NOT A PICTURE OF IT ─────────────────
-   Ivy Park's polygon portrait is a still of something that moves: in
-   the study (HexPolygon.tsx) seven hairline octagons turn around it at
-   their own speeds, which is the brand's one device. A tile that shows
-   the still shows the shape and not the device.
-
-   So the board draws it, from the same numbers the study uses: the
-   path, seven rings, 0.92 of the box, the seeded speeds. The stroke is
-   non-scaling, which is what makes it portable — 0.7 in an 801-unit
-   viewBox is 0.72 CSS pixels in the study's 825px box, and 0.7 device
-   pixels in a 300px tile, so the hairline is the same hairline at both
-   sizes rather than a quarter of one.
-
-   The composition is the study's, scaled to fit a tile: the stage is
-   0.74 of the plate's height at the study's 801:928, the picture is
-   the stage's full height, and the rings sweep to 1.53 of their own
-   width — 237px in a 300px tile, inside it. The ring-to-picture ratio
-   comes out at 1.07, which is the study's.
-
-   Keyed by picture, not by study: this is one photograph's device. */
-const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
-  + "234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
-const TILE_SPIN = {
-  "ivy-park/ivy-park-polygon-portrait-frame-logo": {
-    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
-    /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
-       Board thumbs are served with a day's cache, and this one's
-       MEANING changed rather than its framing: it used to be flattened
-       onto cream and is now transparent, because the rings turn behind
-       it. A visitor holding yesterday's copy would get a cream
-       rectangle on a white page, which reads as broken rather than
-       stale. The query is part of the URL the browser caches under, so
-       asking for `a1` is asking for the transparent one. Bump it if
-       the file's meaning changes again; a re-crop does not need it. */
-    v: "a1" },
 };
 /* the study's own seeded random, so the seven speeds are the seven
    speeds and the rings sit where they sit */
