@@ -6,19 +6,25 @@
 <title>The board, in order</title>
 <link rel="stylesheet" href="field/base.css" />
 <style>
-  /* ── the order each run is dealt in, by hand ───────────────────────
+  /* ── where each picture is dealt, and in what order, by hand ───────
      The sweep sheet (board-sheet.html) decides WHAT the board deals.
-     This decides WHERE. A run is the studies in the site's own order,
-     each one's pictures behind its cover; that is a default, not a
-     judgement, and some pictures should lead a line. Drag a card and
-     the run re-orders; Copy order gives the lines for
-     scripts/lib/board-skip.txt's neighbour, scripts/lib/board-order.txt,
-     which `npm run board:page` reads. No thumbs are rebuilt: the order
-     is read at deal time.
+     This decides WHERE. Two things, both written to
+     scripts/lib/board-order.txt by Copy order:
 
-     The default here is worked out exactly as the board works it out,
-     which is why nothing in a run is dealt off the seed any more. What
-     you drag is what it deals. */
+     THE LINES A STUDY SITS ON — the grid at the top. Tick a line and
+     the study is listed there (the head under that line's headline
+     counts it, the rail counts it, the study's own bar names it). The
+     first line, "deals on", is where its cover and any picture not
+     placed by hand are dealt. ARC is an app, a site and a brand: three
+     ticks.
+
+     WHERE EACH PICTURE DEALS — the runs below. A picture sits on one
+     line. Drag it to another run and it deals there, so ARC's phone
+     can sit with Apps, its tablet with Digital and its mark with
+     Branding. Drag within a run and the run re-orders. What you see
+     here is worked out exactly as the board works it out, so what you
+     drag is what it deals. `npm run board:page` reads the file; no
+     thumbs are rebuilt. */
   body { background: #f3f1ee; padding: 0 0 80px; }
   .bar { position: sticky; top: 0; z-index: 5; background: #f3f1ee; border-bottom: 1px solid rgba(0,0,0,0.1);
     display: flex; gap: 18px; align-items: center; padding: 14px 28px; flex-wrap: wrap; }
@@ -28,9 +34,21 @@
     border-radius: 10px; padding: 6px 12px; cursor: pointer; color: var(--ink); }
   .bar .sp { flex: 1; }
   .g { padding: 26px 28px 6px; }
-  .g h2 { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; }
+  .g h2 { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
   .g h2 span { font-size: 12px; font-weight: 400; color: var(--grey); letter-spacing: 0.04em; }
-  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+  .g h2 span.dirty { color: var(--ink); font-weight: 600; }
+  /* the grid: a study to a row, a line to a column */
+  table { border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 4px 14px 4px 0; border-bottom: 1px solid rgba(0,0,0,0.06); white-space: nowrap; }
+  thead th { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); font-weight: 500; padding-bottom: 8px; }
+  tbody th { font-weight: 500; letter-spacing: -0.01em; padding-right: 22px; }
+  tr.set th { font-weight: 700; }
+  tbody th .sub { font-weight: 400; color: var(--grey); font-size: 11px; }
+  td input { margin: 0; vertical-align: middle; cursor: pointer; }
+  td select { font: inherit; font-size: 11px; border: 0; border-radius: 8px; padding: 2px 4px; background: rgba(0,0,0,0.06); cursor: pointer; }
+  td.n { color: var(--grey); font-variant-numeric: tabular-nums; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; min-height: 60px; border-radius: 10px; }
+  .row.over { box-shadow: inset 0 0 0 2px var(--ink); }
   figure { margin: 0; width: 150px; position: relative; border-radius: 8px; padding: 6px; background: #fff;
     border: 1px solid rgba(0,0,0,0.08); cursor: grab; transition: opacity 0.18s ease, transform 0.18s ease; }
   figure:active { cursor: grabbing; }
@@ -41,19 +59,9 @@
     color: var(--grey); font-variant-numeric: tabular-nums; }
   figure.cover { border-color: rgba(0,0,0,0.32); }
   figure.cover .num::after { content: " cover"; }
+  figure.moved { border-color: var(--ink); }
   figure.drag { opacity: 0.3; }
   figure.over { transform: translateX(6px); box-shadow: -3px 0 0 0 var(--ink); }
-  .moved h2 span.dirty { color: var(--ink); font-weight: 600; }
-  /* the studies on this line, and where else they could sit */
-  .studies { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
-  .st { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.045);
-    border-radius: 12px; padding: 5px 6px 5px 12px; font-size: 12px; font-weight: 500;
-    letter-spacing: -0.01em; }
-  .st b { font-weight: 600; }
-  .st.set { background: var(--ink); color: #fff; }
-  .st select { font: inherit; font-size: 11px; border: 0; border-radius: 9px; padding: 3px 4px;
-    background: rgba(0,0,0,0.06); color: inherit; cursor: pointer; }
-  .st.set select { background: rgba(255,255,255,0.16); color: #fff; }
   textarea { position: fixed; left: -9999px; top: 0; }
 </style>
 </head>
@@ -65,13 +73,21 @@
   <button id="copy">Copy order</button>
   <button id="reset">Back to the deal</button>
 </div>
+<section class="g" id="lines">
+  <h2>Where each study sits <span>tick a line to list the study there · "deals on" is where its cover and unplaced pictures go</span></h2>
+  <table><thead id="mhead"></thead><tbody id="matrix"></tbody></table>
+</section>
 <div id="sheet"></div>
 <textarea id="ta" aria-hidden="true"></textarea>
 <script src="/lab/board-data.js"></script>
 <script>
 const KEY = "board-order";
 const RUNS = [["open", "The opener"], ["digital", "Digital"], ["app", "Apps"],
-  ["creative", "Campaigns"], ["interiors", "Interiors"], ["staples", "Staples"]];
+  ["creative", "Campaigns"], ["branding", "Branding"], ["interiors", "Interiors"], ["staples", "Staples"]];
+const LINES = RUNS.filter(([t]) => t !== "open" && t !== "staples");
+const labelOf = (t) => (RUNS.find(([x]) => x === t) || [t, t])[1];
+/* the board's own rule for a home when none is set: the narrowest line */
+const NARROW = ["app", "branding", "creative", "interiors", "digital"];
 const OPENER = 6;
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
@@ -80,47 +96,44 @@ const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp
    marked x and is not dealt (see build-board-thumbs) */
 const items = (window.BOARD_ITEMS || []).filter((i) => !i.x);
 const GROUPS = window.BOARD_GROUPS || {};
-const homeOf = (g) => g.tags.includes("app") ? "app"
-  : g.tags.includes("creative") ? "creative"
-  : g.tags.includes("interiors") ? "interiors" : "digital";
+const studies = Object.keys(GROUPS).filter((k) => items.some((i) => i.g === k));
+const native = (k) => ((GROUPS[k] || {}).tags || []).filter((t) => LINES.some(([l]) => l === t));
+const linesOf = (k) => homes[k] || native(k);
+const homeOf = (k) => (homes[k] && homes[k][0]) || NARROW.find((t) => native(k).includes(t)) || "digital";
 
-/* ── the deal's own order, worked out the way the board works it out ── */
+/* ── the deal, worked out the way the board works it out ─────────── */
 const covers = items.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
-const opener = covers.slice(0, OPENER);
-const inOpener = new Set(opener.map((i) => i.g));
 const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
-const dealt = {}, onRun = {};
-/* the board's own rule, and the hand-set home over it */
-const lineOf = (k) => homes[k] || homeOf(GROUPS[k]);
+const dealt = {}, placeIs = {};
+const applyOrder = (list, rank) => {
+  if (!rank || !rank.length) return list.slice();
+  const at = new Map(rank.map((k, i) => [k, i]));
+  return list.map((it, i) => [it, at.has(keyOf(it)) ? at.get(keyOf(it)) : rank.length + i])
+    .sort((a, b) => a[1] - b[1]).map(([it]) => it);
+};
 function deal() {
-  dealt.open = opener.slice();
-  dealt.staples = items.filter((i) => i.g === "inspiration");
+  const PLACE = new Map();
+  for (const [run, keys] of Object.entries(state))
+    for (const key of keys || []) if (!PLACE.has(key)) PLACE.set(key, run);
+  const opener = [];
+  for (const it of covers) if (PLACE.get(keyOf(it)) === "open") opener.push(it);
+  for (const it of covers) { if (opener.length >= OPENER) break; if (!PLACE.has(keyOf(it))) opener.push(it); }
+  const openerKeys = new Set(opener.map(keyOf));
+  const placeOf = (it) => PLACE.get(keyOf(it))
+    || (it.g === "inspiration" ? "staples" : !GROUPS[it.g] ? null
+      : openerKeys.has(keyOf(it)) ? "open" : homeOf(it.g));
+  for (const it of items) placeIs[keyOf(it)] = PLACE.has(keyOf(it));
   for (const [tag] of RUNS) {
-    if (tag === "open" || tag === "staples") continue;
-    const studies = Object.keys(GROUPS).filter((k) => lineOf(k) === tag).sort((a, b) => seat(a) - seat(b));
-    onRun[tag] = studies;
-    const run = [];
-    for (const k of studies) {
-      const pics = items.filter((i) => i.g === k);
-      const cover = pics.find((i) => i.c != null);
-      if (cover && !inOpener.has(k)) run.push(cover);
-      for (const it of pics) if (it.c == null) run.push(it);
-    }
-    dealt[tag] = run;
+    const run = items.filter((it) => placeOf(it) === tag);
+    if (tag !== "staples")
+      run.sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
+    dealt[tag] = applyOrder(run, state[tag]);
   }
 }
 
 /* an authored order, from this browser or from the repo's own file */
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } };
 const save = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} };
-
-const applyOrder = (run, rank) => {
-  if (!rank || !rank.length) return dealt[run].slice();
-  const at = new Map(rank.map((k, i) => [k, i]));
-  return dealt[run]
-    .map((it, i) => [it, at.has(keyOf(it)) ? at.get(keyOf(it)) : rank.length + i])
-    .sort((a, b) => a[1] - b[1]).map(([it]) => it);
-};
 
 /* the repo's own order, written beside the board by the assembler, so
    this page opens on what the board is dealing rather than on nothing */
@@ -132,49 +145,76 @@ fetch("/lab/board-order.json")
     const mine = load();
     state = (mine && mine.order) || repo.order || {};
     homes = (mine && mine.homes) || repo.homes || {};
+    /* an older sheet wrote a single line; a list is what it means now */
+    for (const k of Object.keys(homes)) if (!Array.isArray(homes[k])) homes[k] = [homes[k]];
     deal(); draw();
   });
 
+/* ── the grid ────────────────────────────────────────────────────── */
+function setLines(k, lines, home) {
+  const ordered = [home, ...NARROW.filter((t) => t !== home && lines.includes(t))];
+  const nat = native(k), natHome = NARROW.find((t) => nat.includes(t)) || "digital";
+  const same = ordered.length === nat.length && ordered.every((t) => nat.includes(t)) && home === natHome;
+  if (same) delete homes[k]; else homes[k] = ordered;
+  /* a picture placed on a line the study has just left goes home */
+  for (const [run] of LINES) if (!ordered.includes(run) && state[run])
+    state[run] = state[run].filter((key) => !items.some((it) => keyOf(it) === key && it.g === k));
+  save({ order: state, homes }); deal(); draw();
+}
+function drawMatrix() {
+  const head = document.getElementById("mhead"), body = document.getElementById("matrix");
+  head.innerHTML = ""; body.innerHTML = "";
+  const tr = el("tr"); tr.appendChild(el("th", null, "Study")); tr.appendChild(el("th", null, "Deals on"));
+  for (const [, l] of LINES) tr.appendChild(el("th", null, l));
+  tr.appendChild(el("th", null, "Pictures"));
+  head.appendChild(tr);
+  for (const k of studies.slice().sort((a, b) => seat(a) - seat(b))) {
+    const row = el("tr", homes[k] ? "set" : null);
+    const th = el("th", null, GROUPS[k].t);
+    /* three Hill Country rooms share a title; the study's own line tells them apart */
+    if (GROUPS[k].s) th.appendChild(el("span", "sub", " " + GROUPS[k].s));
+    row.appendChild(th);
+    const td0 = el("td"); const sel = document.createElement("select");
+    for (const t of linesOf(k)) { const o = document.createElement("option"); o.value = t; o.textContent = labelOf(t); o.selected = t === homeOf(k); sel.appendChild(o); }
+    sel.addEventListener("change", () => setLines(k, linesOf(k), sel.value));
+    td0.appendChild(sel); row.appendChild(td0);
+    for (const [t] of LINES) {
+      const td = el("td"); const cb = document.createElement("input"); cb.type = "checkbox";
+      cb.checked = linesOf(k).includes(t);
+      cb.addEventListener("change", () => {
+        const cur = linesOf(k).slice();
+        const next = cb.checked ? [...cur, t] : cur.filter((x) => x !== t);
+        if (!next.length) { cb.checked = true; return; }
+        setLines(k, next, next.includes(homeOf(k)) ? homeOf(k) : NARROW.find((x) => next.includes(x)));
+      });
+      td.appendChild(cb); row.appendChild(td);
+    }
+    /* where its pictures actually are */
+    const where = LINES.concat([["open", "opener"]]).map(([t, l]) => [dealt[t].filter((it) => it.g === k).length, l])
+      .filter(([n]) => n).map(([n, l]) => n + " " + l).join(" · ");
+    row.appendChild(el("td", "n", where));
+    body.appendChild(row);
+  }
+}
+
+/* ── the runs ────────────────────────────────────────────────────── */
 const sheet = document.getElementById("sheet");
 function draw() {
+  drawMatrix();
   sheet.innerHTML = "";
   for (const [tag, label] of RUNS) {
-    const list = applyOrder(tag, state[tag]);
+    const list = dealt[tag];
     const sec = el("section", "g"); sec.dataset.run = tag;
     const h = el("h2", null, label);
     h.appendChild(el("span", null, list.length + (list.length === 1 ? " picture" : " pictures")));
     if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
     sec.appendChild(h);
-    /* the studies dealt on this line, each with the line it could move
-       to: a study travels with its pictures, so this is one press */
-    if (tag !== "open" && tag !== "staples") {
-      const strip = el("div", "studies");
-      for (const k of (onRun[tag] || [])) {
-        const chip = el("span", "st" + (homes[k] ? " set" : ""));
-        chip.appendChild(el("b", null, (GROUPS[k] || {}).t || k));
-        const sel = document.createElement("select");
-        for (const [t2, l2] of RUNS) {
-          if (t2 === "open" || t2 === "staples") continue;
-          const o = document.createElement("option");
-          o.value = t2; o.textContent = l2; o.selected = t2 === tag;
-          sel.appendChild(o);
-        }
-        sel.addEventListener("change", () => {
-          const to = sel.value;
-          if (to === homeOf(GROUPS[k])) delete homes[k]; else homes[k] = to;
-          save({ order: state, homes });
-          deal(); draw();
-        });
-        chip.appendChild(sel);
-        strip.appendChild(chip);
-      }
-      sec.appendChild(strip);
-    }
     const row = el("div", "row");
     list.forEach((it, i) => {
       const g = GROUPS[it.g];
       const f = el("figure"); f.draggable = true; f.dataset.key = keyOf(it);
       if (it.c != null) f.classList.add("cover");
+      if (placeIs[keyOf(it)]) f.classList.add("moved");
       f.appendChild(el("span", "num", String(i + 1)));
       const im = el("img"); im.loading = "lazy"; im.alt = "";
       im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
@@ -191,6 +231,7 @@ function draw() {
 }
 
 let dragging = null;
+const runOf = (node) => { const s = node && node.closest("section[data-run]"); return s ? s : null; };
 sheet.addEventListener("dragstart", (e) => {
   const f = e.target.closest("figure"); if (!f) return;
   dragging = f; f.classList.add("drag");
@@ -199,39 +240,45 @@ sheet.addEventListener("dragstart", (e) => {
 });
 sheet.addEventListener("dragend", () => {
   if (dragging) dragging.classList.remove("drag");
-  sheet.querySelectorAll("figure.over").forEach((x) => x.classList.remove("over"));
+  sheet.querySelectorAll(".over").forEach((x) => x.classList.remove("over"));
   dragging = null;
 });
+/* a pull is a pull and a study's picture is a study's picture: the
+   two do not cross, and everything else can go anywhere */
+const mayDrop = (from, to) => from && to && ((from.dataset.run === "staples") === (to.dataset.run === "staples"));
 sheet.addEventListener("dragover", (e) => {
-  const f = e.target.closest("figure");
-  if (!dragging || !f || f === dragging) return;
-  /* a picture belongs to its line: a run is the studies on it */
-  if (f.closest("section").dataset.run !== dragging.closest("section").dataset.run) return;
+  if (!dragging) return;
+  const to = runOf(e.target); if (!mayDrop(runOf(dragging), to)) return;
   e.preventDefault();
-  sheet.querySelectorAll("figure.over").forEach((x) => x.classList.remove("over"));
-  f.classList.add("over");
+  const f = e.target.closest("figure");
+  sheet.querySelectorAll(".over").forEach((x) => x.classList.remove("over"));
+  (f && f !== dragging ? f : to.querySelector(".row")).classList.add("over");
 });
 sheet.addEventListener("drop", (e) => {
-  const f = e.target.closest("figure");
-  if (!dragging || !f || f === dragging) return;
-  const sec = f.closest("section");
-  if (sec.dataset.run !== dragging.closest("section").dataset.run) return;
+  if (!dragging) return;
+  const from = runOf(dragging), to = runOf(e.target); if (!mayDrop(from, to)) return;
   e.preventDefault();
-  const row = sec.querySelector(".row");
-  const all = [...row.children];
-  row.insertBefore(dragging, all.indexOf(dragging) < all.indexOf(f) ? f.nextSibling : f);
-  state[sec.dataset.run] = [...row.children].map((x) => x.dataset.key);
-  save({ order: state, homes }); renumber(sec); count();
-});
-const renumber = (sec) => [...sec.querySelectorAll("figure")].forEach((f, i) => {
-  f.querySelector(".num").textContent = String(i + 1);
+  const f = e.target.closest("figure"), row = to.querySelector(".row");
+  if (f && f !== dragging) {
+    const all = [...row.children];
+    row.insertBefore(dragging, from === to && all.indexOf(dragging) < all.indexOf(f) ? f.nextSibling : f);
+  } else if (!f) row.appendChild(dragging);
+  else return;
+  state[to.dataset.run] = [...row.children].map((x) => x.dataset.key);
+  if (from !== to && state[from.dataset.run])
+    state[from.dataset.run] = state[from.dataset.run].filter((k) => k !== dragging.dataset.key);
+  save({ order: state, homes });
+  deal(); draw();
 });
 function count() {
   const set = RUNS.filter(([t]) => state[t] && state[t].length).map(([, l]) => l);
   const moved = Object.keys(homes).length;
+  /* what the board deals, which is every picture with a study; a
+     picture in a folder no study claims is thumbed but never dealt */
+  const n = RUNS.reduce((a, [t]) => a + (dealt[t] || []).length, 0);
   document.getElementById("count").textContent =
-    items.length + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
-    + (moved ? " · " + moved + (moved === 1 ? " study moved" : " studies moved") : "");
+    n + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
+    + (moved ? " · " + moved + (moved === 1 ? " study re-lined" : " studies re-lined") : "");
 }
 document.getElementById("reset").addEventListener("click", () => {
   state = {}; homes = {}; save({ order: state, homes }); deal(); draw();
@@ -244,13 +291,13 @@ document.getElementById("copy").addEventListener("click", async (e) => {
   for (const [tag, label] of RUNS) {
     if (!state[tag] || !state[tag].length) continue;
     out.push("# " + tag + "   (" + label + ")");
-    out.push(...applyOrder(tag, state[tag]).map(keyOf));
+    out.push(...dealt[tag].map(keyOf));
     out.push("");
   }
-  const moved = Object.entries(homes);
-  if (moved.length) {
+  const lined = Object.entries(homes);
+  if (lined.length) {
     out.push("# homes");
-    for (const [k, run] of moved) out.push(k + " = " + run);
+    for (const [k, lines] of lined) out.push(k + " = " + lines.join(", "));
     out.push("");
   }
   const text = out.join("\n");

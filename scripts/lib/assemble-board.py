@@ -36,7 +36,7 @@ _rows = "".join(
 # `npm run board:page` alone applies a new order — no thumbs needed.
 import os as _os
 _ORDER, _HOMES, _run = {}, {}, None
-_RUNS = ("open", "digital", "app", "creative", "interiors", "staples", "homes")
+_RUNS = ("open", "digital", "app", "creative", "branding", "interiors", "staples", "homes")
 _op = "scripts/lib/board-order.txt"
 if _os.path.exists(_op):
     for _raw in io.open(_op, encoding="utf-8").read().split("\n"):
@@ -51,7 +51,8 @@ if _os.path.exists(_op):
         if _run == "homes":
             if "=" in _t:
                 _k, _v = _t.split("=", 1)
-                _HOMES[_k.strip()] = _v.split("#")[0].strip()
+                # the lines a study sits on, its home first
+                _HOMES[_k.strip()] = [x.strip() for x in _v.split("#")[0].split(",") if x.strip()]
         elif _run:
             _ORDER.setdefault(_run, []).append(_t.split("#")[0].strip())
 ORDER_JS = ("window.BOARD_ORDER = " + _json.dumps(_ORDER) + ";"
@@ -1488,26 +1489,28 @@ const setOrder = (run, list) => {
     .map(([it]) => it);
 };
 const OPENER = 6;
-/* ── WHICH LINE A STUDY IS DEALT ON ─────────────────────────────────
-   A study's tags say which lines claim it and the narrowest of them
-   is where its pictures are dealt, so Ivy Park is tagged digital and
-   creative and runs with Campaigns. That is a rule about the data,
-   and sometimes the data is not how Jeremy thinks of the work: a home
-   set by hand (scripts/lib/board-order.txt, under "# homes", set on
-   lab/board-order.html) moves the study's pictures to the line he
-   names. The line CLAIMS it too — the tag goes on — so the head that
-   opens into a list of studies counts this one among them. It keeps
-   the lines it already had; a study can sit on two lists and only be
-   dealt once. */
+/* ── THE LINES A STUDY SITS ON, AND WHERE EACH PICTURE DEALS ────────
+   Two facts, and they used to be one. A study's tags said which lines
+   list it, the narrowest of them was where ALL its pictures dealt,
+   and a study that is three kinds of work (ARC: an app, a site, a
+   brand) had every picture on one line.
+
+   The lines a study sits on come from its tags, or from a line under
+   "# homes" in scripts/lib/board-order.txt when set by hand on
+   lab/board-order.html: `arc = app, digital, branding`. The first
+   named is its HOME. Each picture deals on exactly one line: the run
+   it is named under in the order file or, unnamed, its study's home.
+   So ARC's phone deals with Apps, its tablet with Digital, its mark
+   with Branding, and each of those heads counts ARC. A cover among
+   the first six sits in the opener unless it is named elsewhere. */
+const NARROW = ["app", "branding", "creative", "interiors", "digital"];
 const HOMES = window.BOARD_HOMES || {};
-for (const [k, run] of Object.entries(HOMES)) {
+for (const [k, lines] of Object.entries(HOMES)) {
   const g = GROUPS[k];
-  if (g && g.tags && !g.tags.includes(run)) g.tags.push(run);
+  if (g) g.tags = (Array.isArray(lines) ? lines : [lines]).slice();
 }
-const homeOf = (k) => HOMES[k] || (GROUPS[k].tags.includes("app") ? "app"
-  : GROUPS[k].tags.includes("branding") ? "branding"
-  : GROUPS[k].tags.includes("creative") ? "creative"
-  : GROUPS[k].tags.includes("interiors") ? "interiors" : "digital");
+const homeOf = (k) => (HOMES[k] && HOMES[k][0])
+  || NARROW.find((t) => GROUPS[k].tags.includes(t)) || "digital";
 const shuffle = (a) => {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
@@ -1523,36 +1526,42 @@ const shuffle = (a) => {
    preview fuller than the board. */
 const all = (window.BOARD_ITEMS || []).filter((i) => !i.x);
 const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
-const opener = covers.slice(0, OPENER);
-const inOpener = new Set(opener.map((i) => i.g));
+/* where the order file puts a picture, if it names it at all */
+const PLACE = new Map();
+for (const [run, keys] of Object.entries(RUN_ORDER))
+  for (const key of keys) if (!PLACE.has(key)) PLACE.set(key, run);
+/* the opener: whatever is named under "# open", then the first covers
+   in site order that nothing else has claimed, to six */
+const opener = [];
+for (const it of covers) if (PLACE.get(keyOf(it)) === "open") opener.push(it);
+for (const it of covers) {
+  if (opener.length >= OPENER) break;
+  if (!PLACE.has(keyOf(it))) opener.push(it);
+}
+const openerKeys = new Set(opener.map(keyOf));
+const placeOf = (it) => PLACE.get(keyOf(it))
+  || (it.g === "inspiration" ? "staples" : !GROUPS[it.g] ? null
+    : openerKeys.has(keyOf(it)) ? "open" : homeOf(it.g));
+/* the site's own order, the one the covers lead with */
+const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
 const img = (it, run) => ({ kind: "img", run, ...it });
-const items = setOrder("open", opener).map((it) => img(it, "open"));
+const items = setOrder("open", all.filter((i) => placeOf(i) === "open")
+  .sort((a, b) => seat(a.g) - seat(b.g))).map((it) => img(it, "open"));
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
-  const studies = Object.keys(GROUPS).filter((k) => homeOf(k) === tag);
   /* ── THE HEAD COUNTS THE LINE, NOT THE RUN ───────────────────────
-     The run holds the studies whose NARROWEST tag is this line, so
-     Digital's run is the four stores and the other six digital
-     studies are dealt with Apps and Campaigns. The chip opens the
-     shelf, and the shelf lists every study tagged digital, which is
-     ten — so a chip that said four was counting one thing and opening
-     another. It counts what it opens. */
+     The run holds the pictures dealt here; the chip opens the shelf,
+     and the shelf lists every study that sits on this line, dealt
+     here or not. It counts what it opens. */
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
-  /* the site's own order, the one the covers lead with */
-  const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
-  studies.sort((a, b) => seat(a) - seat(b));
   items.push({ kind: "head", run: tag, first: true, tag,
     html: label + ". <span class=\"q\">" + desc + "</span>",
     way: shelf + " studies \u2192" });
-  const run = [];
-  for (const k of studies) {
-    const pics = all.filter((i) => i.g === k);
-    const cover = pics.find((i) => i.c != null);
-    if (cover && !inOpener.has(k)) run.push(cover);
-    /* the data file is sorted by path, so a study's pictures come in
-       one fixed order rather than the seed's */
-    for (const it of pics) if (it.c == null) run.push(it);
-  }
+  /* the deal's own order: studies by seat, each cover before its
+     pictures, pictures in the data file's order. The order file's
+     names lead, and setOrder keeps this behind them. */
+  const run = all.filter((i) => placeOf(i) === tag)
+    .sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
   for (const it of setOrder(tag, run)) items.push(img(it, tag));
 });
 /* the threshold: the last thing that is work, then his own sentence

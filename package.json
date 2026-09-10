@@ -32,7 +32,8 @@
     "reels": "node --experimental-strip-types scripts/build-reel-thumbs.mjs",
     "ask:bench": "node --no-warnings scripts/ask-bench.mjs",
     "flow:sim": "node scripts/flow-sim.mjs",
-    "board:roles": "node --no-warnings scripts/board-roles.mjs"
+    "board:roles": "node --no-warnings scripts/board-roles.mjs",
+    "lines:sync": "node --no-warnings scripts/board-lines-sync.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.0",

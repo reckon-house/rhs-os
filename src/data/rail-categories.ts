@@ -11,13 +11,14 @@
  * case study is the exact byte problem scripts/port-home.mjs exists to
  * avoid. So the ring needs the answer without the machinery.
  *
- * These lists ARE the brain's answers, captured from it rather than
- * guessed — think("digital") and the other three, read off the running
- * homepage on 28 Aug 2026. Two of them fall out of projects.ts tags on
- * their own (digital and interiors match their tag exactly); the other
- * two are subsets of `creative` that only the corpus can separate,
- * which is why all four are written the same way rather than two being
- * derived and two authored.
+ * These lists were the brain's answers, captured from think() on 28
+ * Aug 2026. Since 10 Sept 2026 they are WRITTEN BY `npm run lines:sync`
+ * (scripts/board-lines-sync.mjs) from the board's own answer: the
+ * lines a study sits on, which are its projects.ts tags unless
+ * scripts/lib/board-order.txt names them by hand under "# homes". Do
+ * not edit them here; move the study on lab/board-order.html and run
+ * the sync, so the ring, the study bar and the board's heads all
+ * count the same studies.
  *
  * STAPLES IS THE FIFTH AND IT COUNTS NO STUDIES. Its shelf is the
  * inspiration board, so it carries `frames` instead of `ids` — see the
@@ -79,7 +80,9 @@ export const railCategories: RailCategory[] = [
       "sizzle",
       "nordstromFramework",
       "nordstromBeauty",
-      "sallyBeauty",
+      "ivyPark",
+      "lovedByNordstrom",
+      "neimanMarcus",
     ],
   },
   {
@@ -100,6 +103,12 @@ export const railCategories: RailCategory[] = [
       "sallyBeauty",
       "jeffreyCampaign",
       "lovedByNordstrom",
+      "capitanBoot",
+      "nordstromFramework",
+      "oakworks",
+      "cosmoProf",
+      "neimanMarcus",
+      "bigBend",
     ],
   },
   {
@@ -121,6 +130,8 @@ export const railCategories: RailCategory[] = [
       "amberShockey",
       "bwType",
       "variousDesign",
+      "arc",
+      "jeffreyNyc",
     ],
   },
   {
