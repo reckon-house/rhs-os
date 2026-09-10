@@ -720,11 +720,20 @@ head = r'''<!doctype html>
      page by settle()'s own --lag, each one rising the statement's
      fourteen pixels through the statement's own curve. A row is a
      tile here, so the list carries that cascade itself — the box is
-     just the box, and each row rises in its turn. */
+     just the box, and each row rises in its turn.
+
+     AND EACH ROW IS ITS OWN BEAT. At the field's own 45ms step over
+     fourteen pixels the ten of them overlapped into one soft fade:
+     the last row started before the first had finished, so nothing
+     read as arriving. Twice the step and twice the travel, with the
+     ink coming up faster than the movement settles — the row is
+     legible while it is still rising, which is what makes it read as
+     a build rather than a fade. The rule rises with its row, so the
+     list draws its own lines down the column. */
   .tile.lines { position: absolute; display: block; }
-  .tile.lines .crow { opacity: 0; transform: translateY(14px);
-    transition: opacity 0.6s ease var(--lag, 0s),
-      transform 0.6s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  .tile.lines .crow { opacity: 0; transform: translateY(30px);
+    transition: opacity 0.42s ease var(--lag, 0s),
+      transform 0.72s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
   .tile.lines.fd-on .crow { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
     .tile.lines .crow { opacity: 1; transform: none; transition: none; }
@@ -2544,7 +2553,7 @@ function mountLines(head, u, f) {
   /* one after another, in settle()'s own step, and capped so a line of
      fourteen does not keep the eye waiting at the bottom */
   box.querySelectorAll(".crow").forEach((r, i) =>
-    r.style.setProperty("--lag", Math.min(0.62, i * 0.045).toFixed(3) + "s"));
+    r.style.setProperty("--lag", Math.min(1.15, i * 0.09).toFixed(3) + "s"));
   f.__in.appendChild(box);
   return box;
 }
