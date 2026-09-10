@@ -1810,6 +1810,15 @@ function deal(list, opts) {
   sized.forEach((it) => {
     if (it.first) { closeRun(); if (s % per) s += per - (s % per); runStart = s; }
     seats.push(s); s += 1;
+    /* ── A HEAD TAKES THE ROW ITSELF ───────────────────────────────
+       Rows belong to the pair, so a picture sat beside the headline
+       and set the row's height: a 139px head next to a 392px frame
+       opened every run on four hundred and seventy-five pixels of
+       nothing. The head takes both seats now, so the row is the
+       headline's own height and both columns start their pictures
+       under it. A phone runs each column's own y and never had the
+       problem, so it keeps its single seat. */
+    if (it.kind === "head" && VISIBLE > 1) s += VISIBLE - 1;
   });
   closeRun();
   const bySeat = new Array(s);
@@ -1819,13 +1828,23 @@ function deal(list, opts) {
   /* one ladder per pair, each rung the taller of that pair's two */
   const pairYs = [];
   for (let p = 0; p < pairs; p += 1) {
-    const rh = new Array(rows).fill(0);
+    const rh = new Array(rows).fill(0), isHead = new Array(rows).fill(false);
     for (let j = 0; j < per; j += 1) {
       const it = bySeat[p * per + j];
-      if (it && it.h > rh[Math.floor(j / VISIBLE)]) rh[Math.floor(j / VISIBLE)] = it.h;
+      if (!it) continue;
+      const k = Math.floor(j / VISIBLE);
+      if (it.h > rh[k]) rh[k] = it.h;
+      if (it.kind === "head") isHead[k] = true;
     }
     const y = [top0];
-    for (let k = 0; k < rows; k += 1) y.push(y[k] + (rh[k] ? rh[k] + airOf() : 0));
+    for (let k = 0; k < rows; k += 1) {
+      /* the roll is taken either way, so the air a row does not use
+         does not shift every gap after it */
+      const a = airOf();
+      /* and a headline sits close to what it introduces: the board's
+         own smallest gap rather than a dealt one */
+      y.push(y[k] + (rh[k] ? rh[k] + (isHead[k] ? airMin : a) : 0));
+    }
     pairYs.push(y);
   }
   const ys = pairYs[0];
