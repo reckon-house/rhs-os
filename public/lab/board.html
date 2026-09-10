@@ -1367,6 +1367,11 @@ const TILE_SPIN = {
   "ivy-park/ivy-park-polygon-portrait-frame-logo": {
     count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
     share: 1, aspect: 1,
+    /* the study draws at 0.7, which is one hairline on its 825px box.
+       Seven of them around a 340px portrait read heavier than seven
+       around an 800px one, so the board draws them finer. Device
+       pixels, not viewBox units: see the stroke note above. */
+    stroke: 0.5,
     /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
        Board thumbs are served with a day's cache, and this one's
        MEANING changed rather than its framing: it used to be flattened
@@ -3744,7 +3749,7 @@ function spinStage(plate, t, cfg, cap) {
     const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
     p.setAttribute("d", SPIN_PATH);
     p.setAttribute("stroke", "currentColor");
-    p.setAttribute("stroke-width", "0.7");
+    p.setAttribute("stroke-width", String(cfg.stroke || 0.7));
     p.setAttribute("vector-effect", "non-scaling-stroke");
     p.setAttribute("fill", "none");
     g.appendChild(p); st.appendChild(g); rings.push(g);
