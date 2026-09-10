@@ -3255,6 +3255,18 @@ const shelfByText = (text) => {
 };
 
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+/* ── A COLUMN'S KIND IS A CLASS, AND THE SHELL OWNS SOME NAMES ──────
+   The board wears the homepage's whole stylesheet (board-shell.css,
+   lifted from the lab) rather than imitating it, so every class it
+   invents is in the homepage's namespace. The homepage has an
+   `.answer` — its own section, hidden until `body.asked` — and a
+   column of kind "answer" wore that rule: display:none, and the reply
+   the field had already written was on the glass at zero height. It
+   is "reply" now, which the shell does not use.
+
+   Before naming a kind, check board-shell.css for a bare rule on that
+   word. "ask" is taken too. "list", "study", "info" and "connect" are
+   the board's own. */
 function colNode(kind, caption) {
   const c = el("section", "ccol " + kind + " arriving");
   const cin = el("div", "cin");
@@ -3794,7 +3806,7 @@ function askFrom(from, text, opts) {
       .map(([f, x]) => ({ folder: f, g: x, n: x.tags.filter((tg) => g.tags.includes(tg)).length }))
       .filter((h) => h.n > 0).sort((a, b) => b.n - a.n).slice(0, 8);
     if (kin.length) {
-      const c = colNode("answer", "Like " + g.t);
+      const c = colNode("reply", "Like " + g.t);
       c.__lead.appendChild(el("div", "cnote g", kin.length + (kin.length === 1 ? " study shares its shelf." : " studies share its shelf.")));
       studyRows(kin, c.__matter, c);
       insertColumn(c, from, opts);
@@ -3861,7 +3873,7 @@ function askFrom(from, text, opts) {
      inline still earns an index of its own. */
   const inCol = from && ccols.indexOf(from) >= 0;
   if (inCol && (from.__folder || hits.length <= 4)) return sayIn(from, t, hits);
-  const c = colNode("answer", t);
+  const c = colNode("reply", t);
   if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
   if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
