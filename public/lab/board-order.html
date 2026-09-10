@@ -23,6 +23,12 @@
      can sit with Apps, its tablet with Digital and its mark with
      Branding. Drag within a run and the run re-orders.
 
+     SWAP — on every card. Opens the study's own pictures, thumbed or
+     not, so the one standing for the study on that line can be traded
+     for a better one: a device in a room, a big single image. A picture
+     with no thumb yet shows from its original and `npm run board`
+     thumbs it once the file names it. The old one is held off.
+
      OFF THE FIELD — the last section. A study's pictures the cut left
      for its preview alone. Drag one into a run and it is dealt there
      (that is how a study gets a picture on every line it sits on when
@@ -66,7 +72,22 @@
   figure.cover { border-color: rgba(0,0,0,0.32); }
   figure.cover .num::after { content: " cover"; }
   figure.moved { border-color: var(--ink); }
-  figure.drag { opacity: 0.3; }
+  figure .swap { position: absolute; right: 6px; top: 6px; z-index: 2; font: inherit; font-size: 10px; letter-spacing: 0.04em;
+    border: 0; border-radius: 8px; padding: 3px 7px; background: rgba(255,255,255,0.92); color: var(--ink); cursor: pointer; opacity: 0; }
+  figure:hover .swap { opacity: 1; }
+  figure.pseudo img { outline: 2px dashed rgba(0,0,0,0.25); outline-offset: -2px; }
+  .picker { margin: 12px 0 6px; padding: 16px 18px 14px; background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; }
+  .picker h3 { margin: 0 0 10px; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; display: flex; gap: 12px; align-items: baseline; }
+  .picker h3 span { font-size: 11px; font-weight: 400; color: var(--grey); }
+  .picker h3 button { margin-left: auto; font: inherit; font-size: 11px; border: 0; background: rgba(0,0,0,0.06); border-radius: 8px; padding: 4px 9px; cursor: pointer; }
+  .picker .cands { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cand { width: 132px; padding: 5px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); background: #fafaf8; cursor: pointer; }
+  .cand:hover { border-color: var(--ink); }
+  .cand.now { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .cand img { display: block; width: 100%; height: 92px; object-fit: cover; border-radius: 4px; background: #ece9e4; }
+  .cand small { display: block; font-size: 9px; line-height: 1.3; color: var(--grey); margin-top: 4px; word-break: break-word; }
+  .cand small b { color: var(--ink); font-weight: 500; }
+  .cand.none { display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--grey); min-height: 92px; }
   figure.over { transform: translateX(6px); box-shadow: -3px 0 0 0 var(--ink); }
   td.n .gap { color: #b3261e; }
   section[data-run="off"] { background: rgba(0,0,0,0.035); border-radius: 14px; margin: 26px 28px 0; padding: 22px 28px 20px; }
@@ -100,7 +121,7 @@ const labelOf = (t) => (RUNS.find(([x]) => x === t) || [t, t])[1];
 const NARROW = ["app", "branding", "creative", "interiors", "digital"];
 const OPENER = 6;
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
-const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
+const keyOf = (it) => it.k || it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
 
 /* every picture with a study, on the field or not: a cut plate is
    marked x and kept for the preview (see build-board-thumbs), and it
@@ -109,6 +130,30 @@ const onField = new Set((window.BOARD_ITEMS || []).filter((i) => !i.x).map((i) =
 /* one item per thumb, the field's own first (Big Bend's hero is its
    cover and one of its plates) */
 const items = (window.BOARD_ITEMS || []).filter((i) => !(i.x && onField.has(keyOf(i))));
+/* every picture a study uses, with its role, from npm run board:roles;
+   the picker offers these whether or not the board has a thumb */
+let ROLES = {};
+fetch("/lab/board-roles.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({})).then((j) => {
+  ROLES = (j && j.roles) || {};
+  /* a pseudo item made before the roles arrived guessed its extension;
+     now it can know */
+  let fixed = 0;
+  for (const it of items) if (it.pseudo) { const f = fileFor(it.k); if (f && it.t !== "/case-studies/" + f) { it.t = "/case-studies/" + f; fixed += 1; } }
+  if (fixed) draw();
+});
+const fileFor = (key) => Object.keys(ROLES).find((k) => !/\/\._/.test(k) && k.replace(/\.[^.]+$/, "") === key);
+const filesOf = (folder) => Object.keys(ROLES)
+  /* the volume is exFAT and macOS leaves a ._ fork beside every file;
+     the roles walk sees them, the picker must not */
+  .filter((k) => k.startsWith(folder + "/") && !/\/\._/.test(k) && /\.(jpe?g|png|webp)$/i.test(k) && !/-2x\.[^.]+$/.test(k) && !/\/reel\//.test(k))
+  .map((k) => ({ file: k, key: k.replace(/\.[^.]+$/, ""), role: ROLES[k] }));
+/* a picture named in a run before the board has thumbed it shows from
+   its original; the next npm run board makes the thumb */
+const pseudo = (key) => {
+  const file = fileFor(key);
+  return { t: "/case-studies/" + (file || key + ".jpg"), k: key, g: key.split("/")[0], w: 0, h: 0, x: 1, pseudo: true };
+};
+const itemFor = (key) => items.find((it) => keyOf(it) === key) || (() => { const p = pseudo(key); items.push(p); return p; })();
 const GROUPS = window.BOARD_GROUPS || {};
 const studies = Object.keys(GROUPS).filter((k) => items.some((i) => i.g === k));
 const native = (k) => ((GROUPS[k] || {}).tags || []).filter((t) => LINES.some(([l]) => l === t));
@@ -132,6 +177,7 @@ function deal() {
     for (const key of keys || []) if (!PLACE.has(key)) PLACE.set(key, run);
   }
   const OFF = new Set(state.off || []);
+  for (const key of PLACE.keys()) itemFor(key);
   /* on the field: named under a run, or not cut and not held off */
   const field = items.filter((it) => PLACE.has(keyOf(it)) || (!it.x && !OFF.has(keyOf(it))));
   const opener = [];
@@ -252,9 +298,15 @@ function draw() {
       const f = el("figure"); f.draggable = true; f.dataset.key = keyOf(it);
       if (it.c != null) f.classList.add("cover");
       if (placeIs[keyOf(it)]) f.classList.add("moved");
+      if (it.pseudo) f.classList.add("pseudo");
       f.appendChild(el("span", "num", String(i + 1)));
+      if (tag !== "staples" && tag !== "off" && GROUPS[it.g]) {
+        const sw = el("button", "swap", "swap"); sw.type = "button";
+        sw.addEventListener("click", (e) => { e.stopPropagation(); openPicker(sec, tag, it); });
+        f.appendChild(sw);
+      }
       const im = el("img"); im.loading = "lazy"; im.alt = "";
-      im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
+      im.src = it.pseudo ? it.t : (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
       f.appendChild(im);
       const cap = el("figcaption");
       cap.appendChild(el("b", null, g ? g.t : it.g));
@@ -265,6 +317,60 @@ function draw() {
     sec.appendChild(row); sheet.appendChild(sec);
   }
   count();
+}
+
+/* ── swap: the study's pictures for this line ─────────────────────── */
+function openPicker(sec, run, cur) {
+  sec.querySelectorAll(".picker").forEach((p) => p.remove());
+  const k = cur.g, curKey = keyOf(cur);
+  const box = el("div", "picker");
+  const h = el("h3", null, GROUPS[k].t + " on " + labelOf(run));
+  h.appendChild(el("span", null, "pick the picture that stands for it here"));
+  const x = el("button", null, "Close"); x.addEventListener("click", () => box.remove()); h.appendChild(x);
+  box.appendChild(h);
+  const cands = el("div", "cands");
+  /* where each of the study's pictures is right now */
+  const at = {};
+  for (const [t] of RUNS) for (const it of dealt[t] || []) if (it.g === k && t !== "off") at[keyOf(it)] = t;
+  const list = filesOf(k);
+  /* the study's field pictures the roles file does not list (a cover under hp/) */
+  for (const it of items) if (it.g === k && !list.some((c) => c.key === keyOf(it)))
+    list.push({ file: it.t, key: keyOf(it), role: it.c != null ? "cover" : "" });
+  for (const c of list) {
+    const d = el("div", "cand" + (c.key === curKey ? " now" : ""));
+    const it = items.find((i) => keyOf(i) === c.key);
+    const im = el("img"); im.loading = "lazy"; im.alt = "";
+    im.src = it && !it.pseudo ? ((it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t) : "/case-studies/" + c.file;
+    d.appendChild(im);
+    const s = el("small");
+    s.appendChild(el("b", null, (c.role || "") + (at[c.key] ? (c.role ? " · " : "") + "on " + labelOf(at[c.key]) : "")));
+    s.appendChild(document.createTextNode((c.role || at[c.key] ? " " : "") + c.key.split("/").slice(1).join("/").replace(new RegExp("^" + k + "-"), "")));
+    d.appendChild(s);
+    d.addEventListener("click", () => { if (c.key !== curKey) swap(run, curKey, c.key); box.remove(); });
+    cands.appendChild(d);
+  }
+  const none = el("div", "cand none", "none · hold it off");
+  none.addEventListener("click", () => { swap(run, curKey, null); box.remove(); });
+  cands.appendChild(none);
+  box.appendChild(cands);
+  sec.insertBefore(box, sec.querySelector(".row"));
+  box.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+function swap(run, oldKey, newKey) {
+  if (!state[run] || !state[run].length) state[run] = dealt[run].map(keyOf);
+  const oldIt = items.find((i) => keyOf(i) === oldKey);
+  const i = state[run].indexOf(oldKey);
+  if (newKey) {
+    for (const r of Object.keys(state)) if (r !== "off") state[r] = (state[r] || []).filter((x) => x !== newKey);
+    if (i >= 0) state[run].splice(i, 0, newKey); else state[run].push(newKey);
+    state[run] = state[run].filter((x) => x !== oldKey);
+    if (state.off) state.off = state.off.filter((x) => x !== newKey);
+    itemFor(newKey);
+  } else state[run] = state[run].filter((x) => x !== oldKey);
+  /* the old one leaves the board: a field picture is held off, a cut
+     plate is off by itself once unnamed */
+  dropOff(oldKey, oldIt);
+  save({ order: state, homes }); deal(); draw();
 }
 
 let dragging = null;

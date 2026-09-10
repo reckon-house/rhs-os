@@ -23,7 +23,7 @@
  * tile it seats.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { join, extname } from "node:path";
+import { join, dirname, extname } from "node:path";
 import sharp from "sharp";
 
 const FORCE = process.argv.includes("--force");
@@ -67,24 +67,54 @@ const IMG_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
  *  The subdirectories are not the work — reel/ thumbs, arc/demo build
  *  chrome, neiman-marcus/no-shadow duplicate exports, the unused
  *  dsc/new drop. A board of everything still means everything that IS
- *  something. */
+ *  something.
+ *
+ *  EXCEPT WHAT THE ORDER FILE NAMES. Sally's environment shots live in
+ *  sally-os/heroes/, and the sheet's swap can name one for a line. So
+ *  the walk goes below the top level too, and a deep file is yielded
+ *  only when scripts/lib/board-order.txt names it; the deal treats it
+ *  like any named picture. reel/ is never the board's. */
 function* walk(root) {
   for (const slug of readdirSync(root, { withFileTypes: true })) {
     if (!slug.isDirectory()) continue;
-    const dir = join(root, slug.name);
-    for (const name of readdirSync(dir, { withFileTypes: true })) {
-      if (!name.isFile()) continue;
-      const p = join(dir, name.name);
-      if (
-        IMG_EXT.has(extname(name.name).toLowerCase()) &&
-        /* The volume is exFAT and macOS writes an AppleDouble fork
-           beside every real file — ghosts that match the extension
-           test and are not images. */
-        !name.name.startsWith("._")
-      ) {
-        yield p;
-      }
+    yield* walkDir(join(root, slug.name), 0);
+  }
+}
+function* walkDir(dir, depth) {
+  for (const name of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, name.name);
+    if (name.isDirectory()) {
+      if (name.name !== "reel" && !name.name.startsWith(".")) yield* walkDir(p, depth + 1);
+      continue;
     }
+    if (!name.isFile()) continue;
+    if (
+      IMG_EXT.has(extname(name.name).toLowerCase()) &&
+      /* The volume is exFAT and macOS writes an AppleDouble fork
+         beside every real file — ghosts that match the extension
+         test and are not images. */
+      !name.name.startsWith("._")
+    ) {
+      if (depth === 0 || NAMED.has(p.slice(ROOT.length + 1).replace(/\.[^.]+$/, ""))) yield p;
+    }
+  }
+}
+
+/* ── THE ORDER FILE HAS THE LAST WORD ─────────────────────────────
+   A picture named under a run in scripts/lib/board-order.txt is dealt
+   there whatever the skip list says (assemble-board's PLACE), so it
+   needs a thumb whether it was cut or not, at the field's width. Read
+   the same way the assembler reads it: sections by "# <run>", one
+   <slug>/<stem> a line, "# homes" and "# off" aside. */
+const NAMED = new Set();
+{
+  const op = "scripts/lib/board-order.txt";
+  let run = null;
+  if (existsSync(op)) for (const raw of readFileSync(op, "utf8").split("\n")) {
+    const t = raw.trim();
+    if (!t) continue;
+    if (t.startsWith("#")) { run = (t.replace(/^#+\s*/, "").split(/\s+/)[0] || null); continue; }
+    if (run && run !== "homes" && run !== "off") NAMED.add(t.split("#")[0].trim());
   }
 }
 
@@ -175,9 +205,10 @@ for (const [, rels] of byStem) {
 }
 for (const from of walk(ROOT)) {
   const rel = from.slice(ROOT.length + 1); // "<slug>/<file>"
-  const cut = SKIP.has(rel);
-  if (cut && !keepForPreview(rel)) { left += 1; continue; }
-  if (cut) preview += 1;
+  const named = NAMED.has(rel.replace(/\.[^.]+$/, ""));
+  const cut = SKIP.has(rel) || rel.split("/").length > 2;
+  if (cut && !named && !keepForPreview(rel)) { left += 1; continue; }
+  if (cut && !named) preview += 1;
   const open = await opener(from);
   const slug = rel.split("/")[0];
   const stem = rel.slice(slug.length + 1).replace(/\.[^.]+$/, "");
@@ -199,9 +230,10 @@ for (const from of walk(ROOT)) {
       meta = await sharp(to).metadata();
       skipped += 1;
     } else {
-      mkdirSync(join(OUT, slug), { recursive: true });
+      /* a deep picture keeps its folder under the study's */
+      mkdirSync(dirname(to), { recursive: true });
       const info = await open()
-        .resize({ width: cut ? PREVIEW_W : W, withoutEnlargement: true })
+        .resize({ width: cut && !named ? PREVIEW_W : W, withoutEnlargement: true })
         .webp({ quality: Q })
         .toFile(to);
       meta = { width: info.width, height: info.height };

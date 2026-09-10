@@ -59,7 +59,8 @@ for (const f of readdirSync(DATA).filter((x) => x.endsWith("-case-study.ts") && 
   /* and what the folder holds that the study never placed */
   const dir = join(CS, slug);
   if (existsSync(dir)) {
-    for (const file of readdirSync(dir)) {
+    /* the volume is exFAT: macOS leaves a ._ fork beside every file */
+    for (const file of readdirSync(dir).filter((f) => !f.startsWith("._"))) {
       if (!/\.(jpg|jpeg|png|webp|avif)$/i.test(file)) continue;
       const key = slug + "/" + file;
       if (!roles[key]) roles[key] = "unused";

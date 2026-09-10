@@ -29,6 +29,7 @@ arc/arc-app-smartphone-wooden-table-mockup.jpg   # marked by eye, 9 Sept 2026
 arc/arc-app-vinyl-turntable-shelves-lifestyle.jpg   # marked by eye, 9 Sept 2026
 arc/arc-dashboard-screen-hero.png   # tall, 2.25:1, cropped by the tile
 arc/arc-five-screen-app-showcase.png   # wide, 2.67:1
+arc/arc-logo-grid.png   # marked by eye, 9 Sept 2026
 arc/arc-main-thumb.jpg   # under 600px
 arc/arc-mobile-screens-overview.png   # marked by eye, 9 Sept 2026
 arc/arc-multi-device-lifestyle-hero.jpg   # marked by eye, 9 Sept 2026
@@ -316,6 +317,7 @@ jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp   # wide,
 jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg   # a product page, cut
 jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg   # marked by eye, 8 Sept 2026
 jeffrey-ecommerce/jeffrey-new-york-system-spread-homepage-designer-product-templates.png   # marked by eye, 8 Sept 2026
+jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup.jpg   # marked by eye, 8 Sept 2026
 
 # jeffrey-shoes
 jeffrey-shoes/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg   # a Nordstrom picture misfiled here; the folder has no study, so it deals with no caption
