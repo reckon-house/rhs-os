@@ -663,6 +663,15 @@
     transition: opacity 0.42s ease var(--lag, 0s),
       transform 0.72s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
   .tile.lines.fd-on .crow { opacity: 1; transform: none; }
+  /* ── AND IT COMES APART THE WAY IT WENT UP ────────────────────────
+     Closing removed the list between one frame and the next, which
+     read as a blink beside a build that took a second and a half. It
+     runs backwards now: the bottom row goes first and the top row
+     last, each falling the thirty pixels it rose, quicker than it
+     arrived, because a thing leaving does not need to be read. */
+  .tile.lines.out .crow { opacity: 0; transform: translateY(30px);
+    transition: opacity 0.26s ease var(--out, 0s),
+      transform 0.38s cubic-bezier(0.5, 0, 0.75, 0) var(--out, 0s); }
   @media (prefers-reduced-motion: reduce) {
     .tile.lines .crow { opacity: 1; transform: none; transition: none; }
   }
@@ -2514,6 +2523,19 @@ function openLine(tag) {
     if (!cols.has(el.__col.__c) || el.classList.contains("head")) continue;
     el.classList.add("fd-out"); going.push(el);
   }
+  /* a list that is leaving runs its own build backwards first, and
+     the column waits for it before the pictures come back */
+  let wait = going.length && !REDUCE() ? 420 : 0;
+  for (const f of fcols.values()) {
+    if (!cols.has(f.__c) || !f.__lines) continue;
+    if (lineOpen && f.__c === head.col) continue;   /* this one stays */
+    const rows = f.__lines.querySelectorAll(".crow");
+    if (REDUCE() || !rows.length) continue;
+    rows.forEach((r, i) =>
+      r.style.setProperty("--out", ((rows.length - 1 - i) * 0.04).toFixed(3) + "s"));
+    f.__lines.classList.add("out");
+    wait = Math.max(wait, (rows.length - 1) * 40 + 400);
+  }
   const fill = () => {
     for (const el of going) { dropReel(el); el.remove(); }
     for (const [key, el] of live) if (going.includes(el)) live.delete(key);
@@ -2535,7 +2557,7 @@ function openLine(tag) {
     const chip = el.querySelector(".lchip");
     if (chip) chip.textContent = mine ? el.__t.way.replace(/\u2192$/, "\u00d7") : el.__t.way;
   }
-  if (going.length && !REDUCE()) setTimeout(fill, 420); else fill();
+  if (wait) setTimeout(fill, wait); else fill();
   if (lineOpen) pageTo(dispU(head.col));
   writeRow();
   if (window.__askReady) markFamily();
