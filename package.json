@@ -8,7 +8,7 @@
     "build": "npm run port:home:check && npm run dims:check && npm run rail:check && next build",
     "start": "next start",
     "lint": "eslint",
-    "board": "node --no-warnings scripts/build-board-thumbs.mjs && npm run board:page",
+    "board": "npm run board:roles && node --no-warnings scripts/build-board-thumbs.mjs && npm run board:page",
     "board:page": "python3 scripts/lib/assemble-board.py",
     "board:audit": "node --no-warnings scripts/board-audit.mjs",
     "columns:pack": "node --no-warnings scripts/pack-columns.mjs",

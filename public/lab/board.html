@@ -1413,7 +1413,13 @@ const shuffle = (a) => {
   }
   return a;
 };
-const all = (window.BOARD_ITEMS || []).slice();
+/* ── THE FIELD IS THE CUT; A PREVIEW IS THE STUDY ───────────────────
+   A picture marked `x` was cut from the field and thumbed anyway,
+   because the study presents itself with it (build-board-thumbs).
+   The deal never sees one. openStudyColumn reads BOARD_ITEMS itself
+   and shows every picture its study has, which is what makes a
+   preview fuller than the board. */
+const all = (window.BOARD_ITEMS || []).filter((i) => !i.x);
 const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
 const opener = covers.slice(0, OPENER);
 const inOpener = new Set(opener.map((i) => i.g));
@@ -4157,7 +4163,7 @@ function openShelfColumn(tag, from, opts) {
        board itself is — the room grows into the shape the material
        already wanted, and the work steps aside by two instead of one
        because the row is counted in modules either way. */
-    const pulls = (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration");
+    const pulls = (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration" && !i.x);
     const FEW = 12;
     const pics = el("div", "cpics");
     const put = (it, i) => {

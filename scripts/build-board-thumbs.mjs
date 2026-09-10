@@ -89,7 +89,7 @@ function* walk(root) {
 }
 
 const items = [];
-let wrote = 0, skipped = 0, failed = 0, left = 0, clash = 0;
+let wrote = 0, skipped = 0, failed = 0, left = 0, clash = 0, preview = 0;
 let before = 0, after = 0;
 
 /* ── NOT EVERY PICTURE IS DEALT ──────────────────────────────────────
@@ -103,6 +103,37 @@ const SKIP_FILE = "scripts/lib/board-skip.txt";
 const SKIP = new Set(existsSync(SKIP_FILE)
   ? readFileSync(SKIP_FILE, "utf8").split("\n").map((l) => l.replace(/\s+#.*$/, "").trim()).filter((l) => l && !l.startsWith("#"))
   : []);
+
+/* ── OFF THE FIELD, STILL IN THE PREVIEW ────────────────────────────
+   A cut used to mean the picture had no thumb, so it left the board's
+   field AND the study's own column, and a study whose pictures were
+   nearly all details opened its preview on its cover alone. The field
+   is the curation; the preview is the study.
+
+   A cut picture that the study PRESENTS ITSELF WITH — the hero it
+   opens on or a full-width plate, read out of src/data by
+   scripts/board-roles.mjs — is thumbed anyway and marked `x` in the
+   data. The deal skips anything marked; the study column shows all of
+   its own. The details, the screens cut from a UI and the swatches
+   stay gone from both, which is the cut he made.
+
+   Thumbed at 1024 rather than 1536: a preview column is 500px wide,
+   so 1024 is honest at 2x and costs a third of the master. */
+const PREVIEW_W = 1024;
+const ROLES_FILE = "public/lab/board-roles.json";
+const ROLES = existsSync(ROLES_FILE)
+  ? JSON.parse(readFileSync(ROLES_FILE, "utf8")).roles || {} : {};
+const roleOf = (rel) => ROLES[rel] || ROLES[rel.replace(/-2x(\.[^.]+)$/, "$1")] || null;
+/* the folders that are a study, so a cut picture with nowhere to be
+   shown (the homepage's own card crops, the rail's, the pulls) stays
+   out of the data entirely */
+const STUDY_DIRS = new Set(Object.keys(
+  (() => { try { return JSON.parse(readFileSync("public/lab/board-groups.json", "utf8")); }
+    catch (e) { return {}; } })()));
+const keepForPreview = (rel) => {
+  const r = roleOf(rel);
+  return (r === "hero" || r === "plate");
+};
 
 /* ── A PICTURE THAT SHOWED THE PAPER THROUGH GETS ITS PLATE ──────────
    A PNG cut out on transparency is shown in its study on a container
@@ -144,7 +175,9 @@ for (const [, rels] of byStem) {
 }
 for (const from of walk(ROOT)) {
   const rel = from.slice(ROOT.length + 1); // "<slug>/<file>"
-  if (SKIP.has(rel)) { left += 1; continue; }
+  const cut = SKIP.has(rel);
+  if (cut && !keepForPreview(rel)) { left += 1; continue; }
+  if (cut) preview += 1;
   const open = await opener(from);
   const slug = rel.split("/")[0];
   const stem = rel.slice(slug.length + 1).replace(/\.[^.]+$/, "");
@@ -168,7 +201,7 @@ for (const from of walk(ROOT)) {
     } else {
       mkdirSync(join(OUT, slug), { recursive: true });
       const info = await open()
-        .resize({ width: W, withoutEnlargement: true })
+        .resize({ width: cut ? PREVIEW_W : W, withoutEnlargement: true })
         .webp({ quality: Q })
         .toFile(to);
       meta = { width: info.width, height: info.height };
@@ -196,6 +229,9 @@ for (const from of walk(ROOT)) {
       w: meta.width,
       h: meta.height,
       g: slug,
+      /* off the field, in the study's own column: the deal skips it
+         and openStudyColumn does not */
+      ...(cut ? { x: 1 } : {}),
       ...(rungs.length ? { r: rungs } : {}),
     });
   } catch (e) {
@@ -498,7 +534,7 @@ writeFileSync("public/lab/board-shell.css",
 const MB = (b) => (b / 1048576).toFixed(1);
 const STUDIES = Object.entries(COPY).filter(([k]) => k !== "house").map(([, v]) => v);
 console.log(
-  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed, ${left} left out by the skip list${clash ? ", " + clash + " STEM CLASHES above" : ""})` +
+  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed, ${left} left out by the skip list, ${preview} kept for the previews alone${clash ? ", " + clash + " STEM CLASHES above" : ""})` +
   `\n  originals ${MB(before)}MB → thumbs ${MB(after)}MB` +
   `\n  data ${DATA} (${MB(statSync(DATA).size)}MB)` +
   `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +

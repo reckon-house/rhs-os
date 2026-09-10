@@ -76,7 +76,9 @@ const OPENER = 6;
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
 
-const items = window.BOARD_ITEMS || [];
+/* the field's own pictures: anything kept for a preview alone is
+   marked x and is not dealt (see build-board-thumbs) */
+const items = (window.BOARD_ITEMS || []).filter((i) => !i.x);
 const GROUPS = window.BOARD_GROUPS || {};
 const homeOf = (g) => g.tags.includes("app") ? "app"
   : g.tags.includes("creative") ? "creative"
