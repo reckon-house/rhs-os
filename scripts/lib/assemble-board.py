@@ -3396,7 +3396,18 @@ const reveal = (c) => {
 const showCol = reveal;
 
 /* the studies the board knows, matched the way the field is dimmed */
-const stem = (w) => w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
+const stem = (w) => {
+  let x = w.replace(/(ies)$/, "y").replace(/(es|s)$/, "");
+  /* "designed" and "designing" ask for design. The plural came off and
+     the participles did not, so "what have you designed" found the one
+     study whose line says "designed" and missed the twenty-eight that
+     say "design". They come off when what is left is still a word's
+     worth; a long word matches as a substring, so "design" still finds
+     designer, designs and designed in a study's own text. */
+  if (x.length >= 6 && /ed$/.test(x)) x = x.slice(0, -2);
+  else if (x.length >= 7 && /ing$/.test(x)) x = x.slice(0, -3);
+  return x;
+};
 /* the words that are in every sentence are in every study: asking
    "and" caught twenty-five of twenty-eight, which is not an answer.
    Hoisted out of the board's matcher because a study's own summary
@@ -3435,11 +3446,30 @@ const studiesFor = (text) => {
      dozen ordinary words. A word boundary is the honest test for a
      short word and costs nothing for a long one. */
   const ws = askWords(text);
-  return Object.entries(GROUPS).map(([folder, g]) => {
+  /* ── A WORD MOST STUDIES CARRY IS NOT WHAT WAS ASKED FOR ──────────
+     "do you design kitchens?" listed twenty-five studies, because
+     "design" is in nearly every one's own line and "kitchen" in three,
+     and a word was a word. Each word is weighted by how few studies
+     carry it, over the same text the match reads: one that most of
+     them contain is worth almost nothing, one that two contain is
+     worth nearly everything, so the kitchen decides and the design
+     does not. A broad question scores everything alike, and keeps
+     everything, which is the honest list for it. */
+  const docs = Object.entries(GROUPS).map(([f, g]) => (f + " " + g.t + " " + g.s + " " + g.tags.join(" ")
+    + " " + (g.d || "") + " " + ((COPY && COPY[f] && COPY[f].facts) || []).map((x) => x.k + " " + x.v).join(" ")).toLowerCase());
+  const N = docs.length;
+  const wt = new Map(ws.map((w) => {
+    let df = 0; for (const d of docs) if (hasWord(w, d)) df += 1;
+    return [w, Math.log((N + 1) / (df + 1)) / Math.log(N + 1)];
+  }));
+  const found = Object.entries(GROUPS).map(([folder, g]) => {
     const hay = (folder + " " + g.t + " " + g.s + " " + g.tags.join(" ") + " " + (g.d || "")).toLowerCase();
     let n = 0;
-    for (const w of ws) if (hasWord(w, hay)) n += 1;
-    if (lower.length >= 4 && hay.includes(lower)) n += 2;
+    for (const w of ws) if (hasWord(w, hay)) n += wt.get(w);
+    /* the whole question in order is worth as much again as its words:
+       a rare phrase doubles, a common one barely moves. It was a flat
+       two, which after the weighting outranked every real match. */
+    if (lower.length >= 4 && hay.includes(lower)) n += ws.reduce((a, w) => a + wt.get(w), 0);
     /* ── AND THE FACTS ────────────────────────────────────────────
        The mined summaries — Stack, Materials, Tools, Scope, Built —
        sat in board-copy.json unsearched, so "anything in limestone"
@@ -3456,13 +3486,17 @@ const studiesFor = (text) => {
       for (const f of src.facts) {
         const fh = (f.k + " " + f.v).toLowerCase();
         let m = 0;
-        for (const w of ws) if (hasWord(w, fh)) m += 1;
+        for (const w of ws) if (hasWord(w, fh)) m += wt.get(w);
         if (m > best) { best = m; line = f.k + ": " + f.v; }
       }
       n += best * 1.5;
     }
     return { folder, g, n, line };
   }).filter((x) => x.n > 0).sort((a, b) => b.n - a.n);
+  /* and the list keeps only what stands near the best: a study a
+     third as good as the first was matched on the leftovers */
+  const top = found.length ? found[0].n : 0;
+  return found.filter((x) => x.n >= top / 3);
 };
 /* A SHELF NAMED INSIDE A QUESTION IS STILL A SHELF. The match was
    the whole line and nothing else, so "Interiors" opened the shelf
