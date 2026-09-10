@@ -36,7 +36,7 @@ _rows = "".join(
 # `npm run board:page` alone applies a new order — no thumbs needed.
 import os as _os
 _ORDER, _HOMES, _run = {}, {}, None
-_RUNS = ("open", "digital", "app", "creative", "branding", "interiors", "staples", "homes")
+_RUNS = ("open", "digital", "app", "creative", "branding", "interiors", "staples", "off", "homes")
 _op = "scripts/lib/board-order.txt"
 if _os.path.exists(_op):
     for _raw in io.open(_op, encoding="utf-8").read().split("\n"):
@@ -1524,12 +1524,29 @@ const shuffle = (a) => {
    The deal never sees one. openStudyColumn reads BOARD_ITEMS itself
    and shows every picture its study has, which is what makes a
    preview fuller than the board. */
-const all = (window.BOARD_ITEMS || []).filter((i) => !i.x);
-const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
 /* where the order file puts a picture, if it names it at all */
 const PLACE = new Map();
-for (const [run, keys] of Object.entries(RUN_ORDER))
+for (const [run, keys] of Object.entries(RUN_ORDER)) {
+  if (run === "off") continue;
   for (const key of keys) if (!PLACE.has(key)) PLACE.set(key, run);
+}
+/* ── ON THE FIELD, OR OFF IT ────────────────────────────────────────
+   The sweep sheet cuts a picture (board-skip.txt); a cut plate is
+   thumbed anyway and marked x, for the preview. The order sheet has
+   the last word either way: a picture NAMED UNDER A RUN is dealt
+   there, x or not, which is how a study gets a picture on every line
+   it sits on when the cut left it none; and a picture named under
+   "# off" is held off the field without being cut, so it still opens
+   in its study's column. */
+const OFF = new Set(RUN_ORDER.off || []);
+/* one item per thumb: a study whose cover is also one of its plates
+   (Big Bend's hero) has two items with one key, and naming that key
+   would deal both. The field's own item wins. */
+const onField = new Set((window.BOARD_ITEMS || []).filter((i) => !i.x).map(keyOf));
+const all = (window.BOARD_ITEMS || [])
+  .filter((i) => !(i.x && onField.has(keyOf(i))))
+  .filter((i) => PLACE.has(keyOf(i)) || (!i.x && !OFF.has(keyOf(i))));
+const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
 /* the opener: whatever is named under "# open", then the first covers
    in site order that nothing else has claimed, to six */
 const opener = [];

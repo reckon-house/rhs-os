@@ -316,7 +316,6 @@ jeffrey-ecommerce/jeffrey-new-york-homepage-template-grid-mockups.webp   # wide,
 jeffrey-ecommerce/jeffrey-new-york-product-detail-page-sacai-luck-dress.jpg   # a product page, cut
 jeffrey-ecommerce/jeffrey-new-york-saint-laurent-shoes-homepage-laptop-hero.jpg   # marked by eye, 8 Sept 2026
 jeffrey-ecommerce/jeffrey-new-york-system-spread-homepage-designer-product-templates.png   # marked by eye, 8 Sept 2026
-jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup.jpg   # marked by eye, 8 Sept 2026
 
 # jeffrey-shoes
 jeffrey-shoes/nordstrom-personalization-system-design-laptop-website-interface-fashion-ecommerce-floral-field-outdoor-lifestyle.jpg   # a Nordstrom picture misfiled here; the folder has no study, so it deals with no caption

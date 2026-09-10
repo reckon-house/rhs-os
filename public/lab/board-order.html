@@ -21,10 +21,16 @@
      WHERE EACH PICTURE DEALS — the runs below. A picture sits on one
      line. Drag it to another run and it deals there, so ARC's phone
      can sit with Apps, its tablet with Digital and its mark with
-     Branding. Drag within a run and the run re-orders. What you see
-     here is worked out exactly as the board works it out, so what you
-     drag is what it deals. `npm run board:page` reads the file; no
-     thumbs are rebuilt. */
+     Branding. Drag within a run and the run re-orders.
+
+     OFF THE FIELD — the last section. A study's pictures the cut left
+     for its preview alone. Drag one into a run and it is dealt there
+     (that is how a study gets a picture on every line it sits on when
+     the cut left it none); drag a run's picture down here and it is
+     held off the field, still in its preview. What you see here is
+     worked out exactly as the board works it out, so what you drag is
+     what it deals. `npm run board:page` reads the file; no thumbs are
+     rebuilt. */
   body { background: #f3f1ee; padding: 0 0 80px; }
   .bar { position: sticky; top: 0; z-index: 5; background: #f3f1ee; border-bottom: 1px solid rgba(0,0,0,0.1);
     display: flex; gap: 18px; align-items: center; padding: 14px 28px; flex-wrap: wrap; }
@@ -62,6 +68,9 @@
   figure.moved { border-color: var(--ink); }
   figure.drag { opacity: 0.3; }
   figure.over { transform: translateX(6px); box-shadow: -3px 0 0 0 var(--ink); }
+  td.n .gap { color: #b3261e; }
+  section[data-run="off"] { background: rgba(0,0,0,0.035); border-radius: 14px; margin: 26px 28px 0; padding: 22px 28px 20px; }
+  section[data-run="off"] figure { opacity: 0.78; }
   textarea { position: fixed; left: -9999px; top: 0; }
 </style>
 </head>
@@ -71,7 +80,7 @@
   <span class="n" id="count"></span>
   <span class="sp"></span>
   <button id="copy">Copy order</button>
-  <button id="reset">Back to the deal</button>
+  <button id="reset">Reload the file</button>
 </div>
 <section class="g" id="lines">
   <h2>Where each study sits <span>tick a line to list the study there · "deals on" is where its cover and unplaced pictures go</span></h2>
@@ -83,7 +92,8 @@
 <script>
 const KEY = "board-order";
 const RUNS = [["open", "The opener"], ["digital", "Digital"], ["app", "Apps"],
-  ["creative", "Campaigns"], ["branding", "Branding"], ["interiors", "Interiors"], ["staples", "Staples"]];
+  ["creative", "Campaigns"], ["branding", "Branding"], ["interiors", "Interiors"], ["staples", "Staples"],
+  ["off", "Off the field"]];
 const LINES = RUNS.filter(([t]) => t !== "open" && t !== "staples");
 const labelOf = (t) => (RUNS.find(([x]) => x === t) || [t, t])[1];
 /* the board's own rule for a home when none is set: the narrowest line */
@@ -92,9 +102,13 @@ const OPENER = 6;
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
 
-/* the field's own pictures: anything kept for a preview alone is
-   marked x and is not dealt (see build-board-thumbs) */
-const items = (window.BOARD_ITEMS || []).filter((i) => !i.x);
+/* every picture with a study, on the field or not: a cut plate is
+   marked x and kept for the preview (see build-board-thumbs), and it
+   is dealt after all if a run names it */
+const onField = new Set((window.BOARD_ITEMS || []).filter((i) => !i.x).map((i) => keyOf(i)));
+/* one item per thumb, the field's own first (Big Bend's hero is its
+   cover and one of its plates) */
+const items = (window.BOARD_ITEMS || []).filter((i) => !(i.x && onField.has(keyOf(i))));
 const GROUPS = window.BOARD_GROUPS || {};
 const studies = Object.keys(GROUPS).filter((k) => items.some((i) => i.g === k));
 const native = (k) => ((GROUPS[k] || {}).tags || []).filter((t) => LINES.some(([l]) => l === t));
@@ -102,7 +116,7 @@ const linesOf = (k) => homes[k] || native(k);
 const homeOf = (k) => (homes[k] && homes[k][0]) || NARROW.find((t) => native(k).includes(t)) || "digital";
 
 /* ── the deal, worked out the way the board works it out ─────────── */
-const covers = items.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
+const covers = items.filter((i) => i.c != null && !i.x).sort((a, b) => a.c - b.c);
 const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
 const dealt = {}, placeIs = {};
 const applyOrder = (list, rank) => {
@@ -113,18 +127,28 @@ const applyOrder = (list, rank) => {
 };
 function deal() {
   const PLACE = new Map();
-  for (const [run, keys] of Object.entries(state))
+  for (const [run, keys] of Object.entries(state)) {
+    if (run === "off") continue;
     for (const key of keys || []) if (!PLACE.has(key)) PLACE.set(key, run);
+  }
+  const OFF = new Set(state.off || []);
+  /* on the field: named under a run, or not cut and not held off */
+  const field = items.filter((it) => PLACE.has(keyOf(it)) || (!it.x && !OFF.has(keyOf(it))));
   const opener = [];
   for (const it of covers) if (PLACE.get(keyOf(it)) === "open") opener.push(it);
-  for (const it of covers) { if (opener.length >= OPENER) break; if (!PLACE.has(keyOf(it))) opener.push(it); }
+  for (const it of covers) { if (opener.length >= OPENER) break; if (!PLACE.has(keyOf(it)) && !OFF.has(keyOf(it))) opener.push(it); }
   const openerKeys = new Set(opener.map(keyOf));
   const placeOf = (it) => PLACE.get(keyOf(it))
     || (it.g === "inspiration" ? "staples" : !GROUPS[it.g] ? null
       : openerKeys.has(keyOf(it)) ? "open" : homeOf(it.g));
-  for (const it of items) placeIs[keyOf(it)] = PLACE.has(keyOf(it));
+  for (const it of items) placeIs[keyOf(it)] = PLACE.has(keyOf(it)) || OFF.has(keyOf(it));
   for (const [tag] of RUNS) {
-    const run = items.filter((it) => placeOf(it) === tag);
+    if (tag === "off") {
+      dealt.off = items.filter((it) => GROUPS[it.g] && !field.includes(it))
+        .sort((a, b) => seat(a.g) - seat(b.g));
+      continue;
+    }
+    const run = field.filter((it) => placeOf(it) === tag);
     if (tag !== "staples")
       run.sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
     dealt[tag] = applyOrder(run, state[tag]);
@@ -136,15 +160,22 @@ const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"
 const save = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} };
 
 /* the repo's own order, written beside the board by the assembler, so
-   this page opens on what the board is dealing rather than on nothing */
-let state = {}, homes = {};
+   this page opens on what the board is dealing rather than on nothing.
+   Work in progress in this browser sits over it until it is pasted
+   into the file, or dropped with "Reload the file". */
+let state = {}, homes = {}, fileState = null;
+const fromFile = () => {
+  state = JSON.parse(JSON.stringify((fileState && fileState.order) || {}));
+  homes = JSON.parse(JSON.stringify((fileState && fileState.homes) || {}));
+};
 fetch("/lab/board-order.json")
   .then((r) => (r.ok ? r.json() : {}))
   .catch(() => ({}))
   .then((repo) => {
+    fileState = repo;
     const mine = load();
-    state = (mine && mine.order) || repo.order || {};
-    homes = (mine && mine.homes) || repo.homes || {};
+    if (mine) { state = mine.order || {}; homes = mine.homes || {}; }
+    else fromFile();
     /* an older sheet wrote a single line; a list is what it means now */
     for (const k of Object.keys(homes)) if (!Array.isArray(homes[k])) homes[k] = [homes[k]];
     deal(); draw();
@@ -189,10 +220,15 @@ function drawMatrix() {
       });
       td.appendChild(cb); row.appendChild(td);
     }
-    /* where its pictures actually are */
+    /* where its pictures actually are, and any line it sits on
+       with nothing to show there */
+    const td = el("td", "n");
     const where = LINES.concat([["open", "opener"]]).map(([t, l]) => [dealt[t].filter((it) => it.g === k).length, l])
       .filter(([n]) => n).map(([n, l]) => n + " " + l).join(" · ");
-    row.appendChild(el("td", "n", where));
+    td.appendChild(document.createTextNode(where));
+    const gaps = linesOf(k).filter((t) => !dealt[t].some((it) => it.g === k));
+    if (gaps.length) td.appendChild(el("span", "gap", (where ? " · " : "") + "none on " + gaps.map(labelOf).join(", ")));
+    row.appendChild(td);
     body.appendChild(row);
   }
 }
@@ -207,7 +243,8 @@ function draw() {
     const sec = el("section", "g"); sec.dataset.run = tag;
     const h = el("h2", null, label);
     h.appendChild(el("span", null, list.length + (list.length === 1 ? " picture" : " pictures")));
-    if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
+    if (tag === "off") h.appendChild(el("span", null, "drag one into a run to deal it; drag a run's picture here to hold it off"));
+    else if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
     sec.appendChild(h);
     const row = el("div", "row");
     list.forEach((it, i) => {
@@ -246,6 +283,12 @@ sheet.addEventListener("dragend", () => {
 /* a pull is a pull and a study's picture is a study's picture: the
    two do not cross, and everything else can go anywhere */
 const mayDrop = (from, to) => from && to && ((from.dataset.run === "staples") === (to.dataset.run === "staples"));
+const dropOff = (key, it) => {
+  for (const run of Object.keys(state)) if (run !== "off") state[run] = (state[run] || []).filter((k) => k !== key);
+  /* a cut plate is off by itself; only a field picture needs holding */
+  if (it && !it.x) state.off = [...new Set([...(state.off || []), key])];
+  else if (state.off) state.off = state.off.filter((k) => k !== key);
+};
 sheet.addEventListener("dragover", (e) => {
   if (!dragging) return;
   const to = runOf(e.target); if (!mayDrop(runOf(dragging), to)) return;
@@ -264,24 +307,33 @@ sheet.addEventListener("drop", (e) => {
     row.insertBefore(dragging, from === to && all.indexOf(dragging) < all.indexOf(f) ? f.nextSibling : f);
   } else if (!f) row.appendChild(dragging);
   else return;
-  state[to.dataset.run] = [...row.children].map((x) => x.dataset.key);
-  if (from !== to && state[from.dataset.run])
-    state[from.dataset.run] = state[from.dataset.run].filter((k) => k !== dragging.dataset.key);
+  const key = dragging.dataset.key, it = items.find((x) => keyOf(x) === key);
+  if (to.dataset.run === "off") dropOff(key, it);
+  else {
+    state[to.dataset.run] = [...row.children].map((x) => x.dataset.key);
+    if (from !== to && state[from.dataset.run])
+      state[from.dataset.run] = state[from.dataset.run].filter((k) => k !== key);
+    if (state.off) state.off = state.off.filter((k) => k !== key);
+  }
   save({ order: state, homes });
   deal(); draw();
 });
 function count() {
-  const set = RUNS.filter(([t]) => state[t] && state[t].length).map(([, l]) => l);
-  const moved = Object.keys(homes).length;
+  const set = RUNS.filter(([t]) => t !== "off" && state[t] && state[t].length).map(([, l]) => l);
+  const moved = Object.keys(homes).length, held = (state.off || []).length;
   /* what the board deals, which is every picture with a study; a
      picture in a folder no study claims is thumbed but never dealt */
-  const n = RUNS.reduce((a, [t]) => a + (dealt[t] || []).length, 0);
+  const n = RUNS.reduce((a, [t]) => a + (t === "off" ? 0 : (dealt[t] || []).length), 0);
+  const same = fileState && JSON.stringify({ o: state, h: homes }) === JSON.stringify({ o: fileState.order || {}, h: fileState.homes || {} });
   document.getElementById("count").textContent =
-    n + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
-    + (moved ? " · " + moved + (moved === 1 ? " study re-lined" : " studies re-lined") : "");
+    (same ? "" : "unsaved here · ") + n + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
+    + (moved ? " · " + moved + (moved === 1 ? " study re-lined" : " studies re-lined") : "")
+    + (held ? " · " + held + " held off" : "");
 }
 document.getElementById("reset").addEventListener("click", () => {
-  state = {}; homes = {}; save({ order: state, homes }); deal(); draw();
+  /* drop this browser's work and show what the file deals */
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  fromFile(); deal(); draw();
 });
 document.getElementById("copy").addEventListener("click", async (e) => {
   /* held before the await: currentTarget is null once the handler
@@ -291,7 +343,7 @@ document.getElementById("copy").addEventListener("click", async (e) => {
   for (const [tag, label] of RUNS) {
     if (!state[tag] || !state[tag].length) continue;
     out.push("# " + tag + "   (" + label + ")");
-    out.push(...dealt[tag].map(keyOf));
+    out.push(...(tag === "off" ? state.off : dealt[tag].map(keyOf)));
     out.push("");
   }
   const lined = Object.entries(homes);

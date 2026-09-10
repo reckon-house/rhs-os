@@ -9,6 +9,11 @@
 # in that run follows, in the order the deal gives it. So a partial
 # list is enough — name the three that should lead and leave the rest.
 #
+# A picture named under a run is dealt there even if the sweep cut it
+# (a cut plate is thumbed for the preview and marked x): that is how a
+# study shows on every line it sits on. "# off" holds a picture off the
+# field without cutting it; it still opens in its study's column.
+#
 # Ordered by hand on lab/board-order.html (Copy order), read by
 # scripts/lib/assemble-board.py; `npm run board:page` re-deals with it,
 # no thumbs needed. Lines starting with # are notes.
@@ -16,7 +21,9 @@
 # digital   (Digital)
 ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup   # moved off creative
 ivy-park/ivy-park-nordstrom-mobile-experience-mockup   # moved off creative
+sally-os/sally-os-briefing-portal-fullscreen   # a cut plate, dealt because it is named here
 arc/arc-app-tablet-kitchen-living-room-lifestyle   # moved off app
+nordstrom-personalization/nordstrom-personalization-homepage-laptop-mockup-hero   # a cut plate, dealt because it is named here
 dsc/dsc-marketing-site-phone-hero   # moved off app
 nordstrom-framework/hero1   # moved off creative
 nordstrom-framework/hero3   # moved off creative
@@ -25,12 +32,15 @@ hp/rhs-nordstrom-beauty-hub-laptop
 nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup
 hp/rhs-cosmo-prof-website-design-digital-rebrand
 hp/rhs-jeffrey-ecommerce-laptop
+you-by-sally/screen1   # a cut plate, dealt because it is named here
 loved-by-nordstrom/loved-by-nordstrom-iphone-landing-page-corduroy-couch   # moved off creative
+jeffrey-spring/jeffrey-spring-campaign-homepage-laptop-mockup-hero   # a cut plate, dealt because it is named here
 neiman-marcus/neiman-marcus-insite-flora-maxi-laptop-couch-mockup   # moved off creative
 neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup   # moved off creative
 neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup   # moved off creative
 
 # app   (Apps)
+sally-os/sally-os-dashboard-grid-overview   # a cut plate, dealt because it is named here
 arc/arc-app-kitchen-project-selection-lifestyle
 hp/rhs-dallas-sport-collective-laptop-stool
 dsc/dsc-owner-calendar-phone-hero
@@ -39,14 +49,17 @@ sizzle/sizzle
 # creative   (Campaigns)
 ivy-park/ivy-park-campaign-assets-grid-overview
 ivy-park/ivy-signage
+nordstrom-personalization/nordstrom-personalization-system-design-woman-model-blue-floral-print-dress-black-white-geometric-strappy-heels-yellow-sofa-editorial   # a cut plate, dealt because it is named here
 robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign
 robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait
 capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign   # moved off branding
 hp/rhs-nordstrom-framework-on-our-list
+nordstrom-beauty/nordstrom-beauty-glow-story-iphone-orange-table-mockup   # a cut plate, dealt because it is named here
 cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters   # moved off digital
 hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft   # moved off branding
 hp/rhs-you-by-sally-street-display
 you-by-sally/hero
+amber-shockey-co/amber-shockey-co-blue-florals-plate-in-wire-rack-hero   # a cut plate, dealt because it is named here
 hp/rhs-loved-by-nordstrom-ipad
 loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench
 hp/rhs-jeffrey-spring-campaign-laptop
@@ -56,15 +69,18 @@ big-bend/hero
 big-bend/desert-dusk-ridgeline
 big-bend/mountain_crop
 big-bend/prada_grid
+branding-graphics/branding-graphics-bokehs-fall-storefront-window-display   # moved off branding
 
 # branding   (Branding)
 arc/arc-logo-grid   # moved off app
+robert-rodriguez/robert-rodriguez-logo-typography-gradient-orange-pink-coral-color-palette-branding-design   # a cut plate, dealt because it is named here
 hp/rhs-capitan-boot-co-branding
 capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign
 hp/rhs-hill-country-oakworks-billboard
 hp/rhs-campaign-design-typography-black-white-custom-patterns
 black-white-type/typography-patterns-stepper-poster-bench-lifestyle
 black-white-type/typography-patterns-white-poster-gate-lifestyle
+jeffrey-ecommerce/jeffrey-new-york-wordmark-logo-lockup   # moved off digital
 hp/rhs-campaign-design-j-christianson-branding
 j-christianson/j-christianson-billboard-mockup-brand-pattern
 j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles
@@ -74,7 +90,6 @@ amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface
 amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup
 hp/rhs-various-design-branding-graphics-prints-apparel
 branding-graphics/branding-graphics-abc-123-typography-poster-lifestyle
-branding-graphics/branding-graphics-bokehs-fall-storefront-window-display
 branding-graphics/branding-graphics-inna-foil-zine-orange-dress-lifestyle
 branding-graphics/branding-graphics-up-up-and-away-balloon-poster-lifestyle
 branding-graphics/branding-graphics-verse02-light-waves-stripes-print
@@ -88,3 +103,10 @@ hill-country-oak = branding, creative
 jeffrey-ecommerce = digital, branding
 loved-by-nordstrom = creative, digital
 neiman-marcus = creative, digital
+robert-rodriguez = creative, branding, digital
+nordstrom-beauty = digital, creative
+nordstrom-personalization = digital, creative
+you-by-sally = creative, digital
+amber-shockey-co = branding, creative
+jeffrey-spring = creative, digital
+branding-graphics = branding, creative

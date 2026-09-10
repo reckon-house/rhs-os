@@ -83,6 +83,9 @@ export const railCategories: RailCategory[] = [
       "ivyPark",
       "lovedByNordstrom",
       "neimanMarcus",
+      "robertRod",
+      "sallyBeauty",
+      "jeffreyCampaign",
     ],
   },
   {
@@ -109,6 +112,10 @@ export const railCategories: RailCategory[] = [
       "cosmoProf",
       "neimanMarcus",
       "bigBend",
+      "nordstromPersonal",
+      "nordstromBeauty",
+      "amberShockey",
+      "variousDesign",
     ],
   },
   {
@@ -132,6 +139,7 @@ export const railCategories: RailCategory[] = [
       "variousDesign",
       "arc",
       "jeffreyNyc",
+      "robertRod",
     ],
   },
   {
