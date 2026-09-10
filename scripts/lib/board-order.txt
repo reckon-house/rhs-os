@@ -1,0 +1,14 @@
+# ── The order the board deals a run in ──────────────────────────────
+# One picture per line, as <study folder>/<file name without its
+# extension> — the same shape as the skip list, minus the extension,
+# because the board deals a thumb and a thumb is named for its stem.
+#
+# Lines are grouped under a run: "# open" is the opening set, then
+# "# digital", "# app", "# creative", "# interiors", "# staples". A
+# picture named here is dealt in the order it appears; everything else
+# in that run follows, in the order the deal gives it. So a partial
+# list is enough — name the three that should lead and leave the rest.
+#
+# Ordered by hand on lab/board-order.html (Copy order), read by
+# scripts/lib/assemble-board.py; `npm run board:page` re-deals with it,
+# no thumbs needed. Lines starting with # are notes.

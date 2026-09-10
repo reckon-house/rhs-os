@@ -30,6 +30,31 @@ def _esc(t): return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&
 _rows = "".join(
     '<li><a href="/case-studies/%s">%s</a> <span>%s</span></li>' % (_esc(g.get("h", k)), _esc(g.get("t", k)), _esc(g.get("s", "")))
     for k, g in _groups.items() if g.get("t"))
+# ── the order a run is dealt in ─────────────────────────────────────
+# Authored by hand on lab/board-order.html; the file is
+# scripts/lib/board-order.txt. Emitted as window.BOARD_ORDER, so
+# `npm run board:page` alone applies a new order — no thumbs needed.
+import os as _os
+_ORDER, _run = {}, None
+_RUNS = ("open", "digital", "app", "creative", "interiors", "staples")
+_op = "scripts/lib/board-order.txt"
+if _os.path.exists(_op):
+    for _raw in io.open(_op, encoding="utf-8").read().split("\n"):
+        _t = _raw.strip()
+        if not _t:
+            continue
+        if _t.startswith("#"):
+            _head = _t.lstrip("# ").split()
+            if _head and _head[0] in _RUNS:
+                _run = _head[0]
+            continue
+        if _run:
+            _ORDER.setdefault(_run, []).append(_t.split("#")[0].strip())
+ORDER_JS = "window.BOARD_ORDER = " + _json.dumps(_ORDER) + ";"
+# the same order where a lab page can fetch it: board-order.html opens
+# on what the board is actually dealing, not on an empty browser
+io.open("public/lab/board-order.json", "w", encoding="utf-8").write(_json.dumps(_ORDER))
+
 INDEX = ('<aside id="index" aria-label="Every study">'
          '<p>Reckon House. Jeremy Prasatik makes things across brand, product, and place: apps and ecommerce, '
          'campaigns and brand systems, photography and art direction, custom interiors, AI tools. '
@@ -1421,13 +1446,40 @@ const FILTERS = [
    Campaigns, and Digital holds the four stores. A picture is dealt
    once.
 
-   INSIDE A RUN, ROUNDS. Each study puts down its cover and up to
-   three pictures, then the next study takes a turn; when every study
-   has had one, round again with what is left. Campaigns' first round
-   is fourteen studies in fifty-six tiles, and nobody meets Neiman
-   Marcus's twenty-seven pictures in a row. The seed still deals —
-   the order of studies in a round, which pictures go first, the
-   pulls — but only inside a run. The opener never moves. */
+   INSIDE A RUN, THE STUDIES IN THE SITE'S ORDER, each with its own
+   pictures behind its cover. It was rounds — a cover and three
+   pictures each, then the next study, then round again — so that
+   nobody met Neiman Marcus's twenty-seven pictures in a row. After
+   the third sweep no study has more than seven, so the reason is
+   gone, and what is left is worth more: a run reads as the studies
+   themselves, each one's pictures together, in an order that can be
+   written down. Nothing about a run is dealt off the seed now, which
+   is what lets lab/board-order.html show the board's own order and
+   hand back a new one. The seed still deals every tile's size and the
+   air between them. */
+{ORDER}
+/* ── AND THE ORDER A RUN IS DEALT IN ────────────────────────────────
+   The deal decides what goes where: covers by the site's order, then
+   rounds of a cover and three pictures per study, shuffled off the
+   seed. That is a good default and it is not a judgement — some
+   pictures should lead a line and the dice do not know which. A run
+   is re-sorted here by the hand-set order (scripts/lib/board-order.txt,
+   set on lab/board-order.html): a picture named there is dealt where
+   it is named, and everything else follows in the order the deal gave
+   it, so naming the three that should lead is enough. */
+const RUN_ORDER = window.BOARD_ORDER || {};
+const keyOf = (it) => (it.t || "").replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
+const setOrder = (run, list) => {
+  const rank = RUN_ORDER[run];
+  if (!rank || !rank.length) return list;
+  const at = new Map(rank.map((k, i) => [k, i]));
+  /* sort is stable, so anything unnamed keeps the deal's own order
+     behind the named ones */
+  return list
+    .map((it, i) => [it, at.has(keyOf(it)) ? at.get(keyOf(it)) : rank.length + i])
+    .sort((a, b) => a[1] - b[1])
+    .map(([it]) => it);
+};
 const OPENER = 6;
 const homeOf = (g) => g.tags.includes("app") ? "app"
   : g.tags.includes("creative") ? "creative"
@@ -1444,7 +1496,7 @@ const covers = all.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
 const opener = covers.slice(0, OPENER);
 const inOpener = new Set(opener.map((i) => i.g));
 const img = (it, run) => ({ kind: "img", run, ...it });
-const items = opener.map((it) => img(it, "open"));
+const items = setOrder("open", opener).map((it) => img(it, "open"));
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
   const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
@@ -1456,25 +1508,27 @@ FILTERS.forEach(([label, tag, desc]) => {
      ten — so a chip that said four was counting one thing and opening
      another. It counts what it opens. */
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
-  const pool = new Map(studies.map((k) => {
-    const pics = all.filter((i) => i.g === k);
-    const cover = pics.find((i) => i.c != null);
-    const rest = shuffle(pics.filter((i) => i.c == null));
-    return [k, cover && !inOpener.has(k) ? [cover, ...rest] : rest];
-  }));
+  /* the site's own order, the one the covers lead with */
+  const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
+  studies.sort((a, b) => seat(a) - seat(b));
   items.push({ kind: "head", run: tag, first: true, tag,
     html: label + ". <span class=\"q\">" + desc + "</span>",
     way: shelf + " studies \u2192" });
-  let order = shuffle(studies.slice());
-  while ([...pool.values()].some((p) => p.length)) {
-    for (const k of order) for (const it of pool.get(k).splice(0, 4)) items.push(img(it, tag));
-    order = shuffle(order);
+  const run = [];
+  for (const k of studies) {
+    const pics = all.filter((i) => i.g === k);
+    const cover = pics.find((i) => i.c != null);
+    if (cover && !inOpener.has(k)) run.push(cover);
+    /* the data file is sorted by path, so a study's pictures come in
+       one fixed order rather than the seed's */
+    for (const it of pics) if (it.c == null) run.push(it);
   }
+  for (const it of setOrder(tag, run)) items.push(img(it, tag));
 });
 /* the threshold: the last thing that is work, then his own sentence
    for what follows (his words, 8 Sept 2026: "something simple"), then
    the pulls with the lines spaced through them */
-const pulls = shuffle(all.filter((i) => i.g === "inspiration"));
+const pulls = setOrder("staples", all.filter((i) => i.g === "inspiration"));
 const EVERY = Math.floor(pulls.length / (QUOTES.length + 1)) || 1;
 items.push({ kind: "head", run: "staples", first: true, tag: "staples",
   html: "Staples are the people, music, places, and things that inspire me.",
@@ -5350,6 +5404,7 @@ setTimeout(standRow, 400);
 
 out = head + sz + "\n" + burn + "\n" + pt + "\n" + rail
 out = out.replace("{INDEX}", INDEX, 1)   # the plain index, into the body
+out = out.replace("{ORDER}", ORDER_JS, 1)   # the hand-set order of each run
 io.open("public/lab/board.html", "w", encoding="utf-8").write(out)
 print("board: public/lab/board.html — %d lines (reel %d, burn %d, lifted from the lab)"
       % (len(out.split("\n")), len(sz.split("\n")), len(burn.split("\n"))))

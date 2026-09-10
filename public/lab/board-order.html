@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The board, in order</title>
+<link rel="stylesheet" href="field/base.css" />
+<style>
+  /* ── the order each run is dealt in, by hand ───────────────────────
+     The sweep sheet (board-sheet.html) decides WHAT the board deals.
+     This decides WHERE. A run is the studies in the site's own order,
+     each one's pictures behind its cover; that is a default, not a
+     judgement, and some pictures should lead a line. Drag a card and
+     the run re-orders; Copy order gives the lines for
+     scripts/lib/board-skip.txt's neighbour, scripts/lib/board-order.txt,
+     which `npm run board:page` reads. No thumbs are rebuilt: the order
+     is read at deal time.
+
+     The default here is worked out exactly as the board works it out,
+     which is why nothing in a run is dealt off the seed any more. What
+     you drag is what it deals. */
+  body { background: #f3f1ee; padding: 0 0 80px; }
+  .bar { position: sticky; top: 0; z-index: 5; background: #f3f1ee; border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex; gap: 18px; align-items: center; padding: 14px 28px; flex-wrap: wrap; }
+  .bar h1 { font-size: var(--note); letter-spacing: 0.04em; text-transform: uppercase; margin: 0; font-weight: 600; }
+  .bar .n { font-size: 12px; color: var(--grey); letter-spacing: 0.04em; }
+  .bar button { font: inherit; font-size: 12px; letter-spacing: 0.02em; border: 0; background: rgba(0,0,0,0.06);
+    border-radius: 10px; padding: 6px 12px; cursor: pointer; color: var(--ink); }
+  .bar .sp { flex: 1; }
+  .g { padding: 26px 28px 6px; }
+  .g h2 { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; }
+  .g h2 span { font-size: 12px; font-weight: 400; color: var(--grey); letter-spacing: 0.04em; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+  figure { margin: 0; width: 150px; position: relative; border-radius: 8px; padding: 6px; background: #fff;
+    border: 1px solid rgba(0,0,0,0.08); cursor: grab; transition: opacity 0.18s ease, transform 0.18s ease; }
+  figure:active { cursor: grabbing; }
+  figure img { display: block; width: 100%; height: 110px; object-fit: cover; background: #ece9e4; border-radius: 4px; pointer-events: none; }
+  figcaption { font-size: 10px; line-height: 1.35; color: var(--grey); margin-top: 6px; letter-spacing: 0.01em; pointer-events: none; }
+  figcaption b { display: block; color: var(--ink); font-weight: 500; }
+  .num { position: absolute; left: 8px; top: 4px; z-index: 1; font-size: 9px; letter-spacing: 0.06em;
+    color: var(--grey); font-variant-numeric: tabular-nums; }
+  figure.cover { border-color: rgba(0,0,0,0.32); }
+  figure.cover .num::after { content: " cover"; }
+  figure.drag { opacity: 0.3; }
+  figure.over { transform: translateX(6px); box-shadow: -3px 0 0 0 var(--ink); }
+  .moved h2 span.dirty { color: var(--ink); font-weight: 600; }
+  textarea { position: fixed; left: -9999px; top: 0; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>The board, in order</h1>
+  <span class="n" id="count"></span>
+  <span class="sp"></span>
+  <button id="copy">Copy order</button>
+  <button id="reset">Back to the deal</button>
+</div>
+<div id="sheet"></div>
+<textarea id="ta" aria-hidden="true"></textarea>
+<script src="/lab/board-data.js"></script>
+<script>
+const KEY = "board-order";
+const RUNS = [["open", "The opener"], ["digital", "Digital"], ["app", "Apps"],
+  ["creative", "Campaigns"], ["interiors", "Interiors"], ["staples", "Staples"]];
+const OPENER = 6;
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const keyOf = (it) => it.t.replace(/^\/lab\/board-thumbs\//, "").replace(/\.webp$/, "");
+
+const items = window.BOARD_ITEMS || [];
+const GROUPS = window.BOARD_GROUPS || {};
+const homeOf = (g) => g.tags.includes("app") ? "app"
+  : g.tags.includes("creative") ? "creative"
+  : g.tags.includes("interiors") ? "interiors" : "digital";
+
+/* ── the deal's own order, worked out the way the board works it out ── */
+const covers = items.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
+const opener = covers.slice(0, OPENER);
+const inOpener = new Set(opener.map((i) => i.g));
+const dealt = { open: opener.slice(), staples: items.filter((i) => i.g === "inspiration") };
+for (const [tag] of RUNS) {
+  if (tag === "open" || tag === "staples") continue;
+  const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+  const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
+  studies.sort((a, b) => seat(a) - seat(b));
+  const run = [];
+  for (const k of studies) {
+    const pics = items.filter((i) => i.g === k);
+    const cover = pics.find((i) => i.c != null);
+    if (cover && !inOpener.has(k)) run.push(cover);
+    for (const it of pics) if (it.c == null) run.push(it);
+  }
+  dealt[tag] = run;
+}
+
+/* an authored order, from this browser or from the repo's own file */
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } };
+const save = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} };
+
+const applyOrder = (run, rank) => {
+  if (!rank || !rank.length) return dealt[run].slice();
+  const at = new Map(rank.map((k, i) => [k, i]));
+  return dealt[run]
+    .map((it, i) => [it, at.has(keyOf(it)) ? at.get(keyOf(it)) : rank.length + i])
+    .sort((a, b) => a[1] - b[1]).map(([it]) => it);
+};
+
+/* the repo's own order, written beside the board by the assembler, so
+   this page opens on what the board is dealing rather than on nothing */
+let state = {};
+fetch("/lab/board-order.json")
+  .then((r) => (r.ok ? r.json() : {}))
+  .catch(() => ({}))
+  .then((repo) => { state = load() || repo || {}; draw(); });
+
+const sheet = document.getElementById("sheet");
+function draw() {
+  sheet.innerHTML = "";
+  for (const [tag, label] of RUNS) {
+    const list = applyOrder(tag, state[tag]);
+    const sec = el("section", "g"); sec.dataset.run = tag;
+    const h = el("h2", null, label);
+    h.appendChild(el("span", null, list.length + (list.length === 1 ? " picture" : " pictures")));
+    if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
+    sec.appendChild(h);
+    const row = el("div", "row");
+    list.forEach((it, i) => {
+      const g = GROUPS[it.g];
+      const f = el("figure"); f.draggable = true; f.dataset.key = keyOf(it);
+      if (it.c != null) f.classList.add("cover");
+      f.appendChild(el("span", "num", String(i + 1)));
+      const im = el("img"); im.loading = "lazy"; im.alt = "";
+      im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
+      f.appendChild(im);
+      const cap = el("figcaption");
+      cap.appendChild(el("b", null, g ? g.t : it.g));
+      cap.appendChild(document.createTextNode(keyOf(it).split("/").pop().replace(new RegExp("^" + it.g + "-"), "")));
+      f.appendChild(cap);
+      row.appendChild(f);
+    });
+    sec.appendChild(row); sheet.appendChild(sec);
+  }
+  count();
+}
+
+let dragging = null;
+sheet.addEventListener("dragstart", (e) => {
+  const f = e.target.closest("figure"); if (!f) return;
+  dragging = f; f.classList.add("drag");
+  e.dataTransfer.effectAllowed = "move";
+  try { e.dataTransfer.setData("text/plain", f.dataset.key); } catch (err) {}
+});
+sheet.addEventListener("dragend", () => {
+  if (dragging) dragging.classList.remove("drag");
+  sheet.querySelectorAll("figure.over").forEach((x) => x.classList.remove("over"));
+  dragging = null;
+});
+sheet.addEventListener("dragover", (e) => {
+  const f = e.target.closest("figure");
+  if (!dragging || !f || f === dragging) return;
+  /* a picture belongs to its line: a run is the studies on it */
+  if (f.closest("section").dataset.run !== dragging.closest("section").dataset.run) return;
+  e.preventDefault();
+  sheet.querySelectorAll("figure.over").forEach((x) => x.classList.remove("over"));
+  f.classList.add("over");
+});
+sheet.addEventListener("drop", (e) => {
+  const f = e.target.closest("figure");
+  if (!dragging || !f || f === dragging) return;
+  const sec = f.closest("section");
+  if (sec.dataset.run !== dragging.closest("section").dataset.run) return;
+  e.preventDefault();
+  const row = sec.querySelector(".row");
+  const all = [...row.children];
+  row.insertBefore(dragging, all.indexOf(dragging) < all.indexOf(f) ? f.nextSibling : f);
+  state[sec.dataset.run] = [...row.children].map((x) => x.dataset.key);
+  save(state); renumber(sec); count();
+});
+const renumber = (sec) => [...sec.querySelectorAll("figure")].forEach((f, i) => {
+  f.querySelector(".num").textContent = String(i + 1);
+});
+function count() {
+  const set = RUNS.filter(([t]) => state[t] && state[t].length).map(([, l]) => l);
+  document.getElementById("count").textContent =
+    items.length + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order");
+}
+document.getElementById("reset").addEventListener("click", () => { state = {}; save(state); draw(); });
+document.getElementById("copy").addEventListener("click", async (e) => {
+  /* held before the await: currentTarget is null once the handler
+     yields, which is the whole of this listener */
+  const b = e.currentTarget;
+  const out = [];
+  for (const [tag, label] of RUNS) {
+    if (!state[tag] || !state[tag].length) continue;
+    out.push("# " + tag + "   (" + label + ")");
+    out.push(...applyOrder(tag, state[tag]).map(keyOf));
+    out.push("");
+  }
+  const text = out.join("\n");
+  try { await navigator.clipboard.writeText(text); }
+  catch (err) { const ta = document.getElementById("ta"); ta.value = text; ta.select(); document.execCommand("copy"); }
+  b.textContent = "Copied " + out.filter((l) => l && !l.startsWith("#")).length;
+  setTimeout(() => { b.textContent = "Copy order"; }, 1500);
+});
+</script>
+</body>
+</html>
