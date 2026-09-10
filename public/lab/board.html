@@ -2775,10 +2775,21 @@ function mount(t, gx, gy, u, f) {
       const ss = srcsetFor(t);
       if (ss) {
         img.srcset = ss;
-        /* the box it is drawn in, times the 1.32 the hover grows it to,
-           so opening a frame does not magnify a bitmap chosen for the
-           closed one */
-        img.sizes = Math.ceil(t.w * 1.32) + "px";
+        /* ── THE BOX IT IS DRAWN IN, AND THE ONE IT OPENS INTO ───────
+           This asked for the closed box times 1.32, which was the
+           grow when the grow was a fixed 1.32. It is not: a frame
+           opens to its COLUMN'S FULL WIDTH now (armHover), so a third-
+           share tile grows threefold and the picture chosen for 152px
+           was being drawn into 501. Nine of fourteen frames on the
+           glass went soft the moment they opened.
+
+           Asking for the open width up front would put the 1536 master
+           behind every tile on the board, which is megabytes for a
+           hover that may never come. The closed box is what loads, and
+           armHover raises this to the open width when a frame is
+           actually opened: the browser fetches the bigger candidate
+           and swaps it in during the 620ms the frame takes to open. */
+        img.sizes = Math.ceil(t.w) + "px";
       }
       img.alt = "";
       img.decoding = "async";
@@ -2901,6 +2912,14 @@ function armHover() {
     card.style.setProperty("--ix-grow", grow.toFixed(3));
     const drop = shot.offsetHeight * (grow - 1);
     card.style.setProperty("--drop", drop.toFixed(1) + "px");
+    /* and the picture it will be drawn from: raising sizes re-runs the
+       srcset pick, so an opening frame fetches the candidate its OPEN
+       width needs rather than keeping the one its closed width chose */
+    const pic = card.querySelector("img");
+    if (pic && pic.srcset) {
+      const want = Math.ceil(shot.offsetWidth * grow);
+      if (want > (parseFloat(pic.sizes) || 0)) pic.sizes = want + "px";
+    }
 
     /* the name travels to the edge the frame opens toward: the same
        measured distance, opposite sign on a right-hugging column */
