@@ -1999,6 +1999,8 @@ function deal(list, opts) {
     }
     pairYs.push(y);
   }
+  /* the ladder is still walked for the first rung, which is where a
+     head's row and the opener's top line are measured from */
   const ys = pairYs[0];
   /* ── STACKED, NOT ROWED, on a phone ──────────────────────────────
      The live grid is two flex columns, each running its own height,
@@ -2007,7 +2009,23 @@ function deal(list, opts) {
      level; with two, each column keeps its own running y. The seat
      (which column) is still the pair's; only the height is the
      column's own. */
-  const colY = opts.stack ? new Array(cols).fill(top0) : null;
+  /* ── EVERY COLUMN RUNS ITS OWN Y ──────────────────────────────────
+     A pair shared one ladder, and a rung was as tall as the TALLER of
+     that pair's two tiles. A short picture beside a tall one paid the
+     difference: the air constants say 96 to 260 and the board was
+     dealing 736, a quarter of its gaps over the stated maximum and
+     fifteen over four hundred. The holes were worst in Staples, where
+     a wide pull sits beside a tall portrait.
+
+     Each column keeps its own running y, as a phone's already did and
+     as the live homepage's two flex columns do. The gap between two
+     pictures is now the air that was dealt for it and nothing else.
+
+     The shared TOP line survives, which is what a row of columns is
+     for: every column starts at top0, so all twenty-three pairs still
+     open level. Only the rungs below the first stop lining up, and a
+     rung below the first has nothing to line up against. */
+  const colY = new Array(cols).fill(top0);
   /* where each column's work actually ends, so its scroller stops
      there rather than at the tallest column's bottom */
   const colH = new Array(cols).fill(top0);
