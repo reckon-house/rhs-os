@@ -35,8 +35,8 @@ _rows = "".join(
 # scripts/lib/board-order.txt. Emitted as window.BOARD_ORDER, so
 # `npm run board:page` alone applies a new order — no thumbs needed.
 import os as _os
-_ORDER, _run = {}, None
-_RUNS = ("open", "digital", "app", "creative", "interiors", "staples")
+_ORDER, _HOMES, _run = {}, {}, None
+_RUNS = ("open", "digital", "app", "creative", "interiors", "staples", "homes")
 _op = "scripts/lib/board-order.txt"
 if _os.path.exists(_op):
     for _raw in io.open(_op, encoding="utf-8").read().split("\n"):
@@ -48,12 +48,18 @@ if _os.path.exists(_op):
             if _head and _head[0] in _RUNS:
                 _run = _head[0]
             continue
-        if _run:
+        if _run == "homes":
+            if "=" in _t:
+                _k, _v = _t.split("=", 1)
+                _HOMES[_k.strip()] = _v.split("#")[0].strip()
+        elif _run:
             _ORDER.setdefault(_run, []).append(_t.split("#")[0].strip())
-ORDER_JS = "window.BOARD_ORDER = " + _json.dumps(_ORDER) + ";"
+ORDER_JS = ("window.BOARD_ORDER = " + _json.dumps(_ORDER) + ";"
+            "window.BOARD_HOMES = " + _json.dumps(_HOMES) + ";")
 # the same order where a lab page can fetch it: board-order.html opens
 # on what the board is actually dealing, not on an empty browser
-io.open("public/lab/board-order.json", "w", encoding="utf-8").write(_json.dumps(_ORDER))
+io.open("public/lab/board-order.json", "w", encoding="utf-8").write(
+    _json.dumps({"order": _ORDER, "homes": _HOMES}))
 
 INDEX = ('<aside id="index" aria-label="Every study">'
          '<p>Reckon House. Jeremy Prasatik makes things across brand, product, and place: apps and ecommerce, '
@@ -1481,9 +1487,25 @@ const setOrder = (run, list) => {
     .map(([it]) => it);
 };
 const OPENER = 6;
-const homeOf = (g) => g.tags.includes("app") ? "app"
-  : g.tags.includes("creative") ? "creative"
-  : g.tags.includes("interiors") ? "interiors" : "digital";
+/* ── WHICH LINE A STUDY IS DEALT ON ─────────────────────────────────
+   A study's tags say which lines claim it and the narrowest of them
+   is where its pictures are dealt, so Ivy Park is tagged digital and
+   creative and runs with Campaigns. That is a rule about the data,
+   and sometimes the data is not how Jeremy thinks of the work: a home
+   set by hand (scripts/lib/board-order.txt, under "# homes", set on
+   lab/board-order.html) moves the study's pictures to the line he
+   names. The line CLAIMS it too — the tag goes on — so the head that
+   opens into a list of studies counts this one among them. It keeps
+   the lines it already had; a study can sit on two lists and only be
+   dealt once. */
+const HOMES = window.BOARD_HOMES || {};
+for (const [k, run] of Object.entries(HOMES)) {
+  const g = GROUPS[k];
+  if (g && g.tags && !g.tags.includes(run)) g.tags.push(run);
+}
+const homeOf = (k) => HOMES[k] || (GROUPS[k].tags.includes("app") ? "app"
+  : GROUPS[k].tags.includes("creative") ? "creative"
+  : GROUPS[k].tags.includes("interiors") ? "interiors" : "digital");
 const shuffle = (a) => {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
@@ -1499,7 +1521,7 @@ const img = (it, run) => ({ kind: "img", run, ...it });
 const items = setOrder("open", opener).map((it) => img(it, "open"));
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
-  const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+  const studies = Object.keys(GROUPS).filter((k) => homeOf(k) === tag);
   /* ── THE HEAD COUNTS THE LINE, NOT THE RUN ───────────────────────
      The run holds the studies whose NARROWEST tag is this line, so
      Digital's run is the four stores and the other six digital

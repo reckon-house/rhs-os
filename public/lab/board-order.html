@@ -44,6 +44,16 @@
   figure.drag { opacity: 0.3; }
   figure.over { transform: translateX(6px); box-shadow: -3px 0 0 0 var(--ink); }
   .moved h2 span.dirty { color: var(--ink); font-weight: 600; }
+  /* the studies on this line, and where else they could sit */
+  .studies { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+  .st { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.045);
+    border-radius: 12px; padding: 5px 6px 5px 12px; font-size: 12px; font-weight: 500;
+    letter-spacing: -0.01em; }
+  .st b { font-weight: 600; }
+  .st.set { background: var(--ink); color: #fff; }
+  .st select { font: inherit; font-size: 11px; border: 0; border-radius: 9px; padding: 3px 4px;
+    background: rgba(0,0,0,0.06); color: inherit; cursor: pointer; }
+  .st.set select { background: rgba(255,255,255,0.16); color: #fff; }
   textarea { position: fixed; left: -9999px; top: 0; }
 </style>
 </head>
@@ -76,20 +86,26 @@ const homeOf = (g) => g.tags.includes("app") ? "app"
 const covers = items.filter((i) => i.c != null).sort((a, b) => a.c - b.c);
 const opener = covers.slice(0, OPENER);
 const inOpener = new Set(opener.map((i) => i.g));
-const dealt = { open: opener.slice(), staples: items.filter((i) => i.g === "inspiration") };
-for (const [tag] of RUNS) {
-  if (tag === "open" || tag === "staples") continue;
-  const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
-  const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
-  studies.sort((a, b) => seat(a) - seat(b));
-  const run = [];
-  for (const k of studies) {
-    const pics = items.filter((i) => i.g === k);
-    const cover = pics.find((i) => i.c != null);
-    if (cover && !inOpener.has(k)) run.push(cover);
-    for (const it of pics) if (it.c == null) run.push(it);
+const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
+const dealt = {}, onRun = {};
+/* the board's own rule, and the hand-set home over it */
+const lineOf = (k) => homes[k] || homeOf(GROUPS[k]);
+function deal() {
+  dealt.open = opener.slice();
+  dealt.staples = items.filter((i) => i.g === "inspiration");
+  for (const [tag] of RUNS) {
+    if (tag === "open" || tag === "staples") continue;
+    const studies = Object.keys(GROUPS).filter((k) => lineOf(k) === tag).sort((a, b) => seat(a) - seat(b));
+    onRun[tag] = studies;
+    const run = [];
+    for (const k of studies) {
+      const pics = items.filter((i) => i.g === k);
+      const cover = pics.find((i) => i.c != null);
+      if (cover && !inOpener.has(k)) run.push(cover);
+      for (const it of pics) if (it.c == null) run.push(it);
+    }
+    dealt[tag] = run;
   }
-  dealt[tag] = run;
 }
 
 /* an authored order, from this browser or from the repo's own file */
@@ -106,11 +122,16 @@ const applyOrder = (run, rank) => {
 
 /* the repo's own order, written beside the board by the assembler, so
    this page opens on what the board is dealing rather than on nothing */
-let state = {};
+let state = {}, homes = {};
 fetch("/lab/board-order.json")
   .then((r) => (r.ok ? r.json() : {}))
   .catch(() => ({}))
-  .then((repo) => { state = load() || repo || {}; draw(); });
+  .then((repo) => {
+    const mine = load();
+    state = (mine && mine.order) || repo.order || {};
+    homes = (mine && mine.homes) || repo.homes || {};
+    deal(); draw();
+  });
 
 const sheet = document.getElementById("sheet");
 function draw() {
@@ -122,6 +143,31 @@ function draw() {
     h.appendChild(el("span", null, list.length + (list.length === 1 ? " picture" : " pictures")));
     if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
     sec.appendChild(h);
+    /* the studies dealt on this line, each with the line it could move
+       to: a study travels with its pictures, so this is one press */
+    if (tag !== "open" && tag !== "staples") {
+      const strip = el("div", "studies");
+      for (const k of (onRun[tag] || [])) {
+        const chip = el("span", "st" + (homes[k] ? " set" : ""));
+        chip.appendChild(el("b", null, (GROUPS[k] || {}).t || k));
+        const sel = document.createElement("select");
+        for (const [t2, l2] of RUNS) {
+          if (t2 === "open" || t2 === "staples") continue;
+          const o = document.createElement("option");
+          o.value = t2; o.textContent = l2; o.selected = t2 === tag;
+          sel.appendChild(o);
+        }
+        sel.addEventListener("change", () => {
+          const to = sel.value;
+          if (to === homeOf(GROUPS[k])) delete homes[k]; else homes[k] = to;
+          save({ order: state, homes });
+          deal(); draw();
+        });
+        chip.appendChild(sel);
+        strip.appendChild(chip);
+      }
+      sec.appendChild(strip);
+    }
     const row = el("div", "row");
     list.forEach((it, i) => {
       const g = GROUPS[it.g];
@@ -173,17 +219,21 @@ sheet.addEventListener("drop", (e) => {
   const all = [...row.children];
   row.insertBefore(dragging, all.indexOf(dragging) < all.indexOf(f) ? f.nextSibling : f);
   state[sec.dataset.run] = [...row.children].map((x) => x.dataset.key);
-  save(state); renumber(sec); count();
+  save({ order: state, homes }); renumber(sec); count();
 });
 const renumber = (sec) => [...sec.querySelectorAll("figure")].forEach((f, i) => {
   f.querySelector(".num").textContent = String(i + 1);
 });
 function count() {
   const set = RUNS.filter(([t]) => state[t] && state[t].length).map(([, l]) => l);
+  const moved = Object.keys(homes).length;
   document.getElementById("count").textContent =
-    items.length + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order");
+    items.length + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
+    + (moved ? " · " + moved + (moved === 1 ? " study moved" : " studies moved") : "");
 }
-document.getElementById("reset").addEventListener("click", () => { state = {}; save(state); draw(); });
+document.getElementById("reset").addEventListener("click", () => {
+  state = {}; homes = {}; save({ order: state, homes }); deal(); draw();
+});
 document.getElementById("copy").addEventListener("click", async (e) => {
   /* held before the await: currentTarget is null once the handler
      yields, which is the whole of this listener */
@@ -193,6 +243,12 @@ document.getElementById("copy").addEventListener("click", async (e) => {
     if (!state[tag] || !state[tag].length) continue;
     out.push("# " + tag + "   (" + label + ")");
     out.push(...applyOrder(tag, state[tag]).map(keyOf));
+    out.push("");
+  }
+  const moved = Object.entries(homes);
+  if (moved.length) {
+    out.push("# homes");
+    for (const [k, run] of moved) out.push(k + " = " + run);
     out.push("");
   }
   const text = out.join("\n");

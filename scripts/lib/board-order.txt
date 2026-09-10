@@ -12,3 +12,9 @@
 # Ordered by hand on lab/board-order.html (Copy order), read by
 # scripts/lib/assemble-board.py; `npm run board:page` re-deals with it,
 # no thumbs needed. Lines starting with # are notes.
+
+# homes
+# One study per line, as <study folder> = <run>, when the line the data
+# gives it is not the line it belongs on. The run deals its pictures and
+# the line claims it in its list; the study keeps whatever lines it
+# already had.

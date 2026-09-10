@@ -1361,7 +1361,7 @@ const FILTERS = [
    is what lets lab/board-order.html show the board's own order and
    hand back a new one. The seed still deals every tile's size and the
    air between them. */
-window.BOARD_ORDER = {};
+window.BOARD_ORDER = {};window.BOARD_HOMES = {};
 /* ── AND THE ORDER A RUN IS DEALT IN ────────────────────────────────
    The deal decides what goes where: covers by the site's order, then
    rounds of a cover and three pictures per study, shuffled off the
@@ -1385,9 +1385,25 @@ const setOrder = (run, list) => {
     .map(([it]) => it);
 };
 const OPENER = 6;
-const homeOf = (g) => g.tags.includes("app") ? "app"
-  : g.tags.includes("creative") ? "creative"
-  : g.tags.includes("interiors") ? "interiors" : "digital";
+/* ── WHICH LINE A STUDY IS DEALT ON ─────────────────────────────────
+   A study's tags say which lines claim it and the narrowest of them
+   is where its pictures are dealt, so Ivy Park is tagged digital and
+   creative and runs with Campaigns. That is a rule about the data,
+   and sometimes the data is not how Jeremy thinks of the work: a home
+   set by hand (scripts/lib/board-order.txt, under "# homes", set on
+   lab/board-order.html) moves the study's pictures to the line he
+   names. The line CLAIMS it too — the tag goes on — so the head that
+   opens into a list of studies counts this one among them. It keeps
+   the lines it already had; a study can sit on two lists and only be
+   dealt once. */
+const HOMES = window.BOARD_HOMES || {};
+for (const [k, run] of Object.entries(HOMES)) {
+  const g = GROUPS[k];
+  if (g && g.tags && !g.tags.includes(run)) g.tags.push(run);
+}
+const homeOf = (k) => HOMES[k] || (GROUPS[k].tags.includes("app") ? "app"
+  : GROUPS[k].tags.includes("creative") ? "creative"
+  : GROUPS[k].tags.includes("interiors") ? "interiors" : "digital");
 const shuffle = (a) => {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
@@ -1403,7 +1419,7 @@ const img = (it, run) => ({ kind: "img", run, ...it });
 const items = setOrder("open", opener).map((it) => img(it, "open"));
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
-  const studies = Object.keys(GROUPS).filter((k) => homeOf(GROUPS[k]) === tag);
+  const studies = Object.keys(GROUPS).filter((k) => homeOf(k) === tag);
   /* ── THE HEAD COUNTS THE LINE, NOT THE RUN ───────────────────────
      The run holds the studies whose NARROWEST tag is this line, so
      Digital's run is the four stores and the other six digital
