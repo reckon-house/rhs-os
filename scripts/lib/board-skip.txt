@@ -302,7 +302,9 @@ ivy-park/ivy-park-shop-the-look-editorial-grid.jpg   # tall, 2.33:1, cropped by 
 # j-christianson
 j-christianson/j-christianson-brand-pattern-logo-four-colors.jpg   # marked by eye, 9 Sept 2026
 j-christianson/j-christianson-dot-grid-pattern-brown-accents.jpg   # marked by eye, 8 Sept 2026
+j-christianson/j-christianson-dot-grid-pattern-brown-accents.png   # the same picture again; both write one thumb, so cutting one left the other
 j-christianson/j-christianson-dot-grid-pattern-olive-accents.jpg   # marked by eye, 8 Sept 2026
+j-christianson/j-christianson-dot-grid-pattern-olive-accents.png   # the same picture again; both write one thumb, so cutting one left the other
 j-christianson/j-christianson-four-seasonal-tree-circles-flat.jpg   # marked by eye, 8 Sept 2026
 j-christianson/j-christianson-storefront-sign-dot-grid-brown.jpg   # marked by eye, 9 Sept 2026
 j-christianson/j-christianson-tree-stripe-graphic-breakout.jpg   # marked by eye, 8 Sept 2026

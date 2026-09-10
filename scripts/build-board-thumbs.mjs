@@ -89,7 +89,7 @@ function* walk(root) {
 }
 
 const items = [];
-let wrote = 0, skipped = 0, failed = 0, left = 0;
+let wrote = 0, skipped = 0, failed = 0, left = 0, clash = 0;
 let before = 0, after = 0;
 
 /* ── NOT EVERY PICTURE IS DEALT ──────────────────────────────────────
@@ -123,6 +123,25 @@ async function opener(from) {
   return () => { const s = sharp(from, { failOn: "none" }); return clear ? s.flatten({ background: PLATE }) : s; };
 }
 
+/* ── TWO SOURCES, ONE THUMB ─────────────────────────────────────────
+   A thumb is named for its stem, so a picture kept as both a .jpg and
+   a .png writes one file twice and the second pass wins. That also
+   breaks the skip list, which addresses a source by name: a cut that
+   names the .jpg leaves the .png to rebuild the same thumb, and the
+   picture that was removed is back on the board. Named here, loudly,
+   because nothing further down the pipeline can see it. */
+const byStem = new Map();
+for (const from of walk(ROOT)) {
+  const rel = from.slice(ROOT.length + 1);
+  const stem0 = rel.replace(/\.[^.]+$/, "");
+  byStem.set(stem0, [...(byStem.get(stem0) || []), rel]);
+}
+for (const [, rels] of byStem) {
+  /* both cut is no clash: nothing is written either way */
+  if (rels.length < 2 || rels.every((r) => SKIP.has(r))) continue;
+  console.error(`  two sources, one thumb: ${rels.join(" and ")} — skip or rename one`);
+  clash += 1;
+}
 for (const from of walk(ROOT)) {
   const rel = from.slice(ROOT.length + 1); // "<slug>/<file>"
   if (SKIP.has(rel)) { left += 1; continue; }
@@ -479,7 +498,7 @@ writeFileSync("public/lab/board-shell.css",
 const MB = (b) => (b / 1048576).toFixed(1);
 const STUDIES = Object.entries(COPY).filter(([k]) => k !== "house").map(([, v]) => v);
 console.log(
-  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed, ${left} left out by the skip list)` +
+  `board: ${items.length} tiles (${wrote} encoded, ${skipped} kept, ${failed} failed, ${left} left out by the skip list${clash ? ", " + clash + " STEM CLASHES above" : ""})` +
   `\n  originals ${MB(before)}MB → thumbs ${MB(after)}MB` +
   `\n  data ${DATA} (${MB(statSync(DATA).size)}MB)` +
   `\n  shell public/lab/board-shell.css (${MB(statSync("public/lab/board-shell.css").size)}MB)` +
