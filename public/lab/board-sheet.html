@@ -14,6 +14,16 @@
      this browser and copied out as lines for scripts/lib/board-skip.txt,
      which the thumb builder reads.
 
+     THE THIRD PASS is by JOB. The study itself knows what each
+     picture is: the hero it opens on, a full-width plate, one half of
+     a pair, one of three, a thumbnail in a text column, a frame in
+     the cover reel, or a file the study never places at all
+     (npm run board:roles reads it out of src/data). Jeremy is pulling
+     the board back to the pictures the work is presented on, so
+     "Plates" shows the covers, heroes and full-width plates, "Rest"
+     shows everything else, and "Mark the rest" marks all of it in one
+     press. A cover can never be marked: every study needs one.
+
      THE SECOND PASS is by kind, not by measurement: a bare app screen
      with no context, a wordmark or a logo cut from its system, a
      swatch or a pattern field, an illustration lifted from its brand
@@ -49,12 +59,24 @@
   .badge.alpha { background: #ffe9c7; } .badge.tiny { background: #ffd6d6; } .badge.tall, .badge.wide { background: #dcecff; }
   figure.sug { border: 1px dashed rgba(0,0,0,0.45); }
   .badge.ui { background: #e6e0ff; } .badge.type { background: #e0f2e9; } .badge.swatch { background: #fbe4c8; } .badge.art { background: #f6e0ee; }
+  /* the job the study gives it: the plates are ink, the rest is grey */
+  .badge.role { background: rgba(0,0,0,0.06); color: var(--grey); }
+  .badge.role.plate { background: var(--ink); color: #fff; }
+  figure.plate { border-color: rgba(0,0,0,0.3); }
+  figure.cover::before { content: "cover"; position: absolute; left: 8px; top: 4px; z-index: 1;
+    font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grey); }
+  figure.cover { cursor: not-allowed; }
   figure.skip { opacity: 0.38; box-shadow: inset 0 0 0 2px var(--ink); }
   figure.skip::after { content: "×"; position: absolute; right: 8px; top: 4px; font-size: 22px; line-height: 1; color: var(--ink); }
   body.only-flagged figure:not(.flagged):not(.skip) { display: none; }
   body.only-skip figure:not(.skip) { display: none; }
   body.only-sug figure:not(.sug) { display: none; }
-  body.only-flagged .g.empty, body.only-skip .g.empty, body.only-sug .g.empty { display: none; }
+  body.only-plate figure:not(.plate) { display: none; }
+  /* the rest is what the button marks: not the plates, not the pulls */
+  body.only-rest figure.plate, body.only-rest figure.cover,
+  body.only-rest figure[data-role="pull"] { display: none; }
+  body.only-flagged .g.empty, body.only-skip .g.empty, body.only-sug .g.empty,
+  body.only-plate .g.empty, body.only-rest .g.empty { display: none; }
   textarea { position: fixed; left: -9999px; top: 0; }
 </style>
 </head>
@@ -67,7 +89,10 @@
   <button id="fFlag">Flagged</button>
   <button id="fSkip">Marked</button>
   <button id="fSug">Suggested</button>
+  <button id="fPlate">Plates</button>
+  <button id="fRest">Rest</button>
   <button id="markSug">Mark suggested</button>
+  <button id="markRest">Mark the rest</button>
   <button id="copy">Copy list</button>
   <button id="copyNew">Copy new</button>
   <button id="clear">Clear marks</button>
@@ -90,11 +115,21 @@ const KINDS = [
 ];
 const kindOf = (name) => { for (const [k, re] of KINDS) if (re.test(name)) return k; return null; };
 
-fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
+Promise.all([
+  fetch("/lab/board-audit.json").then((r) => r.json()),
+  fetch("/lab/board-roles.json").then((r) => r.json()).catch(() => ({ roles: {} })),
+]).then(([audit, roleData]) => {
+  const ROLES = roleData.roles || {};
+  /* a retina twin carries its base picture's job */
+  const roleOf = (src) => ROLES[src]
+    || ROLES[src.replace(/[-@]2x(\.[^.]+)$/, "$1")]
+    || ROLES[src.replace(/(\.[^.]+)$/, "-2x$1")] || null;
+  const PLATES = new Set(["hero", "plate"]);
   const marks = load();
   /* the skip list as it stands in the repo seeds the marks once */
   if (!localStorage.getItem(KEY)) { (audit.skip || []).forEach((k) => marks.add(k)); save(marks); }
   const items = window.BOARD_ITEMS || [];
+  const GROUPS = window.BOARD_GROUPS || {};
   const groups = new Map();
   for (const it of items) { if (!groups.has(it.g)) groups.set(it.g, []); groups.get(it.g).push(it); }
   const sheet = document.getElementById("sheet");
@@ -110,6 +145,17 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
       if (a.flags.length) f.classList.add("flagged");
       const kind = (it.g !== "inspiration" && it.c == null) ? kindOf(a.src.split("/").pop()) : null;
       if (kind) { f.classList.add("sug"); f.dataset.kind = kind; }
+      /* the job, and whether this tile is one of the pictures he is
+         keeping: a cover, a hero, or a full-width plate */
+      /* a tile whose group is not a study has no caption on the board
+         either: the homepage's own card crops (hp/) and one folder
+         with no study behind it. They deal as anonymous pictures. */
+      const role = it.c != null ? "cover"
+        : it.g === "inspiration" ? "pull"
+        : (GROUPS[it.g] ? roleOf(a.src) : null) || (GROUPS[it.g] ? null : "no study");
+      if (role) f.dataset.role = role;
+      if (role === "cover") f.classList.add("cover", "plate");
+      else if (PLATES.has(role)) f.classList.add("plate");
       if (marks.has(a.src)) f.classList.add("skip");
       const im = el("img"); im.loading = "lazy"; im.alt = "";
       im.src = (it.r && it.r.includes(384)) ? it.t.replace(/\.webp$/, "@384.webp") : it.t;
@@ -120,9 +166,12 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
       const bd = el("div", "badges");
       a.flags.forEach((fl) => bd.appendChild(el("span", "badge " + fl, fl === "alpha" ? "clear" : fl)));
       if (kind) bd.appendChild(el("span", "badge " + kind, kind));
+      if (role && role !== "pull") bd.appendChild(el("span", "badge role" + (f.classList.contains("plate") ? " plate" : ""), role));
       cap.appendChild(bd);
       f.appendChild(cap);
-      f.addEventListener("click", () => { f.classList.toggle("skip"); if (f.classList.contains("skip")) marks.add(a.src); else marks.delete(a.src); save(marks); count(); });
+      /* a study without its cover has no tile on the board and a hole
+         in every list that names it, so the cover is not markable */
+      if (role !== "cover") f.addEventListener("click", () => { f.classList.toggle("skip"); if (f.classList.contains("skip")) marks.add(a.src); else marks.delete(a.src); save(marks); count(); });
       row.appendChild(f); figs.push(f);
     }
     sec.appendChild(row); sheet.appendChild(sec);
@@ -131,7 +180,11 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
     const n = figs.length, k = figs.filter((f) => f.classList.contains("skip")).length, fl = figs.filter((f) => f.classList.contains("flagged")).length;
     const sg = figs.filter((f) => f.classList.contains("sug")).length;
     const fresh = [...marks].filter((m) => !(audit.skip || []).includes(m)).length;
-    document.getElementById("count").textContent = n + " tiles · " + fl + " flagged · " + sg + " suggested · " + k + " marked to leave (" + fresh + " new)";
+    const left = figs.filter((f) => !f.classList.contains("skip")).length;
+    const plates = figs.filter((f) => f.classList.contains("plate")).length;
+    document.getElementById("count").textContent =
+      n + " tiles · " + plates + " plates · " + fl + " flagged · " + sg + " suggested · "
+      + k + " marked to leave (" + fresh + " new) · " + left + " would stand";
     document.querySelectorAll(".g").forEach((sec) => {
       const vis = [...sec.querySelectorAll("figure")].some((f) => getComputedStyle(f).display !== "none");
       sec.classList.toggle("empty", !vis);
@@ -141,13 +194,23 @@ fetch("/lab/board-audit.json").then((r) => r.json()).then((audit) => {
     document.body.classList.toggle("only-flagged", m === "flag");
     document.body.classList.toggle("only-skip", m === "skip");
     document.body.classList.toggle("only-sug", m === "sug");
-    ["fAll", "fFlag", "fSkip", "fSug"].forEach((id, i) => document.getElementById(id).classList.toggle("on", ["all", "flag", "skip", "sug"][i] === m));
+    document.body.classList.toggle("only-plate", m === "plate");
+    document.body.classList.toggle("only-rest", m === "rest");
+    ["fAll", "fFlag", "fSkip", "fSug", "fPlate", "fRest"].forEach((id, i) =>
+      document.getElementById(id).classList.toggle("on", ["all", "flag", "skip", "sug", "plate", "rest"][i] === m));
     count();
   };
   document.getElementById("fAll").addEventListener("click", () => mode("all"));
   document.getElementById("fFlag").addEventListener("click", () => mode("flag"));
   document.getElementById("fSkip").addEventListener("click", () => mode("skip"));
   document.getElementById("fSug").addEventListener("click", () => mode("sug"));
+  document.getElementById("fPlate").addEventListener("click", () => mode("plate"));
+  document.getElementById("fRest").addEventListener("click", () => mode("rest"));
+  document.getElementById("markRest").addEventListener("click", () => {
+    figs.filter((f) => !f.classList.contains("plate") && f.dataset.role !== "pull")
+      .forEach((f) => { f.classList.add("skip"); marks.add(f.dataset.key); });
+    save(marks); count();
+  });
   document.getElementById("markSug").addEventListener("click", () => {
     figs.filter((f) => f.classList.contains("sug")).forEach((f) => { f.classList.add("skip"); marks.add(f.dataset.key); });
     save(marks); count();
