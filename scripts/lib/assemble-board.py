@@ -714,10 +714,21 @@ head = r'''<!doctype html>
   .tile.statement.head .way { display: block; margin-top: 18px; }
   /* the list under an open headline: the tile's own arrival, and the
      rail's rows at the field's measure */
-  .tile.lines { position: absolute; display: block; opacity: 0; transform: translateY(14px);
-    transition: opacity 0.7s ease var(--lag, 0s),
-      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
-  .tile.lines.fd-on { opacity: 1; transform: none; }
+  /* ── THE LIST BUILDS ROW BY ROW ───────────────────────────────────
+     The block faded in as one thing, which is not how anything else
+     on this board arrives: a run of tiles comes in staggered down the
+     page by settle()'s own --lag, each one rising the statement's
+     fourteen pixels through the statement's own curve. A row is a
+     tile here, so the list carries that cascade itself — the box is
+     just the box, and each row rises in its turn. */
+  .tile.lines { position: absolute; display: block; }
+  .tile.lines .crow { opacity: 0; transform: translateY(14px);
+    transition: opacity 0.6s ease var(--lag, 0s),
+      transform 0.6s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  .tile.lines.fd-on .crow { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .tile.lines .crow { opacity: 1; transform: none; transition: none; }
+  }
   .tile.lines .crows { margin-top: 0; }
   .lines .crow { padding-bottom: 44px; }
   .tile.statement.head .lchip { display: inline-flex; align-items: baseline;
@@ -2530,6 +2541,10 @@ function mountLines(head, u, f) {
     .filter(([, g]) => g.tags.includes(head.tag))
     .map(([folder, g]) => ({ folder, g }));
   studyRows(hits, box, null);
+  /* one after another, in settle()'s own step, and capped so a line of
+     fourteen does not keep the eye waiting at the bottom */
+  box.querySelectorAll(".crow").forEach((r, i) =>
+    r.style.setProperty("--lag", Math.min(0.62, i * 0.045).toFixed(3) + "s"));
   f.__in.appendChild(box);
   return box;
 }
