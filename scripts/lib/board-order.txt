@@ -29,15 +29,22 @@ hp/rhs-robert-rodriguez-storefront-window
 # digital   (Digital)
 ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
 ivy-park/ivy-park-nordstrom-mobile-experience-mockup
+hp/rhs-sally-os-asset-hub-laptop   # again, for sally-os on this line
+hp/rhs-arc-app-project-select-phone   # again, for arc on this line
+hp/rhs-nordstrom-personalization-laptop   # again, for nordstrom-personalization on this line
+hp/rhs-robert-rodriguez-storefront-window   # again, for robert-rodriguez on this line
 dsc/dsc-marketing-site-phone-hero
 nordstrom-framework/hero1
 nordstrom-framework/hero3
 nordstrom-framework/hero4
+sizzle/sizzle   # again, for sizzle on this line
 hp/rhs-nordstrom-beauty-hub-laptop
 nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup
 hp/rhs-cosmo-prof-website-design-digital-rebrand
 hp/rhs-jeffrey-ecommerce-laptop
+hp/rhs-you-by-sally-street-display   # again, for you-by-sally on this line
 loved-by-nordstrom/loved-by-nordstrom-iphone-landing-page-corduroy-couch
+hp/rhs-jeffrey-spring-campaign-laptop   # again, for jeffrey-spring on this line
 neiman-marcus/neiman-marcus-insite-flora-maxi-laptop-couch-mockup
 neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup
 neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup
@@ -52,14 +59,17 @@ sizzle/sizzle
 # creative   (Campaigns)
 ivy-park/ivy-park-polygon-portrait-frame-logo
 ivy-park/ivy-signage
+hp/rhs-nordstrom-personalization-laptop   # again, for nordstrom-personalization on this line
 robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign
 robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait
 capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign
 hp/rhs-nordstrom-framework-on-our-list
+hp/rhs-nordstrom-beauty-hub-laptop   # again, for nordstrom-beauty on this line
 cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters
 hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft
 hp/rhs-you-by-sally-street-display
 you-by-sally/hero
+hp/rhs-campaign-design-amber-shockey-blue-plate   # again, for amber-shockey-co on this line
 hp/rhs-loved-by-nordstrom-ipad
 loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench
 hp/rhs-jeffrey-spring-campaign-laptop
@@ -69,15 +79,18 @@ big-bend/hero
 big-bend/desert-dusk-ridgeline
 big-bend/mountain_crop
 big-bend/prada_grid
+hp/rhs-various-design-branding-graphics-prints-apparel   # again, for branding-graphics on this line
 
 # branding   (Branding)
+arc/arc-app-tablet-kitchen-living-room-lifestyle
+hp/rhs-robert-rodriguez-storefront-window   # again, for robert-rodriguez on this line
 hp/rhs-capitan-boot-co-branding
 capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign
 hp/rhs-hill-country-oakworks-billboard
-arc/arc-app-tablet-kitchen-living-room-lifestyle
 hp/rhs-campaign-design-typography-black-white-custom-patterns
 black-white-type/typography-patterns-stepper-poster-bench-lifestyle
 black-white-type/typography-patterns-white-poster-gate-lifestyle
+hp/rhs-jeffrey-ecommerce-laptop   # again, for jeffrey-ecommerce on this line
 hp/rhs-campaign-design-j-christianson-branding
 j-christianson/j-christianson-billboard-mockup-brand-pattern
 j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles
