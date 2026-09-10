@@ -1366,7 +1366,7 @@ const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
 const TILE_SPIN = {
   "ivy-park/ivy-park-polygon-portrait-frame-logo": {
     count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
-    share: 1,
+    share: 1, aspect: 1,
     /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
        Board thumbs are served with a day's cache, and this one's
        MEANING changed rather than its framing: it used to be flattened
@@ -1740,8 +1740,8 @@ function deal(list, opts) {
          a composition rather than a photograph, and the rings only
          read at size (TILE_SPIN). The honest-width step below still
          applies, so a wide screen can walk it back down a rung. */
-      const drawn = !PHONE && TILE_SPIN[keyOf(it)] && TILE_SPIN[keyOf(it)].share;
-      if (drawn) share = drawn;
+      const drawn = !PHONE ? TILE_SPIN[keyOf(it)] : null;
+      if (drawn && drawn.share) share = drawn.share;
       /* ── AN IMAGE IS ONLY AS BIG AS ITS PIXELS ───────────────────
          CLAUDE.md's rule, applied where it bites: native width / DPR
          is the largest honest CSS width. It steps DOWN THE TIERS
@@ -1764,7 +1764,13 @@ function deal(list, opts) {
       }
       prevShare = share;
       w = Math.min(Math.round(COL * share), Math.round(honest));
-      h = Math.round(w * (it.h / it.w));
+      /* ── A DRAWN PIECE SETS ITS OWN BOX ────────────────────────────
+         A photograph's tile is the photograph's shape. A composition's
+         is not: the rings sweep a SQUARE and the fit is against the
+         plate's shorter side, so a box in the picture's shape (0.88)
+         wasted the column's width and held the piece to the height.
+         Square, and the short side is the column. */
+      h = Math.round(w * (drawn && drawn.aspect ? drawn.aspect : it.h / it.w));
       if (h > COL * 1.6) h = Math.round(COL * 1.6);
       h += capOf(it);
     }
