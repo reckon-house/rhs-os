@@ -681,7 +681,12 @@
      the plate parallax writes transform to a tile's img every frame
      and would overwrite one. The stage's ratio is the study's box,
      801:928, so the rings keep their proportion whatever the tile. */
-  .plate.sp { position: relative; background: #EDE7E2; }
+  /* no warm plate under it: the piece stands on the page the way it
+     stands in the study, and the portrait's transparent field is the
+     page rather than a tile. The picture keeps its alpha for exactly
+     this (KEEP_ALPHA in build-board-thumbs). */
+  .plate.sp { position: relative; background: none; }
+  .fd-it .shot:has(.plate.sp) { background: none; }
   .sp-st { position: absolute; inset: 0; margin: auto;
     width: var(--sp-w, 64%); height: var(--sp-h, 74%);
     display: flex; align-items: center; justify-content: center;
@@ -3645,7 +3650,17 @@ const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
   + "234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
 const TILE_SPIN = {
   "ivy-park/ivy-park-polygon-portrait-frame-logo": {
-    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74 },
+    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
+    /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
+       Board thumbs are served with a day's cache, and this one's
+       MEANING changed rather than its framing: it used to be flattened
+       onto cream and is now transparent, because the rings turn behind
+       it. A visitor holding yesterday's copy would get a cream
+       rectangle on a white page, which reads as broken rather than
+       stale. The query is part of the URL the browser caches under, so
+       asking for `a1` is asking for the transparent one. Bump it if
+       the file's meaning changes again; a re-crop does not need it. */
+    v: "a1" },
 };
 /* the study's own seeded random, so the seven speeds are the seven
    speeds and the rings sit where they sit */
@@ -3686,9 +3701,13 @@ function spinStage(plate, t, cfg, cap) {
   plate.classList.add("sp");
   const st = el("span", "sp-st");
   const img = document.createElement("img");
-  img.src = encodeURI(t.t);
+  const q = cfg.v ? "?v=" + cfg.v : "";
+  img.src = encodeURI(t.t) + q;
   const ss = srcsetFor(t);
-  if (ss) { img.srcset = ss; img.sizes = Math.ceil(t.w) + "px"; }
+  if (ss) {
+    img.srcset = q ? ss.replace(/(\.webp)(?= \d)/g, "$1" + q) : ss;
+    img.sizes = Math.ceil(t.w) + "px";
+  }
   img.alt = ""; img.decoding = "async";
   st.appendChild(img);
   /* the rings are appended after the picture and sit UNDER it: the
