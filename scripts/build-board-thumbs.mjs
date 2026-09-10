@@ -181,9 +181,8 @@ const PLATE = "#EDE7E2";
    its alpha and composes on the plate, which is this same colour.
    Named here rather than inferred: this is a fact about how one
    picture is used, not about its pixels. */
-const KEEP_ALPHA = new Set([
-  "ivy-park/ivy-park-polygon-portrait-frame-logo.webp",
-]);
+const KEEP_ALPHA = new Set(
+  JSON.parse(readFileSync("scripts/lib/board-house.json", "utf8")).keepAlpha || []);
 async function opener(from, rel) {
   const meta = await sharp(from, { failOn: "none" }).metadata();
   let clear = false;

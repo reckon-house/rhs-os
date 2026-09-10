@@ -35,6 +35,17 @@ _rows = "".join(
 # scripts/lib/board-order.txt. Emitted as window.BOARD_ORDER, so
 # `npm run board:page` alone applies a new order — no thumbs needed.
 import os as _os
+# ── THE HOUSE ───────────────────────────────────────────────────────
+# Everything in this file that is reckon.house's rather than the
+# engine's lives in scripts/lib/board-house.json: the name and mark,
+# the head, the statement, the lines and their notes, the quotes, the
+# reels, the polygon rings, the credits' marks, the news, the rail's
+# notes, the Ask's strings. COLUMNS.md says which is which. The engine
+# reads BOARD_HOUSE (the script already has a HOUSE, the footer copy's
+# accessor) and never names the house itself.
+HOUSE = _json.load(io.open("scripts/lib/board-house.json", encoding="utf-8"))
+HOUSE_JS = "window.BOARD_HOUSE = " + _json.dumps(HOUSE) + ";"
+
 _ORDER, _HOMES, _run = {}, {}, None
 _RUNS = ("open", "digital", "app", "creative", "branding", "interiors", "staples", "off", "homes")
 _op = "scripts/lib/board-order.txt"
@@ -63,11 +74,9 @@ io.open("public/lab/board-order.json", "w", encoding="utf-8").write(
     _json.dumps({"order": _ORDER, "homes": _HOMES}))
 
 INDEX = ('<aside id="index" aria-label="Every study">'
-         '<p>Reckon House. Jeremy Prasatik makes things across brand, product, and place: apps and ecommerce, '
-         'campaigns and brand systems, photography and art direction, custom interiors, AI tools. '
-         'Every study, in its own words, at the links below; ask the site anything about them.</p>'
+         '<p>' + HOUSE["index"]["intro"] + '</p>'
          '<ul>' + _rows + '</ul>'
-         '<p><a href="/daybook">The daybook</a> · <a href="/book">Book 30 minutes</a> · <a href="mailto:hello@reckon.house">hello@reckon.house</a></p>'
+         '<p>' + HOUSE["index"]["tail"] + '</p>'
          '</aside>\n'
          '<noscript><div style="padding:40px;font:16px/1.5 sans-serif">' + '<ul>' + _rows + '</ul></div></noscript>')
 
@@ -107,28 +116,28 @@ head = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Reckon House · Design & Build</title>
+<title>{H_TITLE}</title>
 <!-- THE HEAD IS THE SITE'S. This page stands at reckon.house/ by a
      rewrite in next.config.ts, so it carries the same title, card and
      description as the app's layout (src/app/layout.tsx), the same
      icons the app serves, and the analytics the app loads. -->
-<meta name="description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
-<link rel="canonical" href="https://reckon.house/">
+<meta name="description" content="{H_DESC}">
+<link rel="canonical" href="{H_CANON}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Reckon House">
-<meta property="og:url" content="https://reckon.house/">
-<meta property="og:title" content="Reckon House · Design & Build">
-<meta property="og:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
-<meta property="og:image" content="https://reckon.house/og-home-clean.jpg">
-<meta property="og:image:width" content="2400">
-<meta property="og:image:height" content="1260">
-<meta property="og:image:alt" content="Reckon House. Work by Jeremy Prasatik: the Robert Rodriguez campaign, the Ivy Park launch, and the A.R.C. app.">
+<meta property="og:site_name" content="{H_NAME}">
+<meta property="og:url" content="{H_CANON}">
+<meta property="og:title" content="{H_TITLE}">
+<meta property="og:description" content="{H_DESC}">
+<meta property="og:image" content="{H_OG}">
+<meta property="og:image:width" content="{H_OG_W}">
+<meta property="og:image:height" content="{H_OG_H}">
+<meta property="og:image:alt" content="{H_OG_ALT}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Reckon House · Design & Build">
-<meta name="twitter:description" content="The portfolio of Jeremy Prasatik, an independent designer and developer in Texas. Apps, ecommerce, campaigns, brand systems, interiors, and AI tools, with case studies for each.">
-<meta name="twitter:image" content="https://reckon.house/og-home-clean.jpg">
-<link rel="icon" href="/icon.png" type="image/png">
-<link rel="apple-touch-icon" href="/apple-icon.png">
+<meta name="twitter:title" content="{H_TITLE}">
+<meta name="twitter:description" content="{H_DESC}">
+<meta name="twitter:image" content="{H_OG}">
+<link rel="icon" href="{H_ICON}" type="image/png">
+<link rel="apple-touch-icon" href="{H_APPLE}">
 <meta name="theme-color" content="#ffffff">
 <script defer src="/_vercel/insights/script.js"></script>
 <style>
@@ -185,7 +194,7 @@ head = r'''<!doctype html>
   - Periodic in both axes; ?seed=N re-deals.
   - 384px webp thumbs. NEVER the plates: 388MB there, 7.8MB here.
 -->
-<link rel="stylesheet" href="/lab/board-shell.css">
+<link rel="stylesheet" href="{H_SHELL}">
 <script src="/lab/board-data.js"></script>
 <style>
   /* ── what the board adds to the homepage's own stylesheet ──────────
@@ -1245,8 +1254,8 @@ if (/[?&]debug\b/.test(location.search)) (function () {
       aria-label="Ask the house" />
   </div>
 
-  <a data-mark href="/" class="mark" aria-label="Reckon House">Reckon<i>*</i>House<span class="fam"></span><span id="cmdChev" aria-hidden="true"><b></b><b></b></span></a>
-  <a class="meta" data-meta href="mailto:hello@reckon.house">hello@reckon.house</a>
+  <a data-mark href="/" class="mark" aria-label="{H_NAME}">{H_MARK}<span class="fam"></span><span id="cmdChev" aria-hidden="true"><b></b><b></b></span></a>
+  <a class="meta" data-meta href="mailto:{H_EMAIL}">{H_EMAIL}</a>
 </nav>
 
 <!-- THE COVER'S OWN LINE, in the page and not in the bar: the wordmark
@@ -1468,28 +1477,9 @@ const TALL_DEFAULT = 5;
    comes out at 1.07, which is the study's.
 
    Keyed by picture, not by study: this is one photograph's device. */
-const SPIN_PATH = "M2.98962 693.072L0.34596 229.765L397.617 0.400769L797.53 "
-  + "234.344L800.174 697.651L402.903 927.015L2.98962 693.072Z";
-const TILE_SPIN = {
-  "ivy-park/ivy-park-polygon-portrait-frame-logo": {
-    count: 7, scale: 0.92, base: 0.4, vary: 0.8, seed: 42, stage: 0.74,
-    share: 1, aspect: 1,
-    /* the study draws at 0.7, which is one hairline on its 825px box.
-       Seven of them around a 340px portrait read heavier than seven
-       around an 800px one, so the board draws them finer. Device
-       pixels, not viewBox units: see the stroke note above. */
-    stroke: 0.4,
-    /* ── WHY THIS PICTURE ASKS FOR ITSELF BY VERSION ──────────────
-       Board thumbs are served with a day's cache, and this one's
-       MEANING changed rather than its framing: it used to be flattened
-       onto cream and is now transparent, because the rings turn behind
-       it. A visitor holding yesterday's copy would get a cream
-       rectangle on a white page, which reads as broken rather than
-       stale. The query is part of the URL the browser caches under, so
-       asking for `a1` is asking for the transparent one. Bump it if
-       the file's meaning changes again; a re-crop does not need it. */
-    v: "a1" },
-};
+{HOUSE}
+const SPIN_PATH = BOARD_HOUSE.spin.path;
+const TILE_SPIN = BOARD_HOUSE.spin.tiles;
 
 /* ── NO PICTURE IS EVER SHOWN LARGER THAN ITS PIXELS ────────────────
    The tier is 768px wide, or the original if that was smaller, so the
@@ -1504,21 +1494,10 @@ const DPR = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
 const CAP_H = 30;
 
 /* ── the corpus ── */
-const QUOTES = [
-  { text: "Came up on a tornado, sunlight in the sky\nI went around all day with the moon sticking in my eye", att: "Don Van Vliet, Captain Beefheart" },
-  { text: "And this old man in front of me wearing canes and ruby rings\nIt's like containing an explosion when he sings\nWith every chance to set himself on fire\nHe just ends up doing the same thing", att: "Jack White" },
-  { text: "What you got ain't nothin' new. This country is hard on people. You can't stop what's coming. It ain't all waiting on you. That's vanity.", att: "Cormac McCarthy" },
-];
+const QUOTES = BOARD_HOUSE.quotes;
 /* the rail's lines, in the rail's order — read here to deal the field
    and again below to build the drawer */
-const FILTERS = [
-  ["Digital", "digital", "Sites, stores and platforms, designed and shipped."],
-  ["Apps", "app", "Native tools and AI products, built end to end."],
-  ["Campaigns", "creative", "Creative direction and execution for international brands."],
-  ["Branding", "branding", "Marks, type and patterns, on packaging, print and apparel."],
-  ["Interiors", "interiors", "Rooms designed like products, down to the hardware."],
-  ["Staples", "staples", "Pictures and lines saved from other people's work."],
-];
+const FILTERS = BOARD_HOUSE.lines;
 
 /* ── THE FIELD IS DEALT IN RUNS ─────────────────────────────────────
    The thirty covers led in site order and everything after them was
@@ -1753,19 +1732,9 @@ const headH = (t) => {
    shelf, the rest ask their own words. They were plain <u> on the
    board's replica and did nothing, which made the one piece of copy
    everybody reads the one piece that could not be used. */
-const T = (word, ask) =>
-  '<u class="term" data-ask="' + (ask || word) + '">' + word + '</u>';
-const STATEMENT_LEAD =
-  "I'm Jeremy Prasatik. I make things across " +
-  T("brand") + ", " + T("product") + ", and " + T("place") + ". " +
-  '<span class="q">' +
-  T("Apps", "App Development") + " and " + T("ecommerce") + ", " +
-  T("campaigns", "Campaign/Creative") + " and " + T("brand systems", "brand system") + ", " +
-  T("photography and art direction", "photography") + ", " +
-  T("custom interiors", "Interiors") + ", " + T("AI tools", "AI") +
-  ".</span> ";
+const STATEMENT_LEAD = BOARD_HOUSE.statement.lead;
 const ASK_TAIL = PHONE
-  ? "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">“Marble surfaces”</span></u></button>"
+  ? "Or just ask me:<br><button type=\"button\" class=\"askgo\"><u><span class=\"asktxt\">" + BOARD_HOUSE.statement.ask + "</span></u></button>"
   : "Or just ask me:<br><span class=\"askslot\" aria-hidden=\"true\"></span>";
 const STATEMENT_HTML = STATEMENT_LEAD + ASK_TAIL;
 const smeas = document.createElement("div");
@@ -1776,7 +1745,7 @@ smeas.innerHTML = STATEMENT_HTML;
    can ever rewrap the tile past the room it reserved; the slot is
    fixed-size by construction */
 const smAsk = smeas.querySelector(".asktxt");
-if (smAsk) smAsk.textContent = "“How do I reach you?”";
+if (smAsk) smAsk.textContent = BOARD_HOUSE.statement.longest;
 document.body.appendChild(smeas);
 const STATEMENT_H = smeas.getBoundingClientRect().height;
 smeas.remove();
@@ -2236,8 +2205,7 @@ const submitQ = (text) => {
    the field and the statement leading the thread stay in step. It
    stands down while the visitor is typing, and under reduced motion
    it holds the first question. */
-const TOUR = ["All work", "Interior projects", "App development",
-  "Kitchen design", "What inspires you?", "Marble surfaces", "How do I reach you?"];
+const TOUR = BOARD_HOUSE.tour;
 (() => {
   const TYPE_IN = 52, TYPE_OUT = 26, TYPE_HOLD = 1700, TYPE_GAP = 340;
   const QQ = (t) => "\u201c" + t + "\u201d";
@@ -3595,7 +3563,7 @@ function colNode(kind, caption) {
    the board's first paint does not carry 30 abstracts it may never
    show. EVERY WORD THE HOUSE SAYS HERE IS A WORD JEREMY WROTE. */
 let COPY = null, copyReq = null;
-const loadCopy = () => copyReq || (copyReq = fetch("/lab/board-copy.json")
+const loadCopy = () => copyReq || (copyReq = fetch(BOARD_HOUSE.ask.copy)
   .then((r) => r.json()).then((j) => (COPY = j))
   .catch(() => (COPY = {})));
 /* a sentence ends on a word ending in . ! or ? — unless that word is
@@ -3670,7 +3638,7 @@ function answerAbout(c, q, hits) {
      an answer. The notes are the house rooms' to give. */
   /* and the dead end is a door: cost, timing, availability are exactly
      the questions that belong in a conversation with him */
-  return { line: "Nothing here answers that. The full study may.", door: "connect" };
+  return { line: BOARD_HOUSE.ask.noAnswer, door: "connect" };
 }
 
 /* ── A SENTENCE ANSWERS IN PLACE, A THING OPENS A COLUMN ───────────
@@ -3689,7 +3657,7 @@ async function sayIn(c, q, hits) {
      the house's own notes; the notes are the room's whole point. */
   const hl = c.__house ? houseLine(q) : null;
   const said = /reach|contact|email|hire|talk/.test(q.toLowerCase())
-    ? { line: "hello@reckon.house. Or keep asking here." }
+    ? { line: BOARD_HOUSE.ask.reach }
     : c.__folder ? answerAbout(c, q, hits)
     : hl ? { line: hl }
     : !hits.length ? (houseLine(q) ? { line: houseLine(q) }
@@ -3767,7 +3735,7 @@ const askable = (q) => q.trim().split(/\s+/).length >= 3 || /^(why|how|what|whic
 const hrefOf = (folder) => "/case-studies/" + ((GROUPS[folder] && GROUPS[folder].h) || folder);
 async function askHouse(q, hrefs, land) {
   try {
-    const r = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json" },
+    const r = await fetch(BOARD_HOUSE.ask.endpoint, { method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ q, hrefs }) });
     if (!r.ok) return;
     const j = await r.json();
@@ -3809,7 +3777,7 @@ const coverOf = (() => {
    study about a reel that sits still in a list is the one row on the
    board that has to move, so it cuts through the house's own pulls —
    which is not a stand-in for the product, it is the product's job. */
-const ALWAYS_REEL = { sizzle: "inspiration" };
+const ALWAYS_REEL = BOARD_HOUSE.reels.always;
 /* ── AND TWO TILES CUT IN THE FIELD ──────────────────────────────
    The homepage this board replaced ran a sizzle-reel in exactly two
    cards of its index (the REELS map in lab/pressing-home.html): Faux
@@ -3833,16 +3801,7 @@ const ALWAYS_REEL = { sizzle: "inspiration" };
    their cream beat together, which reads as two holes in the page
    rather than two reels. Three beats apart, they cut against each
    other. */
-const TR = "/images/thumbnails";
-const TILE_REEL = {
-  sizzle: { at: 0, frames: [
-    TR + "/ivyPark.jpg", TR + "/arc.jpg", TR + "/nordstromPersonal.jpg",
-    TR + "/dsc.jpg", TR + "/nordstromBeauty.jpg"] },
-  "cosmo-prof": { at: 3, frames: [
-    TR + "/cosmo-reel/masque.jpg", TR + "/cosmo-reel/tubes.jpg",
-    TR + "/cosmo-reel/brushes.jpg", TR + "/cosmo-reel/lineup.jpg",
-    TR + "/cosmo-reel/mask.jpg"] },
-};
+const TILE_REEL = BOARD_HOUSE.reels.tiles;
 /* the study's own seeded random, so the seven speeds are the seven
    speeds and the rings sit where they sit */
 const spinRand = (seed) => { let s = seed;
@@ -4222,8 +4181,8 @@ function askFrom(from, text, opts) {
   const c = colNode("reply", t);
   if (hits.length) c.__needle = t.toLowerCase();
   const note = el("div", "cnote g");
-  if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = "hello@reckon.house. Or keep asking here.";
-  else if (!hits.length) note.textContent = "Nothing caught on the board. Ask me directly: hello@reckon.house.";
+  if (/reach|contact|email|hire|talk/.test(t.toLowerCase())) note.textContent = BOARD_HOUSE.ask.reach;
+  else if (!hits.length) note.textContent = BOARD_HOUSE.ask.nothingCaught;
   else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
   c.__lead.appendChild(note);
   if (hits.length) studyRows(hits, c.__matter, c);
@@ -4251,14 +4210,8 @@ const HOUSE = () => (COPY && COPY.house) || { method: [], links: [], credits: []
    optical weight, and these were tuned against these exact files —
    at four thirds, which is the default going 15 to 20. The ratios are
    the footer's; only the register is the room's. */
-const MARK_H = { "Nordstrom": 16, "Rejuvenation": 17, "Visual Comfort": 15,
-  "Floor & Decor": 19, "Design Within Reach": 26 };
-const MARKS = { "Crate & Barrel": "/brands/crate-barrel.svg", "Nordstrom": "/brands/nordstrom.svg",
-  "Ivy Park by Beyonc\u00e9": "/brands/ivy-park.svg", "Neiman Marcus": "/brands/neiman-marcus.svg",
-  "Rejuvenation": "/brands/rejuvenation.png", "Lostine Home": "/brands/lostine.avif",
-  "Visual Comfort": "/brands/visual-comfort.webp", "Floor & Decor": "/brands/floor-decor.svg",
-  "Kingston Brass": "/brands/kingston-brass.webp", "Design Within Reach": "/brands/dwr.jpg",
-  "Vivir Homes": "/brands/vivir-homes.webp" };
+const MARK_H = BOARD_HOUSE.marks.heights;
+const MARKS = BOARD_HOUSE.marks.files;
 const textRow = (into, head, body) => {
   const r = el("div", "crow text");
   const t = el("div");
@@ -4350,7 +4303,7 @@ async function openHouseColumn(kind, from, opts) {
     const ways = el("div", "cways");
     const link = (text, href, ext) => { const u = el("u"); const a = el("a", null, text); a.href = href;
       if (ext) { a.target = "_blank"; a.rel = "noopener"; } u.appendChild(a); return u; };
-    ways.appendChild(link("Or hello@reckon.house", "mailto:hello@reckon.house"));
+    ways.appendChild(link(BOARD_HOUSE.ask.orEmail, "mailto:" + BOARD_HOUSE.email));
     h.links.filter((l) => /^https?:/.test(l.v)).forEach((l) => {
       ways.appendChild(el("span", "g", "\u00b7")); ways.appendChild(link(l.k, l.v, true));
     });
@@ -4372,7 +4325,7 @@ async function buildWeek(c, minutes) {
   if (!c.isConnected && !ccols.includes(c)) return;
   if (!data || !data.ok || !Array.isArray(data.days) || !data.days.length) {
     month.textContent = "";
-    month.insertAdjacentElement("afterend", el("div", "cnote g", "Times are down right now. hello@reckon.house works."));
+    month.insertAdjacentElement("afterend", el("div", "cnote g", "Times are down right now. " + BOARD_HOUSE.email + " works."));
     return;
   }
   const mins = data.minutes || minutes || 30;
@@ -4461,7 +4414,7 @@ async function buildWeek(c, minutes) {
           return;
         }
         go.textContent = "Book " + mins + " minutes";
-        pushTurn(c, "", (j && j.why) || "That didn't go through. hello@reckon.house reaches me directly.");
+        pushTurn(c, "", (j && j.why) || "That didn't go through. " + BOARD_HOUSE.email + " reaches me directly.");
       };
       go.addEventListener("click", send);
       [nm, em].forEach((i) => i.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); send(); } }));
@@ -4503,7 +4456,7 @@ async function intake(c, text) {
     const last = c.__talk.querySelector(".cturn:last-child .ca");
     if (last) last.textContent = ok
       ? "Sent. I will write back. If you want to talk it through first, pick a time below."
-      : "That did not send. hello@reckon.house works.";
+      : "That did not send. " + BOARD_HOUSE.email + " works.";
     it.step = ok ? "done" : "body";
     if (ok) { c.__contact = { name: it.name, email: it.email }; if (c.__showWeek) c.__showWeek(); }
     else c.__line.placeholder = "The project:";
@@ -5051,19 +5004,7 @@ rail = r'''
    Awwwards line says what the honours were for, in his words, and no
    more: they were for the portfolio, and which version of it is not
    the reader's business. */
-const NEWS = [
-  ["Awwwards Honors, 2026", "For reckon.house, this portfolio.",
-    "Awwwards Honors, 2026.", null],
-  ["A.R.C. launched on the App Store",
-    "Point the camera at a room and it names what is there, estimates replacement value, and shows the gap against your policy as a dollar amount. Solo, end to end: concept, code, brand, go-to-market.",
-    "A.R.C. is on the App Store.", "arc"],
-  ["Sally OS is rolling out to the enterprise",
-    "Eight apps, an AI strategist with 21 tools, an asset hub and a store-associate site, built from inside the marketing team in about four months. It reads live signals and proposes campaigns on its own now.",
-    "Sally OS is rolling out to the enterprise.", "sally-os"],
-  ["Faux Reel went out as an open repo",
-    "A sizzle reel with no footage: still photographs run through fourteen transitions in CSS, no video file anywhere. A 4.8KB web component, built in a day with Claude Code.",
-    "Faux Reel is out as an open repo.", "sizzle"],
-];
+const NEWS = BOARD_HOUSE.news;
 /* ── THE NOTE, AND THE TASTE OF IT ──────────────────────────────────
    Third in each row is what the DRAWER says; the first two are the
    room's. They sat together as one line while the drawer was the only
@@ -5073,14 +5014,10 @@ const NEWS = [
    what they are short of, so the two cannot drift apart. News is the
    ships above, one line each. */
 const RAIL_NOTES = {
-  info: [
-    ["About", "Creative technologist. AI development. Brand systems. Digital design. Interior design. Independent, Texas. Design and build. I love the work.",
-      "Creative technologist. Independent, Texas."],
-    ["News", "", NEWS.map((x) => x[2])],
-    ["Stack", "Coffee. Music. Ideas. To do lists. Claude. IPAs, and lagers, and stouts, and ales.",
-      "Coffee. Ideas. Claude."],
-  ],
-  connect: [[null, "hello@reckon.house"]],
+  /* the News row is the ships above, one line each: derived, so the
+     two cannot drift */
+  info: BOARD_HOUSE.railNotes.info.map((r) => r[2] === "@news" ? [r[0], r[1], NEWS.map((x) => x[2])] : r),
+  connect: BOARD_HOUSE.railNotes.connect,
 };
 
 const drawer = document.getElementById("rdrawer");
@@ -5162,8 +5099,8 @@ const toggleHouse = (kind) => {
 {
   const { r, h, pad } = mkRow("Connect", true);
   const nx = sub(pad, "Next open", "\u2026");
-  const t = sub(pad, null, "hello@reckon.house");
-  t.innerHTML = "<a class=\"rmail\" href=\"mailto:hello@reckon.house\">hello@reckon.house</a>";
+  const t = sub(pad, null, BOARD_HOUSE.email);
+  t.innerHTML = "<a class=\"rmail\" href=\"mailto:" + BOARD_HOUSE.email + "\">" + BOARD_HOUSE.email + "</a>";
   let asked = false;
   const fill = async () => {
     if (asked) return; asked = true;
@@ -5754,6 +5691,16 @@ setTimeout(standRow, 400);
 out = head + sz + "\n" + burn + "\n" + pt + "\n" + rail
 out = out.replace("{INDEX}", INDEX, 1)   # the plain index, into the body
 out = out.replace("{ORDER}", ORDER_JS, 1)   # the hand-set order of each run
+out = out.replace("{HOUSE}", HOUSE_JS, 1)   # the house, into the script
+for _k, _v in {
+    "{H_TITLE}": HOUSE["head"]["title"], "{H_DESC}": HOUSE["head"]["description"],
+    "{H_CANON}": HOUSE["head"]["canonical"], "{H_NAME}": HOUSE["name"],
+    "{H_OG}": HOUSE["head"]["ogImage"], "{H_OG_W}": str(HOUSE["head"]["ogImageW"]),
+    "{H_OG_H}": str(HOUSE["head"]["ogImageH"]), "{H_OG_ALT}": HOUSE["head"]["ogImageAlt"],
+    "{H_ICON}": HOUSE["head"]["icon"], "{H_APPLE}": HOUSE["head"]["appleIcon"],
+    "{H_SHELL}": HOUSE["shell"], "{H_MARK}": HOUSE["markHtml"], "{H_EMAIL}": HOUSE["email"],
+}.items():
+    out = out.replace(_k, _v)
 io.open("public/lab/board.html", "w", encoding="utf-8").write(out)
 print("board: public/lab/board.html — %d lines (reel %d, burn %d, lifted from the lab)"
       % (len(out.split("\n")), len(sz.split("\n")), len(burn.split("\n"))))

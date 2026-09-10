@@ -170,23 +170,47 @@ suggestions, the preview tier, and the swap picker's candidates.
 | What is cut | `public/lab/board-sheet.html` → `board-skip.txt` | by hand, then `npm run board` |
 | Where things sit | `public/lab/board-order.html` → `board-order.txt` | by hand, then `npm run board:page` |
 | The audit | `scripts/board-audit.mjs` → `board-audit.json` | `npm run board:audit` |
+| The house | `scripts/lib/board-house.json` → `window.BOARD_HOUSE`, the head, `keepAlpha` | read by both builds |
 
 After a paste into `board-order.txt`: `npm run lines:sync`, then
 `npm run board`. The builder thumbs whatever the file names.
 
-## What the house still owns
+## What the house owns, and where it lives
 
-These are baked into the engine and belong to reckon.house, not to
-Columns. The line to draw next runs between them and everything above.
+`scripts/lib/board-house.json`. Everything in the engine that is
+reckon.house's rather than Columns' is read from this one file, and
+the engine never names the house itself:
 
-- `QUOTES`, the lines spaced through Staples
-- `TILE_REEL` and `ALWAYS_REEL`, which covers cut
-- `TILE_SPIN` and `KEEP_ALPHA`, the one picture the board draws around
-- the notes in `FILTERS`, and the statement in the opener
+```
+name, mark, markHtml, email, shell
+head        title, description, canonical, og image and alt, icons
+index       the plain index's intro and tail links
+statement   the opener's lead (HTML), the ask placeholder, the longest ask
+tour        the questions the field cycles through
+lines       the FILTERS tuples: label, tag, note
+quotes      the lines spaced through Staples
+reels       which covers cut (always, tiles)
+spin        the polygon path and the one tile the board draws around
+keepAlpha   the pictures the thumb builder must not flatten
+marks       the credits' logos and their heights
+news        the shipped items, and their one-line rail form
+railNotes   the rail's Info and Connect rows ("@news" derives from news)
+ask         the endpoint, the copy file, and the Ask's own sentences
+```
+
+The assembler injects it as `window.BOARD_HOUSE`, beside `BOARD_ITEMS`,
+`BOARD_GROUPS` and `BOARD_ORDER`, and fills the head from it. The thumb
+builder reads `keepAlpha` from the same file. A second house is a
+second file; the engine does not change.
+
+Two things are still the house's and not yet in the file:
+
 - `board-shell.css`, the homepage's own stylesheet the board wears.
   Every class the engine invents is in the homepage's namespace, and
-  `.answer` already collided once.
-- the Ask: `/api/ask`, the facts index, the voice specimens
-
-A second house would need its own of each. The engine should not have
-to know which house it is in.
+  `.answer` already collided once. The engine's own rules need their
+  own sheet and their own prefix before a second house can wear
+  anything else.
+- The footer copy the Info and Connect rooms read (`board-copy.json`'s
+  `house`: method, links, credits, book), which the thumb builder
+  lifts from the app's own components. It is data already; it is not
+  yet in the house file.
