@@ -585,6 +585,14 @@
      column's transition now — since a column can open and the row
      glide to it in the same moment */
   #plane.turning .tile.ixrow { transition: none; }
+  /* ── NOTHING OPENS UNDER A MOVING ROW ─────────────────────────────
+     The shell's :hover opens a frame by var(--ix-grow, 1.32) whether
+     or not the script armed it. The plane's own value is 1, so a card
+     the script has not armed does not grow; and while the row turns
+     the corners and the label hold too (armHover, tick). */
+  #plane { --ix-grow: 1; --slide: 0px; }
+  #plane.turning .fd-it:hover .shot { border-radius: var(--r); }
+  #plane.turning .fd-it:hover .lbl { transform: none; }
   .tile .fd-it { width: 100%; }
   /* ── THE FRAME OPENS INTO ITS COLUMN ──────────────────────────────
      The index hangs every frame from the same right edge, so its grow
@@ -3211,6 +3219,9 @@ function swapSides() {
 
    The origin follows the side the column is hugging, so the picture
    always opens into its own air rather than out over the gutter. */
+/* the row's hand on the hover: nothing opens while the row is moving,
+   and what the cursor rests on when it stops does (tick) */
+let hoverClose = () => {}, hoverArm = () => {};
 function armHover() {
   const HOVER = matchMedia("(hover: hover)").matches && !PHONE;
   if (!HOVER) return;
@@ -3220,9 +3231,7 @@ function armHover() {
     for (const el of live.values()) el.__push = 0;
   };
 
-  plane.addEventListener("pointerover", (e) => {
-    const card = e.target.closest && e.target.closest(".fd-it");
-    if (!card || card === openCard) return;
+  const arm = (card) => {
     const tile = card.closest(".tile");
     const shot = card.querySelector(".shot");
     if (!tile || !shot) return;
@@ -3276,17 +3285,42 @@ function armHover() {
       if (el === tile || colOf(el) !== c) continue;
       if (parseFloat(el.style.top) > y0) el.__push = drop;
     }
+  };
+
+  const close = (card) => {
+    card.style.removeProperty("--ix-grow");
+    card.style.removeProperty("--drop");
+    card.style.removeProperty("--slide");
+    if (card === openCard) openCard = null;
+    clearPush();
+  };
+
+  /* ── NOTHING OPENS UNDER A MOVING ROW ─────────────────────────────
+     A turn carries the tiles past a resting cursor, and every one it
+     crossed opened, dropped and pushed the column under it: the row
+     jumped while it moved. A turn closes what is open and no card
+     arms until the row is still; when it stops, the card the cursor
+     rests on opens, so the still state is always the hovered one.
+     The stylesheet holds the same line for the :hover rules the
+     script does not drive (#plane's own --ix-grow, and .turning). */
+  hoverClose = () => { if (openCard) close(openCard); };
+  hoverArm = () => {
+    const card = plane.querySelector(".fd-it:hover");
+    if (card && card !== openCard) arm(card);
+  };
+
+  plane.addEventListener("pointerover", (e) => {
+    const card = e.target.closest && e.target.closest(".fd-it");
+    if (!card || card === openCard) return;
+    if (plane.classList.contains("turning")) return;
+    arm(card);
   });
 
   plane.addEventListener("pointerout", (e) => {
     const card = e.target.closest && e.target.closest(".fd-it");
     if (!card) return;
     if (e.relatedTarget && card.contains(e.relatedTarget)) return;
-    card.style.removeProperty("--ix-grow");
-    card.style.removeProperty("--drop");
-    card.style.removeProperty("--slide");
-    if (card === openCard) openCard = null;
-    clearPush();
+    close(card);
   });
 }
 armHover();
@@ -5007,6 +5041,9 @@ function tick() {
   if (turning !== wasTurning) {
     wasTurning = turning;
     plane.classList.toggle("turning", turning);
+    /* nothing opens under a moving row; what the cursor rests on
+       when it stops does (armHover) */
+    if (turning) hoverClose(); else hoverArm();
   }
   if (turning) pokeBurn();
   /* ── THE ROW IS ON A SPRING ─────────────────────────────────────
