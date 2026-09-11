@@ -1584,7 +1584,7 @@ FILTERS.forEach(([label, tag, desc]) => {
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
   items.push({ kind: "head", run: tag, first: true, tag,
     html: label + ". <span class=\"q\">" + desc + "</span>",
-    way: shelf + " studies \u2192" });
+    way: shelf + " studies +" });
   /* the deal's own order: studies by seat, each cover before its
      pictures, pictures in the data file's order. The order file's
      names lead, and setOrder keeps this behind them. */
@@ -1626,7 +1626,7 @@ const quoteH = (q) => {
    as the statement is, since text has no declared ratio */
 const headHTML = (t, open) => t.html +
   "<span class=\"way\"><button type=\"button\" class=\"lchip\">"
-  + (open ? t.way.replace(/\u2192$/, "\u00d7") : t.way) + "</button></span>";
+  + (open ? t.way.replace(/\+$/, "\u2212") : t.way) + "</button></span>";
 const headH = (t) => {
   const m = document.createElement("div");
   m.className = "tile statement head";
@@ -2967,7 +2967,7 @@ function openLine(tag) {
     const mine = el.__t.tag === tag ? lineOpen === tag : lineOpen === el.__t.tag;
     el.classList.toggle("open", mine);
     const chip = el.querySelector(".lchip");
-    if (chip) chip.textContent = mine ? el.__t.way.replace(/\u2192$/, "\u00d7") : el.__t.way;
+    if (chip) chip.textContent = mine ? el.__t.way.replace(/\+$/, "\u2212") : el.__t.way;
   }
   if (wait) setTimeout(fill, wait); else fill();
   if (lineOpen) pageTo(dispU(head.col));
