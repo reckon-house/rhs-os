@@ -132,7 +132,7 @@ branding-graphics = branding, creative
 # scroll.
 open = hp/rhs-arc-app-project-select-phone
 creative = ivy-park/ivy-signage
-interiors = floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier
+interiors = hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble
 digital = ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
 app = hp/rhs-sally-os-asset-hub-laptop
 branding = j-christianson/j-christianson-storefront-tree-stripe-window-mockup
