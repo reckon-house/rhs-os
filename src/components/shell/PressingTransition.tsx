@@ -86,6 +86,12 @@ export function PressingTransition() {
      instead of behind it. */
   useEffect(() => {
     const cover = document.getElementById("ptArrive");
+    /* CLAIMED BEFORE ANYTHING IS AWAITED. The head script lifts the
+       cover on its own timer if nothing claims it, since its removal
+       used to depend on this effect running at all (layout.tsx). This
+       is the effect running, so the timer stands down and the lift
+       below plays. */
+    if (cover) cover.dataset.owned = "1";
     /* the gate is held by the flag from the first import, so every way
        out of here has to open it */
     const give = () => {

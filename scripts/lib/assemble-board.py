@@ -1265,6 +1265,18 @@ head = r'''<!doctype html>
   r.appendChild(panel('ptw','#fff'));r.appendChild(panel('ptb','#000'));
   document.documentElement.appendChild(r);
   document.documentElement.classList.add('pt-arriving');
+  /* ── AND IT LIFTS ITSELF IF NOTHING ELSE DOES ─────────────────────
+     Every floor under the lift is inside the lift, so the cover only
+     goes if the script that owns it runs. Anything that stops the
+     board's own script reaching that block leaves a finished page
+     under a black screen lapping its lines, which reads as a page
+     that never loaded; a reload clears it only because the note was
+     already spent. The script that draws the cover can take it away
+     too, and it needs nothing but the browser. The lift marks the
+     cover as its own the moment it starts, so this stands down
+     whenever the board is working. */
+  setTimeout(function(){if(r.dataset.owned)return;r.remove();
+    document.documentElement.classList.remove('pt-arriving');},6000);
 }catch(e){}})();
 </script>
 <script>
@@ -5790,6 +5802,9 @@ addEventListener("pageshow", () => {
 (() => {
   const cover = document.getElementById("ptArrive");
   if (!cover) return;
+  /* the head script lifts this itself if nothing claims it; this is
+     the claim, made before anything can wait on anything */
+  cover.dataset.owned = "1";
   const give = () => {
     cover.remove();
     document.documentElement.classList.remove("pt-arriving");

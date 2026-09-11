@@ -148,6 +148,29 @@ export default function RootLayout({
               "r.appendChild(panel('ptw','#fff'));r.appendChild(panel('ptb','#000'));" +
               "document.documentElement.appendChild(r);" +
               "document.documentElement.classList.add('pt-arriving');" +
+              /* ── AND IT LIFTS ITSELF IF NOTHING ELSE DOES ──────────
+                 Every floor under the lift lived inside
+                 PressingTransition's mount effect, so the cover's
+                 removal depended on React hydrating. A chunk that
+                 never arrives, a script the network drops, hydration
+                 that throws: the page underneath is finished and
+                 perfectly good, and this sits over it at z-index 300
+                 lapping its lines for ever, which reads as a page
+                 that never loaded. A reload fixes it only because the
+                 note was already spent, so no cover is drawn at all.
+                 Reproduced by blocking the app's JS.
+
+                 The script that draws the cover can also take it
+                 away, and it needs nothing but the browser to do it.
+                 PressingTransition marks the cover as its own the
+                 moment it mounts, so in the ordinary case this stands
+                 down and the choreographed lift plays. Six seconds:
+                 the lift itself finishes about 2.6s after the
+                 document commits, so this is well clear of it, and a
+                 curtain that vanishes is a far smaller failure than
+                 one that never leaves. */
+              "setTimeout(function(){if(r.dataset.owned)return;r.remove();" +
+              "document.documentElement.classList.remove('pt-arriving');},6000);" +
               "}catch(e){}})()",
           }}
         />
