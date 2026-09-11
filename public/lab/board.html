@@ -2158,15 +2158,13 @@ function deal(list, opts) {
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
     PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun };
 }
-let colRun = [], colTail = [], famRun = null, wideGut = new Set();
+let colRun = [], colTail = [], famRun = null;
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
   colTail = L.colTail || [];
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
-  /* the gutters a wide hero paints across: no rule stands there */
-  wideGut = new Set(tiles.filter((t) => t.hero && t.wide).map((t) => t.col + 1));
 }
 /* ── A PHONE IS DEALT LIKE THE DESKTOP, IN PAIRS ────────────────────
    It was dealt into ONE period, two columns every row, so there was
@@ -2761,6 +2759,17 @@ function remount() {
      mounts while the tab is throttled still opens when it is looked
      at; the rAF version left every frame shut on a parked page. */
   settle(fresh);
+  /* ── AND A WIDE HERO'S GUTTER TRAVELS WITH IT ─────────────────────
+     The rule inside a wide hero's pair is not drawn, and WHICH rule
+     that is was read off the hero's dealt column — true only while
+     nothing else stands in the row. A column opening to its left
+     moves the hero a module right and the hidden rule stayed behind:
+     a rule through the middle of the picture, and a gutter missing
+     beside it. Read off where the hero's column stands now. */
+  const heroGut = new Set();
+  for (const f of fcols.values()) {
+    if (f.classList.contains("wide")) heroGut.add(dispU(f.__u) + 1);
+  }
   /* the standing rules: one per gutter the window can see */
   const kids = rulesEl.children;
   let n = 0;
@@ -2779,7 +2788,7 @@ function remount() {
        and the field; every other one stands between two columns of
        the field, and those are the ones a study takes away */
     el.classList.toggle("mid", ((c % COLS) + COLS) % COLS !== 0);
-    el.classList.toggle("out", wideGut.has(((c % COLS) + COLS) % COLS));
+    el.classList.toggle("out", heroGut.has(c));
     n += 1;
   }
   while (kids.length > n) rulesEl.removeChild(kids[kids.length - 1]);
@@ -4203,6 +4212,11 @@ function insertColumn(c, from, opts) {
       if (here.col) return insertColumn(c, here.col, {});
       u = here.u;
     }
+    /* a wide hero's page is the pair, so a column anchored on its own
+       column would stand on the picture's right half: it goes after
+       the pair instead (anchorOfTile does the same for a press) */
+    const fc = u - Math.floor(u / COLS) * COLS;
+    if (tiles.some((t) => t.col === fc && t.hero && t.wide)) u += 1;
     c.__after = u;
     at = ccols.findIndex((x) => x.__after >= u);
     if (at < 0) at = ccols.length;
