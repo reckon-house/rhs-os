@@ -1449,7 +1449,17 @@ const air = () => AIR_MIN + rnd() * (AIR_MAX - AIR_MIN);
    were not, the site was being compared in its HOVER state. Same six
    rungs, and each study's cover takes the exact rung reckon.house
    gives it — the board-data `sz`, mined from the live seed. */
-const IX_TIERS = [0.33, 0.43, 0.53, 0.64, 0.74, 0.86];
+/* ── FOUR RUNGS, AND THE SMALL ONE WIDER ──────────────────────────
+   Six rungs from 0.33 to 0.86, the live index's own, made a hundred
+   and twenty distinct tile sizes out of a hundred and eighty-three
+   tiles: six widths times a hundred native ratios. Heights stay
+   native, which is what keeps a photograph a photograph, so the
+   width is the only place a system can be imposed.
+
+   Four: small, middle, large, full. The small is 0.42 where it was
+   0.33, because at a third of a column a picture was a stamp. Evenly
+   spaced, so the ladder reads as one. */
+const IX_TIERS = [0.42, 0.57, 0.71, 0.86];
 /* a phone's column is 157px: every frame fills it, as the live grid's do */
 const SHARES = PHONE ? [1] : IX_TIERS;
 /* how many tiles a column carries before a run takes another pair.
@@ -1826,8 +1836,12 @@ function deal(list, opts) {
     else if (it.kind === "head") h = headH(it);
     else {
       let share, guard = 0;
+      /* not the same rung twice running. It was a fixed 0.17 apart,
+         which was one rung of the old six and is more than one rung of
+         these four: it would have rejected every neighbour and left
+         only the jumps. The rule was always "not the same again". */
       do { share = shares[Math.floor(r() * shares.length)]; }
-      while (Math.abs(share - prevShare) < 0.17 && guard++ < 24);
+      while (share === prevShare && guard++ < 24);
       /* ── A COVER STANDS AT THE WIDTH THE LIVE SITE GIVES IT ───────
          Same ladder, different dice: the board rolled its own tier for
          every frame, so a study whose cover is 0.86 on reckon.house
@@ -1836,7 +1850,12 @@ function deal(list, opts) {
          only the rest of the corpus is dealt. The roll still advances
          either way, so the anti-repeat sees what actually landed. */
       const own = !PHONE && it.c != null && GROUPS[it.g] && GROUPS[it.g].sz;
-      if (own) share = own;
+      /* a cover keeps the size the live site gives it, ON THIS LADDER.
+         Its rung was read off reckon.house, whose index still has the
+         old six, so an unsnapped cover put five more widths on a board
+         that has four: the ladder was nine rungs wearing the name of
+         four. Nearest rung, so a big cover stays big. */
+      if (own) share = shares.reduce((a, b) => Math.abs(b - own) < Math.abs(a - own) ? b : a);
       /* a piece the board DRAWS stands at the rung it was given: it is
          a composition rather than a photograph, and the rings only
          read at size (TILE_SPIN). The honest-width step below still
