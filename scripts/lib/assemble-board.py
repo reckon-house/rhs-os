@@ -710,10 +710,13 @@ head = r'''<!doctype html>
      The shell's :hover opens a frame by var(--ix-grow, 1.32) whether
      or not the script armed it. The plane's own value is 1, so a card
      the script has not armed does not grow; and while the row turns
-     the corners and the label hold too (armHover, tick). */
+     the corners and the label hold too, and the same while a column
+     scrolls (armHover, tick). */
   #plane { --ix-grow: 1; --slide: 0px; }
-  #plane.turning .fd-it:hover .shot { border-radius: var(--r); }
-  #plane.turning .fd-it:hover .lbl { transform: none; }
+  #plane.turning .fd-it:hover .shot,
+  #plane.scrolling .fd-it:hover .shot { border-radius: var(--r); }
+  #plane.turning .fd-it:hover .lbl,
+  #plane.scrolling .fd-it:hover .lbl { transform: none; }
   .tile .fd-it { width: 100%; }
   /* ── THE FRAME OPENS INTO ITS COLUMN ──────────────────────────────
      The index hangs every frame from the same right edge, so its grow
@@ -3015,6 +3018,7 @@ function mountCol(u, gx, sh) {
   if (y) f.scrollTop = y;
   f.addEventListener("scroll", () => {
     colY.set(u, f.scrollTop);
+    hoverScroll();
     dressRules();
     pokeBurn();
     if (window.placeAsk) placeAsk();
@@ -3406,7 +3410,7 @@ function swapSides() {
    always opens into its own air rather than out over the gutter. */
 /* the row's hand on the hover: nothing opens while the row is moving,
    and what the cursor rests on when it stops does (tick) */
-let hoverClose = () => {}, hoverArm = () => {};
+let hoverClose = () => {}, hoverArm = () => {}, hoverScroll = () => {};
 function armHover() {
   const HOVER = matchMedia("(hover: hover)").matches && !PHONE;
   if (!HOVER) return;
@@ -3489,6 +3493,27 @@ function armHover() {
      The stylesheet holds the same line for the :hover rules the
      script does not drive (#plane's own --ix-grow, and .turning). */
   hoverClose = () => { if (openCard) close(openCard); };
+  /* ── NOR UNDER A MOVING COLUMN ────────────────────────────────────
+     The same rule for the other axis, and the same reason. A column
+     scrolls under a resting cursor and every frame it carries past
+     opens, drops and pushes the tiles below it: the column jumps
+     while it moves. A scroll closes what is open and arms nothing;
+     when the column stops, the card the cursor rests on opens. Called
+     by each column's own scroll listener (mountCol), and 140ms of
+     quiet is a stop — a wheel's events are far closer together than
+     that, and a trackpad's tail closer still. */
+  let quiet = 0;
+  hoverScroll = () => {
+    if (!plane.classList.contains("scrolling")) {
+      plane.classList.add("scrolling");
+      hoverClose();
+    }
+    clearTimeout(quiet);
+    quiet = setTimeout(() => {
+      plane.classList.remove("scrolling");
+      hoverArm();
+    }, 140);
+  };
   hoverArm = () => {
     const card = plane.querySelector(".fd-it:hover");
     if (card && card !== openCard) arm(card);
@@ -3497,7 +3522,7 @@ function armHover() {
   plane.addEventListener("pointerover", (e) => {
     const card = e.target.closest && e.target.closest(".fd-it");
     if (!card || card === openCard) return;
-    if (plane.classList.contains("turning")) return;
+    if (plane.classList.contains("turning") || plane.classList.contains("scrolling")) return;
     arm(card);
   });
 
