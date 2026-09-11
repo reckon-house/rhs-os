@@ -674,6 +674,15 @@
      a build rather than a fade. The rule rises with its row, so the
      list draws its own lines down the column. */
   .tile.lines { position: absolute; display: block; }
+  /* ── THE LIST OPENS OVER A WIDE HERO ──────────────────────────────
+     A wide hero's column is a page that does not scroll, so the list
+     a head opens there scrolls inside its own box, on the paper, and
+     the hero stays where it stands: the panel cuts across the left
+     of the picture and the picture runs on under the gutter into the
+     pair's other column. */
+  .fcol.hero.wide .tile.lines { overflow-y: auto; overscroll-behavior: contain;
+    scrollbar-width: none; touch-action: pan-y; background: var(--paper); z-index: 1; }
+  .fcol.hero.wide .tile.lines::-webkit-scrollbar { display: none; }
   .tile.lines .crow { opacity: 0; transform: translateY(30px);
     transition: opacity 0.42s ease var(--lag, 0s),
       transform 0.72s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
@@ -2886,8 +2895,9 @@ function fillCol(f, fresh) {
   const want = new Set();
   for (let k = 0; k < col.length; k++) {
     const t = col[k];
-    /* an open head's column is the headline and the list, nothing else */
-    if (head && t !== head) continue;
+    /* an open head's column is the headline and the list, nothing
+       else, but for a wide hero, which the list opens over */
+    if (head && t !== head && !(t.hero && t.wide)) continue;
     if (t.y + t.h < y0 || t.y > y1) continue;
     const key = u + ":" + k;
     want.add(key);
@@ -2910,7 +2920,11 @@ function fillCol(f, fresh) {
 function mountLines(head, u, f) {
   const box = document.createElement("div");
   box.className = "tile lines";
-  box.style.cssText = "left:0;top:" + Math.round(head.y + head.h + 36) + "px;width:" + COL + "px";
+  const top = Math.round(head.y + head.h + 36);
+  box.style.cssText = "left:0;top:" + top + "px;width:" + COL + "px";
+  /* a wide hero's column is a page and does not scroll, so the list
+     opened there scrolls inside its own box, down to the page's foot */
+  if (f.classList.contains("wide")) box.style.height = Math.max(200, Math.round(f.getBoundingClientRect().height - top)) + "px";
   box.__u = u;
   const hits = Object.entries(GROUPS)
     .filter(([, g]) => g.tags.includes(head.tag))
@@ -2949,6 +2963,8 @@ function openLine(tag) {
   const going = [];
   for (const [, el] of live) {
     if (!cols.has(el.__col.__c) || el.classList.contains("head")) continue;
+    /* a wide hero is the page the list opens over; it stays */
+    if (el.__t && el.__t.hero && el.__t.wide) continue;
     el.classList.add("fd-out"); going.push(el);
   }
   /* a list that is leaving runs its own build backwards first, and
