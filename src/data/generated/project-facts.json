@@ -417,7 +417,7 @@
   {
    "slug": "arc",
    "title": "A.R.C. Archive. Ready. Cloud.",
-   "subtitle": "A.R.C., an iPhone app I designed and built for home inventory. It looks at what you own and tells you whether your insurance actually covers it.",
+   "subtitle": "A.R.C., an iPhone app I designed and built for home inventory. It uses AI to recognize what you own, catalogs it, saves the reports, then calculates whether your policy actually covers it.",
    "category": "Digital",
    "href": "/case-studies/arc",
    "year": "2024",
