@@ -124,3 +124,15 @@ you-by-sally = creative, digital
 amber-shockey-co = branding, creative
 jeffrey-spring = creative, digital
 branding-graphics = branding, creative
+
+# heroes
+# One picture a run, as <run> = <folder>/<stem>. A portrait leads the
+# run in a column of its own beside the head; a landscape spans the pair
+# under the head. Either is cut to the screen, and its columns do not
+# scroll.
+open = hp/rhs-arc-app-project-select-phone
+creative = ivy-park/ivy-signage
+interiors = floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier
+digital = ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
+app = hp/rhs-sally-os-asset-hub-laptop
+branding = j-christianson/j-christianson-storefront-tree-stripe-window-mockup

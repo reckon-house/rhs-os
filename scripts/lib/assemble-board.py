@@ -47,7 +47,9 @@ HOUSE = _json.load(io.open("scripts/lib/board-house.json", encoding="utf-8"))
 HOUSE_JS = "window.BOARD_HOUSE = " + _json.dumps(HOUSE) + ";"
 
 _ORDER, _HOMES, _run = {}, {}, None
-_RUNS = ("open", "digital", "app", "creative", "branding", "interiors", "staples", "off", "homes")
+# the runs a header can name: the engine's own five, and the house's lines
+_RUNS = ("open", "staples", "off", "homes", "heroes") + tuple(l[1] for l in HOUSE["lines"])
+_HEROES = {}
 _op = "scripts/lib/board-order.txt"
 if _os.path.exists(_op):
     for _raw in io.open(_op, encoding="utf-8").read().split("\n"):
@@ -64,14 +66,20 @@ if _os.path.exists(_op):
                 _k, _v = _t.split("=", 1)
                 # the lines a study sits on, its home first
                 _HOMES[_k.strip()] = [x.strip() for x in _v.split("#")[0].split(",") if x.strip()]
+        elif _run == "heroes":
+            if "=" in _t:
+                _k, _v = _t.split("=", 1)
+                # the one picture that leads a run, a column to itself
+                _HEROES[_k.strip()] = _v.split("#")[0].strip()
         elif _run:
             _ORDER.setdefault(_run, []).append(_t.split("#")[0].strip())
 ORDER_JS = ("window.BOARD_ORDER = " + _json.dumps(_ORDER) + ";"
-            "window.BOARD_HOMES = " + _json.dumps(_HOMES) + ";")
+            "window.BOARD_HOMES = " + _json.dumps(_HOMES) + ";"
+            "window.BOARD_HEROES = " + _json.dumps(_HEROES) + ";")
 # the same order where a lab page can fetch it: board-order.html opens
 # on what the board is actually dealing, not on an empty browser
 io.open("public/lab/board-order.json", "w", encoding="utf-8").write(
-    _json.dumps({"order": _ORDER, "homes": _HOMES}))
+    _json.dumps({"order": _ORDER, "homes": _HOMES, "heroes": _HEROES}))
 
 INDEX = ('<aside id="index" aria-label="Every study">'
          '<p>' + HOUSE["index"]["intro"] + '</p>'
@@ -601,6 +609,11 @@ head = r'''<!doctype html>
     scrollbar-width: none; touch-action: pan-y;
     transition: translate 0.5s cubic-bezier(0.2, 0.55, 0.2, 1); }
   .fcol::-webkit-scrollbar { display: none; }
+  /* a hero's column is a page, and a page does not scroll */
+  .fcol.hero { overflow-y: hidden; }
+  /* a wide hero spans its pair: the column does not clip it, and
+     stands above the empty column it reaches into */
+  .fcol.hero.wide { overflow: visible; z-index: 1; }
   /* the column's full run, so the scroller has the height the deal
      dealt rather than the height of whatever happens to be mounted */
   .fin { position: relative; width: 100%; }
@@ -635,6 +648,8 @@ head = r'''<!doctype html>
   }
   #rules i { position: absolute; top: 0; bottom: 0; width: 1px;
     background: rgba(0, 0, 0, 0.13); }
+  /* the gutter inside a wide hero's pair: one picture, no rule through it */
+  #rules i.out { display: none; }
   /* ── WHERE YOU ARE ─────────────────────────────────────────────────
      The field goes two ways and nothing said how far either went: the
      peek says there is a right, not that there are 79. Two marks now.
@@ -1627,6 +1642,25 @@ for (const [run, keys] of Object.entries(RUN_ORDER)) {
    it sits on when the cut left it none; and a picture named under
    "# off" is held off the field without being cut, so it still opens
    in its study's column. */
+/* ── A HERO ─────────────────────────────────────────────────────────
+   One picture a run, named under "# heroes", that leads the run in a
+   column of its own: cut to the screen rather than to its own ratio,
+   nothing beneath it, and the column does not scroll. A hero is a page
+   you pass, not a tile you read. It is placed on its run like any named
+   picture, so it is dealt there and nowhere else. */
+const HEROES = window.BOARD_HEROES || {};
+for (const [run, key] of Object.entries(HEROES)) if (!PLACE.has(key)) PLACE.set(key, run);
+const heroIn = (list, run) => {
+  const key = HEROES[run]; if (!key) return list;
+  const i = list.findIndex((it) => keyOf(it) === key);
+  if (i < 0) return list;
+  const [h] = list.splice(i, 1);
+  /* a landscape hero spans the pair under its head; a phone has no
+     pair, so there it simply leads the run at its own ratio */
+  const wide = h.w > h.h;
+  list.unshift(PHONE && wide ? h : { ...h, hero: true, wide });
+  return list;
+};
 const OFF = new Set(RUN_ORDER.off || []);
 /* one item per thumb: a study whose cover is also one of its plates
    (Big Bend's hero) has two items with one key, and naming that key
@@ -1651,8 +1685,8 @@ const placeOf = (it) => PLACE.get(keyOf(it))
 /* the site's own order, the one the covers lead with */
 const seat = (k) => { const c = covers.find((i) => i.g === k); return c ? c.c : 1e6; };
 const img = (it, run) => ({ kind: "img", run, ...it });
-const items = setOrder("open", all.filter((i) => placeOf(i) === "open")
-  .sort((a, b) => seat(a.g) - seat(b.g))).map((it) => img(it, "open"));
+const items = heroIn(setOrder("open", all.filter((i) => placeOf(i) === "open")
+  .sort((a, b) => seat(a.g) - seat(b.g))).map((it) => img(it, "open")), "open");
 FILTERS.forEach(([label, tag, desc]) => {
   if (tag === "staples") return;
   /* ── THE HEAD COUNTS THE LINE, NOT THE RUN ───────────────────────
@@ -1673,7 +1707,7 @@ FILTERS.forEach(([label, tag, desc]) => {
     if (more && more.includes(tag)) run.push({ ...i });
   }
   run.sort((a, b) => (seat(a.g) - seat(b.g)) || ((a.c != null ? 0 : 1) - (b.c != null ? 0 : 1)));
-  for (const it of setOrder(tag, run)) items.push(img(it, tag));
+  for (const it of heroIn(setOrder(tag, run), tag)) items.push(img(it, tag));
 });
 /* the threshold: the last thing that is work, then his own sentence
    for what follows (his words, 8 Sept 2026: "something simple"), then
@@ -1796,6 +1830,10 @@ const BURN_FOOT = PHONE ? 0 : px("--burn-foot", 26);
 /* a phone's band was 30; the count past the edge stands in it now, at
    16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
+/* a hero's height: the band to a floor above the bottom, the caption
+   under it. A phone keeps its nav clear. */
+const heroRoom = (y) => Math.max(240, Math.round(innerHeight - y - CAP_H - (PHONE ? 110 : 24)));
+const HERO_H = heroRoom(TOP0);
 
 /* ── ONE FIELD, DEALT AND RE-DEALT ──────────────────────────────────
    The whole placement is a function of a list, so the field can be
@@ -1834,6 +1872,7 @@ function deal(list, opts) {
     let w = COL, h;
     if (it.kind === "quote") h = quoteH(it);
     else if (it.kind === "head") h = headH(it);
+    else if (it.hero) { w = it.wide ? 2 * COL + GAP : COL; h = HERO_H + capOf(it); }
     else {
       let share, guard = 0;
       /* not the same rung twice running. It was a fixed 0.17 apart,
@@ -1984,12 +2023,83 @@ function deal(list, opts) {
     /* the rows actually used, so the tiles land level across the pairs
        rather than filling the first and starving the last */
     const use = Math.max(1, Math.min(rows, Math.ceil(need / (pairs * VISIBLE))));
-    let inPair = 0;
-    run.forEach((it) => {
-      const take = takes(it);
-      if (inPair && inPair + take > use * VISIBLE) { s += per - inPair; inPair = 0; }
-      seats.push(s); s += take; inPair += take;
-    });
+    const hero = run.find((it) => it.hero);
+    if (!hero) {
+      let inPair = 0;
+      run.forEach((it) => {
+        const take = takes(it);
+        if (inPair && inPair + take > use * VISIBLE) { s += per - inPair; inPair = 0; }
+        seats.push(s); s += take; inPair += take;
+      });
+      return;
+    }
+    /* ── A HERO TAKES A COLUMN ───────────────────────────────────────
+       Beside the head: the head at the pair's first seat, the hero at
+       the second, and the rest of the run down the head's column only,
+       so the hero's column holds the one picture. On a phone a column
+       is a page: the head's page first, since the head names the run,
+       then the hero as a page of its own, then the rest. Seats are
+       given by item so the order of the run's list and the order of
+       its seats stay the same list. */
+    const first = run[0];
+    const rest = run.filter((it) => it !== first && it !== hero);
+    /* the hero's pair has one working column, so the spread is counted
+       in COLUMNS: as few as hold the rest at TALL a column, the head's
+       column first, then pairs; the tiles divided evenly over them so
+       no column is a stub. The opener at a hero is the statement and
+       its covers in one column and the hero in the other. */
+    const n = rest.length;
+    const at = new Map();
+    let i = 0;
+    /* the columns the rest takes, from a starting count, evenly */
+    const spread = (ncols) => {
+      while (Math.ceil(n / ncols) > TALL) ncols += VISIBLE;
+      const counts = [];
+      for (let k = 0; k < ncols; k += 1) counts.push(Math.floor(n / ncols) + (k < n % ncols ? 1 : 0));
+      return counts;
+    };
+    if (hero.wide) {
+      /* a wide hero takes the row under the head, across the pair, and
+         the pair holds nothing else: the rest starts on the next one,
+         in whole pairs */
+      at.set(first, s); at.set(hero, s + VISIBLE); s += per;
+      const counts = n ? spread(VISIBLE) : [];
+      for (let ci = 0; ci < counts.length; ci += VISIBLE) {
+        const a = counts[ci] || 0, b = counts[ci + 1] || 0;
+        for (let k = 0; k < Math.max(a, b); k += 1) {
+          if (k < a) at.set(rest[i++], s + k * VISIBLE);
+          if (k < b) at.set(rest[i++], s + k * VISIBLE + 1);
+        }
+        s += per;
+      }
+    } else if (VISIBLE > 1) {
+      const counts = spread(1);
+      at.set(first, s); at.set(hero, s + 1);
+      for (let k = 0; k < counts[0]; k += 1) at.set(rest[i++], s + (k + 1) * VISIBLE);
+      s += per;
+      for (let ci = 1; ci < counts.length; ci += VISIBLE) {
+        const a = counts[ci] || 0, b = counts[ci + 1] || 0;
+        for (let k = 0; k < Math.max(a, b); k += 1) {
+          if (k < a) at.set(rest[i++], s + k * VISIBLE);
+          if (k < b) at.set(rest[i++], s + k * VISIBLE + 1);
+        }
+        s += per;
+      }
+    } else {
+      const counts = spread(1);
+      at.set(first, s);
+      for (let k = 0; k < counts[0]; k += 1) at.set(rest[i++], s + k + 1);
+      s += per;
+      at.set(hero, s); s += per;
+      for (let ci = 1; ci < counts.length; ci += 1) {
+        for (let k = 0; k < counts[ci]; k += 1) at.set(rest[i++], s + k);
+        s += per;
+      }
+    }
+    run.forEach((it) => seats.push(at.get(it)));
+    /* closeRun reads the last two seats pushed as the last two dealt,
+       which a seated-by-item run does not promise; it stands down */
+    runStart = s;
   });
   closeRun();
   const bySeat = new Array(s);
@@ -2045,6 +2155,8 @@ function deal(list, opts) {
      open level. Only the rungs below the first stop lining up, and a
      rung below the first has nothing to line up against. */
   const colY = new Array(cols).fill(top0);
+  /* where each column's head ends, for the hero that hangs under it */
+  const headEnd = new Array(cols).fill(null);
   /* where each column's work actually ends, so its scroller stops
      there rather than at the tallest column's bottom */
   const colH = new Array(cols).fill(top0);
@@ -2077,7 +2189,16 @@ function deal(list, opts) {
        clearing something already cleared — and it cost the one thing
        a row of columns is for, which is a top edge they share. */
     let y = ysP ? ysP[k] : 0;
-    if (colY) { y = colY[c]; colY[c] += h + airOf(); }
+    if (it.hero && it.wide && colY) {
+      /* under its head at the board's smallest gap, and as tall as the
+         screen leaves from there. The pair's other column is empty
+         beneath the head's row; the picture is what fills it. */
+      y = (headEnd[c] != null ? headEnd[c] : top0) + airMin;
+      h = heroRoom(y) + capOf(it);
+      colY[c] = y + h + airOf(); colY[c + 1] = colY[c];
+      if (y + h > colH[c + 1]) colH[c + 1] = y + h;
+    } else if (colY) { y = colY[c]; colY[c] += h + airOf(); }
+    if (it.kind === "head") headEnd[c] = y + h;
     if (y + h > colH[c]) colH[c] = y + h;
     out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
       noCap: !!opts.noCaptions });
@@ -2103,16 +2224,19 @@ function deal(list, opts) {
     const need = bottom + floor - colH[t.col];
     if (need > colTail[t.col]) colTail[t.col] = need;
   }
+  for (const t of out) if (t.hero) colTail[t.col] = 0;
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
     PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun };
 }
-let colRun = [], colTail = [], famRun = null;
+let colRun = [], colTail = [], famRun = null, wideGut = new Set();
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
   colTail = L.colTail || [];
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
+  /* the gutters a wide hero paints across: no rule stands there */
+  wideGut = new Set(tiles.filter((t) => t.hero && t.wide).map((t) => t.col + 1));
 }
 /* ── A PHONE IS DEALT LIKE THE DESKTOP, IN PAIRS ────────────────────
    It was dealt into ONE period, two columns every row, so there was
@@ -2722,6 +2846,7 @@ function remount() {
        and the field; every other one stands between two columns of
        the field, and those are the ones a study takes away */
     el.classList.toggle("mid", ((c % COLS) + COLS) % COLS !== 0);
+    el.classList.toggle("out", wideGut.has(((c % COLS) + COLS) % COLS));
     n += 1;
   }
   while (kids.length > n) rulesEl.removeChild(kids[kids.length - 1]);
@@ -2816,6 +2941,10 @@ function mountCol(u, gx, sh) {
   inn.className = "fin";
   const c0 = u - Math.floor(u / COLS) * COLS;
   inn.style.height = ((colH[c0] || PH) + (colTail[c0] || 0)) + "px";
+  const hero = tiles.find((t) => t.col === c0 && t.hero);
+  if (hero) { f.classList.add("hero"); if (hero.wide) f.classList.add("wide"); }
+  /* the empty column a wide hero reaches into is part of its page */
+  else if (tiles.some((t) => t.col === c0 - 1 && t.hero && t.wide)) f.classList.add("hero");
   f.appendChild(inn);
   f.__in = inn;
   plane.appendChild(f);
@@ -2997,7 +3126,7 @@ function mount(t, gx, gy, u, f) {
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
   el.__wx = gx;
-  el.__slack = COL - t.w;
+  el.__slack = Math.max(0, COL - t.w);
   if (t.kind === "statement") {
     el.classList.add("statement");
     el.innerHTML = STATEMENT_HTML;
@@ -3050,6 +3179,8 @@ function mount(t, gx, gy, u, f) {
        one picture, not against the study. */
     if (t.c != null && GROUPS[t.g] && GROUPS[t.g].dr != null)
       shot.style.setProperty("--drift", GROUPS[t.g].dr + "%");
+    /* a hero is cut to its box already; there is nothing to drift */
+    if (t.hero) shot.style.setProperty("--drift", "0%");
     /* what the label rides down by when the frame opens: exactly the
        pixels the 1.32 scale adds to the picture's height */
     card.style.setProperty("--drop",
@@ -5697,6 +5828,15 @@ function placeAsk() {
 }
 window.placeAsk = placeAsk;
 window.__askReady = true;
+/* ── ?hero: the hero mock, a lab tool ───────────────────────────────
+   Opened as /?hero, the page loads public/lab/hero-mock.js, which lays
+   a larger picture over the live board four ways and pushes the tiles
+   under it down, so a hero can be looked at against real neighbours
+   before any of it is built. The same pattern as ?debug: a flag nobody
+   types by accident, and nothing on the page without it. */
+if (/[?&]hero\b/.test(location.search)) {
+  const s = document.createElement("script"); s.src = "/lab/hero-mock.js"; document.body.appendChild(s);
+}
 {
   const tin = document.getElementById("threadIn");
   if (tin) tin.addEventListener("scroll", placeAsk, { passive: true });

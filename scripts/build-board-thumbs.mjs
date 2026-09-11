@@ -106,14 +106,23 @@ function* walkDir(dir, depth) {
    needs a thumb whether it was cut or not, at the field's width. Read
    the same way the assembler reads it: sections by "# <run>", one
    <slug>/<stem> a line, "# homes" and "# off" aside. */
+const HOUSE = JSON.parse(readFileSync("scripts/lib/board-house.json", "utf8"));
+/* the runs a header can name: the engine's own five and the house's
+   lines. Any other "#" line is a note, and does not change the run:
+   it did, and a note under "# heroes" emptied the section. */
+const RUNS = new Set(["open", "staples", "off", "homes", "heroes", ...(HOUSE.lines || []).map((l) => l[1])]);
 const NAMED = new Set();
+/* the heroes by name: a landscape one spans two columns and is thumbed
+   wider than the master (HERO_W) */
+const HEROES = new Set();
 {
   const op = "scripts/lib/board-order.txt";
   let run = null;
   if (existsSync(op)) for (const raw of readFileSync(op, "utf8").split("\n")) {
     const t = raw.trim();
     if (!t) continue;
-    if (t.startsWith("#")) { run = (t.replace(/^#+\s*/, "").split(/\s+/)[0] || null); continue; }
+    if (t.startsWith("#")) { const w = t.replace(/^#+\s*/, "").split(/\s+/)[0]; if (RUNS.has(w)) run = w; continue; }
+    if (run === "heroes") { const v = t.split("#")[0].split("=")[1]; if (v) { NAMED.add(v.trim()); HEROES.add(v.trim()); } continue; }
     if (run && run !== "homes" && run !== "off") NAMED.add(t.split("#")[0].trim());
   }
 }
@@ -150,6 +159,10 @@ const SKIP = new Set(existsSync(SKIP_FILE)
    Thumbed at 1024 rather than 1536: a preview column is 500px wide,
    so 1024 is honest at 2x and costs a third of the master. */
 const PREVIEW_W = 1024;
+/* a wide hero paints across a pair, a thousand CSS pixels and more on
+   a wide window, so it is the one thumb cut above the master: 2048,
+   or the source's own width below that */
+const HERO_W = 2048;
 const ROLES_FILE = "public/lab/board-roles.json";
 const ROLES = existsSync(ROLES_FILE)
   ? JSON.parse(readFileSync(ROLES_FILE, "utf8")).roles || {} : {};
@@ -181,8 +194,7 @@ const PLATE = "#EDE7E2";
    its alpha and composes on the plate, which is this same colour.
    Named here rather than inferred: this is a fact about how one
    picture is used, not about its pixels. */
-const KEEP_ALPHA = new Set(
-  JSON.parse(readFileSync("scripts/lib/board-house.json", "utf8")).keepAlpha || []);
+const KEEP_ALPHA = new Set(HOUSE.keepAlpha || []);
 async function opener(from, rel) {
   const meta = await sharp(from, { failOn: "none" }).metadata();
   let clear = false;
@@ -216,6 +228,7 @@ for (const [, rels] of byStem) {
 for (const from of walk(ROOT)) {
   const rel = from.slice(ROOT.length + 1); // "<slug>/<file>"
   const named = NAMED.has(rel.replace(/\.[^.]+$/, ""));
+  const hero = HEROES.has(rel.replace(/\.[^.]+$/, ""));
   const cut = SKIP.has(rel) || rel.split("/").length > 2;
   if (cut && !named && !keepForPreview(rel)) { left += 1; continue; }
   if (cut && !named) preview += 1;
@@ -236,14 +249,19 @@ for (const from of walk(ROOT)) {
        nothing. The thumb knows its own size; record that, and the
        rule needs no constant at all. The ratio is the same either
        way, which is the only other thing the width is used for. */
-    if (!FORCE && existsSync(to)) {
+    /* a landscape hero wants HERO_W; a thumb cut at the master before
+       it was named a hero is rebuilt, not kept */
+    const src = hero ? await open().metadata() : null;
+    const wideHero = !!src && src.width > src.height;
+    const want = wideHero ? Math.min(HERO_W, src.width) : 0;
+    if (!FORCE && existsSync(to) && !(want && (await sharp(to).metadata()).width < want)) {
       meta = await sharp(to).metadata();
       skipped += 1;
     } else {
       /* a deep picture keeps its folder under the study's */
       mkdirSync(dirname(to), { recursive: true });
       const info = await open()
-        .resize({ width: cut && !named ? PREVIEW_W : W, withoutEnlargement: true })
+        .resize({ width: wideHero ? HERO_W : (cut && !named ? PREVIEW_W : W), withoutEnlargement: true })
         .webp({ quality: Q })
         .toFile(to);
       meta = { width: info.width, height: info.height };

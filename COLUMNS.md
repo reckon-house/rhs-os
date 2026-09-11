@@ -92,7 +92,7 @@ the study bar and the board's heads count the same studies.
 
 ```
 # open   # digital   # app   # creative   # branding   # interiors
-# staples   # off   # homes
+# staples   # off   # homes   # heroes
 ```
 
 Rules, in the order they bite:
@@ -107,6 +107,17 @@ Rules, in the order they bite:
 - `# homes` is a study's lines, home first:
   `arc = app, digital, branding`. It replaces the study's tags on the
   board, and `lines:sync` writes it back into the app.
+- `# heroes` is one picture a run, `creative = ivy-park/ivy-signage`.
+  Its shape decides its form. A portrait leads the run in a column of
+  its own beside the head, cut to the screen's height rather than its
+  own ratio, nothing beneath it, and the column does not scroll; on a
+  phone it is its own page, the one after the head's. A landscape
+  spans the pair under its head, cut to the height the screen leaves
+  there, the pair holds nothing else and the rule between its two
+  columns is not drawn; on a phone, which has no pair, it leads the
+  run at its own ratio. Named, so it is dealt on that run whatever
+  the cut says, and a landscape hero is thumbed at 2048 rather than
+  the master's 1536, since it paints across two columns.
 - Anything unnamed takes the deal's own order: studies in site order,
   a cover before its own pictures, pictures in the data file's order.
 - A cover in the first six is in the opener unless named elsewhere.
@@ -153,7 +164,8 @@ suggestions, the preview tier, and the swap picker's candidates.
 - Nothing is drawn larger than its pixels. A tile steps down the rungs
   rather than stretching, and a frame fetches the size it opens to.
 - A cover stands at the rung the live site gives it. A piece the board
-  draws stands at the rung and the box it is given.
+  draws stands at the rung and the box it is given. A hero stands at
+  the full column and the screen's height.
 - The field is the cut. A preview is the whole study, `x` or not.
 - Off screen or with the tab hidden, nothing moves.
 - A transparent picture is flattened onto the plate colour, unless the

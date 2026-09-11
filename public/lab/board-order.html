@@ -72,6 +72,10 @@
   figure.cover { border-color: rgba(0,0,0,0.32); }
   figure.cover .num::after { content: " cover"; }
   figure.moved { border-color: var(--ink); }
+  figure.hero { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  figure.hero .num::after { content: " hero"; color: var(--ink); font-weight: 600; }
+  .g h2 label.hero { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; font-size: 11px; color: var(--grey); letter-spacing: 0.04em; text-transform: uppercase; }
+  .g h2 label.hero select { font: inherit; font-size: 11px; text-transform: none; letter-spacing: 0; border: 0; border-radius: 8px; padding: 3px 6px; background: rgba(0,0,0,0.06); color: var(--ink); max-width: 320px; cursor: pointer; }
   figure .swap { position: absolute; right: 6px; top: 6px; z-index: 2; font: inherit; font-size: 10px; letter-spacing: 0.04em;
     border: 0; border-radius: 8px; padding: 3px 7px; background: rgba(255,255,255,0.92); color: var(--ink); cursor: pointer; opacity: 0; }
   figure:hover .swap { opacity: 1; }
@@ -209,10 +213,11 @@ const save = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catc
    this page opens on what the board is dealing rather than on nothing.
    Work in progress in this browser sits over it until it is pasted
    into the file, or dropped with "Reload the file". */
-let state = {}, homes = {}, fileState = null;
+let state = {}, homes = {}, heroes = {}, fileState = null;
 const fromFile = () => {
   state = JSON.parse(JSON.stringify((fileState && fileState.order) || {}));
   homes = JSON.parse(JSON.stringify((fileState && fileState.homes) || {}));
+  heroes = JSON.parse(JSON.stringify((fileState && fileState.heroes) || {}));
 };
 fetch("/lab/board-order.json")
   .then((r) => (r.ok ? r.json() : {}))
@@ -220,7 +225,7 @@ fetch("/lab/board-order.json")
   .then((repo) => {
     fileState = repo;
     const mine = load();
-    if (mine) { state = mine.order || {}; homes = mine.homes || {}; }
+    if (mine) { state = mine.order || {}; homes = mine.homes || {}; heroes = mine.heroes || {}; }
     else fromFile();
     /* an older sheet wrote a single line; a list is what it means now */
     for (const k of Object.keys(homes)) if (!Array.isArray(homes[k])) homes[k] = [homes[k]];
@@ -236,7 +241,7 @@ function setLines(k, lines, home) {
   /* a picture placed on a line the study has just left goes home */
   for (const [run] of LINES) if (!ordered.includes(run) && state[run])
     state[run] = state[run].filter((key) => !items.some((it) => keyOf(it) === key && it.g === k));
-  save({ order: state, homes }); deal(); draw();
+  save({ order: state, homes, heroes }); deal(); draw();
 }
 function drawMatrix() {
   const head = document.getElementById("mhead"), body = document.getElementById("matrix");
@@ -291,6 +296,24 @@ function draw() {
     h.appendChild(el("span", null, list.length + (list.length === 1 ? " picture" : " pictures")));
     if (tag === "off") h.appendChild(el("span", null, "drag one into a run to deal it; drag a run's picture here to hold it off"));
     else if (state[tag] && state[tag].length) h.appendChild(el("span", "dirty", " · set by hand"));
+    /* the hero: one picture that leads the run. A tall one takes a
+       column of its own beside the head; a wide one spans the pair
+       under it. The run's own pictures, then anything its studies hold
+       off the field, so a picture the cut left out can still be the
+       one. */
+    if (tag !== "staples" && tag !== "off") {
+      const wrap = el("label", "hero"); wrap.appendChild(el("span", null, "hero"));
+      const sel = document.createElement("select");
+      const opt = (v, t, on) => { const o = document.createElement("option"); o.value = v; o.textContent = t; o.selected = !!on; sel.appendChild(o); };
+      opt("", "none", !heroes[tag]);
+      const seen = new Set();
+      const shape = (it) => it.w > it.h ? " · wide" : " · tall";
+      for (const it of list) { seen.add(keyOf(it)); opt(keyOf(it), (GROUPS[it.g] || {}).t + " · " + keyOf(it).split("/").pop().slice(0, 34) + shape(it), heroes[tag] === keyOf(it)); }
+      const gs = new Set(list.map((it) => it.g));
+      for (const it of dealt.off || []) if (gs.has(it.g) && !seen.has(keyOf(it))) opt(keyOf(it), (GROUPS[it.g] || {}).t + " · " + keyOf(it).split("/").pop().slice(0, 34) + shape(it) + " (off)", heroes[tag] === keyOf(it));
+      sel.addEventListener("change", () => { if (sel.value) heroes[tag] = sel.value; else delete heroes[tag]; save({ order: state, homes, heroes }); deal(); draw(); });
+      wrap.appendChild(sel); h.appendChild(wrap);
+    }
     sec.appendChild(h);
     const row = el("div", "row");
     list.forEach((it, i) => {
@@ -298,6 +321,7 @@ function draw() {
       const f = el("figure"); f.draggable = true; f.dataset.key = keyOf(it);
       if (it.c != null) f.classList.add("cover");
       if (placeIs[keyOf(it)]) f.classList.add("moved");
+      if (heroes[tag] === keyOf(it)) f.classList.add("hero");
       if (it.pseudo) f.classList.add("pseudo");
       f.appendChild(el("span", "num", String(i + 1)));
       if (tag !== "staples" && tag !== "off" && GROUPS[it.g]) {
@@ -370,7 +394,7 @@ function swap(run, oldKey, newKey) {
   /* the old one leaves the board: a field picture is held off, a cut
      plate is off by itself once unnamed */
   dropOff(oldKey, oldIt);
-  save({ order: state, homes }); deal(); draw();
+  save({ order: state, homes, heroes }); deal(); draw();
 }
 
 let dragging = null;
@@ -421,7 +445,7 @@ sheet.addEventListener("drop", (e) => {
       state[from.dataset.run] = state[from.dataset.run].filter((k) => k !== key);
     if (state.off) state.off = state.off.filter((k) => k !== key);
   }
-  save({ order: state, homes });
+  save({ order: state, homes, heroes });
   deal(); draw();
 });
 function count() {
@@ -430,7 +454,7 @@ function count() {
   /* what the board deals, which is every picture with a study; a
      picture in a folder no study claims is thumbed but never dealt */
   const n = RUNS.reduce((a, [t]) => a + (t === "off" ? 0 : (dealt[t] || []).length), 0);
-  const same = fileState && JSON.stringify({ o: state, h: homes }) === JSON.stringify({ o: fileState.order || {}, h: fileState.homes || {} });
+  const same = fileState && JSON.stringify({ o: state, h: homes, r: heroes }) === JSON.stringify({ o: fileState.order || {}, h: fileState.homes || {}, r: fileState.heroes || {} });
   document.getElementById("count").textContent =
     (same ? "" : "unsaved here · ") + n + " pictures · " + (set.length ? set.join(", ") + " set by hand" : "all in the deal's order")
     + (moved ? " · " + moved + (moved === 1 ? " study re-lined" : " studies re-lined") : "")
@@ -456,6 +480,12 @@ document.getElementById("copy").addEventListener("click", async (e) => {
   if (lined.length) {
     out.push("# homes");
     for (const [k, lines] of lined) out.push(k + " = " + lines.join(", "));
+    out.push("");
+  }
+  const led = Object.entries(heroes);
+  if (led.length) {
+    out.push("# heroes");
+    for (const [run, key] of led) out.push(run + " = " + key);
     out.push("");
   }
   const text = out.join("\n");
