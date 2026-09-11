@@ -27,18 +27,34 @@
 /* The travel. Each slab gets a screen of scroll to arrive in, which is
    what gives the deal its pace: less and they snap past each other, more
    and the reader is scrolling through a held frame wondering if the page
-   is stuck. The LAST slab takes no travel — the section should end on it
-   rather than hold it over a screen of nothing. */
+   is stuck.
+
+   A SCREEN TALL, NOT A SCREEN OF PADDING UNDER THE SLAB, and the
+   difference is the whole complaint. Written as padding the slot came
+   out slab + screen, so the moment one slab landed at the hold line the
+   next one's top stood a slab's height BELOW the fold: the reader
+   scrolled a slab's height watching a held picture and blank paper,
+   then the next plate began. Measured at 1440x900 — 772px slabs, 1600px
+   slots — 800px frozen after the first landing, 800 after the second,
+   400 at the end: 2000 of the section's 4535, three pauses where
+   nothing on screen moved at all.
+
+   min-height makes the slot ONE SCREEN including its slab, so the next
+   slab's top sits just under the fold as the last one lands and every
+   pixel of the scroll is spent watching it climb. A slab taller than
+   the screen simply sets its own slot, which is the right fallback: it
+   arrives with less travel rather than with a pause in front of it. */
 .slot {
-  padding-bottom: 92dvh;
+  min-height: 92dvh;
 }
-/* The last slot keeps travel too, and less of it. Without any, the final
-   plate arrived still descending and the deck never actually completed —
-   measured: slabs 1 and 2 held while 3 was mid-flight when the section
-   ended. Half a screen is enough for it to land and for the finished
-   deck to sit whole for a beat before the lot releases. */
+/* The last slot keeps a beat after its plate lands — without one the
+   final plate arrived still descending and the deck never actually
+   completed (measured: slabs 1 and 2 held while 3 was mid-flight when
+   the section ended). A beat, not a pause: the finished deck sits whole
+   for about a fifth of a screen, the same beat PLATE_HOLD takes before
+   a climb, and the next section is at the fold as the lot releases. */
 .slot:last-child {
-  padding-bottom: 52dvh;
+  padding-bottom: 13dvh;
 }
 
 /* THE HOLD is written by the driver as a translate; the resting state
@@ -117,7 +133,7 @@
     width: 100%;
   }
   .slot {
-    padding-bottom: 62dvh;
+    min-height: 62dvh;
   }
 }
 
@@ -132,6 +148,7 @@
   }
   .slot,
   .slot:last-child {
+    min-height: 0;
     padding-bottom: clamp(28px, 4dvh, 48px);
   }
 }
