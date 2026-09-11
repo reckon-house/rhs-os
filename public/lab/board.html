@@ -2512,7 +2512,22 @@ const arrive = REDUCE()
         e.target.classList.add("fd-on");
         arrive.unobserve(e.target);
       });
-    }, { threshold: 0.02 });
+    /* ── WHERE THE CURTAIN STARTS ─────────────────────────────────
+       It fired on 2% of a tile and nothing else, which is the instant
+       its top edge clears the bottom of the screen: a 290px tile in a
+       900px window started at 99% down. The reveal then runs 0.8s,
+       and up to 0.36s more when a run arrives together, so the tile
+       is still coming up while it travels a third of the way up the
+       glass. That is why it reads as a mid-screen animation: the
+       START was at the edge, the FINISH was in the middle.
+
+       The bottom of the root reaches 20% of a window below the fold
+       now, so a tile begins while it is still 180px under it and is
+       settled about where it used to begin. Well inside MARGIN_Y, the
+       560px at which a tile is mounted at all: nothing is asked to
+       arrive before it exists. The sides are left alone — a column
+       coming in from the right is a different arrival. */
+    }, { threshold: 0.02, rootMargin: "0px 0px 20% 0px" });
 const drifting = [];
 function remount() {
   if (dealing) return;                /* nothing mounts into a field on its way out */
