@@ -801,9 +801,25 @@ head = r'''<!doctype html>
      the hero stays where it stands: the panel cuts across the left
      of the picture and the picture runs on under the gutter into the
      pair's other column. */
-  .fcol.hero.wide .tile.lines { overflow-y: auto; overscroll-behavior: contain;
-    scrollbar-width: none; touch-action: pan-y; background: var(--paper); z-index: 1; }
-  .fcol.hero.wide .tile.lines::-webkit-scrollbar { display: none; }
+  .tile.lines .lpanel { display: block; }
+  .fcol.hero.wide .tile.lines { z-index: 1; }
+  .fcol.hero.wide .tile.lines .lpanel { position: absolute; inset: 0;
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+    touch-action: pan-y; background: var(--paper); }
+  .fcol.hero.wide .tile.lines .lpanel::-webkit-scrollbar { display: none; }
+  /* ── AND THE PANEL CURTAINS LIKE A FRAME ──────────────────────────
+     The paper appeared between one frame and the next and left the
+     same way, a blink beside rows that took a second to build. It is
+     uncovered downward now, on the frame curtain's own ease, a beat
+     ahead of the rows building down it; and on the way out the top
+     edge keeps travelling down until nothing is left, once the rows
+     have fallen (--out-lag, set with the rows' own --out), quicker
+     and sharper, the shell's two clocks. */
+  .fcol.hero.wide .tile.lines .lpanel { clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.9s cubic-bezier(0.33, 0.28, 0.12, 1); }
+  .fcol.hero.wide .tile.lines.fd-on .lpanel { clip-path: inset(0 0 0 0); }
+  .fcol.hero.wide .tile.lines.out .lpanel { clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.4s cubic-bezier(0.5, 0, 0.75, 0) var(--out-lag, 0s); }
   .tile.lines .crow { opacity: 0; transform: translateY(30px);
     transition: opacity 0.42s ease var(--lag, 0s),
       transform 0.72s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
@@ -819,6 +835,7 @@ head = r'''<!doctype html>
       transform 0.38s cubic-bezier(0.5, 0, 0.75, 0) var(--out, 0s); }
   @media (prefers-reduced-motion: reduce) {
     .tile.lines .crow { opacity: 1; transform: none; transition: none; }
+    .fcol.hero.wide .tile.lines .lpanel { clip-path: none; transition: none; }
   }
   /* ── THE RINGS (TILE_SPIN) ─────────────────────────────────────
      The plate carries the study's composition instead of a picture.
@@ -3046,10 +3063,17 @@ function mountLines(head, u, f) {
      opened there scrolls inside its own box, down to the page's foot */
   if (f.classList.contains("wide")) box.style.height = Math.max(200, Math.round(f.getBoundingClientRect().height - top)) + "px";
   box.__u = u;
+  /* the rows sit in a panel of their own, so a curtain can clip the
+     panel while the tile the arrival observer watches stays unclipped:
+     an IntersectionObserver reads a fully clipped target as nothing
+     there, and the list never arrived */
+  const panel = document.createElement("div");
+  panel.className = "lpanel";
+  box.appendChild(panel);
   const hits = Object.entries(GROUPS)
     .filter(([, g]) => g.tags.includes(head.tag))
     .map(([folder, g]) => ({ folder, g }));
-  studyRows(hits, box, null);
+  studyRows(hits, panel, null);
   /* one after another, in settle()'s own step, and capped so a line of
      fourteen does not keep the eye waiting at the bottom */
   box.querySelectorAll(".crow").forEach((r, i) =>
@@ -3097,6 +3121,8 @@ function openLine(tag) {
     if (REDUCE() || !rows.length) continue;
     rows.forEach((r, i) =>
       r.style.setProperty("--out", ((rows.length - 1 - i) * 0.04).toFixed(3) + "s"));
+    /* the panel under them goes once the last row has started to */
+    f.__lines.style.setProperty("--out-lag", ((rows.length - 1) * 0.04).toFixed(3) + "s");
     f.__lines.classList.add("out");
     wait = Math.max(wait, (rows.length - 1) * 40 + 400);
   }
