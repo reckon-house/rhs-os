@@ -2235,7 +2235,7 @@ const submitQ = (text) => {
     const term = e.target.closest && e.target.closest(".term[data-ask]");
     if (term && window.askFrom) {
       const tile = term.closest(".tile");
-      askFrom(null, term.dataset.ask, { at: tile && tile.__u != null ? tile.__u : anchorOfAsk() });
+      askFrom(null, term.dataset.ask, { at: tile && tile.__u != null ? anchorOfTile(tile) : anchorOfAsk() });
     }
   });
 }
@@ -2308,6 +2308,9 @@ const dispOf = (c) => {
   return n;
 };
 const dispU = (u) => u + colsBefore(u);
+/* what a tile opens stands after the tile's column; a wide hero's
+   page is the pair, so what it opens stands after the pair */
+const anchorOfTile = (tile) => tile.__u + (tile.__t && tile.__t.wide ? 1 : 0);
 /* what stands at a place in the row: a column, or a module */
 const atDisp = (d) => {
   let u = d;
@@ -3286,12 +3289,12 @@ plane.addEventListener("click", (e) => {
   if (pv) {
     e.preventDefault();
     const tile = pv.closest(".tile");
-    openStudyColumn(tile.dataset.slug, { at: tile.__u }); return;
+    openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile) }); return;
   }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
   /* the study opens right after the picture's own module */
-  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { at: tile.__u }); }
+  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile) }); }
 });
 
 /* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
