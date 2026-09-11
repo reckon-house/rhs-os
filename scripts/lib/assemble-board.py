@@ -856,6 +856,18 @@ head = r'''<!doctype html>
     font-size: 13px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
     cursor: pointer; white-space: nowrap; transition: background-color 0.3s ease; }
   @media (hover: hover) { .tile.statement.head .lchip:hover { background: rgba(0, 0, 0, 0.08); } }
+  /* ── THE PLUS TURNS INTO THE MINUS ────────────────────────────────
+     The sign is two bars. Closed, one stands across the other: a
+     plus. Opening turns the standing bar a quarter onto the lying
+     one, with a little swing past and back, and there is a minus;
+     closing turns it back the way it came. */
+  .lchip .pm { position: relative; display: inline-block; width: 9px; height: 9px;
+    margin-left: 7px; align-self: center; margin-top: 1px; }
+  .lchip .pm b { position: absolute; left: 0; top: 3.75px; width: 9px; height: 1.5px;
+    border-radius: 1px; background: currentColor; }
+  .lchip .pm .v { transform: rotate(90deg);
+    transition: transform 0.62s cubic-bezier(0.3, 1.4, 0.5, 1); }
+  .tile.statement.head.open .lchip .pm .v { transform: rotate(0deg); }
   .tile.statement .term { cursor: pointer; }
   .tile.statement .term:hover { text-decoration-color: var(--ink); }
   .tile.statement u { text-decoration-color: rgba(0, 0, 0, 0.22);
@@ -1704,7 +1716,7 @@ FILTERS.forEach(([label, tag, desc]) => {
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
   items.push({ kind: "head", run: tag, first: true, tag,
     html: label + ". <span class=\"q\">" + desc + "</span>",
-    way: shelf + " studies +" });
+    way: shelf + " studies" });
   /* the deal's own order: studies by seat, each cover before its
      pictures, pictures in the data file's order. The order file's
      names lead, and setOrder keeps this behind them. */
@@ -1744,9 +1756,13 @@ const quoteH = (q) => {
 /* a run's head: the line's name and its sentence in the statement's
    type, and a chip that opens the shelf. Measured in its own clothes,
    as the statement is, since text has no declared ratio */
+/* a line's chip carries a drawn sign, two bars, so the plus can turn
+   into the minus (the head's .open, in the stylesheet); Staples' chip
+   is a door to its own column and keeps its arrow in the text */
 const headHTML = (t, open) => t.html +
-  "<span class=\"way\"><button type=\"button\" class=\"lchip\">"
-  + (open ? t.way.replace(/\+$/, "\u2212") : t.way) + "</button></span>";
+  "<span class=\"way\"><button type=\"button\" class=\"lchip\">" + t.way
+  + (t.tag === "staples" ? "" : "<i class=\"pm\"><b class=\"h\"></b><b class=\"v\"></b></i>")
+  + "</button></span>";
 const headH = (t) => {
   const m = document.createElement("div");
   m.className = "tile statement head";
@@ -3086,8 +3102,6 @@ function openLine(tag) {
     if (!el.classList.contains("head") || !el.__t) continue;
     const mine = el.__t.tag === tag ? lineOpen === tag : lineOpen === el.__t.tag;
     el.classList.toggle("open", mine);
-    const chip = el.querySelector(".lchip");
-    if (chip) chip.textContent = mine ? el.__t.way.replace(/\+$/, "\u2212") : el.__t.way;
   }
   if (wait) setTimeout(fill, wait); else fill();
   if (lineOpen) pageTo(dispU(head.col));
