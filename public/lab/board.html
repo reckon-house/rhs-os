@@ -3228,6 +3228,19 @@ function armHover() {
     if (!tile || !shot) return;
     openCard = card;
 
+    /* ── A HERO DOES NOT GROW ─────────────────────────────────────
+       It is the column, or the pair, already: the 4% put it over the
+       gutter and against the standing rule, and the pictures under
+       it are its own page's. Its corners square off, the shell's own
+       hover, and that is the whole event. */
+    if (tile.__t && tile.__t.hero) {
+      card.style.setProperty("--ix-grow", "1");
+      card.style.setProperty("--drop", "0px");
+      card.style.setProperty("--slide", "0px");
+      clearPush();
+      return;
+    }
+
     const share = shot.offsetWidth / COL;
     const grow = Math.max(1.04, 1 / share);
     card.style.setProperty("--ix-grow", grow.toFixed(3));
