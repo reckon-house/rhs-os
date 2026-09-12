@@ -48,7 +48,7 @@ HOUSE_JS = "window.BOARD_HOUSE = " + _json.dumps(HOUSE) + ";"
 
 _ORDER, _HOMES, _run = {}, {}, None
 # the runs a header can name: the engine's own five, and the house's lines
-_RUNS = ("open", "staples", "off", "homes", "heroes") + tuple(l[1] for l in HOUSE["lines"])
+_RUNS = ("open", "staples", "off", "homes", "heroes", "twice") + tuple(l[1] for l in HOUSE["lines"])
 _HEROES = {}
 _op = "scripts/lib/board-order.txt"
 if _os.path.exists(_op):
@@ -4983,7 +4983,14 @@ function openStudyColumn(folder, opts, from) {
      for. Every frame is lazy, so the browser fetches what the scroll
      reaches and nothing else. */
   const pics = el("div", "cpics"); c.__matter.appendChild(pics);
-  const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder);
+  /* ── AND IT DOES NOT OPEN ON THE SAME PICTURE TWICE ──────────────
+     A study's cover is usually its own hero cropped for the homepage
+     grid, a second file of one photograph, so the column stood the
+     cover at the top and the hero straight under it. The builder
+     marks the repeat by reading the pixels (build-board-thumbs); the
+     cover is the one that stands, since it is the picture the board
+     brought the reader here with. */
+  const files = (window.BOARD_ITEMS || []).filter((i) => i.g === folder && !i.dup);
   const cover = coverOf[folder];
   const order = files.filter((f) => !cover || f.t !== cover.t);
   if (cover) order.unshift(cover);

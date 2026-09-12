@@ -136,3 +136,13 @@ interiors = hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble
 digital = ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
 app = hp/rhs-sally-os-asset-hub-laptop
 branding = j-christianson/j-christianson-storefront-tree-stripe-window-mockup
+
+# twice
+# The preview column opens on a study's cover and then shows the study.
+# When the cover IS one of those pictures — the homepage export is a
+# crop of the hero — it showed the same photograph twice, one under the
+# other. The builder catches that by reading the pixels; these are the
+# ones it cannot see, where the cover is a tight crop of a wide shot and
+# the two frame the scene too differently to measure. Name the STUDY's
+# picture: the cover is the one that stands.
+robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign

@@ -110,11 +110,14 @@ const HOUSE = JSON.parse(readFileSync("scripts/lib/board-house.json", "utf8"));
 /* the runs a header can name: the engine's own five and the house's
    lines. Any other "#" line is a note, and does not change the run:
    it did, and a note under "# heroes" emptied the section. */
-const RUNS = new Set(["open", "staples", "off", "homes", "heroes", ...(HOUSE.lines || []).map((l) => l[1])]);
+const RUNS = new Set(["open", "staples", "off", "homes", "heroes", "twice", ...(HOUSE.lines || []).map((l) => l[1])]);
 const NAMED = new Set();
 /* the heroes by name: a landscape one spans two columns and is thumbed
    wider than the master (HERO_W) */
 const HEROES = new Set();
+/* the pictures a cover repeats that the pixels cannot see it repeats:
+   named by eye under "# twice", and marked the same way */
+const TWICE = new Set();
 {
   const op = "scripts/lib/board-order.txt";
   let run = null;
@@ -123,6 +126,9 @@ const HEROES = new Set();
     if (!t) continue;
     if (t.startsWith("#")) { const w = t.replace(/^#+\s*/, "").split(/\s+/)[0]; if (RUNS.has(w)) run = w; continue; }
     if (run === "heroes") { const v = t.split("#")[0].split("=")[1]; if (v) { NAMED.add(v.trim()); HEROES.add(v.trim()); } continue; }
+    /* named, not dealt: a twice is already in its study, it is the
+       PREVIEW that stops showing it */
+    if (run === "twice") { TWICE.add(t.split("#")[0].trim()); continue; }
     if (run && run !== "homes" && run !== "off") NAMED.add(t.split("#")[0].trim());
   }
 }
@@ -559,6 +565,75 @@ for (const it of items) {
 }
 if (coversFound < 25) throw new Error(
   `only ${coversFound} homepage covers matched — the stem match broke`);
+
+/* ── A COVER IS USUALLY THE STUDY'S OWN HERO, CROPPED ───────────────
+   The preview column opens on the study's cover and then shows the
+   study's pictures, and for twenty-two of the twenty-nine studies the
+   first of those IS the cover: the homepage export is a crop of the
+   hero, a different file of the same photograph. So every one of them
+   opened by showing the same picture twice, at two sizes, one under
+   the other. `x` does not catch it and neither does the one-item-per-
+   key rule, which sees two stems and calls them two pictures.
+
+   The pixels are the only place the fact lives, so the builder reads
+   them: a 16x16 greyscale of the cover against a 16x16 of each of its
+   study's pictures, mean absolute difference per pixel. Squashing to a
+   square is what makes a crop comparable to its source. The corpus
+   splits cleanly — every true repeat is under 17.7 and the nearest
+   picture that is genuinely a different shot is 23.8 (Big Bend's
+   ridgeline against its Prada Marfa cover), so 20 sits in the gap with
+   room on both sides. It is printed each run, so a wrong call is
+   visible rather than silent.
+
+   It reads the framing, though, not the subject, so it misses a
+   cover that is a TIGHT CROP of a wide shot: Robert Rodriguez's
+   storefront is the same window at two zooms and scores 41.7, deep
+   in the territory where pictures really are different. Those are
+   named by eye under "# twice" in board-order.txt and earn the same
+   mark, since a person is the only thing that can see it.
+
+   Marked, not dropped: the field may still deal it, and the study
+   still shows it. Only the preview column knows to pass. */
+const DUP_MAX = 20;
+const sigOf = async (t) => {
+  const { data } = await sharp("public" + t)
+    .resize(16, 16, { fit: "fill" }).greyscale().raw().toBuffer({ resolveWithObject: true });
+  return data;
+};
+const sigDist = (a, b) => {
+  let sum = 0;
+  for (let i = 0; i < a.length; i += 1) sum += Math.abs(a[i] - b[i]);
+  return sum / a.length;
+};
+{
+  const byGroup = {};
+  for (const it of items) (byGroup[it.g] = byGroup[it.g] || []).push(it);
+  const said = [];
+  for (const list of Object.values(byGroup)) {
+    const cover = list.find((i) => i.c != null);
+    if (!cover) continue;
+    let cs;
+    try { cs = await sigOf(cover.t); } catch (e) { continue; }
+    for (const it of list) {
+      if (it === cover) continue;
+      try {
+        const d = sigDist(cs, await sigOf(it.t));
+        if (d >= DUP_MAX) continue;
+        it.dup = 1;
+        said.push(`    ${d.toFixed(1).padStart(5)}  ${it.t.slice("/lab/board-thumbs/".length)}`);
+      } catch (e) { /* unreadable, leave it */ }
+    }
+  }
+  const byEye = [];
+  for (const it of items) {
+    const k = it.t.slice("/lab/board-thumbs/".length).replace(/\.webp$/, "");
+    if (!TWICE.has(k) || it.dup) continue;
+    it.dup = 1;
+    byEye.push(`    by eye  ${k}`);
+  }
+  const all = said.concat(byEye);
+  if (all.length) console.log(`  the cover again, out of ${all.length} previews:\n${all.join("\n")}`);
+}
 
 /* Sorted so the data file is stable: a re-run with nothing new
    produces an identical literal and a quiet diff. */

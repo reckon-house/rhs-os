@@ -32,6 +32,8 @@ g   the group it belongs to: the study's folder, or "inspiration"
 c   present on a cover only: its place in the site's own order
 x   present on a picture that is off the field: cut, and thumbed
     anyway for its study's preview
+dup present on a picture the study's COVER already is: the preview
+    shows one of them, and the cover is the one that stands
 r   the rungs that exist below the full file, [384, 768]
 ```
 
@@ -92,8 +94,13 @@ the study bar and the board's heads count the same studies.
 
 ```
 # open   # digital   # app   # creative   # branding   # interiors
-# staples   # off   # homes   # heroes
+# staples   # off   # homes   # heroes   # twice
 ```
+
+Only a header naming one of those switches the section. Every other
+`#` line is a note, and that is not a nicety: both parsers took ANY
+`#` line for a header once, so a note written under `# heroes`
+emptied the section in the thumb builder without a word.
 
 Rules, in the order they bite:
 
@@ -118,6 +125,11 @@ Rules, in the order they bite:
   run at its own ratio. Named, so it is dealt on that run whatever
   the cut says, and a landscape hero is thumbed at 2048 rather than
   the master's 1536, since it paints across two columns.
+- `# twice` names a picture the study's cover already is, where the
+  pixels cannot see it: the preview skips it. The builder finds most
+  of them itself (below); this is for a cover that is a tight crop of
+  a wide shot, which measures as a different picture because it is
+  framed as one.
 - Anything unnamed takes the deal's own order: studies in site order,
   a cover before its own pictures, pictures in the data file's order.
 - A cover in the first six is in the opener unless named elsewhere.
@@ -166,7 +178,15 @@ suggestions, the preview tier, and the swap picker's candidates.
 - A cover stands at the rung the live site gives it. A piece the board
   draws stands at the rung and the box it is given. A hero stands at
   the full column and the screen's height.
-- The field is the cut. A preview is the whole study, `x` or not.
+- The field is the cut. A preview is the whole study, `x` or not, but
+  for the picture its cover already is. Most covers are the study's
+  own hero cropped for the homepage grid — twenty-two of twenty-nine —
+  so a preview used to open on the same photograph twice, one under
+  the other. The builder compares a 16x16 greyscale of the cover
+  against each of the study's pictures and marks anything under a mean
+  difference of 20 per pixel: the corpus splits at 17.7 against 23.8,
+  the nearest picture that is genuinely a different shot, and the run
+  prints what it marked. `# twice` names the ones it cannot see.
 - Off screen or with the tab hidden, nothing moves.
 - A transparent picture is flattened onto the plate colour, unless the
   board draws around it (`KEEP_ALPHA`).
