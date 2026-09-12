@@ -3795,7 +3795,19 @@ const SUBJ_OF = new Map();
 for (const s of SUBJECTS) for (const f of (s.studies || [])) {
   SUBJ_OF.set(f, (SUBJ_OF.get(f) ? SUBJ_OF.get(f) + " " : "") + (s.words || ""));
 }
-const SUBJ = (folder) => SUBJ_OF.get(folder) || "";
+/* ── AND A LINE IS ASKED FOR BY ITS NAME ──────────────────────────
+   A study's tags were searchable and the line's LABEL was not, so a
+   line whose two differ could not be asked for: the house calls it
+   Campaigns on every chip, head and rail row, and the tag underneath
+   is `creative`. Fifteen studies stand on that line and seven
+   answered to the word, the seven whose own text happens to say
+   campaign. The label is the name the question will use, so it is
+   part of what a study is. */
+const LABELS = (tags) => FILTERS.filter((l) => (tags || []).includes(l[1])).map((l) => l[0]).join(" ");
+const SUBJ = (folder) => {
+  const g = GROUPS[folder] || {};
+  return (SUBJ_OF.get(folder) || "") + " " + LABELS(g.tags);
+};
 
 const studiesFor = (text) => {
   const lower = text.toLowerCase().trim();
