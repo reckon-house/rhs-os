@@ -21,6 +21,7 @@
     "dims": "python3 scripts/build-image-dimensions.py",
     "viz-audit": "node scripts/viz-audit.mjs",
     "vision": "node --no-warnings scripts/build-vision.mjs",
+    "work": "node --no-warnings scripts/build-work.mjs",
     "vision:dry": "node --no-warnings scripts/build-vision.mjs --dry",
     "vision:fetch": "node --no-warnings scripts/build-vision.mjs --fetch",
     "interiors": "node --no-warnings scripts/build-interiors-index.mjs",

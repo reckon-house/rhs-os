@@ -3804,9 +3804,18 @@ for (const s of SUBJECTS) for (const f of (s.studies || [])) {
    campaign. The label is the name the question will use, so it is
    part of what a study is. */
 const LABELS = (tags) => FILTERS.filter((l) => (tags || []).includes(l[1])).map((l) => l[0]).join(" ");
+/* ── AND WHAT KIND OF WORK IT IS ──────────────────────────────────
+   The study's work terms with their aliases, written by the builder
+   from what each study declares and what the reasoning pass judged
+   (build-work.mjs, over the prose and the vision catalogue of the
+   pictures). It is the half of the index that says what a study IS
+   rather than what it is made of, and without it a board could be
+   asked for the fireplace and find it, and asked for ecommerce and
+   find the two studies that use the word. */
+const WORKX = (folder) => (COPY && COPY[folder] && COPY[folder].wx) || "";
 const SUBJ = (folder) => {
   const g = GROUPS[folder] || {};
-  return (SUBJ_OF.get(folder) || "") + " " + LABELS(g.tags);
+  return (SUBJ_OF.get(folder) || "") + " " + LABELS(g.tags) + " " + WORKX(folder);
 };
 
 const studiesFor = (text) => {

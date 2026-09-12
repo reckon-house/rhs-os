@@ -52,6 +52,11 @@ export interface Project {
   tools?: string[];
   stats?: { value: string; label: string }[];
   facets?: Record<string, { term: string; n: number; observed?: boolean }[]>;
+  /* what KIND of work it is: declared by the study's own disciplines,
+     judged by scripts/build-work.mjs over the prose and the vision
+     catalogue of its pictures. Never mined from prose — see WORK in
+     scripts/lib/vocabulary.mjs for why. */
+  work?: { term: string; declared?: boolean; judged?: boolean; why?: string }[];
   /* the study in its own words, mined by build-facts: abstract, heads,
      subheads, body, columns, closing; up to 7,000 characters */
   text?: string;
@@ -225,6 +230,13 @@ export const SHELF = PROJECTS.map((p) => {
     `${p.title} (${p.category ?? "work"}${p.year ? ", " + p.year : ""}) ${p.href}`,
     p.subtitle && `  ${plainStatement(p.subtitle)}`,
     p.disciplines?.length && `  disciplines: ${p.disciplines.join(", ")}`,
+    /* WHAT KIND OF WORK IT IS, which the disciplines only half say: a
+       study declares "Ecommerce Design" or it does not, and eight here
+       are ecommerce work while two use the word. The rest of the line
+       is judged by scripts/build-work.mjs over the prose and the vision
+       catalogue. The shelf is every study the model can see, so this is
+       where a question about a KIND of work gets answered from. */
+    p.work?.length && `  does: ${p.work.map((w) => w.term).join(", ")}`,
     facets && `  holds: ${facets}`,
   ].filter(Boolean).join("\n");
 }).join("\n\n");
@@ -371,6 +383,9 @@ export function contextFor(
       p.year && `Year: ${p.year}`,
       ...(p.summary ?? []).map((s) => `${s.label}: ${s.value}`),
       p.disciplines?.length && `Disciplines: ${p.disciplines.join(", ")}`,
+      /* judged, with the line of evidence, so the model can see WHY a
+         term was given and decline to repeat one it disagrees with */
+      p.work?.length && `Kinds of work: ${p.work.map((w) => w.why ? `${w.term} (${w.why})` : w.term).join("; ")}`,
       p.tools?.length && `Tools: ${p.tools.join(", ")}`,
       ...(p.stats ?? []).map((s) => `Stat: ${s.label} = ${s.value}`),
       observed.length && `SEEN IN the photographs: ${observed.join(", ")}`,

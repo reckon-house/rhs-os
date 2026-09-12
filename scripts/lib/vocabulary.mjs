@@ -287,6 +287,102 @@ export const NEGATORS = [
   "nothing", "neither", "nor",
 ];
 
+/* ── WHAT KIND OF WORK IT IS ────────────────────────────────────────
+ * The facets above say what a study is MADE OF — marble, a fireplace,
+ * a kitchen in west texas. Nothing said what it IS. So a visitor could
+ * ask for the fireplace and find it, and ask for ecommerce and find
+ * two studies out of eight, the two whose prose happens to use the
+ * word; the rest say store, retail, merchandising, or name the
+ * retailer and leave the rest to the reader.
+ *
+ * DELIBERATELY NOT A FACET, and that is the whole reason this is a
+ * separate export. A facet is mined by matching its terms against the
+ * prose, which works for a material because "marble" in a sentence
+ * means marble. It does not work here: "web", "brand", "content" and
+ * "print" appear all over thirty studies as ordinary words, and mining
+ * them would bury the index in noise while still missing the study
+ * that never says the word. So nothing here is mined from prose. A
+ * work term is earned two ways only — a discipline the study declares
+ * (authored, exact), or a judgement from a pass that reads the study
+ * and looks at its pictures (scripts/build-work.mjs), which is marked
+ * as judged so it can never be quoted as something the work says.
+ *
+ * The aliases carry the visitor's vocabulary, which is the other half
+ * of the problem: "online store", "shoppable" and "PDP" are the same
+ * question as "ecommerce", and none of them is a word the studies use.
+ *
+ * AN ALIAS IS NOT A SUBJECT AND NOT A ROOM. "kitchen design" read as
+ * interior design, which put the word kitchen on all eight interiors
+ * studies and made "do you design kitchens?" answer eight where the
+ * truth is two; the room facet already owns rooms. And an alias must
+ * not sit inside ordinary words, because the match treats anything
+ * four letters or longer as a substring: "marketing site" for website
+ * put "mark" in eighteen studies. Both were caught by asking the board
+ * the questions it was already answering correctly.
+ *
+ * Validated the way the facets were: every term but two matches at
+ * least one of the eighty-three discipline strings the studies
+ * declare. The two that do not are `app` and `personalization`, both
+ * real work here that the disciplines happen to name another way
+ * (Product Design, the study's own title), and both left for the pass
+ * to assign. */
+export const WORK = [
+  ["ecommerce", ["e-commerce", "commerce", "online store", "storefront", "shop", "shopping", "shoppable", "checkout", "cart", "pdp", "product page"]],
+  ["website", ["web design", "web", "site", "landing page"]],
+  ["app", ["mobile app", "native app", "ios app", "iphone app"]],
+  ["ai", ["artificial intelligence", "machine learning", "computer vision", "llm", "agent", "ai integration", "ai strategy", "ai scheduling", "ai home inventory", "mcp"]],
+  ["design system", ["design systems", "component library", "pattern library", "style guide"]],
+  ["product design", ["product management", "ux design", "ux architecture", "ux", "experience design", "visual design"]],
+  ["engineering", ["full-stack engineering", "front-end", "tooling", "marketing technology", "enterprise tools", "insurance technology"]],
+  ["campaign", ["campaigns", "campaign design", "campaign direction", "advertising", "go-to-market", "go-to-market strategy"]],
+  ["art direction", ["creative direction", "photo direction", "photography direction", "product photography direction", "exterior direction"]],
+  ["photography", ["photo shoot", "photo compositing", "product photography", "photo"]],
+  ["branding", ["brand", "brand identity", "brand system", "brand development", "brand design", "identity"]],
+  ["logo", ["logo design", "logo system", "wordmark", "monogram", "logomark"]],
+  ["typography", ["typography design", "typeface", "lettering", "custom type", "type design"]],
+  ["pattern", ["pattern design", "patterns", "colorway development", "colorway"]],
+  ["print", ["poster design", "poster", "album art", "prints", "graphic design"]],
+  ["apparel", ["apparel graphics", "clothing", "merch", "garment"]],
+  ["signage", ["retail signage", "billboard", "window display", "outdoor"]],
+  ["editorial", ["editorial design", "editorial templates", "story development", "copywriting", "content strategy"]],
+  ["naming", ["names"]],
+  ["motion", ["animation", "video", "film"]],
+  ["personalization", ["personalized", "personalisation", "recommendations"]],
+  ["interior design", ["interiors", "interior", "space planning", "construction documentation", "custom millwork", "millwork"]],
+  ["sourcing", ["furniture curation", "finish selection", "fixture sourcing", "fixture selection", "material selection", "material specification", "finish coordination", "art selection", "curation"]],
+  ["email", ["email & web templates", "newsletter"]],
+];
+
+/* Every surface form of every work term, longest first, so "web
+   design" is spent before "web" can book a second hit on it. */
+export function workTerms() {
+  const out = [];
+  for (const [term, aliases] of WORK) {
+    for (const surface of [term, ...aliases]) out.push({ term, surface: surface.toLowerCase() });
+  }
+  return out.sort((a, b) => b.surface.length - a.surface.length);
+}
+
+/* The canonical work terms a line of authored text declares, each with
+   the string it was read from. Longest-first and consuming, like the
+   facet matcher: "Ecommerce Design" books ecommerce, not ecommerce and
+   then design. */
+export function foldWork(strings) {
+  const surfaces = workTerms();
+  const out = new Map();
+  for (const raw of strings) {
+    let rest = " " + String(raw).toLowerCase() + " ";
+    for (const { term, surface } of surfaces) {
+      const re = new RegExp("(?<![a-z])" + surface.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?![a-z])", "g");
+      if (!re.test(rest)) continue;
+      rest = rest.replace(re, " ");
+      if (!out.has(term)) out.set(term, { term, from: [] });
+      if (!out.get(term).from.includes(raw)) out.get(term).from.push(raw);
+    }
+  }
+  return [...out.values()];
+}
+
 /* Flattened, longest first, ready to match. */
 export function terms() {
   const out = [];

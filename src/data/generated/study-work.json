@@ -1,0 +1,850 @@
+{
+ "model": "claude-opus-5",
+ "studies": {
+  "ivy-park": {
+   "hash": "34e46b946b52dc23",
+   "terms": [
+    {
+     "term": "website",
+     "why": "\"One scrolling brand experience\" built in Nordstrom's CMS with HTML/CSS/JS; screenshots show the live hero and scroll pages.",
+     "from": "both"
+    },
+    {
+     "term": "ecommerce",
+     "why": "Page \"had to be the store\" — frames carry \"SHOP THE COLLECTION\", \"SHOP THE LOOK\" and a leggings product detail with rise/length specs.",
+     "from": "both"
+    },
+    {
+     "term": "campaign",
+     "why": "Declares Campaign Design; assets grid frame shows the launch rolled across banners, social and signage.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Creative direction of supplied photography — \"everything else was open: typography, layout, copy, animation, interaction.\"",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"Typography at Volume\" — big type, mixed weights, baselines off the grid; \"CONFIDENCE IS STRENGTH\" set across the hero frames.",
+     "from": "both"
+    },
+    {
+     "term": "motion",
+     "why": "Polygon \"rotated slowly on scroll\" via CSS transform, plus motion studies and animated polygon mask components.",
+     "from": "prose"
+    },
+    {
+     "term": "email",
+     "why": "\"Launch emails timed to the drop\" with the polygon running into the email headers.",
+     "from": "prose"
+    },
+    {
+     "term": "signage",
+     "why": "\"In-store signage for the locations carrying the line\"; ivy-signage.jpg shows the backlit lightbox poster reading \"CONFIDENCE IS STRENGTH\".",
+     "from": "both"
+    }
+   ]
+  },
+  "amber-shockey-co": {
+   "hash": "1fdc5607d9d8b279",
+   "terms": [
+    {
+     "term": "pattern",
+     "why": "Three collections of tableware repeats — 'amber-shockey-co-blue-florals-peony-wallpaper-pattern-field.jpg' shows the peony repeat at field size",
+     "from": "both"
+    },
+    {
+     "term": "product design",
+     "why": "Prose declares 'Pattern design, product design, and colorway development were done together'; mockups show dinner plates, salad plates and chargers",
+     "from": "both"
+    },
+    {
+     "term": "design system",
+     "why": "'Every pattern had to work next to every other one' — hero/secondary/accent per collection on a shared cream ground, with a construction-grid system mark frame",
+     "from": "both"
+    }
+   ]
+  },
+  "arc": {
+   "hash": "3f51a491dc280661",
+   "terms": [
+    {
+     "term": "app",
+     "why": "\"A.R.C., an iPhone app I designed and built for home inventory\"; frames like arc-five-screen-app-showcase.png show the phone screens.",
+     "from": "both"
+    },
+    {
+     "term": "ai",
+     "why": "OpenAI Vision API and Perceptron Mk1 recognition; arc-pipeline-cloud-sync-step.jpg reads \"Analyzing your photos with AI... 88%\".",
+     "from": "both"
+    },
+    {
+     "term": "product design",
+     "why": "Declares Product Design and designs the whole flow — capture, review, gap analysis — seen in arc-ui-report-configuration-pdf.jpg and arc-dashboard-screen-hero.png.",
+     "from": "both"
+    },
+    {
+     "term": "engineering",
+     "why": "\"Full-Stack Engineering\" — Python backend, Streamlit frontend, Supabase, deployed on Vercel, built solo end to end.",
+     "from": "prose"
+    },
+    {
+     "term": "branding",
+     "why": "\"brand had to make documenting your house something you might want to do\" plus chromatic-brand-circle.png with palette hexes and roles.",
+     "from": "both"
+    },
+    {
+     "term": "logo",
+     "why": "arc-logo-grid.png shows the \"a.r.c. / archive ready cloud\" wordmark on a construction grid with circle and diagonal guides.",
+     "from": "pictures"
+    }
+   ]
+  },
+  "big-bend": {
+   "hash": "7aa4e1968ed69a94",
+   "terms": [
+    {
+     "term": "photography",
+     "why": "Prose: \"Photographs from a family trip through far West Texas\" shot on a Fuji X-T30; every frame is a landscape photograph.",
+     "from": "both"
+    }
+   ]
+  },
+  "black-white-type": {
+   "hash": "ac0cf411118a0680",
+   "terms": [
+    {
+     "term": "typography",
+     "why": "Three lithographs built from letterforms — Didone serifs, calligraphic swashes, slab capitals — each stroke given a different fill ('the fancy' poster flat).",
+     "from": "both"
+    },
+    {
+     "term": "pattern",
+     "why": "Twelve repeating tiles drawn positive and negative; the catalogue lists a dozen swatch frames (diamond grid, halftone dots, diagonal stripes).",
+     "from": "both"
+    },
+    {
+     "term": "print",
+     "why": "'Three lithographs. Black ink on white paper' — posters shown printed and photographed on a bench and gate.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "'the only decisions left were placement and scale' — the study governs ink-to-paper ratio and tile scale across all three sheets.",
+     "from": "prose"
+    }
+   ]
+  },
+  "branding-graphics": {
+   "hash": "73d45b1781813e64",
+   "terms": [
+    {
+     "term": "logo",
+     "why": "\"Five logos for five clients\" plus logo frames: spear COLLECTIVE vines, DJ MIA halftone, OKINA orbit wordmark, J. CHRISTIANSON four-circle mark.",
+     "from": "both"
+    },
+    {
+     "term": "branding",
+     "why": "Identity work made to fit each client — a fashion collective, a DJ, a lifestyle brand — wordmarks and marks like \"hey! SD\" and \"inna\".",
+     "from": "both"
+    },
+    {
+     "term": "print",
+     "why": "Album sleeves, gig posters and art prints; framed poster mockups like \"CANDY PAINT\" and \"Your Reflection Is Me\".",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"hand-drawn type where a piece called for it\" and the ABC-123 typography exercise poster with dot-matrix letterforms.",
+     "from": "both"
+    },
+    {
+     "term": "photography",
+     "why": "\"The photograph was shot on film and blown up to street size\" — the bokeh source photograph frame is the work itself.",
+     "from": "both"
+    },
+    {
+     "term": "signage",
+     "why": "\"one 4x6 film photograph blown up to fill a storefront window\"; the Bokeh's Fall frame shows a backlit poster in a shopfront.",
+     "from": "both"
+    }
+   ]
+  },
+  "capitan-boot-co": {
+   "hash": "542f9390ed81c5e2",
+   "terms": [
+    {
+     "term": "branding",
+     "why": "\"Brand identity for Capitan Boot Co.\" — primary logo, badges, lockups built to survive stamping and embossing.",
+     "from": "both"
+    },
+    {
+     "term": "logo",
+     "why": "Bull skull lockup on a geometric grid plus buffalo and diamond badges in buffalo-logo.png and the four-up mark frame.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"Northwest Regular and Oldman Regular are the type pairing\" with letterspaced wordmarks shown in the palette/grid frame.",
+     "from": "both"
+    },
+    {
+     "term": "apparel",
+     "why": "\"apparel graphics\" declared and \"stitched into denim... shows up on packaging and apparel\".",
+     "from": "prose"
+    },
+    {
+     "term": "photography",
+     "why": "\"The campaign was shot in West Texas... The same person drew the marks and shot the pictures\" — the landscape frames are the work.",
+     "from": "both"
+    },
+    {
+     "term": "campaign",
+     "why": "\"a campaign shot in West Texas\" with lockups sitting on the Big Bend photographs.",
+     "from": "both"
+    }
+   ]
+  },
+  "chalet": {
+   "hash": "d0164cb0a409aa21",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "\"Took it down to the studs\" — full interior rebuild with pine floors, painted stone wall, kitchen and A-frame ceiling shown in the chalet interior frames.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Scope names \"furniture and fixture sourcing\"; frames show the curated Malm fireplace, sputnik chandelier, walnut dining set and leather sling chairs.",
+     "from": "both"
+    }
+   ]
+  },
+  "cosmo-prof": {
+   "hash": "87d481ee254e4485",
+   "terms": [
+    {
+     "term": "website",
+     "why": "Homepage, global header, mobile pages designed — frame cosmo-prof-ui-website-homepage-shinefinity-hero shows nav band with HAIR COLOR / SALON ESSENTIALS links.",
+     "from": "both"
+    },
+    {
+     "term": "ecommerce",
+     "why": "Shoppable video and catalog rows: \"$16.99\", \"ADD TO CART\", \"SHOP THE VIDEO\" in homepage-2 and for-the-pros frames.",
+     "from": "both"
+    },
+    {
+     "term": "photography",
+     "why": "\"Started with photography: high-contrast lighting, defined shadows\" — six product photographs are the study's own shoot.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "\"Each frame defined what a good Cosmo Prof picture looks like\" — compositions that read at thumbnail and full bleed.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "Jost specified by weight: ExtraBold wordmark, Medium headlines, Regular catalog copy, Light price lines.",
+     "from": "prose"
+    },
+    {
+     "term": "personalization",
+     "why": "\"tabbed recommendations personalized to each stylist\" and \"The tabs sort to whoever is logged in.\"",
+     "from": "prose"
+    }
+   ]
+  },
+  "dsc": {
+   "hash": "ec98e1df249d0165",
+   "terms": [
+    {
+     "term": "website",
+     "why": "\"design and build a marketing site\" — dsc-marketing-site-laptop-hero and recovery/facilities sections show the built pages",
+     "from": "both"
+    },
+    {
+     "term": "app",
+     "why": "Athlete app and owner console screens: dsc-athlete-app-dashboard-next-session, dsc-owner-console-home-booking-requests on phone",
+     "from": "both"
+    },
+    {
+     "term": "ai",
+     "why": "MCP server with eleven tools plus Claude chat frames (dsc-claude-mcp-chat-booking-request) and the console's batch scheduler",
+     "from": "both"
+    },
+    {
+     "term": "product design",
+     "why": "Two-faced scheduling platform designed — booking queue, week calendar, roster, OAuth consent screen (dsc-claude-oauth-consent-screen)",
+     "from": "both"
+    },
+    {
+     "term": "engineering",
+     "why": "\"Next.js on Vercel, OAuth 2.0 consent with short-lived tokens\" and a deterministic booking engine built end to end",
+     "from": "prose"
+    },
+    {
+     "term": "branding",
+     "why": "\"a brand that matched where the gym was headed\": black/white palette, wordmark and interlocking monogram mark in dsc-owner-console-home-booking-requests",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "Type system spelled out — Avenir Next Heavy/Demi Bold/Medium plus a monospace for MCP URLs and session times",
+     "from": "prose"
+    }
+   ]
+  },
+  "fairview-entry": {
+   "hash": "8422556d39708f28",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Prose declares \"Interior design, furniture curation, finish selection\" for a two-story foyer; photos show the finished entry with rug, chandelier, bench.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "\"The rug, the bench and the two pieces of art, all found\" — vintage furniture curation and finish specification.",
+     "from": "prose"
+    }
+   ]
+  },
+  "fairview-sitting": {
+   "hash": "1440a075366ea262",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Prose and frames are a built sitting room — 'ledgestone fireplace wall runs floor to ceiling', black box beams, chair grouping shown in the architectural wide frame.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Declares 'Furniture Curation, Finish Selection' and specifies velvet swivels, brass drum coffee table, round cane-front bar cabinet, white oak floors.",
+     "from": "both"
+    }
+   ]
+  },
+  "fairview-suite": {
+   "hash": "0a95d3ccdd71bf43",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Prose describes a 600 sq ft primary suite and ensuite designed wall-to-wall — charcoal violet walls, vaulted ceiling, furniture plan.",
+     "from": "prose"
+    },
+    {
+     "term": "sourcing",
+     "why": "Declares 'Fixture Sourcing' and 'Furniture Curation' — hammered copper tub, crystal chandeliers, brass fixtures selected piece by piece.",
+     "from": "prose"
+    }
+   ]
+  },
+  "floor-and-decor": {
+   "hash": "2db0358fa9c9c31d",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Three residential bathrooms designed floor to ceiling — 'urban southwest, exposed brick and a matte black soaking tub' — photographed as finished rooms.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Declares 'Material Selection, Finish Coordination' — marble, dolomite, white oak and tile picked together on one moodboard, mapped across three projects.",
+     "from": "prose"
+    }
+   ]
+  },
+  "hill-country-bath": {
+   "hash": "bbf03988ac80e8b7",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Prose: 400 sq ft primary bath designed with three marbles, two vanities, freestanding tub under a wood plank ceiling; frames show the finished room.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Scope names 'fixture sourcing, art selection, furniture curation' — 'None of it came from one vendor,' valet stand from an antique shop, vintage rugs.",
+     "from": "prose"
+    }
+   ]
+  },
+  "hill-country-kitchen": {
+   "hash": "40066316b0c1780e",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "Ground-up kitchen: space planning, cabinetry, material spec — frames like hill-country-kitchen-full-view-beams-runner-island.jpg show the finished room.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Declares \"Fixture Selection\" and mixes eras — antique cremone bolts, schoolhouse pendants, leather safari chairs, vintage runner — selected to one four-material palette.",
+     "from": "both"
+    }
+   ]
+  },
+  "hill-country-living": {
+   "hash": "33c2b35ce5aef216",
+   "terms": [
+    {
+     "term": "interior design",
+     "why": "\"Living room around a floor-to-ceiling limestone fireplace wall, open to the kitchen\" with material specification in AutoCAD/SketchUp, shown in the wide fireplace-wall frames.",
+     "from": "both"
+    },
+    {
+     "term": "sourcing",
+     "why": "Scope names \"furniture curation, art selection, fixture sourcing\" — the ladder shelf, brass fire tools and gilt-framed paintings frames show the collected pieces.",
+     "from": "both"
+    }
+   ]
+  },
+  "hill-country-oak": {
+   "hash": "30d0c4130f7946fd",
+   "terms": [
+    {
+     "term": "campaign",
+     "why": "\"The same idea runs on billboards, print, and digital, sized for each\" — banner, posters, wallpaper, shirt.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declared scope; mid-century travel-poster color and oak silhouette direction seen across the artwork frames.",
+     "from": "both"
+    },
+    {
+     "term": "logo",
+     "why": "Two wordmark frames: \"HILL COUNTRY OAKWORKS\" in heavy geometric caps, one with construction circle and grid guides.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "Greatdome/Avenir Next type roles specified; specimen frame of the \"OAK BARRELS. MASTER CRAFT. HERITAGE WHISKEY.\" lockup.",
+     "from": "both"
+    },
+    {
+     "term": "print",
+     "why": "Posters and the outdoor banner mockup with \"TEXAS-BORN OAK. MASTER CRAFTED...\" on a billboard face.",
+     "from": "both"
+    },
+    {
+     "term": "apparel",
+     "why": "Built list names a shirt; photograph shows a crew-neck tee with printed wordmark.",
+     "from": "both"
+    }
+   ]
+  },
+  "j-christianson": {
+   "hash": "efc1ca1d76e7a197",
+   "terms": [
+    {
+     "term": "branding",
+     "why": "\"the brand started from nothing: the name first, then the mark, the palette, the type, and the product graphics\"",
+     "from": "both"
+    },
+    {
+     "term": "naming",
+     "why": "Declares Naming; \"The name came first, then the mark, then the tree.\"",
+     "from": "prose"
+    },
+    {
+     "term": "logo",
+     "why": "Four-circle mark in a tight grid with shifting colorways, seen as the four-dot mark in the billboard and storefront-sign frames",
+     "from": "both"
+    },
+    {
+     "term": "pattern",
+     "why": "Stripe field behind the tree plus the twenty-circle dot grid in j-christianson-dot-grid-pattern-brown-accents and -olive-accents",
+     "from": "both"
+    },
+    {
+     "term": "signage",
+     "why": "Storefront sign and billboard mockups: \"The whole year lit up on the sign\"; j-christianson-outdoor-sign-seasonal-tree-circles",
+     "from": "both"
+    },
+    {
+     "term": "print",
+     "why": "\"It went on apparel, candles, hangtags, and print\"; framed poster panels in the storefront mockups",
+     "from": "both"
+    }
+   ]
+  },
+  "jeffrey-ecommerce": {
+   "hash": "61864a4e147fd47e",
+   "terms": [
+    {
+     "term": "ecommerce",
+     "why": "Product detail frame shows \"Sacai Luck\", \"$470\", add-to-bag and \"SELECT SIZE\"; prose calls it Jeffrey's first online store.",
+     "from": "both"
+    },
+    {
+     "term": "website",
+     "why": "Homepage, designer-launch and category templates designed with nav, masthead and footer across the mockup frames.",
+     "from": "both"
+    },
+    {
+     "term": "branding",
+     "why": "\"the brand around it\" — brand system with palette, wordmark and one type family.",
+     "from": "prose"
+    },
+    {
+     "term": "logo",
+     "why": "jeffrey-new-york-wordmark-logo-lockup.jpg shows the JEFFREY wordmark with construction circle and grid rules.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "Avenir Next Heavy/Demi Bold/Medium hierarchy spelled out as the whole type system, no second typeface.",
+     "from": "prose"
+    },
+    {
+     "term": "design system",
+     "why": "\"Modular grids so the layouts could change with the season\" plus launch/story/product templates merchandising reuses.",
+     "from": "both"
+    }
+   ]
+  },
+  "jeffrey-spring": {
+   "hash": "0fd22eb2a0934e30",
+   "terms": [
+    {
+     "term": "campaign",
+     "why": "\"Jeffrey needed a spring campaign\" — one kit running across email, homepage and social for three dress stories.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declared scope \"Art direction\" plus the studio set-building with cropped monstera as architecture and colour floods.",
+     "from": "both"
+    },
+    {
+     "term": "photography",
+     "why": "Studio photography is the work: \"Two leaves shot once on white\", with leaf and palm frond detail frames catalogued as photographs.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"The type is one family, Avenir Next, italic Heavy for the wordmark and Medium, Demi Bold and Heavy\", condensed and stretched for rhythm.",
+     "from": "both"
+    },
+    {
+     "term": "website",
+     "why": "Desktop and mobile homepage screenshots with nav bar (\"Women, Culture, Designers, Men, Login\") built as web templates.",
+     "from": "both"
+    },
+    {
+     "term": "email",
+     "why": "Declared discipline \"Email & Web Templates\"; the kit \"ran on email, the homepage and social\".",
+     "from": "prose"
+    }
+   ]
+  },
+  "loved-by-nordstrom": {
+   "hash": "4cc3708154137ae6",
+   "terms": [
+    {
+     "term": "campaign",
+     "why": "\"Twelve months across social feeds, email sends, in-store signage, and web landing pages\" on one tile template.",
+     "from": "both"
+    },
+    {
+     "term": "design system",
+     "why": "\"The grid, the type, and the icon were fixed\" — two tiers, Liked/Loved, swappable weekly with no brief.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declared art direction; tiles hold Helmut Lang cold, The Great warm, See by Chloé product-led within one frame.",
+     "from": "both"
+    },
+    {
+     "term": "editorial",
+     "why": "\"Editorial systems\" plus the landing-page mockup with pull quote and brand-organized stories.",
+     "from": "both"
+    },
+    {
+     "term": "signage",
+     "why": "In-store signage and store windows named: \"The tile you saw in a feed was the one you saw in the store window.\"",
+     "from": "prose"
+    },
+    {
+     "term": "website",
+     "why": "Web landing pages built; iphone-landing-page frame shows the editorial page with \"SHOP THIS LOOK\".",
+     "from": "both"
+    }
+   ]
+  },
+  "neiman-marcus": {
+   "hash": "2a5476963434a998",
+   "terms": [
+    {
+     "term": "editorial",
+     "why": "\"InSite was Neiman Marcus's digital editorial hub\" — designer spotlights, color stories and ways-to-wear spreads with headline, deck and body copy in every frame",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"Designer names ran as big as the photographs, letters locked into the figures\"; frames like the-rocker and classic-beauty show swash caps and mixed roman/italic lockups as the layout",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declares Art Direction and Photo Direction: \"Scale, weight and position came out of the story's concept, and the photographer got briefed with those\"",
+     "from": "prose"
+    },
+    {
+     "term": "website",
+     "why": "\"The mandate was to make the website feel like a magazine\"; the color-story and spotlight frames are catalogued as screenshots and shown on laptop mockups",
+     "from": "both"
+    },
+    {
+     "term": "ecommerce",
+     "why": "\"sell product like a store\" and \"shoppers reached the product page having read something first\" — styling copy names shoppable product (Eddie Borgo, David Yurman) and the shopper must \"still find the price\"",
+     "from": "both"
+    },
+    {
+     "term": "design system",
+     "why": "\"Three templates carried dozens of stories\" and merchandising could drop new product photography into the template and ship without a custom layout",
+     "from": "prose"
+    }
+   ]
+  },
+  "nordstrom-beauty": {
+   "hash": "85718c52d70c0760",
+   "terms": [
+    {
+     "term": "ecommerce",
+     "why": "Product drawer frames show \"MAC Red Lipstick $17.50\", \"Add to Bag\", \"Add to Wish List\", size and quantity fields.",
+     "from": "both"
+    },
+    {
+     "term": "website",
+     "why": "A Nordstrom beauty editorial hub built in their CMS with custom components and HTML/CSS/JS, shown desktop and mobile.",
+     "from": "both"
+    },
+    {
+     "term": "product design",
+     "why": "Declared Product/UX design; the try-on tool and shoppable drawer are designed product flows.",
+     "from": "prose"
+    },
+    {
+     "term": "editorial",
+     "why": "\"Three modular story formats, each written in an editorial voice\" — \"GET THAT GLOW\" and \"top 5 serums we love\" story pages with headline, deck and body copy.",
+     "from": "both"
+    },
+    {
+     "term": "personalization",
+     "why": "\"Upload a selfie, try on every shade\" using the customer's own Style Profile photo with a shade gradient on their face.",
+     "from": "both"
+    }
+   ]
+  },
+  "nordstrom-framework": {
+   "hash": "43e41408de687491",
+   "terms": [
+    {
+     "term": "design system",
+     "why": "\"a content framework from scratch: four named buckets, each with its own typographic mark and icon\" reused across homepage, email and landing pages",
+     "from": "both"
+    },
+    {
+     "term": "naming",
+     "why": "Prose names the four buckets — \"What's Now\", \"On Our List\", \"Where to Wear\", \"Wear to Where\" — and the lockup frames show them",
+     "from": "both"
+    },
+    {
+     "term": "ecommerce",
+     "why": "Nordstrom.com homepage modules and shopping pages in hero3.png: \"The List: Hobo Bags\", \"Sunglasses Under $100\", \"Recommended For You\"",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"Sourced a different typeface for every lockup, so no two of them share a face\" — italic script lockups visible in all three lockup frames",
+     "from": "both"
+    },
+    {
+     "term": "branding",
+     "why": "Declares Brand Design; each bucket got its own identity — custom icon plus typographic mark",
+     "from": "both"
+    },
+    {
+     "term": "email",
+     "why": "\"dedicated email sections\" carrying the matching lockup and icon",
+     "from": "prose"
+    }
+   ]
+  },
+  "nordstrom-personalization": {
+   "hash": "c1f05ef6d3b85e07",
+   "terms": [
+    {
+     "term": "personalization",
+     "why": "\"A different homepage for each shopper\" — screens show \"Hi, Gabby\" and \"Hi, Toby\" with different content sets",
+     "from": "both"
+    },
+    {
+     "term": "design system",
+     "why": "Three tile shapes (square, hero, vertical) with strict resize/restack rules across breakpoints",
+     "from": "prose"
+    },
+    {
+     "term": "ecommerce",
+     "why": "Nordstrom shop screens with nav (WOMEN, MEN, SALE), \"FREE SHIPPING. FREE RETURNS.\" and product prices \"$78\"",
+     "from": "both"
+    },
+    {
+     "term": "website",
+     "why": "Homepage layouts and category pages built in the Nordstrom CMS, shown in laptop and phone browser mockups",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declares art direction; editorial modules \"the SAVVY mag\", \"'90S REVIBE\", \"HIGH CITY ESSENTIALS\" styled to one look",
+     "from": "both"
+    },
+    {
+     "term": "photography",
+     "why": "\"The product photography followed the same rules... white seamless paper, no props, one shadow\" — the product shots are catalogued as photographs",
+     "from": "both"
+    }
+   ]
+  },
+  "robert-rodriguez": {
+   "hash": "010ed76ecc5a3780",
+   "terms": [
+    {
+     "term": "campaign",
+     "why": "\"A spring campaign for Neiman Marcus... run across social, email, the stores, and editorial\" — the whole study is a campaign system.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "Declares Art Direction; prose sets the '80s mall-glam reference, four setups, and the composite look.",
+     "from": "both"
+    },
+    {
+     "term": "photography",
+     "why": "The work is the shoot itself — \"One model, four setups\", Capture One, and studio portraits in frames like the pink-blazer polka-dot editorial portrait.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "\"Archer Hairline is thin enough to sit over the pictures\" plus Archer Book for body; hairline wordmark visible in the logo/typography frame.",
+     "from": "both"
+    },
+    {
+     "term": "editorial",
+     "why": "\"the editorial spreads gave the double exposures room to run wide\".",
+     "from": "prose"
+    },
+    {
+     "term": "signage",
+     "why": "\"The storefront window ran the composites at large format\"; storefront window mockup shows the framed campaign panel in situ.",
+     "from": "both"
+    }
+   ]
+  },
+  "sally": {
+   "hash": "034ae623fc3a1a28",
+   "terms": [
+    {
+     "term": "ai",
+     "why": "Five AI providers routed per task, an AI strategist with 21 tools, Claude/Gemini/Perplexity roles described throughout.",
+     "from": "prose"
+    },
+    {
+     "term": "app",
+     "why": "\"six deployed applications\" — a portal with eight apps, asset hub, store-associate site, scoreboard.",
+     "from": "prose"
+    },
+    {
+     "term": "product design",
+     "why": "Declares Product Design and describes designing the portal, feed, Sally's Take and Approve flows.",
+     "from": "prose"
+    },
+    {
+     "term": "engineering",
+     "why": "\"Design and full-stack, brand to backend\" — Python, Next.js, Supabase + pgvector, Railway, Vercel.",
+     "from": "prose"
+    },
+    {
+     "term": "design system",
+     "why": "Declares Design System; the email \"assembles out of the product's own component library\" via a Figma plugin.",
+     "from": "prose"
+    },
+    {
+     "term": "email",
+     "why": "\"press Create Email... One press builds all four emails\" — plugin clones artboards, places images and copy for email developers.",
+     "from": "prose"
+    }
+   ]
+  },
+  "sizzle": {
+   "hash": "a7c5168fb48f25c2",
+   "terms": [
+    {
+     "term": "motion",
+     "why": "Prose: fourteen transition types, wipes, blinks, a burn, timing tuned \"so the stills feel like motion and not a slideshow\".",
+     "from": "prose"
+    },
+    {
+     "term": "engineering",
+     "why": "Prose: React/TypeScript/CSS build shipping a 4.8KB gzipped web component plus a GIF/MP4 exporter.",
+     "from": "prose"
+    },
+    {
+     "term": "product design",
+     "why": "Declared discipline and described as a tool with a lab section that takes user images and beat chips to freeze the reel.",
+     "from": "prose"
+    },
+    {
+     "term": "ai",
+     "why": "Prose: \"The build took a day with Claude Code.\"",
+     "from": "prose"
+    }
+   ]
+  },
+  "you-by-sally": {
+   "hash": "07f9ca2b45543ad4",
+   "terms": [
+    {
+     "term": "campaign",
+     "why": "\"A brand campaign for You by Sally\" running cast portraits, swatches, email and signage together.",
+     "from": "both"
+    },
+    {
+     "term": "art direction",
+     "why": "\"Casting first, and the portraits led everything after it\" — saturated backgrounds and styling in hero2.jpg and the cast portraits.",
+     "from": "both"
+    },
+    {
+     "term": "branding",
+     "why": "Brand system with locked pink/cyan palette and wordmark holding across phone screen and store sign.",
+     "from": "both"
+    },
+    {
+     "term": "logo",
+     "why": "lockup.jpg is the \"YOU BY SALLY.\" painted wordmark shown with construction and circle guides.",
+     "from": "both"
+    },
+    {
+     "term": "typography",
+     "why": "Avenir Next Heavy/Demi Bold/Medium roles specified for wordmark, shade names and body copy.",
+     "from": "prose"
+    },
+    {
+     "term": "signage",
+     "why": "\"a 6-foot retail sign\" — the swatch grid scaled up for in-store signage.",
+     "from": "prose"
+    },
+    {
+     "term": "website",
+     "why": "Bio page mockups (sally-beauty-hair-color-campaign-influencer-bio.png) and screen1.png landing page with cast cards and \"GET HELEN'S LOOK\".",
+     "from": "pictures"
+    }
+   ]
+  }
+ }
+}

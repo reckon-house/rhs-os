@@ -25,6 +25,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, dirname, extname } from "node:path";
 import sharp from "sharp";
+import { WORK, foldWork } from "./lib/vocabulary.mjs";
 
 const FORCE = process.argv.includes("--force");
 const ROOT = "public/case-studies";
@@ -484,6 +485,28 @@ const unquote = (raw) => {
   try { return JSON.parse('"' + raw + '"'); }
   catch { return raw.replace(/\\n/g, "\n").replace(/\\"/g, '"').replace(/\\\\/g, "\\"); }
 };
+/* ── WHAT KIND OF WORK EACH STUDY IS ────────────────────────────────
+   Two halves, and they are kept apart in the file the way the facts
+   index keeps mined and observed apart. `declared` is the disciplines
+   the study itself lists, folded to canonical terms exactly. `judged`
+   is scripts/build-work.mjs reading the prose beside the vision pass's
+   catalogue of the pictures and saying what the work IS — the half
+   nobody had written down, which is why asking this board for
+   ecommerce found two studies out of eight.
+
+   `wx` is those terms with every alias the vocabulary gives them,
+   flattened for the match. The board does the matching and has no
+   vocabulary of its own, so the expansion is done here once rather
+   than shipped as a table the client has to carry. */
+const WORK_IDX = existsSync("src/data/generated/study-work.json")
+  ? JSON.parse(readFileSync("src/data/generated/study-work.json", "utf8"))
+  : { studies: {} };
+const FACTS_IDX = existsSync("src/data/generated/project-facts.json")
+  ? JSON.parse(readFileSync("src/data/generated/project-facts.json", "utf8"))
+  : { projects: [] };
+const DISC = new Map((FACTS_IDX.projects || []).map((p) => [p.slug, p.disciplines || []]));
+const WORD_OF = new Map(WORK.map(([t, al]) => [t, [t, ...al].join(" ")]));
+let worked = 0;
 const COPY = {};
 for (const [folder, g] of Object.entries(groups)) {
   const file = `src/data/${g.h}-case-study.ts`;
@@ -498,7 +521,13 @@ for (const [folder, g] of Object.entries(groups)) {
   }
   const ab = src.match(/\n\s*abstract:\s*\n?\s*"((?:[^"\\]|\\.)*)"/);
   const para = ab ? unquote(ab[1]).split(/\n{2,}/).map((x) => x.trim()).filter(Boolean) : [];
-  if (facts.length || para.length) COPY[folder] = { facts, para };
+  const w = WORK_IDX.studies[g.h] || {};
+  const declared = foldWork(DISC.get(g.h) || []).map((d) => d.term);
+  const work = [...new Set([...declared, ...((w.terms || []).map((t) => t.term))])];
+  const wx = work.map((t) => WORD_OF.get(t) || t).join(" ");
+  if (!facts.length && !para.length) continue;
+  COPY[folder] = { facts, para, ...(work.length ? { work, wx } : {}) };
+  if (work.length) worked += 1;
 }
 /* ── THE HOUSE'S OWN COPY ───────────────────────────────────────────
    The footer is two columns on the board, Info and Connect, and what
@@ -678,6 +707,7 @@ console.log(
      summary line — after everything had been written, which is the
      one place a crash reads as a failed build and is not one */
   `\n  copy public/lab/board-copy.json (${STUDIES.length} studies, ` +
+  `${worked} with work terms, ` +
   `${STUDIES.reduce((n, c) => n + (c.facts || []).length, 0)} facts, ` +
   `${STUDIES.reduce((n, c) => n + (c.para || []).length, 0)} paragraphs, ` +
   `house: ${COPY.house.method.length} notes, ${COPY.house.credits.length} credits)`

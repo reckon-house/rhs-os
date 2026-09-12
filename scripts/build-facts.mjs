@@ -19,7 +19,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { studyFiles, loadStudy, loadPulls, strings, filenameWords } from "./lib/walk-studies.mjs";
-import { terms, NEGATORS, GUARDS, QUERY_ALIASES, VOCAB_VERSION } from "./lib/vocabulary.mjs";
+import { terms, NEGATORS, GUARDS, QUERY_ALIASES, VOCAB_VERSION, foldWork } from "./lib/vocabulary.mjs";
 
 const OUT_DIR = "src/data/generated";
 const TERMS = terms();
@@ -614,6 +614,39 @@ for (const [src, rec] of Object.entries(vision.images || {})) {
 for (const p of projects)
   for (const list of Object.values(p.facets)) list.sort((a, b) => b.n - a.n);
 
+/* ── WHAT KIND OF WORK EACH STUDY IS ────────────────────────────────
+   Two halves, kept apart the way mined and observed are kept apart.
+   `declared` is folded exactly from the disciplines the study lists.
+   `judged` is scripts/build-work.mjs, which read the prose beside the
+   vision pass's catalogue of the pictures and said what the work IS —
+   and it carries the line of evidence that convinced it, so a wrong
+   call is readable here rather than only in an answer.
+
+   Neither is mined from prose, and that is deliberate: "web", "brand"
+   and "content" are ordinary words in thirty studies, and matching
+   them would bury the index while still missing the study that never
+   says the word. See WORK in lib/vocabulary.mjs. */
+const WORK_FILE = OUT_DIR + "/study-work.json";
+const studyWork = existsSync(WORK_FILE)
+  ? JSON.parse(readFileSync(WORK_FILE, "utf8"))
+  : { studies: {} };
+let workTermsWritten = 0;
+for (const p of projects) {
+  const declared = foldWork(p.disciplines || []).map((d) => d.term);
+  const judged = (studyWork.studies[p.slug]?.terms || []);
+  const terms = [...new Set([...declared, ...judged.map((t) => t.term)])];
+  if (!terms.length) continue;
+  p.work = terms.map((term) => {
+    const j = judged.find((x) => x.term === term);
+    return {
+      term,
+      ...(declared.includes(term) ? { declared: true } : {}),
+      ...(j ? { judged: true, why: j.why } : {}),
+    };
+  });
+  workTermsWritten += terms.length;
+}
+
 const payload = { vocabularyVersion: VOCAB_VERSION, voice, daybook, projects, pulls, images };
 writeFileSync(OUT_DIR + "/project-facts.json", JSON.stringify(payload, null, 1));
 
@@ -642,6 +675,7 @@ const compact = {
     slug: p.slug, title: p.title, href: p.href, category: p.category,
     year: p.year,
     d: p.disciplines, t: p.tools,
+    ...(p.work ? { w: p.work.map((x) => x.term) } : {}),
     /* omitted entirely when empty: this rides in the payload every
        visitor downloads, and most studies will never carry one */
     ...(p.keywords.length ? { k: p.keywords } : {}),
@@ -668,6 +702,9 @@ writeFileSync("public/lab/project-facts.min.json", JSON.stringify(compact));
 console.log(images.length
   ? `observed facts    ${observedFacts} from ${images.length} photographed frames`
   : `observed facts    none — run npm run vision to look at the images`);
+console.log(workTermsWritten
+  ? `work terms        ${workTermsWritten} across ${projects.filter((p) => p.work).length} studies`
+  : `work terms        none — run npm run work to say what kind of work each study is`);
 
 const kb = (f) => (Buffer.byteLength(JSON.stringify(f)) / 1024).toFixed(1) + "kb";
 console.log(`\nwrote ${OUT_DIR}/project-facts.json      ${kb(payload)}`);
