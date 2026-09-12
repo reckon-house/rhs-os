@@ -286,13 +286,30 @@ export function namedIn(answer: string): string[] {
   const surfaces: { href: string; s: string }[] = [];
   for (const p of PROJECTS) {
     const full = norm(p.title).trim();
-    /* on a real stop — a period with a space after it — so A.R.C. Archive.
-       Ready. Cloud. gives "A.R.C." and not "A" */
-    const head = norm(p.title.split(/(?<=\w)[.\u2014:-]\s+/)[0] || "").trim();
-    for (const s of new Set([full, head])) {
-      if (s.length >= 3) surfaces.push({ href: p.href, s });
+    /* On a real stop — a period with a space after it — so A.R.C.
+       Archive. Ready. Cloud. gives "A.R.C." and not "A". And before the
+       word that joins a brand to a collaborator, since that is how
+       anyone refers to them: Ivy Park by Beyoncé is "Ivy Park", Robert
+       Rodriguez x Neiman's is "Robert Rodriguez". Only by/x/with, not
+       every connector: splitting "Branding, Print & Apparel" on its
+       ampersand would leave a surface loose enough to catch an
+       ordinary sentence about branding. */
+    const raw = (p.title.split(/(?<=\w)(?:[.\u2014:-]|\s(?:by|x|with))\s+/i)[0] || "").trim();
+    const head = norm(raw).trim();
+    /* A ONE-WORD HEAD IS ONLY SAFE AS AN ACRONYM. "You By Sally" heads
+       to "you" and "Loved by Nordstrom" to "loved", and either would
+       claim half the answers ever written. Two words, or a dotted
+       acronym like A.R.C., and nothing else. */
+    const ok = head.split(" ").length >= 2 || /^[A-Za-z](\.[A-Za-z])+\.?$/.test(raw);
+    for (const cand of new Set([full, ok ? head : ""])) {
+      if (cand && cand.length >= 3) surfaces.push({ href: p.href, s: cand });
     }
   }
+  /* A NAME TWO STUDIES SHARE NAMES BOTH. Three studies head to "the
+     fairview" — entry, sitting room, primary suite — and an answer
+     that says only that means the house, so the house is what the rows
+     should show. A head is only ever shared by a family, since it is
+     cut from the title itself. */
   surfaces.sort((a, b) => b.s.length - a.s.length);
   const at = new Map<string, number>();
   let rest = hay;
@@ -300,7 +317,8 @@ export function namedIn(answer: string): string[] {
     if (at.has(href)) continue;
     const i = rest.indexOf(" " + s + " ");
     if (i < 0) continue;
-    at.set(href, i);
+    /* every study this name belongs to, at the place it was named */
+    for (const sib of surfaces) if (sib.s === s && !at.has(sib.href)) at.set(sib.href, i);
     /* spent, so a shorter title inside this one cannot match it too */
     rest = rest.slice(0, i) + " ".repeat(s.length + 2) + rest.slice(i + s.length + 2);
   }
