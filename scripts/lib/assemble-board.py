@@ -3772,6 +3772,31 @@ const escRe = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const hasWord = (w, hay) => !!w && (w.length <= 3
   ? new RegExp("(^|[^a-z0-9])" + escRe(w) + "([^a-z0-9]|$)").test(hay)
   : hay.includes(w));
+/* ── WHAT A STUDY IS ABOUT, IN WORDS IT DOES NOT USE ────────────────
+   The match reads a study's own text, so it only knows a study by the
+   words that study happens to say. Eight of these are ecommerce work
+   and two say "ecommerce": the others say store, retail,
+   merchandising, or name the brand and leave the rest to the reader.
+   So the honest answer to "ecommerce" was two studies.
+
+   The house keeps a subject as a bag of words and the studies it
+   belongs to (BOARD_HOUSE.subjects), and the words join those
+   studies' text for the match. It carries the VOCABULARY as well as
+   the membership, so "online store", "shoppable" and "PDP" find the
+   same eight, and it is the house talking about its own work rather
+   than the engine guessing what a word means. A second house writes
+   its own subjects; the engine has none of its own.
+
+   The words go into the count as well as the match, so a subject
+   spread over a third of the board is weighted like any other word
+   a third of the board carries. */
+const SUBJECTS = (window.BOARD_HOUSE && window.BOARD_HOUSE.subjects) || [];
+const SUBJ_OF = new Map();
+for (const s of SUBJECTS) for (const f of (s.studies || [])) {
+  SUBJ_OF.set(f, (SUBJ_OF.get(f) ? SUBJ_OF.get(f) + " " : "") + (s.words || ""));
+}
+const SUBJ = (folder) => SUBJ_OF.get(folder) || "";
+
 const studiesFor = (text) => {
   const lower = text.toLowerCase().trim();
   /* SHORT WORDS MATCH WHOLE OR NOT AT ALL. Two- and three-letter
@@ -3791,14 +3816,15 @@ const studiesFor = (text) => {
      does not. A broad question scores everything alike, and keeps
      everything, which is the honest list for it. */
   const docs = Object.entries(GROUPS).map(([f, g]) => (f + " " + g.t + " " + g.s + " " + g.tags.join(" ")
-    + " " + (g.d || "") + " " + ((COPY && COPY[f] && COPY[f].facts) || []).map((x) => x.k + " " + x.v).join(" ")).toLowerCase());
+    + " " + (g.d || "") + " " + SUBJ(f) + " "
+    + ((COPY && COPY[f] && COPY[f].facts) || []).map((x) => x.k + " " + x.v).join(" ")).toLowerCase());
   const N = docs.length;
   const wt = new Map(ws.map((w) => {
     let df = 0; for (const d of docs) if (hasWord(w, d)) df += 1;
     return [w, Math.log((N + 1) / (df + 1)) / Math.log(N + 1)];
   }));
   const found = Object.entries(GROUPS).map(([folder, g]) => {
-    const hay = (folder + " " + g.t + " " + g.s + " " + g.tags.join(" ") + " " + (g.d || "")).toLowerCase();
+    const hay = (folder + " " + g.t + " " + g.s + " " + g.tags.join(" ") + " " + (g.d || "") + " " + SUBJ(folder)).toLowerCase();
     let n = 0;
     for (const w of ws) if (hasWord(w, hay)) n += wt.get(w);
     /* the whole question in order is worth as much again as its words:

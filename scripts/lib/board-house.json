@@ -199,6 +199,21 @@
       ]
     ]
   },
+  "subjects": [
+    {
+      "words": "ecommerce e-commerce commerce online store storefront shop shopping shoppable checkout cart product page pdp",
+      "studies": [
+        "jeffrey-ecommerce",
+        "ivy-park",
+        "nordstrom-personalization",
+        "nordstrom-beauty",
+        "nordstrom-framework",
+        "loved-by-nordstrom",
+        "cosmo-prof",
+        "sally-os"
+      ]
+    }
+  ],
   "ask": {
     "endpoint": "/api/ask",
     "copy": "/lab/board-copy.json",
