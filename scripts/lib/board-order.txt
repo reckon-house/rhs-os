@@ -146,3 +146,4 @@ branding = j-christianson/j-christianson-storefront-tree-stripe-window-mockup
 # the two frame the scene too differently to measure. Name the STUDY's
 # picture: the cover is the one that stands.
 robert-rodriguez/neiman-marcus-robert-rodriguez-woman-cream-polka-dot-dress-pink-blazer-orange-yellow-backdrop-storefront-window-display-campaign
+nordstrom-beauty/nordstrom-beauty-hub-laptop-homepage-mockup
