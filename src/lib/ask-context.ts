@@ -242,6 +242,71 @@ export const SHELF = PROJECTS.map((p) => {
 }).join("\n\n");
 
 
+/* ── WHICH STUDIES THE ANSWER IS ABOUT, READ OFF THE ANSWER ────────
+ * The client picks the rows under an answer by matching the question's
+ * words against the studies' text, which is why asking this house for
+ * packaging found nothing: four studies say labels and hangtags in
+ * their prose and none of them says the word. The model has every
+ * study in its prefix and reasons over them properly — asked that
+ * question it names Capitan Boot Co. and J. Christianson, and says
+ * plainly that packaging itself is not shown.
+ *
+ * So the rows come off the answer now. No new protocol, no schema, no
+ * second call: the model already names the studies it means, in the
+ * house's own titles, because the shelf gave it those titles. Matched
+ * WHOLE and longest-first, so "Nordstrom Beauty" wins over a study
+ * called "Nordstrom" and a bare mention of the retailer matches
+ * nothing. A title either exists here or it does not, which is the
+ * same reason this route never asks the model for an image path: a
+ * name it could invent is a name that cannot get through.
+ */
+export function namedIn(answer: string): string[] {
+  const norm = (t: string) => " " + t.toLowerCase()
+    /* Periods and apostrophes OUT rather than turned into spaces: five
+       titles carry a trailing period ("Cosmo Prof.", "Hill Country
+       Oakworks.") that no answer ever writes, and one study is called
+       A.R.C., which has to survive as a word rather than three
+       letters. Everything else that is not a letter or a number
+       becomes a space, so a title named at the end of a clause —
+       "the Hill Country Kitchen, built around four finishes" — is
+       still the title. The comma was what the first cut missed. */
+    /* a possessive is the same name: "J. Christianson's identity"
+       is J. Christianson, and requiring a clean word end without this
+       dropped it */
+    .replace(/['\u2018\u2019]s\b/g, "")
+    .replace(/[.'\u2018\u2019]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ") + " ";
+  const hay = norm(answer);
+  /* the whole title, and the part before its first stop: a study called
+     "A.R.C. Archive. Ready. Cloud." is named "A.R.C." in every sentence
+     anyone writes about it. Longest first and consuming, so the longer
+     title is spent before a shorter one can book the same words. */
+  const surfaces: { href: string; s: string }[] = [];
+  for (const p of PROJECTS) {
+    const full = norm(p.title).trim();
+    /* on a real stop — a period with a space after it — so A.R.C. Archive.
+       Ready. Cloud. gives "A.R.C." and not "A" */
+    const head = norm(p.title.split(/(?<=\w)[.\u2014:-]\s+/)[0] || "").trim();
+    for (const s of new Set([full, head])) {
+      if (s.length >= 3) surfaces.push({ href: p.href, s });
+    }
+  }
+  surfaces.sort((a, b) => b.s.length - a.s.length);
+  const at = new Map<string, number>();
+  let rest = hay;
+  for (const { href, s } of surfaces) {
+    if (at.has(href)) continue;
+    const i = rest.indexOf(" " + s + " ");
+    if (i < 0) continue;
+    at.set(href, i);
+    /* spent, so a shorter title inside this one cannot match it too */
+    rest = rest.slice(0, i) + " ".repeat(s.length + 2) + rest.slice(i + s.length + 2);
+  }
+  /* in the order the answer introduces them */
+  return [...at.entries()].sort((a, b) => a[1] - b[1]).map(([href]) => href);
+}
+
 /* ── the throttle ─────────────────────────────────────────────────
    THREE CEILINGS, AND AN HONEST ACCOUNT OF WHAT THEY ARE WORTH.
 

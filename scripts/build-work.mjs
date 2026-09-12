@@ -161,8 +161,13 @@ async function main() {
   const done = readJSON(OUT, { model: MODEL, studies: {} });
   const studies = facts.projects.filter((p) => !ONE || p.slug === ONE);
 
-  /* re-read a study when its prose or its pictures have changed */
-  const hashOf = (brief) => createHash("sha1").update(brief).digest("hex").slice(0, 16);
+  /* Re-read a study when its prose, its pictures, or THE VOCABULARY has
+     changed. The last one is the whole judgement: a term the list did
+     not carry could never be returned, so adding one has to re-open
+     every study rather than only the ones whose text moved. Packaging
+     was missing from the first cut of the list and four studies name
+     it in their own prose. */
+  const hashOf = (brief) => createHash("sha1").update(brief + "\n" + TERMS.join(",")).digest("hex").slice(0, 16);
   const jobs = studies.map((p) => {
     const brief = briefFor(p, byStudy.get(p.slug) || []);
     return { p, brief, hash: hashOf(brief) };

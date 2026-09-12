@@ -4149,13 +4149,18 @@ function pushTurn(c, q, line, hits, door) {
    how, a what; a bare word is still a search. */
 const askable = (q) => q.trim().split(/\s+/).length >= 3 || /^(why|how|what|which|when|who|where)\b/i.test(q.trim());
 const hrefOf = (folder) => "/case-studies/" + ((GROUPS[folder] && GROUPS[folder].h) || folder);
+/* and back: the route answers in hrefs, the board deals in folders */
+const folderOfHref = (href) => {
+  const slug = String(href).replace(/^\/case-studies\//, "");
+  return Object.keys(GROUPS).find((f) => (GROUPS[f].h || f) === slug) || null;
+};
 async function askHouse(q, hrefs, land) {
   try {
     const r = await fetch(BOARD_HOUSE.ask.endpoint, { method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ q, hrefs }) });
     if (!r.ok) return;
     const j = await r.json();
-    if (j && j.answer) land(j.answer);
+    if (j && j.answer) land(j.answer, j.named || []);
   } catch (e) { /* the board's own line stands */ }
 }
 function narrowColumn(c, text) {
@@ -4606,10 +4611,37 @@ function askFrom(from, text, opts) {
   else if (!hits.length) note.textContent = BOARD_HOUSE.ask.nothingCaught;
   else note.textContent = hits.length === 1 ? "One study." : hits.length + " studies, " + hits[0].g.t + " first.";
   c.__lead.appendChild(note);
-  if (hits.length) studyRows(hits, c.__matter, c);
+  /* the rows in a box of their own, so the answer can change them */
+  const rowsBox = el("div");
+  c.__matter.appendChild(rowsBox);
+  if (hits.length) studyRows(hits, rowsBox, c);
   insertColumn(c, from, opts);
-  if (askable(t) && hits.length) {
-    askHouse(t, hits.slice(0, 3).map((h) => hrefOf(h.folder)), (answer) => { if (c.isConnected) note.textContent = answer; });
+  /* ── ASKED EVEN WHEN THE MATCH CAUGHT NOTHING ────────────────────
+     The model was only asked when the match had already found
+     something, so the one question the match is worst at — a word the
+     studies do not use — was the one question the house never put to
+     it. "Do you do packaging?" answered "Nothing caught on the board"
+     while the model, given the same question, names Capitan Boot Co.
+     and J. Christianson and says plainly that packaging itself is not
+     shown. The match is a first paint now, not a gate. */
+  if (askable(t)) {
+    askHouse(t, hits.slice(0, 3).map((h) => hrefOf(h.folder)), (answer, named) => {
+      if (!c.isConnected) return;
+      note.textContent = answer;
+      /* ── AND THE ROWS FOLLOW WHAT THE ANSWER NAMED ──────────────
+         The match can be wrong both ways: nothing for packaging,
+         everything for a broad word. What the model actually named
+         leads, then whatever the match found that it did not mention.
+         Nothing invented can arrive here — the route resolves a name
+         to a study or drops it. */
+      const add = (named || []).map(folderOfHref).filter(Boolean)
+        .filter((f) => !hits.some((h) => h.folder === f))
+        .map((folder) => ({ folder, g: GROUPS[folder] }))
+        .filter((x) => x.g);
+      if (!add.length) return;
+      rowsBox.innerHTML = "";
+      studyRows([...add, ...hits], rowsBox, c);
+    });
   }
 }
 window.askFrom = askFrom;

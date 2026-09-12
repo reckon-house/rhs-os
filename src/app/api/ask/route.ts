@@ -44,7 +44,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import {
   SYSTEM, SHELF, DAYBOOK_TEXT, contextFor, throttled, throttleState, KNOWN_TERMS, WITH_TEXT,
-  MAX_Q, type AskBody,
+  MAX_Q, namedIn, type AskBody,
 } from "@/lib/ask-context";
 import { flag } from "@/lib/voice-tells";
 
@@ -292,7 +292,12 @@ export async function POST(req: NextRequest) {
       `cache_write=${u.cache_creation_input_tokens ?? 0} out=${u.output_tokens} voice=${voice}` +
       ` effort=${EFFORT} text=${WITH_TEXT}`
     );
-    return NextResponse.json({ answer, used, model: MODEL });
+    /* The studies the answer is about, read off the answer itself
+       (namedIn). The client picked `used` by matching words and can be
+       wrong in both directions — it finds nothing for "packaging" and
+       everything for a broad word — so what the model actually named
+       rides back with the prose and the rows follow it. */
+    return NextResponse.json({ answer, used, named: namedIn(answer), model: MODEL });
   } catch {
     return NextResponse.json({ error: "model error" }, { status: 502 });
   }

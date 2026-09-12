@@ -343,6 +343,13 @@ export const WORK = [
   ["pattern", ["pattern design", "patterns", "colorway development", "colorway"]],
   ["print", ["poster design", "poster", "album art", "prints", "graphic design"]],
   ["apparel", ["apparel graphics", "clothing", "merch", "garment"]],
+  /* The brand systems land on goods: Capitan's marks are "on the
+     stamps, the banners, the labels, the packaging", J. Christianson
+     runs to hangtags, Oakworks sets type for what "runs long on
+     packaging", Various design is record sleeves. Left out of the
+     first cut of this list because no photograph shows a box, which
+     was reading the pictures and not the prose. */
+  ["packaging", ["label", "labels", "hangtag", "hang tag", "sleeve", "product applications"]],
   ["signage", ["retail signage", "billboard", "window display", "outdoor"]],
   ["editorial", ["editorial design", "editorial templates", "story development", "copywriting", "content strategy"]],
   ["naming", ["names"]],
