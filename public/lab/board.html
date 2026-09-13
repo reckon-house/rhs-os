@@ -1884,7 +1884,7 @@ function deal(list, opts) {
        largest rung's descriptor had become the tile's painted width —
        97w for a 1536px file, which is a rung no box would ever ask
        for. */
-    sized.push({ ...it, nw: it.w, w, h });
+    sized.push({ ...it, nw: it.w, nh: it.h, w, h });
   }
 
   /* ── EVERY PAIR KEEPS ITS OWN ROWS ───────────────────────────────
@@ -2134,18 +2134,42 @@ function deal(list, opts) {
        clearing something already cleared — and it cost the one thing
        a row of columns is for, which is a top edge they share. */
     let y = ysP ? ysP[k] : 0;
+    let ox = 0;
     if (it.hero && it.wide && colY) {
-      /* under its head at the board's smallest gap, and as tall as the
-         screen leaves from there. The pair's other column is empty
-         beneath the head's row; the picture is what fills it. */
-      y = (headEnd[c] != null ? headEnd[c] : top0) + airMin;
-      h = heroRoom(y) + capOf(it);
-      colY[c] = y + h + airOf(); colY[c + 1] = colY[c];
-      if (y + h > colH[c + 1]) colH[c + 1] = y + h;
+      /* ── THE PICTURE KEEPS ITS OWN SHAPE ─────────────────────────────
+         The space is the pair under its head, as tall as the screen
+         leaves: about 1007 by 516 at 1440x900, a 1.95 box. It used to
+         BE the frame, so a 1.53 laptop was cut to 1.95 and cover took
+         its lid and its base. The space is now only the room: the
+         picture fits inside it at its own ratio and sits in the
+         bottom-right corner, so the laptop is whole and the air it
+         leaves opens under the head, diagonal to it.
+
+         A floor of 60% of the pair's width, cropping only past it, and
+         it is load-bearing: the rule between the pair's two columns is
+         not drawn under a wide hero, and a picture narrower than that
+         could sit wholly in the right column and leave that rule's
+         place empty. The column's footprint is measured from the full
+         space, not the picture, so nothing below it moves. */
+      const top = (headEnd[c] != null ? headEnd[c] : top0) + airMin;
+      const cap = capOf(it);
+      const H = heroRoom(top), W = w;
+      const ratio = it.nw && it.nh ? it.nw / it.nh : W / H;
+      let bw = W / H > ratio ? H * ratio : W;
+      let bh = W / H > ratio ? H : W / ratio;
+      if (bw < W * 0.6) { bw = W * 0.6; bh = Math.min(H, bw / ratio); }
+      bw = Math.round(bw); bh = Math.round(bh);
+      ox = W - bw;
+      y = top + (H - bh);
+      w = bw;
+      h = bh + cap;
+      const bottom = top + H + cap;
+      colY[c] = bottom + airOf(); colY[c + 1] = colY[c];
+      if (bottom > colH[c + 1]) colH[c + 1] = bottom;
     } else if (colY) { y = colY[c]; colY[c] += h + airOf(); }
     if (it.kind === "head") headEnd[c] = y + h;
     if (y + h > colH[c]) colH[c] = y + h;
-    out.push({ ...it, w, h, x: c * MOD_X, y, col: c,
+    out.push({ ...it, w, h, x: c * MOD_X, y, col: c, ...(ox ? { ox } : {}),
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
@@ -3094,7 +3118,11 @@ function mount(t, gx, gy, u, f) {
   el.className = "tile ixrow";
   /* left 0: a tile's x IS its column's, and the column is the box it
      is in now. Only the hug moves it within that. */
-  el.style.cssText = "left:0;top:" + gy + "px;width:" + t.w + "px";
+  el.style.cssText = "left:" + (t.ox || 0) + "px;top:" + gy + "px;width:" + t.w + "px";
+  /* a wide hero is anchored to the pair's right edge, so its caption
+     ends where the picture does: the board's own right-hug setting,
+     set once here, since the side-swap never moves a frame this wide */
+  if (t.hero && t.wide) { el.classList.add("hangR"); el.__right = true; }
   /* what the swap reads: where this tile's column sits in the world,
      and how far the tile can travel inside it */
   el.__wx = gx;
