@@ -412,6 +412,38 @@ export function DaybookBoard() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  /* SHIFT AND A WHEEL TURN THE ROW, as they do on the board
+     (assemble-board.py reads e.shiftKey ? e.deltaY : e.deltaX). A
+     trackpad, and a Mac's own shift-wheel, already arrive sideways and
+     scroll the row natively; a plain wheel with shift held arrives
+     vertical, so it turns one column per notch, with a beat between
+     turns so a spinning wheel does not run the row to its end. */
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    let acc = 0;
+    let until = 0;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.shiftKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now < until) return;
+      acc += e.deltaY;
+      if (Math.abs(acc) < 40) return;
+      const col = strip.querySelector<HTMLElement>(`.${styles.col}`);
+      if (col) {
+        strip.scrollTo({
+          left: strip.scrollLeft + Math.sign(acc) * col.offsetWidth,
+          behavior: still() ? "auto" : "smooth",
+        });
+      }
+      acc = 0;
+      until = now + 450;
+    };
+    strip.addEventListener("wheel", onWheel, { passive: false });
+    return () => strip.removeEventListener("wheel", onWheel);
+  }, []);
+
   /* the arrow keys turn the row, as a page turns on the board */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

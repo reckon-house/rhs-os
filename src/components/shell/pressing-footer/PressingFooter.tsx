@@ -1,55 +1,30 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { PressingContact } from "./PressingContact";
-import { PressingCredits } from "./PressingCredits";
-import { PressingReturn } from "./PressingReturn";
 import { PressingHome } from "./PressingHome";
 
 /* ── PressingFooter ─────────────────────────────────────────────────
-   The site's tail, ported from the prototype's .fx-mast + .fx-index:
-   three beats in order — contact on ink, credits on ink, then the whole
-   portfolio on paper. The first two use the case study's own pinned
-   pattern (the headline holds while its column travels up beside it),
-   which is why they read as part of the same document rather than as
-   chrome bolted underneath it.
+   The site's tail, which is now only a case study's.
 
-   The third beat used to be the All-work index, suppressed on the
-   homepage because printing the same thirty frames twice on one route
-   was a directory stutter. Once the homepage BECAME that index the
-   stutter moved: every case study was ending by reprinting the front
-   page. So the tail states the loop instead of duplicating it, and the
-   route check moved inside PressingReturn, which needs it anyway to
-   know whether home is a link or the top of this page.
+   A CASE STUDY ENDS AT THE HOMEPAGE. It has no contact beat and no
+   credits under it: the scroll past its end goes to the board, the
+   real homepage, rather than to a copy of it rebuilt below the study.
+   That copy is what an earlier version of this file rendered, and a
+   reader could not tell the two apart until the URL disagreed.
 
-   A CASE STUDY NOW HAS NO TAIL AT ALL. It ends, and the scroll past
-   the end goes to the homepage — the real one, not the copy of it the
-   ring was rendering below the footer. That copy is what this change
-   is really about: a study ending in a rebuilt front page meant two
-   objects to keep in step, and the reader could not tell them apart
-   until the URL disagreed. Contact and credits went with it, which
-   sounds like a loss and is not: they are on the homepage, which is
-   now one deliberate push away from the end of every study.
+   EVERY OTHER PAGE ENDS WHERE IT ENDS. The old tail was three beats
+   ported from the pre-board homepage (contact on ink, credits on ink,
+   the old homepage's index on paper), and once the board took `/` it
+   was the one piece of the old site still printed under the new one:
+   under the daybook, the booking page, Staples, a thread, the custom
+   page, a 404. The board carries contact and credits now, one press of
+   the mark away.
 
-   No wrapper element around the beats. Each renders its own full-bleed
-   section and manages its own ground, and an extra div here would be one
-   more ancestor that could pick up a transform or an overflow clip and
-   silently kill both sticky headlines. */
+   No wrapper element: PressingHome renders its own full-bleed section
+   and manages its own ground, and an extra div here would be one more
+   ancestor that could pick up a transform or an overflow clip. */
 
 export function PressingFooter() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/case-studies/")) return <PressingHome />;
-  /* THE DAYBOOK HAS NO TAIL EITHER. Its columns fill the glass and
-     scroll inside themselves, so nothing below them is ever reached,
-     and what used to stand here was the old homepage reprinted under
-     a page that no longer looks like it. The mark is the way home. */
-  if (pathname === "/daybook") return null;
-
-  return (
-    <>
-      <PressingContact />
-      <PressingCredits />
-      <PressingReturn />
-    </>
-  );
+  return pathname?.startsWith("/case-studies/") ? <PressingHome /> : null;
 }

@@ -220,7 +220,11 @@
   inset: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  /* contained down, free sideways: a column's own end must not drag
+     the page, but a sideways swipe that starts on its words has to
+     reach the row. `contain` on both axes stopped it at the column,
+     and the row only turned from its buttons and keys. */
+  overscroll-behavior-y: contain;
   scrollbar-width: none;
   padding: calc(var(--cover-air) + 46px) calc(var(--ixgap) / 2) calc(var(--rule-foot) + 64px);
   -webkit-mask-image: linear-gradient(
