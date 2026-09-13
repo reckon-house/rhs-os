@@ -41,6 +41,18 @@ export const TELLS: Tell[] = [
   { key: "never-tail", label: "'and it never...' closing the sentence", re: /,\s*and (?:it|they|nothing) never \w+[^.]*[.!?]$/i },
   { key: "first-last", label: "'from the first X to the last Y'", re: /\bfrom the first \w+ to the last \w+/i },
   { key: "year", label: "a year on the work", scope: "answer", re: /\b20[0-3]\d\b/ },
+  /* THE BRAND DOING THE WORK. It is one person, and "Reckon House covers
+     the Fairview across three rooms" turns him into an agency by making
+     the name the one that acts. The prompt already banned "the house"
+     and "the studio" as a subject; the model reached for the proper
+     noun instead, which is the same move in a better suit. Read at the
+     start of a sentence and only before an action verb, so "Reckon
+     House is Jeremy Prasatik's portfolio" — which the who-are-you rule
+     asks for — still stands. Bare "the house" is left out on purpose:
+     in an interiors answer it is a residence, and "the house was taken
+     to the studs" is exactly the sentence the work wants. */
+  { key: "house-subject", label: "the brand or the studio doing the work", scope: "answer",
+    re: /^(?:Reckon\s?\*?\s?House|(?:the|this) (?:studio|practice|portfolio)|this site)\s+(?:\w+ly\s+)?(?:covers?|has|have|includes?|shows?|features?|offers?|spans?|brings?|handles?|does|did|builds?|built|designs?|designed|works?|specializ(?:es|ed)|focus(?:es|ed)|delivers?|creates?|created|makes?|made|runs?|ran|holds?|takes?|took|gets?|got|puts?|approaches|treats?|pairs?|sets?|leans?)\b/i },
   { key: "narrates", label: "describing what you were given instead of answering", scope: "answer",
     re: /\b(?:on file|the facts|the records|the index|nothing matched|I (?:don't|do not) have|not (?:in|on) (?:the|my) (?:facts|records|data))\b/i },
 ];
