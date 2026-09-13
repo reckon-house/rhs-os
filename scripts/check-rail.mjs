@@ -3,9 +3,10 @@
  *
  * The rail appears twice: down the homepage's pinned column, built by
  * pressingHomeDriver.js from the lab's own NOTES and FILTERS literals,
- * and again in the ring that closes every other page, rendered by
- * src/components/shell/IndexRail.tsx from src/data/practice-notes.ts
- * and src/data/rail-categories.ts.
+ * and again in the app's own copies, src/data/practice-notes.ts and
+ * src/data/rail-categories.ts. The footer ring that rendered those
+ * copies (IndexRail.tsx) is gone; rail-categories.ts still feeds the
+ * study bar's lines, so the two sides are still compared.
  *
  * Two copies of the same words, and until now nothing compared them.
  * practice-notes.ts said so in its own header — "scripts/port-home.mjs
