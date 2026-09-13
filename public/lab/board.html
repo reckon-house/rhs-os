@@ -606,15 +606,21 @@
      around it rather than running through the glyphs. Empty is truly
      empty (:empty), so a column with nothing to count leaves no white
      nub on its rule. */
-  #rules i .yc { position: absolute; left: 50%; top: calc(100% + var(--count-gap, 8px)); transform: translateX(-50%);
+  #rules i .yc, .ccol > .yc { position: absolute; left: 50%; top: calc(100% + var(--count-gap, 8px)); transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 2px;
     padding: 5px 3px; background: var(--paper, #fff);
     pointer-events: none; white-space: nowrap;
     font-style: normal; font-size: 12px; font-weight: 500; letter-spacing: 0.48px;
     text-transform: none; line-height: 12.48px; color: rgba(0, 0, 0, 0.42);
     transition: opacity 0.18s ease; }
-  #rules i .yc:empty { display: none; }
-  #rules i .yc > span { display: block; }
+  #rules i .yc:empty, .ccol > .yc:empty { display: none; }
+  #rules i .yc > span, .ccol > .yc > span { display: block; }
+  /* A STUDY COLUMN CARRIES ITS OWN. It stands on the standing rule and
+     draws that line itself, so the count moves onto its edge with the
+     gauge: at its left edge, hanging under the end of the edge line,
+     which ends --rule-foot above the column's own foot. Above the
+     column's paper, the way its gauge is. */
+  .ccol > .yc { left: 0; top: calc(100% - var(--rule-foot) + var(--count-gap, 8px)); z-index: 3; }
   #field.folding .yc { opacity: 0; }
 
   /* the tiles ARE .fd-it cards — frame, radius, curtain, drift and
@@ -1110,6 +1116,8 @@
        the feel of the row was the thing lost. The field's own rule
        is hidden at this width, so the column's goes with it. */
     .ccol::before { display: none; }
+    /* no edge line on a phone, so nothing for a count to hang from */
+    .ccol > .yc { display: none; }
     /* no top padding on the scroller: WebKit measures a sticky top
        from the scroll container's CONTENT box, so padding there is a
        band the pinned head sits below and the column scrolls through.
@@ -2942,31 +2950,51 @@ function dressRules() {
      time between, never jumping. A column that does not scroll has
      nothing to count down, the gauge's own rule: heroes, an open list,
      anything that fits the glass. */
+  /* The pictures' tops in the scroller's own coordinates: a field
+     column's dealt tiles carry their y; a study column's pictures are
+     images in its scroller, measured where they stand (a lazy picture
+     that has not loaded yet sits high and settles as it arrives, and
+     the next scroll recounts). */
+  const topsIn = (f) => {
+    if (f.__c != null) return (byCol[f.__c] || []).filter((t) => t.kind === "img").map((t) => t.y);
+    if (!f.classList || !f.classList.contains("cin")) return [];
+    const base = f.getBoundingClientRect().top - f.scrollTop;
+    return [...f.querySelectorAll(".cpics img")].map((im) => im.getBoundingClientRect().top - base);
+  };
   const picsLeft = (f) => {
-    if (!f || f.__c == null || f.__lines) return null;
+    if (!f || f.__lines) return null;
     const max = f.scrollHeight - f.clientHeight;
     if (max <= 1) return null;
-    const pics = (byCol[f.__c] || []).filter((t) => t.kind === "img").sort((a, b) => a.y - b.y);
-    if (pics.length < 2) return null;
+    const tops = topsIn(f).sort((a, b) => a - b);
+    if (tops.length < 2) return null;
     const p = Math.min(1, Math.max(0, f.scrollTop / max));
     const line = f.scrollTop + p * f.clientHeight;
     let crossed = 0;
-    for (const t of pics) if (t.y <= line) crossed += 1;
-    return pics.length - Math.max(0, crossed - 1);
+    for (const y of tops) if (y <= line) crossed += 1;
+    return tops.length - Math.max(0, crossed - 1);
   };
   /* stood on end: +, the number, the arrow, one a line. Written only
      when the number changes, and emptied to nothing rather than to a
      blank when a column has nothing to count, so the paper goes too */
   const glyph = (txt) => { const sp = document.createElement("span"); sp.textContent = txt; return sp; };
-  for (let k = 0; k < kids.length; k++) {
-    const it = kids[k], d = it.__d, yc = it.children[1];
-    if (d == null || !yc) continue;
-    const n = atDisp(d).col ? null : picsLeft(scrollerAt(d - 1));
+  const writeCount = (yc, n) => {
     const key = n == null ? "" : String(n);
-    if (yc.__n === key) continue;
+    if (yc.__n === key) return;
     yc.__n = key;
     if (!key) yc.replaceChildren();
     else yc.replaceChildren(glyph("+"), glyph(key), glyph("\u2193"));
+  };
+  for (let k = 0; k < kids.length; k++) {
+    const it = kids[k], d = it.__d, yc = it.children[1];
+    if (d == null || !yc) continue;
+    /* a rule a study column stands on is that column's to draw */
+    writeCount(yc, atDisp(d).col ? null : picsLeft(scrollerAt(d - 1)));
+  }
+  /* and a study column's edge counts what its gauge describes: the
+     column being read to its left, a field column or another study */
+  for (const c of ccols) {
+    if (!c.__yc) { c.__yc = document.createElement("span"); c.__yc.className = "yc"; c.appendChild(c.__yc); }
+    writeCount(c.__yc, picsLeft(scrollerAt(dispOf(c) - 1)));
   }
   /* the count past the edge: the last of the field on the glass, or
      failing that the first past it, which then counts itself */
