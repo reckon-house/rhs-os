@@ -1,3 +1,8 @@
+/* THE PAGE'S GRAMMAR IS THE OLD HOMEPAGE'S. .stratum gives it its top
+   air and .ixbody its rail grid, and both live in this generated sheet.
+   It used to arrive through the site footer, which every page but a
+   study rendered; the footer is gone, so the page asks for it itself. */
+import "@/components/home/pressing-home.css";
 import type { Metadata } from "next";
 import { StaplesBoard } from "./StaplesBoard";
 import { inspiration } from "@/data/inspiration";
