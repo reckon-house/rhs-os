@@ -431,6 +431,14 @@
   .ccol .cways u { cursor: pointer; margin-right: 0.4em; transition: text-decoration-color 0.3s ease; }
   .ccol .cways a { color: inherit; text-decoration: none; }
   .ccol .cways u:hover { text-decoration-color: var(--ink); }
+  /* the door, in the column chip's own values (.ccol .cchip); the chip
+     had a hover only as a button, so a linked one gets the same */
+  .ccol .cways { margin-top: 1.1em; }
+  .ccol a.cchip { text-decoration: none; }
+  .ccol a.cchip:hover { background: rgba(0, 0, 0, 0.09); }
+  /* the arrow gives a little on hover */
+  .ccol .cgo .arr { display: inline-block; transition: transform 0.3s ease; }
+  .ccol .cgo:hover .arr { transform: translateX(3px); }
   /* a kept line, in the room's prose register with its name in grey
      under it — the board sets its quote tiles the same way */
   .ccol .cline-quote { margin: 1.6em 0 0.4em; white-space: pre-line; }
@@ -5070,10 +5078,19 @@ function openStudyColumn(folder, opts, from) {
     const rest = more.join("|").trim(); if (rest) d.appendChild(el("span", "g", rest));
     c.__lead.appendChild(d);
   }
+  /* ── THE DOOR TO THE WHOLE STUDY ──────────────────────────────────
+     It was a 13px underlined link under a headline and two chips, the
+     one piece of the column in nobody's language. It is the column's
+     own chip now, the same object as Next: above it, value for value,
+     ending on the arrow the row's count uses, which gives a little on
+     hover. Chosen over the same chip in the rail's ink and over the
+     headline's own underlined term. */
   const ways = el("div", "cways");
-  const go = el("a", null, "Full case study"); go.href = "/case-studies/" + (g.h || folder);
-  const gou = el("u"); gou.appendChild(go);
-  ways.appendChild(gou);
+  const go = el("a", "cchip cgo");
+  go.href = "/case-studies/" + (g.h || folder);
+  go.appendChild(el("span", null, "Full case study"));
+  go.appendChild(el("span", "arr", "\u2192"));
+  ways.appendChild(go);
   c.__matter.appendChild(ways);
   /* ── A CASE ARRIVES WITH ITS PICTURES ─────────────────────────────
      The cover the homepage leads with stands first and the rest of
