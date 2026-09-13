@@ -185,7 +185,7 @@
      Off the border and into the box, it also stops eating the pixel
      that held the column's text one out from its module's edge. */
   .ccol::before { content: ""; position: absolute; left: 0; width: 1px;
-    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: 0;
+    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: var(--rule-foot, 28px);
     background: rgba(0, 0, 0, 0.12); }
   /* ── A COLUMN GROWS OUT FROM BEHIND ITS NEIGHBOUR ─────────────────
      Arriving is the exact inverse of folding: the box opens from zero
@@ -513,9 +513,29 @@
      and so does a study column's own rule; the tiles still pass under
      it, which is what the effect is for. */
   :root { --burn-foot: 26px; }
+  /* ── EVERY LINE ENDS TOGETHER, AND THE COUNT HANGS UNDER IT ────────
+     The rules ran into the bottom of the glass, so the grid read as
+     cropped at the foot and composed at the head. They stop short now,
+     and all at one height: a standing rule with a column's count on it,
+     one with none, and a study column's own edge. The count hangs just
+     under its line's end, + to the arrow, so the line reads as running
+     down into it, and the ink stops where the line does, above the +.
+
+     Built from the count's own box so the lines end exactly where it
+     begins: its padding (10px), three lines of the counter's type
+     (12.48px) and the two gaps between them (4px), stood 52px off the
+     floor, with 8px between the end of a line and its +. One token for
+     all of them, so no line can end longer than another. A phone's
+     rules keep their own foot, above its nav bar. */
+  :root {
+    --count-gap: 8px;
+    --count-h: calc(10px + 3 * 12.48px + 4px);
+    --count-floor: 52px;
+    --rule-foot: calc(var(--count-floor) + var(--count-h) + var(--count-gap));
+  }
   #rules {
     position: absolute; left: 0; right: 0;
-    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: 0;
+    top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); bottom: var(--rule-foot, 28px);
     pointer-events: none; will-change: transform;
     /* ABOVE THE WORK, UNDER THE COLUMNS. The plane is a later sibling,
        so a picture painted over every rule it passed: the grid read as
@@ -569,6 +589,33 @@
     pointer-events: none; white-space: nowrap;
     font-size: var(--note, 12px); font-weight: 500; letter-spacing: 0.04em;
     text-transform: uppercase; line-height: 1.2; color: rgba(0, 0, 0, 0.42); }
+  /* ── AND DOWN, ON THE LINE ─────────────────────────────────────────
+     +48 → says what stands past the right edge. Each column that
+     scrolls says what is left in it, on its own rule, where the depth
+     gauge already runs: the same count stood on end, + over the number
+     over the arrow, so the ink travels down the line to it. All of the
+     column's pictures at the top, one at the bottom.
+
+     The same object as the count top-right, value for value, read off
+     its computed style rather than approximated: 12px, 500, 0.48px of
+     tracking, 42% ink, no transform. And set upright on purpose: the
+     rules are <i> elements, which every browser italicises, and the
+     first cut of this inherited it.
+
+     It sits ON the line, so it wears the paper and the rule breaks
+     around it rather than running through the glyphs. Empty is truly
+     empty (:empty), so a column with nothing to count leaves no white
+     nub on its rule. */
+  #rules i .yc { position: absolute; left: 50%; top: calc(100% + var(--count-gap, 8px)); transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 5px 3px; background: var(--paper, #fff);
+    pointer-events: none; white-space: nowrap;
+    font-style: normal; font-size: 12px; font-weight: 500; letter-spacing: 0.48px;
+    text-transform: none; line-height: 12.48px; color: rgba(0, 0, 0, 0.42);
+    transition: opacity 0.18s ease; }
+  #rules i .yc:empty { display: none; }
+  #rules i .yc > span { display: block; }
+  #field.folding .yc { opacity: 0; }
 
   /* the tiles ARE .fd-it cards — frame, radius, curtain, drift and
      caption all come from the stylesheet above */
@@ -1044,7 +1091,10 @@
     #field { left: 0; }
     /* the rules stand here too now that there is a sideways to draw;
        from the top, since the phone has no cover line above the field */
-    #rules { top: 0; bottom: calc(var(--nav, 54px) + env(safe-area-inset-bottom, 0px)); }
+    /* and they end above the count, which hangs under its line: the
+       rules used to stop at the nav bar's top, so a count hung below
+       them sat on the nav and ran off the foot of the glass */
+    #rules { top: 0; bottom: calc(var(--nav, 54px) + env(safe-area-inset-bottom, 0px) + var(--count-h) + var(--count-gap) + 10px); }
     #more { display: block; }
 
     /* ── A COLUMN IS A PAGE ─────────────────────────────
@@ -2818,7 +2868,7 @@ function remount() {
     let el = kids[n];
     if (!el) {
       el = document.createElement("i");
-      el.innerHTML = '<span class="rg"></span>';
+      el.innerHTML = '<span class="rg"></span><span class="yc"></span>';
       rulesEl.appendChild(el);
     }
     el.__d = c;
@@ -2883,6 +2933,40 @@ function dressRules() {
   for (const c of ccols) {
     if (!c.__rg) { c.__rg = document.createElement("span"); c.__rg.className = "rg"; c.appendChild(c.__rg); }
     draw(c.__rg, scrollerAt(dispOf(c) - 1), RT);
+  }
+  /* ── HOW MANY ARE LEFT BELOW ─────────────────────────────────────
+     A reading line sweeps from the top of the glass at the top of the
+     column to its foot at the bottom, and a picture is behind you once
+     its top has crossed it. So the count is every picture before you
+     scroll and one once you reach the end, and it drops a picture at a
+     time between, never jumping. A column that does not scroll has
+     nothing to count down, the gauge's own rule: heroes, an open list,
+     anything that fits the glass. */
+  const picsLeft = (f) => {
+    if (!f || f.__c == null || f.__lines) return null;
+    const max = f.scrollHeight - f.clientHeight;
+    if (max <= 1) return null;
+    const pics = (byCol[f.__c] || []).filter((t) => t.kind === "img").sort((a, b) => a.y - b.y);
+    if (pics.length < 2) return null;
+    const p = Math.min(1, Math.max(0, f.scrollTop / max));
+    const line = f.scrollTop + p * f.clientHeight;
+    let crossed = 0;
+    for (const t of pics) if (t.y <= line) crossed += 1;
+    return pics.length - Math.max(0, crossed - 1);
+  };
+  /* stood on end: +, the number, the arrow, one a line. Written only
+     when the number changes, and emptied to nothing rather than to a
+     blank when a column has nothing to count, so the paper goes too */
+  const glyph = (txt) => { const sp = document.createElement("span"); sp.textContent = txt; return sp; };
+  for (let k = 0; k < kids.length; k++) {
+    const it = kids[k], d = it.__d, yc = it.children[1];
+    if (d == null || !yc) continue;
+    const n = atDisp(d).col ? null : picsLeft(scrollerAt(d - 1));
+    const key = n == null ? "" : String(n);
+    if (yc.__n === key) continue;
+    yc.__n = key;
+    if (!key) yc.replaceChildren();
+    else yc.replaceChildren(glyph("+"), glyph(key), glyph("\u2193"));
   }
   /* the count past the edge: the last of the field on the glass, or
      failing that the first past it, which then counts itself */
