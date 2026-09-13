@@ -24,9 +24,11 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CHOREO_BREAKPOINT } from "@/lib/choreo";
 import { onTick, reducedMotion } from "@/lib/scrub";
 import { getLenis } from "@/lib/lenis";
+import { closeStudy } from "@/lib/study-close";
 import styles from "./PressingPhoneRail.module.css";
 
 /** The attribute PressingLayout stamps on each marker. */
@@ -63,6 +65,7 @@ function split(label: string): [string, string] {
 
 export function PressingPhoneRail() {
   const railRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const [current, setCurrent] = useState<{ n: string; name: string } | null>(
     null,
   );
@@ -230,19 +233,36 @@ export function PressingPhoneRail() {
         {/* The label IS the control. A separate affordance beside it
             would be a second thing to explain on the one screen with no
             room to explain anything. */}
-        <button
-          type="button"
-          className={styles.handle}
-          onClick={toggle}
-          aria-expanded={open}
-          aria-label={
-            open ? "Close section navigation" : "Open section navigation"
-          }
-        >
-          {current?.n ? <span className={styles.n}>{current.n}</span> : null}
-          <span className={styles.name}>{current?.name ?? "Sections"}</span>
-          <span className={styles.chev} aria-hidden="true" />
-        </button>
+        <div className={styles.bar}>
+          <button
+            type="button"
+            className={styles.handle}
+            onClick={toggle}
+            aria-expanded={open}
+            aria-label={
+              open ? "Close section navigation" : "Open section navigation"
+            }
+          >
+            {current?.n ? <span className={styles.n}>{current.n}</span> : null}
+            <span className={styles.name}>{current?.name ?? "Sections"}</span>
+            <span className={styles.chev} aria-hidden="true" />
+          </button>
+          {/* THE WAY OUT, ON THE THUMB'S EDGE. The masthead's Close is at
+              the top of the glass, which is the far end of a phone; this
+              is the same close (src/lib/study-close.ts), where the thumb
+              already is. Hidden while the panel is up: open, this bar is
+              the section list, and a close beside the handle that folds
+              it would ask which of the two it meant. */}
+          <button
+            type="button"
+            className={styles.close}
+            onClick={() => closeStudy((href) => router.push(href))}
+            aria-label="Close the case study"
+            tabIndex={open ? -1 : 0}
+          >
+            Close<span className={styles.x} aria-hidden="true">&times;</span>
+          </button>
+        </div>
 
         {/* THE BARE DIV IS LOAD-BEARING. It is the same three-deep
             anatomy the footer rail's drawer uses — .rbody > div > .rpad

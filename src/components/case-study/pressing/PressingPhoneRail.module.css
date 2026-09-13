@@ -162,6 +162,65 @@
   outline-offset: -3px;
 }
 
+/* ── THE ROW, AND THE WAY OUT AT ITS END ────────────────────────────
+   The handle takes the room and Close stands at the right, split off by
+   a short hairline, in the handle's own type: the same 11px caps as the
+   section's name, with the board column's × after it (15px, grey). 44
+   tall like the handle, because a thumb has to find it. */
+.bar {
+  display: flex;
+  align-items: stretch;
+}
+.bar .handle {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+.close {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  margin: 0;
+  padding: 0 20px 0 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--pp-ink);
+  cursor: pointer;
+}
+.close::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.12);
+}
+.close .x {
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgba(0, 0, 0, 0.42);
+}
+.close:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -3px;
+}
+/* hidden rather than removed while the panel is up, so the handle keeps
+   its width and the caret does not jump as the bar floods */
+.rail[data-open] .close {
+  visibility: hidden;
+}
+
 /* A caret, turned when the panel is up. Drawn rather than typed: a
    glyph would bring a second typeface's idea of what an arrow is. */
 .chev {
