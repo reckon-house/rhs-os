@@ -227,6 +227,8 @@ keepAlpha   the pictures the thumb builder must not flatten
 marks       the credits' logos and their heights
 news        the shipped items, and their one-line rail form
 railNotes   the rail's Info and Connect rows ("@news" derives from news)
+doors       the rail's doors: a label and the page it leaves for, under
+            the curtain, with no drawer
 subjects    what the work is about in words the studies do not use:
             each is a bag of words and the studies it belongs to, and
             the words join those studies' text for the match

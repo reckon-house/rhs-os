@@ -46,6 +46,7 @@ This file lists the portfolio's case studies so agents and crawlers can find the
 ## Navigation
 
 - [Home](https://reckon.house/): Full project index.
+- [Daybook](https://reckon.house/daybook): The dated log of what shipped, newest first.
 - [Digital](https://reckon.house/category/digital): Apps, ecommerce, AI tools.
 - [Creative](https://reckon.house/category/creative): Campaigns, brand identity, art direction.
 - [Interiors](https://reckon.house/category/interiors): Custom homes, kitchens, baths.

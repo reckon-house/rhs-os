@@ -1,294 +1,526 @@
 /*
- * The daybook page.
+ * /daybook, in the board's grammar.
  *
- * One grid at three densities: a line, a line with a picture, a post.
- * The date and project columns hold still across all three, which is
- * what makes a post read as a heavier day rather than a different kind
- * of page. Type is the pressing scale, one ink, hairlines only.
+ * EVERY NUMBER HERE IS THE BOARD'S. The board's stylesheet is two
+ * files, scripts/lib/assemble-board.py (the page's own <style>) and
+ * public/lab/board-shell.css (the lab's, lifted whole), and a page
+ * that only resembles the board is how one site becomes two. Where a
+ * value came from is named beside it; where this page departs, the
+ * comment says what is different about the material.
  */
 
-/* The page wears the homepage's grammar now (.stratum supplies the top
-   air, .ixbody the rail grid and gutters); this only closes the bottom. */
-.wrap {
-  padding-bottom: clamp(120px, 16dvh, 200px);
+.page {
+  /* the shell's tokens (board-shell.css :root) */
+  --gut: 50px;
+  --ix-note-w: 180px;
+  --ixgap: clamp(24px, 3.4vw, 56px);
+  --paper: #ffffff;
+  --ink: #000000;
+  --grey: rgba(0, 0, 0, 0.42);
+  /* the glass's air, the rule's foot and the count's room (assemble-board.py) */
+  --cover-air: 50px;
+  --burn-foot: 26px;
+  --count-gap: 8px;
+  --count-h: calc(10px + 3 * 12.48px + 4px);
+  --count-floor: 52px;
+  --rule-foot: calc(var(--count-floor) + var(--count-h) + var(--count-gap));
+  --stmt-fs: clamp(20px, 2.4vw, 32px);
+  /* two columns and a fifth of the next, as the board deals them
+     (VISIBLE 2, PEEK 0.2): the cut column is what says the row turns */
+  --peek: 0.2;
+  --show: calc(2 + var(--peek));
+
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* THE RAIL STARTS AT THE TOP, level with the lede. It used to be
-   pushed down by the month header's own margin so Filter and "August
-   2026" shared a line, which read well enough on its own and read
-   wrong beside the homepage: there the rail is LIFTED (--rail-lift,
-   measured at runtime) so its first block is level with the first
-   frame, at the very top of the composition. Two pages, opposite
-   directions, same intent — so this one goes to the top too.
-
-   Spanning both rows rather than sitting in one: the rail must not be
-   able to make row 1 taller than the lede, or a long filter list would
-   open a hole under the headline. align-items: start on .ixbody keeps
-   it hanging from the top of that span. */
-.rail {
-  grid-column: 1;
-  grid-row: 1 / -1;
-}
-
-/* THE LEDE STANDS IN THE ENTRIES' COLUMN. Row 1 is the headline alone;
-   the rail and the entries share row 2, which is what keeps Filter
-   level with the first month header. Placement is explicit on all
-   three rather than left to auto-flow — a page in this codebase has
-   already been broken twice by a new child quietly taking someone
-   else's slot.
-
-   Three ancestor classes because .stratum .statement carries the page
-   gutter as padding, and inside the grid that gutter is .ixbody's job.
-   A two-class selector would only TIE with it, and a tie across two
-   files is settled by which stylesheet loaded last. */
-:global(.stratum) :global(.ixbody) .lede {
-  grid-column: 2;
-  grid-row: 1;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.list {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-/* THE ALLEY IS GONE. This page used to widen --ixgap to
-   clamp(32px, 10vw, 220px) — 144px at 1440 against the site's 49 —
-   because with only entries in the content column the rail and the
-   list stood shoulder to shoulder and the spare width piled up on the
-   right. That was a fix for a composition this page no longer has:
-   the lede moved into the content column, which fills it, and the wide
-   gap survived only as a 95px offset that made the note rail read as a
-   different width from the homepage's. Same token now, so the rule
-   lands on the same boundary on every page. */
-
-/* THE ACTIVE FILTER IS THE SAME LINE, HELD ON. The homepage draws the
-   rail's rule on hover; a selected row is that rule that never
-   retracted, which is one idea instead of two. It must not be a second
-   text-decoration underline: that sits at a different offset and reads
-   as a double rule the moment the active row is hovered.
-   Three global ancestors because the rule it overrides carries two,
-   and a tie would be settled by stylesheet order across two files. */
-:global(.ixnotes) :global(.filt) button.on {
-  color: #000;
-}
-:global(.ixnotes) :global(.filt) button.on::after {
-  transform: scaleX(1);
-}
-
-.lbl {
-  font-size: var(--pp-lbl, 10px);
-  letter-spacing: var(--pp-lbl-track, 0.04em);
-  font-weight: var(--pp-lbl-weight, 500);
-  text-transform: uppercase;
-  margin: 0;
-}
-.grey {
-  color: rgba(0, 0, 0, 0.45);
-}
-
-.month {
+/* ── THE COVER LINE (board-shell.css .cover, .covermark, .covermeta) ──
+   The mark over the rail and the count over the last column, both set
+   on the statement's cap height rather than on their own boxes. */
+.cover {
+  --nav-size: 12px;
+  --cap-align: calc(0.2031 * var(--stmt-fs) - 0.0417 * var(--nav-size));
+  position: absolute;
+  z-index: 5;
+  top: var(--cover-air);
+  left: var(--gut);
+  right: var(--gut);
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.mark {
+  pointer-events: auto;
+  padding-top: var(--cap-align);
+  font-size: var(--nav-size);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mark i {
+  font-style: normal;
+  font-weight: 400;
+  margin: 0 -0.01em;
+}
+/* the line that is open, named the way a study's bar names its own
+   (Masthead.module.css .fam, .here) */
+.here {
+  margin-left: 0.5em;
+  opacity: 0.5;
+}
+.more {
+  pointer-events: auto;
+  margin: 0;
+  border: 0;
+  padding: var(--cap-align) 0 0;
+  background: none;
+  font: inherit;
+  font-size: var(--nav-size);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.04;
+  color: var(--grey);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+@media (hover: hover) {
+  .more:hover {
+    color: var(--ink);
+  }
+}
+.mark:focus-visible,
+.more:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ── THE RAIL (assemble-board.py #railwrap; board-shell.css .rdrawer) ── */
+.rail {
+  position: absolute;
+  z-index: 4;
+  left: var(--gut);
+  top: calc(var(--cover-air) + 46px);
+  width: var(--ix-note-w);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.gap {
+  display: block;
+  height: 8px;
+}
+/* A CHIP, NOT A CLIPPED ROW. The rail's rows are full-width boxes
+   clipped to hug their words, so that an open drawer can flood the
+   width. Nothing here opens, so the chip is simply as wide as its
+   words, at the row's padding, radius, type and ground, and a picked
+   filter floods to ink the way an open row does. */
+.pill {
+  display: inline-flex;
   align-items: baseline;
-  gap: 24px;
-  margin: clamp(56px, 8dvh, 100px) 0 10px;
+  gap: 8px;
+  max-width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.045);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.n {
+  color: var(--grey);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .pill:hover {
+    background: rgba(0, 0, 0, 0.09);
+  }
+}
+.pill[aria-pressed="true"],
+.pill[aria-pressed="true"]:hover {
+  background: var(--ink);
+  color: #fff;
+}
+.pill[aria-pressed="true"] .n {
+  color: rgba(255, 255, 255, 0.5);
+}
+.pill:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+}
+.pocket {
+  display: none;
 }
 
-/* THE MONTH IS A BEAT. At 10px caps it was a filing label and the page
-   was one long undifferentiated list; a beat gives the scroll a rhythm
-   of arrivals instead.
-
-   It sits at the LEDE'S size, not above it. At 52px against a 32px
-   headline the filing divider was the loudest thing on the page, and
-   read as the title of what followed rather than a marker between
-   runs. Same size, heavier weight: the page keeps one type scale and
-   the month still separates. */
-.monthName {
-  font-size: clamp(20px, 2.4vw, 32px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
-}
-
-/* ── the row ────────────────────────────────────────────────────────
-   THE TAG FOLLOWS THE ENTRY. A 1fr middle column pushes the project to
-   the far page edge on a wide screen, 700px clear of the line it
-   labels with nothing crossing the gap, and the two stop reading as
-   one row. Capping the middle at the measure and packing the tracks
-   left keeps date, entry and project together as a single object. The
-   hairline still runs the full width, because the row element does. */
-.row {
-  position: relative; /* anchors the hover plate */
-  display: grid;
-  /* THE ROW CARRIES THE ENTRY'S OWN SIZE so that 64ch below means 64
-     characters OF THE ENTRY. ch resolves against the element it is
-     written on, and this row was inheriting 16px while .t dropped to
-     12, so the track stayed 569px and the measure went to 91
-     characters. The date and the project set their own size, so
-     nothing else moves. */
-  font-size: var(--pp-note, 12px);
-  grid-template-columns: 84px minmax(0, 64ch) max-content;
-  justify-content: start;
-  column-gap: clamp(20px, 2.6vw, 40px);
-  align-items: start;
-  /* Weighted the way the compose ledger is, further: the entry hangs
-     just under its rule and the air falls BELOW it, so each day reads
-     as its own object with room to end before the next line begins.
-     dvh in the clamp keeps the rhythm proportional on short screens. */
-  padding: 15px 0 clamp(40px, 5.5dvh, 64px);
-  /* scroll-margin so a permalink does not land under the masthead */
-  scroll-margin-top: calc(var(--nav-h, 54px) + 24px);
-}
-/* The rule is a ::before rather than a border so it can be DRAWN: it
-   scales from the left as the row arrives, exactly the compose form's
-   entrance. */
-.first::before {
-  content: "";
+/* ── THE STRIP (assemble-board.py #strip, #field, .ccol) ──────────────
+   Everything right of the rail. It turns natively and lands on a
+   column, where the board eases and snaps by script: the landing is
+   the same, and a trackpad, the arrow keys and a phone all get it
+   without a driver. A column is the strip's width over 2.2, measured
+   by the strip itself rather than by the viewport, so a scrollbar or a
+   resize can never put the rules off their edges. */
+.strip {
   position: absolute;
   top: 0;
-  left: 0;
+  bottom: 0;
   right: 0;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.14);
-  transform: scaleX(1);
-  transform-origin: 0 50%;
-  transition: transform 0.66s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
+  left: calc(var(--gut) + var(--ix-note-w) + var(--ixgap));
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  container-type: inline-size;
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+.col {
+  position: relative;
+  flex: none;
+  width: calc(100cqw / var(--show));
+  height: 100%;
+  scroll-snap-align: start;
+}
+.tail {
+  flex: none;
+  width: calc(100cqw / var(--show) * var(--peek));
 }
 
-/* ── the arrival ──
-   Base state is the finished page; .pre is applied by JS (ledger-
-   arrival) to rows still below the fold and removed as they cross in,
-   so a failed script means a plain, complete ledger rather than an
-   invisible one. */
-.d,
-.t,
-.p,
-.month > * {
-  transition: opacity 0.5s ease calc(var(--dbd, 0ms) + 90ms),
-    transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--dbd, 0ms) + 90ms);
+/* A COLUMN SCROLLS INSIDE ITSELF (assemble-board.py .ccol .cin): the
+   board's padding, the head band above, the count's room below. The
+   top of the glass belongs to the cover line, so a column's words fade
+   out before they reach the mark and the count. The board's pictures
+   pass under a burn pill there instead, which is a treatment for
+   photographs; over type it reads as a smudge. */
+.cin {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: calc(var(--cover-air) + 46px) calc(var(--ixgap) / 2) calc(var(--rule-foot) + 64px);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--cover-air) + 16px),
+    #000 calc(var(--cover-air) + 42px)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--cover-air) + 16px),
+    #000 calc(var(--cover-air) + 42px)
+  );
 }
-.pre .d,
-.pre .t,
-.pre .p,
-.pre.month > * {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: none;
-}
-.pre.first::before {
-  transform: scaleX(0);
-  transition: none;
-}
-
-/* The draw-out is gone. Filtering used to play the arrival backwards
-   before the list swapped, which was this page's own private
-   transition; it plays the site's curtain now, so the rows are
-   rebuilt behind full black and there is nothing to clear off a stage
-   nobody can see. See src/lib/curtain.ts. */
-
-/* ── the mount arrival ──
-   The statement and the rail enter the way study copy does: rise and
-   settle, one after the next. Same contract as everything else — the
-   resting state is the finished page, .enterPre is JS-applied and
-   removed a frame later, so no script means no missing page. */
-.enter {
-  transition: opacity 0.55s ease var(--dbd, 0ms),
-    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--dbd, 0ms);
-}
-.enterPre {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: none;
+.cin::-webkit-scrollbar {
+  display: none;
 }
 
-/* 7px seats the 10px caps on the 16px note's first baseline. */
-.no {
+/* ── THE RULE, ITS INK AND ITS COUNT (assemble-board.py #rules i, .rg, .yc)
+   A column's rule is the one at its right edge, which is where the
+   board draws the ink and the count of the column being read. The
+   statement's column also stands on the rail's rule, which counts
+   nothing. */
+.rule {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: calc(var(--cover-air) + var(--burn-foot));
+  bottom: var(--rule-foot);
+  width: 1px;
+  background: rgba(0, 0, 0, 0.13);
+  font-style: normal;
+  pointer-events: none;
+}
+.lead::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: calc(var(--cover-air) + var(--burn-foot));
+  bottom: var(--rule-foot);
+  width: 1px;
+  background: rgba(0, 0, 0, 0.13);
+  pointer-events: none;
+}
+.rg {
+  position: absolute;
+  left: -0.5px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ink);
+  display: none;
+}
+.rg.on {
   display: block;
-  margin-top: 5px;
-  color: rgba(0, 0, 0, 0.35);
-  font-weight: 400;
 }
-
-.d,
-.p {
-  font-size: var(--pp-lbl, 10px);
-  letter-spacing: var(--pp-lbl-track, 0.04em);
-  font-weight: var(--pp-lbl-weight, 500);
-  text-transform: uppercase;
-  padding-top: 7px;
+.yc {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--count-gap));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 3px;
+  background: var(--paper);
+  pointer-events: none;
   white-space: nowrap;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.48px;
+  line-height: 12.48px;
+  color: var(--grey);
 }
-.p {
-  color: rgba(0, 0, 0, 0.45);
+.yc:empty {
+  display: none;
+}
+.yc > span {
+  display: block;
 }
 
-.t {
-  font-size: var(--pp-note, 16px);
-  line-height: 1.55;
+/* ── THE STATEMENT AND THE HEADS (assemble-board.py .tile.statement) ── */
+.statement,
+.head {
+  margin: 0;
+  font-size: var(--stmt-fs);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
 }
-.t p {
+.head {
+  margin-bottom: 1.1em;
+}
+.g {
+  color: var(--grey);
+}
+
+/* the ledger's own note, set as the board sets a quote (.tile.quote) */
+.quote {
+  margin: clamp(56px, 6.6vw, 108px) 0 0;
+  max-width: 32em;
+  font-size: 17px;
+  line-height: 1.42;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.att {
+  display: block;
+  padding-top: 10px;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+/* ── AN ENTRY IS A ROW (assemble-board.py .crow, .lines .crow) ─────────
+   The hairline over it and the board's 13px of air under that. The
+   words are set as the board's quote, because they are read rather
+   than scanned; the line above them is a caption, the date in ink and
+   the rest receding, the way a frame names its study and then its line. */
+.entry {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 13px 0 44px;
+}
+.meta {
   margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.004em;
 }
-.t p:last-child {
-  margin-bottom: 0;
+.meta time {
+  margin-right: 0.45em;
 }
-
-/* A post's title separates by WEIGHT alone, never a second size. Same
-   rule the case-study columns follow, which is what keeps the blog
-   register inside the ledger's type system. */
+.title,
+.body {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+}
 .title {
+  font-weight: 600;
+  margin-bottom: 0.35em;
+}
+.body {
   font-weight: 500;
 }
-
-/* An image is a small plate at column measure with the family's
-   corner. Pick photographs and full-bleed frames: a UI screenshot
-   carrying its own inner margins reads as a washed-out thumbnail here,
-   and anything that has to be large to be read belongs in a study. */
+.body + .body {
+  margin-top: 0.7em;
+}
 .pic {
   margin: 14px 0 0;
 }
 .pic img {
   display: block;
   width: 100%;
-  max-width: 480px;
   height: auto;
-  border-radius: var(--pp-r, 16px);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.04);
 }
 .cap {
-  margin: 8px 0 0;
-  font-size: var(--pp-cap, 11px);
-  line-height: 1.5;
-  color: rgba(0, 0, 0, 0.55);
+  padding-top: 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+  color: var(--grey);
 }
 
-/* The receipt: the thing the entry produced, reachable. Underlined
-   rather than coloured, because the page has one ink. */
-.receipt {
-  margin-top: 10px !important;
+/* the receipt is the column's chip (assemble-board.py .ccol a.cchip, .cgo) */
+.ways {
+  margin: 1.1em 0 0;
 }
-.receipt a,
-.back a {
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 100%;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.045);
   color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  transition: background-color 0.3s ease;
+}
+.chip:hover {
+  background: rgba(0, 0, 0, 0.09);
+}
+.arr {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.arr::after {
+  content: "\2192";
+}
+.chip:hover .arr {
+  transform: translateX(3px);
 }
 
-.back {
-  margin: clamp(56px, 8dvh, 100px) 0 0;
-  font-size: var(--pp-note, 16px);
+/* ── THE RISE (assemble-board.py .tile.lines .crow, .tile.statement) ── */
+.rise {
+  transition:
+    opacity 0.42s ease var(--lag, 0s),
+    transform 0.72s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s);
+}
+.pre {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: none;
+}
+.statement.pre,
+.quote.pre,
+.head.pre {
+  transform: translateY(14px);
 }
 
+/* ── A PHONE (assemble-board.py, max-width: 760px) ────────────────────
+   A column is a page with a fifth of the next one showing, the rules
+   run from the top, the counts stand above the bar, and the bar is at
+   the thumb: the mark, and the months still to the right. */
 @media (max-width: 760px) {
-  /* One track: the project drops under the entry rather than taking a
-     third column out of a 375px screen. */
-  .row {
-    grid-template-columns: 64px minmax(0, 1fr);
-    column-gap: 14px;
+  .page {
+    --gut: 20px;
+    --bar: 48px;
+    --show: calc(1 + var(--peek));
   }
-  .p {
-    grid-column: 2;
-    padding-top: 6px;
+  .rail {
+    display: none;
+  }
+  .strip {
+    left: 0;
+  }
+  .lead::before {
+    display: none;
+  }
+  .cin {
+    padding: 40px 20px
+      calc(var(--bar) + env(safe-area-inset-bottom, 0px) + var(--count-h) + var(--count-gap) + 64px);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .rule {
+    top: 16px;
+    bottom: calc(
+      var(--bar) + env(safe-area-inset-bottom, 0px) + var(--count-h) + var(--count-gap) + 10px
+    );
+  }
+  .quote {
+    margin-top: 40px;
+    font-size: 16px;
+  }
+  .title,
+  .body {
+    font-size: 16px;
+  }
+  .pocket {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 40px;
+  }
+  .pocket .gap {
+    flex-basis: 100%;
+    height: 4px;
+  }
+  .cover {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+    padding: 0 20px env(safe-area-inset-bottom, 0px);
+    align-items: center;
+    background: var(--paper);
+    pointer-events: auto;
+  }
+  .mark,
+  .more {
+    padding-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .pill,
+  .n,
+  .chip,
+  .arr,
+  .more {
+    transition: none;
+  }
+  .pre {
+    opacity: 1;
+    transform: none;
   }
 }

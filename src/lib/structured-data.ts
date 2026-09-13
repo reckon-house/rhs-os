@@ -1,5 +1,6 @@
 import { SITE_URL, plainStatement } from "@/lib/site";
 import type { CaseStudy } from "@/lib/types";
+import type { DaybookEntry } from "@/data/daybook";
 
 /**
  * JSON-LD structured data. Stable @id values let nodes cross-reference each
@@ -120,4 +121,62 @@ export function caseStudyJsonLd(study: CaseStudy, imageUrl?: string) {
     "@context": "https://schema.org",
     "@graph": [creativeWork, breadcrumb],
   };
+}
+
+/* ── THE DAYBOOK, AS A BLOG ─────────────────────────────────────────
+   Every entry is a BlogPosting at its own anchor, dated by the day it
+   was entered, so a crawler reads the log the way the page lays it
+   out: what shipped, when, and on which project. An entry with no
+   title is headed by its own first sentence, capped where Google stops
+   reading a headline. Nothing here is written for the crawler; it is
+   the entry, restated as data. */
+const HEADLINE_MAX = 110;
+
+function daybookHeadline(e: DaybookEntry): string {
+  if (e.title) return e.title;
+  const first = Array.isArray(e.body) ? e.body[0] : e.body;
+  const sentence = first.match(/^(.+?[.!?])(\s|$)/)?.[1] ?? first;
+  if (sentence.length <= HEADLINE_MAX) return sentence;
+  return `${sentence.slice(0, HEADLINE_MAX - 1).replace(/\s+\S*$/, "")}\u2026`;
+}
+
+/** The /daybook graph: a Blog holding one BlogPosting per entry, plus its breadcrumb. */
+export function daybookJsonLd(entries: DaybookEntry[]) {
+  const url = `${SITE_URL}/daybook`;
+  const blog = {
+    "@type": "Blog",
+    "@id": `${url}#blog`,
+    name: "Daybook",
+    url,
+    description:
+      "Jeremy Prasatik's daybook: ships, fixes and notes across Reckon House, Sally and A.R.C., dated and numbered.",
+    inLanguage: "en",
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": ORG_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    blogPost: entries.map((e) => {
+      const post: Record<string, unknown> = {
+        "@type": "BlogPosting",
+        "@id": `${url}#${e.id}`,
+        url: `${url}#${e.id}`,
+        headline: daybookHeadline(e),
+        datePublished: e.date,
+        articleSection: e.project,
+        articleBody: (Array.isArray(e.body) ? e.body : [e.body]).join("\n\n"),
+        inLanguage: "en",
+        author: { "@id": PERSON_ID },
+        isPartOf: { "@id": `${url}#blog` },
+      };
+      if (e.image) post.image = `${SITE_URL}${e.image.src}`;
+      return post;
+    }),
+  };
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Daybook", item: url },
+    ],
+  };
+  return { "@context": "https://schema.org", "@graph": [blog, breadcrumb] };
 }

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
+import { DAYBOOK } from "@/data/daybook";
 import { SITE_URL } from "@/lib/site";
 
 
@@ -12,6 +13,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
     { url: `${SITE_URL}/custom`, lastModified, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}/inspiration`, lastModified, changeFrequency: "monthly", priority: 0.5 },
+    /* the one page on the site that changes every week, so it says
+       when it last did: the newest entry's own date, not the build's */
+    {
+      url: `${SITE_URL}/daybook`,
+      lastModified: new Date(`${DAYBOOK[0].date}T12:00:00Z`),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
   ];
 
 

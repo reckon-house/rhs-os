@@ -216,6 +216,12 @@ export function Masthead() {
     : null;
   const next = nextOnLine?.href ? nextOnLine : null;
 
+  /* THE DAYBOOK DRAWS ITS OWN LINE. It is a page of columns, laid out
+     the way the board is, so it carries the board's cover line (the
+     mark over the rail, the count over the last column), and a bar
+     here would be a second masthead over the first. After every hook,
+     so the order React counts never changes between routes. */
+  if (pathname === "/daybook") return null;
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind

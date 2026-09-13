@@ -199,6 +199,7 @@
       ]
     ]
   },
+  "doors": [["Daybook", "/daybook"]],
   "subjects": [
     {
       "words": "ecommerce e-commerce commerce online store storefront shop shopping shoppable checkout cart product page pdp",

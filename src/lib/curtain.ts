@@ -112,3 +112,8 @@ export function afterCurtain(fn: () => void): void {
   if (held) waiting.push(fn);
   else fn();
 }
+
+/** True while a curtain covers the page, so an arrival can arm itself unseen.
+ *  A page opened directly is already on the glass, and hiding it to
+ *  bring it back would be the blink the gate exists to prevent. */
+export const arrivalsHeld = (): boolean => held;

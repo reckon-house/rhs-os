@@ -39,6 +39,11 @@ import { PressingHome } from "./PressingHome";
 export function PressingFooter() {
   const pathname = usePathname();
   if (pathname?.startsWith("/case-studies/")) return <PressingHome />;
+  /* THE DAYBOOK HAS NO TAIL EITHER. Its columns fill the glass and
+     scroll inside themselves, so nothing below them is ever reached,
+     and what used to stand here was the old homepage reprinted under
+     a page that no longer looks like it. The mark is the way home. */
+  if (pathname === "/daybook") return null;
 
   return (
     <>

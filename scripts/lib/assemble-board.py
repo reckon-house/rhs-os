@@ -979,6 +979,10 @@ head = r'''<!doctype html>
   #railwrap .rhead { font-weight: 600; }
   #rdrawer .rrow.picked { background: var(--ink); color: #fff; }
   #rdrawer .rrow.picked .rslash { color: #fff; }
+  /* a door is an anchor wearing the row's chip: no underline, and the
+     chip's own hover rather than a drawer's flood */
+  #rdrawer a.rhead { text-decoration: none; }
+  @media (hover: hover) { #rdrawer .rdoor:hover { background: rgba(0, 0, 0, 0.09); } }
 
   /* the subtraction: recede in place */
   #plane .tile { transition: opacity 0.5s ease; }
@@ -5737,6 +5741,38 @@ const toggleHouse = (kind) => {
   h.addEventListener("focus", fill);
   h.addEventListener("click", () => toggleHouse("connect"));
 }
+/* ── A DOOR IS A PAGE, NOT A ROOM ────────────────────────────────────
+   Info and Connect open columns on the glass. A door leaves for a page
+   of its own, under the curtain a study's link plays, its name
+   repeating down it. The house names its doors (board-house.json
+   "doors"); the engine only knows how to hang one. It wears the rail's
+   chip and nothing else: no drawer, because a door has nothing to
+   preview, and an empty drawer on a hover is the mistake Connect's
+   note above already names. */
+(BOARD_HOUSE.doors || []).forEach(([label, href]) => {
+  const r = document.createElement("div");
+  r.className = "rrow rdoor";
+  const a = document.createElement("a");
+  a.className = "rhead";
+  a.href = href;
+  const ink = document.createElement("span");
+  ink.className = "rink";
+  const sl = document.createElement("span");
+  sl.className = "rslash";
+  sl.textContent = "/";
+  ink.appendChild(sl);
+  ink.appendChild(document.createTextNode(" " + label));
+  a.appendChild(ink);
+  r.appendChild(a);
+  drawer.appendChild(r);
+  rrows.push(r);
+  a.addEventListener("click", (e) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    window.__ptLabel = { title: label, sub: "" };
+    playTransition(href, label, "");
+  });
+});
 const gap = document.createElement("div");
 gap.className = "rgap";
 drawer.appendChild(gap);
