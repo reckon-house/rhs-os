@@ -1306,16 +1306,14 @@ head = r'''<!doctype html>
   }
 </style>
 <!-- ── ARRIVING UNDER A CURTAIN ──────────────────────────────────────
-     The app's own head script, verbatim. A study's pull home writes
-     the note; this draws that curtain, lines and all, before this
+     The app's own head script, its drawing held as a function so a
+     board restored from the back-forward cache can draw it too. A
+     study's close writes the note; this draws that curtain, lines and all, before this
      document can be seen, and the lift below owns beat 3. Same
      classes, same keyframes: board-shell.css already carries them. -->
 <script>
 (function(){try{
-  var raw=sessionStorage.getItem('pt.arrive');if(!raw)return;
-  sessionStorage.removeItem('pt.arrive');
-  var d=JSON.parse(raw);
-  if(!d||!d.t||Date.now()-d.t>15000)return;
+  window.__ptCover=function(d){
   var r=document.createElement('div');r.id='ptArrive';
   r.className='pt pt-run pt-1 pt-2 pt-wait';r.setAttribute('aria-hidden','true');
   r.style.cssText='position:fixed;inset:0;z-index:300';
@@ -1347,6 +1345,12 @@ head = r'''<!doctype html>
      whenever the board is working. */
   setTimeout(function(){if(r.dataset.owned)return;r.remove();
     document.documentElement.classList.remove('pt-arriving');},6000);
+  return r;};
+  var raw=sessionStorage.getItem('pt.arrive');if(!raw)return;
+  sessionStorage.removeItem('pt.arrive');
+  var d=JSON.parse(raw);
+  if(!d||!d.t||Date.now()-d.t>15000)return;
+  window.__ptCover(d);
 }catch(e){}})();
 </script>
 <script>
@@ -6062,11 +6066,29 @@ window.ptSwap = (href) => {
    Clear it on every show — persisted or not, since a restore from
    cache runs no script at all otherwise — and let go of the busy flag
    with it, or the next study would never open. */
-addEventListener("pageshow", () => {
+addEventListener("pageshow", (e) => {
+  /* ── AND A PAGE THAT SENT US BACK LEFT A NOTE ─────────────────────
+     A study's close writes the arrival note and goes back a page. A
+     board that loads draws it in the head; one restored from the
+     back-forward cache runs no script at all, so the note is drawn
+     here, over the board exactly as it was left, and lifted the same
+     way. Drawn before the board's own curtain is cleared, so the black
+     never opens between the two. */
+  let note = null;
+  if (e.persisted) {
+    try {
+      const raw = sessionStorage.getItem("pt.arrive");
+      if (raw) {
+        sessionStorage.removeItem("pt.arrive");
+        const d = JSON.parse(raw);
+        if (d && d.t && Date.now() - d.t <= 15000) note = d;
+      }
+    } catch (er) { /* private mode */ }
+  }
+  if (note && window.__ptCover && !document.getElementById("ptArrive")) window.__ptCover(note);
   const pt = document.getElementById("pt");
-  if (!pt) return;
-  pt.className = "pt";
-  delete pt.dataset.busy;
+  if (pt) { pt.className = "pt"; delete pt.dataset.busy; }
+  if (note) liftArrival();
 });
 /* ── AND THE BOARD ARRIVES THE SAME WAY ─────────────────────────────
    A study's pull home writes the note and navigates here at full
@@ -6078,7 +6100,7 @@ addEventListener("pageshow", () => {
    reverse the delays so the lines leave from the bottom, which is the
    direction the lifting clip removes them in. playTransition's own
    ending, on the cover. */
-(() => {
+function liftArrival() {
   const cover = document.getElementById("ptArrive");
   if (!cover) return;
   /* the head script lifts this itself if nothing claims it; this is
@@ -6132,7 +6154,8 @@ addEventListener("pageshow", () => {
     ]);
     give();
   })();
-})();
+}
+liftArrival();
 document.addEventListener("click", (e) => {
   const a = e.target.closest && e.target.closest("a[href^='/case-studies/']");
   if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === "_blank") return;

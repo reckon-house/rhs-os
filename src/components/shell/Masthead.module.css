@@ -376,3 +376,71 @@
    things left at the two ends is what the base row already does. The
    grid went with them rather than being kept as scaffolding around a
    shape it no longer describes. */
+
+/* ── THE WAY OUT, THEN THE WAY ON ─────────────────────────────────────
+   A study's bar ends the way the board's study column heads itself:
+   the ×, then Next. Close is the same chip as Next, value for value,
+   and its × is the column's own (assemble-board.py .ccol .cx): 15px
+   and grey until the chip is hovered. Next still leaves below 1100px;
+   the way out stays at every width. */
+.ways {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.close {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.045);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.close:hover {
+  background: rgba(0, 0, 0, 0.09);
+}
+.close:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+.x {
+  font-size: 15px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.42);
+  transition: color 0.3s ease;
+}
+.close:hover .x {
+  color: var(--masthead-ink);
+}
+.nav.rev .close {
+  background: rgba(255, 255, 255, 0.1);
+}
+.nav.rev .close:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.nav.rev .x {
+  color: rgba(255, 255, 255, 0.5);
+}
+.nav.rev .close:hover .x {
+  color: var(--masthead-paper);
+}
+@media (prefers-reduced-motion: reduce) {
+  .close,
+  .x {
+    transition: none;
+  }
+}

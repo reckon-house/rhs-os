@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { projects, type Project } from "@/data/projects";
 import { railCategories } from "@/data/rail-categories";
+import { closeStudy, trackStudyReturn } from "@/lib/study-close";
 import styles from "./Masthead.module.css";
 
 /* ── THE MARK NAMES THE LINE, HERE TOO ────────────────────────────
@@ -56,6 +57,13 @@ export function Masthead() {
   const navRef = useRef<HTMLElement>(null);
   const burnRef = useRef<HTMLDivElement>(null);
   const [overDark, setOverDark] = useState(false);
+  const router = useRouter();
+
+  /* the page a study's close goes back to, kept as the routes change
+     (src/lib/study-close.ts) */
+  useEffect(() => {
+    trackStudyReturn(pathname ?? "");
+  }, [pathname]);
 
   // ── The nav-burn heat driver, values straight from the prototype. ──
   useEffect(() => {
@@ -306,14 +314,30 @@ export function Masthead() {
             one's first line, wrapping at the end of the shelf. The
             board picks its next off the visit's trail; a page has no
             trail, so the shelf's own order stands in. */}
-        {next && (
-          /* a Link, unlike the lines beside the mark: this one stays
-             inside the app, where the router keeps the scroller and
-             the route's own transition. Those go to the board, which
-             is a static document. */
-          <Link className={styles.next} href={next.href!}>
-            <span className={styles.g}>Next:</span> {next.title}
-          </Link>
+        {study && (
+          /* THE WAY OUT, THEN THE WAY ON. The board's study column heads
+             itself with the study's × and then Next, and the page says
+             the same two things in the same order. Close is a button,
+             not a link: where it goes is decided when it is pressed. */
+          <span className={styles.ways}>
+            <button
+              type="button"
+              className={styles.close}
+              onClick={() => closeStudy((href) => router.push(href))}
+              aria-label="Close the case study"
+            >
+              Close<span className={styles.x} aria-hidden="true">&times;</span>
+            </button>
+            {next && (
+              /* a Link, unlike the lines beside the mark: this one stays
+                 inside the app, where the router keeps the scroller and
+                 the route's own transition. Those go to the board, which
+                 is a static document. */
+              <Link className={styles.next} href={next.href!}>
+                <span className={styles.g}>Next:</span> {next.title}
+              </Link>
+            )}
+          </span>
         )}
       </nav>
     </>
