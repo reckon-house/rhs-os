@@ -38,6 +38,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { registerCurtain, holdArrivals, releaseArrivals } from "@/lib/curtain";
+/* THE CURTAIN BRINGS ITS OWN STYLES. They lived in the homepage's
+   stylesheet, so a page that did not load that sheet (the daybook, the
+   case studies) drew black words on a black panel, never lapped, and
+   blinked instead of lifting. Generated from the lab by port-home.mjs,
+   imported here because this is the one component on every route. */
+import "./pressing-curtain.css";
 
 /** How far apart the stacked lines arrive, and leave. Arriving is the
  *  flourish; leaving should not hold the page up. */
@@ -329,7 +335,7 @@ export function PressingTransition() {
 
       const gut =
         parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue("--gut")
+          getComputedStyle(root).getPropertyValue("--gut")
         ) || 40;
       const avail = window.innerHeight - gut * 2;
       const lines = Math.max(3, Math.round(avail / lineH));
