@@ -50,9 +50,24 @@ export interface DaybookEntry {
   image?: { src: string; alt: string; caption?: string };
 }
 
+/* The log's own sentence, in three parts: the claim, the half that
+   recedes, and how it is kept. /daybook sets all three; the board's
+   Daybook room reads the first two through /api/daybook, so the two
+   surfaces say the same thing from one place. */
+export const DAYBOOK_LEDE = "The day\u2019s work, entered as it happens.";
+export const DAYBOOK_DIM =
+  "Ships, fixes, and notes across RHS, Sally, and A.R.C., with a picture when one earns it.";
+export const DAYBOOK_TAIL = "Newest first, numbered from the first entry.";
+
 /* Newest first. The page groups by month off the dates; nothing here
    carries a month header of its own. */
 export const DAYBOOK: DaybookEntry[] = [
+  {
+    id: "daybook-in-info",
+    date: "2026-09-14",
+    project: "RHS",
+    body: "The daybook left the board's rail. It opens from Info now, under Shipped lately, as its own column: a chip for each month, and the full page at the foot.",
+  },
   {
     id: "daybook-columns",
     date: "2026-09-12",

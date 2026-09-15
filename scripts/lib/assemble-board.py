@@ -560,6 +560,28 @@ head = r'''<!doctype html>
   /* the arrow gives a little on hover */
   .ccol .cgo .arr { display: inline-block; transition: transform 0.3s ease; }
   .ccol .cgo:hover .arr { transform: translateX(3px); }
+  /* ── THE DAYBOOK ROOM ─────────────────────────────────────────────
+     A month is the column's chip carrying the line chip's drawn sign
+     (.lchip .pm), turned to a minus while its entries stand under it.
+     An entry is a text row: the date in weight and the accession
+     number receding, then its first sentence in weight and the rest
+     receding. A shelf's 84px of air is for a list of studies; an entry
+     takes less, with a picture or without. */
+  .ccol .dmonth { margin-top: 10px; }
+  .ccol .dmonth:first-child { margin-top: 0; }
+  .ccol .dchip .pm { margin-left: 2px; }
+  .ccol .dmonth.open .dchip .pm .v { transform: rotate(0deg); }
+  .ccol .dmonth .dlist { display: none; margin: 12px 0 18px; }
+  .ccol .dmonth.open .dlist { display: block; }
+  .ccol .crow.dentry { padding-bottom: 26px; cursor: default; }
+  .ccol .crow.dentry:hover b { text-decoration: none; }
+  .ccol .dentry .dmeta { margin-bottom: 6px; }
+  .ccol .dmonth.open .dentry { animation: picIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .ccol .crow.dentry.dlink { cursor: pointer; }
+  .ccol .crow.dentry.dlink:hover .dline b { text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+    text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .ccol .dmonth.open .dentry { animation: none; } }
   /* a kept line, in the room's prose register with its name in grey
      under it — the board sets its quote tiles the same way */
   .ccol .cline-quote { margin: 1.6em 0 0.4em; white-space: pre-line; }
@@ -4727,6 +4749,7 @@ function askFrom(from, text, opts) {
     const name = verb[1].trim();
     if (/^(info|about|about you)$/.test(name)) return openHouseColumn("info", from, opts);
     if (/^(connect|contact|calendar|booking)$/.test(name)) return openHouseColumn("connect", from, opts);
+    if (BOARD_HOUSE.daybook && /^(the )?daybook$/.test(name)) return openHouseColumn("daybook", from, opts);
     const byT = Object.entries(GROUPS).find(([, g]) => g.t.toLowerCase() === name);
     if (byT) return openStudyColumn(byT[0], { at: opts.at }, from);
     const tg = shelfByText(name);
@@ -4832,7 +4855,8 @@ async function openHouseColumn(kind, from, opts) {
   await loadCopy();
   const h = HOUSE();
   const isInfo = kind === "info";
-  const c = colNode(kind, isInfo ? "Info" : "Connect");
+  const DB = BOARD_HOUSE.daybook || null;
+  const c = colNode(kind, isInfo ? "Info" : kind === "daybook" ? (DB && DB.caption) || "Daybook" : "Connect");
   c.classList.add("dark");
   c.__house = kind;
   if (isInfo) {
@@ -4882,6 +4906,26 @@ async function openHouseColumn(kind, from, opts) {
       r.addEventListener("click", () => openStudyColumn(folder, {}, c));
       c.__matter.appendChild(r);
     });
+    /* ── THE REST OF WHAT SHIPPED ────────────────────────────────────
+       The ships above are the headlines; the daybook is everything
+       else, dated. It was a door in the rail beside Info and Connect,
+       which made a nice-to-have read as a third way in. Here it stands
+       where a reader already is when they want to know what is new. A
+       door to its own column, so it keeps its arrow in the text, as
+       Staples' chip does. */
+    if (DB) {
+      const ways = el("div", "cways");
+      const door = el("button", "cchip cgo");
+      door.type = "button";
+      door.appendChild(el("span", null, DB.door || "The daybook"));
+      door.appendChild(el("span", "arr", "\u2192"));
+      door.addEventListener("click", () => {
+        const had = ccols.find((x) => x.__house === "daybook");
+        if (had) reveal(had); else openHouseColumn("daybook", c, {});
+      });
+      ways.appendChild(door);
+      c.__matter.appendChild(ways);
+    }
     sect("How I work.");
     (h.method || []).forEach((m) => textRow(c.__matter, m.k, m.v));
     textRow(c.__matter, RAIL_NOTES.info[2][0], RAIL_NOTES.info[2][1]);
@@ -4896,6 +4940,8 @@ async function openHouseColumn(kind, from, opts) {
       if (MARK_H[name]) img.style.setProperty("--mh", MARK_H[name] + "px");
       r.appendChild(img);
     });
+  } else if (kind === "daybook" && DB) {
+    buildDaybook(c, DB);
   } else {
     /* ALL IN ONE. /book's own lede, then the field as the message,
        then the week and the claim, then the ways in as plain links —
@@ -4919,6 +4965,133 @@ async function openHouseColumn(kind, from, opts) {
     c.__matter.appendChild(ways);
   }
   insertColumn(c, from, opts);
+}
+/* ── THE DAYBOOK, AS A ROOM ─────────────────────────────────────────
+   The log's own column, opened from Info under "Shipped lately." The
+   entries are read from the site (DB.data, built from
+   src/data/daybook.ts at deploy) the first time the room opens, not
+   carried by the board's first paint. A month is a chip the way a line
+   is: the newest stands open, the rest fold, and a press turns the
+   plus into the minus and lays that month's entries under it. An entry
+   reads as a row in the room's own grammar, its first sentence in
+   weight and the rest receding. One whose receipt is a study opens that
+   study beside the room, as a ship does in Info, and one whose
+   receipt is a call opens Connect. Every paragraph of
+   every entry is the page, one chip away. */
+let DAYBOOK_DATA = null, daybookReq = null;
+const loadDaybook = (url) => daybookReq || (daybookReq = fetch(url)
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j) => (DAYBOOK_DATA = j))
+  .catch(() => { daybookReq = null; DAYBOOK_DATA = null; return null; }));
+const folderOfStudyHref = (href) => {
+  const m = /^\/case-studies\/([^/?#]+)/.exec(href || "");
+  if (!m) return null;
+  return Object.keys(GROUPS).find((k) => (GROUPS[k].h || k) === m[1]) || null;
+};
+function daybookRow(e, room) {
+  /* an entry with a picture is a shelf row, the picture where a
+     study's cover stands; the rest are text rows, as in Info */
+  const pic = e.image && e.image.src;
+  const r = el("div", pic ? "crow dentry" : "crow text dentry");
+  if (pic) {
+    const im = el("img"); im.src = pic; im.alt = e.image.alt || ""; im.loading = "lazy"; im.decoding = "async";
+    r.appendChild(im);
+  }
+  const t = el("div");
+  const meta = el("div", "dmeta");
+  meta.appendChild(el("b", null, e.day + " "));
+  meta.appendChild(el("span", "g", "No. " + String(e.no).padStart(3, "0") + " · " + e.project));
+  t.appendChild(meta);
+  const first = (e.body && e.body[0]) || "";
+  let lead = e.title, rest = first;
+  if (!lead) {
+    const ss = sentences(first);
+    lead = ss[0] || first;
+    rest = ss.slice(1).join(" ");
+  }
+  const line = el("div", "dline");
+  line.appendChild(el("b", null, lead + (rest ? " " : "")));
+  if (rest) line.appendChild(el("span", "g", rest));
+  t.appendChild(line);
+  r.appendChild(t);
+  const folder = e.link && folderOfStudyHref(e.link.href);
+  if (folder && GROUPS[folder]) {
+    r.classList.add("dlink");
+    r.dataset.folder = folder;
+    r.addEventListener("click", () => openStudyColumn(folder, {}, room));
+  } else if (e.link && e.link.href === "/book") {
+    r.classList.add("dlink");
+    r.addEventListener("click", () => {
+      const had = ccols.find((x) => x.__house === "connect");
+      if (had) reveal(had); else openHouseColumn("connect", room, {});
+    });
+  }
+  return r;
+}
+async function buildDaybook(c, DB) {
+  const full = () => {
+    const ways = el("div", "cways");
+    const go = el("a", "cchip cgo");
+    go.href = DB.href || "/daybook";
+    go.appendChild(el("span", null, DB.full || "Full daybook"));
+    go.appendChild(el("span", "arr", "→"));
+    /* the page is a document, so the way there is the board's own
+       curtain and a hard navigation, as a study's is */
+    go.addEventListener("click", (ev) => {
+      if (ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+      ev.preventDefault();
+      const name = DB.caption || "Daybook";
+      window.__ptLabel = { title: name, sub: "" };
+      playTransition(go.getAttribute("href"), name, "");
+    });
+    ways.appendChild(go);
+    c.__matter.appendChild(ways);
+  };
+  const wait = el("div", "cmonth g", "Loading the log");
+  c.__matter.appendChild(wait);
+  const data = await loadDaybook(DB.data || "/api/daybook");
+  if (!c.isConnected && !ccols.includes(c)) return;
+  wait.remove();
+  if (!data || !Array.isArray(data.months) || !data.months.length) {
+    c.__matter.appendChild(el("div", "cnote g", "The log is not loading here right now. The page has all of it."));
+    full();
+    return;
+  }
+  const lead = el("div", "cnote", data.lede + (data.dim ? " " : ""));
+  if (data.dim) lead.appendChild(el("span", "g", data.dim));
+  c.__lead.appendChild(lead);
+  data.months.forEach((m, i) => {
+    const block = el("div", "dmonth" + (i === 0 ? " open" : ""));
+    const chip = el("button", "cchip lchip dchip");
+    chip.type = "button";
+    chip.setAttribute("aria-expanded", i === 0 ? "true" : "false");
+    chip.appendChild(el("span", null, m.label));
+    chip.appendChild(document.createTextNode(" "));
+    chip.appendChild(el("span", "g", String(m.entries.length)));
+    const pm = el("i", "pm");
+    pm.appendChild(el("b", "h"));
+    pm.appendChild(el("b", "v"));
+    chip.appendChild(pm);
+    const list = el("div", "dlist");
+    const fill = () => {
+      if (list.__filled) return;
+      list.__filled = true;
+      m.entries.forEach((e) => list.appendChild(daybookRow(e, c)));
+    };
+    if (i === 0) fill();
+    chip.addEventListener("click", () => {
+      const open = !block.classList.contains("open");
+      if (open) fill();
+      block.classList.toggle("open", open);
+      chip.setAttribute("aria-expanded", open ? "true" : "false");
+      dressRules();
+    });
+    block.appendChild(chip);
+    block.appendChild(list);
+    c.__matter.appendChild(block);
+  });
+  full();
+  dressRules();
 }
 /* ── THE WEEK ───────────────────────────────────────────────────────
    Read from GET /api/book, the same availability() /book renders from,
@@ -5345,16 +5518,28 @@ function writeRow() {
 async function standRow() {
   let ids = [];
   try { ids = (new URL(location.href).searchParams.get("open") || "").split(",").filter(Boolean); } catch (e) { ids = []; }
+  /* THE ROW COMES BACK IN THE ORDER IT WAS LEFT. A fresh column at an
+     anchor stands nearest the asker, ahead of what already stands
+     there, so standing the address up one entry at a time put every
+     run that shared an anchor back to front, and writeRow then wrote
+     the reversed row into the address: a shared link swapped its
+     columns each time it was opened. An entry anchored where the one
+     before it is goes right after that one instead. */
+  let prev = null, prevAfter = null;
   for (const full of ids) {
     const [id, after] = full.split("@");
     const opts = after && /^\d+$/.test(after) ? { at: parseInt(after, 10) } : {};
-    if (id.startsWith("house:")) await openHouseColumn(id.slice(6), null, opts);
+    const from = prev && ccols.includes(prev) && (after || "") === prevAfter ? prev : null;
+    const had = new Set(ccols);
+    if (id.startsWith("house:")) await openHouseColumn(id.slice(6), from, opts);
     else if (id.startsWith("shelf:")) {
       const tag = id.slice(6);
-      openTag(tag, null, opts);
+      openTag(tag, from, opts);
     }
-    else if (GROUPS[id]) openStudyColumn(id, opts);
+    else if (GROUPS[id]) openStudyColumn(id, opts, from);
     await new Promise((r) => setTimeout(r, 120));
+    const added = ccols.find((c) => !had.has(c));
+    if (added) { prev = added; prevAfter = after || ""; }
   }
   /* and the page the address named, once the row stands */
   if (!AT) return;

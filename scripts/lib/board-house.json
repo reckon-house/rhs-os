@@ -199,7 +199,7 @@
       ]
     ]
   },
-  "doors": [["Daybook", "/daybook"]],
+  "daybook": {"caption": "Daybook", "door": "The daybook", "full": "Full daybook", "href": "/daybook", "data": "/api/daybook"},
   "subjects": [
     {
       "words": "ecommerce e-commerce commerce online store storefront shop shopping shoppable checkout cart product page pdp",

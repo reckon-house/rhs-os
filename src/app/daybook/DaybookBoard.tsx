@@ -28,6 +28,9 @@ import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } fr
 import Link from "next/link";
 import {
   DAYBOOK,
+  DAYBOOK_DIM,
+  DAYBOOK_LEDE,
+  DAYBOOK_TAIL,
   byMonth,
   dayLabel,
   monthLabel,
@@ -496,12 +499,7 @@ export function DaybookBoard() {
         <section className={`${styles.col} ${styles.lead}`} aria-label="Daybook">
           <div className={styles.cin}>
             <h1 className={`${styles.statement} ${styles.rise}`}>
-              The day&rsquo;s work, entered as it happens.{" "}
-              <span className={styles.g}>
-                Ships, fixes, and notes across RHS, Sally, and A.R.C., with a picture when one
-                earns it.
-              </span>{" "}
-              Newest first, numbered from the first entry.
+              {DAYBOOK_LEDE} <span className={styles.g}>{DAYBOOK_DIM}</span> {DAYBOOK_TAIL}
             </h1>
             <p className={`${styles.quote} ${styles.rise}`}>
               {DAYBOOK.length} entries since {monthLabel(OLDEST.date)}, drafted from the commit
