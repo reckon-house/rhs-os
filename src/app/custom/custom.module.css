@@ -3,8 +3,7 @@
  * glass.module.css (the strip, the columns, the rules, the ink, the
  * counts, the chips, the rows, the head chips, the week, the rise);
  * what is here is only what this page has that no other does: the two
- * doors, the price line, the Ask and its turns, a piece's plate, and
- * the ways out.
+ * doors, the price line, the Ask and its turns, and the ways out.
  */
 
 /* ── THE TWO DOORS ───────────────────────────────────────────────────
@@ -101,20 +100,6 @@
     opacity: 1;
     transform: none;
   }
-}
-
-/* ── A PIECE'S PICTURE (assemble-board.py .ccol .cpics img) ──────────
-   The plate at the column's measure under "Full case study", as a
-   study's cover stands under its chip on the board. */
-.plate {
-  margin: 24px 0 0;
-}
-.plate img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.04);
 }
 
 /* the ways out of a column (assemble-board.py .ccol .cways) */

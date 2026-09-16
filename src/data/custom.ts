@@ -7,8 +7,11 @@
  * study already says what it is.
  *
  * The page is sent in an email, so it is a straight read: who this is,
- * the two things on offer, what it costs to find out, then the proof.
- * The rest of the site is one chip away and never the entry point. */
+ * the two things on offer, what it costs to find out, then the proof,
+ * dealt the way the board deals a run. Display prose appears once per
+ * run, in its head; a piece is a picture with a 12px line. Every
+ * phrase has one home. The rest of the site is one chip away and
+ * never the entry point. */
 
 export interface Row {
   title: string;
@@ -24,9 +27,9 @@ export interface Row {
 export const CUSTOM = {
   caption: "Custom",
   lede: "I'm Jeremy Prasatik. I run a small design and software studio in Celina, Texas.",
-  dim:
-    "Brand and web design on the front end, custom tools on the back end, and help getting a " +
-    "business set up on the assistants built into Claude, ChatGPT and Gemini.",
+  dim: "Brand and web design on the front end, custom tools on the back end.",
+  /* the two doors, at read size: the offer in full, once. The runs'
+     heads carry one sentence each and neither repeats these. */
   doors: [
     {
       head: "Set up.",
@@ -38,9 +41,8 @@ export const CUSTOM = {
     {
       head: "Build.",
       body:
-        "When the tool you need doesn't exist, I make it. A scheduler, a customer list, an " +
-        "app, the site out front. One person designs it and builds it, so it fits how you " +
-        "already work.",
+        "A scheduler, a customer list, an app, the site out front. One person designs it and " +
+        "builds it, so it fits how you already work.",
     },
   ],
   price:
@@ -52,7 +54,6 @@ export const CUSTOM = {
     none: "Nothing here answers that. hello@reckon.house does.",
     reach: "hello@reckon.house. Or keep asking here.",
   },
-  full: "Full case study",
   heads: {
     studio: "Twenty years, large and small.",
     method: "How I work.",
@@ -69,26 +70,22 @@ export const CUSTOM = {
 
 const T = "/lab/board-thumbs";
 
-/* ── THE RECENT WORK, IN PIECES ──────────────────────────────────────
-   A study is several things a small business would buy one at a time:
-   the gym's scheduler is a booking line, a back office and a front
-   door; the marketing OS is a feed, a brain, a library and a shelf of
-   small tools. So each piece stands as a column of its own, in the
-   clothes a study's preview wears on the board: its chip, the study's
-   sentence about it, the way to the full study, and its picture. The
-   words are the studies' own (dsc, arc, sally, sizzle case studies),
-   cut to a lede and its grey half. A picture is the board's thumb of
-   the study's plate where the board has one, the plate itself where
-   it does not. */
+/* ── THE RECENT WORK, AS TILES ───────────────────────────────────────
+   A study is several things a small business would buy one at a time,
+   and each is a tile the way every picture on the board is a tile: the
+   picture at the column's width, and under it one line at 12px, the
+   study's name in ink and the study's own sentence about the piece in
+   grey. The sentence is the section's title and its held line from the
+   study itself, so a tile says what the study says and stops; the
+   picture is the door to the rest. The board's thumbs where the board
+   has one, the study's plate where it does not. Dealt down two columns
+   a run, with the piece a small business recognises first. */
 export interface Piece {
   id: string;
-  /** the door this piece stands behind: the tools connected, or the tool built */
+  /** the door this piece stands behind */
   run: "setup" | "build";
-  /** the piece's name, and the study it belongs to */
-  chip: string;
   project: string;
-  lede: string;
-  dim: string;
+  line: string;
   href: string;
   image: { src: string; alt: string; w?: number; h?: number };
 }
@@ -101,137 +98,34 @@ export const PIECES: Piece[] = [
   {
     id: "dsc-booking",
     run: "setup",
-    chip: "Booking from any AI",
     project: DSC,
-    lede:
-      "An athlete never has to open the app. They ask whichever AI they already use, and it " +
-      "reads their real schedule and can put in a session request.",
-    dim:
-      "Eleven tools cover the gym overview, the program list, trainer profiles and " +
-      "availability, the athlete's own sessions and pending requests, slot suggestions, " +
-      "booking requests, and cancellations. A write only ever creates a pending request the " +
-      "owner has to approve.",
+    line: "Book a session from your own AI.",
     href: "/case-studies/dsc",
     image: {
-      src: `${T}/dsc/dsc-ai-scheduler-phone-hero.webp`,
-      alt: "The DSC scheduler open on a phone",
-      w: 1024,
-      h: 632,
+      src: "/case-studies/dsc/dsc-claude-mcp-chat-booking-request.jpg",
+      alt: "Claude confirming a booking request, pending the trainer's approval",
+      w: 1096,
+      h: 1400,
     },
   },
   {
-    id: "dsc-owner",
-    run: "build",
-    chip: "The owner console",
-    project: DSC,
-    lede:
-      "The owner side is built for one person on the gym floor. Managing a packed week from " +
-      "a phone, between sessions.",
-    dim:
-      "The queue where every request lands, a week calendar with the session count per day, " +
-      "and a member list flagging waiver and trainer-assignment status. The owner can say a " +
-      "whole week out loud, and the scheduler proposes the batch, names the conflicts it " +
-      "skipped, and waits for the word commit.",
-    href: "/case-studies/dsc",
+    id: "sally-assets",
+    run: "setup",
+    project: SALLY,
+    line: "The DAM they had was bloated and nobody wanted to use it.",
+    href: "/case-studies/sally",
     image: {
-      src: `${T}/dsc/dsc-owner-calendar-phone-hero.webp`,
-      alt: "The owner's calendar on a phone",
-      w: 1536,
-      h: 948,
-    },
-  },
-  {
-    id: "dsc-door",
-    run: "build",
-    chip: "The front door",
-    project: DSC,
-    lede:
-      "The first build was the front door. Athletes create their own accounts, sign the " +
-      "waiver on the way in, and the owner assigns each new member to a trainer before " +
-      "anyone books a session.",
-    dim:
-      "A hundred-plus people moving off text threads and a spreadsheet and onto one roster " +
-      "the software can work with. The marketing site is the part of that door the public " +
-      "sees.",
-    href: "/case-studies/dsc",
-    image: {
-      src: `${T}/dsc/dsc-marketing-site-laptop-stool-hero.webp`,
-      alt: "The marketing site on a laptop",
-      w: 1024,
-      h: 683,
-    },
-  },
-  {
-    id: "arc-inventory",
-    run: "build",
-    chip: "The inventory",
-    project: ARC,
-    lede:
-      "One photo of a room comes back as a list of what is in it. Each item comes back " +
-      "named, valued, and sorted into a category.",
-    dim:
-      "A video of the room works the same way. The image passes through vision processing, " +
-      "object identification, value estimation, and archival, and each stage feeds the next.",
-    href: "/case-studies/arc",
-    image: {
-      src: `${T}/arc/arc-app-kitchen-project-selection-lifestyle.webp`,
-      alt: "A.R.C. on a phone, in a kitchen",
-      w: 1536,
-      h: 945,
-    },
-  },
-  {
-    id: "arc-gap",
-    run: "build",
-    chip: "The coverage gap",
-    project: ARC,
-    lede:
-      "It compares what you own against your policy limit. The gap between the two shows " +
-      "as a dollar amount.",
-    dim:
-      "Every item you document adds to a running total, and that total gets checked against " +
-      "your policy limit for personal property. Documented value on one side, the limit you " +
-      "entered on the other.",
-    href: "/case-studies/arc",
-    image: {
-      src: `${T}/arc/arc-app-vinyl-turntable-shelves-lifestyle.webp`,
-      alt: "A.R.C. beside a turntable and shelves",
-      w: 1024,
-      h: 800,
-    },
-  },
-  {
-    id: "arc-weeks",
-    run: "build",
-    chip: "Ten weeks",
-    project: ARC,
-    lede:
-      "Ten weeks from the first idea to a live App Store product. I did the design, the " +
-      "engineering and the deployment, with AI helping the whole way through.",
-    dim:
-      "Solo means I made every decision and shipped every line. When I noticed a problem, a " +
-      "fix could be live within hours.",
-    href: "/case-studies/arc",
-    image: {
-      src: `${T}/arc/arc-multi-device-lifestyle-hero.webp`,
-      alt: "A.R.C. across a phone, a tablet and a laptop",
-      w: 1024,
-      h: 1029,
+      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
+      alt: "Asset Hub on a laptop",
+      w: 1920,
+      h: 1254,
     },
   },
   {
     id: "sally-feed",
     run: "setup",
-    chip: "The feed",
     project: SALLY,
-    lede:
-      "Three AI models watch 14 industry publications. Competitor social channels, pricing " +
-      "shifts and category trends too.",
-    dim:
-      "Every trend that comes in gets a Sally's Take: an AI-written read that checks the " +
-      "signal against the brand positioning, the active briefs, and the internal knowledge " +
-      "base, and says whether it's worth acting on. Each Take comes with a one-click path to " +
-      "a new brief.",
+    line: "Three AI models watch 14 industry publications.",
     href: "/case-studies/sally",
     image: {
       src: `${T}/sally-os/sally-os-briefing-portal-fullscreen.webp`,
@@ -243,15 +137,8 @@ export const PIECES: Piece[] = [
   {
     id: "sally-jim",
     run: "setup",
-    chip: "Jim, the brand brain",
     project: SALLY,
-    lede: "It answers with the context a new hire takes months to pick up.",
-    dim:
-      "An AI trained on Sally's complete brand architecture: voice guidelines, visual " +
-      "standards, competitive positioning, campaign history, performance data, and a rule " +
-      "set that shapes how it thinks before it responds. On a schedule it reads four live " +
-      "feeds and proposes three to five plays, and approve writes real production requests " +
-      "into the same queue the humans use.",
+    line: "It answers with the context a new hire takes months to pick up.",
     href: "/case-studies/sally",
     image: {
       src: "/case-studies/sally-os/heroes/sally-os-brand-brain-hero.jpg",
@@ -261,36 +148,10 @@ export const PIECES: Piece[] = [
     },
   },
   {
-    id: "sally-assets",
-    run: "setup",
-    chip: "Asset Hub",
-    project: SALLY,
-    lede:
-      "The DAM they had was bloated and nobody wanted to use it. The two things the team " +
-      "actually needed from it, tagging and search, didn't work well, so I built this one " +
-      "from the ground up.",
-    dim:
-      "AI tags every image on upload, with nobody cataloging anything by hand, and search " +
-      "ranks across those tags, the titles, the brands, and the AI descriptions. The right " +
-      "asset comes up in seconds.",
-    href: "/case-studies/sally",
-    image: {
-      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
-      alt: "Asset Hub on a laptop",
-      w: 1920,
-      h: 1254,
-    },
-  },
-  {
     id: "sally-utilities",
     run: "setup",
-    chip: "Utilities",
     project: SALLY,
-    lede: "Ten apps, each one for a job.",
-    dim:
-      "A shelf talker generator, a campaign performance analyzer, an exec deck builder, PDP " +
-      "copy, an image compliance scanner, social copy, SKU lookup, an email template " +
-      "previewer, promo calendar sync, and a competitor ad tracker.",
+    line: "Ten apps, each one for a job that used to take hours.",
     href: "/case-studies/sally",
     image: {
       src: "/case-studies/sally-os/heroes/sally-os-utilities-marketplace-hero.jpg",
@@ -300,17 +161,137 @@ export const PIECES: Piece[] = [
     },
   },
   {
+    id: "arc-gap",
+    run: "build",
+    project: ARC,
+    line: "It compares what you own against your policy limit.",
+    href: "/case-studies/arc",
+    image: {
+      src: `${T}/arc/arc-app-vinyl-turntable-shelves-lifestyle.webp`,
+      alt: "A.R.C. beside a turntable and shelves",
+      w: 1024,
+      h: 800,
+    },
+  },
+  {
+    id: "dsc-door",
+    run: "build",
+    project: DSC,
+    line: "None of the scheduling works until everyone is in the system.",
+    href: "/case-studies/dsc",
+    image: {
+      src: "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
+      alt: "The athlete's registration form",
+      w: 775,
+      h: 1200,
+    },
+  },
+  {
+    id: "dsc-owner",
+    run: "build",
+    project: DSC,
+    line: "The owner side is built for one person on the gym floor.",
+    href: "/case-studies/dsc",
+    image: {
+      src: `${T}/dsc/dsc-owner-calendar-phone-hero.webp`,
+      alt: "The owner's calendar on a phone",
+      w: 1536,
+      h: 948,
+    },
+  },
+  {
+    id: "arc-inventory",
+    run: "build",
+    project: ARC,
+    line: "One photo of a room comes back as a list of what is in it.",
+    href: "/case-studies/arc",
+    image: {
+      src: `${T}/arc/arc-app-kitchen-project-selection-lifestyle.webp`,
+      alt: "A.R.C. on a phone, in a kitchen",
+      w: 1536,
+      h: 945,
+    },
+  },
+  {
+    id: "arc-weeks",
+    run: "build",
+    project: ARC,
+    line: "Ten weeks from the first idea to a live App Store product.",
+    href: "/case-studies/arc",
+    image: {
+      src: `${T}/arc/arc-multi-device-lifestyle-hero.webp`,
+      alt: "A.R.C. across a phone, a tablet and a laptop",
+      w: 1024,
+      h: 1029,
+    },
+  },
+  {
     id: "faux-reel",
     run: "build",
-    chip: "Faux Reel",
-    project: "Open repo",
-    lede:
-      "A sizzle reel with no footage: still photographs run through fourteen transitions in " +
-      "CSS, no video file anywhere.",
-    dim: "A 4.8KB web component, built in a day with Claude Code, and out as an open repo.",
+    project: "Faux Reel",
+    line: "A sizzle reel with no footage.",
     href: "/case-studies/sizzle",
     image: { src: `${T}/sizzle/sizzle.webp`, alt: "Faux Reel", w: 800, h: 800 },
   },
+];
+
+/* ── THE RUNS ─────────────────────────────────────────────────────────
+   A door opens as the board opens a run: a head, the run's name in ink
+   and its ONE sentence in grey, the only display prose the run carries,
+   with a landscape hero across the pair under it, and a chip that
+   counts the tiles and turns the row to them. The sentences are his:
+   the Set up line from his outreach email, the Build line from his
+   notes; each lives here and nowhere else on the page. */
+export interface Hero {
+  src: string;
+  w: number;
+  h: number;
+  /** the caption: the study's name, then its line in grey, as a cover
+   *  is captioned on the board */
+  name: string;
+  cat: string;
+}
+export interface Run {
+  id: "setup" | "build";
+  name: string;
+  line: string;
+  hero: Hero;
+}
+
+export const RUNS: Run[] = [
+  {
+    id: "setup",
+    name: "Set up.",
+    line: "Your business has grown faster than your systems have.",
+    hero: {
+      src: `${T}/dsc/dsc-ai-scheduler-phone-hero.webp`,
+      w: 1024,
+      h: 632,
+      name: "Dallas Sport Collective",
+      cat: "Website, custom app",
+    },
+  },
+  {
+    id: "build",
+    name: "Build.",
+    line: "When the tool you need doesn't exist, I make it.",
+    hero: {
+      src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
+      w: 1536,
+      h: 955,
+      name: "A.R.C.",
+      cat: "App & brand development",
+    },
+  },
+];
+
+/* the rail's doors, each the column it turns the row to */
+export const DOORS: { label: string; col: string }[] = [
+  { label: "Set up", col: "setup" },
+  { label: "Build", col: "build" },
+  { label: "Twenty years", col: "studio" },
+  { label: "How I work", col: "method" },
+  { label: "Let's talk", col: "talk" },
 ];
 
 /* the studio's work for businesses this size, in the studies' own
@@ -356,134 +337,4 @@ export const STUDIO: Row[] = [
     w: 1536,
     h: 1024,
   },
-];
-
-/* ── THE STORY ───────────────────────────────────────────────────────
-   What the page says before it shows. A run is a door with its own
-   opening: the board's head (the name in ink, one line in grey, a chip
-   that counts what follows), a pitch for a spread, and a hero the way
-   the board picks one, its shape deciding its form. A landscape spans
-   the pair under the head; a portrait takes a column of its own beside
-   the pitch. The cover and the beats are the page's own claims, spread
-   across two columns with no picture, or one. Every line here is his,
-   from the outreach email and his notes, edited for the page; the
-   pictures are the studies' covers and plates, as the board thumbs
-   them. */
-export interface Hero {
-  src: string;
-  w: number;
-  h: number;
-  /** the caption: the study's name, then its line in grey, as a cover
-   *  is captioned on the board */
-  name: string;
-  cat: string;
-}
-export interface Run {
-  id: "setup" | "build";
-  /** the head: the name and its one line */
-  name: string;
-  line: string;
-  /** the spread's pitch: the claim in ink, the offer in grey */
-  pitch: { lede: string; dim: string };
-  /** a landscape for the pair under a head */
-  hero: Hero;
-  /** a portrait for a spread, where the study has one */
-  tall?: Hero;
-}
-export interface Beat {
-  id: string;
-  lede: string;
-  dim: string;
-}
-
-export const RUNS: Run[] = [
-  {
-    id: "setup",
-    name: "Set up.",
-    line: "The tools you already have, connected, with the repetitive work handed to an assistant.",
-    pitch: {
-      lede: "Your business has grown faster than your systems have.",
-      dim:
-        "The inbox, the calendar, bookings, invoices, the customer list. It all runs, and " +
-        "you're the one running it. I connect the tools you already have and hand the " +
-        "repetitive part to an assistant, in your own Claude, ChatGPT or Gemini account, " +
-        "and I'll help you pick which one.",
-    },
-    hero: {
-      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
-      w: 1920,
-      h: 1254,
-      name: "Sally Marketing OS",
-      cat: "Product design, engineering",
-    },
-  },
-  {
-    id: "build",
-    name: "Build.",
-    line: "When the tool you need doesn't exist, I make it.",
-    pitch: {
-      lede: "When the tool you need doesn't exist, I make it.",
-      dim:
-        "A scheduler that takes bookings from any AI. An app that reads a room from a " +
-        "photo. A back office that fits how you already work. One person designs it and " +
-        "builds it. Twenty-plus years of that, for companies large and small.",
-    },
-    hero: {
-      src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
-      w: 1536,
-      h: 955,
-      name: "A.R.C.",
-      cat: "App & brand development",
-    },
-    tall: {
-      src: `${T}/hp/rhs-arc-app-project-select-phone.webp`,
-      w: 1536,
-      h: 2082,
-      name: "A.R.C.",
-      cat: "App & brand development",
-    },
-  },
-];
-
-/* the cover: one claim over a wide hero, before the lede */
-export const COVER: Beat & { hero: Hero } = {
-  id: "cover",
-  lede: "Your business has grown faster than your systems have.",
-  dim:
-    "A small design and software studio in Celina, Texas, for the businesses around it. " +
-    "The tools you have, connected. The tool you need, built.",
-  hero: {
-    src: `${T}/hp/rhs-dallas-sport-collective-laptop-stool.webp`,
-    w: 1536,
-    h: 1024,
-    name: "Dallas Sport Collective",
-    cat: "Website, custom app",
-  },
-};
-
-/* the beats: the story's own lines between the runs, two columns wide */
-export const BEATS: Beat[] = [
-  {
-    id: "account",
-    lede: "It runs in your own account.",
-    dim:
-      "Your Claude, ChatGPT or Gemini, your connections, your logins. I set it up beside " +
-      "you, and I never hold your inbox.",
-  },
-  {
-    id: "years",
-    lede: "Twenty-plus years as an independent agency, for companies large and small.",
-    dim:
-      "Nordstrom, Neiman Marcus and Ivy Park at one end. Capitan Boot Co., J. Christianson " +
-      "and a six-trainer gym at the other.",
-  },
-];
-
-/* the rail's doors, each the column it turns the row to */
-export const DOORS: { label: string; col: string }[] = [
-  { label: "Set up", col: "setup" },
-  { label: "Build", col: "build" },
-  { label: "Twenty years", col: "studio" },
-  { label: "How I work", col: "method" },
-  { label: "Let's talk", col: "talk" },
 ];
