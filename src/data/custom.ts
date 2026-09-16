@@ -405,6 +405,62 @@ export const WORK: Run = {
 export const WORK_PICKS = ["dsc-booking", "arc-gap", "capitan", "dsc-owner", "j-christianson", "arc-inventory"];
 export const SPINE = "CELINA";
 
+/* ── THE OFFERINGS, UNDER THE INTRO ──────────────────────────────────
+   Three doors in the statement column, one a service, each a row the
+   way Info's "Shipped lately" rows are: a reel of the service's own
+   pictures where the cover would stand, the name in ink and a short
+   line in grey, and a press that turns the row to that service. The
+   lines are gists, not the heads' sentences, so the head still lands
+   when the reader arrives. The frames are the board's thumbs at the
+   rung a 96 by 72 box needs. */
+export interface Offer {
+  run: "tools" | "brand" | "software";
+  name: string;
+  line: string;
+  frames: string[];
+}
+const R = (path: string) => `${T}/${path}@384.webp`;
+export const OFFERS: Offer[] = [
+  {
+    run: "tools",
+    name: "AI and tools",
+    line: "Pick the assistant, connect the apps, hand off the busywork.",
+    frames: [
+      R("dsc/dsc-ai-scheduler-phone-hero"),
+      R("sally-os/sally-os-briefing-portal-fullscreen"),
+      R("hp/rhs-sally-os-asset-hub-laptop"),
+      R("dsc/dsc-owner-calendar-phone-hero"),
+      R("sally-os/sally-os-dashboard-grid-overview"),
+    ],
+  },
+  {
+    run: "brand",
+    name: "Brand and website",
+    line: "Marks, type and packaging, and the site out front.",
+    frames: [
+      R("hp/rhs-capitan-boot-co-branding"),
+      R("j-christianson/j-christianson-storefront-tree-stripe-window-mockup"),
+      R("hp/rhs-hill-country-oakworks-billboard"),
+      R("hp/rhs-campaign-design-amber-shockey-blue-plate"),
+      R("dsc/dsc-marketing-site-laptop-stool-hero"),
+      R("hp/rhs-campaign-design-j-christianson-branding"),
+    ],
+  },
+  {
+    run: "software",
+    name: "Custom software",
+    line: "The scheduler, the back office, the app you can't buy.",
+    frames: [
+      R("arc/arc-app-vinyl-turntable-shelves-lifestyle"),
+      R("dsc/dsc-owner-calendar-phone-hero"),
+      R("arc/arc-app-kitchen-project-selection-lifestyle"),
+      R("arc/arc-multi-device-lifestyle-hero"),
+      R("sizzle/sizzle"),
+      R("hp/rhs-sally-os-asset-hub-laptop"),
+    ],
+  },
+];
+
 /* the rail's doors, each the column it turns the row to */
 export const DOORS: { label: string; col: string }[] = [
   { label: "AI and tools", col: "tools" },

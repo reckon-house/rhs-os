@@ -518,6 +518,34 @@
 .row b {
   font-weight: 600;
 }
+/* a row that is a door in the page rather than a link out of it: a
+   button in the row's clothes, every piece of button chrome put down */
+.rowBtn {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--hair);
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rowBtn:hover b {
+  text-decoration: underline;
+  text-decoration-color: var(--grey);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+/* a reeling row's picture box (assemble-board.py .ccol .crow .creel):
+   the still's own geometry, so a row that moves and a row that does
+   not sit on the same line */
+.reel {
+  width: 96px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.04);
+}
 /* a row with a line where the picture would be (assemble-board.py
    .ccol .crow.text): the method notes, this site */
 .text {

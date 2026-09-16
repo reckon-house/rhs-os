@@ -42,12 +42,14 @@ import Link from "next/link";
 import { PaperGround } from "@/components/shell/PaperGround";
 import { Rule, still, turnRow, useArrival, useGlass, useTurns } from "@/components/glass/glass";
 import { Week } from "@/components/glass/Week";
+import { SizzleReel, type SizzleBeat } from "@/components/fx/SizzleReel";
 import glass from "@/components/glass/glass.module.css";
 import own from "./custom.module.css";
 import {
   COVER,
   CUSTOM,
   DOORS,
+  OFFERS,
   PIECES,
   RUNS,
   SPINE,
@@ -144,6 +146,51 @@ const piecesOf = (r: Run) =>
   r.id === "work"
     ? WORK_PICKS.map((id) => PIECES.find((p) => p.id === id)).filter((p): p is PieceT => !!p)
     : PIECES.filter((p) => p.run === r.id);
+
+/* ── THE OFFERINGS (assemble-board.py, Info's "Shipped lately" rows) ──
+   Three rows under the intro, one a service: a reel of that service's
+   own pictures where a cover would stand, the name in ink and a gist
+   in grey, and a press that turns the row to the service. The reel is
+   the site's own (SizzleReel), cut to photographs only, since a colour
+   blink in a box beside a sentence is noise; the three start beats
+   apart so they never cut together, which the board found reads as
+   holes in the page rather than reels. */
+const REEL_BEATS: SizzleBeat[] = [
+  { fx: "shutter", img: 0, ms: 900 },
+  { fx: "fade", img: 1, ms: 700 },
+  { fx: "cut", img: 2, ms: 900 },
+  { fx: "curtain", img: 3, ms: 900 },
+  { fx: "fade", img: 4, ms: 700 },
+  { fx: "cut", img: 5, ms: 900 },
+];
+function Offers({ go, pauseRoot }: { go: (col: string) => void; pauseRoot: RefObject<HTMLDivElement | null> }) {
+  return (
+    <div className={glass.rows}>
+      {OFFERS.map((o, k) => (
+        <button
+          key={o.run}
+          type="button"
+          className={`${glass.row} ${glass.rowBtn} ${glass.rise}`}
+          onClick={() => go(o.run)}
+          aria-label={`${o.name}: ${o.line}`}
+        >
+          <span className={glass.reel} aria-hidden="true">
+            <SizzleReel
+              images={o.frames}
+              sequence={REEL_BEATS.filter((b) => (b.img ?? 0) < o.frames.length)}
+              offsetBeat={k * 2}
+              pauseRoot={pauseRoot}
+              style={{ width: 96, height: 72 }}
+            />
+          </span>
+          <span>
+            <b>{o.name}</b> <span className={glass.g}>{o.line}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
 
 /* ── A TILE (assemble-board.py .tile.ixrow) ─────────────────────────
    The picture at the column's width, and one line under it: the
@@ -574,6 +621,8 @@ export function CustomBoard() {
               <h1 className={`${glass.statement} ${glass.rise}`}>
                 {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
               </h1>
+              {/* the three offerings, each a door to its service */}
+              <Offers go={go} pauseRoot={stripRef} />
               {/* the call, here as well as at the end: the reader sold on
                   the first column should not have to turn past everything
                   to reach a time; not when the week is the next column */}
