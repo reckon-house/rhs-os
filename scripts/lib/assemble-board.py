@@ -862,6 +862,27 @@ head = r'''<!doctype html>
   /* a run's head: the line's name in the statement's own type, its
      sentence in the statement's grey, and the chip the columns wear */
   .tile.statement.head .way { display: block; margin-top: 18px; }
+  /* ── THE RUN'S NAME, ON ITS SIDE ─────────────────────────────────
+     /book's month, moved over (glass.module.css .month, value for
+     value: vertical-rl turned 180 so it reads bottom to top, 700,
+     -0.04em, 0.8). Absolute, so the head measures the same with or
+     without it and the hero's row stays where it is; its top is the
+     row under the head and its size is the board's one size, both
+     written by mount from the deal (spineFit). */
+  .tile.statement.head .spine { position: absolute; left: 0; top: var(--spine-top, 100%);
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: var(--spine-fs, 96px); font-weight: 700; letter-spacing: -0.04em;
+    line-height: 0.8; text-transform: uppercase; white-space: nowrap;
+    user-select: none; pointer-events: none; transition: opacity 0.35s ease; }
+  /* the open shelf's list lays into the head's column, so the name
+     stands down while the list is up and returns when it folds */
+  .tile.statement.head.open .spine { opacity: 0; }
+  /* flat on a phone, as /book lays its month: sideways would run the
+     name down the whole page and push the pictures under the fold */
+  @media (max-width: 760px) {
+    .tile.statement.head .spine { position: static; display: inline-block;
+      writing-mode: horizontal-tb; transform: none; margin-top: 26px; }
+  }
   /* the list under an open headline: the tile's own arrival, and the
      rail's rows at the field's measure */
   /* ── THE LIST BUILDS ROW BY ROW ───────────────────────────────────
@@ -1851,7 +1872,7 @@ FILTERS.forEach(([label, tag, desc]) => {
      and the shelf lists every study that sits on this line, dealt
      here or not. It counts what it opens. */
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
-  items.push({ kind: "head", run: tag, first: true, tag,
+  items.push({ kind: "head", run: tag, first: true, tag, label,
     html: label + ". <span class=\"q\">" + desc + "</span>",
     way: shelf + " studies" });
   /* the deal's own order: studies by seat, each cover before its
@@ -1872,6 +1893,7 @@ FILTERS.forEach(([label, tag, desc]) => {
 const pulls = setOrder("staples", all.filter((i) => i.g === "inspiration"));
 const EVERY = Math.floor(pulls.length / (QUOTES.length + 1)) || 1;
 items.push({ kind: "head", run: "staples", first: true, tag: "staples",
+  label: (FILTERS.find((l) => l[1] === "staples") || ["Staples"])[0],
   html: "Staples are the people, music, places, and things that inspire me.",
   way: "See all " + pulls.length + " \u2192" });
 pulls.forEach((p, i) => {
@@ -1899,16 +1921,53 @@ const quoteH = (q) => {
 const headHTML = (t, open) => t.html +
   "<span class=\"way\"><button type=\"button\" class=\"lchip\">" + t.way
   + (t.tag === "staples" ? "" : "<i class=\"pm\"><b class=\"h\"></b><b class=\"v\"></b></i>")
-  + "</button></span>";
+  + "</button></span>"
+  /* the run's name on its side, under the head (the stylesheet's
+     .spine); decorative, since the head has just said it */
+  + (t.label ? "<div class=\"spine\" aria-hidden=\"true\">" + t.label + "</div>" : "");
 const headH = (t) => {
   const m = document.createElement("div");
   m.className = "tile statement head";
   m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
+  m.style.setProperty("--spine-fs", SPINE_FS + "px");
   m.innerHTML = headHTML(t);
   document.body.appendChild(m);
   const h = m.getBoundingClientRect().height;
   m.remove();
   return h;
+};
+
+/* ── THE RUN'S NAME, ON ITS SIDE ─────────────────────────────────────
+   /book's month under its lede, moved over: a run's name stands under
+   its head, sideways, in the room the hero has — from the row under
+   the head to the hero's foot — so it is exactly as tall as the
+   picture beside it. ONE SIZE across the runs (his call, 16 Sept
+   2026): the size the longest name needs to fit that room, measured
+   rather than assumed, so INTERIORS reaches the foot and APPS stops
+   short of it. A phone lays the name flat under the head, as /book
+   lays its month, at the size the longest name needs to fit the
+   column; there it is in the head's flow, so the probe above sizes
+   the head with it. */
+let SPINE_FS = 0;
+const spineLen = (label) => {
+  const m = document.createElement("div");
+  m.className = "tile statement head";
+  m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
+  m.innerHTML = "<div class=\"spine\" style=\"font-size:100px\">" + label + "</div>";
+  document.body.appendChild(m);
+  const r = m.querySelector(".spine").getBoundingClientRect();
+  m.remove();
+  return PHONE ? r.width : r.height;
+};
+const spineFit = (heads) => {
+  let fs = Infinity;
+  for (const t of heads) {
+    if (t.kind !== "head" || !t.label) continue;
+    const room = PHONE ? COL : t.spineRoom;
+    if (!room) continue;
+    fs = Math.min(fs, 100 * room / spineLen(t.label));
+  }
+  return Number.isFinite(fs) ? Math.floor(fs) : 0;
 };
 
 /* ── ONE FIELD, THREE FACES ─────────────────────────────────────────
@@ -2186,8 +2245,20 @@ function deal(list, opts) {
     const use = Math.max(1, Math.min(rows, Math.ceil(need / (pairs * VISIBLE))));
     const hero = run.find((it) => it.hero);
     if (!hero) {
-      let inPair = 0;
-      run.forEach((it) => {
+      let inPair = 0, from = 0;
+      if (VISIBLE > 1 && run[0].kind === "head") {
+        /* a run with no hero keeps its head's column for the name on
+           its side all the same: the head alone there, the run's first
+           tiles in the column beside it, one under the other, and the
+           pour goes on from the next pair. Seats are pushed in the
+           run's own order, which is what bySeat reads. */
+        const aside = Math.min(use, run.length - 1);
+        seats.push(s);
+        for (let k = 0; k < aside; k += 1) seats.push(s + 1 + k * VISIBLE);
+        s += per;
+        from = 1 + aside;
+      }
+      run.slice(from).forEach((it) => {
         const take = takes(it);
         if (inPair && inPair + take > use * VISIBLE) { s += per - inPair; inPair = 0; }
         seats.push(s); s += take; inPair += take;
@@ -2219,12 +2290,8 @@ function deal(list, opts) {
       for (let k = 0; k < ncols; k += 1) counts.push(Math.floor(n / ncols) + (k < n % ncols ? 1 : 0));
       return counts;
     };
-    if (hero.wide) {
-      /* a wide hero takes the row under the head, across the pair, and
-         the pair holds nothing else: the rest starts on the next one,
-         in whole pairs */
-      at.set(first, s); at.set(hero, s + VISIBLE); s += per;
-      const counts = n ? spread(VISIBLE) : [];
+    /* the rest on whole pairs from s, the two columns level */
+    const inPairs = (counts) => {
       for (let ci = 0; ci < counts.length; ci += VISIBLE) {
         const a = counts[ci] || 0, b = counts[ci + 1] || 0;
         for (let k = 0; k < Math.max(a, b); k += 1) {
@@ -2233,7 +2300,22 @@ function deal(list, opts) {
         }
         s += per;
       }
+    };
+    if (hero.wide) {
+      /* a wide hero takes the row under the head, across the pair, and
+         the pair holds nothing else: the rest starts on the next one,
+         in whole pairs */
+      at.set(first, s); at.set(hero, s + VISIBLE); s += per;
+      inPairs(n ? spread(VISIBLE) : []);
+    } else if (VISIBLE > 1 && first.kind === "head") {
+      /* a portrait beside a HEAD: the head's column is the head and
+         the name on its side under it, nothing else, since the name
+         runs to the hero's foot; the rest starts on the next pair */
+      at.set(first, s); at.set(hero, s + 1); s += per;
+      inPairs(n ? spread(VISIBLE) : []);
     } else if (VISIBLE > 1) {
+      /* the opener: the statement and its covers in one column, the
+         hero in the other */
       const counts = spread(1);
       at.set(first, s); at.set(hero, s + 1);
       for (let k = 0; k < counts[0]; k += 1) at.set(rest[i++], s + (k + 1) * VISIBLE);
@@ -2383,9 +2465,15 @@ function deal(list, opts) {
       colY[c] = bottom + airOf(); colY[c + 1] = colY[c];
       if (bottom > colH[c + 1]) colH[c + 1] = bottom;
     } else if (colY) { y = colY[c]; colY[c] += h + airOf(); }
-    if (it.kind === "head") headEnd[c] = y + h;
+    let spine = null;
+    if (it.kind === "head") {
+      headEnd[c] = y + h;
+      /* the name's room, for the spine: the row under the head to the
+         hero's foot, which is the box a wide hero fills */
+      spine = { spineTop: h + airMin, spineRoom: heroRoom(y + h + airMin) };
+    }
     if (y + h > colH[c]) colH[c] = y + h;
-    out.push({ ...it, w, h, x: c * MOD_X, y, col: c, ...(ox ? { ox } : {}),
+    out.push({ ...it, w, h, x: c * MOD_X, y, col: c, ...(ox ? { ox } : {}), ...(spine || {}),
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
@@ -2410,14 +2498,17 @@ function deal(list, opts) {
     if (need > colTail[t.col]) colTail[t.col] = need;
   }
   for (const t of out) if (t.hero) colTail[t.col] = 0;
+  /* the one size the spines share: what the longest name needs */
+  const spineFs = PHONE ? SPINE_FS : spineFit(out);
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun };
+    PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun, spineFs };
 }
 let colRun = [], colTail = [], famRun = null;
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
   colTail = L.colTail || [];
+  if (L.spineFs) SPINE_FS = L.spineFs;
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
@@ -2433,6 +2524,9 @@ function adopt(L) {
    (there is no pair to fit rows across), with more air between the
    pictures than a feed gives them: 48 to 120px, a little under the
    board's own 96 to 260 for tiles a little under the board's width. */
+/* a phone's name lies flat in the head's flow, so its size is the
+   column's to give before any head is measured */
+if (PHONE) SPINE_FS = spineFit(items);
 const BOARD = deal(items, PHONE
   ? { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" }, rows: 7, stack: true, air: [48, 120] }
   : { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" } });
@@ -3406,6 +3500,8 @@ function mount(t, gx, gy, u, f) {
        not the field's */
     el.classList.add("statement", "head");
     el.innerHTML = headHTML(t, lineOpen === t.tag);
+    if (t.spineTop != null) el.style.setProperty("--spine-top", t.spineTop + "px");
+    if (SPINE_FS) el.style.setProperty("--spine-fs", SPINE_FS + "px");
     if (lineOpen === t.tag) el.classList.add("open");
     const chip = el.querySelector(".lchip");
     if (chip) chip.addEventListener("click", (e) => {
