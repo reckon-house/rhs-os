@@ -1,77 +1,11 @@
 /*
  * /custom's own material. The board's grammar for a page of columns is
  * glass.module.css (the strip, the columns, the rules, the ink, the
- * counts, the chips, the rise); what is here is only what this page
- * has that the daybook does not: a shelf row with a picture, a door,
- * the Ask, and the ways out.
+ * counts, the chips, the rows, the head chips, the week, the rise);
+ * what is here is only what this page has that no other does: the two
+ * doors, the price line, the Ask and its turns, a piece's plate, and
+ * the ways out.
  */
-
-/* the column's head chips (assemble-board.py .ccol .chead): the page's
-   own name, and who the link was sent to */
-.chead {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 1.1em;
-}
-/* a chip that names rather than opens: the column chip's values
-   (.ccol .cchip) with no hover, since nothing happens */
-.tag {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  max-width: 100%;
-  border-radius: 12px;
-  padding: 8px 12px;
-  background: var(--chip);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.45;
-}
-
-/* ── A ROW ON A SHELF (assemble-board.py .ccol .crow, .lines .crow) ──
-   The study's cover at 96 by 72, its name in weight and its line
-   receding, the hairline over it and the board's 13px of air under
-   that. The 44px below is a line's list's, since this page is read
-   down a column the way a line's list is. */
-.row {
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  column-gap: 14px;
-  align-items: start;
-  margin: 0;
-  padding: 13px 0 44px;
-  border-top: 1px solid var(--hair);
-  color: inherit;
-  text-decoration: none;
-  font-size: 12px;
-  line-height: 1.35;
-  font-weight: 600;
-  letter-spacing: -0.004em;
-}
-.row img {
-  display: block;
-  width: 96px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.04);
-}
-.row b {
-  font-weight: 600;
-}
-/* a row with a line where the picture would be (assemble-board.py
-   .ccol .crow.text): the method notes, this site */
-.text {
-  grid-template-columns: minmax(0, 1fr);
-}
-a.row:hover b {
-  text-decoration: underline;
-  text-decoration-color: var(--grey);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
 
 /* ── THE TWO DOORS ───────────────────────────────────────────────────
    Set at the size an entry is read at (glass .body), not a row's

@@ -32,6 +32,8 @@
  *  London booking "9:00" without being told is a no-show. */
 export const HOUSE_TZ = "America/Chicago";
 
+
+
 /** How long a first conversation is.
  *
  *  Thirty, not fifteen. The contact beat says "A real conversation and
@@ -39,6 +41,17 @@ export const HOUSE_TZ = "America/Chicago";
  *  this site, and fifteen minutes is not that: it reads as a screening
  *  call and sets the wrong expectation before anyone has spoken. */
 export const SLOT_MINUTES = 30;
+
+/* ── WHAT THE BOOKING SAYS ───────────────────────────────────────────
+   One pair of sentences for every surface that offers a time: /book,
+   /custom's own column, and the board's Connect room, which mines this
+   file for them rather than the page. His line, then the grey half
+   that says what a call is, quoting SLOT_MINUTES above so the sentence
+   cannot disagree with the calendar it stands over. */
+export const BOOK_LEDE = "Let\u2019s talk about what you have in mind.";
+export const BOOK_DIM =
+  `Pick a time that works, it\u2019s a ${SLOT_MINUTES} minute call. ` +
+  "If you want to send anything over first, I\u2019ll read it before we talk.";
 
 /** The hours Jeremy keeps, as half-open [start, end) in house time.
  *

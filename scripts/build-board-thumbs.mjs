@@ -559,16 +559,23 @@ if (method.length < 3 || links.length < 4 || credits.length < 10)
 /* the booking page's own lede and the slot length, so the column
    says what /book says; if the JSX moves, the footer's line stands in
    and the build says so rather than failing */
-const bookTs = readFileSync("src/app/book/page.tsx", "utf8");
 const dataTs = readFileSync("src/data/booking.ts", "utf8");
 const minutes = parseInt((dataTs.match(/SLOT_MINUTES\s*=\s*(\d+)/) || [])[1] || "30", 10);
-const jsxText = (t) => t.replace(/\{"\s*"\}/g, " ").replace(/&rsquo;/g, "\u2019").replace(/\{[^}]*\}/g, String(minutes))
-  .replace(/\s+/g, " ").trim();
-const ledeM = bookTs.match(/<h1[^>]*>\s*([\s\S]*?)<span className="dim">\s*([\s\S]*?)<\/span>/);
-const book = ledeM
-  ? { lede: jsxText(ledeM[1]), dim: jsxText(ledeM[2]), minutes }
+/* The lede lives beside the rules it describes (BOOK_LEDE / BOOK_DIM in
+   src/data/booking.ts), where /book and /custom's own column read it
+   too; it used to be mined out of /book's JSX, which is why moving that
+   page into columns would have quietly emptied this line. The strings
+   carry \u escapes and one ${SLOT_MINUTES}, so they are unescaped and
+   the number put back. */
+const tsText = (raw) => [...raw.matchAll(/"((?:[^"\\]|\\.)*)"|`((?:[^`\\]|\\.)*)`/g)]
+  .map((m) => js(m[1] ?? m[2]).replace(/\$\{SLOT_MINUTES\}/g, String(minutes)))
+  .join("").replace(/\s+/g, " ").trim();
+const ledeM = dataTs.match(/BOOK_LEDE\s*=\s*([\s\S]*?);\n/);
+const dimM = dataTs.match(/BOOK_DIM\s*=\s*([\s\S]*?);\n/);
+const book = ledeM && dimM
+  ? { lede: tsText(ledeM[1]), dim: tsText(dimM[1]), minutes }
   : { lede: "Have a project in mind?", dim: "", minutes };
-if (!ledeM) console.error("  board: /book lede not found, the footer's line stands in");
+if (!ledeM || !dimM) console.error("  board: BOOK_LEDE/BOOK_DIM not found, the footer's line stands in");
 COPY.house = { method, links, services, practice, credits, book };
 writeFileSync("public/lab/board-copy.json", JSON.stringify(COPY));
 

@@ -229,7 +229,7 @@ export function Masthead() {
      line (the mark over the rail, the count over the last column), and
      a bar here would be a second masthead over the first. After every
      hook, so the order React counts never changes between routes. */
-  if (pathname === "/daybook" || pathname === "/custom") return null;
+  if (pathname === "/daybook" || pathname === "/custom" || pathname === "/book") return null;
   return (
     <>
       {/* The melt: turbulence displacing whatever the burn pill has behind

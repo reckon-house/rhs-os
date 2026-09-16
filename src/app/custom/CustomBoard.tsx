@@ -33,13 +33,14 @@ import {
 } from "react";
 import Link from "next/link";
 import { PaperGround } from "@/components/shell/PaperGround";
-import { Rule, turnRow, useArrival, useGlass, useTurns } from "@/components/glass/glass";
+import { Rule, still, turnRow, useArrival, useGlass, useTurns } from "@/components/glass/glass";
+import { Week } from "@/components/glass/Week";
 import glass from "@/components/glass/glass.module.css";
 import own from "./custom.module.css";
 import { CUSTOM, PIECES, STUDIO, type Piece as PieceT, type Row } from "@/data/custom";
 import { plateSrcSet } from "@/lib/img-srcset";
 import { METHOD } from "@/data/method";
-import { SLOT_MINUTES } from "@/data/booking";
+import { BOOK_DIM } from "@/data/booking";
 import { projects } from "@/data/projects";
 
 /* the studies the Ask reads: the pieces', so an answer about
@@ -102,9 +103,9 @@ function Piece({ p }: { p: PieceT }) {
   return (
     <section className={glass.col} aria-labelledby={`piece-${p.id}`}>
       <div className={glass.cin}>
-        <div className={own.chead}>
-          <span className={own.tag}>{p.chip}</span>
-          <span className={`${own.tag} ${glass.g}`}>{p.project}</span>
+        <div className={glass.chead}>
+          <span className={glass.tag}>{p.chip}</span>
+          <span className={`${glass.tag} ${glass.g}`}>{p.project}</span>
         </div>
         <h2 id={`piece-${p.id}`} className={`${glass.statement} ${glass.rise}`}>
           {p.lede} <span className={glass.g}>{p.dim}</span>
@@ -140,7 +141,7 @@ function Piece({ p }: { p: PieceT }) {
 function Shelf({ r }: { r: Row }) {
   return (
     <Link
-      className={`${own.row}${r.thumb ? "" : ` ${own.text}`} ${glass.rise}`}
+      className={`${glass.row}${r.thumb ? "" : ` ${glass.text}`} ${glass.rise}`}
       href={r.href}
     >
       {r.thumb ? (
@@ -269,7 +270,15 @@ export function CustomBoard() {
   const leadRef = useRef<HTMLDivElement | null>(null);
   /* the glass: ink, counts and the columns past the edge; the rise
      under a curtain; the row turning from the keys and a held wheel */
-  const past = useGlass(rootRef, stripRef, `.${own.row}`, "");
+  const past = useGlass(rootRef, stripRef, `.${glass.row}`, "");
+  /* the offer's own way to the week: the row is fifteen columns now,
+     and the reader sold on the first one should not have to turn past
+     everything to reach a time */
+  const goTalk = () => {
+    const strip = stripRef.current;
+    const col = strip?.querySelector<HTMLElement>('[data-col="talk"]');
+    if (strip && col) strip.scrollTo({ left: col.offsetLeft, behavior: still() ? "auto" : "smooth" });
+  };
   useArrival(stripRef);
   useTurns(stripRef);
 
@@ -304,10 +313,10 @@ export function CustomBoard() {
       <div ref={stripRef} className={glass.strip}>
         <section className={`${glass.col} ${glass.lead}`} aria-label={CUSTOM.caption}>
           <div ref={leadRef} className={glass.cin}>
-            <div className={own.chead}>
-              <span className={own.tag}>{CUSTOM.caption}</span>
+            <div className={glass.chead}>
+              <span className={glass.tag}>{CUSTOM.caption}</span>
               {who ? (
-                <span className={own.tag}>
+                <span className={glass.tag}>
                   {/* a space between the two, for a reader's ear: the chip's
                       gap draws it, and a flex box drops the text node */}
                   <span className={glass.g}>For</span> <span>{who}</span>
@@ -329,10 +338,10 @@ export function CustomBoard() {
                 enough now that the reader who is sold on the first
                 column should not have to turn ten more to find it */}
             <p className={`${own.ways} ${glass.rise}`}>
-              <Link className={glass.chip} href="/book">
-                <span className="lbl">{CUSTOM.talk.book}</span>
+              <button type="button" className={glass.chip} onClick={goTalk}>
+                <span>{CUSTOM.talk.book}</span>
                 <span className={glass.arr} aria-hidden="true" />
-              </Link>
+              </button>
             </p>
             <Ask cinRef={leadRef} />
           </div>
@@ -366,7 +375,7 @@ export function CustomBoard() {
           <div className={glass.cin}>
             {head("method", CUSTOM.heads.method)}
             {METHOD.map((m) => (
-              <p key={m.head} className={`${own.row} ${own.text} ${glass.rise}`}>
+              <p key={m.head} className={`${glass.row} ${glass.text} ${glass.rise}`}>
                 <span>
                   <b>{m.head}</b> <span className={glass.g}>{m.body}</span>
                 </span>
@@ -376,21 +385,17 @@ export function CustomBoard() {
           <Rule />
         </section>
 
-        <section className={`${glass.col} ${glass.dark}`} aria-labelledby="talk">
+        {/* THE CALL HAPPENS HERE, not on a page of its own. The week is
+            the board's own (Week, on the glass), so picking a time is
+            the same act in the same clothes wherever it is offered. */}
+        <section className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
           <div className={glass.cin}>
             {head("talk", CUSTOM.heads.talk)}
             <p className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.talk.lede}{" "}
-              <span className={glass.g}>
-                Pick a time that works, it&rsquo;s a {SLOT_MINUTES} minute call. If you want
-                to send anything over first, I&rsquo;ll read it before we talk.
-              </span>
+              {CUSTOM.talk.lede} <span className={glass.g}>{BOOK_DIM}</span>
             </p>
+            <Week />
             <p className={own.ways}>
-              <Link className={glass.chip} href="/book">
-                <span className="lbl">{CUSTOM.talk.book}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </Link>
               <a className={glass.chip} href={`mailto:${CUSTOM.talk.email}`}>
                 {CUSTOM.talk.email}
               </a>
