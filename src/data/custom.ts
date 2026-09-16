@@ -301,12 +301,13 @@ export interface Hero {
   cat: string;
 }
 export interface Run {
-  id: "tools" | "brand" | "software";
+  id: "tools" | "brand" | "software" | "work";
   name: string;
   /** the head's one sentence, at display size */
   line: string;
-  /** what the service is, at read size, beside the head */
-  body: string;
+  /** what the service is, as rows under the head at the list's size:
+   *  the board's own row, a head in ink and its line in grey */
+  rows: { head: string; body: string }[];
   hero: Hero;
 }
 
@@ -315,10 +316,16 @@ export const RUNS: Run[] = [
     id: "tools",
     name: "AI and tools.",
     line: "Which assistant, which apps, and how your business should use them.",
-    body:
-      "Claude, ChatGPT or Gemini, picked for the way you work and connected to the apps you " +
-      "already pay for, with the repetitive part handed to the assistant. It runs in your own " +
-      "account, and you'll know how to run it.",
+    rows: [
+      { head: "Which assistant", body: "Claude, ChatGPT or Gemini, picked for the way you work." },
+      {
+        head: "Which apps",
+        body:
+          "Connected to the ones you already pay for, with the repetitive part handed to the " +
+          "assistant.",
+      },
+      { head: "Your own account", body: "It runs in yours, and you'll know how to run it." },
+    ],
     hero: {
       src: `${T}/dsc/dsc-ai-scheduler-phone-hero.webp`,
       w: 1024,
@@ -332,9 +339,10 @@ export const RUNS: Run[] = [
     name: "Brand and website.",
     line: "A rebrand, a redesign, or the site you have made right.",
     /* the two lines the board says for Branding and Digital, verbatim */
-    body:
-      "Marks, type and patterns, on packaging, print and apparel. Sites, stores and " +
-      "platforms, designed and shipped.",
+    rows: [
+      { head: "Brand", body: "Marks, type and patterns, on packaging, print and apparel." },
+      { head: "Website", body: "Sites, stores and platforms, designed and shipped." },
+    ],
     hero: {
       src: `${T}/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.webp`,
       w: 2048,
@@ -347,9 +355,15 @@ export const RUNS: Run[] = [
     id: "software",
     name: "Custom software.",
     line: "When the tool you need doesn't exist, we build it.",
-    body:
-      "A scheduler that takes bookings from any AI, a back office that fits how you already " +
-      "work, an app on the App Store. Designed and built here, start to finish.",
+    rows: [
+      {
+        head: "Back office",
+        body:
+          "A scheduler that takes bookings from any AI, a customer list, a calendar that fits " +
+          "how you already work.",
+      },
+      { head: "Apps", body: "On the App Store, designed and built here, start to finish." },
+    ],
     hero: {
       src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
       w: 1536,
@@ -359,6 +373,37 @@ export const RUNS: Run[] = [
     },
   },
 ];
+
+/* ── FOR THE EXPLORATIONS ────────────────────────────────────────────
+   A cover: his hook over a hero, before anything else. A work run: the
+   pictures first, six of them, under one head. A spine: the town's
+   name set the way /book sets its month. */
+export const COVER: { lede: string; dim: string; hero: Hero } = {
+  lede: "Your business has grown faster than your systems have.",
+  dim: "A design and software studio in Celina, Texas, for the businesses around it.",
+  hero: {
+    src: `${T}/dsc/dsc-marketing-site-laptop-stool-hero.webp`,
+    w: 1024,
+    h: 683,
+    name: "Dallas Sport Collective",
+    cat: "Website, custom app",
+  },
+};
+export const WORK: Run = {
+  id: "work",
+  name: "Selected work.",
+  line: "Six things we made lately.",
+  rows: [],
+  hero: {
+    src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
+    w: 1920,
+    h: 1254,
+    name: "Sally Marketing OS",
+    cat: "Product design, engineering",
+  },
+};
+export const WORK_PICKS = ["dsc-booking", "arc-gap", "capitan", "dsc-owner", "j-christianson", "arc-inventory"];
+export const SPINE = "CELINA";
 
 /* the rail's doors, each the column it turns the row to */
 export const DOORS: { label: string; col: string }[] = [

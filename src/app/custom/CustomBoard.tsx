@@ -5,22 +5,18 @@
  * read and not the board: one audience, in the grammar the rest of the
  * site is in, with the board's rail of doors down the left. It reads as
  * the studio's front door rather than a cut of the portfolio: the
- * studio and who it is for, then each of its three services dealt as
- * the board deals a run, a head with the service's one sentence and
- * what it is beside it, a wide hero across the pair, then two columns
- * of tiles, each a picture with the study's name and the study's own
- * line at 12px. Then how the work goes, twenty years of clients with
- * the way out to all of it, and the house's own black column with the
- * price line, the call and the week in it.
+ * studio and who it is for, then its three services dealt as the board
+ * deals a run, a head with the service's one sentence and what it is
+ * under it at the list's size, a wide hero across the pair, then two
+ * columns of tiles, each a picture with the study's name and the
+ * study's own line at 12px. Then how the work goes, twenty years of
+ * clients with the way out to all of it, and the house's own black
+ * column with the price line, the call and the week in it.
  *
- * THE BUDGET IS THE BOARD'S. An earlier draft dressed every piece as a
- * study preview and carried a study section at 32px in each, 58 words
- * a column, eleven columns running, and the pictures under the fold:
- * "there's so much text on all of them." A panel of five readings of
- * the system converged on the field's own rule: display prose once per
- * run, in its head; a picture carries a caption; every phrase has one
- * home. About 110 display words on the page now, the board's own
- * proportion.
+ * EXPLORATIONS, for now, on ?v= and the rail's foot: five answers to
+ * "an agency built around this design system", each a different row
+ * of the same pieces. A is the page when nothing is said. The winner
+ * keeps the page; the others come out.
  *
  * THE ASK IS THE BOARD'S. A question typed under the statement is
  * answered from the studies the tiles open (/api/ask), and the studies
@@ -48,7 +44,19 @@ import { Rule, still, turnRow, useArrival, useGlass, useTurns } from "@/componen
 import { Week } from "@/components/glass/Week";
 import glass from "@/components/glass/glass.module.css";
 import own from "./custom.module.css";
-import { CUSTOM, DOORS, PIECES, RUNS, type Hero, type Piece as PieceT, type Run } from "@/data/custom";
+import {
+  COVER,
+  CUSTOM,
+  DOORS,
+  PIECES,
+  RUNS,
+  SPINE,
+  WORK,
+  WORK_PICKS,
+  type Hero,
+  type Piece as PieceT,
+  type Run,
+} from "@/data/custom";
 import { CREDITS } from "@/components/shell/pressing-footer/PressingCredits";
 import { plateSrcSet } from "@/lib/img-srcset";
 import { METHOD } from "@/data/method";
@@ -73,13 +81,19 @@ projects.forEach((p) => {
   if (!TITLE_OF.has(p.href)) TITLE_OF.set(p.href, p.title);
 });
 
-/* ── WHO THE LINK IS FOR ───────────────────────────────────────────
-   Read through an external store rather than copied into state, so
-   the server's page and the client's first render agree and the chip
-   appears once the address is read. Plain text, forty characters. */
-const subscribeFor = (fn: () => void) => {
+/* ── THE ADDRESS ───────────────────────────────────────────────────
+   ?for= names who the link was sent to; ?v= names the exploration.
+   Both read through one external store, so the server's page and the
+   client's first render agree and the chips appear once the address
+   is read. The rail's foot writes ?v= and tells the store. */
+const heard = new Set<() => void>();
+const subscribe = (fn: () => void) => {
+  heard.add(fn);
   window.addEventListener("popstate", fn);
-  return () => window.removeEventListener("popstate", fn);
+  return () => {
+    heard.delete(fn);
+    window.removeEventListener("popstate", fn);
+  };
 };
 const readFor = () => {
   try {
@@ -93,6 +107,28 @@ const readFor = () => {
   }
 };
 const serverFor = () => "";
+type Variant = "a" | "b" | "c" | "d" | "e";
+const VARIANTS: Variant[] = ["a", "b", "c", "d", "e"];
+const readVariant = (): Variant => {
+  try {
+    const v = new URLSearchParams(window.location.search).get("v") as Variant | null;
+    return v && VARIANTS.includes(v) ? v : "a";
+  } catch {
+    return "a";
+  }
+};
+const serverVariant = (): Variant => "a";
+function writeVariant(v: Variant) {
+  try {
+    const u = new URL(window.location.href);
+    if (v === "a") u.searchParams.delete("v");
+    else u.searchParams.set("v", v);
+    window.history.replaceState(null, "", u);
+  } catch {
+    /* an address that will not take it keeps the one it had */
+  }
+  heard.forEach((fn) => fn());
+}
 
 /* the board's thumb at the rungs the generator wrote beside it, or a
    plate through the site's own ladder (raw in development, where the
@@ -102,6 +138,11 @@ const rungsOf = (src: string, w?: number) =>
   `${src.replace(/\.webp$/, "@384.webp")} 384w, ${src.replace(/\.webp$/, "@768.webp")} 768w, ${src} ${w ?? 1536}w`;
 const plateSet = (img: { src: string; w?: number }) =>
   img.src.startsWith(THUMBS) ? rungsOf(img.src, img.w) : plateSrcSet(img.src, img.w);
+
+const piecesOf = (r: Run) =>
+  r.id === "work"
+    ? WORK_PICKS.map((id) => PIECES.find((p) => p.id === id)).filter((p): p is PieceT => !!p)
+    : PIECES.filter((p) => p.run === r.id);
 
 /* ── A TILE (assemble-board.py .tile.ixrow) ─────────────────────────
    The picture at the column's width, and one line under it: the
@@ -132,15 +173,16 @@ function Tile({ p }: { p: PieceT }) {
   );
 }
 
-/* a hero, captioned as the board captions a cover */
-function HeroPlate({ h }: { h: Hero }) {
+/* a hero, captioned as the board captions a cover; wide across a pair,
+   or at a column's width where a column carries its own */
+function HeroPlate({ h, wide }: { h: Hero; wide: boolean }) {
   return (
-    <figure className={`${glass.hero} ${glass.rise}`}>
+    <figure className={`${wide ? glass.hero : glass.tile} ${glass.rise}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={h.src}
         srcSet={plateSet(h)}
-        sizes="(max-width: 760px) 84vw, 1000px"
+        sizes={wide ? "(max-width: 760px) 84vw, 1000px" : "(max-width: 760px) 84vw, 480px"}
         width={h.w}
         height={h.h}
         alt={h.name}
@@ -154,37 +196,51 @@ function HeroPlate({ h }: { h: Hero }) {
   );
 }
 
+/* the list under a head: what the service is, in the board's row */
+function Rows({ rows }: { rows: Run["rows"] }) {
+  if (!rows.length) return null;
+  return (
+    <div className={glass.rows}>
+      {rows.map((x) => (
+        <p key={x.head} className={`${glass.row} ${glass.text} ${glass.tight} ${glass.rise}`}>
+          <span>
+            <b>{x.head}</b> <span className={glass.g}>{x.body}</span>
+          </span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
 /* ── A RUN'S HEAD (assemble-board.py, the head tile) ────────────────
-   The name in ink, its one sentence in grey, and a chip that counts the
-   tiles and turns the row to them, with what the door actually is
-   hanging beside it at read size; the run's hero spans the pair under
-   both. The only display prose a run carries. */
+   The name in ink and its one sentence in grey, what it is as rows
+   under them at the list's size, and a chip that counts the tiles and
+   turns the row to them; the run's hero spans the pair under it. The
+   only display prose a run carries. */
 function Head({ r, go }: { r: Run; go: (col: string) => void }) {
-  const mine = PIECES.filter((p) => p.run === r.id);
+  const mine = piecesOf(r);
   return (
     <section className={glass.pair} data-col={r.id} aria-labelledby={`run-${r.id}`}>
       <div className={glass.cin}>
         <div className={glass.pairHead}>
-          <div>
-            <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
-              {r.name} <span className={glass.g}>{r.line}</span>
-            </h2>
-            <p className={`${own.ways} ${glass.rise}`}>
-              <button
-                type="button"
-                className={glass.chip}
-                onClick={() => mine[0] && go(`tiles-${r.id}-0`)}
-              >
-                <span>
-                  {mine.length} {mine.length === 1 ? "piece" : "pieces"}
-                </span>
-                <span className={glass.arr} aria-hidden="true" />
-              </button>
-            </p>
-          </div>
-          <p className={`${own.door} ${glass.rise}`}>{r.body}</p>
+          <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
+            {r.name} <span className={glass.g}>{r.line}</span>
+          </h2>
+          <Rows rows={r.rows} />
+          <p className={`${own.ways} ${glass.rise}`}>
+            <button
+              type="button"
+              className={glass.chip}
+              onClick={() => mine[0] && go(`tiles-${r.id}-0`)}
+            >
+              <span>
+                {mine.length} {mine.length === 1 ? "piece" : "pieces"}
+              </span>
+              <span className={glass.arr} aria-hidden="true" />
+            </button>
+          </p>
         </div>
-        <HeroPlate h={r.hero} />
+        <HeroPlate h={r.hero} wide />
       </div>
       <Rule />
     </section>
@@ -197,7 +253,7 @@ function Head({ r, go }: { r: Run; go: (col: string) => void }) {
    taking the odd one, the piece a small business recognises first at
    the top of the first. */
 function Tiles({ r }: { r: Run }) {
-  const mine = PIECES.filter((p) => p.run === r.id);
+  const mine = piecesOf(r);
   const half = Math.ceil(mine.length / 2);
   const cols = [mine.slice(0, half), mine.slice(half)].filter((c) => c.length);
   return (
@@ -213,6 +269,48 @@ function Tiles({ r }: { r: Run }) {
         </section>
       ))}
     </>
+  );
+}
+
+/* ── ONE COLUMN, THE WHOLE SERVICE (exploration E) ───────────────────
+   The head, its rows, its hero at the column's width, then its tiles,
+   all down one column: a service a screen wide, the row seven columns
+   long. */
+function Single({ r }: { r: Run }) {
+  return (
+    <section className={glass.col} data-col={r.id} aria-labelledby={`run-${r.id}`}>
+      <div className={glass.cin}>
+        <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
+          {r.name} <span className={glass.g}>{r.line}</span>
+        </h2>
+        <Rows rows={r.rows} />
+        <div className={glass.rows}>
+          <HeroPlate h={r.hero} wide={false} />
+          {piecesOf(r).map((p) => (
+            <Tile key={p.id} p={p} />
+          ))}
+        </div>
+      </div>
+      <Rule />
+    </section>
+  );
+}
+
+/* ── THE COVER (explorations B) ─────────────────────────────────────
+   His hook over a hero, across the pair, before anything else. */
+function Cover() {
+  return (
+    <section className={glass.pair} data-col="cover" aria-label="Cover">
+      <div className={glass.cin}>
+        <div className={glass.pairHead}>
+          <p className={`${glass.statement} ${glass.rise}`}>
+            {COVER.lede} <span className={glass.g}>{COVER.dim}</span>
+          </p>
+        </div>
+        <HeroPlate h={COVER.hero} wide />
+      </div>
+      <Rule />
+    </section>
   );
 }
 
@@ -312,30 +410,110 @@ function Ask({ cinRef }: { cinRef: RefObject<HTMLDivElement | null> }) {
   );
 }
 
-/* the rail's doors */
-function Rail({ go }: { go: (col: string) => void }) {
+/* the rail's doors, and the explorations at its foot */
+function Rail({ v, go, doors }: { v: Variant; go: (col: string) => void; doors: typeof DOORS }) {
   return (
     <>
-      {DOORS.map((d) => (
+      {doors.map((d) => (
         <button key={d.col} type="button" className={glass.pill} onClick={() => go(d.col)}>
           <span>{d.label}</span>
+        </button>
+      ))}
+      <span className={glass.gap} aria-hidden="true" />
+      {VARIANTS.map((x) => (
+        <button
+          key={x}
+          type="button"
+          className={glass.pill}
+          aria-pressed={v === x}
+          aria-label={`Exploration ${x.toUpperCase()}`}
+          onClick={() => writeVariant(x)}
+        >
+          <span>{x.toUpperCase()}</span>
         </button>
       ))}
     </>
   );
 }
 
+/* what stands in the row, by exploration */
+type Slot =
+  | { kind: "statement"; dark?: boolean; spine?: boolean }
+  | { kind: "cover" }
+  | { kind: "caps"; ask?: boolean }
+  | { kind: "head"; run: Run }
+  | { kind: "tiles"; run: Run }
+  | { kind: "single"; run: Run }
+  | { kind: "method" }
+  | { kind: "clients" }
+  | { kind: "talk" };
+const run = (id: Run["id"]) => (id === "work" ? WORK : RUNS.find((r) => r.id === id)!);
+const services = (): Slot[] => RUNS.flatMap((r): Slot[] => [{ kind: "head", run: r }, { kind: "tiles", run: r }]);
+const ROW: Record<Variant, Slot[]> = {
+  /* A · the studio: statement, three services as runs, process, clients, the call */
+  a: [{ kind: "statement" }, ...services(), { kind: "method" }, { kind: "clients" }, { kind: "talk" }],
+  /* B · manifesto: the hook over a hero, what we do as a list, the work, then the rest */
+  b: [
+    { kind: "cover" },
+    { kind: "caps", ask: true },
+    { kind: "head", run: run("work") },
+    { kind: "tiles", run: run("work") },
+    { kind: "method" },
+    { kind: "clients" },
+    { kind: "talk" },
+  ],
+  /* C · work first: the statement, six pictures, then what we do, process, clients, the call */
+  c: [
+    { kind: "statement" },
+    { kind: "head", run: run("work") },
+    { kind: "tiles", run: run("work") },
+    { kind: "caps" },
+    { kind: "method" },
+    { kind: "clients" },
+    { kind: "talk" },
+  ],
+  /* D · the house: the studio speaks first in its own black column; paper after; black to close */
+  d: [{ kind: "statement", dark: true }, ...services(), { kind: "method" }, { kind: "clients" }, { kind: "talk" }],
+  /* E · one column a service: the town's name as a spine, then each service whole, seven columns */
+  e: [
+    { kind: "statement", spine: true },
+    ...RUNS.map((r): Slot => ({ kind: "single", run: r })),
+    { kind: "method" },
+    { kind: "clients" },
+    { kind: "talk" },
+  ],
+};
+const DOORS_OF: Record<Variant, typeof DOORS> = {
+  a: DOORS,
+  b: [{ label: "What we do", col: "caps" }, { label: "The work", col: "work" }, ...DOORS.slice(3)],
+  c: [{ label: "The work", col: "work" }, { label: "What we do", col: "caps" }, ...DOORS.slice(3)],
+  d: DOORS,
+  e: DOORS,
+};
+
 export function CustomBoard() {
-  const who = useSyncExternalStore(subscribeFor, readFor, serverFor);
+  const who = useSyncExternalStore(subscribe, readFor, serverFor);
+  const v = useSyncExternalStore(subscribe, readVariant, serverVariant);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
   const leadRef = useRef<HTMLDivElement | null>(null);
   /* the glass: ink and counts (rows and tiles alike) and the columns
-     past the edge; the rise under a curtain; the row turning from the
-     keys and a held wheel */
-  const past = useGlass(rootRef, stripRef, `.${glass.row}, .${glass.tile}`, "");
+     past the edge, redrawn when an exploration rebuilds the row; the
+     rise under a curtain; the row turning from the keys and a held
+     wheel */
+  const past = useGlass(rootRef, stripRef, `.${glass.row}, .${glass.tile}`, v);
   useArrival(stripRef);
   useTurns(stripRef);
+
+  /* THE ROW STARTS OVER WHEN ITS STRUCTURE DOES. The strip snaps, and a
+     snapping scroller remembers the column it last snapped to: the
+     server renders A, so a page opened on another exploration hydrates
+     with A's first column as that target and re-snaps to it once the
+     row is rebuilt. Before the paint, so the reader never sees the jump. */
+  useLayoutEffect(() => {
+    const strip = stripRef.current;
+    if (strip && strip.scrollLeft) strip.scrollTo({ left: 0, behavior: "auto" });
+  }, [v]);
 
   /* a door, a head's chip and the offer's own "Pick a time" all turn
      the row to a column by its address */
@@ -350,6 +528,166 @@ export function CustomBoard() {
       {text}
     </h2>
   );
+  const pick = (
+    <p className={`${own.ways} ${glass.rise}`}>
+      <button type="button" className={glass.chip} onClick={() => go("talk")}>
+        <span>{CUSTOM.talk.book}</span>
+        <span className={glass.arr} aria-hidden="true" />
+      </button>
+    </p>
+  );
+  const rail = <Rail v={v} go={go} doors={DOORS_OF[v]} />;
+
+  const columns = ROW[v].map((slot) => {
+    switch (slot.kind) {
+      case "statement":
+        return (
+          <section
+            key="statement"
+            className={`${glass.col} ${glass.lead}${slot.dark ? ` ${glass.dark}` : ""}`}
+            data-col="statement"
+            aria-label="Reckon House, for small business"
+          >
+            <div ref={leadRef} className={glass.cin}>
+              <div className={glass.chead}>
+                <span className={glass.tag}>{CUSTOM.caption}</span>
+                {who ? (
+                  <span className={glass.tag}>
+                    {/* a space between the two, for a reader's ear: the chip's
+                        gap draws it, and a flex box drops the text node */}
+                    <span className={glass.g}>For</span> <span>{who}</span>
+                  </span>
+                ) : null}
+              </div>
+              <h1 className={`${glass.statement} ${glass.rise}`}>
+                {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
+              </h1>
+              {/* the call, here as well as at the end: the reader sold on
+                  the first column should not have to turn past everything
+                  to reach a time */}
+              {pick}
+              <Ask cinRef={leadRef} />
+              {/* on a phone the rail has no column of its own, so it rides
+                  under the statement, in the column that introduces it */}
+              <div className={glass.pocket}>{rail}</div>
+              {slot.spine ? (
+                /* the town, set the way /book sets its month */
+                <div className={glass.month} aria-hidden="true">
+                  {SPINE}
+                </div>
+              ) : null}
+            </div>
+            <Rule />
+          </section>
+        );
+      case "cover":
+        return <Cover key="cover" />;
+      case "caps":
+        return (
+          /* what we do, as one list: each service's name and sentence
+             as a row, its rows under it, the way the board's Info room
+             lists what the house does */
+          <section key="caps" className={glass.col} data-col="caps" aria-labelledby="caps">
+            <div className={glass.cin}>
+              {head("caps", "What we do.")}
+              {RUNS.map((r) => (
+                <div key={r.id}>
+                  <p className={`${glass.row} ${glass.text} ${glass.rise}`}>
+                    <span>
+                      <b>{r.name}</b> <span className={glass.g}>{r.line}</span>
+                    </span>
+                  </p>
+                  {r.rows.map((x) => (
+                    <p key={x.head} className={`${glass.row} ${glass.text} ${glass.tight} ${glass.rise}`}>
+                      <span>
+                        <b>{x.head}</b> <span className={glass.g}>{x.body}</span>
+                      </span>
+                    </p>
+                  ))}
+                </div>
+              ))}
+              {pick}
+              {slot.ask ? <Ask cinRef={leadRef} /> : null}
+              {slot.ask ? <div className={glass.pocket}>{rail}</div> : null}
+            </div>
+            <Rule />
+          </section>
+        );
+      case "head":
+        return <Head key={`head-${slot.run.id}`} r={slot.run} go={go} />;
+      case "tiles":
+        return <Tiles key={`tiles-${slot.run.id}`} r={slot.run} />;
+      case "single":
+        return <Single key={`single-${slot.run.id}`} r={slot.run} />;
+      case "method":
+        return (
+          <section key="method" className={glass.col} data-col="method" aria-labelledby="method">
+            <div className={glass.cin}>
+              {head("method", CUSTOM.heads.method)}
+              {METHOD.map((m) => (
+                <p key={m.head} className={`${glass.row} ${glass.text} ${glass.rise}`}>
+                  <span>
+                    <b>{m.head}</b> <span className={glass.g}>{m.body}</span>
+                  </span>
+                </p>
+              ))}
+            </div>
+            <Rule />
+          </section>
+        );
+      case "clients":
+        return (
+          /* twenty years of clients, the credits the footer and the board
+             keep, with the way out to all the work */
+          <section key="clients" className={glass.col} data-col="clients" aria-labelledby="clients">
+            <div className={glass.cin}>
+              {head("clients", CUSTOM.heads.clients)}
+              {CREDITS.map((c) => (
+                <p key={c.name} className={`${glass.row} ${glass.text} ${glass.tight} ${glass.rise}`}>
+                  <span>
+                    <b>{c.name}</b>
+                  </span>
+                </p>
+              ))}
+              <p className={own.ways}>
+                <Link className={glass.chip} href="/">
+                  <span className="lbl">{CUSTOM.all}</span>
+                  <span className={glass.arr} aria-hidden="true" />
+                </Link>
+              </p>
+            </div>
+            <Rule />
+          </section>
+        );
+      case "talk":
+        return (
+          /* THE CALL HAPPENS HERE, not on a page of its own. The week is
+             the board's own (Week, on the glass), so picking a time is
+             the same act in the same clothes wherever it is offered. His
+             pricing line is the grey half: what it costs to find out. */
+          <section key="talk" className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
+            <div className={glass.cin}>
+              {head("talk", CUSTOM.heads.talk)}
+              <p className={`${glass.statement} ${glass.rise}`}>
+                {CUSTOM.talk.lede}{" "}
+                <span className={glass.g}>
+                  {CUSTOM.talk.price} It&rsquo;s a {SLOT_MINUTES} minute call.
+                </span>
+              </p>
+              <Week />
+              <p className={own.ways}>
+                <a className={glass.chip} href={`mailto:${CUSTOM.talk.email}`}>
+                  {CUSTOM.talk.email}
+                </a>
+              </p>
+            </div>
+            <Rule />
+          </section>
+        );
+      default:
+        return null;
+    }
+  });
 
   return (
     /* data-lenis-prevent: the shell's smooth scroller listens on <main>,
@@ -374,107 +712,11 @@ export function CustomBoard() {
       </div>
 
       <nav className={glass.rail} aria-label="On this page">
-        <Rail go={go} />
+        {rail}
       </nav>
 
       <div ref={stripRef} className={glass.strip}>
-        <section className={`${glass.col} ${glass.lead}`} data-col="statement" aria-label="Reckon House, for small business">
-          <div ref={leadRef} className={glass.cin}>
-            <div className={glass.chead}>
-              <span className={glass.tag}>{CUSTOM.caption}</span>
-              {who ? (
-                <span className={glass.tag}>
-                  {/* a space between the two, for a reader's ear: the chip's
-                      gap draws it, and a flex box drops the text node */}
-                  <span className={glass.g}>For</span> <span>{who}</span>
-                </span>
-              ) : null}
-            </div>
-            <h1 className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
-            </h1>
-            {/* the call, here as well as at the end: the reader sold on
-                the first column should not have to turn past everything
-                to reach a time */}
-            <p className={`${own.ways} ${glass.rise}`}>
-              <button type="button" className={glass.chip} onClick={() => go("talk")}>
-                <span>{CUSTOM.talk.book}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </button>
-            </p>
-            <Ask cinRef={leadRef} />
-            {/* on a phone the rail has no column of its own, so it rides
-                under the statement, in the column that introduces it */}
-            <div className={glass.pocket}>
-              <Rail go={go} />
-            </div>
-          </div>
-          <Rule />
-        </section>
-
-        {RUNS.map((r) => (
-          <Head key={`head-${r.id}`} r={r} go={go} />
-        )).flatMap((h, i) => [h, <Tiles key={`tiles-${RUNS[i].id}`} r={RUNS[i]} />])}
-
-        <section className={glass.col} data-col="method" aria-labelledby="method">
-          <div className={glass.cin}>
-            {head("method", CUSTOM.heads.method)}
-            {METHOD.map((m) => (
-              <p key={m.head} className={`${glass.row} ${glass.text} ${glass.rise}`}>
-                <span>
-                  <b>{m.head}</b> <span className={glass.g}>{m.body}</span>
-                </span>
-              </p>
-            ))}
-          </div>
-          <Rule />
-        </section>
-
-        {/* twenty years of clients, the credits the footer and the board
-            keep, with the way out to all the work */}
-        <section className={glass.col} data-col="clients" aria-labelledby="clients">
-          <div className={glass.cin}>
-            {head("clients", CUSTOM.heads.clients)}
-            {CREDITS.map((c) => (
-              <p key={c.name} className={`${glass.row} ${glass.text} ${glass.rise}`}>
-                <span>
-                  <b>{c.name}</b>
-                </span>
-              </p>
-            ))}
-            <p className={own.ways}>
-              <Link className={glass.chip} href="/">
-                <span className="lbl">{CUSTOM.all}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </Link>
-            </p>
-          </div>
-          <Rule />
-        </section>
-
-        {/* THE CALL HAPPENS HERE, not on a page of its own. The week is
-            the board's own (Week, on the glass), so picking a time is
-            the same act in the same clothes wherever it is offered. His
-            pricing line is the grey half: what it costs to find out. */}
-        <section className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
-          <div className={glass.cin}>
-            {head("talk", CUSTOM.heads.talk)}
-            <p className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.talk.lede}{" "}
-              <span className={glass.g}>
-                {CUSTOM.talk.price} It&rsquo;s a {SLOT_MINUTES} minute call.
-              </span>
-            </p>
-            <Week />
-            <p className={own.ways}>
-              <a className={glass.chip} href={`mailto:${CUSTOM.talk.email}`}>
-                {CUSTOM.talk.email}
-              </a>
-            </p>
-          </div>
-          <Rule />
-        </section>
-
+        {columns}
         {/* the fifth of a column past the last one, so its rule and its
             count stand on the glass when the row has turned to its end */}
         <div className={glass.tail} aria-hidden="true" />
