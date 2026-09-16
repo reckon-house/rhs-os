@@ -82,6 +82,8 @@ const T = "/lab/board-thumbs";
    it does not. */
 export interface Piece {
   id: string;
+  /** the door this piece stands behind: the tools connected, or the tool built */
+  run: "setup" | "build";
   /** the piece's name, and the study it belongs to */
   chip: string;
   project: string;
@@ -98,6 +100,7 @@ const SALLY = "Sally Marketing OS";
 export const PIECES: Piece[] = [
   {
     id: "dsc-booking",
+    run: "setup",
     chip: "Booking from any AI",
     project: DSC,
     lede:
@@ -118,6 +121,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "dsc-owner",
+    run: "build",
     chip: "The owner console",
     project: DSC,
     lede:
@@ -138,6 +142,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "dsc-door",
+    run: "build",
     chip: "The front door",
     project: DSC,
     lede:
@@ -158,6 +163,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "arc-inventory",
+    run: "build",
     chip: "The inventory",
     project: ARC,
     lede:
@@ -176,6 +182,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "arc-gap",
+    run: "build",
     chip: "The coverage gap",
     project: ARC,
     lede:
@@ -195,6 +202,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "arc-weeks",
+    run: "build",
     chip: "Ten weeks",
     project: ARC,
     lede:
@@ -213,6 +221,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-feed",
+    run: "setup",
     chip: "The feed",
     project: SALLY,
     lede:
@@ -233,6 +242,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-jim",
+    run: "setup",
     chip: "Jim, the brand brain",
     project: SALLY,
     lede: "It answers with the context a new hire takes months to pick up.",
@@ -252,6 +262,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-assets",
+    run: "setup",
     chip: "Asset Hub",
     project: SALLY,
     lede:
@@ -272,6 +283,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-utilities",
+    run: "setup",
     chip: "Utilities",
     project: SALLY,
     lede: "Ten apps, each one for a job.",
@@ -289,6 +301,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "faux-reel",
+    run: "build",
     chip: "Faux Reel",
     project: "Open repo",
     lede:
@@ -343,4 +356,134 @@ export const STUDIO: Row[] = [
     w: 1536,
     h: 1024,
   },
+];
+
+/* ── THE STORY ───────────────────────────────────────────────────────
+   What the page says before it shows. A run is a door with its own
+   opening: the board's head (the name in ink, one line in grey, a chip
+   that counts what follows), a pitch for a spread, and a hero the way
+   the board picks one, its shape deciding its form. A landscape spans
+   the pair under the head; a portrait takes a column of its own beside
+   the pitch. The cover and the beats are the page's own claims, spread
+   across two columns with no picture, or one. Every line here is his,
+   from the outreach email and his notes, edited for the page; the
+   pictures are the studies' covers and plates, as the board thumbs
+   them. */
+export interface Hero {
+  src: string;
+  w: number;
+  h: number;
+  /** the caption: the study's name, then its line in grey, as a cover
+   *  is captioned on the board */
+  name: string;
+  cat: string;
+}
+export interface Run {
+  id: "setup" | "build";
+  /** the head: the name and its one line */
+  name: string;
+  line: string;
+  /** the spread's pitch: the claim in ink, the offer in grey */
+  pitch: { lede: string; dim: string };
+  /** a landscape for the pair under a head */
+  hero: Hero;
+  /** a portrait for a spread, where the study has one */
+  tall?: Hero;
+}
+export interface Beat {
+  id: string;
+  lede: string;
+  dim: string;
+}
+
+export const RUNS: Run[] = [
+  {
+    id: "setup",
+    name: "Set up.",
+    line: "The tools you already have, connected, with the repetitive work handed to an assistant.",
+    pitch: {
+      lede: "Your business has grown faster than your systems have.",
+      dim:
+        "The inbox, the calendar, bookings, invoices, the customer list. It all runs, and " +
+        "you're the one running it. I connect the tools you already have and hand the " +
+        "repetitive part to an assistant, in your own Claude, ChatGPT or Gemini account, " +
+        "and I'll help you pick which one.",
+    },
+    hero: {
+      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
+      w: 1920,
+      h: 1254,
+      name: "Sally Marketing OS",
+      cat: "Product design, engineering",
+    },
+  },
+  {
+    id: "build",
+    name: "Build.",
+    line: "When the tool you need doesn't exist, I make it.",
+    pitch: {
+      lede: "When the tool you need doesn't exist, I make it.",
+      dim:
+        "A scheduler that takes bookings from any AI. An app that reads a room from a " +
+        "photo. A back office that fits how you already work. One person designs it and " +
+        "builds it. Twenty-plus years of that, for companies large and small.",
+    },
+    hero: {
+      src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
+      w: 1536,
+      h: 955,
+      name: "A.R.C.",
+      cat: "App & brand development",
+    },
+    tall: {
+      src: `${T}/hp/rhs-arc-app-project-select-phone.webp`,
+      w: 1536,
+      h: 2082,
+      name: "A.R.C.",
+      cat: "App & brand development",
+    },
+  },
+];
+
+/* the cover: one claim over a wide hero, before the lede */
+export const COVER: Beat & { hero: Hero } = {
+  id: "cover",
+  lede: "Your business has grown faster than your systems have.",
+  dim:
+    "A small design and software studio in Celina, Texas, for the businesses around it. " +
+    "The tools you have, connected. The tool you need, built.",
+  hero: {
+    src: `${T}/hp/rhs-dallas-sport-collective-laptop-stool.webp`,
+    w: 1536,
+    h: 1024,
+    name: "Dallas Sport Collective",
+    cat: "Website, custom app",
+  },
+};
+
+/* the beats: the story's own lines between the runs, two columns wide */
+export const BEATS: Beat[] = [
+  {
+    id: "account",
+    lede: "It runs in your own account.",
+    dim:
+      "Your Claude, ChatGPT or Gemini, your connections, your logins. I set it up beside " +
+      "you, and I never hold your inbox.",
+  },
+  {
+    id: "years",
+    lede: "Twenty-plus years as an independent agency, for companies large and small.",
+    dim:
+      "Nordstrom, Neiman Marcus and Ivy Park at one end. Capitan Boot Co., J. Christianson " +
+      "and a six-trainer gym at the other.",
+  },
+];
+
+/* the rail's doors, each the column it turns the row to */
+export const DOORS: { label: string; col: string }[] = [
+  { label: "Set up", col: "setup" },
+  { label: "Build", col: "build" },
+  { label: "Twenty years", col: "studio" },
+  { label: "How I work", col: "method" },
+  { label: "Let's talk", col: "talk" },
 ];

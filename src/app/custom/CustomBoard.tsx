@@ -3,11 +3,19 @@
 /* ── /custom, ON THE BOARD'S GLASS ───────────────────────────────────
  * The page a small business lands on from an email, so it is a straight
  * read and not the board: one audience, in the grammar the rest of the
- * site is in. The statement and the two doors, then the recent work in
- * pieces, each a column in the clothes a study's preview wears on the
- * board, then twenty years of the studio's work with the way out to all
- * of it, then how the work goes, then the house's own black column
- * with the call.
+ * site is in, with a rail of doors down the left as the board has. The
+ * statement and the two doors, then each door as a RUN the way the
+ * board deals one: an opening that sets the stage (a head with a wide
+ * hero, or a pitch spread beside one), then that door's pieces, each a
+ * column in the clothes a study's preview wears. Then twenty years of
+ * the studio's work with the way out to all of it, how the work goes,
+ * and the house's own black column with the call, and the week in it.
+ *
+ * THREE EXPLORATIONS, for now, on ?v=a|b|c and the rail's foot: A opens
+ * each run on the board's head and a wide hero; B on a two-column
+ * spread, the pitch at display size beside the hero; C opens the page
+ * itself on a cover, runs as A, and carries the story in beats between
+ * them. The winner keeps the page; the others come out.
  *
  * THE ASK IS THE BOARD'S. A question typed under the statement is
  * answered from the recent work's studies (/api/ask), and the studies
@@ -37,7 +45,20 @@ import { Rule, still, turnRow, useArrival, useGlass, useTurns } from "@/componen
 import { Week } from "@/components/glass/Week";
 import glass from "@/components/glass/glass.module.css";
 import own from "./custom.module.css";
-import { CUSTOM, PIECES, STUDIO, type Piece as PieceT, type Row } from "@/data/custom";
+import {
+  BEATS,
+  COVER,
+  CUSTOM,
+  DOORS,
+  PIECES,
+  RUNS,
+  STUDIO,
+  type Beat as BeatT,
+  type Hero,
+  type Piece as PieceT,
+  type Row,
+  type Run,
+} from "@/data/custom";
 import { plateSrcSet } from "@/lib/img-srcset";
 import { METHOD } from "@/data/method";
 import { BOOK_DIM } from "@/data/booking";
@@ -65,9 +86,14 @@ projects.forEach((p) => {
    Read through an external store rather than copied into state, so
    the server's page and the client's first render agree and the chip
    appears once the address is read. Plain text, forty characters. */
+const heard = new Set<() => void>();
 const subscribeFor = (fn: () => void) => {
+  heard.add(fn);
   window.addEventListener("popstate", fn);
-  return () => window.removeEventListener("popstate", fn);
+  return () => {
+    heard.delete(fn);
+    window.removeEventListener("popstate", fn);
+  };
 };
 const readFor = () => {
   try {
@@ -101,7 +127,7 @@ const plateSet = (img: PieceT["image"]) =>
    measure. */
 function Piece({ p }: { p: PieceT }) {
   return (
-    <section className={glass.col} aria-labelledby={`piece-${p.id}`}>
+    <section className={glass.col} data-col={`piece-${p.id}`} aria-labelledby={`piece-${p.id}`}>
       <div className={glass.cin}>
         <div className={glass.chead}>
           <span className={glass.tag}>{p.chip}</span>
@@ -263,30 +289,413 @@ function Ask({ cinRef }: { cinRef: RefObject<HTMLDivElement | null> }) {
   );
 }
 
+/* ── WHICH EXPLORATION ─────────────────────────────────────────────
+   ?v=a|b|c, read through the same store as ?for=, and written by the
+   rail's foot so the row rebuilds without a load. A is the page when
+   nothing is said. */
+type Variant = "a" | "b" | "c";
+const readVariant = (): Variant => {
+  try {
+    const v = new URLSearchParams(window.location.search).get("v");
+    return v === "b" || v === "c" ? v : "a";
+  } catch {
+    return "a";
+  }
+};
+const serverVariant = (): Variant => "a";
+function writeVariant(v: Variant) {
+  try {
+    const u = new URL(window.location.href);
+    if (v === "a") u.searchParams.delete("v");
+    else u.searchParams.set("v", v);
+    window.history.replaceState(null, "", u);
+  } catch {
+    /* an address that will not take it keeps the one it had */
+  }
+  heard.forEach((fn) => fn());
+}
+
+/* what stands in the row, by exploration: a kind, and what it is of */
+type Slot =
+  | { kind: "statement" }
+  | { kind: "cover" }
+  | { kind: "head"; run: Run }
+  | { kind: "spread"; run: Run }
+  | { kind: "pieces"; run: Run }
+  | { kind: "beat"; beat: BeatT }
+  | { kind: "studio" }
+  | { kind: "method" }
+  | { kind: "talk" };
+const run = (id: Run["id"]) => RUNS.find((r) => r.id === id)!;
+const beat = (id: string) => BEATS.find((b) => b.id === id)!;
+const ROW: Record<Variant, Slot[]> = {
+  a: [
+    { kind: "statement" },
+    { kind: "head", run: run("setup") },
+    { kind: "pieces", run: run("setup") },
+    { kind: "head", run: run("build") },
+    { kind: "pieces", run: run("build") },
+    { kind: "studio" },
+    { kind: "method" },
+    { kind: "talk" },
+  ],
+  b: [
+    { kind: "statement" },
+    { kind: "spread", run: run("setup") },
+    { kind: "pieces", run: run("setup") },
+    { kind: "spread", run: run("build") },
+    { kind: "pieces", run: run("build") },
+    { kind: "studio" },
+    { kind: "method" },
+    { kind: "talk" },
+  ],
+  c: [
+    { kind: "cover" },
+    { kind: "statement" },
+    { kind: "head", run: run("setup") },
+    { kind: "pieces", run: run("setup") },
+    { kind: "beat", beat: beat("account") },
+    { kind: "head", run: run("build") },
+    { kind: "pieces", run: run("build") },
+    { kind: "beat", beat: beat("years") },
+    { kind: "studio" },
+    { kind: "method" },
+    { kind: "talk" },
+  ],
+};
+
+const heroSet = (h: Hero) => plateSet({ src: h.src, w: h.w, h: h.h, alt: h.name });
+
+/* a hero, captioned as the board captions a cover */
+function HeroPlate({ h, className }: { h: Hero; className: string }) {
+  return (
+    <figure className={`${className} ${glass.rise}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={h.src}
+        srcSet={heroSet(h)}
+        sizes="(max-width: 760px) 84vw, 1000px"
+        width={h.w}
+        height={h.h}
+        alt={h.name}
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption className={glass.cap}>
+        <b>{h.name}</b> <span className={glass.g}>{h.cat}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/* ── A RUN'S HEAD (assemble-board.py, the head tile) ────────────────
+   The name in ink, its one line in grey, and a chip that counts what
+   follows and turns the row to it; the run's hero spans the pair under
+   it. */
+function Head({ r, go }: { r: Run; go: (col: string) => void }) {
+  const mine = PIECES.filter((p) => p.run === r.id);
+  return (
+    <section className={glass.pair} data-col={r.id} aria-labelledby={`run-${r.id}`}>
+      <div className={glass.cin}>
+        <div className={glass.pairHead}>
+          <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
+            {r.name} <span className={glass.g}>{r.line}</span>
+          </h2>
+          <p className={`${own.ways} ${glass.rise}`}>
+            <button
+              type="button"
+              className={glass.chip}
+              onClick={() => mine[0] && go(`piece-${mine[0].id}`)}
+            >
+              <span>
+                {mine.length} {mine.length === 1 ? "piece" : "pieces"}
+              </span>
+              <span className={glass.arr} aria-hidden="true" />
+            </button>
+          </p>
+        </div>
+        <HeroPlate h={r.hero} className={glass.hero} />
+      </div>
+      <Rule />
+    </section>
+  );
+}
+
+/* ── THE COVER ──────────────────────────────────────────────────────
+   One claim over a wide hero, before the lede: the page's own first
+   sentence, set a notch over the statement. */
+function Cover() {
+  return (
+    <section className={`${glass.pair} ${glass.beat}`} data-col="cover" aria-label="Cover">
+      <div className={glass.cin}>
+        <div className={glass.pairHead}>
+          <p className={`${glass.claim} ${glass.rise}`}>
+            {COVER.lede} <span className={glass.g}>{COVER.dim}</span>
+          </p>
+        </div>
+        <HeroPlate h={COVER.hero} className={glass.hero} />
+      </div>
+      <Rule />
+    </section>
+  );
+}
+
+/* ── A SPREAD: THE PITCH BESIDE THE HERO ────────────────────────────
+   Two columns that read as one page: the run's pitch at display size,
+   and its picture. A portrait takes the whole column, cut to the
+   screen's height, as a tall hero does on the board; a landscape stands
+   at its own ratio. */
+function Spread({ r }: { r: Run }) {
+  const tall = r.tall;
+  return (
+    <>
+      <section className={glass.col} data-col={r.id} aria-labelledby={`run-${r.id}`}>
+        <div className={glass.cin}>
+          <div className={glass.chead}>
+            <span className={glass.tag}>{r.name.replace(/\.$/, "")}</span>
+          </div>
+          <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
+            {r.pitch.lede} <span className={glass.g}>{r.pitch.dim}</span>
+          </h2>
+        </div>
+        <Rule />
+      </section>
+      {tall ? (
+        <section className={`${glass.col} ${glass.tall}`} aria-label={tall.name}>
+          <div className={glass.cin}>
+            <figure className={glass.tallFig}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={tall.src}
+                srcSet={heroSet(tall)}
+                sizes="(max-width: 760px) 84vw, 480px"
+                width={tall.w}
+                height={tall.h}
+                alt={tall.name}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption className={glass.cap}>
+                <b>{tall.name}</b> <span className={glass.g}>{tall.cat}</span>
+              </figcaption>
+            </figure>
+          </div>
+          <Rule />
+        </section>
+      ) : (
+        <section className={glass.col} aria-label={r.hero.name}>
+          <div className={glass.cin}>
+            <HeroPlate h={r.hero} className={own.plate} />
+          </div>
+          <Rule />
+        </section>
+      )}
+    </>
+  );
+}
+
+/* ── A BEAT: THE STORY, TWO COLUMNS WIDE ────────────────────────────
+   A claim and its grey half across the pair, with no picture: the
+   page's own voice between the runs. */
+function BeatCol({ b }: { b: BeatT }) {
+  return (
+    <section className={`${glass.pair} ${glass.beat}`} data-col={`beat-${b.id}`} aria-label={b.lede}>
+      <div className={glass.cin}>
+        <div className={glass.pairHead}>
+          <p className={`${glass.claim} ${glass.rise}`}>
+            {b.lede} <span className={glass.g}>{b.dim}</span>
+          </p>
+        </div>
+      </div>
+      <Rule />
+    </section>
+  );
+}
+
+/* the rail's doors, and the explorations at its foot */
+function Rail({ v, go }: { v: Variant; go: (col: string) => void }) {
+  return (
+    <>
+      {DOORS.map((d) => (
+        <button key={d.col} type="button" className={glass.pill} onClick={() => go(d.col)}>
+          <span>{d.label}</span>
+        </button>
+      ))}
+      <span className={glass.gap} aria-hidden="true" />
+      {(["a", "b", "c"] as Variant[]).map((x) => (
+        <button
+          key={x}
+          type="button"
+          className={glass.pill}
+          aria-pressed={v === x}
+          aria-label={`Exploration ${x.toUpperCase()}`}
+          onClick={() => writeVariant(x)}
+        >
+          <span>{x.toUpperCase()}</span>
+        </button>
+      ))}
+    </>
+  );
+}
+
 export function CustomBoard() {
   const who = useSyncExternalStore(subscribeFor, readFor, serverFor);
+  const v = useSyncExternalStore(subscribeFor, readVariant, serverVariant);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
   const leadRef = useRef<HTMLDivElement | null>(null);
-  /* the glass: ink, counts and the columns past the edge; the rise
-     under a curtain; the row turning from the keys and a held wheel */
-  const past = useGlass(rootRef, stripRef, `.${glass.row}`, "");
-  /* the offer's own way to the week: the row is fifteen columns now,
-     and the reader sold on the first one should not have to turn past
-     everything to reach a time */
-  const goTalk = () => {
-    const strip = stripRef.current;
-    const col = strip?.querySelector<HTMLElement>('[data-col="talk"]');
-    if (strip && col) strip.scrollTo({ left: col.offsetLeft, behavior: still() ? "auto" : "smooth" });
-  };
+  /* the glass: ink, counts and the columns past the edge, redrawn when
+     an exploration rebuilds the row; the rise under a curtain; the row
+     turning from the keys and a held wheel */
+  const past = useGlass(rootRef, stripRef, `.${glass.row}`, v);
   useArrival(stripRef);
   useTurns(stripRef);
+
+  /* THE ROW STARTS OVER WHEN ITS STRUCTURE DOES. The strip snaps, and a
+     snapping scroller remembers the column it last snapped to: the
+     server renders A, so a page opened on ?v=c hydrates with the
+     statement as that column, and the moment the cover is put ahead of
+     it the browser re-snaps to the statement and the cover stands off
+     the glass. Before the paint, so the reader never sees the jump. */
+  useLayoutEffect(() => {
+    const strip = stripRef.current;
+    if (strip && strip.scrollLeft) strip.scrollTo({ left: 0, behavior: "auto" });
+  }, [v]);
+
+  /* a door, a head's chip and the offer's own "Pick a time" all turn
+     the row to a column by its address */
+  const go = (col: string) => {
+    const strip = stripRef.current;
+    const target = strip?.querySelector<HTMLElement>(`[data-col="${col}"]`);
+    if (strip && target) strip.scrollTo({ left: target.offsetLeft, behavior: still() ? "auto" : "smooth" });
+  };
 
   const head = (id: string, text: string) => (
     <h2 id={id} className={`${glass.head} ${glass.g} ${glass.rise}`}>
       {text}
     </h2>
   );
+
+  const statement = (
+    <section key="statement" className={`${glass.col} ${glass.lead}`} data-col="statement" aria-label={CUSTOM.caption}>
+      <div ref={leadRef} className={glass.cin}>
+        <div className={glass.chead}>
+          <span className={glass.tag}>{CUSTOM.caption}</span>
+          {who ? (
+            <span className={glass.tag}>
+              {/* a space between the two, for a reader's ear: the chip's
+                  gap draws it, and a flex box drops the text node */}
+              <span className={glass.g}>For</span> <span>{who}</span>
+            </span>
+          ) : null}
+        </div>
+        <h1 className={`${glass.statement} ${glass.rise}`}>
+          {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
+        </h1>
+        <div className={own.doors}>
+          {CUSTOM.doors.map((d) => (
+            <p key={d.head} className={`${own.door} ${glass.rise}`}>
+              <b>{d.head}</b> {d.body}
+            </p>
+          ))}
+        </div>
+        <p className={`${own.price} ${glass.rise}`}>{CUSTOM.price}</p>
+        {/* the call, here as well as at the end: the row is long enough
+            that the reader sold on the first column should not have to
+            turn past everything to reach a time */}
+        <p className={`${own.ways} ${glass.rise}`}>
+          <button type="button" className={glass.chip} onClick={() => go("talk")}>
+            <span>{CUSTOM.talk.book}</span>
+            <span className={glass.arr} aria-hidden="true" />
+          </button>
+        </p>
+        <Ask cinRef={leadRef} />
+        {/* on a phone the rail has no column of its own, so it rides
+            under the statement, in the column that introduces it */}
+        <div className={glass.pocket}>
+          <Rail v={v} go={go} />
+        </div>
+      </div>
+      <Rule />
+    </section>
+  );
+
+  const columns = ROW[v].map((slot) => {
+    switch (slot.kind) {
+      case "statement":
+        return statement;
+      case "cover":
+        return <Cover key="cover" />;
+      case "head":
+        return <Head key={`head-${slot.run.id}`} r={slot.run} go={go} />;
+      case "spread":
+        return <Spread key={`spread-${slot.run.id}`} r={slot.run} />;
+      case "pieces":
+        return PIECES.filter((p) => p.run === slot.run.id).map((p) => <Piece key={p.id} p={p} />);
+      case "beat":
+        return <BeatCol key={`beat-${slot.beat.id}`} b={slot.beat} />;
+      case "studio":
+        return (
+          <section key="studio" className={glass.col} data-col="studio" aria-labelledby="studio">
+            <div className={glass.cin}>
+              {head("studio", CUSTOM.heads.studio)}
+              {STUDIO.map((r) => (
+                <Shelf key={r.href} r={r} />
+              ))}
+              <p className={`${own.large} ${glass.rise}`}>
+                <span className={glass.g}>{CUSTOM.large}</span>
+              </p>
+              <p className={own.ways}>
+                <Link className={glass.chip} href="/">
+                  <span className="lbl">{CUSTOM.all}</span>
+                  <span className={glass.arr} aria-hidden="true" />
+                </Link>
+              </p>
+            </div>
+            <Rule />
+          </section>
+        );
+      case "method":
+        return (
+          <section key="method" className={glass.col} data-col="method" aria-labelledby="method">
+            <div className={glass.cin}>
+              {head("method", CUSTOM.heads.method)}
+              {METHOD.map((m) => (
+                <p key={m.head} className={`${glass.row} ${glass.text} ${glass.rise}`}>
+                  <span>
+                    <b>{m.head}</b> <span className={glass.g}>{m.body}</span>
+                  </span>
+                </p>
+              ))}
+            </div>
+            <Rule />
+          </section>
+        );
+      case "talk":
+        return (
+          /* THE CALL HAPPENS HERE, not on a page of its own. The week is
+             the board's own (Week, on the glass), so picking a time is
+             the same act in the same clothes wherever it is offered. */
+          <section key="talk" className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
+            <div className={glass.cin}>
+              {head("talk", CUSTOM.heads.talk)}
+              <p className={`${glass.statement} ${glass.rise}`}>
+                {CUSTOM.talk.lede} <span className={glass.g}>{BOOK_DIM}</span>
+              </p>
+              <Week />
+              <p className={own.ways}>
+                <a className={glass.chip} href={`mailto:${CUSTOM.talk.email}`}>
+                  {CUSTOM.talk.email}
+                </a>
+              </p>
+            </div>
+            <Rule />
+          </section>
+        );
+      default:
+        return null;
+    }
+  });
 
   return (
     /* data-lenis-prevent: the shell's smooth scroller listens on <main>,
@@ -310,100 +719,12 @@ export function CustomBoard() {
         </button>
       </div>
 
+      <nav className={glass.rail} aria-label="On this page">
+        <Rail v={v} go={go} />
+      </nav>
+
       <div ref={stripRef} className={glass.strip}>
-        <section className={`${glass.col} ${glass.lead}`} aria-label={CUSTOM.caption}>
-          <div ref={leadRef} className={glass.cin}>
-            <div className={glass.chead}>
-              <span className={glass.tag}>{CUSTOM.caption}</span>
-              {who ? (
-                <span className={glass.tag}>
-                  {/* a space between the two, for a reader's ear: the chip's
-                      gap draws it, and a flex box drops the text node */}
-                  <span className={glass.g}>For</span> <span>{who}</span>
-                </span>
-              ) : null}
-            </div>
-            <h1 className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
-            </h1>
-            <div className={own.doors}>
-              {CUSTOM.doors.map((d) => (
-                <p key={d.head} className={`${own.door} ${glass.rise}`}>
-                  <b>{d.head}</b> {d.body}
-                </p>
-              ))}
-            </div>
-            <p className={`${own.price} ${glass.rise}`}>{CUSTOM.price}</p>
-            {/* the call, here as well as at the end: the row is long
-                enough now that the reader who is sold on the first
-                column should not have to turn ten more to find it */}
-            <p className={`${own.ways} ${glass.rise}`}>
-              <button type="button" className={glass.chip} onClick={goTalk}>
-                <span>{CUSTOM.talk.book}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </button>
-            </p>
-            <Ask cinRef={leadRef} />
-          </div>
-          <Rule />
-        </section>
-
-        {PIECES.map((p) => (
-          <Piece key={p.id} p={p} />
-        ))}
-
-        <section className={glass.col} aria-labelledby="studio">
-          <div className={glass.cin}>
-            {head("studio", CUSTOM.heads.studio)}
-            {STUDIO.map((r) => (
-              <Shelf key={r.href} r={r} />
-            ))}
-            <p className={`${own.large} ${glass.rise}`}>
-              <span className={glass.g}>{CUSTOM.large}</span>
-            </p>
-            <p className={own.ways}>
-              <Link className={glass.chip} href="/">
-                <span className="lbl">{CUSTOM.all}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </Link>
-            </p>
-          </div>
-          <Rule />
-        </section>
-
-        <section className={glass.col} aria-labelledby="method">
-          <div className={glass.cin}>
-            {head("method", CUSTOM.heads.method)}
-            {METHOD.map((m) => (
-              <p key={m.head} className={`${glass.row} ${glass.text} ${glass.rise}`}>
-                <span>
-                  <b>{m.head}</b> <span className={glass.g}>{m.body}</span>
-                </span>
-              </p>
-            ))}
-          </div>
-          <Rule />
-        </section>
-
-        {/* THE CALL HAPPENS HERE, not on a page of its own. The week is
-            the board's own (Week, on the glass), so picking a time is
-            the same act in the same clothes wherever it is offered. */}
-        <section className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
-          <div className={glass.cin}>
-            {head("talk", CUSTOM.heads.talk)}
-            <p className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.talk.lede} <span className={glass.g}>{BOOK_DIM}</span>
-            </p>
-            <Week />
-            <p className={own.ways}>
-              <a className={glass.chip} href={`mailto:${CUSTOM.talk.email}`}>
-                {CUSTOM.talk.email}
-              </a>
-            </p>
-          </div>
-          <Rule />
-        </section>
-
+        {columns}
         {/* the fifth of a column past the last one, so its rule and its
             count stand on the glass when the row has turned to its end */}
         <div className={glass.tail} aria-hidden="true" />

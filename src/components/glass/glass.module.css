@@ -201,6 +201,11 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
+  /* the row is never anchored by the browser: a column added at its
+     start (an exploration switched in place, a cover arriving on
+     hydration) must not carry the row along to keep the old first
+     column where it was */
+  overflow-anchor: none;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   container-type: inline-size;
@@ -523,6 +528,98 @@ a.row:hover b {
   text-decoration-color: var(--grey);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+/* ── A PAIR: TWO COLUMNS THAT HOLD ONE THING (assemble-board.py .fcol.hero.wide)
+   A run opens on a fresh pair under a head tile, and a landscape hero
+   spans the pair under its head: w = 2·COL + GAP, the pair holds
+   nothing else, and the standing rule inside it is not drawn. Here the
+   pair is one column twice as wide, its head kept to one column's
+   measure at the top left so the picture below it reads as spanning.
+   On a phone a pair is a column, and the landscape leads the run at
+   its own ratio, as it does on the board. */
+.pair {
+  position: relative;
+  flex: none;
+  width: calc(200cqw / var(--show));
+  height: 100%;
+  scroll-snap-align: start;
+}
+/* a pair does not scroll: the head takes what it needs and the hero
+   takes what the screen leaves, cut there, as a hero's columns are
+   locked on the board */
+.pair .cin {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.pairHead {
+  max-width: calc(100cqw / var(--show) - var(--ixgap));
+}
+/* the page's own claim, a notch over the statement */
+.claim {
+  margin: 0;
+  font-size: clamp(26px, 3.3vw, 46px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+/* a beat's words run the pair's whole measure, a story told wide */
+.beat .pairHead {
+  max-width: none;
+}
+/* ── THE HERO (assemble-board.py .fcol.hero) ───────────────────────────
+   The study's cover at the pair's width, captioned the way the board
+   captions a cover: the name in ink and its line in grey, on the right. */
+.hero {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: clamp(40px, 5.2vw, 76px) 0 0;
+}
+.hero img {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.04);
+}
+.cap {
+  margin-top: 10px;
+  text-align: right;
+  font-size: var(--note);
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+}
+/* a portrait takes a column of its own, cut to the screen's height,
+   nothing beneath: the column does not scroll, the picture fills what
+   the glass leaves between the cover line and the count's room */
+.tall .cin {
+  overflow: hidden;
+}
+.tallFig {
+  position: absolute;
+  top: calc(var(--cover-air) + 46px);
+  bottom: calc(var(--rule-foot) + 64px);
+  left: calc(var(--ixgap) / 2);
+  right: calc(var(--ixgap) / 2);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tallFig img {
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  object-fit: cover;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* ── THE WEEK, IN A COLUMN ───────────────────────────────────────────
@@ -915,6 +1012,33 @@ a.row:hover b {
   }
   .free {
     display: none;
+  }
+  .pair {
+    width: calc(100cqw / var(--show));
+  }
+  .pairHead {
+    max-width: none;
+  }
+  /* on a phone the landscape leads the run at its own ratio, and the
+     column scrolls as any column does */
+  .pair .cin {
+    display: block;
+    overflow-y: auto;
+  }
+  .hero,
+  .hero img {
+    flex: none;
+    height: auto;
+  }
+  .tall .cin {
+    overflow-y: auto;
+  }
+  .tallFig {
+    position: static;
+    display: block;
+  }
+  .tallFig img {
+    height: auto;
   }
   .cin {
     padding: 40px 20px
