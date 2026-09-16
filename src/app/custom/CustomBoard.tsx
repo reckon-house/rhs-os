@@ -195,29 +195,33 @@ function HeroPlate({ h }: { h: Hero }) {
 
 /* ── A RUN'S HEAD (assemble-board.py, the head tile) ────────────────
    The name in ink, its one sentence in grey, and a chip that counts the
-   tiles and turns the row to them; the run's hero spans the pair under
-   it. The only display prose a run carries. */
+   tiles and turns the row to them, with what the door actually is
+   hanging beside it at read size; the run's hero spans the pair under
+   both. The only display prose a run carries. */
 function Head({ r, go }: { r: Run; go: (col: string) => void }) {
   const mine = PIECES.filter((p) => p.run === r.id);
   return (
     <section className={glass.pair} data-col={r.id} aria-labelledby={`run-${r.id}`}>
       <div className={glass.cin}>
         <div className={glass.pairHead}>
-          <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
-            {r.name} <span className={glass.g}>{r.line}</span>
-          </h2>
-          <p className={`${own.ways} ${glass.rise}`}>
-            <button
-              type="button"
-              className={glass.chip}
-              onClick={() => mine[0] && go(`tiles-${r.id}-0`)}
-            >
-              <span>
-                {mine.length} {mine.length === 1 ? "piece" : "pieces"}
-              </span>
-              <span className={glass.arr} aria-hidden="true" />
-            </button>
-          </p>
+          <div>
+            <h2 id={`run-${r.id}`} className={`${glass.statement} ${glass.rise}`}>
+              {r.name} <span className={glass.g}>{r.line}</span>
+            </h2>
+            <p className={`${own.ways} ${glass.rise}`}>
+              <button
+                type="button"
+                className={glass.chip}
+                onClick={() => mine[0] && go(`tiles-${r.id}-0`)}
+              >
+                <span>
+                  {mine.length} {mine.length === 1 ? "piece" : "pieces"}
+                </span>
+                <span className={glass.arr} aria-hidden="true" />
+              </button>
+            </p>
+          </div>
+          <p className={`${own.door} ${glass.rise}`}>{r.body}</p>
         </div>
         <HeroPlate h={r.hero} />
       </div>
@@ -428,13 +432,9 @@ export function CustomBoard() {
             <h1 className={`${glass.statement} ${glass.rise}`}>
               {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
             </h1>
-            <div className={own.doors}>
-              {CUSTOM.doors.map((d) => (
-                <p key={d.head} className={`${own.door} ${glass.rise}`}>
-                  <b>{d.head}</b> {d.body}
-                </p>
-              ))}
-            </div>
+            {/* the doors themselves are subcopy under their own heads
+                now, a column each; what stays here is what the offer
+                costs to find out */}
             <p className={`${own.price} ${glass.rise}`}>{CUSTOM.price}</p>
             {/* the call, here as well as at the end: the reader sold on
                 the first column should not have to turn past everything

@@ -6,13 +6,11 @@
  * doors, the price line, the Ask and its turns, and the ways out.
  */
 
-/* ── THE TWO DOORS ───────────────────────────────────────────────────
+/* ── A RUN'S BODY, AND THE PRICE ─────────────────────────────────────
    Set at the size an entry is read at (glass .body), not a row's
-   caption size: they are the offer, and the offer is the page. The
-   hairline over each is the row's. */
-.doors {
-  margin-top: clamp(40px, 4.6vw, 72px);
-}
+   caption size: this is the offer, and the offer is the page. The
+   hairline over it is the row's. */
+/* a run's body, hanging off its own rule beside the head */
 .door {
   margin: 0;
   padding: 13px 0 28px;
@@ -26,7 +24,7 @@
   font-weight: 600;
 }
 .price {
-  margin: 0;
+  margin: clamp(40px, 4.6vw, 72px) 0 0;
   max-width: 32em;
   font-size: 17px;
   line-height: 1.42;

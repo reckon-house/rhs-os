@@ -28,23 +28,6 @@ export const CUSTOM = {
   caption: "Custom",
   lede: "I'm Jeremy Prasatik. I run a small design and software studio in Celina, Texas.",
   dim: "Brand and web design on the front end, custom tools on the back end.",
-  /* the two doors, at read size: the offer in full, once. The runs'
-     heads carry one sentence each and neither repeats these. */
-  doors: [
-    {
-      head: "Set up.",
-      body:
-        "The tools you already have, connected, with the repetitive work handed to an " +
-        "assistant: the inbox, the calendar, bookings, invoices. It runs in your own Claude, " +
-        "ChatGPT or Gemini account, and I'll help you pick which one.",
-    },
-    {
-      head: "Build.",
-      body:
-        "A scheduler, a customer list, an app, the site out front. One person designs it and " +
-        "builds it, so it fits how you already work.",
-    },
-  ],
   price:
     "Each project is scoped and priced on its own, and there's usually a version that fits " +
     "the budget. It starts with a call.",
@@ -241,7 +224,14 @@ export const PIECES: Piece[] = [
    with a landscape hero across the pair under it, and a chip that
    counts the tiles and turns the row to them. The sentences are his:
    the Set up line from his outreach email, the Build line from his
-   notes; each lives here and nowhere else on the page. */
+   notes; each lives here and nowhere else on the page.
+
+   THE OFFER IS SUBCOPY UNDER ITS OWN HEAD. The two doors used to stand
+   in the first column at read size, a column away from the heads that
+   name them, so "Set up." was said twice and the detail arrived before
+   the reader knew what it was detail of. A run's body now hangs in the
+   second half of its own pair, beside the head and over the hero: the
+   claim, then what it actually is, in one place. */
 export interface Hero {
   src: string;
   w: number;
@@ -254,7 +244,10 @@ export interface Hero {
 export interface Run {
   id: "setup" | "build";
   name: string;
+  /** the head's one sentence, at display size */
   line: string;
+  /** what the door is, at read size, beside the head */
+  body: string;
   hero: Hero;
 }
 
@@ -263,6 +256,10 @@ export const RUNS: Run[] = [
     id: "setup",
     name: "Set up.",
     line: "Your business has grown faster than your systems have.",
+    body:
+      "The tools you already have, connected, with the repetitive work handed to an " +
+      "assistant: the inbox, the calendar, bookings, invoices. It runs in your own Claude, " +
+      "ChatGPT or Gemini account, and I'll help you pick which one.",
     hero: {
       src: `${T}/dsc/dsc-ai-scheduler-phone-hero.webp`,
       w: 1024,
@@ -275,6 +272,9 @@ export const RUNS: Run[] = [
     id: "build",
     name: "Build.",
     line: "When the tool you need doesn't exist, I make it.",
+    body:
+      "A scheduler, a customer list, an app, the site out front. One person designs it and " +
+      "builds it, so it fits how you already work.",
     hero: {
       src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
       w: 1536,
