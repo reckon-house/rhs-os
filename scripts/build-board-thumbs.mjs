@@ -531,10 +531,12 @@ for (const [folder, g] of Object.entries(groups)) {
 }
 /* ── THE HOUSE'S OWN COPY ───────────────────────────────────────────
    The footer is two columns on the board, Info and Connect, and what
-   they say is what the footer says: the three method notes and the
-   ways in from PressingContact, the credits from PressingCredits.
+   they say is what the footer says: the three method notes from
+   src/data/method.ts (the footer and /custom set them from there),
+   the ways in from PressingContact, the credits from PressingCredits.
    Mined from those files so the board and the site cannot disagree,
    and loud if a block moves. */
+const methodTs = readFileSync("src/data/method.ts", "utf8");
 const contactTs = readFileSync("src/components/shell/pressing-footer/PressingContact.tsx", "utf8");
 const creditsTs = readFileSync("src/components/shell/pressing-footer/PressingCredits.tsx", "utf8");
 const js = (raw) => JSON.parse('"' + raw + '"');
@@ -543,7 +545,7 @@ const block = (src, name) => {
   if (!m) throw new Error("board: no " + name + " block in the footer source");
   return m[1];
 };
-const method = [...block(contactTs, "METHOD").matchAll(
+const method = [...block(methodTs, "METHOD").matchAll(
   /head:\s*"((?:[^"\\]|\\.)*)",\s*body:\s*((?:"(?:[^"\\]|\\.)*"\s*\+?\s*)+)/g)]
   .map((m) => ({ k: js(m[1]), v: [...m[2].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((x) => js(x[1])).join("") }));
 const links = [...block(contactTs, "CONTACT").matchAll(/label:\s*"([^"]+)",\s*href:\s*"([^"]+)"/g)]

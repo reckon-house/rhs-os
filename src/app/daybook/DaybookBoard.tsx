@@ -21,10 +21,13 @@
  *
  * Still a client component that SSRs: every entry is in the HTML for a
  * crawler and for anyone without a script. The turning, the ink and
- * the counts are layered on a page that is complete without them.
+ * the counts are layered on a page that is complete without them, and
+ * they are the glass's (src/components/glass), shared with /custom;
+ * this file keeps the log's own material and its own reasons to
+ * redraw: the filter, and the fragment.
  */
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   DAYBOOK,
@@ -38,9 +41,17 @@ import {
   type DaybookProject,
 } from "@/data/daybook";
 import { plateSrcSet } from "@/lib/img-srcset";
-import { afterCurtain, arrivalsHeld } from "@/lib/curtain";
 import { PaperGround } from "@/components/shell/PaperGround";
-import styles from "./daybook.module.css";
+import {
+  Rule,
+  armRise,
+  columnsIn,
+  still,
+  useArrival,
+  useGlass,
+  useTurns,
+} from "@/components/glass/glass";
+import styles from "@/components/glass/glass.module.css";
 
 /* The accession number: the oldest entry is No. 001 and the count only
    grows, so a number names its entry for good. */
@@ -54,8 +65,6 @@ const MONTHS = byMonth(DAYBOOK);
 const OLDEST = DAYBOOK[DAYBOOK.length - 1];
 
 const plural = (n: number) => `${n} ${n === 1 ? "entry" : "entries"}`;
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ── THE FILTER LIVES IN THE ADDRESS ────────────────────────────────
    Read through an external store rather than copied into state on
@@ -86,106 +95,6 @@ function writeFilter(p: DaybookProject | null) {
     /* an address that will not take it keeps the one it had */
   }
   heard.forEach((fn) => fn());
-}
-
-const columnsIn = (strip: HTMLElement) =>
-  Array.from(strip.querySelectorAll<HTMLElement>(`.${styles.col}`)).filter((c) => !c.hidden);
-
-/* ── THE INK AND THE COUNT (assemble-board.py, dressRules) ──────────
-   The ink is the column's scroll, drawn on its rule: a segment as long
-   as the glass is of the column, travelling as far down the rule as
-   the column has scrolled. The count is what is left below a reading
-   line that sweeps from the top of the glass to its foot as the column
-   runs to its end, so it is every entry before the reader scrolls, one
-   at the bottom, and never jumps between. A column that fits the glass
-   has nothing to count, and says nothing. */
-function writeCount(yc: HTMLElement, n: number | null) {
-  const key = n == null ? "" : String(n);
-  if (yc.dataset.n === key) return;
-  yc.dataset.n = key;
-  if (!key) {
-    yc.replaceChildren();
-    return;
-  }
-  yc.replaceChildren(
-    ...["+", key, "↓"].map((t) => {
-      const s = document.createElement("span");
-      s.textContent = t;
-      return s;
-    })
-  );
-}
-
-function dressColumn(c: HTMLElement, onGlass: boolean) {
-  const cin = c.querySelector<HTMLElement>(`.${styles.cin}`);
-  const rule = c.querySelector<HTMLElement>(`.${styles.rule}`);
-  const rg = c.querySelector<HTMLElement>(`.${styles.rg}`);
-  const yc = c.querySelector<HTMLElement>(`.${styles.yc}`);
-  if (!cin || !rule || !rg || !yc) return;
-  const max = cin.scrollHeight - cin.clientHeight;
-  /* a column turned off the glass leaves its rule standing at the
-     strip's edge, half cut; the board draws nothing for a column
-     nobody can see, so its ink and its count go with it */
-  if (max <= 1 || !onGlass) {
-    rg.classList.remove(styles.on);
-    writeCount(yc, null);
-    return;
-  }
-  const H = rule.clientHeight;
-  const seg = Math.max(24, (H * cin.clientHeight) / cin.scrollHeight);
-  const at = clamp01(cin.scrollTop / max);
-  rg.classList.add(styles.on);
-  rg.style.top = `${at * (H - seg)}px`;
-  rg.style.height = `${seg}px`;
-
-  const tops = Array.from(cin.querySelectorAll<HTMLElement>(`.${styles.entry}`))
-    .filter((el) => !el.hidden)
-    .map((el) => el.offsetTop);
-  if (tops.length < 2) {
-    writeCount(yc, null);
-    return;
-  }
-  const line = cin.scrollTop + at * cin.clientHeight;
-  let crossed = 0;
-  for (const y of tops) if (y <= line) crossed += 1;
-  writeCount(yc, tops.length - Math.max(0, crossed - 1));
-}
-
-/* the months past the glass: a column the glass does not hold whole,
-   so the fifth of the next one showing still counts, as on the board */
-function pastGlass(strip: HTMLElement, cols: HTMLElement[]) {
-  const edge = strip.scrollLeft + strip.clientWidth + 1;
-  return cols.filter((c) => c.offsetLeft + c.offsetWidth > edge).length;
-}
-
-/* ── THE RISE (assemble-board.py, .tile.lines .crow) ────────────────
-   What is on the glass arrives the way the board's lists do: up and
-   in, a column at a time, each entry a beat behind the one above. Only
-   what can be seen is armed; the rest of a column already stands where
-   it will be when the reader scrolls to it. Returns the release. */
-function armRise(strip: HTMLElement): () => void {
-  const cast: HTMLElement[] = [];
-  const edge = strip.scrollLeft + strip.clientWidth;
-  columnsIn(strip).forEach((c, k) => {
-    if (c.offsetLeft >= edge) return;
-    const cin = c.querySelector<HTMLElement>(`.${styles.cin}`);
-    if (!cin) return;
-    const floor = cin.scrollTop + cin.clientHeight;
-    let i = 0;
-    cin.querySelectorAll<HTMLElement>(`.${styles.rise}`).forEach((el) => {
-      if (el.hidden || el.offsetTop > floor) return;
-      el.style.setProperty("--lag", `${k * 90 + i * 45}ms`);
-      el.classList.add(styles.pre);
-      cast.push(el);
-      i += 1;
-    });
-  });
-  let done = false;
-  return () => {
-    if (done) return;
-    done = true;
-    cast.forEach((el) => el.classList.remove(styles.pre));
-  };
 }
 
 /* an entry's address: its column to the glass, then the column down to it */
@@ -294,23 +203,17 @@ function Rail({
   );
 }
 
-function Rule() {
-  /* an <i> is italic by default, and the count inherits it: the
-     module sets it upright, as the board's own rule had to */
-  return (
-    <i className={styles.rule} aria-hidden="true">
-      <span className={styles.rg} />
-      <span className={styles.yc} />
-    </i>
-  );
-}
-
 export function DaybookBoard() {
   const filter = useSyncExternalStore(subscribeFilter, readFilter, serverFilter);
   const proj = BY_SLUG.get(filter) ?? null;
-  const [past, setPast] = useState(0);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
+  /* the glass: ink, counts and the months past the edge, redrawn when
+     the filter rebuilds the columns; the rise under a curtain; the
+     row turning from the keys and a held wheel */
+  const past = useGlass(rootRef, stripRef, `.${styles.entry}`, filter);
+  useArrival(stripRef);
+  useTurns(stripRef);
   /* a filter the reader picks rises and starts the columns over; one
      read off the address on arrival is simply where the page begins */
   const chosen = useRef(false);
@@ -333,22 +236,6 @@ export function DaybookBoard() {
     if (strip && col) slide(strip.scrollLeft + dir * col.offsetWidth);
   };
 
-  /* ── ARRIVING UNDER THE CURTAIN ─────────────────────────────────
-     Armed only when a curtain covers the page, and released when it
-     has finished lifting. Opened directly, the page is already on the
-     glass, and hiding it to bring it back would be a blink. */
-  useLayoutEffect(() => {
-    const strip = stripRef.current;
-    if (!strip || still() || !arrivalsHeld()) return;
-    const release = armRise(strip);
-    afterCurtain(() => requestAnimationFrame(() => requestAnimationFrame(release)));
-    const belt = window.setTimeout(release, 6000);
-    return () => {
-      window.clearTimeout(belt);
-      release();
-    };
-  }, []);
-
   /* ── A FILTER PICKED ────────────────────────────────────────────
      Before the paint, so the rebuilt columns never show at rest first:
      the row back to its start, every column back to its top, and what
@@ -370,35 +257,6 @@ export function DaybookBoard() {
     };
   }, [proj]);
 
-  /* the ink, the counts and the months past the glass, redrawn on the
-     next frame after anything that could move them */
-  useEffect(() => {
-    const root = rootRef.current;
-    const strip = stripRef.current;
-    if (!root || !strip) return;
-    let raf = 0;
-    const paint = () => {
-      raf = 0;
-      const cols = columnsIn(strip);
-      cols.forEach((c) => dressColumn(c, c.offsetLeft + c.offsetWidth > strip.scrollLeft + 2));
-      setPast(pastGlass(strip, cols));
-    };
-    const ask = () => {
-      if (!raf) raf = requestAnimationFrame(paint);
-    };
-    root.addEventListener("scroll", ask, { capture: true, passive: true });
-    root.addEventListener("load", ask, true);
-    window.addEventListener("resize", ask, { passive: true });
-    document.fonts?.ready.then(ask).catch(() => {});
-    ask();
-    return () => {
-      cancelAnimationFrame(raf);
-      root.removeEventListener("scroll", ask, true);
-      root.removeEventListener("load", ask, true);
-      window.removeEventListener("resize", ask);
-    };
-  }, [proj]);
-
   /* /daybook#id: the browser scrolls nested boxes to a fragment on its
      own, but not always to the top of the entry, and not after the
      filter has rebuilt the columns; a frame later this makes it exact */
@@ -413,58 +271,6 @@ export function DaybookBoard() {
     if (!strip || !id) return;
     const raf = requestAnimationFrame(() => revealEntry(strip, id));
     return () => cancelAnimationFrame(raf);
-  }, []);
-
-  /* SHIFT AND A WHEEL TURN THE ROW, as they do on the board
-     (assemble-board.py reads e.shiftKey ? e.deltaY : e.deltaX). A
-     trackpad, and a Mac's own shift-wheel, already arrive sideways and
-     scroll the row natively; a plain wheel with shift held arrives
-     vertical, so it turns one column per notch, with a beat between
-     turns so a spinning wheel does not run the row to its end. */
-  useEffect(() => {
-    const strip = stripRef.current;
-    if (!strip) return;
-    let acc = 0;
-    let until = 0;
-    const onWheel = (e: WheelEvent) => {
-      if (!e.shiftKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
-      e.preventDefault();
-      const now = performance.now();
-      if (now < until) return;
-      acc += e.deltaY;
-      if (Math.abs(acc) < 40) return;
-      const col = strip.querySelector<HTMLElement>(`.${styles.col}`);
-      if (col) {
-        strip.scrollTo({
-          left: strip.scrollLeft + Math.sign(acc) * col.offsetWidth,
-          behavior: still() ? "auto" : "smooth",
-        });
-      }
-      acc = 0;
-      until = now + 450;
-    };
-    strip.addEventListener("wheel", onWheel, { passive: false });
-    return () => strip.removeEventListener("wheel", onWheel);
-  }, []);
-
-  /* the arrow keys turn the row, as a page turns on the board */
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-      const t = e.target as HTMLElement | null;
-      if (t?.closest("input, textarea, select, [contenteditable]")) return;
-      const strip = stripRef.current;
-      const col = strip?.querySelector<HTMLElement>(`.${styles.col}`);
-      if (!strip || !col) return;
-      e.preventDefault();
-      strip.scrollTo({
-        left: strip.scrollLeft + (e.key === "ArrowRight" ? 1 : -1) * col.offsetWidth,
-        behavior: still() ? "auto" : "smooth",
-      });
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   const shown = (e: DaybookEntry) => proj === null || e.project === proj;

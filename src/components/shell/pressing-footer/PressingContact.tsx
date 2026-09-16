@@ -64,6 +64,7 @@ import { BodyReveal } from "@/components/fx/BodyReveal";
 import { SectionMark } from "@/components/fx/SectionMark";
 import { vh } from "@/lib/scrub";
 import styles from "./PressingContact.module.css";
+import { METHOD } from "@/data/method";
 
 /** px between the headline's last line and the column's first (prototype GAP). */
 const GAP = 34;
@@ -142,28 +143,7 @@ const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors
  * Deliberately uneven. The last one is twice the length of the first,
  * because a set of paragraphs cut to the same measure is the house's
  * own listed tell for machine writing. */
-const METHOD: { head: string; body: string }[] = [
-  {
-    head: "How it starts",
-    body:
-      "A real conversation and a brainstorm, and a direction we both agree on. " +
-      "The work moves quickly from there.",
-  },
-  {
-    head: "What I take on",
-    body:
-      "The brand, the thing people use, and the back of house that keeps it " +
-      "running.",
-  },
-  {
-    head: "When it's done",
-    body:
-      "A brand, a piece of software, a room. None of them are ever really " +
-      "done. There's a time to launch, let it sit, see how people use it, " +
-      "and decide what's next. You can't keep working on it in the " +
-      "background forever.",
-  },
-];
+/* the three notes live in src/data/method.ts, since /custom sets them too */
 const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
 /* THERE IS NO NEWS COLUMN. It held the newest three daybook entries as
    bare titles, and PressingReturn renders the daybook strip about two

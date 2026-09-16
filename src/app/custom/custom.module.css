@@ -1,0 +1,217 @@
+/*
+ * /custom's own material. The board's grammar for a page of columns is
+ * glass.module.css (the strip, the columns, the rules, the ink, the
+ * counts, the chips, the rise); what is here is only what this page
+ * has that the daybook does not: a shelf row with a picture, a door,
+ * the Ask, and the ways out.
+ */
+
+/* the column's head chips (assemble-board.py .ccol .chead): the page's
+   own name, and who the link was sent to */
+.chead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.1em;
+}
+/* a chip that names rather than opens: the column chip's values
+   (.ccol .cchip) with no hover, since nothing happens */
+.tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 100%;
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: var(--chip);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+/* ── A ROW ON A SHELF (assemble-board.py .ccol .crow, .lines .crow) ──
+   The study's cover at 96 by 72, its name in weight and its line
+   receding, the hairline over it and the board's 13px of air under
+   that. The 44px below is a line's list's, since this page is read
+   down a column the way a line's list is. */
+.row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  margin: 0;
+  padding: 13px 0 44px;
+  border-top: 1px solid var(--hair);
+  color: inherit;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+}
+.row img {
+  display: block;
+  width: 96px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.04);
+}
+.row b {
+  font-weight: 600;
+}
+/* a row with a line where the picture would be (assemble-board.py
+   .ccol .crow.text): the method notes, this site */
+.text {
+  grid-template-columns: minmax(0, 1fr);
+}
+a.row:hover b {
+  text-decoration: underline;
+  text-decoration-color: var(--grey);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ── THE TWO DOORS ───────────────────────────────────────────────────
+   Set at the size an entry is read at (glass .body), not a row's
+   caption size: they are the offer, and the offer is the page. The
+   hairline over each is the row's. */
+.doors {
+  margin-top: clamp(40px, 4.6vw, 72px);
+}
+.door {
+  margin: 0;
+  padding: 13px 0 28px;
+  border-top: 1px solid var(--hair);
+  font-size: 17px;
+  line-height: 1.42;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.door b {
+  font-weight: 600;
+}
+.price {
+  margin: 0;
+  max-width: 32em;
+  font-size: 17px;
+  line-height: 1.42;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ── THE ASK (assemble-board.py .ccol .cask, .cline, .cturn) ─────────
+   The board's field, in the statement's own type: a line underlined
+   only while it has the hand. A turn lands above it, the question in
+   ink and the answer in grey, the pair the sentence over them is set
+   in, and the studies the answer names stand under it as chips. */
+.ask {
+  margin-top: clamp(40px, 4.6vw, 72px);
+  font-size: var(--stmt-fs);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+}
+.line {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: max(1px, 0.05em);
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color 0.3s ease;
+}
+.line::placeholder {
+  color: var(--ink);
+  opacity: 1;
+}
+.line:focus {
+  text-decoration-color: var(--ink);
+}
+.line:focus::placeholder {
+  color: var(--grey);
+}
+.turn {
+  margin-bottom: 1.1em;
+  animation: turnIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.turn p {
+  margin: 0;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.55em;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+@keyframes turnIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── A PIECE'S PICTURE (assemble-board.py .ccol .cpics img) ──────────
+   The plate at the column's measure under "Full case study", as a
+   study's cover stands under its chip on the board. */
+.plate {
+  margin: 24px 0 0;
+}
+.plate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* the ways out of a column (assemble-board.py .ccol .cways) */
+.ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 1.1em 0 0;
+}
+/* the larger names, as a text row's caption under the small ones */
+.large {
+  margin: 0;
+  padding: 13px 0 28px;
+  border-top: 1px solid var(--hair);
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+}
+
+@media (max-width: 760px) {
+  .door,
+  .price {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .turn {
+    animation: none;
+  }
+  .line {
+    transition: none;
+  }
+}

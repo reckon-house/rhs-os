@@ -180,3 +180,41 @@ export function daybookJsonLd(entries: DaybookEntry[]) {
   };
   return { "@context": "https://schema.org", "@graph": [blog, breadcrumb] };
 }
+
+/** /custom: the studio's offer to a small business, as a Service the
+ *  Organization provides, with the town it is offered from. No price:
+ *  the page says each project is priced on its own, and a schema that
+ *  named one would say something the page does not. */
+export function customJsonLd() {
+  const url = `${SITE_URL}/custom`;
+  const service = {
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name: "Custom tools and setups for small business",
+    url,
+    description:
+      "A small design and software studio in Celina, Texas. For a small business: the tools " +
+      "it has, connected and running with an assistant in its own Claude, ChatGPT or Gemini " +
+      "account; and the tool it needs, designed and built. Each project is priced on its own.",
+    serviceType: ["Custom software", "Workflow and assistant setup", "Brand and web design"],
+    provider: { "@id": ORG_ID },
+    areaServed: [
+      { "@type": "City", name: "Celina", containedInPlace: { "@type": "State", name: "Texas" } },
+      { "@type": "Country", name: "United States" },
+    ],
+    availableChannel: {
+      "@type": "ServiceChannel",
+      name: "Book a call",
+      serviceUrl: `${SITE_URL}/book`,
+    },
+    isPartOf: { "@id": WEBSITE_ID },
+  };
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Custom", item: url },
+    ],
+  };
+  return { "@context": "https://schema.org", "@graph": [service, breadcrumb] };
+}
