@@ -144,7 +144,7 @@ const SERVICES = ["Art Direction", "Brand Systems", "Digital Design", "Interiors
  * because a set of paragraphs cut to the same measure is the house's
  * own listed tell for machine writing. */
 /* the three notes live in src/data/method.ts, since /custom sets them too */
-const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
+export const PRACTICE = ["Independent, Texas", "Design and build", "I love the work"];
 /* THERE IS NO NEWS COLUMN. It held the newest three daybook entries as
    bare titles, and PressingReturn renders the daybook strip about two
    hundred pixels below this in the same footer: the newest TWO, with

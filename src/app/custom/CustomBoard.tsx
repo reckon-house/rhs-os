@@ -13,7 +13,7 @@
  * clients with the way out to all of it, and the house's own black
  * column with the price line, the call and the week in it.
  *
- * EXPLORATIONS, for now, on ?v= and the rail's foot: five answers to
+ * EXPLORATIONS, for now, on ?v= and the rail's foot: six answers to
  * "an agency built around this design system", each a different row
  * of the same pieces. A is the page when nothing is said. The winner
  * keeps the page; the others come out.
@@ -58,6 +58,7 @@ import {
   type Run,
 } from "@/data/custom";
 import { CREDITS } from "@/components/shell/pressing-footer/PressingCredits";
+import { PRACTICE } from "@/components/shell/pressing-footer/PressingContact";
 import { plateSrcSet } from "@/lib/img-srcset";
 import { METHOD } from "@/data/method";
 import { SLOT_MINUTES } from "@/data/booking";
@@ -107,8 +108,8 @@ const readFor = () => {
   }
 };
 const serverFor = () => "";
-type Variant = "a" | "b" | "c" | "d" | "e";
-const VARIANTS: Variant[] = ["a", "b", "c", "d", "e"];
+type Variant = "a" | "b" | "c" | "d" | "e" | "f";
+const VARIANTS: Variant[] = ["a", "b", "c", "d", "e", "f"];
 const readVariant = (): Variant => {
   try {
     const v = new URLSearchParams(window.location.search).get("v") as Variant | null;
@@ -438,7 +439,7 @@ function Rail({ v, go, doors }: { v: Variant; go: (col: string) => void; doors: 
 
 /* what stands in the row, by exploration */
 type Slot =
-  | { kind: "statement"; dark?: boolean; spine?: boolean }
+  | { kind: "statement"; dark?: boolean; spine?: boolean; facts?: boolean }
   | { kind: "cover" }
   | { kind: "caps"; ask?: boolean }
   | { kind: "head"; run: Run }
@@ -472,8 +473,15 @@ const ROW: Record<Variant, Slot[]> = {
     { kind: "clients" },
     { kind: "talk" },
   ],
-  /* D · the house: the studio speaks first in its own black column; paper after; black to close */
-  d: [{ kind: "statement", dark: true }, ...services(), { kind: "method" }, { kind: "clients" }, { kind: "talk" }],
+  /* D · the house: the studio speaks first in its own black column, with
+     the practice line under the field; paper after; black to close */
+  d: [
+    { kind: "statement", dark: true, facts: true },
+    ...services(),
+    { kind: "method" },
+    { kind: "clients" },
+    { kind: "talk" },
+  ],
   /* E · one column a service: the town's name as a spine, then each service whole, seven columns */
   e: [
     { kind: "statement", spine: true },
@@ -482,6 +490,9 @@ const ROW: Record<Variant, Slot[]> = {
     { kind: "clients" },
     { kind: "talk" },
   ],
+  /* F · the call second: the statement, then the week, then the services;
+     a page whose one job is the call puts it one turn away */
+  f: [{ kind: "statement" }, { kind: "talk" }, ...services(), { kind: "method" }, { kind: "clients" }],
 };
 const DOORS_OF: Record<Variant, typeof DOORS> = {
   a: DOORS,
@@ -489,6 +500,7 @@ const DOORS_OF: Record<Variant, typeof DOORS> = {
   c: [{ label: "The work", col: "work" }, { label: "What we do", col: "caps" }, ...DOORS.slice(3)],
   d: DOORS,
   e: DOORS,
+  f: [DOORS[5], ...DOORS.slice(0, 5)],
 };
 
 export function CustomBoard() {
@@ -564,12 +576,24 @@ export function CustomBoard() {
               </h1>
               {/* the call, here as well as at the end: the reader sold on
                   the first column should not have to turn past everything
-                  to reach a time */}
-              {pick}
+                  to reach a time; not when the week is the next column */}
+              {v === "f" ? null : pick}
               <Ask cinRef={leadRef} />
               {/* on a phone the rail has no column of its own, so it rides
                   under the statement, in the column that introduces it */}
               <div className={glass.pocket}>{rail}</div>
+              {slot.facts ? (
+                /* the practice line, as rows: the footer's own three words */
+                <div className={glass.rows}>
+                  {PRACTICE.map((x) => (
+                    <p key={x} className={`${glass.row} ${glass.text} ${glass.tight} ${glass.rise}`}>
+                      <span>
+                        <b>{x}</b>
+                      </span>
+                    </p>
+                  ))}
+                </div>
+              ) : null}
               {slot.spine ? (
                 /* the town, set the way /book sets its month */
                 <div className={glass.month} aria-hidden="true">
