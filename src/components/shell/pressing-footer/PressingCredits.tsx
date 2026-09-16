@@ -87,7 +87,7 @@ type Credit = {
 
 /* Verbatim from the prototype's ledger, in its order — the sequence is
    edited, not alphabetical or chronological. */
-const CREDITS: Credit[] = [
+export const CREDITS: Credit[] = [
   { name: "Crate & Barrel", src: "/brands/crate-barrel.svg" },
   { name: "Nordstrom", src: "/brands/nordstrom.svg", height: 12 },
   { name: "Design Within Reach", src: "/brands/dwr.jpg", height: 17, asis: true },

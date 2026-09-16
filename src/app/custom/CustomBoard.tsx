@@ -3,13 +3,15 @@
 /* ── /custom, ON THE BOARD'S GLASS ───────────────────────────────────
  * The page a small business lands on from an email, so it is a straight
  * read and not the board: one audience, in the grammar the rest of the
- * site is in, with the board's rail of doors down the left. The
- * statement and the two doors, then each door dealt as the board deals
- * a run: a head with the run's one sentence and a wide hero across the
- * pair, then two columns of tiles, each a picture with the study's name
- * and the study's own line at 12px. Then twenty years of the studio's
- * work with the way out to all of it, how the work goes, and the
- * house's own black column with the call and the week in it.
+ * site is in, with the board's rail of doors down the left. It reads as
+ * the studio's front door rather than a cut of the portfolio: the
+ * studio and who it is for, then each of its three services dealt as
+ * the board deals a run, a head with the service's one sentence and
+ * what it is beside it, a wide hero across the pair, then two columns
+ * of tiles, each a picture with the study's name and the study's own
+ * line at 12px. Then how the work goes, twenty years of clients with
+ * the way out to all of it, and the house's own black column with the
+ * price line, the call and the week in it.
  *
  * THE BUDGET IS THE BOARD'S. An earlier draft dressed every piece as a
  * study preview and carried a study section at 32px in each, 58 words
@@ -46,20 +48,11 @@ import { Rule, still, turnRow, useArrival, useGlass, useTurns } from "@/componen
 import { Week } from "@/components/glass/Week";
 import glass from "@/components/glass/glass.module.css";
 import own from "./custom.module.css";
-import {
-  CUSTOM,
-  DOORS,
-  PIECES,
-  RUNS,
-  STUDIO,
-  type Hero,
-  type Piece as PieceT,
-  type Row,
-  type Run,
-} from "@/data/custom";
+import { CUSTOM, DOORS, PIECES, RUNS, type Hero, type Piece as PieceT, type Run } from "@/data/custom";
+import { CREDITS } from "@/components/shell/pressing-footer/PressingCredits";
 import { plateSrcSet } from "@/lib/img-srcset";
 import { METHOD } from "@/data/method";
-import { BOOK_DIM } from "@/data/booking";
+import { SLOT_MINUTES } from "@/data/booking";
 import { projects } from "@/data/projects";
 
 /* the studies the Ask reads: the tiles', so an answer about scheduling
@@ -107,7 +100,6 @@ const serverFor = () => "";
 const THUMBS = "/lab/board-thumbs/";
 const rungsOf = (src: string, w?: number) =>
   `${src.replace(/\.webp$/, "@384.webp")} 384w, ${src.replace(/\.webp$/, "@768.webp")} 768w, ${src} ${w ?? 1536}w`;
-const rungs = (r: Row) => (r.thumb ? rungsOf(r.thumb, r.w) : undefined);
 const plateSet = (img: { src: string; w?: number }) =>
   img.src.startsWith(THUMBS) ? rungsOf(img.src, img.w) : plateSrcSet(img.src, img.w);
 
@@ -135,37 +127,6 @@ function Tile({ p }: { p: PieceT }) {
           <b>{p.project}</b>
         </span>{" "}
         <span className={glass.g}>{p.line}</span>
-      </span>
-    </Link>
-  );
-}
-
-/* a study on the shelf: its cover, its name, its line, in the rail's
-   own row grammar */
-function Shelf({ r }: { r: Row }) {
-  return (
-    <Link
-      className={`${glass.row}${r.thumb ? "" : ` ${glass.text}`} ${glass.rise}`}
-      href={r.href}
-    >
-      {r.thumb ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={r.thumb}
-          srcSet={rungs(r)}
-          sizes="96px"
-          width={96}
-          height={72}
-          alt=""
-          loading="lazy"
-          decoding="async"
-        />
-      ) : null}
-      <span>
-        <span className="lbl">
-          <b>{r.title}</b>
-        </span>{" "}
-        <span className={glass.g}>{r.line}</span>
       </span>
     </Link>
   );
@@ -232,7 +193,7 @@ function Head({ r, go }: { r: Run; go: (col: string) => void }) {
 
 /* ── A RUN'S TILES, DEALT DOWN TWO COLUMNS ──────────────────────────
    The board deals a run's pictures in rounds down the columns of a
-   pair; here a run of five or six tiles fills two columns, the first
+   pair; here a run of four to seven tiles fills two columns, the first
    taking the odd one, the piece a small business recognises first at
    the top of the first. */
 function Tiles({ r }: { r: Run }) {
@@ -417,7 +378,7 @@ export function CustomBoard() {
       </nav>
 
       <div ref={stripRef} className={glass.strip}>
-        <section className={`${glass.col} ${glass.lead}`} data-col="statement" aria-label={CUSTOM.caption}>
+        <section className={`${glass.col} ${glass.lead}`} data-col="statement" aria-label="Reckon House, for small business">
           <div ref={leadRef} className={glass.cin}>
             <div className={glass.chead}>
               <span className={glass.tag}>{CUSTOM.caption}</span>
@@ -432,10 +393,6 @@ export function CustomBoard() {
             <h1 className={`${glass.statement} ${glass.rise}`}>
               {CUSTOM.lede} <span className={glass.g}>{CUSTOM.dim}</span>
             </h1>
-            {/* the doors themselves are subcopy under their own heads
-                now, a column each; what stays here is what the offer
-                costs to find out */}
-            <p className={`${own.price} ${glass.rise}`}>{CUSTOM.price}</p>
             {/* the call, here as well as at the end: the reader sold on
                 the first column should not have to turn past everything
                 to reach a time */}
@@ -459,25 +416,6 @@ export function CustomBoard() {
           <Head key={`head-${r.id}`} r={r} go={go} />
         )).flatMap((h, i) => [h, <Tiles key={`tiles-${RUNS[i].id}`} r={RUNS[i]} />])}
 
-        <section className={glass.col} data-col="studio" aria-labelledby="studio">
-          <div className={glass.cin}>
-            {head("studio", CUSTOM.heads.studio)}
-            {STUDIO.map((r) => (
-              <Shelf key={r.href} r={r} />
-            ))}
-            <p className={`${own.large} ${glass.rise}`}>
-              <span className={glass.g}>{CUSTOM.large}</span>
-            </p>
-            <p className={own.ways}>
-              <Link className={glass.chip} href="/">
-                <span className="lbl">{CUSTOM.all}</span>
-                <span className={glass.arr} aria-hidden="true" />
-              </Link>
-            </p>
-          </div>
-          <Rule />
-        </section>
-
         <section className={glass.col} data-col="method" aria-labelledby="method">
           <div className={glass.cin}>
             {head("method", CUSTOM.heads.method)}
@@ -492,14 +430,40 @@ export function CustomBoard() {
           <Rule />
         </section>
 
+        {/* twenty years of clients, the credits the footer and the board
+            keep, with the way out to all the work */}
+        <section className={glass.col} data-col="clients" aria-labelledby="clients">
+          <div className={glass.cin}>
+            {head("clients", CUSTOM.heads.clients)}
+            {CREDITS.map((c) => (
+              <p key={c.name} className={`${glass.row} ${glass.text} ${glass.rise}`}>
+                <span>
+                  <b>{c.name}</b>
+                </span>
+              </p>
+            ))}
+            <p className={own.ways}>
+              <Link className={glass.chip} href="/">
+                <span className="lbl">{CUSTOM.all}</span>
+                <span className={glass.arr} aria-hidden="true" />
+              </Link>
+            </p>
+          </div>
+          <Rule />
+        </section>
+
         {/* THE CALL HAPPENS HERE, not on a page of its own. The week is
             the board's own (Week, on the glass), so picking a time is
-            the same act in the same clothes wherever it is offered. */}
+            the same act in the same clothes wherever it is offered. His
+            pricing line is the grey half: what it costs to find out. */}
         <section className={`${glass.col} ${glass.dark}`} data-col="talk" aria-labelledby="talk">
           <div className={glass.cin}>
             {head("talk", CUSTOM.heads.talk)}
             <p className={`${glass.statement} ${glass.rise}`}>
-              {CUSTOM.talk.lede} <span className={glass.g}>{BOOK_DIM}</span>
+              {CUSTOM.talk.lede}{" "}
+              <span className={glass.g}>
+                {CUSTOM.talk.price} It&rsquo;s a {SLOT_MINUTES} minute call.
+              </span>
             </p>
             <Week />
             <p className={own.ways}>

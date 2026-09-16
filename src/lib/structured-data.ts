@@ -190,13 +190,13 @@ export function customJsonLd() {
   const service = {
     "@type": "Service",
     "@id": `${url}#service`,
-    name: "Custom tools and setups for small business",
+    name: "Reckon House, for small business",
     url,
     description:
-      "A small design and software studio in Celina, Texas. For a small business: the tools " +
-      "it has, connected and running with an assistant in its own Claude, ChatGPT or Gemini " +
-      "account; and the tool it needs, designed and built. Each project is priced on its own.",
-    serviceType: ["Custom software", "Workflow and assistant setup", "Brand and web design"],
+      "A design and software studio in Celina, Texas, for small businesses: AI tools picked " +
+      "and set up in the business's own Claude, ChatGPT or Gemini account, brand and website " +
+      "redesign, and custom software. Each project is priced on its own.",
+    serviceType: ["AI tools and setup", "Brand and website design", "Custom software"],
     provider: { "@id": ORG_ID },
     areaServed: [
       { "@type": "City", name: "Celina", containedInPlace: { "@type": "State", name: "Texas" } },

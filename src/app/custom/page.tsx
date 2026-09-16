@@ -5,11 +5,11 @@ import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { customJsonLd } from "@/lib/structured-data";
 import { CustomBoard } from "./CustomBoard";
 
-const TITLE = "Custom tools and setups for small business";
+const TITLE = "Reckon House, for small business";
 const DESCRIPTION =
-  "Jeremy Prasatik runs a small design and software studio in Celina, Texas. For a small " +
-  "business: the tools you have, connected and running with an assistant, or the tool you " +
-  "need, built. Each project is priced on its own. It starts with a call.";
+  "A design and software studio in Celina, Texas, for small businesses: your AI tools picked " +
+  "and set up, your brand and website redesigned, the software you can't buy built. Each " +
+  "project is priced on its own. It starts with a call.";
 
 /* The share card is the site's own, as the daybook's is: a page's
    openGraph replaces the layout's whole, so leaving images out here

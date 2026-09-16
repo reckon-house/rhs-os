@@ -6,31 +6,24 @@
  * lines, verbatim from projects.ts and board-house.json, because a
  * study already says what it is.
  *
- * The page is sent in an email, so it is a straight read: who this is,
- * the two things on offer, what it costs to find out, then the proof,
- * dealt the way the board deals a run. Display prose appears once per
+ * The page is sent in an email, so it is a straight read: the studio,
+ * who it is for, the three things it does, each dealt the way the
+ * board deals a run, then how the work goes and the call. Display prose appears once per
  * run, in its head; a piece is a picture with a 12px line. Every
  * phrase has one home. The rest of the site is one chip away and
  * never the entry point. */
 
-export interface Row {
-  title: string;
-  line: string;
-  href: string;
-  /** the board's thumb of the study's cover (scripts/build-board-thumbs.mjs),
-   *  which also wrote it at @768 and @384 beside the full one */
-  thumb?: string;
-  w?: number;
-  h?: number;
-}
-
 export const CUSTOM = {
-  caption: "Custom",
-  lede: "I'm Jeremy Prasatik. I run a small design and software studio in Celina, Texas.",
-  dim: "Brand and web design on the front end, custom tools on the back end.",
-  price:
-    "Each project is scoped and priced on its own, and there's usually a version that fits " +
-    "the budget. It starts with a call.",
+  /* the page's own name, in the chip and the cover line: who it is for */
+  caption: "For small business",
+  /* the studio, for whom, and the three things it does, in one
+     sentence each way. "We" is the studio's word on this page (Mode D,
+     a local business context); the notes on how the work goes keep
+     his own voice, since he is who you will be talking to. */
+  lede: "Reckon House is a design and software studio for small businesses.",
+  dim:
+    "We pick and set up your AI tools, redesign your brand and website, and build the " +
+    "software you can't buy. Celina, Texas.",
   ask: {
     placeholder: "Ask:",
     wait: "Reading the studies.",
@@ -38,14 +31,17 @@ export const CUSTOM = {
     reach: "hello@reckon.house. Or keep asking here.",
   },
   heads: {
-    studio: "Twenty years, large and small.",
-    method: "How I work.",
+    method: "How it works.",
+    clients: "Twenty years, large and small.",
     talk: "Let's talk.",
   },
-  large: "The larger ones: Nordstrom, Neiman Marcus, Ivy Park by Beyoncé, Floor & Decor.",
   all: "All the work",
   talk: {
     lede: "Let's talk about what you have in mind and tailor a quote to your exact needs.",
+    /* his pricing line, in small-studio words: the one place it lives */
+    price:
+      "Each project is scoped and priced on its own, and there's usually a version that fits " +
+      "the budget.",
     book: "Pick a time",
     email: "hello@reckon.house",
   },
@@ -65,8 +61,8 @@ const T = "/lab/board-thumbs";
    a run, with the piece a small business recognises first. */
 export interface Piece {
   id: string;
-  /** the door this piece stands behind */
-  run: "setup" | "build";
+  /** the service this piece stands behind */
+  run: "tools" | "brand" | "software";
   project: string;
   line: string;
   href: string;
@@ -78,9 +74,10 @@ const ARC = "A.R.C.";
 const SALLY = "Sally Marketing OS";
 
 export const PIECES: Piece[] = [
+  /* AI and tools: the assistant chosen and wired in */
   {
     id: "dsc-booking",
-    run: "setup",
+    run: "tools",
     project: DSC,
     line: "Book a session from your own AI.",
     href: "/case-studies/dsc",
@@ -92,21 +89,8 @@ export const PIECES: Piece[] = [
     },
   },
   {
-    id: "sally-assets",
-    run: "setup",
-    project: SALLY,
-    line: "The DAM they had was bloated and nobody wanted to use it.",
-    href: "/case-studies/sally",
-    image: {
-      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
-      alt: "Asset Hub on a laptop",
-      w: 1920,
-      h: 1254,
-    },
-  },
-  {
     id: "sally-feed",
-    run: "setup",
+    run: "tools",
     project: SALLY,
     line: "Three AI models watch 14 industry publications.",
     href: "/case-studies/sally",
@@ -119,7 +103,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-jim",
-    run: "setup",
+    run: "tools",
     project: SALLY,
     line: "It answers with the context a new hire takes months to pick up.",
     href: "/case-studies/sally",
@@ -132,7 +116,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "sally-utilities",
-    run: "setup",
+    run: "tools",
     project: SALLY,
     line: "Ten apps, each one for a job that used to take hours.",
     href: "/case-studies/sally",
@@ -143,9 +127,71 @@ export const PIECES: Piece[] = [
       h: 1756,
     },
   },
+  /* brand and website: the studies' own subtitles, cut to a line */
+  {
+    id: "capitan",
+    run: "brand",
+    project: "Capitan Boot Co.",
+    line: "Logo, type, badges and apparel graphics for a Western boot maker.",
+    href: "/case-studies/capitan-boot-co",
+    image: { src: `${T}/hp/rhs-capitan-boot-co-branding.webp`, alt: "Capitan Boot Co.", w: 1536, h: 1536 },
+  },
+  {
+    id: "j-christianson",
+    run: "brand",
+    project: "J. Christianson",
+    line: "A brand identity built from the name outward.",
+    href: "/case-studies/j-christianson",
+    image: {
+      src: `${T}/hp/rhs-campaign-design-j-christianson-branding.webp`,
+      alt: "J. Christianson",
+      w: 1536,
+      h: 1024,
+    },
+  },
+  {
+    id: "dsc-site",
+    run: "brand",
+    project: DSC,
+    line: "A marketing site for a six-trainer gym in North Texas.",
+    href: "/case-studies/dsc",
+    image: {
+      src: `${T}/dsc/dsc-marketing-site-laptop-stool-hero.webp`,
+      alt: "The marketing site on a laptop",
+      w: 1024,
+      h: 683,
+    },
+  },
+  {
+    id: "oakworks",
+    run: "brand",
+    project: "Hill Country Oakworks",
+    line: "A campaign from billboards down to phone wallpapers.",
+    href: "/case-studies/hill-country-oak",
+    image: {
+      src: `${T}/hp/rhs-hill-country-oakworks-billboard.webp`,
+      alt: "Hill Country Oakworks",
+      w: 1536,
+      h: 923,
+    },
+  },
+  {
+    id: "amber-shockey",
+    run: "brand",
+    project: "Amber Shockey & Co.",
+    line: "Tableware patterns, three collections in, built to layer.",
+    href: "/case-studies/amber-shockey-co",
+    image: {
+      src: `${T}/hp/rhs-campaign-design-amber-shockey-blue-plate.webp`,
+      alt: "Amber Shockey & Co.",
+      w: 1536,
+      h: 923,
+    },
+  },
+  /* custom software: the piece a small business recognises first */
   {
     id: "arc-gap",
-    run: "build",
+    run: "software",
     project: ARC,
     line: "It compares what you own against your policy limit.",
     href: "/case-studies/arc",
@@ -157,21 +203,8 @@ export const PIECES: Piece[] = [
     },
   },
   {
-    id: "dsc-door",
-    run: "build",
-    project: DSC,
-    line: "None of the scheduling works until everyone is in the system.",
-    href: "/case-studies/dsc",
-    image: {
-      src: "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
-      alt: "The athlete's registration form",
-      w: 775,
-      h: 1200,
-    },
-  },
-  {
     id: "dsc-owner",
-    run: "build",
+    run: "software",
     project: DSC,
     line: "The owner side is built for one person on the gym floor.",
     href: "/case-studies/dsc",
@@ -183,8 +216,21 @@ export const PIECES: Piece[] = [
     },
   },
   {
+    id: "dsc-door",
+    run: "software",
+    project: DSC,
+    line: "None of the scheduling works until everyone is in the system.",
+    href: "/case-studies/dsc",
+    image: {
+      src: "/case-studies/dsc/dsc-athlete-app-registration-form.jpg",
+      alt: "The athlete's registration form",
+      w: 775,
+      h: 1200,
+    },
+  },
+  {
     id: "arc-inventory",
-    run: "build",
+    run: "software",
     project: ARC,
     line: "One photo of a room comes back as a list of what is in it.",
     href: "/case-studies/arc",
@@ -196,8 +242,21 @@ export const PIECES: Piece[] = [
     },
   },
   {
+    id: "sally-assets",
+    run: "software",
+    project: SALLY,
+    line: "The DAM they had was bloated and nobody wanted to use it.",
+    href: "/case-studies/sally",
+    image: {
+      src: `${T}/hp/rhs-sally-os-asset-hub-laptop.webp`,
+      alt: "Asset Hub on a laptop",
+      w: 1920,
+      h: 1254,
+    },
+  },
+  {
     id: "arc-weeks",
-    run: "build",
+    run: "software",
     project: ARC,
     line: "Ten weeks from the first idea to a live App Store product.",
     href: "/case-studies/arc",
@@ -210,7 +269,7 @@ export const PIECES: Piece[] = [
   },
   {
     id: "faux-reel",
-    run: "build",
+    run: "software",
     project: "Faux Reel",
     line: "A sizzle reel with no footage.",
     href: "/case-studies/sizzle",
@@ -242,24 +301,24 @@ export interface Hero {
   cat: string;
 }
 export interface Run {
-  id: "setup" | "build";
+  id: "tools" | "brand" | "software";
   name: string;
   /** the head's one sentence, at display size */
   line: string;
-  /** what the door is, at read size, beside the head */
+  /** what the service is, at read size, beside the head */
   body: string;
   hero: Hero;
 }
 
 export const RUNS: Run[] = [
   {
-    id: "setup",
-    name: "Set up.",
-    line: "Your business has grown faster than your systems have.",
+    id: "tools",
+    name: "AI and tools.",
+    line: "Which assistant, which apps, and how your business should use them.",
     body:
-      "The tools you already have, connected, with the repetitive work handed to an " +
-      "assistant: the inbox, the calendar, bookings, invoices. It runs in your own Claude, " +
-      "ChatGPT or Gemini account, and I'll help you pick which one.",
+      "Claude, ChatGPT or Gemini, picked for the way you work and connected to the apps you " +
+      "already pay for, with the repetitive part handed to the assistant. It runs in your own " +
+      "account, and you'll know how to run it.",
     hero: {
       src: `${T}/dsc/dsc-ai-scheduler-phone-hero.webp`,
       w: 1024,
@@ -269,12 +328,28 @@ export const RUNS: Run[] = [
     },
   },
   {
-    id: "build",
-    name: "Build.",
-    line: "When the tool you need doesn't exist, I make it.",
+    id: "brand",
+    name: "Brand and website.",
+    line: "A rebrand, a redesign, or the site you have made right.",
+    /* the two lines the board says for Branding and Digital, verbatim */
     body:
-      "A scheduler, a customer list, an app, the site out front. One person designs it and " +
-      "builds it, so it fits how you already work.",
+      "Marks, type and patterns, on packaging, print and apparel. Sites, stores and " +
+      "platforms, designed and shipped.",
+    hero: {
+      src: `${T}/j-christianson/j-christianson-storefront-tree-stripe-window-mockup.webp`,
+      w: 2048,
+      h: 1239,
+      name: "J. Christianson",
+      cat: "Brand development, design",
+    },
+  },
+  {
+    id: "software",
+    name: "Custom software.",
+    line: "When the tool you need doesn't exist, we build it.",
+    body:
+      "A scheduler that takes bookings from any AI, a back office that fits how you already " +
+      "work, an app on the App Store. Designed and built here, start to finish.",
     hero: {
       src: `${T}/arc/arc-app-tablet-kitchen-living-room-lifestyle.webp`,
       w: 1536,
@@ -287,54 +362,10 @@ export const RUNS: Run[] = [
 
 /* the rail's doors, each the column it turns the row to */
 export const DOORS: { label: string; col: string }[] = [
-  { label: "Set up", col: "setup" },
-  { label: "Build", col: "build" },
-  { label: "Twenty years", col: "studio" },
-  { label: "How I work", col: "method" },
+  { label: "AI and tools", col: "tools" },
+  { label: "Brand and website", col: "brand" },
+  { label: "Custom software", col: "software" },
+  { label: "How it works", col: "method" },
+  { label: "Twenty years", col: "clients" },
   { label: "Let's talk", col: "talk" },
-];
-
-/* the studio's work for businesses this size, in the studies' own
-   short lines */
-export const STUDIO: Row[] = [
-  {
-    title: "Capitan Boot Co.",
-    line: "Branding, design.",
-    href: "/case-studies/capitan-boot-co",
-    thumb: `${T}/hp/rhs-capitan-boot-co-branding.webp`,
-    w: 1536,
-    h: 1536,
-  },
-  {
-    title: "J. Christianson",
-    line: "Brand development, design.",
-    href: "/case-studies/j-christianson",
-    thumb: `${T}/hp/rhs-campaign-design-j-christianson-branding.webp`,
-    w: 1536,
-    h: 1024,
-  },
-  {
-    title: "Hill Country Oakworks",
-    line: "Campaign direction, branding.",
-    href: "/case-studies/hill-country-oak",
-    thumb: `${T}/hp/rhs-hill-country-oakworks-billboard.webp`,
-    w: 1536,
-    h: 923,
-  },
-  {
-    title: "Amber Shockey & Co.",
-    line: "Tableware design, branding.",
-    href: "/case-studies/amber-shockey-co",
-    thumb: `${T}/hp/rhs-campaign-design-amber-shockey-blue-plate.webp`,
-    w: 1536,
-    h: 923,
-  },
-  {
-    title: "Hill Country home",
-    line: "Interior design, kitchen.",
-    href: "/case-studies/hill-country-kitchen",
-    thumb: `${T}/hp/rhs-interior-design-kitchen-modern-meets-vintage.webp`,
-    w: 1536,
-    h: 1024,
-  },
 ];

@@ -50,7 +50,7 @@ This file lists the portfolio's case studies so agents and crawlers can find the
 - [Digital](https://reckon.house/category/digital): Apps, ecommerce, AI tools.
 - [Creative](https://reckon.house/category/creative): Campaigns, brand identity, art direction.
 - [Interiors](https://reckon.house/category/interiors): Custom homes, kitchens, baths.
-- [Custom](https://reckon.house/custom): For a small business. The tools it has, connected and running with an assistant, or the tool it needs, built. From Celina, Texas; each project priced on its own; it starts with a call.
+- [For small business](https://reckon.house/custom): Reckon House as a studio for small businesses, from Celina, Texas. AI tools picked and set up, brand and website redesign, custom software; each project priced on its own; it starts with a call.
 
 ## Contact
 
