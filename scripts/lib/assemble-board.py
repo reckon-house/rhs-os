@@ -882,6 +882,42 @@ head = r'''<!doctype html>
       writing-mode: horizontal-tb; transform: none; margin: 0 0 14px; }
     .tile.statement.head .hbody { margin-left: 0; }
   }
+  /* ── THE BUILDS ───────────────────────────────────────────────────
+     The case studies' text entry (src/components/fx/reveal.module.css,
+     value for value): a headline's letters rise out of the line's own
+     mask, 1.2s expo-out with 6ms of lead a letter, and body copy rises
+     a rendered line at a time through its own mask, 0.7s expo-out,
+     45ms a line, both retreating quicker than they came. Here a
+     line's mask is a clip band over a whole copy of the block
+     (buildIn), so the words keep their wrap, their kerning and their
+     underlines, and the real block is never cut: it stands hidden
+     under the copies and comes back when they go. */
+  .building { visibility: hidden; }
+  .bld { position: absolute; inset: 0; visibility: visible; pointer-events: none; }
+  .bldI { transform: translateY(var(--rise, 110%));
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.7, 1) var(--d, 0ms); }
+  .building.go .bldI { transform: none;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms); }
+  .tile.statement.head .hbody { position: relative; }
+  /* the name's letters rise out of the name's own box from the
+     baseline side, which, stood on its side, is the sentence's side;
+     flat on a phone they rise as the study's do */
+  .tile.statement.head .spine { overflow: hidden; }
+  .spine .rch { display: inline-block; transform: translateX(-110%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.7, 1) var(--d, 0ms); }
+  .tile.statement.head.go .spine .rch { transform: none;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms); }
+  @media (max-width: 760px) { .spine .rch { transform: translateY(110%); } }
+  /* a head arrives by its parts, never as one fading block */
+  .tile.statement.head:not(.fd-out) { opacity: 1; transform: none; transition: none; }
+  /* the rail's chips on a first load: down the rail on settle's own
+     cascade, in the statement's clothes. The chip's own transitions
+     (the hug, the ink) are the shell's; they are back once this is
+     off, so the two lists never have to agree. */
+  #rdrawer .rrow.bin { opacity: 0; transform: translateY(14px);
+    transition: opacity 0.7s ease var(--lag, 0s),
+      transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
+  #rdrawer .rrow.bin.on { opacity: 1; transform: none; }
   /* the list under an open headline: the tile's own arrival, and the
      rail's rows at the field's measure */
   /* ── THE LIST BUILDS ROW BY ROW ───────────────────────────────────
@@ -1969,6 +2005,10 @@ function spineSize(heads) {
   m.className = "tile statement head";
   m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
   m.innerHTML = labels.map((l) => "<div class=\"spine\" style=\"font-size:100px;width:max-content\">" + l + "</div>").join("");
+  /* measured as it will stand: a name that builds is a run of
+     letter spans, which lose their kerning pairs and run a few pixels
+     longer than the plain word (CAMPAIGNS by 10 at 129px) */
+  if (!REDUCE()) [...m.children].forEach(spineChars);
   document.body.appendChild(m);
   const at100 = {};
   [...m.children].forEach((el, k) => { const r = el.getBoundingClientRect(); at100[labels[k]] = PHONE ? r.width : r.height; });
@@ -2009,6 +2049,101 @@ function spineSize(heads) {
   const root = document.documentElement.style;
   root.setProperty("--spine-fs", SPINE_FS + "px");
   root.setProperty("--spine-strip", SPINE_STRIP + "px");
+}
+
+/* ── THE BUILDS ───────────────────────────────────────────────────────
+   The case studies' text entry, on the board's own tiles (the values
+   are in the stylesheet, under THE BUILDS). Function declarations, so
+   mount can reach them from the first remount, which runs before the
+   consts further down exist. document.createElement rather than el()
+   for the same reason. */
+/* a name's letters, each on its own lead of 6ms, as RevealHeadline
+   cuts a headline; spans, since a <b> would take the weight to 900 */
+function spineChars(sp) {
+  const text = sp.textContent;
+  sp.textContent = "";
+  Array.from(text).forEach((ch, i) => {
+    const c = document.createElement("span");
+    c.className = "rch"; c.textContent = ch;
+    c.style.setProperty("--d", (i * 6) + "ms");
+    sp.appendChild(c);
+  });
+}
+/* ── A BLOCK RISES A LINE AT A TIME, UNCUT ─────────────────────────
+   BodyReveal cuts a paragraph into its rendered lines and rebuilds it
+   as one mask a line. The statement cannot be rebuilt: its underlined
+   terms are doors with their own wiring, one of them wraps across two
+   lines, and the question's slot inside it is measured every frame.
+   So the block is not cut. Its rendered lines are read off a throwaway
+   copy with every word wrapped, and then one full copy is laid over it
+   PER LINE, clipped to that line's band, holding nothing but that line
+   (the same band clipped inside, so no other line rides along), and
+   shifted a band down; the real block stands hidden beneath. Each copy
+   rises into its band on the study's clock, and when the last has
+   landed the copies go and the block is itself again, wrap, kerning,
+   underlines and wiring untouched. Returns when it is done, in ms. */
+function buildIn(host, delay0, beat) {
+  if (REDUCE() || host.__built) return 0;
+  host.__built = true;
+  const mk = (cls) => { const d = document.createElement("div"); d.className = cls; return d; };
+  const html = host.innerHTML;
+  const hostH = host.getBoundingClientRect().height;
+  /* the lines: a copy with its words wrapped, read and thrown away */
+  const meas = mk("bld"); meas.innerHTML = html; host.appendChild(meas);
+  const marks = [];
+  const walk = (n) => {
+    if (n.nodeType === 3) {
+      const parts = n.nodeValue.split(/(\s+)/);
+      if (!n.nodeValue.trim()) return;
+      const frag = document.createDocumentFragment();
+      parts.forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        const w = document.createElement("span"); w.textContent = part;
+        marks.push(w); frag.appendChild(w);
+      });
+      n.parentNode.replaceChild(frag, n);
+      return;
+    }
+    if (n.nodeType !== 1) return;
+    /* a thing that is one piece: the question's slot, the chip's row */
+    if (n.matches(".askslot, .askgo, .way, img, button")) { marks.push(n); return; }
+    [...n.childNodes].forEach(walk);
+  };
+  [...meas.childNodes].forEach(walk);
+  const top0 = meas.getBoundingClientRect().top;
+  const tops = [];
+  marks.forEach((m) => {
+    const r = m.getBoundingClientRect();
+    if (!r.height) return;
+    const t = Math.round(r.top - top0);
+    if (!tops.some((x) => Math.abs(x - t) < 3)) tops.push(t);
+  });
+  tops.sort((a, b) => a - b);
+  meas.remove();
+  if (!tops.length) { host.__built = false; return 0; }
+  host.classList.add("building");
+  const copies = [];
+  tops.forEach((t, i) => {
+    const a = i ? t : 0, b = i + 1 < tops.length ? tops[i + 1] : hostH;
+    const band = "inset(" + a + "px 0 " + Math.max(0, hostH - b) + "px 0)";
+    const c = mk("bld"); c.style.clipPath = band;
+    const inner = mk("bldI"); inner.innerHTML = html; inner.setAttribute("aria-hidden", "true");
+    inner.style.clipPath = band;
+    inner.style.setProperty("--d", Math.round(delay0 + i * beat) + "ms");
+    inner.style.setProperty("--rise", Math.round((b - a) * 1.1) + "px");
+    c.appendChild(inner); host.appendChild(c); copies.push(c);
+  });
+  /* two frames on, so the shifted state has been committed and there
+     is something to rise from */
+  requestAnimationFrame(() => requestAnimationFrame(() => host.classList.add("go")));
+  const total = delay0 + (tops.length - 1) * beat + 700 + 60;
+  setTimeout(() => {
+    copies.forEach((c) => c.remove());
+    host.classList.remove("building", "go");
+    host.__built = false;
+  }, total);
+  return total;
 }
 
 /* ── ONE FIELD, THREE FACES ─────────────────────────────────────────
@@ -3098,6 +3233,7 @@ const arrive = REDUCE()
       es.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add("fd-on");
+        if (e.target.__build) e.target.__build(0);
         arrive.unobserve(e.target);
       });
     /* ── WHERE THE CURTAIN STARTS ─────────────────────────────────
@@ -3527,6 +3663,8 @@ function settle(fresh) {
     if (!booting || y > innerHeight) { arrive.observe(c); return; }
     c.style.transition = "none";
     c.classList.add("fd-on");
+    /* a head on the glass at boot builds as the wipe reaches its column */
+    if (c.__build) c.__build(30 + (c.__col ? c.__col.__c : 0) * REVEAL_MS);
   });
 }
 function mount(t, gx, gy, u, f) {
@@ -3557,6 +3695,25 @@ function mount(t, gx, gy, u, f) {
     el.classList.add("statement", "head");
     el.innerHTML = headHTML(t, lineOpen === t.tag);
     if (t.label) el.style.setProperty("--spine-nudge", (SPINE_NUDGE[t.label] || 0) + "px");
+    /* ── AND IT BUILDS WHEN IT ARRIVES ───────────────────────────────
+       The name's letters rise out of its box the moment the head
+       crosses onto the glass (arrive calls __build), the sentence a
+       beat behind them, a line at a time, the chip as its last line.
+       Until then the sentence stands hidden and the letters below the
+       edge of the box. */
+    if (!REDUCE()) {
+      const sp = el.querySelector(".spine"), hb = el.querySelector(".hbody");
+      if (sp) spineChars(sp);
+      if (hb) hb.classList.add("building");
+      el.__build = (wait) => {
+        if (el.__went) return;
+        el.__went = true;
+        setTimeout(() => {
+          el.classList.add("go");
+          if (hb) { hb.classList.remove("building"); buildIn(hb, 120, 45); }
+        }, wait || 0);
+      };
+    }
     if (lineOpen === t.tag) el.classList.add("open");
     const chip = el.querySelector(".lchip");
     if (chip) chip.addEventListener("click", (e) => {
@@ -6014,6 +6171,9 @@ const mkRow = (label, slash) => {
   body.appendChild(inner);
   r.appendChild(h);
   r.appendChild(body);
+  /* on a first load the chip is born hidden and comes down the rail
+     with the build (__lean); the class is off again once it has */
+  if (booting && !PHONE) r.classList.add("bin");
   drawer.appendChild(r);
   rrows.push(r);
   r.addEventListener("pointerenter", (e) => {
@@ -6526,6 +6686,9 @@ document.addEventListener("click", (e) => {
    coverbar while the cover's wordmark overlaps the band (the burn
    waits), headgone once it has left (the bar's ends drop in). */
 const askEl = document.querySelector("#nav .ask");
+/* on a first load the question is not on the glass before the
+   statement it rides is; the build (__lean) brings it up last */
+if (askEl && booting && !REDUCE()) askEl.style.opacity = "0";
 const askInput = document.getElementById("query");
 const coverline = document.getElementById("coverline");
 const covermark = coverline ? coverline.querySelector(".covermark") : null;
@@ -6685,6 +6848,31 @@ if (booting) plane0.style.clipPath = revealTo(-GAP / 2);
 window.__lean = () => {
   if (!booting) return;
   booting = false;
+  /* ── A FIRST LOAD BUILDS TOO ─────────────────────────────────────
+     The rail's chips come down the rail on settle's own cascade while
+     the field wipes in beside them. The statement rises a line at a
+     time once the wipe has crossed its column (the wipe is 0.5s on
+     its curve and is past the column's middle by 0.3s), and the
+     question, which rides the statement's last line from the bar,
+     waits for the last line to land and then comes up on its own. */
+  if (!REDUCE()) {
+    if (!PHONE) {
+      rrows.forEach((r, i) => r.style.setProperty("--lag", Math.min(0.36, i * 0.05).toFixed(3) + "s"));
+      requestAnimationFrame(() => requestAnimationFrame(() => rrows.forEach((r) => r.classList.add("on"))));
+      setTimeout(() => rrows.forEach((r) => { r.classList.remove("bin", "on"); r.style.removeProperty("--lag"); }), 1200);
+    }
+    const st = live.get("0:0");
+    if (st) {
+      if (askEl) askEl.style.opacity = "0";
+      const done = buildIn(st, 300, 45);
+      setTimeout(() => {
+        if (!askEl) return;
+        askEl.style.transition = "opacity 0.7s ease";
+        askEl.style.opacity = "";
+        setTimeout(() => { askEl.style.transition = ""; }, 800);
+      }, done);
+    }
+  }
   const steps = Math.ceil(SHOW);
   const at = (k) => k * MOD_X - GAP / 2;
   plane0.style.transition = "clip-path 0.5s cubic-bezier(0.2, 0.55, 0.2, 1)";
