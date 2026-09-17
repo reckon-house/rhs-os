@@ -3034,7 +3034,15 @@ const landX = (lift) => {
 
    Not on a phone: a swipe already turns the page there, and the
    system's bounce at the foot would fight it. */
-const PUSH = 60;
+/* 20px: the first real movement of a fresh push. It was 60, and the
+   push that travelled it with nothing moving read as a pause (his
+   note, 16 Sept 2026: "there's a bit of a pause"). Starting at the
+   foot is what makes a push deliberate; the distance only keeps a
+   resting finger from turning the row. */
+const PUSH = 20;
+/* the launch: the row leaves at this share of the distance per frame,
+   and decays onto its column from there (moveOn) */
+const FOOT_GLIDE = 0.12;
 const footPush = { t: 0, dir: 0, n: 0, last: 0, run0: 0, down: 0, tail: false, atEnd: false, sum: 0, moved: false };
 /* the box the wheel would scroll: the nearest one between the pointer
    and the field that scrolls on its Y axis (a column, a study column's
@@ -3106,6 +3114,19 @@ function moveOn(pg, dir) {
   i = Math.max(0, i);
   if (i === colIdx) return;
   readyPage(to, dir < 0);
+  /* ── AND IT LEAVES AT ONCE ───────────────────────────────────────
+     From rest the landing spring eases in: three frames of rising
+     speed before the glide, on top of the push it had waited for,
+     and that read as a pause. The row is launched instead, at
+     FOOT_GLIDE of the distance a frame. A critically damped spring
+     started at ωD decays straight onto its target, and pageTo's own
+     fit (ω = 1.4 v/D, between v/D and 2v/D) keeps that a deceleration
+     from the first frame with no overshoot: 10% of the way in 42ms,
+     90% in 360, against 113 and 413 from rest (the spring, run off
+     the glass, 16 Sept 2026). A row already moving faster keeps its
+     own speed. */
+  const D = restX(i) - cur.x;
+  if (Math.sign(vx) !== Math.sign(D) || Math.abs(vx) < Math.abs(D) * FOOT_GLIDE) vx = D * FOOT_GLIDE;
   pageTo(i);
 }
 function endPush(e, dy0) {
