@@ -3131,6 +3131,134 @@ const landX = (lift) => {
   }
   pageTo(i);
 };
+/* ── THE FOOT OF A COLUMN IS A WAY ON ───────────────────────────────
+   His ask (16 Sept 2026): a column scrolled to its end and stopped,
+   and the only way on was sideways. Now a push past the foot of a
+   column moves the row along, and the next column comes into place at
+   its top under the same pointer, so one downward scroll reads the
+   whole board. A push past the top goes back, and lands the column
+   before at its foot. A column that does not scroll (a hero, a head
+   with nothing under it) is at both ends at once, so a plain mouse
+   wheel walks the board.
+
+   THE SCROLL THAT BRINGS YOU THERE STOPS THERE. A trackpad sends its
+   momentum for a second after the fingers lift, and if that counted,
+   every flick that reached a foot would throw the row. So the
+   vertical stream is cut into pushes the way flowX cuts the sideways
+   one: a pause over 160ms, a turn, or the hand back on over a tail (a
+   delta a quarter bigger than the last, once the tail has begun)
+   starts a push. A push that STARTS at the foot and travels PUSH px
+   past it moves the row, and the rest of it is held, so its own tail
+   cannot scroll the column that arrives. A push that reaches the foot
+   partway is the browser's, and stops at the end as it always did.
+
+   Not on a phone: a swipe already turns the page there, and the
+   system's bounce at the foot would fight it. */
+const PUSH = 60;
+const footPush = { t: 0, dir: 0, n: 0, last: 0, run0: 0, down: 0, tail: false, atEnd: false, sum: 0, moved: false };
+/* the box the wheel would scroll: the nearest one between the pointer
+   and the field that scrolls on its Y axis (a column, a study column's
+   scroller, a list open over a wide hero) */
+const yScroller = (from) => {
+  for (let n = from; n && n.id !== "field"; n = n.parentElement) {
+    if (n.nodeType !== 1) continue;
+    if (n.scrollHeight - n.clientHeight > 1 && /(auto|scroll)/.test(getComputedStyle(n).overflowY)) return n;
+  }
+  return null;
+};
+const atFoot = (sc, dir) => !sc
+  || (dir > 0 ? sc.scrollTop >= sc.scrollHeight - sc.clientHeight - 1 : sc.scrollTop <= 1);
+/* a place in the row, as a page: a study column with its span, a wide
+   hero's pair (one page, as anchorOfTile has it), or one column */
+const pageAt = (d) => {
+  if (d < 0) return null;
+  const r = atDisp(d);
+  if (r.col) return { start: dispOf(r.col), size: spanOf(r.col) };
+  if (r.u == null) return null;
+  const wideAt = (u) => {
+    const c = ((u % COLS) + COLS) % COLS;
+    return (byCol[c] || []).some((t) => t.hero && t.wide);
+  };
+  const same = (k, u) => { const x = atDisp(k); return x.u === u; };
+  if (wideAt(r.u) && (r.u % COLS + COLS) % COLS < COLS - 1 && same(d + 1, r.u + 1)) return { start: d, size: 2 };
+  if (r.u > 0 && wideAt(r.u - 1) && same(d - 1, r.u - 1)) return { start: d - 1, size: 2 };
+  return { start: d, size: 1 };
+};
+/* the page under the pointer: the column the event is inside, or, on
+   the field's bare paper, the place its x falls on */
+const pageUnder = (e) => {
+  const cc = e.target.closest && e.target.closest(".ccol");
+  if (cc && ccols.includes(cc)) return { start: dispOf(cc), size: spanOf(cc) };
+  const fc = e.target.closest && e.target.closest(".fcol");
+  const d = fc && fc.__u != null ? dispU(fc.__u)
+    : Math.floor((e.clientX - field.getBoundingClientRect().left + cur.x) / MOD_X);
+  return pageAt(d);
+};
+/* the page that arrives stands at its top going on, at its foot going
+   back: scrolled there smoothly if it is on the glass already, at once
+   if it is not, and remembered if it is not mounted yet */
+function readyPage(pg, foot) {
+  const fl = field.getBoundingClientRect();
+  for (let k = pg.start; k < pg.start + pg.size; k++) {
+    const r = atDisp(k);
+    const sc = r.col ? r.col.__cin : fcols.get(r.u);
+    if (!sc) { if (r.u != null) colY.set(r.u, foot ? 1e7 : 0); continue; }
+    const to = foot ? Math.max(0, sc.scrollHeight - sc.clientHeight) : 0;
+    if (Math.abs(sc.scrollTop - to) < 2) continue;
+    const b = sc.getBoundingClientRect();
+    /* on the glass by more than a gutter: a column just off the left
+       edge still has its gutter inside the field */
+    if (b.right > fl.left + GAP && b.left < innerWidth - GAP) sc.scrollTo({ top: to, behavior: "smooth" });
+    else { sc.style.scrollBehavior = "auto"; sc.scrollTop = to; sc.style.scrollBehavior = ""; }
+  }
+}
+/* ── UNDER THE SAME POINTER ─────────────────────────────────────────
+   The page that arrives lands in the slot the page being read stood
+   in, so the hand is over it and the same scroll reads on. A page two
+   wide cannot land in the right slot, so it lands in the left one.
+   The part-column past the pair counts as the right slot. */
+function moveOn(pg, dir) {
+  if (!pg) return;
+  const slot = Math.min(VISIBLE - 1, Math.max(0, pg.start - colIdx));
+  const to = pageAt(dir > 0 ? pg.start + pg.size : pg.start - 1);
+  if (!to) return;
+  let i = slot + to.size > VISIBLE ? to.start : to.start - slot;
+  i = Math.max(0, i);
+  if (i === colIdx) return;
+  readyPage(to, dir < 0);
+  pageTo(i);
+}
+function endPush(e, dy0) {
+  if (PHONE || e.ctrlKey || !dy0) return;
+  if (!(e.target.closest && e.target.closest("#field"))) return;
+  const dy = dy0 * (e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? innerHeight : 1);
+  const a = Math.abs(dy), dir = Math.sign(dy), now = performance.now();
+  const P = footPush;
+  const gap = now - P.t; P.t = now;
+  if (gap > 160 || dir !== P.dir) {
+    Object.assign(P, { dir, n: 0, last: 0, run0: 0, down: 0, tail: false, sum: 0, moved: false,
+      atEnd: atFoot(yScroller(e.target), dir) });
+  } else if (P.tail && a > P.last * 1.25 && a > P.last + 4 && a > 6) {
+    /* the hand back on: a new push, from wherever the last one left
+       the column, and what it had already pushed past a foot counts */
+    Object.assign(P, { n: 0, run0: 0, down: 0, tail: false, moved: false,
+      atEnd: atFoot(yScroller(e.target), dir), sum: P.atEnd && !P.moved ? P.sum : 0 });
+  }
+  P.n += 1;
+  /* the tail, read as flowX reads it: deltas under 90% of the push
+     they fell from, four of them and down to 78%, after six events */
+  if (P.n > 1 && a < P.run0 * 0.9) P.down += 1; else { P.down = 0; P.run0 = a; }
+  if (P.n >= 6 && P.down >= 4 && a <= P.run0 * 0.78) P.tail = true;
+  P.last = a;
+  if (P.moved) { e.preventDefault(); return; }
+  if (!P.atEnd || dealing) return;
+  e.preventDefault();
+  if (P.tail) return;
+  P.sum += a;
+  if (P.sum < PUSH) return;
+  P.moved = true;
+  moveOn(pageUnder(e), dir);
+}
 document.addEventListener("wheel", (e) => {
   if (e.target.closest && e.target.closest(".ccol")) return;   /* the column's own */
   if (dealing) { e.preventDefault(); return; }
@@ -3145,7 +3273,7 @@ document.addEventListener("wheel", (e) => {
   if (wheelAxis === "x") {
     e.preventDefault();
     flowX(dx);
-  }
+  } else endPush(e, dy);
   /* and DOWN IS NOT OURS ANY MORE. The column under the pointer is a
      scroller, so the browser routes the wheel to it, keeps its own
      momentum and stops it at its own end — all of which the plane's
@@ -3408,6 +3536,8 @@ function dressRules() {
     if (max <= 1) return null;
     const tops = topsIn(f).sort((a, b) => a - b);
     if (tops.length < 2) return null;
+    /* at the foot the count is the way on: the next push turns the row */
+    if (!PHONE && f.scrollTop >= max - 1) return "end";
     const p = Math.min(1, Math.max(0, f.scrollTop / max));
     const line = f.scrollTop + p * f.clientHeight;
     let crossed = 0;
@@ -3423,6 +3553,7 @@ function dressRules() {
     if (yc.__n === key) return;
     yc.__n = key;
     if (!key) yc.replaceChildren();
+    else if (key === "end") yc.replaceChildren(glyph("\u2192"));
     else yc.replaceChildren(glyph("+"), glyph(key), glyph("\u2193"));
   };
   for (let k = 0; k < kids.length; k++) {
@@ -4449,7 +4580,7 @@ function colNode(kind, caption) {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2) {
       e.preventDefault();
       if (!dealing) flowX(e.deltaX);
-    }
+    } else endPush(e, e.deltaY);   /* and its foot is a way on */
   }, { passive: false });
   return c;
 }
