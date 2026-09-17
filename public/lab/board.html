@@ -742,25 +742,24 @@
      sentence in the statement's grey, and the chip the columns wear */
   .tile.statement.head .way { display: block; margin-top: 18px; }
   /* ── THE RUN'S NAME, ON ITS SIDE ─────────────────────────────────
-     /book's month, moved over (glass.module.css .month, value for
-     value: vertical-rl turned 180 so it reads bottom to top, 700,
-     -0.04em, 0.8). Absolute, so the head measures the same with or
-     without it and the hero's row stays where it is; its top is the
-     row under the head and its size is the board's one size, both
-     written by mount from the deal (spineFit). */
-  .tile.statement.head .spine { position: absolute; left: 0; top: var(--spine-top, 100%);
+     /book's month, value for value (glass.module.css .month:
+     vertical-rl turned 180 so it reads bottom to top, 700, -0.04em,
+     0.8), standing at the head's top left as the head's name. The
+     sentence and the chip stand to its right, past the strip the
+     name takes. The size and the strip are the board's one size,
+     written to the root once at load (spineSize). */
+  .tile.statement.head .spine { position: absolute; left: 0; top: var(--spine-nudge, 0px);
     writing-mode: vertical-rl; transform: rotate(180deg);
     font-size: var(--spine-fs, 96px); font-weight: 700; letter-spacing: -0.04em;
     line-height: 0.8; text-transform: uppercase; white-space: nowrap;
-    user-select: none; pointer-events: none; transition: opacity 0.35s ease; }
-  /* the open shelf's list lays into the head's column, so the name
-     stands down while the list is up and returns when it folds */
-  .tile.statement.head.open .spine { opacity: 0; }
-  /* flat on a phone, as /book lays its month: sideways would run the
-     name down the whole page and push the pictures under the fold */
+    user-select: none; pointer-events: none; }
+  .tile.statement.head .hbody { margin-left: var(--spine-strip, 0px); }
+  /* flat on a phone, over the sentence, as /book lays its month:
+     sideways it would take the narrow column from the words */
   @media (max-width: 760px) {
-    .tile.statement.head .spine { position: static; display: inline-block;
-      writing-mode: horizontal-tb; transform: none; margin-top: 26px; }
+    .tile.statement.head .spine { position: static; width: max-content;
+      writing-mode: horizontal-tb; transform: none; margin: 0 0 14px; }
+    .tile.statement.head .hbody { margin-left: 0; }
   }
   /* the list under an open headline: the tile's own arrival, and the
      rail's rows at the field's measure */
@@ -1753,7 +1752,9 @@ FILTERS.forEach(([label, tag, desc]) => {
      here or not. It counts what it opens. */
   const shelf = Object.keys(GROUPS).filter((k) => GROUPS[k].tags.includes(tag)).length;
   items.push({ kind: "head", run: tag, first: true, tag, label,
-    html: label + ". <span class=\"q\">" + desc + "</span>",
+    /* the name is the head's spine (headHTML), so the words are the
+       sentence alone, in its grey */
+    html: "<span class=\"q\">" + desc + "</span>",
     way: shelf + " studies" });
   /* the deal's own order: studies by seat, each cover before its
      pictures, pictures in the data file's order. The order file's
@@ -1798,18 +1799,19 @@ const quoteH = (q) => {
 /* a line's chip carries a drawn sign, two bars, so the plus can turn
    into the minus (the head's .open, in the stylesheet); Staples' chip
    is a door to its own column and keeps its arrow in the text */
-const headHTML = (t, open) => t.html +
+const headHTML = (t, open) =>
+  /* the run's name on its side at the head's top left (the
+     stylesheet's .spine). It is the head's only name now, so it is
+     read, and it comes first. */
+  (t.label ? "<div class=\"spine\">" + t.label + "</div>" : "")
+  + "<div class=\"hbody\">" + t.html +
   "<span class=\"way\"><button type=\"button\" class=\"lchip\">" + t.way
   + (t.tag === "staples" ? "" : "<i class=\"pm\"><b class=\"h\"></b><b class=\"v\"></b></i>")
-  + "</button></span>"
-  /* the run's name on its side, under the head (the stylesheet's
-     .spine); decorative, since the head has just said it */
-  + (t.label ? "<div class=\"spine\" aria-hidden=\"true\">" + t.label + "</div>" : "");
+  + "</button></span></div>";
 const headH = (t) => {
   const m = document.createElement("div");
   m.className = "tile statement head";
   m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
-  m.style.setProperty("--spine-fs", SPINE_FS + "px");
   m.innerHTML = headHTML(t);
   document.body.appendChild(m);
   const h = m.getBoundingClientRect().height;
@@ -1818,37 +1820,76 @@ const headH = (t) => {
 };
 
 /* ── THE RUN'S NAME, ON ITS SIDE ─────────────────────────────────────
-   /book's month under its lede, moved over: a run's name stands under
-   its head, sideways, in the room the hero has — from the row under
-   the head to the hero's foot — so it is exactly as tall as the
-   picture beside it. ONE SIZE across the runs (his call, 16 Sept
-   2026): the size the longest name needs to fit that room, measured
-   rather than assumed, so INTERIORS reaches the foot and APPS stops
-   short of it. A phone lays the name flat under the head, as /book
-   lays its month, at the size the longest name needs to fit the
-   column; there it is in the head's flow, so the probe above sizes
-   the head with it. */
-let SPINE_FS = 0;
-const spineLen = (label) => {
+   /book's month, moved onto the board as the head's own name. His call
+   (16 Sept 2026): the big type at the head's top left, the small name
+   gone, the sentence standing to its right. It reads bottom to top,
+   and the sentence and the chip take the column beside it.
+
+   ONE SIZE across the runs: the size at which the longest name is as
+   tall as a portrait hero, which stands from the same top line in the
+   next column, so CAMPAIGNS and its billboard end level and every
+   shorter name ends above. Capped so the name's strip never takes
+   more than SPINE_MAX of the column: a tall narrow window would hand
+   the name its whole height and leave the sentence a word a line.
+   The material difference from /book, which keys its month to the
+   column's WIDTH: a nine-letter name has to fit a screen's height,
+   and a three-letter month never meets it.
+
+   A phone lays the name flat over the sentence, as /book lays its
+   month, at the size the longest name needs to fit the column. */
+let SPINE_FS = 0, SPINE_STRIP = 0, SPINE_AT = {}, SPINE_NUDGE = {};
+const SPINE_MAX = 0.3;
+function spineSize(heads) {
+  const labels = [...new Set(heads.filter((t) => t.kind === "head" && t.label).map((t) => t.label))];
+  if (!labels.length) return;
+  /* every name at 100px in one probe: up the column on a desk, across
+     it on a phone, where it lies flat; and the head's type off the
+     same probe, for the cap line below */
   const m = document.createElement("div");
   m.className = "tile statement head";
   m.style.cssText = "position:absolute;left:-9999px;top:0;width:" + COL + "px";
-  m.innerHTML = "<div class=\"spine\" style=\"font-size:100px\">" + label + "</div>";
+  m.innerHTML = labels.map((l) => "<div class=\"spine\" style=\"font-size:100px;width:max-content\">" + l + "</div>").join("");
   document.body.appendChild(m);
-  const r = m.querySelector(".spine").getBoundingClientRect();
+  const at100 = {};
+  [...m.children].forEach((el, k) => { const r = el.getBoundingClientRect(); at100[labels[k]] = PHONE ? r.width : r.height; });
+  const cs = getComputedStyle(m), ns = getComputedStyle(m.firstChild);
+  const type = { fam: cs.fontFamily, fs: parseFloat(cs.fontSize), lh: parseFloat(cs.lineHeight),
+    w: cs.fontWeight, nw: ns.fontWeight, track: parseFloat(ns.letterSpacing) / 100 };
   m.remove();
-  return PHONE ? r.width : r.height;
-};
-const spineFit = (heads) => {
-  let fs = Infinity;
-  for (const t of heads) {
-    if (t.kind !== "head" || !t.label) continue;
-    const room = PHONE ? COL : t.spineRoom;
-    if (!room) continue;
-    fs = Math.min(fs, 100 * room / spineLen(t.label));
+  const longest = Math.max(...Object.values(at100));
+  /* the gutter between the name and its sentence: three quarters of
+     the sentence's own size, so the pair keeps its proportion as the
+     statement's type steps down with the window */
+  const gap = PHONE ? 0 : 0.75 * type.fs;
+  let fs = 100 * (PHONE ? COL : HERO_H) / longest;
+  if (!PHONE) fs = Math.min(fs, (SPINE_MAX * COL - gap) / 0.8);
+  SPINE_FS = Math.floor(fs);
+  SPINE_STRIP = PHONE ? 0 : Math.round(SPINE_FS * 0.8 + gap);
+  /* ── THE NAME'S TOP ON THE SENTENCE'S CAP LINE ───────────────────
+     A box's top is not its ink's. The sentence's capitals start below
+     its line box by the half-leading and the face's ascent over its
+     cap height; a name's last letter ends below ITS box's top by that
+     letter's side bearing, less the tracking laid after it. Both are
+     read off the face with a canvas, which agreed with the rendered
+     page within a pixel (DIGITAL's L stood 4px high of the box and
+     BRANDING's G 4px low, 16 Sept 2026). */
+  const ink = document.createElement("canvas").getContext("2d");
+  ink.font = type.w + " " + type.fs + "px " + type.fam;
+  const M = ink.measureText("M");
+  const capTop = (type.lh - (M.fontBoundingBoxAscent + M.fontBoundingBoxDescent)) / 2
+    + M.fontBoundingBoxAscent - M.actualBoundingBoxAscent;
+  ink.font = type.nw + " " + SPINE_FS + "px " + type.fam;
+  for (const l of labels) {
+    const g = ink.measureText(l.slice(-1).toUpperCase());
+    const nudge = capTop - ((g.width - g.actualBoundingBoxRight) + type.track * SPINE_FS);
+    SPINE_NUDGE[l] = PHONE || !Number.isFinite(nudge) ? 0 : Math.round(nudge * 10) / 10;
+    SPINE_AT[l] = SPINE_NUDGE[l] + at100[l] * SPINE_FS / 100;
   }
-  return Number.isFinite(fs) ? Math.floor(fs) : 0;
-};
+  /* once, at load, like every other measure the deal is cut to */
+  const root = document.documentElement.style;
+  root.setProperty("--spine-fs", SPINE_FS + "px");
+  root.setProperty("--spine-strip", SPINE_STRIP + "px");
+}
 
 /* ── ONE FIELD, THREE FACES ─────────────────────────────────────────
    The homepage has one living field: it rests inside the statement as
@@ -2280,6 +2321,9 @@ function deal(list, opts) {
   const colY = new Array(cols).fill(top0);
   /* where each column's head ends, for the hero that hangs under it */
   const headEnd = new Array(cols).fill(null);
+  /* and where the name on its side ends, which stands from the head's
+     top down the column's left edge */
+  const nameEnd = new Array(cols).fill(null);
   /* where each column's work actually ends, so its scroller stops
      there rather than at the tallest column's bottom */
   const colH = new Array(cols).fill(top0);
@@ -2336,6 +2380,12 @@ function deal(list, opts) {
       let bw = W / H > ratio ? H * ratio : W;
       let bh = W / H > ratio ? H : W / ratio;
       if (bw < W * 0.6) { bw = W * 0.6; bh = Math.min(H, bw / ratio); }
+      /* and clear of the run's name: a picture that would reach under
+         the name's strip while the name still runs beside it is fitted
+         to the width right of the strip, still in its corner */
+      if (nameEnd[c] != null && W - bw < SPINE_STRIP && top + (H - bh) < nameEnd[c]) {
+        bw = W - SPINE_STRIP; bh = bw / ratio;
+      }
       bw = Math.round(bw); bh = Math.round(bh);
       ox = W - bw;
       y = top + (H - bh);
@@ -2345,15 +2395,12 @@ function deal(list, opts) {
       colY[c] = bottom + airOf(); colY[c + 1] = colY[c];
       if (bottom > colH[c + 1]) colH[c + 1] = bottom;
     } else if (colY) { y = colY[c]; colY[c] += h + airOf(); }
-    let spine = null;
     if (it.kind === "head") {
       headEnd[c] = y + h;
-      /* the name's room, for the spine: the row under the head to the
-         hero's foot, which is the box a wide hero fills */
-      spine = { spineTop: h + airMin, spineRoom: heroRoom(y + h + airMin) };
+      if (!PHONE && it.label && SPINE_AT[it.label]) nameEnd[c] = y + SPINE_AT[it.label];
     }
     if (y + h > colH[c]) colH[c] = y + h;
-    out.push({ ...it, w, h, x: c * MOD_X, y, col: c, ...(ox ? { ox } : {}), ...(spine || {}),
+    out.push({ ...it, w, h, x: c * MOD_X, y, col: c, ...(ox ? { ox } : {}),
       noCap: !!opts.noCaptions });
     /* where each study's cover lives, so a study can be walked to */
     if (it.c != null && it.g && cc[it.g] == null) cc[it.g] = c;
@@ -2378,17 +2425,14 @@ function deal(list, opts) {
     if (need > colTail[t.col]) colTail[t.col] = need;
   }
   for (const t of out) if (t.hero) colTail[t.col] = 0;
-  /* the one size the spines share: what the longest name needs */
-  const spineFs = PHONE ? SPINE_FS : spineFit(out);
   return { tiles: out, ROWS: rows, COLS: cols, PW: cols * MOD_X,
-    PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun, spineFs };
+    PH: Math.max(...colH), colH, colTail, rowY: ys, coverCol: cc, colRun };
 }
 let colRun = [], colTail = [], famRun = null;
 function adopt(L) {
   tiles = L.tiles; ROWS = L.ROWS; COLS = L.COLS; PW = L.PW; PH = L.PH;
   rowY = L.rowY; coverCol = L.coverCol; colH = L.colH || []; colRun = L.colRun || [];
   colTail = L.colTail || [];
-  if (L.spineFs) SPINE_FS = L.spineFs;
   byCol = Array.from({ length: COLS }, () => []);
   for (const t of tiles) byCol[t.col].push(t);
 }
@@ -2404,9 +2448,18 @@ function adopt(L) {
    (there is no pair to fit rows across), with more air between the
    pictures than a feed gives them: 48 to 120px, a little under the
    board's own 96 to 260 for tiles a little under the board's width. */
-/* a phone's name lies flat in the head's flow, so its size is the
-   column's to give before any head is measured */
-if (PHONE) SPINE_FS = spineFit(items);
+/* the names' one size, before any head is measured: the sentence
+   wraps in the room the name leaves it */
+spineSize(items);
+/* a cold load can measure before the face arrives (131px against 129
+   on a Mac, 16 Sept 2026): measure again once it has and redress the
+   heads standing now. The deal keeps the numbers it was cut to, which
+   is the contract every other load-time measure here keeps too. */
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+  spineSize(items);
+  for (const el of document.querySelectorAll("#plane .tile.statement.head"))
+    if (el.__t && el.__t.label) el.style.setProperty("--spine-nudge", (SPINE_NUDGE[el.__t.label] || 0) + "px");
+});
 const BOARD = deal(items, PHONE
   ? { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" }, rows: 7, stack: true, air: [48, 120] }
   : { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" } });
@@ -3231,7 +3284,10 @@ function mountLines(head, u, f) {
   const box = document.createElement("div");
   box.className = "tile lines";
   const top = Math.round(head.y + head.h + 36);
-  box.style.cssText = "left:0;top:" + top + "px;width:" + COL + "px";
+  /* beside the name, which runs down the column from the head's top:
+     the list takes the measure its sentence has */
+  const inset = head.label ? SPINE_STRIP : 0;
+  box.style.cssText = "left:" + inset + "px;top:" + top + "px;width:" + (COL - inset) + "px";
   /* a wide hero's column is a page and does not scroll, so the list
      opened there scrolls inside its own box, down to the page's foot */
   if (f.classList.contains("wide")) box.style.height = Math.max(200, Math.round(f.getBoundingClientRect().height - top)) + "px";
@@ -3380,8 +3436,7 @@ function mount(t, gx, gy, u, f) {
        not the field's */
     el.classList.add("statement", "head");
     el.innerHTML = headHTML(t, lineOpen === t.tag);
-    if (t.spineTop != null) el.style.setProperty("--spine-top", t.spineTop + "px");
-    if (SPINE_FS) el.style.setProperty("--spine-fs", SPINE_FS + "px");
+    if (t.label) el.style.setProperty("--spine-nudge", (SPINE_NUDGE[t.label] || 0) + "px");
     if (lineOpen === t.tag) el.classList.add("open");
     const chip = el.querySelector(".lchip");
     if (chip) chip.addEventListener("click", (e) => {
