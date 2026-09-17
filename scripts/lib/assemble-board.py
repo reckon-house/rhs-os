@@ -918,27 +918,26 @@ head = r'''<!doctype html>
     transition: opacity 0.7s ease var(--lag, 0s),
       transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
   #rdrawer .bin.on { opacity: 1; transform: none; }
-  /* ── THE RAIL AS COVERLINES ───────────────────────────────────────
+  /* ── THE RAIL IS THE INTRO ─────────────────────────────────────────
      His concept (Claude Design, Rail Concepts board 02; handoff in
-     columns/handoff/rail-coverlines, 16 Sept 2026), on a desktop:
-     /Info and /Connect as two small links, the shelves as the lines
-     of a magazine cover, one reel under them and a caption. The
-     handoff's values throughout, with two of the house's own: the
-     resting lines wear the board's grey (0.42 ink, #949494 on white,
-     the value the handoff names for about 3:1 against its mock's
-     #d4d4d4 at 1.5:1), and so does the caption's note.
+     columns/handoff/rail-coverlines) put the shelves in the rail as the
+     lines of a magazine cover, and beside the intro that said the same
+     list twice. His next move (16 Sept 2026): the intro takes the
+     rail's place, its underlined words are the index, and the reel
+     under it plays whichever word the hand rests on. On a desktop
+     only: a phone's rail is inside the sheet, so its intro stays in
+     the field.
 
-     THE RAIL NOW TAKES FROM THE FIELD. board-shell.css says the rail
-     pays for the wider margins, at 180; at 256 it is the field that
-     pays, 76px shared across the two columns and the peek, and every
-     measure the deal cuts to is read after this has applied. */
+     The sentence wears the statement's own clothes (the shell's
+     .statement: 600, -0.05em, 1.2, and its terms' rule) at the rail's
+     size, which fitCover writes: 22px, down to 18 on a short window,
+     after which the reel steps aside. The rail is 256px, the handoff's;
+     the field pays the 76px that board-shell.css's 180 gave it. */
   @media (min-width: 761px) {
     :root { --ix-note-w: 256px; }
-    /* the lines' size is written by fitCover, which measures the room
-       the rail has left: the open columns' chips stand above it and
-       the way back below, so no fixed rule of the window can know */
     #rdrawer .cvnav { display: flex; flex-direction: column; align-items: stretch; }
-    /* the open columns' chips at the rail's foot, over the way back */
+    /* the open columns' chips at the rail's foot, over the way back, so
+       nothing above the sentence moves when a column opens */
     #pathwrap { margin-top: auto; }
     #pathwrap + #homewrap { margin-top: 0; }
     .cvdoors { display: flex; gap: 18px; padding-bottom: 30px; }
@@ -951,28 +950,16 @@ head = r'''<!doctype html>
        cleanup would take this with it */
     .cvdoor.lit { text-decoration-color: currentColor; }
     @media (hover: hover) { .cvdoor:hover { color: #555; } }
-    .cvstack { display: flex; flex-direction: column; align-items: flex-start; }
-    .cvrow { display: flex; align-items: flex-start; gap: 4px;
-      background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
-      font: inherit; font-size: var(--cv-fs, 46px); font-weight: 700;
-      letter-spacing: -0.045em; line-height: 1.02; text-align: left;
-      color: rgba(0, 0, 0, 0.42);
-      transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
-    .cvrow.front { color: var(--ink); }
-    .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 6px; }
-    .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
-      padding-top: 7px; font-variant-numeric: tabular-nums; }
+    #rdrawer .cvlede.statement { position: relative; max-width: none;
+      font-size: var(--lede-fs, 22px); color: var(--ink); }
+    #rdrawer .cvlede .q { color: rgba(0, 0, 0, 0.42); }
     .cvreel { width: 100%; aspect-ratio: 256 / 170; margin-top: 30px; border-radius: var(--r); }
-    .cvcap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
-      margin-top: 10px; font-size: 12px; line-height: 1.45; }
-    .cvnote { max-width: 26ch; }
-    .cvnote b { font-weight: 600; }
-    .cvnote .g { color: rgba(0, 0, 0, 0.42); }
-    .cvopen { background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
-      font: inherit; font-size: 12px; font-weight: 500; color: var(--ink); white-space: nowrap;
-      text-decoration: underline; text-underline-offset: 3px; }
-    .cvdoor:focus-visible, .cvopen:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
-    /* too little room for the reel: the lines and the links keep the rail */
+    /* the study on screen, in a tile caption's own two registers */
+    .cvcap { margin-top: 10px; font-size: 12px; line-height: 1.45; min-height: 2.9em; }
+    .cvcap b { font-weight: 600; }
+    .cvcap .g { color: rgba(0, 0, 0, 0.42); }
+    .cvdoor:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
+    /* too little room for the reel: the sentence and the links keep the rail */
     #rdrawer .cvnav.tight .cvreel, #rdrawer .cvnav.tight .cvcap { display: none; }
   }
   /* the list under an open headline: the tile's own arrival, and the
@@ -2320,7 +2307,8 @@ function deal(list, opts) {
 
   /* size pass: every item's box, before anything is seated */
   let prevShare = -1;
-  const sized = [lead];
+  /* no lead on a desktop: the sentence stands in the rail there */
+  const sized = lead ? [lead] : [];
   for (const it of list) {
     let w = COL, h;
     if (it.kind === "quote") h = quoteH(it);
@@ -2774,7 +2762,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
 });
 const BOARD = deal(items, PHONE
   ? { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" }, rows: 7, stack: true, air: [48, 120] }
-  : { lead: { kind: "statement", w: COL, h: STATEMENT_H, run: "open" } });
+  : {});
 adopt(BOARD);
 
 
@@ -4317,11 +4305,11 @@ plane.addEventListener("pointerout", (e) => {
 const ORDER = (window.BOARD_ITEMS || []).filter((i) => i.c != null)
   .sort((a, b) => a.c - b.c).map((i) => i.g)
   .filter((sl, i, arr) => GROUPS[sl] && arr.indexOf(sl) === i);
+/* the house's lines, not the rail's rows: on a desktop the rail is
+   the sentence and holds no row a shelf could be read off */
 const shelfName = (tag) => {
-  const r = (typeof rrows !== "undefined" ? rrows : [])
-    .find((x) => x.dataset && x.dataset.tag === tag);
-  const ink = r && r.querySelector(".rink");
-  return ink ? ink.textContent.trim() : tag;
+  const l = FILTERS.find((x) => x[1] === tag);
+  return l ? l[0] : tag;
 };
 function predictNext(currentSlug) {
   const askedWords = trailLog.asked.join(" ").toLowerCase()
@@ -4583,16 +4571,16 @@ const studiesFor = (text) => {
    in a sentence about something else. */
 const shelfByText = (text) => {
   const q = text.toLowerCase().trim();
-  const names = (x) => {
-    const ink = x.querySelector(".rink").textContent.trim().toLowerCase();
+  const names = ([label, tag]) => {
+    const ink = label.toLowerCase();
     /* the lines are one-word plurals, and a question says "campaign" */
-    return [ink, ink.split("/")[0], x.dataset.tag, ink.replace(/s$/, "")];
+    return [ink, ink.split("/")[0], tag, ink.replace(/s$/, "")];
   };
   const has = (name) => name && new RegExp("(^|[^a-z0-9])" + escRe(name) + "([^a-z0-9]|$)").test(q);
-  const r = rrows.find((x) => x.dataset && x.dataset.tag && names(x).some((nm) => nm === q));
-  if (r) return r.dataset.tag;
-  const inside = rrows.find((x) => x.dataset && x.dataset.tag && names(x).some(has));
-  return inside ? inside.dataset.tag : null;
+  const l = FILTERS.find((x) => names(x).some((nm) => nm === q));
+  if (l) return l[1];
+  const inside = FILTERS.find((x) => names(x).some(has));
+  return inside ? inside[1] : null;
 };
 
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -6091,7 +6079,6 @@ function markFamily(at) {
      stands in for it, since one word twice is a stutter. */
   const run = runAt(at != null ? at : colIdx);
   famRun = run;
-  if (window.__coverRun) window.__coverRun(run);
   const line = run && run !== "open" && !shelves.some((c) => c.__mode === run) ? run : null;
   document.querySelectorAll(".fam").forEach((f) => {
     f.textContent = "";
@@ -6552,36 +6539,37 @@ if (PHONE) FILTERS.forEach(([label, tag, desc]) => {
   r.dataset.tag = tag;
 });
 
-/* ── THE RAIL AS COVERLINES ─────────────────────────────────────────
-   His concept (Claude Design, Rail Concepts board 02; handoff in
-   columns/handoff/rail-coverlines, 16 Sept 2026): on a desktop the
-   chips give way to the lines of a magazine cover, one big word a
-   shelf, and one reel under the stack that plays the line in front.
-   A phone keeps the sheet of chips above; the concept has no phone
-   design yet.
+/* ── THE RAIL IS THE INTRO ─────────────────────────────────────────
+   On a desktop the rail carries the house's sentence, its underlined
+   words the index, and one reel under it (his call, 16 Sept 2026: the
+   Coverlines shelves said the intro's list a second time). A phone
+   keeps the chips in its sheet and the sentence in the field.
 
-   The stack never moves or reflows; only colour says which line is
-   in front. A line comes to the front when the hand rests on it for
-   120ms (a sweep down the stack must not burn every reel it crosses),
-   when the keyboard focuses it, when its shelf opens from anywhere,
-   or when the row brings its run under the glass. A press does
-   exactly what the chip's press did. Info and Connect open their
-   rooms, which is where the drawers' copy went when the chips became
-   doors. The counts are read off the heads' own chips, so the rail
-   and the head can never disagree. The reel is the house's (szLayer
-   and the sz-* beats): inside a line it cuts shutter, slat, curtain,
-   cut, fade, a frame every 950ms; a change of line always burns, from
-   the frame on screen to the new line's first, and the clock starts
-   again after it. Reduced motion swaps the frames and nothing else. */
+   The words are the same doors they were in the field: a word that
+   names a shelf opens it, the rest ask their own words. Resting on a
+   word for 120ms burns the reel over to its pictures: a shelf word
+   plays that shelf's covers, any other word the covers of the studies
+   its question finds. With no word under the hand the reel plays the
+   opening covers again, after a beat, so crossing from one word to
+   the next never flashes the rest state between them. The caption
+   names the study in the frame on screen, in a tile caption's words.
+   The reel is the house's (szLayer and the sz-* beats): shutter,
+   slat, curtain, cut, fade, a frame every 950ms; a change of word
+   burns. Reduced motion swaps the frames and nothing else.
+
+   The live question stays at the end of the sentence. It rides the
+   rail's slot (placeAsk), which never scrolls away, so it never parks
+   in the bar on a desktop. */
 if (!PHONE) {
   const BEATS = ["shutter", "slat", "curtain", "cut", "fade"];
   /* the handoff's lengths. The house's slat is six strips on a stagger
      of 8% of its length, so 520 puts each strip at 364ms and 42ms
      behind the last: the handoff's 0.36s and 40ms */
   const BEAT_MS = { shutter: 420, slat: 520, curtain: 460, cut: 160, fade: 360 };
-  const HOLD = 950, BURN_MS = 1100, SWITCH_HOLD = 1400, DWELL = 120;
+  const HOLD = 950, BURN_MS = 1100, SWITCH_HOLD = 1400, DWELL = 120, BACK = 700;
   const mk = (t, cls, text) => { const e = document.createElement(t); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  /* on a first load every part comes down the rail with the build */
+  /* on a first load the links, the reel and the caption come down the
+     rail with the build; the sentence rises a line at a time (__lean) */
   const boot = (e) => { if (booting) e.classList.add("bin"); return e; };
   /* not "cover": that is the cover line's class, and body.asked
      .cover hides it once a question is asked */
@@ -6602,39 +6590,52 @@ if (!PHONE) {
     b.classList.toggle("lit", ccols.some((c) => c.__house === b.dataset.house)));
   new MutationObserver(doorState).observe(colsEl, { childList: true });
 
-  const stack = mk("div", "cvstack");
-  cvNav.appendChild(stack);
-  const countOf = (tag) => {
-    const h = items.find((t) => t.kind === "head" && t.tag === tag);
-    const m = h && String(h.way).match(/\d+/);
-    return m ? m[0] : "";
-  };
-  const rows = FILTERS.map(([label, tag, desc]) => {
-    const b = boot(mk("button", "cvrow"));
-    b.type = "button"; b.dataset.tag = tag;
-    b.appendChild(mk("span", "rink", label));
-    const n = countOf(tag);
-    if (n) b.appendChild(mk("span", "cvn", n));
-    stack.appendChild(b);
-    /* one of the rail's rows, for everything that reads them: the
-       shelf's name, a question naming a shelf, the picked mark */
-    rrows.push(b);
-    return { b, label, tag, desc, frames: framesFor(tag) };
+  const lede = mk("div", "cvlede statement");
+  lede.innerHTML = STATEMENT_HTML;
+  /* hidden from the first paint on a first load, or the whole sentence
+     shows for a frame before the build takes it away to raise it */
+  if (booting) lede.classList.add("building");
+  cvNav.appendChild(lede);
+  /* the words were never reachable by keyboard in the field; here they
+     are the index, so each one is a button a key can press */
+  lede.querySelectorAll(".term[data-ask]").forEach((u) => { u.tabIndex = 0; u.setAttribute("role", "button"); });
+  lede.addEventListener("keydown", (e) => {
+    const u = e.target.closest && e.target.closest(".term[data-ask]");
+    if (u && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); u.click(); }
   });
 
   const box = boot(mk("div", "cvreel sz-stage"));
   box.setAttribute("aria-hidden", "true");
   cvNav.appendChild(box);
   const cap = boot(mk("div", "cvcap"));
-  const note = mk("div", "cvnote");
-  const open = mk("button", "cvopen", "Open");
-  open.type = "button";
-  cap.appendChild(note); cap.appendChild(open);
+  cap.setAttribute("aria-live", "off");
   cvNav.appendChild(cap);
+
+  /* ── THE PICTURES A WORD PLAYS ─────────────────────────────────── */
+  const coverOf = (folder) => (window.BOARD_ITEMS || []).find((i) => i.g === folder && i.c != null);
+  const shelfItems = (tag) => {
+    if (tag === "staples")
+      return (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration").slice(0, 8).map((i) => ({ t: i.t, g: null }));
+    return (window.BOARD_ITEMS || [])
+      .filter((i) => i.c != null && GROUPS[i.g] && GROUPS[i.g].tags.includes(tag))
+      .sort((a, b) => a.c - b.c).slice(0, 8).map((i) => ({ t: i.t, g: i.g }));
+  };
+  const restItems = items.filter((t) => t.run === "open" && t.kind === "img" && t.t)
+    .slice(0, 8).map((t) => ({ t: t.t, g: t.g }));
+  const byWord = new Map();
+  const wordItems = (ask) => {
+    if (byWord.has(ask)) return byWord.get(ask);
+    const tag = shelfByText(ask);
+    let list = tag ? shelfItems(tag)
+      : studiesFor(ask).slice(0, 8).map((h) => coverOf(h.folder)).filter(Boolean).map((i) => ({ t: i.t, g: i.g }));
+    if (!list.length) list = restItems;
+    byWord.set(ask, list);
+    return list;
+  };
 
   /* ── THE REEL ──────────────────────────────────────────────────── */
   const reel = (() => {
-    const R = { frames: [], f: 0, t: 0, timer: null, layers: [] };
+    const R = { list: [], frames: [], f: 0, t: 0, timer: null, layers: [] };
     /* a 256px box: the rung that fits it, not the 128px stamp's */
     const fit = (im, src) => {
       im.src = src;
@@ -6645,6 +6646,14 @@ if (!PHONE) {
     base.alt = ""; base.decoding = "async";
     box.appendChild(base);
     R.warm = (src) => { if (src) fit(new Image(), src); };
+    /* the caption: the study in the frame on screen */
+    const name = (k) => {
+      const g = R.list[k] && R.list[k].g && GROUPS[R.list[k].g];
+      cap.textContent = "";
+      if (!g) return;
+      cap.appendChild(mk("b", null, g.t));
+      if (g.s) { cap.appendChild(document.createTextNode(" ")); cap.appendChild(mk("span", "g", g.s)); }
+    };
     const lay = (beat, dur) => {
       const L = szLayer(beat, R.frames, dur);
       L.querySelectorAll("img").forEach((im) => { if (im.srcset) im.sizes = "256px"; });
@@ -6670,104 +6679,75 @@ if (!PHONE) {
         R.t += 1;
         lay({ fx, img: R.f }, BEAT_MS[fx]);
       }
+      name(R.f);
       R.timer = setTimeout(step, HOLD);
     };
-    R.show = (frames, first) => {
+    R.show = (list, first) => {
       clearTimeout(R.timer);
-      R.frames = frames; R.f = 0;
-      frames.slice(0, 2).forEach(R.warm);
+      R.list = list; R.frames = list.map((x) => x.t); R.f = 0;
+      R.frames.slice(0, 2).forEach(R.warm);
       if (first || REDUCE()) {
-        fit(base, frames[0]);
+        fit(base, R.frames[0]);
         R.layers.forEach((x) => x.remove()); R.layers = [];
       } else lay({ fx: "burn", img: 0 }, BURN_MS);
+      name(0);
       R.timer = setTimeout(step, first ? HOLD : SWITCH_HOLD);
     };
     return R;
   })();
 
-  /* ── WHICH LINE IS IN FRONT ──────────────────────────────────────── */
-  let active = null, dwellT = 0, over = false, runT = 0;
-  const activate = (tag, first) => {
-    const row = rows.find((r) => r.tag === tag);
-    if (!row || tag === active) return;
-    active = tag;
-    rows.forEach((r) => r.b.classList.toggle("front", r.tag === tag));
-    note.textContent = "";
-    note.appendChild(mk("b", null, row.label + "."));
-    note.appendChild(document.createTextNode(" "));
-    note.appendChild(mk("span", "g", row.desc));
-    reel.show(row.frames, first);
+  /* ── WHICH WORD THE REEL PLAYS ───────────────────────────────────── */
+  let playing = null, dwellT = 0, backT = 0;
+  const play = (key, list, first) => {
+    if (key === playing) return;
+    playing = key;
+    reel.show(list, first);
   };
-  stack.addEventListener("pointerenter", () => { over = true; });
-  stack.addEventListener("pointerleave", () => { over = false; clearTimeout(dwellT); });
-  rows.forEach((r) => {
-    r.b.addEventListener("pointerenter", (e) => {
-      if (e.pointerType !== "mouse") return;
-      reel.warm(r.frames[0]);
-      clearTimeout(dwellT);
-      dwellT = setTimeout(() => activate(r.tag), DWELL);
-    });
-    r.b.addEventListener("focus", () => activate(r.tag));
-    /* the chip's press, word for word */
-    r.b.addEventListener("click", () => { activate(r.tag); setMode(MODE === r.tag ? null : r.tag); });
-    /* a shelf opened from anywhere brings its line to the front, once,
-       as it opens: the picked mark changing, not merely standing */
-    let was = false;
-    new MutationObserver(() => {
-      const now = r.b.classList.contains("picked");
-      if (now && !was) activate(r.tag);
-      was = now;
-    }).observe(r.b, { attributes: true, attributeFilter: ["class"] });
+  const toRest = () => { clearTimeout(backT); backT = setTimeout(() => play("rest", restItems), BACK); };
+  lede.addEventListener("pointerover", (e) => {
+    const u = e.target.closest && e.target.closest(".term[data-ask]");
+    if (!u || e.pointerType !== "mouse") return;
+    clearTimeout(backT); clearTimeout(dwellT);
+    reel.warm((wordItems(u.dataset.ask)[0] || {}).t);
+    dwellT = setTimeout(() => play(u.dataset.ask, wordItems(u.dataset.ask)), DWELL);
   });
-  /* Open goes to the line and opens it, and never folds it: a line
-     already open is travelled to, and Staples' column is revealed */
-  open.addEventListener("click", () => {
-    const tag = active;
-    if (!tag) return;
-    if (tag === "staples") {
-      const had = ccols.find((c) => c.__mode === "staples");
-      if (had) reveal(had); else setMode("staples");
-      return;
-    }
-    const head = tiles.find((t) => t.kind === "head" && t.tag === tag);
-    if (lineOpen !== tag) setMode(tag); else if (head) pageTo(dispU(head.col));
+  lede.addEventListener("pointerout", (e) => {
+    const u = e.target.closest && e.target.closest(".term[data-ask]");
+    if (!u || (e.relatedTarget && u.contains(e.relatedTarget))) return;
+    clearTimeout(dwellT);
+    toRest();
   });
-  /* the run under the glass, from markFamily: once the row has settled
-     on it, and never under a hand resting on the stack */
-  window.__coverRun = (run) => {
-    clearTimeout(runT);
-    if (!run || !rows.some((r) => r.tag === run)) return;
-    runT = setTimeout(() => { if (!over) activate(run); }, 260);
-  };
-  activate(FILTERS[0][1], true);
-  /* ── THE STACK FITS THE ROOM IT HAS ───────────────────────────────
-     Between the chips of the open columns above and the way back at
-     the foot. The lines keep the handoff's 46px while the links, six
-     lines, the reel (30 + 170) and a three-line caption (10 + 52) fit;
-     then they come down to 30; under that the reel and the caption
-     go and the lines take the room back. Measured again whenever a
-     column opens or closes, since each adds or takes a chip. */
+  lede.addEventListener("focusin", (e) => {
+    const u = e.target.closest && e.target.closest(".term[data-ask]");
+    if (!u) return;
+    clearTimeout(backT);
+    play(u.dataset.ask, wordItems(u.dataset.ask));
+  });
+  lede.addEventListener("focusout", toRest);
+  play("rest", restItems, true);
+
+  /* ── THE RAIL FITS THE ROOM IT HAS ────────────────────────────────
+     Between the links at the top and the open columns' chips and the
+     way back at the foot. Measured, not modelled: the rail spaces its
+     parts with its own gap. The way back stands at the rail's foot
+     while everything fits (margin-top: auto) and is pushed past it by
+     whatever does not. The sentence keeps 22px while the reel fits
+     under it, comes down to 18, and then the reel and the caption
+     step aside and the sentence takes 22 again. The question rides
+     the sentence, so it is placed again after. */
   const fitCover = () => {
     const rail = document.getElementById("railwrap"), foot = document.getElementById("homewrap");
     if (!rail || !foot) return;
-    /* measured, not modelled: the rail spaces its parts with its own
-       gap, and the chips' list brings another. The way back stands at
-       the rail's foot while everything fits (margin-top: auto) and is
-       pushed past it by exactly what does not; six lines give 6.12px
-       of height for every pixel of type. */
     const over = (fs) => {
-      cvNav.style.setProperty("--cv-fs", fs + "px");
+      cvNav.style.setProperty("--lede-fs", fs + "px");
       return foot.getBoundingClientRect().bottom - rail.getBoundingClientRect().bottom;
     };
+    const settle = () => { if (window.placeAsk) placeAsk(); };
     cvNav.classList.remove("tight");
-    let o = over(46);
-    if (o <= 0.5) return;
-    /* down to 34px the lines give way; past that the reel does, and
-       the lines stand at full size again */
-    if (46 - o / 6.12 >= 34) { over(Math.floor(46 - o / 6.12)); return; }
+    for (let fs = 22; fs >= 18; fs -= 1) if (over(fs) <= 0.5) return settle();
     cvNav.classList.add("tight");
-    o = over(46);
-    if (o > 0.5) over(Math.max(30, Math.floor(46 - o / 6.12)));
+    for (let fs = 22; fs >= 16; fs -= 1) if (over(fs) <= 0.5) return settle();
+    settle();
   };
   /* the chips' list is made the first time a column opens, so the rail
      is watched for its arrival and the list for its chips; never the
@@ -6789,6 +6769,7 @@ if (!PHONE) {
   new MutationObserver(watchPath).observe(document.getElementById("railwrap"), { childList: true });
   watchPath();
   addEventListener("resize", fitCover, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCover);
 }
 
 /* ── the way back, as a row of the rail ── */
@@ -7205,17 +7186,21 @@ function placeAsk() {
      are u:k since the columns became their own scrollers (4 Sept), and
      the three-part key that stood here from before that found nothing,
      so the field stayed parked in the bar and never took the slot */
-  const st = live.get("0:0");
+  /* on a desktop the sentence stands in the rail, and its slot never
+     leaves the glass: the field rides it at the sentence's size */
+  const railLede = document.querySelector("#rdrawer .cvlede");
+  const st = railLede || live.get("0:0");
   const slot = st ? st.querySelector(".askslot") : null;
   const sr = slot ? slot.getBoundingClientRect() : null;
   /* on screen both ways: a slot pushed off to the right by the
      columns is as gone as one scrolled off the top */
-  const on = !!sr && sr.height > 0 && sr.right > fieldL + 8 && sr.left < innerWidth - 8 && sr.bottom > 0;
+  const on = !!sr && sr.height > 0 && sr.bottom > 0
+    && (railLede ? true : sr.right > fieldL + 8 && sr.left < innerWidth - 8);
   const drop = on ? Math.max(0, sr.top + sr.height / 2 - NAV_H / 2) : 0;
   /* the travel's length is the slot's centre in the space that
      scrolls — the panel's while it is open, the plane's otherwise */
   /* the statement travels with ITS column now, not with the plane */
-  const scrolled = st && st.__col ? st.__col.scrollTop : 0;
+  const scrolled = !railLede && st && st.__col ? st.__col.scrollTop : 0;
   const total = on ? Math.max(1, sr.top + scrolled + sr.height / 2 - NAV_H / 2) : 1;
   const p = Math.min(1, drop / total);
   if (on) askLastCol = { left: sr.left, w: sr.width };
@@ -7232,7 +7217,8 @@ function placeAsk() {
      hand: whatever part of the field stands left of the strip is cut,
      and whatever stands past its right edge too. Cleared when it is
      wholly inside, so a settled field carries no clip at all. */
-  const cutL = Math.max(0, fieldL - col.left);
+  /* the rail stands left of the strip, so its slot is never cut */
+  const cutL = railLede ? 0 : Math.max(0, fieldL - col.left);
   const cutR = Math.max(0, col.left + col.w - innerWidth);
   askEl.style.clipPath = (cutL > 0 || cutR > 0)
     ? "inset(0 " + cutR.toFixed(1) + "px 0 " + cutL.toFixed(1) + "px)" : "";
@@ -7311,14 +7297,19 @@ window.__lean = () => {
      question, which rides the statement's last line from the bar,
      waits for the last line to land and then comes up on its own. */
   if (!REDUCE()) {
+    /* the sentence: the rail's on a desktop, the field's first tile on a
+       phone. On a desktop the links come down first, the sentence rises
+       a line at a time, and the reel and its caption follow it in */
+    const st = PHONE ? live.get("0:0") : document.querySelector("#rdrawer .cvlede");
+    const railDone = !PHONE && st ? 300 + 45 * 12 : 0;
     if (!PHONE) {
       const parts = [...document.querySelectorAll("#rdrawer .bin")];
-      parts.forEach((r, i) => r.style.setProperty("--lag", Math.min(0.5, i * 0.05).toFixed(3) + "s"));
+      parts.forEach((r, i) => r.style.setProperty("--lag",
+        (r.classList.contains("cvdoor") ? i * 0.05 : railDone / 1000 + (i - 2) * 0.08).toFixed(3) + "s"));
       requestAnimationFrame(() => requestAnimationFrame(() => parts.forEach((r) => r.classList.add("on"))));
-      setTimeout(() => parts.forEach((r) => { r.classList.remove("bin", "on"); r.style.removeProperty("--lag"); }), 1400);
+      setTimeout(() => parts.forEach((r) => { r.classList.remove("bin", "on"); r.style.removeProperty("--lag"); }), railDone + 1400);
     }
-    const st = live.get("0:0");
-    if (st) {
+    if (st && (!PHONE || (st.__t && st.__t.kind === "statement"))) {
       if (askEl) askEl.style.opacity = "0";
       const done = buildIn(st, 300, 45);
       setTimeout(() => {
