@@ -914,10 +914,67 @@ head = r'''<!doctype html>
      cascade, in the statement's clothes. The chip's own transitions
      (the hug, the ink) are the shell's; they are back once this is
      off, so the two lists never have to agree. */
-  #rdrawer .rrow.bin { opacity: 0; transform: translateY(14px);
+  #rdrawer .bin { opacity: 0; transform: translateY(14px);
     transition: opacity 0.7s ease var(--lag, 0s),
       transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
-  #rdrawer .rrow.bin.on { opacity: 1; transform: none; }
+  #rdrawer .bin.on { opacity: 1; transform: none; }
+  /* ── THE RAIL AS COVERLINES ───────────────────────────────────────
+     His concept (Claude Design, Rail Concepts board 02; handoff in
+     columns/handoff/rail-coverlines, 16 Sept 2026), on a desktop:
+     /Info and /Connect as two small links, the shelves as the lines
+     of a magazine cover, one reel under them and a caption. The
+     handoff's values throughout, with two of the house's own: the
+     resting lines wear the board's grey (0.42 ink, #949494 on white,
+     the value the handoff names for about 3:1 against its mock's
+     #d4d4d4 at 1.5:1), and so does the caption's note.
+
+     THE RAIL NOW TAKES FROM THE FIELD. board-shell.css says the rail
+     pays for the wider margins, at 180; at 256 it is the field that
+     pays, 76px shared across the two columns and the peek, and every
+     measure the deal cuts to is read after this has applied. */
+  @media (min-width: 761px) {
+    :root { --ix-note-w: 256px; }
+    /* the lines' size is written by fitCover, which measures the room
+       the rail has left: the open columns' chips stand above it and
+       the way back below, so no fixed rule of the window can know */
+    #rdrawer .cvnav { display: flex; flex-direction: column; align-items: stretch; }
+    /* the open columns' chips at the rail's foot, over the way back */
+    #pathwrap { margin-top: auto; }
+    #pathwrap + #homewrap { margin-top: 0; }
+    .cvdoors { display: flex; gap: 18px; padding-bottom: 30px; }
+    .cvdoor { background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+      font: inherit; font-size: 12px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+      color: var(--ink); text-decoration: underline; text-decoration-color: transparent;
+      text-underline-offset: 3px; transition: text-decoration-color 0.3s ease, color 0.3s ease; }
+    /* a room that is open says so the way a link does. Not .on: that
+       is the first load's build class (#rdrawer .bin.on), and its
+       cleanup would take this with it */
+    .cvdoor.lit { text-decoration-color: currentColor; }
+    @media (hover: hover) { .cvdoor:hover { color: #555; } }
+    .cvstack { display: flex; flex-direction: column; align-items: flex-start; }
+    .cvrow { display: flex; align-items: flex-start; gap: 4px;
+      background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+      font: inherit; font-size: var(--cv-fs, 46px); font-weight: 700;
+      letter-spacing: -0.045em; line-height: 1.02; text-align: left;
+      color: rgba(0, 0, 0, 0.42);
+      transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cvrow.front { color: var(--ink); }
+    .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 6px; }
+    .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
+      padding-top: 7px; font-variant-numeric: tabular-nums; }
+    .cvreel { width: 100%; aspect-ratio: 256 / 170; margin-top: 30px; border-radius: var(--r); }
+    .cvcap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+      margin-top: 10px; font-size: 12px; line-height: 1.45; }
+    .cvnote { max-width: 26ch; }
+    .cvnote b { font-weight: 600; }
+    .cvnote .g { color: rgba(0, 0, 0, 0.42); }
+    .cvopen { background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+      font: inherit; font-size: 12px; font-weight: 500; color: var(--ink); white-space: nowrap;
+      text-decoration: underline; text-underline-offset: 3px; }
+    .cvdoor:focus-visible, .cvopen:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
+    /* too little room for the reel: the lines and the links keep the rail */
+    #rdrawer .cvnav.tight .cvreel, #rdrawer .cvnav.tight .cvcap { display: none; }
+  }
   /* the list under an open headline: the tile's own arrival, and the
      rail's rows at the field's measure */
   /* ── THE LIST BUILDS ROW BY ROW ───────────────────────────────────
@@ -6034,6 +6091,7 @@ function markFamily(at) {
      stands in for it, since one word twice is a stutter. */
   const run = runAt(at != null ? at : colIdx);
   famRun = run;
+  if (window.__coverRun) window.__coverRun(run);
   const line = run && run !== "open" && !shelves.some((c) => c.__mode === run) ? run : null;
   document.querySelectorAll(".fam").forEach((f) => {
     f.textContent = "";
@@ -6068,7 +6126,13 @@ function drawPath() {
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
     const rd = document.getElementById("rdrawer");
-    rd.parentNode.insertBefore(wrap, rd);
+    /* over the lines of the cover, the open columns' chips pushed the
+       stack down the rail every time a column opened, and the cover's
+       whole idea is a stack that never moves. On a desktop they stand
+       at the rail's foot instead, over the way back. */
+    const foot = document.getElementById("homewrap");
+    if (!PHONE && foot) foot.parentNode.insertBefore(wrap, foot);
+    else rd.parentNode.insertBefore(wrap, rd);
   }
   wrap.innerHTML = "";
   ccols.forEach((c) => {
@@ -6364,7 +6428,7 @@ const toggleHouse = (kind) => {
    Connect's carries the one live fact a visitor wants before opening
    the room: the next open time, read from the same week the column
    reads, in the reader's own zone, the first time the drawer opens. */
-{
+if (PHONE) {
   const { h, pad } = mkRow("Info", true);
   RAIL_NOTES.info.forEach(([c, t, peek]) => {
     const lines = Array.isArray(peek) ? peek : [peek || t];
@@ -6372,7 +6436,7 @@ const toggleHouse = (kind) => {
   });
   h.addEventListener("click", () => toggleHouse("info"));
 }
-{
+if (PHONE) {
   const { r, h, pad } = mkRow("Connect", true);
   const nx = sub(pad, "Next open", "\u2026");
   const t = sub(pad, null, BOARD_HOUSE.email);
@@ -6427,7 +6491,7 @@ const toggleHouse = (kind) => {
 });
 const gap = document.createElement("div");
 gap.className = "rgap";
-drawer.appendChild(gap);
+if (PHONE) drawer.appendChild(gap);
 
 /* which pictures a category's stamp cuts through: the board's own
    thumbs for the studies that carry the tag, one per study so a stamp
@@ -6450,7 +6514,7 @@ const framesFor = (tag) => {
 };
 
 const catReels = [];
-FILTERS.forEach(([label, tag, desc]) => {
+if (PHONE) FILTERS.forEach(([label, tag, desc]) => {
   const { r, h, pad } = mkRow(label, false);
   pad.classList.add("rcat");
   const box = document.createElement("div");
@@ -6487,6 +6551,245 @@ FILTERS.forEach(([label, tag, desc]) => {
   pad.addEventListener("click", ask);
   r.dataset.tag = tag;
 });
+
+/* ── THE RAIL AS COVERLINES ─────────────────────────────────────────
+   His concept (Claude Design, Rail Concepts board 02; handoff in
+   columns/handoff/rail-coverlines, 16 Sept 2026): on a desktop the
+   chips give way to the lines of a magazine cover, one big word a
+   shelf, and one reel under the stack that plays the line in front.
+   A phone keeps the sheet of chips above; the concept has no phone
+   design yet.
+
+   The stack never moves or reflows; only colour says which line is
+   in front. A line comes to the front when the hand rests on it for
+   120ms (a sweep down the stack must not burn every reel it crosses),
+   when the keyboard focuses it, when its shelf opens from anywhere,
+   or when the row brings its run under the glass. A press does
+   exactly what the chip's press did. Info and Connect open their
+   rooms, which is where the drawers' copy went when the chips became
+   doors. The counts are read off the heads' own chips, so the rail
+   and the head can never disagree. The reel is the house's (szLayer
+   and the sz-* beats): inside a line it cuts shutter, slat, curtain,
+   cut, fade, a frame every 950ms; a change of line always burns, from
+   the frame on screen to the new line's first, and the clock starts
+   again after it. Reduced motion swaps the frames and nothing else. */
+if (!PHONE) {
+  const BEATS = ["shutter", "slat", "curtain", "cut", "fade"];
+  /* the handoff's lengths. The house's slat is six strips on a stagger
+     of 8% of its length, so 520 puts each strip at 364ms and 42ms
+     behind the last: the handoff's 0.36s and 40ms */
+  const BEAT_MS = { shutter: 420, slat: 520, curtain: 460, cut: 160, fade: 360 };
+  const HOLD = 950, BURN_MS = 1100, SWITCH_HOLD = 1400, DWELL = 120;
+  const mk = (t, cls, text) => { const e = document.createElement(t); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  /* on a first load every part comes down the rail with the build */
+  const boot = (e) => { if (booting) e.classList.add("bin"); return e; };
+  /* not "cover": that is the cover line's class, and body.asked
+     .cover hides it once a question is asked */
+  const cvNav = mk("nav", "cvnav");
+  cvNav.setAttribute("aria-label", "Index");
+  drawer.appendChild(cvNav);
+
+  const doors = mk("div", "cvdoors");
+  const doorEls = [["Info", "info"], ["Connect", "connect"]].map(([label, kind]) => {
+    const b = boot(mk("button", "cvdoor", "/ " + label));
+    b.type = "button"; b.dataset.house = kind;
+    b.addEventListener("click", () => toggleHouse(kind));
+    doors.appendChild(b);
+    return b;
+  });
+  cvNav.appendChild(doors);
+  const doorState = () => doorEls.forEach((b) =>
+    b.classList.toggle("lit", ccols.some((c) => c.__house === b.dataset.house)));
+  new MutationObserver(doorState).observe(colsEl, { childList: true });
+
+  const stack = mk("div", "cvstack");
+  cvNav.appendChild(stack);
+  const countOf = (tag) => {
+    const h = items.find((t) => t.kind === "head" && t.tag === tag);
+    const m = h && String(h.way).match(/\d+/);
+    return m ? m[0] : "";
+  };
+  const rows = FILTERS.map(([label, tag, desc]) => {
+    const b = boot(mk("button", "cvrow"));
+    b.type = "button"; b.dataset.tag = tag;
+    b.appendChild(mk("span", "rink", label));
+    const n = countOf(tag);
+    if (n) b.appendChild(mk("span", "cvn", n));
+    stack.appendChild(b);
+    /* one of the rail's rows, for everything that reads them: the
+       shelf's name, a question naming a shelf, the picked mark */
+    rrows.push(b);
+    return { b, label, tag, desc, frames: framesFor(tag) };
+  });
+
+  const box = boot(mk("div", "cvreel sz-stage"));
+  box.setAttribute("aria-hidden", "true");
+  cvNav.appendChild(box);
+  const cap = boot(mk("div", "cvcap"));
+  const note = mk("div", "cvnote");
+  const open = mk("button", "cvopen", "Open");
+  open.type = "button";
+  cap.appendChild(note); cap.appendChild(open);
+  cvNav.appendChild(cap);
+
+  /* ── THE REEL ──────────────────────────────────────────────────── */
+  const reel = (() => {
+    const R = { frames: [], f: 0, t: 0, timer: null, layers: [] };
+    /* a 256px box: the rung that fits it, not the 128px stamp's */
+    const fit = (im, src) => {
+      im.src = src;
+      const ss = tileSrcSet(src);
+      if (ss) { im.srcset = ss; im.sizes = "256px"; }
+    };
+    const base = mk("img", "sz-fill");
+    base.alt = ""; base.decoding = "async";
+    box.appendChild(base);
+    R.warm = (src) => { if (src) fit(new Image(), src); };
+    const lay = (beat, dur) => {
+      const L = szLayer(beat, R.frames, dur);
+      L.querySelectorAll("img").forEach((im) => { if (im.srcset) im.sizes = "256px"; });
+      box.appendChild(L);
+      const under = R.layers.slice();
+      R.layers.push(L);
+      /* what it covers goes once it has landed */
+      setTimeout(() => {
+        under.forEach((x) => x.remove());
+        R.layers = R.layers.filter((x) => !under.includes(x));
+      }, Math.round(dur * 1.2) + 80);
+    };
+    const step = () => {
+      R.timer = null;
+      if (document.hidden) { R.timer = setTimeout(step, 400); return; }
+      const n = R.frames.length;
+      if (n < 2) return;
+      R.f = (R.f + 1) % n;
+      R.warm(R.frames[(R.f + 1) % n]);
+      if (REDUCE()) fit(base, R.frames[R.f]);
+      else {
+        const fx = BEATS[R.t % BEATS.length];
+        R.t += 1;
+        lay({ fx, img: R.f }, BEAT_MS[fx]);
+      }
+      R.timer = setTimeout(step, HOLD);
+    };
+    R.show = (frames, first) => {
+      clearTimeout(R.timer);
+      R.frames = frames; R.f = 0;
+      frames.slice(0, 2).forEach(R.warm);
+      if (first || REDUCE()) {
+        fit(base, frames[0]);
+        R.layers.forEach((x) => x.remove()); R.layers = [];
+      } else lay({ fx: "burn", img: 0 }, BURN_MS);
+      R.timer = setTimeout(step, first ? HOLD : SWITCH_HOLD);
+    };
+    return R;
+  })();
+
+  /* ── WHICH LINE IS IN FRONT ──────────────────────────────────────── */
+  let active = null, dwellT = 0, over = false, runT = 0;
+  const activate = (tag, first) => {
+    const row = rows.find((r) => r.tag === tag);
+    if (!row || tag === active) return;
+    active = tag;
+    rows.forEach((r) => r.b.classList.toggle("front", r.tag === tag));
+    note.textContent = "";
+    note.appendChild(mk("b", null, row.label + "."));
+    note.appendChild(document.createTextNode(" "));
+    note.appendChild(mk("span", "g", row.desc));
+    reel.show(row.frames, first);
+  };
+  stack.addEventListener("pointerenter", () => { over = true; });
+  stack.addEventListener("pointerleave", () => { over = false; clearTimeout(dwellT); });
+  rows.forEach((r) => {
+    r.b.addEventListener("pointerenter", (e) => {
+      if (e.pointerType !== "mouse") return;
+      reel.warm(r.frames[0]);
+      clearTimeout(dwellT);
+      dwellT = setTimeout(() => activate(r.tag), DWELL);
+    });
+    r.b.addEventListener("focus", () => activate(r.tag));
+    /* the chip's press, word for word */
+    r.b.addEventListener("click", () => { activate(r.tag); setMode(MODE === r.tag ? null : r.tag); });
+    /* a shelf opened from anywhere brings its line to the front, once,
+       as it opens: the picked mark changing, not merely standing */
+    let was = false;
+    new MutationObserver(() => {
+      const now = r.b.classList.contains("picked");
+      if (now && !was) activate(r.tag);
+      was = now;
+    }).observe(r.b, { attributes: true, attributeFilter: ["class"] });
+  });
+  /* Open goes to the line and opens it, and never folds it: a line
+     already open is travelled to, and Staples' column is revealed */
+  open.addEventListener("click", () => {
+    const tag = active;
+    if (!tag) return;
+    if (tag === "staples") {
+      const had = ccols.find((c) => c.__mode === "staples");
+      if (had) reveal(had); else setMode("staples");
+      return;
+    }
+    const head = tiles.find((t) => t.kind === "head" && t.tag === tag);
+    if (lineOpen !== tag) setMode(tag); else if (head) pageTo(dispU(head.col));
+  });
+  /* the run under the glass, from markFamily: once the row has settled
+     on it, and never under a hand resting on the stack */
+  window.__coverRun = (run) => {
+    clearTimeout(runT);
+    if (!run || !rows.some((r) => r.tag === run)) return;
+    runT = setTimeout(() => { if (!over) activate(run); }, 260);
+  };
+  activate(FILTERS[0][1], true);
+  /* ── THE STACK FITS THE ROOM IT HAS ───────────────────────────────
+     Between the chips of the open columns above and the way back at
+     the foot. The lines keep the handoff's 46px while the links, six
+     lines, the reel (30 + 170) and a three-line caption (10 + 52) fit;
+     then they come down to 30; under that the reel and the caption
+     go and the lines take the room back. Measured again whenever a
+     column opens or closes, since each adds or takes a chip. */
+  const fitCover = () => {
+    const rail = document.getElementById("railwrap"), foot = document.getElementById("homewrap");
+    if (!rail || !foot) return;
+    /* measured, not modelled: the rail spaces its parts with its own
+       gap, and the chips' list brings another. The way back stands at
+       the rail's foot while everything fits (margin-top: auto) and is
+       pushed past it by exactly what does not; six lines give 6.12px
+       of height for every pixel of type. */
+    const over = (fs) => {
+      cvNav.style.setProperty("--cv-fs", fs + "px");
+      return foot.getBoundingClientRect().bottom - rail.getBoundingClientRect().bottom;
+    };
+    cvNav.classList.remove("tight");
+    let o = over(46);
+    if (o <= 0.5) return;
+    /* down to 34px the lines give way; past that the reel does, and
+       the lines stand at full size again */
+    if (46 - o / 6.12 >= 34) { over(Math.floor(46 - o / 6.12)); return; }
+    cvNav.classList.add("tight");
+    o = over(46);
+    if (o > 0.5) over(Math.max(30, Math.floor(46 - o / 6.12)));
+  };
+  /* the chips' list is made the first time a column opens, so the rail
+     is watched for its arrival and the list for its chips; never the
+     rail's whole subtree, where the reel adds a layer every beat. A
+     chip grows in, so it is measured again once it has. */
+  let pathSeen = null, refit = 0;
+  const onPath = () => {
+    fitCover();
+    clearTimeout(refit); refit = setTimeout(fitCover, 450);
+  };
+  const watchPath = () => {
+    const pw = document.getElementById("pathwrap");
+    if (pw && pw !== pathSeen) {
+      pathSeen = pw;
+      new MutationObserver(onPath).observe(pw, { childList: true, subtree: true });
+    }
+    onPath();
+  };
+  new MutationObserver(watchPath).observe(document.getElementById("railwrap"), { childList: true });
+  watchPath();
+  addEventListener("resize", fitCover, { passive: true });
+}
 
 /* ── the way back, as a row of the rail ── */
 const homeRow = mkRow("Back to start", false);
@@ -7009,9 +7312,10 @@ window.__lean = () => {
      waits for the last line to land and then comes up on its own. */
   if (!REDUCE()) {
     if (!PHONE) {
-      rrows.forEach((r, i) => r.style.setProperty("--lag", Math.min(0.36, i * 0.05).toFixed(3) + "s"));
-      requestAnimationFrame(() => requestAnimationFrame(() => rrows.forEach((r) => r.classList.add("on"))));
-      setTimeout(() => rrows.forEach((r) => { r.classList.remove("bin", "on"); r.style.removeProperty("--lag"); }), 1200);
+      const parts = [...document.querySelectorAll("#rdrawer .bin")];
+      parts.forEach((r, i) => r.style.setProperty("--lag", Math.min(0.5, i * 0.05).toFixed(3) + "s"));
+      requestAnimationFrame(() => requestAnimationFrame(() => parts.forEach((r) => r.classList.add("on"))));
+      setTimeout(() => parts.forEach((r) => { r.classList.remove("bin", "on"); r.style.removeProperty("--lag"); }), 1400);
     }
     const st = live.get("0:0");
     if (st) {
