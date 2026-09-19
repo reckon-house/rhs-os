@@ -199,7 +199,13 @@
       ]
     ]
   },
-  "daybook": {"caption": "Daybook", "door": "The daybook", "full": "Full daybook", "href": "/daybook", "data": "/api/daybook"},
+  "daybook": {
+    "caption": "Daybook",
+    "door": "The daybook",
+    "full": "Full daybook",
+    "href": "/daybook",
+    "data": "/api/daybook"
+  },
   "subjects": [
     {
       "words": "ecommerce e-commerce commerce online store storefront shop shopping shoppable checkout cart product page pdp",
@@ -222,5 +228,38 @@
     "reach": "hello@reckon.house. Or keep asking here.",
     "nothingCaught": "Nothing caught on the board. Ask me directly: hello@reckon.house.",
     "orEmail": "Or hello@reckon.house"
+  },
+  "about": {
+    "name": "About",
+    "draft": "Draft to come.",
+    "sections": [
+      {
+        "id": "about",
+        "name": "About",
+        "lede": "I solve problems in a number of mediums from technology, business workflow, organizational structure, marketing, creative and brand.",
+        "body": [
+          "With 20+ years of experience working across organizations large and small I help create campaigns, brands and use new tools and technology (like AI) to streamline the workflow and process around. I understand the data and analytics needed to solve these problems.",
+          "I can help identify and strategize marketing campaigns, brands as well as process, tools and workflow enhancements to streamline things that are customer facing as well as the internal processes and production."
+        ]
+      },
+      {
+        "id": "design",
+        "name": "Design",
+        "lede": "",
+        "body": []
+      },
+      {
+        "id": "process",
+        "name": "Process & Workflow",
+        "lede": "",
+        "body": []
+      },
+      {
+        "id": "ai",
+        "name": "AI & Technology",
+        "lede": "",
+        "body": []
+      }
+    ]
   }
 }
