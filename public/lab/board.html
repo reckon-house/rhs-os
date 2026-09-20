@@ -748,7 +748,20 @@
      sentence and the chip stand to its right, past the strip the
      name takes. The size and the strip are the board's one size,
      written to the root once at load (spineSize). */
-  .tile.statement.head .spine { position: absolute; left: 0; top: var(--spine-nudge, 0px);
+  /* ── AND IT STANDS 0.03em IN FROM THE COLUMN'S EDGE ──────────────
+     His note, 20 Sept 2026: "still seeing some of the letters being
+     cropped off the big headlines", after the name's own mask was
+     given its margin. A SECOND clip was doing it, and the mask fix
+     could not have shown it: the column is a scroller
+     (.fcol, overflow-x: hidden), the name sits at left: 0 of a tile
+     at the column's own edge, and the ink of a rotated cap stands
+     1.9px proud of its line box. So the column shaved what the mask
+     no longer did. Measured off the render: at the edge the ink went
+     64 then 424 device pixels in a column, a flat cut; 0.03em in, the
+     curve's own ramp is back (22, 38, 48, 58, 64) and wider shifts
+     add nothing. The sentence does not move, so the air between them
+     closes by those few pixels. */
+  .tile.statement.head .spine { position: absolute; left: 0.03em; top: var(--spine-nudge, 0px);
     writing-mode: vertical-rl; transform: rotate(180deg);
     font-size: var(--spine-fs, 96px); font-weight: 700; letter-spacing: -0.04em;
     line-height: 0.8; text-transform: uppercase; white-space: nowrap;
@@ -833,11 +846,11 @@
      rules. The lines above it never move and every drawer is one
      height, so the line under the hand stays under the hand while the
      rest slide. A column open on the glass is a chip inside the line
-     it belongs to. The picture is one size for a window, 4:3, at the
-     line's own left edge; what gives for a short window or a second chip is the
-     air between the rules, never the type and never the picture
-     (fitRail, fitChips). A phone keeps its sheet of chips. The rail is
-     256px, the handoff's. */
+     it belongs to. The picture is 4:3 at the line's own left edge and
+     one size everywhere, 160x120; the lines are the About column's
+     own row. Nothing gives: the rail scrolls, as a column of the
+     field does (fitRail). A phone keeps its sheet of chips. The rail
+     is 256px, the handoff's. */
   .abhead { letter-spacing: inherit; }
   @media (min-width: 761px) {
     :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px);
@@ -942,9 +955,6 @@
        one height, or the list slips out from under the hand */
     .cvnote { margin: 10px 0 0; padding-bottom: 18px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
       font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
-    /* too little room for the picture: the sentence keeps the drawer */
-    #rdrawer .cvnav.tight .cvreel { display: none; }
-    #rdrawer .cvnav.tight .cvnote { margin-top: 0; }
     /* what is open on the glass, in the line it belongs to */
     .cvchips { display: grid; grid-template-rows: 0fr;
       transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -965,6 +975,14 @@
     /* the question, inside Ask's line: the field rides this slot
        (placeAsk) at the body's size, and never parks in the bar */
     #rdrawer .cvask { font-size: 20px; line-height: 1.2; padding-bottom: 14px; }
+    /* ── AND ASK IS PINNED TO THE FOOT ── "ask stays in the rail and
+       is persistent across the entire experience" was his call when
+       the rail could not scroll; now that it can, an open drawer
+       would push the question past the foot and out of reach. It
+       sticks there instead, on the paper, and the rest of the rail
+       scrolls under it. */
+    .cvline[data-tag="ask"] { position: sticky; bottom: 0; z-index: 2;
+      background: var(--paper, #fff); }
     @media (prefers-reduced-motion: reduce) {
       .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow { transition: none; }
     }
@@ -1177,8 +1195,21 @@
      .ixnotes is a flex column with its own gap and the pair alone did
      not stretch it — the column stopped at its content and the way
      back sat halfway up the screen. */
+  /* ── AND IT SCROLLS, like a column of the field ── his call (20
+     Sept 2026): "can we keep the reel at all sizes and just have a
+     scroll bar like the other columns?". It frees the whole fit. The
+     lines no longer buy their air off the picture, so they stand at
+     the About column's own row at every window and the picture keeps
+     its 160x120; what does not fit is scrolled to, and the bar is
+     hidden, as `.fcol` and `.ccol .cin` hide theirs. The nine lines
+     and the question still FIT at rest at every window (fitRail) —
+     what overflows is an open drawer, and that closes when the hand
+     leaves. */
   #railwrap { display: flex; flex-direction: column;
-    height: calc(100dvh - var(--cover-air, 50px) - var(--head-band, 64px) - 24px); }
+    height: calc(100dvh - var(--cover-air, 50px) - var(--head-band, 64px) - 24px);
+    overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+    scrollbar-width: none; }
+  #railwrap::-webkit-scrollbar { display: none; }
   #rdrawer { flex: none; }
   #homewrap { margin-top: auto; }
   #home {
@@ -6403,7 +6434,7 @@ function drawPath() {
      (his note, 20 Sept 2026: "there's actually 3 different sized and
      styled left nav rails"). On a desktop a chip stands inside the
      line it belongs to now, and takes its room from the drawer's
-     picture, never from the type (the rail's fitChips). A phone keeps
+     picture, never from the type. A phone keeps
      the list: there the columns' heads are behind the sheet the rail
      lives in, so it is the only way between them. */
   if (!PHONE) { if (window.__railChips) window.__railChips(); return; }
@@ -7490,97 +7521,36 @@ if (!PHONE) {
   };
   setFront("open");
 
-  /* ── THE RAIL FITS THE WINDOW, AND THE TYPE NEVER PAYS ───────────
-     Nine lines, the question under the last of them, and room at the
-     foot for one open drawer. THE LINES ARE THE ABOUT COLUMN'S LINES
-     as far as the window allows (his call, 20 Sept 2026: "add some
-     spacing to the nav rail so it's consistent with the spacing on
-     the 2nd column... it's a little tight"). That column's row is its
-     40 of air plus the line's own 1.2em, which is P_MAX here, read
-     off the type so the two cannot drift.
+  /* ── THE RAIL IS THE ABOUT COLUMN'S LINES, AND IT SCROLLS ────────
+     His two calls, an hour apart: give the rail the second column's
+     spacing, and "keep the reel at all sizes and just have a scroll
+     bar like the other columns". The second answers the first. The
+     rail used to buy its air off the picture, because nine lines, the
+     eight rules and the question fill a 900-tall window to the pixel
+     and anything else had to come out of them. A scroller has no such
+     budget: the lines stand at the About column's own row (P_MAX, read
+     off the type so the two cannot drift), the picture keeps its
+     160x120 at every window, and chips stand at their full size. What
+     does not fit is scrolled to.
 
-     THE ARITHMETIC IS EXACT AND WORTH STATING: nine of those rows,
-     their eight rules and the question fill a 900-tall window to the
-     pixel. Every pixel the drawer takes is a pixel off the rows. So
-     the rail matches the column only on a tall window, and the order
-     of spending below is what a shorter one gives up first.
-
-     THE PICTURE IS ONE SIZE FOR A WINDOW, and nothing a visitor opens
-     changes it (his note the same day: a chip had been paid for out
-     of the picture, and one chip took it under its floor). It is 4:3
-     at the line's own left edge, under the name and over the sentence,
-     with the air to its right. 72 to 120 tall; a window with no room
-     for 72 keeps the sentence alone.
-
-     In order: the lines to 58 and the picture to 72, then the picture
-     to 88, then the lines to 68, then the picture to 120, then the
-     lines to the column's own row. The picture takes its second step
-     before the lines take their first, because the lines gain about a
-     pixel each for every sixteen the picture gives up: at a 900-tall
-     window the whole of that step buys them half a pixel apiece. */
-  const N = 9, P_MIN = 44, P_EASY = 58, P_MID = 68;
-  const REEL_MIN = 72, REEL_MID = 88, REEL_MAX = 120;
-  /* the drawer without its picture: 2 over the reel, 10 under it, two
-     lines of sentence (2.9em of 12px) and 18 of foot; and with no
-     picture at all */
-  const FIX = 65, FIX0 = 53;
-  let reelH = 0, pitch0 = P_EASY, pitch = P_EASY;
+     WHAT STILL HAS TO FIT is the rail at rest: nine lines, their
+     rules and the question, so Ask is on the glass without a scroll
+     wherever the page opens. That is the one thing this measures, and
+     the only case that shortens a line is a window too short to hold
+     even that. An open drawer, and chips, push past the foot and are
+     scrolled to; the drawer closes when the hand leaves the rail. */
+  const N = 9, P_MIN = 44, REEL_H = 120;
+  let pitch = P_MIN;
   const railH = () => { const r = document.getElementById("railwrap"); return r ? r.clientHeight : 0; };
   /* the About column's own row, from the type the rail is set in */
   const pMax = () => 40 + 1.2 * (parseFloat(getComputedStyle(shelves[0].b).fontSize) || 32);
   const fitRail = () => {
     const avail = railH();
     if (!avail) return;
-    const P_MAX = pMax();
-    /* what the lines and the picture have to share */
-    let budget = avail - (N - 1) - askBox.offsetHeight - FIX;
-    let p, h = 0;
-    if (budget >= N * P_EASY + REEL_MIN) {
-      p = P_EASY; h = REEL_MIN;
-      let rest = budget - N * P_EASY - REEL_MIN;
-      const take = (want) => { const got = Math.min(rest, Math.max(0, want)); rest -= got; return got; };
-      h += take(REEL_MID - REEL_MIN);
-      p += take(N * (P_MID - p)) / N;
-      h += take(REEL_MAX - h);
-      p += take(N * (P_MAX - p)) / N;
-    } else {
-      /* no room for the picture: the sentence keeps the drawer, and
-         the lines take what is left down to their floor */
-      const rest = avail - (N - 1) - askBox.offsetHeight - FIX0;
-      p = Math.max(P_MIN, Math.min(P_MAX, rest / N));
-    }
-    pitch0 = Math.floor(p); reelH = Math.floor(h);
-    cvNav.classList.toggle("tight", !reelH);
-    if (reelH) cvNav.style.setProperty("--reel-h", reelH + "px");
-    fitChips();
-  };
-  /* ── AND THE CHIPS TAKE FROM THE AIR ─────────────────────────────
-     A chip is paid for out of the air between the rules, a few pixels
-     a line, down to the floor of 44: the lines draw together on the
-     drawer's own clock as the chip opens, and back apart as it goes.
-     Only past that floor do chips stay off the rail, the oldest first
-     (their columns carry their own close). The picture and the type
-     are never what gives. */
-  const chipsOf = (L) => [...L.chips.children];
-  const chipsH = () => Object.values(byTag).reduce((a, L) => {
-    const on = chipsOf(L).filter((c) => !c.hidden);
-    return a + (on.length ? on.reduce((x, c) => x + c.offsetHeight + 6, 6) : 0);
-  }, 0);
-  const fitChips = () => {
-    const all = [...cvNav.querySelectorAll(".cvchip")];
-    all.forEach((c) => { c.hidden = false; });
-    const drawer = reelH ? FIX + reelH : FIX0;
-    /* a fraction of a pixel a line is 9 down the rail, and the last
-       of them is the question sliding off the foot */
-    const room = (p) => railH() - N * p - (N - 1) - askBox.offsetHeight - drawer;
-    const short = chipsH() - room(pitch0);
-    const p = short > 0 ? Math.max(P_MIN, Math.floor(pitch0 - short / N)) : pitch0;
-    /* the oldest first: what was opened last is what is being read */
-    all.sort((x, y) => (x.__seq || 0) - (y.__seq || 0));
-    for (let i = 0; i < all.length && chipsH() > room(p); i++) all[i].hidden = true;
-    pitch = p;
-    cvNav.style.setProperty("--cv-pitch", p + "px");
-    Object.values(byTag).forEach((L) => L.cell.classList.toggle("chipped", chipsOf(L).some((c) => !c.hidden)));
+    const room = (avail - (N - 1) - askBox.offsetHeight) / N;
+    pitch = Math.floor(Math.max(P_MIN, Math.min(pMax(), room)));
+    cvNav.style.setProperty("--cv-pitch", pitch + "px");
+    cvNav.style.setProperty("--reel-h", REEL_H + "px");
     follow();
   };
 
@@ -7609,7 +7579,7 @@ if (!PHONE) {
     const sig = ccols.map((c) => ownerOf(c) + ":" + chipName(c)).join("|");
     if (sig === chipSig) return;
     chipSig = sig;
-    Object.values(byTag).forEach((L) => { L.chips.textContent = ""; });
+    Object.values(byTag).forEach((L) => { L.chips.textContent = ""; L.cell.classList.remove("chipped"); });
     ccols.forEach((c) => {
       const L = byTag[ownerOf(c)];
       if (!L) return;
@@ -7627,12 +7597,16 @@ if (!PHONE) {
         if (e.target === x) closeColumn(c); else showCol(c);
       });
       L.chips.appendChild(chip);
+      L.cell.classList.add("chipped");
     });
-    fitChips();
+    follow();
   };
 
   fitRail();
   addEventListener("resize", fitRail, { passive: true });
+  /* the field is fixed and rides its slot, and the slot now scrolls */
+  { const rail = document.getElementById("railwrap");
+    if (rail) rail.addEventListener("scroll", () => { if (window.placeAsk) placeAsk(); }, { passive: true }); }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitRail);
   /* the first frames, once the board itself has had the network */
   setTimeout(() => shelves.forEach((L) => L.reel.prime()), 1600);
@@ -8116,8 +8090,21 @@ function placeAsk() {
   /* the rail stands left of the strip, so its slot is never cut */
   const cutL = railLede ? 0 : Math.max(0, fieldL - col.left);
   const cutR = Math.max(0, col.left + col.w - innerWidth);
-  askEl.style.clipPath = (cutL > 0 || cutR > 0)
-    ? "inset(0 " + cutR.toFixed(1) + "px 0 " + cutL.toFixed(1) + "px)" : "";
+  /* AND THE RAIL SCROLLS NOW, so the slot can be carried past either
+     end of it: the field is cut at the rail's own edges, the way the
+     rail's own rows are, rather than riding on over the page */
+  let cutT = 0, cutB = 0;
+  if (railLede && sr) {
+    const rw = railLede.closest("#railwrap");
+    const rr = rw ? rw.getBoundingClientRect() : null;
+    if (rr) {
+      const hh = askEl.offsetHeight || 30, mid = sr.top + sr.height / 2;
+      cutT = Math.max(0, rr.top - (mid - hh / 2));
+      cutB = Math.max(0, (mid + hh / 2) - rr.bottom);
+    }
+  }
+  askEl.style.clipPath = (cutL > 0 || cutR > 0 || cutT > 0 || cutB > 0)
+    ? "inset(" + cutT.toFixed(1) + "px " + cutR.toFixed(1) + "px " + cutB.toFixed(1) + "px " + cutL.toFixed(1) + "px)" : "";
   askEl.style.setProperty("--ask-drop", drop.toFixed(1) + "px");
   askEl.style.setProperty("--ask-fs", (ASK_SMALL + (big - ASK_SMALL) * p).toFixed(2) + "px");
   askEl.style.setProperty("--ask-ls", (0.04 - 0.09 * p).toFixed(4) + "em");
