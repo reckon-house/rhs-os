@@ -941,8 +941,8 @@ head = r'''<!doctype html>
      rules. The lines above it never move and every drawer is one
      height, so the line under the hand stays under the hand while the
      rest slide. A column open on the glass is a chip inside the line
-     it belongs to. The picture is one size for a window, 4:3 and to
-     the right; what gives for a short window or a second chip is the
+     it belongs to. The picture is one size for a window, 4:3, at the
+     line's own left edge; what gives for a short window or a second chip is the
      air between the rules, never the type and never the picture
      (fitRail, fitChips). A phone keeps its sheet of chips. The rail is
      256px, the handoff's. */
@@ -1037,12 +1037,14 @@ head = r'''<!doctype html>
       transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
     .cvline.open .cvin > * { opacity: 1; transform: none;
       transition: opacity 0.45s ease 0.09s, transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 0.09s; }
-    /* 4:3 and to the right (his call, 20 Sept 2026): the width is
-       stated, because a block's auto width fills its column whatever
-       aspect-ratio says. The chips' radius: the tiles' 16 is a lot of
-       corner on a box this small. */
+    /* 4:3, at the line's own left edge (his call, 20 Sept 2026: right
+       aligned "didnt work like i thought it might" — the picture hung
+       away from the names' edge and the air fell between it and the
+       sentence under it). The width is stated, because a block's auto
+       width fills its column whatever aspect-ratio says. The chips'
+       radius: the tiles' 16 is a lot of corner on a box this small. */
     .cvreel { height: var(--reel-h, 96px); width: calc(var(--reel-h, 96px) * 4 / 3);
-      margin: 2px 0 0 auto; border-radius: 12px; }
+      margin: 2px auto 0 0; border-radius: 12px; }
     /* two lines of room whatever the sentence runs to: every drawer is
        one height, or the list slips out from under the hand */
     .cvnote { margin: 10px 0 0; padding-bottom: 18px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
@@ -7193,12 +7195,13 @@ if (!PHONE) {
      nothing a visitor opens changes it (his note, 20 Sept 2026: with a
      chip standing, the other lines' drawers had lost their reels,
      because a chip was paid for out of the picture and one chip took
-     it a pixel under its floor). It is 4:3 and stands to the right,
-     the live rail's stamp and his call the same day: the full-width
-     letterbox "completely fill[ed] the space and ma[de] the crops
-     difficult", and the room left of it is the drawer's negative
-     space. 72 to 120 tall; a window with no room for 72 keeps the
-     sentence alone, as before.
+     it a pixel under its floor). It is 4:3, the live rail's stamp and
+     his call the same day: the full-width letterbox "completely
+     fill[ed] the space and ma[de] the crops difficult". It stands at
+     the line's own left edge, under the name and over the sentence,
+     and the air is to its right (right-aligned first, which he tried
+     and turned down). 72 to 120 tall; a window with no room for 72
+     keeps the sentence alone, as before.
      In order: lines at 50, then the picture up to 120 with a chip's
      41 kept beside it, then air up to the comp's 74. */
   const N = 9, P_MIN = 44, P_EASY = 50, P_MAX = 74;
