@@ -1027,20 +1027,27 @@ head = r'''<!doctype html>
     .tile.statement.head.about { margin-top: calc(-1 * var(--head-band)); }
     .tile.statement.head.about .abhead { color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
     .tile.statement.head.about .abhead:hover { color: var(--ink); }
-    .tile.statement.head.about .abrow:first-child.open .abin {
-      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 26px)); }
+    /* the first row's name stands on the head line and its body opens
+       on the matter line, so its own foot is exactly the band less the
+       name: stated, not compensated, so nothing jumps as it folds */
+    .tile.statement.head.about .abrow:first-child .abhead {
+      padding-bottom: calc(var(--head-band) - var(--st-fs) * 1.2); }
+    /* and its body opens on that line, with no air of its own */
+    .tile.statement.head.about .abrow:first-child.open .abin { padding-top: 0; }
 
     /* ── THE RAIL ── */
     #rdrawer .cvnav, .cvstack { display: block; }
-    .cvline + .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+    /* every line is ruled, the first one included (his call, 20 Sept
+       2026), so the rail opens on a line the way the columns do */
+    .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
     /* the name sits close to the rule above it and the air falls
        below, as the About column's rows do and as the board reads
-       everywhere else: a third of the air over it, the rest under.
+       everywhere else: a fifth of the air over it, the rest under.
        Border-box, so the padding is inside the pitch the fit
        measured. */
     .cvrow { display: flex; align-items: flex-start; gap: 4px; width: 100%; box-sizing: border-box;
       height: var(--cv-pitch, 50px);
-      padding: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.34) 0 0;
+      padding: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.18) 0 0;
       background: none; border: 0; margin: 0; cursor: pointer; text-align: left;
       font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
@@ -1125,10 +1132,10 @@ head = r'''<!doctype html>
      one of them; anchored below first, and flipped an hour later on
      his note that the board holds text "closer to the top of the line
      than the bottom" everywhere else. The air is split 14 over, 26
-     under, which with the line's own leading reads as about one to
-     three. The row's pitch is what it was, 40 of air either way. */
+     under, tightened again on his next look. The row's pitch is what
+     it was, 40 of air either way. */
   .abhead { display: flex; justify-content: space-between; align-items: center; width: 100%;
-    background: none; border: 0; padding: 14px 0 26px; margin: 0; cursor: pointer;
+    background: none; border: 0; padding: 8px 0 32px; margin: 0; cursor: pointer;
     font: inherit; color: inherit; text-align: left; }
   .abrow:first-child .abhead { padding-top: 0; }
   .abhead:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
@@ -7243,7 +7250,7 @@ if (!PHONE) {
   const fitRail = () => {
     const avail = railH();
     if (!avail) return;
-    const room = (avail - (N - 1) - askBox.offsetHeight) / N;
+    const room = (avail - N - askBox.offsetHeight) / N;
     pitch = Math.floor(Math.max(P_MIN, Math.min(pMax(), room)));
     cvNav.style.setProperty("--cv-pitch", pitch + "px");
     cvNav.style.setProperty("--reel-h", REEL_H + "px");
