@@ -894,24 +894,31 @@
     .tile.statement.head.about .abhead { color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
     .tile.statement.head.about .abhead:hover { color: var(--ink); }
     .tile.statement.head.about .abrow:first-child.open .abin {
-      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 20px)); }
+      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 14px)); }
 
     /* ── THE RAIL ── */
     #rdrawer .cvnav, .cvstack { display: block; }
     .cvline + .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
-    .cvrow { display: flex; align-items: center; gap: 4px; width: 100%; height: var(--cv-pitch, 50px);
-      background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
+    /* the name hangs from the rule above and sits close to the one
+       below, as the About column's rows do: a third of the air under
+       it, the rest over. Border-box, so the padding is inside the
+       pitch the fit measured. */
+    .cvrow { display: flex; align-items: flex-end; gap: 4px; width: 100%; box-sizing: border-box;
+      height: var(--cv-pitch, 50px);
+      padding: 0 0 calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.34);
+      background: none; border: 0; margin: 0; cursor: pointer; text-align: left;
       font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
       transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
-        height 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+        height 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
+        padding-bottom 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
     /* in ink: the line whose run is under the glass, and the one a
        hand has opened */
     .cvrow.front, .cvline.open .cvrow { color: var(--ink); }
     .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 6px; }
-    .cvn { align-self: flex-start; font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
-      margin-top: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) / 2 + 4px);
-      transition: margin-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* the count rides the name's cap, not its foot */
+    .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
+      margin-bottom: calc(var(--st-fs) * 1.2 - 16px);
       font-variant-numeric: tabular-nums; }
     /* a shelf's drawer: the live rail's own fold (0fr to 1fr), with
        its matter a beat behind the structure, as it was there */
@@ -959,7 +966,7 @@
        (placeAsk) at the body's size, and never parks in the bar */
     #rdrawer .cvask { font-size: 20px; line-height: 1.2; padding-bottom: 14px; }
     @media (prefers-reduced-motion: reduce) {
-      .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow, .cvn { transition: none; }
+      .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow { transition: none; }
     }
   }
   /* ── THE ABOUT COLUMN ─────────────────────────────────────────────
@@ -974,8 +981,13 @@
      one module and scrolls. */
   .tile.statement.head.about .abfolds { position: relative; border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .abrow + .abrow { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+  /* ── ANCHORED TO THE RULE BELOW ── his call (20 Sept 2026): the
+     names sat midway between their two rules, and he wants them held
+     to the one under them. The air is split 26 over, 14 under, which
+     with the line's own leading reads as about two to one. The row's
+     pitch is what it was, 40 of air either way. */
   .abhead { display: flex; justify-content: space-between; align-items: center; width: 100%;
-    background: none; border: 0; padding: 20px 0; margin: 0; cursor: pointer;
+    background: none; border: 0; padding: 26px 0 14px; margin: 0; cursor: pointer;
     font: inherit; color: inherit; text-align: left; }
   .abrow:first-child .abhead { padding-top: 0; }
   .abhead:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
@@ -7479,40 +7491,63 @@ if (!PHONE) {
   setFront("open");
 
   /* ── THE RAIL FITS THE WINDOW, AND THE TYPE NEVER PAYS ───────────
-     Nine lines, the question, and room held at the foot for one
-     drawer and one chip. THE PICTURE IS ONE SIZE FOR A WINDOW, and
-     nothing a visitor opens changes it (his note, 20 Sept 2026: with a
-     chip standing, the other lines' drawers had lost their reels,
-     because a chip was paid for out of the picture and one chip took
-     it a pixel under its floor). It is 4:3, the live rail's stamp and
-     his call the same day: the full-width letterbox "completely
-     fill[ed] the space and ma[de] the crops difficult". It stands at
-     the line's own left edge, under the name and over the sentence,
-     and the air is to its right (right-aligned first, which he tried
-     and turned down). 72 to 120 tall; a window with no room for 72
-     keeps the sentence alone, as before.
-     In order: lines at 50, then the picture up to 120 with a chip's
-     41 kept beside it, then air up to the comp's 74. */
-  const N = 9, P_MIN = 44, P_EASY = 50, P_MAX = 74;
-  const REEL_MIN = 72, REEL_MAX = 120, CHIP = 41;
+     Nine lines, the question under the last of them, and room at the
+     foot for one open drawer. THE LINES ARE THE ABOUT COLUMN'S LINES
+     as far as the window allows (his call, 20 Sept 2026: "add some
+     spacing to the nav rail so it's consistent with the spacing on
+     the 2nd column... it's a little tight"). That column's row is its
+     40 of air plus the line's own 1.2em, which is P_MAX here, read
+     off the type so the two cannot drift.
+
+     THE ARITHMETIC IS EXACT AND WORTH STATING: nine of those rows,
+     their eight rules and the question fill a 900-tall window to the
+     pixel. Every pixel the drawer takes is a pixel off the rows. So
+     the rail matches the column only on a tall window, and the order
+     of spending below is what a shorter one gives up first.
+
+     THE PICTURE IS ONE SIZE FOR A WINDOW, and nothing a visitor opens
+     changes it (his note the same day: a chip had been paid for out
+     of the picture, and one chip took it under its floor). It is 4:3
+     at the line's own left edge, under the name and over the sentence,
+     with the air to its right. 72 to 120 tall; a window with no room
+     for 72 keeps the sentence alone.
+
+     In order: the lines to 58 and the picture to 72, then the picture
+     to 88, then the lines to 68, then the picture to 120, then the
+     lines to the column's own row. The picture takes its second step
+     before the lines take their first, because the lines gain about a
+     pixel each for every sixteen the picture gives up: at a 900-tall
+     window the whole of that step buys them half a pixel apiece. */
+  const N = 9, P_MIN = 44, P_EASY = 58, P_MID = 68;
+  const REEL_MIN = 72, REEL_MID = 88, REEL_MAX = 120;
   /* the drawer without its picture: 2 over the reel, 10 under it, two
      lines of sentence (2.9em of 12px) and 18 of foot; and with no
      picture at all */
   const FIX = 65, FIX0 = 53;
   let reelH = 0, pitch0 = P_EASY, pitch = P_EASY;
   const railH = () => { const r = document.getElementById("railwrap"); return r ? r.clientHeight : 0; };
+  /* the About column's own row, from the type the rail is set in */
+  const pMax = () => 40 + 1.2 * (parseFloat(getComputedStyle(shelves[0].b).fontSize) || 32);
   const fitRail = () => {
     const avail = railH();
     if (!avail) return;
-    const spare = avail - N * P_EASY - (N - 1) - askBox.offsetHeight;
-    let p = P_EASY, h = 0;
-    if (spare - FIX >= REEL_MIN) {
-      h = Math.max(REEL_MIN, Math.min(REEL_MAX, spare - FIX - CHIP));
-      const rest = Math.max(0, spare - FIX - CHIP - h);
-      p += Math.min(rest, N * (P_MAX - P_EASY)) / N;
+    const P_MAX = pMax();
+    /* what the lines and the picture have to share */
+    let budget = avail - (N - 1) - askBox.offsetHeight - FIX;
+    let p, h = 0;
+    if (budget >= N * P_EASY + REEL_MIN) {
+      p = P_EASY; h = REEL_MIN;
+      let rest = budget - N * P_EASY - REEL_MIN;
+      const take = (want) => { const got = Math.min(rest, Math.max(0, want)); rest -= got; return got; };
+      h += take(REEL_MID - REEL_MIN);
+      p += take(N * (P_MID - p)) / N;
+      h += take(REEL_MAX - h);
+      p += take(N * (P_MAX - p)) / N;
     } else {
-      const rest = spare - FIX0;
-      p = rest >= 0 ? Math.min(P_MAX, P_EASY + rest / N) : Math.max(P_MIN, P_EASY + rest / N);
+      /* no room for the picture: the sentence keeps the drawer, and
+         the lines take what is left down to their floor */
+      const rest = avail - (N - 1) - askBox.offsetHeight - FIX0;
+      p = Math.max(P_MIN, Math.min(P_MAX, rest / N));
     }
     pitch0 = Math.floor(p); reelH = Math.floor(h);
     cvNav.classList.toggle("tight", !reelH);
@@ -7520,12 +7555,12 @@ if (!PHONE) {
     fitChips();
   };
   /* ── AND THE CHIPS TAKE FROM THE AIR ─────────────────────────────
-     The first chip stands in the room kept for it. Any more are paid
-     for by the air between the rules, a few pixels a line, down to
-     the floor of 44: the lines draw together on the drawer's own
-     clock as the chip opens. Only past that do chips stay off the
-     rail, the oldest first (their columns carry their own close). The
-     picture and the type are never what gives. */
+     A chip is paid for out of the air between the rules, a few pixels
+     a line, down to the floor of 44: the lines draw together on the
+     drawer's own clock as the chip opens, and back apart as it goes.
+     Only past that floor do chips stay off the rail, the oldest first
+     (their columns carry their own close). The picture and the type
+     are never what gives. */
   const chipsOf = (L) => [...L.chips.children];
   const chipsH = () => Object.values(byTag).reduce((a, L) => {
     const on = chipsOf(L).filter((c) => !c.hidden);
@@ -7535,6 +7570,8 @@ if (!PHONE) {
     const all = [...cvNav.querySelectorAll(".cvchip")];
     all.forEach((c) => { c.hidden = false; });
     const drawer = reelH ? FIX + reelH : FIX0;
+    /* a fraction of a pixel a line is 9 down the rail, and the last
+       of them is the question sliding off the foot */
     const room = (p) => railH() - N * p - (N - 1) - askBox.offsetHeight - drawer;
     const short = chipsH() - room(pitch0);
     const p = short > 0 ? Math.max(P_MIN, Math.floor(pitch0 - short / N)) : pitch0;
