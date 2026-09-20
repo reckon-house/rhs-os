@@ -780,8 +780,21 @@
   .tile.statement.head .hbody { position: relative; }
   /* the name's letters rise out of the name's own box from the
      baseline side, which, stood on its side, is the sentence's side;
-     flat on a phone they rise as the study's do */
-  .tile.statement.head .spine { overflow: hidden; }
+     flat on a phone they rise as the study's do.
+     CLIPPED WITH A MARGIN, NOT AT THE BOX (his note, 20 Sept 2026:
+     "on almost all the big type there's portion that is cropped, just
+     a bit, they almost all have it"). The mask is the box, and the box
+     is the line box: 0.8em, while the face's own em box is 1.36em. The
+     ink of caps very nearly fits that — at 124px it stood 1px proud —
+     and `overflow: hidden` shaved a half-pixel flat off the left of
+     every round letter. overflow-clip-margin holds the mask 0.1em
+     outside the box instead, which is LAYOUT-FREE: padding could not
+     do it, since the name is rotated about its own centre and a wider
+     box moves that centre. Measured against no mask at all: identical,
+     pixel for pixel. The letters now clear the mask a tenth of an em
+     before they land, which is the last few percent of an expo-out
+     and is not visible. */
+  .tile.statement.head .spine { overflow: hidden; overflow: clip; overflow-clip-margin: 0.1em; }
   .spine .rch { display: inline-block; transform: translateX(-110%);
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.7, 1) var(--d, 0ms); }
   .tile.statement.head.go .spine .rch { transform: none;
@@ -826,7 +839,6 @@
      (fitRail, fitChips). A phone keeps its sheet of chips. The rail is
      256px, the handoff's. */
   .abhead { letter-spacing: inherit; }
-  #rulesTop { display: none; }
   @media (min-width: 761px) {
     :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px);
       /* the top of the glass down to the foot of the head line: the burn's band */
@@ -837,22 +849,17 @@
     #coverline .covermark .fam { display: none; }
     #coverline .covermark:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
     #rules { top: 0; }
-    /* ── THE RULES ARE DRAWN IN TWO LAYERS ── the band at the top of
-       the glass is the burn (see #navBurn), and the melt bends a
-       hairline standing in it. So the field's own rules begin at the
-       band's foot, and the part inside the band is drawn again ABOVE
-       the lens (#rulesTop, mirrored in dressRules and panned in tick):
-       at rest the glass reads exactly as it did, and a picture passing
-       under the band melts behind straight rules. */
+    /* ── THE RULES STOP UNDER THE HEAD LINE ── as they stop above the
+       foot (his note, 20 Sept 2026: "the thin rules are somehow going
+       to the top of the page - they were cropped like the bottom").
+       They were: the band at the top is the burn, the melt bends a
+       hairline standing in it, so the rules were cut at the band's
+       foot and drawn again ABOVE the lens to keep them looking whole.
+       Whole was the mistake — the crop is the design, and a rule that
+       is not there cannot be bent. The redrawn layer is gone. */
     #rules i { background: linear-gradient(to bottom,
       transparent var(--burn-band), rgba(0, 0, 0, 0.13) var(--burn-band)); }
     .ccol::before { top: var(--burn-band); }
-    #rulesTop { display: block; position: fixed; z-index: 61; top: 0; right: 0; height: var(--burn-band);
-      left: calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap));
-      overflow: hidden; pointer-events: none; }
-    #rulesTop > div { position: absolute; top: 0; bottom: 0; left: 0; right: 0; will-change: transform; }
-    #rulesTop i { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0, 0, 0, 0.13); }
-    #rulesTop i.out { display: none; }
     /* a column resting in the peek would stand its name under the
        count, so the name waits until the column is on the glass */
     .ccol .chead .cchip:first-child { transition: opacity 0.3s ease; }
@@ -1246,8 +1253,9 @@
        the page is still until work passes under the band, and then the
        whole top of it goes off.
        What stands in the band at rest must not melt. The mark and the
-       count already ride above the bar (#coverline). The rules' tops
-       are redrawn above it (#rulesTop). The columns' names cannot be
+       count already ride above the bar (#coverline). The rules simply
+       stop under the head line, as they stop above the foot, so there
+       is no hairline in the band to bend. The columns' names cannot be
        lifted, they scroll inside their columns, so the lens is cut
        around each of them (lensHoles): a name is never under the
        glass, and nothing else ever stands where a name does.
@@ -1602,9 +1610,6 @@ if (/[?&]debug\b/.test(location.search)) (function () {
        stand here now, written by dressRules -->
   <span class="covermeta" aria-live="off"></span>
 </div>
-<!-- the tops of the field's rules, drawn above the burn's band so the
-     lens does not bend them (desktop; see #rulesTop) -->
-<div id="rulesTop" aria-hidden="true"><div></div></div>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
@@ -2446,9 +2451,8 @@ const COVER_AIR = px("--cover-air", 50);
    #navBurn), and what lets a name stand in it unmelted is the hole
    the lens is cut with around each one (lensHoles). */
 const HEAD_BAND = PHONE ? 0 : px("--head-band", 64);
-/* the rules open at the top of the glass at every width now; on a
-   desktop the part of each inside the burn's band is drawn above the
-   lens instead (#rulesTop) */
+/* the rules open at the top of the glass on a phone; on a desktop
+   they open under the head line, the crop the burn's band needs */
 /* a phone's band was 30; the count past the edge stands in it now, at
    16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
@@ -3103,8 +3107,6 @@ const TOUR = BOARD_HOUSE.tour;
 
 const plane = document.getElementById("plane");
 const rulesEl = document.getElementById("rules");
-/* the rules' tops, above the burn's band (desktop; see #rulesTop) */
-const rulesTopIn = (() => { const t = document.getElementById("rulesTop"); return (t && !PHONE) ? t.firstElementChild : null; })();
 let colIdx = 0;
 /* ── WHERE A COLUMN STANDS ─────────────────────────────────────────
    A column is anchored after one module of the field as dealt,
@@ -3775,25 +3777,7 @@ function dressRules() {
       c.classList.toggle("undercount", x0 < count[1] && x0 + r.width > count[0]);
     } else c.classList.remove("undercount");
   }
-  /* ── THE RULES' TOPS, ABOVE THE LENS ─────────────────────────────
-     One for each standing rule, at the same place, except a gutter a
-     column of two modules stands across: the column's paper covers
-     that rule below, and nothing covers this layer. */
-  if (rulesTopIn) {
-    const tops = rulesTopIn.children;
-    let n = 0;
-    for (let k = 0; k < kids.length; k++) {
-      const it = kids[k], d = it.__d;
-      if (d == null) continue;
-      let el = tops[n];
-      if (!el) { el = document.createElement("i"); rulesTopIn.appendChild(el); }
-      el.style.left = it.style.left;
-      const inside = ccols.some((c) => { const a = dispOf(c); return d > a && d < a + spanOf(c); });
-      el.className = (it.classList.contains("out") || inside) ? "out" : "";
-      n += 1;
-    }
-    while (tops.length > n) rulesTopIn.removeChild(tops[tops.length - 1]);
-  }
+
   /* ── HOW MANY ARE LEFT BELOW ─────────────────────────────────────
      A reading line sweeps from the top of the glass at the top of the
      column to its foot at the bottom, and a picture is behind you once
@@ -6554,7 +6538,6 @@ function tick() {
   }
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
-  if (rulesTopIn) rulesTopIn.style.transform = rulesEl.style.transform;
   /* and the lens stays cut around the names as they pan */
   if (turning) lensHoles();
   if (Math.abs(cur.x - lastMount.x) > 100) remount();
@@ -8002,8 +7985,6 @@ const measureLine = () => {
      declared long after it first runs */
   const mr = covermeta ? covermeta.getBoundingClientRect() : null;
   window.__countSpan = (mr && mr.width > 0 && !PHONE) ? [mr.left - 24, mr.right + 24] : null;
-  /* the top rules share the field's origin, inside the strip's box */
-  if (rulesTopIn) rulesTopIn.style.left = (LINE.fieldL - rulesTopIn.parentNode.getBoundingClientRect().left) + "px";
   dressRules();
 };
 /* on the window BEFORE the first measure: that measure dresses the
