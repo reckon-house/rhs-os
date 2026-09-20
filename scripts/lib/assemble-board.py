@@ -1028,32 +1028,32 @@ head = r'''<!doctype html>
     .tile.statement.head.about .abhead { color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
     .tile.statement.head.about .abhead:hover { color: var(--ink); }
     .tile.statement.head.about .abrow:first-child.open .abin {
-      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 14px)); }
+      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 26px)); }
 
     /* ── THE RAIL ── */
     #rdrawer .cvnav, .cvstack { display: block; }
     .cvline + .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
-    /* the name hangs from the rule above and sits close to the one
-       below, as the About column's rows do: a third of the air under
-       it, the rest over. Border-box, so the padding is inside the
-       pitch the fit measured. */
-    .cvrow { display: flex; align-items: flex-end; gap: 4px; width: 100%; box-sizing: border-box;
+    /* the name sits close to the rule above it and the air falls
+       below, as the About column's rows do and as the board reads
+       everywhere else: a third of the air over it, the rest under.
+       Border-box, so the padding is inside the pitch the fit
+       measured. */
+    .cvrow { display: flex; align-items: flex-start; gap: 4px; width: 100%; box-sizing: border-box;
       height: var(--cv-pitch, 50px);
-      padding: 0 0 calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.34);
+      padding: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.34) 0 0;
       background: none; border: 0; margin: 0; cursor: pointer; text-align: left;
       font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
       transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
         height 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
-        padding-bottom 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+        padding-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
     /* in ink: the line whose run is under the glass, and the one a
        hand has opened */
     .cvrow.front, .cvline.open .cvrow { color: var(--ink); }
     .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 6px; }
     /* the count rides the name's cap, not its foot */
     .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
-      margin-bottom: calc(var(--st-fs) * 1.2 - 16px);
-      font-variant-numeric: tabular-nums; }
+      margin-top: 4px; font-variant-numeric: tabular-nums; }
     /* a shelf's drawer: the live rail's own fold (0fr to 1fr), with
        its matter a beat behind the structure, as it was there */
     .cvbody { display: grid; grid-template-rows: 0fr; cursor: pointer;
@@ -1120,13 +1120,15 @@ head = r'''<!doctype html>
      one module and scrolls. */
   .tile.statement.head.about .abfolds { position: relative; border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .abrow + .abrow { border-top: 1px solid rgba(0, 0, 0, 0.1); }
-  /* ── ANCHORED TO THE RULE BELOW ── his call (20 Sept 2026): the
-     names sat midway between their two rules, and he wants them held
-     to the one under them. The air is split 26 over, 14 under, which
-     with the line's own leading reads as about two to one. The row's
-     pitch is what it was, 40 of air either way. */
+  /* ── ANCHORED TO THE RULE ABOVE ── his call (20 Sept 2026): the
+     names sat midway between their two rules, so they were held to
+     one of them; anchored below first, and flipped an hour later on
+     his note that the board holds text "closer to the top of the line
+     than the bottom" everywhere else. The air is split 14 over, 26
+     under, which with the line's own leading reads as about one to
+     three. The row's pitch is what it was, 40 of air either way. */
   .abhead { display: flex; justify-content: space-between; align-items: center; width: 100%;
-    background: none; border: 0; padding: 26px 0 14px; margin: 0; cursor: pointer;
+    background: none; border: 0; padding: 14px 0 26px; margin: 0; cursor: pointer;
     font: inherit; color: inherit; text-align: left; }
   .abrow:first-child .abhead { padding-top: 0; }
   .abhead:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
