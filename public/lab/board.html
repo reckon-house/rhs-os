@@ -813,10 +813,6 @@
   @media (min-width: 761px) {
     :root { --ix-note-w: 256px; }
     #rdrawer .cvnav { display: flex; flex-direction: column; align-items: stretch; }
-    /* the open columns' chips at the rail's foot, over the way back, so
-       nothing above the stack moves when a column opens */
-    #pathwrap { margin-top: auto; }
-    #pathwrap + #homewrap { margin-top: 0; }
     .cvstack { display: flex; flex-direction: column; align-items: flex-start; }
     .cvrow { display: flex; align-items: flex-start; gap: 4px;
       background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
@@ -833,7 +829,10 @@
     /* the question, under Ask: the field rides this slot (placeAsk) at
        this size, and never parks in the bar on a desktop */
     #rdrawer .cvask { font-size: 22px; line-height: 1.2; margin-top: 10px; }
-    .cvreel { width: 100%; aspect-ratio: 256 / 170; margin-top: 30px; border-radius: var(--r); }
+    /* the picture is what a shorter window takes from, not the lines:
+       its height is the room the stack and the question leave, capped
+       at the handoff's 170 and gone under 80 (fitCover) */
+    .cvreel { width: 100%; height: var(--reel-h, 170px); margin-top: 30px; border-radius: var(--r); }
     /* the study on screen, in a tile caption's own two registers */
     .cvcap { margin-top: 10px; font-size: 12px; line-height: 1.45; min-height: 2.9em; }
     .cvcap b { font-weight: 600; }
@@ -6149,17 +6148,20 @@ function drawPath() {
   writeRow();
   markFamily();
   dressRules();
+  /* ── THE CHIPS ARE THE PHONE'S ────────────────────────────────────
+     Every open column already carries its own name and its × at its
+     head, on the glass; the rail listed them a second time, and that
+     list is what made the index three different sizes as it grew (his
+     note, 20 Sept 2026: "there's actually 3 different sized and styled
+     left nav rails"). The rail is one size now and the list is gone
+     from it. A phone keeps it: there the columns' heads are behind the
+     sheet the rail lives in, so it is the only way between them. */
+  if (!PHONE) return;
   let wrap = document.getElementById("pathwrap");
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
     const rd = document.getElementById("rdrawer");
-    /* over the lines of the cover, the open columns' chips pushed the
-       stack down the rail every time a column opened, and the cover's
-       whole idea is a stack that never moves. On a desktop they stand
-       at the rail's foot instead, over the way back. */
-    const foot = document.getElementById("homewrap");
-    if (!PHONE && foot) foot.parentNode.insertBefore(wrap, foot);
-    else rd.parentNode.insertBefore(wrap, rd);
+    rd.parentNode.insertBefore(wrap, rd);
   }
   wrap.innerHTML = "";
   ccols.forEach((c) => {
@@ -7211,53 +7213,49 @@ if (!PHONE) {
   };
   activate("open", true);
 
-  /* ── THE STACK FITS THE ROOM IT HAS ───────────────────────────────
-     Between the top of the rail and the open columns' chips and the
-     way back at the foot. Measured, not modelled: the rail spaces its
+  /* ── THE STACK FITS THE WINDOW ────────────────────────────────────
+     Between the top of the rail and the way back at its foot, and
+     nothing else: what a visitor opens never moves or resizes the
+     index. Measured, not modelled: the rail spaces its
      parts with its own gap. The way back stands at the rail's foot
      while everything fits (margin-top: auto) and is pushed past it by
      whatever does not; nine lines give 9.18px of height for every
-     pixel of type. The lines keep 46 while the reel fits, come down
-     to 34, then the reel and the caption step aside and the lines
-     stand at full size again. The question rides the stack, so it is
-     placed again after. */
+     pixel of type. The lines and the question ARE the rail, so they
+     keep the handoff's 46 and the picture takes whatever room they
+     leave: the handoff's 170 where it fits, a letterbox where it does
+     not, and gone under 80 with its caption. Only a window too short
+     for the lines themselves brings them down. The question rides the
+     stack, so it is placed again after. */
   const fitCover = () => {
     const rail = document.getElementById("railwrap"), foot = document.getElementById("homewrap");
     if (!rail || !foot) return;
-    const over = (fs) => {
-      cvNav.style.setProperty("--cv-fs", fs + "px");
-      return foot.getBoundingClientRect().bottom - rail.getBoundingClientRect().bottom;
-    };
+    const over = () => foot.getBoundingClientRect().bottom - rail.getBoundingClientRect().bottom;
+    const setFs = (fs) => cvNav.style.setProperty("--cv-fs", fs + "px");
+    const setReel = (h) => cvNav.style.setProperty("--reel-h", h + "px");
     const settle = () => { if (window.placeAsk) placeAsk(); };
-    const LINES = 9 * 1.02;
-    cvNav.classList.remove("tight");
-    let o = over(46);
-    if (o <= 0.5) return settle();
-    if (46 - o / LINES >= 28) { over(Math.floor(46 - o / LINES)); return settle(); }
-    cvNav.classList.add("tight");
-    o = over(46);
-    if (o > 0.5) over(Math.max(28, Math.floor(46 - o / LINES)));
+    const LINES = 9 * 1.02, CAP = 45;
+    /* the index first, at the handoff's 46: the lines and the question
+       are the rail, and they come down only when even they do not fit */
+    cvNav.classList.add("tight"); setFs(46); setReel(0);
+    let o = over();
+    if (o > 0.5) { setFs(Math.max(28, Math.floor(46 - o / LINES))); return settle(); }
+    /* then the picture takes what they leave, up to the handoff's box,
+       and stands down rather than shrink past a letterbox. The room is
+       the air over the way back, not the overflow: the foot's margin
+       is auto, so it eats the slack and the overflow reads zero
+       however much room there is. */
+    const air = foot.getBoundingClientRect().top - askBox.getBoundingClientRect().bottom - 24;
+    const h = Math.min(170, Math.floor(air) - 30 - CAP);
+    if (h >= 80) {
+      cvNav.classList.remove("tight");
+      setReel(h);
+      if (over() > 0.5) { cvNav.classList.add("tight"); setReel(0); }
+    }
     settle();
   };
-  /* the chips' list is made the first time a column opens, so the rail
-     is watched for its arrival and the list for its chips; never the
-     rail's whole subtree, where the reel adds a layer every beat. A
-     chip grows in, so it is measured again once it has. */
-  let pathSeen = null, refit = 0;
-  const onPath = () => {
-    fitCover();
-    clearTimeout(refit); refit = setTimeout(fitCover, 450);
-  };
-  const watchPath = () => {
-    const pw = document.getElementById("pathwrap");
-    if (pw && pw !== pathSeen) {
-      pathSeen = pw;
-      new MutationObserver(onPath).observe(pw, { childList: true, subtree: true });
-    }
-    onPath();
-  };
-  new MutationObserver(watchPath).observe(document.getElementById("railwrap"), { childList: true });
-  watchPath();
+  /* once, and then only when the window changes: nothing a visitor
+     opens may resize the index. */
+  fitCover();
   addEventListener("resize", fitCover, { passive: true });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCover);
 }
