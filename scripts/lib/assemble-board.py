@@ -945,26 +945,37 @@ head = r'''<!doctype html>
      the rules and then the picture, never the type (fitRail). A phone
      keeps its sheet of chips. The rail is 256px, the handoff's. */
   .abhead { letter-spacing: inherit; }
+  #rulesTop { display: none; }
   @media (min-width: 761px) {
-    :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px); }
+    :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px);
+      /* the top of the glass down to the foot of the head line: the burn's band */
+      --burn-band: calc(var(--cover-air, 50px) + var(--st-fs) * 1.2 + 8px); }
     /* the mark, on the head line, and a press on it goes home */
     #coverline .covermark { font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em;
       line-height: 1.2; padding-top: 0; margin-top: 4px; pointer-events: auto; cursor: pointer; }
     #coverline .covermark .fam { display: none; }
     #coverline .covermark:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
     #rules { top: 0; }
-    .ccol::before { top: 0; }
-    /* the one rule that rests under the count's pill still begins at
-       the pill's foot, as every rule did while the pill spanned the
-       bar: the melt bends a hairline standing in it (dressRules) */
-    #rules i.underpill { background: linear-gradient(to bottom,
-      transparent calc(var(--cover-air, 50px) + var(--burn-foot, 26px)),
-      rgba(0, 0, 0, 0.13) calc(var(--cover-air, 50px) + var(--burn-foot, 26px))); }
-    .ccol.underpill::before { top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); }
-    /* and a column resting there is the peek: its name would stand
-       under the count, so it waits until the column is on the glass */
+    /* ── THE RULES ARE DRAWN IN TWO LAYERS ── the band at the top of
+       the glass is the burn (see #navBurn), and the melt bends a
+       hairline standing in it. So the field's own rules begin at the
+       band's foot, and the part inside the band is drawn again ABOVE
+       the lens (#rulesTop, mirrored in dressRules and panned in tick):
+       at rest the glass reads exactly as it did, and a picture passing
+       under the band melts behind straight rules. */
+    #rules i { background: linear-gradient(to bottom,
+      transparent var(--burn-band), rgba(0, 0, 0, 0.13) var(--burn-band)); }
+    .ccol::before { top: var(--burn-band); }
+    #rulesTop { display: block; position: fixed; z-index: 61; top: 0; right: 0; height: var(--burn-band);
+      left: calc(var(--gut) + var(--ix-note-w, 180px) + var(--ixgap));
+      overflow: hidden; pointer-events: none; }
+    #rulesTop > div { position: absolute; top: 0; bottom: 0; left: 0; right: 0; will-change: transform; }
+    #rulesTop i { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0, 0, 0, 0.13); }
+    #rulesTop i.out { display: none; }
+    /* a column resting in the peek would stand its name under the
+       count, so the name waits until the column is on the glass */
     .ccol .chead .cchip:first-child { transition: opacity 0.3s ease; }
-    .ccol.underpill .chead .cchip:first-child { opacity: 0; pointer-events: none; }
+    .ccol.undercount .chead .cchip:first-child { opacity: 0; pointer-events: none; }
     /* ── A COLUMN'S NAME, ON THE HEAD LINE ── the chip that named it,
        in the statement's type and the second register, its close
        beside it as the accordion's minus is; what is next keeps the
@@ -1337,12 +1348,26 @@ head = r'''<!doctype html>
     /* the burn sits behind the line it exists to keep legible, from
        the first frame — it is the work passing under the masthead
        that the effect is for, and that starts at the first scroll */
-    /* THE COUNT'S ALONE since the head line (20 Sept 2026): it spanned
-       the bar, and the columns' names stand on that line now, where a
-       displacement filter would ripple them at rest. The mark stands
-       over the rail, where no work passes, and needs none. */
-    #navBurn { top: calc(var(--cover-air, 50px) - 9px); bottom: auto; height: 35px;
-      left: auto; width: 132px; background: none; }
+    /* ── THE WHOLE TOP OF THE GLASS IS THE BURN ── his idea (20 Sept
+       2026): "what if we made the whole top part of the page the burn
+       bar? make it one big surprise". A pill round a 12px line became
+       a band from the top of the glass to the foot of the head line,
+       edge to edge. Over paper it does nothing, which is the point:
+       the page is still until work passes under the band, and then the
+       whole top of it goes off.
+       What stands in the band at rest must not melt. The mark and the
+       count already ride above the bar (#coverline). The rules' tops
+       are redrawn above it (#rulesTop). The columns' names cannot be
+       lifted, they scroll inside their columns, so the lens is cut
+       around each of them (lensHoles): a name is never under the
+       glass, and nothing else ever stands where a name does.
+       No tint: the driver writes a cream wash that warms with the
+       heat, and over a band this size on white paper it would read as
+       a bar arriving. And it no longer stands down over a black room;
+       that was the wash's light band too, and the wash is gone. */
+    #navBurn { top: 0; bottom: auto; left: 0; right: 0; width: auto; height: var(--burn-band);
+      border-radius: 0; background: none !important; }
+    #nav #navBurn.rev { opacity: 1; }
     html.rh-home body.coverbar #nav [data-burn] { opacity: 1; }
   }
   @media (max-width: 760px) {
@@ -1686,6 +1711,9 @@ if (/[?&]debug\b/.test(location.search)) (function () {
        stand here now, written by dressRules -->
   <span class="covermeta" aria-live="off"></span>
 </div>
+<!-- the tops of the field's rules, drawn above the burn's band so the
+     lens does not bend them (desktop; see #rulesTop) -->
+<div id="rulesTop" aria-hidden="true"><div></div></div>
 
 <div id="cmdSheet"><div><div id="cmdIn"></div></div></div>
 
@@ -2523,13 +2551,13 @@ const COVER_AIR = px("--cover-air", 50);
    every column's name on one line at the cover's air, in the
    statement's type, so the band holds a 35px line and the air under
    it; the 12px masthead's 46 would have stood the ledes against
-   their own heads. The pill that melted anything born here is the
-   count's alone on a desktop now (see #navBurn), which is what lets
-   the heads stand in the band at all. */
+   their own heads. The burn covers this whole band on a desktop (see
+   #navBurn), and what lets a name stand in it unmelted is the hole
+   the lens is cut with around each one (lensHoles). */
 const HEAD_BAND = PHONE ? 0 : px("--head-band", 64);
-/* the rules open at the top of the glass at every width now; only the
-   one resting under the count's pill still starts at the pill's foot,
-   and that is the stylesheet's --burn-foot (see #rules i.underpill) */
+/* the rules open at the top of the glass at every width now; on a
+   desktop the part of each inside the burn's band is drawn above the
+   lens instead (#rulesTop) */
 /* a phone's band was 30; the count past the edge stands in it now, at
    16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
@@ -3184,6 +3212,8 @@ const TOUR = BOARD_HOUSE.tour;
 
 const plane = document.getElementById("plane");
 const rulesEl = document.getElementById("rules");
+/* the rules' tops, above the burn's band (desktop; see #rulesTop) */
+const rulesTopIn = (() => { const t = document.getElementById("rulesTop"); return (t && !PHONE) ? t.firstElementChild : null; })();
 let colIdx = 0;
 /* ── WHERE A COLUMN STANDS ─────────────────────────────────────────
    A column is anchored after one module of the field as dealt,
@@ -3823,10 +3853,9 @@ function dressRules() {
      ink still begins on the line the columns' matter begins on */
   const band = TOP0;
   const RT = 0;
-  /* the count's pill, as the masthead measured it (measureLine); a
-     rule resting under it starts at its foot (see the rules' CSS) */
-  const pill = PHONE ? null : (window.__pillSpan || null);
-  const underPill = (x) => x > pill[0] - 2 && x < pill[1] + 2;
+  /* where the count stands, as the masthead measured it (measureLine):
+     a column's name resting under it waits (see .undercount) */
+  const count = PHONE ? null : (window.__countSpan || null);
   const draw = (rg, f, off) => {
     if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.classList.remove("on"); return; }
     const H = rulesEl.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
@@ -3841,8 +3870,6 @@ function dressRules() {
   for (let k = 0; k < kids.length; k++) {
     const it = kids[k], d = it.__d, rg = it.firstChild;
     if (d == null || !rg) continue;
-    /* where it will rest, not where the pan has it now */
-    if (pill) it.classList.toggle("underpill", underPill(it.getBoundingClientRect().left + (cur.x - tgt.x)));
     /* a study column stands on this rule and draws its own edge */
     if (atDisp(d).col) { rg.classList.remove("on"); continue; }
     draw(rg, scrollerAt(d - 1), 0);
@@ -3850,7 +3877,31 @@ function dressRules() {
   for (const c of ccols) {
     if (!c.__rg) { c.__rg = document.createElement("span"); c.__rg.className = "rg"; c.appendChild(c.__rg); }
     draw(c.__rg, scrollerAt(dispOf(c) - 1), RT);
-    if (pill) c.classList.toggle("underpill", underPill(c.getBoundingClientRect().left + (cur.x - tgt.x)));
+    /* where the name will rest, not where the pan has it now */
+    const nm = count ? c.querySelector(".chead .cchip") : null;
+    if (nm) {
+      const r = nm.getBoundingClientRect(), x0 = r.left + (cur.x - tgt.x);
+      c.classList.toggle("undercount", x0 < count[1] && x0 + r.width > count[0]);
+    } else c.classList.remove("undercount");
+  }
+  /* ── THE RULES' TOPS, ABOVE THE LENS ─────────────────────────────
+     One for each standing rule, at the same place, except a gutter a
+     column of two modules stands across: the column's paper covers
+     that rule below, and nothing covers this layer. */
+  if (rulesTopIn) {
+    const tops = rulesTopIn.children;
+    let n = 0;
+    for (let k = 0; k < kids.length; k++) {
+      const it = kids[k], d = it.__d;
+      if (d == null) continue;
+      let el = tops[n];
+      if (!el) { el = document.createElement("i"); rulesTopIn.appendChild(el); }
+      el.style.left = it.style.left;
+      const inside = ccols.some((c) => { const a = dispOf(c); return d > a && d < a + spanOf(c); });
+      el.className = (it.classList.contains("out") || inside) ? "out" : "";
+      n += 1;
+    }
+    while (tops.length > n) rulesTopIn.removeChild(tops[tops.length - 1]);
   }
   /* ── HOW MANY ARE LEFT BELOW ─────────────────────────────────────
      A reading line sweeps from the top of the glass at the top of the
@@ -3925,6 +3976,68 @@ function dressRules() {
     /* the burn reads the slot's middle, and the text just changed width */
     if (window.__measureLine) window.__measureLine();
   }
+  lensHoles();
+}
+/* ── THE LENS IS CUT AROUND THE NAMES ───────────────────────────────
+   The burn's band covers the head line, and a displacement filter
+   bends whatever stands under it, moving or not. A column's name
+   stands there at rest, so the lens has a hole where each name is: a
+   clip-path with the names' boxes punched out, a little over the
+   filter's 9px reach so nothing outside a hole can sample the letters
+   inside it. The hole follows its name: as the row pans (tick), as
+   the column scrolls or the columns change (dressRules), and through
+   the half second a column takes to open or fold (lensFollow). A name
+   and its column's matter move together, so nothing but the name and
+   paper is ever inside a hole. State rides on the function: this is
+   called at boot, long before a `let` beside it would exist. */
+function lensHoles() {
+  if (PHONE) return;
+  const burn = lensHoles.el || (lensHoles.el = document.getElementById("navBurn"));
+  if (!burn) return;
+  const br = burn.getBoundingClientRect();
+  if (!br.width || !br.height) return;
+  const W = Math.round(br.width), H = Math.round(br.height);
+  const holes = [];
+  const cut = (r, mx, y0, y1) => {
+    if (r.width < 2 || r.right <= br.left || r.left >= br.right) return;
+    holes.push([Math.max(0, r.left - br.left - mx), Math.max(0, y0), Math.min(W, r.right - br.left + mx), Math.min(H, y1)]);
+  };
+  /* AND A BLACK ROOM IS OUT OF THE LENS WHOLE. Its edges are the
+     hardest lines on the glass, black against paper, and the melt
+     stood them in waves at rest. The pill used to stand down entirely
+     while a black room was under it; a band this wide cannot, so it
+     steps round the room instead. Nothing the burn is for passes
+     there, and the room's own name is inside the room's hole. */
+  document.querySelectorAll(".ccol.dark:not(.closing)").forEach((c) => cut(c.getBoundingClientRect(), 12, 0, H));
+  document.querySelectorAll(".ccol:not(.closing):not(.undercount):not(.dark) .chead .cchip:first-child, "
+    + ".tile.statement.head.about .abrow:first-child .abhead").forEach((nm) => {
+    /* a head that is building lays copies of its lines over itself
+       (buildIn), each in its own band: the name is the one underneath */
+    if (nm.closest(".bld")) return;
+    const r = nm.getBoundingClientRect();
+    if (r.bottom <= br.top || r.top >= br.bottom) return;
+    cut(r, 12, r.top - br.top - 10, r.bottom - br.top + 10);
+  });
+  /* even-odd turns the lens back ON where two holes overlap, so no
+     two may: left to right, each begins where the last one ended */
+  holes.sort((p, q) => p[0] - q[0]);
+  let d = "M0 0H" + W + "V" + H + "H0Z", edge = -1;
+  holes.forEach(([x0, y0, x1, y1]) => {
+    x0 = Math.max(x0, edge);
+    if (x1 - x0 < 1 || y1 - y0 < 1) return;
+    edge = x1;
+    d += "M" + x0.toFixed(1) + " " + y0.toFixed(1) + "H" + x1.toFixed(1) + "V" + y1.toFixed(1) + "H" + x0.toFixed(1) + "Z";
+  });
+  if (d === lensHoles.sig) return;
+  lensHoles.sig = d;
+  burn.style.clipPath = "path(evenodd, \"" + d + "\")";
+}
+function lensFollow(ms) {
+  if (PHONE) return;
+  const t0 = performance.now();
+  const f = () => { lensHoles(); if (performance.now() - t0 < ms) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+  setTimeout(lensHoles, ms + 60);
 }
 /* a column of the field: its own scroller, at its own module, kept at
    whatever height the deal dealt and returned to wherever it was left */
@@ -4185,7 +4298,13 @@ function mount(t, gx, gy, u, f) {
         el.__went = true;
         setTimeout(() => {
           el.classList.add("go");
-          if (hb) { hb.classList.remove("building"); buildIn(hb, 120, 45); }
+          if (hb) {
+            hb.classList.remove("building");
+            const done = buildIn(hb, 120, 45);
+            /* the lens is cut round the About column's name, and the
+               build has just finished moving it */
+            if (t.about) setTimeout(lensHoles, (done || 1200) + 120);
+          }
         }, wait || 0);
       };
     }
@@ -6390,6 +6509,7 @@ function drawPath() {
   writeRow();
   markFamily();
   dressRules();
+  lensFollow(700);
   /* ── THE LIST IS THE PHONE'S; A DESKTOP'S CHIPS STAND IN THEIR LINES
      The rail listed the open columns under itself, and paid for the
      list by shrinking its type: three sizes of index as the row grew
@@ -6503,6 +6623,8 @@ function tick() {
     /* nothing opens under a moving row; what the cursor rests on
        when it stops does (armHover) */
     if (turning) hoverClose(); else hoverArm();
+    /* and the lens is cut again where the names have landed */
+    lensHoles();
   }
   if (turning) pokeBurn();
   /* ── THE ROW IS ON A SPRING ─────────────────────────────────────
@@ -6541,6 +6663,9 @@ function tick() {
   }
   /* the rules pan in X only, in the same frame, on the same thread */
   rulesEl.style.transform = "translate3d(" + (-cur.x) + "px,0,0)";
+  if (rulesTopIn) rulesTopIn.style.transform = rulesEl.style.transform;
+  /* and the lens stays cut around the names as they pan */
+  if (turning) lensHoles();
   if (Math.abs(cur.x - lastMount.x) > 100) remount();
   /* far from the start: a column open, the row moved, or the column
      being read taken well down its own length */
@@ -7543,13 +7668,26 @@ const measureLine = () => {
   const br = navBurn ? navBurn.getBoundingClientRect() : { left: 0, right: 0 };
   LINE = { mark: mid(covermark), meta: mid(covermeta), burnL: br.left, burnR: br.right,
     fieldL: field.getBoundingClientRect().left };
-  /* and the rules read the pill's span off the window: LINE is declared
-     long after dressRules first runs */
-  window.__pillSpan = (navBurn && br.right > br.left) ? [br.left, br.right] : null;
+  /* and dressRules reads the count's span off the window: LINE is
+     declared long after it first runs */
+  const mr = covermeta ? covermeta.getBoundingClientRect() : null;
+  window.__countSpan = (mr && mr.width > 0 && !PHONE) ? [mr.left - 24, mr.right + 24] : null;
+  /* the top rules share the field's origin, inside the strip's box */
+  if (rulesTopIn) rulesTopIn.style.left = (LINE.fieldL - rulesTopIn.parentNode.getBoundingClientRect().left) + "px";
   dressRules();
 };
-measureLine();
+/* on the window BEFORE the first measure: that measure dresses the
+   rules, the rules write the count for the first time, and a count
+   that has just changed width asks to be measured again. Assigned
+   after, the ask found nobody, and the count's span stayed empty until
+   the count next changed. */
 window.__measureLine = measureLine;
+measureLine();
+/* the first cut was made at boot, before the row's pan had been
+   applied, a gutter's half to the left of where the names stand: cut
+   again through the build, and once the faces have loaded */
+lensFollow(3000);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => lensFollow(300));
 addEventListener("resize", measureLine, { passive: true });
 /* every frame, and only arithmetic: where each black column stands on
    the screen is its place in the row minus the pan */
