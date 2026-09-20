@@ -820,9 +820,11 @@
      rules. The lines above it never move and every drawer is one
      height, so the line under the hand stays under the hand while the
      rest slide. A column open on the glass is a chip inside the line
-     it belongs to. What gives when room is short is the air between
-     the rules and then the picture, never the type (fitRail). A phone
-     keeps its sheet of chips. The rail is 256px, the handoff's. */
+     it belongs to. The picture is one size for a window, 4:3 and to
+     the right; what gives for a short window or a second chip is the
+     air between the rules, never the type and never the picture
+     (fitRail, fitChips). A phone keeps its sheet of chips. The rail is
+     256px, the handoff's. */
   .abhead { letter-spacing: inherit; }
   #rulesTop { display: none; }
   @media (min-width: 761px) {
@@ -894,13 +896,15 @@
       background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
       font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
-      transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+      transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+        height 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
     /* in ink: the line whose run is under the glass, and the one a
        hand has opened */
     .cvrow.front, .cvline.open .cvrow { color: var(--ink); }
     .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 6px; }
     .cvn { align-self: flex-start; font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
       margin-top: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) / 2 + 4px);
+      transition: margin-top 0.56s cubic-bezier(0.2, 0.7, 0.2, 1);
       font-variant-numeric: tabular-nums; }
     /* a shelf's drawer: the live rail's own fold (0fr to 1fr), with
        its matter a beat behind the structure, as it was there */
@@ -912,7 +916,12 @@
       transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
     .cvline.open .cvin > * { opacity: 1; transform: none;
       transition: opacity 0.45s ease 0.09s, transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 0.09s; }
-    .cvreel { width: 100%; height: var(--reel-h, 120px); margin-top: 2px; border-radius: var(--r); }
+    /* 4:3 and to the right (his call, 20 Sept 2026): the width is
+       stated, because a block's auto width fills its column whatever
+       aspect-ratio says. The chips' radius: the tiles' 16 is a lot of
+       corner on a box this small. */
+    .cvreel { height: var(--reel-h, 96px); width: calc(var(--reel-h, 96px) * 4 / 3);
+      margin: 2px 0 0 auto; border-radius: 12px; }
     /* two lines of room whatever the sentence runs to: every drawer is
        one height, or the list slips out from under the hand */
     .cvnote { margin: 10px 0 0; padding-bottom: 18px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
@@ -941,7 +950,7 @@
        (placeAsk) at the body's size, and never parks in the bar */
     #rdrawer .cvask { font-size: 20px; line-height: 1.2; padding-bottom: 14px; }
     @media (prefers-reduced-motion: reduce) {
-      .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > * { transition: none; }
+      .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow, .cvn { transition: none; }
     }
   }
   /* ── THE ABOUT COLUMN ─────────────────────────────────────────────
@@ -7335,11 +7344,11 @@ if (!PHONE) {
   /* ── A SHELF'S REEL ──────────────────────────────────────────────── */
   const mkReel = (box, frames) => {
     const R = { frames, f: 0, t: 0, timer: null, layers: [], on: false, primed: false };
-    /* a 256px box: the rung that fits it, not the 128px stamp's */
+    /* a box of 160px at its widest: the rung that fits it */
     const fit = (im, src) => {
       im.src = src;
       const ss = tileSrcSet(src);
-      if (ss) { im.srcset = ss; im.sizes = "256px"; }
+      if (ss) { im.srcset = ss; im.sizes = "160px"; }
     };
     const base = mk("img", "sz-fill");
     base.alt = ""; base.decoding = "async";
@@ -7347,7 +7356,7 @@ if (!PHONE) {
     const warm = (src) => { if (src) fit(new Image(), src); };
     const lay = (beat, dur) => {
       const L = szLayer(beat, R.frames, dur);
-      L.querySelectorAll("img").forEach((im) => { if (im.srcset) im.sizes = "256px"; });
+      L.querySelectorAll("img").forEach((im) => { if (im.srcset) im.sizes = "160px"; });
       box.appendChild(L);
       const under = R.layers.slice();
       R.layers.push(L);
@@ -7486,20 +7495,25 @@ if (!PHONE) {
 
   /* ── THE RAIL FITS THE WINDOW, AND THE TYPE NEVER PAYS ───────────
      Nine lines, the question, and room held at the foot for one
-     drawer. What a window gives or takes is the air between the rules
-     (44 to 74, 50 where the picture has to be paid for) and then the
-     picture (80 to 170; under 80 the sentence keeps the drawer alone).
-     In order: lines at 50 and a picture up to 120, then air to 56,
-     then the picture to its 170, then air to the comp's 74. Read from
-     the window alone, on load and on resize: nothing a visitor opens
-     re-spaces the lines. */
-  const N = 9, P_MIN = 44, P_EASY = 50, P_MID = 56, P_MAX = 74;
-  const REEL_MIN = 80, REEL_MID = 120, REEL_MAX = 170;
+     drawer and one chip. THE PICTURE IS ONE SIZE FOR A WINDOW, and
+     nothing a visitor opens changes it (his note, 20 Sept 2026: with a
+     chip standing, the other lines' drawers had lost their reels,
+     because a chip was paid for out of the picture and one chip took
+     it a pixel under its floor). It is 4:3 and stands to the right,
+     the live rail's stamp and his call the same day: the full-width
+     letterbox "completely fill[ed] the space and ma[de] the crops
+     difficult", and the room left of it is the drawer's negative
+     space. 72 to 120 tall; a window with no room for 72 keeps the
+     sentence alone, as before.
+     In order: lines at 50, then the picture up to 120 with a chip's
+     41 kept beside it, then air up to the comp's 74. */
+  const N = 9, P_MIN = 44, P_EASY = 50, P_MAX = 74;
+  const REEL_MIN = 72, REEL_MAX = 120, CHIP = 41;
   /* the drawer without its picture: 2 over the reel, 10 under it, two
      lines of sentence (2.9em of 12px) and 18 of foot; and with no
      picture at all */
   const FIX = 65, FIX0 = 53;
-  let reelBase = 0, pitch = P_EASY;
+  let reelH = 0, pitch0 = P_EASY, pitch = P_EASY;
   const railH = () => { const r = document.getElementById("railwrap"); return r ? r.clientHeight : 0; };
   const fitRail = () => {
     const avail = railH();
@@ -7507,24 +7521,25 @@ if (!PHONE) {
     const spare = avail - N * P_EASY - (N - 1) - askBox.offsetHeight;
     let p = P_EASY, h = 0;
     if (spare - FIX >= REEL_MIN) {
-      h = Math.min(REEL_MID, spare - FIX);
-      let rest = spare - FIX - h;
-      const air = Math.min(rest, N * (P_MID - P_EASY)); p += air / N; rest -= air;
-      const pic = Math.min(rest, REEL_MAX - h); h += pic; rest -= pic;
-      p += Math.min(rest, N * (P_MAX - p)) / N;
+      h = Math.max(REEL_MIN, Math.min(REEL_MAX, spare - FIX - CHIP));
+      const rest = Math.max(0, spare - FIX - CHIP - h);
+      p += Math.min(rest, N * (P_MAX - P_EASY)) / N;
     } else {
       const rest = spare - FIX0;
       p = rest >= 0 ? Math.min(P_MAX, P_EASY + rest / N) : Math.max(P_MIN, P_EASY + rest / N);
     }
-    pitch = Math.floor(p); reelBase = Math.floor(h);
-    cvNav.style.setProperty("--cv-pitch", pitch + "px");
+    pitch0 = Math.floor(p); reelH = Math.floor(h);
+    cvNav.classList.toggle("tight", !reelH);
+    if (reelH) cvNav.style.setProperty("--reel-h", reelH + "px");
     fitChips();
   };
-  /* ── AND THE CHIPS TAKE FROM THE PICTURE ─────────────────────────
-     A chip stands in the room the drawer was promised, so the picture
-     gives it up, and stands down under 80 as it does for a short
-     window. Past that the newest chips stay off the rail: their
-     columns carry their own close. */
+  /* ── AND THE CHIPS TAKE FROM THE AIR ─────────────────────────────
+     The first chip stands in the room kept for it. Any more are paid
+     for by the air between the rules, a few pixels a line, down to
+     the floor of 44: the lines draw together on the drawer's own
+     clock as the chip opens. Only past that do chips stay off the
+     rail, the oldest first (their columns carry their own close). The
+     picture and the type are never what gives. */
   const chipsOf = (L) => [...L.chips.children];
   const chipsH = () => Object.values(byTag).reduce((a, L) => {
     const on = chipsOf(L).filter((c) => !c.hidden);
@@ -7533,13 +7548,16 @@ if (!PHONE) {
   const fitChips = () => {
     const all = [...cvNav.querySelectorAll(".cvchip")];
     all.forEach((c) => { c.hidden = false; });
-    const room = railH() - N * pitch - (N - 1) - askBox.offsetHeight - FIX0;
-    for (let i = all.length - 1; i >= 0 && chipsH() > room; i--) all[i].hidden = true;
+    const drawer = reelH ? FIX + reelH : FIX0;
+    const room = (p) => railH() - N * p - (N - 1) - askBox.offsetHeight - drawer;
+    const short = chipsH() - room(pitch0);
+    const p = short > 0 ? Math.max(P_MIN, Math.floor(pitch0 - short / N)) : pitch0;
+    /* the oldest first: what was opened last is what is being read */
+    all.sort((x, y) => (x.__seq || 0) - (y.__seq || 0));
+    for (let i = 0; i < all.length && chipsH() > room(p); i++) all[i].hidden = true;
+    pitch = p;
+    cvNav.style.setProperty("--cv-pitch", p + "px");
     Object.values(byTag).forEach((L) => L.cell.classList.toggle("chipped", chipsOf(L).some((c) => !c.hidden)));
-    const h = reelBase ? reelBase - chipsH() : 0;
-    const tight = h < REEL_MIN;
-    cvNav.classList.toggle("tight", tight);
-    if (!tight) cvNav.style.setProperty("--reel-h", Math.floor(h) + "px");
     follow();
   };
 
@@ -7563,7 +7581,7 @@ if (!PHONE) {
     const L = byTag[ownerOf(c)];
     return (L && L.label === c.__caption) ? "Open" : c.__caption;
   };
-  let chipSig = "";
+  let chipSig = "", chipSeq = 0;
   window.__railChips = () => {
     const sig = ccols.map((c) => ownerOf(c) + ":" + chipName(c)).join("|");
     if (sig === chipSig) return;
@@ -7574,6 +7592,9 @@ if (!PHONE) {
       if (!L) return;
       const chip = mk("button", "cvchip");
       chip.type = "button";
+      /* the order the columns were opened in, for what stands down first */
+      if (!c.__seq) c.__seq = ++chipSeq;
+      chip.__seq = c.__seq;
       chip.appendChild(mk("span", null, chipName(c)));
       const x = mk("span", "cvx", "×");
       x.setAttribute("aria-label", "Close " + c.__caption);
