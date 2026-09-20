@@ -918,48 +918,141 @@ head = r'''<!doctype html>
     transition: opacity 0.7s ease var(--lag, 0s),
       transform 0.7s cubic-bezier(0.2, 0.55, 0.2, 1) var(--lag, 0s); }
   #rdrawer .bin.on { opacity: 1; transform: none; }
-  /* ── THE RAIL IS THE INDEX ───────────────────────────────────────
-     His Coverlines concept (Claude Design, Rail Concepts board 02;
-     handoff in columns/handoff/rail-coverlines), back on the rail once
-     the intro moved into the About column (19 Sept 2026): the six
-     shelves as the lines of a magazine cover, then About, Connect and
-     Ask as three more lines. The question's field stands under Ask,
-     in the statement's clothes at the rail's size, so asking is on
-     the glass wherever the row is; one reel under the stack plays the
-     line the hand rests on, captioned with the study on screen. A
-     phone keeps its sheet of chips. Resting lines wear the board's
-     grey (0.42 ink), the handoff's accessible option. The rail is
-     256px, the handoff's; the field pays the 76px that
-     board-shell.css's 180 gave it. */
+  /* ── THE HEAD LINE, AND THE RAIL UNDER IT ────────────────────────
+     His comp (20 Sept 2026), after the index had stood at three sizes:
+     ONE size. The mark, the rail's lines, every column's name and the
+     ledes all wear the statement's type, so the board carries four
+     sizes (the names on their sides, the statement's, the body's 20
+     and the captions' 12) where it had eight.
+
+     THE HEAD LINE is the cover's air: the mark stands on it over the
+     rail and is the way home (it took Back to start's press, and that
+     chip is a phone's now), and every column's name stands on it too,
+     in the second register, with its own close. The matter begins one
+     band under it, on one line across the rail, the field and the
+     columns. The rules run the whole glass, so a name stands between
+     them as in a table.
+
+     THE RAIL is nine lines between hairlines: the six shelves, About,
+     Connect, Ask. A shelf's line opens under a resting hand, as the
+     live rail's chips did and on the same clock (0.56s on the
+     drawer's curve, which is the About column's too): the reel of
+     that shelf and its sentence, on the paper, between its own two
+     rules. The lines above it never move and every drawer is one
+     height, so the line under the hand stays under the hand while the
+     rest slide. A column open on the glass is a chip inside the line
+     it belongs to. What gives when room is short is the air between
+     the rules and then the picture, never the type (fitRail). A phone
+     keeps its sheet of chips. The rail is 256px, the handoff's. */
+  .abhead { letter-spacing: inherit; }
   @media (min-width: 761px) {
-    :root { --ix-note-w: 256px; }
-    #rdrawer .cvnav { display: flex; flex-direction: column; align-items: stretch; }
-    .cvstack { display: flex; flex-direction: column; align-items: flex-start; }
-    .cvrow { display: flex; align-items: flex-start; gap: 4px;
-      background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
-      font: inherit; font-size: var(--cv-fs, 46px); font-weight: 700;
-      letter-spacing: -0.045em; line-height: 1.02; text-align: left;
+    :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px); }
+    /* the mark, on the head line, and a press on it goes home */
+    #coverline .covermark { font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em;
+      line-height: 1.2; padding-top: 0; margin-top: 4px; pointer-events: auto; cursor: pointer; }
+    #coverline .covermark .fam { display: none; }
+    #coverline .covermark:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
+    #rules { top: 0; }
+    .ccol::before { top: 0; }
+    /* the one rule that rests under the count's pill still begins at
+       the pill's foot, as every rule did while the pill spanned the
+       bar: the melt bends a hairline standing in it (dressRules) */
+    #rules i.underpill { background: linear-gradient(to bottom,
+      transparent calc(var(--cover-air, 50px) + var(--burn-foot, 26px)),
+      rgba(0, 0, 0, 0.13) calc(var(--cover-air, 50px) + var(--burn-foot, 26px))); }
+    .ccol.underpill::before { top: calc(var(--cover-air, 50px) + var(--burn-foot, 26px)); }
+    /* and a column resting there is the peek: its name would stand
+       under the count, so it waits until the column is on the glass */
+    .ccol .chead .cchip:first-child { transition: opacity 0.3s ease; }
+    .ccol.underpill .chead .cchip:first-child { opacity: 0; pointer-events: none; }
+    /* ── A COLUMN'S NAME, ON THE HEAD LINE ── the chip that named it,
+       in the statement's type and the second register, its close
+       beside it as the accordion's minus is; what is next keeps the
+       chip's clothes on a line of its own */
+    .ccol .cin { padding-top: var(--cover-air, 50px); }
+    .ccol .chead { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start;
+      align-content: start; gap: 10px; box-sizing: border-box;
+      min-height: var(--head-band); padding-bottom: 16px; margin-bottom: 0; }
+    .ccol .chead .cchip:first-child { background: none; border-radius: 0; padding: 0; gap: 14px;
+      align-items: flex-start; max-width: calc(100% - 110px);
+      font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
+      color: rgba(0, 0, 0, 0.42); }
+    .ccol.dark .chead .cchip:first-child { background: none; color: rgba(255, 255, 255, 0.5); }
+    .ccol .chead .cx { position: relative; flex: none; box-sizing: content-box;
+      width: 14px; height: 14px; padding: 12px; font-size: 0; color: inherit;
+      margin: calc((var(--st-fs) * 1.2 - 14px) / 2 - 12px) -12px -12px -12px; }
+    .ccol .chead .cx::before, .ccol .chead .cx::after { content: ""; position: absolute;
+      left: 12px; top: 18px; width: 14px; height: 2px; border-radius: 1px;
+      background: currentColor; transform: rotate(45deg); }
+    .ccol .chead .cx::after { transform: rotate(-45deg); }
+    .ccol .chead .cx:hover { color: var(--ink); }
+    .ccol.dark .chead .cx:hover { color: #fff; }
+    .ccol .cchip, .tile.statement.head .lchip { font-size: 12px; }
+    /* ── THE ABOUT COLUMN'S FIRST NAME STANDS THERE TOO ── the tile is
+       seated on the matter's line like any other, so it is lifted by
+       the band and its lede lands back on that line */
+    .tile.statement.head.about { margin-top: calc(-1 * var(--head-band)); }
+    .tile.statement.head.about .abhead { color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
+    .tile.statement.head.about .abhead:hover { color: var(--ink); }
+    .tile.statement.head.about .abrow:first-child.open .abin {
+      padding-top: max(0px, calc(var(--head-band) - var(--st-fs) * 1.2 - 20px)); }
+
+    /* ── THE RAIL ── */
+    #rdrawer .cvnav, .cvstack { display: block; }
+    .cvline + .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+    .cvrow { display: flex; align-items: center; gap: 4px; width: 100%; height: var(--cv-pitch, 50px);
+      background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
+      font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
       transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
-    /* front: the line whose run is under the glass, or under the hand;
-       lit: a room that is open, a field that has the hand */
-    .cvrow.front, .cvrow.lit { color: var(--ink); }
-    .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 6px; }
-    .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
-      padding-top: 7px; font-variant-numeric: tabular-nums; }
-    /* the question, under Ask: the field rides this slot (placeAsk) at
-       this size, and never parks in the bar on a desktop */
-    #rdrawer .cvask { font-size: 22px; line-height: 1.2; margin-top: 10px; }
-    /* the picture is what a shorter window takes from, not the lines:
-       its height is the room the stack and the question leave, capped
-       at the handoff's 170 and gone under 80 (fitCover) */
-    .cvreel { width: 100%; height: var(--reel-h, 170px); margin-top: 30px; border-radius: var(--r); }
-    /* the study on screen, in a tile caption's own two registers */
-    .cvcap { margin-top: 10px; font-size: 12px; line-height: 1.45; min-height: 2.9em; }
-    .cvcap b { font-weight: 600; }
-    .cvcap .g { color: rgba(0, 0, 0, 0.42); }
-    /* too little room for the reel: the lines and the field keep the rail */
-    #rdrawer .cvnav.tight .cvreel, #rdrawer .cvnav.tight .cvcap { display: none; }
+    /* in ink: the line whose run is under the glass, and the one a
+       hand has opened */
+    .cvrow.front, .cvline.open .cvrow { color: var(--ink); }
+    .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 6px; }
+    .cvn { align-self: flex-start; font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
+      margin-top: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) / 2 + 4px);
+      font-variant-numeric: tabular-nums; }
+    /* a shelf's drawer: the live rail's own fold (0fr to 1fr), with
+       its matter a beat behind the structure, as it was there */
+    .cvbody { display: grid; grid-template-rows: 0fr; cursor: pointer;
+      transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cvline.open .cvbody { grid-template-rows: 1fr; }
+    .cvin { overflow: hidden; min-height: 0; }
+    .cvin > * { opacity: 0; transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cvline.open .cvin > * { opacity: 1; transform: none;
+      transition: opacity 0.45s ease 0.09s, transform 0.56s cubic-bezier(0.2, 0.7, 0.2, 1) 0.09s; }
+    .cvreel { width: 100%; height: var(--reel-h, 120px); margin-top: 2px; border-radius: var(--r); }
+    /* two lines of room whatever the sentence runs to: every drawer is
+       one height, or the list slips out from under the hand */
+    .cvnote { margin: 10px 0 0; padding-bottom: 18px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
+      font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
+    /* too little room for the picture: the sentence keeps the drawer */
+    #rdrawer .cvnav.tight .cvreel { display: none; }
+    #rdrawer .cvnav.tight .cvnote { margin-top: 0; }
+    /* what is open on the glass, in the line it belongs to */
+    .cvchips { display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.56s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cvline.chipped .cvchips { grid-template-rows: 1fr; }
+    .cvchipsin { overflow: hidden; min-height: 0; display: flex; flex-direction: column; align-items: flex-start; }
+    .cvchip { display: inline-flex; align-items: center; gap: 8px; max-width: 100%;
+      border: 0; margin: 0 0 6px; padding: 6px 10px; cursor: pointer; text-align: left;
+      background: rgba(0, 0, 0, 0.045); border-radius: 12px; color: var(--ink);
+      font: inherit; font-size: 12px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45;
+      transition: background-color 0.3s ease; }
+    .cvchip:last-child { margin-bottom: 12px; }
+    .cvchip[hidden] { display: none; }
+    .cvchip:hover { background: rgba(0, 0, 0, 0.09); }
+    .cvchip > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .cvchip .cvx { flex: none; font-size: 14px; line-height: 1; color: rgba(0, 0, 0, 0.42);
+      transition: color 0.3s ease; }
+    .cvchip .cvx:hover { color: var(--ink); }
+    /* the question, inside Ask's line: the field rides this slot
+       (placeAsk) at the body's size, and never parks in the bar */
+    #rdrawer .cvask { font-size: 20px; line-height: 1.2; padding-bottom: 14px; }
+    @media (prefers-reduced-motion: reduce) {
+      .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > * { transition: none; }
+    }
   }
   /* ── THE ABOUT COLUMN ─────────────────────────────────────────────
      His mockup (19 Sept 2026): the first column is who he is, an
@@ -1165,7 +1258,7 @@ head = r'''<!doctype html>
      not stretch it — the column stopped at its content and the way
      back sat halfway up the screen. */
   #railwrap { display: flex; flex-direction: column;
-    height: calc(100dvh - var(--nav) - 52px); }
+    height: calc(100dvh - var(--cover-air, 50px) - var(--head-band, 64px) - 24px); }
   #rdrawer { flex: none; }
   #homewrap { margin-top: auto; }
   #home {
@@ -1244,7 +1337,12 @@ head = r'''<!doctype html>
     /* the burn sits behind the line it exists to keep legible, from
        the first frame — it is the work passing under the masthead
        that the effect is for, and that starts at the first scroll */
-    #navBurn { top: calc(var(--cover-air, 50px) - 9px); bottom: auto; height: 35px; }
+    /* THE COUNT'S ALONE since the head line (20 Sept 2026): it spanned
+       the bar, and the columns' names stand on that line now, where a
+       displacement filter would ripple them at rest. The mark stands
+       over the rail, where no work passes, and needs none. */
+    #navBurn { top: calc(var(--cover-air, 50px) - 9px); bottom: auto; height: 35px;
+      left: auto; width: 132px; background: none; }
     html.rh-home body.coverbar #nav [data-burn] { opacity: 1; }
   }
   @media (max-width: 760px) {
@@ -1262,7 +1360,7 @@ head = r'''<!doctype html>
      first chip, a column's chip and the statement all begin on the
      one line. */
   @media (min-width: 761px) {
-    #railwrap { top: calc(var(--cover-air, 50px) + 46px); }
+    #railwrap { top: calc(var(--cover-air, 50px) + var(--head-band, 64px)); }
   }
   /* the room the travelling field takes inside the sentence — the
      homepage's #askSlot, as a class because the statement is dealt
@@ -1303,7 +1401,12 @@ head = r'''<!doctype html>
      column's head is a field now, so a second one floating over the
      masthead was a spare control in the band the burn owns. It rides
      the slot inside the sentence and goes when the sentence goes. */
-  #nav.threadon #query, .ask.parked #query { visibility: hidden; }
+  .ask.parked #query { visibility: hidden; }
+  /* A PHONE'S ONLY. On a desktop the question stands in the rail under
+     Ask and stays there whatever is open (his call, 19 Sept 2026: "ask
+     stays in the rail and is persistent across the entire experience");
+     this rule had been hiding it the moment a column opened. */
+  @media (max-width: 760px) { #nav.threadon #query { visibility: hidden; } }
 
   /* the picture is the door to the study's column, and it says so */
   .tile[data-slug] .shot { cursor: pointer; }
@@ -2416,10 +2519,17 @@ const COVER_AIR = px("--cover-air", 50);
    nothing starts inside the band: the columns and the field begin
    below it, and everything passes under it on the way up, which is
    what a masthead is for. */
-const HEAD_BAND = PHONE ? 0 : 46;
-/* the rules open at the burn band's foot, not the cover line (see
-   the rules' CSS); the phone has no cover line and opens them at 0 */
-const BURN_FOOT = PHONE ? 0 : px("--burn-foot", 26);
+/* 64 SINCE THE HEAD LINE (20 Sept 2026). His comp put the mark and
+   every column's name on one line at the cover's air, in the
+   statement's type, so the band holds a 35px line and the air under
+   it; the 12px masthead's 46 would have stood the ledes against
+   their own heads. The pill that melted anything born here is the
+   count's alone on a desktop now (see #navBurn), which is what lets
+   the heads stand in the band at all. */
+const HEAD_BAND = PHONE ? 0 : px("--head-band", 64);
+/* the rules open at the top of the glass at every width now; only the
+   one resting under the count's pill still starts at the pill's foot,
+   and that is the stylesheet's --burn-foot (see #rules i.underpill) */
 /* a phone's band was 30; the count past the edge stands in it now, at
    16, so the first tile begins at 48 */
 const TOP0 = PHONE ? 48 : COVER_AIR + HEAD_BAND;
@@ -3708,8 +3818,15 @@ function dressRules() {
      band, so the ink never crosses the count; a study column's box
      begins at the top of the glass, so its ink is offset by where the
      rules layer begins */
-  const band = PHONE ? TOP0 : HEAD_BAND - BURN_FOOT;
-  const RT = PHONE ? 0 : COVER_AIR + BURN_FOOT;
+  /* the rules run from the top of the glass on a desktop too since the
+     head line (20 Sept 2026): the heads stand between them, and the
+     ink still begins on the line the columns' matter begins on */
+  const band = TOP0;
+  const RT = 0;
+  /* the count's pill, as the masthead measured it (measureLine); a
+     rule resting under it starts at its foot (see the rules' CSS) */
+  const pill = PHONE ? null : (window.__pillSpan || null);
+  const underPill = (x) => x > pill[0] - 2 && x < pill[1] + 2;
   const draw = (rg, f, off) => {
     if (!f || f.scrollHeight <= f.clientHeight + 1) { rg.classList.remove("on"); return; }
     const H = rulesEl.clientHeight - band, seg = Math.max(24, H * f.clientHeight / f.scrollHeight);
@@ -3724,6 +3841,8 @@ function dressRules() {
   for (let k = 0; k < kids.length; k++) {
     const it = kids[k], d = it.__d, rg = it.firstChild;
     if (d == null || !rg) continue;
+    /* where it will rest, not where the pan has it now */
+    if (pill) it.classList.toggle("underpill", underPill(it.getBoundingClientRect().left + (cur.x - tgt.x)));
     /* a study column stands on this rule and draws its own edge */
     if (atDisp(d).col) { rg.classList.remove("on"); continue; }
     draw(rg, scrollerAt(d - 1), 0);
@@ -3731,6 +3850,7 @@ function dressRules() {
   for (const c of ccols) {
     if (!c.__rg) { c.__rg = document.createElement("span"); c.__rg.className = "rg"; c.appendChild(c.__rg); }
     draw(c.__rg, scrollerAt(dispOf(c) - 1), RT);
+    if (pill) c.classList.toggle("underpill", underPill(c.getBoundingClientRect().left + (cur.x - tgt.x)));
   }
   /* ── HOW MANY ARE LEFT BELOW ─────────────────────────────────────
      A reading line sweeps from the top of the glass at the top of the
@@ -4399,12 +4519,12 @@ plane.addEventListener("click", (e) => {
   if (pv) {
     e.preventDefault();
     const tile = pv.closest(".tile");
-    openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile) }); return;
+    openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile), run: tile.__t && tile.__t.run }); return;
   }
   if (e.target.closest && e.target.closest("a[href]")) return;
   const shot = e.target.closest && e.target.closest(".tile[data-slug] .shot");
   /* the study opens right after the picture's own module */
-  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile) }); }
+  if (shot) { const tile = shot.closest(".tile"); openStudyColumn(tile.dataset.slug, { at: anchorOfTile(tile), run: tile.__t && tile.__t.run }); }
 });
 
 /* ── THE TRAIL, AND WHAT THE HOUSE LAYS NEXT ────────────────────────
@@ -6027,6 +6147,8 @@ function openStudyColumn(folder, opts, from) {
   const ng = nx && GROUPS[nx.slug];
   const c = colNode("study", g.t);
   c.__folder = folder;
+  /* the run its picture stood in: the rail's chip stands in that line */
+  c.__run = opts.run || null;
   if (ng) {
     c.__next = nx.slug;
     const nb = el("button", "cchip cnext"); nb.type = "button";
@@ -6268,15 +6390,16 @@ function drawPath() {
   writeRow();
   markFamily();
   dressRules();
-  /* ── THE CHIPS ARE THE PHONE'S ────────────────────────────────────
-     Every open column already carries its own name and its × at its
-     head, on the glass; the rail listed them a second time, and that
-     list is what made the index three different sizes as it grew (his
-     note, 20 Sept 2026: "there's actually 3 different sized and styled
-     left nav rails"). The rail is one size now and the list is gone
-     from it. A phone keeps it: there the columns' heads are behind the
-     sheet the rail lives in, so it is the only way between them. */
-  if (!PHONE) return;
+  /* ── THE LIST IS THE PHONE'S; A DESKTOP'S CHIPS STAND IN THEIR LINES
+     The rail listed the open columns under itself, and paid for the
+     list by shrinking its type: three sizes of index as the row grew
+     (his note, 20 Sept 2026: "there's actually 3 different sized and
+     styled left nav rails"). On a desktop a chip stands inside the
+     line it belongs to now, and takes its room from the drawer's
+     picture, never from the type (the rail's fitChips). A phone keeps
+     the list: there the columns' heads are behind the sheet the rail
+     lives in, so it is the only way between them. */
+  if (!PHONE) { if (window.__railChips) window.__railChips(); return; }
   let wrap = document.getElementById("pathwrap");
   if (!wrap) {
     wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
@@ -6702,38 +6825,45 @@ if (PHONE) FILTERS.forEach(([label, tag, desc]) => {
 });
 
 /* ── THE RAIL IS THE INDEX ───────────────────────────────────────────
-   His Coverlines concept (Claude Design, Rail Concepts board 02;
-   handoff in columns/handoff/rail-coverlines), back on the rail once
-   the intro moved into the About column (19 Sept 2026): the six
-   shelves as the lines of a magazine cover, then About, Connect and
-   Ask as three more lines. The question's field stands under Ask, so
-   asking is on the glass wherever the row is, and one reel under the
-   stack plays the line the hand rests on, captioned with the study on
-   screen. A phone keeps its sheet of chips.
+   Nine lines between hairlines, in the statement's type and never any
+   other size: the six shelves, then About, Connect and Ask (his comp,
+   20 Sept 2026, after the index had stood at three sizes as columns
+   opened). The rail's history is in the stylesheet's note; what the
+   script owns is below.
 
-   The stack never moves or reflows; only colour says which line is
-   in front. A shelf line comes to the front when the hand rests on it
-   for 120ms (a sweep down the stack must not burn every reel it
-   crosses), when the keyboard focuses it, when its shelf opens from
-   anywhere, or when the row brings its run under the glass; a press
-   does what the chip's did. About is in front while its column is
-   under the near edge and plays the opening covers; a press goes
-   there. Connect lights while its room is open, and a press opens or
-   folds it. Ask lights while the field has the hand, and a press gives
-   it the hand. The counts are read off the heads, so the rail and the
-   head never disagree. The reel is the house's (szLayer and the sz-*
-   beats): shutter, slat, curtain, cut, fade, a frame every 950ms; a
-   change of line burns. Reduced motion swaps the frames and nothing
-   else. */
+   A SHELF'S LINE OPENS UNDER A RESTING HAND, the live rail's drawer on
+   its own clock: the shelf's reel and its sentence, on the paper,
+   between the line's two rules. 120ms of rest first, so a sweep down
+   the rail opens nothing. One drawer at a time, and it stays open
+   while the hand is anywhere on the rail: About, Connect and Ask have
+   no drawer, and folding the one above them as the hand arrived would
+   pull them out from under it. It folds when the hand leaves the rail.
+   The lines above an open drawer never move and every drawer is one
+   height, which is what keeps the line under the hand under the hand.
+   A press on the line or its drawer does what the chip's did.
+
+   IN INK: the line whose run is under the glass (markFamily), and the
+   line a hand has opened. Nothing else lights a line. What is open on
+   the glass is said by a chip inside the line it belongs to: a study
+   in the shelf it was opened from (else its first), Connect's room in
+   Connect, the house's other rooms in About, a question's columns in
+   Ask. A chip goes to its column and its × folds it.
+
+   The counts are read off the heads, so the rail and the head never
+   disagree. The reel is the house's (szLayer and the sz-* beats):
+   shutter, slat, curtain, cut, fade, a frame every 950ms, one reel to
+   a shelf so a folding drawer keeps its picture while the next one
+   opens. Reduced motion swaps the frames and nothing else. A phone
+   keeps its sheet of chips. */
 if (!PHONE) {
   const BEATS = ["shutter", "slat", "curtain", "cut", "fade"];
   /* the handoff's lengths. The house's slat is six strips on a stagger
      of 8% of its length, so 520 puts each strip at 364ms and 42ms
      behind the last: the handoff's 0.36s and 40ms */
   const BEAT_MS = { shutter: 420, slat: 520, curtain: 460, cut: 160, fade: 360 };
-  const HOLD = 950, BURN_MS = 1100, SWITCH_HOLD = 1400, DWELL = 120;
+  const HOLD = 950, DWELL = 120, LEAVE = 180, SLIDE = 560;
   const mk = (t, cls, text) => { const e = document.createElement(t); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  /* on a first load every part comes down the rail with the build */
+  /* on a first load every line comes down the rail with the build */
   const boot = (e) => { if (booting) e.classList.add("bin"); return e; };
   /* not "cover": that is the cover line's class, and body.asked
      .cover hides it once a question is asked */
@@ -6747,52 +6877,33 @@ if (!PHONE) {
     const m = h && String(h.way).match(/\d+/);
     return m ? m[0] : "";
   };
-  /* ── THE PICTURES A LINE PLAYS ───────────────────────────────────── */
-  const shelfItems = (tag) => {
+  /* ── THE PICTURES A SHELF PLAYS ──────────────────────────────────── */
+  const shelfFrames = (tag) => {
     if (tag === "staples")
-      return (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration").slice(0, 8).map((i) => ({ t: i.t, g: null }));
+      return (window.BOARD_ITEMS || []).filter((i) => i.g === "inspiration").slice(0, 8).map((i) => i.t);
     return (window.BOARD_ITEMS || [])
       .filter((i) => i.c != null && GROUPS[i.g] && GROUPS[i.g].tags.includes(tag))
-      .sort((a, b) => a.c - b.c).slice(0, 8).map((i) => ({ t: i.t, g: i.g }));
+      .sort((a, b) => a.c - b.c).slice(0, 8).map((i) => i.t);
   };
-  const restItems = items.filter((t) => t.run === "open" && t.kind === "img" && t.t)
-    .slice(0, 8).map((t) => ({ t: t.t, g: t.g }));
+  /* a line: its cell between two rules, the name, then whatever is
+     open on the glass that belongs to it */
+  const byTag = {};
   const mkLine = (label, tag, n) => {
-    const b = boot(mk("button", "cvrow"));
+    const cell = boot(mk("div", "cvline"));
+    cell.dataset.tag = tag;
+    const b = mk("button", "cvrow");
     b.type = "button"; b.dataset.tag = tag;
     b.appendChild(mk("span", "rink", label));
     if (n) b.appendChild(mk("span", "cvn", n));
-    stack.appendChild(b);
-    return b;
+    cell.appendChild(b);
+    const chipsBox = mk("div", "cvchips"), chips = mk("div", "cvchipsin");
+    chipsBox.appendChild(chips); cell.appendChild(chipsBox);
+    stack.appendChild(cell);
+    return (byTag[tag] = { cell, b, chips, tag, label });
   };
-  const rows = FILTERS.map(([label, tag, desc]) => {
-    const b = mkLine(label, tag, countOf(tag));
-    /* one of the rail's rows, for everything that reads them: a
-       question naming a shelf, the picked mark */
-    rrows.push(b);
-    return { b, label, tag, desc, items: shelfItems(tag) };
-  });
-  /* and the three lines that are not shelves */
-  const aboutLine = mkLine((ABOUT && ABOUT.name) || "About", "about", "");
-  const connectLine = mkLine("Connect", "connect", "");
-  const askLine = mkLine("Ask", "ask", "");
-  /* the question's slot, under Ask; the field rides it (placeAsk) */
-  const askBox = boot(mk("div", "cvask"));
-  const slot = mk("span", "askslot");
-  slot.setAttribute("aria-hidden", "true");
-  askBox.appendChild(slot);
-  cvNav.appendChild(askBox);
-
-  const box = boot(mk("div", "cvreel sz-stage"));
-  box.setAttribute("aria-hidden", "true");
-  cvNav.appendChild(box);
-  const cap = boot(mk("div", "cvcap"));
-  cap.setAttribute("aria-live", "off");
-  cvNav.appendChild(cap);
-
-  /* ── THE REEL ──────────────────────────────────────────────────── */
-  const reel = (() => {
-    const R = { list: [], frames: [], f: 0, t: 0, timer: null, layers: [] };
+  /* ── A SHELF'S REEL ──────────────────────────────────────────────── */
+  const mkReel = (box, frames) => {
+    const R = { frames, f: 0, t: 0, timer: null, layers: [], on: false, primed: false };
     /* a 256px box: the rung that fits it, not the 128px stamp's */
     const fit = (im, src) => {
       im.src = src;
@@ -6802,15 +6913,7 @@ if (!PHONE) {
     const base = mk("img", "sz-fill");
     base.alt = ""; base.decoding = "async";
     box.appendChild(base);
-    R.warm = (src) => { if (src) fit(new Image(), src); };
-    /* the caption: the study in the frame on screen */
-    const name = (k) => {
-      const g = R.list[k] && R.list[k].g && GROUPS[R.list[k].g];
-      cap.textContent = "";
-      if (!g) return;
-      cap.appendChild(mk("b", null, g.t));
-      if (g.s) { cap.appendChild(document.createTextNode(" ")); cap.appendChild(mk("span", "g", g.s)); }
-    };
+    const warm = (src) => { if (src) fit(new Image(), src); };
     const lay = (beat, dur) => {
       const L = szLayer(beat, R.frames, dur);
       L.querySelectorAll("img").forEach((im) => { if (im.srcset) im.sizes = "256px"; });
@@ -6825,133 +6928,239 @@ if (!PHONE) {
     };
     const step = () => {
       R.timer = null;
+      if (!R.on) return;
       if (document.hidden) { R.timer = setTimeout(step, 400); return; }
       const n = R.frames.length;
       if (n < 2) return;
       R.f = (R.f + 1) % n;
-      R.warm(R.frames[(R.f + 1) % n]);
+      warm(R.frames[(R.f + 1) % n]);
       if (REDUCE()) fit(base, R.frames[R.f]);
       else {
         const fx = BEATS[R.t % BEATS.length];
         R.t += 1;
         lay({ fx, img: R.f }, BEAT_MS[fx]);
       }
-      name(R.f);
       R.timer = setTimeout(step, HOLD);
     };
-    R.show = (list, first) => {
-      clearTimeout(R.timer);
-      R.list = list; R.frames = list.map((x) => x.t); R.f = 0;
-      R.frames.slice(0, 2).forEach(R.warm);
-      if (first || REDUCE()) {
-        fit(base, R.frames[0]);
-        R.layers.forEach((x) => x.remove()); R.layers = [];
-      } else lay({ fx: "burn", img: 0 }, BURN_MS);
-      name(0);
-      R.timer = setTimeout(step, first ? HOLD : SWITCH_HOLD);
+    /* the first frame stands in the box before the drawer ever opens,
+       so a first hover opens on a picture and not on a grey box */
+    R.prime = () => {
+      if (R.primed || !R.frames.length) return;
+      R.primed = true; fit(base, R.frames[0]); warm(R.frames[1]);
     };
+    R.start = () => { R.prime(); if (R.on) return; R.on = true; clearTimeout(R.timer); R.timer = setTimeout(step, HOLD); };
+    /* it stops where it is: a folding drawer keeps its picture */
+    R.stop = () => { R.on = false; clearTimeout(R.timer); R.timer = null; };
     return R;
-  })();
-
-  /* ── WHICH LINE IS IN FRONT ──────────────────────────────────────── */
-  let active = null, dwellT = 0, over = false, runT = 0;
-  const activate = (tag, first) => {
-    if (tag === active) return;
-    const row = rows.find((r) => r.tag === tag);
-    if (!row && tag !== "open") return;
-    active = tag;
-    rows.forEach((r) => r.b.classList.toggle("front", r.tag === tag));
-    aboutLine.classList.toggle("front", tag === "open");
-    reel.show(row ? row.items : restItems, first);
   };
-  stack.addEventListener("pointerenter", () => { over = true; });
-  stack.addEventListener("pointerleave", () => { over = false; clearTimeout(dwellT); });
-  rows.map((r) => [r.b, r.tag]).concat([[aboutLine, "open"]]).forEach(([b, tag]) => {
-    b.addEventListener("pointerenter", (e) => {
-      if (e.pointerType !== "mouse") return;
-      clearTimeout(dwellT);
-      dwellT = setTimeout(() => activate(tag), DWELL);
+  const shelves = FILTERS.map(([label, tag, desc]) => {
+    const L = mkLine(label, tag, countOf(tag));
+    /* one of the rail's rows, for everything that reads them: a
+       question naming a shelf, the picked mark */
+    rrows.push(L.b);
+    const body = mk("div", "cvbody"), inn = mk("div", "cvin");
+    const box = mk("div", "cvreel sz-stage");
+    box.setAttribute("aria-hidden", "true");
+    inn.appendChild(box);
+    inn.appendChild(mk("p", "cvnote", desc));
+    body.appendChild(inn); L.cell.appendChild(body);
+    L.body = body; L.reel = mkReel(box, shelfFrames(tag));
+    return L;
+  });
+  /* and the three lines that are not shelves */
+  const aboutLine = mkLine((ABOUT && ABOUT.name) || "About", "about", "");
+  const connectLine = mkLine("Connect", "connect", "");
+  const askLine = mkLine("Ask", "ask", "");
+  /* the question's slot, inside Ask's line; the field rides it (placeAsk) */
+  const askBox = mk("div", "cvask");
+  const slot = mk("span", "askslot");
+  slot.setAttribute("aria-hidden", "true");
+  askBox.appendChild(slot);
+  askLine.cell.appendChild(askBox);
+
+  /* ── THE QUESTION RIDES A LINE THAT SLIDES ───────────────────────
+     The field is fixed and follows its slot by measurement, and the
+     slot is under every drawer and every chip: while anything in the
+     rail is sliding it is placed on each frame, and once more after,
+     for a pane that is not painting frames. */
+  let followF = 0;
+  const follow = () => {
+    const t0 = performance.now();
+    cancelAnimationFrame(followF);
+    const tick = () => {
+      if (window.placeAsk) placeAsk();
+      if (performance.now() - t0 < SLIDE + 120) followF = requestAnimationFrame(tick);
+    };
+    followF = requestAnimationFrame(tick);
+    setTimeout(() => { if (window.placeAsk) placeAsk(); }, SLIDE + 160);
+  };
+
+  /* ── WHICH DRAWER IS OPEN ────────────────────────────────────────── */
+  let openTag = null, dwellT = 0, leaveT = 0;
+  const setOpen = (tag) => {
+    if (tag === openTag) return;
+    openTag = tag;
+    shelves.forEach((L) => {
+      const on = L.tag === tag;
+      L.cell.classList.toggle("open", on);
+      if (on) L.reel.start(); else L.reel.stop();
     });
-    b.addEventListener("focus", () => activate(tag));
+    follow();
+  };
+  const isMouse = (e) => e.pointerType === "mouse";
+  stack.addEventListener("pointerenter", (e) => { if (isMouse(e)) clearTimeout(leaveT); });
+  stack.addEventListener("pointerleave", (e) => {
+    if (!isMouse(e)) return;
+    clearTimeout(dwellT);
+    leaveT = setTimeout(() => setOpen(null), LEAVE);
   });
-  rows.forEach((r) => {
-    /* the chip's press, word for word */
-    r.b.addEventListener("click", () => { activate(r.tag); setMode(MODE === r.tag ? null : r.tag); });
-    /* a shelf opened from anywhere brings its line to the front, once,
-       as it opens: the picked mark changing, not merely standing */
-    let was = false;
-    new MutationObserver(() => {
-      const now = r.b.classList.contains("picked");
-      if (now && !was) activate(r.tag);
-      was = now;
-    }).observe(r.b, { attributes: true, attributeFilter: ["class"] });
+  shelves.forEach((L) => {
+    L.cell.addEventListener("pointerenter", (e) => {
+      if (!isMouse(e)) return;
+      clearTimeout(dwellT);
+      dwellT = setTimeout(() => setOpen(L.tag), DWELL);
+    });
+    L.b.addEventListener("focus", () => { if (L.b.matches(":focus-visible")) setOpen(L.tag); });
+    /* the chip's press, word for word; the drawer is the line's too */
+    const press = () => setMode(MODE === L.tag ? null : L.tag);
+    L.b.addEventListener("click", press);
+    L.body.addEventListener("click", press);
   });
-  aboutLine.addEventListener("click", () => goAbout());
-  connectLine.addEventListener("click", () => toggleHouse("connect"));
-  new MutationObserver(() => connectLine.classList.toggle("lit", ccols.some((c) => c.__house === "connect")))
-    .observe(colsEl, { childList: true });
+  /* a line with no drawer takes the hand without folding the one open
+     above it; it only calls off a drawer that was about to open */
+  [aboutLine, connectLine, askLine].forEach((L) =>
+    L.cell.addEventListener("pointerenter", (e) => { if (isMouse(e)) clearTimeout(dwellT); }));
+  stack.addEventListener("focusout", (e) => { if (!stack.contains(e.relatedTarget)) setOpen(null); });
+  aboutLine.b.addEventListener("click", () => goAbout());
+  connectLine.b.addEventListener("click", () => toggleHouse("connect"));
   {
     const q = document.getElementById("query");
-    askLine.addEventListener("click", () => { if (q) q.focus(); });
-    if (q) {
-      const lit = () => askLine.classList.toggle("lit", document.activeElement === q || !!q.value);
-      q.addEventListener("focus", lit); q.addEventListener("blur", lit); q.addEventListener("input", lit);
-    }
+    askLine.b.addEventListener("click", () => { if (q) q.focus(); });
   }
-  /* the run under the glass, from markFamily: once the row has settled
-     on it, and never under a hand resting on the stack */
+
+  /* ── THE RUN UNDER THE GLASS, IN INK ─────────────────────────────
+     From markFamily, once the row has settled on it. The opening run
+     is About's. */
+  let runT = 0;
+  const setFront = (run) => {
+    shelves.forEach((L) => L.b.classList.toggle("front", L.tag === run));
+    aboutLine.b.classList.toggle("front", run === "open");
+  };
   window.__coverRun = (run) => {
     clearTimeout(runT);
-    if (!run || (run !== "open" && !rows.some((r) => r.tag === run))) return;
-    runT = setTimeout(() => { if (!over) activate(run); }, 260);
+    if (!run || (run !== "open" && !byTag[run])) return;
+    runT = setTimeout(() => setFront(run), 260);
   };
-  activate("open", true);
+  setFront("open");
 
-  /* ── THE STACK FITS THE WINDOW ────────────────────────────────────
-     Between the top of the rail and the way back at its foot, and
-     nothing else: what a visitor opens never moves or resizes the
-     index. Measured, not modelled: the rail spaces its
-     parts with its own gap. The way back stands at the rail's foot
-     while everything fits (margin-top: auto) and is pushed past it by
-     whatever does not; nine lines give 9.18px of height for every
-     pixel of type. The lines and the question ARE the rail, so they
-     keep the handoff's 46 and the picture takes whatever room they
-     leave: the handoff's 170 where it fits, a letterbox where it does
-     not, and gone under 80 with its caption. Only a window too short
-     for the lines themselves brings them down. The question rides the
-     stack, so it is placed again after. */
-  const fitCover = () => {
-    const rail = document.getElementById("railwrap"), foot = document.getElementById("homewrap");
-    if (!rail || !foot) return;
-    const over = () => foot.getBoundingClientRect().bottom - rail.getBoundingClientRect().bottom;
-    const setFs = (fs) => cvNav.style.setProperty("--cv-fs", fs + "px");
-    const setReel = (h) => cvNav.style.setProperty("--reel-h", h + "px");
-    const settle = () => { if (window.placeAsk) placeAsk(); };
-    const LINES = 9 * 1.02, CAP = 45;
-    /* the index first, at the handoff's 46: the lines and the question
-       are the rail, and they come down only when even they do not fit */
-    cvNav.classList.add("tight"); setFs(46); setReel(0);
-    let o = over();
-    if (o > 0.5) { setFs(Math.max(28, Math.floor(46 - o / LINES))); return settle(); }
-    /* then the picture takes what they leave, up to the handoff's box,
-       and stands down rather than shrink past a letterbox. The room is
-       the air over the way back, not the overflow: the foot's margin
-       is auto, so it eats the slack and the overflow reads zero
-       however much room there is. */
-    const air = foot.getBoundingClientRect().top - askBox.getBoundingClientRect().bottom - 24;
-    const h = Math.min(170, Math.floor(air) - 30 - CAP);
-    if (h >= 80) {
-      cvNav.classList.remove("tight");
-      setReel(h);
-      if (over() > 0.5) { cvNav.classList.add("tight"); setReel(0); }
+  /* ── THE RAIL FITS THE WINDOW, AND THE TYPE NEVER PAYS ───────────
+     Nine lines, the question, and room held at the foot for one
+     drawer. What a window gives or takes is the air between the rules
+     (44 to 74, 50 where the picture has to be paid for) and then the
+     picture (80 to 170; under 80 the sentence keeps the drawer alone).
+     In order: lines at 50 and a picture up to 120, then air to 56,
+     then the picture to its 170, then air to the comp's 74. Read from
+     the window alone, on load and on resize: nothing a visitor opens
+     re-spaces the lines. */
+  const N = 9, P_MIN = 44, P_EASY = 50, P_MID = 56, P_MAX = 74;
+  const REEL_MIN = 80, REEL_MID = 120, REEL_MAX = 170;
+  /* the drawer without its picture: 2 over the reel, 10 under it, two
+     lines of sentence (2.9em of 12px) and 18 of foot; and with no
+     picture at all */
+  const FIX = 65, FIX0 = 53;
+  let reelBase = 0, pitch = P_EASY;
+  const railH = () => { const r = document.getElementById("railwrap"); return r ? r.clientHeight : 0; };
+  const fitRail = () => {
+    const avail = railH();
+    if (!avail) return;
+    const spare = avail - N * P_EASY - (N - 1) - askBox.offsetHeight;
+    let p = P_EASY, h = 0;
+    if (spare - FIX >= REEL_MIN) {
+      h = Math.min(REEL_MID, spare - FIX);
+      let rest = spare - FIX - h;
+      const air = Math.min(rest, N * (P_MID - P_EASY)); p += air / N; rest -= air;
+      const pic = Math.min(rest, REEL_MAX - h); h += pic; rest -= pic;
+      p += Math.min(rest, N * (P_MAX - p)) / N;
+    } else {
+      const rest = spare - FIX0;
+      p = rest >= 0 ? Math.min(P_MAX, P_EASY + rest / N) : Math.max(P_MIN, P_EASY + rest / N);
     }
-    settle();
+    pitch = Math.floor(p); reelBase = Math.floor(h);
+    cvNav.style.setProperty("--cv-pitch", pitch + "px");
+    fitChips();
   };
-  /* once, and then only when the window changes: nothing a visitor
-     opens may resize the index. */
-  fitCover();
-  addEventListener("resize", fitCover, { passive: true });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCover);
+  /* ── AND THE CHIPS TAKE FROM THE PICTURE ─────────────────────────
+     A chip stands in the room the drawer was promised, so the picture
+     gives it up, and stands down under 80 as it does for a short
+     window. Past that the newest chips stay off the rail: their
+     columns carry their own close. */
+  const chipsOf = (L) => [...L.chips.children];
+  const chipsH = () => Object.values(byTag).reduce((a, L) => {
+    const on = chipsOf(L).filter((c) => !c.hidden);
+    return a + (on.length ? on.reduce((x, c) => x + c.offsetHeight + 6, 6) : 0);
+  }, 0);
+  const fitChips = () => {
+    const all = [...cvNav.querySelectorAll(".cvchip")];
+    all.forEach((c) => { c.hidden = false; });
+    const room = railH() - N * pitch - (N - 1) - askBox.offsetHeight - FIX0;
+    for (let i = all.length - 1; i >= 0 && chipsH() > room; i--) all[i].hidden = true;
+    Object.values(byTag).forEach((L) => L.cell.classList.toggle("chipped", chipsOf(L).some((c) => !c.hidden)));
+    const h = reelBase ? reelBase - chipsH() : 0;
+    const tight = h < REEL_MIN;
+    cvNav.classList.toggle("tight", tight);
+    if (!tight) cvNav.style.setProperty("--reel-h", Math.floor(h) + "px");
+    follow();
+  };
+
+  /* ── WHAT IS OPEN, IN THE LINE IT BELONGS TO ─────────────────────── */
+  const SHELF_TAGS = FILTERS.map((x) => x[1]);
+  const ownerOf = (c) => {
+    if (c.__house) return c.__house === "connect" ? "connect" : "about";
+    if (c.__mode) return byTag[c.__mode] ? c.__mode : "about";
+    if (c.__folder) {
+      const tags = (GROUPS[c.__folder] && GROUPS[c.__folder].tags) || [];
+      if (c.__run && tags.includes(c.__run)) return c.__run;
+      /* its home line: a study's tags are dealt home first */
+      return tags.find((t) => SHELF_TAGS.includes(t)) || "about";
+    }
+    return "ask";
+  };
+  /* a chip never says its line's name twice: a shelf's own column
+     reads as its count, a room named for its line as open */
+  const chipName = (c) => {
+    if (c.__mode) { const n = countOf(c.__mode); return n ? "All " + n : "Open"; }
+    const L = byTag[ownerOf(c)];
+    return (L && L.label === c.__caption) ? "Open" : c.__caption;
+  };
+  let chipSig = "";
+  window.__railChips = () => {
+    const sig = ccols.map((c) => ownerOf(c) + ":" + chipName(c)).join("|");
+    if (sig === chipSig) return;
+    chipSig = sig;
+    Object.values(byTag).forEach((L) => { L.chips.textContent = ""; });
+    ccols.forEach((c) => {
+      const L = byTag[ownerOf(c)];
+      if (!L) return;
+      const chip = mk("button", "cvchip");
+      chip.type = "button";
+      chip.appendChild(mk("span", null, chipName(c)));
+      const x = mk("span", "cvx", "×");
+      x.setAttribute("aria-label", "Close " + c.__caption);
+      chip.appendChild(x);
+      chip.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (e.target === x) closeColumn(c); else showCol(c);
+      });
+      L.chips.appendChild(chip);
+    });
+    fitChips();
+  };
+
+  fitRail();
+  addEventListener("resize", fitRail, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitRail);
+  /* the first frames, once the board itself has had the network */
+  setTimeout(() => shelves.forEach((L) => L.reel.prime()), 1600);
 }
 /* ── the way back, as a row of the rail ── */
 const homeRow = mkRow("Back to start", false);
@@ -6969,8 +7178,13 @@ const homeWrap = document.createElement("div");
 homeWrap.className = "blk rdrawer";
 homeWrap.id = "homewrap";
 homeWrap.appendChild(home);
-document.getElementById("railwrap").appendChild(homeWrap);
-homeRow.h.addEventListener("click", () => {
+/* THE MARK IS THE WAY HOME ON A DESKTOP (his call, 20 Sept 2026: "drop
+   the 'back to start' chip and just make that the logo"). The chip
+   stood alone at the rail's foot and said what a mark has always
+   meant; the rail's foot is the drawers' room now. A phone's mark is
+   its sheet's handle, so a phone keeps the chip. */
+if (PHONE) document.getElementById("railwrap").appendChild(homeWrap);
+function goHome() {
   closeAllColumns();
   pageTo(0);
   if (window.__aboutRow) __aboutRow("about");
@@ -6980,7 +7194,17 @@ homeRow.h.addEventListener("click", () => {
      returning to the start is the answer, and it happens on the glass
      the sheet is covering */
   if (PHONE && window.toggleSheet) toggleSheet(false);
-});
+}
+homeRow.h.addEventListener("click", goHome);
+if (!PHONE) {
+  const cm = document.querySelector("#coverline .covermark");
+  if (cm) {
+    cm.setAttribute("role", "link"); cm.tabIndex = 0;
+    cm.setAttribute("aria-label", "Reckon House, back to the start");
+    cm.addEventListener("click", goHome);
+    cm.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); goHome(); } });
+  }
+}
 
 /* ── THE SHEET, the bar's own surface on a phone ────────────────────
    The rail moves INTO it wholesale — same nodes, same listeners, the
@@ -7319,6 +7543,10 @@ const measureLine = () => {
   const br = navBurn ? navBurn.getBoundingClientRect() : { left: 0, right: 0 };
   LINE = { mark: mid(covermark), meta: mid(covermeta), burnL: br.left, burnR: br.right,
     fieldL: field.getBoundingClientRect().left };
+  /* and the rules read the pill's span off the window: LINE is declared
+     long after dressRules first runs */
+  window.__pillSpan = (navBurn && br.right > br.left) ? [br.left, br.right] : null;
+  dressRules();
 };
 measureLine();
 window.__measureLine = measureLine;
