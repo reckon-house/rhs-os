@@ -971,10 +971,13 @@ head = r'''<!doctype html>
      one size everywhere, 160x120; the lines are the About column's
      own row. Nothing gives: the rail scrolls, as a column of the
      field does (fitRail). A phone keeps its sheet of chips. The rail
-     is 256px, the handoff's. */
+     is 200px. It was the handoff's 256, and the tight lines left 60
+     of that doing nothing: the widest thing in it is the drawer's
+     sentence, then the question, then Campaigns and its count at 176.
+     The 56 goes to the work. */
   .abhead { letter-spacing: inherit; }
   @media (min-width: 761px) {
-    :root { --ix-note-w: 256px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px);
+    :root { --ix-note-w: 200px; --head-band: 64px; --st-fs: clamp(20px, 2.4vw, 32px);
       /* the top of the glass down to the foot of the head line: the burn's band */
       --burn-band: calc(var(--cover-air, 50px) + var(--st-fs) * 1.2 + 8px); }
     /* the mark, on the head line, and a press on it goes home */
