@@ -356,7 +356,9 @@ function onScroll() {
     o.lab.style.transform = "translateX(" + off + "px)";
   });
   /* in ink: the job under the near third of the glass */
-  const t = timeAt(stage.scrollLeft + stage.clientWidth * 0.3);
+  /* at the far end there is no further to pan, so the last job takes the ink */
+  const atEnd = stage.scrollLeft + stage.clientWidth >= stage.scrollWidth - 40;
+  const t = atEnd ? T(NOW) : timeAt(stage.scrollLeft + stage.clientWidth * 0.3);
   let front = null; ERAS.forEach((r) => { if (r.lane === 0 && T(r.s) <= t) front = r; });
   ERAS.forEach((r) => r.btn.classList.toggle("front", r === front && stage.scrollLeft > INTRO - 300));
 }
