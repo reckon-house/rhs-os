@@ -1576,24 +1576,38 @@
        scroll away with the column; here it is the only one, and a
        reader four pictures down cannot be asked to find the top */
     .ccol .chead { position: sticky; top: 0; z-index: 2;
-      margin: 0 -20px 0; padding: 28px 20px 14px;
+      margin: 0 -20px 0; padding: 26px 20px 12px;
       background: var(--paper, #fff); }
-    /* ── ONE LINE, AND THE NAME GIVES WAY ─────────────────────────
-       The two chips wrapped, and a head of two rows took 118px of an
-       852px glass before a word of the column was read. They sit on
-       one line here: what is open gives up its end to an ellipsis
-       (the reader just pressed it, and the × stays whole beside it),
-       and what is NEXT keeps every letter, because that one names
-       something not yet seen. It is not a scroller — with two chips
-       and 47px over the measure, a swipe would move almost nothing
-       and would fight the row, which pages on the same drag. */
-    .ccol .chead { flex-wrap: nowrap; align-items: flex-start; }
-    .ccol .chead .cchip { min-width: 0; }
-    .ccol .chead .cchip:first-child { flex: 0 1 auto; }
+    /* ── THE HEAD IS THE NAME, AND ITS CLOSE ──────────────────────
+       It was two pills on one line, and to fit them what was open gave
+       its end to an ellipsis: Ivy Park by Beyoncé stood at the top of
+       its own column as "I…". A desktop's head changed on 20 Sept 2026
+       (the name in the statement's type and the second register, its
+       close drawn as two bars, what is next on a line of its own under
+       it), and a phone wears the same now. The name has the whole line
+       and reads whole; the close stands at the far end of it, where a
+       thumb looks and where it never moves with the name's length, in
+       a 44px box. What is NEXT left the head for the first line of the
+       column (openStudyColumn), so the pinned band is one row, 62px
+       where it was 77, and the chip still names the next study in
+       every letter. */
+    .ccol .chead { flex-wrap: nowrap; align-items: flex-start; margin-bottom: 0; }
+    .ccol .chead .cchip:first-child { flex: 1 1 auto; min-width: 0; justify-content: space-between;
+      align-items: flex-start; gap: 14px; background: none; border-radius: 0; padding: 0;
+      font-size: 20px; font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
+      color: rgba(0, 0, 0, 0.42); }
+    .ccol.dark .chead .cchip:first-child { background: none; color: rgba(255, 255, 255, 0.5); }
     .ccol .chead .cchip:first-child > span { overflow: hidden;
       text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-    .ccol .chead .cx { flex: none; }
-    .ccol .chead .cnext { flex: none; }
+    .ccol .chead .cx { position: relative; flex: none; box-sizing: content-box;
+      width: 14px; height: 14px; padding: 15px; margin: -10px -15px -15px -15px;
+      font-size: 0; color: inherit; }
+    .ccol .chead .cx::before, .ccol .chead .cx::after { content: ""; position: absolute;
+      left: 15px; top: 21px; width: 14px; height: 2px; border-radius: 1px;
+      background: currentColor; transform: rotate(45deg); }
+    .ccol .chead .cx::after { transform: rotate(-45deg); }
+    /* what is next, under the head: the column's first line */
+    .ccol .cnextrow { margin: 2px 0 18px; }
     .ccol.dark .chead { background: #000; }
 
     /* ── THE BAR: the field, then the handle ──────────────────────
@@ -6274,7 +6288,10 @@ function openStudyColumn(folder, opts, from) {
     nb.appendChild(el("span", "g", "Next:"));
     nb.appendChild(el("span", null, ng.t));
     nb.addEventListener("click", () => openStudyColumn(nx.slug, {}, c));
-    c.__head.appendChild(nb);
+    /* a phone's head is the name and its close, pinned; what is next
+       is the column's first line under it, and scrolls with it */
+    if (PHONE) { const row = el("div", "cnextrow"); row.appendChild(nb); c.__body.insertBefore(row, c.__body.firstChild); }
+    else c.__head.appendChild(nb);
   }
   /* the chip carries the name, so the column opens on the sentence */
   if (g.d) {
