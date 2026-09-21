@@ -1214,12 +1214,12 @@
      and the question still FIT at rest at every window (fitRail) —
      what overflows is an open drawer, and that closes when the hand
      leaves. */
-  #railwrap { display: flex; flex-direction: column;
+  #railwrap { display: flex; flex-direction: column; align-items: stretch;
     height: calc(100dvh - var(--cover-air, 50px) - var(--head-band, 64px) - 24px);
     overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
     scrollbar-width: none; }
   #railwrap::-webkit-scrollbar { display: none; }
-  #rdrawer { flex: none; }
+  #rdrawer { flex: none; align-self: flex-start; width: 100%; }
   #homewrap { margin-top: auto; }
   #home {
     opacity: 0; pointer-events: none; transform: translateY(6px);
@@ -7530,34 +7530,26 @@ if (!PHONE) {
   };
   setFront("open");
 
-  /* ── THE RAIL IS THE ABOUT COLUMN'S LINES, AND IT SCROLLS ────────
-     His two calls, an hour apart: give the rail the second column's
-     spacing, and "keep the reel at all sizes and just have a scroll
-     bar like the other columns". The second answers the first. The
-     rail used to buy its air off the picture, because nine lines, the
-     eight rules and the question fill a 900-tall window to the pixel
-     and anything else had to come out of them. A scroller has no such
-     budget: the lines stand at the About column's own row (P_MAX, read
-     off the type so the two cannot drift), the picture keeps its
-     160x120 at every window, and chips stand at their full size. What
-     does not fit is scrolled to.
+  /* ── THE RAIL IS SET TIGHT ──────────────────────────────────────
+     His sketch (20 Sept 2026): the nine lines stacked close, each
+     rule just under the name it belongs to, and the air below the
+     block rather than shared out between the rows. "i know this is
+     similar to one we tried before but if we keep the fonts the same
+     size and with the other things we've cleaned up this could work
+     too" — and it is the type staying at the About column's size that
+     makes it a different thing from the 46px rail it looks like.
 
-     WHAT STILL HAS TO FIT is the rail at rest: nine lines, their
-     rules and the question, so Ask is on the glass without a scroll
-     wherever the page opens. That is the one thing this measures, and
-     the only case that shortens a line is a window too short to hold
-     even that. An open drawer, and chips, push past the foot and are
-     scrolled to; the drawer closes when the hand leaves the rail. */
-  const N = 9, P_MIN = 44, REEL_H = 120;
-  let pitch = P_MIN;
-  const railH = () => { const r = document.getElementById("railwrap"); return r ? r.clientHeight : 0; };
-  /* the About column's own row, from the type the rail is set in */
-  const pMax = () => 40 + 1.2 * (parseFloat(getComputedStyle(shelves[0].b).fontSize) || 32);
+     THE PITCH IS THE TYPE'S OWN, not the window's: 1.15 of the size
+     the rail is set in, which is under the line's own 1.2, so the
+     rules fall just below each baseline and the block ends where the
+     names end. Nothing here measures the window any more. The rail
+     scrolls (see #railwrap) if an open drawer ever runs past the
+     foot, which at this pitch takes a very short one. */
+  const TIGHT = 1.15, REEL_H = 120;
+  let pitch = 44;
   const fitRail = () => {
-    const avail = railH();
-    if (!avail) return;
-    const room = (avail - N - askBox.offsetHeight) / N;
-    pitch = Math.floor(Math.max(P_MIN, Math.min(pMax(), room)));
+    const fs = parseFloat(getComputedStyle(shelves[0].b).fontSize) || 32;
+    pitch = Math.round(fs * TIGHT);
     cvNav.style.setProperty("--cv-pitch", pitch + "px");
     cvNav.style.setProperty("--reel-h", REEL_H + "px");
     follow();
