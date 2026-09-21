@@ -1729,6 +1729,26 @@ head = r'''<!doctype html>
     .ccol .chead .cx::after { transform: rotate(-45deg); }
     /* what is next, under the head: the column's first line */
     .ccol .cnextrow { margin: 2px 0 18px; }
+    /* ── ABOUT, AS A ROOM ── the About column's sections in a phone's
+       column (openHouseColumn). The accordion is the column's own; a
+       room is black, so its greys and hairlines are the room's, and
+       the paragraphs come down from the desktop's 20 to a reading size
+       for a 285px measure. A row's name is a 44px press. */
+    .ccol .abtext { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; margin: 14px 0 0; }
+    .ccol .clead .cnote + .abtext { margin-top: 20px; }
+    .ccol .ablede + .abtext { margin-top: 16px; }
+    .ccol.dark .abtext { color: rgba(255, 255, 255, 0.82); }
+    .ccol .abfolds { margin: 4px 0 34px; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+    .ccol.dark .abfolds, .ccol.dark .abrow + .abrow { border-color: rgba(255, 255, 255, 0.16); }
+    .ccol .abhead { padding: 13px 0 15px; color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
+    /* the padding alone: a colour here would outrank the room's grey,
+       and the first row's name stood black on black */
+    .ccol .abrow:first-child .abhead { padding-top: 13px; }
+    .ccol.dark .abhead { color: rgba(255, 255, 255, 0.5); }
+    .ccol .abrow.open .abhead { color: var(--ink); }
+    .ccol.dark .abrow.open .abhead { color: #fff; }
+    .ccol .abhead:focus-visible { outline-color: currentColor; }
+    .ccol .abrow.open .abin { padding: 2px 0 28px; }
     .ccol.dark .chead { background: #000; }
 
     /* ── THE BAR: the field, then the handle ──────────────────────
@@ -5892,10 +5912,46 @@ async function openHouseColumn(kind, from, opts) {
   const h = HOUSE();
   const isInfo = kind === "info";
   const DB = BOARD_HOUSE.daybook || null;
-  const c = colNode(kind, isInfo ? "Info" : kind === "daybook" ? (DB && DB.caption) || "Daybook" : "Connect");
+  /* ── ON A PHONE THIS ROOM IS ABOUT ───────────────────────────────
+     A desktop opens on the About column: who he is, in four sections
+     from his résumé, then what shipped, how he works and who with. A
+     phone opens on the statement and the work, which is right for a
+     glass one column wide, so none of that had a phone at all: its
+     sheet's About line opened Info, a room from before the column was
+     written. The room carries the column now. The first section is
+     its sentence and its paragraphs, the other three fold under it in
+     the column's own accordion, one open at a time, and Info's own
+     rows follow as they were, pictures and marks and all. */
+  const SECS = (PHONE && isInfo && ABOUT && ABOUT.sections) || [];
+  const c = colNode(kind, isInfo ? (SECS.length ? (ABOUT.name || "About") : "Info")
+    : kind === "daybook" ? (DB && DB.caption) || "Daybook" : "Connect");
   c.classList.add("dark");
   c.__house = kind;
   if (isInfo) {
+    if (SECS.length) {
+      const first = SECS[0];
+      if (first.lede) c.__lead.appendChild(el("div", "cnote", first.lede));
+      (first.body || []).forEach((t) => c.__lead.appendChild(el("p", "abtext", t)));
+      const folds = el("div", "abfolds");
+      SECS.slice(1).forEach((sec) => {
+        const r = el("div", "abrow"); r.dataset.k = sec.id;
+        const h = el("button", "abhead"); h.type = "button"; h.setAttribute("aria-expanded", "false");
+        h.appendChild(el("span", null, sec.name));
+        const pm = el("i", "pm"); pm.appendChild(el("b", "h")); pm.appendChild(el("b", "v")); h.appendChild(pm);
+        const bd = el("div", "abbody"), inn = el("div", "abin");
+        if (sec.lede) inn.appendChild(el("p", "ablede", sec.lede));
+        (sec.body || []).forEach((t) => inn.appendChild(el("p", "abtext", t)));
+        bd.appendChild(inn); r.appendChild(h); r.appendChild(bd); folds.appendChild(r);
+        h.addEventListener("click", () => {
+          const on = !r.classList.contains("open");
+          folds.querySelectorAll(".abrow").forEach((o) => {
+            o.classList.toggle("open", o === r && on);
+            o.querySelector(".abhead").setAttribute("aria-expanded", o === r && on ? "true" : "false");
+          });
+        });
+      });
+      if (folds.childElementCount) c.__matter.appendChild(folds);
+    } else {
     /* the About line, split where it turns from what he does to how
        he works, which is the same seam the two registers sit on */
     const about = (RAIL_NOTES.info[0] || [])[1] || "";
@@ -5903,6 +5959,7 @@ async function openHouseColumn(kind, from, opts) {
     const d = el("div", "cnote", (cut > 0 ? about.slice(0, cut) : about).trim() + " ");
     if (cut > 0) d.appendChild(el("span", "g", about.slice(cut).trim()));
     c.__lead.appendChild(d);
+    }
     /* ── THE ROOM STATES WHAT IT KNOWS ────────────────────────────────
        It used to offer four question chips and answer them into the
        talk, which meant the room's own material was three presses
