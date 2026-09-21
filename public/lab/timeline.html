@@ -563,7 +563,12 @@ map.addEventListener("pointerup", () => { scrubbing = false; });
 
 /* a wheel either way pans the world; arrows too */
 stage.addEventListener("wheel", (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); stage.scrollLeft += e.deltaY; } }, { passive: false });
-addEventListener("keydown", (e) => { if (e.key === "ArrowRight") stage.scrollLeft += 240; if (e.key === "ArrowLeft") stage.scrollLeft -= 240; });
+addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") stage.scrollLeft += 240; if (e.key === "ArrowLeft") stage.scrollLeft -= 240;
+  /* Page Down and Page Up turn to the next chapter and the last */
+  if (e.key === "PageDown" || e.key === "PageUp") { e.preventDefault(); const L = stage.scrollLeft, fwd = e.key === "PageDown";
+    const to = fwd ? PAGES.find((p) => p.x > L + 8) : PAGES.slice().reverse().find((p) => p.x < L - 8); go(to ? to.x : (fwd ? stage.scrollWidth : 0)); }
+});
 </script>
 </body>
 </html>
