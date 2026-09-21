@@ -916,9 +916,25 @@
 
     /* ── THE RAIL ── */
     #rdrawer .cvnav, .cvstack { display: block; }
-    /* every line is ruled, the first one included (his call, 20 Sept
-       2026), so the rail opens on a line the way the columns do */
-    .cvline { border-top: 1px solid rgba(0, 0, 0, 0.1); }
+    /* ── EVERY RULE IS THE LENGTH OF THE WORD OVER IT ──────────────
+       His call (20 Sept 2026): the rules "touch the far left and only
+       extend to the end of the word above it. so they will be
+       different lengths." So a rule belongs to its own name, not to
+       the line below: it hangs off the foot of the row that names it,
+       starts a gutter to the left of the rail (off the page's edge)
+       and stops where the word stops — before the count, which rides
+       past its end. The first line has the wordmark over it and its
+       rule is set to that. The widths are measured, not guessed
+       (fitRules), since they are the words' own. */
+    .cvrow { position: relative; }
+    .cvrow::after, .cvline:first-child .cvrow::before {
+      content: ""; position: absolute; left: calc(-1 * var(--gut, 50px)); height: 1px;
+      background: rgba(0, 0, 0, 0.1); pointer-events: none;
+      width: calc(var(--gut, 50px) + var(--rule-w, 0px)); }
+    .cvrow::after { top: 100%; }
+    /* the first line's rule stands at the TOP of its own row, not
+       above it: a scroller clips what sits over its first pixel */
+    .cvline:first-child .cvrow::before { top: 0; width: calc(var(--gut, 50px) + var(--mark-w, 0px)); }
     /* the name sits close to the rule above it and the air falls
        below, as the About column's rows do and as the board reads
        everywhere else: a fifth of the air over it, the rest under.
@@ -928,7 +944,10 @@
       height: var(--cv-pitch, 50px);
       padding: calc((var(--cv-pitch, 50px) - var(--st-fs) * 1.2) * 0.18) 0 0;
       background: none; border: 0; margin: 0; cursor: pointer; text-align: left;
-      font: inherit; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2;
+      /* 700, the wordmark's own weight (his call, 20 Sept 2026): the
+         mark stands directly over the stack and they read as one
+         block of type rather than a name and a list under it */
+      font: inherit; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2;
       color: rgba(0, 0, 0, 0.42);
       transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
         height 0.56s cubic-bezier(0.2, 0.7, 0.2, 1),
@@ -938,8 +957,10 @@
     .cvrow.front, .cvline.open .cvrow { color: var(--ink); }
     .cvrow:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; border-radius: 6px; }
     /* the count rides the name's cap, not its foot */
-    .cvn { font-size: 12px; font-weight: 600; letter-spacing: 0; line-height: 1;
-      margin-top: 4px; font-variant-numeric: tabular-nums; }
+    /* the counts are the smallest thing the board says (his call the
+       same day), and they ride the name's cap */
+    .cvn { font-size: 10px; font-weight: 600; letter-spacing: 0; line-height: 1;
+      margin-top: 5px; font-variant-numeric: tabular-nums; }
     /* a shelf's drawer: the live rail's own fold (0fr to 1fr), with
        its matter a beat behind the structure, as it was there */
     .cvbody { display: grid; grid-template-rows: 0fr; cursor: pointer;
@@ -1335,7 +1356,15 @@
      first chip, a column's chip and the statement all begin on the
      one line. */
   @media (min-width: 761px) {
-    #railwrap { top: calc(var(--cover-air, 50px) + var(--head-band, 64px)); }
+    /* ── THE RAIL'S BOX REACHES THE PAGE'S EDGE ── the rules run off
+       the left of it, and the rail is a scroller, which clips them.
+       So the box starts at 0 and pads its own content back to the
+       gutter: the names stand exactly where they stood, and the rules
+       have somewhere to run to. (overflow-y: auto forces overflow-x
+       to clip as well, so widening the box is the only way.) */
+    #railwrap { top: calc(var(--cover-air, 50px) + var(--head-band, 64px));
+      left: 0; width: calc(var(--ix-note-w, 256px) + var(--gut, 50px));
+      padding-left: var(--gut, 50px); box-sizing: border-box; }
   }
   /* the room the travelling field takes inside the sentence — the
      homepage's #askSlot, as a class because the statement is dealt
@@ -7547,11 +7576,23 @@ if (!PHONE) {
      foot, which at this pitch takes a very short one. */
   const TIGHT = 1.15, REEL_H = 120;
   let pitch = 44;
+  /* each rule is as long as the word over it (see the stylesheet), so
+     every row carries its own name's width, and the first line carries
+     the wordmark's */
+  const fitRules = () => {
+    Object.values(byTag).forEach((L) => {
+      const w = L.b.querySelector(".rink").getBoundingClientRect().width;
+      L.cell.style.setProperty("--rule-w", Math.round(w) + "px");
+    });
+    const mk = document.querySelector("#coverline .covermark");
+    if (mk) cvNav.style.setProperty("--mark-w", Math.round(mk.getBoundingClientRect().width) + "px");
+  };
   const fitRail = () => {
     const fs = parseFloat(getComputedStyle(shelves[0].b).fontSize) || 32;
     pitch = Math.round(fs * TIGHT);
     cvNav.style.setProperty("--cv-pitch", pitch + "px");
     cvNav.style.setProperty("--reel-h", REEL_H + "px");
+    fitRules();
     follow();
   };
 
