@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Timeline view, a mock · Reckon*House</title>
+<!-- ── THE TIMELINE VIEW, A MOCK (20 Sept 2026) ───────────────────────
+     His idea: a toggle on the board, Projects | Timeline, the same
+     work sorted by time, "because there's no story it's just
+     projects". This page is the mock he asked for before it is built
+     into the board. It is standalone on purpose: the board's engine is
+     not touched, and nothing here is wired to it.
+
+     The grammar is the board's (the mark, the tight ruled rail at the
+     statement's size, hairlines, 12px captions, a name on its side)
+     and the chart's is from his references: a time axis with a rule
+     at every year, jobs as bars whose length is their duration, his
+     own practice as a bar running under all of them, notes hung off
+     leaders with the year stacked in two lines, case studies as small
+     reels that play under the hand and open their study.
+
+     DATES ARE LINKEDIN'S (his call). One stretch is not on LinkedIn at
+     all: Neiman Marcus before Aug 2009. The résumé has him there from
+     2006, so that bar is drawn soft until he says which is true.
+     A study's year is its own `published` field. Every note is a fact
+     from his résumé or LinkedIn; the intro's sentence and the legend
+     are placeholders of mine.
+
+     THE MAIN AXIS IS SPACED BY WHAT HAPPENED, NOT BY THE CALENDAR: a
+     year with eight studies is wider than a year with none, as the
+     Tate and Charleroi references are. The strip at the foot is the
+     honest one, true to scale, and it is also the scrubber. -->
+<style>
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; }
+  :root { --ink: #000; --paper: #fff; --grey: rgba(0, 0, 0, 0.42); --hair: rgba(0, 0, 0, 0.13); --rule: rgba(0, 0, 0, 0.1);
+    --gut: 50px; --rail: 200px; --gap: 73px; --air: 50px; --band: 64px;
+    --st-fs: clamp(20px, 2.4vw, 32px);
+    --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+
+  /* the head line: the mark, and what is on the glass */
+  #mark { position: fixed; z-index: 5; left: var(--gut); top: var(--air);
+    font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  #mark i { font-style: normal; font-weight: 400; }
+  #range { position: fixed; z-index: 5; right: var(--gut); top: calc(var(--air) + 2px);
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey); }
+
+  /* the rail: the board's own, with the view's switch over it */
+  #rail { position: fixed; z-index: 4; left: 0; top: calc(var(--air) + var(--band));
+    width: calc(var(--gut) + var(--rail)); padding-left: var(--gut); bottom: 24px; }
+  .switch { display: flex; gap: 14px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; margin: 0 0 14px; }
+  .switch a { color: var(--grey); transition: color 0.3s ease; }
+  .switch a:hover { color: var(--ink); }
+  .switch .on { border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+  .era { position: relative; display: flex; align-items: flex-start; gap: 4px; width: 100%; height: var(--pitch, 42px);
+    padding: 1px 0 0; margin: 0; border: 0; background: none; cursor: pointer; text-align: left;
+    font: inherit; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2;
+    color: var(--grey); white-space: nowrap; transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .era::after { content: ""; position: absolute; top: 100%; left: calc(-1 * var(--gut)); height: 1px;
+    width: calc(var(--gut) + var(--w, 0px)); background: var(--rule); }
+  .era.front, .era:hover { color: var(--ink); }
+  .era sup { font-size: 10px; font-weight: 600; letter-spacing: 0; line-height: 1; margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .era.door { cursor: pointer; }
+
+  /* the stage: one long world, panned sideways */
+  #stage { position: fixed; left: calc(var(--gut) + var(--rail) + var(--gap)); right: 0;
+    top: 0; bottom: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  #stage::-webkit-scrollbar { display: none; }
+  #world { position: relative; height: 100%; }
+  .yr { position: absolute; top: 96px; bottom: 88px; width: 1px; background: var(--hair); }
+  .yr.edge { background: var(--hair); }
+  .yl { position: absolute; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey);
+    font-variant-numeric: tabular-nums; padding-left: 8px; }
+  #axis { position: absolute; left: 0; height: 1px; background: var(--ink); }
+
+  /* the opening column: the view's name on its side, as a run's is */
+  .intro { position: absolute; left: 0; top: calc(var(--air) + var(--band)); width: 400px; }
+  .spine { position: absolute; left: 0.03em; top: 0; writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.8; text-transform: uppercase;
+    white-space: nowrap; user-select: none; }
+  .intro .body { margin-left: 118px; }
+  .lede { font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2; margin: 0 0 22px; }
+  .key { font-size: 12px; font-weight: 500; line-height: 1.45; color: var(--grey); margin: 0; padding: 0; list-style: none; }
+  .key li { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+  .key b { flex: none; width: 34px; height: 12px; border-radius: 3px; }
+  .key .k1 { background: var(--ink); } .key .k2 { border: 1px solid var(--ink); }
+  .key .k3 { height: 22px; border-radius: 5px; background: rgba(0, 0, 0, 0.12); }
+  .key .k0 { background: rgba(0, 0, 0, 0.1); }
+
+  /* a case study: a small reel on a leader, with the board's caption */
+  .st { position: absolute; width: 152px; display: block; }
+  .st .pic { display: block; width: 152px; height: var(--pic-h, 96px); border-radius: 12px; overflow: hidden; background: #EDE7E2; }
+  .st img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .st .cap { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.3;
+    max-height: 2.6em; overflow: hidden; }
+  .st .cap span { color: var(--grey); }
+  .st::after { content: ""; position: absolute; left: 50%; top: calc(100% + 4px); width: 1px; height: var(--lead, 0px); background: var(--hair); }
+  .st:hover .pic { outline: 1px solid var(--ink); outline-offset: 2px; }
+
+  /* the jobs: a bar is as long as the job was */
+  .bar { position: absolute; height: var(--lane-h, 28px); border-radius: 4px; padding: 0 9px; display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; letter-spacing: -0.004em; white-space: nowrap; overflow: hidden; }
+  .bar em { font-style: normal; display: flex; gap: 6px; will-change: transform; }
+  .bar span { font-weight: 500; opacity: 0.62; }
+  .bar.job { background: var(--ink); color: #fff; }
+  .bar.line { border: 1px solid var(--ink); color: var(--ink); background: var(--paper); }
+  .bar.soft { background: rgba(0, 0, 0, 0.28); color: #fff; }
+  .bar.edu { background: rgba(0, 0, 0, 0.08); color: var(--ink); }
+
+  /* a note: the year stacked in two, the fact beside it */
+  .note { position: absolute; width: 236px; display: flex; gap: 10px; align-items: flex-start; }
+  .note .y { flex: none; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 0.86;
+    font-variant-numeric: tabular-nums; }
+  .note p { margin: 1px 0 0; font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
+  .note p b { font-weight: 600; }
+  .note::before { content: ""; position: absolute; left: 0; bottom: calc(100% + 6px); width: 1px; height: var(--lead, 0px); background: var(--hair); }
+  .now { position: absolute; font-size: 12px; font-weight: 600; padding-left: 10px; }
+  #world.dim .note:not(.lit), #world.dim .bar:not(.lit) { opacity: 0.28; }
+  .note, .bar { transition: opacity 0.3s ease; }
+
+  /* the foot: the whole of it to scale, and the way through it */
+  #map { position: fixed; z-index: 4; left: calc(var(--gut) + var(--rail) + var(--gap)); right: var(--gut); bottom: 24px; height: 44px;
+    cursor: pointer; }
+  #map .mb { position: absolute; height: 5px; border-radius: 2px; background: var(--ink); }
+  #map .mb.line { background: none; border: 1px solid var(--ink); }
+  #map .mb.soft { background: rgba(0, 0, 0, 0.28); } #map .mb.edu { background: rgba(0, 0, 0, 0.1); }
+  #map .ml { position: absolute; bottom: 0; font-size: 10px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #map .win { position: absolute; top: -4px; height: 32px; border: 1px solid var(--ink); border-radius: 4px; background: rgba(0, 0, 0, 0.04); pointer-events: none; }
+</style>
+</head>
+<body>
+<a id="mark" href="/">Reckon<i>*</i>House</a>
+<div id="range" aria-live="off"></div>
+<aside id="rail" aria-label="Index">
+  <div class="switch"><a href="/">Projects</a><span class="on">Timeline</span></div>
+  <nav id="eras"></nav>
+</aside>
+<main id="stage"><div id="world"></div></main>
+<div id="map" aria-hidden="true"></div>
+
+<script>
+const STUDIES = [{"k": "branding-graphics", "t": "Various design", "s": "Branding, art, apparel", "h": "branding-graphics", "y": 2008, "frames": ["/lab/board-thumbs/hp/rhs-various-design-branding-graphics-prints-apparel@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-abc-123-typography-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-bokehs-fall-storefront-window-display@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-inna-foil-zine-orange-dress-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-up-up-and-away-balloon-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-verse02-light-waves-stripes-print@384.webp"], "seat": 29}, {"k": "neiman-marcus", "t": "Neiman Marcus", "s": "Editorial direction, design", "h": "neiman-marcus", "y": 2012, "frames": ["/lab/board-thumbs/hp/rhs-neiman-marcus-editorial-design-fashion-spreads@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-flora-maxi-laptop-couch-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup@384.webp"], "seat": 26}, {"k": "nordstrom-personalization", "t": "Nordstrom personalization", "s": "Design system, direction", "h": "nordstrom-personalization", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-personalization-laptop@384.webp"], "seat": 4}, {"k": "jeffrey-ecommerce", "t": "Jeffrey NYC", "s": "Ecommerce, web design", "h": "jeffrey-ecommerce", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-ecommerce-laptop@384.webp"], "seat": 15}, {"k": "ivy-park", "t": "Ivy Park by Beyoncé", "s": "Ecommerce, brand launch", "h": "ivy-park", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-ivy-park-beyonce-digital-brand-launch@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-campaign-assets-grid-overview@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-mobile-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-signage@384.webp"], "seat": 0}, {"k": "nordstrom-framework", "t": "Nordstrom framework", "s": "Content direction, design", "h": "nordstrom-framework", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-framework-on-our-list@384.webp", "/lab/board-thumbs/nordstrom-framework/hero1@384.webp", "/lab/board-thumbs/nordstrom-framework/hero3@384.webp", "/lab/board-thumbs/nordstrom-framework/hero4@384.webp"], "seat": 8}, {"k": "amber-shockey-co", "t": "Amber Shockey & Co.", "s": "Tableware design, branding", "h": "amber-shockey-co", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-amber-shockey-blue-plate@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup@384.webp"], "seat": 19}, {"k": "loved-by-nordstrom", "t": "Loved by Nordstrom", "s": "Brand campaign, design", "h": "loved-by-nordstrom", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-loved-by-nordstrom-ipad@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-landing-page-corduroy-couch@384.webp"], "seat": 24}, {"k": "jeffrey-spring", "t": "Jeffrey Spring Campaign", "s": "Creative direction, design", "h": "jeffrey-spring", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-spring-campaign-laptop@384.webp"], "seat": 25}, {"k": "capitan-boot-co", "t": "Capitan Boot Co.", "s": "Branding, design", "h": "capitan-boot-co", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-capitan-boot-co-branding@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign@384.webp"], "seat": 6}, {"k": "nordstrom-beauty", "t": "Nordstrom beauty", "s": "Digital design, personalized", "h": "nordstrom-beauty", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-beauty-hub-laptop@384.webp", "/lab/board-thumbs/nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup@384.webp"], "seat": 10}, {"k": "hill-country-oak", "t": "Hill Country Oakworks", "s": "Campaign direction, branding", "h": "hill-country-oak", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-hill-country-oakworks-billboard@384.webp", "/lab/board-thumbs/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft@384.webp"], "seat": 13}, {"k": "j-christianson", "t": "J. Christianson", "s": "Brand development, design", "h": "j-christianson", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-j-christianson-branding@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-billboard-mockup-brand-pattern@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-storefront-tree-stripe-window-mockup@384.webp"], "seat": 16}, {"k": "cosmo-prof", "t": "Cosmo Prof", "s": "Digital design, creative direction", "h": "cosmo-prof", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-cosmo-prof-website-design-digital-rebrand@384.webp", "/lab/board-thumbs/cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters@384.webp"], "seat": 12}, {"k": "you-by-sally", "t": "You By Sally", "s": "Brand campaign", "h": "you-by-sally", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-you-by-sally-street-display@384.webp", "/lab/board-thumbs/you-by-sally/hero@384.webp"], "seat": 18}, {"k": "fairview-bedroom", "t": "The Fairview Suite", "s": "Interior design, bedroom", "h": "fairview-suite", "y": 2022, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bedroom-glam-luxe@384.webp"], "seat": 23}, {"k": "big-bend", "t": "West Texas", "s": "Landscape photography", "h": "big-bend", "y": 2022, "frames": ["/lab/board-thumbs/big-bend/hero@384.webp", "/lab/board-thumbs/big-bend/desert-dusk-ridgeline@384.webp", "/lab/board-thumbs/big-bend/mountain_crop@384.webp", "/lab/board-thumbs/big-bend/prada_grid@384.webp"], "seat": 28}, {"k": "hill-country-kitchen", "t": "Hill Country home", "s": "Interior design, kitchen", "h": "hill-country-kitchen", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-kitchen-modern-meets-vintage@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-pantry-fridge-pendant-window@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows@384.webp"], "seat": 2}, {"k": "hill-country-bath", "t": "Hill Country home", "s": "Interior design, primary bath", "h": "hill-country-bath", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-hill-country-primary-bath@384.webp", "/lab/board-thumbs/hill-country-bath/hill-country-bath-his-vanity-valet-stand-antique-mirror@384.webp"], "seat": 11}, {"k": "black-white-type", "t": "Black & white type", "s": "Custom typography, patterns", "h": "black-white-type", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-typography-black-white-custom-patterns@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-stepper-poster-bench-lifestyle@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-white-poster-gate-lifestyle@384.webp"], "seat": 14}, {"k": "hill-country-living", "t": "Hill Country home", "s": "Interior design, living room", "h": "hill-country-living", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-livingroom-interior@384.webp", "/lab/board-thumbs/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry@384.webp"], "seat": 17}, {"k": "floor-and-decor", "t": "Floor & Decor", "s": "Interiors feature", "h": "floor-and-decor", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bath-urban-farmhouse@384.webp", "/lab/board-thumbs/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier@384.webp"], "seat": 20}, {"k": "fairview-sitting", "t": "The Fairview", "s": "Interior design, sitting room", "h": "fairview-sitting", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-formal-modern-transitional-1@384.webp"], "seat": 21}, {"k": "fairview-entry", "t": "The Fairview", "s": "Interior Design, foyer", "h": "fairview-entry", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-grand-entry-luxe@384.webp"], "seat": 22}, {"k": "chalet", "t": "Mountain View", "s": "Interior design, remodel", "h": "chalet", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-cabin-mid-century@384.webp", "/lab/board-thumbs/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape@384.webp"], "seat": 27}, {"k": "arc", "t": "A.R.C. - AI Home Inventory", "s": "App & brand development", "h": "arc", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-arc-app-project-select-phone@384.webp", "/lab/board-thumbs/arc/arc-app-kitchen-project-selection-lifestyle@384.webp", "/lab/board-thumbs/arc/arc-app-tablet-kitchen-living-room-lifestyle@384.webp"], "seat": 3}, {"k": "robert-rodriguez", "t": "Robert Rodriguez x Neiman’s", "s": "Creative direction, design", "h": "robert-rodriguez", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-robert-rodriguez-storefront-window@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait@384.webp"], "seat": 5}, {"k": "sally-os", "t": "Sally Marketing OS", "s": "Product design, engineering", "h": "sally", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-sally-os-asset-hub-laptop@384.webp"], "seat": 1}, {"k": "dsc", "t": "Dallas Sport Collective", "s": "Website, custom app", "h": "dsc", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-dallas-sport-collective-laptop-stool@384.webp", "/lab/board-thumbs/dsc/dsc-marketing-site-phone-hero@384.webp", "/lab/board-thumbs/dsc/dsc-owner-calendar-phone-hero@384.webp"], "seat": 7}, {"k": "sizzle", "t": "Faux Reel", "s": "Product design, motion", "h": "sizzle", "y": 2026, "frames": ["/lab/board-thumbs/sizzle/sizzle@384.webp"], "seat": 9}];
+const NOW = [2026, 9];
+/* LinkedIn's dates. `soft` is the one stretch LinkedIn does not list. */
+const ROLES = [
+  { id: "edu", lane: 0, kind: "edu", org: "UT Dallas", title: "B.S., Management Information Systems", s: [1998, 8], e: [2002, 5] },
+  { id: "am", lane: 0, kind: "job", org: "Applied Media", title: "Visual Designer", s: [2002, 8], e: [2006, 11], era: "Applied Media" },
+  { id: "nm0", lane: 0, kind: "soft", org: "Neiman Marcus", title: "per the résumé", s: [2006, 11], e: [2009, 8], era: "Neiman Marcus" },
+  { id: "nm", lane: 0, kind: "job", org: "Neiman Marcus", title: "Senior Visual Designer", s: [2009, 8], e: [2012, 5] },
+  { id: "jcp", lane: 0, kind: "job", org: "JCPenney", title: "Senior Art Director", s: [2012, 5], e: [2013, 4], era: "JCPenney" },
+  { id: "n1", lane: 0, kind: "job", org: "Nordstrom", title: "Design Manager", s: [2013, 4], e: [2014, 4], era: "Nordstrom" },
+  { id: "n2", lane: 0, kind: "job", org: "Nordstrom", title: "Associate Creative Director", s: [2014, 4], e: [2018, 6] },
+  { id: "n3", lane: 0, kind: "job", org: "Nordstrom", title: "Creative Design Director", s: [2018, 6], e: [2021, 4] },
+  { id: "s1", lane: 0, kind: "job", org: "Sally Beauty", title: "Director of Creative Services", s: [2021, 4], e: [2022, 5], era: "Sally Beauty" },
+  { id: "ah", lane: 0, kind: "job", org: "At Home", title: "Senior Digital Designer", s: [2022, 11], e: [2024, 2], era: "At Home" },
+  { id: "ps", lane: 0, kind: "job", org: "PetSmart", title: "Senior Creative Manager", s: [2024, 2], e: [2025, 6], era: "PetSmart" },
+  { id: "s2", lane: 0, kind: "job", org: "Sally Beauty", title: "Creative Director", s: [2025, 6], e: NOW, era: "Sally Beauty" },
+  { id: "hm", lane: 1, kind: "line", org: "Custom homes", title: "Lead Interior Designer", s: [2021, 10], e: [2023, 6], era: "Homes" },
+  { id: "rh", lane: 2, kind: "line", org: "Reckon House", title: "Principal, my own practice", s: [2012, 4], e: NOW, era: "Reckon House" },
+];
+/* every one a fact from his résumé or LinkedIn */
+const NOTES = [
+  { r: "edu", at: [1998, 9], t: "<b>UT Dallas.</b> A degree in management information systems." },
+  { r: "am", at: [2002, 8], t: "<b>One of six at a startup.</b> All of the digital and print design." },
+  { r: "am", at: [2004, 1], t: "Designed and coded the front-end UI for a custom CMS. Hand-coded CSS and JavaScript." },
+  { r: "nm", at: [2009, 8], t: "<b>Neiman Marcus.</b> Led the design and technical execution of InSite, its editorial hub." },
+  { r: "nm", at: [2011, 1], t: "The cover of the 100th Anniversary Christmas Book, and a full homepage redesign." },
+  { r: "jcp", at: [2012, 5], t: "<b>JCPenney.</b> Recruited for the Ron Johnson transformation. Design language and photo direction." },
+  { r: "n1", at: [2013, 4], t: "<b>Nordstrom.</b> A team of 12 on the daily homepage, landing pages and email." },
+  { r: "n2", at: [2014, 6], t: "A team of 27 across site, email and apps." },
+  { r: "n2", at: [2015, 4], t: "Nordstrom's first personalization design logic." },
+  { r: "n2", at: [2016, 4], t: "<b>Ivy Park by Beyoncé.</b> Six weeks from concept to live." },
+  { r: "n3", at: [2018, 6], t: "<b>A new CMS with engineering.</b> $3M saved over four years." },
+  { r: "n3", at: [2019, 6], t: "Rebrand of the digital design system. Concept-to-web time down 35%, engagement up 22%." },
+  { r: "rh", at: [2012, 4], t: "<b>Reckon House.</b> My own practice starts: brand identity, interiors, and later the tools." },
+  { r: "s1", at: [2021, 4], t: "<b>Sally Beauty.</b> Built the in-house creative teams and a new operating model. Execution efficiency up 27%." },
+  { r: "hm", at: [2021, 10], t: "<b>Custom homes.</b> Interior design and selections on $1-3M builds." },
+  { r: "hm", at: [2023, 3], t: "Designer of the Quarter, Floor & Decor." },
+  { r: "ah", at: [2022, 11], t: "<b>At Home.</b> The brand story redesign for the corporate site, presented to the CEO." },
+  { r: "ps", at: [2024, 2], t: "<b>PetSmart.</b> AI product photography. Creative output up 30%, channel demand up 12%." },
+  { r: "rh", at: [2024, 8], t: "<b>A.R.C.</b> An iPhone app designed and coded end to end. Heading to the App Store." },
+  { r: "s2", at: [2025, 6], t: "<b>Sally OS.</b> Conceived and built it, pitched it to the board. Campaigns go from request to execution in hours instead of weeks." },
+  { r: "rh", at: [2025, 10], t: "Dallas Sport Collective: booking by talking to an AI, with the scheduling kept deterministic." },
+  { r: "s2", at: [2026, 3], t: "Fleet stores to a new boutique store experience." },
+];
+
+/* ── the axis is spaced by what happened ── */
+const Y0 = 1998, Y1 = 2026, INTRO = 470, TAIL = 260;
+const per = {}; STUDIES.forEach((s) => { per[s.y] = (per[s.y] || 0) + 1; });
+const perN = {}; NOTES.forEach((n) => { perN[n.at[0]] = (perN[n.at[0]] || 0) + 1; });
+/* a year is as wide as what happened in it: two rows of pictures, two
+   rows of notes, and a quiet year passes quickly */
+/* school passes in a few columns, so the first job, and the CMS he
+   coded there, stand on the opening screen */
+const yw = (y) => y < 2002 ? 72 : Math.max(100, per[y] ? Math.ceil(per[y] / 2) * 168 + 24 : 0, perN[y] ? perN[y] * 140 + 40 : 0);
+const YX = {}; { let x = INTRO; for (let y = Y0; y <= Y1 + 1; y++) { YX[y] = x; x += yw(y); } }
+const X = (d) => YX[d[0]] + ((d[1] - 1) / 12) * yw(d[0]);
+const WORLD_W = X(NOW) + TAIL;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const world = document.getElementById("world"), stage = document.getElementById("stage");
+world.style.width = WORLD_W + "px";
+
+/* rows, from the head band down. A tall window takes them at full pitch.
+   A shorter one tightens every pitch a step at a time, until the lowest
+   note clears the scale at the foot: his own laptop's window is about
+   770 tall, and at full pitch the last row of notes ran under it. */
+const TOP = 114, V = {}, placed = [];
+const pitch = (t) => {
+  const mix = (a, b) => Math.round(a + (b - a) * t);
+  V.pic = mix(96, 84); V.row = mix(150, 132); V.axis = TOP + 2 * V.row - 2;
+  V.laneH = mix(28, 24); V.lane = V.laneH + mix(8, 6); V.lane0 = V.axis + mix(36, 30);
+  V.note0 = V.lane0 + 3 * V.lane + mix(20, 12); V.noteRow = mix(100, 92);
+  world.style.setProperty("--pic-h", V.pic + "px"); world.style.setProperty("--lane-h", V.laneH + "px");
+  placed.forEach((fn) => fn());
+};
+
+/* the opening column */
+const intro = el("div", "intro", '<div class="spine">Timeline</div><div class="body"><p class="lede">Everything on this site, in the order it happened.</p>'
+  + '<ul class="key"><li><b class="k1"></b>A job, as long as it lasted</li><li><b class="k2"></b>My own practice, alongside</li>'
+  + '<li><b class="k0"></b>School</li><li><b class="k3"></b>A case study. Rest on it to play, press to open.</li></ul></div>');
+world.appendChild(intro);
+
+/* a rule at every year, and the axis */
+for (let y = Y0; y <= Y1 + 1; y++) {
+  const r = el("i", "yr"); r.style.left = YX[y] + "px"; world.appendChild(r);
+  if (y <= Y1) { const l = el("span", "yl", String(y)); l.style.left = YX[y] + "px"; placed.push(() => { l.style.top = (V.axis + 8) + "px"; }); world.appendChild(l); }
+}
+const axis = el("i"); axis.id = "axis"; axis.style.cssText = "left:" + YX[Y0] + "px;width:" + (X(NOW) - YX[Y0]) + "px"; placed.push(() => { axis.style.top = V.axis + "px"; }); world.appendChild(axis);
+
+{ const n = el("span", "now", "Now"); n.style.left = X(NOW) + "px"; placed.push(() => { n.style.top = (V.axis - 8) + "px"; }); world.appendChild(n); }
+
+/* the jobs */
+const byId = {};
+ROLES.forEach((r) => {
+  const b = el("div", "bar " + r.kind, "<em>" + r.org + " <span>" + r.title + "</span></em>");
+  const x0 = X(r.s), x1 = X(r.e);
+  b.style.cssText = "left:" + x0 + "px;width:" + Math.max(8, x1 - x0 - 2) + "px";
+  placed.push(() => { b.style.top = (V.lane0 + r.lane * V.lane) + "px"; });
+  b.dataset.r = r.id; byId[r.id] = { r, b, x0, x1, lab: b.firstChild };
+  world.appendChild(b);
+});
+
+/* the notes, packed in two rows so none stands on another */
+{ const ends = [0, 0];
+  NOTES.slice().sort((a, b) => X(a.at) - X(b.at)).forEach((n) => {
+    const x = X(n.at) + 2;
+    let row = ends[0] <= x ? 0 : (ends[1] <= x ? 1 : (ends[0] <= ends[1] ? 0 : 1));
+    const nx = Math.max(x, ends[row]);
+    ends[row] = nx + 236 + 22;
+    const y = String(n.at[0]);
+    const d = el("div", "note", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>");
+    const lane = byId[n.r].r.lane;
+    d.style.left = nx + "px";
+    placed.push(() => {
+      const top = V.note0 + row * V.noteRow, from = V.lane0 + lane * V.lane + V.laneH;
+      d.style.top = top + "px"; d.style.setProperty("--lead", (row ? 12 : Math.max(0, top - from - 8)) + "px");
+    });
+    d.dataset.r = n.r; world.appendChild(d);
+  });
+}
+
+/* the studies, packed in two rows over the axis */
+{ const ends = [0, 0], W = 152, order = [1, 0];
+  const byYear = {}; STUDIES.forEach((s) => { (byYear[s.y] = byYear[s.y] || []).push(s); });
+  Object.keys(byYear).map(Number).sort((a, b) => a - b).forEach((y) => {
+    const list = byYear[y];
+    list.forEach((s, i) => {
+      const want = YX[y] + ((i + 0.5) / list.length) * yw(y) - W / 2;
+      let row = order[i % 2];
+      if (ends[row] > want) row = ends[0] <= ends[1] ? 0 : 1;
+      const x = Math.max(want, ends[row]);
+      ends[row] = x + W + 16;
+      const a = el("a", "st", '<span class="pic"><img alt="" loading="lazy" decoding="async" src="' + encodeURI(s.frames[0] || "") + '"></span>'
+        + '<span class="cap">' + s.t + ' <span data-full="' + s.s + '">' + s.s + "</span></span>");
+      a.href = "/case-studies/" + s.h;
+      a.style.left = x + "px";
+      placed.push(() => {
+        const top = TOP + row * V.row;
+        a.style.top = top + "px"; a.style.setProperty("--lead", Math.max(0, V.axis - (top + V.pic + 6 + 32) - 8) + "px");
+      });
+      /* a faux reel in miniature: the study's own frames, cut while the hand rests */
+      let t = 0, k = 0; const im = a.querySelector("img");
+      a.addEventListener("pointerenter", () => {
+        if (s.frames.length < 2) return;
+        s.frames.forEach((f) => { const p = new Image(); p.src = encodeURI(f); });
+        clearInterval(t); t = setInterval(() => { k = (k + 1) % s.frames.length; im.src = encodeURI(s.frames[k]); }, 620);
+      });
+      a.addEventListener("pointerleave", () => { clearInterval(t); k = 0; im.src = encodeURI(s.frames[0]); });
+      world.appendChild(a);
+    });
+  });
+}
+
+/* a bar under the hand lights its own notes */
+world.addEventListener("pointerover", (e) => {
+  const b = e.target.closest(".bar, .note"); if (!b) return;
+  const id = b.dataset.r;
+  world.classList.add("dim");
+  world.querySelectorAll(".bar, .note").forEach((n) => n.classList.toggle("lit", n.dataset.r === id));
+});
+world.addEventListener("pointerout", (e) => { if (e.target.closest(".bar, .note")) { world.classList.remove("dim"); world.querySelectorAll(".lit").forEach((n) => n.classList.remove("lit")); } });
+
+/* ── the rail: the eras, in order ── */
+const eras = document.getElementById("eras");
+const ERAS = []; ROLES.forEach((r) => { if (r.era) ERAS.push(r); });
+ERAS.sort((a, b) => X(a.s) - X(b.s));
+const go = (x) => stage.scrollTo({ left: Math.max(0, x - 60), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+ERAS.forEach((r) => {
+  const b = el("button", "era", "<span>" + r.era + "</span><sup>" + r.s[0] + "</sup>"); b.type = "button";
+  b.addEventListener("click", () => go(X(r.s)));
+  eras.appendChild(b); r.btn = b;
+});
+["About", "Connect", "Ask"].forEach((n) => { const a = el("a", "era door", "<span>" + n + "</span>"); a.href = "/"; eras.appendChild(a); });
+const fitRules = () => document.querySelectorAll(".era").forEach((b) => b.style.setProperty("--w", Math.round(b.firstChild.getBoundingClientRect().width) + "px"));
+/* a caption is two lines and never ends on a comma: a discipline gives up
+   its last phrase, whole, until what is left fits */
+const fitCaps = () => world.querySelectorAll(".st .cap").forEach((c) => {
+  const d = c.querySelector("span"); if (!d) return;
+  const parts = d.dataset.full.split(", ");
+  d.textContent = parts.join(", ");
+  while (parts.length && c.scrollHeight > c.clientHeight + 1) { parts.pop(); d.textContent = parts.join(", "); }
+});
+fitRules(); fitCaps(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitRules(); fitCaps(); });
+
+/* ── the foot: true to scale, and the scrubber ── */
+const map = document.getElementById("map");
+const T = (d) => d[0] + (d[1] - 1) / 12, T0 = T([Y0, 8]), T1 = T(NOW) + 0.35;
+const mapX = (t) => ((t - T0) / (T1 - T0)) * map.clientWidth;
+/* the world's x back to a time: the inverse of X */
+const timeAt = (x) => { for (let y = Y0; y <= Y1; y++) if (x < YX[y + 1]) return y + Math.max(0, (x - YX[y]) / yw(y)); return T(NOW); };
+const xAt = (t) => { const y = Math.min(Y1, Math.max(Y0, Math.floor(t))); return YX[y] + (t - y) * yw(y); };
+const win = el("div", "win");
+const drawMap = () => {
+  map.textContent = "";
+  ROLES.forEach((r) => { const m = el("i", "mb " + r.kind); m.style.cssText = "left:" + mapX(T(r.s)) + "px;width:" + Math.max(2, mapX(T(r.e)) - mapX(T(r.s)) - 1) + "px;top:" + (r.lane * 8) + "px"; map.appendChild(m); });
+  for (let y = 2000; y <= Y1; y += 2) { const l = el("span", "ml", String(y)); l.style.left = mapX(y) + "px"; map.appendChild(l); }
+  map.appendChild(win); onScroll();
+};
+const range = document.getElementById("range");
+function onScroll() {
+  const a = timeAt(stage.scrollLeft), b = timeAt(stage.scrollLeft + stage.clientWidth);
+  const l = Math.max(0, mapX(Math.max(T0, a))), r = Math.min(map.clientWidth, mapX(b));
+  win.style.left = l + "px"; win.style.width = Math.max(10, r - l) + "px";
+  range.textContent = stage.scrollLeft < INTRO - 120 ? "1998 to " + Math.floor(b) : Math.floor(a) + " to " + Math.min(Y1, Math.floor(b));
+  /* a long bar's name stays on the glass while the bar crosses it */
+  Object.values(byId).forEach((o) => {
+    const room = (o.x1 - o.x0) - o.lab.offsetWidth - 24;
+    const off = Math.min(Math.max(0, stage.scrollLeft - o.x0 + 4), Math.max(0, room));
+    o.lab.style.transform = "translateX(" + off + "px)";
+  });
+  /* in ink: the job under the near third of the glass */
+  const t = timeAt(stage.scrollLeft + stage.clientWidth * 0.3);
+  let front = null; ERAS.forEach((r) => { if (r.lane === 0 && T(r.s) <= t) front = r; });
+  ERAS.forEach((r) => r.btn.classList.toggle("front", r === front && stage.scrollLeft > INTRO - 300));
+}
+const fitV = () => {
+  const foot = map.getBoundingClientRect().top - 18;
+  for (let i = 0; i <= 5; i++) {
+    pitch(i / 5);
+    let low = 0; world.querySelectorAll(".note").forEach((n) => { low = Math.max(low, n.offsetTop + n.offsetHeight); });
+    if (low <= foot) break;
+  }
+};
+stage.addEventListener("scroll", onScroll, { passive: true });
+addEventListener("resize", () => { drawMap(); fitV(); }, { passive: true });
+drawMap(); fitV();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitV);
+const scrub = (e) => { const r = map.getBoundingClientRect(); const t = T0 + ((e.clientX - r.left) / r.width) * (T1 - T0); stage.scrollLeft = xAt(t) - stage.clientWidth / 2; };
+let scrubbing = false;
+map.addEventListener("pointerdown", (e) => { scrubbing = true; map.setPointerCapture(e.pointerId); scrub(e); });
+map.addEventListener("pointermove", (e) => { if (scrubbing) scrub(e); });
+map.addEventListener("pointerup", () => { scrubbing = false; });
+
+/* a wheel either way pans the world; arrows too */
+stage.addEventListener("wheel", (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); stage.scrollLeft += e.deltaY; } }, { passive: false });
+addEventListener("keydown", (e) => { if (e.key === "ArrowRight") stage.scrollLeft += 240; if (e.key === "ArrowLeft") stage.scrollLeft -= 240; });
+</script>
+</body>
+</html>
