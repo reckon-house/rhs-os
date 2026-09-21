@@ -55,6 +55,20 @@
      are spread across it, except where the chapter a study belongs to
      is plain (STUDY_AT).
 
+     IT READS BACKWARDS (21 Sept 2026, his call): "starting with where i
+     am and reading how i got there might make for a quicker 'oh he has
+     these skills'". So Now is the first page and the glass pans back
+     to 1998, the way a résumé runs: newest job first, each job still
+     told forwards. A chapter's page stands at the head of its own
+     stretch, which in this direction is its END, so a job that starts
+     on a chapter's date ends the stretch at the page after it. Notes
+     hang towards the later side of their date, which is now the left,
+     and are mirrored so the year and the leader stand on the date. The
+     true-scale strip at the foot runs the same way, or its window
+     would walk left as the glass pans right. Chapters are numbered in
+     the order they are read. `?order=old` lays it out from 1998
+     forwards, which is how it was first built, to compare.
+
      THE MAIN AXIS IS SPACED BY WHAT HAPPENED, NOT BY THE CALENDAR: the
      axis is cut at every new year and at every page, and each stretch
      is as wide as the pictures, notes and bar labels in it need, with
@@ -151,6 +165,10 @@
   .note p b { font-weight: 600; }
   .note::before { content: ""; position: absolute; left: var(--lx, 0px); bottom: calc(100% + 6px); width: 1px; height: var(--lead, 0px); background: var(--hair); }
   .now { position: absolute; font-size: 12px; font-weight: 600; padding-left: 10px; }
+  /* read backwards, later is to the left: a note hangs that way from its
+     date, so its year and its leader stand at its right-hand end */
+  #world.rev .note { flex-direction: row-reverse; }
+  #world.rev .now { padding-left: 0; }
 
   /* a chapter's page: paper laid over the timeline, the height of the
      year rules, as wide as its words. The measure is one column; the
@@ -199,6 +217,8 @@
 <script>
 const STUDIES = [{"k": "branding-graphics", "t": "Various design", "s": "Branding, art, apparel", "h": "branding-graphics", "y": 2008, "frames": ["/lab/board-thumbs/hp/rhs-various-design-branding-graphics-prints-apparel@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-abc-123-typography-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-bokehs-fall-storefront-window-display@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-inna-foil-zine-orange-dress-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-up-up-and-away-balloon-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-verse02-light-waves-stripes-print@384.webp"], "seat": 29}, {"k": "neiman-marcus", "t": "Neiman Marcus", "s": "Editorial direction, design", "h": "neiman-marcus", "y": 2012, "frames": ["/lab/board-thumbs/hp/rhs-neiman-marcus-editorial-design-fashion-spreads@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-flora-maxi-laptop-couch-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup@384.webp"], "seat": 26}, {"k": "nordstrom-personalization", "t": "Nordstrom personalization", "s": "Design system, direction", "h": "nordstrom-personalization", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-personalization-laptop@384.webp"], "seat": 4}, {"k": "jeffrey-ecommerce", "t": "Jeffrey NYC", "s": "Ecommerce, web design", "h": "jeffrey-ecommerce", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-ecommerce-laptop@384.webp"], "seat": 15}, {"k": "ivy-park", "t": "Ivy Park by Beyoncé", "s": "Ecommerce, brand launch", "h": "ivy-park", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-ivy-park-beyonce-digital-brand-launch@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-campaign-assets-grid-overview@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-mobile-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-signage@384.webp"], "seat": 0}, {"k": "nordstrom-framework", "t": "Nordstrom framework", "s": "Content direction, design", "h": "nordstrom-framework", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-framework-on-our-list@384.webp", "/lab/board-thumbs/nordstrom-framework/hero1@384.webp", "/lab/board-thumbs/nordstrom-framework/hero3@384.webp", "/lab/board-thumbs/nordstrom-framework/hero4@384.webp"], "seat": 8}, {"k": "amber-shockey-co", "t": "Amber Shockey & Co.", "s": "Tableware design, branding", "h": "amber-shockey-co", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-amber-shockey-blue-plate@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup@384.webp"], "seat": 19}, {"k": "loved-by-nordstrom", "t": "Loved by Nordstrom", "s": "Brand campaign, design", "h": "loved-by-nordstrom", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-loved-by-nordstrom-ipad@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-landing-page-corduroy-couch@384.webp"], "seat": 24}, {"k": "jeffrey-spring", "t": "Jeffrey Spring Campaign", "s": "Creative direction, design", "h": "jeffrey-spring", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-spring-campaign-laptop@384.webp"], "seat": 25}, {"k": "capitan-boot-co", "t": "Capitan Boot Co.", "s": "Branding, design", "h": "capitan-boot-co", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-capitan-boot-co-branding@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign@384.webp"], "seat": 6}, {"k": "nordstrom-beauty", "t": "Nordstrom beauty", "s": "Digital design, personalized", "h": "nordstrom-beauty", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-beauty-hub-laptop@384.webp", "/lab/board-thumbs/nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup@384.webp"], "seat": 10}, {"k": "hill-country-oak", "t": "Hill Country Oakworks", "s": "Campaign direction, branding", "h": "hill-country-oak", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-hill-country-oakworks-billboard@384.webp", "/lab/board-thumbs/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft@384.webp"], "seat": 13}, {"k": "j-christianson", "t": "J. Christianson", "s": "Brand development, design", "h": "j-christianson", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-j-christianson-branding@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-billboard-mockup-brand-pattern@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-storefront-tree-stripe-window-mockup@384.webp"], "seat": 16}, {"k": "cosmo-prof", "t": "Cosmo Prof", "s": "Digital design, creative direction", "h": "cosmo-prof", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-cosmo-prof-website-design-digital-rebrand@384.webp", "/lab/board-thumbs/cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters@384.webp"], "seat": 12}, {"k": "you-by-sally", "t": "You By Sally", "s": "Brand campaign", "h": "you-by-sally", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-you-by-sally-street-display@384.webp", "/lab/board-thumbs/you-by-sally/hero@384.webp"], "seat": 18}, {"k": "fairview-bedroom", "t": "The Fairview Suite", "s": "Interior design, bedroom", "h": "fairview-suite", "y": 2022, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bedroom-glam-luxe@384.webp"], "seat": 23}, {"k": "big-bend", "t": "West Texas", "s": "Landscape photography", "h": "big-bend", "y": 2022, "frames": ["/lab/board-thumbs/big-bend/hero@384.webp", "/lab/board-thumbs/big-bend/desert-dusk-ridgeline@384.webp", "/lab/board-thumbs/big-bend/mountain_crop@384.webp", "/lab/board-thumbs/big-bend/prada_grid@384.webp"], "seat": 28}, {"k": "hill-country-kitchen", "t": "Hill Country home", "s": "Interior design, kitchen", "h": "hill-country-kitchen", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-kitchen-modern-meets-vintage@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-pantry-fridge-pendant-window@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows@384.webp"], "seat": 2}, {"k": "hill-country-bath", "t": "Hill Country home", "s": "Interior design, primary bath", "h": "hill-country-bath", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-hill-country-primary-bath@384.webp", "/lab/board-thumbs/hill-country-bath/hill-country-bath-his-vanity-valet-stand-antique-mirror@384.webp"], "seat": 11}, {"k": "black-white-type", "t": "Black & white type", "s": "Custom typography, patterns", "h": "black-white-type", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-typography-black-white-custom-patterns@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-stepper-poster-bench-lifestyle@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-white-poster-gate-lifestyle@384.webp"], "seat": 14}, {"k": "hill-country-living", "t": "Hill Country home", "s": "Interior design, living room", "h": "hill-country-living", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-livingroom-interior@384.webp", "/lab/board-thumbs/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry@384.webp"], "seat": 17}, {"k": "floor-and-decor", "t": "Floor & Decor", "s": "Interiors feature", "h": "floor-and-decor", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bath-urban-farmhouse@384.webp", "/lab/board-thumbs/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier@384.webp"], "seat": 20}, {"k": "fairview-sitting", "t": "The Fairview", "s": "Interior design, sitting room", "h": "fairview-sitting", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-formal-modern-transitional-1@384.webp"], "seat": 21}, {"k": "fairview-entry", "t": "The Fairview", "s": "Interior Design, foyer", "h": "fairview-entry", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-grand-entry-luxe@384.webp"], "seat": 22}, {"k": "chalet", "t": "Mountain View", "s": "Interior design, remodel", "h": "chalet", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-cabin-mid-century@384.webp", "/lab/board-thumbs/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape@384.webp"], "seat": 27}, {"k": "arc", "t": "A.R.C. - AI Home Inventory", "s": "App & brand development", "h": "arc", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-arc-app-project-select-phone@384.webp", "/lab/board-thumbs/arc/arc-app-kitchen-project-selection-lifestyle@384.webp", "/lab/board-thumbs/arc/arc-app-tablet-kitchen-living-room-lifestyle@384.webp"], "seat": 3}, {"k": "robert-rodriguez", "t": "Robert Rodriguez x Neiman’s", "s": "Creative direction, design", "h": "robert-rodriguez", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-robert-rodriguez-storefront-window@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait@384.webp"], "seat": 5}, {"k": "sally-os", "t": "Sally Marketing OS", "s": "Product design, engineering", "h": "sally", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-sally-os-asset-hub-laptop@384.webp"], "seat": 1}, {"k": "dsc", "t": "Dallas Sport Collective", "s": "Website, custom app", "h": "dsc", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-dallas-sport-collective-laptop-stool@384.webp", "/lab/board-thumbs/dsc/dsc-marketing-site-phone-hero@384.webp", "/lab/board-thumbs/dsc/dsc-owner-calendar-phone-hero@384.webp"], "seat": 7}, {"k": "sizzle", "t": "Faux Reel", "s": "Product design, motion", "h": "sizzle", "y": 2026, "frames": ["/lab/board-thumbs/sizzle/sizzle@384.webp"], "seat": 9}];
 const NOW = [2026, 9];
+/* newest first unless asked otherwise (?order=old) */
+const REV = new URLSearchParams(location.search).get("order") !== "old";
 /* LinkedIn's dates, except Neiman Marcus's start: 2006, from the résumé, which
    he confirmed. `soft` draws a stretch nobody has confirmed; none is left. */
 const ROLES = [
@@ -320,12 +340,16 @@ const STUDY_AT = { "neiman-marcus": [2012, 2], "cosmo-prof": [2021, 5], "you-by-
    every page, and each stretch is as wide as what is in it needs: two rows
    of pictures, two rows of notes, the label of any bar that lives in it,
    and a floor so a quiet year still passes. School passes quickest. */
-let SPANS = [], PAGES = [];
+let SPANS = [], SEQ = [], PAGES = [];
+const NOW_ROOM = 44;
 const ink = document.createElement("canvas").getContext("2d");
 const labelNeed = (r) => { ink.font = '600 12px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif'; const a = ink.measureText(r.org).width;
   ink.font = '500 12px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif'; return a + 6 + ink.measureText(r.title).width + 18 + 14; };
 const layoutX = () => {
-  const cuts = new Set(); for (let y = Y0; y <= Y1 + 1; y++) cuts.add(y);
+  /* the axis ends at now, not at the year's end: read backwards, the rest
+     of this year would be an empty stretch before anything had happened */
+  const cuts = new Set(); for (let y = Y0; y <= Y1; y++) cuts.add(y);
+  cuts.add(T(NOW));
   PAGES.forEach((p) => cuts.add(p.t));
   const ts = [...cuts].sort((a, b) => a - b);
   SPANS = [];
@@ -342,22 +366,36 @@ const layoutX = () => {
     const have = SPANS.reduce((a, sp, i) => a + sp.w * inside[i] / (sp.t1 - sp.t0), 0), need = labelNeed(r), dur = inside.reduce((a, b) => a + b, 0);
     if (have < need && dur > 0) SPANS.forEach((sp, i) => { if (inside[i]) sp.w += (need - have) * (inside[i] / dur) * ((sp.t1 - sp.t0) / inside[i]); });
   });
+  /* a page stands at the head of its chapter's stretch as it is READ: at
+     the chapter's start going forwards, at its end going back */
+  const asc = PAGES.slice().sort((a, b) => a.t - b.t);
+  asc.forEach((p, i) => { p.tEnd = i < asc.length - 1 ? asc[i + 1].t : Infinity; });
+  SEQ = REV ? SPANS.slice().reverse() : SPANS.slice();
   let x = INTRO;
-  SPANS.forEach((sp, i) => { const pg = PAGES.find((p) => p.t === sp.t0); if (pg) { x += i ? 16 : 0; pg.x = x; x += pg.w + 24; } sp.x = x; x += sp.w; });
+  SEQ.forEach((sp, i) => {
+    const pg = REV ? PAGES.find((p) => p.tEnd === sp.t1 || (i === 0 && p.tEnd === Infinity)) : PAGES.find((p) => p.t === sp.t0);
+    /* read backwards, the axis STARTS at now, hard against the first page:
+       a little more room there, for the word that says so */
+    if (pg) { x += i ? 16 : 0; pg.x = x; x += pg.w + 24 + (REV && !i ? NOW_ROOM : 0); }
+    sp.x = x; x += sp.w;
+  });
 };
 const spanFrom = (t) => SPANS.find((s) => t >= s.t0 && t < s.t1) || SPANS[SPANS.length - 1];
 const spanTo = (t) => SPANS.find((s) => t > s.t0 && t <= s.t1) || SPANS[0];
-const at = (sp, t) => sp.x + ((Math.min(Math.max(t, sp.t0), sp.t1) - sp.t0) / (sp.t1 - sp.t0)) * sp.w;
+const at = (sp, t) => { const f = (Math.min(Math.max(t, sp.t0), sp.t1) - sp.t0) / (sp.t1 - sp.t0); return sp.x + (REV ? 1 - f : f) * sp.w; };
 /* where a thing STARTS, and where one ENDS: at a page's date they differ,
    one after the page and one before it */
 const XS = (d) => at(spanFrom(T(d)), T(d)), XE = (d) => at(spanTo(T(d)), T(d));
-const timeAt = (x) => { for (const sp of SPANS) { if (x < sp.x) return sp.t0; if (x <= sp.x + sp.w) return sp.t0 + ((x - sp.x) / sp.w) * (sp.t1 - sp.t0); } return T(NOW); };
-/* a thing that would stand on a page steps back before it when there is
-   room (it belongs to the chapter it is dated in), and only then past it */
-const clearOfPages = (x, w, floor, slack) => { for (let moved = true; moved;) { moved = false;
+const timeAt = (x) => { for (const sp of SEQ) { if (x < sp.x) return REV ? sp.t1 : sp.t0;
+  if (x <= sp.x + sp.w) { const f = (x - sp.x) / sp.w; return sp.t0 + (REV ? 1 - f : f) * (sp.t1 - sp.t0); } } return REV ? Y0 : T(NOW); };
+/* a thing that would stand on a page goes to the side its own moment is
+   on: back before the page when that is where it belongs and there is
+   room, past it otherwise. Which side is which does not depend on the
+   direction the glass reads in. */
+const clearOfPages = (x, w, floor, anchor) => { for (let moved = true; moved;) { moved = false;
   PAGES.forEach((p) => { if (x < p.x + p.w + 16 && x + w > p.x - 16) {
     const back = p.x - 16 - w;
-    if (back >= floor && x - back <= slack) x = back; else { x = p.x + p.w + 16; moved = true; }
+    if (anchor < p.x + p.w / 2 && back >= floor) x = back; else { x = p.x + p.w + 16; moved = true; }
   } }); } return x; };
 
 /* rows, from the head band down. A tall window takes them at full pitch.
@@ -405,8 +443,12 @@ const build = () => {
     + '<ul class="key"><li><b class="k1"></b>A job, as long as it lasted</li><li><b class="k2"></b>My own practice, alongside</li>'
     + '<li><b class="k0"></b>School</li><li><b class="k3"></b>A case study. Rest on it to play, press to open.</li></ul></div>'));
 
-  /* the pages first: their words decide how wide they are */
-  PAGES = CHAPTERS.map((c) => {
+  world.classList.toggle("rev", REV);
+  /* the pages first: their words decide how wide they are. They are
+     numbered in the order they are read. */
+  const ORDER = CHAPTERS.slice().sort((a, b) => (T(a.at) - T(b.at)) * (REV ? -1 : 1));
+  ORDER.forEach((c, i) => { c.no = String(i + 1).padStart(2, "0"); });
+  PAGES = ORDER.map((c) => {
     const pg = el("section", "pg", '<div class="flow"><div class="head"><div class="num">' + c.no + '</div><div class="when">' + c.when + "</div><h2>" + c.title
       + '</h2><p class="lede">' + c.lede + "</p></div>" + c.body.map((t) => "<p>" + t + "</p>").join("")
       + '<div class="yours"><b>Yours to write</b>' + c.yours + "</div></div>");
@@ -424,42 +466,50 @@ const build = () => {
   });
   layoutX();
   PAGES.forEach((p) => { p.el.style.left = p.x + "px"; p.el.style.width = p.w + "px"; });
-  const END = XE(NOW);
-  world.style.width = (END + TAIL) + "px";
+  const LEFT = SEQ[0].x, RIGHT = SEQ[SEQ.length - 1].x + SEQ[SEQ.length - 1].w;
+  world.style.width = (RIGHT + TAIL) + "px";
 
-  /* a rule at every year, and the axis. A year that turns just before a
-     page is named after it, where the chart picks up again. */
-  for (let y = Y0; y <= Y1 + 1; y++) {
-    const x = XS(y), pg = PAGES.find((p) => p.x - x >= 0 && p.x - x < 48);
-    if (!pg) { const r = el("i", "yr"); r.style.left = x + "px"; world.appendChild(r); }
-    if (y <= Y1) { const l = el("span", "yl", String(y)); l.style.left = (pg ? pg.x + pg.w + 24 : x) + "px"; placed.push(() => { l.style.top = (V.axis + 8) + "px"; }); world.appendChild(l); }
+  /* a rule where a year turns, unless it would stand just ahead of a page's
+     edge, and the year's name at the head of the first stretch of it that
+     has room for a name: a year that turns just before a page is named
+     after the page, where the chart picks up again */
+  for (let y = Y0; y <= Y1; y++) {
+    const x = XS(y);
+    if (!PAGES.some((p) => p.x - x >= 0 && p.x - x < 30)) { const r = el("i", "yr"); r.style.left = x + "px"; world.appendChild(r); }
+    const mine = SEQ.filter((sp) => Math.floor(sp.t0 + 1e-9) === y), sp = mine.find((q) => q.w >= 44) || mine[0];
+    if (sp) { const l = el("span", "yl", String(y)); l.style.left = sp.x + "px"; placed.push(() => { l.style.top = (V.axis + 8) + "px"; }); world.appendChild(l); }
   }
-  const axis = el("i"); axis.id = "axis"; axis.style.cssText = "left:" + SPANS[0].x + "px;width:" + (END - SPANS[0].x) + "px"; placed.push(() => { axis.style.top = V.axis + "px"; }); world.appendChild(axis);
-  { const n = el("span", "now", "Now"); n.style.left = END + "px"; placed.push(() => { n.style.top = (V.axis - 8) + "px"; }); world.appendChild(n); }
+  const axis = el("i"); axis.id = "axis"; axis.style.cssText = "left:" + LEFT + "px;width:" + (RIGHT - LEFT) + "px"; placed.push(() => { axis.style.top = V.axis + "px"; }); world.appendChild(axis);
+  /* "Now" stands off the end of the axis that is now: after it going
+     forwards, ahead of it going back */
+  { const n = el("span", "now", "Now"); n.style.left = (REV ? LEFT - NOW_ROOM : RIGHT) + "px"; placed.push(() => { n.style.top = (V.axis - 8) + "px"; }); world.appendChild(n); }
 
   /* the jobs */
   ROLES.forEach((r) => {
     const b = el("div", "bar " + r.kind, "<em>" + r.org + " <span>" + r.title + "</span></em>");
-    const x0 = XS(r.s), x1 = XE(r.e);
+    const xa = XS(r.s), xb = XE(r.e), x0 = Math.min(xa, xb), x1 = Math.max(xa, xb);
     b.style.cssText = "left:" + x0 + "px;width:" + Math.max(8, x1 - x0 - 2) + "px";
     placed.push(() => { b.style.top = (V.lane0 + r.lane * V.lane) + "px"; });
     b.dataset.r = r.id; byId[r.id] = { r, b, x0, x1, lab: b.firstChild };
     world.appendChild(b);
   });
 
-  /* the notes, packed in two rows so none stands on another, or on a page */
+  /* the notes, packed in two rows so none stands on another, or on a page.
+     A note hangs towards the later side of its date, under its own bar:
+     to the right going forwards, to the left going back. */
   { const ends = [0, 0];
-    NOTES.slice().sort((a, b) => T(a.at) - T(b.at)).forEach((n) => {
-      const x = XS(n.at) + 2;
+    NOTES.map((n) => { const anchor = XS(n.at), bar = byId[n.r];
+      return { n, anchor, x: REV ? Math.max(anchor - W_NOTE, bar.x0) : anchor + 2 }; })
+      .sort((a, b) => a.x - b.x).forEach(({ n, anchor, x }) => {
       const row = ends[0] <= x ? 0 : (ends[1] <= x ? 1 : (ends[0] <= ends[1] ? 0 : 1));
-      const nx = clearOfPages(Math.max(x, ends[row]), W_NOTE, Math.max(ends[row], SPANS[0].x), W_NOTE - 24);
+      const nx = clearOfPages(Math.max(x, ends[row]), W_NOTE, Math.max(ends[row], LEFT), anchor);
       ends[row] = nx + W_NOTE + 22;
       const y = String(n.at[0]);
       const d = el("div", "note", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>");
       const lane = byId[n.r].r.lane;
       d.style.left = nx + "px";
       /* the leader stands on the date, wherever the note had to sit */
-      d.style.setProperty("--lx", Math.max(0, Math.min(W_NOTE - 8, x - 2 - nx)) + "px");
+      d.style.setProperty("--lx", Math.max(0, Math.min(W_NOTE - 1, anchor - nx - (REV ? 1 : 0))) + "px");
       placed.push(() => {
         const top = V.note0 + row * V.noteRow, from = V.lane0 + lane * V.lane + V.laneH;
         d.style.top = top + "px"; d.style.setProperty("--lead", (row ? 12 : Math.max(0, top - from - 8)) + "px");
@@ -470,12 +520,12 @@ const build = () => {
 
   /* the studies, packed in two rows over the axis */
   { const ends = [0, 0], order = [1, 0], seen = {};
-    STUDIES.slice().sort((a, b) => a.at - b.at).forEach((s) => {
+    STUDIES.slice().sort((a, b) => (a.at - b.at) * (REV ? -1 : 1)).forEach((s) => {
       const i = seen[s.y] = (seen[s.y] == null ? 0 : seen[s.y] + 1);
-      const want = XS(s.at) - W_ST / 2;
+      const mid = XS(s.at), want = mid - W_ST / 2;
       let row = order[i % 2];
       if (ends[row] > want) row = ends[0] <= ends[1] ? 0 : 1;
-      const x = clearOfPages(Math.max(want, ends[row], SPANS[0].x), W_ST, Math.max(ends[row], SPANS[0].x), W_ST * 2);
+      const x = clearOfPages(Math.max(want, ends[row], LEFT), W_ST, Math.max(ends[row], LEFT), mid);
       ends[row] = x + W_ST + 16;
       const a = el("a", "st", '<span class="pic"><img alt="" loading="lazy" decoding="async" src="' + encodeURI(s.frames[0] || "") + '"></span>'
         + '<span class="cap">' + s.t + ' <span data-full="' + s.s + '">' + s.s + "</span></span>");
@@ -521,26 +571,27 @@ world.addEventListener("pointerout", (e) => { if (e.target.closest(".bar, .note"
 
 /* ── the foot: true to scale, and the scrubber. A tick where a chapter opens. ── */
 const T0 = T([Y0, 8]), T1 = T(NOW) + 0.35;
-const mapX = (t) => ((t - T0) / (T1 - T0)) * map.clientWidth;
+const mapX = (t) => ((REV ? T1 - t : t - T0) / (T1 - T0)) * map.clientWidth;
 const win = el("div", "win");
 function drawMap() {
   map.textContent = "";
-  ROLES.forEach((r) => { const m = el("i", "mb " + r.kind); m.style.cssText = "left:" + mapX(T(r.s)) + "px;width:" + Math.max(2, mapX(T(r.e)) - mapX(T(r.s)) - 1) + "px;top:" + (r.lane * 8) + "px"; map.appendChild(m); });
-  PAGES.forEach((p) => { const m = el("i", "mt"); m.style.left = Math.max(0, mapX(p.t)) + "px"; map.appendChild(m); });
+  ROLES.forEach((r) => { const m = el("i", "mb " + r.kind), a = mapX(T(r.s)), b = mapX(T(r.e)); m.style.cssText = "left:" + Math.min(a, b) + "px;width:" + Math.max(2, Math.abs(b - a) - 1) + "px;top:" + (r.lane * 8) + "px"; map.appendChild(m); });
+  PAGES.forEach((p) => { const m = el("i", "mt"); m.style.left = Math.min(map.clientWidth - 1, Math.max(0, mapX(Math.max(T0, p.t)))) + "px"; map.appendChild(m); });
   for (let y = 2000; y <= Y1; y += 2) { const l = el("span", "ml", String(y)); l.style.left = mapX(y) + "px"; map.appendChild(l); }
   map.appendChild(win);
 }
 function onScroll() {
   if (!SPANS.length) return;
   const L = stage.scrollLeft, a = timeAt(L), b = timeAt(L + stage.clientWidth);
-  const l = Math.max(0, mapX(Math.max(T0, a))), r = Math.min(map.clientWidth, mapX(b));
+  const ma = mapX(Math.max(T0, a)), mb = mapX(Math.max(T0, b)), l = Math.max(0, Math.min(ma, mb)), r = Math.min(map.clientWidth, Math.max(ma, mb));
   win.style.left = l + "px"; win.style.width = Math.max(10, r - l) + "px";
   /* the chapter under the near third of the glass; at the far end there is
      no further to pan, so the last one takes the ink */
   const atEnd = L + stage.clientWidth >= stage.scrollWidth - 40, probe = L + stage.clientWidth * 0.3;
   let front = null; PAGES.forEach((p) => { if (p.x <= probe) front = p; }); if (atEnd) front = PAGES[PAGES.length - 1];
   PAGES.forEach((p) => p.btn.classList.toggle("front", p === front));
-  const y0 = L < INTRO - 120 ? Y0 : Math.floor(a), y1 = Math.min(Y1, Math.floor(b));
+  /* the years on the glass, in the order the glass shows them */
+  const yr = (t) => Math.min(Y1, Math.max(Y0, Math.floor(t - 1e-6))), y0 = yr(a), y1 = yr(b);
   range.textContent = (front ? front.c.no + " " + front.c.name + " · " : "") + (y0 === y1 ? y0 : y0 + " to " + y1);
   /* a long bar's name stays on the glass while the bar crosses it, and
      steps out from under a page rather than reading through it */
@@ -555,7 +606,7 @@ stage.addEventListener("scroll", onScroll, { passive: true });
 { let t = 0; addEventListener("resize", () => { clearTimeout(t); t = setTimeout(build, 140); }, { passive: true }); }
 build();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
-const scrub = (e) => { const r = map.getBoundingClientRect(); const t = T0 + ((e.clientX - r.left) / r.width) * (T1 - T0); stage.scrollLeft = XS(Math.min(Math.max(t, Y0), T(NOW))) - stage.clientWidth / 2; };
+const scrub = (e) => { const r = map.getBoundingClientRect(), f = (e.clientX - r.left) / r.width; const t = REV ? T1 - f * (T1 - T0) : T0 + f * (T1 - T0); stage.scrollLeft = XS(Math.min(Math.max(t, Y0), T(NOW))) - stage.clientWidth / 2; };
 let scrubbing = false;
 map.addEventListener("pointerdown", (e) => { scrubbing = true; map.setPointerCapture(e.pointerId); scrub(e); });
 map.addEventListener("pointermove", (e) => { if (scrubbing) scrub(e); });
