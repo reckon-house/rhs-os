@@ -4,7 +4,7 @@
 # because the board deals a thumb and a thumb is named for its stem.
 #
 # Lines are grouped under a run: "# open" is the opening set, then
-# "# digital", "# app", "# creative", "# interiors", "# staples". A
+# "# digital", "# app", "# systems", "# creative", "# interiors", "# staples". A
 # picture named here is dealt in the order it appears; everything else
 # in that run follows, in the order the deal gives it. So a partial
 # list is enough — name the three that should lead and leave the rest.
@@ -55,6 +55,19 @@ arc/arc-app-kitchen-project-selection-lifestyle
 hp/rhs-dallas-sport-collective-laptop-stool
 dsc/dsc-owner-calendar-phone-hero
 sizzle/sizzle
+
+# systems   (Systems)
+# Added 20 Sept 2026: the work that changes how a team works, which the
+# other lines sort by medium and so never say. Every picture here is a
+# SECOND standing of one dealt elsewhere: the system screenshots were cut
+# from the field by eye on 9 Sept and that cut stands. Set its own
+# pictures on lab/board-order.html when there are some.
+hp/rhs-nordstrom-framework-on-our-list   # again, for nordstrom-framework; this run's hero
+hp/rhs-sally-os-asset-hub-laptop   # again, for sally-os on this line
+hp/rhs-nordstrom-personalization-laptop   # again, for nordstrom-personalization on this line
+dsc/dsc-owner-calendar-phone-hero   # again, for dsc on this line
+hp/rhs-arc-app-project-select-phone   # again, for arc on this line
+sizzle/sizzle   # again, for sizzle on this line
 
 # creative   (Campaigns)
 ivy-park/ivy-park-polygon-portrait-frame-logo
@@ -110,7 +123,11 @@ branding-graphics/okina
 ivy-park/ivy-park-campaign-assets-grid-overview
 
 # homes
-arc = app, digital, branding
+arc = app, digital, branding, systems
+sally-os = app, systems, digital
+dsc = app, systems, digital
+sizzle = app, systems, digital
+nordstrom-framework = creative, systems, digital
 capitan-boot-co = branding, creative
 cosmo-prof = digital, creative
 hill-country-oak = branding, creative
@@ -119,7 +136,7 @@ loved-by-nordstrom = creative, digital
 neiman-marcus = creative, digital
 robert-rodriguez = creative, branding, digital
 nordstrom-beauty = digital, creative
-nordstrom-personalization = digital, creative
+nordstrom-personalization = digital, creative, systems
 you-by-sally = creative, digital
 amber-shockey-co = branding, creative
 jeffrey-spring = creative, digital
@@ -135,6 +152,7 @@ creative = ivy-park/ivy-signage
 interiors = hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble
 digital = ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup
 app = hp/rhs-sally-os-asset-hub-laptop
+systems = hp/rhs-nordstrom-framework-on-our-list
 branding = j-christianson/j-christianson-storefront-tree-stripe-window-mockup
 
 # twice
