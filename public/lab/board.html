@@ -916,8 +916,13 @@
       padding-bottom: calc(var(--head-band) - var(--st-fs) * 1.2); }
     /* and its body opens on that line, with no air of its own */
     .tile.statement.head.about .abrow:first-child.open .abin { padding-top: 0; }
+  }
 
-    /* ── THE RAIL ── */
+  /* ── THE RAIL ── at every width from here (21 Sept 2026): a phone's
+     sheet is this rail laid down, the same lines under the same rules,
+     so the rules that draw it stand outside the desktop's block. What
+     only a desktop needs, the question's slot and its pin to the foot,
+     is fenced again below. Indented as it was, so the history reads. */
     #rdrawer .cvnav, .cvstack { display: block; }
     /* ── EVERY RULE IS THE LENGTH OF THE WORD OVER IT ──────────────
        His call (20 Sept 2026): the rules "touch the far left and only
@@ -1001,6 +1006,7 @@
     .cvchip .cvx { flex: none; font-size: 14px; line-height: 1; color: rgba(0, 0, 0, 0.42);
       transition: color 0.3s ease; }
     .cvchip .cvx:hover { color: var(--ink); }
+  @media (min-width: 761px) {
     /* the question, inside Ask's line: the field rides this slot
        (placeAsk) at the body's size, and never parks in the bar */
     #rdrawer .cvask { font-size: 20px; line-height: 1.2; padding-bottom: 14px; }
@@ -1012,9 +1018,46 @@
        scrolls under it. */
     .cvline[data-tag="ask"] { position: sticky; bottom: 0; z-index: 2;
       background: var(--paper, #fff); }
+  }
     @media (prefers-reduced-motion: reduce) {
       .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow { transition: none; }
     }
+  /* ── A PHONE'S SHEET IS THE RAIL, LAID DOWN ───────────────────────
+     He was away and asked for the phone to catch up with the desktop
+     (20 Sept 2026: "we've made a bunch of edits on desktop - we'll need
+     to work on mobile too"). The sheet held the rail of two designs
+     ago: grey pills at 13px, / Info and / Connect first, Back to start
+     at the foot. It holds the desktop's left column now, as it stands:
+     the mark at the head, which goes home, then the ten lines under
+     their word-length rules, a shelf's drawer with its reel and its
+     sentence, and what is open as a chip inside the line it belongs to.
+
+     THE TYPE IS THE DESKTOP'S 32, not the phone statement's 20. The
+     rail is tight because its pitch is 1.3 of its type, and a thumb
+     wants 42px of row: at 20px a tight rail is a 26px target, and a
+     42px row at 20px is a loose list, which is the rail he replaced.
+     At 32 it is the same rail, and the sheet has the room.
+
+     A FINGER OPENS, THEN ASKS. There is no hover here, so a shelf's
+     first press opens its drawer and the second, on the line or the
+     drawer, does what the press does on a desktop and folds the sheet,
+     because the answer happens on the glass behind it. That was the
+     old sheet's rule too. About, Connect and Ask have no drawer and
+     go on the first press. */
+  @media (max-width: 760px) {
+    #cmdIn { --st-fs: 32px; padding: 20px 20px 8px; }
+    /* the rules run off the left of the rail, and the rail's own box
+       would clip them at the gutter */
+    #cmdIn #railwrap, #cmdIn #rdrawer { overflow: visible; }
+    #cmdIn .cvmark { display: block; border: 0; background: none; padding: 0; margin: 0 0 12px;
+      cursor: pointer; text-align: left; color: var(--ink);
+      font: inherit; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+    #cmdIn .cvmark i { font-style: normal; font-weight: 400; }
+    #cmdIn .cvmark:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
+    /* a sentence has the sheet's width to itself here */
+    #cmdIn .cvnote { max-width: 36ch; font-size: 13px; min-height: 0; padding-bottom: 20px; }
+    #cmdIn .cvchip { font-size: 13px; padding: 8px 12px; margin-bottom: 8px; }
+    #cmdIn .cvchip .cvx { font-size: 16px; padding: 2px 0 2px 6px; }
   }
   /* ── THE ABOUT COLUMN ─────────────────────────────────────────────
      His mockup (19 Sept 2026): the first column is who he is, an
@@ -6473,31 +6516,9 @@ function drawPath() {
      (his note, 20 Sept 2026: "there's actually 3 different sized and
      styled left nav rails"). On a desktop a chip stands inside the
      line it belongs to now, and takes its room from the drawer's
-     picture, never from the type. A phone keeps
-     the list: there the columns' heads are behind the sheet the rail
-     lives in, so it is the only way between them. */
-  if (!PHONE) { if (window.__railChips) window.__railChips(); return; }
-  let wrap = document.getElementById("pathwrap");
-  if (!wrap) {
-    wrap = el("div", "blk rdrawer"); wrap.id = "pathwrap";
-    const rd = document.getElementById("rdrawer");
-    rd.parentNode.insertBefore(wrap, rd);
-  }
-  wrap.innerHTML = "";
-  ccols.forEach((c) => {
-    const r = el("div", "rrow");
-    const h = el("button", "rhead"); h.type = "button";
-    const ink = el("span", "rink", c.__caption); h.appendChild(ink);
-    const x = el("span", "rx", " \u00d7"); x.style.cssText = "margin-left:8px;color:rgba(0,0,0,0.42)";
-    h.appendChild(x);
-    h.addEventListener("click", (e) => { if (e.target === x) closeColumn(c); else showCol(c); });
-    r.appendChild(h); wrap.appendChild(r);
-  });
-  wrap.style.display = ccols.length ? "" : "none";
-  /* AFTER the display, or every row measures zero and keeps the 45%
-     default — which is why these three all stood the same width while
-     every other chip in the rail stopped at its own words. */
-  if (window.__hug) window.__hug();
+     picture, never from the type. A phone's sheet is the same rail
+     since 21 Sept 2026, so its chips stand in their lines too. */
+  if (window.__railChips) window.__railChips();
 }
 /* the keyboard says the same two things: left and right walk the
    columns, up and down move the page a screen at a time */
@@ -7176,20 +7197,6 @@ const mkRow = (label, slash) => {
   });
   return { r, h, pad };
 };
-const sub = (pad, cap, text) => {
-  if (cap) {
-    const c = document.createElement("div");
-    c.className = "rsub";
-    c.textContent = cap;
-    pad.appendChild(c);
-  }
-  const t = document.createElement("div");
-  t.className = "rtxt";
-  t.textContent = text;
-  pad.appendChild(t);
-  return t;
-};
-
 /* Info and Connect were drawers in the rail. They are columns now,
    black, with the same anatomy as everything else, and the rail's
    chip is the door: press it to open the room, press it again to
@@ -7207,35 +7214,9 @@ const toggleHouse = (kind) => {
    Connect's carries the one live fact a visitor wants before opening
    the room: the next open time, read from the same week the column
    reads, in the reader's own zone, the first time the drawer opens. */
-if (PHONE) {
-  const { h, pad } = mkRow("Info", true);
-  RAIL_NOTES.info.forEach(([c, t, peek]) => {
-    const lines = Array.isArray(peek) ? peek : [peek || t];
-    lines.forEach((line, i) => sub(pad, i ? null : c, line));
-  });
-  h.addEventListener("click", () => toggleHouse("info"));
-}
-if (PHONE) {
-  const { r, h, pad } = mkRow("Connect", true);
-  const nx = sub(pad, "Next open", "\u2026");
-  const t = sub(pad, null, BOARD_HOUSE.email);
-  t.innerHTML = "<a class=\"rmail\" href=\"mailto:" + BOARD_HOUSE.email + "\">" + BOARD_HOUSE.email + "</a>";
-  let asked = false;
-  const fill = async () => {
-    if (asked) return; asked = true;
-    try {
-      const j = await (await fetch("/api/book", { cache: "no-store" })).json();
-      const first = j && j.ok ? j.days.flatMap((d) => d.slots).find((x) => x.open) : null;
-      if (!first) { nx.textContent = "Nothing open this week"; return; }
-      const when = new Intl.DateTimeFormat("en-US", { weekday: "long", hour: "numeric", minute: "2-digit", hour12: true })
-        .format(new Date(first.at)).replace(",", "").replace(" AM", "am").replace(" PM", "pm");
-      nx.textContent = when + " \u00b7 " + (j.minutes || 30) + " minutes";
-    } catch (e) { nx.textContent = "Ask for a time"; }
-  };
-  r.addEventListener("pointerenter", fill);
-  h.addEventListener("focus", fill);
-  h.addEventListener("click", () => toggleHouse("connect"));
-}
+/* A phone's sheet carried Info and Connect as chips of their own, with
+   a short note under each. They are lines of the rail now, on a phone
+   as on a desktop (see THE RAIL IS THE INDEX, below). */
 /* ── A DOOR IS A PAGE, NOT A ROOM ────────────────────────────────────
    Info and Connect open columns on the glass. A door leaves for a page
    of its own, under the curtain a study's link plays, its name
@@ -7268,10 +7249,6 @@ if (PHONE) {
     playTransition(href, label, "");
   });
 });
-const gap = document.createElement("div");
-gap.className = "rgap";
-if (PHONE) drawer.appendChild(gap);
-
 /* which pictures a category's stamp cuts through: the board's own
    thumbs for the studies that carry the tag, one per study so a stamp
    is a survey rather than a slideshow of one project */
@@ -7293,43 +7270,6 @@ const framesFor = (tag) => {
 };
 
 const catReels = [];
-if (PHONE) FILTERS.forEach(([label, tag, desc]) => {
-  const { r, h, pad } = mkRow(label, false);
-  pad.classList.add("rcat");
-  const box = document.createElement("div");
-  box.className = "rreel sz-stage";
-  const d = document.createElement("div");
-  d.className = "rdesc";
-  d.textContent = desc;
-  pad.appendChild(box);
-  pad.appendChild(d);
-  const rl = { row: r, box, frames: framesFor(tag), timer: null };
-  szStage(rl);
-  szScrub(rl);
-  catReels.push(rl);
-  rl.mo = new MutationObserver(() => {
-    if (rl.row.classList.contains("open")) szStart(rl);
-    else szStop(rl);
-  });
-  rl.mo.observe(rl.row, { attributes: true, attributeFilter: ["class"] });
-  /* OPEN FIRST, FILTER SECOND — the rail's own rule on touch, and on
-     a mouse the hover has already opened it so one click filters. */
-  const ask = () => setMode(MODE === tag ? null : tag);
-  h.addEventListener("click", () => {
-    /* Open first, ask second — everywhere now. The sheet gives a
-       phone the room the old strip never had, so the drawers, the
-       reels and the two-step run the same on both surfaces. Filtering
-       closes the sheet: the answer happens on the glass behind it. */
-    if (r.classList.contains("open")) {
-      ask();
-      if (PHONE && window.toggleSheet) toggleSheet(false);
-      return;
-    }
-    openOnly(r);
-  });
-  pad.addEventListener("click", ask);
-  r.dataset.tag = tag;
-});
 
 /* ── THE RAIL IS THE INDEX ───────────────────────────────────────────
    Nine lines between hairlines, in the statement's type and never any
@@ -7360,9 +7300,14 @@ if (PHONE) FILTERS.forEach(([label, tag, desc]) => {
    disagree. The reel is the house's (szLayer and the sz-* beats):
    shutter, slat, curtain, cut, fade, a frame every 950ms, one reel to
    a shelf so a folding drawer keeps its picture while the next one
-   opens. Reduced motion swaps the frames and nothing else. A phone
-   keeps its sheet of chips. */
-if (!PHONE) {
+   opens. Reduced motion swaps the frames and nothing else.
+
+   A PHONE BUILDS THE SAME RAIL, into its sheet (21 Sept 2026; the
+   stylesheet's note says why). What differs is said where it differs:
+   the mark heads the sheet and goes home, a finger opens a shelf and
+   then asks, the question stays in the bar, nothing is born hidden,
+   and no picture loads until the sheet first rises. */
+{
   const BEATS = ["shutter", "slat", "curtain", "cut", "fade"];
   /* the handoff's lengths. The house's slat is six strips on a stagger
      of 8% of its length, so 520 puts each strip at 364ms and 42ms
@@ -7371,14 +7316,24 @@ if (!PHONE) {
   const HOLD = 950, DWELL = 120, LEAVE = 180, SLIDE = 560;
   const mk = (t, cls, text) => { const e = document.createElement(t); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   /* on a first load every line comes down the rail with the build */
-  const boot = (e) => { if (booting) e.classList.add("bin"); return e; };
+  const boot = (e) => { if (booting && !PHONE) e.classList.add("bin"); return e; };
   /* not "cover": that is the cover line's class, and body.asked
      .cover hides it once a question is asked */
   const cvNav = mk("nav", "cvnav");
   cvNav.setAttribute("aria-label", "Index");
   drawer.appendChild(cvNav);
+  /* the mark heads a phone's sheet as it heads the rail on a desktop,
+     and a press on it goes home: the bar's own mark is the handle */
+  if (PHONE) {
+    const hm = mk("button", "cvmark"); hm.type = "button";
+    hm.innerHTML = BOARD_HOUSE.markHtml || BOARD_HOUSE.mark || "";
+    hm.setAttribute("aria-label", (BOARD_HOUSE.name || "Home") + ", back to the start");
+    hm.addEventListener("click", () => goHome());
+    cvNav.appendChild(hm);
+  }
   const stack = mk("div", "cvstack");
   cvNav.appendChild(stack);
+  const shut = () => { if (PHONE && window.toggleSheet) toggleSheet(false); };
   const countOf = (tag) => {
     const h = items.find((t) => t.kind === "head" && t.tag === tag);
     const m = h && String(h.way).match(/\d+/);
@@ -7478,12 +7433,15 @@ if (!PHONE) {
   const aboutLine = mkLine((ABOUT && ABOUT.name) || "About", "about", "");
   const connectLine = mkLine("Connect", "connect", "");
   const askLine = mkLine("Ask", "ask", "");
-  /* the question's slot, inside Ask's line; the field rides it (placeAsk) */
-  const askBox = mk("div", "cvask");
-  const slot = mk("span", "askslot");
-  slot.setAttribute("aria-hidden", "true");
-  askBox.appendChild(slot);
-  askLine.cell.appendChild(askBox);
+  /* the question's slot, inside Ask's line; the field rides it
+     (placeAsk). A phone's question lives in its bar, so no slot. */
+  if (!PHONE) {
+    const askBox = mk("div", "cvask");
+    const slot = mk("span", "askslot");
+    slot.setAttribute("aria-hidden", "true");
+    askBox.appendChild(slot);
+    askLine.cell.appendChild(askBox);
+  }
 
   /* ── THE QUESTION RIDES A LINE THAT SLIDES ───────────────────────
      The field is fixed and follows its slot by measurement, and the
@@ -7514,7 +7472,13 @@ if (!PHONE) {
     });
     follow();
   };
-  const isMouse = (e) => e.pointerType === "mouse";
+  /* NEVER A HOVER IN THE SHEET. A shelf opening there moves the lines
+     above it up the glass (the sheet hangs from the bar), and a
+     browser re-tests its last pointer position after a layout change:
+     the line that slid under the finger's last spot read that as a
+     mouse arriving and opened itself, folding the one just pressed.
+     The sheet is pressed, not hovered, whatever is doing the pressing. */
+  const isMouse = (e) => !PHONE && e.pointerType === "mouse";
   stack.addEventListener("pointerenter", (e) => { if (isMouse(e)) clearTimeout(leaveT); });
   stack.addEventListener("pointerleave", (e) => {
     if (!isMouse(e)) return;
@@ -7528,9 +7492,11 @@ if (!PHONE) {
       dwellT = setTimeout(() => setOpen(L.tag), DWELL);
     });
     L.b.addEventListener("focus", () => { if (L.b.matches(":focus-visible")) setOpen(L.tag); });
-    /* the chip's press, word for word; the drawer is the line's too */
-    const press = () => setMode(MODE === L.tag ? null : L.tag);
-    L.b.addEventListener("click", press);
+    /* the chip's press, word for word; the drawer is the line's too.
+       Under a finger the line opens first and asks second, and the
+       sheet folds on the ask: the answer is on the glass behind it */
+    const press = () => { setMode(MODE === L.tag ? null : L.tag); shut(); };
+    L.b.addEventListener("click", () => { if (PHONE && openTag !== L.tag) { setOpen(L.tag); return; } press(); });
     L.body.addEventListener("click", press);
   });
   /* a line with no drawer takes the hand without folding the one open
@@ -7538,9 +7504,10 @@ if (!PHONE) {
   [aboutLine, connectLine, askLine].forEach((L) =>
     L.cell.addEventListener("pointerenter", (e) => { if (isMouse(e)) clearTimeout(dwellT); }));
   stack.addEventListener("focusout", (e) => { if (!stack.contains(e.relatedTarget)) setOpen(null); });
-  aboutLine.b.addEventListener("click", () => goAbout());
-  connectLine.b.addEventListener("click", () => toggleHouse("connect"));
+  aboutLine.b.addEventListener("click", () => { if (PHONE) { toggleHouse("info"); shut(); } else goAbout(); });
+  connectLine.b.addEventListener("click", () => { toggleHouse("connect"); shut(); });
   {
+    /* focusing the field folds a phone's sheet by itself */
     const q = document.getElementById("query");
     askLine.b.addEventListener("click", () => { if (q) q.focus(); });
   }
@@ -7636,7 +7603,7 @@ if (!PHONE) {
       chip.appendChild(x);
       chip.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (e.target === x) closeColumn(c); else showCol(c);
+        if (e.target === x) closeColumn(c); else { showCol(c); shut(); }
       });
       L.chips.appendChild(chip);
       L.cell.classList.add("chipped");
@@ -7650,8 +7617,13 @@ if (!PHONE) {
   { const rail = document.getElementById("railwrap");
     if (rail) rail.addEventListener("scroll", () => { if (window.placeAsk) placeAsk(); }, { passive: true }); }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitRail);
-  /* the first frames, once the board itself has had the network */
-  setTimeout(() => shelves.forEach((L) => L.reel.prime()), 1600);
+  /* the first frames, once the board itself has had the network. On a
+     phone nothing in a closed sheet loads: they are primed the first
+     time the sheet rises, and the rules are measured again then, since
+     a folded sheet's words had no width to measure */
+  if (!PHONE) setTimeout(() => shelves.forEach((L) => L.reel.prime()), 1600);
+  window.__railRise = () => { shelves.forEach((L) => L.reel.prime()); requestAnimationFrame(() => requestAnimationFrame(fitRail)); };
+  window.__railFold = () => setOpen(null);
 }
 /* ── the way back, as a row of the rail ── */
 const homeRow = mkRow("Back to start", false);
@@ -7672,9 +7644,10 @@ homeWrap.appendChild(home);
 /* THE MARK IS THE WAY HOME ON A DESKTOP (his call, 20 Sept 2026: "drop
    the 'back to start' chip and just make that the logo"). The chip
    stood alone at the rail's foot and said what a mark has always
-   meant; the rail's foot is the drawers' room now. A phone's mark is
-   its sheet's handle, so a phone keeps the chip. */
-if (PHONE) document.getElementById("railwrap").appendChild(homeWrap);
+   meant; the rail's foot is the drawers' room now. A phone's bar mark
+   is its sheet's handle, so a phone kept the chip; since 21 Sept 2026
+   the mark at the head of its sheet is the way home, and the chip is
+   on neither glass. */
 function goHome() {
   closeAllColumns();
   pageTo(0);
@@ -7731,8 +7704,8 @@ if (PHONE) {
     nav.classList.toggle("cmdopen", open);
     /* hugs can only be measured once the rows have width, and a
        closed sheet's rows have none — measure on the way open */
-    if (open) requestAnimationFrame(() => requestAnimationFrame(hug));
-    else closeRows();
+    if (open) { requestAnimationFrame(() => requestAnimationFrame(hug)); if (window.__railRise) __railRise(); }
+    else { closeRows(); if (window.__railFold) __railFold(); }
   };
   window.toggleSheet = toggleSheet;
   mark.addEventListener("click", (e) => { e.preventDefault(); toggleSheet(); });
