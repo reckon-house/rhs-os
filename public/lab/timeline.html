@@ -8,31 +8,58 @@
 <!-- ── THE TIMELINE VIEW, A MOCK (20 Sept 2026) ───────────────────────
      His idea: a toggle on the board, Projects | Timeline, the same
      work sorted by time, "because there's no story it's just
-     projects". This page is the mock he asked for before it is built
-     into the board. It is standalone on purpose: the board's engine is
-     not touched, and nothing here is wired to it.
+     projects". Then, the same day: "a timeline meets a small book
+     with chapters, narration type of thing". This page is the mock he
+     asked for before any of it is built into the board. It is
+     standalone on purpose: the board's engine is not touched, and
+     nothing here is wired to it.
 
-     The grammar is the board's (the mark, the tight ruled rail at the
-     statement's size, hairlines, 12px captions, a name on its side)
-     and the chart's is from his references: a time axis with a rule
-     at every year, jobs as bars whose length is their duration, his
-     own practice as a bar running under all of them, notes hung off
+     THE CHART. The grammar is the board's (the mark, the tight ruled
+     rail at the statement's size, hairlines, 12px captions, a name on
+     its side) and the chart's is from his references: a rule at every
+     year, jobs as bars whose length is their duration, his own
+     practice as a bar running under all of them, notes hung off
      leaders with the year stacked in two lines, case studies as small
      reels that play under the hand and open their study.
+
+     THE BOOK. Eight chapters. A chapter opens on a PAGE laid over the
+     timeline at the date it starts: a numeral, the years, the name, one
+     big first sentence, then a few paragraphs. The page is paper, so a
+     bar that runs through a chapter's start (his practice, from 2012)
+     goes under it and comes out the other side. A page is as wide as
+     its words: the text flows into columns of one measure at the
+     window's height, and the page takes as many as it needs. The rail
+     is the contents. Between pages the notes carry the voice.
+
+     THE WORDS ARE HIS, STITCHED. Every sentence on a page is from his
+     LinkedIn, his résumé or what he typed in the session, edited for
+     spelling, length and order and nothing else (VOICE.md: "Get his
+     raw words first... Edit lightly... Do not restate"). Nothing says
+     WHY he moved or WHAT a job taught him, because he has not said.
+     Each page ends on "Yours to write" with the question that gap
+     needs. Those blocks are notes to him and come out before this
+     ships anywhere.
+
+     ONE FACT, ONE HOME. A page tells what a stretch was; a note pins
+     one fact to a date. No fact is in both. Facts with no date of
+     their own sit at the start of the role LinkedIn lists them under,
+     or where they fit inside it. He knows the placement is
+     approximate.
 
      DATES ARE LINKEDIN'S (his call), with one exception he confirmed:
      Neiman Marcus starts in 2006, as the résumé has it. LinkedIn only
      lists it from Aug 2009. The first job is Applied Media Resources
      (LinkedIn's "Applied Media", the résumé's "AMR Inc."); the rail
      says AMR because the full name is wider than the rail.
-     A study's year is its own `published` field. Every note is a fact
-     from his résumé or LinkedIn; the intro's sentence and the legend
-     are placeholders of mine.
+     A study's year is its own `published` field, and a year's studies
+     are spread across it, except where the chapter a study belongs to
+     is plain (STUDY_AT).
 
-     THE MAIN AXIS IS SPACED BY WHAT HAPPENED, NOT BY THE CALENDAR: a
-     year with eight studies is wider than a year with none, as the
-     Tate and Charleroi references are. The strip at the foot is the
-     honest one, true to scale, and it is also the scrubber. -->
+     THE MAIN AXIS IS SPACED BY WHAT HAPPENED, NOT BY THE CALENDAR: the
+     axis is cut at every new year and at every page, and each stretch
+     is as wide as the pictures, notes and bar labels in it need, with
+     a floor so a quiet year still passes. The strip at the foot is
+     the honest one, true to scale, and it is also the scrubber. -->
 <style>
   @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
   @font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
@@ -122,8 +149,29 @@
     font-variant-numeric: tabular-nums; }
   .note p { margin: 1px 0 0; font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
   .note p b { font-weight: 600; }
-  .note::before { content: ""; position: absolute; left: 0; bottom: calc(100% + 6px); width: 1px; height: var(--lead, 0px); background: var(--hair); }
+  .note::before { content: ""; position: absolute; left: var(--lx, 0px); bottom: calc(100% + 6px); width: 1px; height: var(--lead, 0px); background: var(--hair); }
   .now { position: absolute; font-size: 12px; font-weight: 600; padding-left: 10px; }
+
+  /* a chapter's page: paper laid over the timeline, the height of the
+     year rules, as wide as its words. The measure is one column; the
+     text flows into more of them to the right and the page is widened
+     to hold what it made. */
+  .pg { position: absolute; z-index: 2; top: 96px; bottom: 88px; box-sizing: border-box; background: var(--paper);
+    border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); padding: 18px 40px 14px 28px; }
+  .pg .flow { width: 360px; height: 100%; column-width: 360px; column-gap: 40px; column-fill: auto; }
+  .pg .head { break-inside: avoid; }
+  .pg .num { font-size: 72px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.8; margin: 0 0 20px -0.03em;
+    font-variant-numeric: tabular-nums; }
+  .pg .when { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey); margin: 0 0 4px; }
+  .pg h2 { font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; margin: 0 0 14px; }
+  .pg .lede { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; margin: 0 0 16px; }
+  .pg p { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; margin: 0 0 12px;
+    color: rgba(0, 0, 0, 0.8); orphans: 2; widows: 2; }
+  .pg p.lede { color: var(--ink); }
+  /* a note to him, not to a visitor: the question only he can answer */
+  .pg .yours { break-inside: avoid; margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--hair);
+    font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; color: var(--grey); }
+  .pg .yours b { display: block; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
   #world.dim .note:not(.lit), #world.dim .bar:not(.lit) { opacity: 0.28; }
   .note, .bar { transition: opacity 0.3s ease; }
 
@@ -134,6 +182,7 @@
   #map .mb.line { background: none; border: 1px solid var(--ink); }
   #map .mb.soft { background: rgba(0, 0, 0, 0.28); } #map .mb.edu { background: rgba(0, 0, 0, 0.1); }
   #map .ml { position: absolute; bottom: 0; font-size: 10px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+  #map .mt { position: absolute; top: -9px; width: 1px; height: 6px; background: var(--ink); }
   #map .win { position: absolute; top: -4px; height: 32px; border: 1px solid var(--ink); border-radius: 4px; background: rgba(0, 0, 0, 0.04); pointer-events: none; }
 </style>
 </head>
@@ -154,70 +203,168 @@ const NOW = [2026, 9];
    he confirmed. `soft` draws a stretch nobody has confirmed; none is left. */
 const ROLES = [
   { id: "edu", lane: 0, kind: "edu", org: "UT Dallas", title: "B.S., Management Information Systems", s: [1998, 8], e: [2002, 5] },
-  { id: "am", lane: 0, kind: "job", org: "Applied Media Resources", title: "Visual Designer", s: [2002, 8], e: [2006, 11], era: "AMR" },
-  { id: "nm0", lane: 0, kind: "job", org: "Neiman Marcus", title: "Digital Designer", s: [2006, 11], e: [2009, 8], era: "Neiman Marcus" },
+  { id: "am", lane: 0, kind: "job", org: "Applied Media Resources", title: "Visual Designer", s: [2002, 8], e: [2006, 11] },
+  { id: "nm0", lane: 0, kind: "job", org: "Neiman Marcus", title: "Digital Designer", s: [2006, 11], e: [2009, 8] },
   { id: "nm", lane: 0, kind: "job", org: "Neiman Marcus", title: "Senior Visual Designer", s: [2009, 8], e: [2012, 5] },
-  { id: "jcp", lane: 0, kind: "job", org: "JCPenney", title: "Senior Art Director", s: [2012, 5], e: [2013, 4], era: "JCPenney" },
-  { id: "n1", lane: 0, kind: "job", org: "Nordstrom", title: "Design Manager", s: [2013, 4], e: [2014, 4], era: "Nordstrom" },
+  { id: "jcp", lane: 0, kind: "job", org: "JCPenney", title: "Senior Art Director", s: [2012, 5], e: [2013, 4] },
+  { id: "n1", lane: 0, kind: "job", org: "Nordstrom", title: "Design Manager", s: [2013, 4], e: [2014, 4] },
   { id: "n2", lane: 0, kind: "job", org: "Nordstrom", title: "Associate Creative Director", s: [2014, 4], e: [2018, 6] },
   { id: "n3", lane: 0, kind: "job", org: "Nordstrom", title: "Creative Design Director", s: [2018, 6], e: [2021, 4] },
-  { id: "s1", lane: 0, kind: "job", org: "Sally Beauty", title: "Director of Creative Services", s: [2021, 4], e: [2022, 5], era: "Sally Beauty" },
-  { id: "ah", lane: 0, kind: "job", org: "At Home", title: "Senior Digital Designer", s: [2022, 11], e: [2024, 2], era: "At Home" },
-  { id: "ps", lane: 0, kind: "job", org: "PetSmart", title: "Senior Creative Manager", s: [2024, 2], e: [2025, 6], era: "PetSmart" },
-  { id: "s2", lane: 0, kind: "job", org: "Sally Beauty", title: "Creative Director", s: [2025, 6], e: NOW, era: "Sally Beauty" },
-  { id: "hm", lane: 1, kind: "line", org: "Custom homes", title: "Lead Interior Designer", s: [2021, 10], e: [2023, 6], era: "Homes" },
-  { id: "rh", lane: 2, kind: "line", org: "Reckon House", title: "Principal, my own practice", s: [2012, 4], e: NOW, era: "Reckon House" },
-];
-/* every one a fact from his résumé or LinkedIn */
-const NOTES = [
-  { r: "edu", at: [1998, 9], t: "<b>UT Dallas.</b> A degree in management information systems." },
-  { r: "am", at: [2002, 8], t: "<b>One of six at a startup.</b> All of the digital and print design." },
-  { r: "am", at: [2004, 1], t: "Designed and coded the front-end UI for a custom CMS. Hand-coded CSS and JavaScript." },
-  { r: "nm0", at: [2006, 11], t: "<b>Neiman Marcus.</b> Design across site, email and print for a luxury retailer." },
-  /* the company's centennial was 2007, so that year's book is the one */
-  { r: "nm0", at: [2007, 10], t: "The cover of the 100th Anniversary Christmas Book." },
-  { r: "nm", at: [2009, 8], t: "Led the design and technical execution of InSite, its editorial hub." },
-  { r: "nm", at: [2011, 1], t: "A complete homepage redesign." },
-  { r: "jcp", at: [2012, 5], t: "<b>JCPenney.</b> Recruited for the Ron Johnson transformation. Design language and photo direction." },
-  { r: "n1", at: [2013, 4], t: "<b>Nordstrom.</b> A team of 12 on the daily homepage, landing pages and email." },
-  { r: "n2", at: [2014, 6], t: "A team of 27 across site, email and apps." },
-  { r: "n2", at: [2015, 4], t: "Nordstrom's first personalization design logic." },
-  { r: "n2", at: [2016, 4], t: "<b>Ivy Park by Beyoncé.</b> Six weeks from concept to live." },
-  { r: "n3", at: [2018, 6], t: "<b>A new CMS with engineering.</b> $3M saved over four years." },
-  { r: "n3", at: [2019, 6], t: "Rebrand of the digital design system. Concept-to-web time down 35%, engagement up 22%." },
-  { r: "rh", at: [2012, 4], t: "<b>Reckon House.</b> My own practice starts: brand identity, interiors, and later the tools." },
-  { r: "s1", at: [2021, 4], t: "<b>Sally Beauty.</b> Built the in-house creative teams and a new operating model. Execution efficiency up 27%." },
-  { r: "hm", at: [2021, 10], t: "<b>Custom homes.</b> Interior design and selections on $1-3M builds." },
-  { r: "hm", at: [2023, 3], t: "Designer of the Quarter, Floor & Decor." },
-  { r: "ah", at: [2022, 11], t: "<b>At Home.</b> The brand story redesign for the corporate site, presented to the CEO." },
-  { r: "ps", at: [2024, 2], t: "<b>PetSmart.</b> AI product photography. Creative output up 30%, channel demand up 12%." },
-  { r: "rh", at: [2024, 8], t: "<b>A.R.C.</b> An iPhone app designed and coded end to end. Heading to the App Store." },
-  { r: "s2", at: [2025, 6], t: "<b>Sally OS.</b> Conceived and built it, pitched it to the board. Campaigns go from request to execution in hours instead of weeks." },
-  { r: "rh", at: [2025, 10], t: "Dallas Sport Collective: booking by talking to an AI, with the scheduling kept deterministic." },
-  { r: "s2", at: [2026, 3], t: "Fleet stores to a new boutique store experience." },
+  { id: "s1", lane: 0, kind: "job", org: "Sally Beauty", title: "Director of Creative Services", s: [2021, 4], e: [2022, 5] },
+  { id: "ah", lane: 0, kind: "job", org: "At Home", title: "Senior Digital Designer", s: [2022, 11], e: [2024, 2] },
+  { id: "ps", lane: 0, kind: "job", org: "PetSmart", title: "Senior Creative Manager", s: [2024, 2], e: [2025, 6] },
+  { id: "s2", lane: 0, kind: "job", org: "Sally Beauty", title: "Creative Director", s: [2025, 6], e: NOW },
+  { id: "hm", lane: 1, kind: "line", org: "Custom homes", title: "Lead Interior Designer", s: [2021, 10], e: [2023, 6] },
+  { id: "rh", lane: 2, kind: "line", org: "Reckon House", title: "Principal, my own practice", s: [2012, 4], e: NOW },
 ];
 
-/* ── the axis is spaced by what happened ── */
-const Y0 = 1998, Y1 = 2026, INTRO = 470, TAIL = 260;
-const per = {}; STUDIES.forEach((s) => { per[s.y] = (per[s.y] || 0) + 1; });
-const perN = {}; NOTES.forEach((n) => { perN[n.at[0]] = (perN[n.at[0]] || 0) + 1; });
-/* a year is as wide as what happened in it: two rows of pictures, two
-   rows of notes, and a quiet year passes quickly */
-/* school passes in a few columns, so the first job, and the CMS he
-   coded there, stand on the opening screen */
-const yw = (y) => y < 2002 ? 72 : Math.max(100, per[y] ? Math.ceil(per[y] / 2) * 168 + 24 : 0, perN[y] ? perN[y] * 140 + 40 : 0);
-const YX = {}; { let x = INTRO; for (let y = Y0; y <= Y1 + 1; y++) { YX[y] = x; x += yw(y); } }
-const X = (d) => YX[d[0]] + ((d[1] - 1) / 12) * yw(d[0]);
-const WORLD_W = X(NOW) + TAIL;
+/* ── THE BOOK ─────────────────────────────────────────────────────────
+   Every sentence below is his: LinkedIn (L), the résumé (R), or what he
+   typed in the session (S), edited for spelling, length and order.
+   `yours` is the question only he can answer; it prints on the page as a
+   note to him and comes out before this ships. */
+const CHAPTERS = [
+  { no: "01", name: "AMR", title: "Applied Media Resources", at: [1998, 1], when: "1998 to 2006",
+    lede: "One of six employees at a fast-paced startup.",                                                          /* L */
+    body: ["My degree is in management information systems, from the University of Texas at Dallas.",               /* L, R */
+      "I joined Applied Media Resources in 2002, and I was responsible for the entire visual output across digital and print."], /* L */
+    yours: "How did an MIS degree turn into a design job? What did four years at a six-person company teach you?" },
+  { no: "02", name: "Neiman Marcus", title: "Neiman Marcus", at: [2006, 11], when: "2006 to 2012",
+    lede: "Design across site, email and print for a luxury retailer.",                                             /* L, R */
+    body: ["I directed high-end product presentation and editorial content.",                                       /* R */
+      "I defined digital product design and UI patterns before they were industry standards."],  /* L */
+    yours: "What did luxury teach you about craft? What was InSite, in your own words?" },
+  { no: "03", name: "JCPenney", title: "JCPenney", at: [2012, 5], when: "2012 to 2013",
+    lede: "Recruited specifically for the Ron Johnson transformation.",                                             /* L */
+    body: ["It was a company-wide rebrand. I defined the design language and the photo direction.",                 /* L, R */
+      "I led creative for the national brand launches too: Martha Stewart, Michael Graves, Jonathan Adler and Sir Terence Conran, across video, editorial, product photography and the site."], /* L, R */
+    yours: "It lasted a year. What happened, and what did you take with you to Seattle?" },
+  { no: "04", name: "Nordstrom", title: "Nordstrom", at: [2013, 4], when: "2013 to 2021",
+    lede: "I spent eight years at Nordstrom helping rebuild the entire digital experience.",                        /* L */
+    body: ["Three roles in that time: design manager, associate creative director, creative design director.",      /* L */
+      "I led the campaigns that defined the brand, Anniversary Sale and Holiday and the Half-Yearly Sales, with on-set art direction along the way.", /* L */
+      "The redesign ran from marketing all the way down to the product page. It is where I learned process and efficiencies, and how to put new ways of working into practice.", /* S */
+      "Reckon House ran alongside. The earlier years of the practice were brand identity work: western boot companies, dinnerware lines, poster sets."], /* L */
+    yours: "Why leave after eight years? What would your old team say you changed?" },
+  { no: "05", name: "Sally Beauty", title: "Sally Beauty", at: [2021, 4], when: "2021 to 2022",
+    lede: "A first run at Sally Beauty.",                                                                           /* L */
+    body: ["I built and led the internal creative teams across the Sally and CosmoProf brands: photo and art direction, copy, proofreading, visual design and the internal photo studio.", /* R, L */
+      "I worked with product management on design systems and content templates for more than 1,000 assets a month.", /* L */
+      "I rebranded CosmoProfBeauty.com too, refocusing it around professional users."],                             /* R */
+    yours: "Why Sally, after Seattle? What did you walk into?" },
+  { no: "06", name: "Homes", title: "Homes", at: [2021, 10], when: "2021 to 2024",
+    lede: "Somewhere in there I spent a couple years deep in custom residential builds.",                           /* L */
+    body: ["I led interior design, architecture and selections on $1-3M homes, floor plan through final styling, debating tile grout and light fixtures more than I'd like to admit.", /* L */
+      "I was the primary creative link between builder and client.",                                                /* L */
+      "Projects from those years have been featured by Crate & Barrel, Design Within Reach, Rejuvenation, Visual Comfort, Lostine Home, Vivir Designs and The Haven List.", /* L */
+      "Then I returned to the corporate digital space at At Home, leading digital design for the big seasonal moments, Holiday included, and building UI patterns for the home decor category."], /* L */
+    yours: "Why houses? What did a build site teach you that a screen never did?" },
+  { no: "07", name: "PetSmart", title: "PetSmart", at: [2024, 2], when: "2024 to 2025",
+    lede: "I ran digital creative and loyalty across web, email and app.",                                          /* R */
+    body: ["I led creative for the Treats rewards program campaigns, including a dynamic messaging system that flexed across app, mobile and desktop.", /* L */
+      "I introduced AI product photography to the brand, building a workflow that gave product imagery a more editorial feel while moving faster than traditional shoots.", /* L */
+      "New site patterns and email templates gave the team a faster path from brief to live."],                     /* L */
+    yours: "Was this where the AI work started for you? What made you think it could change how a team works?" },
+  { no: "08", name: "Now", title: "Now", at: [2025, 6], when: "2025 to now",
+    lede: "Right now I'm leading creative at Sally Beauty and building the platforms the work runs on.",             /* L */
+    body: ["The store side is the move from a legacy fleet to a new boutique experience: store concepts, installations, focal walls, campaign and event takeovers, brand partnerships.", /* L */
+      "The platform side is Sally OS, an internal marketing operating system built entirely with AI, which wasn't something the company did before. It started with the creative team, ended up in front of the board, and now runs daily across marketing, ecommerce, CRM and merchandising.", /* L */
+      "Over the past year the job has turned into a repeating loop: take a concept, bring it to life, test it for real, then productize it into new workflows and day-to-day execution.", /* L */
+      "At Reckon House, I built A.R.C. end to end because personally, I needed it. It's heading to the App Store now.", /* L */
+      "House Notes and Noted are small plugins for Figma and Framer that write alt text and filenames so designers don't have to. Not glamorous, but people use them every day, which is kind of the point.", /* L */
+      "reckon.house runs entirely in Claude Code. It's the CMS, the design tool and the build environment all at once."], /* L */
+    yours: "Where is this heading? Say it the way you would say it out loud." },
+];
+
+/* a note pins ONE fact to a date, in his first person, and no page repeats
+   it. A fact with no date of its own sits at the start of the role LinkedIn
+   lists it under, or where it fits inside it. */
+const NOTES = [
+  { r: "am", at: [2004, 1], t: "I designed the front-end UI for a custom CMS and coded it by hand, CSS and JavaScript." },
+  /* the company's centennial was 2007, so that year's book is the one */
+  { r: "nm0", at: [2007, 10], t: "I designed the cover of the 100th Anniversary Christmas Book." },
+  { r: "nm", at: [2009, 8], t: "<b>InSite.</b> I led the design and technical execution of the brand's editorial hub." },
+  { r: "nm", at: [2011, 1], t: "A complete homepage redesign." },
+  { r: "rh", at: [2012, 4], t: "<b>Reckon House starts.</b> My own practice, running alongside from here." },
+  { r: "n1", at: [2013, 4], t: "<b>Design manager.</b> A team of 12 on the daily homepage, landing pages and email." },
+  { r: "n2", at: [2014, 4], t: "<b>Associate creative director.</b> A team of 27 across site, email and apps." },
+  { r: "n2", at: [2015, 4], t: "Nordstrom's first personalization design logic." },
+  { r: "n2", at: [2016, 4], t: "<b>Ivy Park by Beyoncé.</b> The exclusive US launch, six weeks from concept to live." },
+  { r: "n3", at: [2018, 6], t: "<b>Creative design director.</b> A new CMS, shipped with engineering. $3M saved over four years." },
+  { r: "n3", at: [2019, 6], t: "A rebrand of the digital design system. Concept-to-web time down 35%, engagement up 22%." },
+  { r: "s1", at: [2021, 4], t: "A new creative operating model. Execution efficiency up 27%." },
+  { r: "s1", at: [2021, 5], t: "A national campaign across print, digital, in-store screens and social. 79.5M cumulative views, divisional demand up 22%." },
+  { r: "ah", at: [2022, 11], t: "<b>At Home.</b> I led the brand story redesign for the corporate site and presented it to the CEO." },
+  { r: "hm", at: [2023, 3], t: "Designer of the Quarter, Floor & Decor." },
+  { r: "ps", at: [2024, 2], t: "Creative output up 30%, channel demand up 12%." },
+  { r: "rh", at: [2024, 8], t: "<b>A.R.C.</b> An AI home inventory app. Point your camera at a room and it catalogs what's in it." },
+  { r: "s2", at: [2025, 6], t: "<b>Sally OS.</b> Full campaigns go from request to execution in hours instead of weeks." },
+  { r: "rh", at: [2025, 10], t: "<b>Dallas Sport Collective.</b> Athletes and trainers both talk to an AI to book sessions. The scheduling stays deterministic." },
+];
+
+/* ── time and place ── */
+const Y0 = 1998, Y1 = 2026, INTRO = 470, TAIL = 260, W_ST = 152, W_NOTE = 236, COL_W = 360, COL_GAP = 40, PG_L = 28, PG_R = 40;
+const T = (d) => Array.isArray(d) ? d[0] + (d[1] - 1) / 12 : d;
 const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
-const world = document.getElementById("world"), stage = document.getElementById("stage");
-world.style.width = WORLD_W + "px";
+const world = document.getElementById("world"), stage = document.getElementById("stage"), map = document.getElementById("map"),
+  range = document.getElementById("range"), eras = document.getElementById("eras");
+
+/* a study's moment. The site knows its year and no more, so a year's
+   studies are spread across it, except where the chapter a study belongs
+   to is plain from whose work it is. */
+const STUDY_AT = { "neiman-marcus": [2012, 2], "cosmo-prof": [2021, 5], "you-by-sally": [2021, 7], "sally-os": [2025, 8], "dsc": [2025, 10] };
+{ const byYear = {}; STUDIES.forEach((s) => { (byYear[s.y] = byYear[s.y] || []).push(s); });
+  Object.values(byYear).forEach((list) => list.forEach((s, i) => { s.at = STUDY_AT[s.k] ? T(STUDY_AT[s.k]) : s.y + (i + 0.5) / list.length; })); }
+
+/* THE AXIS IS SPACED BY WHAT HAPPENED. It is cut at every new year and at
+   every page, and each stretch is as wide as what is in it needs: two rows
+   of pictures, two rows of notes, the label of any bar that lives in it,
+   and a floor so a quiet year still passes. School passes quickest. */
+let SPANS = [], PAGES = [];
+const ink = document.createElement("canvas").getContext("2d");
+const labelNeed = (r) => { ink.font = '600 12px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif'; const a = ink.measureText(r.org).width;
+  ink.font = '500 12px "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif'; return a + 6 + ink.measureText(r.title).width + 18 + 14; };
+const layoutX = () => {
+  const cuts = new Set(); for (let y = Y0; y <= Y1 + 1; y++) cuts.add(y);
+  PAGES.forEach((p) => cuts.add(p.t));
+  const ts = [...cuts].sort((a, b) => a - b);
+  SPANS = [];
+  for (let i = 0; i < ts.length - 1; i++) {
+    const t0 = ts[i], t1 = ts[i + 1];
+    const st = STUDIES.filter((s) => s.at >= t0 && s.at < t1).length, no = NOTES.filter((n) => T(n.at) >= t0 && T(n.at) < t1).length;
+    const w = Math.max((t1 - t0) * (t0 < 2002 ? 72 : 100), st ? Math.ceil(st / 2) * (W_ST + 16) + 24 : 0, no ? Math.max(no * 140 + 40, W_NOTE + 40) : 0);
+    SPANS.push({ t0, t1, w, x: 0 });
+  }
+  /* a bar is never shorter than its own label: the stretches it lives in
+     are let out, in proportion, until the name fits */
+  ROLES.forEach((r) => {
+    const s = T(r.s), e = T(r.e), inside = SPANS.map((sp) => Math.max(0, Math.min(e, sp.t1) - Math.max(s, sp.t0)));
+    const have = SPANS.reduce((a, sp, i) => a + sp.w * inside[i] / (sp.t1 - sp.t0), 0), need = labelNeed(r), dur = inside.reduce((a, b) => a + b, 0);
+    if (have < need && dur > 0) SPANS.forEach((sp, i) => { if (inside[i]) sp.w += (need - have) * (inside[i] / dur) * ((sp.t1 - sp.t0) / inside[i]); });
+  });
+  let x = INTRO;
+  SPANS.forEach((sp, i) => { const pg = PAGES.find((p) => p.t === sp.t0); if (pg) { x += i ? 16 : 0; pg.x = x; x += pg.w + 24; } sp.x = x; x += sp.w; });
+};
+const spanFrom = (t) => SPANS.find((s) => t >= s.t0 && t < s.t1) || SPANS[SPANS.length - 1];
+const spanTo = (t) => SPANS.find((s) => t > s.t0 && t <= s.t1) || SPANS[0];
+const at = (sp, t) => sp.x + ((Math.min(Math.max(t, sp.t0), sp.t1) - sp.t0) / (sp.t1 - sp.t0)) * sp.w;
+/* where a thing STARTS, and where one ENDS: at a page's date they differ,
+   one after the page and one before it */
+const XS = (d) => at(spanFrom(T(d)), T(d)), XE = (d) => at(spanTo(T(d)), T(d));
+const timeAt = (x) => { for (const sp of SPANS) { if (x < sp.x) return sp.t0; if (x <= sp.x + sp.w) return sp.t0 + ((x - sp.x) / sp.w) * (sp.t1 - sp.t0); } return T(NOW); };
+/* a thing that would stand on a page steps back before it when there is
+   room (it belongs to the chapter it is dated in), and only then past it */
+const clearOfPages = (x, w, floor, slack) => { for (let moved = true; moved;) { moved = false;
+  PAGES.forEach((p) => { if (x < p.x + p.w + 16 && x + w > p.x - 16) {
+    const back = p.x - 16 - w;
+    if (back >= floor && x - back <= slack) x = back; else { x = p.x + p.w + 16; moved = true; }
+  } }); } return x; };
 
 /* rows, from the head band down. A tall window takes them at full pitch.
    A shorter one tightens every pitch a step at a time, until the lowest
    note clears the scale at the foot: his own laptop's window is about
    770 tall, and at full pitch the last row of notes ran under it. */
-const TOP = 114, V = {}, placed = [];
+const TOP = 114, V = {}, placed = [], byId = {};
 const pitch = (t) => {
   const mix = (a, b) => Math.round(a + (b - a) * t);
   V.pic = mix(96, 84); V.row = mix(150, 132); V.axis = TOP + 2 * V.row - 2;
@@ -226,63 +373,110 @@ const pitch = (t) => {
   world.style.setProperty("--pic-h", V.pic + "px"); world.style.setProperty("--lane-h", V.laneH + "px");
   placed.forEach((fn) => fn());
 };
-
-/* the opening column */
-const intro = el("div", "intro", '<div class="spine">Timeline</div><div class="body"><p class="lede">Everything on this site, in the order it happened.</p>'
-  + '<ul class="key"><li><b class="k1"></b>A job, as long as it lasted</li><li><b class="k2"></b>My own practice, alongside</li>'
-  + '<li><b class="k0"></b>School</li><li><b class="k3"></b>A case study. Rest on it to play, press to open.</li></ul></div>');
-world.appendChild(intro);
-
-/* a rule at every year, and the axis */
-for (let y = Y0; y <= Y1 + 1; y++) {
-  const r = el("i", "yr"); r.style.left = YX[y] + "px"; world.appendChild(r);
-  if (y <= Y1) { const l = el("span", "yl", String(y)); l.style.left = YX[y] + "px"; placed.push(() => { l.style.top = (V.axis + 8) + "px"; }); world.appendChild(l); }
-}
-const axis = el("i"); axis.id = "axis"; axis.style.cssText = "left:" + YX[Y0] + "px;width:" + (X(NOW) - YX[Y0]) + "px"; placed.push(() => { axis.style.top = V.axis + "px"; }); world.appendChild(axis);
-
-{ const n = el("span", "now", "Now"); n.style.left = X(NOW) + "px"; placed.push(() => { n.style.top = (V.axis - 8) + "px"; }); world.appendChild(n); }
-
-/* the jobs */
-const byId = {};
-ROLES.forEach((r) => {
-  const b = el("div", "bar " + r.kind, "<em>" + r.org + " <span>" + r.title + "</span></em>");
-  const x0 = X(r.s), x1 = X(r.e);
-  b.style.cssText = "left:" + x0 + "px;width:" + Math.max(8, x1 - x0 - 2) + "px";
-  placed.push(() => { b.style.top = (V.lane0 + r.lane * V.lane) + "px"; });
-  b.dataset.r = r.id; byId[r.id] = { r, b, x0, x1, lab: b.firstChild };
-  world.appendChild(b);
+const fitV = () => {
+  const foot = map.getBoundingClientRect().top - 18;
+  for (let i = 0; i <= 5; i++) {
+    pitch(i / 5);
+    let low = 0; world.querySelectorAll(".note").forEach((n) => { low = Math.max(low, n.offsetTop + n.offsetHeight); });
+    if (low <= foot) break;
+  }
+};
+const go = (x) => stage.scrollTo({ left: Math.max(0, x), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+const fitRules = () => document.querySelectorAll(".era").forEach((b) => b.style.setProperty("--w", Math.round(b.firstChild.getBoundingClientRect().width) + "px"));
+/* a caption is two lines and never ends on a comma: a discipline gives up
+   its last phrase, whole, until what is left fits */
+const fitCaps = () => world.querySelectorAll(".st .cap").forEach((c) => {
+  const d = c.querySelector("span"); if (!d) return;
+  const parts = d.dataset.full.split(", ");
+  d.textContent = parts.join(", ");
+  while (parts.length && c.scrollHeight > c.clientHeight + 1) { parts.pop(); d.textContent = parts.join(", "); }
 });
 
-/* the notes, packed in two rows so none stands on another */
-{ const ends = [0, 0];
-  NOTES.slice().sort((a, b) => X(a.at) - X(b.at)).forEach((n) => {
-    const x = X(n.at) + 2;
-    let row = ends[0] <= x ? 0 : (ends[1] <= x ? 1 : (ends[0] <= ends[1] ? 0 : 1));
-    const nx = Math.max(x, ends[row]);
-    ends[row] = nx + 236 + 22;
-    const y = String(n.at[0]);
-    const d = el("div", "note", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>");
-    const lane = byId[n.r].r.lane;
-    d.style.left = nx + "px";
-    placed.push(() => {
-      const top = V.note0 + row * V.noteRow, from = V.lane0 + lane * V.lane + V.laneH;
-      d.style.top = top + "px"; d.style.setProperty("--lead", (row ? 12 : Math.max(0, top - from - 8)) + "px");
-    });
-    d.dataset.r = n.r; world.appendChild(d);
-  });
-}
+/* ── the build. It runs again when the window changes, because a page is
+   as wide as its words at THIS height, and everything after a page
+   stands where the page ends. ── */
+const build = () => {
+  const keep = SPANS.length ? timeAt(stage.scrollLeft + stage.clientWidth / 2) : null, wasAt = stage.scrollLeft;
+  world.textContent = ""; eras.textContent = ""; placed.length = 0; Object.keys(byId).forEach((k) => delete byId[k]);
 
-/* the studies, packed in two rows over the axis */
-{ const ends = [0, 0], W = 152, order = [1, 0];
-  const byYear = {}; STUDIES.forEach((s) => { (byYear[s.y] = byYear[s.y] || []).push(s); });
-  Object.keys(byYear).map(Number).sort((a, b) => a - b).forEach((y) => {
-    const list = byYear[y];
-    list.forEach((s, i) => {
-      const want = YX[y] + ((i + 0.5) / list.length) * yw(y) - W / 2;
+  /* the cover: the view's name on its side, as a run's is. The sentence is
+     his, from LinkedIn. */
+  world.appendChild(el("div", "intro", '<div class="spine">Timeline</div><div class="body"><p class="lede">Different mediums but the same attention given to all of it, because I really do love the work.</p>'
+    + '<ul class="key"><li><b class="k1"></b>A job, as long as it lasted</li><li><b class="k2"></b>My own practice, alongside</li>'
+    + '<li><b class="k0"></b>School</li><li><b class="k3"></b>A case study. Rest on it to play, press to open.</li></ul></div>'));
+
+  /* the pages first: their words decide how wide they are */
+  PAGES = CHAPTERS.map((c) => {
+    const pg = el("section", "pg", '<div class="flow"><div class="head"><div class="num">' + c.no + '</div><div class="when">' + c.when + "</div><h2>" + c.title
+      + '</h2><p class="lede">' + c.lede + "</p></div>" + c.body.map((t) => "<p>" + t + "</p>").join("")
+      + '<div class="yours"><b>Yours to write</b>' + c.yours + "</div></div>");
+    world.appendChild(pg);
+    return { c, el: pg, t: T(c.at), x: 0, w: 0 };
+  });
+  PAGES.forEach((p) => {
+    const flow = p.el.firstChild, left = flow.getBoundingClientRect().left;
+    let right = left; [...flow.children].forEach((k) => { right = Math.max(right, k.getBoundingClientRect().right); });
+    const cols = Math.max(1, Math.ceil((right - left - 2) / (COL_W + COL_GAP)));
+    p.w = PG_L + cols * COL_W + (cols - 1) * COL_GAP + PG_R; p.cols = cols;
+    /* more than one column is a spread: the words are shared out between
+       them, so a page never carries one full column and one stray line */
+    if (cols > 1) { flow.style.width = (cols * COL_W + (cols - 1) * COL_GAP) + "px"; flow.style.columnFill = "balance"; }
+  });
+  layoutX();
+  PAGES.forEach((p) => { p.el.style.left = p.x + "px"; p.el.style.width = p.w + "px"; });
+  const END = XE(NOW);
+  world.style.width = (END + TAIL) + "px";
+
+  /* a rule at every year, and the axis. A year that turns just before a
+     page is named after it, where the chart picks up again. */
+  for (let y = Y0; y <= Y1 + 1; y++) {
+    const x = XS(y), pg = PAGES.find((p) => p.x - x >= 0 && p.x - x < 48);
+    if (!pg) { const r = el("i", "yr"); r.style.left = x + "px"; world.appendChild(r); }
+    if (y <= Y1) { const l = el("span", "yl", String(y)); l.style.left = (pg ? pg.x + pg.w + 24 : x) + "px"; placed.push(() => { l.style.top = (V.axis + 8) + "px"; }); world.appendChild(l); }
+  }
+  const axis = el("i"); axis.id = "axis"; axis.style.cssText = "left:" + SPANS[0].x + "px;width:" + (END - SPANS[0].x) + "px"; placed.push(() => { axis.style.top = V.axis + "px"; }); world.appendChild(axis);
+  { const n = el("span", "now", "Now"); n.style.left = END + "px"; placed.push(() => { n.style.top = (V.axis - 8) + "px"; }); world.appendChild(n); }
+
+  /* the jobs */
+  ROLES.forEach((r) => {
+    const b = el("div", "bar " + r.kind, "<em>" + r.org + " <span>" + r.title + "</span></em>");
+    const x0 = XS(r.s), x1 = XE(r.e);
+    b.style.cssText = "left:" + x0 + "px;width:" + Math.max(8, x1 - x0 - 2) + "px";
+    placed.push(() => { b.style.top = (V.lane0 + r.lane * V.lane) + "px"; });
+    b.dataset.r = r.id; byId[r.id] = { r, b, x0, x1, lab: b.firstChild };
+    world.appendChild(b);
+  });
+
+  /* the notes, packed in two rows so none stands on another, or on a page */
+  { const ends = [0, 0];
+    NOTES.slice().sort((a, b) => T(a.at) - T(b.at)).forEach((n) => {
+      const x = XS(n.at) + 2;
+      const row = ends[0] <= x ? 0 : (ends[1] <= x ? 1 : (ends[0] <= ends[1] ? 0 : 1));
+      const nx = clearOfPages(Math.max(x, ends[row]), W_NOTE, Math.max(ends[row], SPANS[0].x), W_NOTE - 24);
+      ends[row] = nx + W_NOTE + 22;
+      const y = String(n.at[0]);
+      const d = el("div", "note", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>");
+      const lane = byId[n.r].r.lane;
+      d.style.left = nx + "px";
+      /* the leader stands on the date, wherever the note had to sit */
+      d.style.setProperty("--lx", Math.max(0, Math.min(W_NOTE - 8, x - 2 - nx)) + "px");
+      placed.push(() => {
+        const top = V.note0 + row * V.noteRow, from = V.lane0 + lane * V.lane + V.laneH;
+        d.style.top = top + "px"; d.style.setProperty("--lead", (row ? 12 : Math.max(0, top - from - 8)) + "px");
+      });
+      d.dataset.r = n.r; world.appendChild(d);
+    });
+  }
+
+  /* the studies, packed in two rows over the axis */
+  { const ends = [0, 0], order = [1, 0], seen = {};
+    STUDIES.slice().sort((a, b) => a.at - b.at).forEach((s) => {
+      const i = seen[s.y] = (seen[s.y] == null ? 0 : seen[s.y] + 1);
+      const want = XS(s.at) - W_ST / 2;
       let row = order[i % 2];
       if (ends[row] > want) row = ends[0] <= ends[1] ? 0 : 1;
-      const x = Math.max(want, ends[row]);
-      ends[row] = x + W + 16;
+      const x = clearOfPages(Math.max(want, ends[row], SPANS[0].x), W_ST, Math.max(ends[row], SPANS[0].x), W_ST * 2);
+      ends[row] = x + W_ST + 16;
       const a = el("a", "st", '<span class="pic"><img alt="" loading="lazy" decoding="async" src="' + encodeURI(s.frames[0] || "") + '"></span>'
         + '<span class="cap">' + s.t + ' <span data-full="' + s.s + '">' + s.s + "</span></span>");
       a.href = "/case-studies/" + s.h;
@@ -301,8 +495,20 @@ ROLES.forEach((r) => {
       a.addEventListener("pointerleave", () => { clearInterval(t); k = 0; im.src = encodeURI(s.frames[0]); });
       world.appendChild(a);
     });
+  }
+
+  /* the rail is the contents */
+  PAGES.forEach((p) => {
+    const b = el("button", "era", "<span>" + p.c.name + "</span><sup>" + p.c.no + "</sup>"); b.type = "button";
+    b.addEventListener("click", () => go(p.x));
+    eras.appendChild(b); p.btn = b;
   });
-}
+  ["About", "Connect", "Ask"].forEach((n) => { const a = el("a", "era door", "<span>" + n + "</span>"); a.href = "/"; eras.appendChild(a); });
+
+  fitRules(); fitCaps(); drawMap(); fitV();
+  if (keep != null) stage.scrollLeft = wasAt < 40 ? 0 : XS(keep) - stage.clientWidth / 2;
+  onScroll();
+};
 
 /* a bar under the hand lights its own notes */
 world.addEventListener("pointerover", (e) => {
@@ -313,74 +519,43 @@ world.addEventListener("pointerover", (e) => {
 });
 world.addEventListener("pointerout", (e) => { if (e.target.closest(".bar, .note")) { world.classList.remove("dim"); world.querySelectorAll(".lit").forEach((n) => n.classList.remove("lit")); } });
 
-/* ── the rail: the eras, in order ── */
-const eras = document.getElementById("eras");
-const ERAS = []; ROLES.forEach((r) => { if (r.era) ERAS.push(r); });
-ERAS.sort((a, b) => X(a.s) - X(b.s));
-const go = (x) => stage.scrollTo({ left: Math.max(0, x - 60), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-ERAS.forEach((r) => {
-  const b = el("button", "era", "<span>" + r.era + "</span><sup>" + r.s[0] + "</sup>"); b.type = "button";
-  b.addEventListener("click", () => go(X(r.s)));
-  eras.appendChild(b); r.btn = b;
-});
-["About", "Connect", "Ask"].forEach((n) => { const a = el("a", "era door", "<span>" + n + "</span>"); a.href = "/"; eras.appendChild(a); });
-const fitRules = () => document.querySelectorAll(".era").forEach((b) => b.style.setProperty("--w", Math.round(b.firstChild.getBoundingClientRect().width) + "px"));
-/* a caption is two lines and never ends on a comma: a discipline gives up
-   its last phrase, whole, until what is left fits */
-const fitCaps = () => world.querySelectorAll(".st .cap").forEach((c) => {
-  const d = c.querySelector("span"); if (!d) return;
-  const parts = d.dataset.full.split(", ");
-  d.textContent = parts.join(", ");
-  while (parts.length && c.scrollHeight > c.clientHeight + 1) { parts.pop(); d.textContent = parts.join(", "); }
-});
-fitRules(); fitCaps(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitRules(); fitCaps(); });
-
-/* ── the foot: true to scale, and the scrubber ── */
-const map = document.getElementById("map");
-const T = (d) => d[0] + (d[1] - 1) / 12, T0 = T([Y0, 8]), T1 = T(NOW) + 0.35;
+/* ── the foot: true to scale, and the scrubber. A tick where a chapter opens. ── */
+const T0 = T([Y0, 8]), T1 = T(NOW) + 0.35;
 const mapX = (t) => ((t - T0) / (T1 - T0)) * map.clientWidth;
-/* the world's x back to a time: the inverse of X */
-const timeAt = (x) => { for (let y = Y0; y <= Y1; y++) if (x < YX[y + 1]) return y + Math.max(0, (x - YX[y]) / yw(y)); return T(NOW); };
-const xAt = (t) => { const y = Math.min(Y1, Math.max(Y0, Math.floor(t))); return YX[y] + (t - y) * yw(y); };
 const win = el("div", "win");
-const drawMap = () => {
+function drawMap() {
   map.textContent = "";
   ROLES.forEach((r) => { const m = el("i", "mb " + r.kind); m.style.cssText = "left:" + mapX(T(r.s)) + "px;width:" + Math.max(2, mapX(T(r.e)) - mapX(T(r.s)) - 1) + "px;top:" + (r.lane * 8) + "px"; map.appendChild(m); });
+  PAGES.forEach((p) => { const m = el("i", "mt"); m.style.left = Math.max(0, mapX(p.t)) + "px"; map.appendChild(m); });
   for (let y = 2000; y <= Y1; y += 2) { const l = el("span", "ml", String(y)); l.style.left = mapX(y) + "px"; map.appendChild(l); }
-  map.appendChild(win); onScroll();
-};
-const range = document.getElementById("range");
+  map.appendChild(win);
+}
 function onScroll() {
-  const a = timeAt(stage.scrollLeft), b = timeAt(stage.scrollLeft + stage.clientWidth);
+  if (!SPANS.length) return;
+  const L = stage.scrollLeft, a = timeAt(L), b = timeAt(L + stage.clientWidth);
   const l = Math.max(0, mapX(Math.max(T0, a))), r = Math.min(map.clientWidth, mapX(b));
   win.style.left = l + "px"; win.style.width = Math.max(10, r - l) + "px";
-  range.textContent = stage.scrollLeft < INTRO - 120 ? "1998 to " + Math.floor(b) : Math.floor(a) + " to " + Math.min(Y1, Math.floor(b));
-  /* a long bar's name stays on the glass while the bar crosses it */
+  /* the chapter under the near third of the glass; at the far end there is
+     no further to pan, so the last one takes the ink */
+  const atEnd = L + stage.clientWidth >= stage.scrollWidth - 40, probe = L + stage.clientWidth * 0.3;
+  let front = null; PAGES.forEach((p) => { if (p.x <= probe) front = p; }); if (atEnd) front = PAGES[PAGES.length - 1];
+  PAGES.forEach((p) => p.btn.classList.toggle("front", p === front));
+  const y0 = L < INTRO - 120 ? Y0 : Math.floor(a), y1 = Math.min(Y1, Math.floor(b));
+  range.textContent = (front ? front.c.no + " " + front.c.name + " · " : "") + (y0 === y1 ? y0 : y0 + " to " + y1);
+  /* a long bar's name stays on the glass while the bar crosses it, and
+     steps out from under a page rather than reading through it */
   Object.values(byId).forEach((o) => {
-    const room = (o.x1 - o.x0) - o.lab.offsetWidth - 24;
-    const off = Math.min(Math.max(0, stage.scrollLeft - o.x0 + 4), Math.max(0, room));
-    o.lab.style.transform = "translateX(" + off + "px)";
+    const lw = o.lab.offsetWidth, room = Math.max(0, (o.x1 - o.x0) - lw - 24);
+    let lx = Math.max(o.x0 + 9, L + 13);
+    PAGES.forEach((p) => { if (lx < p.x + p.w + 12 && lx + lw > p.x - 12) lx = p.x + p.w + 12; });
+    o.lab.style.transform = "translateX(" + Math.min(Math.max(0, lx - o.x0 - 9), room) + "px)";
   });
-  /* in ink: the job under the near third of the glass */
-  /* at the far end there is no further to pan, so the last job takes the ink */
-  const atEnd = stage.scrollLeft + stage.clientWidth >= stage.scrollWidth - 40;
-  const t = atEnd ? T(NOW) : timeAt(stage.scrollLeft + stage.clientWidth * 0.3);
-  let front = null; ERAS.forEach((r) => { if (r.lane === 0 && T(r.s) <= t) front = r; });
-  ERAS.forEach((r) => r.btn.classList.toggle("front", r === front && stage.scrollLeft > INTRO - 300));
 }
-const fitV = () => {
-  const foot = map.getBoundingClientRect().top - 18;
-  for (let i = 0; i <= 5; i++) {
-    pitch(i / 5);
-    let low = 0; world.querySelectorAll(".note").forEach((n) => { low = Math.max(low, n.offsetTop + n.offsetHeight); });
-    if (low <= foot) break;
-  }
-};
 stage.addEventListener("scroll", onScroll, { passive: true });
-addEventListener("resize", () => { drawMap(); fitV(); }, { passive: true });
-drawMap(); fitV();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitV);
-const scrub = (e) => { const r = map.getBoundingClientRect(); const t = T0 + ((e.clientX - r.left) / r.width) * (T1 - T0); stage.scrollLeft = xAt(t) - stage.clientWidth / 2; };
+{ let t = 0; addEventListener("resize", () => { clearTimeout(t); t = setTimeout(build, 140); }, { passive: true }); }
+build();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+const scrub = (e) => { const r = map.getBoundingClientRect(); const t = T0 + ((e.clientX - r.left) / r.width) * (T1 - T0); stage.scrollLeft = XS(Math.min(Math.max(t, Y0), T(NOW))) - stage.clientWidth / 2; };
 let scrubbing = false;
 map.addEventListener("pointerdown", (e) => { scrubbing = true; map.setPointerCapture(e.pointerId); scrub(e); });
 map.addEventListener("pointermove", (e) => { if (scrubbing) scrub(e); });
