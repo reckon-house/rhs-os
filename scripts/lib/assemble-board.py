@@ -1166,7 +1166,9 @@ head = r'''<!doctype html>
      old sheet's rule too. About, Connect and Ask have no drawer and
      go on the first press. */
   @media (max-width: 760px) {
-    #cmdIn { --st-fs: 32px; padding: 20px 20px 8px; }
+    /* ten lines and the mark are 502px: a 740px glass gave the sheet
+       488 and cut the rule under Ask, so it may take a little more */
+    #cmdIn { --st-fs: 32px; padding: 20px 20px 8px; max-height: min(74dvh, 600px); }
     /* the rules run off the left of the rail, and the rail's own box
        would clip them at the gutter */
     #cmdIn #railwrap, #cmdIn #rdrawer { overflow: visible; }
@@ -1770,7 +1772,12 @@ head = r'''<!doctype html>
        from the field (hidden while a thread is on anyway) and ellipse
        past that, rather than push the grid off the glass */
     #nav .mark { justify-self: end; white-space: nowrap; min-width: 0; max-width: 100%;
-      overflow: hidden; text-overflow: ellipsis; }
+      overflow: hidden; text-overflow: ellipsis;
+      /* the wordmark's own weight and tracking, as the sheet's big mark
+         and the desktop's head line wear it, so the handle reads as the
+         same mark at the bar's size (it was 11px at 600) */
+      font-size: 14px; font-weight: 700; letter-spacing: -0.04em; }
+    #nav .mark .fam { letter-spacing: -0.02em; }
     #nav .meta { display: none; }
   }
 </style>
@@ -7286,7 +7293,9 @@ const catReels = [];
   let runT = 0;
   const setFront = (run) => {
     shelves.forEach((L) => L.b.classList.toggle("front", L.tag === run));
-    aboutLine.b.classList.toggle("front", run === "open");
+    /* a phone opens on the statement, not on About, so its opening run
+       puts no line in ink */
+    aboutLine.b.classList.toggle("front", run === "open" && !PHONE);
   };
   window.__coverRun = (run) => {
     clearTimeout(runT);
