@@ -7262,13 +7262,15 @@ if (!PHONE) {
      too" — and it is the type staying at the About column's size that
      makes it a different thing from the 46px rail it looks like.
 
-     THE PITCH IS THE TYPE'S OWN, not the window's: 1.15 of the size
-     the rail is set in, which is under the line's own 1.2, so the
-     rules fall just below each baseline and the block ends where the
-     names end. Nothing here measures the window any more. The rail
+     THE PITCH IS THE TYPE'S OWN, not the window's: 1.3 of the size
+     the rail is set in, so the rules clear each line's own foot by a
+     few pixels and the block ends where the names end. It was 1.15,
+     which put the rule inside the line box and the descenders through
+     it; his call was for "a little more air between them". Nothing
+     here measures the window any more. The rail
      scrolls (see #railwrap) if an open drawer ever runs past the
      foot, which at this pitch takes a very short one. */
-  const TIGHT = 1.15, REEL_H = 120;
+  const TIGHT = 1.3, REEL_H = 120;
   let pitch = 44;
   /* each rule is as long as the word over it (see the stylesheet), so
      every row carries its own name's width, and the first line carries
