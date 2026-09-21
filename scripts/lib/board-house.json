@@ -236,29 +236,42 @@
       {
         "id": "about",
         "name": "About",
-        "lede": "I solve problems in a number of mediums from technology, business workflow, organizational structure, marketing, creative and brand.",
+        "lede": "I can work across an organization, or across something new with no structure, and make it something.",
         "body": [
-          "With 20+ years of experience working across organizations large and small I help create campaigns, brands and use new tools and technology (like AI) to streamline the workflow and process around. I understand the data and analytics needed to solve these problems.",
-          "I can help identify and strategize marketing campaigns, brands as well as process, tools and workflow enhancements to streamline things that are customer facing as well as the internal processes and production."
+          "I spent eight years at Nordstrom, where I worked with engineering to roll out a new CMS and led the redesign of the digital experience, from marketing down to the product page.",
+          "I've also taken a new app from the idea through brand and code, and made the marketing platform a 2,000-store retailer now runs on daily.",
+          "I'm a tinkerer. My degree is in management information systems, and my first job was one of six at a startup, where I ran all the digital and print marketing and wrote the front end for a custom CMS."
         ]
       },
       {
         "id": "design",
         "name": "Design",
-        "lede": "",
-        "body": []
+        "lede": "Twenty years of experience design and creative direction, across digital products, stores and homes.",
+        "body": [
+          "Neiman Marcus, JCPenney, Nordstrom, At Home, PetSmart and Sally Beauty. At Nordstrom I directed a team of 27 across site, email and apps, and led the US digital launch of Ivy Park by Beyoncé, six weeks from concept to live.",
+          "At Sally Beauty I lead design teams and outside agencies across digital and 2,000+ stores, including a full redesign of the digital experience and a new boutique store concept.",
+          "Somewhere in there I spent a couple of years deep in custom homes, leading interior design and selections on $1-3M builds. Floor & Decor named me Designer of the Quarter in 2023."
+        ]
       },
       {
         "id": "process",
         "name": "Process & Workflow",
-        "lede": "",
-        "body": []
+        "lede": "I know how things get made inside a big company, and I put new ways of working into practice.",
+        "body": [
+          "At Nordstrom the new CMS saved $3M over four years. Redesigning the UI and templates cut concept-to-web time 35% and lifted customer engagement 22%.",
+          "At Sally Beauty and CosmoProf I built the in-house creative teams and a new operating model that raised execution efficiency 27%. At PetSmart, new site patterns, email templates and AI-assisted product photography lifted creative output 30%."
+        ]
       },
       {
         "id": "ai",
         "name": "AI & Technology",
-        "lede": "",
-        "body": []
+        "lede": "I build the tools as much as the output.",
+        "body": [
+          "Sally OS is a marketing platform I came up with and built at Sally Beauty. It went in front of the board, leadership approved it, and it's used across the company. A full campaign goes from request to execution in hours instead of weeks.",
+          "It reads competitor research and voice-of-customer data, plans the campaign, then writes and designs the emails, web assets and signage, and delivers them into Figma through a plugin I wrote. It answers from what the brand has shipped, and a governance layer holds automated work to the same standard as anything made by hand.",
+          "A.R.C. is an iPhone app for home inventory that I designed and coded end to end. For Dallas Sport Collective I made a scheduling system where athletes and trainers book by talking to an AI, and the scheduling underneath stays deterministic.",
+          "This site runs in Claude Code. It's the CMS, the design tool and the build environment at once."
+        ]
       }
     ]
   }
