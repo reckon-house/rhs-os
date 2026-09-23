@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Timeline, the spreads · Reckon*House</title>
+<!-- ── LOOK D: THE SPREADS (22 Sept 2026) ─────────────────────────────
+     The book, taken at its word. Each chapter is a spread: the page,
+     then one picture as big as the glass allows (the chapter's study
+     the site leads with), then the chapter's notes in a margin, then
+     the rest of its pictures in two rows. The chart leaves the page and
+     becomes the running foot, the way a book carries its page numbers:
+     the whole career to scale along the bottom, the chapter being read
+     in ink and the rest in grey. The one look where the graph steps
+     back so the work can lead. -->
+<link rel="stylesheet" href="/lab/timeline-looks/base.css">
+<style>
+  .hero, .gp { position: absolute; display: block; }
+  .hero .pic, .gp .pic { display: block; border-radius: 16px; overflow: hidden; background: var(--cream); }
+  .gp .pic { border-radius: 12px; }
+  .hero img, .gp img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .hero .cap, .gp .cap { display: block; margin-top: 9px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hero .cap span, .gp .cap span { color: var(--grey); }
+  .hero:hover .pic, .gp:hover .pic { outline: 1px solid var(--ink); outline-offset: 3px; }
+
+  /* the margin: a chapter's notes, the year stacked beside each */
+  .mg { position: absolute; width: 248px; }
+  .mn { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 22px; }
+  .mn .y { flex: none; font-size: 32px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.86; font-variant-numeric: tabular-nums; }
+  .mn p { margin: 1px 0 0; font-size: 13px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
+  .mn p b { font-weight: 700; }
+
+  /* the running foot: the chapter being read in ink, the rest in grey */
+  #map .mb { height: 4px; border-radius: 0; background: rgba(0, 0, 0, 0.14); transition: background-color 0.4s ease, border-color 0.4s ease; }
+  #map .mb.line { height: 0; border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); background: none; }
+  #map .mb.edu { background: rgba(0, 0, 0, 0.07); }
+  #map .mb.cur { background: var(--ink); }
+  #map .mb.line.cur { border-top-color: var(--ink); }
+  #map .win { border: 0; border-radius: 0; border-top: 1px solid var(--ink); background: none; top: -8px; height: 36px; }
+
+  .key .kh { width: 22px; height: 22px; border-radius: 5px; background: var(--cream); margin-right: 12px; }
+  .key .kf { height: 4px; background: var(--ink); }
+</style>
+</head>
+<body>
+<a id="mark" href="/">Reckon<i>*</i>House</a>
+<div id="range" aria-live="off"></div>
+<aside id="rail" aria-label="Index">
+  <div class="switch"><a href="/">Projects</a><span class="on">Timeline</span></div>
+  <nav id="eras"></nav>
+</aside>
+<main id="stage"><div id="world"></div></main>
+<div id="map" aria-hidden="true"></div>
+<a id="look" href="/lab/timeline-looks/index.html">D · The spreads<span>All looks →</span></a>
+<script src="/lab/timeline-data.js"></script>
+<script src="/lab/timeline-looks/engine.js"></script>
+<script>
+(function () {
+const TOP = 114, AIR = 56, CAP = 30, ROW_GAP = 30, GP_GAP = 32, MG_W = 248, MARGIN = 96;
+const geo = (api) => { const HH = Math.max(280, api.foot - 26 - TOP - CAP); return { HH, GH: Math.floor((HH - 2 * 26 - ROW_GAP) / 2) }; };
+const fit = (api, s, h) => { let w = Math.round(h * s.nat[0] / s.nat[1]); if (w > api.HONEST(s)) { w = Math.floor(api.HONEST(s)); h = Math.round(w * s.nat[1] / s.nat[0]); } return { w, h }; };
+
+TLE.start({
+  key: '<li><b class="kh"></b>The chapter\'s pictures, the one it leads with first</li><li><b class="kf"></b>The career to scale along the foot, the chapter in ink</li>',
+  pageAir: 40,
+  /* the axis is cut only where a chapter turns: a chapter is one spread */
+  cuts(api) { return api.PAGES.map((p) => p.t); },
+  prepare(api) {
+    const G = geo(api), el = api.el;
+    api.SEQ.forEach((sp) => {
+      const byseat = sp.studies.slice().sort((a, b) => a.seat - b.seat);
+      sp.hero = byseat[0] || null;
+      sp.rest = sp.studies.filter((s) => s !== sp.hero);
+      sp.heroSize = sp.hero ? fit(api, sp.hero, G.HH) : null;
+      /* the margin, set and measured: it runs on into a second column if a
+         chapter holds more notes than the glass is tall */
+      sp.mg = [];
+      if (sp.notes.length) {
+        let col = el("div", "mg"); col.style.cssText = "left:0;top:" + TOP + "px;visibility:hidden"; api.world.appendChild(col); sp.mg.push(col);
+        sp.notes.forEach((n) => {
+          const y = String(n.at[0]);
+          const d = el("div", "mn", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>"); d.dataset.r = n.r;
+          col.appendChild(d);
+          if (col.offsetHeight > G.HH && col.children.length > 1) {
+            col.removeChild(d);
+            col = el("div", "mg"); col.style.cssText = "left:0;top:" + TOP + "px;visibility:hidden"; api.world.appendChild(col); sp.mg.push(col);
+            col.appendChild(d);
+          }
+        });
+      }
+      /* the rest of the pictures: two rows as even as they will go, or, for
+         one or two, a single row set lower and larger, standing on the lead
+         picture's baseline so the spread is not half empty */
+      sp.single = sp.rest.length > 0 && sp.rest.length <= 2;
+      const rows = [[], []], rw = [0, 0];
+      if (sp.single) sp.rest.forEach((s) => { const f = fit(api, s, Math.round(G.HH * 0.6)); rows[1].push({ s, f }); rw[1] += f.w + GP_GAP; });
+      else sp.rest.forEach((s) => { const r = rw[0] <= rw[1] ? 0 : 1; const f = fit(api, s, G.GH); rows[r].push({ s, f }); rw[r] += f.w + GP_GAP; });
+      sp.rows = rows; sp.galW = Math.max(0, Math.max(rw[0], rw[1]) - GP_GAP);
+      const parts = [sp.heroSize ? sp.heroSize.w : 0, sp.mg.length ? sp.mg.length * MG_W + (sp.mg.length - 1) * 32 : 0, sp.galW].filter((w) => w > 0);
+      sp.rw = parts.reduce((a, w) => a + w, 0) + Math.max(0, parts.length - 1) * AIR;
+    });
+  },
+  need(sp) { return sp.rw ? sp.rw + MARGIN : 120; },
+  render(api) {
+    const G = geo(api), el = api.el, W = api.world;
+    const pic = (cls, s, w, h, x, y) => {
+      const a = el("a", cls); a.href = "/case-studies/" + s.h; a.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + w + "px";
+      const p = el("span", "pic"); p.style.height = h + "px"; const im = api.picture(s, w); p.appendChild(im); a.appendChild(p);
+      a.appendChild(el("span", "cap", s.t + " <span>" + s.s + "</span>")); api.reel(a, s, im); W.appendChild(a);
+    };
+    api.SEQ.forEach((sp) => {
+      let x = sp.x;
+      if (sp.hero) { const { w, h } = sp.heroSize; pic("hero", sp.hero, w, h, x, TOP); x += w + AIR; }
+      if (sp.mg.length) { sp.mg.forEach((col, i) => { col.style.left = (x + i * (MG_W + 32)) + "px"; col.style.visibility = ""; }); x += sp.mg.length * (MG_W + 32) - 32 + AIR; }
+      const base = TOP + (sp.heroSize ? sp.heroSize.h : G.HH);
+      sp.rows.forEach((row, r) => { let gx = x; const y = TOP + r * (G.GH + 26 + ROW_GAP);
+        row.forEach(({ s, f }) => { pic("gp", s, f.w, f.h, gx, sp.single ? base - f.h : y + (G.GH - f.h)); gx += f.w + GP_GAP; }); });
+    });
+  },
+  /* the foot carries the chapter being read in ink */
+  onScroll(api, L, front) {
+    if (!front) return;
+    const t0 = front.t, t1 = front.tEnd === Infinity ? 9999 : front.tEnd;
+    document.querySelectorAll("#map .mb").forEach((m) => {
+      const r = api.ROLES.find((x) => x.id === m.dataset.r);
+      m.classList.toggle("cur", !!r && r.t0 < t1 && r.t1 > t0);
+    });
+  },
+});
+})();
+</script>
+</body>
+</html>

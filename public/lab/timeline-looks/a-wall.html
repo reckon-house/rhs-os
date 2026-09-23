@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Timeline, the wall · Reckon*House</title>
+<!-- ── LOOK A: THE WALL (22 Sept 2026) ────────────────────────────────
+     A museum's chronology wall. One line is the career: a job is a
+     length of it, and a gap between jobs is a break in it. His own
+     practice runs under it as a dotted leader. The years are set big,
+     hanging off the line, and what a year holds is listed under its
+     number the way a wall label sits under a picture. The pictures are
+     hung above from one line, at two sizes: the site's own first ten at
+     208, the rest at 136, so the work he leads with leads here too.
+     Nothing else is drawn: no rule at every year, no bars, no leaders.
+     The white between things is the point. -->
+<link rel="stylesheet" href="/lab/timeline-looks/base.css">
+<style>
+  .pr { position: absolute; display: block; }
+  .pr .pic { display: block; width: 100%; border-radius: 12px; overflow: hidden; background: var(--cream); }
+  .pr img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pr .cap { display: block; margin-top: 9px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35;
+    max-height: 2.7em; overflow: hidden; }
+  .pr .cap span { color: var(--grey); }
+  .pr:hover .pic { outline: 1px solid var(--ink); outline-offset: 3px; }
+
+  /* the career: one line, a job a length of it */
+  .ln { position: absolute; height: 3px; background: var(--ink); }
+  .ln.edu { background: rgba(0, 0, 0, 0.16); }
+  /* alongside it, dotted, as a leader */
+  .dl { position: absolute; height: 0; border-top: 1px dotted var(--ink); }
+  .lab { position: absolute; white-space: nowrap; font-size: 12px; font-weight: 500; letter-spacing: -0.004em;
+    line-height: 18px; will-change: transform; }
+  .lab b { font-weight: 700; }
+  .lab span { color: var(--grey); }
+  .lab.on { background: var(--paper); padding-right: 10px; }
+  .tick { position: absolute; width: 1px; height: 8px; background: var(--ink); }
+
+  /* a year, set big, and what it holds under it */
+  /* a year's label: its number, and under it what it holds, as one block
+     that stays on the glass while the year crosses it */
+  .yb { position: absolute; will-change: transform; }
+  .wns { display: flex; gap: 32px; margin-top: 20px; }
+  .yn { font-size: 72px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.8;
+    font-variant-numeric: tabular-nums; }
+  .yq { position: absolute; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey);
+    font-variant-numeric: tabular-nums; }
+  .wn { flex: none; width: 232px; margin: 0; font-size: 13px; font-weight: 500; line-height: 1.5; letter-spacing: -0.004em; }
+  .wn b { font-weight: 700; }
+
+  .key .kl { height: 3px; background: var(--ink); }
+  .key .kd { height: 0; border-top: 1px dotted var(--ink); }
+  .key .kp { height: 22px; border-radius: 5px; background: var(--cream); }
+
+  /* the foot, drawn in the same line */
+  #map .mb { height: 2px; border-radius: 0; }
+  #map .mb.line { height: 0; border: 0; border-top: 1px dotted var(--ink); }
+  #map .win { border: 0; border-radius: 0; border-bottom: 2px solid var(--ink); background: rgba(0, 0, 0, 0.035); }
+</style>
+</head>
+<body>
+<a id="mark" href="/">Reckon<i>*</i>House</a>
+<div id="range" aria-live="off"></div>
+<aside id="rail" aria-label="Index">
+  <div class="switch"><a href="/">Projects</a><span class="on">Timeline</span></div>
+  <nav id="eras"></nav>
+</aside>
+<main id="stage"><div id="world"></div></main>
+<div id="map" aria-hidden="true"></div>
+<a id="look" href="/lab/timeline-looks/index.html">A · The wall<span>All looks →</span></a>
+<script src="/lab/timeline-data.js"></script>
+<script src="/lab/timeline-looks/engine.js"></script>
+<script>
+(function () {
+const BIG = 208, SMALL = 136, GAP = 40, NOTE_W = 232, NOTE_GAP = 32, MARGIN = 72, NUM = 72;
+/* the wall's heights, from the glass's: at 770 (his laptop) everything
+   is at full size, and a shorter glass gives the pictures up first */
+const geo = (H) => {
+  const s = Math.min(1, Math.max(0.76, (H - 250) / 520));
+  const big = Math.round(BIG * s), small = Math.round(SMALL * s), top = 114;
+  const h0 = top + big + 38 + Math.round(52 * s);
+  return { big, small, top, h0, lab: h0 - 26, l1: h0 + 20, l2: h0 + 38, num: h0 + 64, notes: h0 + 64 + Math.round(NUM * 0.8) + 20 };
+};
+const size = (s, G) => { const h = s.seat < 10 ? G.big : G.small; return { h, w: Math.round(h * s.nat[0] / s.nat[1]) }; };
+
+TLE.start({
+  key: '<li><b class="kl"></b>A job, as long as it lasted</li><li><b class="kd"></b>My own practice, alongside</li>'
+    + '<li><b class="kp"></b>A case study. Rest on it to play, press to open.</li>',
+  /* a year's number stands where the year is first met, if it holds
+     anything; a quiet year gets its name small */
+  prepare(api) {
+    const seen = new Set();
+    api.SEQ.forEach((sp) => { sp.numeral = false; sp.quiet = false; });
+    api.SEQ.forEach((sp) => { if (!seen.has(sp.year) && (sp.studies.length || sp.notes.length)) { sp.numeral = true; seen.add(sp.year); } });
+    api.SEQ.forEach((sp) => { if (!seen.has(sp.year) && sp.t1 - sp.t0 >= 0.5) { sp.quiet = true; seen.add(sp.year); } });
+  },
+  need(sp, api) {
+    const G = geo(api.H);
+    const row = sp.studies.reduce((a, s) => a + size(s, G).w, 0) + Math.max(0, sp.studies.length - 1) * GAP;
+    const notes = sp.notes.length ? sp.notes.length * NOTE_W + (sp.notes.length - 1) * NOTE_GAP : 0;
+    const num = sp.numeral ? api.textW(String(sp.year), NUM, 700, -0.05) : 0;
+    const content = Math.max(row, notes, num);
+    const floor = (sp.t1 - sp.t0) * (sp.t0 < 2002 ? 60 : 120);
+    return content ? Math.max(content + MARGIN, floor) : floor;
+  },
+  labelNeed(r, api) { return api.textW(r.org, 12, 700) + 6 + api.textW(r.title, 12, 500) + 40; },
+  render(api) {
+    const G = geo(api.H), W = api.world, el = api.el;
+    /* the pictures, hung from one line */
+    api.SEQ.forEach((sp) => {
+      let x = sp.x;
+      sp.studies.forEach((s) => {
+        const { h, w } = size(s, G);
+        const a = el("a", "pr"); a.href = "/case-studies/" + s.h;
+        a.style.cssText = "left:" + x + "px;top:" + G.top + "px;width:" + w + "px";
+        const pic = el("span", "pic"); pic.style.height = h + "px";
+        const im = api.picture(s, w); pic.appendChild(im); a.appendChild(pic);
+        a.appendChild(el("span", "cap", s.t + ' <span data-full="' + s.s + '">' + s.s + "</span>"));
+        api.reel(a, s, im); W.appendChild(a); x += w + GAP;
+      });
+    });
+    /* the career, and what ran alongside it */
+    api.ROLES.forEach((r) => {
+      const xa = api.XS(r.s), xb = api.XE(r.e), x0 = Math.min(xa, xb), x1 = Math.max(xa, xb) - 4;
+      const main = r.lane === 0, y = main ? G.h0 : r.lane === 1 ? G.l1 : G.l2;
+      const line = el("i", main ? "ln " + r.kind : "dl");
+      line.style.cssText = "left:" + x0 + "px;width:" + Math.max(4, x1 - x0) + "px;top:" + (main ? y - 1 : y) + "px";
+      line.dataset.r = r.id; W.appendChild(line);
+      const lab = el("span", main ? "lab" : "lab on", "<b>" + r.org + "</b> <span>" + r.title + "</span>");
+      lab.style.cssText = "left:" + x0 + "px;top:" + (main ? G.lab : y - 9) + "px";
+      lab.dataset.r = r.id; W.appendChild(lab); api.stick(lab, x0, x1, 0);
+    });
+    /* a small tick under the line where a year turns */
+    for (let y = api.Y0 + 1; y <= api.Y1; y++) {
+      const x = api.XS(y);
+      if (x > api.RIGHT - 1 || api.PAGES.some((p) => p.x - x >= -1 && p.x - x < 30)) continue;
+      const t = el("i", "tick"); t.style.cssText = "left:" + x + "px;top:" + (G.h0 + 5) + "px"; W.appendChild(t);
+    }
+    /* the years, and under each what it holds */
+    api.SEQ.forEach((sp) => {
+      if (sp.quiet) { const n = el("div", "yq", String(sp.year)); n.style.cssText = "left:" + sp.x + "px;top:" + G.num + "px"; W.appendChild(n); }
+      if (!sp.numeral && !sp.notes.length) return;
+      /* the year's label stays on the glass while its year crosses it, as a
+         job's name does, so a long year never leaves the wall unlabelled */
+      const yb = el("div", "yb"); yb.style.cssText = "left:" + sp.x + "px;top:" + (sp.numeral ? G.num : G.notes) + "px";
+      if (sp.numeral) yb.appendChild(el("div", "yn", String(sp.year)));
+      if (sp.notes.length) {
+        const row = el("div", "wns"); if (!sp.numeral) row.style.marginTop = "0";
+        sp.notes.forEach((n) => { const p = el("p", "wn", n.t); p.dataset.r = n.r; row.appendChild(p); });
+        yb.appendChild(row);
+      }
+      W.appendChild(yb);
+      if (sp.numeral) api.stick(yb, sp.x, sp.x + sp.w - MARGIN / 2, 0);
+    });
+    api.fitCaps(".pr .cap");
+  },
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Timeline, the chronology · Reckon*House</title>
+<!-- ── LOOK C: THE CHRONOLOGY (22 Sept 2026) ──────────────────────────
+     The back pages of a monograph. Each year is a column: its number
+     over a heavy rule, a strip under the rule that shows which months
+     each job and the practice held, then what happened that year listed
+     under it, newest first, a month in the margin of each line. A job
+     starting is a line of the list, a note is a line, a study is a line
+     with its picture small beside it. A busy year runs on into a second
+     column, as the book's pages do. The time scale lives in the strips
+     and in the true-scale foot; the columns are as wide as their lists,
+     so a quiet year is a narrow one. Pictures are small here on
+     purpose: this is the one where the type does the work. -->
+<link rel="stylesheet" href="/lab/timeline-looks/base.css">
+<style>
+  /* one hairline under every year's head, the length of the book */
+  .cline { position: absolute; height: 1px; background: var(--hair); }
+  .cb { position: absolute; }
+  .cy { font-size: 56px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.9; font-variant-numeric: tabular-nums; height: 56px; }
+  .crule { height: 2px; background: var(--ink); margin-top: 6px; }
+  .cstrip { position: relative; height: 22px; margin-top: 8px; }
+  .cstrip i { position: absolute; }
+  .cstrip .job { top: 0; height: 6px; background: var(--ink); }
+  .cstrip .edu { top: 0; height: 6px; background: rgba(0, 0, 0, 0.16); }
+  .cstrip .l1 { top: 10px; height: 0; border-top: 2px dotted var(--ink); }
+  .cstrip .l2 { top: 16px; height: 2px; background: rgba(0, 0, 0, 0.22); }
+  .cents { margin-top: 10px; column-fill: auto; }
+  .ce { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 4px; padding: 10px 0 11px; border-top: 1px solid var(--rule);
+    break-inside: avoid; font-size: 13px; font-weight: 500; line-height: 1.45; letter-spacing: -0.004em; }
+  .ce > i { font-style: normal; font-size: 11px; font-weight: 600; color: var(--grey); padding-top: 1px; letter-spacing: 0.01em; }
+  .ce b { font-weight: 700; }
+  .ce .g { color: var(--grey); }
+  .ce.ro b { font-size: 15px; letter-spacing: -0.02em; }
+  .ce.st { grid-template-columns: 34px 64px minmax(0, 1fr); column-gap: 4px; }
+  .ce.st .th { display: block; width: 64px; height: 48px; border-radius: 6px; overflow: hidden; background: var(--cream); margin-right: 10px; }
+  .ce.st .th img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ce.st div { padding-left: 10px; }
+  .ce.st:hover .th { outline: 1px solid var(--ink); outline-offset: 2px; }
+  .cq { position: absolute; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey); font-variant-numeric: tabular-nums; }
+
+  .key .kj { height: 6px; background: var(--ink); }
+  .key .kd { height: 2px; background: rgba(0, 0, 0, 0.22); }
+  .key .kr { height: 2px; background: var(--ink); }
+</style>
+</head>
+<body>
+<a id="mark" href="/">Reckon<i>*</i>House</a>
+<div id="range" aria-live="off"></div>
+<aside id="rail" aria-label="Index">
+  <div class="switch"><a href="/">Projects</a><span class="on">Timeline</span></div>
+  <nav id="eras"></nav>
+</aside>
+<main id="stage"><div id="world"></div></main>
+<div id="map" aria-hidden="true"></div>
+<a id="look" href="/lab/timeline-looks/index.html">C · The chronology<span>All looks →</span></a>
+<script src="/lab/timeline-data.js"></script>
+<script src="/lab/timeline-looks/engine.js"></script>
+<script>
+(function () {
+const COL = 256, CGAP = 28, MARGIN = 56, TOP = 114;
+const HEAD = 56 + 6 + 2 + 8 + 22 + 10;   /* number, rule, strip, air */
+const entsH = (api) => Math.max(240, api.foot - 18 - (TOP + HEAD));
+const month = (api, t) => api.MONTHS[Math.min(11, Math.max(0, Math.round((t - Math.floor(t)) * 12)))];
+
+TLE.start({
+  key: '<li><b class="kr"></b>A year, and what happened in it</li><li><b class="kj"></b>The months a job held</li>'
+    + '<li><b class="kd"></b>My own practice, alongside</li>',
+  pageAir: 40,
+  /* the columns are set, then measured, before the axis is laid out: a
+     year is as wide as its list */
+  prepare(api) {
+    const el = api.el, H = entsH(api);
+    const seen = new Set();
+    api.SEQ.forEach((sp) => {
+      sp.block = null; sp.quiet = false;
+      const items = [];
+      sp.starts.forEach((r) => items.push({ t: r.t0, kind: "ro", r }));
+      sp.notes.forEach((n) => items.push({ t: n.time, kind: "no", n }));
+      sp.studies.forEach((s) => items.push({ t: s.at, kind: "st", s }));
+      items.sort(api.byTime((x) => x.t));
+      if (!items.length) { if (!seen.has(sp.year) && sp.t1 - sp.t0 >= 0.5) { sp.quiet = true; seen.add(sp.year); } return; }
+      seen.add(sp.year);
+      const b = el("div", "cb"); b.style.cssText = "left:0;top:" + TOP + "px;visibility:hidden";
+      b.appendChild(el("div", "cy", String(sp.year)));
+      b.appendChild(el("div", "crule"));
+      const strip = el("div", "cstrip"); b.appendChild(strip);
+      const ents = el("div", "cents"); ents.style.cssText = "width:" + COL + "px;height:" + H + "px;column-width:" + COL + "px;column-gap:" + CGAP + "px";
+      items.forEach((it) => {
+        if (it.kind === "ro") ents.appendChild(el("div", "ce ro", "<i>" + month(api, it.t) + "</i><div><b>" + it.r.org + "</b> <span class=\"g\">" + it.r.title + "</span></div>"));
+        else if (it.kind === "no") { const d = el("div", "ce", "<i>" + month(api, it.t) + "</i><div>" + it.n.t + "</div>"); d.dataset.r = it.n.r; ents.appendChild(d); }
+        else {
+          const a = el("a", "ce st"); a.href = "/case-studies/" + it.s.h;
+          a.appendChild(el("i"));
+          const th = el("span", "th"); const im = api.picture(it.s, 64); th.appendChild(im); a.appendChild(th);
+          a.appendChild(el("div", null, "<b>" + it.s.t + "</b> <span class=\"g\">" + it.s.s + "</span>"));
+          api.reel(a, it.s, im); ents.appendChild(a);
+        }
+      });
+      b.appendChild(ents); api.world.appendChild(b);
+      const left = ents.getBoundingClientRect().left;
+      let right = left; [...ents.children].forEach((k) => { right = Math.max(right, k.getBoundingClientRect().right); });
+      const cols = Math.max(1, Math.ceil((right - left - 2) / (COL + CGAP)));
+      const w = cols * COL + (cols - 1) * CGAP;
+      ents.style.width = w + "px"; if (cols > 1) ents.style.columnFill = "balance";
+      sp.block = b; sp.bw = w;
+    });
+  },
+  need(sp) { return sp.block ? sp.bw + MARGIN : (sp.t1 - sp.t0) * (sp.t0 < 2002 ? 48 : 84); },
+  render(api) {
+    const el = api.el, W = api.world;
+    const line = el("i", "cline"); line.style.cssText = "left:" + api.LEFT + "px;width:" + (api.RIGHT - api.LEFT) + "px;top:" + (TOP + 56 + 6 + 1) + "px"; W.appendChild(line);
+    api.SEQ.forEach((sp) => {
+      if (sp.quiet) { const q = el("div", "cq", String(sp.year)); q.style.cssText = "left:" + sp.x + "px;top:" + (TOP + 30) + "px"; W.appendChild(q); }
+      if (!sp.block) return;
+      const b = sp.block; b.style.left = sp.x + "px"; b.style.visibility = "";
+      b.style.width = sp.bw + "px";
+      /* the strip: the months each job, and the practice, held in this span */
+      const strip = b.querySelector(".cstrip"), span = sp.t1 - sp.t0;
+      api.ROLES.forEach((r) => {
+        const a = Math.max(r.t0, sp.t0), z = Math.min(r.t1, sp.t1); if (z <= a) return;
+        const fa = (a - sp.t0) / span, fz = (z - sp.t0) / span;
+        const l = api.REV ? 1 - fz : fa, w = Math.abs(fz - fa);
+        const s = el("i", r.lane === 0 ? r.kind : r.lane === 1 ? "l1" : "l2");
+        s.style.cssText = "left:" + (l * 100) + "%;width:calc(" + (w * 100) + "% - 2px)"; s.dataset.r = r.id; strip.appendChild(s);
+      });
+    });
+  },
+});
+})();
+</script>
+</body>
+</html>

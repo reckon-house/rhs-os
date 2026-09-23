@@ -1,0 +1,92 @@
+/* ── WHAT EVERY LOOK SHARES (22 Sept 2026) ────────────────────────────
+   The mock's own chrome, lifted as it was: the mark, the rail as the
+   contents, the stage, the cover, the book's pages and the true-scale
+   foot. A look's stylesheet draws only the chart. */
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; }
+:root { --ink: #000; --paper: #fff; --cream: #EDE7E2; --grey: rgba(0, 0, 0, 0.42); --hair: rgba(0, 0, 0, 0.13); --rule: rgba(0, 0, 0, 0.1);
+  --gut: 50px; --rail: 200px; --gap: 73px; --air: 50px; --band: 64px;
+  --st-fs: clamp(20px, 2.4vw, 32px);
+  --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* the head line: the mark, and what is on the glass */
+#mark { position: fixed; z-index: 5; left: var(--gut); top: var(--air);
+  font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+#mark i { font-style: normal; font-weight: 400; }
+#range { position: fixed; z-index: 5; right: var(--gut); top: calc(var(--air) + 2px);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--grey); }
+
+/* the rail: the board's own, with the view's switch over it */
+#rail { position: fixed; z-index: 4; left: 0; top: calc(var(--air) + var(--band));
+  width: calc(var(--gut) + var(--rail)); padding-left: var(--gut); bottom: 24px; }
+.switch { display: flex; gap: 14px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; margin: 0 0 14px; }
+.switch a { color: var(--grey); transition: color 0.3s ease; }
+.switch a:hover { color: var(--ink); }
+.switch .on { border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+.era { position: relative; display: flex; align-items: flex-start; gap: 4px; width: 100%; height: var(--pitch, 42px);
+  padding: 1px 0 0; margin: 0; border: 0; background: none; cursor: pointer; text-align: left;
+  font: inherit; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2;
+  color: var(--grey); white-space: nowrap; transition: color 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.era::after { content: ""; position: absolute; top: 100%; left: calc(-1 * var(--gut)); height: 1px;
+  width: calc(var(--gut) + var(--w, 0px)); background: var(--rule); }
+.era.front, .era:hover { color: var(--ink); }
+.era sup { font-size: 10px; font-weight: 600; letter-spacing: 0; line-height: 1; margin-top: 5px; font-variant-numeric: tabular-nums; }
+
+/* which look this is, and the way back to all of them */
+#look { position: fixed; z-index: 5; left: var(--gut); bottom: 24px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; }
+#look span { color: var(--grey); font-weight: 500; margin-left: 8px; transition: color 0.3s ease; }
+#look:hover span { color: var(--ink); }
+
+/* the stage: one long world, panned sideways */
+#stage { position: fixed; left: calc(var(--gut) + var(--rail) + var(--gap)); right: 0;
+  top: 0; bottom: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+#stage::-webkit-scrollbar { display: none; }
+#world { position: relative; height: 100%; }
+
+/* the cover: the view's name on its side, as a run's is */
+.intro { position: absolute; left: 0; top: calc(var(--air) + var(--band)); width: 400px; }
+.spine { position: absolute; left: 0.03em; top: 0; writing-mode: vertical-rl; transform: rotate(180deg);
+  font-size: 112px; font-weight: 700; letter-spacing: -0.04em; line-height: 0.8; text-transform: uppercase;
+  white-space: nowrap; user-select: none; }
+.intro .body { margin-left: 118px; }
+.intro .lede { font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2; margin: 0 0 22px; }
+.key { font-size: 12px; font-weight: 500; line-height: 1.45; color: var(--grey); margin: 0; padding: 0; list-style: none; }
+.key li { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+.key b { flex: none; width: 34px; height: 12px; }
+
+/* a chapter's page: paper laid over the timeline, as wide as its words */
+.pg { position: absolute; z-index: 2; top: 96px; bottom: var(--pg-foot, 88px); box-sizing: border-box; background: var(--paper);
+  border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); padding: 18px 40px 14px 28px; }
+.pg .flow { width: 360px; height: 100%; column-width: 360px; column-gap: 40px; column-fill: auto; }
+.pg .head { break-inside: avoid; }
+.pg .num { font-size: 72px; font-weight: 700; letter-spacing: -0.06em; line-height: 0.8; margin: 0 0 20px -0.03em;
+  font-variant-numeric: tabular-nums; }
+.pg .when { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--grey); margin: 0 0 4px; }
+.pg h2 { font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; margin: 0 0 14px; }
+.pg .lede { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; margin: 0 0 16px; }
+.pg p { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; margin: 0 0 12px;
+  color: rgba(0, 0, 0, 0.8); orphans: 2; widows: 2; }
+.pg p.lede { color: var(--ink); }
+.pg .yours { break-inside: avoid; margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--hair);
+  font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; color: var(--grey); }
+.pg .yours b { display: block; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+
+/* a role under the hand lights what belongs to it */
+#world.dim [data-r]:not(.lit) { opacity: 0.28; }
+#world [data-r] { transition: opacity 0.3s ease; }
+
+/* the foot: the whole of it to scale, and the way through it */
+#map { position: fixed; z-index: 4; left: calc(var(--gut) + var(--rail) + var(--gap)); right: var(--gut); bottom: 24px; height: 44px;
+  cursor: pointer; }
+#map .mb { position: absolute; height: 5px; border-radius: 2px; background: var(--ink); }
+#map .mb.line { background: none; border: 1px solid var(--ink); }
+#map .mb.edu { background: rgba(0, 0, 0, 0.1); }
+#map .ml { position: absolute; bottom: 0; font-size: 10px; font-weight: 600; color: var(--grey); font-variant-numeric: tabular-nums; }
+#map .mt { position: absolute; top: -9px; width: 1px; height: 6px; background: var(--ink); }
+#map .win { position: absolute; top: -4px; height: 32px; border: 1px solid var(--ink); border-radius: 4px; background: rgba(0, 0, 0, 0.04); pointer-events: none; }

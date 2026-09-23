@@ -214,113 +214,14 @@
 <main id="stage"><div id="world"></div></main>
 <div id="map" aria-hidden="true"></div>
 
+<script src="/lab/timeline-data.js"></script>
 <script>
-const STUDIES = [{"k": "branding-graphics", "t": "Various design", "s": "Branding, art, apparel", "h": "branding-graphics", "y": 2008, "frames": ["/lab/board-thumbs/hp/rhs-various-design-branding-graphics-prints-apparel@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-abc-123-typography-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-bokehs-fall-storefront-window-display@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-inna-foil-zine-orange-dress-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-up-up-and-away-balloon-poster-lifestyle@384.webp", "/lab/board-thumbs/branding-graphics/branding-graphics-verse02-light-waves-stripes-print@384.webp"], "seat": 29}, {"k": "neiman-marcus", "t": "Neiman Marcus", "s": "Editorial direction, design", "h": "neiman-marcus", "y": 2012, "frames": ["/lab/board-thumbs/hp/rhs-neiman-marcus-editorial-design-fashion-spreads@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-contemporary-art-magazine-hands-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-flora-maxi-laptop-couch-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-minimalism-laptop-steel-mockup@384.webp", "/lab/board-thumbs/neiman-marcus/neiman-marcus-insite-rainbow-laptop-blue-chairs-mockup@384.webp"], "seat": 26}, {"k": "nordstrom-personalization", "t": "Nordstrom personalization", "s": "Design system, direction", "h": "nordstrom-personalization", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-personalization-laptop@384.webp"], "seat": 4}, {"k": "jeffrey-ecommerce", "t": "Jeffrey NYC", "s": "Ecommerce, web design", "h": "jeffrey-ecommerce", "y": 2015, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-ecommerce-laptop@384.webp"], "seat": 15}, {"k": "ivy-park", "t": "Ivy Park by Beyoncé", "s": "Ecommerce, brand launch", "h": "ivy-park", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-ivy-park-beyonce-digital-brand-launch@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-campaign-assets-grid-overview@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-laptop-brand-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-park-nordstrom-mobile-experience-mockup@384.webp", "/lab/board-thumbs/ivy-park/ivy-signage@384.webp"], "seat": 0}, {"k": "nordstrom-framework", "t": "Nordstrom framework", "s": "Content direction, design", "h": "nordstrom-framework", "y": 2016, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-framework-on-our-list@384.webp", "/lab/board-thumbs/nordstrom-framework/hero1@384.webp", "/lab/board-thumbs/nordstrom-framework/hero3@384.webp", "/lab/board-thumbs/nordstrom-framework/hero4@384.webp"], "seat": 8}, {"k": "amber-shockey-co", "t": "Amber Shockey & Co.", "s": "Tableware design, branding", "h": "amber-shockey-co", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-amber-shockey-blue-plate@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-black-linework-geometric-plates-marble-surface-collection-mockup@384.webp", "/lab/board-thumbs/amber-shockey-co/amber-shockey-co-blue-florals-plates-stacked-on-peony-pattern-collection-mockup@384.webp"], "seat": 19}, {"k": "loved-by-nordstrom", "t": "Loved by Nordstrom", "s": "Brand campaign, design", "h": "loved-by-nordstrom", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-loved-by-nordstrom-ipad@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-instagram-stories-tibi-trench@384.webp", "/lab/board-thumbs/loved-by-nordstrom/loved-by-nordstrom-iphone-landing-page-corduroy-couch@384.webp"], "seat": 24}, {"k": "jeffrey-spring", "t": "Jeffrey Spring Campaign", "s": "Creative direction, design", "h": "jeffrey-spring", "y": 2017, "frames": ["/lab/board-thumbs/hp/rhs-jeffrey-spring-campaign-laptop@384.webp"], "seat": 25}, {"k": "capitan-boot-co", "t": "Capitan Boot Co.", "s": "Branding, design", "h": "capitan-boot-co", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-capitan-boot-co-branding@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-branding-western-desert-landscape-winding-river-rolling-hills-sage-brush-terrain-original-typography-campaign@384.webp", "/lab/board-thumbs/capitan-boot-co/capitan-boot-co-western-original-buffalo-silhouette-desert-landscape-mesa-mountains-sage-brush-terrain-branding-campaign@384.webp"], "seat": 6}, {"k": "nordstrom-beauty", "t": "Nordstrom beauty", "s": "Digital design, personalized", "h": "nordstrom-beauty", "y": 2018, "frames": ["/lab/board-thumbs/hp/rhs-nordstrom-beauty-hub-laptop@384.webp", "/lab/board-thumbs/nordstrom-beauty/nordstrom-beauty-tryon-iphone-color-selector-mockup@384.webp"], "seat": 10}, {"k": "hill-country-oak", "t": "Hill Country Oakworks", "s": "Campaign direction, branding", "h": "hill-country-oak", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-hill-country-oakworks-billboard@384.webp", "/lab/board-thumbs/hill-country-oak/hill-country-oakworks-outdoor-banner-whiskey-barrels-colorful-background-tree-texas-born-oakcraft@384.webp"], "seat": 13}, {"k": "j-christianson", "t": "J. Christianson", "s": "Brand development, design", "h": "j-christianson", "y": 2019, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-j-christianson-branding@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-billboard-mockup-brand-pattern@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-outdoor-sign-seasonal-tree-circles@384.webp", "/lab/board-thumbs/j-christianson/j-christianson-storefront-tree-stripe-window-mockup@384.webp"], "seat": 16}, {"k": "cosmo-prof", "t": "Cosmo Prof", "s": "Digital design, creative direction", "h": "cosmo-prof", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-cosmo-prof-website-design-digital-rebrand@384.webp", "/lab/board-thumbs/cosmo-prof/cosmo-prof-photography-direction-maria-nila-colour-masque-pink-cream-splatters@384.webp"], "seat": 12}, {"k": "you-by-sally", "t": "You By Sally", "s": "Brand campaign", "h": "you-by-sally", "y": 2021, "frames": ["/lab/board-thumbs/hp/rhs-you-by-sally-street-display@384.webp", "/lab/board-thumbs/you-by-sally/hero@384.webp"], "seat": 18}, {"k": "fairview-bedroom", "t": "The Fairview Suite", "s": "Interior design, bedroom", "h": "fairview-suite", "y": 2022, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bedroom-glam-luxe@384.webp"], "seat": 23}, {"k": "big-bend", "t": "West Texas", "s": "Landscape photography", "h": "big-bend", "y": 2022, "frames": ["/lab/board-thumbs/big-bend/hero@384.webp", "/lab/board-thumbs/big-bend/desert-dusk-ridgeline@384.webp", "/lab/board-thumbs/big-bend/mountain_crop@384.webp", "/lab/board-thumbs/big-bend/prada_grid@384.webp"], "seat": 28}, {"k": "hill-country-kitchen", "t": "Hill Country home", "s": "Interior design, kitchen", "h": "hill-country-kitchen", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-kitchen-modern-meets-vintage@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-pantry-fridge-pendant-window@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-sink-corner-shelves-marble@384.webp", "/lab/board-thumbs/hill-country-kitchen/hill-country-kitchen-wide-dining-island-windows@384.webp"], "seat": 2}, {"k": "hill-country-bath", "t": "Hill Country home", "s": "Interior design, primary bath", "h": "hill-country-bath", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-hill-country-primary-bath@384.webp", "/lab/board-thumbs/hill-country-bath/hill-country-bath-his-vanity-valet-stand-antique-mirror@384.webp"], "seat": 11}, {"k": "black-white-type", "t": "Black & white type", "s": "Custom typography, patterns", "h": "black-white-type", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-campaign-design-typography-black-white-custom-patterns@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-stepper-poster-bench-lifestyle@384.webp", "/lab/board-thumbs/black-white-type/typography-patterns-white-poster-gate-lifestyle@384.webp"], "seat": 14}, {"k": "hill-country-living", "t": "Hill Country home", "s": "Interior design, living room", "h": "hill-country-living", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-livingroom-interior@384.webp", "/lab/board-thumbs/hill-country-living/hill-country-living-limestone-fireplace-eisenhower-painting-navajo-throw-cognac-sofa-symmetry@384.webp"], "seat": 17}, {"k": "floor-and-decor", "t": "Floor & Decor", "s": "Interiors feature", "h": "floor-and-decor", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-master-bath-urban-farmhouse@384.webp", "/lab/board-thumbs/floor-and-decor/quiet-glam-primary-bath-veined-marble-brass-urchin-chandelier@384.webp"], "seat": 20}, {"k": "fairview-sitting", "t": "The Fairview", "s": "Interior design, sitting room", "h": "fairview-sitting", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-formal-modern-transitional-1@384.webp"], "seat": 21}, {"k": "fairview-entry", "t": "The Fairview", "s": "Interior Design, foyer", "h": "fairview-entry", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-grand-entry-luxe@384.webp"], "seat": 22}, {"k": "chalet", "t": "Mountain View", "s": "Interior design, remodel", "h": "chalet", "y": 2023, "frames": ["/lab/board-thumbs/hp/rhs-interior-design-cabin-mid-century@384.webp", "/lab/board-thumbs/chalet/chalet-exterior-three-quarter-deck-stairs-pacific-northwest-landscape@384.webp"], "seat": 27}, {"k": "arc", "t": "A.R.C. - AI Home Inventory", "s": "App & brand development", "h": "arc", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-arc-app-project-select-phone@384.webp", "/lab/board-thumbs/arc/arc-app-kitchen-project-selection-lifestyle@384.webp", "/lab/board-thumbs/arc/arc-app-tablet-kitchen-living-room-lifestyle@384.webp"], "seat": 3}, {"k": "robert-rodriguez", "t": "Robert Rodriguez x Neiman’s", "s": "Creative direction, design", "h": "robert-rodriguez", "y": 2024, "frames": ["/lab/board-thumbs/hp/rhs-robert-rodriguez-storefront-window@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-model-pink-blazer-cream-polka-dot-dress-orange-red-backdrop-editorial-campaign@384.webp", "/lab/board-thumbs/robert-rodriguez/neiman-marcus-robert-rodriguez-woman-yellow-blazer-white-pants-coral-heels-curly-hair-pink-orange-gradient-studio-editorial-portrait@384.webp"], "seat": 5}, {"k": "sally-os", "t": "Sally Marketing OS", "s": "Product design, engineering", "h": "sally", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-sally-os-asset-hub-laptop@384.webp"], "seat": 1}, {"k": "dsc", "t": "Dallas Sport Collective", "s": "Website, custom app", "h": "dsc", "y": 2025, "frames": ["/lab/board-thumbs/hp/rhs-dallas-sport-collective-laptop-stool@384.webp", "/lab/board-thumbs/dsc/dsc-marketing-site-phone-hero@384.webp", "/lab/board-thumbs/dsc/dsc-owner-calendar-phone-hero@384.webp"], "seat": 7}, {"k": "sizzle", "t": "Faux Reel", "s": "Product design, motion", "h": "sizzle", "y": 2026, "frames": ["/lab/board-thumbs/sizzle/sizzle@384.webp"], "seat": 9}];
-const NOW = [2026, 9];
+/* the facts live in /lab/timeline-data.js, shared with the looks */
+const { STUDIES, ROLES, CHAPTERS, NOTES, NOW, STUDY_AT } = window.TL;
 /* newest first unless asked otherwise (?order=old) */
 const REV = new URLSearchParams(location.search).get("order") !== "old";
-/* LinkedIn's dates, except Neiman Marcus's start: 2006, from the résumé, which
-   he confirmed. `soft` draws a stretch nobody has confirmed; none is left. */
-const ROLES = [
-  { id: "edu", lane: 0, kind: "edu", org: "UT Dallas", title: "B.S., Management Information Systems", s: [1998, 8], e: [2002, 5] },
-  { id: "am", lane: 0, kind: "job", org: "Applied Media Resources", title: "Visual Designer", s: [2002, 8], e: [2006, 11] },
-  { id: "nm0", lane: 0, kind: "job", org: "Neiman Marcus", title: "Digital Designer", s: [2006, 11], e: [2009, 8] },
-  { id: "nm", lane: 0, kind: "job", org: "Neiman Marcus", title: "Senior Visual Designer", s: [2009, 8], e: [2012, 5] },
-  { id: "jcp", lane: 0, kind: "job", org: "JCPenney", title: "Senior Art Director", s: [2012, 5], e: [2013, 4] },
-  { id: "n1", lane: 0, kind: "job", org: "Nordstrom", title: "Design Manager", s: [2013, 4], e: [2014, 4] },
-  { id: "n2", lane: 0, kind: "job", org: "Nordstrom", title: "Associate Creative Director", s: [2014, 4], e: [2018, 6] },
-  { id: "n3", lane: 0, kind: "job", org: "Nordstrom", title: "Creative Design Director", s: [2018, 6], e: [2021, 4] },
-  { id: "s1", lane: 0, kind: "job", org: "Sally Beauty", title: "Director of Creative Services", s: [2021, 4], e: [2022, 5] },
-  { id: "ah", lane: 0, kind: "job", org: "At Home", title: "Senior Digital Designer", s: [2022, 11], e: [2024, 2] },
-  { id: "ps", lane: 0, kind: "job", org: "PetSmart", title: "Senior Creative Manager", s: [2024, 2], e: [2025, 6] },
-  { id: "s2", lane: 0, kind: "job", org: "Sally Beauty", title: "Creative Director", s: [2025, 6], e: NOW },
-  { id: "hm", lane: 1, kind: "line", org: "Custom homes", title: "Lead Interior Designer", s: [2021, 10], e: [2023, 6] },
-  { id: "rh", lane: 2, kind: "line", org: "Reckon House", title: "Principal, my own practice", s: [2012, 4], e: NOW },
-];
 
-/* ── THE BOOK ─────────────────────────────────────────────────────────
-   Every sentence below is his: LinkedIn (L), the résumé (R), or what he
-   typed in the session (S), edited for spelling, length and order.
-   `yours` is the question only he can answer; it prints on the page as a
-   note to him and comes out before this ships. */
-const CHAPTERS = [
-  { no: "01", name: "AMR", title: "Applied Media Resources", at: [1998, 1], when: "1998 to 2006",
-    lede: "One of six employees at a fast-paced startup.",                                                          /* L */
-    body: ["My degree is in management information systems, from the University of Texas at Dallas.",               /* L, R */
-      "I joined Applied Media Resources in 2002, and I was responsible for the entire visual output across digital and print."], /* L */
-    yours: "How did an MIS degree turn into a design job? What did four years at a six-person company teach you?" },
-  { no: "02", name: "Neiman Marcus", title: "Neiman Marcus", at: [2006, 11], when: "2006 to 2012",
-    lede: "Design across site, email and print for a luxury retailer.",                                             /* L, R */
-    body: ["I directed high-end product presentation and editorial content.",                                       /* R */
-      "I defined digital product design and UI patterns before they were industry standards."],  /* L */
-    yours: "What did luxury teach you about craft? What was InSite, in your own words?" },
-  { no: "03", name: "JCPenney", title: "JCPenney", at: [2012, 5], when: "2012 to 2013",
-    lede: "Recruited specifically for the Ron Johnson transformation.",                                             /* L */
-    body: ["It was a company-wide rebrand. I defined the design language and the photo direction.",                 /* L, R */
-      "I led creative for the national brand launches too: Martha Stewart, Michael Graves, Jonathan Adler and Sir Terence Conran, across video, editorial, product photography and the site."], /* L, R */
-    yours: "It lasted a year. What happened, and what did you take with you to Seattle?" },
-  { no: "04", name: "Nordstrom", title: "Nordstrom", at: [2013, 4], when: "2013 to 2021",
-    lede: "I spent eight years at Nordstrom helping rebuild the entire digital experience.",                        /* L */
-    body: ["Three roles in that time: design manager, associate creative director, creative design director.",      /* L */
-      "I led the campaigns that defined the brand, Anniversary Sale and Holiday and the Half-Yearly Sales, with on-set art direction along the way.", /* L */
-      "The redesign ran from marketing all the way down to the product page. It is where I learned process and efficiencies, and how to put new ways of working into practice.", /* S */
-      "Reckon House ran alongside. The earlier years of the practice were brand identity work: western boot companies, dinnerware lines, poster sets."], /* L */
-    yours: "Why leave after eight years? What would your old team say you changed?" },
-  { no: "05", name: "Sally Beauty", title: "Sally Beauty", at: [2021, 4], when: "2021 to 2022",
-    lede: "A first run at Sally Beauty.",                                                                           /* L */
-    body: ["I built and led the internal creative teams across the Sally and CosmoProf brands: photo and art direction, copy, proofreading, visual design and the internal photo studio.", /* R, L */
-      "I worked with product management on design systems and content templates for more than 1,000 assets a month.", /* L */
-      "I rebranded CosmoProfBeauty.com too, refocusing it around professional users."],                             /* R */
-    yours: "Why Sally, after Seattle? What did you walk into?" },
-  { no: "06", name: "Homes", title: "Homes", at: [2021, 10], when: "2021 to 2024",
-    lede: "Somewhere in there I spent a couple years deep in custom residential builds.",                           /* L */
-    body: ["I led interior design, architecture and selections on $1-3M homes, floor plan through final styling, debating tile grout and light fixtures more than I'd like to admit.", /* L */
-      "I was the primary creative link between builder and client.",                                                /* L */
-      "Projects from those years have been featured by Crate & Barrel, Design Within Reach, Rejuvenation, Visual Comfort, Lostine Home, Vivir Designs and The Haven List.", /* L */
-      "Then I returned to the corporate digital space at At Home, leading digital design for the big seasonal moments, Holiday included, and building UI patterns for the home decor category."], /* L */
-    yours: "Why houses? What did a build site teach you that a screen never did?" },
-  { no: "07", name: "PetSmart", title: "PetSmart", at: [2024, 2], when: "2024 to 2025",
-    lede: "I ran digital creative and loyalty across web, email and app.",                                          /* R */
-    body: ["I led creative for the Treats rewards program campaigns, including a dynamic messaging system that flexed across app, mobile and desktop.", /* L */
-      "I introduced AI product photography to the brand, building a workflow that gave product imagery a more editorial feel while moving faster than traditional shoots.", /* L */
-      "New site patterns and email templates gave the team a faster path from brief to live."],                     /* L */
-    yours: "Was this where the AI work started for you? What made you think it could change how a team works?" },
-  { no: "08", name: "Now", title: "Now", at: [2025, 6], when: "2025 to now",
-    lede: "Right now I'm leading creative at Sally Beauty and building the platforms the work runs on.",             /* L */
-    body: ["The store side is the move from a legacy fleet to a new boutique experience: store concepts, installations, focal walls, campaign and event takeovers, brand partnerships.", /* L */
-      "The platform side is Sally OS, an internal marketing operating system built entirely with AI, which wasn't something the company did before. It started with the creative team, ended up in front of the board, and now runs daily across marketing, ecommerce, CRM and merchandising.", /* L */
-      "Over the past year the job has turned into a repeating loop: take a concept, bring it to life, test it for real, then productize it into new workflows and day-to-day execution.", /* L */
-      "At Reckon House, I built A.R.C. end to end because personally, I needed it. It's heading to the App Store now.", /* L */
-      "House Notes and Noted are small plugins for Figma and Framer that write alt text and filenames so designers don't have to. Not glamorous, but people use them every day, which is kind of the point.", /* L */
-      "reckon.house runs entirely in Claude Code. It's the CMS, the design tool and the build environment all at once."], /* L */
-    yours: "Where is this heading? Say it the way you would say it out loud." },
-];
 
-/* a note pins ONE fact to a date, in his first person, and no page repeats
-   it. A fact with no date of its own sits at the start of the role LinkedIn
-   lists it under, or where it fits inside it. */
-const NOTES = [
-  { r: "am", at: [2004, 1], t: "I designed the front-end UI for a custom CMS and coded it by hand, CSS and JavaScript." },
-  /* the company's centennial was 2007, so that year's book is the one */
-  { r: "nm0", at: [2007, 10], t: "I designed the cover of the 100th Anniversary Christmas Book." },
-  { r: "nm", at: [2009, 8], t: "<b>InSite.</b> I led the design and technical execution of the brand's editorial hub." },
-  { r: "nm", at: [2011, 1], t: "A complete homepage redesign." },
-  { r: "rh", at: [2012, 4], t: "<b>Reckon House starts.</b> My own practice, running alongside from here." },
-  { r: "n1", at: [2013, 4], t: "<b>Design manager.</b> A team of 12 on the daily homepage, landing pages and email." },
-  { r: "n2", at: [2014, 4], t: "<b>Associate creative director.</b> A team of 27 across site, email and apps." },
-  { r: "n2", at: [2015, 4], t: "Nordstrom's first personalization design logic." },
-  { r: "n2", at: [2016, 4], t: "<b>Ivy Park by Beyoncé.</b> The exclusive US launch, six weeks from concept to live." },
-  { r: "n3", at: [2018, 6], t: "<b>Creative design director.</b> A new CMS, shipped with engineering. $3M saved over four years." },
-  { r: "n3", at: [2019, 6], t: "A rebrand of the digital design system. Concept-to-web time down 35%, engagement up 22%." },
-  { r: "s1", at: [2021, 4], t: "A new creative operating model. Execution efficiency up 27%." },
-  { r: "s1", at: [2021, 5], t: "A national campaign across print, digital, in-store screens and social. 79.5M cumulative views, divisional demand up 22%." },
-  { r: "ah", at: [2022, 11], t: "<b>At Home.</b> I led the brand story redesign for the corporate site and presented it to the CEO." },
-  { r: "hm", at: [2023, 3], t: "Designer of the Quarter, Floor & Decor." },
-  { r: "ps", at: [2024, 2], t: "Creative output up 30%, channel demand up 12%." },
-  { r: "rh", at: [2024, 8], t: "<b>A.R.C.</b> An AI home inventory app. Point your camera at a room and it catalogs what's in it." },
-  { r: "s2", at: [2025, 6], t: "<b>Sally OS.</b> Full campaigns go from request to execution in hours instead of weeks." },
-  { r: "rh", at: [2025, 10], t: "<b>Dallas Sport Collective.</b> Athletes and trainers both talk to an AI to book sessions. The scheduling stays deterministic." },
-];
 
 /* ── time and place ── */
 const Y0 = 1998, Y1 = 2026, INTRO = 470, TAIL = 260, W_ST = 152, W_NOTE = 236, COL_W = 360, COL_GAP = 40, PG_L = 28, PG_R = 40;
@@ -329,10 +230,8 @@ const el = (t, c, h) => { const e = document.createElement(t); if (c) e.classNam
 const world = document.getElementById("world"), stage = document.getElementById("stage"), map = document.getElementById("map"),
   range = document.getElementById("range"), eras = document.getElementById("eras");
 
-/* a study's moment. The site knows its year and no more, so a year's
-   studies are spread across it, except where the chapter a study belongs
-   to is plain from whose work it is. */
-const STUDY_AT = { "neiman-marcus": [2012, 2], "cosmo-prof": [2021, 5], "you-by-sally": [2021, 7], "sally-os": [2025, 8], "dsc": [2025, 10] };
+/* a study's moment: STUDY_AT pins the few whose chapter is plain; the rest
+   are spread across their year */
 { const byYear = {}; STUDIES.forEach((s) => { (byYear[s.y] = byYear[s.y] || []).push(s); });
   Object.values(byYear).forEach((list) => list.forEach((s, i) => { s.at = STUDY_AT[s.k] ? T(STUDY_AT[s.k]) : s.y + (i + 0.5) / list.length; })); }
 
@@ -557,6 +456,9 @@ const build = () => {
 
   fitRules(); fitCaps(); drawMap(); fitV();
   if (keep != null) stage.scrollLeft = wasAt < 40 ? 0 : XS(keep) - stage.clientWidth / 2;
+  /* ?at=2016.5 opens on that moment, as the looks do, so the compare page
+     can frame today's version beside them */
+  else { const q = new URLSearchParams(location.search).get("at"); if (q) stage.scrollLeft = Math.max(0, XS(+q) - stage.clientWidth * 0.18); }
   onScroll();
 };
 
