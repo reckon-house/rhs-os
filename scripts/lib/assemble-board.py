@@ -1056,10 +1056,23 @@ head = r'''<!doctype html>
        since they are the words' own.
        NOTHING RULES THE FIRST LINE: it briefly took the wordmark's own
        width, and he dropped it — the mark is the head of the stack,
-       not another entry in it. */
-    .cvrow { position: relative; }
-    .cvrow::after {
-      content: ""; position: absolute; top: 100%; left: calc(-1 * var(--gut, 50px)); height: 1px;
+       not another entry in it.
+       ── AND IT CLOSES THE WHOLE LINE, not the name (his note, 24 Sept
+       2026): "when the rail opens on hover the thin line should move
+       down - right now it stays persistent with the faux reel sitting
+       below it. to feel like it 'opened' the line should move down".
+       It hung off the name's row, so an open drawer, and a chip, sat
+       under the rule, outside the section they belong to. It hangs off
+       the foot of the line now, the cell that holds the name, its chips
+       and its drawer, so it rides the drawer's own 0fr→1fr down as the
+       line opens and back up as it folds. Closed, the line is the row,
+       and the rule stands where it always stood. Its length is still
+       the word's. Inside the cell (bottom: 0), not below it, because
+       Ask's line is pinned to the rail's foot and anything under it
+       would be cut off by the scroller. */
+    .cvline { position: relative; }
+    .cvline::after {
+      content: ""; position: absolute; bottom: 0; left: calc(-1 * var(--gut, 50px)); height: 1px;
       background: rgba(0, 0, 0, 0.1); pointer-events: none;
       width: calc(var(--gut, 50px) + var(--rule-w, 0px)); }
     /* the name sits close to the rule above it and the air falls
@@ -1107,8 +1120,12 @@ head = r'''<!doctype html>
     .cvreel { height: var(--reel-h, 96px); width: calc(var(--reel-h, 96px) * 4 / 3);
       margin: 2px auto 0 0; border-radius: 12px; }
     /* two lines of room whatever the sentence runs to: every drawer is
-       one height, or the list slips out from under the hand */
-    .cvnote { margin: 10px 0 0; padding-bottom: 18px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
+       one height, or the list slips out from under the hand. The air
+       under it is the rule's now (it closes the line, see above): 8px,
+       where it was 18 when the rule stood over the drawer, so the
+       section shuts just after its words, and an open drawer at his
+       770px window no longer runs Connect under the pinned Ask. */
+    .cvnote { margin: 8px 0 0; padding-bottom: 8px; box-sizing: content-box; min-height: 2.9em; max-width: 30ch;
       font-size: 12px; font-weight: 500; letter-spacing: -0.004em; line-height: 1.45; }
     /* what is open on the glass, in the line it belongs to */
     .cvchips { display: grid; grid-template-rows: 0fr;
@@ -1138,7 +1155,10 @@ head = r'''<!doctype html>
        sticks there instead, on the paper, and the rest of the rail
        scrolls under it. */
     .cvline[data-tag="ask"] { position: sticky; bottom: 0; z-index: 2;
-      background: var(--paper, #fff); }
+      background: var(--paper, #fff);
+      /* and its paper reaches the page's edge, over the gutter the rules
+         run into, so a line scrolled under it leaves no stub beside it */
+      box-shadow: calc(-1 * var(--gut, 50px)) 0 0 0 var(--paper, #fff); }
   }
     @media (prefers-reduced-motion: reduce) {
       .cvbody, .cvchips, .cvin > *, .cvline.open .cvin > *, .cvrow { transition: none; }
@@ -1178,7 +1198,7 @@ head = r'''<!doctype html>
     #cmdIn .cvmark i { font-style: normal; font-weight: 400; }
     #cmdIn .cvmark:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
     /* a sentence has the sheet's width to itself here */
-    #cmdIn .cvnote { max-width: 36ch; font-size: 13px; min-height: 0; padding-bottom: 20px; }
+    #cmdIn .cvnote { max-width: 36ch; font-size: 13px; min-height: 0; padding-bottom: 12px; }
     #cmdIn .cvchip { font-size: 13px; padding: 8px 12px; margin-bottom: 8px; }
     #cmdIn .cvchip .cvx { font-size: 16px; padding: 2px 0 2px 6px; }
   }
