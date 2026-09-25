@@ -1,0 +1,77 @@
+/* ── WHAT EVERY SCROLL CONCEPT SHARES (24 Sept 2026) ─────────────────
+   The house's type and colour, the ride's structure (a leg that pins and
+   travels sideways, then lets the page go on down), the picture box, and
+   the resting states of the effects ride.js drives. A concept's own
+   stylesheet draws the concept. */
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Regular.woff2') format('woff2'), url('/fonts/AvenirNext-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Medium.woff') format('woff'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-DemiBold.woff') format('woff'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Bold.woff') format('woff'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-Heavy.woff') format('woff'); font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Avenir Next'; src: url('/fonts/AvenirNext-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+:root { --ink: #000; --paper: #fff; --cream: #EDE7E2; --grey: rgba(0, 0, 0, 0.42); --hair: rgba(0, 0, 0, 0.13);
+  --gut: 50px; --st-fs: clamp(20px, 2.4vw, 32px); --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --sans: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+/* lenis's own rules */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ── THE RIDE ── a leg pins for as long as its track is wider than the
+   glass, and the page goes on down when it has run out */
+.leg-h { position: relative; }
+.leg-h > .pin { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.leg-h > .pin > .track { position: relative; display: flex; align-items: stretch; height: 100%; width: max-content; will-change: transform; }
+.panel { position: relative; flex: none; height: 100%; }
+/* a phone reads every leg downwards: the panels stack */
+.leg-h.flat { height: auto !important; }
+.leg-h.flat > .pin { position: relative; height: auto; overflow: visible; }
+.leg-h.flat > .pin > .track { flex-direction: column; width: 100%; transform: none !important; }
+.leg-h.flat .panel { width: 100% !important; height: auto; min-height: 100svh; overflow: hidden; }
+
+/* the house's mark */
+.mark { font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+.mark i { font-style: normal; font-weight: 400; }
+
+/* ── A PICTURE ── rounded, on the cream, cover-cropped */
+.pic { position: relative; display: block; overflow: hidden; border-radius: 16px; background: var(--cream); }
+.pic > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* a phone is narrower than any picture's desktop width: it shrinks to the
+   column and keeps its shape */
+@media (max-width: 760px) { .pic { max-width: 100%; height: auto !important; } }
+.pic > img + img { opacity: 0; }
+.pic > img.on { opacity: 1; }
+.cap { display: block; margin-top: 10px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; line-height: 1.35; }
+.cap span { color: var(--grey); }
+.on-dark .cap span, .cap.light span { color: rgba(255, 255, 255, 0.6); }
+/* a caption wraps to its picture's width, so a long name under a narrow
+   picture cannot run into what stands beside it. Desktop only: on a phone
+   the picture shrinks to the column, and min-content would hold it wide */
+@media (min-width: 761px) { .it, .tile, .lead { width: min-content; } }
+
+/* ── THE EFFECTS' RESTING STATES ── ride.js moves them */
+[data-flip] { will-change: clip-path; }
+[data-flip] > img { will-change: transform; }
+.rise .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.16em; margin-bottom: -0.16em; }
+.rise .w > span { display: inline-block; transform: translateY(108%); transition: transform 1s var(--ease) calc(var(--i, 0) * 38ms); }
+.rise.in .w > span { transform: none; }
+.stretch { display: inline-flex; align-items: flex-end; }
+.stretch .l { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+
+/* ── THE DOT ── a cursor that grows into a word over the things it opens */
+#cur { position: fixed; z-index: 90; left: 0; top: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
+  background: #fff; mix-blend-mode: difference; pointer-events: none; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; letter-spacing: -0.004em; color: #000;
+  transition: width 0.45s var(--ease), height 0.45s var(--ease), margin 0.45s var(--ease); }
+#cur span { opacity: 0; transition: opacity 0.25s ease; }
+#cur.big { width: 88px; height: 88px; margin: -44px 0 0 -44px; }
+#cur.big span { opacity: 1; }
+@media (hover: none) { #cur { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise .w > span { transition: none; transform: none; }
+}

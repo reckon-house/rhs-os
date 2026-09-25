@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The turn · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT A: THE TURN (24 Sept 2026) ─────────────────────────────
+     Normal is Boring's structure, in the board's language. The homepage
+     is one sideways ride: the statement set big across an empty white
+     page, then each line as a pair of panels, a field of the line's
+     colour with its name on its side (the board's spine) and the study
+     it leads with, and then white, with three more of its studies hung
+     at different heights and sizes. The ride ends on black, the About
+     column's first sentence; the pin lets go, the black slides up, and
+     the page is a normal page from there: About, the numbers, how he
+     works, who with, and a footer whose wordmark grows up out of the
+     foot of the glass.
+     Ours: the mark, the spine, the ruled index, the reels, the type.
+     Theirs: the pinned ride, the colour fields, the big-versus-tiny
+     type, the split mark in two corners, the turn, the wordmark at the
+     end. Colours are the studies' own palettes (house.js). -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  /* the chrome: the mark split across two corners, the index, where you are */
+  .chrome { position: fixed; z-index: 30; color: var(--c, var(--ink)); transition: color 0.35s ease; }
+  #mkA { left: var(--gut); top: 44px; font-size: var(--st-fs); }
+  #mkB { right: var(--gut); bottom: 34px; font-size: var(--st-fs); transform: rotate(180deg); }
+  #idx { right: var(--gut); top: 48px; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 16px 0 14px;
+    border: 1px solid currentColor; border-radius: 17px; background: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  #idx i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  #where { left: var(--gut); bottom: 36px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 14px; }
+  #mkB, #where { transition: color 0.35s ease, opacity 0.4s ease; }
+  body.atfoot #mkB, body.atfoot #where { opacity: 0; pointer-events: none; }
+  #where b { display: block; width: 120px; height: 1px; background: currentColor; opacity: 0.25; position: relative; }
+  #where b i { position: absolute; left: 0; top: -1px; height: 3px; background: currentColor; width: var(--p, 0%); }
+
+  /* the opener: the statement, set across an empty page */
+  .open { width: 100vw; background: var(--paper); }
+  .open .small { position: absolute; left: 20vw; top: 21vh; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2; }
+  .open .big { position: absolute; font-size: 15.5vh; font-weight: 700; letter-spacing: -0.055em; line-height: 0.9; white-space: nowrap; }
+  .open .big > span { display: inline-block; }
+  .open .b1 { left: 8vw; top: 32vh; } .open .b2 { left: 31vw; top: 49vh; } .open .b3 { left: 54vw; top: 66vh; }
+  .open .grey { position: absolute; right: 7vw; top: 21vh; max-width: 26ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  .open .cue { position: absolute; right: 7vw; bottom: 9vh; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+  .open .cue i { display: block; width: 64px; height: 1px; background: currentColor; }
+
+  /* a line's field: its colour, its name on its side, the study it leads with */
+  .field { background: var(--fill); color: var(--fink); }
+  .field .spine { position: absolute; left: 3.4vw; top: 15vh; writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 0.8; text-transform: uppercase; white-space: nowrap; }
+  .field .count { position: absolute; top: 15vh; font-size: 12px; font-weight: 600; }
+  .field .lead { position: absolute; top: 15vh; }
+  .field .say { position: absolute; bottom: 11vh; width: 22vw; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .field .say .all { display: inline-flex; margin-top: 18px; align-items: center; gap: 10px; height: 34px; padding: 0 16px;
+    border: 1px solid currentColor; border-radius: 17px; font-size: 12px; font-weight: 600; letter-spacing: -0.004em; }
+  .field .cap span { color: inherit; opacity: 0.62; }
+
+  /* then white, with more of the line hung at different heights */
+  .hang { background: var(--paper); }
+  .hang .it { position: absolute; }
+  .hang .no { position: absolute; left: 4vw; bottom: 9vh; font-size: 12px; font-weight: 600; color: var(--grey); }
+
+  /* the end of the ride: black, and About's first sentence */
+  .end { width: 100vw; background: #000; color: #fff; }
+  .end .lbl { position: absolute; left: 12vw; top: 24vh; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.5); }
+  .end .lede { position: absolute; left: 12vw; top: 30vh; width: 70vw; margin: 0; font-size: 4.3vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+
+  /* ── the page after the turn ── */
+  .v { position: relative; padding: 18vh 12vw 14vh; }
+  .v .lbl { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 28px; }
+  .about .cols { columns: 2; column-gap: 5vw; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.45; }
+  .about .cols p { margin: 0 0 1em; break-inside: avoid; }
+  .rows { margin-top: 12vh; border-top: 1px solid var(--hair); }
+  .row { display: grid; grid-template-columns: 8vw 22vw minmax(0, 1fr); gap: 2vw; padding: 34px 0 38px; border-bottom: 1px solid var(--hair); }
+  .row .n { font-size: 12px; font-weight: 600; color: var(--grey); padding-top: 10px; font-variant-numeric: tabular-nums; }
+  .row h3 { margin: 0; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  .row .t { font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .row .t p { margin: 0; }
+  .row .t p + p { margin-top: 10px; font-size: 16px; font-weight: 500; color: var(--grey); letter-spacing: -0.01em; line-height: 1.5; }
+
+  .nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2vw; padding-top: 14vh; padding-bottom: 14vh; border-top: 1px solid var(--hair); }
+  .num .n { font-size: 11vh; font-weight: 700; letter-spacing: -0.06em; line-height: 0.9; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .num .n span { font-weight: 400; color: var(--grey); }
+  .num p { margin: 18px 0 0; font-size: 12px; font-weight: 600; max-width: 18ch; line-height: 1.4; }
+
+  .credits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 3vw; }
+  .credits div { padding: 18px 0 20px; border-bottom: 1px solid var(--hair); font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em;
+    line-height: 1.2; color: rgba(0, 0, 0, 0.42); transition: color 0.3s ease; }
+  .credits div:hover { color: var(--ink); }
+
+  .foot { background: #000; color: #fff; padding: 20vh 5vw 0; overflow: hidden; }
+  .foot .lede { margin: 0 0 0 7vw; max-width: 20ch; font-size: 4.3vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .foot .dim { margin: 26px 0 0 7vw; max-width: 42ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: rgba(255, 255, 255, 0.5); }
+  .foot .ways { display: flex; flex-wrap: wrap; gap: 10px; margin: 40px 0 0 7vw; }
+  .foot .ways a { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px;
+    font-size: 13px; font-weight: 600; transition: background-color 0.3s ease, color 0.3s ease; }
+  .foot .ways a:hover { background: #fff; color: #000; }
+  .foot .prac { margin: 12vh 0 0 7vw; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.5); }
+  .foot .word { display: block; margin: 5vh 0 0; white-space: nowrap; font-size: 12.9vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.74; }
+  .foot .word .l:nth-child(7) { font-weight: 400; }
+
+  /* the index: the board's ruled rail, over the ride */
+  #sheet { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(520px, 100vw); background: var(--paper); color: var(--ink);
+    padding: 120px 50px 50px; box-shadow: -1px 0 0 var(--hair);
+    /* hidden by a clip, not moved off the glass: parked past the right
+       edge it widened a phone's page into a sideways scroll */
+    clip-path: inset(0 0 0 100%); pointer-events: none; transition: clip-path 0.7s var(--ease); }
+  #sheet.on { clip-path: inset(0 0 0 0); pointer-events: auto; }
+  #sheet .ln { position: relative; display: flex; align-items: flex-start; gap: 4px; width: 100%; height: 42px; padding: 2px 0 0; border: 0; background: none;
+    font: inherit; font-size: 32px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; color: var(--grey); cursor: pointer; text-align: left; transition: color 0.3s ease; }
+  #sheet .ln:hover, #sheet .ln.here { color: var(--ink); }
+  #sheet .ln sup { font-size: 10px; font-weight: 600; letter-spacing: 0; margin-top: 6px; }
+  #sheet .ln::after { content: ""; position: absolute; left: -50px; top: 100%; height: 1px; width: calc(50px + var(--w, 0px)); background: rgba(0, 0, 0, 0.1); }
+  #sheet .x { position: absolute; right: 50px; top: 48px; height: 34px; padding: 0 16px; border: 1px solid currentColor; border-radius: 17px;
+    background: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+  @media (max-width: 760px) {
+    .open .small { left: 20px; top: 110px; }
+    .open .big { position: relative; left: auto; top: auto; display: block; margin: 0 20px; font-size: 16vw; }
+    .open .b1 { margin-top: 180px; } .open .grey, .open .cue { position: relative; right: auto; top: auto; bottom: auto; margin: 30px 20px; }
+    .field, .hang { padding: 90px 20px 60px; }
+    .field .spine, .field .count, .field .lead, .field .say, .hang .it, .hang .no, .end .lbl, .end .lede { position: relative; left: auto !important; top: auto !important; bottom: auto !important; right: auto !important; }
+    .foot { overflow: hidden; }
+    .field .spine { writing-mode: horizontal-tb; transform: none; font-size: 18vw !important; }
+    .field .say { width: auto; margin-top: 30px; } .hang .it { margin: 0 0 40px; }
+    .end { padding: 20vh 20px; } .end .lede { width: auto; font-size: 9vw; }
+    .v { padding: 14vh 20px; } .about .cols { columns: 1; } .row { grid-template-columns: 1fr; } .nums, .credits { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<a id="mkA" class="chrome mark" href="/">Reckon</a>
+<a id="mkB" class="chrome mark" href="/"><i>*</i>House</a>
+<button id="idx" class="chrome" type="button"><i></i>Index</button>
+<div id="where" class="chrome"><span id="whereName">Reckon*House</span><b><i></i></b></div>
+<aside id="sheet" aria-label="Index"><button class="x" type="button">Close</button><nav id="lines"></nav></aside>
+
+<section class="leg-h" id="ride"><div class="pin"><div class="track" id="track"></div></div></section>
+<main id="after"></main>
+
+<script src="/lab/timeline-data.js"></script>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, R = window.Ride;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const track = document.getElementById("track"), after = document.getElementById("after");
+const vh = () => innerHeight, vw = () => innerWidth;
+/* a picture at a height, never wider than half its own pixels */
+const fit = (s, h) => { let w = h * s.nat[0] / s.nat[1]; const m = R.honest(s); if (w > m) { h = h * m / w; w = m; } return { w, h }; };
+const zones = [];
+
+function build() {
+  track.textContent = ""; after.textContent = ""; zones.length = 0;
+  const VH = vh(), VW = vw();
+
+  /* ── the opener ── */
+  const words = H.statement.ink.match(/^(.*across) (brand,) (product,) (and place\.)$/);
+  const open = el("div", "panel open");
+  open.appendChild(el("div", "small", esc(words ? words[1] : H.statement.ink)));
+  if (words) [words[2], words[3], words[4]].forEach((w, i) => {
+    const b = el("div", "big b" + (i + 1)); b.dataset.par = String([0.06, 0.16, 0.28][i]); b.appendChild(el("span", null, esc(w))); open.appendChild(b);
+  });
+  open.appendChild(el("p", "grey", esc(H.statement.grey)));
+  open.appendChild(el("div", "cue", "<i></i>Scroll"));
+  open.dataset.ink = "#000"; track.appendChild(open); zones.push(open);
+
+  /* ── the lines ── */
+  H.lines.forEach((L, li) => {
+    const lead = H.studies[L.lead];
+    const f = el("div", "panel field"); f.dataset.line = L.tag; f.dataset.ink = L.ink;
+    f.style.setProperty("--fill", L.color); f.style.setProperty("--fink", L.ink);
+    const size = Math.min(0.24 * VH, 0.76 * VH / (L.name.length * 0.64));
+    const sp = el("div", "spine", esc(L.name)); sp.style.fontSize = size + "px"; f.appendChild(sp);
+    const thick = size * 0.8;
+    const ct = el("div", "count", String(L.studies.length)); ct.style.left = (0.034 * VW + thick + 12) + "px"; f.appendChild(ct);
+    const px = 0.034 * VW + thick + 0.05 * VW;
+    const lp = fit(lead, 0.62 * VH);
+    const wrap = el("div", "lead"); wrap.style.left = px + "px";
+    wrap.appendChild(R.pic(lead, lp.w, lp.h, { flip: "up" }));
+    wrap.appendChild(el("span", "cap", esc(lead.t) + " <span>" + esc(lead.s) + "</span>"));
+    f.appendChild(wrap);
+    const say = el("div", "say", "<div>" + esc(L.sentence) + "</div>"); say.style.left = (px + lp.w + 0.05 * VW) + "px";
+    const all = el("a", "all", "All " + L.studies.length + " <span>→</span>"); all.href = "/"; say.appendChild(all);
+    f.appendChild(say);
+    f.style.width = (px + lp.w + 0.05 * VW + 0.22 * VW + 0.05 * VW) + "px";
+    track.appendChild(f); zones.push(f);
+
+    /* then white, three more hung at different heights */
+    const hang = el("div", "panel hang"); hang.dataset.ink = "#000"; hang.dataset.line = L.tag;
+    const spots = [[0.44, 0.19, "down"], [0.32, 0.44, "up"], [0.5, 0.13, "left"]];
+    let x = 0.07 * VW;
+    L.studies.slice(1, 4).forEach((k, i) => {
+      const s = H.studies[k], [hh, top, dir] = spots[i % 3], p = fit(s, hh * VH);
+      const it = el("div", "it"); it.style.left = x + "px"; it.style.top = (top * VH) + "px";
+      it.appendChild(R.pic(s, p.w, p.h, { flip: dir }));
+      it.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+      hang.appendChild(it); x += p.w + 0.055 * VW;
+    });
+    hang.appendChild(el("div", "no", String(li + 1).padStart(2, "0") + " / " + String(H.lines.length).padStart(2, "0")));
+    hang.style.width = (x + 0.03 * VW) + "px";
+    track.appendChild(hang); zones.push(hang);
+  });
+
+  /* ── the end of the ride ── */
+  const end = el("div", "panel end"); end.dataset.ink = "#fff";
+  const about = H.about[0];
+  end.appendChild(el("div", "lbl", esc(about.name)));
+  const lede = el("p", "lede", esc(about.lede)); lede.dataset.rise = ""; end.appendChild(lede);
+  track.appendChild(end); zones.push(end);
+
+  /* ── the page after the turn ── */
+  const a = el("section", "v about"); a.dataset.ink = "#000";
+  a.appendChild(el("div", "cols", about.body.map((p) => "<p>" + esc(p) + "</p>").join("")));
+  const rows = el("div", "rows");
+  H.about.slice(1).forEach((sec, i) => {
+    rows.appendChild(el("div", "row", '<div class="n">' + String(i + 2).padStart(2, "0") + "</div><h3>" + esc(sec.name) + '</h3><div class="t"><p>' + esc(sec.lede) + "</p>"
+      + (sec.body && sec.body[0] ? "<p>" + esc(sec.body[0]) + "</p>" : "") + "</div>"));
+  });
+  a.appendChild(rows); after.appendChild(a); zones.push(a);
+
+  const nums = el("section", "v nums"); nums.dataset.ink = "#000";
+  [[H.order.length, "case studies on this site"], [20, "years of experience design and creative direction"], [8, "years at Nordstrom"], ["2,000", "stores the Sally marketing platform runs on"]].forEach(([n, t]) => {
+    nums.appendChild(el("div", "num", '<div class="n"><span>(</span><b data-count>' + n + "</b><span>)</span></div><p>" + esc(t) + "</p>"));
+  });
+  after.appendChild(nums); zones.push(nums);
+
+  const how = el("section", "v"); how.dataset.ink = "#000";
+  how.appendChild(el("p", "lbl", "How I work"));
+  const hr = el("div", "rows"); hr.style.marginTop = "0";
+  H.method.forEach((m, i) => hr.appendChild(el("div", "row", '<div class="n">' + String(i + 1).padStart(2, "0") + "</div><h3>" + esc(m.k) + '</h3><div class="t"><p>' + esc(m.v) + "</p></div>")));
+  how.appendChild(hr); after.appendChild(how); zones.push(how);
+
+  const cr = el("section", "v"); cr.dataset.ink = "#000"; cr.style.paddingTop = "6vh";
+  cr.appendChild(el("p", "lbl", "Worked with, spotted by and featured in"));
+  cr.appendChild(el("div", "credits", H.credits.map((c) => "<div>" + esc(c) + "</div>").join("")));
+  after.appendChild(cr); zones.push(cr);
+
+  const foot = el("footer", "foot"); foot.dataset.ink = "#fff";
+  foot.appendChild(el("p", "lede", esc(H.book.lede)));
+  foot.appendChild(el("p", "dim", esc(H.book.dim)));
+  foot.appendChild(el("div", "ways", H.links.map((l) => '<a href="' + esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
+  foot.appendChild(el("p", "prac", H.practice.map(esc).join(" · ")));
+  const word = el("div", "word", "Reckon*House"); word.dataset.stretch = ""; foot.appendChild(word);
+  after.appendChild(foot); zones.push(foot);
+
+  /* the index: the rail's lines, each a way to its field */
+  const nav = document.getElementById("lines"); nav.textContent = "";
+  H.lines.forEach((L) => {
+    const b = el("button", "ln", "<span>" + esc(L.name) + "</span><sup>" + L.studies.length + "</sup>"); b.type = "button"; b.dataset.line = L.tag;
+    b.addEventListener("click", () => { const f = track.querySelector('.field[data-line="' + L.tag + '"]'); const leg = R.legs[0];
+      if (f && leg) R.to(R.yForX(leg, f.offsetLeft)); sheet.classList.remove("on"); });
+    nav.appendChild(b);
+  });
+  requestAnimationFrame(() => nav.querySelectorAll(".ln").forEach((b) => b.style.setProperty("--w", Math.round(b.firstChild.getBoundingClientRect().width) + "px")));
+}
+
+/* the chrome takes the ink of whatever it stands on */
+const chrome = { mkA: [70, 60], idx: [-80, 64], where: [80, -44], mkB: [-80, -44] };
+const inkAt = (x, y) => { for (const z of zones) { const r = z.getBoundingClientRect(); if (x >= r.left && x < r.right && y >= r.top && y < r.bottom) return z.dataset.ink || "#000"; } return "#000"; };
+const sheet = document.getElementById("sheet");
+document.getElementById("idx").addEventListener("click", () => sheet.classList.add("on"));
+sheet.querySelector(".x").addEventListener("click", () => sheet.classList.remove("on"));
+
+build();
+R.start({
+  measure: () => {},
+  frame: (r) => {
+    Object.entries(chrome).forEach(([id, [x, y]]) => {
+      const e = document.getElementById(id); e.style.setProperty("--c", inkAt(x < 0 ? r.vw + x : x, y < 0 ? r.vh + y : y));
+    });
+    /* where you are: the line whose panels are under the middle of the glass */
+    /* sideways on a desktop, stacked on a phone */
+    let here = null; track.querySelectorAll(".field, .hang").forEach((p) => { const b = p.getBoundingClientRect();
+      if (r.flat ? (b.top < r.vh * 0.5 && b.bottom > r.vh * 0.5) : (b.left < r.vw * 0.5 && b.right > r.vw * 0.5)) here = p.dataset.line; });
+    const L = H.lines.find((l) => l.tag === here);
+    const leg = r.legs[0];
+    const name = L ? L.name + " " + L.studies.length : (leg && leg.t >= 1 ? "About" : "Reckon*House");
+    const w = document.getElementById("whereName"); if (w.textContent !== name) w.textContent = name;
+    document.getElementById("where").style.setProperty("--p", ((leg ? leg.t : 0) * 100).toFixed(1) + "%");
+    document.querySelectorAll("#lines .ln").forEach((b) => b.classList.toggle("here", b.dataset.line === here));
+    const ft = document.querySelector(".foot"); document.body.classList.toggle("atfoot", !!ft && ft.getBoundingClientRect().top < r.vh * 0.35);
+  },
+});
+let rt = 0; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); R.frame(); }, 100); });
+})();
+</script>
+</body>
+</html>

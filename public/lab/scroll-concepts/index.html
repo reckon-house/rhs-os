@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Scroll concepts · Reckon*House</title>
+<!-- ── SCROLL CONCEPTS: THE INDEX (24 Sept 2026) ──────────────────────
+     His ask: audit normalisboring.es and akaru.fr, then "blend the
+     designs of ours with some highlights of theirs to create some new
+     concepts and also interactions/scrolling... look at both the design
+     and an idea of how the design would interact". What the audit found,
+     what the concepts keep from the board, and the six concepts, each
+     live in a frame at his laptop's size with a scrubber under it. The
+     words on this page are notes to him, not site copy. No screenshot of
+     either site is published here; the audit is described, and its
+     frames went to him directly. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  body { background: var(--paper); }
+  .wrap { padding: 0 var(--gut); }
+  header { padding: 44px var(--gut) 0; }
+  header .mark { font-size: var(--st-fs); }
+  h1 { margin: 14vh 0 0; max-width: 16ch; font-size: 5.2vw; font-weight: 600; letter-spacing: -0.05em; line-height: 1.02; }
+  .sub { margin: 26px 0 0; max-width: 44ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  h2 { margin: 0 0 30px; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  section { padding: 16vh var(--gut) 0; }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4vw; }
+  .site h3 { margin: 0 0 4px; font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+  .site .url { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 18px; }
+  .site svg { display: block; width: 100%; height: auto; margin: 0 0 22px; border-radius: 12px; background: var(--cream); }
+  ul.f { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+  ul.f li { padding: 14px 0 15px; border-bottom: 1px solid var(--hair); font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; }
+  ul.f li b { font-weight: 700; }
+  .both { margin-top: 8vh; max-width: 60em; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.35; }
+  .both span { color: var(--grey); }
+  .ours { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .ours span { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 18px; background: rgba(0, 0, 0, 0.045); font-size: 13px; font-weight: 600; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12vh 3vw; }
+  .card .frame { position: relative; width: 100%; overflow: hidden; border-radius: 16px; background: var(--cream); box-shadow: 0 0 0 1px var(--hair); }
+  .card iframe { position: absolute; left: 0; top: 0; width: 1512px; height: 770px; border: 0; transform-origin: 0 0; }
+  .card .scrub { display: flex; align-items: center; gap: 14px; margin: 14px 0 0; font-size: 12px; font-weight: 600; color: var(--grey); }
+  .card input[type=range] { flex: 1; accent-color: #000; }
+  .card h3 { margin: 22px 0 4px; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .card h3 a { font-size: 12px; font-weight: 600; letter-spacing: -0.004em; color: var(--grey); white-space: nowrap; transition: color 0.3s ease; }
+  .card h3 a:hover { color: var(--ink); }
+  .card dl { margin: 14px 0 0; display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px 18px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; }
+  .card dt { font-size: 12px; font-weight: 600; color: var(--grey); padding-top: 2px; }
+  .card dd { margin: 0; }
+  .read { padding-bottom: 20vh; }
+  .read p { margin: 0 0 16px; max-width: 46em; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.35; }
+  .read p span { color: var(--grey); }
+  @media (max-width: 900px) { .two, .cards { grid-template-columns: 1fr; } h1 { font-size: 10vw; } }
+</style>
+</head>
+<body>
+<header><a class="mark" href="/">Reckon<i>*</i>House</a>
+  <h1>Six scroll concepts, from two sites and the board</h1>
+  <p class="sub">What normalisboring.es and akaru.fr do, what the board keeps, and six ways to put them together. Every concept runs on the site's own words, pictures and colours.</p>
+</header>
+
+<section>
+  <h2>What the two sites do</h2>
+  <div class="two">
+    <div class="site">
+      <h3>Normal is Boring</h3>
+      <p class="url">normalisboring.es · Awwwards Site of the Day</p>
+      <svg viewBox="0 0 600 200" aria-label="A pinned row slides left, ends on a coral field, and the field slides up">
+        <g font-family="Avenir Next, Helvetica, sans-serif" font-size="11" font-weight="600">
+          <rect x="30" y="40" width="80" height="60" fill="#fff"/><rect x="110" y="40" width="60" height="60" fill="#000"/><rect x="170" y="40" width="70" height="60" fill="#ECE4DA"/>
+          <rect x="240" y="40" width="70" height="60" fill="#C7D7E9"/><rect x="310" y="40" width="80" height="60" fill="#DB5C59"/>
+          <rect x="310" y="40" width="80" height="60" fill="none" stroke="#000" stroke-width="1.5"/>
+          <path d="M40 120 H 380" stroke="#000" stroke-width="1.5" marker-end="url(#ah)"/><text x="40" y="140">scroll down, the row moves left</text>
+          <path d="M430 100 V 40" stroke="#000" stroke-width="1.5" marker-end="url(#ah)"/><text x="444" y="75">then the coral</text><text x="444" y="89">field slides up</text>
+          <rect x="400" y="120" width="170" height="54" fill="#ECE4DA"/><text x="412" y="152">the page reads down</text>
+        </g>
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker></defs>
+      </svg>
+      <ul class="f">
+        <li><b>The ride.</b> One pinned section about 17,000px wide, moved by about 9,000px of scrolling, so the page goes nearly two pixels sideways for every one down. Then about 4,000px of ordinary vertical page.</li>
+        <li><b>The turn.</b> The row ends on a coral field exactly one screen wide. The pin lets go and that field slides up, and beige comes up under it with huge serif words building letter by letter.</li>
+        <li><b>Colour.</b> Whole panels in white, black, beige #ECE4DA, powder blue #C7D7E9 and coral #DB5C59, with a teal dot for a cursor.</li>
+        <li><b>Type.</b> A display serif around 100px in capitals, italic accents, and a 13px sans. Huge or tiny, nothing between, and a lot of white around both.</li>
+        <li><b>Chrome.</b> The logo split across two corners, NORMAL top left and "is BORING" upside down bottom right. A Menú pill.</li>
+        <li><b>Details.</b> Pictures unmask from one side as they arrive. A word runs vertically as a column's title. The footer's logo letters stretch taller as you reach the end.</li>
+        <li><b>Built with</b> WordPress, GSAP (ScrollTrigger, ScrollSmoother, SplitText) and Lenis for the smooth scroll.</li>
+      </ul>
+    </div>
+    <div class="site">
+      <h3>Akaru</h3>
+      <p class="url">akaru.fr · 35 Awwwards, 19 FWA</p>
+      <svg viewBox="0 0 600 200" aria-label="One sticky block pans left then keeps going up">
+        <g font-family="Avenir Next, Helvetica, sans-serif" font-size="11" font-weight="600">
+          <rect x="30" y="30" width="120" height="70" fill="#F0EFEB"/><text x="40" y="72" font-size="22" font-weight="700">AKARU</text>
+          <rect x="150" y="30" width="60" height="70" fill="#BDC8D6"/><rect x="210" y="30" width="30" height="70" fill="#B78F9E"/><rect x="240" y="30" width="16" height="70" fill="#7E9178"/>
+          <path d="M40 120 H 300" stroke="#000" stroke-width="1.5" marker-end="url(#ah2)"/><text x="40" y="140">2,770px sideways first</text>
+          <path d="M320 120 V 60" stroke="#000" stroke-width="1.5" marker-end="url(#ah2)"/><text x="334" y="95">then the same block</text><text x="334" y="109">goes 1,687px up</text>
+          <rect x="460" y="30" width="40" height="150" fill="#fff" stroke="#000" stroke-width="1"/><rect x="500" y="30" width="70" height="150" fill="#F0EFEB"/><text x="466" y="196">film strip</text>
+        </g>
+        <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#000"/></marker></defs>
+      </svg>
+      <ul class="f">
+        <li><b>The opener.</b> Half the screen is a giant condensed wordmark, one sentence and the socials under a rule. The other half is the projects as vertical strips, each in its own colour with one photo.</li>
+        <li><b>The turn.</b> Nothing is released. One sticky block pans 2,770px sideways over the first 2,900px of scroll, then the same block moves 1,687px up over the next 5,000px. The camera changes direction mid-shot.</li>
+        <li><b>Strips.</b> As a project reaches the left it opens to full width, its name set big at its foot. Blue-grey, mauve and sage, each project's own colour.</li>
+        <li><b>After.</b> A column of project images runs up like a film strip beside a panel that holds still. Then a black awards section with counters in brackets, (35) and (19), and a 3D trophy.</li>
+        <li><b>Chrome.</b> Nav items each with a coloured dot, pill buttons with a dot, a MENU pill. The footer ends on the wordmark rising out of black.</li>
+        <li><b>Built with</b> Nuxt, Lenis and one WebGL canvas.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="both">What they share: scrolling down moves the page sideways, smoothly. Whole panels of solid colour. Huge type against tiny labels with plenty of white. <span>One moment where the direction changes, and a wordmark that performs at the end.</span></p>
+</section>
+
+<section>
+  <h2>What the concepts keep from the board</h2>
+  <div class="ours"><span>The mark, Reckon*House</span><span>A name on its side, the spine</span><span>The ruled index, lines at 32px with counts</span><span>Reels that cut through a study's own frames</span><span>Rounded pictures on the cream</span><span>Ink first, then the grey half</span><span>Paper, ink and black rooms</span><span>Each study's own palette for every colour</span></div>
+</section>
+
+<section>
+  <h2>The concepts</h2>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="read">
+  <h2>My read</h2>
+  <p>A is the most complete answer to what you described: the ride, the colour fields, the white, and the turn into an ordinary page. <span>It could end on D's turn instead of the black slide, the last word tipping onto its side as About's spine, which is the one move neither site has.</span></p>
+  <p>C is where the timeline could go. B and E are the bolder homepages. <span>F holds the pieces, so any of them can be mixed into another.</span></p>
+</section>
+
+<script>
+const CONCEPTS = [
+  { id: "a-turn", name: "A · The turn", design: "The homepage as one sideways ride. The statement set big across empty white, then each line as a field of its own colour with its name on its side and the study it leads with, then white with three more of its studies hung at different heights. It ends on black.",
+    move: "Scrolling down moves the page sideways. Pictures unmask as they arrive. At the end the black field slides up and the page reads down: About, the numbers, how you work, who with, and a wordmark that grows up out of the foot. The Index pill opens the ruled rail as a menu.",
+    from: "Normal is Boring's ride, fields, split corner mark, turn and stretching logo. The board's spine, rail, reels and grey half." },
+  { id: "b-strips", name: "B · Strips", design: "Half the screen is the mark as large as it goes, with the statement and the lines, each with a dot in its colour. The other half is the work as strips, each in a colour from that study's own palette.",
+    move: "The strip reaching the reading line opens to full width and plays its reel. Then the camera turns up without a cut: every study runs up as a two-speed film strip beside the ruled index, which lights the lines of the study in the middle. Black, and the wordmark rises letter by letter. Hover a line under the mark and the other strips dim.",
+    from: "Akaru's opener, strips, camera turn, film strip and rising wordmark. The board's rail, reels and palettes." },
+  { id: "c-time", name: "C · Back through time", design: "The timeline book as a colour ride, newest first. The glass takes each chapter's colour from its own studies, its number set as a tone on it, and the years run along the foot.",
+    move: "It opens as an ordinary page and the first scroll turns it sideways. The colour eases from chapter to chapter as each boundary crosses the middle. At 1998 the ride ends on the year itself, which slides up into the way to talk.",
+    from: "Both sites' turn, twice. The timeline's words, notes and years." },
+  { id: "d-side", name: "D · On its side", design: "Type is the graphic. The statement's words and the six line names run enormous off the foot of the screen, with a field of each line's colour holding two of its studies between them.",
+    move: "The last word is About. While the ride is still pinned it turns a quarter onto its side and shrinks into the left edge as the About column's spine, and About reads beside its own name.",
+    from: "Normal is Boring's giant bleeding type and the turn. The board's spine, used as the turn itself." },
+  { id: "e-route", name: "E · The route", design: "The homepage laid out the way the board is, rows and columns on one big plane: a run across, a study opened down, the next run on its colour.",
+    move: "Scrolling is a route over the plane: across Digital, down into Ivy Park, across Campaigns, down into the Hill Country kitchen, across to the end. The camera eases into each corner. A map at the foot shows the plane, the route and where you are.",
+    from: "Akaru's camera turn, made into a whole route. The board's runs and columns." },
+  { id: "f-parts", name: "F · The parts", design: "Each interaction the others are made of, alone, in a window that scrolls inside itself.",
+    move: "The turn, the camera turn, pictures unmasking, strips opening, colour following, a word going onto its side, the wordmark arriving two ways, and counters with the dot cursor.",
+    from: "Both sites and the board, one piece at a time, to mix." },
+];
+const cards = document.getElementById("cards");
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const frames = CONCEPTS.map((c) => {
+  const card = document.createElement("article"); card.className = "card";
+  card.innerHTML = '<div class="frame"><iframe loading="lazy" title="' + esc(c.name) + '" src="/lab/scroll-concepts/' + c.id + '.html?smooth=0"></iframe></div>'
+    + '<div class="scrub"><span>Drag</span><input type="range" min="0" max="1000" value="0" aria-label="Scroll ' + esc(c.name) + '"><span class="pc">0%</span></div>'
+    + '<h3><span>' + esc(c.name) + '</span><a href="/lab/scroll-concepts/' + c.id + '.html">Open it full size →</a></h3>'
+    + "<dl><dt>Design</dt><dd>" + esc(c.design) + "</dd><dt>How it moves</dt><dd>" + esc(c.move) + "</dd><dt>From</dt><dd>" + esc(c.from) + "</dd></dl>";
+  cards.appendChild(card);
+  const f = card.querySelector("iframe"), box = card.querySelector(".frame"), range = card.querySelector("input"), pc = card.querySelector(".pc");
+  range.addEventListener("input", () => { const p = range.value / 1000; pc.textContent = Math.round(p * 100) + "%"; if (f.contentWindow) f.contentWindow.postMessage({ type: "ride-scrub", p }, "*"); });
+  if (c.id === "f-parts") { card.querySelector(".scrub").style.visibility = "hidden"; }
+  return { f, box, range, pc };
+});
+const fit = () => frames.forEach(({ f, box }) => { const s = box.clientWidth / 1512; f.style.transform = "scale(" + s + ")"; box.style.height = Math.round(770 * s) + "px"; });
+fit(); addEventListener("resize", fit, { passive: true });
+/* a frame scrolled in place moves its scrubber */
+addEventListener("message", (e) => {
+  if (!e.data || e.data.type !== "ride-progress") return;
+  const fr = frames.find((x) => x.f.contentWindow === e.source); if (!fr) return;
+  fr.range.value = Math.round(e.data.p * 1000); fr.pc.textContent = Math.round(e.data.p * 100) + "%";
+});
+</script>
+</body>
+</html>

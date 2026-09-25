@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>On its side · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT D: ON ITS SIDE (24 Sept 2026) ──────────────────────────
+     The turn, done with the board's own device. The ride is type: the
+     statement's three words and then the six lines' names set enormous
+     on white, running off the foot of the glass the way Normal is
+     Boring's words run off its edges, each line's name followed by a
+     field of its colour holding two of its studies and its sentence.
+     The last word is About. While the ride is still pinned it turns on
+     its side, a quarter turn about its foot, and shrinks into the left
+     edge as the About column's spine, the name on its side that every
+     column on the board already wears. Then the page goes on down, and
+     About reads beside its own name. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  #mk { position: fixed; z-index: 30; left: var(--gut); top: 44px; font-size: var(--st-fs); color: var(--c, #000); transition: color 0.35s ease; }
+  .word { background: var(--paper); }
+  .word .w { position: absolute; left: 3vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.78; white-space: nowrap; }
+  .word .w sup { font-size: 12px; font-weight: 600; letter-spacing: 0; vertical-align: top; position: relative; top: 0.6em; margin-left: 10px; }
+  .word.lo .w { bottom: -0.08em; } .word.hi .w { top: 12vh; }
+  .word .small { position: absolute; left: 3vw; top: 21vh; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2; }
+  .word .grey { position: absolute; left: 3vw; top: 21vh; max-width: 26ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  .shot { background: var(--paper); }
+  .shot .it, .fieldd .it { position: absolute; }
+  .fieldd { background: var(--fill); color: var(--fink); }
+  .fieldd .say { position: absolute; bottom: 12vh; width: 22vw; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .fieldd .cap span { color: inherit; opacity: 0.62; }
+  .fieldd .no { position: absolute; left: 3vw; top: 12vh; font-size: 12px; font-weight: 600; opacity: 0.7; }
+
+  /* the word that turns */
+  #turner { position: fixed; z-index: 25; left: 0; top: 0; margin: 0; font-weight: 700; letter-spacing: -0.06em; line-height: 0.78; white-space: nowrap;
+    transform-origin: 0 100%; pointer-events: none; visibility: hidden; will-change: transform; }
+
+  /* About, beside its own name */
+  .about { position: relative; background: var(--paper); padding: 16vh 8vw 12vh var(--spinew, 30vw); }
+  .about .lede { margin: 0 0 7vh; max-width: 22ch; font-size: 4vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .about .cols { columns: 2; column-gap: 4vw; font-size: 18px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.5; }
+  .about .cols p { margin: 0 0 1em; break-inside: avoid; }
+  .about .sec { display: grid; grid-template-columns: 16vw minmax(0, 1fr); gap: 3vw; padding: 32px 0 36px; border-top: 1px solid var(--hair); }
+  .about .sec:first-of-type { margin-top: 10vh; }
+  .about .sec h3 { margin: 0; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  .about .sec p { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .about .sec p + p { margin-top: 10px; font-size: 16px; font-weight: 500; color: var(--grey); letter-spacing: -0.01em; line-height: 1.5; }
+  .about .creds { margin-top: 10vh; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.35; color: rgba(0, 0, 0, 0.42); }
+  .about .creds span { color: var(--ink); }
+  .end { position: relative; background: #000; color: #fff; padding: 18vh 8vw 16vh var(--spinew, 30vw); }
+  .end h2 { margin: 0; max-width: 18ch; font-size: 4vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .end .dim { margin: 24px 0 0; max-width: 42ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: rgba(255, 255, 255, 0.5); }
+  .end .ways { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .end .ways a { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px; font-size: 13px; font-weight: 600; }
+
+  @media (max-width: 760px) {
+    .word, .shot, .fieldd { padding: 90px 20px 50px; } .word .w, .word .small, .word .grey, .shot .it, .fieldd .it, .fieldd .say, .fieldd .no { position: relative; left: auto !important; top: auto !important; bottom: auto !important; width: auto; margin: 0 0 24px; }
+    .word .w { font-size: 15vw !important; white-space: normal; } #turner { display: none; } .about, .end { padding: 12vh 20px; } .about .cols { columns: 1; } .about .sec { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<a id="mk" class="mark" href="/">Reckon<i>*</i>House</a>
+<section class="leg-h" id="ride" data-extra="1.3"><div class="pin"><div class="track" id="track"></div></div></section>
+<div id="turner" aria-hidden="true">About</div>
+<section class="about" id="about"></section>
+<section class="end" id="end"></section>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, R = window.Ride, clamp = R.clamp, lerp = R.lerp;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const fit = (s, h) => { let w = h * s.nat[0] / s.nat[1]; const m = R.honest(s); if (w > m) { h = h * m / w; w = m; } return { w, h }; };
+const track = document.getElementById("track"), turner = document.getElementById("turner");
+let T = null;
+
+function build() {
+  const VW = innerWidth, VH = innerHeight, F = 0.44 * VH;
+  track.textContent = "";
+  const zones = [];
+  const word = (txt, cls, extra) => {
+    const p = el("div", "panel word " + cls); const w = el("div", "w", txt); w.style.fontSize = F + "px"; p.appendChild(w);
+    if (extra) p.appendChild(extra);
+    track.appendChild(p); p.dataset.ink = "#000"; zones.push(p);
+    p.style.width = (w.offsetWidth + 0.09 * VW) + "px";
+    return p;
+  };
+  const shot = (k, top, h, dir) => {
+    const s = H.studies[k], p = el("div", "panel shot"), f = fit(s, h * VH);
+    const it = el("div", "it"); it.style.left = "2vw"; it.style.top = (top * VH) + "px";
+    it.appendChild(R.pic(s, f.w, f.h, { flip: dir })); it.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+    p.appendChild(it); p.style.width = (f.w + 0.08 * VW) + "px"; p.dataset.ink = "#000"; track.appendChild(p); zones.push(p);
+  };
+  /* the statement, word by word */
+  const m = H.statement.ink.match(/^(.*across) (brand,) (product,) (and place\.)$/);
+  const first = word(esc(m[2]), "lo", el("div", "small", esc(m[1])));
+  first.style.width = Math.max(parseFloat(first.style.width), 0.62 * VW) + "px";
+  shot("robert-rodriguez", 0.14, 0.5, "up");
+  word(esc(m[3]), "lo");
+  shot("arc", 0.1, 0.56, "down");
+  const place = word(esc(m[4]), "lo", el("div", "grey", esc(H.statement.grey)));
+  place.querySelector(".grey").style.left = (place.querySelector(".w").offsetWidth * 0.52) + "px";
+  /* the lines: a name, then its field */
+  H.lines.forEach((L, i) => {
+    word(esc(L.name) + "<sup>" + L.studies.length + "</sup>", i % 2 ? "hi" : "lo");
+    const f = el("div", "panel fieldd"); f.style.setProperty("--fill", L.color); f.style.setProperty("--fink", L.ink); f.dataset.ink = L.ink;
+    f.appendChild(el("div", "no", String(i + 1).padStart(2, "0") + " " + esc(L.name)));
+    let x = 0.03 * VW;
+    L.studies.slice(0, 2).forEach((k, j) => {
+      const s = H.studies[k], hh = j ? 0.36 : 0.54, top = j ? 0.46 : 0.2, pf = fit(s, hh * VH);
+      const it = el("div", "it"); it.style.left = x + "px"; it.style.top = (top * VH) + "px";
+      it.appendChild(R.pic(s, pf.w, pf.h, { flip: j ? "left" : "up" })); it.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+      f.appendChild(it); x += pf.w + 0.04 * VW;
+    });
+    const say = el("div", "say", esc(L.sentence)); say.style.left = x + "px"; f.appendChild(say);
+    f.style.width = (x + 0.22 * VW + 0.05 * VW) + "px";
+    track.appendChild(f); zones.push(f);
+  });
+  /* the last word, the one that turns */
+  /* a whole white screen of its own, so it turns on paper, not over a field */
+  const last = word("About", "lo");
+  last.style.width = VW + "px";
+  turner.style.fontSize = F + "px";
+
+  /* About, beside its own name */
+  const a = document.getElementById("about"); a.textContent = "";
+  const sec0 = H.about[0];
+  a.appendChild(el("p", "lede", esc(sec0.lede)));
+  a.appendChild(el("div", "cols", sec0.body.map((p) => "<p>" + esc(p) + "</p>").join("")));
+  H.about.slice(1).forEach((sec) => a.appendChild(el("div", "sec", "<h3>" + esc(sec.name) + "</h3><div><p>" + esc(sec.lede) + "</p>" + (sec.body && sec.body[0] ? "<p>" + esc(sec.body[0]) + "</p>" : "") + "</div>")));
+  a.appendChild(el("p", "creds", "Worked with <span>" + H.credits.map(esc).join("</span>, <span>") + "</span>."));
+  a.dataset.ink = "#000"; zones.push(a);
+  const e = document.getElementById("end"); e.textContent = "";
+  e.appendChild(el("h2", null, esc(H.book.lede))); e.appendChild(el("p", "dim", esc(H.book.dim)));
+  e.appendChild(el("div", "ways", H.links.map((l) => '<a href="' + esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
+  e.dataset.ink = "#fff"; zones.push(e);
+
+  /* where the turned word lands: on its side at the left edge, its foot at
+     the foot of the glass, as long as the glass is tall less the head */
+  const ww = turner.offsetWidth, len = 0.7 * VH, s1 = len / ww;
+  const thick = F * s1 * 0.78;
+  document.documentElement.style.setProperty("--spinew", (0.034 * VW + thick + 0.07 * VW) + "px");
+  T = { last, s1, VW, VH, zones, F };
+}
+
+function frame(r) {
+  if (!T || r.flat) return;
+  const L = r.legs[0]; if (!L) return;
+  const w = T.last.querySelector(".w"), b = w.getBoundingClientRect();
+  const aboutR = document.getElementById("about").getBoundingClientRect();
+  const k = R.ease(L.turn);
+  if (L.d < L.travel - 2) { turner.style.visibility = "hidden"; w.style.visibility = ""; }
+  else {
+    /* from the word's place in the ride to the spine's place at the left */
+    w.style.visibility = "hidden"; turner.style.visibility = "visible";
+    const x0 = b.left, y0 = b.bottom, x1 = 0.034 * r.vw + T.F * T.s1 * 0.8, y1 = r.vh - 0.06 * r.vh;
+    const x = lerp(x0, x1, k), y = lerp(y0, y1, k), s = lerp(1, T.s1, k), a = -90 * k;
+    /* once the ride lets go, the spine holds the edge while About reads
+       beside it, and leaves with About's last line */
+    const lift = Math.min(0, aboutR.bottom - r.vh);
+    turner.style.transform = "translate3d(" + x.toFixed(1) + "px," + (y - turner.offsetHeight + lift).toFixed(1) + "px,0) rotate(" + a.toFixed(2) + "deg) scale(" + s.toFixed(4) + ")";
+  }
+  let ink = "#000"; for (const z of T.zones) { const q = z.getBoundingClientRect(); if (70 >= q.left && 70 < q.right && 60 >= q.top && 60 < q.bottom) { ink = z.dataset.ink; break; } }
+  document.getElementById("mk").style.setProperty("--c", ink);
+}
+
+build();
+R.start({ frame });
+let rt = 0; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); R.frame(); }, 100); });
+})();
+</script>
+</body>
+</html>

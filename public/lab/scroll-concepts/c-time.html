@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Back through time · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT C: BACK THROUGH TIME (24 Sept 2026) ────────────────────
+     The timeline book (/lab/timeline.html) ridden the way the two sites
+     ride. It opens as an ordinary page, and the first scroll turns it
+     sideways: the chapters come newest first, and the whole glass takes
+     the colour of the chapter it is in, easing from one to the next as
+     you cross (a colour from that chapter's own studies; JCPenney has no
+     studies, so it is paper). A chapter is its number set as a tone on
+     its own colour, its name, its first sentence, its pictures and its
+     dated notes. The years run along the foot. At the start, 1998, the
+     ride ends on the year itself; that field slides up and the page is
+     a page again: the way to talk.
+     Two turns, then: down into sideways, and sideways into down. The
+     words are the book's and the notes are the timeline's (his, from
+     LinkedIn and the résumé); the "Yours to write" questions stay in
+     the mock, they are notes to him. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  .chrome { position: fixed; z-index: 30; color: var(--c, #000); transition: color 0.35s ease; }
+  #mk { left: var(--gut); top: 44px; font-size: var(--st-fs); }
+  #here { right: var(--gut); top: 54px; font-size: 12px; font-weight: 600; }
+
+  .intro { position: relative; height: 100vh; padding: 0 var(--gut); }
+  .intro .lbl { position: absolute; left: 12vw; top: 30vh; font-size: 12px; font-weight: 600; color: var(--grey); }
+  .intro h1 { position: absolute; left: 12vw; top: 35vh; width: 62vw; margin: 0; font-size: 4.3vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .intro .down { position: absolute; left: 12vw; bottom: 9vh; display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; }
+  .intro .down i { width: 1px; height: 48px; background: currentColor; }
+
+  #ride > .pin { background: var(--bg, #fff); color: var(--fg, #000); transition: color 0.4s ease; }
+  .chap { position: relative; }
+  .chap .num { position: absolute; left: 2vw; top: 6vh; font-size: 44vh; font-weight: 700; letter-spacing: -0.07em; line-height: 0.8; opacity: 0.13; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .chap .txt { position: absolute; left: 7vw; top: 30vh; width: 30vw; }
+  .chap .when { font-size: 12px; font-weight: 600; opacity: 0.6; margin: 0 0 8px; }
+  .chap h2 { margin: 0 0 18px; font-size: 11vh; font-weight: 700; letter-spacing: -0.055em; line-height: 0.92; }
+  .chap .lede { margin: 0 0 14px; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .chap .body { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; opacity: 0.75; max-width: 34em; }
+  .chap .it { position: absolute; }
+  .chap .cap span { color: inherit; opacity: 0.6; }
+  .chap .note { position: absolute; width: 230px; display: flex; gap: 10px; align-items: flex-start; }
+  .chap .note .y { flex: none; font-size: 28px; font-weight: 700; letter-spacing: -0.05em; line-height: 0.86; font-variant-numeric: tabular-nums; }
+  .chap .note p { margin: 1px 0 0; font-size: 13px; font-weight: 500; line-height: 1.45; letter-spacing: -0.004em; }
+  .chap .note p b { font-weight: 700; }
+  .chap .more { position: absolute; font-size: 12px; font-weight: 600; opacity: 0.6; }
+
+  /* the years along the foot */
+  .axis { position: absolute; left: 0; right: 0; bottom: 7vh; height: 1px; background: currentColor; opacity: 0.35; }
+  .yr { position: absolute; bottom: calc(7vh - 26px); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; opacity: 0.7; transform: translateX(-50%); }
+  .yr::before { content: ""; position: absolute; left: 50%; bottom: 26px; width: 1px; height: 7px; background: currentColor; }
+
+  /* the start: the year itself, as the last field */
+  .origin { width: 100vw; }
+  .origin .yy { position: absolute; left: 5vw; bottom: 11vh; margin: 0; font-size: 34vw; font-weight: 700; letter-spacing: -0.07em; line-height: 0.72; }
+  .origin .yy span { font-weight: 400; opacity: 0.4; }
+  .origin p { position: absolute; left: 7vw; top: 22vh; width: 30vw; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+
+  .talk { position: relative; background: #fff; padding: 24vh 12vw 16vh; overflow: hidden; }
+  .talk h2 { margin: 0; max-width: 18ch; font-size: 5.2vw; font-weight: 600; letter-spacing: -0.05em; line-height: 1.04; }
+  .talk .dim { margin: 26px 0 0; max-width: 44ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  .talk .ways { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 42px; }
+  .talk .ways a { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 20px; background: rgba(0, 0, 0, 0.045);
+    font-size: 13px; font-weight: 600; transition: background-color 0.3s ease; }
+  .talk .ways a:hover { background: rgba(0, 0, 0, 0.1); }
+  .talk .word { display: block; margin: 20vh 0 0 -0.04em; font-size: 12.4vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.76; white-space: nowrap; }
+
+  @media (max-width: 760px) {
+    .intro h1 { left: 20px; width: auto; right: 20px; font-size: 9vw; } .intro .lbl, .intro .down { left: 20px; }
+    .chap { padding: 80px 20px 60px; } .chap .num, .chap .txt, .chap .it, .chap .note, .chap .more { position: relative; left: auto !important; top: auto !important; width: auto; margin: 0 0 30px; }
+    .chap .num { font-size: 30vw; } .axis, .yr { display: none; } .origin { padding: 30vh 20px 10vh; } .origin .yy, .origin p { position: relative; left: auto; top: auto; bottom: auto; width: auto; }
+  }
+</style>
+</head>
+<body>
+<a id="mk" class="chrome mark" href="/">Reckon<i>*</i>House</a>
+<div id="here" class="chrome"></div>
+<section class="intro" id="intro"></section>
+<section class="leg-h" id="ride"><div class="pin"><div class="track" id="track"></div></div></section>
+<section class="talk" id="talk"></section>
+<script src="/lab/timeline-data.js"></script>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, TL = window.TL, R = window.Ride, clamp = R.clamp;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const T = (d) => d[0] + (d[1] - 1) / 12;
+const fit = (s, h) => { let w = h * s.nat[0] / s.nat[1]; const m = R.honest(s); if (w > m) { h = h * m / w; w = m; } return { w, h }; };
+const track = document.getElementById("track");
+/* a chapter's colour comes from a study of its own years; JCPenney has none */
+const COLOR = { "Now": "sally-os", "PetSmart": "arc", "Homes": "hill-country-kitchen", "Sally Beauty": "cosmo-prof",
+  "Nordstrom": "ivy-park", "JCPenney": null, "Neiman Marcus": "neiman-marcus", "AMR": "branding-graphics" };
+/* which years' studies belong on which chapter */
+const YEARS = { "Now": [2025, 2026], "PetSmart": [2024, 2024], "Homes": [2022, 2023], "Sally Beauty": [2021, 2021],
+  "Nordstrom": [2013, 2020], "JCPenney": [2012.5, 2012.9], "Neiman Marcus": [2006, 2012], "AMR": [1998, 2005] };
+const ROLE_CH = { s2: "Now", ps: "PetSmart", ah: "Homes", hm: "Homes", s1: "Sally Beauty", n1: "Nordstrom", n2: "Nordstrom", n3: "Nordstrom",
+  jcp: "JCPenney", nm: "Neiman Marcus", nm0: "Neiman Marcus", am: "AMR", edu: "AMR" };
+const chOfTime = (t) => t >= 2025.4 ? "Now" : t >= 2024.1 ? "PetSmart" : t >= 2021.8 ? "Homes" : t >= 2021.3 ? "Sally Beauty" : t >= 2013.3 ? "Nordstrom" : t >= 2012.3 ? "JCPenney" : t >= 2006.8 ? "Neiman Marcus" : "AMR";
+const lum = (hex) => { const c = hex.replace("#", ""); const v = [0, 2, 4].map((i) => { const x = parseInt(c.slice(i, i + 2), 16) / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+const inkFor = (hex) => (lum(hex) + 0.05) / 0.05 >= 1.05 / (lum(hex) + 0.05) ? "#000000" : "#FFFFFF";
+const mix = (a, b, t) => { const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return "rgb(" + pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(",") + ")"; };
+let CH = [];
+
+function build() {
+  const VW = innerWidth, VH = innerHeight;
+  const intro = document.getElementById("intro"); intro.textContent = "";
+  intro.appendChild(el("div", "lbl", "Timeline"));
+  const h1 = el("h1", null, "Different mediums but the same attention given to all of it, because I really do love the work."); h1.dataset.rise = ""; intro.appendChild(h1);
+  intro.appendChild(el("div", "down", "<i></i>Newest first"));
+  intro.dataset.ink = "#000";
+
+  track.textContent = "";
+  const chapters = TL.CHAPTERS.slice().sort((a, b) => T(b.at) - T(a.at));
+  CH = [];
+  chapters.forEach((c, i) => {
+    const k = COLOR[c.name], color = k ? H.studies[k].fill : "#FFFFFF";
+    const ch = el("div", "panel chap"); ch.dataset.color = color;
+    ch.appendChild(el("div", "num", String(i + 1).padStart(2, "0")));
+    const txt = el("div", "txt");
+    txt.appendChild(el("p", "when", esc(c.when)));
+    txt.appendChild(el("h2", null, esc(c.title)));
+    txt.appendChild(el("p", "lede", esc(c.lede)));
+    /* one fact, one home: the degree is the 1998 field's, so a chapter
+       carrying it shows its next paragraph instead */
+    const para = (c.body || []).find((b) => !/management information systems/i.test(b));
+    if (para) txt.appendChild(el("p", "body", esc(para)));
+    ch.appendChild(txt);
+    let x = 0.07 * VW + 0.3 * VW + 0.06 * VW;
+    /* its pictures, hung high and low */
+    const [y0, y1] = YEARS[c.name];
+    const ks = H.order.filter((kk) => { const s = H.studies[kk]; return s.y >= y0 && s.y <= y1; }).sort((a, b) => H.studies[b].y - H.studies[a].y || H.studies[a].seat - H.studies[b].seat);
+    const spots = [[0.5, 0.13], [0.34, 0.47], [0.44, 0.2], [0.3, 0.5], [0.46, 0.16], [0.36, 0.42]];
+    ks.slice(0, 6).forEach((kk, j) => {
+      const s = H.studies[kk], [hh, top] = spots[j % spots.length], p = fit(s, hh * VH);
+      const it = el("div", "it"); it.style.left = x + "px"; it.style.top = (top * VH) + "px";
+      it.appendChild(R.pic(s, p.w, p.h, { flip: j % 2 ? "down" : "up" }));
+      it.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+      ch.appendChild(it); x += p.w + 0.045 * VW;
+    });
+    if (ks.length > 6) { const m = el("div", "more", "and " + (ks.length - 6) + " more from these years"); m.style.left = x + "px"; m.style.top = (0.62 * VH) + "px"; ch.appendChild(m); x += 0.14 * VW; }
+    /* its notes, dated */
+    const notes = TL.NOTES.filter((n) => (n.r === "rh" ? chOfTime(T(n.at)) : ROLE_CH[n.r]) === c.name).sort((a, b) => T(b.at) - T(a.at));
+    notes.forEach((n, j) => {
+      const y = String(n.at[0]);
+      const d = el("div", "note", '<div class="y">' + y.slice(0, 2) + "<br>" + y.slice(2) + "</div><p>" + n.t + "</p>");
+      d.style.left = (x + (j >> 1) * 270) + "px"; d.style.top = ((j % 2 ? 0.5 : 0.24) * VH) + "px";
+      ch.appendChild(d);
+    });
+    if (notes.length) x += Math.ceil(notes.length / 2) * 270 + 0.02 * VW;
+    ch.style.width = Math.max(VW, x + 0.06 * VW) + "px";
+    track.appendChild(ch);
+    CH.push({ el: ch, color, c, from: T(c.at), no: String(i + 1).padStart(2, "0") });
+  });
+
+  /* where it started: the year, as the last field */
+  const amr = CH[CH.length - 1];
+  const origin = el("div", "panel origin"); origin.dataset.color = amr.color;
+  origin.appendChild(el("p", null, "My degree is in management information systems, from the University of Texas at Dallas."));
+  origin.appendChild(el("h3", "yy", "19<span>98</span>"));
+  track.appendChild(origin);
+  CH.push({ el: origin, color: amr.color, c: { no: "", name: "1998", when: "" } });
+
+  /* the years along the foot, where each one falls in the ride */
+  const axis = el("div", "axis"); track.appendChild(axis);
+  CH.slice(0, -1).forEach((o, i) => {
+    const next = CH[i + 1];
+    const start = o.c.at ? T(o.c.at) : 1998, end = i === 0 ? 2026.7 : T(CH[i - 1].c.at);
+    for (let yy = Math.ceil(start); yy <= Math.floor(end); yy++) {
+      if (yy > 2026) continue;
+      const f = (end - yy) / Math.max(0.1, end - start);
+      const lbl = el("div", "yr", String(yy)); lbl.style.left = (o.el.offsetLeft + 0.07 * VW + f * (o.el.offsetWidth - 0.14 * VW)) + "px";
+      track.appendChild(lbl);
+    }
+  });
+
+  const talk = document.getElementById("talk"); talk.textContent = ""; talk.dataset.ink = "#000";
+  const h2 = el("h2", null, esc(H.book.lede)); h2.dataset.rise = ""; talk.appendChild(h2);
+  talk.appendChild(el("p", "dim", esc(H.book.dim)));
+  talk.appendChild(el("div", "ways", H.links.map((l) => '<a href="' + esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
+  const word = el("div", "word", "Reckon*House"); word.dataset.stretch = ""; talk.appendChild(word);
+}
+
+/* the glass takes the colour of the chapter under its middle, easing into
+   the next over the last quarter of each */
+function colour(r) {
+  const pin = document.querySelector("#ride > .pin");
+  const mid = r.vw / 2;
+  let bg = "#FFFFFF", fg = "#000000", label = "";
+  for (let i = 0; i < CH.length; i++) {
+    const b = CH[i].el.getBoundingClientRect();
+    if (b.left <= mid && b.right > mid) {
+      const next = CH[i + 1], ahead = b.right - mid, win = 0.34 * r.vw;
+      const t = next ? R.ease(clamp(1 - ahead / win, 0, 1)) : 0;
+      bg = next ? mix(CH[i].color, next.color, t) : CH[i].color;
+      fg = inkFor(t > 0.5 && next ? next.color : CH[i].color);
+      label = CH[i].no ? CH[i].no + " " + CH[i].c.name + " · " + CH[i].c.when : "1998";
+      break;
+    }
+  }
+  pin.style.setProperty("--bg", bg); pin.style.setProperty("--fg", fg);
+  const L = r.legs[0], inRide = L && r.y >= L.top - r.vh * 0.5 && r.y < L.top + L.travel + r.vh * 0.5;
+  const onRide = L && r.y >= L.top && r.y <= L.top + L.travel;
+  document.getElementById("mk").style.setProperty("--c", onRide ? fg : "#000");
+  const hr = document.getElementById("here"); hr.style.setProperty("--c", onRide ? fg : "#000"); hr.textContent = inRide ? label : "";
+}
+
+build();
+R.start({ frame: colour });
+let rt = 0; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); R.frame(); }, 100); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The route · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT E: THE ROUTE (24 Sept 2026) ────────────────────────────
+     Akaru's turn is a camera that changes direction without cutting:
+     its sticky block pans 2,770px sideways and then the same block
+     moves 1,687px up. The board already is a plane of rows and columns,
+     so here the camera flies over it. Scrolling is the route: across
+     the Digital run, down into a study the way a column opens on the
+     board, across the Campaigns run on its own colour, down into
+     another study, and across to the end. The camera eases into each
+     corner and out of it, so every turn reads as a turn. A map at the
+     foot shows the whole plane, the route and where you are on it, and
+     the label beside it says which way you are going. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  #stage { position: relative; }
+  #stage > .pin { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  #plane { position: absolute; left: 0; top: 0; will-change: transform; }
+  .room { position: absolute; overflow: hidden; }
+  .room.white { background: #fff; } .room.dark { background: #000; color: #fff; }
+  .chrome { position: fixed; z-index: 30; color: var(--c, #000); transition: color 0.35s ease; }
+  #mk { left: var(--gut); top: 44px; font-size: var(--st-fs); }
+  #way { left: var(--gut); bottom: 36px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  #way b { font-size: 16px; font-weight: 600; display: inline-block; transition: transform 0.5s var(--ease); }
+  #map { position: fixed; z-index: 30; right: var(--gut); bottom: 30px; width: 220px; height: 110px; }
+  #map svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+  /* the opener */
+  .opener .st { position: absolute; left: 12vw; top: 30vh; width: 58vw; margin: 0; font-size: 3.4vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.12; }
+  .opener .st span { color: var(--grey); }
+  .opener .cue { position: absolute; left: 12vw; bottom: 16vh; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+  .opener .cue i { width: 56px; height: 1px; background: currentColor; }
+  /* a run's head, in the board's clothes */
+  .head .spine { position: absolute; left: 3vw; top: 15vh; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; letter-spacing: -0.04em; line-height: 0.8; text-transform: uppercase; white-space: nowrap; }
+  .head .q { position: absolute; top: 15vh; width: 18vw; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .head .q span { opacity: 0.55; }
+  .tile { position: absolute; }
+  .tile .cap span { color: inherit; opacity: 0.6; }
+  /* a study, opened into a column */
+  .col .txt { position: absolute; width: 22vw; }
+  .col .txt h2 { margin: 0 0 14px; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  .col .txt p { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .col .txt p span { color: var(--grey); }
+  .col .txt .meta { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--grey); }
+  .col .fr { position: absolute; }
+  /* the end */
+  .dark h2 { position: absolute; left: 12vw; top: 22vh; margin: 0; max-width: 18ch; font-size: 4.3vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .dark .ways { position: absolute; left: 12vw; top: calc(22vh + 11vw); display: flex; gap: 10px; }
+  .dark .ways a { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px; font-size: 13px; font-weight: 600; }
+  .dark .word { position: absolute; left: 4vw; bottom: -0.04em; margin: 0; font-size: 12.8vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.76; white-space: nowrap; }
+</style>
+</head>
+<body>
+<section id="stage"><div class="pin"><div id="plane"></div></div></section>
+<a id="mk" class="chrome mark" href="/">Reckon<i>*</i>House</a>
+<div id="way" class="chrome"><b>→</b><span></span></div>
+<div id="map" aria-hidden="true"></div>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, R = window.Ride, clamp = R.clamp, lerp = R.lerp;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const fit = (s, h, i) => { const nat = i ? [1536, 1536 * s.nat[1] / s.nat[0]] : s.nat; let w = h * s.nat[0] / s.nat[1]; const m = (i ? 1536 : s.nat[0]) / 2; if (w > m) { h = h * m / w; w = m; } return { w, h }; };
+const stage = document.getElementById("stage"), plane = document.getElementById("plane"), map = document.getElementById("map");
+let G = null;
+
+/* a run across: its head, then its covers, hung at the board's sizes */
+function run(L, x, y, dark) {
+  const VW = innerWidth, VH = innerHeight;
+  const room = el("div", "room head " + (dark ? "" : "white")); room.style.left = x + "px"; room.style.top = y + "px"; room.style.height = VH + "px";
+  if (!dark) room.dataset.ink = "#000"; else { room.style.background = L.color; room.style.color = L.ink; room.dataset.ink = L.ink; }
+  const size = Math.min(0.24 * VH, 0.76 * VH / (L.name.length * 0.64));
+  const sp = el("div", "spine", esc(L.name)); sp.style.fontSize = size + "px"; room.appendChild(sp);
+  const q = el("div", "q", esc(L.sentence) + " <span>" + L.studies.length + " studies</span>"); q.style.left = (0.03 * VW + size * 0.8 + 0.04 * VW) + "px"; room.appendChild(q);
+  let cx = 0.03 * VW + size * 0.8 + 0.04 * VW + 0.18 * VW + 0.05 * VW;
+  const tops = [0.15, 0.3, 0.2, 0.36];
+  L.studies.slice(0, 4).forEach((k, i) => {
+    const s = H.studies[k], f = fit(s, (i % 2 ? 0.4 : 0.52) * VH);
+    const t = el("div", "tile"); t.style.left = cx + "px"; t.style.top = (tops[i] * VH) + "px";
+    t.appendChild(R.pic(s, f.w, f.h, { flip: "up" })); t.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+    room.appendChild(t); cx += f.w + 0.045 * VW;
+  });
+  const w = cx + 0.04 * VW; room.style.width = w + "px";
+  plane.appendChild(room);
+  return { room, x, y, w, h: VH };
+}
+/* a study opened into a column: its words, then its frames down the page */
+function column(k, x, y) {
+  const VW = innerWidth, VH = innerHeight, s = H.studies[k];
+  const room = el("div", "room col white"); room.style.left = x + "px"; room.style.top = y + "px"; room.style.width = VW + "px"; room.dataset.ink = "#000";
+  const txt = el("div", "txt", '<p class="meta">' + s.y + " · " + esc(s.s) + "</p><h2>" + esc(s.t) + "</h2><p>" + esc(s.fact) + (s.rest ? " <span>" + esc(s.rest) + "</span>" : "") + "</p>");
+  txt.style.left = "12vw"; txt.style.top = "12vh"; room.appendChild(txt);
+  let fy = 0.12 * VH;
+  /* a frame's own size is not in the data, so each sits in a 3:2 box,
+     cover-cropped, never wider than a 1536 file allows */
+  s.frames.forEach((f, i) => {
+    const bw = Math.min(768, 0.42 * VW), d = { w: bw, h: bw * 2 / 3 };
+    const fr = el("div", "fr"); fr.style.left = (0.12 * VW + 0.22 * VW + 0.06 * VW) + "px"; fr.style.top = fy + "px";
+    const box = el("a", "pic"); box.href = "/case-studies/" + s.h; box.style.width = d.w + "px"; box.style.height = d.h + "px"; box.style.aspectRatio = "3 / 2"; box.dataset.flip = i % 2 ? "left" : "up"; box.dataset.cur = "Open";
+    const im = R.img(s, d.w, i); im.classList.add("on"); box.appendChild(im); fr.appendChild(box); room.appendChild(fr);
+    fy += d.h + 0.08 * VH;
+  });
+  const h = Math.max(VH * 1.6, fy + 0.1 * VH); room.style.height = h + "px";
+  plane.appendChild(room);
+  return { room, x, y, w: VW, h };
+}
+
+function build() {
+  plane.textContent = "";
+  const VW = innerWidth, VH = innerHeight;
+  const rooms = [];
+  /* row 1: the opener and the Digital run */
+  const op = el("div", "room opener white"); op.style.left = "0px"; op.style.top = "0px"; op.style.width = VW + "px"; op.style.height = VH + "px"; op.dataset.ink = "#000";
+  op.appendChild(el("p", "st", esc(H.statement.ink) + " <span>" + esc(H.statement.grey) + "</span>"));
+  op.appendChild(el("div", "cue", "<i></i>Scroll"));
+  plane.appendChild(op); rooms.push({ room: op, x: 0, y: 0, w: VW, h: VH });
+  const dig = H.lines.find((l) => l.tag === "digital"), cam = H.lines.find((l) => l.tag === "creative");
+  const r1 = run(dig, VW, 0, false); rooms.push(r1);
+  const A = VW + r1.w;
+  /* down into a study */
+  const c1 = column("ivy-park", A - VW, VH); rooms.push(c1);
+  const C1 = c1.h;
+  /* row 2: Campaigns, on its colour */
+  const r2 = run(cam, A, C1, true); rooms.push(r2);
+  const B = r2.w;
+  /* down into another */
+  const c2 = column("hill-country-kitchen", A + B - VW, C1 + VH); rooms.push(c2);
+  const C2 = c2.h;
+  /* row 3: the end */
+  const end = el("div", "room dark"); end.style.left = (A + B) + "px"; end.style.top = C1 + C2 + "px"; end.style.width = (1.6 * VW) + "px"; end.style.height = VH + "px"; end.dataset.ink = "#fff";
+  end.appendChild(el("h2", null, esc(H.book.lede)));
+  end.appendChild(el("div", "ways", H.links.map((l) => '<a href="' + esc(l.v) + '">' + esc(l.k) + "</a>").join("")));
+  const word = el("p", "word", "Reckon*House"); word.style.left = (0.6 * VW + 0.04 * VW) + "px"; end.appendChild(word);
+  plane.appendChild(end); rooms.push({ room: end, x: A + B, y: C1 + C2, w: 1.6 * VW, h: VH });
+  const D = 1.6 * VW;
+  /* the route: the camera's top-left corner, corner to corner */
+  const pts = [[0, 0], [A - VW, 0], [A - VW, C1], [A + B - VW, C1], [A + B - VW, C1 + C2], [A + B + D - VW, C1 + C2]];
+  const labels = ["Across · " + dig.name, "Down · " + H.studies["ivy-park"].t, "Across · " + cam.name, "Down · " + H.studies["hill-country-kitchen"].t, "Across · the end"];
+  const segs = []; let len = 0;
+  for (let i = 0; i < pts.length - 1; i++) { const d = Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]); segs.push({ a: pts[i], b: pts[i + 1], s: len, d, label: labels[i], dir: pts[i + 1][0] > pts[i][0] ? "→" : "↓" }); len += d; }
+  stage.style.height = (len + VH) + "px";
+  const PW = A + B + D, PH = C1 + C2 + VH;
+  plane.style.width = PW + "px"; plane.style.height = PH + "px";
+  G = { rooms, pts, segs, len, PW, PH, VW, VH };
+  drawMap();
+}
+
+function drawMap() {
+  const { rooms, pts, PW, PH } = G, W = 220, Hm = 110, k = Math.min(W / PW, Hm / PH);
+  let svg = '<svg viewBox="0 0 ' + W + " " + Hm + '">';
+  rooms.forEach((r) => { const fill = r.room.classList.contains("dark") ? "#000" : r.room.style.background ? r.room.style.background : "rgba(0,0,0,0.08)";
+    svg += '<rect x="' + (r.x * k).toFixed(1) + '" y="' + (r.y * k).toFixed(1) + '" width="' + (r.w * k).toFixed(1) + '" height="' + (r.h * k).toFixed(1) + '" fill="' + fill + '" rx="1.5"/>'; });
+  svg += '<polyline fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" points="' + pts.map((p) => ((p[0] + G.VW / 2) * k).toFixed(1) + "," + ((p[1] + G.VH / 2) * k).toFixed(1)).join(" ") + '"/>';
+  svg += '<rect id="mapWin" width="' + (G.VW * k).toFixed(1) + '" height="' + (G.VH * k).toFixed(1) + '" fill="none" stroke="currentColor" stroke-width="1.5" rx="1.5"/></svg>';
+  map.innerHTML = svg; G.k = k;
+}
+
+/* along the route: each leg eases into its corner and out of it */
+const soft = (t) => t - Math.sin(2 * Math.PI * t) / (2 * Math.PI) * 0.62;
+function frame(r) {
+  if (!G) return;
+  const top = stage.getBoundingClientRect().top + scrollY;
+  const d = clamp(r.y - top, 0, G.len);
+  let seg = G.segs[G.segs.length - 1];
+  for (const s of G.segs) { if (d <= s.s + s.d) { seg = s; break; } }
+  const t = seg.d ? soft(clamp((d - seg.s) / seg.d, 0, 1)) : 1;
+  const cx = lerp(seg.a[0], seg.b[0], t), cy = lerp(seg.a[1], seg.b[1], t);
+  plane.style.transform = "translate3d(" + (-cx).toFixed(1) + "px," + (-cy).toFixed(1) + "px,0)";
+  const win = document.getElementById("mapWin"); if (win) { win.setAttribute("x", (cx * G.k).toFixed(1)); win.setAttribute("y", (cy * G.k).toFixed(1)); }
+  const way = document.getElementById("way"); way.querySelector("span").textContent = seg.label; way.querySelector("b").textContent = seg.dir;
+  /* the chrome takes the ink of the room under it */
+  const inkAt = (x, y) => { for (const q of G.rooms) { if (x + cx >= q.x && x + cx < q.x + q.w && y + cy >= q.y && y + cy < q.y + q.h) return q.room.dataset.ink || "#000"; } return "#000"; };
+  document.getElementById("mk").style.setProperty("--c", inkAt(70, 60));
+  way.style.setProperty("--c", inkAt(80, r.vh - 40));
+  map.style.color = inkAt(r.vw - 120, r.vh - 80);
+}
+
+build();
+R.start({ frame });
+let rt = 0; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); R.frame(); }, 100); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The parts · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT F: THE PARTS (24 Sept 2026) ────────────────────────────
+     The interactions the other five are made of, one at a time, each in
+     a window of its own that scrolls inside itself, so they can be
+     judged apart and mixed. Each says where it comes from and where it
+     could go on the site. The words under each are notes to him, not
+     site copy. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  header { padding: 44px var(--gut) 8vh; }
+  header .mark { font-size: var(--st-fs); }
+  header h1 { margin: 12vh 0 0; max-width: 20ch; font-size: 4.3vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  header p { margin: 22px 0 0; max-width: 46ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+  main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8vh 3vw; padding: 0 var(--gut) 16vh; }
+  .part .box { position: relative; height: min(62vh, 520px); border-radius: 16px; overflow-y: auto; overflow-x: hidden; background: var(--cream); scrollbar-width: none; overscroll-behavior: contain; }
+  .part .box::-webkit-scrollbar { display: none; }
+  .part .spacer { position: relative; }
+  .part .st { position: sticky; top: 0; height: min(62vh, 520px); overflow: hidden; }
+  .part .hint { position: absolute; right: 14px; bottom: 12px; z-index: 5; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 12px; background: rgba(255, 255, 255, 0.85); color: #000; transition: opacity 0.4s ease; pointer-events: none; }
+  .part .box.moved .hint { opacity: 0; }
+  .part h2 { margin: 18px 0 6px; font-size: var(--st-fs); font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; }
+  .part .from { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 10px; }
+  .part p { margin: 0 0 8px; max-width: 46ch; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.5; }
+  .part p b { font-weight: 700; }
+  .fill { position: absolute; inset: 0; }
+  .lbl { position: absolute; font-size: 12px; font-weight: 600; }
+  .big { position: absolute; font-weight: 700; letter-spacing: -0.055em; line-height: 0.86; white-space: nowrap; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } header h1 { font-size: 9vw; } }
+</style>
+</head>
+<body>
+<header><a class="mark" href="/">Reckon<i>*</i>House</a>
+  <h1>The parts, one at a time</h1>
+  <p>Every window scrolls inside itself. Rest on one and scroll.</p></header>
+<main id="parts"></main>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, R = window.Ride, clamp = R.clamp, lerp = R.lerp, ease = R.ease;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const parts = document.getElementById("parts");
+const S = (k) => H.studies[k];
+const imgBox = (s, w, h, i) => { const b = el("div", "pic"); b.style.width = w + "px"; b.style.height = h + "px"; b.style.aspectRatio = w + " / " + h; const im = R.img(s, w, i || 0); im.classList.add("on"); im.loading = "eager"; b.appendChild(im); b.__s = s; return b; };
+
+/* a window that scrolls inside itself: `len` screens of scroll drive `draw(p)` */
+function part(name, from, notes, len, make) {
+  const card = el("section", "part");
+  const box = el("div", "box"); box.setAttribute("data-lenis-prevent", "");
+  const sp = el("div", "spacer"), st = el("div", "st");
+  sp.appendChild(st); box.appendChild(sp); box.appendChild(el("div", "hint", "Scroll inside"));
+  card.appendChild(box);
+  card.appendChild(el("h2", null, esc(name)));
+  card.appendChild(el("div", "from", esc(from)));
+  notes.forEach((n) => card.appendChild(el("p", null, n)));
+  parts.appendChild(card);
+  const draw = make(st, box);
+  const size = () => { sp.style.height = (box.clientHeight * (1 + len)) + "px"; };
+  const go = () => { const max = box.scrollHeight - box.clientHeight; const p = max > 0 ? box.scrollTop / max : 0; if (p > 0.01) box.classList.add("moved"); draw(clamp(p, 0, 1), box.clientWidth, box.clientHeight); };
+  box.addEventListener("scroll", go, { passive: true });
+  addEventListener("resize", () => { size(); go(); });
+  requestAnimationFrame(() => { size(); go(); });
+}
+
+/* 1 · the turn, released */
+part("The turn", "Normal is Boring",
+  ["A pinned row of panels runs sideways, ends on a full field of colour, and <b>the pin lets go</b>: the field slides up and the page reads down from there.",
+   "Where: the end of the homepage's ride, handing over to About."], 3, (st) => {
+  const row = el("div", "fill"); row.style.width = "400%"; row.style.display = "flex"; st.appendChild(row);
+  const cols = [H.lines[0], H.lines[1], H.lines[3]].map((L) => L.color).concat(["#000"]);
+  cols.forEach((c, i) => { const p = el("div", null); p.style.cssText = "flex:1;position:relative;background:" + c;
+    p.appendChild(el("div", "big", i < 3 ? esc([H.lines[0], H.lines[1], H.lines[3]][i].name) : "About")).style.cssText = "left:6%;bottom:8%;font-size:64px;color:" + (i < 3 ? [H.lines[0], H.lines[1], H.lines[3]][i].ink : "#fff"); row.appendChild(p); });
+  const under = el("div", "fill"); under.style.background = "#fff"; under.style.zIndex = "-1"; st.appendChild(under);
+  under.appendChild(el("div", "lbl", "The page, reading down")).style.cssText = "left:8%;top:40%;font-size:20px;font-weight:600";
+  st.style.background = "#fff";
+  return (p, W, Hh) => {
+    const a = clamp(p / 0.7, 0, 1), b = clamp((p - 0.7) / 0.3, 0, 1);
+    row.style.transform = "translate3d(" + (-a * 3 * W) + "px," + (-ease(b) * Hh) + "px,0)";
+  };
+});
+
+/* 2 · the camera turns, without a cut */
+part("The camera turns", "Akaru",
+  ["The same block pans sideways, then keeps going <b>up</b>, easing into the corner. Nothing is released; the direction changes mid-shot.",
+   "Where: the homepage as a map (concept E), or a run turning down into a study."], 3, (st) => {
+  const plane = el("div", null); plane.style.cssText = "position:absolute;left:0;top:0;width:200%;height:200%"; st.appendChild(plane);
+  const ks = ["ivy-park", "sally-os", "arc", "robert-rodriguez"];
+  [[0, 0], [1, 0], [1, 1]].forEach(([cx, cy], i) => { const r = el("div", null); r.style.cssText = "position:absolute;left:" + cx * 50 + "%;top:" + cy * 50 + "%;width:50%;height:50%;background:" + ["#fff", S(ks[1]).fill, S(ks[3]).fill][i]; plane.appendChild(r);
+    r.appendChild(el("div", "lbl", ["Across", "Then down", "Arrived"][i])).style.cssText = "left:8%;top:10%;font-size:20px"; });
+  const pics = [["ivy-park", 0.62, 0.3], ["sally-os", 0.66, 0.62], ["robert-rodriguez", 0.62, 0.8]];
+  const nodes = pics.map(([k]) => { const b = imgBox(S(k), 160, 110); b.style.position = "absolute"; plane.appendChild(b); return b; });
+  const soft = (t) => t - Math.sin(2 * Math.PI * t) / (2 * Math.PI) * 0.62;
+  return (p, W, Hh) => {
+    plane.style.width = 2 * W + "px"; plane.style.height = 2 * Hh + "px";
+    nodes.forEach((b, i) => { b.style.left = (pics[i][1] * W * (i ? 1 : 0.9)) + (i ? W * 0.3 : 0) + "px"; b.style.top = (pics[i][2] * Hh * (i === 2 ? 1.6 : 1)) + "px"; });
+    const a = soft(clamp(p / 0.5, 0, 1)), b = soft(clamp((p - 0.5) / 0.5, 0, 1));
+    plane.style.transform = "translate3d(" + (-a * W) + "px," + (-b * Hh) + "px,0)";
+  };
+});
+
+/* 3 · pictures unmasking */
+part("Pictures unmask", "Normal is Boring's flips",
+  ["A picture is uncovered as it comes in, from one of four sides, and settles from a slight zoom. It is driven by the scroll, so it plays backwards too.",
+   "Where: every picture on a ride; the covers on the board as a column opens."], 1.5, (st) => {
+  st.style.background = "#fff";
+  const ks = ["hill-country-kitchen", "amber-shockey-co", "capitan-boot-co", "jeffrey-spring"], dirs = ["up", "down", "left", "right"];
+  const boxes = ks.map((k, i) => { const b = imgBox(S(k), 150, 190); b.style.position = "absolute"; b.style.top = "22%"; b.style.left = (6 + i * 23.5) + "%"; st.appendChild(b); return b; });
+  return (p) => boxes.forEach((b, i) => {
+    const e = ease(clamp(p * 1.6 - i * 0.14, 0, 1)), k = ((1 - e) * 100).toFixed(1) + "%";
+    const ins = dirs[i] === "down" ? "0 0 " + k + " 0" : dirs[i] === "left" ? "0 " + k + " 0 0" : dirs[i] === "right" ? "0 0 0 " + k : k + " 0 0 0";
+    b.style.clipPath = "inset(" + ins + " round 16px)"; b.firstChild.style.transform = "scale(" + (1 + (1 - e) * 0.18) + ")";
+  });
+});
+
+/* 4 · strips that open */
+part("Strips that open", "Akaru",
+  ["Each study a strip in its own colour. The one reaching the reading line opens to full width, and the next grows in behind it.",
+   "Where: a line's page, or the homepage's opener (concept B)."], 3, (st) => {
+  const ks = H.order.slice(0, 7);
+  const strips = ks.map((k, i) => { const s = S(k); const d = el("div", null); d.style.cssText = "position:absolute;top:0;height:100%;overflow:hidden;background:" + s.fill + ";color:" + s.ink;
+    const b = imgBox(s, 190, 130); b.style.position = "absolute"; b.style.left = "18px"; b.style.top = "18%"; d.appendChild(b);
+    d.appendChild(el("div", "big", esc(s.t))).style.cssText = "left:16px;bottom:10%;font-size:40px";
+    d.appendChild(el("div", "lbl", String(i + 1).padStart(2, "0"))).style.cssText = "left:18px;bottom:4%"; st.appendChild(d); return d; });
+  return (p, W) => {
+    const Wo = 0.62 * W, n = 0.063 * W, q = p * (ks.length - 1), i0 = Math.min(ks.length - 2, Math.floor(q)), f = q - i0;
+    let x = 0;
+    strips.forEach((d, i) => {
+      let left, width;
+      if (i < i0) { left = -f * Wo - (i0 - i) * Wo; width = Wo; } else if (i === i0) { left = -f * Wo; width = Wo; }
+      else if (i === i0 + 1) { left = -f * Wo + Wo; width = lerp(n, Wo, f); } else { left = x; width = n; }
+      d.style.left = left + "px"; d.style.width = width + "px"; x = left + width;
+    });
+  };
+});
+
+/* 5 · the colour follows you */
+part("The colour follows you", "Ours, after both",
+  ["The whole glass takes the colour of the chapter it is in, from that chapter's own studies, and eases into the next as the boundary crosses the middle.",
+   "Where: the timeline (concept C), or the lines on the homepage."], 3, (st) => {
+  const chs = [["Now", "sally-os"], ["PetSmart", "arc"], ["Homes", "hill-country-kitchen"], ["Nordstrom", "ivy-park"], ["Neiman Marcus", "neiman-marcus"]];
+  const name = el("div", "big"); name.style.cssText = "left:7%;bottom:12%;font-size:64px"; st.appendChild(name);
+  const no = el("div", "lbl"); no.style.cssText = "left:7.4%;top:12%"; st.appendChild(no);
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  return (p) => {
+    const q = p * (chs.length - 1), i = Math.min(chs.length - 2, Math.floor(q)), f = ease(clamp((q - i - 0.55) / 0.45, 0, 1));
+    const a = hex(S(chs[i][1]).fill), b = hex(S(chs[i + 1][1]).fill), c = a.map((v, j) => Math.round(v + (b[j] - v) * f));
+    st.style.background = "rgb(" + c.join(",") + ")";
+    const cur = f > 0.5 ? i + 1 : i; st.style.color = S(chs[cur][1]).ink;
+    name.textContent = chs[cur][0]; no.textContent = String(cur + 1).padStart(2, "0");
+  };
+});
+
+/* 6 · a word goes on its side */
+part("A word goes on its side", "Ours: the board's spine, as the turn",
+  ["The last word of a ride turns a quarter about its foot and shrinks into the edge as a column's name on its side. Then the column reads beside it.",
+   "Where: the end of any ride that hands over to a column (concept D)."], 2, (st) => {
+  st.style.background = "#fff";
+  const w = el("div", "big", "About"); w.style.cssText = "left:0;top:0;font-size:120px;transform-origin:0 100%"; st.appendChild(w);
+  const col = el("div", null, '<div style="font-size:20px;font-weight:600;letter-spacing:-0.03em;line-height:1.3">' + esc(H.about[0].lede) + "</div>"); col.style.cssText = "position:absolute;left:32%;right:8%;top:100%;transition:none"; st.appendChild(col);
+  return (p, W, Hh) => {
+    const k = ease(clamp(p / 0.6, 0, 1)), c = clamp((p - 0.6) / 0.4, 0, 1);
+    const x = lerp(0.06 * W, 0.06 * W + 70, k), y = lerp(Hh * 0.82, Hh * 0.92, k), s = lerp(1, 0.62, k);
+    w.style.transform = "translate3d(" + x + "px," + (y - w.offsetHeight) + "px,0) rotate(" + (-90 * k) + "deg) scale(" + s + ")";
+    col.style.top = lerp(100, 30, ease(c)) + "%";
+  };
+});
+
+/* 7 · the wordmark arrives */
+part("The wordmark arrives", "Normal is Boring stretches, Akaru rises",
+  ["At the foot of the page the mark comes up out of the bottom edge: on the left its letters grow from the baseline, on the right they rise one by one.",
+   "Where: the footer of any page, as the last thing read."], 1.6, (st) => {
+  st.style.background = "#000"; st.style.color = "#fff";
+  const a = el("div", "big stretch", ""); a.style.cssText = "left:5%;top:14%;font-size:64px"; st.appendChild(a);
+  [..."Reckon*House"].forEach((c) => { const l = el("span", "l", c); a.appendChild(l); });
+  const b = el("div", "big", ""); b.style.cssText = "left:5%;top:58%;font-size:64px"; st.appendChild(b);
+  const ls = [..."Reckon*House"].map((c) => { const o = el("span", null); o.style.cssText = "display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:0.1em"; const n = el("span", null, c); n.style.display = "inline-block"; o.appendChild(n); b.appendChild(o); return n; });
+  return (p) => {
+    const L = a.querySelectorAll(".l"), n = L.length;
+    L.forEach((l, i) => { const k = ease(clamp(p * 1.7 - (i / (n - 1)) * 0.6, 0, 1)); l.style.transform = "scaleY(" + lerp(0.06, 1, k) + ")"; });
+    ls.forEach((l, i) => { const k = ease(clamp(p * 2.2 - i * 0.09, 0, 1)); l.style.transform = "translateY(" + ((1 - k) * 110) + "%)"; });
+  };
+});
+
+/* 8 · the numbers count, and the dot grows into a word */
+part("Numbers that count, and the dot", "Akaru's counters, Normal is Boring's cursor",
+  ["Big numbers in brackets count up as they arrive. The cursor is a dot, and over a picture it grows into the word for what a press does.",
+   "Where: About's facts; the dot over every picture on the site."], 1.2, (st) => {
+  st.style.background = "#fff";
+  const facts = [[H.order.length, "case studies"], [20, "years"], [8, "years at Nordstrom"], [2000, "stores"]];
+  const nums = facts.map(([v, t], i) => { const d = el("div", null, '<div class="big" style="position:static;font-size:52px"><span style="font-weight:400;color:rgba(0,0,0,.42)">(</span><b>0</b><span style="font-weight:400;color:rgba(0,0,0,.42)">)</span></div><div style="font-size:12px;font-weight:600;margin-top:8px">' + t + "</div>");
+    d.style.cssText = "position:absolute;left:" + (6 + i * 23) + "%;top:18%"; st.appendChild(d); return { b: d.querySelector("b"), v }; });
+  ["ivy-park", "arc", "chalet"].forEach((k, i) => { const b = imgBox(S(k), 140, 100); b.style.position = "absolute"; b.style.left = (6 + i * 30) + "%"; b.style.top = "58%"; b.dataset.cur = "Open"; b.dataset.reel = k; st.appendChild(b); });
+  return (p) => nums.forEach(({ b, v }) => { const k = ease(clamp(p * 1.4, 0, 1)); const x = Math.round(v * k); b.textContent = v >= 1000 ? x.toLocaleString("en-US") : String(x); });
+});
+
+R.start({ frame: () => {} });
+})();
+</script>
+</body>
+</html>
