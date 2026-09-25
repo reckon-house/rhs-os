@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The plane · scroll concepts · Reckon*House</title>
+<!-- ── CONCEPT G: THE PLANE, A AND E TOGETHER (25 Sept 2026) ──────────
+     His ask: "what would a combo of A and E look like? what if we mix in
+     some full bleed hero images too so it's a big scale play mix of
+     large images in play? and would we transition a full case study
+     'down' like the mini ivy park one so everything feels 'connected'?
+     ... it never feels like you leave the page, ya know? just keep going
+     up, down, left, right..."
+
+     A's rows (a line as a field of its lead study's colour with its name
+     on its side, then white with studies hung at different heights) laid
+     out on E's plane, and E's camera flying one route over it. Mixed in
+     at full bleed: a picture that fills the glass edge to edge, from a
+     file with the pixels for it (3,000 wide or more, never stretched).
+     At the end of a row the study it leads to starts as a small picture
+     at the right of the glass and grows to full bleed as the camera
+     arrives, and then the camera turns DOWN into the whole study: every
+     section of src/data/<slug>-case-study.ts in order, his words, read as
+     a normal page. At its foot the camera turns across into the next
+     row, so nothing ever leaves.
+
+     The route: across (Digital) · down (Ivy Park, the full study) ·
+     across (Campaigns) · UP through Robert Rodriguez's campaign at full
+     bleed · across (Interiors) · down (the Hill Country kitchen, the full
+     study) · LEFT into the way to talk. Each leg slows into its corner
+     and speeds out of it, and reads at the scroll's own speed between.
+     A study keeps an address: entering one writes #ivy-park into the
+     URL, and opening that URL opens the plane on it.
+
+     Not ported: the studies' pressing choreography (pins, zooms,
+     crossings). Their bespoke drawings (the hexagon device, the reach
+     chart, the material charts) show as a note pointing to the live
+     study. A phone reads the whole route downwards. -->
+<link rel="stylesheet" href="/lab/scroll-concepts/ride.css">
+<style>
+  #stage { position: relative; }
+  #stage > .pin { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #fff; }
+  #plane { position: absolute; left: 0; top: 0; will-change: transform; }
+  .room { position: absolute; overflow: hidden; }
+  .room.paper { background: #fff; }
+  .room.black { background: #000; color: #fff; }
+
+  /* ── the chrome ── */
+  .chrome { position: fixed; z-index: 30; color: var(--c, #000); transition: color 0.35s ease; }
+  #mk { left: var(--gut); top: 44px; font-size: var(--st-fs); }
+  #crumb { left: var(--gut); top: calc(44px + var(--st-fs) * 1.2 + 4px); font-size: 12px; font-weight: 600; white-space: nowrap; }
+  #crumb span { opacity: 0.55; }
+  #idx { right: var(--gut); top: 48px; display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 16px 0 14px;
+    border: 1px solid currentColor; border-radius: 17px; background: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  #idx i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  #way { left: var(--gut); bottom: 36px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  #way b { font-size: 16px; font-weight: 600; }
+  #map { position: fixed; z-index: 30; right: var(--gut); bottom: 28px; width: 190px; height: 118px; color: var(--c, #000); transition: color 0.35s ease; }
+  #map svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  #map, #way { transition: color 0.35s ease, opacity 0.4s ease; }
+  body.reading #map, body.reading #way, body.home #map, body.home #way { opacity: 0; pointer-events: none; }
+  /* while a study is under the mark, the mark stands on paper, as it
+     does on the site's own study pages, so the words pass under it */
+  #band { position: fixed; z-index: 29; left: 0; right: 0; top: 0; height: calc(44px + var(--st-fs) * 1.2 + 36px); background: var(--paper);
+    box-shadow: 0 1px 0 var(--hair); transform: translateY(-101%); transition: transform 0.5s var(--ease); pointer-events: none; }
+  #band.on { transform: none; }
+
+  /* the index: the rail's lines as ways to their places on the route */
+  #sheet { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(520px, 100vw); background: var(--paper); color: var(--ink);
+    padding: 120px 50px 50px; box-shadow: -1px 0 0 var(--hair); clip-path: inset(0 0 0 100%); pointer-events: none; transition: clip-path 0.7s var(--ease); }
+  #sheet.on { clip-path: inset(0 0 0 0); pointer-events: auto; }
+  #sheet .ln { position: relative; display: flex; align-items: flex-start; gap: 4px; width: 100%; height: 42px; padding: 2px 0 0; border: 0; background: none;
+    font: inherit; font-size: 32px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.2; color: var(--grey); cursor: pointer; text-align: left; transition: color 0.3s ease; }
+  #sheet .ln.st { font-size: 20px; font-weight: 600; letter-spacing: -0.03em; height: 34px; padding: 6px 0 0 18px; }
+  #sheet .ln:hover, #sheet .ln.here { color: var(--ink); }
+  #sheet .ln::after { content: ""; position: absolute; left: -50px; top: 100%; height: 1px; width: calc(50px + var(--w, 0px)); background: rgba(0, 0, 0, 0.1); }
+  #sheet .ln.st::after { display: none; }
+  #sheet .x { position: absolute; right: 50px; top: 48px; height: 34px; padding: 0 16px; border: 1px solid currentColor; border-radius: 17px;
+    background: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+  /* ── the opener: the statement across an empty page ── */
+  .opener .small { position: absolute; left: 20vw; top: 21vh; font-size: var(--st-fs); font-weight: 600; letter-spacing: -0.05em; line-height: 1.2; }
+  .opener .big { position: absolute; font-size: 15.5vh; font-weight: 700; letter-spacing: -0.055em; line-height: 0.9; white-space: nowrap; will-change: transform; }
+  .opener .b1 { left: 8vw; top: 32vh; } .opener .b2 { left: 31vw; top: 49vh; } .opener .b3 { left: 54vw; top: 66vh; }
+  .opener .grey { position: absolute; right: 7vw; top: 21vh; max-width: 26ch; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: var(--grey); }
+
+  /* ── a line's field: its colour, its name on its side, its sentence ── */
+  .field { background: var(--fill); color: var(--fink); }
+  .field .spine { position: absolute; left: 3.4vw; top: 15vh; writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 0.8; text-transform: uppercase; white-space: nowrap; }
+  .field .count { position: absolute; top: 15vh; font-size: 12px; font-weight: 600; }
+  .field .say { position: absolute; bottom: 12vh; width: 24vw; margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; }
+  .field .cap span { color: inherit; opacity: 0.62; }
+
+  /* ── white, with studies hung at different sizes ── */
+  .hang .it { position: absolute; }
+
+  /* ── a picture at full bleed ── */
+  .bleed { background: #1a1a1a; color: #fff; }
+  .bleed .clip { position: absolute; inset: 0; overflow: hidden; }
+  .bleed .im { position: absolute; left: -7%; top: -7%; width: 114%; height: 114%; will-change: transform; }
+  .bleed .im img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .bleed .lab { position: absolute; left: var(--gut); bottom: 84px; font-size: 12px; font-weight: 600; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45); }
+  .bleed .lab span { opacity: 0.75; }
+  .bleed.grow { background: #fff; }
+  .bleed .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 32%; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.32)); pointer-events: none; }
+  .bleed .go { position: absolute; left: var(--gut); bottom: 84px; display: inline-flex; align-items: center; height: 40px; padding: 0 18px;
+    border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 20px; font-size: 13px; font-weight: 600; transition: background-color 0.3s ease, color 0.3s ease; }
+  .bleed .go:hover { background: #fff; color: #000; }
+
+  /* ── the study, going down ── */
+  .study { background: #fff; color: #000; padding: 16vh 0 22vh; }
+  .s-sec { position: relative; margin: 0 12vw; }
+  .s-sec + .s-sec, .s-sec + .s-group, .s-group + .s-sec, .s-group + .s-group, .s-bleed + .s-sec, .s-sec + .s-bleed, .s-group + .s-bleed, .s-bleed + .s-group { margin-top: 13vh; }
+  .s-head + .s-sec { margin-top: 5vh; }
+  .s-kick { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 18px; }
+  .s-title { margin: 0; font-size: clamp(56px, 7vw, 120px); font-weight: 700; letter-spacing: -0.055em; line-height: 0.92; }
+  .s-sub { margin: 4vh 0 0; max-width: 34ch; font-size: clamp(22px, 2.3vw, 36px); font-weight: 600; letter-spacing: -0.045em; line-height: 1.15; }
+  .s-sub span, .s-held { color: var(--grey); }
+  .s-meta { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 5vw; }
+  .s-reel { position: relative; width: 200px; height: 150px; border-radius: 16px; overflow: hidden; background: var(--cream); }
+  .s-reel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .s-reel + .cap { color: var(--grey); font-weight: 500; }
+  .s-ledger { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3vw; margin-top: 8vh; padding-top: 18px; border-top: 1px solid var(--ink); }
+  .s-ledger dt { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 6px; }
+  .s-ledger dd { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.45; }
+  .s-abstract { grid-column: 1 / -1; columns: 2; column-gap: 4vw; margin-top: 7vh; font-size: 18px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.5; }
+  .s-abstract p { margin: 0 0 1em; break-inside: avoid; }
+  .s-label { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 16px; }
+  .s-h2 { margin: 0; font-size: clamp(34px, 4.2vw, 68px); font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }
+  .s-subhead { margin: 0; max-width: 24ch; font-size: clamp(24px, 2.4vw, 38px); font-weight: 600; letter-spacing: -0.045em; line-height: 1.15; }
+  .s-base { margin: 0; max-width: 40em; font-size: 18px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.55; color: rgba(0, 0, 0, 0.8); }
+  .s-base + .s-base { margin-top: 1em; }
+  .s-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3.2vw; }
+  .s-col h3 { margin: 0 0 12px; font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.25; }
+  .s-col p { margin: 0 0 0.9em; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.55; color: rgba(0, 0, 0, 0.8); }
+  .s-group { margin: 0 6vw; padding: 9vh 6vw 9vh; }
+  .s-group > .s-sec { margin-left: 0; margin-right: 0; }
+  .s-bleed { position: relative; overflow: hidden; }
+  .s-bleed .im { position: absolute; left: 0; top: -6%; width: 100%; height: 112%; will-change: transform; }
+  .s-bleed .im img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .s-row { display: flex; gap: 2.4vw; align-items: flex-end; }
+  .s-row.center { justify-content: center; }
+  .s-fig .cap { color: rgba(0, 0, 0, 0.8); }
+  .s-edit { margin: 0; font-size: clamp(44px, 6.2vw, 108px); font-weight: 600; letter-spacing: -0.055em; line-height: 0.98; }
+  .s-close { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 5vw; }
+  .s-close .t p { margin: 0 0 1em; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.35; }
+  .s-close dt { font-size: 12px; font-weight: 600; color: var(--grey); margin: 0 0 6px; }
+  .s-close dd { margin: 0 0 22px; font-size: 15px; font-weight: 500; line-height: 1.6; }
+  .s-note { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 26px 30px; border-radius: 16px; background: var(--cream);
+    font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .s-note a { font-size: 12px; white-space: nowrap; border-bottom: 1px solid currentColor; }
+  .s-swatches { display: flex; gap: 2vw; margin-top: 5vh; }
+  .s-sw { width: 160px; }
+  .s-sw i { display: block; height: 160px; border-radius: 16px; background: var(--c); }
+  .s-sw b { display: block; margin-top: 10px; font-size: 13px; font-weight: 700; }
+  .s-sw span { font-size: 12px; font-weight: 500; color: var(--grey); }
+  .s-words { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2em 0.5em; margin-top: 6vh; font-size: clamp(40px, 5vw, 88px); letter-spacing: -0.05em; line-height: 1; }
+  /* the turn, announced at the edge the camera is about to leave by */
+  .s-cue { position: absolute; right: var(--gut); bottom: 46vh; font-size: 12px; font-weight: 600; }
+  .s-cue.left { right: auto; left: var(--gut); }
+
+  /* ── up: a campaign at full bleed, frame over frame ── */
+  .lift .lab { max-width: 34em; line-height: 1.5; }
+
+  /* ── the way to talk, arriving from the left ── */
+  .end .ab { position: absolute; top: 24vh; width: 62vw; margin: 0; font-size: 4vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .end .lbl { position: absolute; top: 19vh; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.5); }
+  .end .talk { position: absolute; top: 24vh; width: 56vw; }
+  .end .talk h2 { margin: 0; font-size: 4vw; font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
+  .end .talk p { margin: 24px 0 0; max-width: 40ch; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.3; color: rgba(255, 255, 255, 0.5); }
+  .end .ways { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+  .end .ways a { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px;
+    font-size: 13px; font-weight: 600; transition: background-color 0.3s ease, color 0.3s ease; }
+  .end .ways a:hover { background: #fff; color: #000; }
+  .end .word { position: absolute; left: 3vw; bottom: -0.02em; margin: 0; font-size: 13vw; font-weight: 700; letter-spacing: -0.06em; line-height: 0.76; white-space: nowrap; }
+  .end .word .l { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+  .end .prac { position: absolute; left: 3.4vw; top: 19vh; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.5); }
+
+  /* ── a phone reads the route downwards ── */
+  body.flat #stage { height: auto !important; }
+  body.flat #stage > .pin { position: relative; height: auto; overflow: visible; }
+  body.flat #plane { position: relative; transform: none !important; width: 100% !important; height: auto !important; }
+  body.flat .room { position: relative !important; left: auto !important; top: auto !important; width: 100% !important; height: auto !important; min-height: 60svh; }
+  body.flat .room > * , body.flat .opener .big, body.flat .field .spine, body.flat .field .count, body.flat .field .say, body.flat .hang .it,
+  body.flat .end .ab, body.flat .end .lbl, body.flat .end .talk, body.flat .end .word, body.flat .end .prac { position: relative !important; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; }
+  body.flat .opener, body.flat .field, body.flat .hang, body.flat .end { padding: 90px 20px 50px; }
+  body.flat .opener .big { display: block; font-size: 16vw; } body.flat .opener .small, body.flat .opener .grey { position: relative; left: auto; right: auto; top: auto; margin: 20px 0; }
+  body.flat .field .spine { writing-mode: horizontal-tb; transform: none; font-size: 17vw !important; }
+  body.flat .field .say { width: auto; margin-top: 24px; } body.flat .hang .it { margin: 0 0 36px; }
+  body.flat .bleed { height: 64svh !important; } body.flat .bleed .clip { clip-path: none !important; }
+  body.flat .study { padding: 60px 0; } body.flat .s-sec { margin: 0 20px; } body.flat .s-meta, body.flat .s-close, body.flat .s-cols { display: block; }
+  body.flat .s-abstract { columns: 1; } body.flat .s-ledger { grid-template-columns: 1fr 1fr; } body.flat .s-row { flex-wrap: wrap; }
+  body.flat .s-group { margin: 0 12px; padding: 40px 20px; } body.flat .s-cue { display: none; }
+  body.flat .end { display: flex; flex-direction: column-reverse; gap: 40px; }
+  body.flat .end .ab, body.flat .end .talk h2 { width: auto; font-size: 9vw; } body.flat .end .talk { width: auto; } body.flat .end .word { font-size: 15vw; white-space: normal; }
+  body.flat #map, body.flat #way { display: none; }
+  body.flat #band { transform: none; left: 0 !important; right: 0 !important; height: 104px; }
+</style>
+</head>
+<body>
+<section id="stage"><div class="pin"><div id="plane"></div></div></section>
+<a id="mk" class="chrome mark" href="/">Reckon<i>*</i>House</a>
+<div id="band"></div>
+<div id="crumb" class="chrome"></div>
+<button id="idx" class="chrome" type="button"><i></i>Index</button>
+<aside id="sheet" aria-label="Index"><button class="x" type="button">Close</button><nav id="lines"></nav></aside>
+<div id="way" class="chrome"><b>&rarr;</b><span></span></div>
+<div id="map" aria-hidden="true"></div>
+<script src="/lab/scroll-concepts/house.js"></script>
+<script src="/lab/scroll-concepts/studies.js"></script>
+<script src="/lab/scroll-concepts/vendor/lenis.min.js"></script>
+<script src="/lab/scroll-concepts/ride.js"></script>
+<script>
+(function () {
+const H = window.HOUSE, FULL = window.STUDIES_FULL, BLEEDS = window.BLEEDS, R = window.Ride, clamp = R.clamp, lerp = R.lerp, ease = R.ease;
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const stage = document.getElementById("stage"), plane = document.getElementById("plane"), map = document.getElementById("map");
+const line = (tag) => H.lines.find((l) => l.tag === tag);
+/* a board picture at a height, never wider than half its own pixels */
+const fit = (s, h) => { let w = h * s.nat[0] / s.nat[1]; const m = R.honest(s); if (w > m) { h = h * m / w; w = m; } return { w, h }; };
+let VW = 0, VH = 0, FLAT = false, G = null;
+const rooms = [], drift = [], grows = [], words = [], timers = [];
+
+/* ── ROOMS ─────────────────────────────────────────────────────────── */
+function place(elm, x, y, w, h, ink, kind) {
+  elm.classList.add("room");
+  if (FLAT) { plane.appendChild(elm); const r = { el: elm, x: 0, y: 0, w: 0, h: 0, ink, kind }; rooms.push(r); return r; }
+  elm.style.left = x + "px"; elm.style.top = y + "px"; elm.style.width = w + "px";
+  if (h != null) elm.style.height = h + "px";
+  plane.appendChild(elm);
+  const r = { el: elm, x, y, w, h: h != null ? h : elm.offsetHeight, ink, kind };
+  rooms.push(r); return r;
+}
+function opener() {
+  const o = el("div", "opener paper");
+  const m = H.statement.ink.match(/^(.*across) (brand,) (product,) (and place\.)$/);
+  o.appendChild(el("div", "small", esc(m ? m[1] : H.statement.ink)));
+  if (m) [m[2], m[3], m[4]].forEach((w, i) => { const b = el("div", "big b" + (i + 1), esc(w)); b.__drift = [0.05, 0.14, 0.26][i]; o.appendChild(b); });
+  o.appendChild(el("p", "grey", esc(H.statement.grey)));
+  return o;
+}
+function field(L) {
+  const f = el("div", "field"); f.style.setProperty("--fill", L.color); f.style.setProperty("--fink", L.ink);
+  const size = Math.min(0.26 * VH, 0.74 * VH / (L.name.length * 0.64));
+  const sp = el("div", "spine", esc(L.name)); sp.style.fontSize = size + "px"; f.appendChild(sp);
+  const thick = size * 0.8;
+  const ct = el("div", "count", String(L.studies.length)); ct.style.left = (0.034 * VW + thick + 12) + "px"; f.appendChild(ct);
+  const say = el("p", "say", esc(L.sentence)); say.style.left = (0.034 * VW + thick + 0.06 * VW) + "px"; f.appendChild(say);
+  f.__w = 0.034 * VW + thick + 0.06 * VW + 0.24 * VW + 0.06 * VW;
+  return f;
+}
+/* studies hung at three sizes, so a small one stands beside a big one */
+function hang(ks) {
+  const hg = el("div", "hang paper");
+  const spots = [[0.58, 0.14, "up"], [0.26, 0.54, "left"], [0.4, 0.2, "down"]];
+  let x = 0.06 * VW;
+  ks.forEach((k, i) => {
+    const s = H.studies[k], [hh, top, dir] = spots[i % 3], p = fit(s, hh * VH);
+    const it = el("div", "it"); it.style.left = x + "px"; it.style.top = (top * VH) + "px";
+    const pic = R.pic(s, p.w, p.h, { flip: dir }); pic.dataset.go = s.h; it.appendChild(pic);
+    it.appendChild(el("span", "cap", esc(s.t) + " <span>" + esc(s.s) + "</span>"));
+    hg.appendChild(it); x += p.w + 0.05 * VW;
+  });
+  hg.__w = x + 0.02 * VW;
+  return hg;
+}
+/* a picture at full bleed, from a file with the pixels for it */
+function bleed(src, label, sub, opts) {
+  const o = opts || {};
+  const b = el("div", "bleed" + (o.grow ? " grow" : ""));
+  const clip = el("div", "clip"), im = el("div", "im"), img = el("img");
+  img.alt = ""; img.decoding = "async"; img.loading = o.eager ? "eager" : "lazy"; img.src = encodeURI(src);
+  im.appendChild(img); clip.appendChild(im); b.appendChild(clip);
+  clip.appendChild(el("div", "shade"));
+  if (label) clip.appendChild(el("div", "lab", esc(label) + (sub ? " <span>" + esc(sub) + "</span>" : "")));
+  if (o.go) { const g = el("a", "go", esc(o.go) + " \u2192"); g.href = o.href || "#"; clip.appendChild(g); }
+  im.__drift = o.drift != null ? o.drift : 0.12;
+  b.__im = im; b.__clip = clip; b.__grow = !!o.grow;
+  return b;
+}
+
+/* ── A WHOLE STUDY, GOING DOWN ─────────────────────────────────────────
+   Every section of the study's data file, in order. The common types
+   are drawn in the house's type; the bespoke drawings point to the live
+   study. Plates are never wider than half their file's pixels. */
+const NOTES = { "hex-polygon": "the hexagon device", "polygon-lattice": "the polygon lattice", "campaign-blast-radius": "the campaign's reach, drawn",
+  "material-circos": "how the four materials meet, drawn", "kitchen-palette": "the room's colour spectrum", "rr-system-index": "the system index" };
+function studyColumn(slug, next) {
+  const S = FULL[slug], dims = S.dims, col = el("div", "study");
+  const ratio = (src) => dims[src][0] / dims[src][1];
+  const honest = (src) => dims[src][0] / 2;
+  const plate = (src, w, alt, flip) => {
+    const h = w / ratio(src), b = el("div", "pic");
+    b.style.width = w + "px"; b.style.height = h + "px"; b.style.aspectRatio = w + " / " + h;
+    const img = el("img"); img.alt = alt || ""; img.loading = "lazy"; img.decoding = "async"; img.src = encodeURI(src); img.classList.add("on");
+    b.appendChild(img); if (flip) b.dataset.flip = flip; return b;
+  };
+  const cw = 0.76 * VW;
+  const lines = (text, cls) => { const w = el("div", cls); String(text).split("\n").forEach((ln) => { const d = el("div", null, esc(ln)); d.dataset.rise = ""; w.appendChild(d); }); return w; };
+  const paras = (text, cls) => String(text || "").split(/\n\n+/).map((p) => el("p", cls, esc(p)));
+  let plates = 0, group = null, gname = null;
+  S.sections.forEach((sec) => {
+    let node = null;
+    switch (sec.type) {
+      case "meta": {
+        node = el("section", "s-sec s-meta");
+        const left = el("div");
+        left.appendChild(el("div", "s-kick", esc(sec.published || S.published) + " · " + esc(String(sec.field || "").split(/\s{2,}|\n/).join(" · "))));
+        left.appendChild(lines(sec.title || S.title, "s-title"));
+        const [ink, grey] = String(sec.subtitle || S.subtitle || "").split("|").map((x) => x.trim());
+        left.appendChild(el("p", "s-sub", esc(ink) + (grey ? " <span>" + esc(grey) + "</span>" : "")));
+        node.appendChild(left);
+        if (sec.reel && sec.reel.images && sec.reel.images.length) {
+          const right = el("div"), box = el("div", "s-reel");
+          const thumbs = sec.reel.images.map((u) => u.replace(/\/([^/]+)\.(jpe?g|png|webp)$/i, "/reel/$1.avif"));
+          const im = el("img"); im.alt = ""; im.src = encodeURI(thumbs[0]); box.appendChild(im);
+          let k = 0; timers.push(setInterval(() => { if (document.hidden) return; k = (k + 1) % thumbs.length; im.src = encodeURI(thumbs[k]); }, 700));
+          right.appendChild(box); right.appendChild(el("span", "cap", esc(sec.reel.caption || ""))); node.appendChild(right);
+        }
+        if (sec.summary) { const dl = el("dl", "s-ledger"); sec.summary.forEach((r) => { const d = el("div"); d.appendChild(el("dt", null, esc(r.label))); d.appendChild(el("dd", null, esc(r.value))); dl.appendChild(d); }); node.appendChild(dl); }
+        if (sec.abstract) { const a = el("div", "s-abstract"); paras(sec.abstract).forEach((p) => a.appendChild(p)); node.appendChild(a); }
+        break;
+      }
+      case "hero": {
+        if (!dims[sec.image]) break;
+        if (!sec.inline) {
+          node = el("div", "s-bleed"); node.style.height = Math.min(VW / ratio(sec.image), 1.15 * VH) + "px";
+          const im = el("div", "im"), img = el("img"); img.alt = sec.alt || ""; img.loading = "lazy"; img.decoding = "async"; img.src = encodeURI(sec.image);
+          im.appendChild(img); node.appendChild(im); im.__drift = 0.1;
+        } else {
+          node = el("section", "s-sec s-fig");
+          const w = Math.min(honest(sec.image), cw, 1.1 * VH * ratio(sec.image));
+          const row = el("div", "s-row center"); const fig = el("div"); fig.appendChild(plate(sec.image, w, sec.alt, "up"));
+          const cap = sec.pressing && sec.pressing.captions && sec.pressing.captions[0]; if (cap) fig.appendChild(el("span", "cap", esc(cap)));
+          row.appendChild(fig); node.appendChild(row);
+        }
+        break;
+      }
+      case "section-header": {
+        node = el("section", "s-sec s-head");
+        if (sec.label) node.appendChild(el("div", "s-label", esc(sec.label)));
+        const t = lines(sec.title || "", "s-h2");
+        if (sec.pressing && sec.pressing.heldLine) { const d = el("div", "s-held", esc(sec.pressing.heldLine)); d.dataset.rise = ""; t.appendChild(d); }
+        node.appendChild(t);
+        break;
+      }
+      case "text": {
+        node = el("section", "s-sec");
+        const cls = sec.size === "subhead" || sec.size === "xl" || sec.size === "lg" ? "s-subhead" : "s-base";
+        paras(sec.content, cls).forEach((p) => { if (cls === "s-subhead") p.dataset.rise = ""; node.appendChild(p); });
+        break;
+      }
+      case "three-column-text": case "two-column-text": {
+        node = el("section", "s-sec s-cols");
+        if (sec.type === "two-column-text") node.style.gridTemplateColumns = "repeat(2, minmax(0, 1fr))";
+        (sec.columns || []).forEach((c) => {
+          const d = el("div", "s-col");
+          if (c.image && dims[c.image.src]) { d.appendChild(plate(c.image.src, Math.min(honest(c.image.src), (cw - 6.4 * VW / 100) / 3), c.image.alt, "up")); d.lastChild.style.marginBottom = "18px"; }
+          d.appendChild(el("h3", null, esc(c.title)));
+          paras(c.content).forEach((p) => d.appendChild(p));
+          node.appendChild(d);
+        });
+        break;
+      }
+      case "image": {
+        if (!dims[sec.src]) break;
+        node = el("section", "s-sec s-fig");
+        const w = Math.min(honest(sec.src), 0.6 * VW, 1.6 * VH * ratio(sec.src));
+        const row = el("div", "s-row"); row.style.justifyContent = plates++ % 2 ? "flex-end" : "flex-start";
+        const fig = el("div"); fig.appendChild(plate(sec.src, w, sec.alt, plates % 2 ? "up" : "left"));
+        row.appendChild(fig); node.appendChild(row);
+        break;
+      }
+      case "dual-image": case "triple-image": {
+        const imgs = (sec.images || [sec.left, sec.right]).filter((x) => x && dims[x.src]);
+        if (!imgs.length) break;
+        node = el("section", "s-sec s-fig");
+        const gap = 0.024 * VW, rs = imgs.map((x) => ratio(x.src));
+        let h = Math.min(0.72 * VH, (cw - gap * (imgs.length - 1)) / rs.reduce((a, b) => a + b, 0));
+        imgs.forEach((x, i) => { h = Math.min(h, honest(x.src) / rs[i]); });
+        const row = el("div", "s-row center");
+        imgs.forEach((x, i) => { const fig = el("div"); fig.appendChild(plate(x.src, h * rs[i], x.alt, ["up", "down", "up"][i]));
+          const cap = sec.pressing && sec.pressing.captions && sec.pressing.captions[i]; if (cap) fig.appendChild(el("span", "cap", esc(cap))); row.appendChild(fig); });
+        node.appendChild(row);
+        break;
+      }
+      case "editorial-headline": {
+        node = el("section", "s-sec"); node.appendChild(lines(sec.text || "", "s-edit"));
+        break;
+      }
+      case "brand-system-volume": {
+        node = el("section", "s-sec");
+        if (sec.label) node.appendChild(el("div", "s-label", esc(sec.label)));
+        node.appendChild(lines(sec.title || "", "s-h2"));
+        if (sec.introText) { const p = el("p", "s-base", esc(sec.introText)); p.style.marginTop = "3vh"; node.appendChild(p); }
+        if (sec.colors) { const sw = el("div", "s-swatches"); sec.colors.forEach((c) => { const d = el("div", "s-sw", "<i></i><b>" + esc(c.name) + "</b><span>" + esc(c.hex) + "</span>"); d.firstChild.style.setProperty("--c", c.hex); sw.appendChild(d); }); node.appendChild(sw); }
+        if (sec.specimenWords && sec.fonts && sec.fonts[0]) {
+          const wts = sec.fonts[0].weights || [700], wd = el("div", "s-words");
+          sec.specimenWords.forEach((w, i) => { const s = el("span", null, esc(w)); s.style.fontWeight = wts[i % wts.length]; wd.appendChild(s); });
+          node.appendChild(wd);
+          node.appendChild(el("div", "s-label", esc(sec.fonts[0].name) + " · " + esc(sec.fonts[0].role || ""))).style.marginTop = "14px";
+        }
+        break;
+      }
+      case "closing": {
+        node = el("section", "s-sec s-close");
+        const t = el("div", "t"); paras(sec.content).forEach((p) => t.appendChild(p)); node.appendChild(t);
+        const dl = el("dl");
+        if (sec.services && sec.services.length) { dl.appendChild(el("dt", null, "Services")); dl.appendChild(el("dd", null, sec.services.map(esc).join("<br>"))); }
+        if (sec.stack && sec.stack.length) { dl.appendChild(el("dt", null, "Stack")); dl.appendChild(el("dd", null, sec.stack.map(esc).join("<br>"))); }
+        node.appendChild(dl);
+        break;
+      }
+      default: {
+        if (NOTES[sec.type]) {
+          node = el("section", "s-sec s-note", "<span>In the live study, " + esc(NOTES[sec.type]) + " plays here.</span>");
+          const a = el("a", null, "Open the live study"); a.href = "/case-studies/" + slug; node.appendChild(a);
+        }
+      }
+    }
+    if (!node) return;
+    const g = sec.group && sec.group.name;
+    if (g) {
+      if (g !== gname || !group) { group = el("div", "s-group"); group.style.background = sec.group.bg || "var(--cream)"; group.style.borderRadius = Math.min(sec.group.radius || 40, 64) + "px"; col.appendChild(group); gname = g; }
+      group.appendChild(node);
+    } else { group = null; gname = null; col.appendChild(node); }
+  });
+  if (next) col.appendChild(el("div", "s-cue" + (/^\u2190/.test(next) ? " left" : ""), esc(next)));
+  return col;
+}
+
+/* ── UP: a campaign at full bleed, frame over frame ── */
+function lift(slug, n) {
+  const S = FULL[slug], dims = S.dims;
+  /* its widest landscape files, in the order the study shows them, and
+     its brand frame last, at the top, where the climb ends */
+  const seen = new Set(), frames = [];
+  const want = (src) => dims[src] && dims[src][0] >= 3000 && !seen.has(src);
+  const walk = (v) => { if (typeof v === "string" && want(v)) { seen.add(v); frames.push(v); } else if (Array.isArray(v)) v.forEach(walk); else if (v && typeof v === "object") Object.values(v).forEach(walk); };
+  walk(S.sections);
+  const brand = frames.filter((f) => /logo/.test(f)), photos = frames.filter((f) => !/logo/.test(f));
+  return photos.slice(0, n - 1).concat(brand.slice(0, 1));
+}
+
+/* ── BUILD THE PLANE ───────────────────────────────────────────────── */
+function build() {
+  VW = innerWidth; VH = innerHeight; FLAT = VW <= 760;
+  document.body.classList.toggle("flat", FLAT);
+  plane.textContent = ""; rooms.length = 0; drift.length = 0; grows.length = 0; words.length = 0;
+  timers.splice(0).forEach(clearInterval);
+  const dig = line("digital"), cam = line("creative"), inn = line("interiors");
+  const ivy = H.studies["ivy-park"], rr = H.studies["robert-rodriguez"], kit = H.studies["hill-country-kitchen"];
+  let x = 0;
+  /* row one: the statement, Digital, and Ivy Park growing at the end */
+  const R0 = { opener: place(opener(), 0, 0, VW, VH, "#000", "paper") };
+  x = VW;
+  const f1 = field(dig); R0.field = place(f1, x, 0, f1.__w, VH, dig.ink, "field"); x += f1.__w;
+  const h1 = hang(["sally-os", "nordstrom-personalization", "jeffrey-ecommerce"]); place(h1, x, 0, h1.__w, VH, "#000", "paper"); x += h1.__w;
+  const b1 = BLEEDS["nordstrom-beauty"]; place(bleed(b1.src, H.studies["nordstrom-beauty"].t, H.studies["nordstrom-beauty"].s), x, 0, VW, VH, "#fff", "bleed"); x += VW;
+  const h2 = hang(["neiman-marcus", "cosmo-prof"]); place(h2, x, 0, h2.__w, VH, "#000", "paper"); x += h2.__w;
+  const xI = x;
+  const ivyB = FULL["ivy-park"].sections.find((s) => s.type === "hero").image;
+  const g1 = bleed(ivyB, ivy.t, ivy.s, { grow: true, eager: true }); g1.dataset.to = "ivy-park"; place(g1, xI, 0, VW, VH, "#fff", "bleed");
+  /* down: the whole study */
+  const c1 = studyColumn("ivy-park", "Next, Campaigns →"); const C1 = place(c1, xI, VH, VW, null, "#000", "study");
+  const yB = C1.h;
+  /* across: Campaigns */
+  x = xI + VW;
+  const f2 = field(cam); const F2 = place(f2, x, yB, f2.__w, VH, cam.ink, "field"); x += f2.__w;
+  const h3 = hang(["capitan-boot-co", "hill-country-oak", "loved-by-nordstrom"]); place(h3, x, yB, h3.__w, VH, "#000", "paper"); x += h3.__w;
+  const b2 = BLEEDS["jeffrey-spring"]; place(bleed(b2.src, H.studies["jeffrey-spring"].t, H.studies["jeffrey-spring"].s), x, yB, VW, VH, "#fff", "bleed"); x += VW;
+  const xR = x;
+  /* up: Robert Rodriguez at full bleed, frame over frame */
+  const fr = lift("robert-rodriguez", 4);
+  fr.forEach((src, i) => {
+    const first = i === 0, last = i === fr.length - 1;
+    const b = bleed(src, first ? rr.t : "", first ? rr.fact : "", { go: last ? "Open the study" : "", href: "/case-studies/" + rr.h });
+    if (first) b.classList.add("lift");
+    place(b, xR, yB - i * VH, VW, VH, "#fff", "bleed");
+  });
+  const yT = yB - (fr.length - 1) * VH;
+  /* across: Interiors, and the kitchen growing at the end */
+  x = xR + VW;
+  const f3 = field(inn); const F3 = place(f3, x, yT, f3.__w, VH, inn.ink, "field"); x += f3.__w;
+  const h4 = hang(["fairview-entry", "chalet", "hill-country-bath"]); place(h4, x, yT, h4.__w, VH, "#000", "paper"); x += h4.__w;
+  const b3 = BLEEDS["fairview-sitting"]; place(bleed(b3.src, H.studies["fairview-sitting"].t, H.studies["fairview-sitting"].s), x, yT, VW, VH, "#fff", "bleed"); x += VW;
+  const xK = x;
+  const kitB = FULL["hill-country-kitchen"].sections.find((s) => s.type === "hero").image;
+  const g2 = bleed(kitB, kit.t, kit.s, { grow: true }); g2.dataset.to = "hill-country-kitchen"; place(g2, xK, yT, VW, VH, "#fff", "bleed");
+  const c2 = studyColumn("hill-country-kitchen", "← Next, the way to talk"); const C2 = place(c2, xK, yT + VH, VW, null, "#000", "study");
+  const yE = yT + C2.h;
+  /* left: About, the way to talk, and the mark */
+  const We = 2.7 * VW, end = el("div", "end black");
+  end.appendChild(el("div", "prac", H.practice.map(esc).join(" · ")));
+  const word = el("p", "word"); [..."Reckon*House"].forEach((c) => { const l = el("span", "l", c === " " ? " " : esc(c)); word.appendChild(l); words.push(l); }); end.appendChild(word);
+  const talk = el("div", "talk"); talk.style.left = (1.08 * VW) + "px";
+  talk.appendChild(el("h2", null, esc(H.book.lede))); talk.appendChild(el("p", null, esc(H.book.dim)));
+  talk.appendChild(el("div", "ways", H.links.map((l) => '<a href="' + esc(l.v) + '">' + esc(l.k) + "</a>").join(""))); end.appendChild(talk);
+  const lbl = el("div", "lbl", esc(H.about[0].name)); lbl.style.left = (1.96 * VW) + "px"; end.appendChild(lbl);
+  const ab = el("p", "ab", esc(H.about[0].lede)); ab.style.left = (1.96 * VW) + "px"; ab.style.width = (0.62 * VW) + "px"; end.appendChild(ab);
+  const EB = place(end, xK - We, yE, We, VH, "#fff", "black");
+  if (FLAT) { G = null; return; }
+
+  /* the drifting things, in plane coordinates */
+  rooms.forEach((r) => {
+    r.el.querySelectorAll(".big, .im").forEach((d) => { if (d.__drift == null) return;
+      let ox = 0, oy = 0, n = d; while (n && n !== r.el) { ox += n.offsetLeft; oy += n.offsetTop; n = n.offsetParent; }
+      drift.push({ d, bx: r.x + ox + d.offsetWidth / 2, by: r.y + oy + d.offsetHeight / 2, k: d.__drift }); });
+    if (r.el.__grow) grows.push(r);
+  });
+
+  /* ── THE ROUTE ── the camera's top-left corner, corner to corner */
+  const pts = [[0, 0], [xI, 0], [xI, yB], [xR, yB], [xR, yT], [xK, yT], [xK, yE], [xK - We, yE]];
+  const names = [
+    ["→", "Across", dig.name, ""], ["↓", "Down", dig.name, ivy.t], ["→", "Across", cam.name, ""], ["↑", "Up", cam.name, rr.t],
+    ["→", "Across", inn.name, ""], ["↓", "Down", inn.name, kit.t], ["←", "Left", "The way to talk", ""]];
+  const hashes = [null, "ivy-park", null, "robert-rodriguez", null, "hill-country-kitchen", null];
+  const segs = []; let S = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const L = Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]);
+    const a = Math.min(0.9 * VH, L / 2);
+    segs.push({ a: pts[i], b: pts[i + 1], L, ramp: a, S: L + a, s: S, name: names[i], hash: hashes[i] });
+    S += L + a;
+  }
+  stage.style.height = (S + VH) + "px";
+  let PW = 0, PH = 0; rooms.forEach((r) => { PW = Math.max(PW, r.x + r.w); PH = Math.max(PH, r.y + r.h); });
+  plane.style.width = PW + "px"; plane.style.height = PH + "px";
+  G = { pts, segs, S, PW, PH, xI, yB, xR, yT, xK, yE, We, F2, F3, R0, EB };
+  drawMap(); index();
+}
+
+/* ── MOVING ALONG IT ── speed ramps up out of a corner and down into
+   the next, and in between the camera moves at the scroll's own speed */
+const posAt = (sg, u) => { const a = sg.ramp, L = sg.L;
+  if (u <= a) return (u * u) / (2 * a);
+  if (u >= sg.S - a) { const v = sg.S - u; return L - (v * v) / (2 * a); }
+  return a / 2 + (u - a); };
+const uFor = (sg, pos) => { const a = sg.ramp, L = sg.L;
+  if (pos <= a / 2) return Math.sqrt(2 * a * pos);
+  if (pos >= L - a / 2) return sg.S - Math.sqrt(2 * a * (L - pos));
+  return pos + a / 2; };
+const stageTop = () => stage.getBoundingClientRect().top + scrollY;
+function camera(d) {
+  /* at a corner, the leg about to start is the one you are on. The page
+     scrolls in whole pixels and a corner falls between two, so a pixel
+     and a half short of it counts as there */
+  let sg = G.segs[G.segs.length - 1];
+  for (const s of G.segs) { if (d < s.s + s.S - 1.5) { sg = s; break; } }
+  const u = clamp(d - sg.s, 0, sg.S), f = sg.L ? posAt(sg, u) / sg.L : 1;
+  return { sg, u, cx: lerp(sg.a[0], sg.b[0], f), cy: lerp(sg.a[1], sg.b[1], f), f };
+}
+let lastHash = null;
+function frame(r) {
+  if (!G || FLAT) return;
+  const d = clamp(r.y - stageTop(), 0, G.S);
+  const { sg, cx, cy, f } = camera(d);
+  plane.style.transform = "translate3d(" + (-cx).toFixed(1) + "px," + (-cy).toFixed(1) + "px,0)";
+  /* the things that drift, against the middle of the glass */
+  drift.forEach((o) => {
+    const sx = o.bx - cx - VW / 2, sy = o.by - cy - VH / 2;
+    if (Math.abs(sx) > VW * 1.6 || Math.abs(sy) > VH * 1.6) return;
+    o.d.style.transform = "translate3d(" + (-sx * o.k).toFixed(1) + "px," + (-sy * o.k).toFixed(1) + "px,0)";
+  });
+  /* a study's picture grows from small to full bleed as it arrives */
+  grows.forEach((g) => {
+    const vis = clamp((VW - (g.x - cx)) / VW, 0, 1) * clamp((VH - Math.abs(g.y - cy)) / VH, 0, 1);
+    const k = ease(clamp(vis * 1.05, 0, 1));
+    const t = (1 - k) * 23, rt = (1 - k) * 44, b = (1 - k) * 23, l = (1 - k) * 9, rad = (1 - k) * 16;
+    g.el.__clip.style.clipPath = "inset(" + t.toFixed(2) + "% " + rt.toFixed(2) + "% " + b.toFixed(2) + "% " + l.toFixed(2) + "% round " + rad.toFixed(1) + "px)";
+  });
+  /* the mark stretches up out of the foot on the last leg */
+  if (sg === G.segs[G.segs.length - 1]) {
+    const n = words.length, k0 = f;
+    words.forEach((l, i) => { const k = ease(clamp(k0 * 1.6 - (1 - i / (n - 1)) * 0.6, 0, 1)); l.style.transform = "scaleY(" + lerp(0.06, 1, k).toFixed(4) + ")"; });
+  }
+  /* where you are, and which way you are going */
+  const [arrow, dir, ln0, st] = sg.name;
+  /* the opener belongs to no line yet */
+  const ln = sg === G.segs[0] && cx < G.R0.field.x - VW * 0.45 ? "" : ln0;
+  const way = document.getElementById("way"); way.firstChild.textContent = arrow; way.lastChild.textContent = (st || ln) ? dir + " · " + (st || ln) : dir;
+  const crumb = document.getElementById("crumb"), c = ln ? esc(ln) + (st ? " <span>/ " + esc(st) + "</span>" : "") : "";
+  if (crumb.__c !== c) { crumb.innerHTML = c; crumb.__c = c; }
+  if (sg.hash !== lastHash) { lastHash = sg.hash; history.replaceState(null, "", sg.hash ? "#" + sg.hash : location.pathname + location.search); }
+  /* the chrome takes the ink of the room under it */
+  const roomAt = (px, py) => { const X = px + cx, Y = py + cy; for (const q of rooms) { if (X >= q.x && X < q.x + q.w && Y >= q.y && Y < q.y + q.h) return q; } return null; };
+  const inkAt = (px, py) => { const q = roomAt(px, py); return q ? q.ink : "#000"; };
+  const under = roomAt(70, 60), band = !!under && under.kind === "study", bandEl = document.getElementById("band");
+  bandEl.classList.toggle("on", band);
+  /* only as wide as the study: a field arriving beside it keeps its top */
+  if (band) { bandEl.style.left = Math.max(0, under.x - cx).toFixed(1) + "px"; bandEl.style.right = Math.max(0, VW - (under.x + under.w - cx)).toFixed(1) + "px"; }
+  /* mid-study the map and the arrow step aside; they come back for the
+     turns, and they leave for good once the mark has arrived */
+  const reading = !!sg.hash && sg.hash !== "robert-rodriguez" && (d - sg.s) > 1.1 * VH && (sg.s + sg.S - d) > 1.1 * VH;
+  document.body.classList.toggle("reading", reading);
+  document.body.classList.toggle("home", sg === G.segs[G.segs.length - 1] && f > 0.7);
+  document.getElementById("mk").style.setProperty("--c", inkAt(70, 60));
+  crumb.style.setProperty("--c", inkAt(70, 100));
+  document.getElementById("idx").style.setProperty("--c", inkAt(VW - 80, 64));
+  way.style.setProperty("--c", inkAt(80, VH - 40));
+  map.style.setProperty("--c", inkAt(VW - 120, VH - 80));
+  const win = document.getElementById("mapWin"); if (win) { win.setAttribute("x", (cx * G.k).toFixed(1)); win.setAttribute("y", (cy * G.k).toFixed(1)); }
+}
+
+/* ── THE MAP ── the whole plane, the route, and the glass on it */
+function drawMap() {
+  const W = 190, Hm = 118, k = Math.min(W / G.PW, Hm / G.PH);
+  let svg = '<svg viewBox="0 0 ' + W + " " + Hm + '">';
+  rooms.forEach((r) => {
+    const fill = r.kind === "field" ? getComputedStyle(r.el).getPropertyValue("--fill") : r.kind === "bleed" ? "rgba(128,128,128,0.55)" : r.kind === "black" ? "#000" : "rgba(128,128,128,0.18)";
+    svg += '<rect x="' + (r.x * k).toFixed(1) + '" y="' + (r.y * k).toFixed(1) + '" width="' + Math.max(0.6, r.w * k).toFixed(1) + '" height="' + Math.max(0.6, r.h * k).toFixed(1) + '" fill="' + fill.trim() + '"/>';
+  });
+  svg += '<polyline fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" points="' + G.pts.map((p) => ((p[0] + VW / 2) * k).toFixed(1) + "," + ((p[1] + VH / 2) * k).toFixed(1)).join(" ") + '"/>';
+  svg += '<rect id="mapWin" width="' + (VW * k).toFixed(1) + '" height="' + (VH * k).toFixed(1) + '" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+  map.innerHTML = svg; G.k = k;
+}
+
+/* ── THE INDEX ── each entry flies the camera to its place on the route */
+const sheet = document.getElementById("sheet");
+function goTo(seg, pos, now) { const sg = G.segs[seg]; const d = sg.s + uFor(sg, clamp(pos, 0, sg.L)); R.to(stageTop() + d, now); sheet.classList.remove("on"); }
+function index() {
+  const nav = document.getElementById("lines"); nav.textContent = "";
+  const entries = [
+    [line("digital").name, 0, G.R0.field.x, false], [H.studies["ivy-park"].t, 1, 0, true],
+    [line("creative").name, 2, G.F2.x - G.xI, false], [H.studies["robert-rodriguez"].t, 3, 0, true],
+    [line("interiors").name, 4, G.F3.x - G.xR, false], [H.studies["hill-country-kitchen"].t, 5, 0, true],
+    ["The way to talk", 6, G.We - VW, false]];
+  entries.forEach(([txt, seg, pos, st]) => {
+    const b = el("button", "ln" + (st ? " st" : ""), "<span>" + esc(txt) + "</span>"); b.type = "button";
+    b.addEventListener("click", () => goTo(seg, pos)); nav.appendChild(b);
+  });
+  requestAnimationFrame(() => nav.querySelectorAll(".ln").forEach((b) => b.style.setProperty("--w", Math.round(b.firstChild.getBoundingClientRect().width) + "px")));
+}
+document.getElementById("idx").addEventListener("click", () => sheet.classList.add("on"));
+sheet.querySelector(".x").addEventListener("click", () => sheet.classList.remove("on"));
+/* a hung picture of a study on the route flies there; the rest open their study */
+plane.addEventListener("click", (e) => {
+  if (!G) return;
+  const grow = e.target.closest(".bleed.grow");
+  if (grow) { const seg = G.segs.findIndex((s) => s.hash === grow.dataset.to); if (seg >= 0) { goTo(seg, 0); return; } }
+  const a = e.target.closest("a.pic"); if (!a) return;
+  const seg = G.segs.findIndex((s) => s.hash === a.dataset.go);
+  if (seg >= 0) { e.preventDefault(); goTo(seg, 0); }
+});
+
+build();
+R.start({ pre: frame });
+/* for the compare page and for testing: the route, and a way along it */
+window.PLANE = { get G() { return G; }, go: (seg, frac) => { if (!G) return; const sg = G.segs[seg]; R.to(stageTop() + sg.s + clamp(frac, 0, 1) * sg.S, true); } };
+/* a study's address opens the plane on it */
+const deep = () => { if (!G || !location.hash) return; const seg = G.segs.findIndex((s) => s.hash === location.hash.slice(1)); if (seg >= 0) goTo(seg, 0, true); };
+requestAnimationFrame(deep); setTimeout(deep, 300);
+/* a rebuild keeps you on the same leg at the same point along it: the
+   route's lengths change a little once the fonts land, so a fraction of
+   the whole route would move you, off a corner and out of a study */
+let rt = 0; const rebuild = () => {
+  let keep = null;
+  if (G && !FLAT) { const c = camera(clamp(scrollY - stageTop(), 0, G.S)); keep = { i: G.segs.indexOf(c.sg), k: c.sg.S ? c.u / c.sg.S : 0 }; }
+  build(); R.remeasure();
+  if (G && keep) { const sg = G.segs[keep.i]; R.to(stageTop() + sg.s + keep.k * sg.S, true); }
+};
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(rebuild, 140); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+})();
+</script>
+</body>
+</html>

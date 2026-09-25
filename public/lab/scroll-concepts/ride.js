@@ -32,7 +32,7 @@ const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => 1 - Math.pow(1 - t, 3);
-const ride = { legs: [], fx: [], hooks: [], measures: [], y: 0, vw: innerWidth, vh: innerHeight, lenis: null, flat: false, clamp, lerp, ease };
+const ride = { legs: [], fx: [], pre: [], hooks: [], measures: [], y: 0, vw: innerWidth, vh: innerHeight, lenis: null, flat: false, clamp, lerp, ease };
 
 /* ── PICTURES ── the house's rungs (@384, @768, the file) and never wider
    than half a file's own pixels */
@@ -172,6 +172,9 @@ function frame() {
     L.turn = L.extra ? clamp((d - L.travel) / L.extra, 0, 1) : (d > L.travel ? 1 : 0);
     L.track.style.transform = "translate3d(" + (-L.x) + "px,0,0)";
   });
+  /* a concept that moves the page itself does it here, so the effects
+     below read where things are this frame, not the last */
+  ride.pre.forEach((fn) => fn(ride));
   const vw = ride.vw, vh = ride.vh;
   ride.fx.forEach((f) => {
     const el = f.el, r = el.getBoundingClientRect();
@@ -213,6 +216,9 @@ function frame() {
   }
 }
 ride.frame = frame;
+/* a concept that rebuilds itself (on resize, or once its fonts land) asks
+   the engine to find its effects again */
+ride.remeasure = () => measure();
 
 /* ── GOING PLACES ── */
 ride.to = (y, now) => {
@@ -249,6 +255,7 @@ function cursor() {
 ride.start = (opts) => {
   const o = opts || {};
   if (o.frame) ride.hooks.push(o.frame);
+  if (o.pre) ride.pre.push(o.pre);
   if (o.measure) ride.measures.push(o.measure);
   if (!REDUCE && Q.get("smooth") !== "0" && window.Lenis && !ride.flat) {
     ride.lenis = new Lenis({ lerp: o.lerp || 0.085, smoothWheel: true, wheelMultiplier: 1 });
